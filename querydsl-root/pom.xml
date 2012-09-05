@@ -8,11 +8,21 @@
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>http://www.querydsl.com</url>
+  
+<!--   
   <parent>
     <groupId>com.mysema.home</groupId>
     <artifactId>mysema-source</artifactId>
     <version>0.2.2</version>
   </parent>
+-->
+
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>  
+  
   <packaging>pom</packaging>
 
   <inceptionYear>2007</inceptionYear>
@@ -82,7 +92,13 @@
     <name>Mysema Ltd</name>
     <url>http://www.mysema.com</url>
   </organization>
-
+  
+  <scm>                  
+    <connection>scm:git:git@github.com:mysema/querydsl.git</connection>
+    <developerConnection>scm:git:git@github.com:mysema/querydsl.git</developerConnection>
+    <url>git@github.com:mysema/querydsl.git</url>
+  </scm>
+  
   <developers>
     <developer>
       <id>tiwe</id>
@@ -234,24 +250,24 @@
           <includeTests>true</includeTests>     
         </configuration>
       </plugin>      
-<!-- 
       <plugin>
-        <groupId>com.springsource.bundlor</groupId>
-        <artifactId>com.springsource.bundlor.maven</artifactId>
-        <version>1.0.0.RELEASE</version>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
         <executions>
           <execution>
-            <id>bundlor</id>
-            <goals>
-              <goal>bundlor</goal>
+            <phase>package</phase>
+            <goals>            
+              <goal>jar</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <failOnWarnings>true</failOnWarnings> 
-        </configuration>
-      </plugin>
- -->      
+      </plugin>  
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -269,6 +285,7 @@
     </plugins>
   </build>
   
+<!--   
   <repositories>
     <repository>
       <id>source</id>
@@ -280,7 +297,8 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-  </repositories>  
+  </repositories>
+ -->    
   
   <profiles>
     <profile>
@@ -419,12 +437,13 @@
     </plugins>
   </reporting>
   
+<!--   
   <pluginRepositories>
     <pluginRepository>
-        <!-- Required for Bundlor plugin -->
         <id>com.springsource.repository.bundles.release</id>
         <url>http://repository.springsource.com/maven/bundles/release</url>
     </pluginRepository>
   </pluginRepositories>
+ -->  
 
 </project>

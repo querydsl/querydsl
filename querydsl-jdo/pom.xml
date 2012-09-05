@@ -114,6 +114,7 @@
 
   </dependencies>
 
+<!-- 
   <repositories>
     <repository>
       <id>datanucleus</id>
@@ -139,6 +140,7 @@
       </snapshots>
     </pluginRepository>  
   </pluginRepositories>
+ -->  
   
   <build>
     <plugins>

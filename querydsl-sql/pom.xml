@@ -207,6 +207,7 @@
     </plugins>
   </build>
   
+<!--   
   <repositories>
     <repository>
       <id>jahia</id>
@@ -236,5 +237,6 @@
       <url> http://maven.cubrid.org </url>
     </repository>	
   </repositories>
+ -->  
 
 </project>
