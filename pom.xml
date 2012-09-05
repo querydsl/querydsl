@@ -7,14 +7,29 @@
   <version>0.5.3</version>
   <name>Codegen</name>
   <description>Code generation and compilation for Java</description>
+  
   <parent>
     <groupId>com.mysema.home</groupId>
     <artifactId>mysema-source</artifactId>
-    <version>0.2.2</version>
+    <version>0.3.0</version>
   </parent>
+  
   <packaging>jar</packaging>
 
   <inceptionYear>2010</inceptionYear>
+  
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:git:git@github.com:mysema/codegen.git</connection>
+    <url>git@github.com:mysema/codegen.git</url>
+  </scm>    
   
   <properties>
     <commons.collections.version>4.01</commons.collections.version>
@@ -87,6 +102,7 @@
     </plugins>
   </build>
   
+<!--   
   <repositories>
     <repository>
 	  <id>jboss</id>
@@ -102,11 +118,10 @@
   
   <pluginRepositories>
     <pluginRepository>
-        <!-- Required for Bundlor plugin -->
         <id>com.springsource.repository.bundles.release</id>
         <url>http://repository.springsource.com/maven/bundles/release</url>
     </pluginRepository>
   </pluginRepositories>
-  
+ -->  
   
 </project>
