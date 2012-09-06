@@ -10,9 +10,7 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependencies to your Maven project and make sure that
-      the Maven 2 repo of Mysema Source (http://source.mysema.com/maven2/releases) is accessible 
-      from your POM :
+      Add the following dependencies to your Maven project :
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -116,12 +114,12 @@
 java.sql.Connection conn = ...;
 MetaDataExporter exporter = new MetaDataExporter();
 exporter.setPackageName("com.myproject.mydomain");
-exporter.setTargetFolder(new File("src/main/java"));
+exporter.setTargetFolder(new File("target/generated-sources/java"));
 exporter.export(conn.getMetaData());  
 ]]></programlisting>
 
   <para>This declares that the database schema is to be mirrored into the com.myproject.domain 
-  package in the src/main/java folder.</para>
+  package in the target/generated-sources/java folder.</para>
   
   <para>
   The generated types have the table name transformed to mixed case as the class name and a similar 
@@ -372,64 +370,94 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
     used in the queries and the main entity the DMLClause is bound to.
     </para>
     
-    <para>Insert examples :</para>
+    <sect3>
+    
+    <title>Insert</title>
+    
+    <para>With columns</para>
     
 <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
   
-// with columns
 new SQLInsertClause(conn, dialect, survey)
     .columns(survey.id, survey.name)
     .values(3, "Hello").execute();
+]]></programlisting>    
 
-// without columns
+	<para>Without columns</para>
+    
+<programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, dialect, survey)
     .values(4, "Hello").execute();
+]]></programlisting>    
 
-// with subquery
+	<para>With subquery</para>
+    
+<programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, dialect, survey)
     .columns(survey.id, survey.name)
     .select(new SQLSubQuery().from(survey2).list(survey2.id.add(1), survey2.name))
     .execute();
+]]></programlisting>    
 
-// with subquery, without columns
+	<para>With subquery, without columns</para>
+    
+<programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, dialect, survey)
     .select(new SQLSubQuery().from(survey2).list(survey2.id.add(10), survey2.name))
     .execute();
 ]]></programlisting>
 
+	</sect3>
+	
+	<sect3>
+	
+	<title>Update</title>
 
-   <para>Update examples :</para> 
+   <para>With where</para> 
   
 <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-// update with where
 new SQLUpdateClause(conn, dialect, survey)
     .where(survey.name.eq("XXX"))
     .set(survey.name, "S")
     .execute();
-  
-// update without where
+]]></programlisting>    
+
+	<para>Without where</para>
+    
+<programlisting language="java"><![CDATA[  
 new SQLUpdateClause(conn, dialect, survey)
     .set(survey.name, "S")
     .execute()  
 ]]></programlisting>
 
-  <para>Delete examples :</para>
+	</sect3>
+	
+	<sect3>
+
+  	<title>Delete</title>
+
+	<para>With where</para>
 
 <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-// delete with where
 new SQLDelecteClause(conn, dialect, survey)
     .where(survey.name.eq("XXX"))
     .execute();
-  
-// delete without where
+    
+]]></programlisting>
+
+	<para>Without where</para>
+
+<programlisting language="java"><![CDATA[  
 new SQLDelecteClause(conn, dialect, survey)
     .execute()  
 ]]></programlisting>  
+
+	</sect3>
 
   </sect2>
   
@@ -442,38 +470,38 @@ new SQLDelecteClause(conn, dialect, survey)
     you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how it 
     works for UPDATE, DELETE and INSERT.</para>
 	
+	<para>Update :</para>
+	
 <programlisting language="java"><![CDATA[   	
-    private static final QSurvey survey = QSurvey.survey;
+QSurvey survey = QSurvey.survey;
 
-    @Test
-    public void updateExample() throws SQLException{
-        insert(survey).values(2, "A").execute();
-        insert(survey).values(3, "B").execute();
+insert(survey).values(2, "A").execute();
+insert(survey).values(3, "B").execute();
 
-        SQLUpdateClause update = update(survey);
-        update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
-        update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
-        assertEquals(2, update.execute());
-    }
+SQLUpdateClause update = update(survey);
+update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
+update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
+]]></programlisting>      
 
-    @Test
-    public void deleteExample() throws SQLException{
-        insert(survey).values(2, "A").execute();
-        insert(survey).values(3, "B").execute();
+	<para>Delete:</para>
+    
+<programlisting language="java"><![CDATA[
+insert(survey).values(2, "A").execute();
+insert(survey).values(3, "B").execute();
 
-        SQLDeleteClause delete = delete(survey);
-        delete.where(survey.name.eq("A")).addBatch();
-        delete.where(survey.name.eq("B")).addBatch();
-        assertEquals(2, delete.execute());
-    }
+SQLDeleteClause delete = delete(survey);
+delete.where(survey.name.eq("A")).addBatch();
+delete.where(survey.name.eq("B")).addBatch();
+assertEquals(2, delete.execute());
+]]></programlisting>      
 
-    @Test
-    public void insertExample(){
-        SQLInsertClause insert = insert(survey);
-        insert.set(survey.id, 5).set(survey.name, "5").addBatch();
-        insert.set(survey.id, 6).set(survey.name, "6").addBatch();
-        assertEquals(2, insert.execute());
-    }
+	<para>Insert:</para>
+
+<programlisting language="java"><![CDATA[
+SQLInsertClause insert = insert(survey);
+insert.set(survey.id, 5).set(survey.name, "5").addBatch();
+insert.set(survey.id, 6).set(survey.name, "6").addBatch();
+assertEquals(2, insert.execute());
 ]]></programlisting>  		
 	
     
@@ -499,58 +527,55 @@ exporter.export(conn.getMetaData());
 		to bean types in queries. Here is a simple example in JUnit form :</para>  	
   	
 <programlisting language="java"><![CDATA[    	
-    @Test
-    public void Insert_Update_Query_and_Delete(){
-        QEmployee e = new QEmployee("e");
-           
-        // Insert
-        Employee employee = new Employee();
-        employee.setFirstname("John");
-        Integer id = insert(e).populate(employee).executeWithKey(e.id);
-        employee.setId(id);
+QEmployee e = new QEmployee("e");
+   
+// Insert
+Employee employee = new Employee();
+employee.setFirstname("John");
+Integer id = insert(e).populate(employee).executeWithKey(e.id);
+employee.setId(id);
 
-        // Update
-        employee.setLastname("Smith");
-        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+// Update
+employee.setLastname("Smith");
+assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
-        // Query
-        Employee smith = query().from(e).where(e.lastname.eq("Smith")).uniqueResult(e);
-        assertEquals("John", smith.getFirstname());
-        
-        // Delete 
-        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
-    }
+// Query
+Employee smith = query().from(e).where(e.lastname.eq("Smith")).uniqueResult(e);
+assertEquals("John", smith.getFirstname());
+
+// Delete 
+assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
 ]]></programlisting>  	
   	
   	<para>The factory methods used in the previous example are here :</para>
 
 <programlisting language="java"><![CDATA[      	
-    protected SQLUpdateClause update(RelationalPath<?> e){
-        return new SQLUpdateClause(Connections.getConnection(), templates, e);
-    }
+protected SQLUpdateClause update(RelationalPath<?> e){
+    return new SQLUpdateClause(Connections.getConnection(), templates, e);
+}
 
-    protected SQLInsertClause insert(RelationalPath<?> e){
-        return new SQLInsertClause(Connections.getConnection(), templates, e);
-    }
+protected SQLInsertClause insert(RelationalPath<?> e){
+    return new SQLInsertClause(Connections.getConnection(), templates, e);
+}
 
-    protected SQLDeleteClause delete(RelationalPath<?> e){
-        return new SQLDeleteClause(Connections.getConnection(), templates, e);
-    }
+protected SQLDeleteClause delete(RelationalPath<?> e){
+    return new SQLDeleteClause(Connections.getConnection(), templates, e);
+}
 
-    protected SQLMergeClause merge(RelationalPath<?> e){
-        return new SQLMergeClause(Connections.getConnection(), templates, e);
-    }
+protected SQLMergeClause merge(RelationalPath<?> e){
+    return new SQLMergeClause(Connections.getConnection(), templates, e);
+}
 
-    protected SQLQuery query() {
-        return new SQLQueryImpl(Connections.getConnection(), templates);  	
-  	}
+protected SQLQuery query() {
+    return new SQLQueryImpl(Connections.getConnection(), templates);  	
+}
   	
 ]]></programlisting>  	  	
   	
   </sect2>
-  
-<sect2>
-		
+	  
+  <sect2>
+    	   	   
 		<title>Custom syntax expressions</title>
 		
 		<para>
@@ -589,21 +614,18 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
 	arguments to the actual queries :</para>
 
 <programlisting language="java"><![CDATA[    
-    @Test
-    public void ForSQLType(){
-        Configuration configuration = new Configuration(new H2Templates());
-        // overrides the mapping for Types.DATE
-        configuration.register(new UtilDateType());
-    }
-	
-    @Test
-    public void ForTableColumn(){
-        Configuration configuration = new Configuration(new H2Templates());
-        // declares a maping for the gender column in the person table
-        configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
-        assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, "person", "gender"));
-    }			
+Configuration configuration = new Configuration(new H2Templates());
+// overrides the mapping for Types.DATE
+configuration.register(new UtilDateType());		
 ]]></programlisting>     			
+
+    <para>And for a table column</para>
+
+<programlisting language="java"><![CDATA[    
+Configuration configuration = new Configuration(new H2Templates());
+// declares a maping for the gender column in the person table
+configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
+]]></programlisting>                
 	
   </sect2>
   

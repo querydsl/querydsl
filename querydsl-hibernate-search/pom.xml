@@ -76,6 +76,7 @@
     
   </dependencies>
   
+  <!-- 
   <repositories>
     <repository>
       <id>jboss</id>
@@ -88,6 +89,7 @@
       </snapshots>
     </repository>
   </repositories>
+   -->
   
   <build>
     <plugins>

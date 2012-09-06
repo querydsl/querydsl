@@ -126,6 +126,7 @@
     
   </dependencies>
   
+  <!-- 
   <repositories>
     <repository>
       <id>jboss</id>
@@ -158,6 +159,7 @@
       <url>http://scala-tools.org/repo-releases</url>
     </pluginRepository>
   </pluginRepositories>
+   -->
 
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>

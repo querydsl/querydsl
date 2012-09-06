@@ -1,0 +1,111 @@
+<sect1>
+    
+    <title>Alternative code generation</title>
+    
+    	
+    <para>The Java 6 APT annotation processing functionality is used in Querydsl for code generation 
+    in the JPA, JDO and Mongodb modules. For cases where annotated Java souces are not available,
+    such as the usage of a different JVM language such as Scala or Groovy or annotation addition
+    via bytecode manipulation the GenericExporter class can be used to scan the classpath
+    for annotated classes and generate query types for them.</para>
+    	
+    <para>GenericExporter can be used directly or via the querydsl-maven-plugin.</para>
+    	
+    <sect2>
+    	
+    	<title>Direct usage</title>
+    		
+    	<para>To make GenericExporter available add a dependency to the querydsl-codegen module
+    	to your project, or to be more precise com.mysema.querydsl:querydsl-codegen:${querydsl.version}.</para>
+
+		<para>Below is an example for JPA</para>
+    		
+<programlisting language="java"><![CDATA[    		
+GenericExporter exporter = new GenericExporter();
+exporter.setKeywords(Keywords.JPA);
+exporter.setEntityAnnotation(Entity.class);
+exporter.setEmbeddableAnnotation(Embeddable.class);
+exporter.setEmbeddedAnnotation(Embedded.class);        
+exporter.setSupertypeAnnotation(MappedSuperclass.class);
+exporter.setSkipAnnotation(Transient.class);
+exporter.setTargetFolder(new File("target/generated-sources/java"));
+exporter.export(DomainClass.class.getPackage());    	
+]]></programlisting>          	
+
+		<para>This will export all the JPA annotated classes in the package of the DomainClass class
+		and subpackages to the target/generated-sources/java directory.</para>
+    	
+    </sect2>
+    	
+    <sect2>
+    	
+    	<title>Usage via Maven</title>
+    		
+    	<para>The goals generic-export, jpa-export and jdo-export of the querydsl-maven-plugin
+    	can be used for GenericExporter usage via Maven.</para>
+    	
+    	<para>Here is an example for JPA annotated classes</para>
+    		
+<programlisting language="xml"><![CDATA[    		
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${querydsl.version}</version>  
+  <executions>
+    <execution>    
+      <goals>
+        <goal>jpa-export</goal>
+      </goals>
+      <configuration>
+        <targetFolder>target/generated-sources/java</targetFolder>
+        <packages>
+          <package>com.example.domain</package>
+        </packages>
+      </configuration>      
+    </execution>
+  </executions>
+</plugin>    		
+]]></programlisting>      
+
+		<para>This will export the JPA annotated classes of the com.example.domain package
+		and subpackages to the target/generated-sources/java directory.</para>
+			
+		<para>If you need Scala output of the classes, use a variant of the following configuration</para>
+
+<programlisting language="xml"><![CDATA[    					
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${querydsl.version}</version>  
+  <dependencies>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-scala</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+  </dependencies>
+  <executions>
+    <execution>
+      <goals>
+        <goal>jpa-export</goal>
+      </goals>
+      <configuration>
+        <targetFolder>target/generated-sources/scala</targetFolder>
+        <scala>true</scala>
+        <packages>
+          <package>com.example.domain</package>
+        </packages>       
+      </configuration>
+    </execution>
+  </executions>
+</plugin>    			
+]]></programlisting>            
+            
+    </sect2>
+    
+</sect1>    

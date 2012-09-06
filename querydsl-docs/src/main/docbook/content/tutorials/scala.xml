@@ -263,42 +263,40 @@ class Department {
    
 	<para>And here are some query examples</para>   	
  
+    <para>List</para>
+ 
  <programlisting language="java"><![CDATA[
-import com.mysema.query.jpa.impl.JPAQuery
+val person = Person as "person"
 
-import org.junit.Test
+query.from(person).where(person.firstName like "Rob%").list(person)
+]]></programlisting>    
 
-class JPAQueryTest {
+    <para>Unique result</para>
 
-  val person = Person as "person"
+<programlisting language="java"><![CDATA[
+query.from(person).where(person.firstName like "Rob%").unique(person)
+]]></programlisting>    
 
-  @Test
-  def Various() {
-    // list
-    query from person where (person.firstName like "Rob%") 
-      .list person
+    <para>Long where</para>
 
-    // unique result
-    query from person where (person.firstName like "Rob%") 
-      .unique person
+<programlisting language="java"><![CDATA[
+query.from(person) 
+  .where(person.firstName like "Rob%", person.lastName like "An%") 
+  .list(person)
+]]></programlisting>    
 
-    // long where
-    query from person 
-      .where (person.firstName like "Rob%", person.lastName like "An%") 
-      .list person
+    <para>Order</para>
 
-    // order
-    query from person orderBy (person.firstName asc) list person
+<programlisting language="java"><![CDATA[
+query.from(person).orderBy(person.firstName asc).list(person)
+]]></programlisting>    
 
-    // not null 
-    query from person 
-      .where (person.firstName isEmpty, person.lastName isNotNull) 
-      .list person
-  }
+    <para>Not null</para>
 
-  def query() = new JPAQuery(entityManager)
-
-}
+<programlisting language="java"><![CDATA[
+query.from(person) 
+  .where(person.firstName isEmpty, person.lastName isNotNull) 
+  .list(person)
 ]]></programlisting>    
 
 	<para>The main import for Querydsl Scala integration is the following</para>

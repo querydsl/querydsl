@@ -4,6 +4,7 @@
     <title>General usage</title>
     
 	<xi:include href="general/expressions.xml" />
+	<xi:include href="general/codegen.xml"/>
 	<xi:include href="general/configuration.xml" />
 	<xi:include href="general/best-practices.xml" />
     <xi:include href="general/alias.xml" />

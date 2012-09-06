@@ -191,6 +191,7 @@
     </plugins>
   </build>
   
+  <!-- 
   <repositories>
     <repository>
       <id>jahia</id>
@@ -214,5 +215,5 @@
       </snapshots>
 	</repository>
   </repositories>
-
+   -->
 </project>

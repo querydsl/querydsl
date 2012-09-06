@@ -14,10 +14,7 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependencies to your Maven project and make sure that
-      the Maven 2 repo of Mysema Source
-      (http://source.mysema.com/maven2/releases) is accessible from your
-      POM if the version cannot yet be found in other public Maven repos :
+      Add the following dependencies to your Maven project :
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -53,8 +50,8 @@
       ...
       <plugin>
         <groupId>com.mysema.maven</groupId>
-        <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0.2</version>
+        <artifactId>apt-maven-plugin</artifactId>
+        <version>1.0.4</version>
         <executions>
           <execution>
             <goals>

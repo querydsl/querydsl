@@ -28,6 +28,8 @@ public class QDocument extends EntityPathBase<Document>{
 
   <para>QDocument represents a Lucene document with the fields year and title.</para>
   
+  <para>Code generation is not available for Lucene, since no schema data is available.</para>
+  
  </sect2>
  
  <sect2>

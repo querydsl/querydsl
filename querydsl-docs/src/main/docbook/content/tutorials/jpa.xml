@@ -8,11 +8,11 @@
     Querydsl defines a general statically typed syntax for querying on top of
     persisted domain model data. JDO and JPA are the primary integration
     technologies for Querydsl. This guide describes how to use Querydsl
-    in combination with JPA/Hibernate.
+    in combination with JPA.
     </para>
     
   <para>
-  Querydsl for JPA/Hibernate is an alternative to both JPQL and Criteria queries. It combines the 
+  Querydsl for JPA is an alternative to both JPQL and Criteria queries. It combines the 
   dynamic nature
   of Criteria queries with the expressiveness of JPQL and all that in a fully typesafe manner.  
   </para>
@@ -21,9 +21,7 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependencies to your Maven project and make sure that
-      the Maven 2 repo of Mysema Source (http://source.mysema.com/maven2/releases) is accessible 
-      from your POM :
+      Add the following dependencies to your Maven project  :
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -58,8 +56,8 @@
     ...
     <plugin>
       <groupId>com.mysema.maven</groupId>
-      <artifactId>maven-apt-plugin</artifactId>
-      <version>1.0.2</version>
+      <artifactId>apt-maven-plugin</artifactId>
+      <version>1.0.4</version>
       <executions>
         <execution>
           <goals>
@@ -251,6 +249,7 @@ JPAQuery query = new JPAQuery (entityManager);
 
 	<para>Both HibernateQuery and JPAQuery implement the JPQLQuery interface.</para>
 
+<!-- 
 	<para>
 	The default configuration of JPAQuery is best suited for use with Hibernate. Whe using 
 	EclipseLink as the JPA provider, the 
@@ -260,12 +259,13 @@ JPAQuery query = new JPAQuery (entityManager);
 <programlisting language="java"><![CDATA[   
 JPAQuery query = new JPAQuery (entityManager, EclipseLinkTemplates.DEFAULT); 
 ]]></programlisting>	
-
+ 
     <para>If you want to use the standard JPA 2 serialization then create the query like this :</para>
     
 <programlisting language="java"><![CDATA[   
 JPAQuery query = new JPAQuery (entityManager, JPQLTemplates.DEFAULT); 
 ]]></programlisting>	
+-->
 
     <para>
       To retrieve the customer with the first name Bob you would construct a

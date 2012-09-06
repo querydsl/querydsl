@@ -92,6 +92,7 @@
 	    
   </dependencies>
   
+  <!-- 
   <repositories>
     <repository>
       <id>jboss</id>
@@ -115,15 +116,14 @@
       </snapshots>
     </repository>    	
   </repositories>  
+   -->
 
   <build>
-    <plugins> 
-    
+    <plugins>     
       <plugin>
         <groupId>com.springsource.bundlor</groupId>
         <artifactId>com.springsource.bundlor.maven</artifactId>
-      </plugin>   
-         
+      </plugin>           
     </plugins>
   </build>
 
