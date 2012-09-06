@@ -25,6 +25,7 @@ public class QAccount extends EntityPathBase<Account>{
     
   </sect2>
  
+ <!-- 
   <sect2>
   
     <title>Custom query extensions</title>
@@ -32,6 +33,7 @@ public class QAccount extends EntityPathBase<Account>{
     <para>TODO</para>
   
   </sect2>
+ -->  
  
   <sect2 id="dao_integration">
   
