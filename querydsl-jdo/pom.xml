@@ -113,34 +113,6 @@
 	</dependency>    
 
   </dependencies>
-
-<!-- 
-  <repositories>
-    <repository>
-      <id>datanucleus</id>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-  
-  <pluginRepositories>
-    <pluginRepository>
-      <id>datanucleus</id>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>  
-  </pluginRepositories>
- -->  
   
   <build>
     <plugins>

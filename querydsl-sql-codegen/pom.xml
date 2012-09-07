@@ -191,29 +191,4 @@
     </plugins>
   </build>
   
-  <!-- 
-  <repositories>
-    <repository>
-      <id>jahia</id>
-      <url>http://maven.jahia.org/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-	
-	<repository>
-	  <id>jboss</id>
-	  <url>http://repository.jboss.org/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-	</repository>
-  </repositories>
-   -->
 </project>

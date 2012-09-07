@@ -78,25 +78,6 @@
     </dependency>    
   </dependencies>
   
-<!--   
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-        <checksumPolicy>warn</checksumPolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <checksumPolicy>fail</checksumPolicy>
-      </snapshots>
-      <id>morphia_repo</id>
-      <name>Morphia Repository</name>
-      <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
-      <layout>default</layout>
-    </repository>
-  </repositories>
- -->  
-  
   <build>
   	<plugins>
       <plugin>

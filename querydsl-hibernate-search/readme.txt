@@ -1,1 +1,0 @@
-* add support for JPA based FullTextQuery

@@ -91,32 +91,6 @@
     </dependency>    
 	    
   </dependencies>
-  
-  <!-- 
-  <repositories>
-    <repository>
-      <id>jboss</id>
-      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-	
-    <repository>
-      <id>EclipseLink Repo</id>
-      <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>    	
-  </repositories>  
-   -->
 
   <build>
     <plugins>     
