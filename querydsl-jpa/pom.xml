@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>2.7.2.BUILD-SNAPSHOT</version>
+    <version>2.7.3</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -16,7 +16,7 @@
   <packaging>jar</packaging>
   
   <properties>
-    <hibernate.version>4.1.4.Final</hibernate.version>
+    <hibernate.version>4.1.7.Final</hibernate.version>
     <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
   </properties>
   
@@ -279,7 +279,7 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
-        <version>1.0.4</version>        
+        <version>1.0.5</version>        
         <executions>
           <execution>
             <goals>
