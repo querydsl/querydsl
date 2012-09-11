@@ -1,6 +1,7 @@
 package com.mysema.query.scala;
 
 import com.mysema.query.annotations._
+import scala.runtime.RichChar
 
 package ext {
 
@@ -16,6 +17,8 @@ package ext {
     var someScalaEnum: WeekDay.Value = _
 
     var someChar: Char = _
+    
+    var someRichChar: RichChar = _
   }
 
   trait SomeTrait {
