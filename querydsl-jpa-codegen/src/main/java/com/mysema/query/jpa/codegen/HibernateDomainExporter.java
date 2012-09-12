@@ -303,8 +303,6 @@ public class HibernateDomainExporter {
                     while (properties.hasNext()) {
                         handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
                     }
-                } else {
-                    // ?!?
                 }
             }
             Iterator<?> properties = pc.getDeclaredPropertyIterator();

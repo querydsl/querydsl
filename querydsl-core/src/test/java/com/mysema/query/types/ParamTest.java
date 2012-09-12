@@ -35,6 +35,11 @@ public class ParamTest {
         assertFalse(param11.equals(param3));
         assertFalse(param11.equals(param4));
     }
+    
+    @Test
+    public void Anon() {
+        System.out.println(param4.getName());
+    }
 
     @Test
     public void GetNotSetMessage(){

@@ -13,6 +13,8 @@
  */
 package com.mysema.query.types;
 
+import java.util.UUID;
+
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -26,8 +28,6 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
 
     private static final long serialVersionUID = -6872502615009012503L;
 
-    private static volatile long counter = 0;
-
     private final String name;
 
     private final boolean anon;
@@ -37,10 +37,10 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
         this.name = Assert.notNull(name, "name");
         this.anon = false;
     }
-
+    
     public ParamExpressionImpl(Class<? extends T> type) {
         super(type);
-        this.name = "param" + (++counter);
+        this.name = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         this.anon = true;
     }
 

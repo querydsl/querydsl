@@ -33,7 +33,6 @@ public class HSQLDBTemplates extends SQLTemplates {
 
     public HSQLDBTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
-        //setDummyTable(null);
         setAutoIncrement(" identity");        
         add(Ops.TRIM, "trim(both from {0})");
         add(Ops.NEGATE, "{0} * -1", 7);
@@ -45,9 +44,6 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
-        
-//        add(Ops.DateTimeOps.DATE_ADD, "dateadd('{2s}', {1}, {0})");
-//        add(Ops.DateTimeOps.DATE_DIFF, "datediff('{2s}', {0}, {1})");
     }
     
     @Override

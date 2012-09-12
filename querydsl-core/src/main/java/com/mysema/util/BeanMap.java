@@ -1,4 +1,3 @@
-// GenericsNote: Converted to <String,Object>.
 /*
  *  Copyright 2001-2004 The Apache Software Foundation
  *

@@ -103,16 +103,6 @@ public final class EmbeddableSerializer extends EntitySerializer {
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }
 
-//    @Override
-//    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
-//        // no root constructors
-//    }
-
-//    @Override
-//    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
-//        // no default instance
-//    }
-
     @Override
     protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
         // no factory methods
@@ -139,11 +129,6 @@ public final class EmbeddableSerializer extends EntitySerializer {
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
         packages.add(SimplePath.class.getPackage());
-//        if ((model.hasLists() && config.useListAccessors())
-//                || !model.getDelegates().isEmpty()
-//                || (model.hasMaps() && config.useMapAccessors())){
-//            packages.add(ComparableExpression.class.getPackage());
-//        }
         
         if (isImportExprPackage(model)) {
             packages.add(ComparableExpression.class.getPackage());

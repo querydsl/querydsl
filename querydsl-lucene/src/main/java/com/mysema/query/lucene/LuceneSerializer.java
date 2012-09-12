@@ -112,24 +112,20 @@ public class LuceneSerializer {
             return eq(operation, metadata, false);
         } else if (op == Ops.EQ_IGNORE_CASE) {
             throw new IgnoreCaseUnsupportedException();
-            // return eq(operation, metadata, true);
         } else if (op == Ops.NE) {
             return ne(operation, metadata, false);
         } else if (op == Ops.STARTS_WITH) {
             return startsWith(metadata, operation, false);
         } else if (op == Ops.STARTS_WITH_IC) {
             throw new IgnoreCaseUnsupportedException();
-            // return startsWith(metadata, operation, true);
         } else if (op == Ops.ENDS_WITH) {
             return endsWith(operation, metadata, false);
         } else if (op == Ops.ENDS_WITH_IC) {
             throw new IgnoreCaseUnsupportedException();
-            // return endsWith(operation, metadata, true);
         } else if (op == Ops.STRING_CONTAINS) {
             return stringContains(operation, metadata, false);
         } else if (op == Ops.STRING_CONTAINS_IC) {
             throw new IgnoreCaseUnsupportedException();
-            // return stringContains(operation, metadata, true);
         } else if (op == Ops.BETWEEN) {
             return between(operation, metadata);
         } else if (op == Ops.IN) {

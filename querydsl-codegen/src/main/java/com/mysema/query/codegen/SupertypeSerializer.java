@@ -47,21 +47,6 @@ public final class SupertypeSerializer extends EntitySerializer{
         super(typeMappings, keywords);
     }
 
-//    @Override
-//    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
-//        // no constructors for variables
-//    }
-//
-//    @Override
-//    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
-//        // no default instance
-//    }
-//
-//    @Override
-//    protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
-//        // no factory methods
-//    }
-
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         introDelegatePackages(writer, model);
