@@ -444,15 +444,5 @@ public class QueryMixin<T> {
     public String toString() {
         return metadata.toString();
     }
-    
-
-    private static String uncapitalize(String str) {
-        if (str.length() > 1) {
-            return Character.toLowerCase(str.charAt(0)) + str.substring(1);
-        } else {
-            return str.toLowerCase();
-        }
-    }
-
 
 }

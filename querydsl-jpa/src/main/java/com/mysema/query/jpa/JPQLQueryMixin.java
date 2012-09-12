@@ -83,21 +83,6 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         return super.convert(Conversions.convert(expr));
     }
     
-    private boolean isAggSumWithConversion(Expression<?> expr) {
-        if (expr instanceof Operation && ((Operation)expr).getOperator() == Ops.AggOps.SUM_AGG) {
-            Class type = ((Operation)expr).getType();
-            if (type.equals(Float.class) || type.equals(Integer.class) 
-                    || type.equals(Short.class) || type.equals(Byte.class)) {
-                return true;
-            }
-        } 
-        return false;
-    }
-
-    private boolean isCountAggConversion(Expression<?> expr) {
-        return expr instanceof Operation && ((Operation)expr).getOperator() == Ops.AggOps.COUNT_AGG;
-    }
-    
     @Override    
     protected Predicate normalize(Predicate predicate, boolean where) {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
