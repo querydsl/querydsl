@@ -1,5 +1,7 @@
 package com.mysema.codegen;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -27,6 +29,24 @@ public class InnerClassesTest {
         writer.end();
 
         System.err.println(str.toString());
+    }
+    
+    @Test
+    public void Java() {
+        StringWriter str = new StringWriter();
+        JavaWriter writer = new JavaWriter(str);
+        
+        assertEquals("com.mysema.codegen.InnerClassesTest.Entity", 
+                writer.getRawName(new ClassType(Entity.class)));
+    }
+    
+    @Test
+    public void Scala() {
+        StringWriter str = new StringWriter();
+        ScalaWriter writer = new ScalaWriter(str);
+        
+        assertEquals("com.mysema.codegen.InnerClassesTest$Entity", 
+                writer.getRawName(new ClassType(Entity.class)));
     }
 
 }

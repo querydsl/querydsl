@@ -370,6 +370,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
             fullName = StringUtils.capitalize(fullName);
         }
         String packageName = type.getPackageName();
+        if (packageName != null && packageName.length() > 0) {
+            fullName = packageName + "." + fullName.substring(packageName.length()+1).replace('.', '$');
+        } else {
+            fullName = fullName.replace('.', '$');
+        }
         String rv = fullName;
         if (type.isPrimitive() && packageName.isEmpty()) {
             rv = Character.toUpperCase(rv.charAt(0)) + rv.substring(1);
