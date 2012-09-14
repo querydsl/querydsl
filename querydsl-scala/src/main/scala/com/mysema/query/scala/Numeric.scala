@@ -30,6 +30,15 @@ object Numeric {
     
   implicit val bigDecimal = new Numeric[java.math.BigDecimal]
   implicit val bigInteger = new Numeric[java.math.BigInteger]
+  
+  implicit val richByte = new Numeric[scala.runtime.RichByte]
+  implicit val richChar = new Numeric[scala.runtime.RichChar]
+  implicit val richDouble = new Numeric[scala.runtime.RichDouble]
+  implicit val richFloat = new Numeric[scala.runtime.RichFloat]
+  implicit val richInt = new Numeric[scala.runtime.RichInt]
+  implicit val richLong = new Numeric[scala.runtime.RichLong]
+  implicit val richShort = new Numeric[scala.runtime.RichShort]
+  
 }
   
 /**

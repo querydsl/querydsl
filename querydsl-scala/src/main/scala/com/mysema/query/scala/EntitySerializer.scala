@@ -168,7 +168,9 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   private def getName(t: Type, writer: CodeWriter) = {
-    if (primitives && Types.PRIMITIVES.containsKey(t)) {
+    if (t == Types.CHARACTER) {
+      "Character" // because createComparable[Char] doesn't work, and the workaround involves implicit params
+    } else if (primitives && Types.PRIMITIVES.containsKey(t)) {
       writer.getRawName(Types.PRIMITIVES.get(t)) 
     } else {
       writer.getGenericName(true, t)
