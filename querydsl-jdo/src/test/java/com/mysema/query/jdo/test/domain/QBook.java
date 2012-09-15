@@ -48,10 +48,13 @@ public class QBook extends EntityPathBase<com.mysema.query.jdo.test.domain.Book>
     public QBook(String path) {
           this(com.mysema.query.jdo.test.domain.Book.class, path);
     }
+    
     public QBook(Class<? extends com.mysema.query.jdo.test.domain.Book> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
+    
     public QBook(PathMetadata<?> metadata) {
          super(com.mysema.query.jdo.test.domain.Book.class, metadata);
     }
+    
 }

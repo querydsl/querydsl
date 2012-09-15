@@ -42,7 +42,6 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.STRING_CAST, "String.valueOf({0})");
 
         // Number
-        add(Ops.DIV,          "(double)({0}/{1})");
         add(Ops.MathOps.COT,  functions + ".cot({0})");
         add(Ops.MathOps.COTH, functions + ".coth({0})");
         add(Ops.MathOps.DEG,  functions + ".degrees({0})");

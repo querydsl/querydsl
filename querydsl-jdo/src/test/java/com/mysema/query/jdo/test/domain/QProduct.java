@@ -48,10 +48,13 @@ public class QProduct extends EntityPathBase<com.mysema.query.jdo.test.domain.Pr
     public QProduct(String path) {
           this(com.mysema.query.jdo.test.domain.Product.class, path);
     }
+    
     public QProduct(Class<? extends com.mysema.query.jdo.test.domain.Product> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
+    
     public QProduct(PathMetadata<?> metadata) {
          super(com.mysema.query.jdo.test.domain.Product.class, metadata);
     }
+    
 }
