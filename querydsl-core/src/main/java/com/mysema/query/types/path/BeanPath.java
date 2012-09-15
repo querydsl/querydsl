@@ -150,8 +150,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, Q extends SimpleExpression<? super A>> CollectionPath<A, Q> createCollection(String property, Class<? super A> type, Class<? super Q> queryType) {
-        return add(new CollectionPath<A, Q>(type, (Class) queryType, forProperty(property)));
+    protected <A, Q extends SimpleExpression<? super A>> CollectionPath<A, Q> createCollection(String property, Class<? super A> type, Class<? super Q> queryType, PathInits inits) {
+        return add(new CollectionPath<A, Q>(type, (Class) queryType, forProperty(property), inits));
     }
 
     /**
@@ -215,8 +215,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, E extends SimpleExpression<? super A>> ListPath<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType) {
-        return add(new ListPath<A, E>(type, (Class) queryType, forProperty(property)));
+    protected <A, E extends SimpleExpression<? super A>> ListPath<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType, PathInits inits) {
+        return add(new ListPath<A, E>(type, (Class) queryType, forProperty(property), inits));
     }
 
     /**
@@ -258,8 +258,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, E extends SimpleExpression<? super A>> SetPath<A, E> createSet(String property, Class<? super A> type, Class<? super E> queryType) {
-        return add(new SetPath<A, E>(type, (Class) queryType, forProperty(property)));
+    protected <A, E extends SimpleExpression<? super A>> SetPath<A, E> createSet(String property, Class<? super A> type, Class<? super E> queryType, PathInits inits) {
+        return add(new SetPath<A, E>(type, (Class) queryType, forProperty(property), inits));
     }
 
     /**

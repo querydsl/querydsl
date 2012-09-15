@@ -37,15 +37,18 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
     extends CollectionExpressionBase<C, E> implements Path<C>{
 
     private static final long serialVersionUID = -9004995667633601298L;
-
-    public CollectionPathBase(Path<C> mixin) {
-        super(mixin);
-    }
-
+   
     @Nullable
     private transient volatile Constructor<?> constructor;
     
     private volatile boolean usePathInits = false;
+
+    private final PathInits inits;
+    
+    public CollectionPathBase(Path<C> mixin, PathInits inits) {
+        super(mixin);
+        this.inits = inits;
+    }
     
     public abstract Q any();
     
@@ -71,14 +74,14 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
             }
             if (Constants.isTyped(queryType)) {
                 if (usePathInits) {
-                    return (Q)constructor.newInstance(getElementType(), pm, PathInits.DIRECT);
+                    return (Q)constructor.newInstance(getElementType(), pm, inits);
                 } else {
                     return (Q)constructor.newInstance(getElementType(), pm);    
                 }
                 
             } else {
                 if (usePathInits) {
-                    return (Q)constructor.newInstance(pm, PathInits.DIRECT);    
+                    return (Q)constructor.newInstance(pm, inits);    
                 } else {
                     return (Q)constructor.newInstance(pm);
                 }                

@@ -51,6 +51,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
@@ -471,24 +472,18 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introInits(CodeWriter writer, EntityType model) throws IOException {
-        if (model.hasEntityFields()) {
-            List<String> inits = new ArrayList<String>();
-            for (Property property : model.getProperties()) {
-                if (property.getType().getCategory() == TypeCategory.ENTITY ||
-                    property.getType().getCategory() == TypeCategory.CUSTOM) {
-                    for (String init : property.getInits()) {
-                        inits.add(property.getEscapedName() + DOT + init);
-                    }
-                }
-            }            
-            if (!inits.isEmpty()) {
-                inits.add(0, STAR);
-                String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
-                writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
-            } else {
-                writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT");
+        List<String> inits = new ArrayList<String>();
+        for (Property property : model.getProperties()) {
+            for (String init : property.getInits()) {
+                inits.add(property.getEscapedName() + DOT + init);
             }
-
+        }            
+        if (!inits.isEmpty()) {
+            inits.add(0, STAR);
+            String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
+            writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
+        } else if (model.hasEntityFields()) {
+            writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT");
         }
     }
 
@@ -662,6 +657,7 @@ public class EntitySerializer implements Serializer{
             Type queryType = typeMappings.getPathType(propertyType, model, false);
             Type genericQueryType = null;
             String localRawName = writer.getRawName(property.getType());
+            String inits = getInits(property);
             
             switch(property.getType().getCategory()) {
             case STRING:
@@ -717,7 +713,7 @@ public class EntitySerializer implements Serializer{
 
                 serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createCollection",
-                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
+                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS, inits);
                 break;
 
             case SET:
@@ -728,7 +724,7 @@ public class EntitySerializer implements Serializer{
 
                 serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createSet",
-                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
+                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS, inits);
                 break;
 
             case LIST:
@@ -739,7 +735,7 @@ public class EntitySerializer implements Serializer{
 
                 serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createList",
-                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
+                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS, inits);
                 break;
 
             case MAP:
@@ -763,7 +759,15 @@ public class EntitySerializer implements Serializer{
             }
         }
     }
-
+    
+    private String getInits(Property property) {
+        if (!property.getInits().isEmpty()) {
+            return "INITS.get(\"" + property.getName() + "\")";
+        } else {
+            return "PathInits.DIRECT";
+        }
+    }
+    
     private Type getRaw(Type type) {
         if (type instanceof EntityType && type.getPackageName().startsWith("ext.java")) {
             return type;

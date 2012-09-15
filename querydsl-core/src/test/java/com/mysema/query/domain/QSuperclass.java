@@ -18,7 +18,7 @@ public class QSuperclass extends EntityPathBase<Superclass> {
 
     public static final QSuperclass superclass = new QSuperclass("superclass");
 
-    public final ListPath<IdNamePair<String>, QIdNamePair> fooOfSuperclass = this.<IdNamePair<String>, QIdNamePair>createList("fooOfSuperclass", IdNamePair.class, QIdNamePair.class);
+    public final ListPath<IdNamePair<String>, QIdNamePair> fooOfSuperclass = this.<IdNamePair<String>, QIdNamePair>createList("fooOfSuperclass", IdNamePair.class, QIdNamePair.class, PathInits.DIRECT);
 
     public QSuperclass(String variable) {
         super(Superclass.class, forVariable(variable));

@@ -141,7 +141,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A> CollectionPath<A, PathBuilder<A>> getCollection(String property, Class<A> type) {
         validate(property);
-        return super.<A, PathBuilder<A>>createCollection(property, type, PathBuilder.class);
+        return super.<A, PathBuilder<A>>createCollection(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
     /**
@@ -156,7 +156,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<E> queryType) {
         validate(property);
-        return super.<A, E>createCollection(property, type, queryType);
+        return super.<A, E>createCollection(property, type, queryType, PathInits.DIRECT);
     }
 
     /**
@@ -261,7 +261,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A> ListPath<A, PathBuilder<A>> getList(String property, Class<A> type) {
         validate(property);
-        return super.<A, PathBuilder<A>>createList(property, type, PathBuilder.class);
+        return super.<A, PathBuilder<A>>createList(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
     /**
@@ -276,7 +276,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<E> queryType) {
         validate(property);
-        return super.<A, E>createList(property, type, queryType);
+        return super.<A, E>createList(property, type, queryType, PathInits.DIRECT);
     }
 
     /**
@@ -344,7 +344,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
         validate(property);
-        return super.<A, PathBuilder<A>>createSet(property, type, PathBuilder.class);
+        return super.<A, PathBuilder<A>>createSet(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
     /**
@@ -359,7 +359,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<E> queryType) {
         validate(property);
-        return super.<A, E>createSet(property, type, queryType);
+        return super.<A, E>createSet(property, type, queryType, PathInits.DIRECT);
     }
 
     /**

@@ -63,7 +63,12 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
-        super(new PathImpl<List<E>>((Class)List.class, metadata));
+        this(elementType, queryType, metadata, PathInits.DIRECT);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata, PathInits inits) {
+        super(new PathImpl<List<E>>((Class)List.class, metadata), inits);
         this.elementType = (Class<E>) Assert.notNull(elementType,"type");
         this.queryType = queryType;
         this.pathMixin = (Path<List<E>>)mixin;

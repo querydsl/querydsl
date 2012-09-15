@@ -26,6 +26,7 @@ import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.PathInits;
 import com.mysema.query.types.path.SetPath;
 import com.mysema.query.types.path.SimplePath;
 
@@ -41,23 +42,23 @@ public class QDefaultQueryMetadata extends EntityPathBase<DefaultQueryMetadata> 
 
     public final BooleanPath distinct = createBoolean("distinct");
 
-    public final SetPath<Expression<?>, SimplePath<Expression<?>>> exprInJoins = this.<Expression<?>, SimplePath<Expression<?>>>createSet("exprInJoins", Expression.class, SimplePath.class);
+    public final SetPath<Expression<?>, SimplePath<Expression<?>>> exprInJoins = this.<Expression<?>, SimplePath<Expression<?>>>createSet("exprInJoins", Expression.class, SimplePath.class, PathInits.DIRECT);
 
-    public final SetPath<QueryFlag, SimplePath<QueryFlag>> flags = this.<QueryFlag, SimplePath<QueryFlag>>createSet("flags", QueryFlag.class, SimplePath.class);
+    public final SetPath<QueryFlag, SimplePath<QueryFlag>> flags = this.<QueryFlag, SimplePath<QueryFlag>>createSet("flags", QueryFlag.class, SimplePath.class, PathInits.DIRECT);
 
-    public final ListPath<Expression<?>, SimplePath<Expression<?>>> groupBy = this.<Expression<?>, SimplePath<Expression<?>>>createList("groupBy", Expression.class, SimplePath.class);
+    public final ListPath<Expression<?>, SimplePath<Expression<?>>> groupBy = this.<Expression<?>, SimplePath<Expression<?>>>createList("groupBy", Expression.class, SimplePath.class, PathInits.DIRECT);
 
     public final SimplePath<Predicate> having = createSimple("having", Predicate.class);
 
-    public final ListPath<JoinExpression, SimplePath<JoinExpression>> joins = this.<JoinExpression, SimplePath<JoinExpression>>createList("joins", JoinExpression.class, SimplePath.class);
+    public final ListPath<JoinExpression, SimplePath<JoinExpression>> joins = this.<JoinExpression, SimplePath<JoinExpression>>createList("joins", JoinExpression.class, SimplePath.class, PathInits.DIRECT);
 
     public final SimplePath<QueryModifiers> modifiers = createSimple("modifiers", QueryModifiers.class);
 
-    public final ListPath<OrderSpecifier<?>, SimplePath<OrderSpecifier<?>>> orderBy = this.<OrderSpecifier<?>, SimplePath<OrderSpecifier<?>>>createList("orderBy", OrderSpecifier.class, SimplePath.class);
+    public final ListPath<OrderSpecifier<?>, SimplePath<OrderSpecifier<?>>> orderBy = this.<OrderSpecifier<?>, SimplePath<OrderSpecifier<?>>>createList("orderBy", OrderSpecifier.class, SimplePath.class, PathInits.DIRECT);
 
     public final MapPath<ParamExpression<?>, Object, SimplePath<Object>> params = this.<ParamExpression<?>, Object, SimplePath<Object>>createMap("params", ParamExpression.class, Object.class, SimplePath.class);
 
-    public final ListPath<Expression<?>, SimplePath<Expression<?>>> projection = this.<Expression<?>, SimplePath<Expression<?>>>createList("projection", Expression.class, SimplePath.class);
+    public final ListPath<Expression<?>, SimplePath<Expression<?>>> projection = this.<Expression<?>, SimplePath<Expression<?>>>createList("projection", Expression.class, SimplePath.class, PathInits.DIRECT);
 
     public final BooleanPath unique = createBoolean("unique");
 

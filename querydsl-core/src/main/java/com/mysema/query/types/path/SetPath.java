@@ -55,9 +55,13 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
         this(type, queryType, PathMetadataFactory.forProperty(parent, property));
     }
     
-    @SuppressWarnings("unchecked")
     public SetPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata) {
-        super(new PathImpl<Set<E>>((Class)Set.class, metadata));
+        this(type, queryType, metadata, PathInits.DIRECT);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public SetPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata, PathInits inits) {
+        super(new PathImpl<Set<E>>((Class)Set.class, metadata), inits);
         this.elementType = (Class<E>) Assert.notNull(type,"type");
         this.queryType = queryType;
         this.pathMixin = (Path<Set<E>>)mixin;
