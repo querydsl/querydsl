@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -68,6 +69,7 @@ import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QFloatProjection;
 import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QShow;
+import com.mysema.query.jpa.domain.QSimpleTypes;
 import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
@@ -385,6 +387,99 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @ExcludeIn(Target.ORACLE)
+    public void Divide() {
+        QSimpleTypes entity = new QSimpleTypes("entity1");
+        QSimpleTypes entity2 = new QSimpleTypes("entity2");
+        
+        query().from(entity, entity2)
+               .where(entity.ddouble.divide(entity2.ddouble).loe(2.0))
+               .list(entity);
+        
+        query().from(entity, entity2)
+                .where(entity.ddouble.divide(entity2.iint).loe(2.0))
+                .list(entity);
+        
+        query().from(entity, entity2)
+                .where(entity.iint.divide(entity2.ddouble).loe(2.0))
+                .list(entity);
+        
+        query().from(entity, entity2)
+                .where(entity.iint.divide(entity2.iint).loe(2))
+                .list(entity);
+    }
+    
+    @Test
+    @ExcludeIn(Target.ORACLE)
+    public void Divide_BigDecimal() {
+        QSimpleTypes entity = new QSimpleTypes("entity1");
+        QSimpleTypes entity2 = new QSimpleTypes("entity2");
+        NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
+        NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
+        
+        query().from(entity, entity2)
+               .where(bigd1.divide(bigd2).loe(new BigDecimal("1.00")))
+               .list(entity);
+        
+        query().from(entity, entity2)
+               .where(entity.ddouble.divide(bigd2).loe(new BigDecimal("1.00")))
+               .list(entity);
+        
+        query().from(entity, entity2)
+               .where(bigd1.divide(entity.ddouble).loe(new BigDecimal("1.00")))
+               .list(entity);
+    }
+    
+    @Test
+    @ExcludeIn(Target.ORACLE)
+    public void Multiply() {
+        QSimpleTypes entity = new QSimpleTypes("entity1");
+        QSimpleTypes entity2 = new QSimpleTypes("entity2");
+        query().from(entity, entity2)
+               .where(entity.ddouble.multiply(entity2.ddouble).loe(2.0))
+               .list(entity);
+    }
+    
+    @Test
+    @ExcludeIn(Target.ORACLE)
+    public void Multiply_BigDecimal() {
+        QSimpleTypes entity = new QSimpleTypes("entity1");
+        QSimpleTypes entity2 = new QSimpleTypes("entity2");
+        NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
+        NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
+        
+        query().from(entity, entity2)
+               .where(bigd1.multiply(bigd2).loe(new BigDecimal("1.00")))
+               .list(entity);                       
+    }
+    
+    @Test
+    @ExcludeIn(Target.ORACLE)
+    public void Add_BigDecimal() {
+        QSimpleTypes entity = new QSimpleTypes("entity1");
+        QSimpleTypes entity2 = new QSimpleTypes("entity2");
+        NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
+        NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
+        
+        query().from(entity, entity2)
+               .where(bigd1.add(bigd2).loe(new BigDecimal("1.00")))
+               .list(entity);                       
+    }
+    
+    @Test
+    @ExcludeIn(Target.ORACLE)
+    public void Subtract_BigDecimal() {
+        QSimpleTypes entity = new QSimpleTypes("entity1");
+        QSimpleTypes entity2 = new QSimpleTypes("entity2");
+        NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
+        NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
+        
+        query().from(entity, entity2)
+               .where(bigd1.subtract(bigd2).loe(new BigDecimal("1.00")))
+               .list(entity);                       
+    }
+    
+    @Test
     public void Enum_in() {
         assertEquals(1, query().from(company).where(company.ratingOrdinal.in(Rating.A, Rating.AA)).count());
         assertEquals(1, query().from(company).where(company.ratingString.in(Rating.A, Rating.AA)).count());
@@ -464,6 +559,11 @@ public abstract class AbstractStandardTest {
     @Ignore // FIXME https://github.com/mysema/querydsl/issues/185
     public void Case() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
+    }
+    
+    @Test
+    public void Cast() {
+        query().from(cat).list(cat.bodyWeight.castToNum(Integer.class));
     }
     
     @Test

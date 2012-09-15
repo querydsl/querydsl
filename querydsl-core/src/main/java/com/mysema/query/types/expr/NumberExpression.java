@@ -40,7 +40,7 @@ import com.mysema.util.MathUtils;
  * @see java.lang.Number
  */
 public abstract class NumberExpression<T extends Number & Comparable<?>> extends ComparableExpressionBase<T> {
-
+    
     private static final long serialVersionUID = -5485902768703364888L;
 
     @Nullable
@@ -151,10 +151,10 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public NumberExpression<Byte> byteValue() {
         return castToNum(Byte.class);
     }
-
+    
     @SuppressWarnings("unchecked")
     private T cast(Number number) {
-        Class<T> type = (Class<T>) getType();
+        Class<T> type = (Class<T>) getType();        
         if (type.equals(number.getClass())) {
             return (T) number;
         } else if (Byte.class.equals(type)) {
@@ -203,24 +203,34 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return ceil;
     }
 
-    /**
-     * Get the result of the operation this / right
-     *
-     * @param right
-     * @return this / right
-     */
-    public <N extends Number & Comparable<?>> NumberExpression<Double> divide(Expression<N> right) {
-        return NumberOperation.create(Double.class, Ops.DIV, this, right);
+    private Class<?> getDivisionType(Class<?> left, Class<?> right) {
+        if (!left.equals(right)) {
+            return Double.class;
+        } else {
+            return left;
+        }
     }
-
+    
     /**
      * Get the result of the operation this / right
      *
      * @param right
      * @return this / right
      */
-    public <N extends Number & Comparable<?>> NumberExpression<Double> divide(N right) {
-        return NumberOperation.create(Double.class, Ops.DIV, this, new ConstantImpl<N>(right));
+    public <N extends Number & Comparable<?>> NumberExpression<T> divide(Expression<N> right) {
+        Class<?> type = getDivisionType(getType(), right.getType());
+        return NumberOperation.create((Class<T>)type, Ops.DIV, this, right);
+    }
+    
+    /**
+     * Get the result of the operation this / right
+     *
+     * @param right
+     * @return this / right
+     */
+    public <N extends Number & Comparable<?>> NumberExpression<T> divide(N right) {
+        Class<?> type = getDivisionType(getType(), right.getClass());
+        return NumberOperation.create((Class<T>)type, Ops.DIV, this, new ConstantImpl<N>(right));
     }
 
     /**
