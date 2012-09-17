@@ -31,7 +31,9 @@ public final class UnionUtils {
         StringBuilder builder = new StringBuilder("(");
         String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
         for (int i = 0; i < union.length; i++) {
-            if (i > 0) builder.append(separator);
+            if (i > 0) {
+                builder.append(separator);
+            }
             builder.append("{"+i+"}");
         }
         builder.append(")");

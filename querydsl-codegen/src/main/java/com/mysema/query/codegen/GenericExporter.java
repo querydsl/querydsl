@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
@@ -91,7 +92,7 @@ import com.mysema.util.ReflectionUtils;
  *
  */
 public class GenericExporter {
-
+    
     private Class<? extends Annotation> entityAnnotation = QueryEntity.class;
 
     private Class<? extends Annotation> supertypeAnnotation = QuerySupertype.class;

@@ -13,12 +13,6 @@
  */
 package com.mysema.query.sql.mssql;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import com.mysema.query.JoinFlag;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Template;
@@ -52,7 +46,9 @@ public final class SQLServerGrammar {
     static String tableHints(SQLServerTableHints... tableHints) {
         StringBuilder hints = new StringBuilder(" with ").append("(");
         for (int i = 0; i < tableHints.length; i++) {
-            if (i > 0) hints.append(", ");
+            if (i > 0) {
+                hints.append(", ");
+            }
             hints.append(tableHints[i].name());
         }
         hints.append(")");

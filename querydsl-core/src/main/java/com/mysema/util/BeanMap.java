@@ -231,8 +231,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * BeanMap are fixed).
      */
     public void clear() {
-        if (bean == null) return;
-
+        if (bean == null) {
+            return;
+        }
         Class<?> beanClass = null;
         try {
             beanClass = bean.getClass();
@@ -531,7 +532,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     }
 
     private void initialise() {
-        if (getBean() == null) return;
+        if (getBean() == null) {
+            return;
+        }
 
         Class<?> beanClass = getBean().getClass();
         try {
