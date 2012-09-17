@@ -185,7 +185,11 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     
     @Override
     public <T> SQLUpdateClause set(Path<T> path, Expression<? extends T> expression) {
-        updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));
+        if (expression != null) {
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));    
+        } else {
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
+        }        
         return this;
     }
     

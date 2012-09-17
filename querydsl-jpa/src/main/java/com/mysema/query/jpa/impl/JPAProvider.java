@@ -31,17 +31,17 @@ public enum JPAProvider {
     /**
      * Hibernate
      */
-    HIBERNATE("org.hibernate.Session", HQLTemplates.DEFAULT),
+    HIBERNATE("org.hibernate.Session", new HQLTemplates()),
     
     /**
      * EclipseLink
      */
-    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT),
+    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", new EclipseLinkTemplates()),
     
     /**
      * OpenJPA
      */
-    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT),
+    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", new OpenJPATemplates()),
     
     /**
      * Generic JPA provider

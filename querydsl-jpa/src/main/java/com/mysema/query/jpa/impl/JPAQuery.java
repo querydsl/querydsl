@@ -34,7 +34,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * The query can be attached via the clone method
      */
     public JPAQuery() {
-        super(null, HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+        super(null, JPQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
     /**

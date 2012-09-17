@@ -91,7 +91,11 @@ public class HibernateUpdateClause implements
     
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, Expression<? extends T> expression) {
-        metadata.addProjection(ExpressionUtils.eq(path, expression));
+        if (expression != null) {
+            metadata.addProjection(ExpressionUtils.eq(path, expression));    
+        } else {
+            metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        }        
         return this;
     }
     

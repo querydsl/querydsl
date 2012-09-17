@@ -34,7 +34,7 @@ public class JPAQueryFactory implements QueryFactory<JPAQuery, JPASubQuery>  {
     private final Provider<EntityManager> entityManager;
 
     public JPAQueryFactory(Provider<EntityManager> entityManager) {
-        this(HQLTemplates.DEFAULT, entityManager);
+        this(JPQLTemplates.DEFAULT, entityManager);
     }
 
     public JPAQueryFactory(JPQLTemplates templates, Provider<EntityManager> entityManager) {

@@ -23,7 +23,6 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
-import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
@@ -47,8 +46,8 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     private final JPQLTemplates templates;
 
-    public JPAUpdateClause(EntityManager session, EntityPath<?> entity) {
-        this(session, entity, HQLTemplates.DEFAULT);
+    public JPAUpdateClause(EntityManager em, EntityPath<?> entity) {
+        this(em, entity, JPAProvider.getTemplates(em));
     }
 
     public JPAUpdateClause(EntityManager em, EntityPath<?> entity, JPQLTemplates templates) {
@@ -80,7 +79,11 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     
     @Override
     public <T> JPAUpdateClause set(Path<T> path, Expression<? extends T> expression) {
-        metadata.addProjection(ExpressionUtils.eq(path, expression));
+        if (expression != null) {
+            metadata.addProjection(ExpressionUtils.eq(path, expression));    
+        } else {
+            metadata.addProjection(ExpressionUtils.eq(path, expression));
+        }        
         return this;
     }
     

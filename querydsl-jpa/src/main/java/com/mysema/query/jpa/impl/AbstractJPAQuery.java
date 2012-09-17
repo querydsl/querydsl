@@ -37,7 +37,6 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.Expression;
@@ -76,7 +75,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     protected boolean factoryExpressionUsed = false;
     
     public AbstractJPAQuery(EntityManager em) {
-        this(em, HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+        this(em, JPAProvider.getTemplates(em), new DefaultQueryMetadata());
     }
 
     public AbstractJPAQuery(EntityManager em, JPQLTemplates patterns, QueryMetadata metadata) {
