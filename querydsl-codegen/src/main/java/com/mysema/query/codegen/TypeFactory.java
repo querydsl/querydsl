@@ -14,6 +14,7 @@
 package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
@@ -94,6 +95,9 @@ public final class TypeFactory {
                 cl = Primitives.wrap(cl);
             }
             Type value;
+            Type[] tempParams = (Type[]) Array.newInstance(Type.class, 
+                    ReflectionUtils.getTypeParameterCount(genericType));
+            cache.put(key, new ClassType(cl, tempParams));
             Type[] parameters = getParameters(cl, genericType);
 
             if (cl.isArray()) {
@@ -219,8 +223,8 @@ public final class TypeFactory {
             Class<?> rawType = (Class)parameterized.getRawType();
             if (rawType.equals(cl)) {
                 return new TypeExtends(typeVariable.getName(), new ClassType(cl));
-            } else {
-                return new TypeExtends(create(rawType, rawType));
+            } else {                
+                return new TypeExtends(create(rawType, parameterized));
             }                
         } else {
             throw new IllegalStateException(typeVariable.getBounds()[0].getClass().toString());

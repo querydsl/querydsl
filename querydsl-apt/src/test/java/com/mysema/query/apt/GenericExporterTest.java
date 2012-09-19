@@ -57,7 +57,7 @@ public class GenericExporterTest extends AbstractProcessorTest{
         expected.add("QQueryEmbeddable2Test_User.java");
         expected.add("QQueryEmbedded4Test_User.java");
         expected.add("QSuperclass3Test_Subtype.java");
-        expected.add("QExamples_OrderBys.java");        
+        expected.add("QExamples_OrderBys.java");      
         
         execute(expected, "GenericExporterTest", "QuerydslAnnotationProcessor");
     }
@@ -94,6 +94,9 @@ public class GenericExporterTest extends AbstractProcessorTest{
         
         // FIXME
         expected.add("QEntityInheritanceTest_TestEntity.java");
+        
+        expected.add("QGeneric4Test_HidaBezGruppe.java");
+        expected.add("QGeneric4Test_HidaBez.java");
         
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }
