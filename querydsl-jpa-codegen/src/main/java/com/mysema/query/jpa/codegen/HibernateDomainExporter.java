@@ -314,6 +314,9 @@ public class HibernateDomainExporter {
 
     private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p) 
             throws NoSuchMethodException, ClassNotFoundException {
+        if (p.isBackRef()) {
+            return;
+        }
         Type propertyType = getType(cl, p.getName());
         if (p.isComposite()) {
             Class<?> embeddedClass = Class.forName(propertyType.getFullName());

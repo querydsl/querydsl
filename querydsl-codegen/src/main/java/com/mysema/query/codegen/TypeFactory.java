@@ -59,7 +59,7 @@ public final class TypeFactory {
 
     private boolean unknownAsEntity = false;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public TypeFactory(Class<?>... entityAnnotations) {
         this((List)Arrays.asList(entityAnnotations));
     }
@@ -181,6 +181,7 @@ public final class TypeFactory {
         return types;
     }
 
+    @SuppressWarnings("rawtypes")
     private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType,
             boolean collectionOrMap, int i) {
         java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
@@ -209,6 +210,7 @@ public final class TypeFactory {
         return types;
     }
     
+    @SuppressWarnings("rawtypes")
     private Type getTypeParameter(Class<?> cl, int i) {
         TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
         java.lang.reflect.Type firstBound = typeVariable.getBounds()[0];

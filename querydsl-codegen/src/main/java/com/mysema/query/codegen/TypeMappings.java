@@ -107,7 +107,7 @@ public abstract class TypeMappings {
         }
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public void register(TypeCategory category,
             @Nullable Class<? extends Expression> expr,
             @Nullable Class<? extends Path> path,
