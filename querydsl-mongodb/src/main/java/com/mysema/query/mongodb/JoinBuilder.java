@@ -32,16 +32,18 @@ public class JoinBuilder<K, T> {
     
     private final QueryMixin<MongodbQuery<K>> queryMixin;
     
-    private final Path<T> ref, target;
+    private final Path<?> ref;
+    
+    private final Path<T> target;
 
-    public JoinBuilder(QueryMixin<MongodbQuery<K>> queryMixin, Path<T> ref, Path<T> target) {
+    public JoinBuilder(QueryMixin<MongodbQuery<K>> queryMixin, Path<?> ref, Path<T> target) {
         this.queryMixin = queryMixin;
         this.ref = ref;
         this.target = target;
     }
     
     public MongodbQuery<K> on(Predicate... conditions) {
-        JoinExpression join = new JoinExpression(JoinType.JOIN, ExpressionUtils.as(ref, target));
+        JoinExpression join = new JoinExpression(JoinType.JOIN, ExpressionUtils.as((Path)ref, target));
         join.addCondition(ExpressionUtils.allOf(conditions));
         queryMixin.getMetadata().addJoin(join);
         return queryMixin.getSelf();

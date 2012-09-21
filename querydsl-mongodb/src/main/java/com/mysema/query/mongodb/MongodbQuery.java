@@ -45,6 +45,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.path.CollectionPathBase;
 
 /**
  * MongodbQuery provides a general Querydsl query implementation with a pluggable DBObject to Bean transformation
@@ -88,6 +89,17 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      * @return
      */
     public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {        
+        return new JoinBuilder<K,T>(queryMixin, ref, target);
+    }
+    
+    /**
+     * Define a join 
+     * 
+     * @param ref
+     * @param target
+     * @return
+     */
+    public <T> JoinBuilder<K,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
         return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
         
@@ -142,7 +154,6 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
             }
             Path path = new PathImpl<String>(String.class, source, "$id");
             predicates.put(source.getRoot(), ExpressionUtils.in(path, ids));
-//            System.err.println(predicates);
         }
         Path source = (Path)((Operation)joins.get(0).getTarget()).getArg(0);
         return allOf(predicates.get(source.getRoot()));
