@@ -72,7 +72,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         if (value != null) {
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
         } else {
-            metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+            setNull(path);
         }
         return this;
     }
@@ -82,7 +82,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         if (expression != null) {
             metadata.addProjection(ExpressionUtils.eq(path, expression));    
         } else {
-            metadata.addProjection(ExpressionUtils.eq(path, expression));
+            setNull(path);
         }        
         return this;
     }

@@ -84,7 +84,7 @@ public class HibernateUpdateClause implements
         if (value != null) {
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
         } else {
-            metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+            setNull(path);
         }
         return this;
     }
@@ -94,7 +94,7 @@ public class HibernateUpdateClause implements
         if (expression != null) {
             metadata.addProjection(ExpressionUtils.eq(path, expression));    
         } else {
-            metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+            setNull(path);
         }        
         return this;
     }

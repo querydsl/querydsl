@@ -178,7 +178,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         }else if (value != null) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, new ConstantImpl<Object>(value)));
         } else {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
+            setNull(path);
         }
         return this;
     }
@@ -188,7 +188,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         if (expression != null) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));    
         } else {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
+            setNull(path);
         }        
         return this;
     }
