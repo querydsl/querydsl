@@ -293,6 +293,7 @@ public class GenericExporter {
                         // skip internal supertypes
                         continue;
                     }
+                    // FIXME this misses the generics
                     Class<?> cl = supertype.getType().getJavaClass();
                     typeFactory.addEmbeddableType(cl);
                     entityType = createEntityType(cl, new HashMap<Class<?>, EntityType>());
