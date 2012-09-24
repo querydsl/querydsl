@@ -45,6 +45,8 @@ import com.mysema.util.ReflectionUtils;
 // TODO : refactor this to be more understandable
 public final class TypeFactory {
 
+    private static final Type ANY = new TypeExtends(Types.OBJECT);
+    
     private static final Type[] TYPES_0 = new Type[0];
 
     private static final Type[] TYPES_1 = new Type[]{ Types.OBJECT };
@@ -192,7 +194,7 @@ public final class TypeFactory {
             && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
             && ((WildcardType)parameter).getLowerBounds().length == 0) {
             Type rv = getTypeParameter(cl, i);
-            return (collectionOrMap && rv == null) ? Types.OBJECT : rv;
+            return (collectionOrMap && rv == null) ? ANY : rv;
         } else {
             Type rv = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
             if (parameter instanceof WildcardType) {

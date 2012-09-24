@@ -13,22 +13,27 @@
  */
 package com.mysema.query.codegen;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeExtends;
 
 /**
- * TypeResolver provides type resolving functionality for resolving generic type variables to concrete types
+ * TypeResolver provides type resolving functionality for resolving generic type variables to 
+ * concrete types
  * 
  * @author tiwe
  *
  */
 public final class TypeResolver {
 
-    public static Type resolve(Type type, Type declaringType, EntityType context){        
+    public static Type resolve(Type type, Type declaringType, EntityType context) {         
         Type resolved = type;
-
+        
         // unwrap entity type
         if (resolved instanceof EntityType) {
             resolved = ((EntityType)resolved).getInnerType();
@@ -36,7 +41,11 @@ public final class TypeResolver {
         
         // handle generic types
         if (resolved instanceof TypeExtends) {
-            resolved = resolveTypeExtends((TypeExtends)resolved, declaringType, context);
+            List<Type> result = resolveTypeExtends((TypeExtends)resolved, declaringType, context);
+            if (!result.isEmpty()) {
+                resolved = result.get(0);
+                declaringType = result.get(1);
+            }
         }
 
         // handle generic type parameters
@@ -57,36 +66,39 @@ public final class TypeResolver {
         return resolved;
     }
 
-    private static Type resolveTypeExtends(TypeExtends typeExtends, Type declaringType, EntityType subtype){
+    private static List<Type> resolveTypeExtends(TypeExtends typeExtends, Type declaringType, 
+            EntityType context) {
         // typeExtends without variable name can't be resolved
-        if (typeExtends.getVarName() == null){ //NOSONAR
-            return typeExtends;
+        if (typeExtends.getVarName() == null) { //NOSONAR
+            return Collections.emptyList();
         }
 
         // get parameter index of var in declaring type
         int index = -1;
-        for (int i = 0; i < declaringType.getParameters().size(); i++){
+        for (int i = 0; i < declaringType.getParameters().size(); i++) {
             Type param = declaringType.getParameters().get(i);
             // unwrap entity type
             if (param instanceof EntityType) {
                 param = ((EntityType)param).getInnerType();
             }
             if (param instanceof TypeExtends 
-                    && Objects.equal(((TypeExtends)param).getVarName(), typeExtends.getVarName())){
+                    && Objects.equal(((TypeExtends)param).getVarName(), typeExtends.getVarName())) {
                 index = i;
             }
         }
 
-        if (index > -1){
+        if (index > -1) {
             // get binding of var via model supertype
-            Supertype type = subtype.getSuperType();            
-            while (!type.getEntityType().equals(declaringType)){
+            Supertype type = context.getSuperType();            
+            while (!type.getEntityType().equals(declaringType)) {
                 type = type.getEntityType().getSuperType();                
             }
-            return type.getType().getParameters().get(index);
-        }else{
+            return Lists.newArrayList(
+                    type.getType().getParameters().get(index), 
+                    type.getType());
+        } else {
             // TODO : error
-            return typeExtends;
+            return Collections.emptyList();
         }
     }
 

@@ -264,7 +264,7 @@ public final class ExtendedTypeFactory {
             TypeMappings typeMappings,
             QueryTypeFactory queryTypeFactory){
         this.env = env;
-        this.defaultType = Types.OBJECT;
+        this.defaultType = new TypeExtends(Types.OBJECT);
         this.entityAnnotations = annotations;
         this.objectType = getErasedType(Object.class);
         this.numberType = getErasedType(Number.class);

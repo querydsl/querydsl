@@ -51,7 +51,6 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
@@ -111,7 +110,7 @@ public class EntitySerializer implements Serializer{
             CodeWriter writer) throws IOException {
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
-
+        
         boolean hasEntityFields = model.hasEntityFields();
         boolean stringOrBoolean = model.getOriginalCategory() == TypeCategory.STRING 
                 || model.getOriginalCategory() == TypeCategory.BOOLEAN;
@@ -120,7 +119,7 @@ public class EntitySerializer implements Serializer{
                         
         // 1
         constructorsForVariables(writer, model);
-
+        
         // 2
         if (model.isFinal()) {
             Type type = new ClassType(Path.class, model);

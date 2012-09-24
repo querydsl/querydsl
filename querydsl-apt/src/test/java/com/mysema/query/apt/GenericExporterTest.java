@@ -58,6 +58,7 @@ public class GenericExporterTest extends AbstractProcessorTest{
         expected.add("QQueryEmbedded4Test_User.java");
         expected.add("QSuperclass3Test_Subtype.java");
         expected.add("QExamples_OrderBys.java");      
+        expected.add("QGeneric7Test_ListAttribute.java");
         
         execute(expected, "GenericExporterTest", "QuerydslAnnotationProcessor");
     }
