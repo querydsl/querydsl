@@ -8,7 +8,7 @@
   
     <id name="id" type="string" length="40"/>
 
-    <property name="custom"/>
+    <property name="custom" type="object"/>
     
   </class>
    

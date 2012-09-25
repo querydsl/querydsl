@@ -52,7 +52,6 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
 import com.mysema.query.QueryException;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
@@ -319,7 +318,7 @@ public class HibernateDomainExporter {
         if (p.isBackRef()) {
             return;
         }
-        Type propertyType = getType(cl, p.getName());
+        Type propertyType = getType(cl, p.getType().getReturnedClass(), p.getName());
         if (p.isComposite()) {
             EntityType embeddedType = createEmbeddableType(propertyType);
             Iterator<?> properties = ((Component)p.getValue()).getPropertyIterator();
@@ -400,7 +399,7 @@ public class HibernateDomainExporter {
             EntityType entityType = new EntityType(type);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
             Class<?> superClass = type.getJavaClass().getSuperclass();
-            if (entityType.getSuperType() == null && !superClass.equals(Object.class)) {
+            if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {
                 entityType.addSupertype(new Supertype(new ClassType(superClass)));
             }
             types.put(rawName, entityType);
@@ -424,15 +423,22 @@ public class HibernateDomainExporter {
         }
     }
 
-
-    private Type getType(Class<?> cl, String propertyName) throws NoSuchMethodException {
+    private Type getType(Class<?> cl, Class<?> mappedType, String propertyName) throws NoSuchMethodException {
         Field field = ReflectionUtils.getFieldOrNull(cl, propertyName);
         if (field != null) {
-            return typeFactory.create(field.getType(), field.getGenericType());    
+            if (mappedType.isAssignableFrom(field.getType())) {
+                return typeFactory.create(field.getType(), field.getGenericType());    
+            } else {
+                return typeFactory.create(mappedType);
+            }                
         } else {
             Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
             if (method != null) {
-                return typeFactory.create(method.getReturnType(), method.getGenericReturnType());
+                if (mappedType.isAssignableFrom(method.getReturnType())) {
+                    return typeFactory.create(method.getReturnType(), method.getGenericReturnType());    
+                } else {
+                    return typeFactory.create(mappedType);
+                }                
             } else {
                 throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
             }    
