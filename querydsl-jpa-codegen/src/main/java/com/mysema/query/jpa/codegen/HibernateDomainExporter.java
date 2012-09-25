@@ -52,6 +52,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.QueryException;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
@@ -310,6 +311,7 @@ public class HibernateDomainExporter {
                 handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
             }
         }
+        
     }
 
     private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p) 
@@ -319,15 +321,16 @@ public class HibernateDomainExporter {
         }
         Type propertyType = getType(cl, p.getName());
         if (p.isComposite()) {
-            Class<?> embeddedClass = Class.forName(propertyType.getFullName());
-            EntityType embeddedType = createEmbeddableType(embeddedClass);
+            EntityType embeddedType = createEmbeddableType(propertyType);
             Iterator<?> properties = ((Component)p.getValue()).getPropertyIterator();
             while (properties.hasNext()) {
-                handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property)properties.next());
+                handleProperty(embeddedType, embeddedType.getJavaClass(), (org.hibernate.mapping.Property)properties.next());
             }
             propertyType = embeddedType;
         } else if (propertyType.getCategory() == TypeCategory.ENTITY) {
-            propertyType = createEntityType(Class.forName(propertyType.getFullName()));
+            propertyType = createEntityType(propertyType);
+        } else if (propertyType.getCategory() == TypeCategory.CUSTOM) {
+            propertyType = createEmbeddableType(propertyType);
         } else if (p.getValue() instanceof org.hibernate.mapping.Collection) {
             org.hibernate.mapping.Collection collection = (org.hibernate.mapping.Collection)p.getValue();            
             if (collection.getElement() instanceof OneToMany) {
@@ -373,10 +376,39 @@ public class HibernateDomainExporter {
         return createEntityType(cl, entityTypes);
     }
 
+    private EntityType createEntityType(Type type) {
+        return createEntityType(type, entityTypes);
+    }
+    
     private EntityType createEmbeddableType(Class<?> cl) {
         return createEntityType(cl, embeddableTypes);
     }
+    
+    private EntityType createEmbeddableType(Type type) {
+        return createEntityType(type, embeddableTypes);
+    }
 
+    private EntityType createSuperType(Class<?> cl) {
+        return createEntityType(cl, superTypes);
+    }
+    
+    private EntityType createEntityType(Type type,  Map<String,EntityType> types) {
+        String rawName = type.getJavaClass().getName();
+        if (types.containsKey(rawName)) {
+            return types.get(rawName);
+        } else {
+            EntityType entityType = new EntityType(type);
+            typeMappings.register(entityType, queryTypeFactory.create(entityType));
+            Class<?> superClass = type.getJavaClass().getSuperclass();
+            if (entityType.getSuperType() == null && !superClass.equals(Object.class)) {
+                entityType.addSupertype(new Supertype(new ClassType(superClass)));
+            }
+            types.put(rawName, entityType);
+            allTypes.put(rawName, entityType);
+            return entityType;
+        }
+    }
+    
     private EntityType createEntityType(Class<?> cl,  Map<String,EntityType> types) {
         if (types.containsKey(cl.getName())) {
             return types.get(cl.getName());
@@ -390,10 +422,6 @@ public class HibernateDomainExporter {
             allTypes.put(cl.getName(), type);
             return type;
         }
-    }
-
-    private EntityType createSuperType(Class<?> cl) {
-        return createEntityType(cl, superTypes);
     }
 
 
