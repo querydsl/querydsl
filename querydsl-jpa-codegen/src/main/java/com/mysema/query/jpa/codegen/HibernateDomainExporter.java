@@ -40,6 +40,7 @@ import javax.xml.stream.XMLStreamException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
+import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.MappedSuperclass;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
@@ -326,7 +327,7 @@ public class HibernateDomainExporter {
                 handleProperty(embeddedType, embeddedType.getJavaClass(), (org.hibernate.mapping.Property)properties.next());
             }
             propertyType = embeddedType;
-        } else if (propertyType.getCategory() == TypeCategory.ENTITY) {
+        } else if (propertyType.getCategory() == TypeCategory.ENTITY || p.getValue() instanceof ManyToOne) {
             propertyType = createEntityType(propertyType);
         } else if (propertyType.getCategory() == TypeCategory.CUSTOM) {
             propertyType = createEmbeddableType(propertyType);
@@ -346,8 +347,7 @@ public class HibernateDomainExporter {
                 while (properties.hasNext()) {
                     handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property)properties.next());
                 }
-            }
-            
+            }            
         }
         AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
         Property property = createProperty(entityType, p.getName(), propertyType, annotated);
@@ -392,9 +392,9 @@ public class HibernateDomainExporter {
     }
     
     private EntityType createEntityType(Type type,  Map<String,EntityType> types) {
-        String rawName = type.getJavaClass().getName();
-        if (types.containsKey(rawName)) {
-            return types.get(rawName);
+        String rawName = type.getFullName();
+        if (allTypes.containsKey(rawName)) {
+            return allTypes.get(rawName);
         } else {
             EntityType entityType = new EntityType(type);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
@@ -409,8 +409,8 @@ public class HibernateDomainExporter {
     }
     
     private EntityType createEntityType(Class<?> cl,  Map<String,EntityType> types) {
-        if (types.containsKey(cl.getName())) {
-            return types.get(cl.getName());
+        if (allTypes.containsKey(cl.getName())) {
+            return allTypes.get(cl.getName());
         } else {
             EntityType type = new EntityType(new ClassType(TypeCategory.ENTITY, cl));
             typeMappings.register(type, queryTypeFactory.create(type));

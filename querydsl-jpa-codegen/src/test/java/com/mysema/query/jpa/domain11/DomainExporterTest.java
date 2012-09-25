@@ -27,9 +27,11 @@ public class DomainExporterTest {
         assertTrue(new File(gen, "com/mysema/query/jpa/domain11/QOtherthing.java").exists());
         assertTrue(new File(gen, "com/mysema/query/jpa/domain11/QSomething.java").exists());
         
-        String str = Files.toString(new File(gen, "com/mysema/query/jpa/domain11/QSomething.java"), Charsets.UTF_8);
+        String str = Files.toString(new File(gen, "com/mysema/query/jpa/domain11/QOtherthing.java"), Charsets.UTF_8);
         assertTrue(str.contains("QSomething"));
         
+        str = Files.toString(new File(gen, "com/mysema/query/jpa/domain11/QSomething.java"), Charsets.UTF_8);
+        assertTrue(str.contains("id"));
     }
     
 }

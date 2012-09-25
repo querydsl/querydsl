@@ -6,14 +6,17 @@
 <hibernate-mapping default-access="field" package="com.mysema.query.jpa.domain11">
 	<class name="Otherthing" table="Otherthing">
 	    <id name="id" type="string" length="40"/>
-	
+ 
 		<many-to-one name="property" class="Something" lazy="false"
 			fetch="join">
 			<column name="SOMETHING_ID" length="40" />
 		</many-to-one>
+
 	</class>
 	
 	<class name="Something" table="Something">
 	   <id name="id" type="string" length="40"/>
+	   
 	</class>
+	
 </hibernate-mapping>
