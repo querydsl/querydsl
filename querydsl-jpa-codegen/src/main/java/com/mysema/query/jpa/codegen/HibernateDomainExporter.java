@@ -47,6 +47,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.ClassType;
@@ -312,6 +313,18 @@ public class HibernateDomainExporter {
             }
         }
         
+        // go through supertypes
+        Set<Supertype> additions = Sets.newHashSet();
+        for (Map.Entry<String, EntityType> entry : allTypes.entrySet()) {
+            EntityType entityType = entry.getValue();
+            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getFullName())) {
+                additions.add(entityType.getSuperType());
+            }
+        }
+        
+        for (Supertype type : additions) {
+            type.setEntityType(createEntityType(type.getType(), superTypes));
+        }
     }
 
     private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p) 
