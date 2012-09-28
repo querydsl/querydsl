@@ -1,5 +1,7 @@
-@QueryEntities({A.class, Tenant.class})
+@QueryEntities({A.class, Tenant.class, DefaultRevisionEntity.class})
 package com.mysema.query.domain;
 
-import com.mysema.query.annotations.*;
+import org.hibernate.envers.DefaultRevisionEntity;
+
+import com.mysema.query.annotations.QueryEntities;
 
