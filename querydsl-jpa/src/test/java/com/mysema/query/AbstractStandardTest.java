@@ -68,9 +68,12 @@ import com.mysema.query.jpa.domain.QDoubleProjection;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QFloatProjection;
 import com.mysema.query.jpa.domain.QFoo;
+import com.mysema.query.jpa.domain.QHuman;
+import com.mysema.query.jpa.domain.QMammal;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QSimpleTypes;
 import com.mysema.query.jpa.domain.QUser;
+import com.mysema.query.jpa.domain.QWorld;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
@@ -564,6 +567,26 @@ public abstract class AbstractStandardTest {
     @Test
     public void Cast() {
         query().from(cat).list(cat.bodyWeight.castToNum(Integer.class));
+    }
+    
+    @Test
+    public void Fetch() {
+        QMammal mammal = QMammal.mammal;
+        QHuman human = new QHuman("mammal");
+        query().from(mammal)
+            .leftJoin(human.hairs).fetch()
+            .list(mammal);        
+    }
+    
+    @Test
+    public void Fetch2() {
+        QWorld world = QWorld.world;
+        QMammal mammal = QMammal.mammal;
+        QHuman human = new QHuman("mammal");
+        query().from(world)
+            .leftJoin(world.mammals, mammal).fetch()
+            .leftJoin(human.hairs).fetch()
+            .list(world);        
     }
     
     @Test
