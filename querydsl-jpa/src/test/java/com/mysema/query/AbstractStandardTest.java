@@ -570,6 +570,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoEclipseLink @NoOpenJPA
     public void Fetch() {
         QMammal mammal = QMammal.mammal;
         QHuman human = new QHuman("mammal");
@@ -579,6 +580,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoEclipseLink @NoOpenJPA
     public void Fetch2() {
         QWorld world = QWorld.world;
         QMammal mammal = QMammal.mammal;
