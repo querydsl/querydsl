@@ -421,6 +421,26 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * Expr: <code>this like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression like(String str){
+        return BooleanOperation.create(Ops.LIKE, stringValue(), ConstantImpl.create(str));
+    }
+
+    /**
+     * Expr: <code>this like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression like(Expression<String> str){
+        return BooleanOperation.create(Ops.LIKE, stringValue(), str);
+    }
+    
+    /**
      * Create a <code>this &lt;= right</code> expression
      *
      * @param <A>

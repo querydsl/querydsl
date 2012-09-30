@@ -527,6 +527,13 @@ public class SelectBase extends AbstractBaseTest{
             .on(employee.superiorIdKey.on(employee2))
             .list(employee.id, employee2.id);
     }
+    
+    @Test
+    @ExcludeIn(DERBY)
+    public void Like_Number() {
+        assertEquals(5, query().from(employee)
+                .where(employee.id.like("1%")).count());
+    }
 
     @Test
     public void Limit() throws SQLException {
