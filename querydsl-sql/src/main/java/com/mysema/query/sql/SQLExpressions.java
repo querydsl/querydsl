@@ -36,7 +36,7 @@ public final class SQLExpressions {
     }    
     
     public static final <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
-        return SimpleOperation.create(type, SQLTemplates.NEXTVAL, ConstantImpl.create("seq"));
+        return SimpleOperation.create(type, SQLTemplates.NEXTVAL, ConstantImpl.create(sequence));
     }
     
     private SQLExpressions() {}
