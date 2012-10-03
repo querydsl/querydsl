@@ -35,7 +35,6 @@ public class JDOExporterMojo extends AbstractExporterMojo {
         exporter.setEmbeddedAnnotation(Embedded.class);
         exporter.setEntityAnnotation(PersistenceCapable.class);
         exporter.setSkipAnnotation(NotPersistent.class);
-        exporter.setSupertypeAnnotation(null);
     }
 
 }
