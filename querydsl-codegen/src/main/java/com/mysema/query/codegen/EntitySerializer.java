@@ -146,7 +146,7 @@ public class EntitySerializer implements Serializer{
             writer.end();
         } else {
             if (!localName.equals(genericName)) {
-                writer.suppressWarnings(UNCHECKED);
+                writer.suppressWarnings("all");
             }
             writer.beginConstructor(PATH_METADATA);
             if (stringOrBoolean) {
@@ -161,7 +161,7 @@ public class EntitySerializer implements Serializer{
         // 4
         if (hasEntityFields) {
             if (!localName.equals(genericName)) {
-                writer.suppressWarnings(UNCHECKED);
+                writer.suppressWarnings("all");
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
             writer.line(thisOrSuper, "(", localName.equals(genericName) ? EMPTY : "(Class)", 
@@ -195,7 +195,7 @@ public class EntitySerializer implements Serializer{
         String additionalParams = hasEntityFields ? "" : getAdditionalConstructorParameter(model);
         
         if (!localName.equals(genericName)) {
-            writer.suppressWarnings(UNCHECKED);
+            writer.suppressWarnings("all");
         }
         writer.beginConstructor(new Parameter("variable", Types.STRING));
         if (stringOrBoolean) {
@@ -326,8 +326,6 @@ public class EntitySerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }
-        
-//        writer.suppressWarnings("all");
         
         writer.line("@Generated(\"", getClass().getName(), "\")");
 
