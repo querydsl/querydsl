@@ -26,6 +26,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 import com.mysema.query.codegen.GenericExporter;
 import com.mysema.query.codegen.Serializer;
@@ -67,38 +68,49 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
      * @parameter default-value=false
      */
     private boolean testClasspath;
+    
+    /**
+	 * @component
+	 */
+	private BuildContext buildContext;
         
     @SuppressWarnings("unchecked")
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        ClassLoader classLoader = null;        
-        try {
-            classLoader = getProjectClassLoader();
-        } catch (MalformedURLException e) {
-            throw new MojoFailureException(e.getMessage(), e);
-        } catch (DependencyResolutionRequiredException e) {
-            throw new MojoFailureException(e.getMessage(), e);
-        }
-        
-        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
-        GenericExporter exporter = new GenericExporter(classLoader, charset);
-        exporter.setTargetFolder(targetFolder);
-        
-        if (scala) {
-            try {
-                exporter.setSerializerClass((Class<? extends Serializer>) 
-                        Class.forName("com.mysema.query.scala.ScalaEntitySerializer"));
-                exporter.setTypeMappingsClass((Class<? extends TypeMappings>) 
-                        Class.forName("com.mysema.query.scala.ScalaTypeMappings"));
-                exporter.setCreateScalaSources(true);
-            } catch (ClassNotFoundException e) {
-                throw new MojoFailureException(e.getMessage(), e);
-            }            
-        }
-        
-        configure(exporter);
-        
-        exporter.export(packages);
+    	
+    	// Only run if something has changed on the source dirs. This will
+    	// avoid m2e entering on a infinite build.
+
+	    if ( hasSourceChanges() ) {
+	        ClassLoader classLoader = null;        
+	        try {
+	            classLoader = getProjectClassLoader();
+	        } catch (MalformedURLException e) {
+	            throw new MojoFailureException(e.getMessage(), e);
+	        } catch (DependencyResolutionRequiredException e) {
+	            throw new MojoFailureException(e.getMessage(), e);
+	        }
+	        
+	        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
+	        GenericExporter exporter = new GenericExporter(classLoader, charset);
+	        exporter.setTargetFolder(targetFolder);
+	        
+	        if (scala) {
+	            try {
+	                exporter.setSerializerClass((Class<? extends Serializer>) 
+	                        Class.forName("com.mysema.query.scala.ScalaEntitySerializer"));
+	                exporter.setTypeMappingsClass((Class<? extends TypeMappings>) 
+	                        Class.forName("com.mysema.query.scala.ScalaTypeMappings"));
+	                exporter.setCreateScalaSources(true);
+	            } catch (ClassNotFoundException e) {
+	                throw new MojoFailureException(e.getMessage(), e);
+	            }            
+	        }
+	        
+	        configure(exporter);
+	        
+	        exporter.export(packages);
+	    }
     }
     
     protected abstract void configure(GenericExporter exporter);
@@ -121,5 +133,20 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         }
         return new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
     }
+    
+    // Detects if any source has been changed on the source dirs. It returns
+ 	// true if BuildContext is not available
+ 	private boolean hasSourceChanges() {
+
+ 		boolean changes = false;
+
+ 		for ( Object path : project.getCompileSourceRoots() ) {
+ 			if ( buildContext != null && buildContext.hasDelta( new File( path.toString() ) ) ) {
+ 				changes = true;
+ 			}
+ 		}
+
+ 		return changes;
+ 	}
 
 }
