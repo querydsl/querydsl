@@ -20,6 +20,8 @@ import static com.mysema.query.group.GroupBy.map;
 import static com.mysema.query.group.GroupBy.max;
 import static com.mysema.query.group.GroupBy.min;
 import static com.mysema.query.group.GroupBy.set;
+import static com.mysema.query.group.GroupBy.sum;
+import static com.mysema.query.group.GroupBy.avg;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -82,6 +84,28 @@ public class GroupByTest {
         assertEquals("Comment 1", results.get(1));
         assertEquals("Comment 3", results.get(2));
         assertEquals("Comment 6", results.get(3));
+    }
+    
+    @Test
+    public void Group_Sum() {
+        Map<Integer, Integer> results = MiniApi.from(post, posts).from(comment, comments)
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(sum(comment.id)));
+        
+        assertEquals(1,  results.get(1).intValue());
+        assertEquals(5,  results.get(2).intValue());
+        assertEquals(15, results.get(3).intValue());
+    }
+    
+    @Test
+    public void Group_Avg() {
+        Map<Integer, Integer> results = MiniApi.from(post, posts).from(comment, comments)
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(avg(comment.id)));
+        
+        assertEquals(1,  results.get(1).intValue());
+        assertEquals(2,  results.get(2).intValue());
+        assertEquals(5, results.get(3).intValue());
     }
     
     @Test 

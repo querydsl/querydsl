@@ -52,6 +52,26 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
      */
     public static <E extends Comparable<E>> AbstractGroupExpression<?,E> min(Expression<E> expression) {
         return new GMin<E>(expression);
+    }
+    
+    /**
+     * Create a new aggregating sum expression
+     * 
+     * @param expression
+     * @return
+     */
+    public static <E extends Number & Comparable<E>> AbstractGroupExpression<?,E> sum(Expression<E> expression) {
+        return new GSum<E>(expression);
+    }
+    
+    /**
+     * Create a new aggregating avg expression
+     * 
+     * @param expression
+     * @return
+     */
+    public static <E extends Number & Comparable<E>> AbstractGroupExpression<?,E> avg(Expression<E> expression) {
+        return new GAvg<E>(expression);
     }    
     
     /**

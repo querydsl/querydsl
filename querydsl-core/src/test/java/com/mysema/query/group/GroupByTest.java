@@ -118,13 +118,13 @@ public class GroupByTest {
             row("John", "John", 1, "post 1", comment(3))
     );
     
-    private static final Projectable USERS_W_LATEST_POST_AND_COMMENTS2 = projectable(
-            row("John", 1, "post 1", comment(1)),
-            row("Jane", 2, "post 2", comment(4)),
-            row("John", 1, "post 1", comment(2)),
-            row("Jane", 2, "post 2", comment(5)),
-            row("John", 1, "post 1", comment(3))
-    );
+//    private static final Projectable USERS_W_LATEST_POST_AND_COMMENTS2 = projectable(
+//            row("John", 1, "post 1", comment(1)),
+//            row("Jane", 2, "post 2", comment(4)),
+//            row("John", 1, "post 1", comment(2)),
+//            row("Jane", 2, "post 2", comment(5)),
+//            row("John", 1, "post 1", comment(3))
+//    );
 
     @Test 
     public void Group_Order() {       
