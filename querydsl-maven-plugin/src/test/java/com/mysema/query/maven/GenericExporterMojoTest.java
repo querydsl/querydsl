@@ -7,11 +7,7 @@ import java.io.File;
 import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
-public class GenericExporterMojoTest extends AbstractMojoTest {
-
-    public GenericExporterMojoTest() {
-        super(AbstractExporterMojo.class);
-    }
+public class GenericExporterMojoTest {
 
     @Test
     public void Execute() throws Exception {
@@ -19,9 +15,9 @@ public class GenericExporterMojoTest extends AbstractMojoTest {
         mavenProject.getBuild().setOutputDirectory("target/classes");
         
         GenericExporterMojo mojo = new GenericExporterMojo();
-        set(mojo, "targetFolder", new File("target/generated-test-data"));
-        set(mojo, "packages", new String[]{"com.mysema.query.maven"});
-        set(mojo, "project", mavenProject);
+        mojo.setTargetFolder(new File("target/generated-test-data"));
+        mojo.setPackages(new String[]{"com.mysema.query.maven"});
+        mojo.setProject( mavenProject);
         mojo.execute();
         
         File file = new File("target/generated-test-data/com/mysema/query/maven/QEntity.java"); 

@@ -33,8 +33,8 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
- * AbstractExporterMojo calls the {@link GenericExporter} tool using the classpath of the module
- * the plugin is invoked in.
+ * AbstractExporterMojo calls the {@link GenericExporter} tool using the
+ * classpath of the module the plugin is invoked in.
  * 
  */
 public abstract class AbstractExporterMojo extends AbstractMojo {
@@ -43,81 +43,81 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
      * @parameter
      */
     private File targetFolder;
-    
+
     /**
      * @parameter default-value=false
      */
     private boolean scala;
-        
+
     /**
      * @parameter
      */
     private String[] packages;
-    
+
     /**
      * @parameter expression="${project}" readonly=true required=true
      */
     private MavenProject project;
-    
+
     /**
      * @parameter
      */
     private String sourceEncoding;
-    
+
     /**
      * @parameter default-value=false
      */
     private boolean testClasspath;
-    
+
     /**
-	 * @component
-	 */
-	private BuildContext buildContext;
-        
+     * @component
+     */
+    private BuildContext buildContext;
+
     @SuppressWarnings("unchecked")
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-    	
-    	// Only run if something has changed on the source dirs. This will
-    	// avoid m2e entering on a infinite build.
+        if (!hasSourceChanges()) {            
+            // Only run if something has changed on the source dirs. This will
+            // avoid m2e entering on a infinite build.
+            return;
+        }
 
-	    if ( hasSourceChanges() ) {
-	        ClassLoader classLoader = null;        
-	        try {
-	            classLoader = getProjectClassLoader();
-	        } catch (MalformedURLException e) {
-	            throw new MojoFailureException(e.getMessage(), e);
-	        } catch (DependencyResolutionRequiredException e) {
-	            throw new MojoFailureException(e.getMessage(), e);
-	        }
-	        
-	        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
-	        GenericExporter exporter = new GenericExporter(classLoader, charset);
-	        exporter.setTargetFolder(targetFolder);
-	        
-	        if (scala) {
-	            try {
-	                exporter.setSerializerClass((Class<? extends Serializer>) 
-	                        Class.forName("com.mysema.query.scala.ScalaEntitySerializer"));
-	                exporter.setTypeMappingsClass((Class<? extends TypeMappings>) 
-	                        Class.forName("com.mysema.query.scala.ScalaTypeMappings"));
-	                exporter.setCreateScalaSources(true);
-	            } catch (ClassNotFoundException e) {
-	                throw new MojoFailureException(e.getMessage(), e);
-	            }            
-	        }
-	        
-	        configure(exporter);
-	        
-	        exporter.export(packages);
-	    }
+        ClassLoader classLoader = null;
+        try {
+            classLoader = getProjectClassLoader();
+        } catch (MalformedURLException e) {
+            throw new MojoFailureException(e.getMessage(), e);
+        } catch (DependencyResolutionRequiredException e) {
+            throw new MojoFailureException(e.getMessage(), e);
+        }
+
+        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset
+                .defaultCharset();
+        GenericExporter exporter = new GenericExporter(classLoader, charset);
+        exporter.setTargetFolder(targetFolder);
+
+        if (scala) {
+            try {
+                exporter.setSerializerClass((Class<? extends Serializer>) Class
+                        .forName("com.mysema.query.scala.ScalaEntitySerializer"));
+                exporter.setTypeMappingsClass((Class<? extends TypeMappings>) Class
+                        .forName("com.mysema.query.scala.ScalaTypeMappings"));
+                exporter.setCreateScalaSources(true);
+            } catch (ClassNotFoundException e) {
+                throw new MojoFailureException(e.getMessage(), e);
+            }
+        }
+
+        configure(exporter);
+        exporter.export(packages);        
     }
-    
+
     protected abstract void configure(GenericExporter exporter);
-    
-   
+
     @SuppressWarnings("unchecked")
-    protected ClassLoader getProjectClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
+    protected ClassLoader getProjectClassLoader() throws DependencyResolutionRequiredException,
+            MalformedURLException {
         List<String> classpathElements;
         if (testClasspath) {
             classpathElements = project.getTestClasspathElements();
@@ -125,28 +125,57 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
             classpathElements = project.getCompileClasspathElements();
         }
         List<URL> urls = new ArrayList<URL>(classpathElements.size());
-        for (String element : classpathElements){
+        for (String element : classpathElements) {
             File file = new File(element);
-            if (file.exists()){
+            if (file.exists()) {
                 urls.add(file.toURI().toURL());
             }
         }
         return new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
     }
+
+    @SuppressWarnings("rawtypes")
+    private boolean hasSourceChanges() {
+        if (buildContext != null) {            
+            List sourceRoots = testClasspath ? project.getTestCompileSourceRoots() :
+                                               project.getCompileSourceRoots();
+            for (Object path : sourceRoots) {
+                if (buildContext.hasDelta(new File(path.toString()))) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return true;
+        }        
+    }
+
+    public void setTargetFolder(File targetFolder) {
+        this.targetFolder = targetFolder;
+    }
+
+    public void setScala(boolean scala) {
+        this.scala = scala;
+    }
+
+    public void setPackages(String[] packages) {
+        this.packages = packages;
+    }
+
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    public void setSourceEncoding(String sourceEncoding) {
+        this.sourceEncoding = sourceEncoding;
+    }
+
+    public void setTestClasspath(boolean testClasspath) {
+        this.testClasspath = testClasspath;
+    }
+
+    public void setBuildContext(BuildContext buildContext) {
+        this.buildContext = buildContext;
+    }
     
-    // Detects if any source has been changed on the source dirs. It returns
- 	// true if BuildContext is not available
- 	private boolean hasSourceChanges() {
-
- 		boolean changes = false;
-
- 		for ( Object path : project.getCompileSourceRoots() ) {
- 			if ( buildContext != null && buildContext.hasDelta( new File( path.toString() ) ) ) {
- 				changes = true;
- 			}
- 		}
-
- 		return changes;
- 	}
-
 }

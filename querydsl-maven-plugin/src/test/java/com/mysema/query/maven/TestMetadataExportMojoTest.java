@@ -23,33 +23,29 @@ import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
 
-public class TestMetadataExportMojoTest extends AbstractMojoTest {
+public class TestMetadataExportMojoTest {
 
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
-    
-    public TestMetadataExportMojoTest() {
-        super(AbstractMetaDataExportMojo.class);
-    }
-    
+        
     @Test
     public void Execute() throws Exception {
         MavenProject project = new MavenProject();
         TestMetadataExportMojo mojo = new TestMetadataExportMojo();
-        set(mojo, "project", project);
-        set(mojo, "jdbcDriver", "org.h2.Driver");
-        set(mojo, "jdbcUrl", url);
-        set(mojo, "jdbcUser", "sa");
-        set(mojo, "namePrefix", "Q"); // default value
-        set(mojo, "nameSuffix", "");
-        set(mojo, "beanPrefix", "");
-        set(mojo, "beanSuffix", "Bean");
-        set(mojo, "packageName", "com.example");
-        set(mojo, "targetFolder", "target/export2");
+        mojo.setProject(project);
+        mojo.setJdbcDriver("org.h2.Driver");
+        mojo.setJdbcUrl(url);
+        mojo.setJdbcUser("sa");
+        mojo.setNamePrefix("Q"); // default value
+        mojo.setNameSuffix("");
+        mojo.setBeanPrefix("");
+        mojo.setBeanSuffix("Bean");
+        mojo.setPackageName("com.example");
+        mojo.setTargetFolder("target/export4");
 
         mojo.execute();
 
-        assertEquals(Collections.singletonList("target/export2"), project.getTestCompileSourceRoots());
-        assertTrue(new File("target/export2").exists());
+        assertEquals(Collections.singletonList("target/export4"), project.getTestCompileSourceRoots());
+        assertTrue(new File("target/export4").exists());
     }
     
 }

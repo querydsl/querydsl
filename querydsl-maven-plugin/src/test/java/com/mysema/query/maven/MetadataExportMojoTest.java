@@ -27,27 +27,23 @@ import com.mysema.query.sql.types.DateTimeType;
 import com.mysema.query.sql.types.LocalDateType;
 import com.mysema.query.sql.types.LocalTimeType;
 
-public class MetadataExportMojoTest extends AbstractMojoTest {
+public class MetadataExportMojoTest {
 
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
 
     private final MavenProject project = new MavenProject();
     
     private final MetadataExportMojo mojo = new MetadataExportMojo();
-
-    public MetadataExportMojoTest() {
-        super(AbstractMetaDataExportMojo.class);
-    }
     
     @Test
     public void Execute() throws Exception {
-        set(mojo, "project", project);
-        set(mojo, "jdbcDriver", "org.h2.Driver");
-        set(mojo, "jdbcUrl", url);
-        set(mojo, "jdbcUser", "sa");
-        set(mojo, "namePrefix", "Q"); // default value
-        set(mojo, "packageName", "com.example");
-        set(mojo, "targetFolder", "target/export");
+        mojo.setProject(project);
+        mojo.setJdbcDriver("org.h2.Driver");
+        mojo.setJdbcUrl(url);
+        mojo.setJdbcUser("sa");
+        mojo.setNamePrefix("Q"); // default value
+        mojo.setPackageName("com.example");
+        mojo.setTargetFolder("target/export");
 
         mojo.execute();
 
@@ -58,14 +54,14 @@ public class MetadataExportMojoTest extends AbstractMojoTest {
 
     @Test
     public void Execute_With_CustomTypes() throws Exception {
-        set(mojo, "project", project);
-        set(mojo, "jdbcDriver", "org.h2.Driver");
-        set(mojo, "jdbcUrl", url);
-        set(mojo, "jdbcUser", "sa");
-        set(mojo, "namePrefix", "Q"); // default value
-        set(mojo, "packageName", "com.example");
-        set(mojo, "targetFolder", "target/export2");
-        set(mojo, "customTypes", new String[]{BytesType.class.getName()});
+        mojo.setProject(project);
+        mojo.setJdbcDriver("org.h2.Driver");
+        mojo.setJdbcUrl(url);
+        mojo.setJdbcUser("sa");
+        mojo.setNamePrefix("Q"); // default value
+        mojo.setPackageName("com.example");
+        mojo.setTargetFolder("target/export2");
+        mojo.setCustomTypes(new String[]{BytesType.class.getName()});
 
         mojo.execute();
 
@@ -75,14 +71,14 @@ public class MetadataExportMojoTest extends AbstractMojoTest {
     
     @Test
     public void Execute_With_JodaTypes() throws Exception{
-        set(mojo, "project", project);
-        set(mojo, "jdbcDriver", "org.h2.Driver");
-        set(mojo, "jdbcUrl", url);
-        set(mojo, "jdbcUser", "sa");
-        set(mojo, "namePrefix", "Q"); // default value
-        set(mojo, "packageName", "com.example");
-        set(mojo, "targetFolder", "target/export3");
-        set(mojo, "customTypes", new String[]{LocalDateType.class.getName(), LocalTimeType.class.getName(), DateTimeType.class.getName()});
+        mojo.setProject(project);
+        mojo.setJdbcDriver("org.h2.Driver");
+        mojo.setJdbcUrl(url);
+        mojo.setJdbcUser("sa");
+        mojo.setNamePrefix("Q"); // default value
+        mojo.setPackageName("com.example");
+        mojo.setTargetFolder("target/export3");
+        mojo.setCustomTypes(new String[]{LocalDateType.class.getName(), LocalTimeType.class.getName(), DateTimeType.class.getName()});
 
         mojo.execute();
 

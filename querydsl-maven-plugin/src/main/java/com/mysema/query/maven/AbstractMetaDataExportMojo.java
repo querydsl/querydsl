@@ -317,4 +317,104 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         return false;
     }
 
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    public void setJdbcDriver(String jdbcDriver) {
+        this.jdbcDriver = jdbcDriver;
+    }
+
+    public void setJdbcUrl(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
+    }
+
+    public void setJdbcUser(String jdbcUser) {
+        this.jdbcUser = jdbcUser;
+    }
+
+    public void setJdbcPassword(String jdbcPassword) {
+        this.jdbcPassword = jdbcPassword;
+    }
+
+    public void setNamePrefix(String namePrefix) {
+        this.namePrefix = namePrefix;
+    }
+
+    public void setNameSuffix(String nameSuffix) {
+        this.nameSuffix = nameSuffix;
+    }
+
+    public void setBeanPrefix(String beanPrefix) {
+        this.beanPrefix = beanPrefix;
+    }
+
+    public void setBeanSuffix(String beanSuffix) {
+        this.beanSuffix = beanSuffix;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public void setBeanPackageName(String beanPackageName) {
+        this.beanPackageName = beanPackageName;
+    }
+
+    public void setSchemaPattern(String schemaPattern) {
+        this.schemaPattern = schemaPattern;
+    }
+
+    public void setTableNamePattern(String tableNamePattern) {
+        this.tableNamePattern = tableNamePattern;
+    }
+
+    public void setTargetFolder(String targetFolder) {
+        this.targetFolder = targetFolder;
+    }
+
+    public void setNamingStrategyClass(String namingStrategyClass) {
+        this.namingStrategyClass = namingStrategyClass;
+    }
+
+    public void setBeanSerializerClass(String beanSerializerClass) {
+        this.beanSerializerClass = beanSerializerClass;
+    }
+
+    public void setSerializerClass(String serializerClass) {
+        this.serializerClass = serializerClass;
+    }
+
+    public void setExportBeans(boolean exportBeans) {
+        this.exportBeans = exportBeans;
+    }
+
+    public void setInnerClassesForKeys(boolean innerClassesForKeys) {
+        this.innerClassesForKeys = innerClassesForKeys;
+    }
+
+    public void setValidationAnnotations(boolean validationAnnotations) {
+        this.validationAnnotations = validationAnnotations;
+    }
+
+    public void setColumnAnnotations(boolean columnAnnotations) {
+        this.columnAnnotations = columnAnnotations;
+    }
+
+    public void setCustomTypes(String[] customTypes) {
+        this.customTypes = customTypes;
+    }
+
+    public void setCreateScalaSources(boolean createScalaSources) {
+        this.createScalaSources = createScalaSources;
+    }
+
+    public void setSchemaToPackage(boolean schemaToPackage) {
+        this.schemaToPackage = schemaToPackage;
+    }
+
+    public void setLowerCase(boolean lowerCase) {
+        this.lowerCase = lowerCase;
+    }
+    
 }
