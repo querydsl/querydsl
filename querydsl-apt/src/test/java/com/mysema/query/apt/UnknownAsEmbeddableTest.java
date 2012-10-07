@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class UnknownAsEmbeddableTest extends AbstractProcessorTest {
 
-    private static final String packagePath = "src/test/java/com/mysema/query/domain/custom";
+    private static final String packagePath = "src/test/java/com/mysema/query/domain";
 
     @Test
     public void Process() throws IOException{

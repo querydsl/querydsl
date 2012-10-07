@@ -61,11 +61,24 @@ public class TypeExtractor extends AbstractTypeVisitor6<TypeElement, Void> {
             switch (typeElement.getKind()) {
                 case ENUM:      return skipEnum ? null : typeElement;
                 case CLASS:     return typeElement;
-                case INTERFACE: return visit(t.getTypeArguments().get(t.getTypeArguments().size()-1));
+                case INTERFACE: return visitInterface(t);
                 default: throw new IllegalArgumentException("Illegal type " + typeElement);
             }
         } else {
             return null;
+        }
+    }
+
+    private TypeElement visitInterface(DeclaredType t) {
+        if (t.getTypeArguments().isEmpty()) {
+            return (TypeElement)t.asElement();
+        } else {
+            int count = t.getTypeArguments().size();
+            if (t.asElement().toString().startsWith("java.util")) {
+                return t.getTypeArguments().get(count - 1).accept(this, null);
+            } else {
+                return (TypeElement)t.asElement();
+            }
         }
     }
 
@@ -78,14 +91,23 @@ public class TypeExtractor extends AbstractTypeVisitor6<TypeElement, Void> {
     public TypeElement visitTypeVariable(TypeVariable t, Void p) {
         if (t.getUpperBound() != null) {
             return visit(t.getUpperBound());
-        } else {
+        } else if (t.getLowerBound() != null) {
             return visit(t.getLowerBound());
+        } else {
+            return null;
         }
     }
 
     @Override
     public TypeElement visitWildcard(WildcardType t, Void p) {
-        return visit(t.getExtendsBound());
+        if (t.getExtendsBound() != null) {
+            return visit(t.getExtendsBound());    
+        } else if (t.getSuperBound() != null) {    
+            return visit(t.getSuperBound());
+        } else {
+            return null;
+        }
+        
     }
 
     @Override
