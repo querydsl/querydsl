@@ -95,6 +95,11 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
         }
         
+        if (roundEnv.getRootElements() == null || roundEnv.getRootElements().isEmpty()) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "No sources to process");
+            return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
+        }
+        
         conf = createConfiguration(roundEnv);
         context = new Context();        
         Set<Class<? extends Annotation>> entityAnnotations = conf.getEntityAnnotations();        
