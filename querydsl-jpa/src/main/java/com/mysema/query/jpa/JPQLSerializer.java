@@ -401,7 +401,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (cl.getAnnotation(DiscriminatorValue.class) != null) {
                 newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
             } else {
-                newArgs.set(1, ConstantImpl.create(cl.getName()));
+                newArgs.set(1, ConstantImpl.create(cl.getSimpleName()));
             }
             super.visitOperation(type, operator, newArgs);
         } else {

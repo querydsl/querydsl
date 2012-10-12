@@ -56,6 +56,8 @@ import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.DoubleProjection;
 import com.mysema.query.jpa.domain.Employee;
+import com.mysema.query.jpa.domain.Entity1;
+import com.mysema.query.jpa.domain.Entity2;
 import com.mysema.query.jpa.domain.FloatProjection;
 import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
@@ -66,6 +68,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QCompany;
 import com.mysema.query.jpa.domain.QDoubleProjection;
 import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.jpa.domain.QEntity1;
 import com.mysema.query.jpa.domain.QFloatProjection;
 import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QHuman;
@@ -202,6 +205,10 @@ public abstract class AbstractStandardTest {
         employee2.jobFunctions.add(JobFunction.CONSULTANT);
         employee2.jobFunctions.add(JobFunction.CONTROLLER);
         save(employee2);
+
+        save(new Entity1(1));
+        save(new Entity1(2));
+        save(new Entity2(3));        
         
         Foo foo = new Foo();
         foo.id = 1;
@@ -727,6 +734,18 @@ public abstract class AbstractStandardTest {
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
 
+    @Test
+    public void InstanceOf_Entity1() {
+        QEntity1 entity1 = QEntity1.entity1;
+        assertEquals(2l, query().from(entity1).where(entity1.instanceOf(Entity1.class)).count());
+    }
+    
+    @Test
+    public void InstanceOf_Entity2() {
+        QEntity1 entity1 = QEntity1.entity1;
+        assertEquals(1l, query().from(entity1).where(entity1.instanceOf(Entity2.class)).count());
+    }
+    
     @Test
     public void NestedProjection(){
         Concatenation concat = new Concatenation(cat.name, cat.name);

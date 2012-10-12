@@ -94,7 +94,7 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
         }
         entityManagerFactory = Persistence.createEntityManagerFactory(mode);
         entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
+        entityManager.getTransaction().begin();        
     }
     
     private void shutdown() {
