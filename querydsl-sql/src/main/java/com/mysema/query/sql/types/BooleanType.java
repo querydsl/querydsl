@@ -34,8 +34,8 @@ public class BooleanType extends AbstractType<Boolean> {
 
     @Override
     public Boolean getValue(ResultSet rs, int startIndex) throws SQLException {
-        Object value = rs.getObject(startIndex);
-        return value instanceof Boolean ? (Boolean)value : null;
+        final boolean value = rs.getBoolean(startIndex);
+        return rs.wasNull() ? null : value;
     }
 
     @Override
