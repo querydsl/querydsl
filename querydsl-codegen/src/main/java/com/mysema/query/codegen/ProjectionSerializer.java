@@ -28,7 +28,6 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 
 /**
@@ -61,8 +60,8 @@ public final class ProjectionSerializer implements Serializer{
         }
 
         // imports
-        writer.imports(Expression.class.getPackage(), NumberExpression.class.getPackage());
-        writer.imports(Generated.class);
+        writer.imports(NumberExpression.class.getPackage());
+        writer.imports(ConstructorExpression.class, Generated.class);
 
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);

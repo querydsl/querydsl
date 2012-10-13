@@ -183,6 +183,15 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return hasPropertyWithType(TypeCategory.ENTITY);
     }
     
+    public boolean hasInits() {
+        for (Property property : properties) {
+            if (!property.getInits().isEmpty()) {
+                return true;
+            }
+        }
+        return false;        
+    }
+    
     public boolean hasLists() {
         return hasPropertyWithType(TypeCategory.LIST);
     }
@@ -192,7 +201,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
     
     public boolean hasSets() {
-        return hasPropertyWithType(TypeCategory.COLLECTION);
+        return hasPropertyWithType(TypeCategory.SET);
     }
     
     public boolean hasMaps() {

@@ -17,11 +17,8 @@ import static com.mysema.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -31,9 +28,6 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.ComparablePath;
@@ -41,7 +35,6 @@ import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
@@ -106,37 +99,6 @@ public final class EmbeddableSerializer extends EntitySerializer {
     @Override
     protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
         // no factory methods
-    }
-
-    @Override
-    protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-        writer.staticimports(PathMetadataFactory.class);
-        
-        Type queryType = typeMappings.getPathType(model, model, true);
-        if (!model.getPackageName().isEmpty()
-            && !queryType.getPackageName().equals(model.getPackageName()) 
-            && !queryType.getSimpleName().equals(model.getSimpleName())) {
-            String fullName = model.getFullName();
-            String packageName = model.getPackageName();
-            if (fullName.substring(packageName.length()+1).contains(".")) {
-                fullName = fullName.substring(0, fullName.lastIndexOf('.'));
-            }
-            writer.importClasses(fullName);
-        }
-        
-        introDelegatePackages(writer, model);
-
-        List<Package> packages = new ArrayList<Package>();
-        packages.add(PathMetadata.class.getPackage());
-        packages.add(SimplePath.class.getPackage());
-        
-        if (isImportExprPackage(model)) {
-            packages.add(ComparableExpression.class.getPackage());
-        }
-        
-        writer.imports(packages.toArray(new Package[packages.size()]));
-        
-        writer.imports(Generated.class);
     }
 
 }

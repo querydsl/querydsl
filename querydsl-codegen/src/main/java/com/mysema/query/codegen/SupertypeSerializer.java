@@ -13,20 +13,10 @@
  */
 package com.mysema.query.codegen;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import com.mysema.codegen.CodeWriter;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.path.SimplePath;
 
 /**
  * SupertypeSerializer is a {@link Serializer} implementation for supertypes
@@ -45,25 +35,6 @@ public final class SupertypeSerializer extends EntitySerializer{
     @Inject
     public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
         super(typeMappings, keywords);
-    }
-
-    @Override
-    protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-        introDelegatePackages(writer, model);
-
-        writer.staticimports(PathMetadataFactory.class);
-        
-        List<Package> packages = new ArrayList<Package>();
-        packages.add(PathMetadata.class.getPackage());
-        packages.add(SimplePath.class.getPackage());
-        if ((model.hasLists() && config.useListAccessors())
-                || !model.getDelegates().isEmpty()
-                || (model.hasMaps() && config.useMapAccessors())) {
-            packages.add(ComparableExpression.class.getPackage());
-        }
-        writer.imports(packages.toArray(new Package[packages.size()]));
-        
-        writer.imports(Generated.class);
     }
 
 }

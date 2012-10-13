@@ -41,6 +41,8 @@ import javax.inject.Named;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Constructor;
@@ -421,19 +423,41 @@ public class EntitySerializer implements Serializer{
             writer.importClasses(fullName);
         }
         
+        // delegate packages
         introDelegatePackages(writer, model);
 
-        List<Package> packages = new ArrayList<Package>();
-        packages.add(PathMetadata.class.getPackage());
-        packages.add(SimplePath.class.getPackage());
-        
+        // other packages
+        List<Package> packages = Lists.newArrayList();
+        packages.add(SimplePath.class.getPackage());        
+        if (!model.getConstructors().isEmpty()) {
+            packages.add(ConstructorExpression.class.getPackage());
+        }        
         if (isImportExprPackage(model)) {
             packages.add(ComparableExpression.class.getPackage());
         }
-
         writer.imports(packages.toArray(new Package[packages.size()]));
         
-        writer.imports(Generated.class);
+        // other classes
+        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        if (!model.getSimpleName().equals("Path")) {
+            classes.add(Path.class); 
+        }        
+        boolean inits = false;
+        if (model.hasEntityFields() || model.hasInits()) {
+            inits = true;
+        } else {
+            Set<TypeCategory> collections = Sets.newHashSet(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
+            for (Property property : model.getProperties()) {
+                if (!property.isInherited() && collections.contains(property.getType().getCategory())) {
+                    inits = true;
+                    break;
+                }
+            }
+        }        
+        if (inits) {
+            classes.add(PathInits.class);
+        }
+        writer.imports(classes.toArray(new Class[classes.size()]));        
     }
     
     protected boolean isImportExprPackage(EntityType model) {
