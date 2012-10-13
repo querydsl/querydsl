@@ -59,6 +59,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.ArrayPath;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.CollectionPath;
@@ -429,8 +430,8 @@ public class EntitySerializer implements Serializer{
         // other packages
         List<Package> packages = Lists.newArrayList();
         packages.add(SimplePath.class.getPackage());        
-        if (!model.getConstructors().isEmpty()) {
-            packages.add(ConstructorExpression.class.getPackage());
+        if (!model.getConstructors().isEmpty()) {            
+            packages.add(SimpleExpression.class.getPackage());
         }        
         if (isImportExprPackage(model)) {
             packages.add(ComparableExpression.class.getPackage());
@@ -442,6 +443,10 @@ public class EntitySerializer implements Serializer{
         if (!model.getSimpleName().equals("Path")) {
             classes.add(Path.class); 
         }        
+        if (!model.getConstructors().isEmpty()) {
+            classes.add(ConstructorExpression.class);
+            classes.add(Expression.class);
+        }
         boolean inits = false;
         if (model.hasEntityFields() || model.hasInits()) {
             inits = true;
