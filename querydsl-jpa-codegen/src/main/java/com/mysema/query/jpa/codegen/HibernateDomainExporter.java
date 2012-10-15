@@ -37,6 +37,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.xml.stream.XMLStreamException;
 
+import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
@@ -332,7 +333,13 @@ public class HibernateDomainExporter {
         if (p.isBackRef()) {
             return;
         }
-        Type propertyType = getType(cl, p.getType().getReturnedClass(), p.getName());
+        Class<?> clazz = Object.class;
+        try {
+            clazz = p.getType().getReturnedClass();
+        } catch (MappingException e) {
+            // ignore
+        }
+        Type propertyType = getType(cl, clazz, p.getName());
         if (p.isComposite()) {
             EntityType embeddedType = createEmbeddableType(propertyType);
             Iterator<?> properties = ((Component)p.getValue()).getPropertyIterator();

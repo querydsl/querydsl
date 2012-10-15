@@ -95,7 +95,7 @@ public class SerializationTest {
         SubQueryExpression<?> sq = new SQLSubQuery().from(QSurvey.survey).list(SQLExpressions.nextval("myseq"));
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
         serializer.serialize(sq.getMetadata(), false);
-        assertEquals("select nextval('seq')\nfrom SURVEY SURVEY", serializer.toString());
+        assertEquals("select nextval('myseq')\nfrom SURVEY SURVEY", serializer.toString());
     }
     
     @Test

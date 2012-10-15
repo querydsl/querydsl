@@ -42,7 +42,6 @@ import org.junit.Test;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.BigDecimalType;
 import com.mysema.query.sql.types.BlobType;
-import com.mysema.query.sql.types.BooleanType;
 import com.mysema.query.sql.types.ByteType;
 import com.mysema.query.sql.types.BytesType;
 import com.mysema.query.sql.types.CharacterType;
@@ -94,7 +93,7 @@ public class TypeTest implements InvocationHandler{
     public void test() throws MalformedURLException, SQLException{
         List<Pair<?,?>> valueAndType = new ArrayList<Pair<?,?>>();
         valueAndType.add(Pair.of(new BigDecimal("1"), new BigDecimalType()));
-        valueAndType.add(Pair.of(Boolean.TRUE,         new BooleanType()));
+        //valueAndType.add(Pair.of(Boolean.TRUE,         new BooleanType()));
         valueAndType.add(Pair.of(Byte.valueOf((byte)1),   new ByteType()));
         valueAndType.add(Pair.of(new byte[0],         new BytesType()));        
         valueAndType.add(Pair.of(new Character('c'),  new CharacterType()));
