@@ -20,6 +20,7 @@ import org.junit.Test;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.domain.QCat;
 import com.mysema.query.jpa.domain.Location;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.types.EntityPath;
@@ -37,6 +38,17 @@ public class JPQLSerializerTest {
         md.addJoin(JoinType.DEFAULT, entityPath);
         serializer.serialize(md, false, null);
         assertEquals("select entity\nfrom Location2 entity", serializer.toString());
+    }
+    
+    @Test
+    public void Join_With() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);        
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, QCat.cat);
+        md.addJoin(JoinType.INNERJOIN, QCat.cat.mate);
+        md.addJoinCondition(QCat.cat.mate.alive);
+        serializer.serialize(md, false, null);
+        assertEquals("select cat\nfrom Cat cat\n  inner join cat.mate with cat.mate.alive", serializer.toString());
     }
 
     @Test
