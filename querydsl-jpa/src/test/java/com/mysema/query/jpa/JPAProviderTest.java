@@ -37,7 +37,7 @@ public class JPAProviderTest {
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
 //        println(em.getEntityManagerFactory().getProperties());
-        assertEquals(JPAProvider.HIBERNATE, JPAProvider.get(em));
+        assertEquals(HQLTemplates.DEFAULT, JPAProvider.getTemplates(em));
     }
     
     @Test
@@ -54,7 +54,7 @@ public class JPAProviderTest {
                 Thread.currentThread().getContextClassLoader(), 
                 new Class[]{EntityManager.class}, 
                 handler);
-        assertEquals(JPAProvider.HIBERNATE, JPAProvider.get(proxy));
+        assertEquals(HQLTemplates.DEFAULT, JPAProvider.getTemplates(proxy));
     }
     
     @Test
@@ -63,7 +63,7 @@ public class JPAProviderTest {
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
 //        println(em.getEntityManagerFactory().getProperties());
-        assertEquals(JPAProvider.ECLIPSELINK, JPAProvider.get(em));
+        assertEquals(EclipseLinkTemplates.DEFAULT, JPAProvider.getTemplates(em));
     }
     
     @Test
@@ -80,7 +80,7 @@ public class JPAProviderTest {
                 Thread.currentThread().getContextClassLoader(), 
                 new Class[]{EntityManager.class}, 
                 handler);
-        assertEquals(JPAProvider.ECLIPSELINK, JPAProvider.get(proxy));
+        assertEquals(EclipseLinkTemplates.DEFAULT, JPAProvider.getTemplates(proxy));
     }
         
     @Test
@@ -89,7 +89,7 @@ public class JPAProviderTest {
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
 //        println(em.getEntityManagerFactory().getProperties());
-        assertEquals(JPAProvider.OPEN_JPA, JPAProvider.get(em));
+        assertEquals(OpenJPATemplates.DEFAULT, JPAProvider.getTemplates(em));
     }
     
 //    private void println(Map<String, Object> properties) {

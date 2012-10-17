@@ -12,4 +12,5 @@ Import-Template:
   javax.persistence.*;version="[1.1.0,2.1.0)",
   javax.xml.stream.*;version="0",
   org.hibernate.*;version="${hibernate.version}";resolution:=optional,
-  org.slf4j.*;version="${slf4j.version}"
+  org.slf4j.*;version="${slf4j.version}",
+  com.google.common.*;version="${guava.version}"

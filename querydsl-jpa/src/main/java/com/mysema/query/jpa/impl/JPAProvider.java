@@ -13,67 +13,48 @@
  */
 package com.mysema.query.jpa.impl;
 
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 
+import com.google.common.collect.Maps;
 import com.mysema.query.jpa.EclipseLinkTemplates;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.OpenJPATemplates;
 
 /**
- * JPAProvider provides an enumeration of supported JPA providers
+ * JPAProvider provides detection of the JPA provider based on the EntityManager instance
  * 
  * @author tiwe
  *
  */
-public enum JPAProvider {
-
-    /**
-     * Hibernate
-     */
-    HIBERNATE("org.hibernate.Session", new HQLTemplates()),
+public final class JPAProvider {
     
-    /**
-     * EclipseLink
-     */
-    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", new EclipseLinkTemplates()),
+    private static final Map<Class<?>, JPQLTemplates> mappings = Maps.newHashMap();
     
-    /**
-     * OpenJPA
-     */
-    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", new OpenJPATemplates()),
-    
-    /**
-     * Generic JPA provider
-     */
-    GENERIC("javax.persistence.EntityManager", JPQLTemplates.DEFAULT); 
-    
-    private Class<?> delegateClass;
-    
-    private final JPQLTemplates templates;
-    
-    JPAProvider(String emClassName, JPQLTemplates templates) {
-        this.templates = templates;
-        try {            
-            this.delegateClass = Class.forName(emClassName);            
+    private static void addMapping(String className, JPQLTemplates templates) {
+        try {
+            mappings.put(Class.forName(className), templates);
         } catch (ClassNotFoundException e) {}
     }
-    
-    public JPQLTemplates getTemplates() {
-        return templates;
-    }
 
-    public static JPAProvider get(EntityManager em) {
-        for (JPAProvider provider : values()) {
-            if (provider.delegateClass != null 
-             && provider.delegateClass.isAssignableFrom(em.getDelegate().getClass())) {
-                return provider;
-            }
-        }       
-        throw new IllegalStateException("No Provider for " + em.getClass().getName());
+    static {
+        addMapping("org.hibernate.Session", HQLTemplates.DEFAULT);
+        addMapping("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT);
+        addMapping("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT);
+        addMapping("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT);
     }
     
     public static JPQLTemplates getTemplates(EntityManager em) {
-        return get(em).getTemplates();
+        for (Map.Entry<Class<?>, JPQLTemplates> entry : mappings.entrySet()) {
+            if (entry.getKey().isAssignableFrom(em.getDelegate().getClass())) {
+                return entry.getValue();
+            }
+        }
+        return JPQLTemplates.DEFAULT;
     }
+    
+    private JPAProvider() {}
+    
 }
