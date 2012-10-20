@@ -69,6 +69,10 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         super(templates);
     }
 
+    private void appendCast(Class<?> clazz) {
+        append("(").append(clazz.getCanonicalName()).append(")");
+    }
+
     @Override
     public Void visit(Path<?> path, Void context) {
         PathType pathType = path.getMetadata().getPathType();
@@ -83,15 +87,22 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             String accessor = prefix + BeanUtils.capitalize(property);
             Class<?> parentType = path.getMetadata().getParent().getType();
             try {
+                append("(");
                 // getter
                 Method m = getMethod(parentType, accessor);
                 if (m != null && Modifier.isPublic(m.getModifiers())) {                    
+                    if (!m.getReturnType().equals(path.getType())) {
+                        appendCast(path.getType());
+                    }
                     handle((Expression<?>) path.getMetadata().getParent());
                     append(".").append(accessor).append("()");    
                 } else {
                     // field
                     Field f = getField(parentType, property);
                     if (f != null && Modifier.isPublic(f.getModifiers())) {
+                        if (!f.getType().equals(path.getType())) {
+                            appendCast(path.getType());
+                        }
                         handle((Expression<?>) path.getMetadata().getParent());
                         append(".").append(property);
                     } else {
@@ -101,7 +112,8 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                         handle((Expression<?>) path.getMetadata().getParent());
                         append(", \""+property+"\")");
                     }
-                }                
+                }
+                append(")");
             } catch (Exception e) {
                 throw new QueryException(e);
             }
