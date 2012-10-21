@@ -66,9 +66,15 @@ public final class ClassUtils {
             return Collection.class;
         } else if (Map.class.isAssignableFrom(clazz)) {
             return Map.class;
-        } else {
-            return clazz;
+        // check for CGLIB generated classes
+        } else if (clazz.getName().contains("$$")) {
+            Class<?> zuper = clazz.getSuperclass();
+            if (zuper != null && !Object.class.equals(zuper)) {
+                return zuper;
+            }
         }
+
+        return clazz;
     }
 
     private ClassUtils() {
