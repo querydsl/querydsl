@@ -19,6 +19,8 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.PathInits;
 
+import static org.junit.Assert.assertEquals;
+
 public class TypeCastTest {
 
     @Test(expected=IllegalStateException.class)
@@ -29,4 +31,10 @@ public class TypeCastTest {
         MiniApi.from(animal, Collections.<Animal> emptyList()).from(cat, Collections.<Cat> emptyList());
     }
 
+    @Test
+    public void PropertyCast() {
+        Post post = new Post(0, "", new User2("bla@bla.com"));
+
+        assertEquals("bla@bla.com", MiniApi.from(QPost.post, post).singleResult(QPost.post.user.as(QUser2.class).email));
+    }
 }
