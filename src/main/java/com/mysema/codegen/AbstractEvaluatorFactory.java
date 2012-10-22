@@ -13,6 +13,7 @@ import java.util.Map;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import java.util.Collection;
 
 /**
  * @author tiwe
@@ -68,7 +69,7 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
     public <T> Evaluator<T> createEvaluator(String source, ClassType projection, String[] names,
             Type[] types, Class<?>[] classes, Map<String, Object> constants) {
         try {
-            String id = toId(source, projection.getJavaClass(), types);
+            String id = toId(source, projection.getJavaClass(), types, constants.values());
             Class<?> clazz;
             try {
                 clazz = loader.loadClass(id);
@@ -106,12 +107,15 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
     }
 
 
-    protected String toId(String source, Class<?> returnType, Type... types) {
+    protected String toId(String source, Class<?> returnType, Type[] types, Collection<Object> constants) {
         StringBuilder b = new StringBuilder("Q");
         b.append("_").append(source.hashCode());
         b.append("_").append(returnType.getName().hashCode());
         for (Type type : types) {
             b.append("_").append(type.getFullName().hashCode());
+        }
+        for (Object constant : constants) {
+            b.append("_").append(constant.getClass().getName().hashCode());
         }
         return b.toString().replace('-', '0');
     }
