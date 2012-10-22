@@ -1,4 +1,4 @@
-package com.mysema.query.jpa.domain7;
+package com.mysema.query.jpa.domain14;
 
 import static org.junit.Assert.assertTrue;
 
@@ -18,13 +18,12 @@ public class DomainExporterTest {
         File gen = new File("target/" + getClass().getSimpleName());
         FileUtils.delete(gen);
         Configuration config = new Configuration();
-        config.addFile(new File("src/test/resources/com/mysema/query/jpa/domain7/domain.hbm.xml"));
+        config.addFile(new File("src/test/resources/com/mysema/query/jpa/domain14/domain.hbm.xml"));
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", gen, config);
-        exporter.execute();
+        exporter.execute();        
         
-        assertTrue(new File(gen, "com/mysema/query/jpa/domain7/QA.java").exists());
-        assertTrue(new File(gen, "com/mysema/query/jpa/domain7/QB.java").exists());
-        assertTrue(new File(gen, "com/mysema/query/jpa/domain7/QC.java").exists());
+        assertTrue(new File(gen, "com/mysema/query/jpa/domain14/QSiCZuCapiRechtMapping.java").exists());
+        assertTrue(new File(gen, "com/mysema/query/jpa/domain14/QMappingID.java").exists());
     }
     
 }
