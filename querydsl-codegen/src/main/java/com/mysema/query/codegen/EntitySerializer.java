@@ -440,7 +440,7 @@ public class EntitySerializer implements Serializer{
         
         // other classes
         List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
-        if (!model.getSimpleName().equals("Path")) {
+        if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class); 
         }        
         if (!model.getConstructors().isEmpty()) {
@@ -463,6 +463,20 @@ public class EntitySerializer implements Serializer{
             classes.add(PathInits.class);
         }
         writer.imports(classes.toArray(new Class[classes.size()]));        
+    }
+    
+    private Set<String> getUsedClassNames(EntityType model) {
+        Set<String> result = Sets.newHashSet();
+        result.add(model.getSimpleName());
+        for (Property property : model.getProperties()) {
+            result.add(property.getType().getSimpleName());
+            for (Type type : property.getType().getParameters()) {
+                if (type != null) {
+                    result.add(type.getSimpleName());
+                }
+            }
+        }        
+        return result;
     }
     
     protected boolean isImportExprPackage(EntityType model) {
