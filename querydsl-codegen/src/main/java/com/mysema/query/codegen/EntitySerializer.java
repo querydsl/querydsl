@@ -120,29 +120,31 @@ public class EntitySerializer implements Serializer{
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
         String additionalParams = getAdditionalConstructorParameter(model);
                         
-        // 1
+        // String
         constructorsForVariables(writer, model);
         
-        // 2
+        // Path 
+        writer.suppressWarnings("all");
+        Type simpleModel = new SimpleType(model);
         if (model.isFinal()) {
-            Type type = new ClassType(Path.class, model);
+            Type type = new ClassType(Path.class, simpleModel);
             writer.beginConstructor(new Parameter("path", type));
         } else {
-            Type type = new ClassType(Path.class, new TypeExtends(model));
+            Type type = new ClassType(Path.class, new TypeExtends(simpleModel));
             writer.beginConstructor(new Parameter("path", type));
-        }
+        }       
         if (!hasEntityFields) {            
             if (stringOrBoolean) {
                 writer.line("super(path.getMetadata());");
             } else {
-                writer.line("super(path.getType(), path.getMetadata()" +additionalParams+");");
+                writer.line("super((Class)path.getType(), path.getMetadata()" +additionalParams+");");
             }            
         } else {
-            writer.line("this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.line("this((Class)path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
         }
         writer.end();
 
-        // 3
+        // PathMetadata
         if (hasEntityFields) {
             writer.beginConstructor(PATH_METADATA);
             writer.line("this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);");
@@ -161,7 +163,7 @@ public class EntitySerializer implements Serializer{
             writer.end();
         }
 
-        // 4
+        // PathMetadata, PathInits
         if (hasEntityFields) {
             if (!localName.equals(genericName)) {
                 writer.suppressWarnings("all");
@@ -172,7 +174,7 @@ public class EntitySerializer implements Serializer{
             writer.end();
         }
 
-        // 5
+        // Class, PathMetadata, PathInits
         if (hasEntityFields) {
             Type type = new ClassType(Class.class, new TypeExtends(model));
             writer.beginConstructor(new Parameter("type", type), PATH_METADATA, PATH_INITS);
