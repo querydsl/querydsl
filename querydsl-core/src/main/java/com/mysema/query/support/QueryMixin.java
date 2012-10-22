@@ -117,21 +117,29 @@ public class QueryMixin<T> {
 
 
     protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
+        Assert.notNull(path, "path");
+        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
 
     protected <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
+        Assert.notNull(target, "target");
+        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
+        Assert.notNull(target, "target");
+        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected <D> Expression<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
+        Assert.notNull(path, "path");
+        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
