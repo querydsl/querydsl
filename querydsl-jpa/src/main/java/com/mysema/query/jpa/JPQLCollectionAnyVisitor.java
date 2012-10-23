@@ -15,8 +15,11 @@ package com.mysema.query.jpa;
 
 import java.util.UUID;
 
+import javax.persistence.Entity;
+
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -38,18 +41,25 @@ public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
     public static final JPQLCollectionAnyVisitor DEFAULT = new JPQLCollectionAnyVisitor();
     
     @Override
+    @SuppressWarnings("all")
     protected Predicate exists(Context c, Predicate condition) {
         JPQLSubQuery query = new JPQLSubQuery();
         for (int i = 0; i < c.paths.size(); i++) {
-            Path<?> child = c.paths.get(i).getMetadata().getParent();
-            Path<?> parent = child.getMetadata().getParent();
-            Path<?> replacement = c.replacements.get(i);
-            String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
-            String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
-            EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
-            Path newChild = new PathImpl(child.getType(), newParent, child.getMetadata().getExpression().toString());            
-            query.from(newParent).innerJoin(newChild, replacement);
-            query.where(ExpressionUtils.eq(newParent, parent));    
+            Path<?> child = c.paths.get(i).getMetadata().getParent();            
+            EntityPath<?> replacement = c.replacements.get(i);
+            if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
+                query.from(replacement);
+                query.where(new PredicateOperation(Ops.IN, replacement, child));    
+            } else {
+                // join via parent
+                Path<?> parent = child.getMetadata().getParent();
+                String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
+                String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);            
+                EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
+                Path newChild = new PathImpl(child.getType(), newParent, child.getMetadata().getExpression().toString());            
+                query.from(newParent).innerJoin(newChild, replacement);
+                query.where(ExpressionUtils.eq(newParent, parent));    
+            }                
         }        
         c.clear();
         query.where(condition);
