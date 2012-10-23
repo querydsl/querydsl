@@ -84,18 +84,14 @@ public class GenericExporterTest extends AbstractProcessorTest{
         // projections are not supported
         expected.add("QQueryProjectionTest_EntityWithProjection.java");
         // GenericExporter doesn't include field/method selection
-        expected.add("QFileAttachment.java");
-        
-        expected.add("QJodaTest_BaseEntity.java");
-        
-        expected.add("QEnum3Test_Entity1.java");
-        
+        expected.add("QFileAttachment.java");        
+        expected.add("QJodaTest_BaseEntity.java");        
+        expected.add("QEnum3Test_Entity1.java");        
         expected.add("QCustomCollection_MyCustomCollection.java");
         expected.add("QCustomCollection_MyCustomCollection2.java");
         
         // FIXME
-        expected.add("QEntityInheritanceTest_TestEntity.java");
-        
+        expected.add("QEntityInheritanceTest_TestEntity.java");        
         expected.add("QGeneric4Test_HidaBezGruppe.java");
         expected.add("QGeneric4Test_HidaBez.java");
         expected.add("QGeneric6Test_Cycle1.java");

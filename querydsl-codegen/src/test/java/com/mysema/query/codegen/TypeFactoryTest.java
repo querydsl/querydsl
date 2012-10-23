@@ -124,8 +124,9 @@ public class TypeFactoryTest {
     public void Generics_WildCard() throws SecurityException, NoSuchFieldException{
         Field field = getClass().getDeclaredField("field");
         Type type = factory.create(field.getType(), field.getGenericType());
-        assertEquals(1, type.getParameters().size());
-        assertNull(type.getParameters().get(0));
+        assertEquals(1, type.getParameters().size());        
+        assertEquals(TypeExtends.class, type.getParameters().get(0).getClass());
+//        assertNull(type.getParameters().get(0));
     }
 
     @Test

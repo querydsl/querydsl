@@ -51,7 +51,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
@@ -420,7 +419,8 @@ public class HibernateDomainExporter {
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
             Class<?> superClass = type.getJavaClass().getSuperclass();
             if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {
-                entityType.addSupertype(new Supertype(new ClassType(superClass)));
+                entityType.addSupertype(new Supertype(typeFactory.create(superClass, 
+                        type.getJavaClass().getGenericSuperclass())));
             }
             types.put(rawName, entityType);
             allTypes.put(rawName, entityType);
@@ -432,10 +432,10 @@ public class HibernateDomainExporter {
         if (allTypes.containsKey(cl.getName())) {
             return allTypes.get(cl.getName());
         } else {
-            EntityType type = new EntityType(new ClassType(TypeCategory.ENTITY, cl));
+            EntityType type = typeFactory.createEntityType(cl);
             typeMappings.register(type, queryTypeFactory.create(type));
             if (!cl.getSuperclass().equals(Object.class)) {
-                type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
+                type.addSupertype(new Supertype(typeFactory.create(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
             types.put(cl.getName(), type);
             allTypes.put(cl.getName(), type);

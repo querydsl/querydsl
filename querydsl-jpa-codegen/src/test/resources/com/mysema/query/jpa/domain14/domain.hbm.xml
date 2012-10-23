@@ -5,13 +5,13 @@
    
 <hibernate-mapping package="com.mysema.query.jpa.domain14" default-access="field">
 
-<class name="SiCZuCapiRechtMapping">
+  <class name="SiCZuCapiRechtMapping">
 
     <composite-id name="id" class="MappingID">
         <key-property name="capiID"/>
         <key-property name="systemID"/>
     </composite-id>     
 
-</class>
+  </class>
 
 </hibernate-mapping>

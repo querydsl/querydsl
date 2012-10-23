@@ -187,9 +187,10 @@ public final class TypeFactory {
     private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType,
             boolean collectionOrMap, int i) {
         java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
-        if (parameter instanceof TypeVariable
-            && ((TypeVariable)parameter).getBounds()[0].equals(Object.class)) {
-            return collectionOrMap ? Types.OBJECT : null;
+        if (parameter instanceof TypeVariable) {
+            TypeVariable variable = (TypeVariable)parameter;
+            Type rv = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
+            return new TypeExtends(variable.getName(), rv);
         } else if (parameter instanceof WildcardType 
             && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
             && ((WildcardType)parameter).getLowerBounds().length == 0) {
@@ -217,9 +218,9 @@ public final class TypeFactory {
         TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
         java.lang.reflect.Type firstBound = typeVariable.getBounds()[0];
         if (firstBound.equals(Object.class)) {
-            return null;
+            return new TypeExtends(typeVariable.getName(), Types.OBJECT);
         } else if (firstBound.equals(cl)) {
-            return new ClassType(cl);                
+            return new TypeExtends(typeVariable.getName(), new ClassType(cl));                
         } else if (firstBound instanceof Class) {
             return create((Class)typeVariable.getBounds()[0], typeVariable);    
         } else  if (firstBound instanceof ParameterizedType){
