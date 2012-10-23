@@ -160,4 +160,49 @@ public class ComplexEvaluationTest {
 
         assertEquals(Arrays.asList(true, true, true), evaluator.evaluate(a_, b_));
     }
+
+    public static class SuperCat extends Cat {
+        private SuperCat(String name) {
+            super(name);
+        }
+    }
+
+    @Test
+    public void ComplexDifferentConstants() {
+        ClassType resultType = new ClassType(TypeCategory.LIST, List.class, new ClassType(Cat.class));
+        String source = new StringBuilder()
+                .append("java.util.List<com.mysema.codegen.support.Cat> rv = new java.util.ArrayList<com.mysema.codegen.support.Cat>();\n")
+                .append("for (com.mysema.codegen.support.Cat cat : (java.util.List<com.mysema.codegen.support.Cat>)cat_){\n")
+                    .append("if (cat.equals(a1)) {\n")
+                        .append("rv.add(cat);\n")
+                    .append("}\n")
+                .append("}\n")
+                .append("return rv;\n")
+                .toString();
+
+        List<Cat> cats = Arrays.asList(new Cat("fuzzy"), new Cat("spot"));
+        String[] names = new String[] { "cat_" };
+        Type[] types = new Type[] { new ClassType(TypeCategory.LIST, List.class, new ClassType(Cat.class)) };
+        Class<?>[] classes = new Class[] { List.class };
+
+        // first pass
+        factory.createEvaluator(
+                source,
+                resultType,
+                names,
+                types,
+                classes,
+                Collections.singletonMap("a1", (Object) new SuperCat("superMittens"))
+        ).evaluate(cats);
+
+        // second pass
+        factory.createEvaluator(
+                source,
+                resultType,
+                names,
+                types,
+                classes,
+                Collections.singletonMap("a1", (Object) new Cat("normalMittens"))
+        ).evaluate(cats);
+    }
 }
