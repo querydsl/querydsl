@@ -105,6 +105,12 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             } catch (Exception e) {
                 throw new QueryException(e);
             }
+            
+        } else if (pathType == PathType.DELEGATE) {
+            append("(");
+            append("(").append(path.getType().getName()).append(")");
+            path.getMetadata().getParent().accept(this, context);
+            append(")");
 
         } else {
             List<Expression<?>> args = new ArrayList<Expression<?>>(2);

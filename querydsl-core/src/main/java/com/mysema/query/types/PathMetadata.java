@@ -68,7 +68,7 @@ public final class PathMetadata<T> implements Serializable{
     public Path<?> getParent() {
         return parent;
     }
-
+    
     public PathType getPathType() {
         return pathType;
     }

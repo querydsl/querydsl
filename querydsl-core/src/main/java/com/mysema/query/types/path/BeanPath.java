@@ -85,11 +85,12 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     public <U extends BeanPath<? extends T>> U as(Class<U> clazz) {
         try {
             if (!casts.containsKey(clazz)) {
-                U rv;
+                PathMetadata<T> metadata = PathMetadataFactory.forDelegate(this);
+                U rv;                
                 if (inits != null) {
-                    rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(this.getMetadata(), inits);
+                    rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(metadata, inits);
                 } else {
-                    rv = clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
+                    rv = clazz.getConstructor(PathMetadata.class).newInstance(metadata);
                 }
                 casts.put(clazz, rv);
                 return rv;

@@ -176,6 +176,7 @@ public class Templates {
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");
         add(PathType.VARIABLE, "{0s}");
+        add(PathType.DELEGATE, "{0}");
         add(Ops.ORDINAL, "ordinal({0})");
         add(Ops.DELEGATE, "{0}");
 
