@@ -45,6 +45,7 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.MappedSuperclass;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.SimpleValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -301,11 +302,27 @@ public class HibernateDomainExporter {
             } else if (pc.getIdentifier() != null) {
                 KeyValue identifier = pc.getIdentifier();
                 if (identifier instanceof Component) {
-                    Iterator<?> properties = ((Component)identifier).getPropertyIterator();
-                    while (properties.hasNext()) {
-                        handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
-                    }
+                    Component component = (Component)identifier;
+                    Iterator<?> properties = component.getPropertyIterator();
+                    if (component.isEmbedded()) {
+                        while (properties.hasNext()) {
+                            handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
+                        }   
+                    } else {
+                        String name = component.getNodeName();
+                        Class<?> clazz = component.getType().getReturnedClass();
+                        Type propertyType = getType(pc.getMappedClass(), clazz, name);
+                        AnnotatedElement annotated = getAnnotatedElement(pc.getMappedClass(), name);
+                        Property property = createProperty(entityType, name, propertyType, annotated);
+                        entityType.addProperty(property);                    
+                        // handle component properties
+                        EntityType embeddedType = createEmbeddableType(propertyType);                    
+                        while (properties.hasNext()) {
+                            handleProperty(embeddedType, clazz, (org.hibernate.mapping.Property) properties.next());
+                        }    
+                    }                    
                 }
+                // TODO handle other KeyValue subclasses such as Any, DependentValue and ToOne
             }
             Iterator<?> properties = pc.getDeclaredPropertyIterator();
             while (properties.hasNext()) {
