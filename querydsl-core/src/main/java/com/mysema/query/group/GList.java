@@ -39,7 +39,9 @@ class GList<T> extends AbstractGroupExpression<T, List<T>> {
             
             @Override
             public void add(T o) {
-                list.add(o);
+                if (o != null) {
+                    list.add(o);    
+                }                
             }
 
             @Override

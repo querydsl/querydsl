@@ -39,7 +39,9 @@ class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
             
             @Override
             public void add(T o) {
-                set.add(o);
+                if (o != null) {
+                    set.add(o);    
+                }                
             }
 
             @Override

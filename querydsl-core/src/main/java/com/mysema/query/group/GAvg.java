@@ -39,9 +39,12 @@ public class GAvg<T extends Number & Comparable<T>> extends AbstractGroupExpress
             private BigDecimal sum = BigDecimal.ZERO;
 
             @Override
-            public void add(T t) {
+            public void add(T t) {                
                 count++;
-                sum = sum.add(new BigDecimal(t.toString()));
+                if (t != null) {
+                    sum = sum.add(new BigDecimal(t.toString()));    
+                }
+                
             }
 
             @Override

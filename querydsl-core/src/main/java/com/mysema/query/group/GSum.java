@@ -39,7 +39,9 @@ public class GSum<T extends Number & Comparable<T>> extends AbstractGroupExpress
 
             @Override
             public void add(T t) {
-                sum = sum.add(new BigDecimal(t.toString()));
+                if (t != null) {
+                    sum = sum.add(new BigDecimal(t.toString()));    
+                }                
             }
 
             @Override

@@ -123,7 +123,7 @@ public class GroupBy2Test {
         
         UserDto dto2 = userDtos.get(32l);
         assertEquals(3, dto2.roleIds.size());
-        assertEquals(3, dto2.roleNames.size());
+        assertEquals(1, dto2.roleNames.size());
         assertEquals(3, dto2.secIds.size());        
     }
     
