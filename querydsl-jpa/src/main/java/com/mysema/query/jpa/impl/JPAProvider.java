@@ -46,6 +46,7 @@ public final class JPAProvider {
         addMapping("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT);
         addMapping("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT);
         addMapping("org.datanucleus.jpa.EntityManagerImpl", DataNucleusTemplates.DEFAULT);
+        addMapping("org.datanucleus.ObjectManager", DataNucleusTemplates.DEFAULT);
     }
     
     public static JPQLTemplates getTemplates(EntityManager em) {
