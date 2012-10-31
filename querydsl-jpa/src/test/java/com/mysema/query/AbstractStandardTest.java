@@ -344,6 +344,16 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    public void Any_In_Projection2() {
+        query().from(cat).list(cat.kittens.any().name);
+    }
+    
+    @Test
+    public void Any_In_Order() {
+        query().from(cat).orderBy(cat.kittens.any().name.asc()).list(cat);
+    }
+    
+    @Test
     @NoEclipseLink
     @ExcludeIn(Target.ORACLE)
     public void JoinEmbeddable() {

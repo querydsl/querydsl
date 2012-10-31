@@ -351,7 +351,10 @@ public class QueryMixin<T> {
     }
 
     public T orderBy(OrderSpecifier<?>... o) {
-        metadata.addOrderBy(o);
+        for (OrderSpecifier<?> spec : o) {
+            Expression<?> e = convert(spec.getTarget());
+            metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));
+        }
         return self;
     }
 

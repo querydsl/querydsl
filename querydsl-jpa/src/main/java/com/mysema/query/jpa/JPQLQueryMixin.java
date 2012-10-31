@@ -27,8 +27,6 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
