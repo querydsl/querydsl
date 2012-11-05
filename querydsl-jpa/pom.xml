@@ -127,6 +127,19 @@
       <version>2.2.0</version>
       <scope>test</scope>
  	</dependency>   
+ 	
+ 	<dependency>
+ 	  <groupId>org.batoo.jpa</groupId>
+ 	  <artifactId>batoo-jpa</artifactId>
+      <version>0.1.7-SNAPSHOT</version>
+      <scope>test</scope>
+ 	</dependency>
+ 	<dependency>
+      <groupId>com.jolbox</groupId>
+      <artifactId>bonecp</artifactId>
+      <version>0.7.1.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
     
     <dependency>
       <groupId>org.hsqldb</groupId>
