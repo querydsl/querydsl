@@ -51,6 +51,7 @@ import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeMappings;
@@ -223,7 +224,7 @@ public final class ExtendedTypeFactory {
 
         @Override
         public List<String> visitTypeVariable(TypeVariable t, Boolean p) {
-            List<String> rv = visitBase(t); 
+            List<String> rv = visitBase(t);
             if (t.getUpperBound() != null) {
                 rv.addAll(visit(t.getUpperBound(), p));
             }
@@ -346,7 +347,9 @@ public final class ExtendedTypeFactory {
                 }
             }
         }
-
+        
+        
+        
         // for intersection types etc
         if (name.equals("")) {
             TypeMirror type = objectType;
@@ -602,5 +605,21 @@ public final class ExtendedTypeFactory {
             }
         }
         return type;
+    }
+
+    public void extendTypes() {
+        for (EntityType entityType : entityTypeCache.values()) {
+            if (entityType.getProperties().isEmpty()) {
+                for (Map.Entry<List<String>, EntityType> entry : entityTypeCache.entrySet()) {
+                    if (entry.getKey().get(0).equals(entityType.getFullName()) && 
+                        !entry.getValue().getProperties().isEmpty()) {
+                        for (Property property : entry.getValue().getProperties()) {
+                            entityType.addProperty(property);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

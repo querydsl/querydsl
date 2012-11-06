@@ -252,6 +252,9 @@ public class GenericExporter {
         for (EntityType type : embeddableTypes.values()) {
             addSupertypeFields(type, allTypes, handled);
         }
+        
+        // extend types
+        typeFactory.extendTypes();
 
         try {
             Serializer supertypeSerializer, entitySerializer, embeddableSerializer;

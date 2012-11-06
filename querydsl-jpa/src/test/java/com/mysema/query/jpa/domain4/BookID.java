@@ -15,6 +15,8 @@ package com.mysema.query.jpa.domain4;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +25,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bookid_")
+@Access(AccessType.PROPERTY)
 public class BookID implements Serializable {
 
     private static final long serialVersionUID = -3205025118656391776L;

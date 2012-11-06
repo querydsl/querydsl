@@ -179,6 +179,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
       
         processProjectionTypes(elements);
         
+        // extend entity types
+        typeFactory.extendTypes();
+        
         context.clean();    
         
     }

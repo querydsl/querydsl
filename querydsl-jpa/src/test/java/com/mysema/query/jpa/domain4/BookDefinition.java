@@ -16,6 +16,8 @@ package com.mysema.query.jpa.domain4;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -23,6 +25,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.OrderColumn;
 
 @Embeddable
+@Access(AccessType.PROPERTY)
 public class BookDefinition implements Serializable {
 
     private static final long serialVersionUID = 3570098308959717614L;

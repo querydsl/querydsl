@@ -107,7 +107,7 @@ public final class TypeResolver {
         boolean transformed = false;
         for (int i = 0; i < type.getParameters().size(); i++) {
             Type param = type.getParameters().get(i);
-            if (param != null) {
+            if (param != null && !param.getFullName().equals(type.getFullName())) {
                 params[i] = resolve(param, declaringType, context);
                 if (params[i] != param) {
                     transformed = true;
