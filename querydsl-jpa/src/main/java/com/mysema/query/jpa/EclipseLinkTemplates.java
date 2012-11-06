@@ -37,8 +37,14 @@ public class EclipseLinkTemplates extends JPQLTemplates {
     }
     
     @Override
+    public boolean isPathInEntitiesSupported() {
+        return false;
+    }
+    
+    @Override
     public boolean isSelect1Supported() {
         return true;
     }
+    
     
 }

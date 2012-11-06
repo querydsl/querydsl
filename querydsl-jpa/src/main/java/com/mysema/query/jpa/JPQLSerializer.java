@@ -413,7 +413,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
         // NOTE turns entityPath in collection into entityPath.id in (collection of ids)                
-        if (entityManager != null && args.get(0).getType().isAnnotationPresent(Entity.class)) {
+        if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             Path<?> lhs = (Path<?>) args.get(0);
             Constant<?> rhs = (Constant<?>) args.get(1);
             Metamodel metamodel = entityManager.getMetamodel();

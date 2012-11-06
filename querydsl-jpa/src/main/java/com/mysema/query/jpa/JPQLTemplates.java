@@ -143,6 +143,10 @@ public class JPQLTemplates extends Templates {
     public boolean isEnumInPathSupported() {
         return true;
     }
+
+    public boolean isPathInEntitiesSupported() {
+        return true;
+    }
     
     public boolean isSelect1Supported() {
         return false;
@@ -161,5 +165,6 @@ public class JPQLTemplates extends Templates {
     public boolean isWithForOn() {
         return false;
     }
+    
 
 }
