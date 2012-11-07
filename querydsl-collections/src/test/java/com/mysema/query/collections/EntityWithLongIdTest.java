@@ -1,10 +1,12 @@
 package com.mysema.query.collections;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.junit.Test;
 
 public class EntityWithLongIdTest {
 
@@ -22,8 +24,28 @@ public class EntityWithLongIdTest {
         query.where(root.id.eq(1000L));
 
         Long found = query.singleResult(root.id);
-        Assert.assertNotNull(found);
-        Assert.assertEquals(found.longValue(), 1000);
+        assertNotNull(found);
+        assertEquals(found.longValue(), 1000);
+    }
+    
+    @Test
+    public void CartesianEquals() {
+        QEntityWithLongId root = new QEntityWithLongId("root1");
+        QEntityWithLongId root2 = new QEntityWithLongId("root2");
+        assertEquals(entities.size(), new ColQueryImpl()
+            .from(root, entities).from(root2, entities)
+            .where(root2.id.eq(root.id))
+            .count());
+    }
+    
+    @Test
+    public void CartesianPlus1() {
+        QEntityWithLongId root = new QEntityWithLongId("root1");
+        QEntityWithLongId root2 = new QEntityWithLongId("root2");
+        assertEquals(2, new ColQueryImpl()
+            .from(root, entities).from(root2, entities)
+            .where(root2.id.eq(root.id.add(1)))
+            .count());
     }
 
 }
