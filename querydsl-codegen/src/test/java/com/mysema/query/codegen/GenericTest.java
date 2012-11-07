@@ -1,7 +1,10 @@
 package com.mysema.query.codegen;
 
+import java.lang.annotation.Annotation;
+
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.mysema.codegen.model.Type;
 
 
@@ -19,16 +22,16 @@ public class GenericTest {
             CapiBCKeyedByGrundstueck {
     }
     
+    private TypeFactory typeFactory = new TypeFactory();
+    
     @Test
     public void HidaBez() {
-        TypeFactory typeFactory = new TypeFactory();
         Type type = typeFactory.createEntityType(HidaBez.class);
         System.out.println(type.getGenericName(true));
     }
     
     @Test
     public void HidaBezGruppe() {
-        TypeFactory typeFactory = new TypeFactory();
         Type type = typeFactory.createEntityType(HidaBezGruppe.class);
         System.out.println(type.getGenericName(true));
     }

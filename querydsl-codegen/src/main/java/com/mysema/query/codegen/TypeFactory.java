@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
@@ -42,7 +43,6 @@ import com.mysema.util.ReflectionUtils;
  * @author tiwe
  *
  */
-// TODO : refactor this to be more understandable
 public final class TypeFactory {
 
     private static final Type ANY = new TypeExtends(Types.OBJECT);
@@ -55,15 +55,14 @@ public final class TypeFactory {
 
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
     
-    private final Collection<Class<? extends Annotation>> entityAnnotations;
+    private final List<Class<? extends Annotation>> entityAnnotations;
 
     private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
 
     private boolean unknownAsEntity = false;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public TypeFactory(Class<?>... entityAnnotations) {
-        this((List)Arrays.asList(entityAnnotations));
+    public TypeFactory() {
+        this(Lists.<Class<? extends Annotation>>newArrayList());
     }
 
     public TypeFactory(List<Class<? extends Annotation>> entityAnnotations) {
@@ -131,7 +130,7 @@ public final class TypeFactory {
                 }
             } 
 
-            if (entity) {
+            if (entity && !(value instanceof EntityType)) {
                 value = new EntityType(value);
             }
 

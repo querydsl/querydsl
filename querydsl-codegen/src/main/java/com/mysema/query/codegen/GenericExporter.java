@@ -217,7 +217,7 @@ public class GenericExporter {
     private void innerExport(){
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(entityAnnotation, supertypeAnnotation, embeddableAnnotation);
+        typeFactory = new TypeFactory(Arrays.asList(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
         // process supertypes
         for (Class<?> cl : superTypes.keySet()) {
