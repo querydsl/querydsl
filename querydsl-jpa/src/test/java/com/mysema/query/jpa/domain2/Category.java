@@ -18,6 +18,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,6 +52,7 @@ public class Category {
     private Date deleteDate;
     
     @OneToMany
+    @JoinTable(joinColumns = @JoinColumn(name = "parentId"), inverseJoinColumns = @JoinColumn(name = "childId"))
     private Set<Category> childCategories;
     
     @OneToMany
