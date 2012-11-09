@@ -260,4 +260,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         }        
         return this;
     }
+
+    @Override
+    public boolean isEmpty() {
+        return updates.isEmpty();
+    }
 }

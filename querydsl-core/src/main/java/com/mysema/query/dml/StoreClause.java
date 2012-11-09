@@ -54,6 +54,13 @@ public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C> {
      * @return
      */
     <T> C setNull(Path<T> path);
+    
+    /**
+     * Returns true, if no bindings have been set, otherwise false.
+     * 
+     * @return
+     */
+    boolean isEmpty();
 
 
 }

@@ -100,5 +100,10 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>> {
         return "update " + query;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return paths.isEmpty();
+    }
+
 
 }

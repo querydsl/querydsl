@@ -294,4 +294,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return this;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return values.isEmpty();
+    }
+
 }

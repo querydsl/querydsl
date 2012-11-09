@@ -120,4 +120,9 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         return serializer.toString();
     }
 
+    @Override
+    public boolean isEmpty() {
+        return metadata.getProjection().isEmpty();
+    }
+
 }

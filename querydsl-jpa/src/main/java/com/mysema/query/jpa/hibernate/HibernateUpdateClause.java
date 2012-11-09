@@ -133,5 +133,10 @@ public class HibernateUpdateClause implements
         return serializer.toString();
     }
 
+    @Override
+    public boolean isEmpty() {
+        return metadata.getProjection().isEmpty();
+    }
+
 
 }

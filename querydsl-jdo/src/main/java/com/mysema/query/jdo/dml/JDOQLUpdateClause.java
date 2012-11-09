@@ -97,5 +97,10 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
         return this;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return metadata.getProjection().isEmpty();
+    }
+
 
 }

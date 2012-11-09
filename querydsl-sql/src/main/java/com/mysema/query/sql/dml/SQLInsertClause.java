@@ -400,4 +400,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return this;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return values.isEmpty();
+    }
+
 }
