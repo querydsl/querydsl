@@ -27,7 +27,7 @@ public class SQLTypeMappingTest {
         for (Field field : java.sql.Types.class.getFields()){
             if (field.getType().equals(int.class)){
                 int val = field.getInt(null);
-                if (mapping.get(val) == null){
+                if (mapping.get(val,0,0) == null){
                     fail("Got no value for " + field.getName());
                 }
             }

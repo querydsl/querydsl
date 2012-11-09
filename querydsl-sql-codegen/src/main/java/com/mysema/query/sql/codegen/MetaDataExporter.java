@@ -78,6 +78,8 @@ public class MetaDataExporter {
     private static final int COLUMN_TYPE = 5;
 
     private static final int COLUMN_SIZE = 7;
+    
+    private static final int COLUMN_DIGITS = 9;
 
     private static final int COLUMN_NULLABLE = 11;
     
@@ -221,10 +223,14 @@ public class MetaDataExporter {
 
     private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
         String columnName = normalize(columns.getString(COLUMN_NAME));
+        int columnType = columns.getInt(COLUMN_TYPE);
+        int columnSize = columns.getInt(COLUMN_SIZE);
+        int columnDigits = columns.getInt(COLUMN_DIGITS);
         String propertyName = namingStrategy.getPropertyName(columnName, classModel);
-        Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
+        Class<?> clazz = configuration.getJavaType(columnType, columnSize, columnDigits, 
+                tableName, columnName);
         if (clazz == null) {
-            throw new IllegalStateException("Found to mapping for " + columns.getInt(COLUMN_TYPE));
+            throw new IllegalStateException("Found to mapping for " + columnType);
         }
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)) {

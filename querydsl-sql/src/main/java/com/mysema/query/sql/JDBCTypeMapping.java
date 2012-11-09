@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.Null;
 
 /**
@@ -94,13 +95,46 @@ public final class JDBCTypeMapping {
     
     private final Map<Integer, Class<?>> types = new HashMap<Integer, Class<?>>();
     
+    private final Map<Pair<Integer,Integer>, Class<?>> numericTypes = new HashMap<Pair<Integer,Integer>, Class<?>>();
+    
     public void register(int sqlType, Class<?> javaType) {
         types.put(sqlType, javaType);
     }
+    
+    public void registerNumeric(int size, int digits, Class<? extends Number> javaType) {
+        numericTypes.put(Pair.of(size, digits), javaType);
+    }
 
+    private Class<?> getNumericClass(int size, int digits) {
+        Pair<Integer,Integer> key = Pair.of(size, digits);
+        if (numericTypes.containsKey(key)) {
+            return numericTypes.get(key);            
+        } else if (digits == 0) {
+            if (size > 18) {
+                return Long.class;
+            } else if (size > 5) {
+                return Integer.class;
+            } else if (size > 3) {
+                return Short.class;
+            } else if (size > 1) {
+                return Byte.class;
+            } else {
+                return Boolean.class;
+            }
+        } else {
+            if (size > 16) {
+                return BigDecimal.class;
+            } else {
+                return Double.class;
+            }
+        }
+    }
+    
     @Nullable
-    public Class<?> get(int sqlType) {
-        if (types.containsKey(sqlType)) {
+    public Class<?> get(int sqlType, int size, int digits) {
+        if (sqlType == Types.NUMERIC) {
+            return getNumericClass(size, digits);        
+        } else if (types.containsKey(sqlType)) {
             return types.get(sqlType);
         } else {
             return defaultTypes.get(sqlType);

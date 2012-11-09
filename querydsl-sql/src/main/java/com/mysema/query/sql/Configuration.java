@@ -66,16 +66,18 @@ public class Configuration {
      * Get the java type for the given jdbc type, table name and column name
      * 
      * @param sqlType
+     * @param size
+     * @param digits
      * @param tableName
      * @param columnName
      * @return
      */
-    public Class<?> getJavaType(int sqlType, String tableName, String columnName) {
+    public Class<?> getJavaType(int sqlType, int size, int digits, String tableName, String columnName) {
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null) {
             return type.getReturnedClass();
         } else {
-            return jdbcTypeMapping.get(sqlType);
+            return jdbcTypeMapping.get(sqlType, size, digits);
         }
     }
     
@@ -131,6 +133,17 @@ public class Configuration {
     public void register(Type<?> type) {
         jdbcTypeMapping.register(type.getSQLTypes()[0], type.getReturnedClass());
         javaTypeMapping.register(type);
+    }
+    
+    /**
+     * Override the binding for the given NUMERIC type
+     * 
+     * @param size
+     * @param digits
+     * @param javaType
+     */
+    public void registerNumeric(int size, int digits, Class<? extends Number> javaType) {
+        jdbcTypeMapping.registerNumeric(size, digits, javaType);
     }
 
     /**
