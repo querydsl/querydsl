@@ -108,6 +108,16 @@ public class GroupByTest {
             row(null, null, "null post", comment(8)),
             row(1, 1, "post 1", comment(3))
     );
+    
+    private static final Projectable POST_W_COMMENTS2 = projectable(
+            row(1, "post 1", comment(1)),
+            row(1, "post 1", comment(2)),
+            row(2, "post 2", comment(5)),
+            row(3, "post 3", comment(6)),
+            row(null, "null post", comment(7)),
+            row(null, "null post", comment(8)),
+            row(1, "post 1", comment(3))
+    );
 
     // [ user.name, latestPost(post.id, post.name), latestPost.comments() ]
     private static final Projectable USERS_W_LATEST_POST_AND_COMMENTS = projectable(
@@ -215,6 +225,27 @@ public class GroupByTest {
     public void Transform_Results() {        
         Map<Integer, Post> results = POST_W_COMMENTS.transform(
                 groupBy(postId).as(Projections.constructor(Post.class, postId, postName, set(qComment))));
+        
+        Post post = results.get(1);
+        assertNotNull(post);
+        assertEquals(toInt(1), post.getId());
+        assertEquals("post 1", post.getName());
+        assertEquals(toSet(comment(1), comment(2), comment(3)), post.getComments());
+    }
+    
+    @Test
+    public void Transform_Via_GroupByProjection() {        
+        Map<Integer, Post> results = POST_W_COMMENTS2.transform(
+                new GroupByProjection<Integer, Post>(postId, postName, set(qComment)){
+                    @Override
+                    protected Post transform(Group group) {
+                        return new Post(
+                                group.getOne(postId),
+                                group.getOne(postName),
+                                group.getSet(qComment));
+                                
+                    }                    
+                });
         
         Post post = results.get(1);
         assertNotNull(post);
