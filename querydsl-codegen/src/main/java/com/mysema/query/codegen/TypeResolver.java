@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeExtends;
+import com.mysema.query.QueryException;
 
 /**
  * TypeResolver provides type resolving functionality for resolving generic type variables to 
@@ -31,12 +32,19 @@ import com.mysema.codegen.model.TypeExtends;
  */
 public final class TypeResolver {
 
+    /**
+     * Resolve type declared in declaringType for context
+     * 
+     * @param type type
+     * @param declaringType
+     * @param context
+     * @return
+     */
     public static Type resolve(Type type, Type declaringType, EntityType context) {         
-        Type resolved = type;
+        Type resolved = unwrap(type);
         
-        // unwrap entity type
-        if (resolved instanceof EntityType) {
-            resolved = ((EntityType)resolved).getInnerType();
+        if (resolved instanceof TypeExtends) {
+            
         }
         
         // handle generic types
@@ -55,7 +63,7 @@ public final class TypeResolver {
         
         // rewrap entity type
         if (type instanceof EntityType) {
-            if (!((EntityType)type).getInnerType().equals(resolved)) {
+            if (!unwrap(type).equals(resolved)) {
                 resolved = new EntityType(resolved, ((EntityType)type).getSuperTypes());    
             } else {
                 // reset to original type
@@ -76,13 +84,8 @@ public final class TypeResolver {
         // get parameter index of var in declaring type
         int index = -1;
         for (int i = 0; i < declaringType.getParameters().size(); i++) {
-            Type param = declaringType.getParameters().get(i);
-            // unwrap entity type
-            if (param instanceof EntityType) {
-                param = ((EntityType)param).getInnerType();
-            }
-            if (param instanceof TypeExtends 
-                    && Objects.equal(((TypeExtends)param).getVarName(), typeExtends.getVarName())) {
+            Type param = unwrap(declaringType.getParameters().get(i));
+            if (param instanceof TypeExtends && Objects.equal(((TypeExtends)param).getVarName(), typeExtends.getVarName())) {
                 index = i;
             }
         }
@@ -115,14 +118,44 @@ public final class TypeResolver {
             }
         }
         if (transformed) {
-            return new SimpleType(
-                    type.getCategory(),
-                    type.getFullName(), 
-                    type.getPackageName(), 
-                    type.getSimpleName(),
-                    type.isFinal(),
-                    type.isPrimitive(),
-                    params);
+            return new SimpleType(type, params);
+        } else {
+            return type;
+        }
+    }
+        
+    private static Type resolveTypeVariable(String variable, Type declaringType, EntityType context) {
+        int i = 0;
+        for (Type parameter : declaringType.getParameters()) {
+            if (parameter instanceof TypeExtends && variable.equals(((TypeExtends)parameter).getVarName())) {
+                break;
+            } else {
+                i++;
+            }
+        }
+        
+        Type type = null;
+        for (Supertype superClass : context.getSuperTypes()) {
+            if (declaringType.equals(superClass.getType())) {
+                type = superClass.getType();
+            }
+        }
+        
+        if (type == null) {
+            throw new QueryException("Super class declaration for " + declaringType + " not found from " + context);
+        }
+        
+        if (type.getParameters().size() > i) {
+            return type.getParameters().get(i);
+        } else {
+            throw new QueryException("Generic parameters not supplied from " + context + " to " + declaringType);
+        }
+        
+    }
+    
+    private static Type unwrap(Type type) {
+        if (type instanceof EntityType) {
+            return ((EntityType)type).getInnerType();
         } else {
             return type;
         }

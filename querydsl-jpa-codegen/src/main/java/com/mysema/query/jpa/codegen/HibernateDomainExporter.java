@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -45,7 +46,6 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.MappedSuperclass;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.SimpleValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,8 +96,9 @@ public class HibernateDomainExporter {
 
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
-    private final TypeFactory typeFactory = new TypeFactory(Entity.class, 
-            javax.persistence.MappedSuperclass.class, Embeddable.class);
+    @SuppressWarnings("unchecked")
+    private final TypeFactory typeFactory = new TypeFactory(Arrays.<Class<? extends Annotation>>asList(Entity.class, 
+            javax.persistence.MappedSuperclass.class, Embeddable.class));
 
     private final Configuration configuration;
 

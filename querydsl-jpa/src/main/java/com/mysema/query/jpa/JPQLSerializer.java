@@ -109,7 +109,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
         joinTypes.put(JoinType.INNERJOIN, "\n  inner join ");
-        joinTypes.put(JoinType.JOIN, "\n  join ");
+        joinTypes.put(JoinType.JOIN, "\n  inner join ");
         joinTypes.put(JoinType.LEFTJOIN, "\n  left join ");
         joinTypes.put(JoinType.RIGHTJOIN, "\n  right join ");
     }

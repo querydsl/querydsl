@@ -57,6 +57,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         operatorSymbols.put(Ops.LOE, " <= ");
         
         castSuffixes.put(Byte.class, ".byteValue()");
+        castSuffixes.put(Character.class, ".charValue()");
         castSuffixes.put(Double.class, ".doubleValue()");
         castSuffixes.put(Float.class, ".floatValue()");
         castSuffixes.put(Integer.class, ".intValue()");
@@ -177,6 +178,9 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             handle(args.get(0));
             append(operatorSymbols.get(operator));
             handle(args.get(1));
+            if (args.get(1) instanceof Constant) {
+                append(castSuffixes.get(args.get(1).getType()));
+            }
             return;
         }
         
