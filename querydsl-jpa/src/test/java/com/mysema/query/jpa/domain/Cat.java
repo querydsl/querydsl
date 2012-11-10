@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,12 +38,12 @@ public class Cat extends Animal {
     private Color eyecolor;
 
     @OneToMany
-    @JoinTable(name="kittens")
+	@JoinTable(name = "kittens", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
     @IndexColumn(name = "ind")
     private List<Cat> kittens = new ArrayList<Cat>();
 
     @OneToMany
-    @JoinTable(name="kittens_set")
+	@JoinTable(name = "kittens_set", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
     private Set<Cat> kittensSet;
 
 //    @OneToMany

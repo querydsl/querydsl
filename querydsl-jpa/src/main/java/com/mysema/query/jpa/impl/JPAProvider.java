@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import com.google.common.collect.Maps;
+import com.mysema.query.jpa.BatooTemplates;
 import com.mysema.query.jpa.DataNucleusTemplates;
 import com.mysema.query.jpa.EclipseLinkTemplates;
 import com.mysema.query.jpa.HQLTemplates;
@@ -41,6 +42,7 @@ public final class JPAProvider {
     }
 
     static {
+    	addMapping("org.batoo.jpa.core.impl.manager.EntityManagerImpl", BatooTemplates.DEFAULT);
         addMapping("org.hibernate.Session", HQLTemplates.DEFAULT);
         addMapping("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT);
         addMapping("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT);
