@@ -20,13 +20,6 @@
     <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
   </properties>
   
-  <pluginRepositories>
-    <pluginRepository>
-  	  <id>opencastproject</id>
-  	  <url>http://repository.opencastproject.org/nexus/content/repositories/com.springsource.repository.bundles.release</url>
-  	</pluginRepository>
-  </pluginRepositories>
-  
   <dependencies>   
     <dependency>
       <groupId>org.hibernate</groupId>
