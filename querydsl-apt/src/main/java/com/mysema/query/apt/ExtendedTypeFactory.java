@@ -365,12 +365,7 @@ public final class ExtendedTypeFactory {
             typeElement = (TypeElement)env.getTypeUtils().asElement(type);
         }
         
-        Type type;
-//        if (typeElement.asType() instanceof DeclaredType && declaredType.getTypeArguments().isEmpty()) {
-//            type = createType(typeElement, typeCategory, ((DeclaredType)typeElement.asType()).getTypeArguments(), deep);
-//        } else {
-            type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
-//        }        
+        Type type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
         
         TypeMirror superType = typeElement.getSuperclass();
         TypeElement superTypeElement = null;

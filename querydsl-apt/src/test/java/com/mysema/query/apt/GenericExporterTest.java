@@ -56,9 +56,9 @@ public class GenericExporterTest extends AbstractProcessorTest{
         expected.add("QExternalEntityTest_MyEntity.java");
         expected.add("QQueryEmbeddable2Test_User.java");
         expected.add("QQueryEmbedded4Test_User.java");
-        expected.add("QSuperclass3Test_Subtype.java");
-        expected.add("QExamples_OrderBys.java");      
-        expected.add("QGeneric7Test_ListAttribute.java");
+        expected.add("QEnum2Test_EnumPermissions.java");
+        expected.add("QAbstractEntityTest_Category.java");
+        expected.add("QAbstractEntityTest_CategoryReference.java");
         
         execute(expected, "GenericExporterTest", "QuerydslAnnotationProcessor");
     }
@@ -91,12 +91,8 @@ public class GenericExporterTest extends AbstractProcessorTest{
         expected.add("QCustomCollection_MyCustomCollection2.java");
         
         // FIXME
-        expected.add("QEntityInheritanceTest_TestEntity.java");        
-        expected.add("QGeneric4Test_HidaBezGruppe.java");
         expected.add("QGeneric4Test_HidaBez.java");
-        expected.add("QGeneric6Test_Cycle1.java");
-        expected.add("QGeneric6Test_Cycle2.java");
-        
+        expected.add("QGeneric4Test_HidaBezGruppe.java");       
         expected.add("QGeneric9Test_CommonOrganizationalUnit.java");
         expected.add("QAbstractClasses2Test_PartyRole.java");
         expected.add("QGeneric9Test_ProductionSurface.java");

@@ -77,6 +77,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         String path = new File("src/test/java/com/mysema/query/domain/AbstractClassesTest.java").getPath();
         process(JPAAnnotationProcessor.class, Collections.singletonList(path),"abstractClasses");
     }
+    
+    @Test
+    public void Process_AbstractClasses2() throws IOException {
+        String path = new File("src/test/java/com/mysema/query/domain/AbstractClasses2Test.java").getPath();
+        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"abstractClasses2");
+    }
 
     @Test
     public void Process_GenericSignature() throws IOException{

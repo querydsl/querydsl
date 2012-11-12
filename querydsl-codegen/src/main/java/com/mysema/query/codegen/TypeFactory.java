@@ -15,7 +15,6 @@ package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
@@ -116,13 +115,13 @@ public final class TypeFactory {
         } else if (entity) {
             value = createOther(cl, entity, parameters);
         } else if (Map.class.isAssignableFrom(cl)) {
-            value = new SimpleType(Types.MAP, parameters[0], parameters[1]);
+            value = new SimpleType(Types.MAP, parameters[0], asGeneric(parameters[1]));
         } else if (List.class.isAssignableFrom(cl)) {
-            value = new SimpleType(Types.LIST, parameters[0]);
+            value = new SimpleType(Types.LIST, asGeneric(parameters[0]));
         } else if (Set.class.isAssignableFrom(cl)) {
-            value = new SimpleType(Types.SET, parameters[0]);
+            value = new SimpleType(Types.SET, asGeneric(parameters[0]));
         } else if (Collection.class.isAssignableFrom(cl)) {
-            value = new SimpleType(Types.COLLECTION, parameters[0]);            
+            value = new SimpleType(Types.COLLECTION, asGeneric(parameters[0]));            
         } else {
             value = createOther(cl, entity, parameters);
         }
@@ -142,6 +141,16 @@ public final class TypeFactory {
         return value;
     }
     
+    private Type asGeneric(Type type) {
+        if (type.getParameters().size() == 0) {
+            int count = type.getJavaClass().getTypeParameters().length;
+            if (count > 0) {
+                return new SimpleType(type, new Type[count]); 
+            }
+        }
+        return type;
+    }
+
     private Type createOther(Class<?> cl, boolean entity, Type[] parameters) {
         TypeCategory typeCategory = TypeCategory.get(cl.getName());
         if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
@@ -181,7 +190,6 @@ public final class TypeFactory {
 
     @SuppressWarnings("rawtypes")
     private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType, int i) {
-//        java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
         java.lang.reflect.Type parameter = ReflectionUtils.getTypeParameter(genericType, i);
         if (parameter instanceof TypeVariable) {
             TypeVariable variable = (TypeVariable)parameter;
