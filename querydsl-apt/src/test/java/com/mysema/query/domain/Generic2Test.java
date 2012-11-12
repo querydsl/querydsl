@@ -8,8 +8,6 @@ import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
 
-import com.mysema.query.annotations.QueryEmbeddable;
-
 public class Generic2Test {
 
     public static class Range<T extends Comparable<? super T>> {

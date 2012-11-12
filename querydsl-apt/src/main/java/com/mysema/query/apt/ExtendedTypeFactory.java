@@ -86,7 +86,6 @@ public final class ExtendedTypeFactory {
 
         @Override
         public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
-            //return visit(env.getTypeUtils().boxedClass(primitiveType).asType(), p);
             switch (primitiveType.getKind()) {
             case BOOLEAN: return Types.BOOLEAN;
             case BYTE: return Types.BYTE;
@@ -138,7 +137,8 @@ public final class ExtendedTypeFactory {
                 Type type = visit(typeVariable.getUpperBound(), p);
                 return new TypeExtends(varName, type);
             } else if (typeVariable.getLowerBound() != null && !(typeVariable.getLowerBound() instanceof NullType)) {
-                return new TypeSuper(varName, visit(typeVariable.getLowerBound(), p));
+                Type type = visit(typeVariable.getLowerBound(), p);
+                return new TypeSuper(varName, type);
             } else {
                 return null;
             }
@@ -150,7 +150,8 @@ public final class ExtendedTypeFactory {
                 Type type = visit(wildardType.getExtendsBound(), p);
                 return new TypeExtends(type);
             } else if (wildardType.getSuperBound() != null) {
-                return new TypeSuper(visit(wildardType.getSuperBound(), p));
+                Type type = visit(wildardType.getSuperBound(), p);
+                return new TypeSuper(type);
             } else {
                 return null;
             }
@@ -348,8 +349,6 @@ public final class ExtendedTypeFactory {
             }
         }
         
-        
-        
         // for intersection types etc
         if (name.equals("")) {
             TypeMirror type = objectType;
@@ -367,11 +366,11 @@ public final class ExtendedTypeFactory {
         }
         
         Type type;
-        if (typeElement.asType() instanceof DeclaredType && declaredType.getTypeArguments().isEmpty()) {
-            type = createType(typeElement, typeCategory, ((DeclaredType)typeElement.asType()).getTypeArguments(), deep);
-        } else {
+//        if (typeElement.asType() instanceof DeclaredType && declaredType.getTypeArguments().isEmpty()) {
+//            type = createType(typeElement, typeCategory, ((DeclaredType)typeElement.asType()).getTypeArguments(), deep);
+//        } else {
             type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
-        }        
+//        }        
         
         TypeMirror superType = typeElement.getSuperclass();
         TypeElement superTypeElement = null;
@@ -471,16 +470,16 @@ public final class ExtendedTypeFactory {
             }
             entityTypeCache.put(key, entityType);
 
-            if (key.size() > 1 && key.get(0).equals(entityType.getFullName()) && doubleIndexEntities) {
-                List<String> newKey = new ArrayList<String>();
-                newKey.add(entityType.getFullName());
-                for (int i = 0; i < entityType.getParameters().size(); i++) {
-                    newKey.add("?");
-                }
-                if (!entityTypeCache.containsKey(newKey)) {
-                    entityTypeCache.put(newKey, entityType);
-                }
-            }
+//            if (key.size() > 1 && key.get(0).equals(entityType.getFullName()) && doubleIndexEntities) {
+//                List<String> newKey = new ArrayList<String>();
+//                newKey.add(entityType.getFullName());
+//                for (int i = 0; i < entityType.getParameters().size(); i++) {
+//                    newKey.add("?");
+//                }
+//                if (!entityTypeCache.containsKey(newKey)) {
+//                    entityTypeCache.put(newKey, entityType);
+//                }
+//            }
 
             if (deep) {
                 for (Type superType : getSupertypes(typeMirror, value, deep)) {

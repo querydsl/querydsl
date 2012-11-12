@@ -13,15 +13,11 @@
  */
 package com.mysema.query.codegen;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeExtends;
-import com.mysema.query.QueryException;
+import com.mysema.codegen.model.TypeSuper;
 
 /**
  * TypeResolver provides type resolving functionality for resolving generic type variables to 
@@ -43,21 +39,10 @@ public final class TypeResolver {
     public static Type resolve(Type type, Type declaringType, EntityType context) {         
         Type resolved = unwrap(type);
         
-        if (resolved instanceof TypeExtends) {
-            
-        }
-        
-        // handle generic types
-        if (resolved instanceof TypeExtends) {
-            List<Type> result = resolveTypeExtends((TypeExtends)resolved, declaringType, context);
-            if (!result.isEmpty()) {
-                resolved = result.get(0);
-                declaringType = result.get(1);
-            }
-        }
-
-        // handle generic type parameters
-        if(!resolved.getParameters().isEmpty()) {
+        String varName = getVarName(resolved);        
+        if (varName != null) {
+            resolved = resolveVar(varName, declaringType, context);
+        } else if(!resolved.getParameters().isEmpty()) {
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
         
@@ -74,37 +59,40 @@ public final class TypeResolver {
         return resolved;
     }
 
-    private static List<Type> resolveTypeExtends(TypeExtends typeExtends, Type declaringType, 
-            EntityType context) {
-        // typeExtends without variable name can't be resolved
-        if (typeExtends.getVarName() == null) { //NOSONAR
-            return Collections.emptyList();
-        }
-
+    /**
+     * @param varName
+     * @param declaringType
+     * @param context
+     * @return
+     */
+    private static Type resolveVar(String varName, Type declaringType, EntityType context) {
         // get parameter index of var in declaring type
         int index = -1;
         for (int i = 0; i < declaringType.getParameters().size(); i++) {
             Type param = unwrap(declaringType.getParameters().get(i));
-            if (param instanceof TypeExtends && Objects.equal(((TypeExtends)param).getVarName(), typeExtends.getVarName())) {
+            if (param instanceof TypeExtends && Objects.equal(((TypeExtends)param).getVarName(), varName)) {
                 index = i;
             }
         }
-
-        if (index > -1) {
-            // get binding of var via model supertype
-            Supertype type = context.getSuperType();            
-            while (!type.getEntityType().equals(declaringType)) {
-                type = type.getEntityType().getSuperType();                
-            }
-            return Lists.newArrayList(
-                    type.getType().getParameters().get(index), 
-                    type.getType());
-        } else {
-            // TODO : error
-            return Collections.emptyList();
+        
+        if (index == -1) {
+            throw new IllegalStateException("Did not find type " + varName
+                    + " in " + declaringType.getParameters());
         }
+
+        Supertype type = context.getSuperType();            
+        while (!type.getEntityType().equals(declaringType)) {
+            type = type.getEntityType().getSuperType();                
+        }
+        return type.getType().getParameters().get(index);
     }
 
+    /**
+     * @param type
+     * @param declaringType
+     * @param context
+     * @return
+     */
     private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {
         Type[] params = new Type[type.getParameters().size()];
         boolean transformed = false;
@@ -112,7 +100,7 @@ public final class TypeResolver {
             Type param = type.getParameters().get(i);
             if (param != null && !param.getFullName().equals(type.getFullName())) {
                 params[i] = resolve(param, declaringType, context);
-                if (params[i] != param) {
+                if (!params[i].equals(param)) {
                     transformed = true;
                 }
             }
@@ -123,36 +111,25 @@ public final class TypeResolver {
             return type;
         }
     }
-        
-    private static Type resolveTypeVariable(String variable, Type declaringType, EntityType context) {
-        int i = 0;
-        for (Type parameter : declaringType.getParameters()) {
-            if (parameter instanceof TypeExtends && variable.equals(((TypeExtends)parameter).getVarName())) {
-                break;
-            } else {
-                i++;
-            }
-        }
-        
-        Type type = null;
-        for (Supertype superClass : context.getSuperTypes()) {
-            if (declaringType.equals(superClass.getType())) {
-                type = superClass.getType();
-            }
-        }
-        
-        if (type == null) {
-            throw new QueryException("Super class declaration for " + declaringType + " not found from " + context);
-        }
-        
-        if (type.getParameters().size() > i) {
-            return type.getParameters().get(i);
-        } else {
-            throw new QueryException("Generic parameters not supplied from " + context + " to " + declaringType);
-        }
-        
-    }
     
+    /**
+     * @param type
+     * @return
+     */
+    private static String getVarName(Type type) {
+        if (type instanceof TypeExtends) {
+            return ((TypeExtends)type).getVarName();
+        } else if (type instanceof TypeSuper) {
+            return ((TypeSuper)type).getVarName();
+        } else {
+            return null;
+        }
+    }
+         
+    /**
+     * @param type
+     * @return
+     */
     private static Type unwrap(Type type) {
         if (type instanceof EntityType) {
             return ((EntityType)type).getInnerType();

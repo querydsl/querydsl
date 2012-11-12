@@ -1,12 +1,9 @@
 package com.mysema.query.codegen;
 
-import org.junit.Ignore;
-
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 
-@Ignore
-public class QueryEmbeddable2Test {
+public class QueryEmbeddable2Test extends AbstractExporterTest {
 
     @QueryEntity
     public static class User {

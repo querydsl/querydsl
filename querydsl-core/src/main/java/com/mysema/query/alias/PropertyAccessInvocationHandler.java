@@ -217,12 +217,12 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (typeSystem.isSetType(type)) {
-            Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
+            Class<?> elementType = ReflectionUtils.getTypeParameterAsClass(genericType, 0);
             path = pathFactory.createSetPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (typeSystem.isCollectionType(type)) {
-            Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
+            Class<?> elementType = ReflectionUtils.getTypeParameterAsClass(genericType, 0);
             path = pathFactory.createCollectionPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 

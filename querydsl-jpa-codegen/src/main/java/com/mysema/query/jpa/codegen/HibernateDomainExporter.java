@@ -373,7 +373,7 @@ public class HibernateDomainExporter {
             if (collection.getElement() instanceof OneToMany) {
                 String entityName = ((OneToMany)collection.getElement()).getReferencedEntityName();
                 if (entityName != null) {
-                    Type componentType = typeFactory.create(Class.forName(entityName));
+                    Type componentType = typeFactory.get(Class.forName(entityName));
                     propertyType = new SimpleType(propertyType, componentType);    
                 }                
             } else if (collection.getElement() instanceof Component) {
@@ -437,7 +437,7 @@ public class HibernateDomainExporter {
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
             Class<?> superClass = type.getJavaClass().getSuperclass();
             if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {
-                entityType.addSupertype(new Supertype(typeFactory.create(superClass, 
+                entityType.addSupertype(new Supertype(typeFactory.get(superClass, 
                         type.getJavaClass().getGenericSuperclass())));
             }
             types.put(rawName, entityType);
@@ -450,10 +450,10 @@ public class HibernateDomainExporter {
         if (allTypes.containsKey(cl.getName())) {
             return allTypes.get(cl.getName());
         } else {
-            EntityType type = typeFactory.createEntityType(cl);
+            EntityType type = typeFactory.getEntityType(cl);
             typeMappings.register(type, queryTypeFactory.create(type));
             if (!cl.getSuperclass().equals(Object.class)) {
-                type.addSupertype(new Supertype(typeFactory.create(cl.getSuperclass(), cl.getGenericSuperclass())));
+                type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
             types.put(cl.getName(), type);
             allTypes.put(cl.getName(), type);
@@ -465,17 +465,17 @@ public class HibernateDomainExporter {
         Field field = ReflectionUtils.getFieldOrNull(cl, propertyName);
         if (field != null) {
             if (mappedType.isAssignableFrom(field.getType())) {
-                return typeFactory.create(field.getType(), field.getGenericType());    
+                return typeFactory.get(field.getType(), field.getGenericType());    
             } else {
-                return typeFactory.create(mappedType);
+                return typeFactory.get(mappedType);
             }                
         } else {
             Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
             if (method != null) {
                 if (mappedType.isAssignableFrom(method.getReturnType())) {
-                    return typeFactory.create(method.getReturnType(), method.getGenericReturnType());    
+                    return typeFactory.get(method.getReturnType(), method.getGenericReturnType());    
                 } else {
-                    return typeFactory.create(mappedType);
+                    return typeFactory.get(mappedType);
                 }                
             } else {
                 throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);

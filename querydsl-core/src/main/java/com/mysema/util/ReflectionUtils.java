@@ -98,17 +98,28 @@ public final class ReflectionUtils {
     public static int getTypeParameterCount(java.lang.reflect.Type type){
         if (type instanceof ParameterizedType) {
             return ((ParameterizedType) type).getActualTypeArguments().length;
-        }else{
+        } else if (type instanceof TypeVariable) {
+            return getTypeParameterCount(((TypeVariable) type).getBounds()[0]);            
+        } else {
             return 0;
         }
     }
 
+    public static Class<?> getTypeParameterAsClass(java.lang.reflect.Type type, int index) {
+        Type parameter = getTypeParameter(type, index);
+        if (parameter != null) {
+            return getClass(parameter);
+        } else {
+            return null;
+        }
+    }
+    
     @Nullable
-    @SuppressWarnings("unchecked")
-    public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
+    public static Type getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
-            ParameterizedType ptype = (ParameterizedType) type;
-            return getClass(ptype.getActualTypeArguments()[index]);
+            return ((ParameterizedType) type).getActualTypeArguments()[index];
+        } else if (type instanceof TypeVariable) {    
+            return getTypeParameter(((TypeVariable) type).getBounds()[0], index);
         } else {
             return null;    
         }        

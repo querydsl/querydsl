@@ -89,9 +89,15 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         String path = new File("src/test/java/com/mysema/query/domain/AbstractProperties2Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"abstractProperties");
     }
+        
+    @Test
+    public void Process_Inheritance2Test() throws IOException {
+        String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance2Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"InheritanceTest2");
+    }
     
     @Test
-    public void Entity_InheritanceTest() throws IOException {
+    public void Process_EntityInheritanceTest() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/EntityInheritanceTest.java").getPath();
         process(JPAAnnotationProcessor.class, Collections.singletonList(path),"entityInheritance");
     }

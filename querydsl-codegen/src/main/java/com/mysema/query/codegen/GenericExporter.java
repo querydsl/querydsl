@@ -24,7 +24,6 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.TypeVariable;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,7 +42,6 @@ import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.support.ClassUtils;
 import com.mysema.query.QueryException;
 import com.mysema.query.annotations.Config;
@@ -315,20 +313,23 @@ public class GenericExporter {
         } else {
             EntityType type = allTypes.get(ClassUtils.getFullName(cl));
             if (type == null) {
-                type = typeFactory.createEntityType(cl);
+                type = typeFactory.getEntityType(cl);
             }
             types.put(cl, type);
-            allTypes.put(ClassUtils.getFullName(cl), type);
+            String fullName = ClassUtils.getFullName(cl);
+            if (!allTypes.containsKey(fullName)) {
+                allTypes.put(fullName, type);    
+            }            
 
             typeMappings.register(type, queryTypeFactory.create(type));
             if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())
                 && !cl.getSuperclass().isAnnotationPresent(QueryExclude.class)) {                
-                type.addSupertype(new Supertype(typeFactory.create(cl.getSuperclass(), cl.getGenericSuperclass())));
+                type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
             if (cl.isInterface()) {
                 for (Class<?> iface : cl.getInterfaces()) {
                     if (!stopClasses.contains(iface) && !iface.isAnnotationPresent(QueryExclude.class)) {
-                        type.addSupertype(new Supertype(typeFactory.create(iface)));    
+                        type.addSupertype(new Supertype(typeFactory.get(iface)));    
                     }                    
                 }
             }
@@ -392,23 +393,19 @@ public class GenericExporter {
 
     private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, 
             java.lang.reflect.Type genericType) {        
-        Type propertyType = allTypes.get(ClassUtils.getFullName(type));
-        if (propertyType != null && genericType instanceof TypeVariable) {
-            if (propertyType instanceof EntityType) {
-                propertyType = ((EntityType) propertyType).getInnerType();
-            }
-            propertyType = new TypeExtends(((TypeVariable) genericType).getName(), propertyType);
-        }
-        if (propertyType == null && annotated.isAnnotationPresent(embeddedAnnotation)) {
+        Type propertyType = null;     
+        if (annotated.isAnnotationPresent(embeddedAnnotation)) {
             Class<?> embeddableType = type;
             if (Collection.class.isAssignableFrom(type)) {
-                embeddableType = ReflectionUtils.getTypeParameter(genericType, 0);
+                embeddableType = ReflectionUtils.getTypeParameterAsClass(genericType, 0);
             } else if (Map.class.isAssignableFrom(type)) {
-                embeddableType = ReflectionUtils.getTypeParameter(genericType, 1);
+                embeddableType = ReflectionUtils.getTypeParameterAsClass(genericType, 1);
             }
             if (!embeddableType.getName().startsWith("java.")) {
                 typeFactory.addEmbeddableType(embeddableType);
-                if (!embeddableTypes.containsKey(embeddableType) && !entityTypes.containsKey(embeddableType)) {
+                if (!embeddableTypes.containsKey(embeddableType) 
+                  && !entityTypes.containsKey(embeddableType)
+                  && !superTypes.containsKey(embeddableType)) {
                     EntityType entityType = createEntityType(embeddableType, embeddableTypes);
                     addProperties(embeddableType, entityType);
                     if (embeddableType == type) {
@@ -418,9 +415,12 @@ public class GenericExporter {
             }
         }
         if (propertyType == null) {
-            propertyType = typeFactory.create(type, genericType);
+            propertyType = typeFactory.get(type, genericType);
             if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))) {
-                allTypes.put(ClassUtils.getFullName(type), (EntityType)propertyType);
+                String fullName = ClassUtils.getFullName(type);
+                if (!allTypes.containsKey(fullName)) {
+                    allTypes.put(fullName, (EntityType)propertyType);    
+                }                
             }
         }
         return propertyType;
@@ -441,8 +441,7 @@ public class GenericExporter {
             QueryType queryType = annotated.getAnnotation(QueryType.class);
             if (queryType.value().equals(PropertyType.NONE)) {
                 return null;
-            }
-            
+            }            
             propertyType = propertyType.as(TypeCategory.valueOf(queryType.value().name()));
         }
         return new Property(entityType, propertyName, propertyType, inits);

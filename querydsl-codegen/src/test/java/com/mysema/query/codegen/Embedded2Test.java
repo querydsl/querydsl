@@ -15,15 +15,12 @@ package com.mysema.query.codegen;
 
 import java.io.Serializable;
 
-import org.junit.Ignore;
-
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEmbedded;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 
-@Ignore
-public class Embedded2Test {
+public class Embedded2Test extends AbstractExporterTest {
     
     @QuerySupertype
     public static class EntityCode {

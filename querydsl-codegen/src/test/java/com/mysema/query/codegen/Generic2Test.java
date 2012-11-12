@@ -40,13 +40,19 @@ public class Generic2Test {
     @Test
     public void Resolve() {
         TypeFactory factory = new TypeFactory(Collections.<Class<? extends Annotation>>emptyList());
-        Type type = factory.create(AbstractCollectionAttribute.class, 
-                AbstractCollectionAttribute.class.getGenericSuperclass());
-        assertEquals("com.mysema.query.codegen.Generic2Test.AbstractCollectionAttribute<? extends java.util.Collection<?>>", 
-                type.getGenericName(false));
-        assertEquals("com.mysema.query.codegen.Generic2Test.AbstractCollectionAttribute<? extends java.util.Collection<?>>", 
-                type.getGenericName(true));
+        Type type = factory.get(AbstractCollectionAttribute.class);
+        assertEquals("com.mysema.query.codegen.Generic2Test.AbstractCollectionAttribute", type.getGenericName(false));
+        assertEquals("com.mysema.query.codegen.Generic2Test.AbstractCollectionAttribute", type.getGenericName(true));
     }
+    
+    @Test
+    public void Resolve2() {
+        TypeFactory factory = new TypeFactory(Collections.<Class<? extends Annotation>>emptyList());
+        Type type = factory.getEntityType(AbstractCollectionAttribute.class);
+        assertEquals("com.mysema.query.codegen.Generic2Test.AbstractCollectionAttribute<? extends java.util.Collection<?>>", type.getGenericName(false));
+        assertEquals("com.mysema.query.codegen.Generic2Test.AbstractCollectionAttribute<? extends java.util.Collection<?>>", type.getGenericName(true));
+    }
+
 
     @Test
     public void Export() {

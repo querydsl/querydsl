@@ -1,10 +1,7 @@
 package com.mysema.query.codegen;
 
-import java.lang.annotation.Annotation;
-
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.mysema.codegen.model.Type;
 
 
@@ -26,13 +23,13 @@ public class GenericTest {
     
     @Test
     public void HidaBez() {
-        Type type = typeFactory.createEntityType(HidaBez.class);
+        Type type = typeFactory.getEntityType(HidaBez.class);
         System.out.println(type.getGenericName(true));
     }
     
     @Test
     public void HidaBezGruppe() {
-        Type type = typeFactory.createEntityType(HidaBezGruppe.class);
+        Type type = typeFactory.getEntityType(HidaBezGruppe.class);
         System.out.println(type.getGenericName(true));
     }
 

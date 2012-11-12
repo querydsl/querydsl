@@ -1,14 +1,11 @@
 package com.mysema.query.codegen;
 
-import org.junit.Ignore;
-
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEmbedded;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 
-@Ignore
-public class EmbeddedTest {
+public class EmbeddedTest extends AbstractExporterTest {
     
     @QueryEntity
     public static class EntityClass extends AbstractEntity<SubEntityCode> {

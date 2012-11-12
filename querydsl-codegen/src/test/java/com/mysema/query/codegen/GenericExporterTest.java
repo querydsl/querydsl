@@ -48,30 +48,6 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_EmbeddedTest() {
-        exporter.setTargetFolder(new File("target/EmbeddedTest"));
-        exporter.export(EmbeddedTest.class.getDeclaredClasses());
-    }
-    
-    @Test
-    public void Export_Embedded2Test() {
-        exporter.setTargetFolder(new File("target/Embedded2Test"));
-        exporter.export(Embedded2Test.class.getDeclaredClasses());
-    }
-    
-    @Test
-    public void Export_EntityInheritanceTest() {
-        exporter.setTargetFolder(new File("target/EntityInheritanceTest"));
-        exporter.export(EntityInheritanceTest.class.getDeclaredClasses());
-    }
-    
-    @Test
-    public void Export_QueryEmbeddable2Test() {
-        exporter.setTargetFolder(new File("target/QueryEmbeddable2Test"));
-        exporter.export(QueryEmbeddable2Test.class.getDeclaredClasses());
-    }
-    
-    @Test
     public void Export_With_Keywords() throws IOException {
         exporter.setKeywords(Keywords.JPA);
         exporter.setTargetFolder(new File("target/gen1_jpa"));

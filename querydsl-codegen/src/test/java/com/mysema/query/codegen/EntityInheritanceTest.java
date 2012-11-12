@@ -1,12 +1,9 @@
 package com.mysema.query.codegen;
 
-import org.junit.Ignore;
-
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 
-@Ignore
-public class EntityInheritanceTest {
+public class EntityInheritanceTest extends AbstractExporterTest {
     
     @QuerySupertype
     public static class TreeEntity<T extends TreeEntity<T>> {
