@@ -349,6 +349,8 @@ public final class ExtendedTypeFactory {
             }
         }
         
+        List<? extends TypeMirror> arguments = declaredType.getTypeArguments();
+        
         // for intersection types etc
         if (name.equals("")) {
             TypeMirror type = objectType;
@@ -363,9 +365,12 @@ public final class ExtendedTypeFactory {
                 }
             }
             typeElement = (TypeElement)env.getTypeUtils().asElement(type);
+            if (type instanceof DeclaredType) {
+                arguments = ((DeclaredType)type).getTypeArguments();
+            }
         }
         
-        Type type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
+        Type type = createType(typeElement, typeCategory, arguments, deep);
         
         TypeMirror superType = typeElement.getSuperclass();
         TypeElement superTypeElement = null;
@@ -464,17 +469,6 @@ public final class ExtendedTypeFactory {
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
             }
             entityTypeCache.put(key, entityType);
-
-//            if (key.size() > 1 && key.get(0).equals(entityType.getFullName()) && doubleIndexEntities) {
-//                List<String> newKey = new ArrayList<String>();
-//                newKey.add(entityType.getFullName());
-//                for (int i = 0; i < entityType.getParameters().size(); i++) {
-//                    newKey.add("?");
-//                }
-//                if (!entityTypeCache.containsKey(newKey)) {
-//                    entityTypeCache.put(newKey, entityType);
-//                }
-//            }
 
             if (deep) {
                 for (Type superType : getSupertypes(typeMirror, value, deep)) {

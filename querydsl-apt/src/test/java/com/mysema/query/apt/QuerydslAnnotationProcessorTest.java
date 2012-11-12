@@ -45,37 +45,37 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     @Test
     public void Process_Inheritance3() throws IOException{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance3Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance3");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"Inheritance3Test");
     }
 
     @Test
     public void Process_Inheritance8() throws IOException{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance8Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance8");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"Inheritance8Test");
     }
 
     @Test
     public void Process_QueryEmbedded3() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded3Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"embedded3");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"QueryEmbedded3Test");
     }
     
     @Test
     public void Process_QueryEmbedded4() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded4Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"embedded3");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"QueryEmbedded4Test");
     }
 
     @Test
     public void Process_Delegate() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/DelegateTest.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"delegate");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"DelegateTest");
     }
 
     @Test
     public void Process_AbstractClasses() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/AbstractClassesTest.java").getPath();
-        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"abstractClasses");
+        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"AbstractClassesTest");
     }
     
     @Test
@@ -87,13 +87,13 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     @Test
     public void Process_GenericSignature() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/GenericSignatureTest.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"genericSignature");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"GenericSignatureTest");
     }
     
     @Test
     public void Process_AbstractProperties2Test() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/AbstractProperties2Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"abstractProperties");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"AbstractProperties2Test");
     }
         
     @Test
@@ -105,7 +105,13 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     @Test
     public void Process_EntityInheritanceTest() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/EntityInheritanceTest.java").getPath();
-        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"entityInheritance");
+        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"EntityInheritanceTest");
+    }
+    
+    @Test
+    public void Process_Enum2Test() throws IOException {
+        String path = new File("src/test/java/com/mysema/query/domain/Enum2Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"Enum2Test");
     }
     
     @Test

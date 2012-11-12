@@ -222,11 +222,12 @@ public final class TypeFactory {
             if (entry.getValue() instanceof EntityType) {
                 EntityType entityType = (EntityType)entry.getValue();
                 if (entityType.getProperties().isEmpty()) {
-                    Type type = cache.get(Arrays.asList(entry.getKey().get(0), entry.getKey().get(0)));
-                    if (type instanceof EntityType) {
-                        EntityType base = (EntityType)type;
-                        for (Property property : base.getProperties()) {
-                            entityType.addProperty(property);
+                    for (Type type : cache.values()) {                    
+                        if (type.getFullName().equals(entityType.getFullName()) && type instanceof EntityType) {    
+                            EntityType base = (EntityType)type;
+                            for (Property property : base.getProperties()) {
+                                entityType.addProperty(property);
+                            }       
                         }
                     }
                 }
