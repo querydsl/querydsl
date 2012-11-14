@@ -216,7 +216,7 @@ public class SQLTemplates extends Templates {
         class2type.put(java.sql.Timestamp.class, "timestamp");
     }
 
-    public void addClass2TypeMappings(String type, Class<?>... classes) {
+    protected void addClass2TypeMappings(String type, Class<?>... classes) {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
         }
