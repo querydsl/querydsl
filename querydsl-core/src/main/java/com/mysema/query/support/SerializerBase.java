@@ -147,6 +147,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }        
         return self;
     }
+    
+    public S insert(int position, String str) {
+        builder.insert(position, str);
+        return self;
+    }
 
     public S append(String... str) {
         if (!dry) {
@@ -163,6 +168,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel;
+    }
+    
+    public int getLength() {
+        return builder.length();
     }
 
     protected Template getTemplate(Operator<?> op) {
