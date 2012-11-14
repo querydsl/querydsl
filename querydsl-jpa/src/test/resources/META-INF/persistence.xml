@@ -105,6 +105,41 @@
 	
     <persistence-unit name="h2-batoo">
         <provider>org.batoo.jpa.core.BatooPersistenceProvider</provider>
+        <class>com.mysema.query.jpa.domain.Account</class>
+        <class>com.mysema.query.jpa.domain.Animal</class>
+        <class>com.mysema.query.jpa.domain.AuditLog</class>
+        <class>com.mysema.query.jpa.domain.Author</class>
+        <class>com.mysema.query.jpa.domain.Bar</class>
+        <class>com.mysema.query.jpa.domain.Book</class>     
+        <class>com.mysema.query.jpa.domain.Calendar</class>
+        <class>com.mysema.query.jpa.domain.Cat</class>
+        <class>com.mysema.query.jpa.domain.Catalog</class> 
+        <class>com.mysema.query.jpa.domain.Company</class>
+        <class>com.mysema.query.jpa.domain.Customer</class>
+        <class>com.mysema.query.jpa.domain.Department</class>
+        <class>com.mysema.query.jpa.domain.DomesticCat</class>
+        <class>com.mysema.query.jpa.domain.EmbeddedType</class>
+        <class>com.mysema.query.jpa.domain.Employee</class>
+        <class>com.mysema.query.jpa.domain.Foo</class>
+        <class>com.mysema.query.jpa.domain.Formula</class>
+        <class>com.mysema.query.jpa.domain.Item</class>
+        <class>com.mysema.query.jpa.domain.Name</class>
+        <class>com.mysema.query.jpa.domain.NameList</class>
+        <class>com.mysema.query.jpa.domain.Named</class>
+        <class>com.mysema.query.jpa.domain.Nationality</class>
+        <class>com.mysema.query.jpa.domain.Parameter</class>
+        <class>com.mysema.query.jpa.domain.Payment</class>
+        <class>com.mysema.query.jpa.domain.Person</class>
+        <class>com.mysema.query.jpa.domain.PersonId</class>
+        <class>com.mysema.query.jpa.domain.Product</class>
+        <class>com.mysema.query.jpa.domain.Show</class>
+        <class>com.mysema.query.jpa.domain.User</class>
+        <class>com.mysema.query.jpa.domain4.BookDefinition</class>
+        <class>com.mysema.query.jpa.domain4.BookID</class>
+        <class>com.mysema.query.jpa.domain4.BookMark</class>        
+        <class>com.mysema.query.jpa.domain4.BookVersion</class>
+        <class>com.mysema.query.jpa.domain4.BookVersionPK</class>
+        <class>com.mysema.query.jpa.domain4.Library</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-3" />
