@@ -39,6 +39,16 @@ public class GroupByTest extends AbstractJDOTest {
         assertEquals(3, query().from(product).groupBy(product.description).list(product.description).size());
         assertEquals(3, query().from(product).groupBy(product.price).list(product.price).size());
     }
+    
+    @Test
+    public void Having() {
+        assertEquals(3, query().from(product)
+                .groupBy(product.description).having(product.description.ne("XXX"))
+                .list(product.description).size());
+        assertEquals(3, query().from(product)
+                .groupBy(product.price).having(product.price.gt(0))
+                .list(product.price).size());
+    }
 
     @BeforeClass
     public static void doPersist() {

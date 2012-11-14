@@ -122,9 +122,9 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         for (Expression<?> arg : operation.getArgs()) {
             if (!arg.getType().equals(String.class)) {
                 args.add(arg);
-            }else if (arg instanceof Constant) {
+            } else if (arg instanceof Constant) {
                 args.add(regexToLike(arg.toString()));
-            }else if (arg instanceof Operation) {
+            } else if (arg instanceof Operation) {
                 args.add(regexToLike((Operation)arg));
             } else {
                 args.add(arg);
@@ -140,7 +140,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return ConstantImpl.create(str.replace(".*", "%").replace(".", "_"));
     }
 
-    @SuppressWarnings("unchecked")
+
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
         List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
@@ -205,12 +205,9 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         if (joins.size() > 1) {
             serializeVariables(joins);
         }
-
-        // parameters
-        if (!getConstantToLabel().isEmpty()) {
-            serializeParameters(metadata.getParams());
-        }
-
+        
+        int position = getLength();
+        
         // group by
         if (!groupBy.isEmpty()) {
             append(GROUP_BY).handle(COMMA, groupBy);
@@ -241,7 +238,12 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             Long offset = metadata.getModifiers().getOffset();
             serializeModifiers(limit, offset);
         }
-
+        
+        // parameters        
+        if (!getConstantToLabel().isEmpty()) {
+            insert(position, serializeParameters(metadata.getParams()));            
+        }
+        
         constantToLabel.pop();
         
     }
@@ -259,14 +261,15 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     }
 
-    private void serializeParameters(Map<ParamExpression<?>, Object> params) {
-        append(PARAMETERS);
+    private String serializeParameters(Map<ParamExpression<?>, Object> params) {
+        StringBuilder b = new StringBuilder();
+        b.append(PARAMETERS);
         boolean first = true;
         List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
         Collections.sort(entries, comparator);
         for (Map.Entry<Object, String> entry : entries) {
             if (!first) {
-                append(COMMA);
+                b.append(COMMA);
             }
             if (Param.class.isInstance(entry.getKey())) {
                 Object constant = params.get(entry.getKey());
@@ -274,17 +277,17 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
                 }
                 constants.add(constant);
-                append(((Param<?>)entry.getKey()).getType().getName());
+                b.append(((Param<?>)entry.getKey()).getType().getName());
             } else {
                 constants.add(entry.getKey());
-                append(entry.getKey().getClass().getName());
+                b.append(entry.getKey().getClass().getName());
             }
-            append(" ").append(entry.getValue());
+            b.append(" ").append(entry.getValue());
             first = false;
         }
+        return b.toString();
     }
 
-    @SuppressWarnings("unchecked")
     private void serializeVariables(List<JoinExpression> joins) {
         append(VARIABLES);
         for (int i = 1; i < joins.size(); i++) {

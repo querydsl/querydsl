@@ -21,9 +21,6 @@ import org.junit.Test;
 import com.mysema.query.jdo.models.fitness.QGym;
 import com.mysema.query.jdo.models.fitness.Wardrobe;
 
-/**
- * Tests for JDOQL queries of collections and maps.
- */
 public class ContainerTest extends AbstractTest{
 
     private QGym gym = QGym.gym1;
@@ -35,9 +32,6 @@ public class ContainerTest extends AbstractTest{
         wrd.setModel("model");
     }
 
-    /**
-     * Tests NOT contains in Map.values
-     */
     @Test
     public void NotContainsValuesInMapFields() {
 
@@ -82,9 +76,6 @@ public class ContainerTest extends AbstractTest{
                 .list(gym)));
     }
 
-    /**
-     * Tests NOT contains in Map.keys
-     */
     @Test 
     public void NotContainsKeysInMapFields() {
 
@@ -129,10 +120,8 @@ public class ContainerTest extends AbstractTest{
                  .list(gym)));
     }
 
-    /**
-     * Tests NOT contains in Map.entry
-     */
-    @Test public void NotContainsEntryInMapFields() {
+    @Test 
+    public void NotContainsEntryInMapFields() {
         // NOTE : containsEntry is not supported in Querydsl
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
@@ -149,9 +138,6 @@ public class ContainerTest extends AbstractTest{
 
     }
 
-    /**
-     * Tests get
-     */
     @Test 
     public void GetInMapFields() {
 
@@ -167,9 +153,6 @@ public class ContainerTest extends AbstractTest{
                    .where(gym.wardrobes.get(wrd.getModel()).eq(wrd)).list(gym)));
     }
 
-    /**
-     * Tests get method used in ordering
-     */
     @Test 
     public void GetInOrderingInMapFields() {
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
@@ -177,6 +160,7 @@ public class ContainerTest extends AbstractTest{
 //        .setOrdering("this.wardrobes.get(wrd.model).model ascending");
         assertEquals(
           "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "PARAMETERS java.lang.String a1 " +
           "ORDER BY this.wardrobes.get(a1).model ASC",
 
           serialize(query().from(gym)
