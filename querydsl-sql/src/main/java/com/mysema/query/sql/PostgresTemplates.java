@@ -78,9 +78,17 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
+        add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
+        add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
+        add(Ops.DateTimeOps.CURRENT_TIME, "current_time");
         
 //        add(Ops.DateTimeOps.DATE_ADD, "timestamp {0} + interval '{1s} {2s}s'");
 
+    }
+    
+    @Override
+    public void setPrintSchema(boolean printSchema) {
+        super.setPrintSchema(printSchema);
     }
 
 }
