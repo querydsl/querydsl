@@ -459,18 +459,46 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @SuppressWarnings("unchecked")
     public void serializeUnion(SubQueryExpression[] sqs, QueryMetadata metadata, boolean unionAll) {
+        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        Predicate having = metadata.getHaving();
+        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        Set<QueryFlag> flags = metadata.getFlags();
+        
         // union
         boolean oldInUnion = inUnion;
         inUnion = true;
-        handle(unionAll ? templates.getUnionAll() : templates.getUnion(), Arrays.asList(sqs));
+        String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
+        if (templates.isUnionsWrapped()) {
+            append("(");
+            handle(")" + separator + "(", Arrays.asList(sqs));   
+            append(")");
+        } else {
+            handle(separator, Arrays.asList(sqs));    
+        }        
         inUnion = oldInUnion;
 
+        // group by
+        stage = Stage.GROUP_BY;
+        serialize(Position.BEFORE_GROUP_BY, flags);
+        if (!groupBy.isEmpty()) {            
+            append(templates.getGroupBy()).handle(COMMA, groupBy);
+            serialize(Position.AFTER_GROUP_BY, flags);
+        }
+
+        // having
+        stage = Stage.HAVING;
+        serialize(Position.BEFORE_HAVING, flags);
+        if (having != null) {
+            append(templates.getHaving()).handle(having);
+            serialize(Position.AFTER_HAVING, flags);
+        }        
+        
         // order by
-        if (!metadata.getOrderBy().isEmpty()) {
+        if (!orderBy.isEmpty()) {
             append(templates.getOrderBy());
             boolean first = true;
             skipParent = true;
-            for (OrderSpecifier<?> os : metadata.getOrderBy()) {
+            for (OrderSpecifier<?> os : orderBy) {
                 if (!first) {
                     append(COMMA);
                 }

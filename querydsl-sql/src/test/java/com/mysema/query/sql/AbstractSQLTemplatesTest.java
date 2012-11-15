@@ -59,11 +59,11 @@ public abstract class AbstractSQLTemplatesTest {
             sq().unique(two),
             sq().unique(three));
         assertEquals(
-                "select 1 as col1 from dual " +
+                "(select 1 as col1 from dual) " +
         	"union " +
-        	"select 2 from dual " +
+        	"(select 2 from dual) " +
         	"union " +
-        	"select 3 from dual", union.toString());
+        	"(select 3 from dual)", union.toString());
     }
     
     @Test

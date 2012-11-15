@@ -149,6 +149,8 @@ public class SQLTemplates extends Templates {
     
     private boolean bigDecimalSupported = true;
     
+    private boolean unionsWrapped = true;
+    
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
@@ -441,6 +443,11 @@ public class SQLTemplates extends Templates {
     public String getNoWait() {
         return noWait;
     }
+    
+
+    public boolean isUnionsWrapped() {
+        return unionsWrapped;
+    }
 
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
@@ -670,5 +677,11 @@ public class SQLTemplates extends Templates {
     protected void setNoWait(String noWait) {
         this.noWait = noWait;
     }
+
+    protected void setUnionsWrapped(boolean unionsWrapped) {
+        this.unionsWrapped = unionsWrapped;
+    }
+    
+    
 
 }

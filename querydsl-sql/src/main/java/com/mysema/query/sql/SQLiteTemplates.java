@@ -35,6 +35,7 @@ public class SQLiteTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setDummyTable(null);
         setBigDecimalSupported(false);
+        setUnionsWrapped(false);
         add(Ops.MOD, "{0} % {1}");
         
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");

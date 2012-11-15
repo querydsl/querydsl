@@ -20,6 +20,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Predicate;
 
 /**
  * Default implementation of the Union interface
@@ -59,6 +60,19 @@ public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT>{
             return (CloseableIterator<RT>) query.iterate(projection);
         }
     }
+
+    @Override
+    public Union<RT> groupBy(Expression<?>... o) {
+        query.groupBy(o);
+        return this;
+    }
+
+    @Override
+    public Union<RT> having(Predicate... o) {
+        query.having(o);
+        return this;
+    }
+
     
     @SuppressWarnings("unchecked")
     @Override
@@ -71,7 +85,5 @@ public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT>{
     public String toString() {
         return query.toString();
     }
-
-
 
 }

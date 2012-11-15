@@ -16,7 +16,9 @@ package com.mysema.query.sql;
 import java.util.List;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Predicate;
 
 /**
  * Union defines an interface for Union queries
@@ -41,6 +43,22 @@ public interface Union<RT> {
      * @return
      */
     CloseableIterator<RT> iterate();
+    
+    /**
+     * Defines the grouping/aggregation expressions
+     *
+     * @param o
+     * @return
+     */
+    Union<RT> groupBy(Expression<?>... o);
+
+    /**
+     * Defines the filters for aggregation
+     *
+     * @param o
+     * @return
+     */
+    Union<RT> having(Predicate... o);
     
 
     /**

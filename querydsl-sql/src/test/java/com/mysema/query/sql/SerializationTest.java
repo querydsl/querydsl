@@ -134,4 +134,51 @@ public class SerializationTest {
 
     }
     
+    @Test
+    public void Union() {
+        QSurvey table = QSurvey.survey;
+        SQLQuery q = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        q.union(new SQLSubQuery().from(table).list(table.all()),
+                new SQLSubQuery().from(table).list(table.all()));
+        
+        assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
+            "from SURVEY SURVEY)\n" +
+            "union\n" +
+            "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
+            "from SURVEY SURVEY)", q.toString());
+                
+    }
+    
+    @Test
+    public void Union_GroupBy() {
+        QSurvey table = QSurvey.survey;
+        SQLQuery q = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        q.union(new SQLSubQuery().from(table).list(table.all()),
+                new SQLSubQuery().from(table).list(table.all()))
+                .groupBy(table.id);
+        
+        assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
+            "from SURVEY SURVEY)\n" +
+            "union\n" +
+            "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
+            "from SURVEY SURVEY)\n"+
+            "group by SURVEY.ID", q.toString());
+                
+    }
+    
+    @Test
+    public void Union2() {
+        QSurvey table = QSurvey.survey;
+        SQLQuery q = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        q.union(table, new SQLSubQuery().from(table).list(table.all()),
+                new SQLSubQuery().from(table).list(table.all()));
+        
+        assertEquals("from (select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n"+
+            "from SURVEY SURVEY\n" +
+            "union\n" +
+            "select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
+            "from SURVEY SURVEY) as SURVEY", q.toString());
+                
+    }
+    
 }
