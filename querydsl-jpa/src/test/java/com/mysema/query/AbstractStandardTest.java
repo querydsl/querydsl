@@ -82,6 +82,7 @@ import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
 import com.mysema.query.jpa.impl.JPASubQuery;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
@@ -388,6 +389,12 @@ public abstract class AbstractStandardTest {
         assertEquals(Integer.valueOf(6), query().from(cat).list(cat.id.max()).get(0));
     }
     
+    @Test
+    public void Constant() {
+        //select cat.id, ?1 as const from Cat cat
+        query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", new StringPath("const"))));
+    }
+        
     @Test
     public void DistinctResults(){
         System.out.println("-- list results");
