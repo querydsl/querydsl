@@ -40,8 +40,10 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.Address;
 import com.mysema.query.mongodb.domain.City;
 import com.mysema.query.mongodb.domain.Item;
+import com.mysema.query.mongodb.domain.MapEntity;
 import com.mysema.query.mongodb.domain.QAddress;
 import com.mysema.query.mongodb.domain.QItem;
+import com.mysema.query.mongodb.domain.QMapEntity;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.mongodb.domain.User.Gender;
@@ -61,13 +63,14 @@ public class MongodbQueryTest {
     private final QUser user = QUser.user;
     private final QItem item = QItem.item;
     private final QAddress address = QAddress.address;
+    private final QMapEntity mapEntity = QMapEntity.mapEntity;
 
     User u1, u2, u3, u4;
     City tampere, helsinki;
 
     public MongodbQueryTest() throws UnknownHostException, MongoException {
         mongo = new Mongo();
-        morphia = new Morphia().map(User.class).map(Item.class);
+        morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class);
         ds = morphia.createDatastore(mongo, dbname, null, null);
     }    
     
@@ -75,6 +78,7 @@ public class MongodbQueryTest {
     public void before() throws UnknownHostException, MongoException {
         ds.delete(ds.createQuery(Item.class));
         ds.delete(ds.createQuery(User.class));
+        ds.delete(ds.createQuery(MapEntity.class));
 
         tampere = new City("Tampere", 61.30, 23.50);
         helsinki= new City("Helsinki", 60.15, 20.03);
@@ -85,6 +89,19 @@ public class MongodbQueryTest {
         u2 = addUser("Jaakki", "Jantunen", 30, new Address("Beekatu", "00200", helsinki));
         u3 = addUser("Jaana", "Aakkonen", 40, new Address("Ceekatu","00300", tampere));
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
+    }
+    
+    @Test
+    public void Contains_Key() {
+        MapEntity entity = new MapEntity();
+        entity.getProperties().put("key", "value");
+        ds.save(entity);
+        
+        assertTrue(query(mapEntity).where(mapEntity.properties.get("key").isNotNull()).exists());
+        assertFalse(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull()).exists());
+        
+        assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key")).exists());
+        assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key2")).exists());
     }
  
     @Test
@@ -396,6 +413,10 @@ public class MongodbQueryTest {
 
     private MongodbQuery<User> query() {
         return new MorphiaQuery<User>(morphia, ds, user);
+    }
+    
+    private <T> MongodbQuery<T> query(EntityPath<T> path) {
+        return new MorphiaQuery<T>(morphia, ds, path);
     }
 
     private void assertQuery(MongodbQuery<User> query, User ... expected ) {

@@ -89,7 +89,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         if (op == Ops.EQ) {
             return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
 
-        } else if (op == Ops.STRING_IS_EMPTY){
+        } else if (op == Ops.STRING_IS_EMPTY) {
             return asDBObject(asDBKey(expr, 0), "");
             
         } else if (op == Ops.AND) {
@@ -112,7 +112,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
             }
             
-        } else if (op == Ops.OR){
+        } else if (op == Ops.OR) {
             BasicDBList list = new BasicDBList();
             list.add(handle(expr.getArg(0)));
             list.add(handle(expr.getArg(1)));
@@ -188,11 +188,16 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         } else if (op == Ops.GOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
             
-        } else if (op == Ops.IS_NULL){
+        } else if (op == Ops.IS_NULL) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
             
-        } else if (op == Ops.IS_NOT_NULL){
+        } else if (op == Ops.IS_NOT_NULL) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
+            
+        } else if (op == Ops.CONTAINS_KEY) {
+            Path<?> path = (Path<?>) expr.getArg(0);
+            Expression<?> key = expr.getArg(1);
+            return asDBObject(visit(path, context) + "." + key.toString(), asDBObject("$exists", true));
             
         } else if (op == MongodbOps.NEAR) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
@@ -205,7 +210,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     @Override
-    public Object visit(Path<?> expr, Void context) {
+    public String visit(Path<?> expr, Void context) {
         PathMetadata<?> metadata = expr.getMetadata();
         if (metadata.getParent() != null){
             if (metadata.getPathType() == PathType.COLLECTION_ANY){
