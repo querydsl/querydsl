@@ -75,6 +75,16 @@ public class GroupByTest {
         assertEquals("Comment 4", results.get(3));
     }
     
+    public void Comments_By_Post() {
+        Map<Integer, List<Comment>> results = MiniApi.from(post, posts).from(comment, comments)
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(list(comment)));
+        
+        assertEquals(1,  results.get(1).size());
+        assertEquals(2,  results.get(2).size());
+        assertEquals(3, results.get(3).size());
+    }
+    
     @Test
     public void Group_Max() {
         Map<Integer, String> results = MiniApi.from(post, posts).from(comment, comments)
