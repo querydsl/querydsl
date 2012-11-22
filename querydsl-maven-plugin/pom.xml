@@ -39,7 +39,7 @@
     
     <dependency>
       <groupId>org.sonatype.plexus</groupId>
-	  <artifactId>plexus-build-api</artifactId>
+      <artifactId>plexus-build-api</artifactId>
       <version>0.0.7</version>
     </dependency>  
 
@@ -48,7 +48,7 @@
       <artifactId>querydsl-sql-codegen</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-	
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
@@ -63,8 +63,8 @@
     </dependency>    
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-	  <artifactId>hibernate-jpa-2.0-api</artifactId>
-	  <version>1.0.0.Final</version>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
     </dependency>    
 
     <!-- test -->

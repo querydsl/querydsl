@@ -43,9 +43,9 @@
     </dependency>    
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-	  <artifactId>hibernate-jpa-2.0-api</artifactId>
-	  <version>1.0.0.Final</version>
-	  <scope>provided</scope>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
+      <scope>provided</scope>
     </dependency>
     
     <!-- test -->
@@ -74,14 +74,14 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
-	
+    
     <dependency>
       <groupId>org.eclipse.jdt.core.compiler</groupId>
       <artifactId>ecj</artifactId>
       <version>3.7.1</version>
-	  <scope>test</scope>
+      <scope>test</scope>
     </dependency>
-	    	
+            
   </dependencies>
 
   <build>
@@ -115,25 +115,25 @@
       
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-		<executions>
-		  <execution>
-		  	<id>apt-jars</id>
-			<goals>
-			  <goal>single</goal>	
-			</goals>
-			<phase>package</phase>
-		  	<configuration>
+        <executions>
+          <execution>
+              <id>apt-jars</id>
+            <goals>
+              <goal>single</goal>    
+            </goals>
+            <phase>package</phase>
+              <configuration>
               <descriptors>
                 <descriptor>src/main/general.xml</descriptor>
                 <descriptor>src/main/hibernate.xml</descriptor>
                 <descriptor>src/main/jdo.xml</descriptor>
                 <descriptor>src/main/jpa.xml</descriptor>
               </descriptors>
-			  <outputDirectory>${project.build.directory}</outputDirectory>
+              <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
-		  </execution>	
-		</executions>        
-      </plugin>	     
+          </execution>    
+        </executions>        
+      </plugin>         
          
       <plugin>
         <groupId>com.mysema.maven</groupId>
@@ -155,7 +155,7 @@
                 <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
               </processors>              
             </configuration>
-          </execution>		                    
+          </execution>                            
         </executions>
       </plugin>
       

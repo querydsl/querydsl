@@ -38,16 +38,16 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-  	  <scope>provided</scope>      
+        <scope>provided</scope>      
     </dependency>    
 
-	<!-- ANT integration -->	
-	<dependency>
-	    <groupId>org.apache.ant</groupId>
-	    <artifactId>ant</artifactId>
-	    <version>${ant.version}</version>
-		<scope>provided</scope>
-	</dependency>	
+    <!-- ANT integration -->    
+    <dependency>
+        <groupId>org.apache.ant</groupId>
+        <artifactId>ant</artifactId>
+        <version>${ant.version}</version>
+        <scope>provided</scope>
+    </dependency>    
 
     <!-- test -->
     <dependency>
@@ -56,7 +56,7 @@
       <version>${project.parent.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
-    </dependency>   	    
+    </dependency>           
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
@@ -114,8 +114,8 @@
       <artifactId>jdepend</artifactId>
       <version>2.9.1</version>
       <scope>test</scope>
-	</dependency>    
-	
+    </dependency>    
+    
   </dependencies>
   
   <build>

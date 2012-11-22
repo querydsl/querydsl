@@ -17,7 +17,7 @@
 
   <properties>   
     <dn.version>2.1.2</dn.version>
-	<dn.plugin.version>2.0.1</dn.plugin.version>
+    <dn.plugin.version>2.0.1</dn.plugin.version>
   </properties>
 
   <dependencies>
@@ -27,7 +27,7 @@
       <artifactId>jdo-api</artifactId>
       <version>3.0</version>
     </dependency>
-	<!-- 
+    <!-- 
     <dependency>
       <groupId>javax.jdo</groupId>
       <artifactId>jdo2-api</artifactId>
@@ -49,7 +49,7 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.parent.version}</version>
-	  <scope>provided</scope>
+      <scope>provided</scope>
     </dependency>        
     
     <dependency>
@@ -59,7 +59,7 @@
       <scope>compile</scope>
       <optional>true</optional> 
     </dependency>      
-	
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -110,7 +110,7 @@
       <artifactId>jdepend</artifactId>
       <version>2.9.1</version>
       <scope>test</scope>
-	</dependency>    
+    </dependency>    
 
   </dependencies>
   
@@ -122,29 +122,29 @@
       </plugin>      
     
       <plugin>
-      	  <groupId>org.apache.maven.plugins</groupId>
-      	  <artifactId>maven-jar-plugin</artifactId>
-		  <executions>
-		  	<execution>
-		  	  <id>apt</id>
-			  <goals>
-			  	<goal>jar</goal>				
-			  </goals>	
-			  <configuration>
-			    <classifier>apt</classifier>
-				<classesDirectory>src/apt</classesDirectory>									
-			  </configuration>			  
-		   </execution>			
-	      </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+          <executions>
+              <execution>
+                <id>apt</id>
+              <goals>
+                  <goal>jar</goal>                
+              </goals>    
+              <configuration>
+                <classifier>apt</classifier>
+                <classesDirectory>src/apt</classesDirectory>                                    
+              </configuration>              
+           </execution>            
+          </executions>
       </plugin> 
-		
+        
       <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
         <artifactId>maven-datanucleus-plugin</artifactId>
         <version>${dn.plugin.version}</version>
         <configuration>
-        	<metadataDirectory>target/test-classes</metadataDirectory>
+            <metadataDirectory>target/test-classes</metadataDirectory>
             <metadataIncludes>com/mysema/query/jdo/test/domain/*.class</metadataIncludes>
             <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>
             <verbose>true</verbose>
@@ -169,52 +169,52 @@
           </dependency>
         </dependencies>       
       </plugin> 
-	  
+      
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-		<executions>
-		  <execution>
-		  	<id>apt-one-jar</id>
-			<goals>
-			  <goal>single</goal>	
-			</goals>
-			<phase>package</phase>
-		  	<configuration>
+        <executions>
+          <execution>
+              <id>apt-one-jar</id>
+            <goals>
+              <goal>single</goal>    
+            </goals>
+            <phase>package</phase>
+              <configuration>
               <descriptors>
                 <descriptor>src/main/assembly.xml</descriptor>
               </descriptors>
-			  <outputDirectory>${project.build.directory}</outputDirectory>
+              <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
-		  </execution>	
-		</executions>         
-      </plugin>	  	  
-	  
+          </execution>    
+        </executions>         
+      </plugin>            
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-		<version>2.6</version>
-		<executions>
-		  <execution>
-		  <id>verification</id>	
-		  <goals>
-		    <goal>test</goal>	
-		  </goals>
-		  <phase>verify</phase>
-		  <configuration>
-		  	<systemProperties>
+        <version>2.6</version>
+        <executions>
+          <execution>
+          <id>verification</id>    
+          <goals>
+            <goal>test</goal>    
+          </goals>
+          <phase>verify</phase>
+          <configuration>
+              <systemProperties>
               <property>
-              	<name>version</name>
-				<value>${project.version}</value>
-              </property>		  		
-			</systemProperties>	
+                  <name>version</name>
+                <value>${project.version}</value>
+              </property>                  
+            </systemProperties>    
             <includes>
               <include>com/mysema/query/PackageVerification.java</include>
             </includes>
           </configuration>
-		  </execution>
-		</executions>        
-      </plugin>	  
-	  
+          </execution>
+        </executions>        
+      </plugin>      
+      
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
@@ -232,7 +232,7 @@
           </execution>
         </executions>    
       </plugin>   
-	  
+      
       <plugin>
         <groupId>com.mysema.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
@@ -241,19 +241,19 @@
           <jdbcDriver>org.hsqldb.jdbcDriver</jdbcDriver>
           <jdbcUrl>jdbc:hsqldb:target/jdo</jdbcUrl>
           <packageName>com.mysema.query.jdo.test.domain.sql</packageName>
-		  <userName>sa</userName>
+          <userName>sa</userName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
         </configuration>
         <dependencies>
-		    <dependency>
-		      <groupId>hsqldb</groupId>
-		      <artifactId>hsqldb</artifactId>
-		      <version>1.8.0.7</version>
-		    </dependency>
+            <dependency>
+              <groupId>hsqldb</groupId>
+              <artifactId>hsqldb</artifactId>
+              <version>1.8.0.7</version>
+            </dependency>
         </dependencies>
       </plugin>    
-    </plugins>	  
+    </plugins>      
   </build>
 
 </project>

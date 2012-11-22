@@ -48,19 +48,19 @@
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
-	<exclusions>
-		<exclusion>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</exclusion>
-	</exclusions>      
+    <exclusions>
+        <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </exclusion>
+    </exclusions>      
     </dependency>    
  
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-	  <artifactId>hibernate-jpa-2.0-api</artifactId>
-	  <version>1.0.0.Final</version>
-	  <scope>compile</scope>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -89,7 +89,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>    
-	    
+        
   </dependencies>
 
   <build>

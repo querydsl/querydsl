@@ -20,16 +20,16 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>	
+    </dependency>    
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>1.6</version>
     </dependency>    
     <dependency>
-   	  <groupId>javax.validation</groupId>
-	  <artifactId>validation-api</artifactId>
-	  <version>1.0.0.GA</version>
+         <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.0.0.GA</version>
     </dependency>
        
     <dependency>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-  	  <scope>provided</scope>      
+        <scope>provided</scope>      
     </dependency>    
     
     <dependency>  
@@ -83,10 +83,10 @@
     </dependency>
     <!--   
     <dependency>
-	  <groupId>com.oracle</groupId>
-	  <artifactId>ojdbc14</artifactId>
-	  <version>${oracle.version}</version>
-	  <scope>test</scope>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc14</artifactId>
+      <version>${oracle.version}</version>
+      <scope>test</scope>
     </dependency>
      -->      
     <dependency>
@@ -110,10 +110,10 @@
     </dependency>    
 
     <dependency>
-	  <groupId>org.xerial</groupId>
-	  <artifactId>sqlite-jdbc</artifactId>
-	  <version>${sqlite.version}</version>
-	  <scope>test</scope>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>${sqlite.version}</version>
+      <scope>test</scope>
     </dependency>
             
 
@@ -130,8 +130,8 @@
       <artifactId>jdepend</artifactId>
       <version>2.9.1</version>
       <scope>test</scope>
-	</dependency>    
-	
+    </dependency>    
+    
   </dependencies>
   
   <build>
