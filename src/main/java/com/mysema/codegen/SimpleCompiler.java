@@ -41,11 +41,21 @@ import com.google.common.base.Joiner;
 public class SimpleCompiler implements JavaCompiler {
 
     private static final Joiner pathJoiner = Joiner.on(File.pathSeparator);
-    
+
+    private static boolean isSureFireBooter(URLClassLoader cl) {
+        for (URL url : cl.getURLs()) {
+            if (url.getPath().contains("surefirebooter")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static String getClassPath(URLClassLoader cl) {
         try {
             List<String> paths = new ArrayList<String>();
-            if (cl.getURLs().length == 1 && cl.getURLs()[0].getPath().contains("surefirebooter")) {
+            if (isSureFireBooter(cl)) {
                 // extract MANIFEST.MF Class-Path entry, since the Java Compiler doesn't handle
                 // manifest only jars in the classpath correctly
                 URL url = cl.findResource("META-INF/MANIFEST.MF");
