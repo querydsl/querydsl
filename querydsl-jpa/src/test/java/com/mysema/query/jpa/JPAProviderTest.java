@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.jpa.impl.JPAProvider;
@@ -36,7 +37,6 @@ public class JPAProviderTest {
         factory = Persistence.createEntityManagerFactory("h2");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
-//        println(em.getEntityManagerFactory().getProperties());
         assertEquals(HQLTemplates.DEFAULT, JPAProvider.getTemplates(em));
     }
     
@@ -62,7 +62,6 @@ public class JPAProviderTest {
         factory = Persistence.createEntityManagerFactory("h2-eclipselink");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
-//        println(em.getEntityManagerFactory().getProperties());
         assertEquals(EclipseLinkTemplates.DEFAULT, JPAProvider.getTemplates(em));
     }
     
@@ -88,15 +87,16 @@ public class JPAProviderTest {
         factory = Persistence.createEntityManagerFactory("derby-openjpa");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
-//        println(em.getEntityManagerFactory().getProperties());
         assertEquals(OpenJPATemplates.DEFAULT, JPAProvider.getTemplates(em));
     }
     
-//    private void println(Map<String, Object> properties) {
-//        for (Map.Entry<String, Object> entry : properties.entrySet()) {
-//            System.out.println(entry.getKey() + " = " + entry.getValue());
-//        }
-//        System.out.println();
-//    }
+    @Test
+    @Ignore
+    public void Batoo() {
+        factory = Persistence.createEntityManagerFactory("h2-batoo");
+        em = factory.createEntityManager();
+        System.out.println(em.getDelegate().getClass());
+        assertEquals(BatooTemplates.DEFAULT, JPAProvider.getTemplates(em));
+    }
     
 }

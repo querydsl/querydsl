@@ -48,19 +48,19 @@
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
-	<exclusions>
-		<exclusion>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</exclusion>
-	</exclusions>      
+    <exclusions>
+        <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </exclusion>
+    </exclusions>      
     </dependency>    
  
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-	  <artifactId>hibernate-jpa-2.0-api</artifactId>
-	  <version>1.0.0.Final</version>
-	  <scope>compile</scope>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -72,7 +72,7 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.parent.version}</version>
-	  <scope>provided</scope>
+      <scope>provided</scope>
     </dependency>
     
     <dependency>
@@ -82,7 +82,7 @@
       <scope>compile</scope>
       <optional>true</optional> 
     </dependency>    
-	
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -91,14 +91,14 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>    
-	
+    
     <!-- test -->
         
     <dependency>
-	  <groupId>org.eclipse.persistence</groupId>
-	  <artifactId>eclipselink</artifactId>
-	  <version>2.4.0</version>
-	  <scope>test</scope>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>eclipselink</artifactId>
+      <version>2.4.0</version>
+      <scope>test</scope>
     </dependency>
     
     <dependency>
@@ -115,26 +115,26 @@
       <scope>test</scope>
     </dependency>
     
- 	<dependency>
-	  <groupId>org.apache.openjpa</groupId>
-	  <artifactId>openjpa-persistence</artifactId>
-	  <version>2.2.0</version>
-	  <scope>test</scope>
-	</dependency>
-	<dependency>
+     <dependency>
+      <groupId>org.apache.openjpa</groupId>
+      <artifactId>openjpa-persistence</artifactId>
+      <version>2.2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.openjpa</groupId>
       <artifactId>openjpa-persistence-jdbc</artifactId>
       <version>2.2.0</version>
       <scope>test</scope>
- 	</dependency>   
- 	
- 	<dependency>
- 	  <groupId>org.batoo.jpa</groupId>
- 	  <artifactId>batoo-jpa</artifactId>
-      <version>2.0.0.0-SNAPSHOT</version>
+     </dependency>   
+     
+     <dependency>
+       <groupId>org.batoo.jpa</groupId>
+       <artifactId>batoo-jpa</artifactId>
+      <version>2.0.0.0.RC2</version>
       <scope>test</scope>
- 	</dependency>
- 	<dependency>
+     </dependency>
+     <dependency>
       <groupId>com.jolbox</groupId>
       <artifactId>bonecp</artifactId>
       <version>0.7.1.RELEASE</version>
@@ -154,7 +154,7 @@
       <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
-	
+    
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
@@ -186,7 +186,7 @@
       <artifactId>jdepend</artifactId>
       <version>2.9.1</version>
       <scope>test</scope>
-	</dependency>        
+    </dependency>        
     
   </dependencies>
   
@@ -199,27 +199,27 @@
       </plugin>   
           
       <plugin>
-      	<groupId>org.apache.maven.plugins</groupId>
-      	<artifactId>maven-jar-plugin</artifactId>
-		<executions>
-		   <execution>
-		  	 <id>apt</id>
-			 <goals>
-			   <goal>jar</goal>				
-			 </goals>	
-			 <configuration>
-			   <classifier>apt</classifier>
-			   <classesDirectory>src/apt</classesDirectory>									
-			 </configuration>			  
-		   </execution>		
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+           <execution>
+               <id>apt</id>
+             <goals>
+               <goal>jar</goal>                
+             </goals>    
+             <configuration>
+               <classifier>apt</classifier>
+               <classesDirectory>src/apt</classesDirectory>                                    
+             </configuration>              
+           </execution>        
           <execution>
             <id>test-jar</id>
             <goals>
               <goal>test-jar</goal>
             </goals>
-          </execution>		   	
-	    </executions>
-	  </plugin>  		  
+          </execution>               
+        </executions>
+      </plugin>            
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
@@ -230,34 +230,34 @@
             </goals>
           </execution>
         </executions>
-      </plugin>	  
-	  	  
+      </plugin>      
+            
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-		<executions>
-		  <execution>
-		  	<id>one-jars</id>
-			<goals>
-			  <goal>single</goal>	
-			</goals>
-			<phase>package</phase>
-		  	<configuration>
+        <executions>
+          <execution>
+              <id>one-jars</id>
+            <goals>
+              <goal>single</goal>    
+            </goals>
+            <phase>package</phase>
+              <configuration>
               <descriptors>
                 <descriptor>src/main/assembly.xml</descriptor>
-				<descriptor>src/main/assembly-hibernate.xml</descriptor>
+                <descriptor>src/main/assembly-hibernate.xml</descriptor>
               </descriptors>
-			  <outputDirectory>${project.build.directory}</outputDirectory>
+              <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
-		  </execution>	
-		</executions>        
-      </plugin>	  
-	  
+          </execution>    
+        </executions>        
+      </plugin>      
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-		<version>2.6</version>
-		<configuration>
-		  <includes>
+        <version>2.6</version>
+        <configuration>
+          <includes>
             <include>**/*Test.java</include>
           </includes> 
           <systemProperties>
@@ -266,29 +266,29 @@
                 <value>target/derby.log</value>
             </property>
           </systemProperties>
-    	</configuration>
-		<executions>
-		  <execution>
-		  <id>verification</id>	
-		  <goals>
-		    <goal>test</goal>	
-		  </goals>
-		  <phase>verify</phase>
-		  <configuration>
-		  	<systemProperties>
+        </configuration>
+        <executions>
+          <execution>
+          <id>verification</id>    
+          <goals>
+            <goal>test</goal>    
+          </goals>
+          <phase>verify</phase>
+          <configuration>
+              <systemProperties>
               <property>
-              	<name>version</name>
-				<value>${project.version}</value>
-              </property>		  		
-			</systemProperties>	
+                  <name>version</name>
+                <value>${project.version}</value>
+              </property>                  
+            </systemProperties>    
             <includes>
               <include>com/mysema/query/PackageVerification.java</include>
             </includes>
           </configuration>
-		  </execution>
-		</executions>        
+          </execution>
+        </executions>        
       </plugin>
-      	     
+               
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>

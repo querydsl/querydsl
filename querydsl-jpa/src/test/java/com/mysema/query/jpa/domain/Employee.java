@@ -42,7 +42,6 @@ public class Employee {
     public String firstName, lastName;
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
     public int id;
     
     @Enumerated(EnumType.STRING)

@@ -21,7 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.IndexColumn;
+import org.batoo.jpa.annotations.Index;
 
 /**
  * The Class Department.
@@ -33,10 +33,11 @@ public class Department {
     Company company;
 
     @OneToMany
-    @IndexColumn(name = "_index")
+    @Index(name = "_index")
     List<Employee> employees;
 
     @Id
     int id;
+    
     String name;
 }
