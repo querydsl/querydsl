@@ -29,6 +29,7 @@ import org.junit.Test;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
+import com.mysema.query.NoBatooJPA;
 import com.mysema.query.NoEclipseLink;
 import com.mysema.query.NoOpenJPA;
 import com.mysema.query.jpa.domain.Cat;
@@ -251,7 +252,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @NoOpenJPA
+    @NoOpenJPA @NoBatooJPA
     public void DocoExamples94_3() throws Exception {
         query().from(cat).select(cat.kittens).parse();
     }
@@ -399,7 +400,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void DocoExamples98_9() throws Exception {
         query().from(person, calendar).select(person).where(
                 calendar.holidays("national holiday").eq(person.birthDay),
@@ -407,7 +408,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     @ExcludeIn({DERBY, HSQLDB, ORACLE})
     public void DocoExamples98_10() throws Exception {
         query().from(item, ord).select(item).where(
@@ -426,7 +427,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     @ExcludeIn({DERBY, HSQLDB, ORACLE})
     public void DocoExamples98_12() throws Exception {
         query()        
@@ -488,19 +489,19 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA 
     public void JoinFlags1() throws RecognitionException, TokenStreamException{
         query().from(cat).fetchAll().parse();
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void JoinFlags2() throws RecognitionException, TokenStreamException{
         query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void JoinFlags3() throws RecognitionException, TokenStreamException{
         query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
@@ -521,7 +522,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test 
-    @NoOpenJPA
+    @NoOpenJPA @NoBatooJPA
     public void Joins2() throws RecognitionException, TokenStreamException{
         query().from(cat).join(cat.mate, mate).with(mate.name.eq("Bob")).parse();
     }

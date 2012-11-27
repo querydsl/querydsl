@@ -218,7 +218,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void test(){
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size()-1);
@@ -594,7 +594,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Fetch() {
         QMammal mammal = QMammal.mammal;
         QHuman human = new QHuman("mammal");
@@ -604,7 +604,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Fetch2() {
         QWorld world = QWorld.world;
         QMammal mammal = QMammal.mammal;
@@ -865,42 +865,42 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).count());
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey2(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey3(){
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsValue(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsValue2(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsValue3(){
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());
