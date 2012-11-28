@@ -181,5 +181,22 @@ query
 ]]></programlisting>    
   
   </sect2>		  
+  
+  <sect2>
+  
+    <title>Select only relevant fields</title>
+  
+    <para>To select only relevant fields you can use the overlaoded projection methods list, 
+    iterate, uniqueResult and singleResult methods like this</para>
+  
+  <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .list(doc.title, doc.path);
+]]></programlisting>    
+
+    <para>This query will load only the title and path fields of the documents.</para>
+  
+  </sect2>
 		  
 </sect1>
