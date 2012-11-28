@@ -182,6 +182,8 @@ public final class Ops {
 
     // coalesce
     public static final Operator<Object>  COALESCE = new OperatorImpl<Object>("COALESCE",Object.class);
+    
+    public static final Operator<Object>  NULLIF = new OperatorImpl<Object>("NULLIF", OBJECT_X_2);
 
     // subquery operations
     public static final Operator<Boolean> EXISTS = new OperatorImpl<Boolean>("EXISTS",Object.class);

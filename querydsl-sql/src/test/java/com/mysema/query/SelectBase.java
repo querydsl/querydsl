@@ -165,13 +165,13 @@ public class SelectBase extends AbstractBaseTest{
     }
     
     @Test
-    @ExcludeIn({ORACLE, DERBY})
+    @ExcludeIn({ORACLE, DERBY, SQLITE})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
     
     @Test
-    @ExcludeIn({ORACLE, DERBY})
+    @ExcludeIn({ORACLE, DERBY, SQLITE})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
@@ -224,6 +224,16 @@ public class SelectBase extends AbstractBaseTest{
         query().from(employee).where(c.getValue().eq("xxx")).list(employee.id);
     }
 
+    @Test
+    public void Nullif() {
+        query().from(employee).list(employee.firstname.nullif(employee.lastname));
+    }
+    
+    @Test
+    public void Nullif_Constant() {
+        query().from(employee).list(employee.firstname.nullif("xxx"));
+    }
+    
     @Test
     public void Compact_Join(){
         // verbose

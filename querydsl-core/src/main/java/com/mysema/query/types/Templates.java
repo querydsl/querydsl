@@ -203,6 +203,8 @@ public class Templates {
 
         // coalesce
         add(Ops.COALESCE, "coalesce({0})");
+        
+        add(Ops.NULLIF, "nullif({0},{1})");
 
         // subquery
         add(Ops.EXISTS, "exists {0}");

@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
@@ -263,8 +264,6 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         }
     }
 
-
-
     /**
      * Get a <code>this not in right</code> expression
      *
@@ -275,6 +274,29 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         return in(right).not();
     }
 
+    
+    /**
+     * Get a <code>nullif(this, other)</code> expression
+     * 
+     * @param expr
+     * @param other
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public SimpleExpression<T> nullif(Expression<T> other) {
+        return SimpleOperation.create((Class<T>)this.getType(), Ops.NULLIF, this, other);
+    }
+    
+    /**
+     * Get a <code>nullif(this, other)</code> expression
+     * 
+     * @param expr
+     * @param other
+     * @return
+     */
+    public SimpleExpression<T> nullif(T other) {
+        return nullif(Expressions.constant(other));
+    }
 
     /**
      * Get a case expression builder
