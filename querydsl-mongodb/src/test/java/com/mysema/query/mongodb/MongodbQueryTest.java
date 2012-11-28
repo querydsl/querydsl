@@ -16,6 +16,7 @@ package com.mysema.query.mongodb;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -89,6 +90,29 @@ public class MongodbQueryTest {
         u2 = addUser("Jaakki", "Jantunen", 30, new Address("Beekatu", "00200", helsinki));
         u3 = addUser("Jaana", "Aakkonen", 40, new Address("Ceekatu","00300", tampere));
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
+    }
+    
+    @Test
+    public void List_Keys() {
+        User u = where(user.firstName.eq("Jaakko")).list(user.firstName, user.mainAddress().street).get(0);
+        assertEquals("Jaakko", u.getFirstName());        
+        assertNull(u.getLastName());
+        assertEquals("Aakatu", u.getMainAddress().street);
+        assertNull(u.getMainAddress().postCode);
+    }
+    
+    @Test
+    public void SingleResult_Keys() {
+        User u = where(user.firstName.eq("Jaakko")).singleResult(user.firstName);
+        assertEquals("Jaakko", u.getFirstName());
+        assertNull(u.getLastName());
+    }
+    
+    @Test
+    public void UniqueResult_Keys() {
+        User u = where(user.firstName.eq("Jaakko")).uniqueResult(user.firstName);
+        assertEquals("Jaakko", u.getFirstName());
+        assertNull(u.getLastName());
     }
     
     @Test

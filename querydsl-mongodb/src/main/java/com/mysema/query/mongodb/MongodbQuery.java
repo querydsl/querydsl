@@ -166,7 +166,8 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     protected List<Object> getIds(Class<?> targetType, Predicate condition) {
         DBCollection collection = getCollection(targetType);
         // TODO : fetch only ids
-        DBCursor cursor = createCursor(collection, condition, QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
+        DBCursor cursor = createCursor(collection, condition, Collections.<Expression<?>>emptyList(), 
+                QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
         if (cursor.hasNext()) {
             List<Object> ids = new ArrayList<Object>(cursor.count());
             for (DBObject obj : cursor) {
@@ -217,6 +218,11 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
         return queryMixin.set(param, value);
     }
+    
+    public CloseableIterator<K> iterate(Path<?>... paths) {
+        queryMixin.getMetadata().addProjection(paths);
+        return iterate();
+    }
 
     @Override
     public CloseableIterator<K> iterate() {
@@ -247,6 +253,11 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         return iterate();
     }
 
+    public List<K> list(Path<?>... paths) {
+        queryMixin.getMetadata().addProjection(paths);
+        return list();
+    }
+    
     @Override
     public List<K> list() {
         try {
@@ -264,12 +275,12 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     protected DBCursor createCursor() {
         QueryMetadata metadata = queryMixin.getMetadata();
         Predicate filter = createFilter(metadata);
-        return createCursor(collection, filter, metadata.getModifiers(), metadata.getOrderBy());     
+        return createCursor(collection, filter, metadata.getProjection(), metadata.getModifiers(), metadata.getOrderBy());     
     }
 
-    protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, QueryModifiers modifiers,
-            List<OrderSpecifier<?>> orderBy) {
-        DBCursor cursor = collection.find(createQuery(where));
+    protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, List<Expression<?>> projection,
+            QueryModifiers modifiers, List<OrderSpecifier<?>> orderBy) {
+        DBCursor cursor = collection.find(createQuery(where), createProjection(projection));
         if (modifiers.getLimit() != null){
             cursor.limit(modifiers.getLimit().intValue());
         }
@@ -282,9 +293,25 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         return cursor;
     }
 
+    private DBObject createProjection(List<Expression<?>> projection) {
+        if (!projection.isEmpty()) {
+            DBObject obj = new BasicDBObject();
+            for (Expression<?> expr : projection) {
+                obj.put((String)serializer.handle(expr), 1);
+            }
+            return obj;
+        }
+        return null;
+    }
+
     @Override
     public List<K> listDistinct() {
         return list();
+    }
+    
+    public K singleResult(Path<?>...paths) {
+        queryMixin.getMetadata().addProjection(paths);
+        return singleResult();
     }
 
     @Override
@@ -299,6 +326,11 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         } catch (NoResults ex) {
             return null;
         }        
+    }
+    
+    public K uniqueResult(Path<?>... paths) {
+        queryMixin.getMetadata().addProjection(paths);
+        return uniqueResult();
     }
 
     @Override
@@ -321,6 +353,11 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         } catch (NoResults ex) {
             return null;
         }        
+    }
+    
+    public SearchResults<K> listResults(Path<?>... paths) {
+        queryMixin.getMetadata().addProjection(paths);
+        return listResults();
     }
 
     @Override
