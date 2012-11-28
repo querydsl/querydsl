@@ -344,6 +344,6 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param condition
      * @return
      */
-    Q with(Predicate... condition);
+    Q on(Predicate... condition);
 
 }

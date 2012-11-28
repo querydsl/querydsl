@@ -524,7 +524,7 @@ public class ParsingTest extends AbstractQueryTest{
     @Test 
     @NoOpenJPA @NoBatooJPA
     public void Joins2() throws RecognitionException, TokenStreamException{
-        query().from(cat).join(cat.mate, mate).with(mate.name.eq("Bob")).parse();
+        query().from(cat).join(cat.mate, mate).on(mate.name.eq("Bob")).parse();
     }
 
     @Test

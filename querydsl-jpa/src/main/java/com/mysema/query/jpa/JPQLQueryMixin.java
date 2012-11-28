@@ -69,11 +69,8 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         return getSelf();
     }
 
-    public T with(Predicate... conditions){
-        for (Predicate condition : normalize(conditions, false)){
-            getMetadata().addJoinCondition(condition);
-        }
-        return getSelf();
+    public T on(Predicate... conditions){
+        return super.on(normalize(conditions, false));
     }
     
     @Override

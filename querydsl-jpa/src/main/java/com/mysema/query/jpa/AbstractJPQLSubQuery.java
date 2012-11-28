@@ -186,8 +186,8 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.rightJoin(target, alias);
     }
 
-    public Q with(Predicate... conditions) {
-        return queryMixin.with(conditions);
+    public Q on(Predicate... conditions) {
+        return queryMixin.on(conditions);
     }
     
     public String toString() {
