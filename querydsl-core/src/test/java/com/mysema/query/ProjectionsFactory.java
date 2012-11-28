@@ -220,7 +220,9 @@ public class ProjectionsFactory {
 
         rv.add(expr.upper());
         
-        rv.add(expr.nullif("xxx"));
+        if (module != Module.JDO) {
+            rv.add(expr.nullif("xxx"));    
+        }        
         
         return rv;
     }
