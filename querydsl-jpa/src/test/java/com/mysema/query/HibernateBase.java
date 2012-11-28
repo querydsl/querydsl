@@ -45,6 +45,9 @@ import com.mysema.testutil.HibernateTestRunner;
 public class HibernateBase extends AbstractStandardTest {
     
     @Rule
+    public static MethodRule jpaProviderRule = new JPAProviderRule();
+    
+    @Rule
     public static MethodRule targetRule = new TargetRule();
     
     private Session session;

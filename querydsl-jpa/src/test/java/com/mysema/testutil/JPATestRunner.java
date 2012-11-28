@@ -87,6 +87,9 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
     
     private void start() throws Exception {
         String mode = Mode.mode.get();
+        if (mode == null) {
+            mode = "h2";
+        }        
         System.out.println(mode);
         isDerby = mode.contains("derby");
         if (isDerby) {

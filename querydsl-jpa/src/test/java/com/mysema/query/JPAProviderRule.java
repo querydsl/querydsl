@@ -19,12 +19,15 @@ public class JPAProviderRule implements MethodRule {
         boolean noEclipseLink = hasAnnotation(method, NoEclipseLink.class);
         boolean noOpenJPA = hasAnnotation(method, NoOpenJPA.class);
         boolean noBatooJPA = hasAnnotation(method, NoBatooJPA.class);
+        boolean noHibernate = hasAnnotation(method, NoHibernate.class);
         String mode = Mode.mode.get();
         if (noEclipseLink && mode.contains("-eclipselink")) {
             return EmptyStatement.DEFAULT;
         } else if (noOpenJPA && mode.contains("-openjpa")) {
             return EmptyStatement.DEFAULT;
         } else if (noBatooJPA && mode.contains("-batoo")) {
+            return EmptyStatement.DEFAULT;
+        } else if (noHibernate && !mode.contains("-")) {
             return EmptyStatement.DEFAULT;
         } else {
             return base;

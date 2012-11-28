@@ -390,6 +390,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoHibernate
     public void Constant() {
         //select cat.id, ?1 as const from Cat cat
         query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", new StringPath("const"))));

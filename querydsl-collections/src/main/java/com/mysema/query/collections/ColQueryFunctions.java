@@ -64,6 +64,14 @@ public final class ColQueryFunctions {
         }
         return null;
     }
+    
+    public static <T> T nullif(T first, T second) {
+        if (first.equals(second)) {
+            return null;
+        } else {
+            return first;
+        }
+    }
 
     public static int getDayOfMonth(Date date){
         return getField(date, Calendar.DAY_OF_MONTH);

@@ -48,7 +48,7 @@ public class JPABase extends AbstractStandardTest {
     public static MethodRule targetRule = new TargetRule();
     
     @Rule
-    public static MethodRule hibernateOnly = new JPAProviderRule();
+    public static MethodRule jpaProviderRule = new JPAProviderRule();
     
     private EntityManager entityManager;
     

@@ -219,6 +219,9 @@ public class ProjectionsFactory {
         rv.add(expr.trim());
 
         rv.add(expr.upper());
+        
+        rv.add(expr.nullif("xxx"));
+        
         return rv;
     }
 
