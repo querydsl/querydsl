@@ -48,13 +48,13 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Multiple_Columns() throws SQLException {
-        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
-        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.lastname, employee.firstname);
-        List<Object[]> list = query().union(sq1, sq2).list();
+        SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
+        SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.lastname, employee.firstname);
+        List<Tuple> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
-        for (Object[] row : list){
-            assertNotNull(row[0]);
-            assertNotNull(row[1]);
+        for (Tuple row : list){
+            assertNotNull(row.get(0, Object.class));
+            assertNotNull(row.get(1, Object.class));
         }
     }
     
@@ -80,17 +80,17 @@ public class UnionBase extends AbstractBaseTest {
     @Test
     @SuppressWarnings("unchecked")
     public void Union3() throws SQLException {
-        SimpleSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
-        SimpleSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
-        List<Object[]> list2 = query().union(sq3, sq4).list();
+        SimpleSubQuery<Tuple> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
+        SimpleSubQuery<Tuple> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
+        List<Tuple> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
     
     @Test
     @ExcludeIn({DERBY})
     public void Union4() {
-        SimpleSubQuery<Object[]> sq1 = sq().from(employee).unique(employee.id, employee.firstname);
-        SimpleSubQuery<Object[]> sq2 = sq().from(employee).unique(employee.id, employee.firstname);
+        SimpleSubQuery<Tuple> sq1 = sq().from(employee).unique(employee.id, employee.firstname);
+        SimpleSubQuery<Tuple> sq2 = sq().from(employee).unique(employee.id, employee.firstname);
         query().union(employee, sq1, sq2).list(employee.id.count());
     }
     
@@ -105,13 +105,13 @@ public class UnionBase extends AbstractBaseTest {
          * order by ID asc
          */
         QEmployee superior = new QEmployee("superior");
-        ListSubQuery<Object[]> sq1 = sq().from(employee)
+        ListSubQuery<Tuple> sq1 = sq().from(employee)
                 .join(employee.superiorIdKey, superior)
                 .list(employee.id, employee.firstname, superior.id.as("sup_id"), superior.firstname.as("sup_name"));
-        ListSubQuery<Object[]> sq2 = sq().from(employee)
+        ListSubQuery<Tuple> sq2 = sq().from(employee)
                 .list(employee.id, employee.firstname, null, null);
-        List<Object[]> results = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
-        for (Object[] result : results) {
+        List<Tuple> results = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
+        for (Tuple result : results) {
             System.err.println(Arrays.asList(result));
         }
  
@@ -129,10 +129,10 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Multi_Column_Projection_List() throws IOException{
-        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
-        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
+        SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
+        SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
 
-        List<Object[]> list = query().union(sq1, sq2).list();
+        List<Tuple> list = query().union(sq1, sq2).list();
         assertEquals(2, list.size());
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
@@ -141,10 +141,10 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Multi_Column_Projection_Iterate() throws IOException{
-        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
-        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
+        SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
+        SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
 
-        CloseableIterator<Object[]> iterator = query().union(sq1,sq2).iterate();
+        CloseableIterator<Tuple> iterator = query().union(sq1,sq2).iterate();
         try{
             assertTrue(iterator.hasNext());
             assertTrue(iterator.next() != null);

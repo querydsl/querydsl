@@ -35,6 +35,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jdo.JDOTuple;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLSerializer;
@@ -163,8 +164,8 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return detach;
     }
 
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator(), closeable);
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
@@ -172,11 +173,8 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expression<?>[] args) {
-        queryMixin.addToProjection(args);
-        Object rv = execute(createQuery(false));
-        reset();
-        return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
 
     @SuppressWarnings("unchecked")
@@ -219,6 +217,13 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         }
     }
 
+
+    @Override
+    @Nullable
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));
+    }
+    
     @Override
     @SuppressWarnings("unchecked")
     @Nullable
@@ -227,18 +232,6 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return (RT)uniqueResult();
     }
     
-    @Override
-    @Nullable
-    public Object[] uniqueResult(Expression<?>[] args) {
-        queryMixin.addToProjection(args);
-        Object obj = uniqueResult();
-        if (obj != null) {
-            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
-        } else {
-            return null;
-        }     
-    }
-
     @Nullable
     private Object uniqueResult() {
         if (getMetadata().getModifiers().getLimit() == null) {

@@ -31,6 +31,7 @@ import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.NativeSQLSerializer;
 import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
@@ -45,6 +46,7 @@ import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
@@ -152,10 +154,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> list(Expression<?>[] projection) {
-        Query query = createQuery(projection);
-        reset();
-        return query.list();
+    public List<Tuple> list(Expression<?>[] projection) {
+        return list(new QTuple(projection));
     }
 
     @SuppressWarnings("unchecked")
@@ -167,8 +167,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator());
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     @Override
@@ -217,14 +217,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
-        Query query = createQuery(args);
-        Object obj = uniqueResult(query);
-        if (obj != null) {
-            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};
-        } else {
-            return null;
-        }
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));
     }
 
     @SuppressWarnings("unchecked")

@@ -24,13 +24,14 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.QTuple;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -121,8 +122,8 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return iterate(new ArrayConstructorExpression<Object>(args));
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     @Override
@@ -137,8 +138,8 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @Override
-    public List<Object[]> list(Expression<?>[] args) {
-        return list(new ArrayConstructorExpression<Object>(args));
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
 
     @Override
@@ -169,7 +170,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
     
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>[] args) {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2l);

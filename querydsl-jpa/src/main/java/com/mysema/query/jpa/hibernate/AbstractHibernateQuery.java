@@ -36,6 +36,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
@@ -43,6 +44,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.QTuple;
 
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface
@@ -191,18 +193,14 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     /**
-     * Return the query results as an <tt>Iterator</tt>. If the query
-     * contains multiple results pre row, the results are returned in
-     * an instance of <tt>Object[]</tt>.<br>
+     * Return the query results as an <tt>Iterator</tt>.<br>
      * <br>
      * Entities returned as results are initialized on demand. The first
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        Query query = createQuery(args);
-        reset();
-        return new IteratorAdapter<Object[]>(query.iterate());
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     /**
@@ -221,10 +219,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expression<?>[] args) {
-        Query query = createQuery(args);
-        reset();
-        return query.list();
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
 
     @SuppressWarnings("unchecked")
@@ -390,16 +386,16 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return (Q)this;
     }
 
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));
+    }
+    
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
         return (RT)uniqueResult();
     }
     
-    public Object[] uniqueResult(Expression<?>[] args) {
-        getQueryMixin().addToProjection(args);
-        return (Object[]) uniqueResult();
-    }
     
     private Object uniqueResult() {
         QueryModifiers modifiers = getMetadata().getModifiers();

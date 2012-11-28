@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.Survey;
+import com.mysema.query.Tuple;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
@@ -63,7 +64,7 @@ public class SQLSerializerTest {
         QSurvey survey = QSurvey.survey;
         
         // create sub queries
-        List<SubQueryExpression<Object[]>> sq = new ArrayList<SubQueryExpression<Object[]>>();
+        List<SubQueryExpression<Tuple>> sq = new ArrayList<SubQueryExpression<Tuple>>();
         String[] strs = new String[]{"a","b","c"};
         for(String str : strs) {
             Expression<Boolean> alias = Expressions.cases().when(survey.name.eq(str)).then(true).otherwise(false);
@@ -71,7 +72,7 @@ public class SQLSerializerTest {
         }
         
         // master query
-        PathBuilder<Object[]> subAlias = new PathBuilder<Object[]>(Object[].class, "sub");        
+        PathBuilder<Tuple> subAlias = new PathBuilder<Tuple>(Tuple.class, "sub");        
         SubQueryExpression<?> master = sq()
                 .from(sq().union(sq).as(subAlias))
                 .groupBy(subAlias.get("prop1"))

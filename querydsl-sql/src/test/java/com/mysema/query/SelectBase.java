@@ -536,11 +536,11 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     public void Joins() throws SQLException {
-        for (Object[] row : query().from(employee).innerJoin(employee2)
+        for (Tuple row : query().from(employee).innerJoin(employee2)
                 .on(employee.superiorId.eq(employee2.superiorId))
                 .where(employee2.id.eq(10))
                 .list(employee.id, employee2.id)) {
-            System.out.println(row[0] + ", " + row[1]);
+            System.out.println(row.get(employee.id) + ", " + row.get(employee2.id));
         }
     }
 
@@ -669,15 +669,15 @@ public class SelectBase extends AbstractBaseTest{
 
         // simple
         System.out.println("#1");
-        for (Object[] row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)){
-            System.out.println(Arrays.asList(row));
+        for (Tuple row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)){
+            System.out.println(row);
         }
         System.out.println();
 
         // with subquery, generic alias
         System.out.println("#2");
-        ListSubQuery<Object[]> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        SimplePath<Object[]> subAlias = new SimplePath<Object[]>(Object[].class, "s");
+        ListSubQuery<Tuple> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        SimplePath<Tuple> subAlias = new SimplePath<Tuple>(Tuple.class, "s");
         for (Object[] row : query().from(sub.as(subAlias)).list(all)){
             System.out.println(Arrays.asList(row));
         }
@@ -694,8 +694,8 @@ public class SelectBase extends AbstractBaseTest{
 
         // with subquery, specific alias
         System.out.println("#4");
-        ListSubQuery<Object[]> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        for (Object[] row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)){
+        ListSubQuery<Tuple> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        for (Tuple row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)){
             System.out.println(Arrays.asList(row));
         }
     }
@@ -844,10 +844,10 @@ public class SelectBase extends AbstractBaseTest{
     
     @Test
     public void Projection() throws IOException{
-        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
+        CloseableIterator<Tuple> results = query().from(survey).iterate(survey.all());
         assertTrue(results.hasNext());
         while (results.hasNext()){
-            assertEquals(3, results.next().length);
+            assertEquals(3, results.next().size());
         }
         results.close();
     }
@@ -855,22 +855,22 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     public void Projection_and_TwoColumns(){
         // projection and two columns
-        for (Object[] row : query().from(survey)
+        for (Tuple row : query().from(survey)
                 .list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
-            assertEquals(3, row.length);
-            assertEquals(IdName.class, row[0].getClass());
-            assertEquals(Integer.class, row[1].getClass());
-            assertEquals(String.class, row[2].getClass());
+            assertEquals(3, row.size());
+            assertEquals(IdName.class, row.get(0, Object.class).getClass());
+            assertEquals(Integer.class, row.get(1, Object.class).getClass());
+            assertEquals(String.class, row.get(2, Object.class).getClass());
         }
     }
     
     @Test
     public void Projection2() throws IOException{
         // TODO : add assertions
-        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.id, survey.name);
+        CloseableIterator<Tuple> results = query().from(survey).iterate(survey.id, survey.name);
         assertTrue(results.hasNext());
         while (results.hasNext()){
-            assertEquals(2, results.next().length);
+            assertEquals(2, results.next().size());
         }
         results.close();
     }
@@ -921,10 +921,10 @@ public class SelectBase extends AbstractBaseTest{
     
     @Test
     public void Query_with_Constant() throws Exception {
-        for (Object[] row : query().from(survey)
+        for (Tuple row : query().from(survey)
                 .where(survey.id.eq(1))
                 .list(survey.id, survey.name)) {
-            System.out.println(row[0] + ", " + row[1]);
+            System.out.println(row.get(survey.id) + ", " + row.get(survey.name));
         }
     }
     
@@ -937,8 +937,8 @@ public class SelectBase extends AbstractBaseTest{
         
     @Test
     public void Query2() throws Exception {
-        for (Object[] row : query().from(survey).list(survey.id, survey.name)) {
-            System.out.println(row[0] + ", " + row[1]);
+        for (Tuple row : query().from(survey).list(survey.id, survey.name)) {
+            System.out.println(row.get(survey.id) + ", " + row.get(survey.name));
         }
     }
 
@@ -948,12 +948,12 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     public void RelationalPath_Projection() {
-        List<Object[]> results = query().from(employee, employee2).where(employee.id.eq(employee2.id))
+        List<Tuple> results = query().from(employee, employee2).where(employee.id.eq(employee2.id))
                 .list(employee, employee2);
         assertFalse(results.isEmpty());
-        for (Object[] row : results) {
-            Employee e1 = (Employee)row[0];
-            Employee e2 = (Employee)row[1];
+        for (Tuple row : results) {
+            Employee e1 = row.get(employee);
+            Employee e2 = row.get(employee2);
             assertEquals(e1.getId(), e2.getId());
         }
     }
@@ -1156,22 +1156,22 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     public void TwoColumns(){
         // two columns
-        for (Object[] row : query().from(survey).list(survey.id, survey.name)){
-            assertEquals(2, row.length);
-            assertEquals(Integer.class, row[0].getClass());
-            assertEquals(String.class, row[1].getClass());
+        for (Tuple row : query().from(survey).list(survey.id, survey.name)){
+            assertEquals(2, row.size());
+            assertEquals(Integer.class, row.get(0, Object.class).getClass());
+            assertEquals(String.class, row.get(1, Object.class).getClass());
         }
     }
     
     @Test
     public void TwoColumns_and_Projection(){
         // two columns and projection
-        for (Object[] row : query().from(survey)
+        for (Tuple row : query().from(survey)
                 .list(survey.id, survey.name, new QIdName(survey.id, survey.name))){
-            assertEquals(3, row.length);
-            assertEquals(Integer.class, row[0].getClass());
-            assertEquals(String.class, row[1].getClass());
-            assertEquals(IdName.class, row[2].getClass());
+            assertEquals(3, row.size());
+            assertEquals(Integer.class, row.get(0, Object.class).getClass());
+            assertEquals(String.class, row.get(1, Object.class).getClass());
+            assertEquals(IdName.class, row.get(2, Object.class).getClass());
         }
     }
     
@@ -1199,11 +1199,11 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     public void Unique_Wildcard(){
         // unique wildcard
-        Object[] row = query().from(survey).limit(1).uniqueResult(survey.all());
+        Tuple row = query().from(survey).limit(1).uniqueResult(survey.all());
         assertNotNull(row);
-        assertEquals(3, row.length);
-        assertNotNull(row[0]);
-        assertNotNull(row[0] +" is not null", row[1]);
+        assertEquals(3, row.size());
+        assertNotNull(row.get(0, Object.class));
+        assertNotNull(row.get(0, Object.class) +" is not null", row.get(1, Object.class));
 
     }
 
@@ -1243,11 +1243,11 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     public void Wildcard(){
         // wildcard
-        for (Object[] row : query().from(survey).list(survey.all())){
+        for (Tuple row : query().from(survey).list(survey.all())){
             assertNotNull(row);
-            assertEquals(3, row.length);
-            assertNotNull(row[0]);
-            assertNotNull(row[0] + " is not null", row[1]);
+            assertEquals(3, row.size());
+            assertNotNull(row.get(0, Object.class));
+            assertNotNull(row.get(0, Object.class) + " is not null", row.get(1, Object.class));
         }
     }
     

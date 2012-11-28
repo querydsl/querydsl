@@ -24,16 +24,19 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
+import com.mysema.query.Tuple;
 import com.mysema.query.support.AbstractProjectable;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
@@ -326,7 +329,7 @@ public class GroupByTest {
     
     private static Projectable projectable(final Object[]... rows) {
         return new AbstractProjectable(){
-            public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+            public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
                 return iterator(rows);
             }
         };
@@ -336,7 +339,11 @@ public class GroupByTest {
         return row;
     }
     
-    private static CloseableIterator<Object[]> iterator(Object[]... rows) {
-        return new IteratorAdapter<Object[]>(Arrays.asList(rows).iterator());
+    private static CloseableIterator<Tuple> iterator(Object[]... rows) {
+        List<Tuple> tuples = Lists.newArrayList();
+        for (Object[] row : rows) {
+            tuples.add(new MockTuple(row));
+        }
+        return new IteratorAdapter<Tuple>(tuples.iterator());
     }
 }

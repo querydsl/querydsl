@@ -40,6 +40,7 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -48,6 +49,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
@@ -337,9 +339,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {     
-        queryMixin.addToProjection(args);
-        return iterateMultiple(queryMixin.getMetadata());
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     @Override
@@ -460,8 +461,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
 
     @Override
-    public List<Object[]> list(Expression<?>[] args) {
-        return IteratorAdapter.asList(iterate(args));
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
 
     @Override
@@ -566,6 +567,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
     }
+    
+    @Override
+    public Tuple uniqueResult(Expression<?>[] expr) {
+        return uniqueResult(new QTuple(expr));
+    }
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
@@ -577,15 +583,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return uniqueResult(iterator);
     }
     
-    @Override
-    public Object[] uniqueResult(Expression<?>[] expr) {
-        if (getMetadata().getModifiers().getLimit() == null) {
-            limit(2);    
-        }        
-        CloseableIterator<Object[]> iterator = iterate(expr);
-        return uniqueResult(iterator);
-    }
-
     private long unsafeCount() throws SQLException {
         String queryString = buildQueryString(true);
         logger.debug("query : {}", queryString);

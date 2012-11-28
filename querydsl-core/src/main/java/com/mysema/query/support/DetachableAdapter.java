@@ -15,6 +15,7 @@ package com.mysema.query.support;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -64,12 +65,12 @@ public class DetachableAdapter implements Detachable{
         return detachable;
     }
 
-    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, 
+    public ListSubQuery<Tuple> list(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return detachable.list(first, second, rest);
     }
 
-    public ListSubQuery<Object[]> list(Expression<?>[] args) {
+    public ListSubQuery<Tuple> list(Expression<?>[] args) {
         return detachable.list(args);
     }
 
@@ -78,7 +79,7 @@ public class DetachableAdapter implements Detachable{
     }
 
     @Override
-    public ListSubQuery<Object[]> list(Object... args) {
+    public ListSubQuery<Tuple> list(Object... args) {
         return detachable.list(args);
     }
 
@@ -102,11 +103,11 @@ public class DetachableAdapter implements Detachable{
         return detachable.unique(projection);
     }
 
-    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public SimpleSubQuery<Tuple> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return detachable.unique(first, second, rest);
     }
 
-    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Tuple> unique(Expression<?>[] args) {
         return detachable.unique(args);
     }
 
@@ -131,7 +132,7 @@ public class DetachableAdapter implements Detachable{
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Object... args) {
+    public SimpleSubQuery<Tuple> unique(Object... args) {
         return detachable.unique(args);
     }
 

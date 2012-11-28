@@ -34,6 +34,7 @@ import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.NativeSQLSerializer;
 import com.mysema.query.jpa.impl.JPAUtil;
@@ -46,6 +47,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
@@ -159,10 +161,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> list(Expression<?>[] args) {
-        Query query = createQuery(args);
-        //reset();
-        return (List<Object[]>) getResultList(query);
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
     
     /**
@@ -225,8 +225,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator());
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     @Override
@@ -318,23 +318,17 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
 
     @Override
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));
+    }
+    
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
         return (RT)uniqueResult(query);
     }
     
-    @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
-        Query query = createQuery(args);
-        Object obj = uniqueResult(query);
-        if (obj != null) {
-            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
-        } else {
-            return null;
-        }        
-    }
-
     @Nullable
     private Object uniqueResult(Query query) {        
         try{

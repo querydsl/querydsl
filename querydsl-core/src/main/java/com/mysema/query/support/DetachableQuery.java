@@ -13,6 +13,7 @@
  */
 package com.mysema.query.support;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -60,13 +61,13 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, 
+    public ListSubQuery<Tuple> list(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return detachableMixin.list(first, second, rest);
     }
 
     @Override
-    public ListSubQuery<Object[]> list(Expression<?>[] args) {
+    public ListSubQuery<Tuple> list(Expression<?>[] args) {
         return detachableMixin.list(args);
     }
 
@@ -76,7 +77,7 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public ListSubQuery<Object[]> list(Object... args) {
+    public ListSubQuery<Tuple> list(Object... args) {
         return detachableMixin.list(args);
     }
 
@@ -101,13 +102,13 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, 
+    public SimpleSubQuery<Tuple> unique(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return detachableMixin.unique(first, second, rest);
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Tuple> unique(Expression<?>[] args) {
         return detachableMixin.unique(args);
     }
 
@@ -137,7 +138,7 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Object... args) {
+    public SimpleSubQuery<Tuple> unique(Object... args) {
         return detachableMixin.unique(args);
     }
 

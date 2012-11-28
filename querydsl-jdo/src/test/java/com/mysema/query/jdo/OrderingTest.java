@@ -26,6 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QProduct;
 
@@ -64,12 +65,12 @@ public class OrderingTest extends AbstractJDOTest {
 
     @Test
     public void TabularResults() {
-        List<Object[]> rows = query().from(product).orderBy(product.name.asc())
+        List<Tuple> rows = query().from(product).orderBy(product.name.asc())
                 .list(product.name, product.description);
         assertEquals(30, rows.size());
-        for (Object[] row : rows) {
-            assertEquals(row[0].toString().substring(1), row[1].toString()
-                    .substring(1));
+        for (Tuple row : rows) {
+            assertEquals(row.get(0, String.class).substring(1), 
+                    row.get(1, String.class).substring(1));
         }
     }
 

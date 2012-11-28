@@ -29,6 +29,7 @@ import antlr.collections.AST;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 class QueryHelper extends JPQLQueryBase<QueryHelper> {
@@ -42,7 +43,7 @@ class QueryHelper extends JPQLQueryBase<QueryHelper> {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
         throw new UnsupportedOperationException();
     }
 
@@ -80,7 +81,7 @@ class QueryHelper extends JPQLQueryBase<QueryHelper> {
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>[] args) {
         throw new UnsupportedOperationException();
     }
 

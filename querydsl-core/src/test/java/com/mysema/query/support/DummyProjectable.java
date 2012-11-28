@@ -16,6 +16,7 @@ package com.mysema.query.support;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
@@ -34,8 +35,8 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new EmptyCloseableIterator<Object[]>();
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return new EmptyCloseableIterator<Tuple>();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>[] args) {
         if (queryMixin.getMetadata().getModifiers().getLimit() == null){
             limit(2);
         }

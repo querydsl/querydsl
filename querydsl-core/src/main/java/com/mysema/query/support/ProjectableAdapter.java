@@ -21,6 +21,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
@@ -61,13 +62,13 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, 
+    public CloseableIterator<Tuple> iterate(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
         return projectable.iterate(args);
     }
 
@@ -77,13 +78,13 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, 
+    public CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args) {
         return projectable.iterateDistinct(args);
     }
 
@@ -93,12 +94,12 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public List<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public List<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.list(first, second, rest);
     }
 
     @Override
-    public List<Object[]> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>[] args) {
         return projectable.list(args);
     }
 
@@ -108,13 +109,13 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public List<Object[]> listDistinct(Expression<?> first, Expression<?> second, 
+    public List<Tuple> listDistinct(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return projectable.listDistinct(first, second, rest);
     }
 
     @Override
-    public List<Object[]> listDistinct(Expression<?>[] args) {
+    public List<Tuple> listDistinct(Expression<?>[] args) {
         return projectable.listDistinct(args);
     }
 
@@ -144,12 +145,12 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public Tuple singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.singleResult(first, second, rest);
     }
 
     @Override
-    public Object[] singleResult(Expression<?>[] args) {
+    public Tuple singleResult(Expression<?>[] args) {
         return projectable.singleResult(args);
     }
 
@@ -164,12 +165,12 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
     
     @Override
-    public Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public Tuple uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.uniqueResult(first, second, rest);
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>[] args) {
         return projectable.uniqueResult(args);
     }
 

@@ -22,6 +22,7 @@ import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 public class AbstractProjectable implements Projectable {
@@ -47,14 +48,14 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?> first,
+    public CloseableIterator<Tuple> iterate(Expression<?> first,
             Expression<?> second, Expression<?>... rest) {
         return null;
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new EmptyCloseableIterator<Object[]>();
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return new EmptyCloseableIterator<Tuple>();
     }
 
     @Override
@@ -63,14 +64,14 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expression<?> first,
+    public CloseableIterator<Tuple> iterateDistinct(Expression<?> first,
             Expression<?> second, Expression<?>... rest) {
-        return new EmptyCloseableIterator<Object[]>();
+        return new EmptyCloseableIterator<Tuple>();
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args) {
-        return new EmptyCloseableIterator<Object[]>();
+    public CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args) {
+        return new EmptyCloseableIterator<Tuple>();
     }
 
     @Override
@@ -79,13 +80,13 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public List<Object[]> list(Expression<?> first, Expression<?> second,
+    public List<Tuple> list(Expression<?> first, Expression<?> second,
             Expression<?>... rest) {
         return Collections.emptyList();
     }
 
     @Override
-    public List<Object[]> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>[] args) {
         return Collections.emptyList();
     }
 
@@ -95,13 +96,13 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public List<Object[]> listDistinct(Expression<?> first,
+    public List<Tuple> listDistinct(Expression<?> first,
             Expression<?> second, Expression<?>... rest) {
         return Collections.emptyList();
     }
 
     @Override
-    public List<Object[]> listDistinct(Expression<?>[] args) {
+    public List<Tuple> listDistinct(Expression<?>[] args) {
         return Collections.emptyList();
     }
 
@@ -126,13 +127,13 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public Object[] singleResult(Expression<?> first, Expression<?> second,
+    public Tuple singleResult(Expression<?> first, Expression<?> second,
             Expression<?>... rest) {
-        return new Object[0];
+        return null;
     }
 
     @Override
-    public Object[] singleResult(Expression<?>[] args) {
+    public Tuple singleResult(Expression<?>[] args) {
         return null;
     }
 
@@ -147,13 +148,13 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?> first, Expression<?> second,
+    public Tuple uniqueResult(Expression<?> first, Expression<?> second,
             Expression<?>... rest) {
         return null;
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>[] args) {
         return null;
     }
 

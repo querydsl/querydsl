@@ -37,6 +37,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
@@ -208,8 +209,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return detach;
     }
 
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator(), closeable);
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return new IteratorAdapter<Tuple>(list(args).iterator(), closeable);
     }
 
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
@@ -217,12 +218,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expression<?>[] args) {
-        queryMixin.addToProjection(args);
-        Object rv = execute(createQuery(false));
-        reset();
-        return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
 
     @Override
@@ -284,14 +281,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     
     @Override
     @Nullable
-    public Object[] uniqueResult(Expression<?>[] args) {
-        queryMixin.addToProjection(args);
-        Object obj = uniqueResult();
-        if (obj != null) {
-            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
-        } else {
-            return null;
-        }                
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));        
     }
 
     @SuppressWarnings("unchecked")

@@ -37,11 +37,13 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
+import com.mysema.query.types.QTuple;
 
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
@@ -246,8 +248,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
 
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator());
+    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+        return iterate(new QTuple(args));
     }
 
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
@@ -256,13 +258,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expression<?>[] args) {
-        Query query = createQuery(args);
-        try {
-            return (List<Object[]>)getResultList(query);    
-        } finally {
-            reset();
-        }        
+    public List<Tuple> list(Expression<?>[] args) {
+        return list(new QTuple(args));
     }
 
     @Override
@@ -309,9 +306,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
-        getQueryMixin().addToProjection(args);
-        return (Object[])uniqueResult();
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));
     }
     
     @Nullable

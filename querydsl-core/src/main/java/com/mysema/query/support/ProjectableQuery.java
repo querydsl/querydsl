@@ -25,6 +25,7 @@ import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
@@ -47,20 +48,20 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, 
+    public final CloseableIterator<Tuple> iterate(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return iterate(merge(first, second, rest));
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, 
+    public final CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         queryMixin.setDistinct(true);
         return iterate(first, second, rest);
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args) {
+    public final CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args) {
         queryMixin.setDistinct(true);
         return iterate(args);
     }
@@ -72,12 +73,12 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final List<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public final List<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return list(merge(first, second, rest));
     }
 
     @Override
-    public List<Object[]> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>[] args) {
         return IteratorAdapter.asList(iterate(args));
     }
 
@@ -87,13 +88,13 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final List<Object[]> listDistinct(Expression<?> first, Expression<?> second, 
+    public final List<Tuple> listDistinct(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         queryMixin.setDistinct(true);
         return list(first, second, rest);
     }
 
-    public final List<Object[]> listDistinct(Expression<?>[] args) {
+    public final List<Tuple> listDistinct(Expression<?>[] args) {
         queryMixin.setDistinct(true);
         return list(args);
     }
@@ -111,12 +112,11 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
-        List<Object[]> list = list(key, value);
+        List<Tuple> list = list(key, value);
         Map<K, V> results = new LinkedHashMap<K, V>(list.size());
-        for (Object[] row : list) {
-            results.put((K)row[0], (V)row[1]);
+        for (Tuple row : list) {
+            results.put(row.get(key), row.get(value));
         }
         return results;
     }
@@ -135,13 +135,13 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final Object[] singleResult(Expression<?> first, Expression<?> second, 
+    public final Tuple singleResult(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return singleResult(merge(first, second, rest));
     }
 
     @Override
-    public final Object[] singleResult(Expression<?>[] args) {
+    public final Tuple singleResult(Expression<?>[] args) {
         return limit(1).uniqueResult(args);
     }
 
@@ -157,7 +157,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     
     
     @Override
-    public final Object[] uniqueResult(Expression<?> first, Expression<?> second, 
+    public final Tuple uniqueResult(Expression<?> first, Expression<?> second, 
             Expression<?>... rest) {
         return uniqueResult(merge(first, second, rest));
     }

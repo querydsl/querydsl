@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
+import com.mysema.query.Tuple;
 import com.mysema.query.jdo.sql.JDOSQLQuery;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.sql.SProduct;
@@ -115,10 +116,10 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         assertEquals(3, sql().from(product).offset(3).limit(3).list(product.name).size());
 
         // list multiple
-        for (Object[] row : sql().from(product).list(product.productId, product.name, product.amount)){
-            assertNotNull(row[0]);
-            assertNotNull(row[1]);
-            assertNotNull(row[2]);
+        for (Tuple row : sql().from(product).list(product.productId, product.name, product.amount)){
+            assertNotNull(row.get(0, Object.class));
+            assertNotNull(row.get(1, Object.class));
+            assertNotNull(row.get(2, Object.class));
         }
 
         // listResults

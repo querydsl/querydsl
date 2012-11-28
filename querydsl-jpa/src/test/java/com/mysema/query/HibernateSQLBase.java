@@ -233,7 +233,7 @@ public class HibernateSQLBase {
     public void Wildcard(){
         SAnimal cat = new SAnimal("cat");
 
-        List<Object[]> rows = query().from(cat).list(cat.all());
+        List<Tuple> rows = query().from(cat).list(cat.all());
         assertEquals(6, rows.size());
         print(rows);
 
@@ -242,9 +242,9 @@ public class HibernateSQLBase {
 //        print(rows);
     }
 
-    private void print(Iterable<Object[]> rows){
-        for (Object[] row : rows){
-            System.out.println(Arrays.asList(row));
+    private void print(Iterable<Tuple> rows){
+        for (Tuple row : rows){
+            System.out.println(row);
         }
     }
     

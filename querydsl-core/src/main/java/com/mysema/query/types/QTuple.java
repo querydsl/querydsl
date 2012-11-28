@@ -80,6 +80,11 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
                 int index = QTuple.this.args.indexOf(expr);
                 return index != -1 ? (T) a[index] : null;
             }
+            
+            @Override
+            public int size() {
+                return a.length;
+            }
 
             @Override
             public Object[] toArray() {
@@ -100,6 +105,11 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
             @Override
             public int hashCode() {
                 return Arrays.hashCode(a);
+            }
+            
+            @Override
+            public String toString() {
+                return Arrays.toString(a);
             }
 
         };

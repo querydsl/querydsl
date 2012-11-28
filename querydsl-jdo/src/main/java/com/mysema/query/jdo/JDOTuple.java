@@ -56,6 +56,11 @@ public class JDOTuple implements Tuple{
     }
 
     @Override
+    public int size() {
+        return indexed.size();
+    }
+    
+    @Override
     public Object[] toArray() {
         return indexed.toArray();
     }
@@ -75,6 +80,11 @@ public class JDOTuple implements Tuple{
     @Override
     public int hashCode() {
         return Arrays.hashCode(toArray());
+    }
+    
+    @Override
+    public String toString() {
+        return Arrays.toString(toArray());
     }
 
 }

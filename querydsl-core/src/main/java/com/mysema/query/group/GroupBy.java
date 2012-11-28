@@ -22,6 +22,7 @@ import java.util.Set;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
@@ -150,10 +151,10 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
         
         // create groups
-        CloseableIterator<Object[]> iter = projectable.iterate(expressions);
+        CloseableIterator<Tuple> iter = projectable.iterate(expressions);
         try {
             while (iter.hasNext()) {
-                Object[] row = iter.next();
+                Object[] row = iter.next().toArray();
                 K groupId = (K) row[0];                
                 GroupImpl group = (GroupImpl)groups.get(groupId);                
                 if (group == null) {

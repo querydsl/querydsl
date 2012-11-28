@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types.query;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -54,7 +55,7 @@ public interface Detachable {
      *            rest
      * @return a List over the projection
      */
-    ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    ListSubQuery<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -62,7 +63,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    ListSubQuery<Object[]> list(Expression<?>[] args);
+    ListSubQuery<Tuple> list(Expression<?>[] args);
     
     /**
      * Create a projection expression for the given projection
@@ -71,7 +72,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    ListSubQuery<Object[]> list(Object... args);
+    ListSubQuery<Tuple> list(Object... args);
 
     /**
      * Create a projection expression for the given projection
@@ -99,7 +100,7 @@ public interface Detachable {
      * @param rest
      * @return
      */
-    SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    SimpleSubQuery<Tuple> unique(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -107,7 +108,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    SimpleSubQuery<Object[]> unique(Expression<?>[] args);
+    SimpleSubQuery<Tuple> unique(Expression<?>[] args);
     
     /**
      * Create a projection expression for the given projection
@@ -116,7 +117,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    SimpleSubQuery<Object[]> unique(Object... args);
+    SimpleSubQuery<Tuple> unique(Object... args);
 
     /**
      * Create a subquery expression for the given projection

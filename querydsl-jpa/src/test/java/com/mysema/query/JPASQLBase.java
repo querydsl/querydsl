@@ -240,7 +240,7 @@ public class JPASQLBase {
     public void Wildcard(){
         SAnimal cat = new SAnimal("cat");
 
-        List<Object[]> rows = query().from(cat).list(cat.all());
+        List<Tuple> rows = query().from(cat).list(cat.all());
         assertEquals(6, rows.size());
         print(rows);
 
@@ -270,14 +270,14 @@ public class JPASQLBase {
     @ExcludeIn({Target.DERBY, Target.POSTGRES})
     public void Union2() {
         SAnimal cat = new SAnimal("cat");
-        List<Object[]> rows = query().union(
+        List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id), 
             new SQLSubQuery().from(cat).where(cat.name.eq("Kate")).distinct().list(cat.name, null))
         .list();
         
         assertEquals(2, rows.size());
-        for (Object[] row : rows) {
-            System.err.println(Arrays.asList(row));
+        for (Tuple row : rows) {
+            System.err.println(row);
         }
     }
     
@@ -286,16 +286,16 @@ public class JPASQLBase {
     public void Union3() {
         SAnimal cat = new SAnimal("cat");
         SAnimal cat2 = new SAnimal("cat2");
-        List<Object[]> rows = query().union(
+        List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)).list(cat.id, cat2.id), 
             new SQLSubQuery().from(cat).list(cat.id, null))
         .list();
         
         assertEquals(12, rows.size());
         int nulls = 0;
-        for (Object[] row : rows) {
+        for (Tuple row : rows) {
             System.err.println(Arrays.asList(row));
-            if (row[1] == null) nulls++;
+            if (row.get(1, Object.class) == null) nulls++;
         }
         assertEquals(6, nulls);
     }
@@ -314,15 +314,15 @@ public class JPASQLBase {
     public void Union5() {
         SAnimal cat = new SAnimal("cat");
         SAnimal cat2 = new SAnimal("cat2");
-        List<Object[]> rows = query().union(
+        List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).list(cat.id, cat2.id),
             new SQLSubQuery().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).list(cat.id, cat2.id))
         .list();
         
         assertEquals(5, rows.size());
-        for (Object[] row : rows) {
-            int first = ((Integer)row[0]).intValue();
-            int second = ((Integer)row[1]).intValue();
+        for (Tuple row : rows) {
+            int first = row.get(cat.id).intValue();
+            int second = row.get(cat2.id).intValue();
             assertEquals(first + 1, second);
         }
     }
@@ -337,9 +337,9 @@ public class JPASQLBase {
         assertFalse(list.isEmpty());
     }
     
-    private void print(Iterable<Object[]> rows){
-        for (Object[] row : rows){
-            System.out.println(Arrays.asList(row));
+    private void print(Iterable<Tuple> rows){
+        for (Tuple row : rows){
+            System.out.println(row);
         }
     }    
 

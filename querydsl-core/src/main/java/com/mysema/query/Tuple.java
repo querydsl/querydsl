@@ -58,6 +58,13 @@ public interface Tuple {
     <T> T get(Expression<T> expr);
 
     /**
+     * Get the size of the Tuple
+     * 
+     * @return 
+     */
+    int size();
+    
+    /**
      * Get the content as an Object array
      *
      * @return

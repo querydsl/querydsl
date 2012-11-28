@@ -18,11 +18,11 @@ public class ListSubQueryTest {
     public void HashCode() {
         QSurvey survey = QSurvey.survey;
         QSurvey survey2 = new QSurvey("survey2");
-        ListSubQuery<Object[]> query1 = new SQLSubQuery().from(survey).list(survey.all());
-        ListSubQuery<Object[]> query2 = new SQLSubQuery().from(survey2).list(survey2.all());
+        ListSubQuery<Tuple> query1 = new SQLSubQuery().from(survey).list(survey.all());
+        ListSubQuery<Tuple> query2 = new SQLSubQuery().from(survey2).list(survey2.all());
 
 
-        Set<ListSubQuery<Object[]>> queries = new HashSet<ListSubQuery<Object[]>>();
+        Set<ListSubQuery<Tuple>> queries = new HashSet<ListSubQuery<Tuple>>();
         queries.add(query1);
         queries.add(query2);
         assertEquals(2, queries.size());

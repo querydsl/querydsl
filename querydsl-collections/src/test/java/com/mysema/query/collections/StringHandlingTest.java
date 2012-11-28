@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.path.StringPath;
 
 public class StringHandlingTest extends AbstractQueryTest {
@@ -39,11 +40,11 @@ public class StringHandlingTest extends AbstractQueryTest {
     public void EqualsIgnoreCase() {
         Iterator<String> res = Arrays.asList("petER - PETer",
                 "THomas - thOMAS", "joHAN - JOhan").iterator();
-        for (Object[] arr : query()
+        for (Tuple arr : query()
                 .from(a, data1)
                 .from(b, data2)
                 .where(a.equalsIgnoreCase(b)).list(a, b)) {
-            assertEquals(res.next(), arr[0] + " - " + arr[1]);
+            assertEquals(res.next(), arr.get(a) + " - " + arr.get(b));
         }
     }
 

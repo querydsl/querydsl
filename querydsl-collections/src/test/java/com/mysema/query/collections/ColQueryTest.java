@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
@@ -126,10 +127,10 @@ public class ColQueryTest extends AbstractQueryTest {
     public void Various() {
         StringPath a = new StringPath("a");
         StringPath b = new StringPath("b");
-        for (Object[] strs : from(a, "aa", "bb", "cc")
+        for (Tuple strs : from(a, "aa", "bb", "cc")
                 .from(b, Arrays.asList("a","b"))
                 .where(a.startsWith(b)).list(a, b)) {
-            System.out.println(Arrays.asList(strs));
+            System.out.println(strs);
         }
 
         query().from(cat, cats).list(cat.mate);

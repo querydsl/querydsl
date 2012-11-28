@@ -61,7 +61,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, 
+    CloseableIterator<Tuple> iterate(Expression<?> first, Expression<?> second, 
             Expression<?>... rest);
 
     /**
@@ -70,7 +70,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    CloseableIterator<Object[]> iterate(Expression<?>[] args);
+    CloseableIterator<Tuple> iterate(Expression<?>[] args);
 
     /**
      * iterate over the results for the given projection
@@ -90,7 +90,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, 
+    CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
             Expression<?>... rest);
 
     /**
@@ -99,7 +99,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args);
+    CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args);
 
     /**
      * iterate over the distinct results for the given projection
@@ -122,7 +122,7 @@ public interface Projectable {
      *            rest
      * @return a List over the projection
      */
-    List<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    List<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * list the results for the given projection
@@ -132,7 +132,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    List<Object[]> list(Expression<?>[] args);
+    List<Tuple> list(Expression<?>[] args);
 
     /**
      * list the results for the given projection
@@ -157,7 +157,7 @@ public interface Projectable {
      *            rest
      * @return a List over the projection
      */
-    List<Object[]> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    List<Tuple> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * list the distinct results for the given projection
@@ -167,7 +167,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    List<Object[]> listDistinct(Expression<?>[] args);
+    List<Tuple> listDistinct(Expression<?>[] args);
 
     /**
      * list the distinct results for the given projection
@@ -223,7 +223,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    Tuple singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * return a single result for the given projection or null if no result is found
@@ -237,7 +237,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Object[] singleResult(Expression<?>[] args);
+    Tuple singleResult(Expression<?>[] args);
 
     /**
      * return a single result for the given projection or null if no result is found
@@ -277,7 +277,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    Tuple uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * return a unique result for the given projection or null if no result is found
@@ -290,7 +290,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Object[] uniqueResult(Expression<?>[] args);
+    Tuple uniqueResult(Expression<?>[] args);
 
     /**
      * return a unique result for the given projection or null if no result is found
