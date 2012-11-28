@@ -28,7 +28,7 @@ public class MappingProjectionTest {
     
     @SuppressWarnings("serial")
     @Test
-    public void test(){                
+    public void Two_Args(){                
         MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str2){
             @Override
             protected Pair<String, String> map(Tuple row) {
@@ -40,5 +40,18 @@ public class MappingProjectionTest {
         assertEquals("1", pair.getFirst());
         assertEquals("2", pair.getSecond());
     }
-
+    
+    @SuppressWarnings("serial")
+    @Test
+    public void Single_Arg(){                
+        MappingProjection<String> mapping = new MappingProjection<String>(String.class, str1){
+            @Override
+            protected String map(Tuple row) {
+                return row.get(str1);
+            }            
+        };
+        
+        assertEquals("1", mapping.newInstance("1"));
+    }
+    
 }
