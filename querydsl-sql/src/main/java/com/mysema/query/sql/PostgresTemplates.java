@@ -79,6 +79,10 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
         
+        add(Ops.AggOps.BOOLEAN_ANY, "bool_or({0})", 0);
+        add(Ops.AggOps.BOOLEAN_ALL, "bool_and({0})", 0);
+
+        
 //        add(Ops.DateTimeOps.DATE_ADD, "timestamp {0} + interval '{1s} {2s}s'");
 
     }

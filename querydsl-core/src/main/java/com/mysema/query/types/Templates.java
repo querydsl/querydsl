@@ -208,6 +208,8 @@ public class Templates {
         add(Ops.EXISTS, "exists {0}");
 
         // numeric aggregates
+        add(Ops.AggOps.BOOLEAN_ALL, "all({0})");
+        add(Ops.AggOps.BOOLEAN_ANY, "any({0})");
         add(Ops.AggOps.AVG_AGG, "avg({0})");
         add(Ops.AggOps.MAX_AGG, "max({0})");
         add(Ops.AggOps.MIN_AGG, "min({0})");

@@ -15,6 +15,9 @@ package com.mysema.query.sql;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.Wildcard;
@@ -30,6 +33,20 @@ public final class SQLExpressions {
     public static final Expression<Object[]> all = Wildcard.all;
     
     public static final Expression<Long> countAll = Wildcard.count;
+    
+    /**
+     * Get an aggregate any expression for the given boolean expression
+     */
+    public static BooleanExpression any(BooleanExpression expr) {
+        return BooleanOperation.create(Ops.AggOps.BOOLEAN_ANY, expr);
+    }
+    
+    /**
+     * Get an aggregate all expression for the given boolean expression
+     */
+    public static BooleanExpression all(BooleanExpression expr) {
+        return BooleanOperation.create(Ops.AggOps.BOOLEAN_ALL, expr);
+    }
     
     public static final SimpleExpression<Long> nextval(String sequence) {
         return nextval(Long.class, sequence);

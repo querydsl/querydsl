@@ -198,6 +198,10 @@ public final class Ops {
     @SuppressWarnings("unchecked")
     public static final class AggOps{
     
+        public static final Operator<Boolean> BOOLEAN_ALL = new OperatorImpl<Boolean>("BOOLEAN_ALL",Boolean.class);
+        
+        public static final Operator<Boolean> BOOLEAN_ANY = new OperatorImpl<Boolean>("BOOLEAN_ANY",Boolean.class);
+        
         public static final Operator<Comparable> MAX_AGG = new OperatorImpl<Comparable>("MAX_AGG",Comparable.class);
         
         public static final Operator<Comparable> MIN_AGG = new OperatorImpl<Comparable>("MIN_AGG",Comparable.class);

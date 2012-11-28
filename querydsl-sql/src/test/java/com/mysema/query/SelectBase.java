@@ -55,6 +55,7 @@ import com.mysema.query.group.GroupBy;
 import com.mysema.query.sql.Beans;
 import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.SQLExpressions;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
@@ -161,6 +162,18 @@ public class SelectBase extends AbstractBaseTest{
             Path<?> path = (Path<?>)expr;
             assertEquals(survey, path.getMetadata().getParent());
         }
+    }
+    
+    @Test
+    @ExcludeIn({ORACLE, DERBY})
+    public void Boolean_Any() {
+        assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
+    }
+    
+    @Test
+    @ExcludeIn({ORACLE, DERBY})
+    public void Boolean_All() {
+        assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
     
     @SuppressWarnings("unchecked")
