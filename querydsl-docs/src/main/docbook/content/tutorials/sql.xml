@@ -626,6 +626,14 @@ Configuration configuration = new Configuration(new H2Templates());
 // declares a maping for the gender column in the person table
 configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
 ]]></programlisting>                
+
+    <para>To customize a numeric mapping you can use the registerNumeric method like this</para>
+    
+<programlisting language="java"><![CDATA[    
+configuration.registerNumeric(5,2,Float.class);
+]]></programlisting>                
+
+    <para>This will map the Float type to the NUMERIC(5,2) type.</para>    
 	
   </sect2>
   
