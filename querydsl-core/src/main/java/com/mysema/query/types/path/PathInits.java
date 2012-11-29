@@ -40,6 +40,8 @@ public class PathInits implements Serializable {
 
     public static final PathInits DIRECT  = new PathInits("*");
     
+    public static final PathInits DIRECT2  = new PathInits("*.*");
+    
     private final boolean initAllProps;
     
     private final PathInits defaultValue;

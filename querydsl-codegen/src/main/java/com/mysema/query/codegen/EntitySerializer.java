@@ -525,7 +525,7 @@ public class EntitySerializer implements Serializer{
             String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
         } else if (model.hasEntityFields()) {
-            writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT");
+            writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT2");
         }
     }
 
@@ -806,7 +806,7 @@ public class EntitySerializer implements Serializer{
         if (!property.getInits().isEmpty()) {
             return "INITS.get(\"" + property.getName() + "\")";
         } else {
-            return "PathInits.DIRECT";
+            return "PathInits.DIRECT2";
         }
     }
     

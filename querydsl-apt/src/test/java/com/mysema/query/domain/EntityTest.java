@@ -71,9 +71,14 @@ public class EntityTest extends AbstractTest{
     public static class Supertype2 extends Supertype{
 
     }
+    
+    @Test
+    public void Initialization_Depth() {
+        assertNotNull(QEntityTest_Entity1.entity1.entity1Ref.entity1Ref.entity1Field);
+    }
 
     @Test
-    public void testInheritance(){
+    public void Inheritance(){
         assertNotNull(entity3.entity3Ref.entity2Ref);
         assertNotNull(entity3.entity3Ref.entity3Ref);
 
@@ -82,7 +87,7 @@ public class EntityTest extends AbstractTest{
     }
 
     @Test
-    public void testSupertypePaths(){
+    public void SupertypePaths(){
         assertNotNull(entity3.superTypeEntityRef.entity2Ref);
         assertNotNull(entity3._super.superTypeEntityRef.entity2Ref);
         assertNotNull(entity3._super._super.superTypeEntityRef.entity2Ref);
@@ -90,7 +95,6 @@ public class EntityTest extends AbstractTest{
         assertNotNull(QEntityTest_Entity4.entity4.supertypeField);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void Constructors() throws SecurityException, NoSuchMethodException{
         Class[] types = new Class[]{Class.class, PathMetadata.class, PathInits.class};
@@ -102,7 +106,6 @@ public class EntityTest extends AbstractTest{
         QEntityTest_Supertype2.class.getConstructor(types);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected=NoSuchMethodException.class)
     public void Constructors2() throws SecurityException, NoSuchMethodException{
         Class[] types = new Class[]{Class.class, PathMetadata.class, PathInits.class};
