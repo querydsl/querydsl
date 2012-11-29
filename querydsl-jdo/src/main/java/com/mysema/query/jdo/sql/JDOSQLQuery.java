@@ -27,6 +27,7 @@ import javax.jdo.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
@@ -36,12 +37,11 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
-import com.mysema.query.jdo.JDOTuple;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.QTuple;
 
 /**
@@ -70,6 +70,10 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     private final PersistenceManager persistenceManager;
 
     private List<Query> queries = new ArrayList<Query>(2);
+    
+    @Nullable
+    private FactoryExpression<?> projection;
+    
 
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
         this(persistenceManager, templates, new DefaultQueryMetadata(), false);
@@ -94,7 +98,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         Query query = createQuery(true);
         query.setUnique(true);
         reset();
-        Long rv = (Long) execute(query);
+        Long rv = (Long) execute(query, true);
         if (rv != null) {
             return rv.longValue();
         } else {
@@ -121,11 +125,8 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
 
         if (!forCount) {
             List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-            Class<?> exprType = projection.get(0).getClass();
-            if (exprType.equals(QTuple.class)) {
-                query.setResultClass(JDOTuple.class);
-            } else if (ConstructorExpression.class.isAssignableFrom(exprType)) {
-                query.setResultClass(projection.get(0).getType());
+            if (projection.get(0) instanceof FactoryExpression) {
+                this.projection = (FactoryExpression<?>)projection.get(0);
             }
         } else {
             query.setResultClass(Long.class);
@@ -142,8 +143,18 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
             return persistenceManager.detachCopy(results);
         }
     }
+    
+    private Object project(FactoryExpression<?> expr, Object row) {
+        if (row == null) {
+            return null;
+        } else if (row.getClass().isArray()) {
+            return expr.newInstance((Object[])row);
+        } else {
+            return expr.newInstance(new Object[]{row});
+        }
+    }
 
-    private Object execute(Query query) {
+    private Object execute(Query query, boolean forCount) {
         Object rv;
         if (!orderedConstants.isEmpty()) {
             rv = query.executeWithArray(orderedConstants.toArray());
@@ -152,6 +163,17 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         }
         if (isDetach()) {
             rv = detach(rv);
+        }
+        if (projection != null && !forCount) {
+            if (rv instanceof List) {
+                List<?> original = (List<?>)rv;
+                rv = Lists.newArrayList();
+                for (Object o : original) {
+                    ((List)rv).add(project(projection, o));
+                }
+            } else {
+                rv = project(projection, rv);
+            }
         }
         return rv;
     }
@@ -180,7 +202,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
-        Object rv = execute(createQuery(false));
+        Object rv = execute(createQuery(false), false);
         reset();
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
@@ -190,12 +212,12 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         queryMixin.addToProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
-        long total = (Long) execute(countQuery);
+        long total = (Long) execute(countQuery, true);
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Query query = createQuery(false);
             reset();
-            return new SearchResults<RT>((List<RT>) execute(query), modifiers, total);
+            return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
         } else {
             reset();
             return SearchResults.emptyResults();
@@ -239,7 +261,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         }
         Query query = createQuery(false);
         reset();
-        Object rv = execute(query);
+        Object rv = execute(query, false);
         if (rv instanceof List) {
             List<?> list = (List<?>)rv;
             if (!list.isEmpty()) {

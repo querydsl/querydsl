@@ -178,12 +178,13 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
+    @Ignore
     public void ConstructorProjection(){
-        List<Projection> projections = query().from(store)
+        List<Projection> results = query().from(store)
                 .list(ConstructorExpression.create(Projection.class, store.name));
-        assertFalse(projections.isEmpty());
-        for (Projection projection : projections){
-            assertNotNull(projection);
+        assertFalse(results.isEmpty());
+        for (Projection result : results){
+            assertNotNull(result);
         }
     }
 

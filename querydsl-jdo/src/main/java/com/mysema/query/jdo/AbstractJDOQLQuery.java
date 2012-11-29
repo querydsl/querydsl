@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,6 +29,7 @@ import javax.jdo.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
@@ -51,7 +52,7 @@ import com.mysema.query.types.QTuple;
  *
  * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
+public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
 
@@ -77,6 +78,9 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     @Nullable
     protected Integer maxFetchDepth;
+    
+    @Nullable
+    private FactoryExpression<?> projection;
 
     public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
         this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
@@ -111,7 +115,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         Query query = createQuery(true);
         query.setUnique(true);
         reset();
-        Long rv = (Long) execute(query);
+        Long rv = (Long) execute(query, true);
         if (rv != null) {
             return rv.longValue();
         } else {
@@ -129,7 +133,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     private Expression<?> getSource() {
         return queryMixin.getMetadata().getJoins().get(0).getTarget();
     }
-
+    
     private Query createQuery(boolean forCount) {
         Expression<?> source = getSource();
 
@@ -146,13 +150,9 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
         if (!forCount) {
             List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-            Class<?> exprType = projection.get(0).getClass();
-            if (exprType.equals(QTuple.class)) {
-                query.setResultClass(JDOTuple.class);
-            } else if (FactoryExpression.class.isAssignableFrom(exprType)) {
-                query.setResultClass(projection.get(0).getType());
+            if (projection.get(0) instanceof FactoryExpression) {
+                this.projection = (FactoryExpression<?>)projection.get(0);
             }
-
             if (!fetchGroups.isEmpty()) {
                 query.getFetchPlan().setGroups(fetchGroups);
             }
@@ -179,8 +179,18 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
+    private Object project(FactoryExpression<?> expr, Object row) {
+        if (row == null) {
+            return null;
+        } else if (row.getClass().isArray()) {
+            return expr.newInstance((Object[])row);
+        } else {
+            return expr.newInstance(new Object[]{row});
+        }
+    }
+
     @Nullable
-    private Object execute(Query query) {
+    private Object execute(Query query, boolean forCount) {
         Object rv;
         if (!orderedConstants.isEmpty()) {
             rv = query.executeWithArray(orderedConstants.toArray());
@@ -190,6 +200,18 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         if (isDetach()) {
             rv = detach(rv);
         }
+        if (projection != null && !forCount) {
+            if (rv instanceof List) {
+                List<?> original = (List<?>)rv;
+                rv = Lists.newArrayList();
+                for (Object o : original) {
+                    ((List)rv).add(project(projection, o));
+                }
+            } else {
+                rv = project(projection, rv);
+            }
+        }
+        
         return rv;
     }
 
@@ -226,7 +248,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
-        Object rv = execute(createQuery(false));
+        Object rv = execute(createQuery(false), false);
         reset();
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
@@ -237,12 +259,12 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
         countQuery.setResult("count(this)");
-        long total = (Long) execute(countQuery);
+        long total = (Long) execute(countQuery, true);
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Query query = createQuery(false);
             reset();
-            return new SearchResults<RT>((List<RT>) execute(query), modifiers, total);
+            return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
         } else {
             reset();
             return SearchResults.emptyResults();
@@ -272,20 +294,19 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     @Override
+    @Nullable
+    public Tuple uniqueResult(Expression<?>[] args) {
+        return uniqueResult(new QTuple(args));        
+    }
+    
+    @Override
     @SuppressWarnings("unchecked")
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
         return (RT)uniqueResult();
     }
-    
-    @Override
-    @Nullable
-    public Tuple uniqueResult(Expression<?>[] args) {
-        return uniqueResult(new QTuple(args));        
-    }
 
-    @SuppressWarnings("unchecked")
     @Nullable
     private Object uniqueResult() {
         if (getMetadata().getModifiers().getLimit() == null) {
@@ -293,7 +314,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
         Query query = createQuery(false);
         reset();
-        Object rv = execute(query);
+        Object rv = execute(query, false);
         if (rv instanceof List) {
             List<?> list = (List)rv;
             if (!list.isEmpty()) {

@@ -55,7 +55,7 @@ public class FetchPlanTest extends AbstractJDOTest{
              .addFetchGroup("myfetchgroup2")
              .setMaxFetchDepth(2)
              .list(product);
-        query.close();
+//        query.close();
         
         Field queriesField = AbstractJDOQLQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);

@@ -73,8 +73,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     
     @Nullable
     protected FlushModeType flushMode;
-        
-    protected boolean factoryExpressionUsed = false;
+    
+    @Nullable
+    protected FactoryExpression<?> projection;
     
     public AbstractJPAQuery(EntityManager em) {
         this(em, JPAProvider.getTemplates(em), new DefaultQueryMetadata());
@@ -185,7 +186,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
                 }
                 
             } else {
-                factoryExpressionUsed = true;
+                this.projection = (FactoryExpression<?>)projection.get(0);
                 if (wrapped != null) {
                     getMetadata().clearProjection();
                     getMetadata().addProjection(wrapped);
@@ -204,16 +205,15 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      */
     private List<?> getResultList(Query query) {
         // TODO : use lazy list here?
-        if (factoryExpressionUsed) {
+        if (projection != null) {
             List<?> results = query.getResultList();
             List<Object> rv = new ArrayList<Object>(results.size());
-            FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
             for (Object o : results) {
                 if (o != null) {
                     if (!o.getClass().isArray()) {
                         o = new Object[]{o};
                     }   
-                    rv.add(expr.newInstance((Object[])o));
+                    rv.add(projection.newInstance((Object[])o));
                 } else {
                     rv.add(null);
                 }                
@@ -232,14 +232,13 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      */
     @Nullable
     private Object getSingleResult(Query query) {
-        if (factoryExpressionUsed) {
+        if (projection != null) {
             Object result = query.getSingleResult();
-            FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
             if (result != null) {
                 if (!result.getClass().isArray()) {
                     result = new Object[]{result};
                 }
-                return expr.newInstance((Object[])result);    
+                return projection.newInstance((Object[])result);    
             } else {
                 return null;
             }            

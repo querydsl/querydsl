@@ -16,8 +16,8 @@
   <packaging>jar</packaging>
 
   <properties>   
-    <dn.version>2.1.2</dn.version>
-    <dn.plugin.version>2.0.1</dn.plugin.version>
+    <dn.version>3.2.0-m1</dn.version>
+    <dn.plugin.version>3.2.0-m1</dn.plugin.version>
   </properties>
 
   <dependencies>
@@ -71,6 +71,12 @@
 
     <!-- test -->
 
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-api-jdo</artifactId>
+      <version>${dn.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.datanucleus</groupId>
       <artifactId>datanucleus-core</artifactId>
@@ -162,9 +168,9 @@
         </executions>
         <dependencies>
           <dependency>
-            <groupId>javax.jdo</groupId>
-            <artifactId>jdo2-api</artifactId>
-            <version>2.3-ec</version>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-api-jdo</artifactId>
+            <version>${dn.version}</version>
             <scope>runtime</scope>
           </dependency>
         </dependencies>       
