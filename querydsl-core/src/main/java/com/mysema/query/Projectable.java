@@ -41,6 +41,7 @@ public interface Projectable {
      * return the amount of distinct matched rows
      */
     @Nonnegative
+    @Deprecated
     long countDistinct();
 
     /**
@@ -90,6 +91,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
+    @Deprecated
     CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
             Expression<?>... rest);
 
@@ -99,6 +101,7 @@ public interface Projectable {
      * @param args
      * @return
      */
+    @Deprecated
     CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args);
 
     /**
@@ -109,6 +112,7 @@ public interface Projectable {
      * @param projection
      * @return an Iterator over the projection
      */
+    @Deprecated
     <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection);
 
     /**
@@ -157,6 +161,7 @@ public interface Projectable {
      *            rest
      * @return a List over the projection
      */
+    @Deprecated
     List<Tuple> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
@@ -167,6 +172,7 @@ public interface Projectable {
      * @param args
      * @return
      */
+    @Deprecated
     List<Tuple> listDistinct(Expression<?>[] args);
 
     /**
@@ -179,6 +185,7 @@ public interface Projectable {
      * @param projection
      * @return a List over the projection
      */
+    @Deprecated
     <RT> List<RT> listDistinct(Expression<RT> projection);
 
     /**
@@ -197,6 +204,7 @@ public interface Projectable {
      * @param projection
      * @return
      */
+    @Deprecated
     <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection);
 
     /**
