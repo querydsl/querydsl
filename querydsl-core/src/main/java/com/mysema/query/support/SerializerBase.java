@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Joiner;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
@@ -47,8 +46,6 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
-
-    private static final Joiner EMPTY_JOINER = Joiner.on("");
 
     private final StringBuilder builder = new StringBuilder();
     
@@ -88,10 +85,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     private boolean normalize = true;
     
     public static final String normalize(String queryString) {        
-        StringBuilder rv = new StringBuilder();
+        StringBuilder rv = null;
         Matcher m = OPERATION.matcher(queryString);
         int end = 0;
         while (m.find()) {
+            if (rv == null) {
+                rv = new StringBuilder(queryString.length());
+            }            
             if (m.start() > end) {
                 rv.append(queryString.subSequence(end, m.start()));
             }
@@ -122,14 +122,19 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             rv.append(result); 
             end = m.end();
         }
-        if (end < queryString.length()) {
-            rv.append(queryString.substring(end));
-        }
-        if (rv.toString().equals(queryString)) {
-            return rv.toString();
+        if (end > 0) {
+            if (end < queryString.length()) {
+                rv.append(queryString.substring(end));
+            }
+            if (rv.toString().equals(queryString)) {
+                return rv.toString();
+            } else {
+                return normalize(rv.toString());
+            }    
         } else {
-            return normalize(rv.toString());
+            return queryString;
         }
+        
     }
 
     public SerializerBase(Templates templates) {
@@ -141,9 +146,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         this.dry = dry;
     }
     
-    public S prepend(String... str) {
+    public S prepend(String str) {
         if (!dry){
-            builder.insert(0, EMPTY_JOINER.join(str));                
+            builder.insert(0, str);                
         }        
         return self;
     }
@@ -153,11 +158,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    public S append(String... str) {
+    public S append(String str) {
         if (!dry) {
-            for (String s : str) {
-                builder.append(s);
-            }    
+            builder.append(str);
         }        
         return self;
     }
@@ -268,7 +271,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public Void visit(Constant<?> expr, Void context) {
         if (!getConstantToLabel().containsKey(expr.getConstant())) {
             String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
-            getConstantToLabel().put(expr.getConstant(), constLabel);
+            constantToLabel.put(expr.getConstant(), constLabel);
             append(constLabel);
         } else {
             append(getConstantToLabel().get(expr.getConstant()));
@@ -284,7 +287,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         } else {
             paramLabel = paramPrefix + param.getName();
         }
-        getConstantToLabel().put(param, paramLabel);
+        constantToLabel.put(param, paramLabel);
         append(paramLabel);
         return null;
     }
@@ -320,7 +323,6 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         Template template = templates.getTemplate(operator);
         if (template == null) {

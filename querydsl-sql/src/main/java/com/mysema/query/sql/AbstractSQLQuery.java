@@ -350,64 +350,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return iterateSingle(queryMixin.getMetadata(), expr);
     }
 
-    private CloseableIterator<Object[]> iterateMultiple(QueryMetadata metadata) {
-        String queryString = buildQueryString(false);
-        logger.debug("query : {}", queryString);
-        try {
-            PreparedStatement stmt = Assert.notNull(conn, "connection").prepareStatement(queryString);
-            final List<? extends Expression<?>> projection = metadata.getProjection();
-            setParameters(stmt, constants, constantPaths, metadata.getParams());
-            ResultSet rs = stmt.executeQuery();
-
-            return new SQLResultIterator<Object[]>(stmt, rs) {
-
-                @SuppressWarnings("unchecked")
-                @Override
-                protected Object[] produceNext(ResultSet rs) {
-                    try {
-                        List<Object> objects = new ArrayList<Object>(projection.size());
-                        int index = 0;
-                        for (int i = 0; i < projection.size(); i++) {
-                            Expression<?> expr = projection.get(i);
-                            if (expr instanceof FactoryExpression) {
-                                objects.add(newInstance((FactoryExpression)expr, rs, index));
-                                index += ((FactoryExpression)expr).getArgs().size();
-                            } else if (expr.getType().isArray()) {
-                                for (int j = index; j < rs.getMetaData().getColumnCount(); j++) {
-                                    objects.add(get(rs, expr, index++ + 1, Object.class));
-                                }
-                                i = objects.size();
-                            } else {
-                                objects.add(get(rs, expr, index++ + 1, expr.getType()));
-                            }
-                        }
-                        return objects.toArray();
-                    } catch (InstantiationException e) {
-                        close();
-                        throw new QueryException(e);
-                    } catch (IllegalAccessException e) {
-                        close();
-                        throw new QueryException(e);
-                    } catch (InvocationTargetException e) {
-                        close();
-                        throw new QueryException(e);
-                    } catch (SQLException e) {
-                        close();
-                        throw new QueryException(e);
-                    }
-                }
-
-            };
-
-        } catch (SQLException e) {
-            throw new QueryException(e);
-
-        } finally {
-            reset();
-        }
-
-    }
-
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
         String queryString = buildQueryString(false);

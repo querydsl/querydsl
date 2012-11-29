@@ -356,7 +356,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             if (Number.class.isAssignableFrom(clazz) && Primitives.isWrapperType(clazz)) {
                 clazz = Primitives.unwrap(clazz);
             }
-            append("(",clazz.getSimpleName(),")").handle(args.get(0));
+            append("("+clazz.getSimpleName()+")").handle(args.get(0));
 
         } else {
             super.visitOperation(type, operator, args);

@@ -173,7 +173,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         templates.serialize(metadata, forCountRow, context);
     }
 
-    @SuppressWarnings("unchecked")
     private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
@@ -183,7 +182,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         Set<QueryFlag> flags = metadata.getFlags();
 
-        List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>();
+        List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>(select.size());
         for (Expression<?> selectExpr : select) {
             if (selectExpr instanceof FactoryExpression) {
                 // transforms constructor arguments into individual select expressions
@@ -272,7 +271,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             serialize(Position.AFTER_ORDER, flags);
         }
         
-
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
             templates.serializeModifiers(metadata, context);
         }
