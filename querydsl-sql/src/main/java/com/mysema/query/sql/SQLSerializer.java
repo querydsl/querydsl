@@ -612,18 +612,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             constantPaths.add((Path<?>)args.get(0));
         }       
         
-        if (operator.equals(Ops.STRING_CAST)) {
+        if (operator == Ops.STRING_CAST) {
             String typeName = templates.getTypeForCast(String.class);
             visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), 
                     ConstantImpl.create(typeName)));
 
-        } else if (operator.equals(Ops.NUMCAST)) {
+        } else if (operator == Ops.NUMCAST) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = templates.getTypeForCast(targetType);
             visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), 
                     ConstantImpl.create(typeName)));
 
-        } else if (operator.equals(Ops.ALIAS)) {
+        } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
                 if (args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator() == SQLTemplates.UNION) {
                     args = Arrays.asList(Expressions.operation(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
@@ -639,5 +639,4 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    
 }

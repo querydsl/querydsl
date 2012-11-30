@@ -177,16 +177,16 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return builder.length();
     }
 
-    protected Template getTemplate(Operator<?> op) {
+    protected final Template getTemplate(Operator<?> op) {
         return templates.getTemplate(op);
     }
 
-    public S handle(Expression<?> expr) {
+    public final S handle(Expression<?> expr) {
         expr.accept(this, null);
         return self;
     }
 
-    public S handle(JoinFlag joinFlag) {
+    public final S handle(JoinFlag joinFlag) {
         return handle(joinFlag.getFlag());
     }
 
@@ -196,11 +196,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             if (!first) {
                 append(sep);
             }
-            if (expr instanceof Expression<?>) {
-                handle((Expression<?>)expr);
-            } else {
-                throw new IllegalArgumentException("Unsupported type " + expr.getClass().getName());
-            }
+            handle((Expression<?>)expr);
             first = false;
         }
         return self;
