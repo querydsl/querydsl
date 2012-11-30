@@ -34,6 +34,14 @@ import com.mysema.query.types.path.PathBuilder;
 public class SQLSerializerTest {
     
     @Test
+    public void Count() {
+        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        QEmployee employee = QEmployee.employee;
+        serializer.handle(employee.id.count().add(employee.id.countDistinct()));
+        assertEquals("count(EMPLOYEE.ID) + count(distinct EMPLOYEE.ID)", serializer.toString());
+    }
+    
+    @Test
     public void Some() {
         //select some((e.FIRSTNAME is not null)) from EMPLOYEE 
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
