@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.Configuration;
@@ -19,6 +20,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.QSurvey;
 
+@Ignore
 public class QueryPerformanceTest {
     
     @Before

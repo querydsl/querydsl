@@ -455,7 +455,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
     }
 
-    @SuppressWarnings("unchecked")
     public void serializeUnion(SubQueryExpression[] sqs, QueryMetadata metadata, boolean unionAll) {
         List<? extends Expression<?>> groupBy = metadata.getGroupBy();
         Predicate having = metadata.getHaving();
@@ -509,7 +508,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Void visit(Constant<?> expr, Void context) {
         if (expr.getConstant() instanceof Collection) {
@@ -534,8 +532,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 constantPaths.add(lastPath);
             }
         } else {
-            append("?");
-            
+            append("?");            
             constants.add(expr.getConstant());
             if (constantPaths.size() < constants.size()) {
                 constantPaths.add(null);
