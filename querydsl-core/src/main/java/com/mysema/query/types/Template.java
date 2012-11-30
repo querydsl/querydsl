@@ -40,16 +40,16 @@ public final class Template implements Serializable{
         private final String staticText;
 
         @Nullable
-        private final transient Function<Expression<?>,Expression<?>> transformer;
+        private final transient Function<Object, Object> transformer;
 
         private final boolean asString;
 
         private final String toString;
 
         @SuppressWarnings("unchecked")
-        Element(int index, Function<? extends Expression<?>,? extends Expression<?>> transformer) {
+        Element(int index, Function<Object, Object> transformer) {
             this.asString = false;
-            this.transformer = (Function)transformer;
+            this.transformer = transformer;
             this.index = index;
             this.staticText = null;
             this.toString = String.valueOf(index);
@@ -88,7 +88,7 @@ public final class Template implements Serializable{
             return transformer != null;
         }
 
-        public Expression<?> convert(Expression<?> source){
+        public Object convert(Object source){
             return transformer.apply(source);
         }
 

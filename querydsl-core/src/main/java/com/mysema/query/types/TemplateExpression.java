@@ -29,14 +29,14 @@ public interface TemplateExpression<T> extends Expression<T>{
      * @param index
      * @return
      */
-    Expression<?> getArg(int index);
+    Object getArg(int index);
 
     /**
      * Get the arguments of the custom expression
      *
      * @return
      */
-    List<Expression<?>> getArgs();
+    List<?> getArgs();
 
     /**
      * Get the serialization template for this custom expression

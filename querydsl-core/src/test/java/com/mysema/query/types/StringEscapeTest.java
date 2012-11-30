@@ -22,7 +22,7 @@ public class StringEscapeTest {
     @Test
     public void EscapeForLike() {
         Converters converters = new Converters('\\');
-        assertEquals("a\\%b\\_c", converters.escapeForLike(new ConstantImpl<String>("a%b_c")).toString());
+        assertEquals("a\\%b\\_c", converters.escapeForLike("a%b_c"));
     }
 
 }

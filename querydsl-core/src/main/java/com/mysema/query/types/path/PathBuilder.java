@@ -431,7 +431,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     private String toString(Path<?> path){
-        return path.getMetadata().getExpression().toString();
+        return path.getMetadata().getElement().toString();
     }
 
 }

@@ -63,7 +63,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     
     @SuppressWarnings("unchecked")
     private static <T> Path<T> replaceParent(Path<T> path, Path<?> parent) {
-        PathMetadata<?> metadata = new PathMetadata(parent, path.getMetadata().getExpression(), 
+        PathMetadata<?> metadata = new PathMetadata(parent, path.getMetadata().getElement(), 
                 path.getMetadata().getPathType());
         if (path instanceof CollectionExpression) {
             CollectionExpression col = (CollectionExpression)path;
@@ -81,10 +81,14 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, Context context) {
-        Expression<?>[] args = new Expression<?>[expr.getArgs().size()];        
+        Object[] args = new Object[expr.getArgs().size()];        
         for (int i = 0; i < args.length; i++) {
             Context c = new Context();
-            args[i] = expr.getArg(i).accept(this, c);
+            if (expr.getArg(i) instanceof Expression) {
+                args[i] = ((Expression)expr.getArg(i)).accept(this, c);    
+            } else {
+                args[i] = expr.getArg(i);
+            }            
             context.add(c);
         }
         if (context.replace) {            

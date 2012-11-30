@@ -272,23 +272,22 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @Override
-    public Void visit(Constant<?> expr, Void context) {
-        boolean wrap = templates.wrapConstant(expr);
+    public void visitConstant(Object constant) {
+        boolean wrap = templates.wrapConstant(constant);
         if (wrap) {
              append("(");
         }
         append("?");
-        if (!getConstantToLabel().containsKey(expr.getConstant())) {
+        if (!getConstantToLabel().containsKey(constant)) {
             String constLabel = String.valueOf(getConstantToLabel().size()+1);
-            getConstantToLabel().put(expr.getConstant(), constLabel);
+            getConstantToLabel().put(constant, constLabel);
             append(constLabel);
         } else {
-            append(getConstantToLabel().get(expr.getConstant()));
+            append(getConstantToLabel().get(constant));
         }
         if (wrap) {
             append(")");
         }
-        return null;
     }
 
     @Override

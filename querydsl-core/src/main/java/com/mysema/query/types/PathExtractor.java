@@ -62,12 +62,14 @@ public final class PathExtractor implements Visitor<Path<?>,Void> {
         return visit(expr.getArgs());
     }
 
-    private Path<?> visit(List<Expression<?>> exprs) {
-        for (Expression<?> e : exprs) {
-            Path<?> path = e.accept(this, null);
-            if (path != null) {
-                return path;
-            }
+    private Path<?> visit(List<?> exprs) {
+        for (Object e : exprs) {
+            if (e instanceof Expression) {
+                Path<?> path = ((Expression<?>)e).accept(this, null);
+                if (path != null) {
+                    return path;
+                }    
+            }            
         }
         return null;
     }

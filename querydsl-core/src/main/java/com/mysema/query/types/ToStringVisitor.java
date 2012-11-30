@@ -71,7 +71,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
     @Override
     public String visit(Path<?> p, Templates templates) {
         Path<?> parent = p.getMetadata().getParent();
-        Expression<?> expr = p.getMetadata().getExpression();
+        Object elem = p.getMetadata().getElement();
         if (parent != null) {
             Template pattern = templates.getTemplate(p.getMetadata().getPathType());
             if (pattern != null) {
@@ -82,7 +82,11 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
                     } else if (element.getIndex() == 0) {
                         builder.append(parent.accept(this, templates));
                     } else if (element.getIndex() == 1) {
-                        builder.append(expr.accept(this, templates));
+                        if (elem instanceof Expression) {
+                            builder.append(((Expression)elem).accept(this, templates));    
+                        } else {
+                            builder.append(elem.toString());
+                        }                        
                     }
                 }
                 return builder.toString();
@@ -90,7 +94,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
                 throw new IllegalArgumentException("No pattern for " + p.getMetadata().getPathType());
             }
         } else {
-            return expr.toString();
+            return elem.toString();
         }
     }
 
@@ -106,7 +110,12 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
             if (element.getStaticText() != null) {
                 builder.append(element.getStaticText());
             } else {
-                builder.append(expr.getArg(element.getIndex()).accept(this, templates));
+                Object arg = expr.getArg(element.getIndex());
+                if (arg instanceof Expression) {
+                    builder.append(((Expression) arg).accept(this, templates));
+                } else {
+                    builder.append(arg.toString());
+                }
             }
         }
         return builder.toString();

@@ -74,7 +74,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                 }
             }
             if (property == null) {
-                property = path.getMetadata().getExpression().toString();
+                property = path.getMetadata().getName();
             }
             pathToProperty.put(path, property);
         }
@@ -92,7 +92,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                    && RelationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())) {
                     property = resolvePropertyViaFields(path);
                 } else {
-                    property = path.getMetadata().getExpression().toString();
+                    property = path.getMetadata().getName();
                 }
                 rv.put(property, expr);
                 
@@ -100,7 +100,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                 Operation<?> operation = (Operation<?>)expr;
                 if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>) {
                     Path<?> path = (Path<?>)operation.getArg(1);
-                    rv.put(path.getMetadata().getExpression().toString(), operation.getArg(0));
+                    rv.put(path.getMetadata().getName(), operation.getArg(0));
                 } else {
                     throw new IllegalArgumentException("Unsupported expression " + expr);
                 }

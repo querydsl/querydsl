@@ -36,7 +36,7 @@ public final class HashCodeVisitor implements Visitor<Integer,Void> {
     @Override
     public Integer visit(Path<?> expr, Void context) {
         PathMetadata<?> md = expr.getMetadata();
-        return Objects.hashCode(md.getPathType(), md.getParent(), md.getExpression());
+        return Objects.hashCode(md.getPathType(), md.getParent(), md.getElement());
     }
 
     @Override

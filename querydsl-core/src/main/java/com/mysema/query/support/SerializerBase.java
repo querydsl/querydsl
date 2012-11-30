@@ -181,8 +181,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return templates.getTemplate(op);
     }
 
-    public final S handle(Expression<?> expr) {
-        expr.accept(this, null);
+    public final S handle(Object arg) {
+        if (arg instanceof Expression) {
+            ((Expression)arg).accept(this, null);
+        } else {
+            visitConstant(arg);
+        }
         return self;
     }
 
@@ -202,16 +206,21 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    private void handleTemplate(Template template, List<Expression<?>> args){
+    private void handleTemplate(Template template, List<?> args){
         for (Template.Element element : template.getElements()) {
             if (element.getStaticText() != null) {
                 append(element.getStaticText());
             } else if (element.isAsString()) {
-                appendAsString(args.get(element.getIndex()));
+                append(args.get(element.getIndex()).toString());
             } else if (element.hasConverter()) {
                 handle(element.convert(args.get(element.getIndex())));
             } else {
-                handle(args.get(element.getIndex()));
+                Object arg = args.get(element.getIndex());
+                if (arg instanceof Expression) {
+                    handle((Expression)arg);    
+                } else {
+                    visitConstant(arg);
+                }                
             }
         }
     }
@@ -264,15 +273,19 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public Void visit(Constant<?> expr, Void context) {
-        if (!getConstantToLabel().containsKey(expr.getConstant())) {
+    public final Void visit(Constant<?> expr, Void context) {
+        visitConstant(expr.getConstant());
+        return null;
+    }
+    
+    public void visitConstant(Object constant) {
+        if (!getConstantToLabel().containsKey(constant)) {
             String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
-            getConstantToLabel().put(expr.getConstant(), constLabel);
+            getConstantToLabel().put(constant, constLabel);
             append(constLabel);
         } else {
-            append(getConstantToLabel().get(expr.getConstant()));
+            append(getConstantToLabel().get(constant));
         }
-        return null;
     }
 
     @Override
@@ -310,11 +323,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public Void visit(Path<?> path, Void context) {
         PathType pathType = path.getMetadata().getPathType();
         Template template = templates.getTemplate(pathType);
-        List<Expression<?>> args = new ArrayList<Expression<?>>();
+        List<Object> args = new ArrayList<Object>();
         if (path.getMetadata().getParent() != null) {
             args.add(path.getMetadata().getParent());
         }
-        args.add(path.getMetadata().getExpression());
+        args.add(path.getMetadata().getElement());
         handleTemplate(template, args);
         return null;
     }
@@ -330,11 +343,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 append(element.getStaticText());                
             } else if (element.isAsString() && args.get(element.getIndex()) instanceof Constant) {
                 // serialize only constants directly
-                appendAsString(args.get(element.getIndex()));                
+                append(args.get(element.getIndex()).toString());                
             } else {
                 int i = element.getIndex();
                 boolean wrap = false;
-                Expression arg = args.get(i);
+                Expression<?> arg = args.get(i);
                 if (arg instanceof Operation && ((Operation)arg).getOperator() == Ops.DELEGATE) {
                     arg = ((Operation)arg).getArg(0);
                 }
@@ -347,8 +360,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 if (element.hasConverter()) {
                     handle(element.convert(arg));
                 } else {
-                    handle(arg);
-                }
+                    handle((Expression)arg);
+                } 
                 if (wrap) {
                     append(")");
                 }
@@ -356,8 +369,5 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
     }
 
-    protected void appendAsString(Expression<?> expr) {
-        append(expr.toString());
-    }
 
 }

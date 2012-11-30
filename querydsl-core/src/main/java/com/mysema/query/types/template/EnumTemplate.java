@@ -56,12 +56,12 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
     }
     
     @Override
-    public Expression<?> getArg(int index) {
+    public Object getArg(int index) {
         return templateMixin.getArg(index);
     }
 
     @Override
-    public List<Expression<?>> getArgs() {
+    public List<?> getArgs() {
         return templateMixin.getArgs();
     }
 

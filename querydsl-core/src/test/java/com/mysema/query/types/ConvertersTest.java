@@ -24,7 +24,7 @@ public class ConvertersTest {
 
     private static final Converters converters = new Converters('\\');
     
-    private static Constant<String> constant = ConstantImpl.create("abcDEF");
+    private static String constant = "abcDEF";
     
     private static StringPath path = new StringPath("string");
     

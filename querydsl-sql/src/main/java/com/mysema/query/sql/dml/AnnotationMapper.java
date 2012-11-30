@@ -51,7 +51,7 @@ public class AnnotationMapper implements Mapper<Object> {
         try {
             Map<String, Path<?>> columnToPath = new HashMap<String, Path<?>>();
             for (Path<?> column : path.getColumns()) {
-                columnToPath.put(column.getMetadata().getExpression().toString(), column);
+                columnToPath.put(column.getMetadata().getName(), column);
             }
             Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();        
             for (Field field : ReflectionUtils.getFields(object.getClass())) {

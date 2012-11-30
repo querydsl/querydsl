@@ -24,7 +24,6 @@ import javax.persistence.Entity;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
@@ -56,7 +55,7 @@ public final class NativeSQLSerializer extends SQLSerializer{
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof Path) {
                 Path<?> path = (Path<?>)args[i];
-                if (!used.add(path.getMetadata().getExpression().toString())) {
+                if (!used.add(path.getMetadata().getName())) {
                     args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
                     modified = true;    
                 }
@@ -81,11 +80,11 @@ public final class NativeSQLSerializer extends SQLSerializer{
     }
 
     @Override
-    public Void visit(Constant<?> expr, Void context) {
-        if (expr.getConstant() instanceof Collection<?>) {
+    public void visitConstant(Object constant) {
+        if (constant instanceof Collection<?>) {
             append("(");
             boolean first = true;
-            for (Object element : ((Collection<?>)expr.getConstant())) {
+            for (Object element : ((Collection<?>)constant)) {
                 if (!first) {
                     append(", ");
                 }
@@ -93,14 +92,7 @@ public final class NativeSQLSerializer extends SQLSerializer{
                 first = false;
             }            
             append(")");
-        } else {
-            visitConstant(expr.getConstant());    
-        }
-        return null;
-    }
-
-    private void visitConstant(Object constant) {
-        if (!getConstantToLabel().containsKey(constant)) {
+        } else if (!getConstantToLabel().containsKey(constant)) {
             String constLabel = String.valueOf(getConstantToLabel().size() + 1);
             getConstantToLabel().put(constant, constLabel);
             append("?"+constLabel);

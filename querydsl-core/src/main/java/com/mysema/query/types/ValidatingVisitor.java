@@ -16,6 +16,7 @@ package com.mysema.query.types;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
@@ -116,9 +117,11 @@ public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
         }        
     }
     
-    private void visit(Iterable<? extends Expression<?>> exprs){
-        for (Expression<?> e : exprs) {
-            e.accept(this, null);
+    private void visit(List<?> exprs){
+        for (Object e : exprs) {
+            if (e instanceof Expression) {
+                ((Expression)e).accept(this, null);    
+            }            
         }
     }
 

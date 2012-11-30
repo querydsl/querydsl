@@ -28,8 +28,8 @@ public final class PathMetadata<T> implements Serializable{
 
     private static final long serialVersionUID = -1055994185028970065L;
 
-    private final Expression<T> expression;
-
+    private final Object element;
+    
     private final int hashCode;
 
     @Nullable
@@ -37,21 +37,21 @@ public final class PathMetadata<T> implements Serializable{
 
     private final PathType pathType;
 
-    public PathMetadata(@Nullable Path<?> parent, Expression<T> expression, PathType type) {
+    public PathMetadata(@Nullable Path<?> parent, Object element, PathType type) {
         this.parent = parent;
-        this.expression = expression;
+        this.element = element;
         this.pathType = type;
         this.root = parent != null ? parent.getRoot() : null;
-        this.hashCode = Objects.hashCode(expression, parent, pathType);
+        this.hashCode = Objects.hashCode(element, parent, pathType);
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         } else if (obj instanceof PathMetadata<?>) { 
             PathMetadata<?> p = (PathMetadata<?>) obj;
-            return Objects.equal(expression, p.expression) &&
+            return Objects.equal(element, p.element) && 
                    Objects.equal(parent, p.parent) &&
                    Objects.equal(pathType, p.pathType);
         } else {
@@ -60,8 +60,12 @@ public final class PathMetadata<T> implements Serializable{
 
     }
 
-    public Expression<T> getExpression() {
-        return expression;
+    public Object getElement() {
+        return element;
+    }
+    
+    public String getName() {
+        return (String)element;
     }
 
     @Nullable

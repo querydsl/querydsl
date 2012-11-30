@@ -29,7 +29,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private static final long serialVersionUID = 6951623726800809083L;
 
-    private final List<Expression<?>> args;
+    private final List<?> args;
 
     private final Template template;
 
@@ -42,7 +42,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
      * @param args
      * @return
      */
-    public static <C> Expression<C> create(Class<C> cl, String template, Expression<?>... args){
+    public static <C> Expression<C> create(Class<C> cl, String template, Object... args){
         return create(cl, TemplateFactory.DEFAULT.create(template), args);
     }
 
@@ -55,27 +55,27 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
      * @param args
      * @return
      */
-    public static <C> Expression<C> create(Class<C> cl, Template template, Expression<?>... args){
+    public static <C> Expression<C> create(Class<C> cl, Template template, Object... args){
         return new TemplateExpressionImpl<C>(cl, template, args);
     }
 
-    public TemplateExpressionImpl(Class<? extends T> type, Template template, Expression<?>... args){
-        this(type, template, Arrays.<Expression<?>>asList(args));
+    public TemplateExpressionImpl(Class<? extends T> type, Template template, Object... args){
+        this(type, template, Arrays.<Object>asList(args));
     }    
     
-    public TemplateExpressionImpl(Class<? extends T> type, Template template, List<Expression<?>> args){
+    public TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args){
         super(type);
         this.args = Assert.notNull(args,"args");
         this.template = Assert.notNull(template,"template");
     }
 
     @Override
-    public Expression<?> getArg(int index) {
+    public Object getArg(int index) {
         return getArgs().get(index);
     }
 
     @Override
-    public List<Expression<?>> getArgs() {
+    public List<?> getArgs() {
         return args;
     }
 

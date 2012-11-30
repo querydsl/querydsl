@@ -440,7 +440,7 @@ public class LuceneSerializer {
      * @return
      */
     protected String toField(Path<?> path) {
-        String rv = path.getMetadata().getExpression().toString();
+        String rv = path.getMetadata().getName();
         if (path.getMetadata().getParent() != null){
             Path<?> parent = path.getMetadata().getParent();
             if (parent.getMetadata().getPathType() != PathType.VARIABLE){

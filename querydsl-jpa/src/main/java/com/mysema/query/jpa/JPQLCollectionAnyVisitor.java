@@ -56,7 +56,7 @@ public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
                 String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
                 String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);            
                 EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
-                Path newChild = new PathImpl(child.getType(), newParent, child.getMetadata().getExpression().toString());            
+                Path newChild = new PathImpl(child.getType(), newParent, child.getMetadata().getElement().toString());            
                 query.from(newParent).innerJoin(newChild, replacement);
                 query.where(ExpressionUtils.eq(newParent, parent));    
             }                

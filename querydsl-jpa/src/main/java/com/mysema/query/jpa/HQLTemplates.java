@@ -93,9 +93,9 @@ public class HQLTemplates extends JPQLTemplates {
     }
     
     @Override
-    public boolean wrapConstant(Constant<?> expr) {
+    public boolean wrapConstant(Object constant) {
         // related : https://hibernate.onjira.com/browse/HHH-6913
-        Class<?> type = expr.getType();
+        Class<?> type = constant.getClass();
         return type.isArray() || Collection.class.isAssignableFrom(type);
     }
     

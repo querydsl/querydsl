@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -35,17 +34,17 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
 
     private static final long serialVersionUID = 4975559746071238026L;
 
-    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template, Expression<?>... args) {
-        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template, Object... args) {
+        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Object>asList(args));
     }
 
-    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, Template template, Expression<?>... args) {
-        return new DateTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
+    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, Template template, Object... args) {
+        return new DateTemplate<T>(type, template, Arrays.asList(args));
     }
 
     private final TemplateExpression<T> templateMixin;
 
-    public DateTemplate(Class<T> type, Template template, List<Expression<?>> args) {
+    public DateTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpression<T>)mixin;
     }
@@ -56,12 +55,12 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
     }
     
     @Override
-    public Expression<?> getArg(int index) {
+    public Object getArg(int index) {
         return templateMixin.getArg(index);
     }
 
     @Override
-    public List<Expression<?>> getArgs() {
+    public List<?> getArgs() {
         return templateMixin.getArgs();
     }
 

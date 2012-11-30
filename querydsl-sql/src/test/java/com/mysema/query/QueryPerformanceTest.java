@@ -10,7 +10,6 @@ import java.sql.Statement;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.Configuration;
@@ -20,7 +19,6 @@ import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 
-@Ignore
 public class QueryPerformanceTest {
     
     private static final int iterations = 1000000;

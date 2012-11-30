@@ -40,7 +40,7 @@ public class AliasTest {
        ComparableEntity entity = Alias.alias(ComparableEntity.class);
        Path<String> propertyPath = $(entity.getProperty());
        assertEquals(String.class, propertyPath.getType());
-       assertEquals("property", propertyPath.getMetadata().getExpression().toString());
+       assertEquals("property", propertyPath.getMetadata().getName());
     }
     
     @Test

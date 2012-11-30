@@ -50,7 +50,7 @@ public class FeaturesTest extends AbstractQueryTest {
     
     @Test
     public void BasicStructure3() {
-        assertEquals("cat", cat.getMetadata().getExpression().toString());
+        assertEquals("cat", cat.getMetadata().getName());
     }
 
     @Test

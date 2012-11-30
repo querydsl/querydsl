@@ -157,7 +157,7 @@ public class JPQLTemplates extends Templates {
         return null;
     }
     
-    public boolean wrapConstant(Constant<?> expr) {
+    public boolean wrapConstant(Object constant) {
         // related : https://hibernate.onjira.com/browse/HHH-6913
         return false;
     }

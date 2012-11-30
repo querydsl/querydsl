@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -34,12 +33,12 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private static final long serialVersionUID = 5749369427497731719L;
 
-    public static BooleanExpression create(String template, Expression<?>... args) {
-        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static BooleanExpression create(String template, Object... args) {
+        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Object>asList(args));
     }
 
-    public static BooleanExpression create(Template template, Expression<?>... args) {
-        return new BooleanTemplate(template, Arrays.<Expression<?>>asList(args));
+    public static BooleanExpression create(Template template, Object... args) {
+        return new BooleanTemplate(template, Arrays.<Object>asList(args));
     }
     
     public static final BooleanExpression TRUE = create("true");
@@ -48,7 +47,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private final TemplateExpression<Boolean> templateMixin;
 
-    public BooleanTemplate(Template template, List<Expression<?>> args) {
+    public BooleanTemplate(Template template, List<?> args) {
         super(new TemplateExpressionImpl<Boolean>(Boolean.class, template, args));
         this.templateMixin = (TemplateExpression<Boolean>)mixin;
     }
@@ -59,12 +58,12 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     }
     
     @Override
-    public Expression<?> getArg(int index) {
+    public Object getArg(int index) {
         return templateMixin.getArg(index);
     }
 
     @Override
-    public List<Expression<?>> getArgs() {
+    public List<?> getArgs() {
         return templateMixin.getArgs();
     }
 

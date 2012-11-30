@@ -115,7 +115,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void appendAsColumnName(Path<?> path) {
-        String column = path.getMetadata().getExpression().toString();
+        String column = path.getMetadata().getName();
         append(templates.quoteIdentifier(column));
     }
     
@@ -509,11 +509,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    public Void visit(Constant<?> expr, Void context) {
-        if (expr.getConstant() instanceof Collection) {
+    public void visitConstant(Object constant) {
+        if (constant instanceof Collection) {
             append("(");
             boolean first = true;
-            for (Object o : ((Collection)expr.getConstant())) {
+            for (Object o : ((Collection)constant)) {
                 if (!first) {
                     append(COMMA);
                 }
@@ -526,19 +526,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             append(")");
             
-            int size = ((Collection)expr.getConstant()).size() - 1;
+            int size = ((Collection)constant).size() - 1;
             Path<?> lastPath = constantPaths.get(constantPaths.size()-1);
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
             }
         } else {
             append("?");            
-            constants.add(expr.getConstant());
+            constants.add(constant);
             if (constantPaths.size() < constants.size()) {
                 constantPaths.add(null);
             }
         }
-        return null;
     }
 
     @Override
@@ -570,7 +569,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             visit(path.getMetadata().getParent(), context);
             append(".");
         }
-        append(templates.quoteIdentifier(path.getMetadata().getExpression().toString()));    
+        append(templates.quoteIdentifier(path.getMetadata().getName()));    
         return null;
     }
 

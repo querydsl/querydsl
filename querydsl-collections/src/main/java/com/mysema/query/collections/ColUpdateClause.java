@@ -54,7 +54,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>> {
             BeanMap beanMap = new BeanMap(match);
             for (Map.Entry<Path<?>,Object> entry : paths.entrySet()) {
                 // TODO : support deep updates as well
-                String propertyName = entry.getKey().getMetadata().getExpression().toString();
+                String propertyName = entry.getKey().getMetadata().getName();
                 beanMap.put(propertyName, entry.getValue());
             }
             rv++;

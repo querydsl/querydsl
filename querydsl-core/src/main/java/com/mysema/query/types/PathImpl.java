@@ -78,7 +78,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
         if (annotatedElement == null) {
             if (metadata.getPathType() == PathType.PROPERTY) {
                 Class<?> beanClass = metadata.getParent().getType();
-                String propertyName = metadata.getExpression().toString();
+                String propertyName = metadata.getName();
                 annotatedElement = ReflectionUtils.getAnnotatedElement(beanClass, propertyName, getType());
 
             } else {

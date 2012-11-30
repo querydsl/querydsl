@@ -80,7 +80,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
                 prefix = "is";
             }
-            String property = path.getMetadata().getExpression().toString();      
+            String property = path.getMetadata().getName();      
             String accessor = prefix + BeanUtils.capitalize(property);
             Class<?> parentType = path.getMetadata().getParent().getType();
             try {
@@ -114,11 +114,11 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             append(")");
 
         } else {
-            List<Expression<?>> args = new ArrayList<Expression<?>>(2);
+            List<Object> args = new ArrayList<Object>(2);
             if (path.getMetadata().getParent() != null) {
                 args.add((Expression<?>)path.getMetadata().getParent());
             }
-            args.add(path.getMetadata().getExpression());
+            args.add(path.getMetadata().getElement());
             Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()) {
                 if (element.getStaticText() != null) {
@@ -126,7 +126,12 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                 } else if (element.isAsString()) {
                     append(args.get(element.getIndex()).toString());
                 } else {
-                    handle(args.get(element.getIndex()));
+                    Object elem = args.get(element.getIndex());
+                    if (elem instanceof Expression) {
+                        handle((Expression)elem);
+                    } else {
+                        visitConstant(elem);
+                    }
                 }
             }
         }

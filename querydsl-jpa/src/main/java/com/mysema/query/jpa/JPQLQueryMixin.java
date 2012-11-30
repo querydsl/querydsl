@@ -24,6 +24,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.ListAccessVisitor;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -105,7 +106,11 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         EntityPath<?> alias = context.replacements.get(i);
         leftJoin((ListPath)path.getMetadata().getParent(), context.replacements.get(i));
         Expression index = TemplateExpressionImpl.create(Integer.class, "index({0})", alias);
-        Predicate condition = ExpressionUtils.eq(index, path.getMetadata().getExpression()); 
+        Object element = path.getMetadata().getElement();
+        if (!(element instanceof Expression)) {
+            element = new ConstantImpl(element);
+        }
+        Predicate condition = ExpressionUtils.eq(index, (Expression)element); 
         if (where){
             super.where(condition);
         } else {

@@ -255,7 +255,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             if (entity.getPrimaryKey() != null) {
                 String[] target = new String[entity.getPrimaryKey().getLocalColumns().size()];
                 for (int i = 0; i < target.length; i++) {
-                    target[i] = entity.getPrimaryKey().getLocalColumns().get(i).getMetadata().getExpression().toString();
+                    target[i] = entity.getPrimaryKey().getLocalColumns().get(i).getMetadata().getName();
                 }
                 stmt = connection.prepareStatement(queryString, target);
             } else {
