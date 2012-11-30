@@ -6,9 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.Configuration;
@@ -17,30 +19,41 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.domain.QSurvey;
 
+@Ignore
 public class QueryPerformanceTest {
     
-    @Before
-    public void setUp() throws SQLException, ClassNotFoundException {
-        Connections.initH2();
+    private static final int iterations = 1000000;
+    
+    @BeforeClass
+    public static void setUpClass() throws SQLException, ClassNotFoundException {
+        Connections.initH2();        
+        Connection conn = Connections.getConnection();        
+        Statement stmt = conn.createStatement();
+        stmt.execute("create table companies (id identity, name varchar(30) unique not null);");        
+        for (int i = 0; i < iterations; i++) {
+            stmt.execute("insert into companies (name) values ('" + i + "')");
+        }        
+        stmt.close();
     }
     
-    @After
-    public void tearDown() throws SQLException {
-        Connections.close();
-    }
+    @AfterClass
+    public static void tearDownClass() throws SQLException {
+        Connection conn = Connections.getConnection();        
+        Statement stmt = conn.createStatement();
+        stmt.execute("drop table companies");
+        stmt.close();
+        Connections.close();    }
     
-    private int iterations = 1000000;
     
     @Test
     public void JDBC() throws SQLException {
         Connection conn = Connections.getConnection();        
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement("select name from survey where id = ?");
+            PreparedStatement stmt = conn.prepareStatement("select name from companies where id = ?");
             try {
-                stmt.setInt(1, 1);
+                stmt.setInt(1, i);
                 ResultSet rs = stmt.executeQuery();                
                 try {
                     while (rs.next()) {
@@ -54,31 +67,68 @@ public class QueryPerformanceTest {
                 stmt.close();
             }            
         }
-        System.err.println("jdbc " + (System.currentTimeMillis() - start));    
-                
+        System.err.println("jdbc by id " + (System.currentTimeMillis() - start));                    
     }
     
     @Test
-    public void Querydsl() {
+    public void JDBC2() throws SQLException {
+        Connection conn = Connections.getConnection();        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            PreparedStatement stmt = conn.prepareStatement("select id from companies where name = ?");
+            try {
+                stmt.setString(1, String.valueOf(i));
+                ResultSet rs = stmt.executeQuery();                
+                try {
+                    while (rs.next()) {
+                        rs.getString(1);
+                    }
+                } finally {
+                    rs.close();
+                }
+                
+            } finally {
+                stmt.close();
+            }            
+        }
+        System.err.println("jdbc by name " + (System.currentTimeMillis() - start));                    
+    }
+    
+    @Test
+    public void Querydsl1() {
         Connection conn = Connections.getConnection();        
         Configuration conf = new Configuration(new H2Templates());
         
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
-            QSurvey survey = QSurvey.survey;
+            QCompanies companies = QCompanies.companies;
             SQLQuery query = new SQLQueryImpl(conn, conf);
-            query.from(survey).where(survey.id.eq(1)).list(survey.name);            
+            query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
         }
-        System.err.println("qdsl " + (System.currentTimeMillis() - start));    
+        System.err.println("qdsl by id " + (System.currentTimeMillis() - start));    
+    }
+    
+    @Test
+    public void Querydsl2() {
+        Connection conn = Connections.getConnection();        
+        Configuration conf = new Configuration(new H2Templates());
+        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {            
+            QCompanies companies = QCompanies.companies;
+            SQLQuery query = new SQLQueryImpl(conn, conf);
+            query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
+        }
+        System.err.println("qdsl by name " + (System.currentTimeMillis() - start));    
     }
     
     @Test
     public void Serialization() {
-        QSurvey survey = QSurvey.survey;
+        QCompanies companies = QCompanies.companies;
         QueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, survey);
-        md.addWhere(survey.id.eq(1));
-        md.addProjection(survey.name);
+        md.addJoin(JoinType.DEFAULT, companies);
+        md.addWhere(companies.id.eq(1l));
+        md.addProjection(companies.name);
         
         SQLTemplates templates = new H2Templates();
         
@@ -95,11 +145,11 @@ public class QueryPerformanceTest {
     
     @Test
     public void Serialization2() {
-        QSurvey survey = QSurvey.survey;
+        QCompanies companies = QCompanies.companies;
         QueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, survey);
-        md.addWhere(survey.id.eq(1));
-        md.addProjection(survey.name);
+        md.addJoin(JoinType.DEFAULT, companies);
+        md.addWhere(companies.id.eq(1l));
+        md.addProjection(companies.name);
         
         SQLTemplates templates = new H2Templates();
         
