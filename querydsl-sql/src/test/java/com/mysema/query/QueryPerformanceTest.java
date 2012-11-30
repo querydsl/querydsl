@@ -4,11 +4,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.Configuration;
@@ -19,7 +19,6 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.QSurvey;
 
-@Ignore
 public class QueryPerformanceTest {
     
     @Before
@@ -42,7 +41,15 @@ public class QueryPerformanceTest {
             PreparedStatement stmt = conn.prepareStatement("select name from survey where id = ?");
             try {
                 stmt.setInt(1, 1);
-                stmt.executeQuery().close();    
+                ResultSet rs = stmt.executeQuery();                
+                try {
+                    while (rs.next()) {
+                        rs.getString(1);
+                    }
+                } finally {
+                    rs.close();
+                }
+                
             } finally {
                 stmt.close();
             }            
