@@ -338,7 +338,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 if (arg instanceof Operation && ((Operation)arg).getOperator() == Ops.DELEGATE) {
                     arg = ((Operation)arg).getArg(0);
                 }
-                if (arg instanceof Operation) {
+                if (arg instanceof Operation && args.size() > 1) {
                     wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
                 }
                 if (wrap) {

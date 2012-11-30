@@ -24,6 +24,7 @@ import org.junit.Test;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.Survey;
 import com.mysema.query.Tuple;
+import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
@@ -31,6 +32,15 @@ import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.path.PathBuilder;
 
 public class SQLSerializerTest {
+    
+    @Test
+    public void Some() {
+        //select some((e.FIRSTNAME is not null)) from EMPLOYEE 
+        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        QEmployee employee = QEmployee.employee;
+        serializer.handle(SQLExpressions.any(employee.firstname.isNotNull()));
+        assertEquals("some(EMPLOYEE.FIRSTNAME is not null)", serializer.toString());
+    }
 
     @Test
     public void StartsWith(){

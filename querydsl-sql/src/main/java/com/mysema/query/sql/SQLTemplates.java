@@ -202,8 +202,8 @@ public class SQLTemplates extends Templates {
         add(UNION, "{0}\nunion\n{1}");
         add(NEXTVAL, "nextval('{0s}')");
         
-        add(Ops.AggOps.BOOLEAN_ANY, "some({0})", 0);
-        add(Ops.AggOps.BOOLEAN_ALL, "every({0})", 0);
+        add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
+        add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
 
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
