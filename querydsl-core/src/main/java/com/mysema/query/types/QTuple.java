@@ -51,6 +51,16 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
         super(Tuple.class);
         this.args = Arrays.asList(args);
     }
+    
+    /**
+     * Create a new QTuple instance
+     * 
+     * @param args
+     */
+    public QTuple(List<Expression<?>> args) {
+        super(Tuple.class);
+        this.args = args;
+    }
 
     /**
      * Create a new QTuple instance

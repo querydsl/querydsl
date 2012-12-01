@@ -152,7 +152,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return query;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Tuple> list(Expression<?>[] projection) {
         return list(new QTuple(projection));

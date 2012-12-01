@@ -23,6 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.IndexColumn;
+
 /**
  * The Class Order.
  */
@@ -33,16 +35,19 @@ public class Order {
     Customer customer;
 
     @ElementCollection
+    @IndexColumn(name = "_index")
     List<Integer> deliveredItemIndices;
 
     @Id
     long id;
 
     @OneToMany
+    @IndexColumn(name = "_index")
     List<Item> items;
   
     @OneToMany
     @JoinTable(name = "LineItems")
+    @IndexColumn(name = "_index")
     List<Item> lineItems;
 
     boolean paid;

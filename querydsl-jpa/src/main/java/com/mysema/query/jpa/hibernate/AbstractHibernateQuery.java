@@ -183,7 +183,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
             if (expr instanceof FactoryExpression<?>) {
                 query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
             }
-        } else if (!forCount){
+        } else if (!forCount) {
             FactoryExpression<?> proj = FactoryExpressionUtils.wrap(projection);
             if (proj != null) {
                 query.setResultTransformer(new FactoryExpressionTransformer(proj));    

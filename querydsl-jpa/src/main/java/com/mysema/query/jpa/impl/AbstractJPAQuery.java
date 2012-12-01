@@ -188,6 +188,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             } else {
                 this.projection = (FactoryExpression<?>)projection.get(0);
                 if (wrapped != null) {
+                    this.projection = wrapped;
                     getMetadata().clearProjection();
                     getMetadata().addProjection(wrapped);
                 }

@@ -158,7 +158,7 @@ public class SQLTemplates extends Templates {
         
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
-        add(Ops.NOT, "not {0}", 3);
+        add(Ops.NOT, "not {0}", 35);
         add(Ops.OR, "{0} or {1}", 38);
         add(Ops.XNOR, "{0} xnor {1}", 39);
         add(Ops.XOR, "{0} xor {1}", 39);
@@ -167,7 +167,7 @@ public class SQLTemplates extends Templates {
         add(Ops.MathOps.RANDOM, "rand()");
         add(Ops.MathOps.CEIL, "ceiling({0})");
         add(Ops.MathOps.POWER, "power({0},{1})");
-        add(Ops.MOD, "mod({0},{1})", 0);
+        add(Ops.MOD, "mod({0},{1})", -1);
 
         // date time
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");

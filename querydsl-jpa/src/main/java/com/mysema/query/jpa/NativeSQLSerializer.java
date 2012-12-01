@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 
+import com.google.common.collect.Lists;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
@@ -30,6 +31,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.QTuple;
 
 /**
  * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change 
@@ -38,7 +40,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-public final class NativeSQLSerializer extends SQLSerializer{
+public final class NativeSQLSerializer extends SQLSerializer {
 
     private final List<Path<?>> entityPaths = new ArrayList<Path<?>>();
 
@@ -48,6 +50,7 @@ public final class NativeSQLSerializer extends SQLSerializer{
     
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
+        // TODO get rid of this wrapping when Hibernate doesn't require unique aliases anymore
         int size = metadata.getProjection().size();
         Expression<?>[] args = metadata.getProjection().toArray(new Expression<?>[size]);
         boolean modified = false;
@@ -59,7 +62,18 @@ public final class NativeSQLSerializer extends SQLSerializer{
                     args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
                     modified = true;    
                 }
-            } else if (!isAlias(args[i]) && !(args[i] instanceof FactoryExpression)) {    
+            } else if (args[i] instanceof FactoryExpression) {   
+                FactoryExpression<?> factoryExpr = (FactoryExpression<?>)args[i];
+                List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
+                for (int j = 0; j < fargs.size(); j++) {
+                    if (!isAlias(fargs.get(j)) && !fargs.get(j).toString().contains("*")) {
+                        fargs.set(j, ExpressionUtils.as(fargs.get(j), "col__"+(i+1)+"_"+(j+1)));
+                    }
+                }
+                args[i] = new QTuple(fargs);
+                modified = true;
+                
+            } else if (!isAlias(args[i])) {    
                 // https://github.com/mysema/querydsl/issues/80
                 if (!args[i].toString().contains("*")) {
                     args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
