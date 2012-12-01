@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -35,17 +34,17 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     private static final long serialVersionUID = -7684306954555037051L;
 
-    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, String template, Expression<?>... args) {
-        return new TimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, String template, Object... args) {
+        return new TimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
-    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, Template template, Expression<?>... args) {
-        return new TimeTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
+    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, Template template, Object... args) {
+        return new TimeTemplate<T>(type, template, Arrays.asList(args));
     }
 
     private final TemplateExpression<T> templateMixin;
 
-    public TimeTemplate(Class<T> type, Template template, List<Expression<?>> args) {
+    public TimeTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpression<T>)mixin;
     }

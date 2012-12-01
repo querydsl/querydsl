@@ -84,10 +84,10 @@ public class Templates {
         add(Ops.EQ_IGNORE_CASE, "eqIc({0},{1})", 18);
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
         add(Ops.NE, "{0} != {1}", 25);
-        add(Ops.IN, "{0} in {1}");
+        add(Ops.IN, "{0} in {1}", 27);
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
-        add(Ops.ALIAS, "{0} as {1}");
+        add(Ops.ALIAS, "{0} as {1}", 0);
         
         add(Ops.EXISTS, "exists({0})");
 
@@ -114,8 +114,8 @@ public class Templates {
         add(Ops.INDEX_OF, "indexOf({0},{1})");
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
-        add(Ops.LIKE, "{0} like {1}");
-        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'");
+        add(Ops.LIKE, "{0} like {1}", 26);
+        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", 26);
 
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");

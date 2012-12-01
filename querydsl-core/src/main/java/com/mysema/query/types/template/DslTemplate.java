@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -35,17 +34,17 @@ public class DslTemplate<T> extends DslExpression<T> implements TemplateExpressi
 
     private static final long serialVersionUID = -4697578522909045745L;
 
-    public static <T> DslExpression<T> create(Class<? extends T> type, String template, Expression<?>... args) {
-        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T> DslExpression<T> create(Class<? extends T> type, String template, Object... args) {
+        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
-    public static <T> DslExpression<T> create(Class<? extends T> type, Template template, Expression<?>... args) {
-        return new DslTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
+    public static <T> DslExpression<T> create(Class<? extends T> type, Template template, Object... args) {
+        return new DslTemplate<T>(type, template, Arrays.asList(args));
     }
 
     private final TemplateExpression<T> templateMixin;
 
-    public DslTemplate(Class<? extends T> type, Template template, List<Expression<?>> args) {
+    public DslTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpression<T>)mixin;
     }

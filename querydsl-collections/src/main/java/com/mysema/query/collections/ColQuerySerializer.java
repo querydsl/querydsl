@@ -126,12 +126,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                 } else if (element.isAsString()) {
                     append(args.get(element.getIndex()).toString());
                 } else {
-                    Object elem = args.get(element.getIndex());
-                    if (elem instanceof Expression) {
-                        handle((Expression)elem);
-                    } else {
-                        visitConstant(elem);
-                    }
+                    handle(args.get(element.getIndex()));                    
                 }
             }
         }

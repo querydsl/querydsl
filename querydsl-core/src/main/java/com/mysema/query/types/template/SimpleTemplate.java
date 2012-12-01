@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -35,17 +34,17 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
 
     private static final long serialVersionUID = -4697578522909045745L;
 
-    public static <T> SimpleExpression<T> create(Class<? extends T> type, String template, Expression<?>... args) {
-        return new SimpleTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T> SimpleExpression<T> create(Class<? extends T> type, String template, Object... args) {
+        return new SimpleTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
-    public static <T> SimpleExpression<T> create(Class<? extends T> type, Template template, Expression<?>... args) {
-        return new SimpleTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
+    public static <T> SimpleExpression<T> create(Class<? extends T> type, Template template, Object... args) {
+        return new SimpleTemplate<T>(type, template, Arrays.asList(args));
     }
 
     private final TemplateExpression<T> templateMixin;
 
-    public SimpleTemplate(Class<? extends T> type, Template template, List<Expression<?>> args) {
+    public SimpleTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpression<T>)mixin;
     }

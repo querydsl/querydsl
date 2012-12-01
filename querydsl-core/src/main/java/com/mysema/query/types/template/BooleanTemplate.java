@@ -34,11 +34,11 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     private static final long serialVersionUID = 5749369427497731719L;
 
     public static BooleanExpression create(String template, Object... args) {
-        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Object>asList(args));
+        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
     public static BooleanExpression create(Template template, Object... args) {
-        return new BooleanTemplate(template, Arrays.<Object>asList(args));
+        return new BooleanTemplate(template, Arrays.asList(args));
     }
     
     public static final BooleanExpression TRUE = create("true");

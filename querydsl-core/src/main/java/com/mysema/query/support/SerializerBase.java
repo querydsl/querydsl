@@ -13,15 +13,11 @@
  */
 package com.mysema.query.support;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
@@ -48,25 +44,7 @@ import com.mysema.query.types.Visitor;
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 
     private final StringBuilder builder = new StringBuilder();
-    
-    private static final String START = "\\b";
-    
-    private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
-    
-    private static final String WS = "\\s*";
-    
-    private static final Pattern OPERATOR = Pattern.compile(WS + "[+\\-/*]" + WS);
-    
-    private static final Pattern OPERATION = Pattern.compile(START + NUMBER + OPERATOR.pattern() + NUMBER);
-    
-    private static final Pattern ADDITION = Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER);
-    
-    private static final Pattern SUBTRACTION = Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER);
-    
-    private static final Pattern DIVISION = Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER);
-    
-    private static final Pattern MULTIPLICATION = Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER);
-    
+           
     private String constantPrefix = "a";
 
     private String paramPrefix = "p";
@@ -84,59 +62,6 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     private boolean normalize = true;
     
-    public static final String normalize(String queryString) {        
-        StringBuilder rv = null;
-        Matcher m = OPERATION.matcher(queryString);
-        int end = 0;
-        while (m.find()) {
-            if (rv == null) {
-                rv = new StringBuilder(queryString.length());
-            }            
-            if (m.start() > end) {
-                rv.append(queryString.subSequence(end, m.start()));
-            }
-            String str = queryString.substring(m.start(), m.end());
-            boolean add = ADDITION.matcher(str).matches();
-            boolean subtract = SUBTRACTION.matcher(str).matches();
-            boolean divide = DIVISION.matcher(str).matches();
-            boolean multiply = MULTIPLICATION.matcher(str).matches();
-            Matcher matcher = OPERATION.matcher(str);
-            matcher.matches();            
-            BigDecimal first = new BigDecimal(matcher.group(1));
-            BigDecimal second = new BigDecimal(matcher.group(2));
-            String result = null;
-            if (multiply) {
-                result = first.multiply(second).toString();
-            } else if (divide) {
-                result = first.divide(second, 10, RoundingMode.HALF_UP).toString();                    
-            } else if (subtract) {
-                result = first.subtract(second).toString();
-            } else if (add) {
-                result = first.add(second).toString();
-            } else {
-                throw new IllegalStateException("Unsupported expression " + str);
-            }
-            while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
-                result = result.substring(0, result.length()-1);
-            }
-            rv.append(result); 
-            end = m.end();
-        }
-        if (end > 0) {
-            if (end < queryString.length()) {
-                rv.append(queryString.substring(end));
-            }
-            if (rv.toString().equals(queryString)) {
-                return rv.toString();
-            } else {
-                return normalize(rv.toString());
-            }    
-        } else {
-            return queryString;
-        }
-        
-    }
-
     public SerializerBase(Templates templates) {
         this(templates, false);
     }
@@ -181,6 +106,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return templates.getTemplate(op);
     }
 
+    public final S handle(Expression<?> expr) {
+        expr.accept(this, null);
+        return self;
+    }
+    
     public final S handle(Object arg) {
         if (arg instanceof Expression) {
             ((Expression)arg).accept(this, null);
@@ -215,12 +145,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             } else if (element.hasConverter()) {
                 handle(element.convert(args.get(element.getIndex())));
             } else {
-                Object arg = args.get(element.getIndex());
-                if (arg instanceof Expression) {
-                    handle((Expression)arg);    
-                } else {
-                    visitConstant(arg);
-                }                
+                handle(args.get(element.getIndex()));                               
             }
         }
     }
@@ -266,7 +191,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     @Override
     public String toString() {
         if (normalize) {
-            return normalize(builder.toString());    
+            return Normalization.normalize(builder.toString());    
         } else {
             return builder.toString();
         }        
@@ -360,7 +285,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 if (element.hasConverter()) {
                     handle(element.convert(arg));
                 } else {
-                    handle((Expression)arg);
+                    handle(arg);
                 } 
                 if (wrap) {
                     append(")");

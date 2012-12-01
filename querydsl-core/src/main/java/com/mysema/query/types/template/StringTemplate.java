@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -34,17 +33,17 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     private static final long serialVersionUID = 3181686132439356614L;
 
-    public static StringExpression create(String template, Expression<?>... args) {
-        return new StringTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static StringExpression create(String template, Object... args) {
+        return new StringTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
-    public static StringExpression create(Template template, Expression<?>... args) {
-        return new StringTemplate(template, Arrays.<Expression<?>>asList(args));
+    public static StringExpression create(Template template, Object... args) {
+        return new StringTemplate(template, Arrays.asList(args));
     }
 
     private final TemplateExpression<String> templateMixin;
 
-    public StringTemplate(Template template, List<Expression<?>> args) {
+    public StringTemplate(Template template, List<?> args) {
         super(new TemplateExpressionImpl<String>(String.class, template, args));
         this.templateMixin = (TemplateExpression<String>)mixin;
     }

@@ -16,7 +16,6 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -35,12 +34,12 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     private static final long serialVersionUID = 351057421752203377L;
 
-    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, String template, Expression<?>... args) {
-        return new NumberTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, String template, Object... args) {
+        return new NumberTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
-    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, Template template, Expression<?>... args) {
-        return new NumberTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
+    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, Template template, Object... args) {
+        return new NumberTemplate<T>(type, template, Arrays.asList(args));
     }
 
     public static final NumberExpression<Integer> ONE = create(Integer.class, "1");
@@ -53,7 +52,7 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     private final TemplateExpression<T> templateMixin;
 
-    public NumberTemplate(Class<T> type, Template template, List<Expression<?>> args) {
+    public NumberTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpression<T>)mixin;
     }

@@ -20,11 +20,13 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.expr.StringExpression;
 
+@Ignore
 public class PathMetadataTest {
 
     @Before
@@ -36,7 +38,7 @@ public class PathMetadataTest {
     }
 
     @SuppressWarnings("unchecked")
-    @Test
+    @Test    
     public void test() throws Exception{
         Field field = ConstantImpl.class.getDeclaredField("STRINGS");
         field.setAccessible(true);

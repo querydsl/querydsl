@@ -120,29 +120,29 @@ public final class Expressions {
         }
     }
     
-    public static <T> SimpleExpression<T> template(Class<T> cl, String template, Expression<?>... args) {
+    public static <T> SimpleExpression<T> template(Class<T> cl, String template, Object... args) {
         return SimpleTemplate.create(cl, template, args);
     }
     
-    public static <T> DslExpression<T> dslTemplate(Class<T> cl, String template, Expression<?>... args) {
+    public static <T> DslExpression<T> dslTemplate(Class<T> cl, String template, Object... args) {
         return DslTemplate.create(cl, template, args);
     }
     
     public static <T extends Comparable<?>> ComparableExpression<T> comparableTemplate(Class<T> cl, 
-            String template, Expression<?>... args) {
+            String template, Object... args) {
         return ComparableTemplate.create(cl, template, args);
     }
     
     public static <T extends Number & Comparable<?>> NumberExpression<T> numberTemplate(Class<T> cl, 
-            String template, Expression<?>... args) {
+            String template, Object... args) {
         return NumberTemplate.create(cl, template, args);
     }
     
-    public static StringExpression stringTemplate(String template, Expression<?>... args) {
+    public static StringExpression stringTemplate(String template, Object... args) {
         return StringTemplate.create(template, args);
     }
     
-    public static BooleanExpression booleanTemplate(String template, Expression<?>... args) {
+    public static BooleanExpression booleanTemplate(String template, Object... args) {
         return BooleanTemplate.create(template, args);
     }
     
