@@ -31,7 +31,7 @@ import com.mysema.query.types.expr.DateExpression;
  *
  * @param <T> expression type
  */
-public final class DateSubQuery<T extends Comparable<?>> extends DateExpression<T> implements ExtendedSubQueryExpression<T>{
+public final class DateSubQuery<T extends Comparable<?>> extends DateExpression<T> implements ExtendedSubQueryExpression<T> {
 
     private static final long serialVersionUID = -64156984110154969L;
 

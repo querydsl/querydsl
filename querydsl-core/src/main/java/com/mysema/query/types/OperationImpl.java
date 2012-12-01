@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @param <T> expression type
  */
-public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T>{
+public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> {
 
     private static final long serialVersionUID = 4796432056083507588L;
 

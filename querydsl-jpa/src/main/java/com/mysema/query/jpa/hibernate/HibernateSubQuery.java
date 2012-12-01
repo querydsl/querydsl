@@ -23,7 +23,7 @@ import com.mysema.query.jpa.JPQLCommonQuery;
  * @author tiwe
  *
  */
-public final class HibernateSubQuery extends AbstractJPQLSubQuery<HibernateSubQuery> implements JPQLCommonQuery<HibernateSubQuery>{
+public final class HibernateSubQuery extends AbstractJPQLSubQuery<HibernateSubQuery> implements JPQLCommonQuery<HibernateSubQuery> {
 
     public HibernateSubQuery() {
         super();

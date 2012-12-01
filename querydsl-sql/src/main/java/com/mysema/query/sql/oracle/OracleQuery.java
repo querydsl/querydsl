@@ -31,7 +31,7 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  */
-public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements SQLCommonQuery<OracleQuery>{    
+public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements SQLCommonQuery<OracleQuery> {    
 
     private static final String CONNECT_BY = "\nconnect by ";
 

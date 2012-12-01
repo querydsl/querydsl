@@ -26,7 +26,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public class JDOQueryFactory implements QueryFactory<JDOQLQuery, JDOQLSubQuery>{
+public class JDOQueryFactory implements QueryFactory<JDOQLQuery, JDOQLSubQuery> {
 
     private final Provider<PersistenceManager> persistenceManager;
 

@@ -19,10 +19,10 @@ import java.sql.Types;
 
 /**
  * @author tiwe
- *
+ * 
  */
-public class DoubleType extends AbstractNumberType<Double>{
-    
+public class DoubleType extends AbstractNumberType<Double> {
+
     public DoubleType() {
         super(Types.DOUBLE);
     }

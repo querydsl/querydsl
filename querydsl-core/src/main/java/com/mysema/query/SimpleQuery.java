@@ -26,7 +26,7 @@ import com.mysema.query.types.ParamExpression;
  * @param <Q> concrete subtype
  * @see Query
  */
-public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>{
+public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q> {
 
     /**
      * Defines the limit / max results for the query results

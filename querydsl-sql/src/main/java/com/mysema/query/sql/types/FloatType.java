@@ -21,7 +21,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class FloatType extends AbstractNumberType<Float>{
+public class FloatType extends AbstractNumberType<Float> {
 
     public FloatType() {
         super(Types.FLOAT);

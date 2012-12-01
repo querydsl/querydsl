@@ -43,7 +43,7 @@ import com.mysema.query.types.template.BooleanTemplate;
  * @author tiwe
  *
  */
-public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
+public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     
     public static final ListAccessVisitor DEFAULT = new ListAccessVisitor();
     

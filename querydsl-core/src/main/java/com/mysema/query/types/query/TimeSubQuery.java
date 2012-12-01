@@ -31,7 +31,7 @@ import com.mysema.query.types.expr.TimeExpression;
  *
  * @param <T> expression type
  */
-public final class TimeSubQuery<T extends Comparable<?>> extends TimeExpression<T> implements ExtendedSubQueryExpression<T>{
+public final class TimeSubQuery<T extends Comparable<?>> extends TimeExpression<T> implements ExtendedSubQueryExpression<T> {
 
     private static final long serialVersionUID = -64156984110154969L;
 

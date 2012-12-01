@@ -50,7 +50,7 @@ import com.mysema.query.types.template.BooleanTemplate;
  * @author tiwe
  *
  */
-public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
+public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
     
     public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
     

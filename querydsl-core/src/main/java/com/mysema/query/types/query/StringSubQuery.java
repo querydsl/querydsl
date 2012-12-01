@@ -29,7 +29,7 @@ import com.mysema.query.types.expr.StringExpression;
  *
  * @author tiwe
  */
-public final class StringSubQuery extends StringExpression implements ExtendedSubQueryExpression<String>{
+public final class StringSubQuery extends StringExpression implements ExtendedSubQueryExpression<String> {
 
     private static final long serialVersionUID = -64156984110154969L;
 

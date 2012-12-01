@@ -33,7 +33,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * @author tiwe
  *
  */
-public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery>{
+public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery> {
 
     public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

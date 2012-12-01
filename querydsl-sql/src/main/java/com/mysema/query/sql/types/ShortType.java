@@ -21,7 +21,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class ShortType extends AbstractNumberType<Short>{
+public class ShortType extends AbstractNumberType<Short> {
 
     public ShortType() {
         super(Types.SMALLINT);

@@ -22,7 +22,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class CharacterType extends AbstractType<Character>{
+public class CharacterType extends AbstractType<Character> {
     
     public CharacterType() {
         super(Types.CHAR);

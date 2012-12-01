@@ -22,7 +22,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class StringType extends AbstractType<String>{
+public class StringType extends AbstractType<String> {
 
     public StringType() {
         super(Types.VARCHAR);

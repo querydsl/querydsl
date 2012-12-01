@@ -34,7 +34,7 @@ import com.mysema.query.types.Predicate;
  *
  * @param <T> type of entity
  */
-public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectableAdapter<T>>, SimpleProjectable<T>{
+public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectableAdapter<T>>, SimpleProjectable<T> {
 
     private final Projectable projectable;
 

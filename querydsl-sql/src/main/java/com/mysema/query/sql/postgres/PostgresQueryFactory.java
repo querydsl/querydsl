@@ -28,7 +28,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class PostgresQueryFactory extends AbstractSQLQueryFactory<PostgresQuery>{
+public class PostgresQueryFactory extends AbstractSQLQueryFactory<PostgresQuery> {
 
     public PostgresQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

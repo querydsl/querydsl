@@ -40,7 +40,7 @@ import com.mysema.query.types.expr.SimpleOperation;
  *
  * @param <T> expression type
  */
-public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> implements ExtendedSubQueryExpression<List<T>>{
+public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> implements ExtendedSubQueryExpression<List<T>> {
 
     private static final long serialVersionUID = 3399354334765602960L;
 

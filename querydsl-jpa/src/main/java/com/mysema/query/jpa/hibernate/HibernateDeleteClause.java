@@ -35,7 +35,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause>{
+public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause> {
 
     private final QueryMetadata md = new DefaultQueryMetadata();
 

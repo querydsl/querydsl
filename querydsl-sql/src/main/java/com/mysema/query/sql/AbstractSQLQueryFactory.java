@@ -30,7 +30,7 @@ import com.mysema.query.types.Expression;
  *
  */
 public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLQueryFactory<Q, SQLSubQuery, 
-    SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
+    SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
     
     protected final Configuration configuration;
 

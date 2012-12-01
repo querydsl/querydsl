@@ -24,7 +24,7 @@ import com.mysema.commons.lang.Assert;
  *
  * @param <T> expression type
  */
-public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamExpression<T>{
+public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamExpression<T> {
 
     private static final long serialVersionUID = -6872502615009012503L;
 

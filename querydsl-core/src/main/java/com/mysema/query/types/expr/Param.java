@@ -24,7 +24,7 @@ import com.mysema.query.types.Visitor;
  *
  * @param <T> expression type
  */
-public class Param<T> extends SimpleExpression<T> implements ParamExpression<T>{
+public class Param<T> extends SimpleExpression<T> implements ParamExpression<T> {
 
     private static final long serialVersionUID = -6872502615009012503L;
 

@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author tiwe
  */
-public interface Operation<T> extends Expression<T>{
+public interface Operation<T> extends Expression<T> {
 
     /**
      * Get the argument with the given index

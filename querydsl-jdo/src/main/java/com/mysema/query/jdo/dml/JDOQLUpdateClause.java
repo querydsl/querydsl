@@ -30,7 +30,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
+public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 

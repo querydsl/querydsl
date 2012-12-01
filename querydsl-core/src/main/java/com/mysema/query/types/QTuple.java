@@ -36,7 +36,7 @@ import com.mysema.query.Tuple;
  * @author tiwe
  *
  */
-public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple>{
+public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
 
     private static final long serialVersionUID = -2640616030595420465L;
 

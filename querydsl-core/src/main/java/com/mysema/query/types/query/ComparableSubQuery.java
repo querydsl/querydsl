@@ -32,7 +32,7 @@ import com.mysema.query.types.expr.ComparableExpression;
  * @param <T> expression type
  *
  */
-public final class ComparableSubQuery<T extends Comparable<?>> extends ComparableExpression<T> implements ExtendedSubQueryExpression<T>{
+public final class ComparableSubQuery<T extends Comparable<?>> extends ComparableExpression<T> implements ExtendedSubQueryExpression<T> {
 
     private static final long serialVersionUID = -64156984110154969L;
 

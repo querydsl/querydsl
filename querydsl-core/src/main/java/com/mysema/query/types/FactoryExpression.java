@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> type of projection
  */
-public interface FactoryExpression<T> extends Expression<T>{
+public interface FactoryExpression<T> extends Expression<T> {
     
     /**
      * Get the invocation arguments

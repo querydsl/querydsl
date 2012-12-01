@@ -23,7 +23,7 @@ import com.google.common.base.Function;
  *
  * @author vema
  */
-public class LuceneQuery extends AbstractLuceneQuery<Document, LuceneQuery>{
+public class LuceneQuery extends AbstractLuceneQuery<Document, LuceneQuery> {
     
     private static final Function<Document,Document> TRANSFORMER = new Function<Document,Document>() {
         @Override

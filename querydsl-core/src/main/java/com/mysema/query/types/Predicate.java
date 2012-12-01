@@ -19,7 +19,7 @@ package com.mysema.query.types;
  * @author tiwe
  *
  */
-public interface Predicate extends Expression<Boolean>{
+public interface Predicate extends Expression<Boolean> {
     
     /**
      * Get the negation of the expression

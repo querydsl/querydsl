@@ -18,7 +18,7 @@ package com.mysema.query.types;
  *
  * @author tiwe
  */
-public final class ToStringVisitor implements Visitor<String,Templates>{
+public final class ToStringVisitor implements Visitor<String,Templates> {
     
     public static final ToStringVisitor DEFAULT = new ToStringVisitor();
 

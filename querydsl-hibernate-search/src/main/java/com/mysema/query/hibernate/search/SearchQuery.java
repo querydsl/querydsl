@@ -43,7 +43,7 @@ import com.mysema.query.types.Predicate;
  *
  * @param <T>
  */
-public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjectable<T>{
+public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjectable<T> {
 
     private final EntityPath<T> path;
 

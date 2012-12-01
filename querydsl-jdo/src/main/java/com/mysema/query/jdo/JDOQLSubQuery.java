@@ -27,7 +27,7 @@ import com.mysema.query.types.query.NumberSubQuery;
  * @author tiwe
  *
  */
-public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery> implements JDOQLCommonQuery<JDOQLSubQuery>{
+public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery> implements JDOQLCommonQuery<JDOQLSubQuery> {
     
     public JDOQLSubQuery() {
         super();

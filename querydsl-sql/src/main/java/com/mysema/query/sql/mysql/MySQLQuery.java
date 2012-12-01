@@ -35,7 +35,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @see SQLQuery
  *
  */
-public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommonQuery<MySQLQuery>{
+public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommonQuery<MySQLQuery> {
     
     private static final String WITH_ROLLUP = "\nwith rollup ";
 

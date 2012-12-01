@@ -25,7 +25,7 @@ import com.mysema.query.types.query.Detachable;
  *
  * @param <T> return type of subquery
  */
-public interface SubQueryExpression<T> extends Expression<T>{
+public interface SubQueryExpression<T> extends Expression<T> {
 
     /**
      * Get the query metadata for the subquery

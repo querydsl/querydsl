@@ -25,7 +25,7 @@ import com.mysema.query.types.PathMetadata;
  *
  * @param <T> entity type
  */
-public class EntityPathBase<T> extends BeanPath<T> implements EntityPath<T>{
+public class EntityPathBase<T> extends BeanPath<T> implements EntityPath<T> {
 
     private static final long serialVersionUID = -8610055828414880996L;
 

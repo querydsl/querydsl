@@ -28,7 +28,7 @@ import com.mysema.query.types.expr.BooleanOperation;
  *
  * @author tiwe
  */
-public final class BooleanSubQuery extends BooleanExpression implements ExtendedSubQueryExpression<Boolean>{
+public final class BooleanSubQuery extends BooleanExpression implements ExtendedSubQueryExpression<Boolean> {
 
     private static final long serialVersionUID = -64156984110154969L;
 

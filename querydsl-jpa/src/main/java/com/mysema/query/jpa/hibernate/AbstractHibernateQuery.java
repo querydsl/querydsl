@@ -53,7 +53,7 @@ import com.mysema.query.types.QTuple;
  *
  * @param <Q>
  */
-public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends JPQLQueryBase<Q>{
+public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends JPQLQueryBase<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 

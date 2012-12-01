@@ -33,7 +33,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @see SQLQuery
  *
  */
-public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> implements SQLCommonQuery<PostgresQuery>{
+public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> implements SQLCommonQuery<PostgresQuery> {
     
     public PostgresQuery(Connection conn) {
         this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());

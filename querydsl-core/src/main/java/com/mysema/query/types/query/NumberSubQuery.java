@@ -31,7 +31,7 @@ import com.mysema.query.types.expr.NumberExpression;
  *
  * @param <T> expression type
  */
-public final class NumberSubQuery<T extends Number & Comparable<?>> extends NumberExpression<T> implements ExtendedSubQueryExpression<T>{
+public final class NumberSubQuery<T extends Number & Comparable<?>> extends NumberExpression<T> implements ExtendedSubQueryExpression<T> {
 
     private static final long serialVersionUID = -64156984110154969L;
 

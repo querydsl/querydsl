@@ -20,7 +20,7 @@ package com.mysema.query.types;
  *
  * @param <T> constant type
  */
-public interface Constant<T> extends Expression<T>{
+public interface Constant<T> extends Expression<T> {
 
     /**
      * Get the constant

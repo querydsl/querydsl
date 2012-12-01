@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> expression type
  */
-public abstract class ExpressionBase<T> implements Expression<T>{
+public abstract class ExpressionBase<T> implements Expression<T> {
 
     private static final long serialVersionUID = -8862014178653364345L;
 

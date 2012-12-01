@@ -33,7 +33,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
+public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 

@@ -55,7 +55,7 @@ import com.mysema.query.types.expr.Param;
  * @author tiwe
  *
  */
-public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements StoreClause<SQLMergeClause>{
+public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements StoreClause<SQLMergeClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 

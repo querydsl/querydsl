@@ -30,7 +30,7 @@ import com.mysema.query.types.expr.TimeExpression;
  * @param <T> expression type
  */
 @SuppressWarnings({"unchecked"})
-public class TimePath<T extends Comparable> extends TimeExpression<T> implements Path<T>{
+public class TimePath<T extends Comparable> extends TimeExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = -1432775001949467763L;
 

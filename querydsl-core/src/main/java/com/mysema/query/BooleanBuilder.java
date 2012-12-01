@@ -43,7 +43,7 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  */
-public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boolean>{
+public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boolean> {
 
     private static final long serialVersionUID = -4129485177345542519L;
 

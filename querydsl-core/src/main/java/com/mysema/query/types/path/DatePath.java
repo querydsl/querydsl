@@ -30,7 +30,7 @@ import com.mysema.query.types.expr.DateExpression;
  * @param <T> expression type
  */
 @SuppressWarnings({"unchecked"})
-public class DatePath<T extends Comparable> extends DateExpression<T> implements Path<T>{
+public class DatePath<T extends Comparable> extends DateExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = -6030609920388740246L;
 

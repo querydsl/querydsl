@@ -20,7 +20,7 @@ package com.mysema.query.types;
  *
  * @param <T> expression type
  */
-public interface ParamExpression<T> extends Expression<T>{
+public interface ParamExpression<T> extends Expression<T> {
 
     /**
      * Get the name of the parameter

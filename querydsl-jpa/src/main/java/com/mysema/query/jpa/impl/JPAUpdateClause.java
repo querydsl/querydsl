@@ -38,7 +38,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
+public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 

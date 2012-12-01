@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
  *
  * @author tiwe
  */
-public interface Visitor<R,C>{
+public interface Visitor<R,C> {
 
     /**
      * @param expr

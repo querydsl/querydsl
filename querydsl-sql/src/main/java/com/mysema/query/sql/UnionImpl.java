@@ -30,7 +30,7 @@ import com.mysema.query.types.Predicate;
  * @param <Q>
  * @param <RT>
  */
-public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT>{
+public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT> {
     
     private final Q query;
     

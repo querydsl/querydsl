@@ -28,7 +28,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuery>{
+public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuery> {
 
     public SQLServerQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

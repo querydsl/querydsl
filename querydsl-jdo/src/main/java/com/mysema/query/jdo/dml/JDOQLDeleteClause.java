@@ -35,7 +35,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
+public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
