@@ -227,7 +227,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         if (expr.getType().equals(ObjectId.class)){
             return "_id";
         } else {
-            return metadata.getName();    
+            return metadata.getElement().toString();    
         }        
     }
 
