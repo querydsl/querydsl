@@ -48,11 +48,11 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
 
     private static final Map<Path<?>, String> pathToProperty = Collections.synchronizedMap(new HashMap<Path<?>, String>());
 
-    private static Class<?> RelationalPathClass = null;
+    private static Class<?> relationalPathClass = null;
 
     static {
         try {
-            RelationalPathClass = Class.forName("com.mysema.query.sql.RelationalPath");
+            relationalPathClass = Class.forName("com.mysema.query.sql.RelationalPath");
         } catch (ClassNotFoundException e) {
             // do nothing
         }
@@ -88,8 +88,8 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                 Path<?> path = (Path<?>)expr;
                 String property;
                 if (path.getMetadata().getParent() != null
-                   && RelationalPathClass != null
-                   && RelationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())) {
+                   && relationalPathClass != null
+                   && relationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())) {
                     property = resolvePropertyViaFields(path);
                 } else {
                     property = path.getMetadata().getName();

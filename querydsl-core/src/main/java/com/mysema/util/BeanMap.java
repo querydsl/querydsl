@@ -264,19 +264,6 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     }
 
     /**
-     * Returns true if the bean defines a property whose current value is
-     * the given object.
-     *
-     * @param value the value to check
-     * @return false  true if the bean has at least one property whose
-     *         current value is that object, false otherwise
-     */
-    public boolean containsValue(Object value) {
-        // use default implementation
-        return super.containsValue(value);
-    }
-
-    /**
      * Returns the value of the bean's property with the given name.
      * <p/>
      * The given name must be a {@link String} and must not be

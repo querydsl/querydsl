@@ -58,4 +58,6 @@ public final class Conversions {
         return expr instanceof Operation && ((Operation)expr).getOperator() == Ops.AggOps.COUNT_AGG;
     }
     
+    private Conversions() {}
+    
 }
