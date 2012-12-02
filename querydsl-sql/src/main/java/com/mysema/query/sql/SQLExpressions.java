@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
