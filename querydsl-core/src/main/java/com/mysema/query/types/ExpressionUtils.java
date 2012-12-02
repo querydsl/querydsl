@@ -19,6 +19,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
+
 
 /**
  * ExpressionUtils provides utilities for constructing common operation instances. This class is 
@@ -156,8 +159,8 @@ public final class ExpressionUtils {
      * @param source
      * @return
      */
-    public static Expression<Long> count(Expression<?> source){
-        return OperationImpl.create(Long.class, Ops.AggOps.COUNT_AGG, source);
+    public static NumberExpression<Long> count(Expression<?> source){
+    	return NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, source);
     }
     
     /**
