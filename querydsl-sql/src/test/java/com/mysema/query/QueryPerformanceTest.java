@@ -129,6 +129,20 @@ public class QueryPerformanceTest {
     }
     
     @Test
+    public void Querydsl13() {
+        Connection conn = Connections.getConnection();        
+        Configuration conf = new Configuration(new H2Templates());
+        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {            
+            QCompanies companies = QCompanies.companies;
+            SQLQuery query = new SQLQueryImpl(conn, conf, new DefaultQueryMetadata().noValidate());
+            query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
+        }
+        System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (no validation)");    
+    }
+    
+    @Test
     public void Querydsl2() {
         Connection conn = Connections.getConnection();        
         Configuration conf = new Configuration(new H2Templates());
@@ -161,6 +175,20 @@ public class QueryPerformanceTest {
             }                       
         }
         System.err.println("qdsl by name " + (System.currentTimeMillis() - start) + " (iterated)");    
+    }
+    
+    @Test
+    public void Querydsl23() {
+        Connection conn = Connections.getConnection();        
+        Configuration conf = new Configuration(new H2Templates());
+        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {            
+            QCompanies companies = QCompanies.companies;
+            SQLQuery query = new SQLQueryImpl(conn, conf, new DefaultQueryMetadata().noValidate());
+            query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
+        }
+        System.err.println("qdsl by name " + (System.currentTimeMillis() - start) + " (no validation)");    
     }
     
     @Test
