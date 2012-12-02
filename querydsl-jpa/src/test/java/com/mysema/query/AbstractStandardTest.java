@@ -946,8 +946,15 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    public void Sum_as_Float2() {
+        float val = query().from(cat).uniqueResult(cat.floatProperty.sum().negate());
+        assertTrue(val < 0);
+    }
+    
+    @Test
     public void Sum_Coalesce() {
-        query().from(cat).uniqueResult(cat.weight.sum().coalesce(0));
+        int val = query().from(cat).uniqueResult(cat.weight.sum().coalesce(0));
+        assertTrue(val == 0);
     }
         
     @Test

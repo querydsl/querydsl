@@ -77,7 +77,6 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
      *
      * @return
      */
-    @SuppressWarnings("unchecked")
     public DslExpression<T> as(Path<T> alias) {
         return DslOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
     }
@@ -138,7 +137,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     }
 
     private Expression<?> getExpressionList(){
-        return ExpressionUtils.list(exprs);
+        return ExpressionUtils.list(getType(), exprs);
     }
     
     @Override

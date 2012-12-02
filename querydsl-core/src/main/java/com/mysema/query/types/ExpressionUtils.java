@@ -278,8 +278,8 @@ public final class ExpressionUtils {
      * @param exprs
      * @return
      */
-    public static Expression<?> list(Expression<?>... exprs) {
-        return list(Arrays.asList(exprs));
+    public static <T> Expression<T> list(Class<T> clazz, Expression<?>... exprs) {
+        return list(clazz, Arrays.asList(exprs));
     }
     
 
@@ -287,10 +287,10 @@ public final class ExpressionUtils {
      * @param exprs
      * @return
      */
-    public static Expression<?> list(List<? extends Expression<?>> exprs) {
-        Expression<?> rv = exprs.get(0);
+    public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
+        Expression<T> rv = (Expression)exprs.get(0);
         for (int i = 1; i < exprs.size(); i++) {
-            rv = OperationImpl.create(Object.class, Ops.LIST, rv, exprs.get(i));
+            rv = OperationImpl.create(clazz, Ops.LIST, rv, exprs.get(i));
         }
         return rv;
     }    
