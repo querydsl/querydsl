@@ -47,6 +47,18 @@ public class SQLTemplatesTest {
     }
     
     @Test
+    public void Quoting_Performance() {
+        // 385 -> 63
+        SQLTemplates templates = new H2Templates();
+        long start = System.currentTimeMillis();
+        int iterations = 1000000;
+        for (int i = 0; i < iterations; i++) {
+            templates.quoteIdentifier("companies");
+        }
+        System.err.println(System.currentTimeMillis() - start);
+    }
+    
+    @Test
     public void NextVal() {
         Operation<String> nextval = new OperationImpl<String>(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("nextval('myseq')", new SQLSerializer(SQLTemplates.DEFAULT).handle(nextval).toString());

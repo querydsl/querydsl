@@ -480,8 +480,14 @@ public class SQLTemplates extends Templates {
     }
 
     protected boolean requiresQuotes(String identifier) {
-//        return IDENTIFIER_CHARS.matcher(identifier).matches();
-        return QUOTED_CHARS.matcher(identifier).find();
+        for (int i = 0; i < identifier.length(); i++) {
+            char ch = identifier.charAt(i);
+            //0-9,a-z,A-Z
+            if (ch < '0' || (ch > '9' && ch < 'A') || (ch > 'Z' && ch < 'a') || ch > 'z') {
+                return true;
+            }            
+        }
+        return false;
     }
     
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
