@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinType;
@@ -45,9 +44,6 @@ public class SQLTemplates extends Templates {
     public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("NEXTVAL", String.class);
     
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
-    
-//    private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
-    private static final Pattern QUOTED_CHARS = Pattern.compile("[^\\w-]");
     
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
