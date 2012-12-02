@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.google.common.primitives.Primitives;
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -47,7 +46,8 @@ public class SQLTemplates extends Templates {
     
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
-    private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
+//    private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
+    private static final Pattern QUOTED_CHARS = Pattern.compile("[^\\w-]");
     
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
@@ -153,7 +153,7 @@ public class SQLTemplates extends Templates {
     
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
-        this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
+        this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
         
         // boolean
@@ -480,7 +480,8 @@ public class SQLTemplates extends Templates {
     }
 
     protected boolean requiresQuotes(String identifier) {
-        return !IDENTIFIER_CHARS.matcher(identifier).matches();
+//        return IDENTIFIER_CHARS.matcher(identifier).matches();
+        return QUOTED_CHARS.matcher(identifier).find();
     }
     
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {

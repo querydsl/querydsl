@@ -61,7 +61,7 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
         super(new PathImpl<E[]>((Class)type, metadata));
         this.pathMixin = (Path<E[]>)mixin;
-        this.componentType = (Class<E>) Assert.notNull(type.getComponentType(),"componentType");
+        this.componentType = (Class<E>)type.getComponentType();
     }
 
     @Override

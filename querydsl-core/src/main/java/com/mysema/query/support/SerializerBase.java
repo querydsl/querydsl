@@ -67,7 +67,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
     
     public SerializerBase(Templates templates, boolean dry) {
-        this.templates = Assert.notNull(templates,"templates");
+        this.templates = templates;
         this.dry = dry;
     }
     

@@ -355,7 +355,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
-            PreparedStatement stmt = Assert.notNull(conn, "connection").prepareStatement(queryString);
+            PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
             ResultSet rs = stmt.executeQuery();
 
@@ -531,7 +531,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = Assert.notNull(conn, "connection").prepareStatement(queryString);
+            stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();

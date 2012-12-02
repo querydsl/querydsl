@@ -108,8 +108,8 @@ public class QueryFlag implements Serializable{
     }
     
     public QueryFlag(Position position, Expression<?> flag) {
-        this.position = Assert.notNull(position,"position");
-        this.flag = Assert.notNull(flag,"flag");        
+        this.position = position;
+        this.flag = flag;        
     }
 
     public Position getPosition() {

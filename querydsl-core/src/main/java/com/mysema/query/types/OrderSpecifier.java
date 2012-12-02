@@ -15,15 +15,12 @@ package com.mysema.query.types;
 
 import java.io.Serializable;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * OrderSpecifier represents an order-by-element in a Query instance
  *
  * @param <T> related expression type
  * @author tiwe
  */
-@SuppressWarnings({"unchecked"})
 public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     private static final long serialVersionUID = 3427652988262514678L;
@@ -33,8 +30,8 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     private final Expression<T> target;
 
     public OrderSpecifier(Order order, Expression<T> target) {
-        this.order = Assert.notNull(order,"order");
-        this.target = Assert.notNull(target,"target");
+        this.order = order;
+        this.target = target;
     }
 
     /**

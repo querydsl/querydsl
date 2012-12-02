@@ -12,11 +12,11 @@ import javax.annotation.Generated;
  * SOrderDELIVEREDITEMINDICES is a Querydsl query type for SOrderDELIVEREDITEMINDICES
  */
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
-public class SOrderDELIVEREDITEMINDICES extends com.mysema.query.sql.RelationalPathBase<SOrderDELIVEREDITEMINDICES> {
+public class SOrderDELIVEREDITEMINDICES2 extends com.mysema.query.sql.RelationalPathBase<SOrderDELIVEREDITEMINDICES2> {
 
     private static final long serialVersionUID = 541359789;
 
-    public static final SOrderDELIVEREDITEMINDICES OrderDELIVEREDITEMINDICES = new SOrderDELIVEREDITEMINDICES("Order_DELIVEREDITEMINDICES");
+    public static final SOrderDELIVEREDITEMINDICES2 OrderDELIVEREDITEMINDICES = new SOrderDELIVEREDITEMINDICES2("Order_DELIVEREDITEMINDICES");
 
     public final NumberPath<Integer> delivereditemindices = createNumber("DELIVEREDITEMINDICES", Integer.class);
 
@@ -24,16 +24,16 @@ public class SOrderDELIVEREDITEMINDICES extends com.mysema.query.sql.RelationalP
 
     public final com.mysema.query.sql.ForeignKey<SOrder> orderDELIVEREDITEMINDICESOrderIDFK = createForeignKey(orderID, "id");
 
-    public SOrderDELIVEREDITEMINDICES(String variable) {
-        super(SOrderDELIVEREDITEMINDICES.class, forVariable(variable), "null", "Order_DELIVEREDITEMINDICES");
+    public SOrderDELIVEREDITEMINDICES2(String variable) {
+        super(SOrderDELIVEREDITEMINDICES2.class, forVariable(variable), "null", "Order_DELIVEREDITEMINDICES");
     }
 
-    public SOrderDELIVEREDITEMINDICES(Path<? extends SOrderDELIVEREDITEMINDICES> path) {
+    public SOrderDELIVEREDITEMINDICES2(Path<? extends SOrderDELIVEREDITEMINDICES2> path) {
         super(path.getType(), path.getMetadata(), "null", "Order_DELIVEREDITEMINDICES");
     }
 
-    public SOrderDELIVEREDITEMINDICES(PathMetadata<?> metadata) {
-        super(SOrderDELIVEREDITEMINDICES.class, metadata, "null", "Order_DELIVEREDITEMINDICES");
+    public SOrderDELIVEREDITEMINDICES2(PathMetadata<?> metadata) {
+        super(SOrderDELIVEREDITEMINDICES2.class, metadata, "null", "Order_DELIVEREDITEMINDICES");
     }
 
 }

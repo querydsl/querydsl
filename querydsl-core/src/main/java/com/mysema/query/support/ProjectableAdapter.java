@@ -34,7 +34,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     private final P projectable;
 
     public ProjectableAdapter(P projectable) {
-        this.projectable = Assert.notNull(projectable,"projectable");
+        this.projectable = projectable;
     }
 
     protected P getProjectable() {

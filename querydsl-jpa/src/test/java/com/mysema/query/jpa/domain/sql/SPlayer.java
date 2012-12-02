@@ -24,7 +24,7 @@ public class SPlayer extends com.mysema.query.sql.RelationalPathBase<SPlayer> {
 
     public final com.mysema.query.sql.ForeignKey<SPlayerScores> _fkd5dc571fd8736d5c = createInvForeignKey(id, "Player_id");
 
-    public final com.mysema.query.sql.ForeignKey<SPlayerSCORES> _playerSCORESPlayerIDFK = createInvForeignKey(id, "Player_ID");
+    public final com.mysema.query.sql.ForeignKey<SPlayerSCORES2> _playerSCORESPlayerIDFK = createInvForeignKey(id, "Player_ID");
 
     public SPlayer(String variable) {
         super(SPlayer.class, forVariable(variable), "null", "player_");

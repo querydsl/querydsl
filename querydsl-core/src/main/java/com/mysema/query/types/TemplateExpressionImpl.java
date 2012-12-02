@@ -65,8 +65,8 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     
     public TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args){
         super(type);
-        this.args = Assert.notNull(args,"args");
-        this.template = Assert.notNull(template,"template");
+        this.args = args;
+        this.template = template;
     }
 
     @Override

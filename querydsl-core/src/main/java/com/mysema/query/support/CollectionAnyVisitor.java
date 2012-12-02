@@ -165,5 +165,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
     public Expression<?> visit(ParamExpression<?> expr, Context context) {
         return expr;
     }
+    
+    protected CollectionAnyVisitor() {}
         
 }

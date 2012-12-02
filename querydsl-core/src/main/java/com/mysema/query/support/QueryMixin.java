@@ -47,15 +47,24 @@ import com.mysema.query.types.SubQueryExpression;
 public class QueryMixin<T> {
 
     private final QueryMetadata metadata;
+    
+    private final boolean validateAnyPaths;
 
     private T self;
 
     public QueryMixin(){
         this.metadata = new DefaultQueryMetadata();
+        this.validateAnyPaths = true;
     }
 
     public QueryMixin(QueryMetadata metadata){
-        this.metadata = Assert.notNull(metadata,"metadata");
+        this.metadata = metadata;
+        this.validateAnyPaths = true;
+    }
+    
+    public QueryMixin(QueryMetadata metadata, boolean validateAnyPaths){
+        this.metadata = metadata;
+        this.validateAnyPaths = validateAnyPaths;
     }
 
     public QueryMixin(T self){
@@ -63,8 +72,15 @@ public class QueryMixin<T> {
     }
 
     public QueryMixin(T self, QueryMetadata metadata){
-        this.self = Assert.notNull(self,"self");
-        this.metadata = Assert.notNull(metadata,"metadata");
+        this.self = self;
+        this.metadata = metadata;
+        this.validateAnyPaths = true;
+    }
+    
+    public QueryMixin(T self, QueryMetadata metadata, boolean validateAnyPaths){
+        this.self = self;
+        this.metadata = metadata;
+        this.validateAnyPaths = validateAnyPaths;
     }
 
     public T addFlag(QueryFlag queryFlag){
@@ -86,7 +102,7 @@ public class QueryMixin<T> {
 
     @SuppressWarnings("rawtypes")
     public <RT> Expression<RT> convert(Expression<RT> expr){
-        if (expr instanceof Path) {
+        if (validateAnyPaths && expr instanceof Path) {
             Context context = new Context();            
             Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
             if (!replaced.equals(expr)) {
@@ -117,29 +133,21 @@ public class QueryMixin<T> {
 
 
     protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
-        Assert.notNull(path, "path");
-        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
 
     protected <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
-        Assert.notNull(target, "target");
-        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
-        Assert.notNull(target, "target");
-        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected <D> Expression<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
-        Assert.notNull(path, "path");
-        Assert.notNull(alias, "alias");
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
@@ -415,7 +423,7 @@ public class QueryMixin<T> {
     public void setSelf(T self){
         this.self = self;
     }
-
+    
     public void setUnique(boolean unique) {
         metadata.setUnique(unique);
     }

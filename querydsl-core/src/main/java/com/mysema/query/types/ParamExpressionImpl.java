@@ -15,8 +15,6 @@ package com.mysema.query.types;
 
 import java.util.UUID;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * ParamExpressionImpl defines a parameter in a query with an optional name
  *
@@ -34,7 +32,7 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
 
     public ParamExpressionImpl(Class<? extends T> type, String name) {
         super(type);
-        this.name = Assert.notNull(name, "name");
+        this.name = name;
         this.anon = false;
     }
     

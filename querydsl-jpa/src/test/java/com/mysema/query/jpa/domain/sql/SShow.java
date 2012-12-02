@@ -22,7 +22,7 @@ public class SShow extends com.mysema.query.sql.RelationalPathBase<SShow> {
 
     public final com.mysema.query.sql.PrimaryKey<SShow> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SShowACTS> _showACTSShowIDFK = createInvForeignKey(id, "Show_ID");
+    public final com.mysema.query.sql.ForeignKey<SShowACTS2> _showACTSShowIDFK = createInvForeignKey(id, "Show_ID");
 
     public final com.mysema.query.sql.ForeignKey<SShowActs> _fk5f6ee03ab40105c = createInvForeignKey(id, "Show_id");
 

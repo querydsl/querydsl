@@ -26,7 +26,7 @@ public class SCalendar extends com.mysema.query.sql.RelationalPathBase<SCalendar
 
     public final com.mysema.query.sql.ForeignKey<SCalendarHolidays> _fk31ce1edc591ebbc = createInvForeignKey(id, "Calendar_id");
 
-    public final com.mysema.query.sql.ForeignKey<SCalendarHOLIDAYS> _calendarHOLIDAYSCalendarIDFK = createInvForeignKey(id, "Calendar_ID");
+    public final com.mysema.query.sql.ForeignKey<SCalendarHOLIDAYS2> _calendarHOLIDAYSCalendarIDFK = createInvForeignKey(id, "Calendar_ID");
 
     public SCalendar(String variable) {
         super(SCalendar.class, forVariable(variable), "null", "calendar_");

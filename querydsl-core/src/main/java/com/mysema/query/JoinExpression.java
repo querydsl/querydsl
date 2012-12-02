@@ -46,8 +46,8 @@ public final class JoinExpression implements Serializable{
      * @param target
      */
     public JoinExpression(JoinType type, Expression<?> target) {
-        this.type = Assert.notNull(type,"type");
-        this.target = Assert.notNull(target,"target");
+        this.type = type;
+        this.target = target;
     }
 
     public Predicate getCondition() {

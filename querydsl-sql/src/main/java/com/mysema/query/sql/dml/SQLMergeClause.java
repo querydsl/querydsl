@@ -84,8 +84,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     
     public SQLMergeClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
-        this.connection = Assert.notNull(connection,"connection");
-        this.entity = Assert.notNull(entity,"entity");
+        this.connection = connection;
+        this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
     

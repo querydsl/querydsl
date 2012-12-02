@@ -98,8 +98,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     
     public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
-        this.connection = Assert.notNull(connection,"connection");
-        this.entity = Assert.notNull(entity,"entity");
+        this.connection = connection;
+        this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 

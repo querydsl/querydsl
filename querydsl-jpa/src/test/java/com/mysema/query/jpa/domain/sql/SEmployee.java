@@ -44,7 +44,7 @@ public class SEmployee extends com.mysema.query.sql.RelationalPathBase<SEmployee
 
     public final com.mysema.query.sql.ForeignKey<SCompany> _company_CEOIDFK = createInvForeignKey(id, "ceo_id");
 
-    public final com.mysema.query.sql.ForeignKey<SEmployeeJOBFUNCTIONS> _employeeJOBFUNCTIONSEmployeeIDFK = createInvForeignKey(id, "Employee_ID");
+    public final com.mysema.query.sql.ForeignKey<SEmployeeJOBFUNCTIONS2> _employeeJOBFUNCTIONSEmployeeIDFK = createInvForeignKey(id, "Employee_ID");
 
     public final com.mysema.query.sql.ForeignKey<SEmployeeJobFunctions> _fk49690e2f75b8f5bc = createInvForeignKey(id, "Employee_id");
 

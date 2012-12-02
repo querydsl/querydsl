@@ -22,7 +22,7 @@ public class SNamelist extends com.mysema.query.sql.RelationalPathBase<SNamelist
 
     public final com.mysema.query.sql.PrimaryKey<SNamelist> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SNameListNAMES> _nameListNAMESNameListIDFK = createInvForeignKey(id, "NameList_ID");
+    public final com.mysema.query.sql.ForeignKey<SNameListNAMES2> _nameListNAMESNameListIDFK = createInvForeignKey(id, "NameList_ID");
 
     public final com.mysema.query.sql.ForeignKey<SNameListNames> _fkd6c82d7217b6c3fc = createInvForeignKey(id, "NameList_id");
 

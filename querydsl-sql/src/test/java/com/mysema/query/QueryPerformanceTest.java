@@ -28,7 +28,7 @@ public class QueryPerformanceTest {
         Connections.initH2();        
         Connection conn = Connections.getConnection();        
         Statement stmt = conn.createStatement();
-        stmt.execute("create table companies (id identity, name varchar(30) unique not null);");        
+        stmt.execute("create or replace table companies (id identity, name varchar(30) unique not null);");        
         for (int i = 0; i < iterations; i++) {
             stmt.execute("insert into companies (name) values ('" + i + "')");
         }        

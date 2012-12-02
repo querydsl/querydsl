@@ -48,7 +48,7 @@ public class LimitingIterator<E> implements Iterator<E> {
     private final Iterator<E> original;
 
     LimitingIterator(Iterator<E> iterator, long limit) {
-        this.original = Assert.notNull(iterator,"iterator");
+        this.original = iterator;
         this.limit = limit;
     }
 

@@ -18,8 +18,6 @@ import static java.util.Collections.unmodifiableList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * OperatorImpl is the default implementation of the {@link Operator} interface
  */
@@ -36,7 +34,7 @@ public class OperatorImpl<T> implements Operator<T> {
     }
 
     public OperatorImpl(String id, List<Class<?>> types) {
-        this.id = Assert.notNull(id,"id");
+        this.id = id;
         this.types = unmodifiableList(types);
     }
 

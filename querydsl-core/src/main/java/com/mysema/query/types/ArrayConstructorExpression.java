@@ -42,7 +42,7 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);
-        this.elementType = (Class<T>) Assert.notNull(type.getComponentType(),"componentType");
+        this.elementType = (Class<T>)type.getComponentType();
         this.args = Arrays.<Expression<?>>asList(args);
     }
 

@@ -52,7 +52,7 @@ public class DetachableMixin implements Detachable{
     private final QueryMixin<?> queryMixin;
 
     public DetachableMixin(QueryMixin<?> queryMixin){
-        this.queryMixin = Assert.notNull(queryMixin,"queryMixin");
+        this.queryMixin = queryMixin;
     }
 
     @Override

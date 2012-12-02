@@ -30,11 +30,11 @@ public class SQLQueryMixin<T> extends QueryMixin<T> {
     public SQLQueryMixin() {}
 
     public SQLQueryMixin(QueryMetadata metadata) {
-        super(metadata);
+        super(metadata, false);
     }
 
     public SQLQueryMixin(T self, QueryMetadata metadata) {
-        super(self, metadata);
+        super(self, metadata, false);
     }
 
     public <P> T join(RelationalFunctionCall<P> target, Path<P> alias) {

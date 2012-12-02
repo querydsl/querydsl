@@ -32,7 +32,7 @@ public class SOrder extends com.mysema.query.sql.RelationalPathBase<SOrder> {
 
     public final com.mysema.query.sql.ForeignKey<SOrder_item> _order_item_OrderIDFK = createInvForeignKey(id, "Order_ID");
 
-    public final com.mysema.query.sql.ForeignKey<SOrderDELIVEREDITEMINDICES> _orderDELIVEREDITEMINDICESOrderIDFK = createInvForeignKey(id, "Order_ID");
+    public final com.mysema.query.sql.ForeignKey<SOrderDELIVEREDITEMINDICES2> _orderDELIVEREDITEMINDICESOrderIDFK = createInvForeignKey(id, "Order_ID");
 
     public final com.mysema.query.sql.ForeignKey<SCustomer> _customer_CURRENTORDERIDFK = createInvForeignKey(id, "currentOrder_id");
 

@@ -170,7 +170,7 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         if (STRINGS.containsKey(str)) {
             return STRINGS.get(str);
         } else {
-            Constant<String> rv = new ConstantImpl<String>(Assert.notNull(str,"str"));
+            Constant<String> rv = new ConstantImpl<String>(str);
             if (populateCache) {
                 STRINGS.put(str, rv);
             }
