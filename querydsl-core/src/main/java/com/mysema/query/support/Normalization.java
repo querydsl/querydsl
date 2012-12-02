@@ -25,7 +25,11 @@ public final class Normalization {
     
     private static final Pattern MULTIPLICATION = Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER);
     
-    public static final String normalize(String queryString) {        
+    public static final String normalize(String queryString) {
+        if (!hasOperators(queryString)) {
+            return queryString;
+        }
+        
         StringBuilder rv = null;
         Matcher m = OPERATION.matcher(queryString);
         int end = 0;
@@ -74,8 +78,17 @@ public final class Normalization {
             }    
         } else {
             return queryString;
+        }        
+    }    
+    
+    private static final boolean hasOperators(String queryString) {
+        for (int i = 0; i < queryString.length(); i++) {
+            char ch = queryString.charAt(i);
+            if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+                return true;
+            }
         }
-        
+        return false;
     }
     
     private Normalization(){}

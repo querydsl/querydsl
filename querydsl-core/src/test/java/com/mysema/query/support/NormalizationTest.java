@@ -5,6 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class NormalizationTest {
+    
+    @Test
+    public void Performance() {
+        int iterations = 1000000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            Normalization.normalize("select name from companies where id = ?");
+        }
+        System.err.println(System.currentTimeMillis() - start);
+    }
         
     @Test
     public void Variables() {
