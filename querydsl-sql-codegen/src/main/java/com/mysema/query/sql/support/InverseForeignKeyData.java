@@ -19,7 +19,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.codegen.model.Type;
-import com.mysema.commons.lang.Assert;
 
 /**
  * @author tiwe
@@ -42,9 +41,9 @@ public class InverseForeignKeyData implements KeyData{
     private final List<String> parentColumns = new ArrayList<String>();
 
     public InverseForeignKeyData(String name, @Nullable String schema, String parentTable, @Nullable Type type) {
-        this.name = Assert.hasLength(name,"name");
+        this.name = name;
         this.schema = schema;
-        this.table = Assert.hasLength(parentTable,"parentTable");
+        this.table = parentTable;
         this.type = type;
     }
 

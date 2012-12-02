@@ -17,7 +17,6 @@ import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.util.ReflectionUtils;
 
 /**

@@ -16,8 +16,6 @@ package com.mysema.query.types;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * Default implementation of the {@link TemplateExpression} interface
  * 

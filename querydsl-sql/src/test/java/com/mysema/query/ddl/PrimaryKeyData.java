@@ -8,8 +8,6 @@ package com.mysema.query.ddl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * @author tiwe
  *
@@ -21,7 +19,7 @@ public class PrimaryKeyData {
     private final List<String> columns = new ArrayList<String>();
 
     public PrimaryKeyData(String name) {
-        this.name = Assert.notNull(name,"name");
+        this.name = name;
     }
     
     public PrimaryKeyData(String name, String[] c){

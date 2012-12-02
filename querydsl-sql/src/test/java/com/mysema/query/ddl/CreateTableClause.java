@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Joiner;
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -59,8 +58,6 @@ public class CreateTableClause {
      * @return
      */
     public CreateTableClause column(String name, Class<?> type) {
-        Assert.notNull(name,"name");
-        Assert.notNull(type,"type");
         columns.add(new ColumnData(templates.quoteIdentifier(name), templates.getTypeForClass(type))); 
         return this;
     }
@@ -108,8 +105,6 @@ public class CreateTableClause {
      * @return
      */
     public CreateTableClause primaryKey(String name, String... columns) {
-        Assert.notNull(name,"name");
-        Assert.notEmpty(columns,"columns");
         for (int i = 0; i < columns.length; i++){
             columns[i] = templates.quoteIdentifier(columns[i]);
         }        
@@ -125,8 +120,6 @@ public class CreateTableClause {
      * @return
      */
     public CreateTableClause index(String name, String... columns){
-        Assert.notNull(name,"name");
-        Assert.notEmpty(columns,"columns");
         indexes.add(new IndexData(name, columns));
         return this;
     }
@@ -149,8 +142,6 @@ public class CreateTableClause {
      * @return
      */
     public ForeignKeyBuilder foreignKey(String name, String... columns) {
-        Assert.notNull(name,"name");
-        Assert.notEmpty(columns,"columns");
         return new ForeignKeyBuilder(this, templates, foreignKeys, templates.quoteIdentifier(name), columns);
     }
 

@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
@@ -68,12 +67,8 @@ public class GroupByBuilder<K> {
     }
     
     public <V> ResultTransformer<Map<K, V>> as(FactoryExpression<V> expression) {
-        Assert.notNull(expression, "expression");
-        
         final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
-
-        List<Expression<?>> args = transformation.getArgs();
-        
+        List<Expression<?>> args = transformation.getArgs();        
         return new GroupBy<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
 
             @Override

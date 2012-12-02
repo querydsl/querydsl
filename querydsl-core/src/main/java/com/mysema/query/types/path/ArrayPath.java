@@ -18,7 +18,6 @@ import java.lang.reflect.AnnotatedElement;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;

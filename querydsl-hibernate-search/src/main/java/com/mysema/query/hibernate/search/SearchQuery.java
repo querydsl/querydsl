@@ -20,7 +20,6 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.NonUniqueResultException;
@@ -61,8 +60,8 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
      */
     public SearchQuery(FullTextSession session, EntityPath<T> path) {
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
-        this.session = Assert.notNull(session,"session");
-        this.path = Assert.notNull(path,"path");
+        this.session = session;
+        this.path = path;
         this.serializer = SearchSerializer.DEFAULT;
         queryMixin.from(path);
     }
@@ -94,7 +93,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private FullTextQuery createQuery(boolean forCount){
         QueryMetadata metadata = queryMixin.getMetadata();
-        Assert.notNull(metadata.getWhere(), "where needs to be set");
         org.apache.lucene.search.Query query = serializer.toQuery(metadata.getWhere(), metadata);
 
         FullTextQuery fullTextQuery = session.createFullTextQuery(query, path.getType());

@@ -44,7 +44,6 @@ import javax.lang.model.element.VariableElement;
 
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
@@ -110,8 +109,8 @@ public class DefaultConfiguration implements Configuration {
 		this.excludedPackages = new HashSet<String>();
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);
-        this.entitiesAnn = Assert.notNull(entitiesAnn, "entitiesAnn");
-        this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
+        this.entitiesAnn = entitiesAnn;
+        this.entityAnn = entityAnn;
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.embeddedAnn = embeddedAnn;

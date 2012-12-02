@@ -13,7 +13,6 @@
  */
 package com.mysema.query;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
@@ -43,7 +42,7 @@ final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D>
         if (val instanceof Boolean){
             return (SimpleExpression<T>)BooleanConstant.create((Boolean)val);
         }else{
-            return new SimpleConstant<T>(Assert.notNull(val,"val"));
+            return new SimpleConstant<T>(val);
         }
     }
 

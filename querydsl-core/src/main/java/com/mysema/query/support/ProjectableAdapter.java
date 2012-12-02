@@ -16,7 +16,6 @@ package com.mysema.query.support;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;

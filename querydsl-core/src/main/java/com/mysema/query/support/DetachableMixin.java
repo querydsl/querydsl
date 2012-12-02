@@ -15,7 +15,6 @@ package com.mysema.query.support;
 
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.ConstantImpl;

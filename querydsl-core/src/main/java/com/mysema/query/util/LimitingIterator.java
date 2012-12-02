@@ -15,7 +15,6 @@ package com.mysema.query.util;
 
 import java.util.Iterator;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryModifiers;
 
 /**

@@ -18,7 +18,6 @@ import java.util.List;
 import com.google.common.base.Objects;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
-import com.mysema.commons.lang.Assert;
 
 /**
  * Delegate defines a delegate method which dispatches to an external static method
@@ -40,11 +39,11 @@ public class Delegate {
 
     public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params, 
             Type returnType) {
-        this.declaringType = Assert.notNull(declaringType,"declaringType");
-        this.delegateType = Assert.notNull(delegateType,"delegateType");
-        this.name = Assert.notNull(name,"name");
-        this.parameters = Assert.notNull(params,"params");
-        this.returnType = Assert.notNull(returnType,"returnType");
+        this.declaringType = declaringType;
+        this.delegateType = delegateType;
+        this.name = name;
+        this.parameters = params;
+        this.returnType = returnType;
     }
 
     @Override

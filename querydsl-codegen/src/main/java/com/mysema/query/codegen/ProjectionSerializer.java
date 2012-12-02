@@ -26,7 +26,6 @@ import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.expr.NumberExpression;
 
@@ -47,7 +46,7 @@ public final class ProjectionSerializer implements Serializer{
      */
     @Inject
     public ProjectionSerializer(TypeMappings typeMappings){
-        this.typeMappings = Assert.notNull(typeMappings,"typeMappings");
+        this.typeMappings = typeMappings;
     }
 
     protected void intro(EntityType model, CodeWriter writer) throws IOException {

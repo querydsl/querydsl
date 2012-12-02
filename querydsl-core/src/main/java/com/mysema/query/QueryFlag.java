@@ -16,7 +16,6 @@ package com.mysema.query;
 import java.io.Serializable;
 
 import com.google.common.base.Objects;
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
 

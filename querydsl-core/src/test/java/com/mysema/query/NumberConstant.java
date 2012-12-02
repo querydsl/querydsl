@@ -13,7 +13,6 @@
  */
 package com.mysema.query;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
@@ -42,7 +41,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
      */
     @SuppressWarnings("unchecked")
     public static <T extends Number & Comparable<?>> NumberExpression<T> create(T val){
-        return new NumberConstant<T>((Class<T>)val.getClass(), Assert.notNull(val,"val"));
+        return new NumberConstant<T>((Class<T>)val.getClass(), val);
     }
 
     private final D constant;

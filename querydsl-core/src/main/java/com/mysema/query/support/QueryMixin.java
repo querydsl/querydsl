@@ -15,7 +15,6 @@ package com.mysema.query.support;
 
 import java.util.Collection;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;

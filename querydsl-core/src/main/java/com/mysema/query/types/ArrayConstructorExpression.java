@@ -17,8 +17,6 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * ArrayConstructorExpression extends {@link ExpressionBase} to represent array initializers
  *

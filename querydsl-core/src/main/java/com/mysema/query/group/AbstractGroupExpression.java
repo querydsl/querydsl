@@ -13,7 +13,6 @@
  */
 package com.mysema.query.group;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -39,8 +38,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
     
     @SuppressWarnings("unchecked")
     public AbstractGroupExpression(Class<? super R> type, Expression<T> expr) {
-        this.type = (Class)type;
-        Assert.notNull(expr, "expr");        
+        this.type = (Class)type;        
         this.expr = expr;
     }
     

@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * ConstantImpl is the default implementation of the Constant interface
  * 

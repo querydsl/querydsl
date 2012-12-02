@@ -15,8 +15,6 @@ package com.mysema.query.types;
 
 import javax.annotation.Nonnegative;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * PathMetadataFactory is a factory class for {@link Path} construction
  * 
@@ -119,7 +117,7 @@ public final class PathMetadataFactory {
      * @return
      */
     public static PathMetadata<String> forProperty(Path<?> parent, String property) {
-        return new PathMetadata<String>(parent, Assert.hasLength(property,"property"), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, property, PathType.PROPERTY);
     }
 
     /**
@@ -129,7 +127,7 @@ public final class PathMetadataFactory {
      * @return
      */
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, Assert.hasLength(variable,"variable"), PathType.VARIABLE);
+        return new PathMetadata<String>(null, variable, PathType.VARIABLE);
     }
 
     private PathMetadataFactory() {}

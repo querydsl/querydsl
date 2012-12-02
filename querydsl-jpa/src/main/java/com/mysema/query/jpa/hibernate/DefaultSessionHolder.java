@@ -17,8 +17,6 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * DefaultSessionHolder is the default implementation of the {@link SessionHolder} interface
  * 
@@ -30,7 +28,7 @@ public class DefaultSessionHolder implements SessionHolder{
     private final Session session;
 
     public DefaultSessionHolder(Session session){
-        this.session = Assert.notNull(session,"session");
+        this.session = session;
     }
 
     @Override

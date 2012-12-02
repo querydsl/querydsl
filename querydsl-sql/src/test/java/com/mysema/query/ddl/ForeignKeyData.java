@@ -8,8 +8,6 @@ package com.mysema.query.ddl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * @author tiwe
  *
@@ -25,8 +23,8 @@ public class ForeignKeyData implements KeyData {
     private final List<String> parentColumns = new ArrayList<String>();
 
     public ForeignKeyData(String name, String parentTable) {
-        this.name = Assert.hasLength(name,"name");
-        this.table = Assert.hasLength(parentTable,"parentTable");
+        this.name = name;
+        this.table = parentTable;
     }
 
     public void add(String foreignColumn, String parentColumn){

@@ -17,8 +17,6 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.StatelessSession;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * SessionHolder implementation using StatelessSession
  * 
@@ -30,7 +28,7 @@ public class StatelessSessionHolder implements SessionHolder{
     private final StatelessSession session;
 
     public StatelessSessionHolder(StatelessSession session) {
-        this.session = Assert.notNull(session,"session");
+        this.session = session;
     }
 
     @Override

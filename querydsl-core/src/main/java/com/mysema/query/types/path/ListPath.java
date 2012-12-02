@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;

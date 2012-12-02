@@ -22,7 +22,6 @@ import java.util.Map;
 
 import com.google.common.base.Objects;
 import com.mysema.codegen.model.Type;
-import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
@@ -61,9 +60,9 @@ public final class Property implements Comparable<Property> {
     public Property(EntityType declaringType, String name, String escapedName, Type type, 
             List<String> inits, boolean inherited) {
         this.declaringType = declaringType;
-        this.name = Assert.notNull(name,"name");
+        this.name = name;
         this.escapedName = escapedName;
-        this.type = Assert.notNull(type,"type");
+        this.type = type;
         this.inits = inits;  
         this.inherited = inherited;
     }
