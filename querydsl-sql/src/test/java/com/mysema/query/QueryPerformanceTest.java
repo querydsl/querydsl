@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLQuery;
@@ -107,6 +108,27 @@ public class QueryPerformanceTest {
     }
     
     @Test
+    public void Querydsl12() {
+        Connection conn = Connections.getConnection();        
+        Configuration conf = new Configuration(new H2Templates());
+        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {            
+            QCompanies companies = QCompanies.companies;
+            SQLQuery query = new SQLQueryImpl(conn, conf);
+            CloseableIterator<String> it = query.from(companies).where(companies.id.eq((long)i)).iterate(companies.name);
+            try {
+                while (it.hasNext()) {
+                    it.next();
+                }    
+            } finally {
+                it.close();
+            }                       
+        }
+        System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (iterated)");    
+    }
+    
+    @Test
     public void Querydsl2() {
         Connection conn = Connections.getConnection();        
         Configuration conf = new Configuration(new H2Templates());
@@ -118,6 +140,27 @@ public class QueryPerformanceTest {
             query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
         }
         System.err.println("qdsl by name " + (System.currentTimeMillis() - start));    
+    }
+    
+    @Test
+    public void Querydsl22() {
+        Connection conn = Connections.getConnection();        
+        Configuration conf = new Configuration(new H2Templates());
+        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {            
+            QCompanies companies = QCompanies.companies;
+            SQLQuery query = new SQLQueryImpl(conn, conf);
+            CloseableIterator<String> it = query.from(companies).where(companies.name.eq(String.valueOf(i))).iterate(companies.name);
+            try {
+                while (it.hasNext()) {
+                    it.next();
+                }    
+            } finally {
+                it.close();
+            }                       
+        }
+        System.err.println("qdsl by name " + (System.currentTimeMillis() - start) + " (iterated)");    
     }
     
     @Test
@@ -160,7 +203,7 @@ public class QueryPerformanceTest {
             serializer.getConstantPaths();
             assertNotNull(serializer.toString());     
         }
-        System.err.println("ser2 " + (System.currentTimeMillis() - start));    
+        System.err.println("ser2 " + (System.currentTimeMillis() - start) + " (non normalized)");    
     }
 
 }

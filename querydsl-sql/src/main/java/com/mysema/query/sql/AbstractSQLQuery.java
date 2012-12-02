@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
@@ -281,7 +281,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 
-    @SuppressWarnings("unchecked")
     @Nullable
     private <T> T get(ResultSet rs, Expression<?> expr, int i, Class<T> type) throws SQLException {
         return configuration.get(rs, expr instanceof Path ? (Path)expr : null, i, type);
@@ -356,41 +355,40 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
             PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
             ResultSet rs = stmt.executeQuery();
-
-            return new SQLResultIterator<RT>(stmt, rs) {
-
-                @Override
-                public RT produceNext(ResultSet rs) {
-                    try {
-                        if (expr == null) {
-                            return (RT) rs.getObject(1);
-                        } else if (expr instanceof FactoryExpression) {
-                            return newInstance((FactoryExpression<RT>) expr, rs, 0);
-                        } else if (expr.getType().isArray()) {
-                            Object[] rv = new Object[rs.getMetaData().getColumnCount()];
-                            for (int i = 0; i < rv.length; i++) {
-                                rv[i] = rs.getObject(i+1);
-                            }
-                            return (RT) rv;
-                        } else {
-                            return get(rs, expr, 1, expr.getType());
-                        }
-                    } catch (IllegalAccessException e) {
-                        close();
-                        throw new QueryException(e);
-                    } catch (InvocationTargetException e) {
-                        close();
-                        throw new QueryException(e);
-                    } catch (InstantiationException e) {
-                        close();
-                        throw new QueryException(e);
-                    } catch (SQLException e) {
-                        close();
-                        throw new QueryException(e);
+            
+            if (expr == null) {
+                return new SQLResultIterator<RT>(stmt, rs) {
+                    @Override
+                    public RT produceNext(ResultSet rs) throws Exception {
+                        return (RT) rs.getObject(1);
                     }
-                }
-
-            };
+                };
+            } else if (expr instanceof FactoryExpression) {
+                return new SQLResultIterator<RT>(stmt, rs) {
+                    @Override
+                    public RT produceNext(ResultSet rs) throws Exception {
+                        return newInstance((FactoryExpression<RT>) expr, rs, 0);
+                    }
+                };
+            } else if (expr.getType().isArray()) {
+                return new SQLResultIterator<RT>(stmt, rs) {
+                    @Override
+                    public RT produceNext(ResultSet rs) throws Exception {
+                        Object[] rv = new Object[rs.getMetaData().getColumnCount()];
+                        for (int i = 0; i < rv.length; i++) {
+                            rv[i] = rs.getObject(i+1);
+                        }
+                        return (RT) rv;
+                    }
+                };
+            } else {
+                return new SQLResultIterator<RT>(stmt, rs) {
+                    @Override
+                    public RT produceNext(ResultSet rs) throws Exception {
+                        return get(rs, expr, 1, expr.getType());
+                    }
+                };
+            }
 
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
@@ -407,7 +405,58 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @Override
     public <RT> List<RT> list(Expression<RT> expr) {
-        return IteratorAdapter.asList(iterate(expr));
+        //return IteratorAdapter.asList(iterate(expr));
+        expr = queryMixin.convert(expr);
+        queryMixin.addToProjection(expr);
+        String queryString = buildQueryString(false);
+        logger.debug("query : {}", queryString);
+        try {
+            PreparedStatement stmt = conn.prepareStatement(queryString);
+            try {
+                setParameters(stmt, constants, constantPaths, queryMixin.getMetadata().getParams());
+                ResultSet rs = stmt.executeQuery();
+                try {
+                    List<RT> rv = new ArrayList<RT>();    
+                    if (expr instanceof FactoryExpression) {
+                        FactoryExpression<RT> fe = (FactoryExpression<RT>)expr;
+                        while (rs.next()) {
+                            rv.add(newInstance(fe, rs, 0));
+                        }
+                    }  else if (expr.getType().isArray()) {
+                        while (rs.next()) {
+                            Object[] row = new Object[rs.getMetaData().getColumnCount()];
+                            for (int i = 0; i < row.length; i++) {
+                                row[i] = rs.getObject(i+1);
+                            }
+                            rv.add((RT)row);
+                        }
+                    } else {
+                        while (rs.next()) {
+                            rv.add(get(rs, expr, 1, expr.getType()));
+                        } 
+                    }
+                    return rv;
+                } catch (IllegalAccessException e) {
+                    throw new QueryException(e);
+                } catch (InvocationTargetException e) {
+                    throw new QueryException(e);
+                } catch (InstantiationException e) {
+                    throw new QueryException(e);
+                } catch (SQLException e) {
+                    throw new QueryException(e);
+                } finally {
+                    rs.close();
+                }                 
+                
+            } finally {
+                stmt.close();
+            }
+        } catch (SQLException e) {
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+
+        } finally {
+            reset();
+        }
     }
 
     @Override

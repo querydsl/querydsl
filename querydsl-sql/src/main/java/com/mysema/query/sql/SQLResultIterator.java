@@ -78,13 +78,18 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
     public T next() {
         if (hasNext()) {
             next = null;
-            return produceNext(rs);
+            try {
+                return produceNext(rs);
+            } catch (Exception e) {
+                close();
+                throw new QueryException(e);
+            }
         } else {
             throw new NoSuchElementException();
         }
     }
 
-    protected abstract T produceNext(ResultSet rs);
+    protected abstract T produceNext(ResultSet rs) throws Exception;
 
     @Override
     public void remove() {
