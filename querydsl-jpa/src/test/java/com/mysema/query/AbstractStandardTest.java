@@ -909,6 +909,13 @@ public abstract class AbstractStandardTest {
     
     @Test
     @Ignore
+    public void Size() {
+        // NOT SUPPORTED
+        query().from(cat).list(cat, cat.kittens.size());
+    }
+    
+    @Test
+    @Ignore
     public void Sum() throws RecognitionException, TokenStreamException {
         // NOT SUPPORTED
         query().from(cat).list(cat.kittens.size().sum());
