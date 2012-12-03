@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import javax.annotation.Nullable;
 
 import com.mysema.query.sql.types.BigDecimalAsDoubleType;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.sql.types.UntypedNullType;
 import com.mysema.query.types.Path;
@@ -114,7 +115,7 @@ public class Configuration {
 
     @SuppressWarnings("unchecked")
     private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
-        if (path != null && path.getMetadata().getParent() instanceof RelationalPath) {
+        if (path != null && !clazz.equals(Null.class) && path.getMetadata().getParent() instanceof RelationalPath) {
             String table = ((RelationalPath)path.getMetadata().getParent()).getTableName();
             String column = path.getMetadata().getName();
             Type<T> type = (Type)javaTypeMapping.getType(table, column);

@@ -16,14 +16,20 @@ package com.mysema.query.sql;
 import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Types;
 
+import org.easymock.EasyMock;
 import org.junit.Test;
 
 import com.mysema.query.alias.Gender;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.sql.types.EnumByNameType;
 import com.mysema.query.sql.types.InputStreamType;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.StringType;
+import com.mysema.query.sql.types.UntypedNullType;
 import com.mysema.query.sql.types.UtilDateType;
 
 public class ConfigurationTest {
@@ -45,6 +51,15 @@ public class ConfigurationTest {
 //        configuration.setJavaType(Types.BLOB, InputStream.class);
         configuration.register(new InputStreamType());        
         assertEquals(InputStream.class, configuration.getJavaType(Types.BLOB, 0,0,"", ""));
+    }
+    
+    @Test
+    public void Set_Null() throws SQLException {
+        Configuration configuration = new Configuration(new H2Templates());
+        configuration.register(new UntypedNullType());
+        configuration.register("SURVEY", "NAME",  new EncryptedString());        
+        PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
+        configuration.set(stmt, QSurvey.survey.name, 0, Null.DEFAULT);
     }
         
 }
