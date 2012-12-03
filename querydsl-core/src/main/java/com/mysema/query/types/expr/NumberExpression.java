@@ -72,6 +72,14 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return random;
     }
 
+    /**
+     * @param source
+     * @return
+     */
+    public static NumberExpression<Long> count(Expression<?> source){
+    	return NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, source);
+    }
+
     @Nullable
     private volatile NumberExpression<T> abs, sum, min, max, floor, ceil;
 

@@ -14,6 +14,7 @@
 package com.mysema.query.jpa.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -45,4 +46,6 @@ public class Person implements Serializable{
     @ManyToOne
     @QueryInit("calendar")
     Nationality nationality;
+    
+    List<Person> children;
 }
