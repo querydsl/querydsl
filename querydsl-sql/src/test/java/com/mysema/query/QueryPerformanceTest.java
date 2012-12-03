@@ -55,7 +55,7 @@ public class QueryPerformanceTest {
         Connection conn = Connections.getConnection();        
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement("select name from companies where id = ?");
+            PreparedStatement stmt = conn.prepareStatement("select COMPANIES.NAME from COMPANIES COMPANIES where COMPANIES.ID = ?");
             try {
                 stmt.setInt(1, i);
                 ResultSet rs = stmt.executeQuery();                
@@ -73,13 +73,13 @@ public class QueryPerformanceTest {
         }
         System.err.println("jdbc by id " + (System.currentTimeMillis() - start));                    
     }
-    
+        
     @Test
     public void JDBC2() throws SQLException {
         Connection conn = Connections.getConnection();        
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement("select id from companies where name = ?");
+            PreparedStatement stmt = conn.prepareStatement("select COMPANIES.ID from COMPANIES COMPANIES where COMPANIES.NAME = ?");                                                           
             try {
                 stmt.setString(1, String.valueOf(i));
                 ResultSet rs = stmt.executeQuery();                
