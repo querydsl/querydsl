@@ -29,10 +29,14 @@ public class QueryPerformanceTest {
         Connections.initH2();        
         Connection conn = Connections.getConnection();        
         Statement stmt = conn.createStatement();
-        stmt.execute("create or replace table companies (id identity, name varchar(30) unique not null);");        
+        stmt.execute("create or replace table companies (id identity, name varchar(30) unique not null);");
+        PreparedStatement pstmt = conn.prepareStatement("insert into companies (name) values (?)");
         for (int i = 0; i < iterations; i++) {
-            stmt.execute("insert into companies (name) values ('" + i + "')");
+            pstmt.setString(1, String.valueOf(i));
+            pstmt.execute();
+            pstmt.clearParameters();
         }        
+        pstmt.close();
         stmt.close();
     }
     
@@ -42,7 +46,8 @@ public class QueryPerformanceTest {
         Statement stmt = conn.createStatement();
         stmt.execute("drop table companies");
         stmt.close();
-        Connections.close();    }
+        Connections.close();    
+    }
     
     
     @Test
