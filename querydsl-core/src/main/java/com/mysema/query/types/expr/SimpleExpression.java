@@ -60,7 +60,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     @SuppressWarnings("unchecked")
     public SimpleExpression<T> as(Path<T> alias) {
-        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, mixin, alias);
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression isNotNull() {
         if (isnotnull == null) {
-            isnotnull = BooleanOperation.create(Ops.IS_NOT_NULL, this);
+            isnotnull = BooleanOperation.create(Ops.IS_NOT_NULL, mixin);
         }
         return isnotnull;
     }
@@ -91,7 +91,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression isNull() {
         if (isnull == null) {
-            isnull = BooleanOperation.create(Ops.IS_NULL, this);
+            isnull = BooleanOperation.create(Ops.IS_NULL, mixin);
         }
         return isnull;
     }
@@ -103,7 +103,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public NumberExpression<Long> count(){
         if (count == null) {
-            count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, this);
+            count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, mixin);
         }
         return count;
     }
@@ -116,7 +116,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public NumberExpression<Long> countDistinct(){
         if (countDistinct == null) {
-          countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, this);
+          countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, mixin);
         }
         return countDistinct;
     }
@@ -171,7 +171,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.size() == 1) {
             return eq(right.iterator().next());
         } else {
-            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<Collection<? extends T>>(right));
+            return BooleanOperation.create(Ops.IN, mixin, new ConstantImpl<Collection<? extends T>>(right));
         }
     }
 
@@ -185,7 +185,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return eq(right[0]);
         } else {
-            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<List<T>>(Arrays.asList(right)));
+            return BooleanOperation.create(Ops.IN, mixin, new ConstantImpl<List<T>>(Arrays.asList(right)));
         }
     }
 
@@ -197,7 +197,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression in(CollectionExpression<?,? extends T> right) {
-        return BooleanOperation.create(Ops.IN, this, right);
+        return BooleanOperation.create(Ops.IN, mixin, right);
     }
 
     /**
@@ -217,7 +217,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression ne(Expression<? super T> right) {
-        return BooleanOperation.create(Ops.NE, this, right);
+        return BooleanOperation.create(Ops.NE, mixin, right);
     }
     
     /**
@@ -305,7 +305,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public CaseForEqBuilder<T> when(T other){
-        return new CaseForEqBuilder<T>(this, new ConstantImpl<T>(other));
+        return new CaseForEqBuilder<T>(mixin, new ConstantImpl<T>(other));
     }
 
     /**
@@ -315,7 +315,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public CaseForEqBuilder<T> when(Expression<? extends T> other){
-        return new CaseForEqBuilder<T>(this, other);
+        return new CaseForEqBuilder<T>(mixin, other);
     }
 
 }

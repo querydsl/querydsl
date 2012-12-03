@@ -46,7 +46,7 @@ public abstract class DslExpression<T> implements Expression<T> {
      */
     @SuppressWarnings("unchecked")
     public DslExpression<T> as(Path<T> alias) {
-        return DslOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+        return DslOperation.create((Class<T>)getType(),Ops.ALIAS, mixin, alias);
     }
 
     /**

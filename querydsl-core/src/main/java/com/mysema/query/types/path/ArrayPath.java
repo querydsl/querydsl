@@ -75,7 +75,7 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
      * @return
      */
     public SimplePath<E> get(Expression<Integer> index) {
-        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(this, index);
+        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return new SimplePath<E>(componentType, md);
     }
 
@@ -86,7 +86,7 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
      * @return
      */
     public SimplePath<E> get(@Nonnegative int index) {
-        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(this, index);
+        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return new SimplePath<E>(componentType, md);
     }
 
@@ -116,7 +116,7 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
      */
     public NumberExpression<Integer> size() {
         if (size == null) {
-            size = NumberOperation.create(Integer.class, Ops.ARRAY_SIZE, this);
+            size = NumberOperation.create(Integer.class, Ops.ARRAY_SIZE, pathMixin);
         }
         return size;
     }

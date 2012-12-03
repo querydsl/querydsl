@@ -45,7 +45,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     @Override
     public TimeExpression<T> as(Path<T> alias) {
-        return TimeOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+        return TimeOperation.create((Class<T>)getType(),Ops.ALIAS, mixin, alias);
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public NumberExpression<Integer> hour(){
         if (hours == null) {
-            hours = NumberOperation.create(Integer.class, Ops.DateTimeOps.HOUR, this);
+            hours = NumberOperation.create(Integer.class, Ops.DateTimeOps.HOUR, mixin);
         }
         return hours;
     }
@@ -72,7 +72,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public NumberExpression<Integer> minute(){
         if (minutes == null) {
-            minutes = NumberOperation.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
+            minutes = NumberOperation.create(Integer.class, Ops.DateTimeOps.MINUTE, mixin);
         }
         return minutes;
     }
@@ -84,7 +84,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public NumberExpression<Integer> second(){
         if (seconds == null) {
-            seconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.SECOND, this);
+            seconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.SECOND, mixin);
         }
         return seconds;
     }
@@ -97,7 +97,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public NumberExpression<Integer> milliSecond(){
         if (milliseconds == null) { 
-            milliseconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.MILLISECOND, this);
+            milliseconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.MILLISECOND, mixin);
         }
         return milliseconds;
     }

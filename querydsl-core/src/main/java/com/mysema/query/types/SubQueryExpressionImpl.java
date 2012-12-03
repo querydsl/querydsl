@@ -33,7 +33,7 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
     }
 
     @SuppressWarnings("unchecked")
-    public boolean equals(Object o){
+    public final boolean equals(Object o){
         if (o == this) {
             return true;
         } else if (o instanceof SubQueryExpression) {
@@ -45,12 +45,12 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
     }
 
     @Override
-    public QueryMetadata getMetadata() {
+    public final QueryMetadata getMetadata() {
         return metadata;
     }
     
     @Override
-    public <R, C> R accept(Visitor<R, C> v, C context) {
+    public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
     

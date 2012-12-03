@@ -25,7 +25,7 @@ import java.util.Map;
  * @author tiwe
  */
 @SuppressWarnings("unchecked")
-public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
+public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final long serialVersionUID = -3898138057967814118L;
     

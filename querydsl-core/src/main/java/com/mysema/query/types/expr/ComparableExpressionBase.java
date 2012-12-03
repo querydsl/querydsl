@@ -51,13 +51,13 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      */
     public final OrderSpecifier<T> asc() {
         if (asc == null) {
-            asc = new OrderSpecifier<T>(Order.ASC, this);
+            asc = new OrderSpecifier<T>(Order.ASC, mixin);
         }
         return asc;
     }
     
     public final Coalesce<T> coalesce(Expression<?>...exprs) {
-        Coalesce<T> coalesce = new Coalesce<T>(getType(), this);
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression expr : exprs) {
             coalesce.add(expr);
         }
@@ -65,7 +65,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     }
     
     public final Coalesce<T> coalesce(T... args) {
-        Coalesce<T> coalesce = new Coalesce<T>(getType(), this);
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
             coalesce.add(arg);
         }
@@ -80,7 +80,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return
      */
     public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
-        return NumberOperation.create(type, Ops.NUMCAST, this, new ConstantImpl(type));
+        return NumberOperation.create(type, Ops.NUMCAST, mixin, new ConstantImpl(type));
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      */
     public final OrderSpecifier<T> desc() {
         if (desc == null) {
-            desc = new OrderSpecifier<T>(Order.DESC, this);
+            desc = new OrderSpecifier<T>(Order.DESC, mixin);
         }
         return desc;
     }
@@ -103,7 +103,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      */
     public StringExpression stringValue() {
         if (stringCast == null) {
-            stringCast = StringOperation.create(Ops.STRING_CAST, this);
+            stringCast = StringOperation.create(Ops.STRING_CAST, mixin);
         }
         return stringCast;
     }

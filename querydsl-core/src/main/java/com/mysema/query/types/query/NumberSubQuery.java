@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;

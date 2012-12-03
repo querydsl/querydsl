@@ -74,7 +74,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     @Override
     public Q any(){
         if (any == null) {
-            any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
+            any = newInstance(queryType, PathMetadataFactory.forCollectionAny(pathMixin));
         }
         return any;
     }

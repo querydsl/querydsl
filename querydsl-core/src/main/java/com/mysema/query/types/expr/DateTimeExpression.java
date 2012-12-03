@@ -96,7 +96,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
 
     @Override
     public DateTimeExpression<T> as(Path<T> alias) {
-        return DateTimeOperation.create((Class<T>)getType(), Ops.ALIAS, this, alias);
+        return DateTimeOperation.create((Class<T>)getType(), Ops.ALIAS, mixin, alias);
     }
 
     @Override
@@ -111,7 +111,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> dayOfMonth(){
         if (dayOfMonth == null) {
-            dayOfMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
+            dayOfMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, mixin);
         }
         return dayOfMonth;
     }
@@ -124,7 +124,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> dayOfWeek() {
         if (dayOfWeek == null) {
-            dayOfWeek = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
+            dayOfWeek = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, mixin);
         }
         return dayOfWeek;
     }
@@ -137,7 +137,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> dayOfYear() {
         if (dayOfYear == null){
-            dayOfYear = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
+            dayOfYear = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, mixin);
         }
         return dayOfYear;
     }
@@ -149,7 +149,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> hour(){
         if (hours == null) {
-            hours = NumberOperation.create(Integer.class, Ops.DateTimeOps.HOUR, this);
+            hours = NumberOperation.create(Integer.class, Ops.DateTimeOps.HOUR, mixin);
         }
         return hours;
     }
@@ -161,7 +161,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public DateTimeExpression<T> max(){
         if (max == null) {
-            max = DateTimeOperation.create((Class<T>)getType(), Ops.AggOps.MAX_AGG, this);
+            max = DateTimeOperation.create((Class<T>)getType(), Ops.AggOps.MAX_AGG, mixin);
         }
         return max;
     }
@@ -174,7 +174,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> milliSecond(){
         if (milliseconds == null) {
-            milliseconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.MILLISECOND, this);
+            milliseconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.MILLISECOND, mixin);
         }
         return milliseconds;
     }
@@ -186,7 +186,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public DateTimeExpression<T> min(){
         if (min == null) {
-            min = DateTimeOperation.create((Class<T>)getType(), Ops.AggOps.MIN_AGG, this);
+            min = DateTimeOperation.create((Class<T>)getType(), Ops.AggOps.MIN_AGG, mixin);
         }
         return min;
     }
@@ -198,7 +198,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> minute(){
         if (minutes == null) {
-            minutes = NumberOperation.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
+            minutes = NumberOperation.create(Integer.class, Ops.DateTimeOps.MINUTE, mixin);
         }
         return minutes;
     }
@@ -210,7 +210,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> month(){
         if (month == null) {
-            month = NumberOperation.create(Integer.class, Ops.DateTimeOps.MONTH, this);
+            month = NumberOperation.create(Integer.class, Ops.DateTimeOps.MONTH, mixin);
         }
         return month;
     }
@@ -222,7 +222,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> second(){
         if (seconds == null) {
-            seconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.SECOND, this);
+            seconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.SECOND, mixin);
         }
         return seconds;
     }
@@ -234,7 +234,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> week() {
         if (week == null) {
-            week = NumberOperation.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
+            week = NumberOperation.create(Integer.class, Ops.DateTimeOps.WEEK,  mixin);
         }
         return week;
     }
@@ -246,7 +246,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> year(){
         if (year == null) {
-            year = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR, this);
+            year = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR, mixin);
         }
         return year;
     }
@@ -258,7 +258,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> yearMonth(){
         if (yearMonth == null) {
-            yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, this);
+            yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, mixin);
         }
         return yearMonth;
     }

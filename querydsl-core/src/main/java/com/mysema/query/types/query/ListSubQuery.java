@@ -23,7 +23,6 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;

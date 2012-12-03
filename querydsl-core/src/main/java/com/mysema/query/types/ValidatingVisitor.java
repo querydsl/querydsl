@@ -63,13 +63,13 @@ public final class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>
     }
 
     @Override
-    public Void visit(Path<?> expr, Set<Expression<?>> known) {
-        if (!known.contains(expr.getRoot())){
+    public Void visit(Path<?> expr, Set<Expression<?>> known) {               
+        PathMetadata<?> metadata = expr.getMetadata();
+        if (metadata.getParent() != null) {
+            metadata.getParent().accept(this, known);
+        } else if (!known.contains(expr.getRoot())) {
             throw new IllegalArgumentException("Undeclared path '" + expr.getRoot() + "'. " +
-            	"Add this path as a source to the query to be able to reference it.");
-        }
-        if (expr.getMetadata().getParent() != null){
-            expr.getMetadata().getParent().accept(this, known);
+                    "Add this path as a source to the query to be able to reference it.");
         }
         return null;
     }

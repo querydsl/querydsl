@@ -49,7 +49,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
 
     @Override
     public StringExpression as(Path<String> alias) {
-        return StringOperation.create(Ops.ALIAS, this, alias);
+        return StringOperation.create(Ops.ALIAS, mixin, alias);
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this + str
      */
     public StringExpression append(Expression<String> str) {
-        return StringOperation.create(Ops.CONCAT, this, str);
+        return StringOperation.create(Ops.CONCAT, mixin, str);
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#charAt(int)
      */
     public SimpleExpression<Character> charAt(Expression<Integer> i) {
-        return ComparableOperation.create(Character.class, Ops.CHAR_AT, this, i);
+        return ComparableOperation.create(Character.class, Ops.CHAR_AT, mixin, i);
     }
 
     /**
@@ -127,7 +127,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#contains(CharSequence)
      */
     public BooleanExpression contains(Expression<String> str) {
-        return BooleanOperation.create(Ops.STRING_CONTAINS, this, str);
+        return BooleanOperation.create(Ops.STRING_CONTAINS, mixin, str);
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression containsIgnoreCase(Expression<String> str) {
-        return BooleanOperation.create(Ops.STRING_CONTAINS_IC, this, str);
+        return BooleanOperation.create(Ops.STRING_CONTAINS_IC, mixin, str);
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#endsWith(String)
      */
     public BooleanExpression endsWith(Expression<String> str) {
-        return BooleanOperation.create(Ops.ENDS_WITH, this, str);
+        return BooleanOperation.create(Ops.ENDS_WITH, mixin, str);
     }
 
     /**
@@ -173,7 +173,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression endsWithIgnoreCase(Expression<String> str){
-        return BooleanOperation.create(Ops.ENDS_WITH_IC, this, str);
+        return BooleanOperation.create(Ops.ENDS_WITH_IC, mixin, str);
     }
 
     /**
@@ -204,7 +204,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#equalsIgnoreCase(String)
      */
     public BooleanExpression equalsIgnoreCase(Expression<String> str) {
-        return BooleanOperation.create(Ops.EQ_IGNORE_CASE, this, str);
+        return BooleanOperation.create(Ops.EQ_IGNORE_CASE, mixin, str);
     }
 
     /**
@@ -227,7 +227,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#indexOf(String)
      */
     public NumberExpression<Integer> indexOf(Expression<String> str) {
-        return NumberOperation.create(Integer.class, Ops.INDEX_OF, this, str);
+        return NumberOperation.create(Integer.class, Ops.INDEX_OF, mixin, str);
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public NumberExpression<Integer> indexOf(Expression<String> str, int i) {
-        return NumberOperation.create(Integer.class, Ops.INDEX_OF_2ARGS, this, str, ConstantImpl.create(i));
+        return NumberOperation.create(Integer.class, Ops.INDEX_OF_2ARGS, mixin, str, ConstantImpl.create(i));
     }
 
     /**
@@ -272,7 +272,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public BooleanExpression isEmpty(){
         if (isempty == null) {
-            isempty = BooleanOperation.create(Ops.STRING_IS_EMPTY, this);
+            isempty = BooleanOperation.create(Ops.STRING_IS_EMPTY, mixin);
         }
         return isempty;
     }
@@ -295,7 +295,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public NumberExpression<Integer> length() {
         if (length == null) {
-            length = NumberOperation.create(Integer.class, Ops.STRING_LENGTH, this);
+            length = NumberOperation.create(Integer.class, Ops.STRING_LENGTH, mixin);
         }
         return length;
     }
@@ -317,7 +317,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression like(Expression<String> str){
-        return BooleanOperation.create(Ops.LIKE, this, str);
+        return BooleanOperation.create(Ops.LIKE, mixin, str);
     }
     
     /**
@@ -327,7 +327,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression like(String str, char escape){
-        return BooleanOperation.create(Ops.LIKE_ESCAPE, this, ConstantImpl.create(str), ConstantImpl.create(escape));
+        return BooleanOperation.create(Ops.LIKE_ESCAPE, mixin, ConstantImpl.create(str), ConstantImpl.create(escape));
     }
 
     /**
@@ -337,7 +337,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression like(Expression<String> str, char escape){
-        return BooleanOperation.create(Ops.LIKE_ESCAPE, this, str, ConstantImpl.create(escape));
+        return BooleanOperation.create(Ops.LIKE_ESCAPE, mixin, str, ConstantImpl.create(escape));
     }
 
     /**
@@ -347,7 +347,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return locate(str, this)
      */
     public NumberExpression<Integer> locate(Expression<String> str) {
-        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE, str, this);
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE, str, mixin);
     }
     
     /**
@@ -357,7 +357,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return locate(str, this)
      */
     public NumberExpression<Integer> locate(String str) {
-        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE, ConstantImpl.create(str), this);
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE, ConstantImpl.create(str), mixin);
     }
     
     /**
@@ -367,7 +367,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return locate(str, this, start)
      */
     public NumberExpression<Integer> locate(Expression<String> str, NumberExpression<Integer> start) {
-        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE2, str, this, start);
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE2, str, mixin, start);
     }
     
     /**
@@ -377,7 +377,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return locate(str, this, start)
      */
     public NumberExpression<Integer> locate(String str, int start) {
-        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE2, ConstantImpl.create(str), this, ConstantImpl.create(start));
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE2, ConstantImpl.create(str), mixin, ConstantImpl.create(start));
     }
     
     /**
@@ -388,7 +388,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public StringExpression lower() {
         if (lower == null) {
-            lower = StringOperation.create(Ops.LOWER, this);
+            lower = StringOperation.create(Ops.LOWER, mixin);
         }
         return lower;
     }
@@ -401,7 +401,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#matches(String)
      */
     public BooleanExpression matches(Expression<String> regex){
-        return BooleanOperation.create(Ops.MATCHES, this, regex);
+        return BooleanOperation.create(Ops.MATCHES, mixin, regex);
     }
 
     /**
@@ -422,7 +422,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public StringExpression max(){
         if (max == null) {
-            max = StringOperation.create(Ops.AggOps.MAX_AGG, this);
+            max = StringOperation.create(Ops.AggOps.MAX_AGG, mixin);
         }
         return max;
     }
@@ -434,7 +434,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public StringExpression min(){
         if (min == null) {
-            min = StringOperation.create(Ops.AggOps.MIN_AGG, this);
+            min = StringOperation.create(Ops.AggOps.MIN_AGG, mixin);
         }
         return min;
     }
@@ -511,7 +511,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return str + this
      */
     public StringExpression prepend(Expression<String> str) {
-        return StringOperation.create(Ops.CONCAT, str, this);
+        return StringOperation.create(Ops.CONCAT, str, mixin);
     }
 
     /**
@@ -532,7 +532,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#startsWith(String)
      */
     public BooleanExpression startsWith(Expression<String> str) {
-        return BooleanOperation.create(Ops.STARTS_WITH, this, str);
+        return BooleanOperation.create(Ops.STARTS_WITH, mixin, str);
     }
 
     /**
@@ -540,7 +540,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression startsWithIgnoreCase(Expression<String> str) {
-        return BooleanOperation.create(Ops.STARTS_WITH_IC, this, str);
+        return BooleanOperation.create(Ops.STARTS_WITH_IC, mixin, str);
     }
 
     /**
@@ -575,7 +575,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int)
      */
     public StringExpression substring(int beginIndex) {
-        return StringOperation.create(Ops.SUBSTR_1ARG, this, ConstantImpl.create(beginIndex));
+        return StringOperation.create(Ops.SUBSTR_1ARG, mixin, ConstantImpl.create(beginIndex));
     }
 
     /**
@@ -587,7 +587,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int, int)
      */
     public StringExpression substring(int beginIndex, int endIndex) {
-        return StringOperation.create(Ops.SUBSTR_2ARGS, this, ConstantImpl.create(beginIndex), ConstantImpl.create(endIndex));
+        return StringOperation.create(Ops.SUBSTR_2ARGS, mixin, ConstantImpl.create(beginIndex), ConstantImpl.create(endIndex));
     }
     
     /**
@@ -599,7 +599,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int, int)
      */
     public StringExpression substring(Expression<Integer> beginIndex, int endIndex) {
-        return StringOperation.create(Ops.SUBSTR_2ARGS, this, beginIndex, ConstantImpl.create(endIndex));
+        return StringOperation.create(Ops.SUBSTR_2ARGS, mixin, beginIndex, ConstantImpl.create(endIndex));
     }
     
     /**
@@ -611,7 +611,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int, int)
      */
     public StringExpression substring(int beginIndex, Expression<Integer> endIndex) {
-        return StringOperation.create(Ops.SUBSTR_2ARGS, this, ConstantImpl.create(beginIndex), endIndex);
+        return StringOperation.create(Ops.SUBSTR_2ARGS, mixin, ConstantImpl.create(beginIndex), endIndex);
     }
 
     /**
@@ -622,7 +622,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int)
      */
     public StringExpression substring(Expression<Integer> beginIndex) {
-        return StringOperation.create(Ops.SUBSTR_1ARG, this, beginIndex);
+        return StringOperation.create(Ops.SUBSTR_1ARG, mixin, beginIndex);
     }
 
     /**
@@ -634,7 +634,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int, int)
      */
     public StringExpression substring(Expression<Integer> beginIndex, Expression<Integer> endIndex) {
-        return StringOperation.create(Ops.SUBSTR_2ARGS, this, beginIndex, endIndex);
+        return StringOperation.create(Ops.SUBSTR_2ARGS, mixin, beginIndex, endIndex);
     }
     
     /**
@@ -666,7 +666,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public StringExpression trim() {
         if (trim == null) {
-            trim = StringOperation.create(Ops.TRIM, this);
+            trim = StringOperation.create(Ops.TRIM, mixin);
         }
         return trim;
     }
@@ -679,7 +679,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public StringExpression upper() {
         if (upper == null) {
-            upper = StringOperation.create(Ops.UPPER, this);
+            upper = StringOperation.create(Ops.UPPER, mixin);
         }
         return upper;
     }

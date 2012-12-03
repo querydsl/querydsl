@@ -54,19 +54,19 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     }
 
     public final BooleanExpression containsKey(Expression<K> key) {
-        return BooleanOperation.create(Ops.CONTAINS_KEY, this, key);
+        return BooleanOperation.create(Ops.CONTAINS_KEY, mixin, key);
     }
 
     public final BooleanExpression containsKey(K key) {
-        return BooleanOperation.create(Ops.CONTAINS_KEY, this, new ConstantImpl<K>(key));
+        return BooleanOperation.create(Ops.CONTAINS_KEY, mixin, new ConstantImpl<K>(key));
     }
 
     public final BooleanExpression containsValue(Expression<V> value) {
-        return BooleanOperation.create(Ops.CONTAINS_VALUE, this, value);
+        return BooleanOperation.create(Ops.CONTAINS_VALUE, mixin, value);
     }
 
     public final BooleanExpression containsValue(V value) {
-        return BooleanOperation.create(Ops.CONTAINS_VALUE, this, new ConstantImpl<V>(value));
+        return BooleanOperation.create(Ops.CONTAINS_VALUE, mixin, new ConstantImpl<V>(value));
     }
 
     public abstract Q get(Expression<K> key);
@@ -75,7 +75,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
 
     public final BooleanExpression isEmpty() {
         if (empty == null) {
-            empty = BooleanOperation.create(Ops.MAP_IS_EMPTY, this);
+            empty = BooleanOperation.create(Ops.MAP_IS_EMPTY, mixin);
         }
         return empty;
     }
@@ -86,7 +86,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
 
     public final NumberExpression<Integer> size() {
         if (size == null) {
-            size = NumberOperation.create(Integer.class, Ops.MAP_SIZE, this);
+            size = NumberOperation.create(Integer.class, Ops.MAP_SIZE, mixin);
         }
         return size;
     }

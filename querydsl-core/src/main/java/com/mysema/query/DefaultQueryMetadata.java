@@ -15,7 +15,6 @@ package com.mysema.query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -208,17 +207,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public List<Expression<?>> getGroupBy() {
-        return Collections.unmodifiableList(groupBy);
+        return groupBy;
     }
 
     @Override
     public Predicate getHaving() {
-        return having.hasValue() ? having.getValue() : null;
+        return having.getValue();
     }
 
     @Override
     public List<JoinExpression> getJoins() {
-        return Collections.unmodifiableList(joins);
+        return joins;
     }
 
     @Override
@@ -228,17 +227,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     public Map<ParamExpression<?>,Object> getParams(){
-        return Collections.unmodifiableMap(params);
+        return params;
     }
 
     @Override
     public List<OrderSpecifier<?>> getOrderBy() {
-        return Collections.unmodifiableList(orderBy);
+        return orderBy;
     }
 
     @Override
     public List<Expression<?>> getProjection() {
-        return Collections.unmodifiableList(projection);
+        return projection;
     }
 
     @Override
@@ -314,6 +313,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public boolean hasFlag(QueryFlag flag) {
         return flags.contains(flag);
+    }
+    
+    private void validate(Expression<?> expr){
+        if (validate) {
+            expr.accept(ValidatingVisitor.DEFAULT, exprInJoins);
+        }
     }
     
     private void validate(Expression<?>... expr){

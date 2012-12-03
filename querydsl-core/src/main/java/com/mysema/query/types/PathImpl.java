@@ -52,7 +52,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof Path<?>) {
@@ -63,17 +63,17 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public final PathMetadata<?> getMetadata() {
         return metadata;
     }
 
     @Override
-    public Path<?> getRoot() {
+    public final Path<?> getRoot() {
         return root;
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement() {
+    public final AnnotatedElement getAnnotatedElement() {
         if (annotatedElement == null) {
             if (metadata.getPathType() == PathType.PROPERTY) {
                 Class<?> beanClass = metadata.getParent().getType();
@@ -88,7 +88,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     }
 
     @Override
-    public <R, C> R accept(Visitor<R, C> v, C context) {
+    public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
 

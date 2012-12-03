@@ -85,7 +85,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     public <U extends BeanPath<? extends T>> U as(Class<U> clazz) {
         try {
             if (!casts.containsKey(clazz)) {
-                PathMetadata<T> metadata = PathMetadataFactory.forDelegate(this);
+                PathMetadata<T> metadata = PathMetadataFactory.forDelegate(pathMixin);
                 U rv;                
                 if (inits != null) {
                     rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(metadata, inits);
@@ -321,7 +321,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @return
      */
     public <B extends T> BooleanExpression instanceOf(Class<B> type) {
-        return BooleanOperation.create(Ops.INSTANCE_OF, this, new ConstantImpl<Class<B>>(type));
+        return BooleanOperation.create(Ops.INSTANCE_OF, pathMixin, new ConstantImpl<Class<B>>(type));
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })

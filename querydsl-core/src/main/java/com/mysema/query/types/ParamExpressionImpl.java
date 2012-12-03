@@ -43,12 +43,12 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof ParamExpression<?>) {
@@ -61,15 +61,15 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
         }
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public boolean isAnon(){
+    public final boolean isAnon(){
         return anon;
     }
 
-    public String getNotSetMessage() {
+    public final String getNotSetMessage() {
         if (!anon) {
             return "The parameter " + name + " needs to be set";
         } else {

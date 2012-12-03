@@ -49,16 +49,14 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     }
 
     public final BooleanExpression contains(Expression<E> child) {
-        return BooleanOperation.create(Ops.IN, child, this);
+        return BooleanOperation.create(Ops.IN, child, mixin);
     }
 
     public abstract Class<E> getElementType();
-    
-
 
     public final BooleanExpression isEmpty() {
         if (empty == null) {
-            empty = BooleanOperation.create(Ops.COL_IS_EMPTY, this);
+            empty = BooleanOperation.create(Ops.COL_IS_EMPTY, mixin);
         }
         return empty;
     }
@@ -69,7 +67,7 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
 
     public final NumberExpression<Integer> size() {
         if (size == null) {
-            size = NumberOperation.create(Integer.class, Ops.COL_SIZE, this);
+            size = NumberOperation.create(Integer.class, Ops.COL_SIZE, mixin);
         }
         return size;
     }

@@ -68,22 +68,22 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     }
 
     @Override
-    public Object getArg(int index) {
+    public final Object getArg(int index) {
         return getArgs().get(index);
     }
 
     @Override
-    public List<?> getArgs() {
+    public final List<?> getArgs() {
         return args;
     }
 
     @Override
-    public Template getTemplate() {
+    public final Template getTemplate() {
         return template;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
        if (o == this) {
            return true;
        } else if (o instanceof TemplateExpression) {
@@ -96,7 +96,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     }
     
     @Override
-    public <R, C> R accept(Visitor<R, C> v, C context) {
+    public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
 

@@ -14,7 +14,6 @@
 package com.mysema.query.types;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -44,26 +43,26 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     public OperationImpl(Class<? extends T> type, Operator<? super T> operator, List<Expression<?>> args){
         super(type);
         this.operator = operator;
-        this.args = Collections.unmodifiableList(args);
+        this.args = args;
     }
 
     @Override
-    public Expression<?> getArg(int i) {
+    public final Expression<?> getArg(int i) {
         return args.get(i);
     }
 
     @Override
-    public List<Expression<?>> getArgs() {
+    public final List<Expression<?>> getArgs() {
         return args;
     }
 
     @Override
-    public Operator<? super T> getOperator() {
+    public final Operator<? super T> getOperator() {
         return operator;
     }
 
     @Override
-    public boolean equals(Object o){
+    public final boolean equals(Object o){
         if (o == this) {
             return true;
         } else if (o instanceof Operation<?>) {
@@ -77,7 +76,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     }
 
     @Override
-    public <R, C> R accept(Visitor<R, C> v, C context) {
+    public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
 

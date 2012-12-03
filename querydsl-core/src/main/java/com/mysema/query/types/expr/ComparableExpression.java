@@ -42,7 +42,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     
     @Override
     public ComparableExpression<T> as(Path<T> alias) {
-        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
+        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, mixin, alias);
     }
     
     @Override
@@ -60,14 +60,14 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public final BooleanExpression between(@Nullable T from, @Nullable T to) {
         if (from == null) {
             if (to != null) {
-                return BooleanOperation.create(Ops.LOE, this, new ConstantImpl<T>(to));
+                return BooleanOperation.create(Ops.LOE, mixin, new ConstantImpl<T>(to));
             } else {
                 throw new IllegalArgumentException("Either from or to needs to be non-null");
             }
         } else if (to == null) {
-            return BooleanOperation.create(Ops.GOE, this, new ConstantImpl<T>(from));
+            return BooleanOperation.create(Ops.GOE, mixin, new ConstantImpl<T>(from));
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<T>(from), new ConstantImpl<T>(to));    
+            return BooleanOperation.create(Ops.BETWEEN, mixin, new ConstantImpl<T>(from), new ConstantImpl<T>(to));    
         }        
     }
 
@@ -81,14 +81,14 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public final BooleanExpression between(@Nullable Expression<T> from, @Nullable Expression<T> to) {
         if (from == null) {
             if (to != null) {
-                return BooleanOperation.create(Ops.LOE, this, to);
+                return BooleanOperation.create(Ops.LOE, mixin, to);
             } else {
                 throw new IllegalArgumentException("Either from or to needs to be non-null");
             }
         } else if (to == null) {
-            return BooleanOperation.create(Ops.GOE, this, from);
+            return BooleanOperation.create(Ops.GOE, mixin, from);
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, this, from, to);    
+            return BooleanOperation.create(Ops.BETWEEN, mixin, from, to);    
         }
         
     }
@@ -134,7 +134,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression gt(Expression<T> right) {
-        return BooleanOperation.create(Ops.GT, this, right);
+        return BooleanOperation.create(Ops.GT, mixin, right);
     }
     
     /**
@@ -173,7 +173,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression goe(Expression<T> right) {
-        return BooleanOperation.create(Ops.GOE, this, right);
+        return BooleanOperation.create(Ops.GOE, mixin, right);
     }
     
     /**
@@ -211,7 +211,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression lt(Expression<T> right) {
-        return BooleanOperation.create(Ops.LT, this, right);
+        return BooleanOperation.create(Ops.LT, mixin, right);
     }
     
     /**
@@ -239,7 +239,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(T right) {
-        return BooleanOperation.create(Ops.LOE, this, new ConstantImpl<T>(right));
+        return BooleanOperation.create(Ops.LOE, mixin, new ConstantImpl<T>(right));
     }
 
     /**
