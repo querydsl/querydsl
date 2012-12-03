@@ -2,14 +2,14 @@ package com.mysema.query.jpa.domain;
 
 import com.mysema.query.annotations.QueryProjection;
 
-public class PersonSummary {
+public class PersonSummaryInteger {
 
 	private String name;
 
-	private Long numberOfChildren;
+	private Integer numberOfChildren;
 
 	@QueryProjection
-	public PersonSummary(String name, Long numberOfChildren) {
+	public PersonSummaryInteger(String name, Integer numberOfChildren) {
 		super();
 		this.name = name;
 		this.numberOfChildren = numberOfChildren;
@@ -23,11 +23,11 @@ public class PersonSummary {
 		this.name = name;
 	}
 
-	public Long getNumberOfChildren() {
+	public Integer getNumberOfChildren() {
 		return numberOfChildren;
 	}
 
-	public void setNumberOfChildren(Long numberOfChildren) {
+	public void setNumberOfChildren(Integer numberOfChildren) {
 		this.numberOfChildren = numberOfChildren;
 	}
 
