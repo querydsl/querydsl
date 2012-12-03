@@ -61,8 +61,8 @@ public class CustomTypesTest extends AbstractJDBCTest{
         configuration = new Configuration(new HSQLDBTemplates());
 //        configuration.setJavaType(Types.DATE, java.util.Date.class);
         configuration.register(new UtilDateType());
-        configuration.register("person", "secureId", new EncryptedString());
-        configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
+        configuration.register("PERSON", "SECUREDID", new EncryptedString());
+        configuration.register("PERSON", "GENDER",  new EnumByNameType<Gender>(Gender.class));
         configuration.register(new StringType());
 
     }
@@ -82,6 +82,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
         // export
         exporter.export(connection.getMetaData());
         String person = Files.toString(new File("target/customExport/test/QPerson.java"), Charsets.UTF_8);
+        System.err.println(person);
         assertTrue(person.contains("createEnum(\"GENDER\""));              
     }
     

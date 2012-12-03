@@ -20,7 +20,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.primitives.Primitives;
-import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.BigDecimalType;
 import com.mysema.query.sql.types.BlobType;
 import com.mysema.query.sql.types.BooleanType;
@@ -105,11 +104,16 @@ public class JavaTypeMapping {
     
     private final Map<Class<?>,Type<?>> resolvedTypesByClass = new HashMap<Class<?>,Type<?>>();
     
-    private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
+    private final Map<String, Map<String,Type<?>>> typeByColumn = new HashMap<String,Map<String,Type<?>>>();
     
     @Nullable
-    public Type<?> getType(String table, String column) {
-        return typeByColumn.get(Pair.of(table, column)); 
+    public Type<?> getType(String table, String column) { 
+        Map<String,Type<?>> columns = typeByColumn.get(table);
+        if (columns != null) {
+            return columns.get(column);
+        } else {
+            return null;
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -121,11 +125,7 @@ public class JavaTypeMapping {
                 resolvedTypesByClass.put(clazz, resolvedType);
             }
         }
-        if (resolvedType == null) {
-            throw new IllegalArgumentException("Got not user type for " + clazz.getName());
-        } else {
-            return (Type<T>) resolvedType;
-        }
+        return (Type<T>) resolvedType;
     }
 
     @Nullable
@@ -135,7 +135,7 @@ public class JavaTypeMapping {
         do{
             if (typeByClass.containsKey(cl)) {
                 return typeByClass.get(cl);
-            }else if (defaultTypes.containsKey(cl)) {
+            } else if (defaultTypes.containsKey(cl)) {
                 return defaultTypes.get(cl);
             }    
             cl = cl.getSuperclass(); 
@@ -164,7 +164,12 @@ public class JavaTypeMapping {
     }
 
     public void setType(String table, String column, Type<?> type) {
-        typeByColumn.put(Pair.of(table.toLowerCase(), column.toLowerCase()), type);        
+        Map<String,Type<?>> columns = typeByColumn.get(table);
+        if (columns == null) {
+            columns = new HashMap<String, Type<?>>();
+            typeByColumn.put(table, columns);
+        }
+        columns.put(column, type);
     }
     
 }
