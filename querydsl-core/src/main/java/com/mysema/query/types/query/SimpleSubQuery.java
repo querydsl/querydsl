@@ -35,14 +35,14 @@ public final class SimpleSubQuery<T> extends DslExpression<T> implements Extende
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpression<T> subQueryMixin;
+    private final SubQueryExpressionImpl<T> subQueryMixin;
 
     @Nullable
     private volatile BooleanExpression exists;
 
     public SimpleSubQuery(Class<T> type, QueryMetadata md) {
         super(new SubQueryExpressionImpl<T>(type, md));
-        subQueryMixin = (SubQueryExpression<T>)mixin;
+        subQueryMixin = (SubQueryExpressionImpl<T>)mixin;
     }
 
     @Override

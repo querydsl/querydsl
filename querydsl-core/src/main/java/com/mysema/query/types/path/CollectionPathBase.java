@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -45,7 +46,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
 
     private final PathInits inits;
     
-    public CollectionPathBase(Path<C> mixin, PathInits inits) {
+    public CollectionPathBase(PathImpl<C> mixin, PathInits inits) {
         super(mixin);
         this.inits = inits;
     }

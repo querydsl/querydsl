@@ -45,11 +45,11 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     
     public static final BooleanExpression FALSE = create("false");
 
-    private final TemplateExpression<Boolean> templateMixin;
+    private final TemplateExpressionImpl<Boolean> templateMixin;
 
     public BooleanTemplate(Template template, List<?> args) {
         super(new TemplateExpressionImpl<Boolean>(Boolean.class, template, args));
-        this.templateMixin = (TemplateExpression<Boolean>)mixin;
+        this.templateMixin = (TemplateExpressionImpl<Boolean>)mixin;
     }
 
     @Override

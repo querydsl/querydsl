@@ -33,14 +33,14 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpression<String> subQueryMixin;
+    private final SubQueryExpressionImpl<String> subQueryMixin;
     
     @Nullable
     private volatile BooleanExpression exists;
 
     public StringSubQuery(QueryMetadata md) {
         super(new SubQueryExpressionImpl<String>(String.class, md));
-        this.subQueryMixin = (SubQueryExpression<String>)mixin;
+        this.subQueryMixin = (SubQueryExpressionImpl<String>)mixin;
     }
     
     @Override

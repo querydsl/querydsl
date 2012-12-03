@@ -42,11 +42,11 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
         return new DateTemplate<T>(type, template, Arrays.asList(args));
     }
 
-    private final TemplateExpression<T> templateMixin;
+    private final TemplateExpressionImpl<T> templateMixin;
 
     public DateTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
-        templateMixin = (TemplateExpression<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
 
     @Override

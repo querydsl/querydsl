@@ -34,7 +34,7 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
 
     private static final long serialVersionUID = -6030609920388740246L;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public DatePath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
@@ -42,7 +42,7 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
 
     public DatePath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
     }
 
     public DatePath(Class<? extends T> type, String var) {

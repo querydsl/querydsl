@@ -46,7 +46,7 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
         return new EnumOperation<D>(type, op, args);
     }
 
-    private final Operation<T> opMixin;
+    private final OperationImpl<T> opMixin;
 
     protected EnumOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
@@ -54,7 +54,7 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
 
     protected EnumOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
-        this.opMixin = (Operation<T>)mixin;
+        this.opMixin = (OperationImpl<T>)mixin;
     }
     
     @Override

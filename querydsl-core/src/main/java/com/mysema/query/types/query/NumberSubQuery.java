@@ -35,14 +35,14 @@ public final class NumberSubQuery<T extends Number & Comparable<?>> extends Numb
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpression<T> subQueryMixin;
+    private final SubQueryExpressionImpl<T> subQueryMixin;
 
     @Nullable
     private volatile BooleanExpression exists;
 
     public NumberSubQuery(Class<T> type, QueryMetadata md) {
         super(new SubQueryExpressionImpl<T>(type, md));
-        subQueryMixin = (SubQueryExpression<T>)mixin;
+        subQueryMixin = (SubQueryExpressionImpl<T>)mixin;
     }
 
     @Override

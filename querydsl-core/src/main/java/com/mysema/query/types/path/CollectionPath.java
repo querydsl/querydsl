@@ -39,7 +39,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
 
     private final Class<E> elementType;
 
-    private final Path<Collection<E>> pathMixin;
+    private final PathImpl<Collection<E>> pathMixin;
 
     @Nullable
     private transient Q any;
@@ -63,7 +63,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
         super(new PathImpl<Collection<E>>((Class)Collection.class, metadata), inits);
         this.elementType = (Class<E>)type;
         this.queryType = queryType;
-        this.pathMixin = (Path<Collection<E>>)mixin;
+        this.pathMixin = (PathImpl<Collection<E>>)mixin;
     }
     
     @Override

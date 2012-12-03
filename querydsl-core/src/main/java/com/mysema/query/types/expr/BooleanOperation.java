@@ -37,7 +37,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
         return new BooleanOperation(op, args);
     }
 
-    private final Operation<Boolean> opMixin;
+    private final OperationImpl<Boolean> opMixin;
 
     protected BooleanOperation(Operator<? super Boolean> op, Expression<?>... args) {
         this(op, Arrays.asList(args));
@@ -45,7 +45,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     protected BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
         super(new OperationImpl<Boolean>(Boolean.class, op, args));
-        opMixin = (Operation<Boolean>)mixin;
+        opMixin = (OperationImpl<Boolean>)mixin;
     }
     
     @Override

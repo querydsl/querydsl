@@ -33,7 +33,7 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
 
     private static final long serialVersionUID = 338191992784020563L;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public EnumPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
@@ -41,7 +41,7 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
 
     public EnumPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
     }
 
     public EnumPath(Class<? extends T> type, String var) {

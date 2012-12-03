@@ -45,7 +45,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
 
     private final Class<E> elementType;
 
-    private final Path<List<E>> pathMixin;
+    private final PathImpl<List<E>> pathMixin;
 
     private final Class<Q> queryType;
 
@@ -60,7 +60,6 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
         this(elementType, queryType, PathMetadataFactory.forProperty(parent, property));   
     }
     
-    @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
         this(elementType, queryType, metadata, PathInits.DIRECT);
     }
@@ -70,7 +69,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
         super(new PathImpl<List<E>>((Class)List.class, metadata), inits);
         this.elementType = (Class<E>)elementType;
         this.queryType = queryType;
-        this.pathMixin = (Path<List<E>>)mixin;
+        this.pathMixin = (PathImpl<List<E>>)mixin;
     }
     
     @Override

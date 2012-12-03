@@ -44,7 +44,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
 
     private final Class<K> keyType;
 
-    private final Path<Map<K,V>> pathMixin;
+    private final PathImpl<Map<K,V>> pathMixin;
 
     private final Class<E> queryType;
 
@@ -67,7 +67,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
-        this.pathMixin = (Path<Map<K,V>>)mixin;
+        this.pathMixin = (PathImpl<Map<K,V>>)mixin;
     }
     
     @Override

@@ -49,7 +49,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     @Nullable
     private final PathInits inits;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public BeanPath(Class<? extends T> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable), null);
@@ -65,7 +65,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
 
     public BeanPath(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
         this.inits = inits;
     }
     

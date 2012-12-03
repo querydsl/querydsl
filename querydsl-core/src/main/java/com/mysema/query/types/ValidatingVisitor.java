@@ -27,7 +27,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Serializable{
+public final class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Serializable{
 
     private static final long serialVersionUID = 691350069621050872L;
     
@@ -40,7 +40,9 @@ public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Ser
 
     @Override
     public Void visit(FactoryExpression<?> expr, Set<Expression<?>> known) {
-        visit(expr.getArgs(), known);
+        for (Expression<?> arg : expr.getArgs()) {
+            arg.accept(this, known);
+        }
         return null;
     }
 
@@ -49,7 +51,9 @@ public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Ser
         if (expr.getOperator() == Ops.ALIAS){
             known.add(expr.getArg(1));
         }
-        visit(expr.getArgs(), known);
+        for (Expression<?> arg : expr.getArgs()) {
+            arg.accept(this, known);            
+        }
         return null;
     }
 
@@ -75,9 +79,15 @@ public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Ser
         known = new HashSet<Expression<?>>(known);
         QueryMetadata md = expr.getMetadata();
         visitJoins(md.getJoins(), known);
-        visitOrder(md.getOrderBy(), known);
-        visit(md.getProjection(), known);
-        visit(md.getGroupBy(), known);
+        for (OrderSpecifier<?> o : md.getOrderBy()) { 
+            o.getTarget().accept(this, known);
+        }      
+        for (Expression<?> p : md.getProjection()) {
+            p.accept(this, known);
+        }
+        for (Expression<?> g : md.getGroupBy()) {
+            g.accept(this, known);
+        }
         if (md.getHaving() != null) {
             md.getHaving().accept(this, known);
         }
@@ -90,7 +100,11 @@ public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Ser
 
     @Override
     public Void visit(TemplateExpression<?> expr, Set<Expression<?>> known) {
-        visit(expr.getArgs(), known);
+        for (Object arg : expr.getArgs()) {
+            if (arg instanceof Expression<?>) {
+                ((Expression<?>)arg).accept(this, known);
+            }
+        }
         return null;
     }
     
@@ -101,20 +115,6 @@ public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Ser
             if (j.getCondition() != null) {
                 j.getCondition().accept(this, known);
             }
-        }
-    }
-
-    private void visitOrder(Iterable<OrderSpecifier<?>> order, Set<Expression<?>> known) {
-        for (OrderSpecifier<?> o : order) { 
-            o.getTarget().accept(this, known);
-        }        
-    }
-    
-    private void visit(List<?> exprs, Set<Expression<?>> known){
-        for (Object e : exprs) {
-            if (e instanceof Expression) {
-                ((Expression)e).accept(this, known);    
-            }            
         }
     }
 

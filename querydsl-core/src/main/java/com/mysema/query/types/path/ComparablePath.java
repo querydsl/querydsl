@@ -35,7 +35,7 @@ public class ComparablePath<T extends Comparable> extends ComparableExpression<T
 
     private static final long serialVersionUID = -7434767743611671666L;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public ComparablePath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
@@ -43,7 +43,7 @@ public class ComparablePath<T extends Comparable> extends ComparableExpression<T
 
     public ComparablePath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
     }
 
     public ComparablePath(Class<? extends T> type, String var) {

@@ -29,12 +29,11 @@ import com.mysema.query.types.expr.TimeExpression;
  *
  * @param <T> expression type
  */
-@SuppressWarnings({"unchecked"})
 public class TimePath<T extends Comparable> extends TimeExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = -1432775001949467763L;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public TimePath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
@@ -42,7 +41,7 @@ public class TimePath<T extends Comparable> extends TimeExpression<T> implements
 
     public TimePath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
     }
 
     public TimePath(Class<? extends T> type, String var) {

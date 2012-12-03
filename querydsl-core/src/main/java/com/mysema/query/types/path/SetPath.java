@@ -39,7 +39,7 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
 
     private final Class<E> elementType;
 
-    private final Path<Set<E>> pathMixin;
+    private final PathImpl<Set<E>> pathMixin;
     
     @Nullable
     private transient Q any;
@@ -63,7 +63,7 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
         super(new PathImpl<Set<E>>((Class)Set.class, metadata), inits);
         this.elementType = (Class<E>)type;
         this.queryType = queryType;
-        this.pathMixin = (Path<Set<E>>)mixin;
+        this.pathMixin = (PathImpl<Set<E>>)mixin;
     }
     
     @Override

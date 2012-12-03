@@ -46,7 +46,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     private final Class<T> elementType;
 
-    private final SubQueryExpression<List<T>> subQueryMixin;
+    private final SubQueryExpressionImpl<List<T>> subQueryMixin;
 
     @Nullable
     private volatile BooleanExpression exists;
@@ -61,7 +61,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     public ListSubQuery(Class<T> elementType, QueryMetadata md) {
         super(new SubQueryExpressionImpl<List<T>>((Class)List.class, md));
         this.elementType = elementType;
-        this.subQueryMixin = (SubQueryExpression<List<T>>)mixin;
+        this.subQueryMixin = (SubQueryExpressionImpl<List<T>>)mixin;
     }
     
     @Override

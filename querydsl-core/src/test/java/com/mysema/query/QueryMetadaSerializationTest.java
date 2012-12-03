@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -97,7 +98,10 @@ public class QueryMetadaSerializationTest {
                 System.out.println(clazz.getName());
                 fail(clazz.getName() + " is not serializable");
             }            
-            for (Field field : clazz.getDeclaredFields()){
+            for (Field field : clazz.getDeclaredFields()) {
+                if (Modifier.isTransient(field.getModifiers())) {
+                    continue;
+                }
                 Set<Class<?>> types = new HashSet<Class<?>>(3);
                 types.add(field.getType());
                 if (field.getType().getSuperclass() != null){

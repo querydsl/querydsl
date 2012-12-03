@@ -33,7 +33,7 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
 
     private static final long serialVersionUID = 338191992784020563L;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public NumberPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
@@ -41,7 +41,7 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
 
     public NumberPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
     }
 
     public NumberPath(Class<? extends T> type, String var) {

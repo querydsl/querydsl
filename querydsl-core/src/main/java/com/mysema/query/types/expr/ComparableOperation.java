@@ -47,7 +47,7 @@ public class ComparableOperation<T extends Comparable<?>> extends
         return new ComparableOperation<D>(type, op, args);
     }
 
-    private final Operation<T> opMixin;
+    private final OperationImpl<T> opMixin;
 
     protected ComparableOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
@@ -55,7 +55,7 @@ public class ComparableOperation<T extends Comparable<?>> extends
 
     protected ComparableOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
-        this.opMixin = (Operation<T>)mixin;
+        this.opMixin = (OperationImpl<T>)mixin;
     }
     
     @Override

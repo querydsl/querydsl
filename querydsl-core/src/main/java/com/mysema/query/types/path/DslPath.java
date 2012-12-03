@@ -33,7 +33,7 @@ public class DslPath<T> extends DslExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 3088836955328191852L;
 
-    private final Path<T> pathMixin;
+    private final PathImpl<T> pathMixin;
 
     public DslPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
@@ -41,7 +41,7 @@ public class DslPath<T> extends DslExpression<T> implements Path<T> {
 
     public DslPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
-        this.pathMixin = (Path<T>)mixin;
+        this.pathMixin = (PathImpl<T>)mixin;
     }
 
     public DslPath(Class<? extends T> type, String var) {

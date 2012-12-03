@@ -50,11 +50,11 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     public static final NumberExpression<Integer> ZERO = create(Integer.class, "0");
 
-    private final TemplateExpression<T> templateMixin;
+    private final TemplateExpressionImpl<T> templateMixin;
 
     public NumberTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
-        templateMixin = (TemplateExpression<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
 
     @Override

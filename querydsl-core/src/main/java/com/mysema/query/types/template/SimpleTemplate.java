@@ -42,11 +42,11 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
         return new SimpleTemplate<T>(type, template, Arrays.asList(args));
     }
 
-    private final TemplateExpression<T> templateMixin;
+    private final TemplateExpressionImpl<T> templateMixin;
 
     public SimpleTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
-        templateMixin = (TemplateExpression<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
      
     @Override

@@ -35,14 +35,14 @@ public final class DateTimeSubQuery<T extends Comparable<?>> extends DateTimeExp
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpression<T> subQueryMixin;
+    private final SubQueryExpressionImpl<T> subQueryMixin;
 
     @Nullable
     private volatile BooleanExpression exists;
 
     public DateTimeSubQuery(Class<T> type, QueryMetadata md) {
         super(new SubQueryExpressionImpl<T>(type, md));
-        subQueryMixin = (SubQueryExpression<T>)mixin;
+        subQueryMixin = (SubQueryExpressionImpl<T>)mixin;
     }
     
     @Override

@@ -32,14 +32,14 @@ public final class BooleanSubQuery extends BooleanExpression implements Extended
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpression<Boolean> subQueryMixin;
+    private final SubQueryExpressionImpl<Boolean> subQueryMixin;
     
     @Nullable
     private volatile BooleanExpression exists;
 
     public BooleanSubQuery(QueryMetadata md) {
         super(new SubQueryExpressionImpl<Boolean>(Boolean.class, md));
-        subQueryMixin = (SubQueryExpression<Boolean>)mixin;
+        subQueryMixin = (SubQueryExpressionImpl<Boolean>)mixin;
     }
     
     @Override

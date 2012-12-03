@@ -42,11 +42,11 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
         return new ComparableTemplate<T>(type, template, Arrays.asList(args));
     }
 
-    private final TemplateExpression<T> templateMixin;
+    private final TemplateExpressionImpl<T> templateMixin;
 
     public ComparableTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
-        templateMixin = (TemplateExpression<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
 
     @Override

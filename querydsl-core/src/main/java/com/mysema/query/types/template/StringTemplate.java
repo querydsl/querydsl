@@ -41,11 +41,11 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
         return new StringTemplate(template, Arrays.asList(args));
     }
 
-    private final TemplateExpression<String> templateMixin;
+    private final TemplateExpressionImpl<String> templateMixin;
 
     public StringTemplate(Template template, List<?> args) {
         super(new TemplateExpressionImpl<String>(String.class, template, args));
-        this.templateMixin = (TemplateExpression<String>)mixin;
+        this.templateMixin = (TemplateExpressionImpl<String>)mixin;
     }
 
     @Override

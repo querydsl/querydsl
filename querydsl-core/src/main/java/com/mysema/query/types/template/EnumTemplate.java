@@ -42,11 +42,11 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
         return new EnumTemplate<T>(type, template, Arrays.asList(args));
     }
 
-    private final TemplateExpression<T> templateMixin;
+    private final TemplateExpressionImpl<T> templateMixin;
 
     public EnumTemplate(Class<T> type, Template template, List<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
-        templateMixin = (TemplateExpression<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
 
     @Override

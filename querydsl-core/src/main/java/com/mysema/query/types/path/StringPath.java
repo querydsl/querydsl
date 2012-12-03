@@ -32,7 +32,7 @@ public class StringPath extends StringExpression implements Path<String> {
 
     private static final long serialVersionUID = 7983490925756833429L;
 
-    private final Path<String> pathMixin;
+    private final PathImpl<String> pathMixin;
 
     public StringPath(Path<?> parent, String property) {
         this(PathMetadataFactory.forProperty(parent, property));
@@ -40,7 +40,7 @@ public class StringPath extends StringExpression implements Path<String> {
 
     public StringPath(PathMetadata<?> metadata) {
         super(new PathImpl<String>(String.class, metadata));
-        this.pathMixin = (Path<String>)mixin;
+        this.pathMixin = (PathImpl<String>)mixin;
     }
 
     public StringPath(String var) {

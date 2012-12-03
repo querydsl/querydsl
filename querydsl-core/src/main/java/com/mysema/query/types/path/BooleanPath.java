@@ -33,7 +33,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
 
     private static final long serialVersionUID = 6590516706769430565L;
 
-    private final Path<Boolean> pathMixin;
+    private final PathImpl<Boolean> pathMixin;
 
     public BooleanPath(Path<?> parent, String property) {
         this(PathMetadataFactory.forProperty(parent, property));
@@ -41,7 +41,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
 
     public BooleanPath(PathMetadata<?> metadata) {
         super(new PathImpl<Boolean>(Boolean.class, metadata));
-        this.pathMixin = (Path<Boolean>)mixin;
+        this.pathMixin = (PathImpl<Boolean>)mixin;
     }
 
     public BooleanPath(String var) {
