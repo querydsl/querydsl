@@ -43,7 +43,9 @@ public class Configuration {
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
     
     private final SQLTemplates templates;
-
+    
+    private boolean hasTableColumnTypes = false;
+    
     /**
      * Create a new Configuration instance
      * 
@@ -115,7 +117,8 @@ public class Configuration {
 
     @SuppressWarnings("unchecked")
     private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
-        if (path != null && !clazz.equals(Null.class) && path.getMetadata().getParent() instanceof RelationalPath) {
+        if (hasTableColumnTypes && path != null && !clazz.equals(Null.class) 
+                && path.getMetadata().getParent() instanceof RelationalPath) {
             String table = ((RelationalPath)path.getMetadata().getParent()).getTableName();
             String column = path.getMetadata().getName();
             Type<T> type = (Type)javaTypeMapping.getType(table, column);
@@ -156,6 +159,7 @@ public class Configuration {
      */
     public void register(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
+        hasTableColumnTypes = true;
     }
 
 }

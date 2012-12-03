@@ -109,7 +109,7 @@ public class JavaTypeMapping {
     
     @Nullable
     public Type<?> getType(String table, String column) {
-        return typeByColumn.get(Pair.of(table.toLowerCase(), column.toLowerCase())); 
+        return typeByColumn.get(Pair.of(table, column)); 
     }
     
     @SuppressWarnings("unchecked")
