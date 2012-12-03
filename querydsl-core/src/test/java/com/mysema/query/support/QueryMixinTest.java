@@ -19,7 +19,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.domain.QCommonPersistence;

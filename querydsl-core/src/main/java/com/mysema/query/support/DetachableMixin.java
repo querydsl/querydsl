@@ -46,11 +46,11 @@ import com.mysema.query.types.query.TimeSubQuery;
  * @author tiwe
  *
  */
-public class DetachableMixin implements Detachable{
+public class DetachableMixin implements Detachable {
 
     private final QueryMixin<?> queryMixin;
 
-    public DetachableMixin(QueryMixin<?> queryMixin){
+    public DetachableMixin(QueryMixin<?> queryMixin) {
         this.queryMixin = queryMixin;
     }
 

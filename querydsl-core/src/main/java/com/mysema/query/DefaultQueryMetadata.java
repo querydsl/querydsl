@@ -68,8 +68,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private Set<QueryFlag> flags = new LinkedHashSet<QueryFlag>();
     
-    private final ValidatingVisitor validatingVisitor = new ValidatingVisitor(exprInJoins);
-
     private boolean validate = true;
     
     /**
@@ -126,7 +124,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     private void validateJoin(JoinExpression join) {
-        if (join.getTarget() instanceof Path) {
+        if (validate && join.getTarget() instanceof Path) {
             Path<?> path = (Path<?>)join.getTarget();
             if (join.getType() == JoinType.DEFAULT) {
                 ensureRoot(path);
@@ -200,7 +198,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);
         }
-
     }
 
     private void ensureRoot(Path<?> path){
@@ -318,11 +315,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public boolean hasFlag(QueryFlag flag) {
         return flags.contains(flag);
     }
-
+    
     private void validate(Expression<?>... expr){
         if (validate) {
             for (Expression<?> e : expr) {
-                e.accept(validatingVisitor, null);
+                e.accept(ValidatingVisitor.DEFAULT, exprInJoins);
             }
         }
     }

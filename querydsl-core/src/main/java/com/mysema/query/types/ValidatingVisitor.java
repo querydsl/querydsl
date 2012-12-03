@@ -14,9 +14,9 @@
 package com.mysema.query.types;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
@@ -27,102 +27,96 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
+public class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>>, Serializable{
 
     private static final long serialVersionUID = 691350069621050872L;
-
-    private Collection<Expression<?>> known;
     
-    public ValidatingVisitor(Collection<Expression<?>> known) {
-        this.known = known;
-    }
+    public static final ValidatingVisitor DEFAULT = new ValidatingVisitor();
     
     @Override
-    public Void visit(Constant<?> expr, Void context) {
+    public Void visit(Constant<?> expr, Set<Expression<?>> known) {
         return null;
     }
 
     @Override
-    public Void visit(FactoryExpression<?> expr, Void context) {
-        visit(expr.getArgs());
+    public Void visit(FactoryExpression<?> expr, Set<Expression<?>> known) {
+        visit(expr.getArgs(), known);
         return null;
     }
 
     @Override
-    public Void visit(Operation<?> expr, Void context) {
+    public Void visit(Operation<?> expr, Set<Expression<?>> known) {
         if (expr.getOperator() == Ops.ALIAS){
             known.add(expr.getArg(1));
         }
-        visit(expr.getArgs());
+        visit(expr.getArgs(), known);
         return null;
     }
 
     @Override
-    public Void visit(ParamExpression<?> expr, Void context) {
+    public Void visit(ParamExpression<?> expr, Set<Expression<?>> known) {
         return null;
     }
 
     @Override
-    public Void visit(Path<?> expr, Void context) {
+    public Void visit(Path<?> expr, Set<Expression<?>> known) {
         if (!known.contains(expr.getRoot())){
             throw new IllegalArgumentException("Undeclared path '" + expr.getRoot() + "'. " +
             	"Add this path as a source to the query to be able to reference it.");
         }
         if (expr.getMetadata().getParent() != null){
-            expr.getMetadata().getParent().accept(this, null);
+            expr.getMetadata().getParent().accept(this, known);
         }
         return null;
     }
 
     @Override
-    public Void visit(SubQueryExpression<?> expr, Void context) {
-        Collection<Expression<?>> k = known;
+    public Void visit(SubQueryExpression<?> expr, Set<Expression<?>> known) {
         known = new HashSet<Expression<?>>(known);
         QueryMetadata md = expr.getMetadata();
-        visitJoins(md.getJoins());
-        visitOrder(md.getOrderBy());
-        visit(md.getProjection());
-        visit(md.getGroupBy());
+        visitJoins(md.getJoins(), known);
+        visitOrder(md.getOrderBy(), known);
+        visit(md.getProjection(), known);
+        visit(md.getGroupBy(), known);
         if (md.getHaving() != null) {
-            md.getHaving().accept(this, null);
+            md.getHaving().accept(this, known);
         }
         if (md.getWhere() != null) {
-            md.getWhere().accept(this, null);
+            md.getWhere().accept(this, known);
         }
-        known = k;
         return null;
     }
 
 
     @Override
-    public Void visit(TemplateExpression<?> expr, Void context) {
-        visit(expr.getArgs());
+    public Void visit(TemplateExpression<?> expr, Set<Expression<?>> known) {
+        visit(expr.getArgs(), known);
         return null;
     }
     
-
-    private void visitJoins(Iterable<JoinExpression> joins) {
+    private void visitJoins(Iterable<JoinExpression> joins, Set<Expression<?>> known) {
         for (JoinExpression j : joins) {
             known.add(j.getTarget());
-            j.getTarget().accept(this, null);
+            j.getTarget().accept(this, known);
             if (j.getCondition() != null) {
-                j.getCondition().accept(this, null);
+                j.getCondition().accept(this, known);
             }
         }
     }
 
-    private void visitOrder(Iterable<OrderSpecifier<?>> order) {
+    private void visitOrder(Iterable<OrderSpecifier<?>> order, Set<Expression<?>> known) {
         for (OrderSpecifier<?> o : order) { 
-            o.getTarget().accept(this, null);
+            o.getTarget().accept(this, known);
         }        
     }
     
-    private void visit(List<?> exprs){
+    private void visit(List<?> exprs, Set<Expression<?>> known){
         for (Object e : exprs) {
             if (e instanceof Expression) {
-                ((Expression)e).accept(this, null);    
+                ((Expression)e).accept(this, known);    
             }            
         }
     }
 
+    private ValidatingVisitor() {}
 }
