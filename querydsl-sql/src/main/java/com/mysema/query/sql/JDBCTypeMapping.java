@@ -132,7 +132,7 @@ public final class JDBCTypeMapping {
     
     @Nullable
     public Class<?> get(int sqlType, int size, int digits) {
-        if (sqlType == Types.NUMERIC) {
+        if (sqlType == Types.NUMERIC || sqlType == Types.DECIMAL) {
             return getNumericClass(size, digits);        
         } else if (types.containsKey(sqlType)) {
             return types.get(sqlType);
