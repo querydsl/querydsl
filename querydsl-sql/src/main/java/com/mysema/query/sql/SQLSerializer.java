@@ -41,6 +41,7 @@ import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.TemplateExpression;
@@ -101,15 +102,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private boolean inUnion = false;
     
     public SQLSerializer(SQLTemplates templates) {
-        this(templates, false, false);
+        this(templates, false);
     }
     
     public SQLSerializer(SQLTemplates templates, boolean dml) {
-        this(templates, dml, false);
-    }
-
-    public SQLSerializer(SQLTemplates templates, boolean dml, boolean dry) {
-        super(templates, dry);
+        super(templates);
         this.templates = templates;
         this.dml = dml;
     }
@@ -565,11 +562,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 return null;
             }
         }
-        if (path.getMetadata().getParent() != null && !skipParent) {
-            visit(path.getMetadata().getParent(), context);
+        PathMetadata<?> metadata = path.getMetadata();
+        if (metadata.getParent() != null && !skipParent) {
+            visit(metadata.getParent(), context);
             append(".");
         }
-        append(templates.quoteIdentifier(path.getMetadata().getName()));    
+        append(templates.quoteIdentifier(metadata.getName()));    
         return null;
     }
 

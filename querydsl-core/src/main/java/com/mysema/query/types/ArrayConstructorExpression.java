@@ -65,12 +65,11 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
         }
     }
 
-
     @Override
     public List<Expression<?>> getArgs() {
         return args;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == this){

@@ -16,9 +16,9 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.types.PredicateTemplate;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -45,11 +45,11 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     
     public static final BooleanExpression FALSE = create("false");
 
-    private final TemplateExpressionImpl<Boolean> templateMixin;
+    private final PredicateTemplate templateMixin;
 
     public BooleanTemplate(Template template, List<?> args) {
-        super(new TemplateExpressionImpl<Boolean>(Boolean.class, template, args));
-        this.templateMixin = (TemplateExpressionImpl<Boolean>)mixin;
+        super(new PredicateTemplate(template, args));
+        this.templateMixin = (PredicateTemplate)mixin;
     }
 
     @Override

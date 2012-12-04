@@ -46,22 +46,20 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata{
     }
     
     @Override
-    public void addJoin(JoinExpression... j) {
-        for (JoinExpression join : j) {
-            if (joins.contains(join)) {
-                continue;
-            }        
-            if (join.getType() == JoinType.DEFAULT) {
-                int index = joins.size();
-                while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT) {
-                    index--;
-                }            
-                joins.add(index, join);
-            } else {
-                joins.add(join);
-            }
-            last = join;    
+    public void addJoin(JoinExpression join) {
+        if (joins.contains(join)) {
+            return;
         }        
+        if (join.getType() == JoinType.DEFAULT) {
+            int index = joins.size();
+            while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT) {
+                index--;
+            }            
+            joins.add(index, join);
+        } else {
+            joins.add(join);
+        }
+        last = join;
     }
     
     @Override

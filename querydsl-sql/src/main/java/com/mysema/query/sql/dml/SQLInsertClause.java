@@ -236,7 +236,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 SQLInsertBatch batch = batches.get(i);
-                serializer = new SQLSerializer(configuration.getTemplates(), true, true);
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();

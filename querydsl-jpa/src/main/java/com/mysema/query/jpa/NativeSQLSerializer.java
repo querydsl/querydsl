@@ -84,7 +84,9 @@ public final class NativeSQLSerializer extends SQLSerializer {
         if (modified) {
             metadata = metadata.clone();
             metadata.clearProjection();
-            metadata.addProjection(args);    
+            for (Expression<?> arg : args) {
+                metadata.addProjection(arg);    
+            }                
         }        
         super.serialize(metadata, forCountRow);
     }

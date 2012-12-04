@@ -241,16 +241,13 @@ public class Templates {
     }
 
     @Nullable
-    public Template getTemplate(Operator<?> op) {
+    public final Template getTemplate(Operator<?> op) {
         return templates.get(op);
     }
 
-    public int getPrecedence(Operator<?> operator) {
-        if (precedence.containsKey(operator)) {
-            return precedence.get(operator);
-        } else {
-            return -1;
-        }
+    public final int getPrecedence(Operator<?> operator) {
+        Integer rv = precedence.get(operator);
+        return rv != null ? rv.intValue() : -1;
     }
 
 }

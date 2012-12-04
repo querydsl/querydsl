@@ -141,7 +141,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             
             // add other batches
             for (int i = 1; i < batchUpdates.size(); i++) {
-                serializer = new SQLSerializer(configuration.getTemplates(), true, true);
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
                         Collections.<Param<?>,Object>emptyMap());
@@ -215,7 +215,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     @Override
     public SQLUpdateClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);    
+        }        
         return this;
     }
 

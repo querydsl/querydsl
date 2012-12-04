@@ -87,18 +87,16 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
             
     @Override
-    public void addGroupBy(Expression<?>... o) {
+    public void addGroupBy(Expression<?> o) {
         validate(o);
-        groupBy.addAll(Arrays.<Expression<?>> asList(o));
+        groupBy.add(o);
     }
 
     @Override
-    public void addHaving(Predicate... o) {
-        for (Predicate e : o) {
-            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
-                validate(e);
-                having.and(e);
-            }
+    public void addHaving(Predicate e) {
+        if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
+            validate(e);
+            having.and(e);
         }
     }
 
@@ -108,18 +106,16 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
     
     @Override
-    public void addJoin(JoinExpression... j){
-        for (JoinExpression join : j) {
-            Expression<?> expr = join.getTarget();
-            if (!exprInJoins.contains(expr)) {
-                validateJoin(join);
-                exprInJoins.add(expr);
-                validate(expr);
-                joins.add(join);
-            } else {
-                throw new IllegalStateException(expr + " is already used");
-            }    
-        }        
+    public void addJoin(JoinExpression join) {
+        Expression<?> expr = join.getTarget();
+        if (!exprInJoins.contains(expr)) {
+            validateJoin(join);
+            exprInJoins.add(expr);
+            validate(expr);
+            joins.add(join);
+        } else {
+            throw new IllegalStateException(expr + " is already used");
+        }
     }
 
     private void validateJoin(JoinExpression join) {
@@ -145,25 +141,23 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void addOrderBy(OrderSpecifier<?>... o) {
+    public void addOrderBy(OrderSpecifier<?> o) {
         // order specifiers can't be validated, since they can refer to projection elements
         // that are declared later
-        orderBy.addAll(Arrays.asList(o));
+        orderBy.add(o);
     }
 
     @Override
-    public void addProjection(Expression<?>... o) {
+    public void addProjection(Expression<?> o) {
         validate(o);
-        projection.addAll(Arrays.asList(o));
+        projection.add(o);
     }
 
     @Override
-    public void addWhere(Predicate... o) {
-        for (Predicate e : o) {
-            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
-                validate(e);
-                where.and(e);
-            }
+    public void addWhere(Predicate e) {
+        if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
+            validate(e);
+            where.and(e);
         }
     }
 
@@ -199,8 +193,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
     }
 
-    private void ensureRoot(Path<?> path){
-        if (path.getMetadata().getParent() != null) {
+    private void ensureRoot(Path<?> path){        
+        if (!path.getMetadata().isRoot()) {
             throw new IllegalArgumentException("Only root paths are allowed for joins : " + path);
         }
     }

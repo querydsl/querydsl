@@ -57,35 +57,24 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final Templates templates;
     
-    private final boolean dry;
-    
     private boolean normalize = true;
     
     public SerializerBase(Templates templates) {
-        this(templates, false);
-    }
-    
-    public SerializerBase(Templates templates, boolean dry) {
         this.templates = templates;
-        this.dry = dry;
     }
     
-    public S prepend(String str) {
-        if (!dry){
-            builder.insert(0, str);                
-        }        
+    public final S prepend(String str) {
+        builder.insert(0, str);
         return self;
     }
     
-    public S insert(int position, String str) {
+    public final S insert(int position, String str) {
         builder.insert(position, str);
         return self;
     }
 
-    public S append(String str) {
-        if (!dry) {
-            builder.append(str);
-        }        
+    public final S append(String str) {
+        builder.append(str);
         return self;
     }
 

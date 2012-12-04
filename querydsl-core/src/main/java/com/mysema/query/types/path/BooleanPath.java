@@ -50,7 +50,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
     
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(pathMixin, context);
+        return v.visit(this, context);
     }
 
     @Override

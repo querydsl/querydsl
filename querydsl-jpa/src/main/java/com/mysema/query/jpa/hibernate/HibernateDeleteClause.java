@@ -74,7 +74,9 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     
     @Override
     public HibernateDeleteClause where(Predicate... o) {
-        md.addWhere(o);
+        for (Predicate p : o) {
+            md.addWhere(p);    
+        }        
         return this;
     }
     

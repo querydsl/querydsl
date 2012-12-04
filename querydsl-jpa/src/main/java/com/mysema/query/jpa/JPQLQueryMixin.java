@@ -69,10 +69,6 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         joins.get(joins.size()-1).addFlag(FETCH_ALL_PROPERTIES);
         return getSelf();
     }
-
-    public T on(Predicate... conditions){
-        return super.on(normalize(conditions, false));
-    }
     
     @Override
     public <RT> Expression<RT> convert(Expression<RT> expr){

@@ -38,14 +38,14 @@ public interface QueryMetadata extends Serializable {
      *
      * @param o
      */
-    void addGroupBy(Expression<?>... o);
+    void addGroupBy(Expression<?> o);
 
     /**
      * Add the given having expressions
      *
      * @param o
      */
-    void addHaving(Predicate... o);
+    void addHaving(Predicate o);
 
     /**
      * Add the given query join
@@ -59,7 +59,7 @@ public interface QueryMetadata extends Serializable {
      * Add the given query join
      *
      */
-    void addJoin(JoinExpression... join);
+    void addJoin(JoinExpression join);
 
     /**
      * Add the given join condition to the last given join
@@ -73,21 +73,21 @@ public interface QueryMetadata extends Serializable {
      *
      * @param o
      */
-    void addOrderBy(OrderSpecifier<?>... o);
+    void addOrderBy(OrderSpecifier<?> o);
 
     /**
      * Add the given projections
      *
      * @param o
      */
-    void addProjection(Expression<?>... o);
+    void addProjection(Expression<?> o);
 
     /**
      * Add the given where expressions
      *
      * @param o
      */
-    void addWhere(Predicate... o);
+    void addWhere(Predicate o);
 
     /**
      * Clear the order expressions

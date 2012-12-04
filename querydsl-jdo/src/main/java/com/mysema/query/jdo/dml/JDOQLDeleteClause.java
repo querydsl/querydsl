@@ -97,7 +97,9 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause> {
     
     @Override
     public JDOQLDeleteClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);    
+        }        
         return this;
     }
     

@@ -204,7 +204,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 SQLMergeBatch batch = batches.get(i);
-                serializer = new SQLSerializer(configuration.getTemplates(), true, true);
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();

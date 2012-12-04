@@ -43,7 +43,7 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
         super(self, metadata);
     }
     
-    @SuppressWarnings("unchecked")
+    @Override
     protected Predicate normalize(Predicate predicate, boolean where) {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
             return predicate;

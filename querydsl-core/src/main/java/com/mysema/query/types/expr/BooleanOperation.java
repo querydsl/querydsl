@@ -18,9 +18,9 @@ import java.util.List;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.PredicateOperation;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -37,15 +37,15 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
         return new BooleanOperation(op, args);
     }
 
-    private final OperationImpl<Boolean> opMixin;
+    private final PredicateOperation opMixin;
 
     protected BooleanOperation(Operator<? super Boolean> op, Expression<?>... args) {
         this(op, Arrays.asList(args));
     }
 
     protected BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
-        super(new OperationImpl<Boolean>(Boolean.class, op, args));
-        opMixin = (OperationImpl<Boolean>)mixin;
+        super(new PredicateOperation((Operator)op, args));
+        opMixin = (PredicateOperation)mixin;
     }
     
     @Override

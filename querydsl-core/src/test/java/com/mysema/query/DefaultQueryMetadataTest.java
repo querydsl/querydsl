@@ -126,14 +126,16 @@ public class DefaultQueryMetadataTest {
     @Test
     public void GetProjection() {
         metadata.addJoin(JoinType.DEFAULT, str);
-        metadata.addProjection(str, str.append("abc"));
+        metadata.addProjection(str);
+        metadata.addProjection(str.append("abc"));
         assertEquals(Arrays.asList(str, str.append("abc")), metadata.getProjection());
     }
 
     @Test
     public void GetWhere() {
         metadata.addJoin(JoinType.DEFAULT, str);
-        metadata.addWhere(str.eq("b"), str.isNotEmpty());
+        metadata.addWhere(str.eq("b"));
+        metadata.addWhere(str.isNotEmpty());
         assertEquals(str.eq("b").and(str.isNotEmpty()), metadata.getWhere());
     }
 
@@ -160,8 +162,10 @@ public class DefaultQueryMetadataTest {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());
-        metadata.addProjection(str, str.append("abc"));
-        metadata.addWhere(str.eq("b"), str.isNotEmpty());
+        metadata.addProjection(str);
+        metadata.addProjection(str.append("abc"));
+        metadata.addWhere(str.eq("b"));
+        metadata.addWhere(str.isNotEmpty());
 
         QueryMetadata clone = metadata.clone();
         assertEquals(metadata.getGroupBy(), clone.getGroupBy());
@@ -197,8 +201,10 @@ public class DefaultQueryMetadataTest {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());
-        metadata.addProjection(str, str.append("abc"));
-        metadata.addWhere(str.eq("b"), str.isNotEmpty());
+        metadata.addProjection(str);
+        metadata.addProjection(str.append("abc"));
+        metadata.addWhere(str.eq("b"));
+        metadata.addWhere(str.isNotEmpty());
         
         QueryMetadata metadata2 = new DefaultQueryMetadata();
         assertFalse(metadata.equals(metadata2));        
@@ -214,9 +220,11 @@ public class DefaultQueryMetadataTest {
         assertFalse(metadata.equals(metadata2));
         metadata2.addOrderBy(str.asc());
         assertFalse(metadata.equals(metadata2));
-        metadata2.addProjection(str, str.append("abc"));
+        metadata2.addProjection(str);
+        metadata2.addProjection(str.append("abc"));
         assertFalse(metadata.equals(metadata2));
-        metadata2.addWhere(str.eq("b"), str.isNotEmpty());
+        metadata2.addWhere(str.eq("b"));
+        metadata2.addWhere(str.isNotEmpty());
         assertTrue(metadata.equals(metadata2));
     }
     
@@ -229,8 +237,10 @@ public class DefaultQueryMetadataTest {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());
-        metadata.addProjection(str, str.append("abc"));
-        metadata.addWhere(str.eq("b"), str.isNotEmpty());
+        metadata.addProjection(str);
+        metadata.addProjection(str.append("abc"));
+        metadata.addWhere(str.eq("b"));
+        metadata.addWhere(str.isNotEmpty());
         metadata.hashCode();        
     }
     

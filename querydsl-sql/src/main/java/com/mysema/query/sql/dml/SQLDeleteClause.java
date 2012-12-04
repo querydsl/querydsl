@@ -127,7 +127,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
-                serializer = new SQLSerializer(configuration.getTemplates(), true, true);
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForDelete(batches.get(i), entity);
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();
@@ -157,7 +157,9 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     
     @Override
     public SQLDeleteClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);    
+        }        
         return this;
     }
     

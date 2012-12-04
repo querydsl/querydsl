@@ -1,6 +1,5 @@
 package com.mysema.query.types;
 
-import com.google.common.base.Objects;
 
 /**
  * HashCodeVisitor is used for hashCode generation in {@link Expression} implementations.
@@ -15,38 +14,40 @@ public final class HashCodeVisitor implements Visitor<Integer,Void> {
     
     @Override
     public Integer visit(Constant<?> expr, Void context) {
-        return Objects.hashCode(expr.getConstant());
+        return expr.getConstant().hashCode();
     }
 
     @Override
     public Integer visit(FactoryExpression<?> expr, Void context) {
-        return Objects.hashCode(expr.getType(), expr.getArgs());
+        int result = expr.getType().hashCode();
+        return 31 * result + expr.getArgs().hashCode();
     }
 
     @Override
     public Integer visit(Operation<?> expr, Void context) {
-        return Objects.hashCode(expr.getOperator(), expr.getArgs());
+        int result = expr.getOperator().hashCode();
+        return 31 * result + expr.getArgs().hashCode();
     }
 
     @Override
     public Integer visit(ParamExpression<?> expr, Void context) {
-        return Objects.hashCode(expr.getName());
+        return expr.getName().hashCode();
     }
 
     @Override
     public Integer visit(Path<?> expr, Void context) {
-        PathMetadata<?> md = expr.getMetadata();
-        return Objects.hashCode(md.getPathType(), md.getParent(), md.getElement());
+        return expr.getMetadata().hashCode();
     }
 
     @Override
     public Integer visit(SubQueryExpression<?> expr, Void context) {
-        return Objects.hashCode(expr.getMetadata());
+        return expr.getMetadata().hashCode();
     }
 
     @Override
     public Integer visit(TemplateExpression<?> expr, Void context) {
-        return Objects.hashCode(expr.getTemplate(), expr.getArgs());
+        int result = expr.getTemplate().hashCode();
+        return 31 * result + expr.getArgs().hashCode();        
     }
 
 }

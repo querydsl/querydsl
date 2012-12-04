@@ -64,7 +64,9 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
     
     @Override
     public JPADeleteClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);    
+        }        
         return this;
     }
     

@@ -93,7 +93,9 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause> {
     
     @Override
     public JDOQLUpdateClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);    
+        }        
         return this;
     }
 

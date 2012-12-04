@@ -109,7 +109,9 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
 
     @Override
     public JPAUpdateClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);   
+        }        
         return this;
     }
     

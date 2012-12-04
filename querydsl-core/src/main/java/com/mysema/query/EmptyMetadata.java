@@ -36,12 +36,12 @@ public final class EmptyMetadata implements QueryMetadata {
     public static final QueryMetadata DEFAULT = new EmptyMetadata();
 
     @Override
-    public void addGroupBy(Expression<?>... o) {
+    public void addGroupBy(Expression<?> o) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void addHaving(Predicate... o) {
+    public void addHaving(Predicate o) {
         throw new UnsupportedOperationException();
     }
 
@@ -51,7 +51,7 @@ public final class EmptyMetadata implements QueryMetadata {
     }
 
     @Override
-    public void addJoin(JoinExpression... join) {
+    public void addJoin(JoinExpression join) {
         throw new UnsupportedOperationException();
     }
 
@@ -61,17 +61,17 @@ public final class EmptyMetadata implements QueryMetadata {
     }
 
     @Override
-    public void addOrderBy(OrderSpecifier<?>... o) {
+    public void addOrderBy(OrderSpecifier<?> o) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void addProjection(Expression<?>... o) {
+    public void addProjection(Expression<?> o) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void addWhere(Predicate... o) {
+    public void addWhere(Predicate o) {
         throw new UnsupportedOperationException();
     }
 

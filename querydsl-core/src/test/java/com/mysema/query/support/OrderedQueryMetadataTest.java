@@ -55,17 +55,23 @@ public class OrderedQueryMetadataTest {
         for (JoinExpression join1 : joins) {
             for (JoinExpression join2 : joins) {
                 QueryMetadata md = new OrderedQueryMetadata();
-                md.addJoin(join1, join2);
+                md.addJoin(join1);
+                md.addJoin(join2);
                 validate(md.getJoins());
                 
                 for (JoinExpression join3 : joins) {
                     md = new OrderedQueryMetadata();
-                    md.addJoin(join1, join2, join3);
+                    md.addJoin(join1);
+                    md.addJoin(join2);
+                    md.addJoin(join3);
                     validate(md.getJoins());
                     
                     for (JoinExpression join4 : joins) {
                         md = new OrderedQueryMetadata();
-                        md.addJoin(join1, join2, join3, join4);
+                        md.addJoin(join1);
+                        md.addJoin(join2);
+                        md.addJoin(join3);
+                        md.addJoin(join4);
                         validate(md.getJoins());
                     }
                 }

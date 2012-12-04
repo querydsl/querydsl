@@ -83,7 +83,9 @@ public class ExtendedSQLTest {
            .forUpdate();
            // of(author.firstName, author.lastName)
         
-        query.getMetadata().addProjection(author.firstName, author.lastName, Wildcard.count);
+        query.getMetadata().addProjection(author.firstName);
+        query.getMetadata().addProjection(author.lastName);
+        query.getMetadata().addProjection(Wildcard.count);
 
         SQLSerializer serializer = new SQLSerializer(new MySQLTemplates());
         serializer.serialize(query.getMetadata(), false);

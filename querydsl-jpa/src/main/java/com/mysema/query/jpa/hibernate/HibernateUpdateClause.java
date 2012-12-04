@@ -122,7 +122,9 @@ public class HibernateUpdateClause implements
 
     @Override
     public HibernateUpdateClause where(Predicate... o) {
-        metadata.addWhere(o);
+        for (Predicate p : o) {
+            metadata.addWhere(p);    
+        }        
         return this;
     }
     

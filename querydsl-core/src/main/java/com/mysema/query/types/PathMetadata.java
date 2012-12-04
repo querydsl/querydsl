@@ -42,7 +42,7 @@ public final class PathMetadata<T> implements Serializable{
         this.element = element;
         this.pathType = type;
         this.root = parent != null ? parent.getRoot() : null;
-        this.hashCode = Objects.hashCode(element, parent, pathType);
+        this.hashCode = 31 * element.hashCode() + pathType.hashCode();
     }
     
     @Override
@@ -51,9 +51,9 @@ public final class PathMetadata<T> implements Serializable{
             return true;
         } else if (obj instanceof PathMetadata<?>) { 
             PathMetadata<?> p = (PathMetadata<?>) obj;
-            return Objects.equal(element, p.element) && 
-                   Objects.equal(parent, p.parent) &&
-                   Objects.equal(pathType, p.pathType);
+            return element.equals(p.element) &&
+                    pathType.equals(p.pathType) &&
+                    Objects.equal(parent, p.parent);
         } else {
             return false;
         }
