@@ -72,7 +72,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(this, context);
+        return v.visit(pathMixin, context);
     }
 
     protected PathMetadata<K> forMapAccess(K key){

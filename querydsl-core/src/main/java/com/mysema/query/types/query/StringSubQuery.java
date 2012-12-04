@@ -44,13 +44,13 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
     
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(this, context);
+        return v.visit(subQueryMixin, context);
     }
 
     @Override
     public BooleanExpression exists() {
         if (exists == null) {
-            exists = BooleanOperation.create(Ops.EXISTS, this);
+            exists = BooleanOperation.create(Ops.EXISTS, mixin);
         }
         return exists;
     }

@@ -51,7 +51,7 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
      
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(this, context);
+        return v.visit(templateMixin, context);
     }
     
     @Override

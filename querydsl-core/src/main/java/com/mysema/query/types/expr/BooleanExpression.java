@@ -75,7 +75,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
 
     @Override
     public BooleanExpression as(Path<Boolean> alias) {
-        return BooleanOperation.create(Ops.ALIAS, this, alias);
+        return BooleanOperation.create(Ops.ALIAS, mixin, alias);
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      */
     public BooleanExpression and(@Nullable Predicate right) {
         if (right != null) {
-            return BooleanOperation.create(Ops.AND, this, right);
+            return BooleanOperation.create(Ops.AND, mixin, right);
         } else {
             return this;
         }
@@ -114,6 +114,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      */
     public BooleanExpression not() {
         if (not == null) {
+            // uses this, because it makes unwrapping easier
             not = BooleanOperation.create(Ops.NOT, this);
         }
         return not;
@@ -127,7 +128,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      */
     public BooleanExpression or(@Nullable Predicate right) {
         if (right != null) {
-            return BooleanOperation.create(Ops.OR, this, right);
+            return BooleanOperation.create(Ops.OR, mixin, right);
         } else {
             return this;
         }

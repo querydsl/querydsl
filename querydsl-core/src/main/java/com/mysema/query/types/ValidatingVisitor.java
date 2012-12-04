@@ -15,7 +15,6 @@ package com.mysema.query.types;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.mysema.query.JoinExpression;
@@ -64,10 +63,7 @@ public final class ValidatingVisitor implements Visitor<Void, Set<Expression<?>>
 
     @Override
     public Void visit(Path<?> expr, Set<Expression<?>> known) {               
-        PathMetadata<?> metadata = expr.getMetadata();
-        if (metadata.getParent() != null) {
-            metadata.getParent().accept(this, known);
-        } else if (!known.contains(expr.getRoot())) {
+        if (!known.contains(expr.getRoot())) {
             throw new IllegalArgumentException("Undeclared path '" + expr.getRoot() + "'. " +
                     "Add this path as a source to the query to be able to reference it.");
         }

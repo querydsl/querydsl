@@ -71,6 +71,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
+        // mixin is not used here, because subtype instances may have data that needs to be made available
         return v.visit(this, context);
     }
 

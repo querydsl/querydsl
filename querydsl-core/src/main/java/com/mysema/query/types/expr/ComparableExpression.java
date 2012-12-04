@@ -250,7 +250,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(Expression<T> right) {
-        return BooleanOperation.create(Ops.LOE, this, right);
+        return BooleanOperation.create(Ops.LOE, mixin, right);
     }
     
     /**
