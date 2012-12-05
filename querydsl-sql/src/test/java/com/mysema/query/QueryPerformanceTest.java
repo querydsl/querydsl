@@ -19,6 +19,8 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Path;
 
 public class QueryPerformanceTest {
     
@@ -97,7 +99,7 @@ public class QueryPerformanceTest {
         }
         System.err.println("jdbc by name " + (System.currentTimeMillis() - start));                    
     }
-    
+        
     @Test
     public void Querydsl1() {
         Connection conn = Connections.getConnection();        
@@ -145,6 +147,22 @@ public class QueryPerformanceTest {
             query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
         }
         System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (no validation)");    
+    }
+    
+    @Test
+    public void Querydsl14() {
+        Connection conn = Connections.getConnection();        
+        Configuration conf = new Configuration(new H2Templates());
+        QCompanies companies = QCompanies.companies;
+        EntityPath[] companies_ = new EntityPath[]{companies};
+//        Path[] name_ = new Path[]{companies.name};
+        
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {                        
+            SQLQuery query = new SQLQueryImpl(conn, conf);
+            query.from(companies_).where(companies.id.eq((long)i)).list(companies.name);            
+        }
+        System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (less varargs)");    
     }
     
     @Test

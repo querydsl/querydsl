@@ -125,13 +125,6 @@ public class QueryMixin<T> {
         }
     }
 
-//    public final Expression<?>[] convert(Expression<?>[] exprs){
-//        for (int i = 0; i < exprs.length; i++) {
-//            exprs[i] = convert(exprs[i]);
-//        }
-//        return exprs;
-//    }
-
     protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
@@ -159,13 +152,6 @@ public class QueryMixin<T> {
 
     public final T from(Expression<?>... args) {
         for (Expression<?> arg : args) {
-            metadata.addJoin(JoinType.DEFAULT, arg);
-        }
-        return self;
-    }
-
-    public final T from(EntityPath<?>... args) {
-        for (EntityPath<?> arg : args) {
             metadata.addJoin(JoinType.DEFAULT, arg);
         }
         return self;
@@ -432,7 +418,7 @@ public class QueryMixin<T> {
         metadata.setUnique(unique);
     }
 
-    public final T where(Predicate... o) {
+    public final T where(Predicate... o) {        
         for (Predicate e : o) {
             metadata.addWhere(normalize(e, true));    
         }        
