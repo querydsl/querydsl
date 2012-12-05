@@ -14,8 +14,7 @@
 package com.mysema.query.lucene;
 
 import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringOperation;
 
 /**
  * TermElement represents the embedded String as a term
@@ -23,28 +22,12 @@ import com.mysema.query.types.expr.StringExpression;
  * @author tiwe
  *
  */
-public class TermElement extends StringExpression {
+public class TermElement extends StringOperation {
 
     private static final long serialVersionUID = 2350215644019186076L;
 
     public TermElement(String str) {
-        super(ConstantImpl.create(str));
-    }
-
-    @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return mixin.accept(v, context);
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        } else if (o instanceof TermElement) {
-            return ((TermElement)o).mixin.equals(mixin);
-        } else {
-            return false;
-        }
+        super(LuceneUtils.TERM, ConstantImpl.create(str));
     }
 
 }

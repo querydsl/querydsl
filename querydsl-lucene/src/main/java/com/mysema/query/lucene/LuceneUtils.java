@@ -16,6 +16,8 @@ package com.mysema.query.lucene;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.FuzzyQuery;
 
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -26,6 +28,12 @@ import com.mysema.query.types.expr.BooleanExpression;
  *
  */
 public final class LuceneUtils {
+    
+    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>("LUCENE_QUERY", Object.class);
+    
+    static final Operator<String> PHRASE = new OperatorImpl<String>("PHRASE", String.class);
+    
+    static final Operator<String> TERM = new OperatorImpl<String>("TERM", String.class);
     
     /**
      * Create a fuzzy query

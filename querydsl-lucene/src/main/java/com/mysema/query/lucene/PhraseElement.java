@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2011, Mysema Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,7 @@
 package com.mysema.query.lucene;
 
 import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringOperation;
 
 /**
  * PhraseElement represents the embedded String as a phrase
@@ -23,28 +22,12 @@ import com.mysema.query.types.expr.StringExpression;
  * @author tiwe
  *
  */
-public class PhraseElement extends StringExpression {
+public class PhraseElement extends StringOperation {
 
     private static final long serialVersionUID = 2350215644019186076L;
 
     public PhraseElement(String str) {
-        super(ConstantImpl.create(str));
+        super(LuceneUtils.PHRASE, ConstantImpl.create(str));
     }
     
-    @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return mixin.accept(v, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        } else if (o instanceof PhraseElement){
-            return ((PhraseElement)o).mixin.equals(mixin);
-        } else {
-            return false;
-        }
-    }
-
 }

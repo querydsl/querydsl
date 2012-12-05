@@ -13,15 +13,9 @@
  */
 package com.mysema.query.lucene;
 
-import javax.annotation.Nullable;
-
 import org.apache.lucene.search.Query;
 
-import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 
 /**
@@ -30,32 +24,12 @@ import com.mysema.query.types.expr.BooleanOperation;
  * @author tiwe
  *
  */
-public class QueryElement extends BooleanExpression {
+public class QueryElement extends BooleanOperation {
     
     private static final long serialVersionUID = 470868107363840155L;
 
-    private final Query query;
-
-    @Nullable
-    private volatile Constant<String> expr;
-
     public QueryElement(Query query){
-        super(BooleanOperation.create(Ops.DELEGATE, ConstantImpl.create(query.toString())));
-        this.query = query;
-    }
-
-    @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
-        return mixin.accept(v, context);
+        super(LuceneUtils.LUCENE_QUERY, new ConstantImpl<Query>(query));        
     }
     
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof QueryElement && ((QueryElement)o).query.equals(query);
-    }
-    
-    public Query getQuery() {
-        return query;
-    }
-
 }

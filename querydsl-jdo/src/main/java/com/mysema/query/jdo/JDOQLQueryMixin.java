@@ -21,8 +21,10 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.PredicateOperation;
 
 /**
  * JDOQLQueryMixin extends {@link QueryMixin} to provide module specific extensions 
@@ -62,7 +64,7 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
     private void addCondition(Context context, int i, Path<?> path, boolean where) {
         EntityPath<?> alias = context.replacements.get(i);                 
         from(alias);
-        Predicate condition = ExpressionUtils.in(alias, (CollectionExpression)path.getMetadata().getParent());
+        Predicate condition = new PredicateOperation(Ops.IN, alias, path.getMetadata().getParent());
         if (where) {
             super.where(condition);
         } else {

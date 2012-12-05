@@ -140,6 +140,8 @@ public class LuceneSerializer {
             return ge(operation, metadata);
         } else if (op == Ops.DELEGATE){
             return toQuery(operation.getArg(0), metadata);
+        } else if (op == LuceneUtils.LUCENE_QUERY) {
+            return ((Constant<Query>)operation.getArg(0)).getConstant();
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
@@ -471,10 +473,15 @@ public class LuceneSerializer {
      * @return
      */
     protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
-        if (rightHandSide instanceof PhraseElement) {
-            return Iterables.toArray(WS_SPLITTER.split(rightHandSide.toString()), String.class);
-        } else if (rightHandSide instanceof TermElement) {
-            return new String[] { rightHandSide.toString() };
+        if (rightHandSide instanceof Operation) {
+            Operation<?> operation = (Operation<?>)rightHandSide;
+            if (operation.getOperator() == LuceneUtils.PHRASE) {
+                return Iterables.toArray(WS_SPLITTER.split(operation.getArg(0).toString()), String.class);
+            } else if (operation.getOperator() == LuceneUtils.TERM) {
+                return new String[] { operation.getArg(0).toString() };
+            } else {
+                throw new IllegalArgumentException(rightHandSide.toString());
+            }
         } else if (rightHandSide instanceof ParamExpression<?>){
             Object value = metadata.getParams().get(rightHandSide);
             if (value == null){
@@ -524,8 +531,6 @@ public class LuceneSerializer {
     public Query toQuery(Expression<?> expr, QueryMetadata metadata) {
         if (expr instanceof Operation<?>) {
             return toQuery((Operation<?>) expr, metadata);
-        } else if (expr instanceof QueryElement) {
-            return ((QueryElement) expr).getQuery();
         } else{
             throw new IllegalArgumentException("expr was of unsupported type " + expr.getClass().getName());
         }
