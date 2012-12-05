@@ -100,7 +100,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Query createQuery(Expression<?> expr) {
-        getQueryMixin().addToProjection(expr);
+        queryMixin.addProjection(expr);
         String queryString = toString();
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers(), false);
@@ -113,8 +113,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
-        getQueryMixin().addToProjection(expr1, expr2);
-        getQueryMixin().addToProjection(rest);
+        queryMixin.addProjection(expr1);
+        queryMixin.addProjection(expr2);
+        queryMixin.addProjection(rest);
         String queryString = toString();
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers(), false);
@@ -127,7 +128,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Query createQuery(Expression<?>[] args) {
-        getQueryMixin().addToProjection(args);
+        queryMixin.addProjection(args);
         String queryString = toString();
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers(), false);
@@ -274,7 +275,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        getQueryMixin().addToProjection(expr);
+        queryMixin.addProjection(expr);
         Query countQuery = createQuery(toCountRowsString(), null, true);
         long total = (Long) countQuery.getSingleResult();
         if (total > 0) {
@@ -301,7 +302,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        getQueryMixin().addToProjection(expr);
+        queryMixin.addProjection(expr);
         return (RT)uniqueResult();
     }
 

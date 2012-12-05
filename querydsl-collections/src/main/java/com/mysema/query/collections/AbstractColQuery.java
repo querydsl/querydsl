@@ -129,8 +129,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         try {
-            projection = queryMixin.convert(projection);
-            queryMixin.addToProjection(projection);
+            projection = queryMixin.addProjection(projection);
             return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
         } finally {
             reset();
@@ -145,8 +144,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
         try {
-            projection = queryMixin.convert(projection);
-            queryMixin.addToProjection(projection);
+            projection = queryMixin.addProjection(projection);
             return queryEngine.list(getMetadata(), iterables, projection);
         } finally {
             reset();
@@ -155,8 +153,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
-        projection = queryMixin.convert(projection);
-        queryMixin.addToProjection(projection);
+        projection = queryMixin.addProjection(projection);
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0l) {
             List<RT> list = queryEngine.list(getMetadata(), iterables, projection);

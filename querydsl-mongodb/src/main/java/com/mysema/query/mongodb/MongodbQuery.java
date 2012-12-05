@@ -220,7 +220,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
     
     public CloseableIterator<K> iterate(Path<?>... paths) {
-        queryMixin.addToProjection(paths);       
+        queryMixin.addProjection(paths);       
         return iterate();
     }
 
@@ -254,7 +254,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     public List<K> list(Path<?>... paths) {
-        queryMixin.addToProjection(paths);
+        queryMixin.addProjection(paths);
         return list();
     }
     
@@ -310,7 +310,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
     
     public K singleResult(Path<?>...paths) {
-        queryMixin.addToProjection(paths);
+        queryMixin.addProjection(paths);
         return singleResult();
     }
 
@@ -329,7 +329,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
     
     public K uniqueResult(Path<?>... paths) {
-        queryMixin.addToProjection(paths);
+        queryMixin.addProjection(paths);
         return uniqueResult();
     }
 
@@ -356,7 +356,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
     
     public SearchResults<K> listResults(Path<?>... paths) {
-        queryMixin.addToProjection(paths);
+        queryMixin.addProjection(paths);
         return listResults();
     }
 

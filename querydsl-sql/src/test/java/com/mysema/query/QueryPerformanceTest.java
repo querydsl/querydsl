@@ -20,7 +20,6 @@ import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Path;
 
 public class QueryPerformanceTest {
     

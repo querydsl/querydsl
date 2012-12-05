@@ -111,7 +111,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
-        queryMixin.addToProjection(args);
+        queryMixin.addProjection(args);
         return createQuery(toQueryString());
     }
 
@@ -236,7 +236,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
-        queryMixin.addToProjection(projection);
+        queryMixin.addProjection(projection);
         Query query = createQuery(toCountRowsString());
         long total = ((Number)query.getSingleResult()).longValue();
         if (total > 0) {

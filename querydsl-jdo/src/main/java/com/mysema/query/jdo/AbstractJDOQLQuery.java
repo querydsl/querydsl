@@ -247,7 +247,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         Object rv = execute(createQuery(false), false);
         reset();
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
@@ -255,7 +255,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
         countQuery.setResult("count(this)");
@@ -303,7 +303,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @SuppressWarnings("unchecked")
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         return (RT)uniqueResult();
     }
 

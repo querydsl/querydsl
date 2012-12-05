@@ -116,7 +116,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
-        queryMixin.addToProjection(args);
+        queryMixin.addProjection(args);
         return createQuery(toQueryString());
     }
 
@@ -178,7 +178,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
-        queryMixin.addToProjection(projection);
+        queryMixin.addProjection(projection);
         Query query = createQuery(toCountRowsString());
         long total = ((Number)query.uniqueResult()).longValue();
         if (total > 0) {

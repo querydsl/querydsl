@@ -76,7 +76,7 @@ class QueryHelper extends JPQLQueryBase<QueryHelper> {
     }
 
     public QueryHelper select(Expression<?>... exprs) {
-        getQueryMixin().addToProjection(exprs);
+        queryMixin.addProjection(exprs);
         return this;
     }
 

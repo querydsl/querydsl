@@ -201,7 +201,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
 
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         Object rv = execute(createQuery(false), false);
         reset();
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
@@ -209,7 +209,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
 
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
         long total = (Long) execute(countQuery, true);
@@ -250,7 +250,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     @SuppressWarnings("unchecked")
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         return (RT)uniqueResult();
     }
     

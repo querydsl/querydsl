@@ -87,7 +87,13 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public T addToProjection(Expression<?>... o) {
+    public <E> Expression<E> addProjection(Expression<E> e) {
+        e = convert(e);
+        metadata.addProjection(e);
+        return e;
+    }
+    
+    public T addProjection(Expression<?>... o) {
         for (Expression<?> e : o) {
             metadata.addProjection(convert(e));
         }

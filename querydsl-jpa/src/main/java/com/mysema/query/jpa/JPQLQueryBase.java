@@ -36,7 +36,7 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
 
     private Map<Object,String> constants;
 
-    private final JPQLQueryMixin<Q> queryMixin;
+    protected final JPQLQueryMixin<Q> queryMixin;
 
     private final JPQLTemplates templates;
     
@@ -56,9 +56,9 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
         return templates;
     }
 
-    protected JPQLQueryMixin<Q> getQueryMixin() {
-        return queryMixin;
-    }
+//    protected JPQLQueryMixin<Q> getQueryMixin() {
+//        return queryMixin;
+//    }
     
     protected String buildQueryString(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {

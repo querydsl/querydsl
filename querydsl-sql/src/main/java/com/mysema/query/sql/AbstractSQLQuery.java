@@ -295,7 +295,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
 
     public ResultSet getResults(Expression<?>... exprs) {
-        queryMixin.addToProjection(exprs);
+        queryMixin.addProjection(exprs);
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
 
@@ -342,8 +342,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        expr = queryMixin.convert(expr);
-        queryMixin.addToProjection(expr);
+        expr = queryMixin.addProjection(expr);
         return iterateSingle(queryMixin.getMetadata(), expr);
     }
 
@@ -405,9 +404,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @Override
     public <RT> List<RT> list(Expression<RT> expr) {
-        //return IteratorAdapter.asList(iterate(expr));
-        expr = queryMixin.convert(expr);
-        queryMixin.addToProjection(expr);
+        expr = queryMixin.addProjection(expr);
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
@@ -416,7 +413,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
                 setParameters(stmt, constants, constantPaths, queryMixin.getMetadata().getParams());
                 ResultSet rs = stmt.executeQuery();
                 try {
-                    List<RT> rv = new ArrayList<RT>();    
+                    final List<RT> rv = new ArrayList<RT>();    
                     if (expr instanceof FactoryExpression) {
                         FactoryExpression<RT> fe = (FactoryExpression<RT>)expr;
                         while (rs.next()) {
@@ -461,7 +458,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+        queryMixin.addProjection(expr);
         long total = count();
         try {
             if (total > 0) {
