@@ -178,6 +178,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         Predicate having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         Set<QueryFlag> flags = metadata.getFlags();
+        final boolean hasFlags = !flags.isEmpty();
 
         List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>(select.size());
         for (Expression<?> selectExpr : select) {
@@ -190,14 +191,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
                 
         // start
-        serialize(Position.START, flags);
+        if (hasFlags) {
+            serialize(Position.START, flags);    
+        }        
 
         // select
         Stage oldStage = stage;
         stage = Stage.SELECT;
         if (forCountRow) {
-            append(templates.getSelect());            
-            serialize(Position.AFTER_SELECT, flags);
+            append(templates.getSelect());      
+            if (hasFlags) {
+                serialize(Position.AFTER_SELECT, flags);    
+            }            
             
             if (!metadata.isDistinct()) {
                 append(templates.getCountStar());
@@ -217,11 +222,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             } else {
                 append(templates.getSelectDistinct());
             }
-            serialize(Position.AFTER_SELECT, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_SELECT, flags);    
+            }            
             
             handle(COMMA, sqlSelect);
         }
-        serialize(Position.AFTER_PROJECTION, flags);
+        if (hasFlags) {
+            serialize(Position.AFTER_PROJECTION, flags);    
+        }        
 
         // from
         stage = Stage.FROM;
@@ -229,31 +238,45 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         // where          
         stage = Stage.WHERE;
-        serialize(Position.BEFORE_FILTERS, flags);
+        if (hasFlags) {
+            serialize(Position.BEFORE_FILTERS, flags);    
+        }        
         if (where != null) {            
             append(templates.getWhere()).handle(where);
-            serialize(Position.AFTER_FILTERS, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_FILTERS, flags);    
+            }            
         }        
 
         // group by
         stage = Stage.GROUP_BY;
-        serialize(Position.BEFORE_GROUP_BY, flags);
+        if (hasFlags) {
+            serialize(Position.BEFORE_GROUP_BY, flags);    
+        }        
         if (!groupBy.isEmpty()) {            
             append(templates.getGroupBy()).handle(COMMA, groupBy);
-            serialize(Position.AFTER_GROUP_BY, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_GROUP_BY, flags);    
+            }            
         }
 
         // having
         stage = Stage.HAVING;
-        serialize(Position.BEFORE_HAVING, flags);
+        if (hasFlags) {
+            serialize(Position.BEFORE_HAVING, flags);    
+        }        
         if (having != null) {
             append(templates.getHaving()).handle(having);
-            serialize(Position.AFTER_HAVING, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_HAVING, flags);    
+            }            
         }
         
         // order by
         stage = Stage.ORDER_BY;
-        serialize(Position.BEFORE_ORDER, flags);
+        if (hasFlags) {
+            serialize(Position.BEFORE_ORDER, flags);    
+        }        
         if (!orderBy.isEmpty() && !forCountRow) {
             append(templates.getOrderBy());                       
             boolean first = true;
@@ -265,7 +288,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
                 first = false;
             }
-            serialize(Position.AFTER_ORDER, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_ORDER, flags);    
+            }            
         }
         
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
@@ -273,7 +298,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
         // end
-        serialize(Position.END, flags);
+        if (hasFlags) {
+            serialize(Position.END, flags);    
+        }        
         
         // reset stage
         stage = oldStage;
@@ -434,20 +461,27 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getFrom());
             for (int i = 0; i < joins.size(); i++) {
                 JoinExpression je = joins.get(i);
-                serialize(JoinFlag.Position.START, je.getFlags());
-                if (!serialize(JoinFlag.Position.OVERRIDE, je.getFlags()) && i > 0) {
-                    append(templates.getJoinSymbol(je.getType()));
+                if (je.getFlags().isEmpty()) {
+                    if (i > 0) {
+                        append(templates.getJoinSymbol(je.getType()));
+                    }
+                    handleJoinTarget(je);
+                    if (je.getCondition() != null) {
+                        append(templates.getOn()).handle(je.getCondition());
+                    }                           
+                } else {
+                    serialize(JoinFlag.Position.START, je.getFlags());
+                    if (!serialize(JoinFlag.Position.OVERRIDE, je.getFlags()) && i > 0) {
+                        append(templates.getJoinSymbol(je.getType()));
+                    }                    
+                    serialize(JoinFlag.Position.BEFORE_TARGET, je.getFlags());
+                    handleJoinTarget(je);                    
+                    serialize(JoinFlag.Position.BEFORE_CONDITION, je.getFlags());
+                    if (je.getCondition() != null) {
+                        append(templates.getOn()).handle(je.getCondition());
+                    }                    
+                    serialize(JoinFlag.Position.END, je.getFlags());
                 }
-                
-                serialize(JoinFlag.Position.BEFORE_TARGET, je.getFlags());
-                handleJoinTarget(je);
-                
-                serialize(JoinFlag.Position.BEFORE_CONDITION, je.getFlags());
-                if (je.getCondition() != null) {
-                    append(templates.getOn()).handle(je.getCondition());
-                }
-                
-                serialize(JoinFlag.Position.END, je.getFlags());
             }    
         }        
     }

@@ -138,7 +138,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
     }
 
-    protected boolean serialize(QueryFlag.Position position, Set<QueryFlag> flags) {
+    protected final boolean serialize(QueryFlag.Position position, Set<QueryFlag> flags) {
         boolean handled = false;
         for (QueryFlag flag : flags) {
             if (flag.getPosition() == position) {
@@ -149,7 +149,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return handled;
     }
     
-    protected boolean serialize(JoinFlag.Position position, Set<JoinFlag> flags){
+    protected final boolean serialize(JoinFlag.Position position, Set<JoinFlag> flags){
         boolean handled = false;
         for (JoinFlag flag : flags) {
             if (flag.getPosition() == position) {
