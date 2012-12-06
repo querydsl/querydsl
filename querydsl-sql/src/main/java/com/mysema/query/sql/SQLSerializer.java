@@ -56,16 +56,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY}
 
-    private final SerializationContext context = new SerializationContext() {
+    private static class SQLSerializationContext implements SerializationContext {
 
+        private final SQLSerializer serializer;
+        
+        public SQLSerializationContext(SQLSerializer serializer) {
+            this.serializer = serializer;
+        }
+        
         @Override
         public void serialize(QueryMetadata metadata, boolean forCountRow) {
-            SQLSerializer.this.serializeForQuery(metadata, forCountRow);
+            serializer.serializeForQuery(metadata, forCountRow);
         }
 
         @Override
         public SerializationContext append(String str) {
-            SQLSerializer.this.append(str);
+            serializer.append(str);
             return this;
         }
 
@@ -75,12 +81,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             for (int i = 0; i < args.length; i++) {
                 exprs[i] = new ConstantImpl<Object>(args[i]);
             }
-            SQLSerializer.this.handle(TemplateExpressionImpl.create(Object.class, template, exprs));
-
+            serializer.handle(TemplateExpressionImpl.create(Object.class, template, exprs));
         }
-
-    };
-
+        
+    }
+    
+    private final SerializationContext context = new SQLSerializationContext(this);
+    
     private static final String COMMA = ", ";
 
     private final List<Path<?>> constantPaths = new ArrayList<Path<?>>();

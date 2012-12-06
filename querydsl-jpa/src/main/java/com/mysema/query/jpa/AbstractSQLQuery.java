@@ -43,16 +43,22 @@ import com.mysema.query.types.template.SimpleTemplate;
  */
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T> {
 
+    private static final class NativeQueryMixin<T> extends SQLQueryMixin<T> {
+        private NativeQueryMixin(QueryMetadata metadata) {
+            super(metadata);
+        }
+
+        @Override
+        public <RT> Expression<RT> convert(Expression<RT> expr){
+            return super.convert(Conversions.convert(expr));
+        }
+    }
+
     protected final SQLQueryMixin<T> queryMixin;
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
-        super(new SQLQueryMixin<T>(metadata){
-            @Override
-            public <RT> Expression<RT> convert(Expression<RT> expr){
-                return super.convert(Conversions.convert(expr));
-            }
-        });
+        super(new NativeQueryMixin<T>(metadata));
         this.queryMixin = (SQLQueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }

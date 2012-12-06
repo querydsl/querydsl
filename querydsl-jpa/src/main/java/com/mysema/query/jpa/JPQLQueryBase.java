@@ -55,10 +55,6 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     protected JPQLTemplates getTemplates() {
         return templates;
     }
-
-//    protected JPQLQueryMixin<Q> getQueryMixin() {
-//        return queryMixin;
-//    }
     
     protected String buildQueryString(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
