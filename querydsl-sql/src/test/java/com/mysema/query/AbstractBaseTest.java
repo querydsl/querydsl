@@ -24,10 +24,11 @@ import junit.framework.Assert;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 
+import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.AbstractSQLSubQuery;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -39,6 +40,36 @@ import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.oracle.OracleQuery;
 
 public abstract class AbstractBaseTest {
+
+    private final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLQuery {
+        
+        private TestQuery(Connection conn, Configuration configuration) {
+            super(conn, configuration);
+        }
+
+        private TestQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+            super(conn, configuration, metadata);
+        }
+        
+        @Override
+        protected String buildQueryString(boolean countRow) {
+            String rv = super.buildQueryString(countRow);
+            if (expectedQuery != null) {
+                assertEquals(expectedQuery, rv.replace('\n', ' '));
+                expectedQuery = null;
+            }
+            System.out.println(rv);
+            return rv;
+        }
+
+        @Override
+        public SQLQuery clone(Connection conn) {
+            TestQuery q = new TestQuery(conn, getConfiguration(), getMetadata().clone());
+            q.union = union;
+            q.unionAll = unionAll;
+            return q;
+        }
+    }
 
     private Connection connection = Connections.getConnection();
     
@@ -86,18 +117,7 @@ public abstract class AbstractBaseTest {
     }
     
     protected SQLQuery query() {
-        return new SQLQueryImpl(connection, templates) {
-            @Override
-            protected String buildQueryString(boolean countRow) {
-                String rv = super.buildQueryString(countRow);
-                if (expectedQuery != null) {
-                    assertEquals(expectedQuery, rv.replace('\n', ' '));
-                    expectedQuery = null;
-                }
-                System.out.println(rv);
-                return rv;
-            }
-        };
+        return new TestQuery(connection, new Configuration(templates));
     }
     
     protected OracleQuery oracleQuery(){

@@ -22,7 +22,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery, Cloneable {
+public final class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery, Cloneable {
 
     /**
      * Create a new ColQueryImpl instance

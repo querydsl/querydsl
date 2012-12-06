@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.junit.Before;
 
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.Expression;
 
@@ -71,10 +73,19 @@ public abstract class AbstractQueryTest {
         return last;
     }
 
-    static class TestQuery extends ColQueryImpl {
+    static class TestQuery extends AbstractColQuery<TestQuery> {
 
         List<Object> res = new ArrayList<Object>();
 
+        public TestQuery() {
+            super(new DefaultQueryMetadata(), DefaultQueryEngine.DEFAULT);
+        }
+        
+        @Override
+        public QueryMetadata getMetadata() {
+            return queryMixin.getMetadata();
+        }
+        
         @Override
         public <RT> List<RT> list(Expression<RT> projection) {
             boolean array = projection.getType().isArray();
