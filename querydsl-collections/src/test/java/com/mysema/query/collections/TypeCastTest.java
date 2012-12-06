@@ -26,7 +26,7 @@ public class TypeCastTest {
         QAnimal animal = QAnimal.animal;
         QCat cat = new QCat(animal.getMetadata(), new PathInits("*"));
         System.out.println(cat);
-        MiniApi.from(animal, Collections.<Animal> emptyList()).from(cat, Collections.<Cat> emptyList());
+        ColQueryFactory.from(animal, Collections.<Animal> emptyList()).from(cat, Collections.<Cat> emptyList());
     }
 
 }

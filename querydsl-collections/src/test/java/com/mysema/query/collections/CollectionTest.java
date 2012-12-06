@@ -45,7 +45,7 @@ public class CollectionTest {
     
     @Test
     public void Join(){
-        assertEquals("4", MiniApi.from(cat, cats)
+        assertEquals("4", ColQueryFactory.from(cat, cats)
                 .innerJoin(cat.kittens, other)
                 .where(other.name.eq("4")).uniqueResult(cat.name));
     }
@@ -54,7 +54,7 @@ public class CollectionTest {
     public void Join_From_Two_Sources(){
         QCat cat_kittens = new QCat("cat_kittens");
         QCat other_kittens = new QCat("other_kittens");
-        assertEquals(30, MiniApi
+        assertEquals(30, ColQueryFactory
                 .from(cat, cats).from(other, cats)
                 .innerJoin(cat.kittens, cat_kittens)
                 .innerJoin(other.kittens, other_kittens)
@@ -63,44 +63,44 @@ public class CollectionTest {
     
     @Test
     public void Any_UniqueResult(){
-        assertEquals("4", MiniApi.from(cat, cats)
+        assertEquals("4", ColQueryFactory.from(cat, cats)
                 .where(cat.kittens.any().name.eq("4")).uniqueResult(cat.name));
     }
     
     @Test
     public void Any_Count(){
-        assertEquals(4, MiniApi.from(cat, cats)
+        assertEquals(4, ColQueryFactory.from(cat, cats)
                 .where(cat.kittens.any().name.isNotNull()).count());
     }
     
     @Test
     public void Any_Two_Levels(){
-        assertEquals(4, MiniApi.from(cat, cats).where( 
+        assertEquals(4, ColQueryFactory.from(cat, cats).where( 
                 cat.kittens.any().kittens.any().isNotNull()).count());
     }
     
     @Test
     public void Any_Two_Levels2(){
-        assertEquals(4, MiniApi.from(cat, cats).where(
+        assertEquals(4, ColQueryFactory.from(cat, cats).where(
                 cat.kittens.any().name.isNotNull(), 
                 cat.kittens.any().kittens.any().isNotNull()).count());
     }
     
     @Test
     public void Any_From_Two_Sources(){
-        assertEquals(16, MiniApi.from(cat, cats).from(other, cats).where(
+        assertEquals(16, ColQueryFactory.from(cat, cats).from(other, cats).where(
                 cat.kittens.any().name.eq(other.kittens.any().name)).count());
     }
     
     @Test
     public void List_Size(){
-        assertEquals(4, MiniApi.from(cat, cats).where(cat.kittens.size().gt(0)).count());
-        assertEquals(2, MiniApi.from(cat, cats).where(cat.kittens.size().gt(2)).count());
+        assertEquals(4, ColQueryFactory.from(cat, cats).where(cat.kittens.size().gt(0)).count());
+        assertEquals(2, ColQueryFactory.from(cat, cats).where(cat.kittens.size().gt(2)).count());
     }
     
     @Test
     public void List_Is_Empty(){
-        assertEquals(0, MiniApi.from(cat, cats).where(cat.kittens.isEmpty()).count());
+        assertEquals(0, ColQueryFactory.from(cat, cats).where(cat.kittens.isEmpty()).count());
     }
     
 }

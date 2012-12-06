@@ -105,7 +105,7 @@ public class GroupBy2Test {
         QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
         QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
         
-        Map<Long, UserDto> userDtos = MiniApi.from(user, users)
+        Map<Long, UserDto> userDtos = ColQueryFactory.from(user, users)
                 .innerJoin(user.roles, role)
                 .innerJoin(role.groups, group)
                 .transform(GroupBy.groupBy(user.id)
@@ -133,7 +133,7 @@ public class GroupBy2Test {
         QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
         QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
         
-        Map<Long, UserDto> userDtos = MiniApi.from(user, users)
+        Map<Long, UserDto> userDtos = ColQueryFactory.from(user, users)
                 .innerJoin(user.roles, role)
                 .innerJoin(role.groups, group)
                 .transform(GroupBy.groupBy(user.id)

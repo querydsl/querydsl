@@ -22,7 +22,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<Cat> kittens = MiniApi.from(QCat.cat, Arrays.asList(a,b)).list(QCat.cat.kittens.any());
+        List<Cat> kittens = ColQueryFactory.from(QCat.cat, Arrays.asList(a,b)).list(QCat.cat.kittens.any());
         assertEquals(Arrays.asList(aa,ab,ac,ba,bb), kittens);
         
     }
@@ -40,7 +40,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<String> kittens = MiniApi.from(QCat.cat, Arrays.asList(a,b))
+        List<String> kittens = ColQueryFactory.from(QCat.cat, Arrays.asList(a,b))
                 .list(QCat.cat.kittens.any().name);
         assertEquals(Arrays.asList("aa","ab","ac","ba","bb"), kittens);
     }
@@ -58,7 +58,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<Cat> kittens = MiniApi.from(QCat.cat, Arrays.asList(a,b))
+        List<Cat> kittens = ColQueryFactory.from(QCat.cat, Arrays.asList(a,b))
                 .where(QCat.cat.kittens.any().name.startsWith("a"))
                 .list(QCat.cat.kittens.any());
         
@@ -79,7 +79,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<String> kittens = MiniApi.from(QCat.cat, Arrays.asList(a,b))
+        List<String> kittens = ColQueryFactory.from(QCat.cat, Arrays.asList(a,b))
                 .where(QCat.cat.kittens.any().name.startsWith("a"))
                 .list(QCat.cat.kittens.any().name);
         

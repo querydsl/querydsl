@@ -42,21 +42,21 @@ public class IterationTest {
     
     @Test
     public void test(){                
-        assertEquals(expected, MiniApi.from ($(lt), allData).list($(lt.getData())));
+        assertEquals(expected, ColQueryFactory.from ($(lt), allData).list($(lt.getData())));
     }
 
     @Test
     public void test2(){        
-        assertEquals(expected, MiniApi.from ($(lt), Arrays.asList(allData.toArray())).list($(lt.getData())));
+        assertEquals(expected, ColQueryFactory.from ($(lt), Arrays.asList(allData.toArray())).list($(lt.getData())));
     }
     
     @Test
     public void test3(){                
-        assertEquals(expected, MiniApi.from (lt, allData).list($(lt.getData())));
+        assertEquals(expected, ColQueryFactory.from (lt, allData).list($(lt.getData())));
     }
 
     @Test
     public void test4(){        
-        assertEquals(expected, MiniApi.from (lt, Arrays.asList(allData.toArray())).list($(lt.getData())));
+        assertEquals(expected, ColQueryFactory.from (lt, Arrays.asList(allData.toArray())).list($(lt.getData())));
     }
 }

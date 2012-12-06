@@ -24,7 +24,7 @@ public class CastTest extends AbstractQueryTest {
          Cat cat = new Cat();
          cat.setEyecolor(Color.TABBY);
          assertEquals(Color.TABBY, 
-             MiniApi.from(QAnimal.animal, cat)
+             ColQueryFactory.from(QAnimal.animal, cat)
                  .where(QAnimal.animal.instanceOf(Cat.class))
                  .singleResult(QAnimal.animal.as(QCat.class).eyecolor));
     }

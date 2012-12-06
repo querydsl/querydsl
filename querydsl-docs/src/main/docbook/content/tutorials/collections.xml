@@ -21,7 +21,7 @@
 
     <programlisting language="java"><![CDATA[
 // needed for access of the Querydsl Collections API    
-import static com.mysema.query.collections.MiniApi.*;
+import static com.mysema.query.collections.ColQueryFactory.*;
 // needed, if you use the $-invocations    
 import static com.mysema.query.alias.Alias.*;
 ]]></programlisting>

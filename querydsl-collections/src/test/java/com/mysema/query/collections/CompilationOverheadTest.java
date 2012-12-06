@@ -50,7 +50,7 @@ public class CompilationOverheadTest {
 
     private void query(BooleanExpression condition){
         long start = System.currentTimeMillis();
-        MiniApi.from(cat, Collections.<Cat>emptyList()).where(condition).list(cat);
+        ColQueryFactory.from(cat, Collections.<Cat>emptyList()).where(condition).list(cat);
         long duration = System.currentTimeMillis() - start;
         System.out.println(condition + " : " + duration + "ms");
     }

@@ -66,7 +66,7 @@ public class GroupByTest {
         
     @Test
     public void Group_Min() {
-        Map<Integer, String> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, String> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(min(comment.text)));
         
@@ -76,7 +76,7 @@ public class GroupByTest {
     }
     
     public void Comments_By_Post() {
-        Map<Integer, List<Comment>> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, List<Comment>> results = ColQueryFactory.from(post, posts).from(comment, comments)
                 .where(comment.post.id.eq(post.id))
                 .transform(groupBy(post.id).as(list(comment)));
         
@@ -87,7 +87,7 @@ public class GroupByTest {
     
     @Test
     public void Group_Max() {
-        Map<Integer, String> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, String> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(max(comment.text)));
         
@@ -98,7 +98,7 @@ public class GroupByTest {
     
     @Test
     public void Group_Sum() {
-        Map<Integer, Integer> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Integer> results = ColQueryFactory.from(post, posts).from(comment, comments)
                 .where(comment.post.id.eq(post.id))
                 .transform(groupBy(post.id).as(sum(comment.id)));
         
@@ -109,7 +109,7 @@ public class GroupByTest {
     
     @Test
     public void Group_Avg() {
-        Map<Integer, Integer> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Integer> results = ColQueryFactory.from(post, posts).from(comment, comments)
                 .where(comment.post.id.eq(post.id))
                 .transform(groupBy(post.id).as(avg(comment.id)));
         
@@ -120,7 +120,7 @@ public class GroupByTest {
     
     @Test 
     public void Group_Order() {       
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Group> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id)));
         
@@ -129,7 +129,7 @@ public class GroupByTest {
     
     @Test
     public void First_Set_And_List() {       
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Group> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
         
@@ -143,7 +143,7 @@ public class GroupByTest {
     @Test
     @Ignore
     public void Group_By_Null() {        
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Group> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
         
@@ -166,7 +166,7 @@ public class GroupByTest {
     
     @Test(expected=ClassCastException.class)
     public void ClassCastException() {        
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Group> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
         
@@ -177,7 +177,7 @@ public class GroupByTest {
     @Test
     @Ignore
     public void Map() {
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Group> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, map(comment.id, comment.text)));
         
@@ -189,7 +189,7 @@ public class GroupByTest {
 
     @Test
     public void Array_Access() {        
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Group> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
         
@@ -203,7 +203,7 @@ public class GroupByTest {
     
     @Test
     public void Transform_Results() {        
-        Map<Integer, Post> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Post> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(QPost.create(post.id, post.name, set(qComment))));
         
@@ -216,7 +216,7 @@ public class GroupByTest {
     
     @Test
     public void Transform_As_Bean() {
-        Map<Integer, Post> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, Post> results = ColQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments"))));
         
@@ -230,7 +230,7 @@ public class GroupByTest {
     
     @Test
     public void OneToOneToMany_Projection() {
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
+        Map<String, User> results = ColQueryFactory.from(user, users).from(post, posts).from(comment, comments)
             .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name).as(Projections.constructor(User.class, user.name, 
                     QPost.create(post.id, post.name, set(qComment)))));                    
@@ -247,7 +247,7 @@ public class GroupByTest {
     
     @Test
     public void OneToOneToMany_Projection_As_Bean() {
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
+        Map<String, User> results = ColQueryFactory.from(user, users).from(post, posts).from(comment, comments)
             .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name).as(Projections.bean(User.class, user.name, 
                     Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments")).as("latestPost"))));
@@ -263,7 +263,7 @@ public class GroupByTest {
     
     @Test
     public void OneToOneToMany_Projection_As_Bean_And_Constructor() {
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
+        Map<String, User> results = ColQueryFactory.from(user, users).from(post, posts).from(comment, comments)
             .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name).as(Projections.bean(User.class, user.name, 
                 QPost.create(post.id, post.name, set(qComment)).as("latestPost"))));
