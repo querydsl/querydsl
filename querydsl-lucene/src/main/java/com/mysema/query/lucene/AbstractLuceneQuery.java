@@ -271,6 +271,10 @@ SimpleProjectable<T> {
         return queryMixin.offset(offset);
     }
 
+    public Q orderBy(OrderSpecifier<?> o) {
+        return queryMixin.orderBy(o);
+    }
+    
     @Override
     public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
@@ -334,6 +338,10 @@ SimpleProjectable<T> {
     @Override
     public T uniqueResult() {
         return oneResult(true);
+    }
+    
+    public Q where(Predicate e) {
+        return queryMixin.where(e);
     }
 
     @Override

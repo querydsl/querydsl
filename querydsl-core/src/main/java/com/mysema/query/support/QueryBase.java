@@ -36,16 +36,32 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         return queryMixin.distinct();
     }
     
+    public Q groupBy(Expression<?> e) {
+        return queryMixin.groupBy(e);
+    }
+    
     public Q groupBy(Expression<?>... o) {
         return queryMixin.groupBy(o);
+    }
+    
+    public Q having(Predicate e) {
+        return queryMixin.having(e);
     }
 
     public Q having(Predicate... o) {
         return queryMixin.having(o);
     }
+    
+    public Q orderBy(OrderSpecifier<?> o) {
+        return queryMixin.orderBy(o);
+    }
 
     public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
+    }
+    
+    public Q where(Predicate o) {
+        return queryMixin.where(o);
     }
 
     public Q where(Predicate... o) {

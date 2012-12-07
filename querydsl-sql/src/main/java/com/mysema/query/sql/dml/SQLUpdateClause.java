@@ -213,6 +213,11 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         return this;
     }
 
+    public SQLUpdateClause where(Predicate p) {
+        metadata.addWhere(p);
+        return this;
+    }
+    
     @Override
     public SQLUpdateClause where(Predicate... o) {
         for (Predicate p : o) {

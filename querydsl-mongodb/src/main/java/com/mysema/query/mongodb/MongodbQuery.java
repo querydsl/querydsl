@@ -189,6 +189,10 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         return queryMixin.distinct();
     }
 
+    public MongodbQuery<K> where(Predicate e) {
+        return queryMixin.where(e);
+    }
+    
     @Override
     public MongodbQuery<K> where(Predicate... e) {
         return queryMixin.where(e);
@@ -209,6 +213,10 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         return queryMixin.restrict(modifiers);
     }
 
+    public MongodbQuery<K> orderBy(OrderSpecifier<?> o) {
+        return queryMixin.orderBy(o);
+    }
+    
     @Override
     public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);

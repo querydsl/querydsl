@@ -192,6 +192,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return new SQLSerializer(configuration.getTemplates());
     }
 
+    public Q from(Expression<?> arg) {
+        return queryMixin.from(arg);
+    }
+    
     public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
@@ -481,6 +485,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
             args[i] = get(rs, c.getArgs().get(i), offset + i + 1, c.getArgs().get(i).getType());
         }
         return c.newInstance(args);
+    }
+    
+    public Q on(Predicate condition) {
+        return queryMixin.on(condition);
     }
 
     public Q on(Predicate... conditions) {

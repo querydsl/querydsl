@@ -23,7 +23,7 @@ import com.mysema.query.types.Predicate;
  * @param <C> concrete subtype
  */
 public interface FilteredClause<C extends FilteredClause<C>> {
-
+    
     /**
      * Adds the given filter conditions
      *

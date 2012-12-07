@@ -155,6 +155,11 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         }
     }
     
+    public SQLDeleteClause where(Predicate p) {
+        metadata.addWhere(p);
+        return this;
+    }
+    
     @Override
     public SQLDeleteClause where(Predicate... o) {
         for (Predicate p : o) {

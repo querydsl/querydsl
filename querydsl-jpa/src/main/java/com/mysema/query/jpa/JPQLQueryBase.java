@@ -88,6 +88,10 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
         return queryMixin.fetchAll();
     }
 
+    public Q from(EntityPath<?> arg) {
+        return queryMixin.from(arg);
+    }
+    
     public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }
@@ -214,6 +218,10 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
 
     public <P> Q rightJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.rightJoin(target, alias);
+    }
+    
+    public Q on(Predicate condition) {
+        return queryMixin.on(condition);
     }
     
     public Q on(Predicate... conditions) {

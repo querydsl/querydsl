@@ -156,6 +156,11 @@ public class QueryMixin<T> {
         return self;
     }
 
+    public final T from(Expression<?> arg) {
+        metadata.addJoin(JoinType.DEFAULT, arg);
+        return self;
+    }
+    
     public final T from(Expression<?>... args) {
         for (Expression<?> arg : args) {
             metadata.addJoin(JoinType.DEFAULT, arg);
@@ -207,10 +212,20 @@ public class QueryMixin<T> {
         return self;
     }
 
+    public final T groupBy(Expression<?> e) {
+        metadata.addGroupBy(e);
+        return self;
+    }
+    
     public final T groupBy(Expression<?>... o) {
         for (Expression<?> e : o) {
             metadata.addGroupBy(e);    
         }        
+        return self;
+    }
+    
+    public final T having(Predicate e) {
+        metadata.addHaving(normalize(e, false));
         return self;
     }
 
@@ -346,6 +361,11 @@ public class QueryMixin<T> {
         metadata.setOffset(offset);
         return self;
     }
+    
+    public final T on(Predicate condition) {
+        metadata.addJoinCondition(normalize(condition, false));
+        return self;
+    }
 
     public final T on(Predicate... conditions){
         for (Predicate condition : conditions) {
@@ -354,14 +374,19 @@ public class QueryMixin<T> {
         return self;
     }
 
+    public final T orderBy(OrderSpecifier<?> spec) {
+        Expression<?> e = convert(spec.getTarget());
+        if (!spec.getTarget().equals(e)) {
+            metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));    
+        } else {
+            metadata.addOrderBy(spec);
+        }
+        return self;
+    }
+    
     public final T orderBy(OrderSpecifier<?>... o) {
         for (OrderSpecifier<?> spec : o) {
-            Expression<?> e = convert(spec.getTarget());
-            if (!spec.getTarget().equals(e)) {
-                metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));    
-            } else {
-                metadata.addOrderBy(spec);
-            }            
+            orderBy(spec);            
         }
         return self;
     }
@@ -424,6 +449,11 @@ public class QueryMixin<T> {
         metadata.setUnique(unique);
     }
 
+    public final T where(Predicate e) {
+        metadata.addWhere(normalize(e, true));
+        return self;
+    }
+    
     public final T where(Predicate... o) {        
         for (Predicate e : o) {
             metadata.addWhere(normalize(e, true));    
