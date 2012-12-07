@@ -508,6 +508,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoBatooJPA
     public void Enum_in() {
         assertEquals(1, query().from(company).where(company.ratingOrdinal.in(Rating.A, Rating.AA)).count());
         assertEquals(1, query().from(company).where(company.ratingString.in(Rating.A, Rating.AA)).count());
@@ -981,6 +982,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoBatooJPA
     public void Precedence2() {
         StringPath str = cat.name;
         Predicate where = str.like("Bob%").and(str.like("%ob123")
@@ -1050,6 +1052,7 @@ public abstract class AbstractStandardTest {
     }
  
     @Test
+    @NoBatooJPA
     public void Enum_In() {
         QEmployee employee = QEmployee.employee;
         
@@ -1071,6 +1074,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoBatooJPA
     public void List_ElementCollection_Of_String() {
         QFoo foo = QFoo.foo;
         StringPath str = new StringPath("str");
@@ -1083,6 +1087,7 @@ public abstract class AbstractStandardTest {
         
     @Test
     @ExcludeIn(MYSQL)
+    @NoBatooJPA
     public void GroupBy() {
         QAuthor author = QAuthor.author;
         QBook book = QBook.book;

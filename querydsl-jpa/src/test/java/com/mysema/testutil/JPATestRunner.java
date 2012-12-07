@@ -113,7 +113,9 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
         }            
         
         if (entityManagerFactory != null){
-            entityManagerFactory.getCache().evictAll();
+            if (entityManagerFactory.getCache() != null) {
+                entityManagerFactory.getCache().evictAll();    
+            }            
             entityManagerFactory.close();
             entityManagerFactory = null;
         }

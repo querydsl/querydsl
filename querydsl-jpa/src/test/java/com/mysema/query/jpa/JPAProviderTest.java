@@ -92,7 +92,6 @@ public class JPAProviderTest {
     }
     
     @Test
-    @Ignore
     public void Batoo() {
         factory = Persistence.createEntityManagerFactory("h2-batoo");
         em = factory.createEntityManager();
