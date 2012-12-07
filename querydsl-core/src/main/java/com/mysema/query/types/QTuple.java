@@ -38,6 +38,56 @@ import com.mysema.query.Tuple;
  */
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
 
+    private final class TupleImpl implements Tuple {
+        private final Object[] a;
+
+        private TupleImpl(Object[] a) {
+            this.a = a;
+        }
+
+        @Override
+        public <T> T get(int index, Class<T> type) {
+            return (T) a[index];
+        }
+
+        @Override
+        public <T> T get(Expression<T> expr) {
+            int index = QTuple.this.args.indexOf(expr);
+            return index != -1 ? (T) a[index] : null;
+        }
+
+        @Override
+        public int size() {
+            return a.length;
+        }
+
+        @Override
+        public Object[] toArray() {
+            return a;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) {
+                return true;
+            } else if (obj instanceof Tuple) {
+                return Arrays.equals(a, ((Tuple) obj).toArray());
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(a);
+        }
+
+        @Override
+        public String toString() {
+            return Arrays.toString(a);
+        }
+    }
+
     private static final long serialVersionUID = -2640616030595420465L;
 
     private final List<Expression<?>> args;
@@ -75,54 +125,9 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Tuple newInstance(final Object... a) {
-        return new Tuple() {
-
-            @Override
-            public <T> T get(int index, Class<T> type) {
-                return (T) a[index];
-            }
-
-            @Override
-            public <T> T get(Expression<T> expr) {
-                int index = QTuple.this.args.indexOf(expr);
-                return index != -1 ? (T) a[index] : null;
-            }
-            
-            @Override
-            public int size() {
-                return a.length;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return a;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                if (obj == this) {
-                    return true;
-                } else if (obj instanceof Tuple) {
-                    return Arrays.equals(a, ((Tuple) obj).toArray());
-                } else {
-                    return false;
-                }
-            }
-
-            @Override
-            public int hashCode() {
-                return Arrays.hashCode(a);
-            }
-            
-            @Override
-            public String toString() {
-                return Arrays.toString(a);
-            }
-
-        };
+    public Tuple newInstance(Object... a) {
+        return new TupleImpl(a);
     }
 
     @Override
