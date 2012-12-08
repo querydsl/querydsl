@@ -23,7 +23,7 @@ public class QueryPerformanceTest {
     
     @BeforeClass
     public static void setUpClass() {
-        Mode.mode.set("h2-perf");
+        Mode.mode.set("h2perf");
         Mode.target.set(Target.H2);
     }
     

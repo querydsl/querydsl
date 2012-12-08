@@ -89,7 +89,7 @@
         </properties>
     </persistence-unit>
     
-        <persistence-unit name="h2-perf" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="h2perf" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
@@ -97,9 +97,7 @@
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url" value="jdbc:h2:target/h2-perf" />
             <property name="hibernate.connection.user" value="sa" />
-            <!-- 
-            <property name="hibernate.show_sql" value="true"/>
-             -->
+            <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>

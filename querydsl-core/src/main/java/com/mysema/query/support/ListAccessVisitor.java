@@ -45,16 +45,18 @@ import com.mysema.query.types.template.BooleanTemplate;
  */
 public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     
+    private static final class UnderscoreTemplates extends Templates {
+        {
+            add(PathType.PROPERTY, "{0}_{1}");
+            add(PathType.LISTVALUE, "{0}_{1}");
+            add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");        
+        }
+    }
+
     public static final ListAccessVisitor DEFAULT = new ListAccessVisitor();
     
-    public static final Templates TEMPLATE = new Templates() {
-    {
-        add(PathType.PROPERTY, "{0}_{1}");
-        add(PathType.LISTVALUE, "{0}_{1}");
-        add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");        
-    }};
-    
-    
+    public static final Templates TEMPLATE = new UnderscoreTemplates();
+        
     @SuppressWarnings("unchecked")
     private static <T> Path<T> replaceParent(Path<T> path, Path<?> parent) {
         PathMetadata<?> metadata = new PathMetadata(parent, path.getMetadata().getElement(), 

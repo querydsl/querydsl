@@ -35,7 +35,6 @@ public final class FactoryExpressionTransformer implements ResultTransformer {
         this.constructor = constructor;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List transformList(List collection) {
         return collection;

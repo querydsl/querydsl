@@ -58,10 +58,22 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     private static Class<?> hibernateQueryClass;
     
+    private static Constructor<?> hibernateQueryTransformationConstructor;
+    
     static {
         try {
             hibernateQueryClass = Class.forName("org.hibernate.ejb.HibernateQuery");
         } catch (ClassNotFoundException e) {
+            // do nothing
+        }
+        try {
+            Class<?> clazz = Class.forName("com.mysema.query.jpa.impl.HibernateQueryTransformation");
+            hibernateQueryTransformationConstructor = clazz.getConstructor(Query.class, FactoryExpression.class);
+        } catch (ClassNotFoundException e) {
+            // do nothing
+        } catch (SecurityException e) {
+            // do nothing
+        } catch (NoSuchMethodException e) {
             // do nothing
         }
     }
@@ -163,21 +175,16 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         
         if (!forCount && ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null)) {
             Expression<?> expr = wrapped != null ? wrapped : projection.get(0);            
-            String transformation = null;
+            Constructor<?> transformation = null;
             if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
-                transformation = "com.mysema.query.jpa.impl.HibernateQueryTransformation";
+                transformation = hibernateQueryTransformationConstructor;
             }
 //            else if (query.getClass().getName().startsWith("org.eclipse.persistence")) {
 //                transformation = "com.mysema.query.jpa.impl.EclipseLinkQueryTransformation";
 //            }
             if (transformation != null) {
                 try {
-                    Constructor<?> c = Class.forName(transformation).getConstructor(Query.class, FactoryExpression.class);
-                    c.newInstance(query, expr);
-                } catch (NoSuchMethodException e) {
-                    throw new QueryException(e);
-                } catch (ClassNotFoundException e) {
-                    throw new QueryException(e);
+                    transformation.newInstance(query, expr);
                 } catch (InstantiationException e) {
                     throw new QueryException(e);
                 } catch (IllegalAccessException e) {
