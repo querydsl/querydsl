@@ -26,7 +26,7 @@ public class QueryPerformanceTest {
     
     @BeforeClass
     public static void setUpClass() {
-        Mode.mode.set("h2");
+        Mode.mode.set("h2-perf");
         Mode.target.set(Target.H2);
     }
     
@@ -45,50 +45,49 @@ public class QueryPerformanceTest {
     }
     
     @Test
-    public void test() {
-        Map<String, Long> results = new LinkedHashMap<String, Long>();
-        
-        // by id - raw
+    public void ById_Raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             Cat cat = (Cat)entityManager.createQuery("select cat from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
             assertNotNull(cat);            
         }
-        results.put("by id - raw", System.currentTimeMillis() - start);
-        
-        // by - dsl
-        start = System.currentTimeMillis();
+        System.err.println("by id - raw" + (System.currentTimeMillis() - start));
+    }
+    
+    @Test
+    public void ById_Qdsl() {
+        long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
             Cat c = query().from(cat).where(cat.id.eq(i+100)).uniqueResult(cat);
             assertNotNull(c);
         }
-        results.put("by id - dsl", System.currentTimeMillis() - start);
-        
-        // by id - raw
-        start = System.currentTimeMillis();
+        System.err.println("by id - dsl" + (System.currentTimeMillis() - start));
+    }
+    
+    @Test
+    public void ById_TwoCols_Raw() {
+        long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             Object[] row = (Object[])entityManager.createQuery("select cat.id, cat.name from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
             assertNotNull(row);            
         }
-        results.put("by id - 2 cols - raw", System.currentTimeMillis() - start);
-        
-        // by id - dsl
-        start = System.currentTimeMillis();
+        System.err.println("by id - 2 cols - raw" + (System.currentTimeMillis() - start));
+    }
+    
+    @Test
+    public void ById_TwoCols_Qdsl() {
+        long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
             Tuple row = query().from(cat).where(cat.id.eq(i+100)).uniqueResult(cat.id, cat.name);
             assertNotNull(row);
         }
-        results.put("by id - 2 cols - dsl", System.currentTimeMillis() - start);
-        
-        
-        for (Map.Entry<String, Long> entry : results.entrySet()) {
-            System.err.println(entry.getKey() + " " + entry.getValue());
-        }
+        System.err.println("by id - 2 cols - dsl" + (System.currentTimeMillis() - start));
     }
+    
     
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
