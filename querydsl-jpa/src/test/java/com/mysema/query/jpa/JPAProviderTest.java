@@ -92,6 +92,7 @@ public class JPAProviderTest {
     }
     
     @Test
+    @Ignore // temporarily ignored, since Batoo hangs on EntityManager creation
     public void Batoo() {
         factory = Persistence.createEntityManagerFactory("h2-batoo");
         em = factory.createEntityManager();
