@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,6 +16,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
+@Ignore
 public class QueryPerformanceTest {
 
     private static final int iterations = 1000;
