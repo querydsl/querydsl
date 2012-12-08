@@ -2,9 +2,6 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.persistence.EntityManager;
 
 import org.junit.Before;
@@ -70,7 +67,8 @@ public class QueryPerformanceTest {
     public void ById_TwoCols_Raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            Object[] row = (Object[])entityManager.createQuery("select cat.id, cat.name from Cat cat where id = ?")
+            Object[] row = (Object[])entityManager.createQuery(
+                    "select cat.id, cat.name from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
             assertNotNull(row);            
         }
