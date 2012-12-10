@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParametrizedExpression;
 import com.mysema.query.types.Path;
@@ -103,7 +104,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (methodType == MethodType.LIST_ACCESS || methodType == MethodType.SCALA_LIST_ACCESS) {
             // TODO : manage cases where the argument is based on a property invocation
-            Object propKey = Arrays.asList(MethodType.LIST_ACCESS, args[0]);
+            Object propKey = ImmutableList.of(MethodType.LIST_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
@@ -114,7 +115,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
         } else if (methodType == MethodType.MAP_ACCESS || methodType == MethodType.SCALA_MAP_ACCESS) {
-            Object propKey = Arrays.asList(MethodType.MAP_ACCESS, args[0]);
+            Object propKey = ImmutableList.of(MethodType.MAP_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {

@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Template.Element;
 
 /**
@@ -121,6 +122,7 @@ public class TemplateFactory {
             if (end < template.length()) {
                 elements.add(new Element(template.substring(end)));
             }
+            elements = ImmutableList.copyOf(elements);
             Template rv = new Template(template, elements);
             cache.put(template, rv);
             return rv;

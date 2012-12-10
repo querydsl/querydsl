@@ -36,6 +36,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -215,7 +216,7 @@ public class GenericExporter {
     private void innerExport(){
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(Arrays.asList(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
+        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
         // process supertypes
         for (Class<?> cl : superTypes.keySet()) {
@@ -435,7 +436,7 @@ public class GenericExporter {
             return null;
         }
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = Arrays.asList(annotated.getAnnotation(QueryInit.class).value());
+            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
         }
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);

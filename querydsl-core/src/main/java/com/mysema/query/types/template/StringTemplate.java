@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.template;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -33,12 +33,20 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     private static final long serialVersionUID = 3181686132439356614L;
 
+    public static StringExpression create(String template, Object one) {
+        return new StringTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
+    }
+    
+    public static StringExpression create(String template, Object one, Object two) {
+        return new StringTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
+    }
+    
     public static StringExpression create(String template, Object... args) {
-        return new StringTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
+        return new StringTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
     }
 
     public static StringExpression create(Template template, Object... args) {
-        return new StringTemplate(template, Arrays.asList(args));
+        return new StringTemplate(template, ImmutableList.copyOf(args));
     }
 
     private final TemplateExpressionImpl<String> templateMixin;

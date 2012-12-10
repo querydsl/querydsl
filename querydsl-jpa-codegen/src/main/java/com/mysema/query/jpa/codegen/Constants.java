@@ -13,8 +13,9 @@
  */
 package com.mysema.query.jpa.codegen;
 
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Constants defines keywords used in Hibernate
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public final class Constants {
     
-    public static final List<String> keywords = Arrays.asList(
+    public static final List<String> keywords = ImmutableList.of(
             "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
             "BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
             "CHARACTER_LENGTH","CLASS",

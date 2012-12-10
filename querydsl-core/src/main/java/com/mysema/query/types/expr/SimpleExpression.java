@@ -13,12 +13,12 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
@@ -185,7 +185,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return eq(right[0]);
         } else {
-            return BooleanOperation.create(Ops.IN, mixin, new ConstantImpl<List<T>>(Arrays.asList(right)));
+            return BooleanOperation.create(Ops.IN, mixin, new ConstantImpl<List<T>>(ImmutableList.copyOf(right)));
         }
     }
 

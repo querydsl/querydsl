@@ -14,7 +14,6 @@
 package com.mysema.query.jdo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import java.util.Stack;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
@@ -334,7 +334,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
         } else if (operator.equals(Ops.LIKE) || operator.equals(Ops.LIKE_ESCAPE)) {
             super.visitOperation(type, Ops.MATCHES, 
-                Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1), false)));
+                ImmutableList.of(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1), false)));
             
         // exists    
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {

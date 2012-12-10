@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -33,15 +33,14 @@ public class TimeOperation<T extends Comparable<?>> extends TimeExpression<T> im
 
     private static final long serialVersionUID = 9051606798649239240L;
 
-    /**
-     * Factory method
-     *
-     * @param <D>
-     * @param type
-     * @param op
-     * @param args
-     * @return
-     */
+    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+        return new TimeOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
+    }
+    
+    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+        return new TimeOperation<D>(type, op, ImmutableList.of(one, two));
+    }
+        
     public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
         return new TimeOperation<D>(type, op, args);
     }
@@ -49,7 +48,7 @@ public class TimeOperation<T extends Comparable<?>> extends TimeExpression<T> im
     private final OperationImpl<T> opMixin;
 
     protected TimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
-        this(type, op, Arrays.asList(args));
+        this(type, op, ImmutableList.copyOf(args));
     }
 
     protected TimeOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {

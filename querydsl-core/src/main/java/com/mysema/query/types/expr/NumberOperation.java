@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -35,23 +35,22 @@ public class NumberOperation<T extends Number & Comparable<?>>
 
     private static final long serialVersionUID = -3593040852095778453L;
 
-    /**
-     * Factory method
-     *
-     * @param <D>
-     * @param type
-     * @param op
-     * @param args
-     * @return
-     */
-    public static <D extends Number & Comparable<?>> NumberExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?>... args){
+    public static <D extends Number & Comparable<?>> NumberExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?> one) {
+        return new NumberOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
+    }
+    
+    public static <D extends Number & Comparable<?>> NumberExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+        return new NumberOperation<D>(type, op, ImmutableList.of(one, two));
+    }
+    
+    public static <D extends Number & Comparable<?>> NumberExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?>... args) {
         return new NumberOperation<D>(type, op, args);
     }
 
     private final OperationImpl<T> opMixin;
 
     protected NumberOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
-        this(type, op, Arrays.asList(args));
+        this(type, op, ImmutableList.copyOf(args));
     }
 
     protected NumberOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {

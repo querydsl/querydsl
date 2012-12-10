@@ -34,6 +34,7 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -373,7 +374,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         } else if (operator.equals(Ops.MATCHES) || operator.equals(Ops.MATCHES_IC)) {
             super.visitOperation(type, Ops.LIKE,
-                    Arrays.asList(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
+                    ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
         }else if(NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
@@ -428,7 +429,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                     ids.add(util.getIdentifier(entity));
                 }
                 rhs = new ConstantImpl(ids);
-                args = Arrays.asList(lhs, rhs);
+                args = ImmutableList.of(lhs, rhs);
             }
         }
         super.visitOperation(type, operator, args);
@@ -451,9 +452,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
             Enum constant = (Enum)((Constant)args.get(0)).getConstant();
             if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
-                args = Arrays.asList(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
+                args = ImmutableList.of(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
             } else {
-                args = Arrays.asList(new ConstantImpl<String>(constant.name()), args.get(1));
+                args = ImmutableList.of(new ConstantImpl<String>(constant.name()), args.get(1));
             }
         }                
         super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);

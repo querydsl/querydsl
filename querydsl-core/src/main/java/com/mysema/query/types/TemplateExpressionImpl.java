@@ -13,8 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Default implementation of the {@link TemplateExpression} interface
@@ -58,7 +59,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     }
 
     public TemplateExpressionImpl(Class<? extends T> type, Template template, Object... args){
-        this(type, template, Arrays.<Object>asList(args));
+        this(type, template, ImmutableList.copyOf(args));
     }    
     
     public TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args){

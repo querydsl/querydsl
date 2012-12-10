@@ -13,9 +13,9 @@
  */
 package com.mysema.query.collections;
 
-import java.util.Arrays;
 import java.util.Collection;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.Path;
 
@@ -56,7 +56,7 @@ public final class ColQueryFactory {
      * @return
      */
     public static <A> ColQuery from(Path<A> path, A... arr) {
-        return new ColQueryImpl().from(path, Arrays.asList(arr));
+        return new ColQueryImpl().from(path, ImmutableList.copyOf(arr));
     }
 
     /**

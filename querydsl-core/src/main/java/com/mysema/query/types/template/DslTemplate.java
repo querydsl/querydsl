@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.template;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -34,12 +34,20 @@ public class DslTemplate<T> extends DslExpression<T> implements TemplateExpressi
 
     private static final long serialVersionUID = -4697578522909045745L;
 
+    public static <T> DslExpression<T> create(Class<? extends T> type, String template, Object one) {
+        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
+    }
+    
+    public static <T> DslExpression<T> create(Class<? extends T> type, String template, Object one, Object two) {
+        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
+    }
+    
     public static <T> DslExpression<T> create(Class<? extends T> type, String template, Object... args) {
-        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
+        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
     }
 
     public static <T> DslExpression<T> create(Class<? extends T> type, Template template, Object... args) {
-        return new DslTemplate<T>(type, template, Arrays.asList(args));
+        return new DslTemplate<T>(type, template, ImmutableList.copyOf(args));
     }
 
     private final TemplateExpressionImpl<T> templateMixin;

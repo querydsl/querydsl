@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
@@ -33,16 +33,24 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     private static final long serialVersionUID = 7432281499861357581L;
 
-    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?>... args){
+    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?> one) {
+        return new BooleanOperation(op, ImmutableList.<Expression<?>>of(one));
+    }
+    
+    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?> one, Expression<?> two) {
+        return new BooleanOperation(op, ImmutableList.of(one, two));
+    }
+    
+    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?>... args) {
         return new BooleanOperation(op, args);
     }
-
+    
     private final PredicateOperation opMixin;
 
     protected BooleanOperation(Operator<? super Boolean> op, Expression<?>... args) {
-        this(op, Arrays.asList(args));
+        this(op, ImmutableList.copyOf(args));
     }
-
+    
     protected BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
         super(new PredicateOperation((Operator)op, args));
         opMixin = (PredicateOperation)mixin;

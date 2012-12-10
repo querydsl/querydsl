@@ -14,9 +14,9 @@
 package com.mysema.query.sql;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Path;
 
 /**
@@ -33,7 +33,7 @@ public class PrimaryKey <E> implements Serializable {
     private final List<? extends Path<?>> localColumns;
 
     public PrimaryKey(RelationalPath<?> entity, Path<?>... localColumns) {
-        this(entity, Arrays.asList(localColumns));
+        this(entity, ImmutableList.copyOf(localColumns));
     }
 
     public PrimaryKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns) {

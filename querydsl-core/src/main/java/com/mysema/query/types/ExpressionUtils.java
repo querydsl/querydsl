@@ -13,11 +13,12 @@
  */
 package com.mysema.query.types;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 
 
 /**
@@ -279,7 +280,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <T> Expression<T> list(Class<T> clazz, Expression<?>... exprs) {
-        return list(clazz, Arrays.asList(exprs));
+        return list(clazz, ImmutableList.copyOf(exprs));
     }
     
 

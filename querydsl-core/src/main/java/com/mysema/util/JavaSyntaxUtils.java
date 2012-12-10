@@ -13,9 +13,9 @@
  */
 package com.mysema.util;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * JavaSyntaxUtils defines reserved keywords for Java
@@ -27,7 +27,7 @@ public final class JavaSyntaxUtils {
 
     private JavaSyntaxUtils() {}
 
-    private static final Set<String> reserved = new HashSet<String>(Arrays.asList(
+    private static final Set<String> reserved = ImmutableSet.of(
     "abstract",
     "assert",
     "boolean",
@@ -80,7 +80,7 @@ public final class JavaSyntaxUtils {
     "try",
     "void",
     "volatile",
-    "while"));
+    "while");
 
     public static boolean isReserved(String str) {
         return reserved.contains(str);

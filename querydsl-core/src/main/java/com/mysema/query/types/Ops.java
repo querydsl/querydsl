@@ -13,11 +13,10 @@
  */
 package com.mysema.query.types;
 
-import static java.util.Collections.unmodifiableList;
-
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Ops provides the operators for the fluent query grammar.
@@ -26,19 +25,19 @@ import java.util.List;
  */
 public final class Ops {
 
-    private static final List<Class<?>> BOOLEAN_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Boolean.class, Boolean.class));
+    private static final List<Class<?>> BOOLEAN_X_2 = ImmutableList.<Class<?>>of(Boolean.class, Boolean.class);
 
-    private static final List<Class<?>> COMPARABLE_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Comparable.class, Comparable.class));
+    private static final List<Class<?>> COMPARABLE_X_2 = ImmutableList.<Class<?>>of(Comparable.class, Comparable.class);
 
-    private static final List<Class<?>> COMPARABLE_X_3 = unmodifiableList(Arrays.<Class<?>> asList(Comparable.class, Comparable.class,Comparable.class));
+    private static final List<Class<?>> COMPARABLE_X_3 = ImmutableList.<Class<?>>of(Comparable.class, Comparable.class,Comparable.class);
 
-    private static final List<Class<?>> OBJECT_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Object.class, Object.class));
+    private static final List<Class<?>> OBJECT_X_2 = ImmutableList.<Class<?>>of(Object.class, Object.class);
 
-    private static final List<Class<?>> NUMBER_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Number.class, Number.class));
+    private static final List<Class<?>> NUMBER_X_2 = ImmutableList.<Class<?>>of(Number.class, Number.class);
 
-    private static final List<Class<?>> STRING_X_2 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class));
+    private static final List<Class<?>> STRING_X_2 = ImmutableList.<Class<?>>of(String.class, String.class);
     
-    private static final List<Class<?>> STRING_X_3 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class, String.class));
+    private static final List<Class<?>> STRING_X_3 = ImmutableList.<Class<?>>of(String.class, String.class, String.class);
 
     // general
     public static final Operator<Boolean> EQ = new OperatorImpl<Boolean>("EQ",OBJECT_X_2);
@@ -188,11 +187,11 @@ public final class Ops {
     // subquery operations
     public static final Operator<Boolean> EXISTS = new OperatorImpl<Boolean>("EXISTS",Object.class);
 
-    public static final List<Operator<?>> equalsOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ));
+    public static final List<Operator<?>> equalsOps = ImmutableList.<Operator<?>>of(EQ);
 
-    public static final List<Operator<?>> notEqualsOps = unmodifiableList(Arrays.<Operator<?>> asList(NE));
+    public static final List<Operator<?>> notEqualsOps = ImmutableList.<Operator<?>>of(NE);
 
-    public static final List<Operator<?>> compareOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ, NE, LT, GT, GOE, LOE));
+    public static final List<Operator<?>> compareOps = ImmutableList.<Operator<?>>of(EQ, NE, LT, GT, GOE, LOE);
 
     /**
      * Aggregation operators

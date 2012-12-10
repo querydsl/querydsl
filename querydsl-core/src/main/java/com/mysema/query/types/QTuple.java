@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.Tuple;
 
 /**
@@ -99,7 +100,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      */
     public QTuple(Expression<?>... args) {
         super(Tuple.class);
-        this.args = Arrays.asList(args);
+        this.args = ImmutableList.copyOf(args);
     }
     
     /**

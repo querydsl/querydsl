@@ -49,6 +49,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -396,7 +397,7 @@ public class HibernateDomainExporter {
             AnnotatedElement annotated) {
         List<String> inits = Collections.<String>emptyList();
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = Arrays.asList(annotated.getAnnotation(QueryInit.class).value());
+            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
         }
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);

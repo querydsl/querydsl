@@ -14,9 +14,9 @@
 package com.mysema.query.sql;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -42,7 +42,7 @@ public class ForeignKey <E> implements Serializable {
     private final List<String> foreignColumns;
 
     public ForeignKey(RelationalPath<?> entity, Path<?> localColumn, String foreignColumn) {
-        this(entity, Arrays.<Path<?>>asList(localColumn), Arrays.asList(foreignColumn));
+        this(entity, ImmutableList.of(localColumn), ImmutableList.of(foreignColumn));
     }
 
     public ForeignKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns, 

@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
 
 /**
@@ -86,7 +87,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     private transient Constructor<?> constructor;
     
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
-        this(type, paramTypes, Arrays.asList(args));
+        this(type, paramTypes, ImmutableList.copyOf(args));
     }
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, List<Expression<?>> args) {

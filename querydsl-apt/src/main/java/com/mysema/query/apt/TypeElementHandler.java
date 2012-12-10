@@ -29,6 +29,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
@@ -156,7 +157,7 @@ public final class TypeElementHandler {
         // inits
         List<String> inits = Collections.<String>emptyList();
         if (annotations.isAnnotationPresent(QueryInit.class)) {
-            inits = Arrays.asList(annotations.getAnnotation(QueryInit.class).value());            
+            inits = ImmutableList.copyOf(annotations.getAnnotation(QueryInit.class).value());            
         }
         
         return new Property(entityType, name, propertyType, inits);

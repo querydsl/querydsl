@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -32,6 +32,14 @@ public class StringOperation extends StringExpression implements Operation<Strin
 
     private static final long serialVersionUID = 6846556373847139549L;
 
+    public static StringExpression create(Operator<? super String> op, Expression<?> one) {
+        return new StringOperation(op, ImmutableList.<Expression<?>>of(one));
+    }
+    
+    public static StringExpression create(Operator<? super String> op, Expression<?> one, Expression<?> two) {
+        return new StringOperation(op, ImmutableList.of(one, two));
+    }
+    
     public static StringExpression create(Operator<? super String> op, Expression<?>... args) {
         return new StringOperation(op, args);
     }
@@ -39,7 +47,7 @@ public class StringOperation extends StringExpression implements Operation<Strin
     private final OperationImpl<String> opMixin;
 
     protected StringOperation(Operator<? super String> op, Expression<?>... args) {
-        this(op, Arrays.asList(args));
+        this(op, ImmutableList.copyOf(args));
     }
 
     protected StringOperation(Operator<? super String> op, List<Expression<?>> args) {

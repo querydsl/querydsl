@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.template;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.PredicateTemplate;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
@@ -33,12 +33,20 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private static final long serialVersionUID = 5749369427497731719L;
 
+    public static BooleanExpression create(String template, Object one) {
+        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
+    }
+    
+    public static BooleanExpression create(String template, Object one, Object two) {
+        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
+    }
+    
     public static BooleanExpression create(String template, Object... args) {
-        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
+        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
     }
 
     public static BooleanExpression create(Template template, Object... args) {
-        return new BooleanTemplate(template, Arrays.asList(args));
+        return new BooleanTemplate(template, ImmutableList.copyOf(args));
     }
     
     public static final BooleanExpression TRUE = create("true");

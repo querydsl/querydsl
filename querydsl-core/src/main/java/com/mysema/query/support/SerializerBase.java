@@ -112,6 +112,18 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return handle(joinFlag.getFlag());
     }
 
+    public final S handle(String sep, Expression<?>[] expressions) {
+        boolean first = true;
+        for (Expression<?> expr : expressions) {
+            if (!first) {
+                append(sep);
+            }
+            handle(expr);
+            first = false;
+        }
+        return self;
+    }
+    
     public final S handle(String sep, List<?> expressions) {
         boolean first = true;
         for (Object expr : expressions) {

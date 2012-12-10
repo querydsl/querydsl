@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.template;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -34,12 +34,20 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
 
     private static final long serialVersionUID = -6292853402028813007L;
 
+    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template, Object one) {
+        return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
+    }
+    
+    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template, Object one, Object two) {
+        return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
+    }
+    
     public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template, Object... args) {
-        return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
+        return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
     }
 
     public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, Template template, Object... args) {
-        return new ComparableTemplate<T>(type, template, Arrays.asList(args));
+        return new ComparableTemplate<T>(type, template, ImmutableList.copyOf(args));
     }
 
     private final TemplateExpressionImpl<T> templateMixin;

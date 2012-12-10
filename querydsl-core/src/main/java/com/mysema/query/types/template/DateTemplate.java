@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.template;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -34,12 +34,20 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
 
     private static final long serialVersionUID = 4975559746071238026L;
 
+    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template, Object one) {
+        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
+    }
+    
+    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template, Object one, Object two) {
+        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
+    }
+    
     public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template, Object... args) {
-        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
+        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
     }
 
     public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, Template template, Object... args) {
-        return new DateTemplate<T>(type, template, Arrays.asList(args));
+        return new DateTemplate<T>(type, template, ImmutableList.copyOf(args));
     }
 
     private final TemplateExpressionImpl<T> templateMixin;

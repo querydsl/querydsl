@@ -15,13 +15,13 @@ package com.mysema.query.types.path;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
@@ -64,7 +64,7 @@ public class PathInits implements Serializable {
                 List<String> inits = Collections.emptyList();
                 if (initStr.contains(".")) {
                     key = initStr.substring(0, initStr.indexOf('.'));
-                    inits = Arrays.asList(initStr.substring(key.length()+1));
+                    inits = ImmutableList.of(initStr.substring(key.length()+1));
                 }
                 Collection<String> values = properties.get(key);
                 if (values == null) {

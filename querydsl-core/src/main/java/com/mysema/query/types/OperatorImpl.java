@@ -13,10 +13,9 @@
  */
 package com.mysema.query.types;
 
-import static java.util.Collections.unmodifiableList;
-
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * OperatorImpl is the default implementation of the {@link Operator} interface
@@ -30,12 +29,12 @@ public class OperatorImpl<T> implements Operator<T> {
     private final List<Class<?>> types;
 
     public OperatorImpl(String id, Class<?>... types) {
-        this(id, Arrays.<Class<?>> asList(types));
+        this(id, ImmutableList.copyOf(types));
     }
 
     public OperatorImpl(String id, List<Class<?>> types) {
         this.id = id;
-        this.types = unmodifiableList(types);
+        this.types = ImmutableList.copyOf(types);
     }
 
     @Override

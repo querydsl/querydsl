@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
@@ -505,10 +506,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
         if (templates.isUnionsWrapped()) {
             append("(");
-            handle(")" + separator + "(", Arrays.asList(sqs));   
+            handle(")" + separator + "(", sqs);   
             append(")");
         } else {
-            handle(separator, Arrays.asList(sqs));    
+            handle(separator, sqs);    
         }        
         inUnion = oldInUnion;
 
@@ -664,7 +665,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
                 if (args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator() == SQLTemplates.UNION) {
-                    args = Arrays.asList(Expressions.operation(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
+                    args = ImmutableList.of(Expressions.operation(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
                 }
                 super.visitOperation(type, operator, args);
             } else {

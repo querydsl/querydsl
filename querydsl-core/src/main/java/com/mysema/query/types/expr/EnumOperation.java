@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -33,15 +33,14 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
 
     private static final long serialVersionUID = -3593040852095778453L;
 
-    /**
-     * Factory method
-     *
-     * @param <D>
-     * @param type
-     * @param op
-     * @param args
-     * @return
-     */
+    public static <D extends Enum<D>> EnumExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?> one) {
+        return new EnumOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
+    }
+    
+    public static <D extends Enum<D>> EnumExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+        return new EnumOperation<D>(type, op, ImmutableList.<Expression<?>>of(one, two));
+    }
+    
     public static <D extends Enum<D>> EnumExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?>... args) {
         return new EnumOperation<D>(type, op, args);
     }
@@ -49,7 +48,7 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
     private final OperationImpl<T> opMixin;
 
     protected EnumOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
-        this(type, op, Arrays.asList(args));
+        this(type, op, ImmutableList.copyOf(args));
     }
 
     protected EnumOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {

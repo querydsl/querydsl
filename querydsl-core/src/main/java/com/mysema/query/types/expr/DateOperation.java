@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -34,25 +34,24 @@ public class DateOperation<T extends Comparable<?>> extends
 
     private static final long serialVersionUID = -7859020164194396995L;
 
-    /**
-     * Factory method
-     *
-     * @param <D>
-     * @param type
-     * @param op
-     * @param args
-     * @return
-     */
+    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+        return new DateOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
+    }
+    
+    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+        return new DateOperation<D>(type, op, ImmutableList.of(one, two));
+    }
+    
     public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
         return new DateOperation<D>(type, op, args);
     }
-
+    
     private final OperationImpl<T> opMixin;
 
     protected DateOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
-        this(type, op, Arrays.asList(args));
+        this(type, op, ImmutableList.copyOf(args));
     }
-
+    
     protected DateOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;

@@ -14,7 +14,6 @@
 package com.mysema.query.apt.jpa;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +42,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
@@ -73,7 +73,7 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     @SuppressWarnings("unchecked")
     protected List<Class<? extends Annotation>> getAnnotations() {
-        return Arrays.asList(
+        return ImmutableList.of(
             Access.class, Basic.class, Column.class, ElementCollection.class,
             Embedded.class, EmbeddedId.class, Enumerated.class, GeneratedValue.class, Id.class, 
             JoinColumn.class, ManyToOne.class, ManyToMany.class, MapKeyEnumerated.class, 

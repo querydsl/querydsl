@@ -14,13 +14,13 @@
 package com.mysema.query.collections;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.mysema.codegen.Evaluator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -90,7 +90,7 @@ public class DefaultQueryEngine implements QueryEngine {
         if (!list.isEmpty() && list.get(0).getClass().isArray()) {
             Set set = new HashSet(list.size());
             for (T o : list) {
-                if (set.add(Arrays.asList((Object[])o))) {
+                if (set.add(ImmutableList.copyOf((Object[])o))) {
                     rv.add(o);
                 }
             }

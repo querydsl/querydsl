@@ -13,8 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 
 /**
@@ -32,15 +33,15 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private final Operator<? super T> operator;
 
-    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args){
+    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args) {
         return new OperationImpl<RT>(type, operator, args);
     }
-
-    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args){
-        this(type, operator, Arrays.asList(args));
+    
+    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args) {
+        this(type, operator, ImmutableList.copyOf(args));
     }
-
-    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, List<Expression<?>> args){
+    
+    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, List<Expression<?>> args) {
         super(type);
         this.operator = operator;
         this.args = args;
