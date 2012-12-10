@@ -13,14 +13,12 @@
  */
 package com.mysema.query.jdo;
 
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
@@ -47,9 +45,8 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
         
     @Override
     protected Predicate normalize(Predicate predicate, boolean where) {
-        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
-            return predicate;
-        } else {
+        predicate = (Predicate)predicate.accept(ExtractorVisitor.DEFAULT, null);
+        if (predicate != null){
             Context context = new Context();            
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.paths.size(); i++) {
@@ -57,7 +54,9 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
                 addCondition(context, i, path, where);
             }
             return transformed;    
-        }        
+        } else {
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")

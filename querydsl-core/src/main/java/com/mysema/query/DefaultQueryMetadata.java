@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
@@ -93,7 +94,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addHaving(Predicate e) {
-        if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
+        if (e == null) {
+            return;
+        }
+        e = (Predicate)e.accept(ExtractorVisitor.DEFAULT, null);
+        if (e != null) {
             validate(e);
             having.and(e);
         }
@@ -154,7 +159,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addWhere(Predicate e) {
-        if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
+        if (e == null) {
+            return;
+        }
+        e = (Predicate)e.accept(ExtractorVisitor.DEFAULT, null);
+        if (e != null) {
             validate(e);
             where.and(e);
         }

@@ -84,11 +84,15 @@ public final class Template implements Serializable{
             return asString;
         }
 
-        public boolean hasConverter(){
+        public boolean hasConverter() {
             return transformer != null;
         }
 
-        public Object convert(Object source){
+        public Expression<?> convert(Expression<?> source) {
+            return (Expression<?>)transformer.apply(source);
+        }
+        
+        public Object convert(Object source) {
             return transformer.apply(source);
         }
 

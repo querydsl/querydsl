@@ -70,6 +70,12 @@ public class OracleQueryTest {
         assertEquals("from SURVEY survey order siblings by survey.NAME order by survey.NAME asc", 
                 toString(query));
     }
+    
+    @Test
+    public void RowNum() {
+        query.where(OracleGrammar.rownum.lt(5));
+        assertEquals("from SURVEY survey where rownum < ? order by survey.NAME asc", toString(query));
+    }
 
     private String toString(OracleQuery query){
         return query.toString().replace('\n', ' ');

@@ -19,7 +19,6 @@ import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.template.DateTemplate;
 import com.mysema.query.types.template.NumberTemplate;
 
@@ -41,7 +40,7 @@ public final class SQLServerGrammar {
     
     public static final NumberExpression<Long> rowNumber = NumberTemplate.create(Long.class, "row_number");
 
-    public static final NumberPath<Long> rn = new NumberPath<Long>(Long.class, "rn");
+    public static final NumberExpression<Long> rn = NumberTemplate.create(Long.class, "rn");
 
     static String tableHints(SQLServerTableHints... tableHints) {
         StringBuilder hints = new StringBuilder(" with ").append("(");

@@ -244,7 +244,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         handleTemplate(template, args);
         return null;
     }
-
+    
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         Template template = templates.getTemplate(operator);
         if (template == null) {
@@ -267,17 +267,16 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 if (precedence > -1 && arg instanceof Operation) {
                     wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
                 }
+                if (element.hasConverter()) {
+                    arg = element.convert(arg);
+                }
                 if (wrap) {
                     append("(");
-                }
-                if (element.hasConverter()) {
-                    handle(element.convert(arg));
+                    handle(arg);
+                    append(")");
                 } else {
                     handle(arg);
-                } 
-                if (wrap) {
-                    append(")");
-                }
+                }                
             }
         }
     }

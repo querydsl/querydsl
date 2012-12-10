@@ -66,10 +66,10 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
-        if (predicate != null){
+        if (predicate != null) {
             return predicate.accept(v, context);
-        }else{
-            throw new QueryException("BooleanBuilder has no value");
+        } else {
+            return null;
         }
     }
 

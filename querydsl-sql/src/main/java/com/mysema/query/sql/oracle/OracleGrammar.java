@@ -18,8 +18,8 @@ import java.util.Date;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.template.DateTemplate;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * Convenience functions and constants for Oracle DB usage
@@ -30,11 +30,13 @@ public final class OracleGrammar {
 
     private OracleGrammar(){}
 
-    public static final NumberExpression<Integer> level = new NumberPath<Integer>(Integer.class, "level");
+    public static final NumberExpression<Integer> level = NumberTemplate.create(Integer.class, "level");
 
-    public static final NumberExpression<Integer> rownum = new NumberPath<Integer>(Integer.class, "rownum");
+    public static final NumberExpression<Integer> rownum = NumberTemplate.create(Integer.class, "rownum");
+    
+    public static final NumberExpression<Integer> rowid = NumberTemplate.create(Integer.class, "rowid");
 
-    public static final DateExpression<Date> sysdate = new DatePath<Date>(Date.class, "sysdate");
+    public static final DateExpression<Date> sysdate = DateTemplate.create(Date.class, "sysdate");
 
     public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expression<A> expr) {
         return new SumOver<A>(expr);

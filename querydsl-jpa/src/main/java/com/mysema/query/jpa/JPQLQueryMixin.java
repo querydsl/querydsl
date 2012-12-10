@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
@@ -28,6 +27,7 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -77,9 +77,8 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
     
     @Override    
     protected Predicate normalize(Predicate predicate, boolean where) {
-        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
-            return predicate;
-        } else {
+        predicate = (Predicate)predicate.accept(ExtractorVisitor.DEFAULT, null);
+        if (predicate != null) {
             // transform any usage
             predicate = (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());
             
@@ -93,7 +92,9 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
                 }
             }
             return predicate;
-        }        
+        } else {
+            return null;
+        }
     }
     
     @SuppressWarnings("unchecked")
