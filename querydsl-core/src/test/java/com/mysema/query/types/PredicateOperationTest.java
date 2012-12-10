@@ -24,7 +24,7 @@ public class PredicateOperationTest {
     public void Not() {
         Path o1 = new PathImpl(Object.class, "o1");
         Path o2 = new PathImpl(Object.class, "o2");
-        PredicateOperation template = new PredicateOperation(Ops.EQ, o1, o2);
+        PredicateOperation template = PredicateOperation.create(Ops.EQ, o1, o2);
         assertEquals("!o1 = o2", template.not().toString());
     }
 

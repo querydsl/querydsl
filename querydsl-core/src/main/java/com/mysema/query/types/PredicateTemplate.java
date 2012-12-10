@@ -45,7 +45,7 @@ public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implement
     @Override
     public Predicate not() {
         if (not == null) {
-            not = new PredicateOperation(Ops.NOT, this);
+            not = PredicateOperation.create(Ops.NOT, this);
         }
         return not;
     }

@@ -49,7 +49,7 @@ public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
             EntityPath<?> replacement = c.replacements.get(i);
             if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
                 query.from(replacement);
-                query.where(new PredicateOperation(Ops.IN, replacement, child));    
+                query.where(PredicateOperation.create(Ops.IN, replacement, child));    
             } else {
                 // join via parent
                 Path<?> parent = child.getMetadata().getParent();

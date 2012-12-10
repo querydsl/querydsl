@@ -34,6 +34,10 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
 
     private static final long serialVersionUID = -6292853402028813007L;
 
+    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template) {
+        return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template, Object one) {
         return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

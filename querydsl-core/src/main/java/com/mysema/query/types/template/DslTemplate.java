@@ -34,6 +34,10 @@ public class DslTemplate<T> extends DslExpression<T> implements TemplateExpressi
 
     private static final long serialVersionUID = -4697578522909045745L;
 
+    public static <T> DslExpression<T> create(Class<? extends T> type, String template) {
+        return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T> DslExpression<T> create(Class<? extends T> type, String template, Object one) {
         return new DslTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

@@ -91,7 +91,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate and(Predicate left, Predicate right){
-        return new PredicateOperation(Ops.AND, left, right);
+        return PredicateOperation.create(Ops.AND, left, right);
     }
     
 
@@ -138,7 +138,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
-        return new OperationImpl<D>(alias.getType(), Ops.ALIAS, source, alias);
+        return OperationImpl.create(alias.getType(), Ops.ALIAS, source, alias);
     }
     
     /**
@@ -182,7 +182,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
-        return new PredicateOperation(Ops.EQ, left, right);
+        return PredicateOperation.create(Ops.EQ, left, right);
     }
     
     /**
@@ -194,7 +194,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate in(Expression<D> left, CollectionExpression<?,? extends D> right) {
-        return new PredicateOperation(Ops.IN, left, right);
+        return PredicateOperation.create(Ops.IN, left, right);
     }
     
     /**
@@ -209,7 +209,7 @@ public final class ExpressionUtils {
         if (right.size() == 1) {
             return eqConst(left, right.iterator().next());
         } else {
-            return new PredicateOperation(Ops.IN, left, new ConstantImpl<Collection<?>>(right));
+            return PredicateOperation.create(Ops.IN, left, new ConstantImpl<Collection<?>>(right));
         }
     }
     
@@ -220,7 +220,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate isNull(Expression<?> left) {
-        return new PredicateOperation(Ops.IS_NULL, left);
+        return PredicateOperation.create(Ops.IS_NULL, left);
     }
     
     /**
@@ -230,7 +230,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate isNotNull(Expression<?> left) {
-        return new PredicateOperation(Ops.IS_NOT_NULL, left);
+        return PredicateOperation.create(Ops.IS_NOT_NULL, left);
     }   
     
     
@@ -266,7 +266,7 @@ public final class ExpressionUtils {
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0), false);
                 Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1), false);
-                return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
+                return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
             } else {
                 return expr;
             }
@@ -323,7 +323,7 @@ public final class ExpressionUtils {
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
                 Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
-                return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
+                return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
             } else {
                 return expr;
             }            
@@ -353,7 +353,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
-        return new PredicateOperation(Ops.NE, left, right);
+        return PredicateOperation.create(Ops.NE, left, right);
     }
     
     /**
@@ -364,7 +364,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate or(Predicate left, Predicate right){
-        return new PredicateOperation(Ops.OR, left, right);
+        return PredicateOperation.create(Ops.OR, left, right);
     }
     
     private ExpressionUtils(){}

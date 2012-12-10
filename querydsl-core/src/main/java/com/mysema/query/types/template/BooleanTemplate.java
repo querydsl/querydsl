@@ -33,6 +33,10 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private static final long serialVersionUID = 5749369427497731719L;
 
+    public static BooleanExpression create(String template) {
+        return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static BooleanExpression create(String template, Object one) {
         return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

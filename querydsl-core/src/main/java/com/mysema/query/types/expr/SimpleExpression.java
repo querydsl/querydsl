@@ -142,7 +142,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression eq(Expression<? super T> right) {
-        return BooleanOperation.create(Ops.EQ, this, right);
+        return BooleanOperation.create(Ops.EQ, mixin, right);
     }
     
     /**

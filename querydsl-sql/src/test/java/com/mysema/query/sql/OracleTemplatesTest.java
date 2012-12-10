@@ -65,7 +65,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     
     @Test
     public void NextVal() {
-        Operation<String> nextval = new OperationImpl<String>(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
+        Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new OracleTemplates()).handle(nextval).toString());        
     }
 

@@ -42,7 +42,7 @@ public class AnyEmbeddedBuilder<K> {
     }
 
     public MongodbQuery<K> on(Predicate... conditions) {
-        return queryMixin.where(new PredicateOperation(
+        return queryMixin.where(PredicateOperation.create(
                 MongodbOps.ELEM_MATCH, collection, ExpressionUtils.allOf(conditions)));
     }
     

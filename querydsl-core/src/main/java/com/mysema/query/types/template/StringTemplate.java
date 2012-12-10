@@ -33,6 +33,10 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     private static final long serialVersionUID = 3181686132439356614L;
 
+    public static StringExpression create(String template) {
+        return new StringTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static StringExpression create(String template, Object one) {
         return new StringTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

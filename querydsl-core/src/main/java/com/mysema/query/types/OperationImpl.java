@@ -33,11 +33,15 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private final Operator<? super T> operator;
 
-    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args) {
-        return new OperationImpl<RT>(type, operator, args);
+    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?> one) {
+        return new OperationImpl<RT>(type, operator, ImmutableList.<Expression<?>>of(one));
     }
     
-    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args) {
+    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?> one, Expression<?> two) {
+        return new OperationImpl<RT>(type, operator, ImmutableList.of(one, two));
+    }
+    
+    protected OperationImpl(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args) {
         this(type, operator, ImmutableList.copyOf(args));
     }
     

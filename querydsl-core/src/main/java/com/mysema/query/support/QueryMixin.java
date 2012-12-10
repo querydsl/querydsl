@@ -23,6 +23,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.FactoryExpressionUtils.FactoryExpressionAdapter;

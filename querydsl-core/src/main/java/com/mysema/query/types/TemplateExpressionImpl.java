@@ -32,37 +32,31 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private final Template template;
 
-    /**
-     * Create a new TemplateExpression with the given template in String form and template arguments
-     * 
-     * @param <C>
-     * @param cl
-     * @param template
-     * @param args
-     * @return
-     */
-    public static <C> Expression<C> create(Class<C> cl, String template, Object... args){
-        return create(cl, TemplateFactory.DEFAULT.create(template), args);
+    public static <C> Expression<C> create(Class<C> cl, String template) {
+        return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
+    public static <C> Expression<C> create(Class<C> cl, String template, Object one) {
+        return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
+    }
+    
+    public static <C> Expression<C> create(Class<C> cl, String template, Object one, Object two) {
+        return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
+    }
+    
+    public static <C> Expression<C> create(Class<C> cl, String template, Object... args) {
+        return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), args);
     }
 
-    /**
-     * Create a new TemplateExpression with the given template and template arguments
-     * 
-     * @param <C>
-     * @param cl
-     * @param template
-     * @param args
-     * @return
-     */
-    public static <C> Expression<C> create(Class<C> cl, Template template, Object... args){
+    public static <C> Expression<C> create(Class<C> cl, Template template, Object... args) {
         return new TemplateExpressionImpl<C>(cl, template, args);
     }
 
-    public TemplateExpressionImpl(Class<? extends T> type, Template template, Object... args){
+    protected TemplateExpressionImpl(Class<? extends T> type, Template template, Object... args) {
         this(type, template, ImmutableList.copyOf(args));
     }    
     
-    public TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args){
+    public TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args) {
         super(type);
         this.args = args;
         this.template = template;

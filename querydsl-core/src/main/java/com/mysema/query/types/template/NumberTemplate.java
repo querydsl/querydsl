@@ -34,6 +34,10 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     private static final long serialVersionUID = 351057421752203377L;
 
+    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, String template) {
+        return new NumberTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, String template, Object one) {
         return new NumberTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

@@ -34,6 +34,10 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     private static final long serialVersionUID = -7684306954555037051L;
 
+    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, String template) {
+        return new TimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, String template, Object one) {
         return new TimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

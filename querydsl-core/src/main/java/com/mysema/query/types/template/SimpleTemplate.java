@@ -34,6 +34,10 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
 
     private static final long serialVersionUID = -4697578522909045745L;
 
+    public static <T> SimpleExpression<T> create(Class<? extends T> type, String template) {
+        return new SimpleTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T> SimpleExpression<T> create(Class<? extends T> type, String template, Object one) {
         return new SimpleTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

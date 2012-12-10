@@ -63,7 +63,7 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
     private void addCondition(Context context, int i, Path<?> path, boolean where) {
         EntityPath<?> alias = context.replacements.get(i);                 
         from(alias);
-        Predicate condition = new PredicateOperation(Ops.IN, alias, path.getMetadata().getParent());
+        Predicate condition = PredicateOperation.create(Ops.IN, alias, path.getMetadata().getParent());
         if (where) {
             super.where(condition);
         } else {

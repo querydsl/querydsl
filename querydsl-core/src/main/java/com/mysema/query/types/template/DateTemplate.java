@@ -34,6 +34,10 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
 
     private static final long serialVersionUID = 4975559746071238026L;
 
+    public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template) {
+        return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T extends Comparable<?>> DateExpression<T> create(Class<T> type, String template, Object one) {
         return new DateTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

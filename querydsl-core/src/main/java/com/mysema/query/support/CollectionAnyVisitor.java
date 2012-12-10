@@ -16,6 +16,7 @@ package com.mysema.query.support;
 
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.EntityPath;
@@ -96,7 +97,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
                 Predicate predicate = BooleanTemplate.create(expr.getTemplate(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
             } else {
-                return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), args);    
+                return TemplateExpressionImpl.create(expr.getType(), expr.getTemplate(), args);    
             }    
         } else {
             return expr;
@@ -119,10 +120,10 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
         }
         if (context.replace) {            
             if (expr.getType().equals(Boolean.class)){
-                Predicate predicate = new PredicateOperation((Operator)expr.getOperator(), args);
+                Predicate predicate = new PredicateOperation((Operator)expr.getOperator(), ImmutableList.copyOf(args));
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
             } else {
-                return new OperationImpl(expr.getType(), expr.getOperator(), args);    
+                return new OperationImpl(expr.getType(), (Operator)expr.getOperator(), ImmutableList.copyOf(args));    
             }    
         } else {
             return expr;

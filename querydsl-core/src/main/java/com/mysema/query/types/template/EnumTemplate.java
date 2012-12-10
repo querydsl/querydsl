@@ -34,6 +34,10 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
 
     private static final long serialVersionUID = 351057421752203377L;
 
+    public static <T extends Enum<T>> EnumExpression<T> create(Class<T> type, String template) {
+        return new EnumTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
+    }
+    
     public static <T extends Enum<T>> EnumExpression<T> create(Class<T> type, String template, Object one) {
         return new EnumTemplate<T>(type, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }

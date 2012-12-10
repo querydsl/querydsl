@@ -17,6 +17,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * PredicateOperation provides a Boolean typed Operation implementation 
  * 
@@ -30,10 +32,14 @@ public class PredicateOperation extends OperationImpl<Boolean> implements Predic
     @Nullable
     private volatile Predicate not;
     
-    public PredicateOperation(Operator<Boolean> operator, Expression<?>... args){
-        super(Boolean.class, operator, args);
+    public static PredicateOperation create(Operator<Boolean> operator, Expression<?> one) {
+        return new PredicateOperation(operator, ImmutableList.<Expression<?>>of(one));
     }
-
+    
+    public static PredicateOperation create(Operator<Boolean> operator, Expression<?> one, Expression<?> two) {
+        return new PredicateOperation(operator, ImmutableList.of(one, two));
+    }
+    
     public PredicateOperation(Operator<Boolean> operator, List<Expression<?>> args){
         super(Boolean.class, operator, args);
     }
@@ -41,7 +47,7 @@ public class PredicateOperation extends OperationImpl<Boolean> implements Predic
     @Override
     public Predicate not() {
         if (not == null) {
-            not = new PredicateOperation(Ops.NOT, this);
+            not = PredicateOperation.create(Ops.NOT, this);
         }
         return not;
     }
