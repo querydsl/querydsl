@@ -256,13 +256,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (i > 0) {
                 append(joinTypes.get(je.getType()));
             }
-            if (je.hasFlag(JPQLQueryMixin.FETCH) && !forCountRow) {
-                handle(JPQLQueryMixin.FETCH);
+            if (je.hasFlag(JPAQueryMixin.FETCH) && !forCountRow) {
+                handle(JPAQueryMixin.FETCH);
             }
             handleJoinTarget(je);
             // XXX Hibernate specific flag
-            if (je.hasFlag(JPQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow) {
-                handle(JPQLQueryMixin.FETCH_ALL_PROPERTIES);
+            if (je.hasFlag(JPAQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow) {
+                handle(JPAQueryMixin.FETCH_ALL_PROPERTIES);
             }
 
             if (je.getCondition() != null) {

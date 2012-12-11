@@ -25,7 +25,7 @@ import com.mysema.query.QueryMetadata;
  *
  * @param <A>
  */
-public final class JDOQuery extends AbstractJDOQuery<JDOQuery> implements JDOCommonQuery<JDOQuery> {
+public final class JDOQuery extends AbstractJDOQuery<JDOQuery> implements JDOQLQuery {
 
     /**
      * Create a detached JDOQuery instance

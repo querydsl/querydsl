@@ -34,13 +34,13 @@ import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.path.ListPath;
 
 /**
- * JPQLQueryMixin extends {@link QueryMixin} to support JPQL join construction
+ * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction
  * 
  * @author tiwe
  *
  * @param <T>
  */
-public class JPQLQueryMixin<T> extends QueryMixin<T> {
+public class JPAQueryMixin<T> extends QueryMixin<T> {
     
     private final Set<Path<?>> paths = new HashSet<Path<?>>();
     
@@ -48,13 +48,13 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
     
     public static final JoinFlag FETCH_ALL_PROPERTIES = new JoinFlag(" fetch all properties");
     
-    public JPQLQueryMixin() {}
+    public JPAQueryMixin() {}
 
-    public JPQLQueryMixin(QueryMetadata metadata) {
+    public JPAQueryMixin(QueryMetadata metadata) {
         super(metadata);
     }
 
-    public JPQLQueryMixin(T self, QueryMetadata metadata) {
+    public JPAQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
 
@@ -80,7 +80,7 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         predicate = (Predicate)predicate.accept(ExtractorVisitor.DEFAULT, null);
         if (predicate != null) {
             // transform any usage
-            predicate = (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());
+            predicate = (Predicate) predicate.accept(JPACollectionAnyVisitor.DEFAULT, new Context());
             
             // transform list access
             Context context = new Context();

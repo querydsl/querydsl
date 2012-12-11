@@ -34,19 +34,19 @@ import com.mysema.query.types.template.NumberTemplate;
  *
  * @param <Q> concrete subtype
  */
-public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends DetachableQuery<Q> { 
+public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends DetachableQuery<Q> { 
 
-    private final JPQLQueryMixin<Q> queryMixin;
+    private final JPAQueryMixin<Q> queryMixin;
 
-    public AbstractJPQLSubQuery() {
+    public AbstractJPASubQuery() {
         this(new DefaultQueryMetadata().noValidate());
     }
 
     @SuppressWarnings("unchecked")
-    public AbstractJPQLSubQuery(QueryMetadata metadata) {
-        super(new JPQLQueryMixin<Q>(metadata));
+    public AbstractJPASubQuery(QueryMetadata metadata) {
+        super(new JPAQueryMixin<Q>(metadata));
         super.queryMixin.setSelf((Q)this);
-        this.queryMixin = (JPQLQueryMixin<Q>) super.queryMixin;
+        this.queryMixin = (JPAQueryMixin<Q>) super.queryMixin;
     }
     
     @Override

@@ -23,7 +23,7 @@ public class JPQLQueryTest {
 
     private QCat cat = QCat.cat;
     
-    private JPQLQuery query = new HibernateQuery();
+    private HibernateQuery query = new HibernateQuery();
     
     @Before
     public void setUp(){

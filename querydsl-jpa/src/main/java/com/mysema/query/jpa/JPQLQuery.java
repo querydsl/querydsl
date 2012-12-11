@@ -21,7 +21,7 @@ import com.mysema.query.Projectable;
  * @author tiwe
  *
  */
-public interface JPQLQuery extends JPQLCommonQuery<JPQLQuery>, Projectable {
+public interface JPQLQuery extends JPACommonQuery<JPQLQuery>, Projectable {
 
     /**
      * Add the "fetch" flag to the last defined join

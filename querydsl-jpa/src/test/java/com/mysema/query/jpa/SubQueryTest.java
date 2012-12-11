@@ -30,14 +30,14 @@ public class SubQueryTest extends AbstractQueryTest{
 
     @Test
     public void Single_Source(){
-        JPQLSubQuery query = sub();
+        JPASubQuery query = sub();
         query.from(cat);
         assertEquals("select cat\nfrom Cat cat", query.toString());
     }
     
     @Test
     public void Multiple_Sources(){
-        JPQLSubQuery query = sub();
+        JPASubQuery query = sub();
         query.from(cat);
         query.from(fatcat);
         assertEquals("select cat\nfrom Cat cat, Cat fatcat", 

@@ -42,7 +42,7 @@ public class UniqueResultsTest {
         assertEquals(Long.valueOf(3), query().from(cat).uniqueResult(cat.count()));
     }
 
-    private JPQLQuery query(){
+    private HibernateQuery query(){
         return new HibernateQuery(session);
     }
 

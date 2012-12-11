@@ -25,7 +25,7 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 
-public class JPQLCollectionAnyVisitorTest {
+public class JPACollectionAnyVisitorTest {
 
     private QCat cat = QCat.cat;
     
@@ -75,7 +75,7 @@ public class JPQLCollectionAnyVisitorTest {
     }
     
     private String serialize(Expression<?> expression){
-        Expression<?> transformed = expression.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());
+        Expression<?> transformed = expression.accept(JPACollectionAnyVisitor.DEFAULT, new Context());
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT, null);
         serializer.handle(transformed);
         return serializer.toString();

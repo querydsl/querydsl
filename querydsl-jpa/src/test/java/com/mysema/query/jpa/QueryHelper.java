@@ -32,7 +32,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
-class QueryHelper extends JPQLQueryBase<QueryHelper> {
+class QueryHelper extends JPAQueryBase<QueryHelper> {
 
     public QueryHelper(JPQLTemplates templates) {
         super(new DefaultQueryMetadata(), templates, null);

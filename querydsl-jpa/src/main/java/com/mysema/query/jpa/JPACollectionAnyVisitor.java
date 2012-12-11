@@ -30,20 +30,20 @@ import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.path.EntityPathBase;
 
 /**
- * JPQLCollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
+ * JPACollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
  * extensions
  * 
  * @author tiwe
  *
  */
-public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
+public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
     
-    public static final JPQLCollectionAnyVisitor DEFAULT = new JPQLCollectionAnyVisitor();
+    public static final JPACollectionAnyVisitor DEFAULT = new JPACollectionAnyVisitor();
     
     @Override
     @SuppressWarnings("all")
     protected Predicate exists(Context c, Predicate condition) {
-        JPQLSubQuery query = new JPQLSubQuery();
+        JPASubQuery query = new JPASubQuery();
         for (int i = 0; i < c.paths.size(); i++) {
             Path<?> child = c.paths.get(i).getMetadata().getParent();            
             EntityPath<?> replacement = c.replacements.get(i);
@@ -66,6 +66,6 @@ public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
         return query.exists();
     }
     
-    private JPQLCollectionAnyVisitor() {}
+    private JPACollectionAnyVisitor() {}
 
 }

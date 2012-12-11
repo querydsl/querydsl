@@ -38,8 +38,7 @@ public final class Conversions {
                 if (isAggSumWithConversion(e) || isCountAggConversion(expr)) {
                     return new NumberConversions<RT>(factorye);
                 }
-            }
-            
+            }            
         } 
         return expr;
     }

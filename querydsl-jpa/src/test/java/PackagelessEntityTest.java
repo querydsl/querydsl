@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.JPQLSubQuery;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.path.PathBuilder;
 
 
@@ -24,7 +24,7 @@ public class PackagelessEntityTest {
     @SuppressWarnings("unchecked")
     @Test
     public void PackageLess_Path(){
-        JPQLSubQuery query = new JPQLSubQuery();
+        JPASubQuery query = new JPASubQuery();
         PathBuilder builder = new PathBuilder(PackagelessEntityTest.class,"entity");
         query.from(builder);
         assertEquals("select entity\nfrom PackagelessEntityTest entity", query.toString());

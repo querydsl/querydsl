@@ -19,11 +19,11 @@ import org.junit.Test;
 
 import com.mysema.query.jpa.domain.QCat;
 
-public class JPQLSubQueryTest {
+public class JPASubQueryTest {
     
     @Test
     public void Multiple_Projections(){
-        JPQLSubQuery query = new JPQLSubQuery();
+        JPASubQuery query = new JPASubQuery();
         query.from(QCat.cat);
         assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
         assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());

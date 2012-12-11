@@ -28,15 +28,15 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.template.NumberTemplate;
 
 /**
- * JPQLQueryBase is a base Query class for JPQL queries
+ * JPAQueryBase is a base Query class for JPA queries
  *
  * @author tiwe
  */
-public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends ProjectableQuery<Q> {
+public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends ProjectableQuery<Q> {
 
     private Map<Object,String> constants;
 
-    protected final JPQLQueryMixin<Q> queryMixin;
+    protected final JPAQueryMixin<Q> queryMixin;
 
     private final JPQLTemplates templates;
     
@@ -44,10 +44,10 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     protected final EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
-    public JPQLQueryBase(QueryMetadata md, JPQLTemplates templates, @Nullable EntityManager entityManager) {
-        super(new JPQLQueryMixin<Q>(md));
+    public JPAQueryBase(QueryMetadata md, JPQLTemplates templates, @Nullable EntityManager entityManager) {
+        super(new JPAQueryMixin<Q>(md));
         super.queryMixin.setSelf((Q) this);
-        this.queryMixin = (JPQLQueryMixin) super.queryMixin;
+        this.queryMixin = (JPAQueryMixin) super.queryMixin;
         this.templates = templates;
         this.entityManager = entityManager;
     }

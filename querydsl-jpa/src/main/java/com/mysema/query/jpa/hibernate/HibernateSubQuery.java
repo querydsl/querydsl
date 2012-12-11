@@ -14,8 +14,8 @@
 package com.mysema.query.jpa.hibernate;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.jpa.AbstractJPQLSubQuery;
-import com.mysema.query.jpa.JPQLCommonQuery;
+import com.mysema.query.jpa.AbstractJPASubQuery;
+import com.mysema.query.jpa.JPACommonQuery;
 
 /**
  * HibernateSubQuery is a subquery class for Hibernate
@@ -23,7 +23,7 @@ import com.mysema.query.jpa.JPQLCommonQuery;
  * @author tiwe
  *
  */
-public final class HibernateSubQuery extends AbstractJPQLSubQuery<HibernateSubQuery> implements JPQLCommonQuery<HibernateSubQuery> {
+public final class HibernateSubQuery extends AbstractJPASubQuery<HibernateSubQuery> implements JPACommonQuery<HibernateSubQuery> {
 
     public HibernateSubQuery() {
         super();

@@ -17,7 +17,7 @@ import com.mysema.query.Query;
 import com.mysema.query.types.EntityPath;
 
 /**
- * JDOCommonQuery is a parent interface for JDOQuery and JDOSubQuery
+ * JDOCommonQuery is a parent interface for JDOQLQuery and JDOSubQuery
  * 
  * @author tiwe
  *

@@ -38,7 +38,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.HQLTemplates;
-import com.mysema.query.jpa.JPQLQueryBase;
+import com.mysema.query.jpa.JPAQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
@@ -53,7 +53,7 @@ import com.mysema.query.types.QTuple;
  *
  * @param <Q>
  */
-public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends JPQLQueryBase<Q> {
+public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends JPAQueryBase<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 

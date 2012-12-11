@@ -23,13 +23,13 @@ import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringOperation;
 
 /**
- * JPQLGrammar provides factory methods for JPQL specific operations
+ * JPAGrammar provides factory methods for JPQL specific operations
  * elements.
  *
  * @author tiwe
  */
 @SuppressWarnings("unchecked")
-public final class JPQLGrammar {
+public final class JPAGrammar {
   
     /**
      * @param col
@@ -63,6 +63,6 @@ public final class JPQLGrammar {
         return StringOperation.create(JPQLTemplates.TYPE, path);
     }
     
-    private JPQLGrammar() {}
+    private JPAGrammar() {}
 
 }

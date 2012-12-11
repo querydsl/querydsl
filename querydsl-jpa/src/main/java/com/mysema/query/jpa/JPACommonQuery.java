@@ -22,13 +22,13 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
- * JPQLCommonQuery is a common interface for queries and subqueries of this module
+ * JPACommonQuery is a common interface for queries and subqueries of this module
  * 
  * @author tiwe
  *
  * @param <Q>
  */
-public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q> {
+public interface JPACommonQuery<Q extends JPACommonQuery<Q>>  extends Query<Q> {
    
     /**
      * Set the sources of this query

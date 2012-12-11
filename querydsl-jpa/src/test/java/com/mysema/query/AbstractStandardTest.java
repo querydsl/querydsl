@@ -44,9 +44,9 @@ import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.GroupBy;
 import com.mysema.query.group.QPair;
-import com.mysema.query.jpa.JPQLGrammar;
+import com.mysema.query.jpa.JPAGrammar;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Animal;
 import com.mysema.query.jpa.domain.Author;
 import com.mysema.query.jpa.domain.Book;
@@ -81,7 +81,6 @@ import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
-import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
@@ -141,8 +140,8 @@ public abstract class AbstractStandardTest {
 
     protected abstract JPQLQuery query();
     
-    protected JPQLSubQuery subQuery(){
-        return new JPQLSubQuery();
+    protected JPASubQuery subQuery(){
+        return new JPASubQuery();
     }
 
     protected abstract void save(Object entity);
@@ -799,14 +798,14 @@ public abstract class AbstractStandardTest {
     @Ignore
     public void Type() {
         assertEquals(Arrays.asList("C","C","C","C","C","C","A"),
-                query().from(animal).orderBy(animal.id.asc()).list(JPQLGrammar.type(animal)));
+                query().from(animal).orderBy(animal.id.asc()).list(JPAGrammar.type(animal)));
     }
     
     @Test
     @NoOpenJPA
     public void Type_Order() {
         assertEquals(Arrays.asList(10,1,2,3,4,5,6),
-                query().from(animal).orderBy(JPQLGrammar.type(animal).asc(), animal.id.asc())
+                query().from(animal).orderBy(JPAGrammar.type(animal).asc(), animal.id.asc())
                        .list(animal.id));
     }
     

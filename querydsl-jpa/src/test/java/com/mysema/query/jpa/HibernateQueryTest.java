@@ -25,7 +25,7 @@ public class HibernateQueryTest {
 
     @Test
     public void InnerJoin(){
-        JPQLQuery hqlQuery = new HibernateQuery();
+        HibernateQuery hqlQuery = new HibernateQuery();
         QEmployee employee = QEmployee.employee;
         hqlQuery.from(employee);
         hqlQuery.innerJoin(employee.user, QUser.user);
