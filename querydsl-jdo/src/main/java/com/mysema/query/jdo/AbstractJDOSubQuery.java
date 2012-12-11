@@ -41,6 +41,10 @@ public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends Detac
         this.queryMixin.setSelf((Q)this);
     }
 
+    public Q from(EntityPath<?> arg) {
+        return queryMixin.from(arg);
+    }
+    
     public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }

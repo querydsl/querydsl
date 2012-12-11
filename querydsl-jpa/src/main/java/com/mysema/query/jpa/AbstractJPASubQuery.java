@@ -62,6 +62,10 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
         return unique(NumberTemplate.create(Long.class, count.toString()));
     }
 
+    public Q from(EntityPath<?> o) {
+        return queryMixin.from(o);
+    }
+    
     public Q from(EntityPath<?>... o) {
         return queryMixin.from(o);
     }
@@ -186,6 +190,10 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
         return queryMixin.rightJoin(target, alias);
     }
 
+    public Q on(Predicate condition) {
+        return queryMixin.on(condition);
+    }
+    
     public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }

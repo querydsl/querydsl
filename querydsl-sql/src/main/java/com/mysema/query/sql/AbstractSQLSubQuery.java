@@ -110,6 +110,10 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return (Q)this;
     }
     
+    public Q from(Expression<?> arg) {
+        return queryMixin.from(arg);
+    }
+    
     public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
@@ -181,6 +185,10 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
 
     public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
+    }
+    
+    public Q on(Predicate condition) {
+        return queryMixin.on(condition);
     }
 
     public Q on(Predicate... conditions) {
