@@ -107,16 +107,16 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     private final QueryExecution standardTest = new QueryExecution(Module.JDO, Target.H2){
         @Override
-        protected Pair<Projectable, List<Expression<?>>> createQuery() {
+        protected Pair<Projectable, Expression<?>[]> createQuery() {
             return Pair.of(
                 (Projectable)query().from(store, product, otherProduct),
-                Arrays.<Expression<?>>asList(store, product, otherProduct));
+                new Expression<?>[]{store, product, otherProduct});
         }
         @Override
-        protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
+        protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
             return Pair.of(
                 (Projectable)query().from(store, product, otherProduct).where(filter),
-                Arrays.<Expression<?>>asList(store, product, otherProduct));
+                new Expression<?>[]{store, product, otherProduct});
         }
     };
 

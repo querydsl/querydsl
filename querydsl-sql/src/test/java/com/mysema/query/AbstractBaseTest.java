@@ -29,7 +29,6 @@ import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLCommonQuery;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -118,6 +117,11 @@ public abstract class AbstractBaseTest {
     
     protected TestQuery query() {
         return new TestQuery(connection, new Configuration(templates));
+    }
+    
+    protected TestQuery testQuery() {
+        return new TestQuery(connection, new Configuration(templates), 
+                new DefaultQueryMetadata().noValidate());
     }
     
     protected OracleQuery oracleQuery(){

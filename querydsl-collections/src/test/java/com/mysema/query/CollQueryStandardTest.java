@@ -18,7 +18,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -57,18 +56,20 @@ public class CollQueryStandardTest {
             new Cat("Mary", 5, birthDate)
     );
 
+    private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
+    
     private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM){
         @Override
-        protected Pair<Projectable,List<Expression<?>>> createQuery() {
+        protected Pair<Projectable, Expression<?>[]> createQuery() {
             return Pair.of(
                     (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data),
-                    Collections.<Expression<?>>emptyList());
+                    NO_EXPRESSIONS);
         }
         @Override
-        protected Pair<Projectable,List<Expression<?>>> createQuery(BooleanExpression filter) {
+        protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
             return Pair.of(
                     (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data).where(filter),
-                    Collections.<Expression<?>>singletonList(cat.name));
+                    new Expression<?>[]{cat.name});
         }
     };
 

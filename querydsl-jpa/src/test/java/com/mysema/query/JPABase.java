@@ -57,6 +57,11 @@ public class JPABase extends AbstractStandardTest {
         return new JPAQuery(entityManager);
     }
     
+    @Override
+    protected JPAQuery testQuery(){
+        return new JPAQuery(entityManager, new DefaultQueryMetadata().noValidate());
+    }    
+    
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

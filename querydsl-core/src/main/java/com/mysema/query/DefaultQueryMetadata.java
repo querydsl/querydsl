@@ -323,14 +323,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
     }
     
-    private void validate(Expression<?>... expr){
-        if (validate) {
-            for (Expression<?> e : expr) {
-                e.accept(ValidatingVisitor.DEFAULT, exprInJoins);
-            }
-        }
-    }
-    
     public void setValidate(boolean v) {
         this.validate = v;
     }

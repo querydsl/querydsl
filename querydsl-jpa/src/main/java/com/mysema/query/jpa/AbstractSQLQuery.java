@@ -74,6 +74,10 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
+    public T from(Expression<?> arg) {
+        return queryMixin.from(arg);
+    }
+    
     public T from(Expression<?>... args) {
         return queryMixin.from(args);
     }
@@ -149,6 +153,10 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     public T leftJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.leftJoin(o, alias);
+    }
+    
+    public T on(Predicate condition) {
+        return queryMixin.on(condition);
     }
 
     public T on(Predicate... conditions) {

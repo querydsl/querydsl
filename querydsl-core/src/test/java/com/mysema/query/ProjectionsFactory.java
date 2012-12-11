@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
@@ -54,7 +55,7 @@ public class ProjectionsFactory {
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
         }
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     public <A> Collection<Expression<?>> collection(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement){
@@ -62,7 +63,7 @@ public class ProjectionsFactory {
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
         }
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -78,7 +79,7 @@ public class ProjectionsFactory {
             rv.add(expr.max());
         }
 
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -97,7 +98,7 @@ public class ProjectionsFactory {
             rv.add(expr.max());
         }
 
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement){
@@ -106,7 +107,7 @@ public class ProjectionsFactory {
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
         }
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     public <K,V> Collection<Expression<?>> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
@@ -115,14 +116,14 @@ public class ProjectionsFactory {
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
         }
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     public <A extends Number & Comparable<A>> Collection<NumberExpression<?>> numeric(NumberExpression<A> expr, NumberExpression<A> other, A knownValue, boolean forFilter){
         HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
         rv.addAll(numeric(expr, other, forFilter));
         rv.addAll(numeric(expr, NumberConstant.create(knownValue), forFilter));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -160,7 +161,7 @@ public class ProjectionsFactory {
                     .otherwise((NumberExpression)other));
         }
         
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     public <A extends Number & Comparable<A>> Collection<NumberExpression<?>> numericCasts(NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
@@ -172,7 +173,7 @@ public class ProjectionsFactory {
             rv.add(expr.intValue());
             rv.add(expr.longValue());
             rv.add(expr.shortValue());
-            return rv;
+            return ImmutableList.copyOf(rv);
         }else{
             return Collections.emptySet();
         }
@@ -224,7 +225,7 @@ public class ProjectionsFactory {
             rv.add(expr.nullif("xxx"));    
         }        
         
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -233,7 +234,7 @@ public class ProjectionsFactory {
         rv.add(expr.hour());
         rv.add(expr.minute());
         rv.add(expr.second());
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
 }

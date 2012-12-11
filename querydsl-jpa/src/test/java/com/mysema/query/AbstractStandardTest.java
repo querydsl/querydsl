@@ -85,7 +85,10 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QTuple;
@@ -105,6 +108,8 @@ import com.mysema.testutil.ExcludeIn;
  */
 public abstract class AbstractStandardTest {
 
+    private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
+    
     private static final QCompany company = QCompany.company;
     
     private static final QAnimal animal = QAnimal.animal;
@@ -116,6 +121,10 @@ public abstract class AbstractStandardTest {
     private static final BooleanExpression cond1 = cat.name.length().gt(0);
 
     private static final BooleanExpression cond2 = otherCat.name.length().gt(0);
+    
+    private static final Predicate condition = ExpressionUtils.and(
+            (Predicate)cond1.accept(ExtractorVisitor.DEFAULT, null),
+            (Predicate)cond2.accept(ExtractorVisitor.DEFAULT, null));
 
     private static final Date birthDate;
 
@@ -139,6 +148,8 @@ public abstract class AbstractStandardTest {
     }
 
     protected abstract JPQLQuery query();
+    
+    protected abstract JPQLQuery testQuery();
     
     protected JPASubQuery subQuery(){
         return new JPASubQuery();
@@ -231,24 +242,29 @@ public abstract class AbstractStandardTest {
             }
         };
         
+        final EntityPath<?>[] sources = new EntityPath[]{cat, otherCat};        
+        final Predicate[] conditions = new Predicate[]{condition};        
+        final Expression<?>[] projection = new Expression[]{cat.name, otherCat.name};
+        
         QueryExecution standardTest = new QueryExecution(
                 projections, 
                 new FilterFactory(projections, Module.JPA, getTarget()), 
                 new MatchingFiltersFactory(Module.JPA, getTarget())){
 
             @Override
-            protected Pair<Projectable, List<Expression<?>>> createQuery() {
+            protected Pair<Projectable, Expression<?>[]> createQuery() {
                 // NOTE : EclipseLink needs extra conditions cond1 and code2
                 return Pair.of(
-                        (Projectable)query().from(cat, otherCat).where(cond1, cond2),
-                        Arrays.<Expression<?>>asList());
+                        (Projectable)testQuery().from(sources).where(conditions),
+                        NO_EXPRESSIONS);
             }
+            
             @Override
-            protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
+            protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
                 // NOTE : EclipseLink needs extra conditions cond1 and code2
                 return Pair.of(
-                        (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
-                        Arrays.<Expression<?>>asList(cat.name, otherCat.name));
+                        (Projectable)testQuery().from(sources).where(condition, filter),
+                        projection);
             }
         };
         

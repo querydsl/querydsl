@@ -28,8 +28,8 @@ import com.mysema.query.types.Predicate;
  *
  * @param <Q>
  */
-public interface JPACommonQuery<Q extends JPACommonQuery<Q>>  extends Query<Q> {
-   
+public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
+    
     /**
      * Set the sources of this query
      *
@@ -337,7 +337,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>>  extends Query<Q> {
      * @return
      */
     <P> Q fullJoin(MapExpression<?, P> target, Path<P> alias);
-
+    
     /**
      * Add join conditions to the last added join
      *

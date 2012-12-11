@@ -33,6 +33,7 @@ import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.ScrollableResultsIterator;
 import com.mysema.testutil.HibernateTestRunner;
@@ -54,6 +55,11 @@ public class HibernateBase extends AbstractStandardTest {
 
     protected HibernateQuery query(){
         return new HibernateQuery(session, getTemplates());
+    }
+    
+    protected HibernateQuery testQuery(){
+        return new HibernateQuery(new DefaultSessionHolder(session), 
+                getTemplates(), new DefaultQueryMetadata().noValidate());
     }
 
     protected JPQLTemplates getTemplates(){

@@ -145,12 +145,12 @@ public abstract class QueryExecution {
         }
     }
 
-    protected abstract Pair<Projectable, List<Expression<?>>> createQuery();
+    protected abstract Pair<Projectable, Expression<?>[]> createQuery();
 
-    protected abstract Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter);
+    protected abstract Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter);
 
-    private long runCount(BooleanExpression f){
-        Pair<Projectable, List<Expression<?>>> p = createQuery(f);
+    private long runCount(BooleanExpression f) {
+        Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().count();
         }finally{
@@ -158,8 +158,8 @@ public abstract class QueryExecution {
         }
     }
 
-    private long runCountDistinct(BooleanExpression f){
-        Pair<Projectable, List<Expression<?>>> p = createQuery(f);
+    private long runCountDistinct(BooleanExpression f) {
+        Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().countDistinct();
         }finally{
@@ -167,36 +167,34 @@ public abstract class QueryExecution {
         }
     }
 
-    private int runFilter(BooleanExpression f){
-        Pair<Projectable, List<Expression<?>>> p = createQuery(f);
+    private int runFilter(BooleanExpression f) { 
+        Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
-            Expression<?>[] projection = p.getSecond().toArray(new Expression[p.getSecond().size()]);
-            return p.getFirst().list(projection).size();
+            return p.getFirst().list(p.getSecond()).size();
         }finally{
             close(p.getFirst());
         }
     }
 
-    private int runFilterDistinct(BooleanExpression f){
-        Pair<Projectable, List<Expression<?>>> p = createQuery(f);
+    private int runFilterDistinct(BooleanExpression f) {
+        Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
-            Expression<?>[] projection = p.getSecond().toArray(new Expression[p.getSecond().size()]);
-            return p.getFirst().listDistinct(projection).size();
+            return p.getFirst().listDistinct(p.getSecond()).size();
         }finally{
             close(p.getFirst());
         }
     }
 
-    private int runProjection(Expression<?> pr){
-        Pair<Projectable, List<Expression<?>>> p = createQuery();
+    private int runProjection(Expression<?> pr) {
+        Pair<Projectable, Expression<?>[]> p = createQuery();
         try{
-            if (p.getSecond().isEmpty()){
+            if (p.getSecond().length == 0) {
                 return p.getFirst().list(pr).size();
-            }else{
-                List<Expression<?>> projection = new ArrayList<Expression<?>>();
-                projection.add(pr);
-                projection.addAll(p.getSecond());
-                return p.getFirst().list(projection.toArray(new Expression[projection.size()])).size();
+            } else {
+                Expression<?>[] projection = new Expression[p.getSecond().length + 1];
+                projection[0] = pr;
+                System.arraycopy(p.getSecond(), 0, projection, 1, p.getSecond().length);
+                return p.getFirst().list(projection).size();
             }
 
         }finally{
@@ -204,16 +202,16 @@ public abstract class QueryExecution {
         }
     }
 
-    private int runProjectionDistinct(Expression<?> pr){
-        Pair<Projectable, List<Expression<?>>> p = createQuery();
+    private int runProjectionDistinct(Expression<?> pr) {
+        Pair<Projectable, Expression<?>[]> p = createQuery();
         try{
-            if (p.getSecond().isEmpty()){
+            if (p.getSecond().length == 0){
                 return p.getFirst().listDistinct(pr).size();
             }else{
-                List<Expression<?>> projection = new ArrayList<Expression<?>>();
-                projection.add(pr);
-                projection.addAll(p.getSecond());
-                return p.getFirst().listDistinct(projection.toArray(new Expression[projection.size()])).size();
+                Expression<?>[] projection = new Expression[p.getSecond().length + 1];
+                projection[0] = pr;
+                System.arraycopy(p.getSecond(), 0, projection, 1, p.getSecond().length);
+                return p.getFirst().listDistinct(projection).size();
             }
 
         }finally{
@@ -283,35 +281,35 @@ public abstract class QueryExecution {
         return this;
     }
 
-    public final <A> void runArrayTests(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement, A missingElement){
+    public final <A> void runArrayTests(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement, A missingElement) {
         runFilterQueries(matchers.array(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.array(expr, other, knownElement), false);
         runProjectionQueries(projections.array(expr, other, knownElement));
     }
 
-    public final void runBooleanTests(BooleanExpression expr, BooleanExpression other){
+    public final void runBooleanTests(BooleanExpression expr, BooleanExpression other) {
         runFilterQueries(filters.booleanFilters(expr, other), false);
     }
 
-    public final <A> void runCollectionTests(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement, A missingElement){
+    public final <A> void runCollectionTests(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement, A missingElement) {
         runFilterQueries(matchers.collection(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.collection(expr, other, knownElement), false);
         runProjectionQueries(projections.collection(expr, other, knownElement));
     }
 
-    public final void runDateTests(DateExpression<java.sql.Date> expr, DateExpression<java.sql.Date> other, java.sql.Date knownValue){
+    public final void runDateTests(DateExpression<java.sql.Date> expr, DateExpression<java.sql.Date> other, java.sql.Date knownValue) {
         runFilterQueries(matchers.date(expr, other, knownValue), true);
         runFilterQueries(filters.date(expr, other, knownValue), false);
         runProjectionQueries(projections.date(expr, other, knownValue));
     }
 
-    public final void runDateTimeTests(DateTimeExpression<java.util.Date> expr, DateTimeExpression<java.util.Date> other, java.util.Date knownValue){
+    public final void runDateTimeTests(DateTimeExpression<java.util.Date> expr, DateTimeExpression<java.util.Date> other, java.util.Date knownValue) {
         runFilterQueries(matchers.dateTime(expr, other, knownValue), true);
         runFilterQueries(filters.dateTime(expr, other, knownValue), false);
         runProjectionQueries(projections.dateTime(expr, other, knownValue));
     }
 
-    public final <A, Q extends SimpleExpression<A>> void runListTests(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement, A missingElement){
+    public final <A, Q extends SimpleExpression<A>> void runListTests(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement, A missingElement) {
         runFilterQueries(matchers.list(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.list(expr, other, knownElement), false);
         runProjectionQueries(projections.list(expr, other, knownElement));
@@ -323,23 +321,23 @@ public abstract class QueryExecution {
         runProjectionQueries(projections.map(expr, other, knownKey, knownValue));
     }
 
-    public final <A extends Number & Comparable<A>> void runNumericCasts(NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+    public final <A extends Number & Comparable<A>> void runNumericCasts(NumberExpression<A> expr, NumberExpression<A> other, A knownValue) {
         runProjectionQueries(projections.numericCasts(expr, other, knownValue));
     }
 
-    public final <A extends Number & Comparable<A>> void runNumericTests(NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+    public final <A extends Number & Comparable<A>> void runNumericTests(NumberExpression<A> expr, NumberExpression<A> other, A knownValue) {
         runFilterQueries(matchers.numeric(expr, other, knownValue), true);
         runFilterQueries(filters.numeric(expr, other, knownValue), false);
         runProjectionQueries(projections.numeric(expr, other, knownValue, false));
     }
 
-    public final void runStringTests(StringExpression expr, StringExpression other, String knownValue){
+    public final void runStringTests(StringExpression expr, StringExpression other, String knownValue) {
         runFilterQueries(matchers.string(expr, other, knownValue), true);
         runFilterQueries(filters.string(expr, other, knownValue), false);
         runProjectionQueries(projections.string(expr, other, knownValue));
     }
 
-    public final void runTimeTests(TimeExpression<java.sql.Time> expr, TimeExpression<java.sql.Time> other, java.sql.Time knownValue){
+    public final void runTimeTests(TimeExpression<java.sql.Time> expr, TimeExpression<java.sql.Time> other, java.sql.Time knownValue) {
         runFilterQueries(matchers.time(expr, other, knownValue), true);
         runFilterQueries(filters.time(expr, other, knownValue), false);
         runProjectionQueries(projections.time(expr, other, knownValue));

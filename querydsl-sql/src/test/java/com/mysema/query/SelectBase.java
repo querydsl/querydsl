@@ -56,7 +56,6 @@ import com.mysema.query.sql.Beans;
 import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLExpressions;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
@@ -98,19 +97,21 @@ import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
 
 public class SelectBase extends AbstractBaseTest{
+    
+    private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
 
     private final QueryExecution standardTest = new QueryExecution(Module.SQL, Connections.getTarget()) {
         @Override
-        protected Pair<Projectable, List<Expression<?>>> createQuery() {
+        protected Pair<Projectable, Expression<?>[]> createQuery() {
             return Pair.of(
-                    (Projectable)query().from(employee, employee2),
-                    Collections.<Expression<?>>emptyList());
+                    (Projectable)testQuery().from(employee, employee2),
+                    NO_EXPRESSIONS);
         }
         @Override
-        protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
+        protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
             return Pair.of(
-                    (Projectable)query().from(employee, employee2).where(filter),
-                    Collections.<Expression<?>>singletonList(employee.firstname));
+                    (Projectable)testQuery().from(employee, employee2).where(filter),
+                    new Expression<?>[]{employee.firstname});
         }
     };
 
