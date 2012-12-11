@@ -34,7 +34,7 @@ import com.mysema.query.jdo.test.domain.QStore;
 
 public class FetchPlanTest extends AbstractJDOTest{
     
-    private JDOQLQuery query;
+    private JDOQuery query;
     
     @After
     public void tearDown() {
@@ -57,7 +57,7 @@ public class FetchPlanTest extends AbstractJDOTest{
              .list(product);
 //        query.close();
         
-        Field queriesField = AbstractJDOQLQuery.class.getDeclaredField("queries");
+        Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>)queriesField.get(query);
         Query jdoQuery = queries.get(0);
@@ -75,7 +75,7 @@ public class FetchPlanTest extends AbstractJDOTest{
             .addFetchGroup("products")
             .list(store);
         
-        Field queriesField = AbstractJDOQLQuery.class.getDeclaredField("queries");
+        Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>)queriesField.get(query);
         Query jdoQuery = queries.get(0);

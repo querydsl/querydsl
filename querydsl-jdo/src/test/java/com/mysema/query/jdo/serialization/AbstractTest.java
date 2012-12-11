@@ -14,15 +14,15 @@
 package com.mysema.query.jdo.serialization;
 
 import com.mysema.query.jdo.JDOQLSerializer;
-import com.mysema.query.jdo.JDOQLSubQuery;
+import com.mysema.query.jdo.JDOSubQuery;
 import com.mysema.query.jdo.JDOQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
 
 public abstract class AbstractTest {
 
-    protected JDOQLSubQuery query(){
-        return new JDOQLSubQuery();
+    protected JDOSubQuery query(){
+        return new JDOSubQuery();
     }
 
     protected String serialize(SubQueryExpression<?> expr) {

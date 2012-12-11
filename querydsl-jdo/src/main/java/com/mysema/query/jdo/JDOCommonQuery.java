@@ -13,20 +13,24 @@
  */
 package com.mysema.query.jdo;
 
-import static org.junit.Assert.assertEquals;
+import com.mysema.query.Query;
+import com.mysema.query.types.EntityPath;
 
-import org.junit.Test;
-
-import com.mysema.query.jdo.test.domain.QProduct;
-
-public class JDOQLSubQueryTest {
+/**
+ * JDOCommonQuery is a parent interface for JDOQuery and JDOSubQuery
+ * 
+ * @author tiwe
+ *
+ * @param <Q>
+ */
+public interface JDOCommonQuery<Q extends JDOCommonQuery<Q>> extends Query<Q> {
     
-    @Test
-    public void Multiple_Projections(){
-        JDOQLSubQuery query = new JDOQLSubQuery();
-        query.from(QProduct.product);
-        assertEquals(1, query.list(QProduct.product).getMetadata().getProjection().size());
-        assertEquals(1, query.list(QProduct.product).getMetadata().getProjection().size());
-    }
+    /**
+     * Add query sources
+     *
+     * @param sources
+     * @return
+     */
+    Q from(EntityPath<?>... sources);
 
 }

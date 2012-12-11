@@ -29,15 +29,15 @@ import com.mysema.query.types.Path;
  *
  * @param <Q>
  */
-public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q> {
+public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends DetachableQuery<Q> {
 
-    public AbstractJDOQLSubQuery() {
+    public AbstractJDOSubQuery() {
         this(new DefaultQueryMetadata().noValidate());
     }
 
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLSubQuery(QueryMetadata metadata) {
-        super(new JDOQLQueryMixin<Q>(metadata));
+    public AbstractJDOSubQuery(QueryMetadata metadata) {
+        super(new JDOQueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q)this);
     }
 

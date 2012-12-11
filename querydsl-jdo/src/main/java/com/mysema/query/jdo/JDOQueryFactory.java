@@ -17,7 +17,7 @@ import javax.inject.Provider;
 import javax.jdo.PersistenceManager;
 
 import com.mysema.query.QueryFactory;
-import com.mysema.query.jdo.dml.JDOQLDeleteClause;
+import com.mysema.query.jdo.dml.JDODeleteClause;
 import com.mysema.query.types.EntityPath;
 
 /**
@@ -26,7 +26,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public class JDOQueryFactory implements QueryFactory<JDOQLQuery, JDOQLSubQuery> {
+public class JDOQueryFactory implements QueryFactory<JDOQuery, JDOSubQuery> {
 
     private final Provider<PersistenceManager> persistenceManager;
 
@@ -34,20 +34,20 @@ public class JDOQueryFactory implements QueryFactory<JDOQLQuery, JDOQLSubQuery> 
         this.persistenceManager = persistenceManager;
     }
 
-    public JDOQLDeleteClause delete(EntityPath<?> path) {
-        return new JDOQLDeleteClause(persistenceManager.get(), path);
+    public JDODeleteClause delete(EntityPath<?> path) {
+        return new JDODeleteClause(persistenceManager.get(), path);
     }
 
-    public JDOQLQuery from(EntityPath<?> from) {
+    public JDOQuery from(EntityPath<?> from) {
         return query().from(from);
     }
 
-    public JDOQLQuery query() {
-        return new JDOQLQueryImpl(persistenceManager.get());
+    public JDOQuery query() {
+        return new JDOQuery(persistenceManager.get());
     }
 
-    public JDOQLSubQuery subQuery() {
-        return new JDOQLSubQuery();
+    public JDOSubQuery subQuery() {
+        return new JDOSubQuery();
     }
 
 }

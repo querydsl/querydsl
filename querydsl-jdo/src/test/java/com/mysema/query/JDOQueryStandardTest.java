@@ -44,7 +44,7 @@ import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Param;
 
-public class JDOQLQueryStandardTest extends AbstractJDOTest {
+public class JDOQueryStandardTest extends AbstractJDOTest {
 
     public static class Projection {
 

@@ -30,23 +30,9 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause> {
+public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
-
-//    private final PersistenceManager persistenceManager;
-//
-//    private final JDOQLTemplates templates;
-
-//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity) {
-//        this(persistenceManager, entity, JDOQLTemplates.DEFAULT);
-//    }
-//
-//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates) {
-//        this.persistenceManager = persistenceManager;
-//        this.templates = templates;
-//        metadata.addFrom(entity);
-//    }
 
     @Override
     public long execute() {
@@ -56,7 +42,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause> {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public JDOQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
+    public JDOUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) != null) {
                 metadata.addProjection(ExpressionUtils.eqConst(((Expression)paths.get(i)), values.get(i)));
@@ -69,7 +55,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause> {
     }
 
     @Override
-    public <T> JDOQLUpdateClause set(Path<T> path, T value) {
+    public <T> JDOUpdateClause set(Path<T> path, T value) {
         if (value != null) {
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
         } else {
@@ -80,19 +66,19 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause> {
 
 
     @Override
-    public <T> JDOQLUpdateClause set(Path<T> path, Expression<? extends T> expression) {
+    public <T> JDOUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         metadata.addProjection(ExpressionUtils.eq(path, expression));
         return this;
     }
     
     @Override
-    public <T> JDOQLUpdateClause setNull(Path<T> path) {
+    public <T> JDOUpdateClause setNull(Path<T> path) {
         metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         return this;
     }
     
     @Override
-    public JDOQLUpdateClause where(Predicate... o) {
+    public JDOUpdateClause where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);    
         }        

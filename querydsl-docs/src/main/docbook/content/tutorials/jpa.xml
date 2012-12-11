@@ -99,7 +99,7 @@
     </para>
     
     <para>
-      Now you are able to construct JPQL query instances and instances of
+      Now you are able to construct JPA query instances and instances of
       the query domain model.
     </para>
 

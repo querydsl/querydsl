@@ -44,7 +44,7 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void Serialization() throws IOException{
-        JDOQLQuery query = query();
+        JDOQuery query = query();
 
         assertEquals("FROM com.mysema.query.jdo.test.domain.Product", query.from(product).toString());
         assertEquals("FROM com.mysema.query.jdo.test.domain.Product" +
@@ -57,7 +57,7 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void SubQuerySerialization() throws IOException{
-        JDOQLSubQuery query = sub();
+        JDOSubQuery query = sub();
 
         assertEquals("FROM com.mysema.query.jdo.test.domain.Product", query.from(product).toString());
         assertEquals("FROM com.mysema.query.jdo.test.domain.Product" +
@@ -106,7 +106,7 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void SimpleTest() throws IOException{
-        JDOQLQuery query = new JDOQLQueryImpl(pm, templates, false);
+        JDOQuery query = new JDOQuery(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman"))
                 .uniqueResult(product.name));
         query.close();

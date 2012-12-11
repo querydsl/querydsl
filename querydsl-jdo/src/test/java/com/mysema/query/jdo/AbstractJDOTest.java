@@ -24,7 +24,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
-import com.mysema.query.jdo.dml.JDOQLDeleteClause;
+import com.mysema.query.jdo.dml.JDODeleteClause;
 import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.Store;
@@ -42,24 +42,24 @@ public abstract class AbstractJDOTest {
 
     protected Transaction tx;
 
-    protected JDOQLQuery query() {
-        return new JDOQLQueryImpl(pm, templates, false);
+    protected JDOQuery query() {
+        return new JDOQuery(pm, templates, false);
     }
 
-    protected JDOQLQuery detachedQuery() {
-        return new JDOQLQueryImpl(pm, templates, true);
+    protected JDOQuery detachedQuery() {
+        return new JDOQuery(pm, templates, true);
     }
 
-    protected JDOQLSubQuery sub(){
-        return new JDOQLSubQuery();
+    protected JDOSubQuery sub(){
+        return new JDOSubQuery();
     }
 
     protected <T> List<T> query(EntityPath<T> source, Predicate condition) {
         return query().from(source).where(condition).list(source);
     }
 
-    protected JDOQLDeleteClause delete(EntityPath<?> entity) {
-        return new JDOQLDeleteClause(pm, entity, templates);
+    protected JDODeleteClause delete(EntityPath<?> entity) {
+        return new JDODeleteClause(pm, entity, templates);
     }
 
     @Before

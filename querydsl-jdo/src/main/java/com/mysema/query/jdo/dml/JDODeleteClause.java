@@ -35,7 +35,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  *
  */
-public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause> {
+public class JDODeleteClause implements DeleteClause<JDODeleteClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -45,11 +45,11 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause> {
 
     private final EntityPath<?> entity;
 
-    public JDOQLDeleteClause(PersistenceManager pm, EntityPath<?> entity) {
+    public JDODeleteClause(PersistenceManager pm, EntityPath<?> entity) {
         this(pm, entity, JDOQLTemplates.DEFAULT);
     }
 
-    public JDOQLDeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, 
+    public JDODeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, 
             JDOQLTemplates templates) {
         this.entity = entity;
         this.persistenceManager = persistenceManager;
@@ -96,7 +96,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause> {
     }
     
     @Override
-    public JDOQLDeleteClause where(Predicate... o) {
+    public JDODeleteClause where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);    
         }        

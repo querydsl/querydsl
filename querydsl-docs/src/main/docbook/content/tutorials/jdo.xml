@@ -88,7 +88,7 @@
     </para>
 
     <para>
-      Now you are able to construct JDOQL query instances and instances of the
+      Now you are able to construct JDO query instances and instances of the
       query domain model.
     </para>
 
@@ -198,16 +198,16 @@ customer.firstName;
 
   <sect2>
 
-    <title>Querying with JDOQL</title>
+    <title>Querying with JDO</title>
 
     <para>
-      For the JDOQL-module JDOQLQueryImpl is the main Query implementation. It
+      For the JDO-module JDOQuery is the main Query implementation. It
       is instantiated like this :
     </para>
 
     <programlisting language="java"><![CDATA[
 PersistenceManager pm = ...;
-JDOQLQuery query = new JDOQLQueryImpl (pm);
+JDOQuery query = new JDOQuery (pm);
 ]]></programlisting>
 
     <para>
@@ -217,7 +217,7 @@ JDOQLQuery query = new JDOQLQueryImpl (pm);
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-JDOQLQuery query = new JDOQLQueryImpl (pm);
+JDOQuery query = new JDOQuery (pm);
 Customer bob = query.from(customer)
   .where(customer.firstName.eq("Bob"))
   .uniqueResult(customer);
@@ -231,7 +231,7 @@ query.close();
   </para>
 
 <para>
-    To create a query with multiple sources you just use the JDOQLQuery interface like this :
+    To create a query with multiple sources you just use the JDOQuery class like this :
   </para>
 
     <programlisting language="java"><![CDATA[
@@ -269,7 +269,7 @@ query.from(customer)
   
   <title>General usage</title>
   
-  <para>Use the the cascading methods of the JDOQLQuery interface like this</para>
+  <para>Use the the cascading methods of the JDOQuery class like this</para>
   
   <para><emphasis>from :</emphasis> Define the query sources here, the first argument becomes the main source 
   and the others are treated as variables.</para>
@@ -322,18 +322,18 @@ query.from(customer)
   <sect2>  
 
   <title>Delete clauses</title>
-  <para>Delete clauses in Querydsl JDOQL follow a simple delete-where-execute form. Here are some 
+  <para>Delete clauses in Querydsl JDO follow a simple delete-where-execute form. Here are some 
   examples :</para>
     
 <programlisting language="java"><![CDATA[   
 QCustomer customer = QCustomer.customer;
 // delete all customers
-new JDOQLDeleteClause(pm, customer).execute();
+new JDODeleteClause(pm, customer).execute();
 // delete all customers with a level less than 3
-new JDOQLDeleteClause(pm, customer).where(customer.level.lt(3)).execute();  
+new JDODeleteClause(pm, customer).where(customer.level.lt(3)).execute();  
 ]]></programlisting>  
   
-  <para>The second parameter of the JDOQLDeleteClause constructor is the entity to be deleted.
+  <para>The second parameter of the JDODeleteClause constructor is the entity to be deleted.
   The where call is optional and the execute call performs the deletion and returns the amount of 
   deleted entities.</para>
   
@@ -344,7 +344,7 @@ new JDOQLDeleteClause(pm, customer).where(customer.level.lt(3)).execute();
   <title>Subqueries</title>
   
   <para>To create
-  a subquery you create a JDOQLSubQuery instance, define the query parameters via from, where 
+  a subquery you create a JDOSubQuery instance, define the query parameters via from, where 
   etc and use unique or list to create a subquery, which is just a type-safe Querydsl expression 
   for the query. unique is used for a unique result and list for a list result.</para>
 
@@ -353,11 +353,11 @@ QDepartment department = QDepartment.department;
 QDepartment d = new QDepartment("d");
 query.from(department)
     .where(department.employees.size().eq(
-        new JDOQLSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
+        new JDOSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
      )).list(department);  
 ]]></programlisting>   
 
-  <para>represents the following native JDOQL query</para>
+  <para>represents the following native JDO query</para>
   
 <programlisting>
 SELECT this FROM com.mysema.query.jdoql.models.company.Department
@@ -372,13 +372,13 @@ QEmployee employee = QEmployee.employee;
 QEmployee e = new QEmployee("e");
 query.from(employee)
     .where(employee.weeklyhours.gt(
-        new JDOQLSubQuery().from(employee.department.employees, e)
+        new JDOSubQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))
         .unique(AggregationFunctions.avg(e.weeklyhours))
     )).list(employee);
 ]]></programlisting>  
 
-<para>which represents the following native JDOQL query</para>
+<para>which represents the following native JDO query</para>
 
 <programlisting>
 SELECT this FROM com.mysema.query.jdoql.models.company.Employee 

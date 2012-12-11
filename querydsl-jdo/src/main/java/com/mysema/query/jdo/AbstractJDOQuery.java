@@ -46,20 +46,20 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.QTuple;
 
 /**
- * Abstract base class for custom implementations of the JDOQLQuery interface.
+ * Abstract base class for custom implementations of the JDOCommonQuery interface.
  *
  * @author tiwe
  *
  * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q> {
+public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends ProjectableQuery<Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(JDOQuery.class);
 
     private final Closeable closeable = new Closeable() {
         @Override
         public void close() throws IOException {
-            AbstractJDOQLQuery.this.close();
+            AbstractJDOQuery.this.close();
         }
     };
 
@@ -82,28 +82,36 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @Nullable
     private FactoryExpression<?> projection;
 
-    public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
+    public AbstractJDOQuery(@Nullable PersistenceManager persistenceManager) {
         this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
     }
 
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(
+    public AbstractJDOQuery(
             @Nullable PersistenceManager persistenceManager,
             JDOQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
-        super(new JDOQLQueryMixin<Q>(metadata));
+        super(new JDOQueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.templates = templates;
         this.persistenceManager = persistenceManager;
         this.detach = detach;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Add the fetch group to the set of active fetch groups.
+     * 
+     * @param string
+     * @return
+     */
     public Q addFetchGroup(String fetchGroupName) {
         fetchGroups.add(fetchGroupName);
         return (Q)this;
     }
 
+    /**
+     * Close the query and related resources
+     */
     public void close() {
         for (Query query : queries) {
             query.closeAll();
@@ -275,7 +283,16 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         queryMixin.getMetadata().reset();
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Set the maximum fetch depth when fetching. 
+     * A value of 0 has no meaning and will throw a JDOUserException.
+     * A value of -1 means that no limit is placed on fetching.
+     * A positive integer will result in that number of references from the
+     * initial object to be fetched.
+     * 
+     * @param maxFetchDepth
+     * @return
+     */
     public Q setMaxFetchDepth(int depth) {
         maxFetchDepth = depth;
         return (Q)this;

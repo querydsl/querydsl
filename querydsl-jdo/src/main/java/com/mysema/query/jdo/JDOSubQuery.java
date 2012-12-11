@@ -22,18 +22,18 @@ import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.query.NumberSubQuery;
 
 /**
- * JDOQLSubQuery is subquery implementation for JDOQL
+ * JDOSubQuery is subquery implementation for JDOQL
  *
  * @author tiwe
  *
  */
-public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery> implements JDOQLCommonQuery<JDOQLSubQuery> {
+public class JDOSubQuery extends AbstractJDOSubQuery<JDOSubQuery> implements JDOCommonQuery<JDOSubQuery> {
     
-    public JDOQLSubQuery() {
+    public JDOSubQuery() {
         super();
     }
 
-    public JDOQLSubQuery(QueryMetadata metadata) {
+    public JDOSubQuery(QueryMetadata metadata) {
         super(metadata);
     }
     

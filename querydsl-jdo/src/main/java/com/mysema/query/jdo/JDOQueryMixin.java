@@ -25,21 +25,21 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
 
 /**
- * JDOQLQueryMixin extends {@link QueryMixin} to provide module specific extensions 
+ * JDOQueryMixin extends {@link QueryMixin} to provide module specific extensions 
  * 
  * @author tiwe
  *
  * @param <T>
  */
-public class JDOQLQueryMixin<T> extends QueryMixin<T> {
+public class JDOQueryMixin<T> extends QueryMixin<T> {
     
-    public JDOQLQueryMixin() {}
+    public JDOQueryMixin() {}
 
-    public JDOQLQueryMixin(QueryMetadata metadata) {
+    public JDOQueryMixin(QueryMetadata metadata) {
         super(metadata);
     }
 
-    public JDOQLQueryMixin(T self, QueryMetadata metadata) {
+    public JDOQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
         
