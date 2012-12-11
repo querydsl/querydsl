@@ -108,7 +108,7 @@ public class SelectBase extends AbstractBaseTest{
                     NO_EXPRESSIONS);
         }
         @Override
-        protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
+        protected Pair<Projectable, Expression<?>[]> createQuery(Predicate filter) {
             return Pair.of(
                     (Projectable)testQuery().from(employee, employee2).where(filter),
                     new Expression<?>[]{employee.firstname});

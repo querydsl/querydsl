@@ -18,7 +18,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +39,8 @@ import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QTuple;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Param;
 
 public class JDOQueryStandardTest extends AbstractJDOTest {
@@ -113,7 +112,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
                 new Expression<?>[]{store, product, otherProduct});
         }
         @Override
-        protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
+        protected Pair<Projectable, Expression<?>[]> createQuery(Predicate filter) {
             return Pair.of(
                 (Projectable)query().from(store, product, otherProduct).where(filter),
                 new Expression<?>[]{store, product, otherProduct});

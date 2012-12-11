@@ -16,10 +16,12 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.ArrayExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CollectionExpressionBase;
@@ -49,42 +51,42 @@ public class MatchingFiltersFactory {
         this.target = target;
     }
 
-    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr,  
+    public <A> Collection<Predicate> array(ArrayExpression<A> expr,  
             ArrayExpression<A> other, A knownElement, A missingElement){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
 //        rv.add(expr.isEmpty().not());
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size().gt(0));
         }
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public <A> Collection<BooleanExpression> collection(CollectionExpressionBase<?,A> expr,  
+    public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr,  
             CollectionExpression<?,A> other, A knownElement, A missingElement){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.contains(knownElement));
             rv.add(expr.contains(missingElement).not());
         }
         rv.add(expr.isEmpty().not());
         rv.add(expr.isNotEmpty());
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
-    private <A extends Comparable> Collection<BooleanExpression> comparable(ComparableExpression<A> expr,  
+    private <A extends Comparable> Collection<Predicate> comparable(ComparableExpression<A> expr,  
             Expression<A> other){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
         rv.add(expr.loe(other));
         rv.add(expr.ne(other).not());
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, 
+    public Collection<Predicate> date(DateExpression<java.sql.Date> expr, 
             DateExpression<java.sql.Date> other){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
@@ -103,20 +105,20 @@ public class MatchingFiltersFactory {
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, 
+    public Collection<Predicate> date(DateExpression<java.sql.Date> expr, 
             DateExpression<java.sql.Date> other, java.sql.Date knownValue){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(date(expr, other));
         rv.addAll(date(expr, DateConstant.create(knownValue)));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, 
+    public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr, 
             DateTimeExpression<java.util.Date> other){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
@@ -139,25 +141,25 @@ public class MatchingFiltersFactory {
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, 
+    public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr, 
             DateTimeExpression<java.util.Date> other, java.util.Date knownValue){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(dateTime(expr, other));
         rv.addAll(dateTime(expr, DateTimeConstant.create(knownValue)));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public <A,Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A,Q> expr, 
+    public <A,Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A,Q> expr, 
             ListExpression<A,Q> other, A knownElement, A missingElement){
         return collection(expr, other, knownElement, missingElement);
     }
 
-    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, 
+    public <K,V> Collection<Predicate> map(MapExpressionBase<K,V,?> expr, 
             MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsKey(missingKey).not());
         rv.add(expr.containsValue(knownValue));
@@ -165,20 +167,20 @@ public class MatchingFiltersFactory {
         rv.add(expr.get(knownKey).eq(knownValue));
         rv.add(expr.isEmpty().not());
         rv.add(expr.isNotEmpty());
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( 
+    public <A extends Number & Comparable<A>> Collection<Predicate> numeric( 
             NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(numeric(expr, other));
         rv.addAll(numeric(expr, NumberConstant.create(knownValue)));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( 
+    public <A extends Number & Comparable<A>> Collection<Predicate> numeric( 
             NumberExpression<A> expr, NumberExpression<A> other){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
         rv.add(expr.gt(other.subtract(1)));
@@ -187,11 +189,11 @@ public class MatchingFiltersFactory {
         rv.add(expr.lt(other.add(1)));
         rv.add(expr.lt(other.add(2)));
         rv.add(expr.ne(other).not());
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+    public Collection<Predicate> string(StringExpression expr, StringExpression other){
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         if (module != Module.LUCENE){
             rv.addAll(comparable(expr, other));
 
@@ -293,33 +295,33 @@ public class MatchingFiltersFactory {
         }
 
         rv.add(expr.upper().eq(other.upper()));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other,  
+    public Collection<Predicate> string(StringExpression expr, StringExpression other,  
             String knownValue){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(string(expr, other));
         rv.addAll(string(expr, StringConstant.create(knownValue)));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  
+    public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,  
             TimeExpression<java.sql.Time> other){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
         rv.add(expr.minute().eq(other.minute()));
         rv.add(expr.hour().eq(other.hour()));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 
-    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  
+    public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,  
             TimeExpression<java.sql.Time> other, java.sql.Time knownValue){
-        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
+        HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(time(expr, other));
         rv.addAll(time(expr, TimeConstant.create(knownValue)));
-        return rv;
+        return ImmutableList.copyOf(rv);
     }
 }

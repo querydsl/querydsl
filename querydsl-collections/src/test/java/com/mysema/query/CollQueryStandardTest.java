@@ -32,8 +32,8 @@ import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QTuple;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Param;
 
 public class CollQueryStandardTest {
@@ -66,7 +66,7 @@ public class CollQueryStandardTest {
                     NO_EXPRESSIONS);
         }
         @Override
-        protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
+        protected Pair<Projectable, Expression<?>[]> createQuery(Predicate filter) {
             return Pair.of(
                     (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data).where(filter),
                     new Expression<?>[]{cat.name});

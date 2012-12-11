@@ -25,6 +25,7 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.ArrayExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CollectionExpressionBase;
@@ -109,9 +110,9 @@ public abstract class QueryExecution {
         return throwable;
     }
 
-    private void runFilterQueries(Collection<BooleanExpression> filters, boolean matching){
+    private void runFilterQueries(Collection<Predicate> filters, boolean matching){
         if (this.runFilters){
-            for (BooleanExpression f : filters){
+            for (Predicate f : filters){
                 total++;
                 try{
                     System.err.println(f);
@@ -147,9 +148,9 @@ public abstract class QueryExecution {
 
     protected abstract Pair<Projectable, Expression<?>[]> createQuery();
 
-    protected abstract Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter);
+    protected abstract Pair<Projectable, Expression<?>[]> createQuery(Predicate filter);
 
-    private long runCount(BooleanExpression f) {
+    private long runCount(Predicate f) {
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().count();
@@ -158,7 +159,7 @@ public abstract class QueryExecution {
         }
     }
 
-    private long runCountDistinct(BooleanExpression f) {
+    private long runCountDistinct(Predicate f) {
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().countDistinct();
@@ -167,7 +168,7 @@ public abstract class QueryExecution {
         }
     }
 
-    private int runFilter(BooleanExpression f) { 
+    private int runFilter(Predicate f) { 
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().list(p.getSecond()).size();
@@ -176,7 +177,7 @@ public abstract class QueryExecution {
         }
     }
 
-    private int runFilterDistinct(BooleanExpression f) {
+    private int runFilterDistinct(Predicate f) {
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().listDistinct(p.getSecond()).size();

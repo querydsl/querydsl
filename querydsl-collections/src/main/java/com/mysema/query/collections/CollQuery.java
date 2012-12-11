@@ -52,7 +52,7 @@ public final class CollQuery extends AbstractCollQuery<CollQuery> implements Sim
     
 
     /**
-     * Create a new ColQueryImpl instance
+     * Create a new CollQuery instance
      *
      * @param metadata
      * @param evaluatorFactory
@@ -62,7 +62,7 @@ public final class CollQuery extends AbstractCollQuery<CollQuery> implements Sim
     }
 
     /**
-     * Create a new ColQueryImpl instance
+     * Create a new CollQuery instance
      *
      * @param metadata
      * @param evaluatorFactory
@@ -72,7 +72,7 @@ public final class CollQuery extends AbstractCollQuery<CollQuery> implements Sim
     }
 
     /**
-     * Clone the state of this query to a new ColQueryImpl instance
+     * Clone the state of this query to a new CollQuery instance
      */
     @Override
     public CollQuery clone() {

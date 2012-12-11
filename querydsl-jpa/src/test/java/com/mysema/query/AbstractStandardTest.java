@@ -260,7 +260,7 @@ public abstract class AbstractStandardTest {
             }
             
             @Override
-            protected Pair<Projectable, Expression<?>[]> createQuery(BooleanExpression filter) {
+            protected Pair<Projectable, Expression<?>[]> createQuery(Predicate filter) {
                 // NOTE : EclipseLink needs extra conditions cond1 and code2
                 return Pair.of(
                         (Projectable)testQuery().from(sources).where(condition, filter),

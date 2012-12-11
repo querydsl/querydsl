@@ -22,9 +22,9 @@ import java.util.Arrays;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.NumericField;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.NumericField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.search.IndexSearcher;
@@ -46,6 +46,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
@@ -631,7 +632,7 @@ public class LuceneSerializerTest {
         fail("Not yet implemented!");
     }
 
-    private boolean unsupportedOperation(BooleanExpression filter) {
+    private boolean unsupportedOperation(Predicate filter) {
         if (filter instanceof Operation<?>) {
             Operator<?> op = ((Operation<?>) filter).getOperator();
             if (op == Ops.STARTS_WITH_IC || op == Ops.EQ_IGNORE_CASE || op == Ops.STARTS_WITH_IC
@@ -645,7 +646,7 @@ public class LuceneSerializerTest {
     @Test
     public void various() throws Exception{
         MatchingFiltersFactory filters = new MatchingFiltersFactory(Module.LUCENE, Target.LUCENE);
-        for (BooleanExpression filter : filters.string(title, StringConstant.create("jurassic park"))){
+        for (Predicate filter : filters.string(title, StringConstant.create("jurassic park"))){
             if (unsupportedOperation(filter)) {
                 continue;
             }
@@ -653,7 +654,7 @@ public class LuceneSerializerTest {
             testQuery(filter, 1);
         }
 
-        for (BooleanExpression filter : filters.string(author, StringConstant.create("michael crichton"))){
+        for (Predicate filter : filters.string(author, StringConstant.create("michael crichton"))){
             if (unsupportedOperation(filter)) {
                 continue;
             }
@@ -661,7 +662,7 @@ public class LuceneSerializerTest {
             testQuery(filter, 1);
         }
 
-        for (BooleanExpression filter : filters.string(title, StringConstant.create("1990"))){
+        for (Predicate filter : filters.string(title, StringConstant.create("1990"))){
             if (unsupportedOperation(filter)) {
                 continue;
             }
