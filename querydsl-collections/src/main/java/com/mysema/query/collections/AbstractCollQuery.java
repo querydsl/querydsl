@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.FilteredClause;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -34,7 +35,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.QTuple;
 
 /**
- * AbstractColQuery provides a base class for Collection query implementations.
+ * AbstractCollQuery provides a base class for Collection query implementations.
  * Extend it like this
  *
  * <pre>
@@ -43,19 +44,19 @@ import com.mysema.query.types.QTuple;
  * }
  * </pre>
  *
- * @see ColQuery
+ * @see CollQuery
  *
  * @author tiwe
  */
-public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends ProjectableQuery<Q> {
+public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends ProjectableQuery<Q> {
 
     private final Map<Expression<?>, Iterable<?>> iterables = new HashMap<Expression<?>, Iterable<?>>();
 
     private final QueryEngine queryEngine;
 
     @SuppressWarnings("unchecked")
-    public AbstractColQuery(QueryMetadata metadata, QueryEngine queryEngine) {
-        super(new ColQueryMixin<Q>(metadata));
+    public AbstractCollQuery(QueryMetadata metadata, QueryEngine queryEngine) {
+        super(new CollQueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.queryEngine = queryEngine;
     }
@@ -90,14 +91,28 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Add a query source
+     *
+     * @param <A>
+     * @param entity Path for the source
+     * @param col content of the source
+     * @return
+     */
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
         getMetadata().addJoin(JoinType.DEFAULT, entity);
         return (Q)this;
     }
     
-    @SuppressWarnings("unchecked")
+    /**
+     * Bind the given collection to an already existing query source
+     *
+     * @param <A>
+     * @param entity Path for the source
+     * @param col content of the source
+     * @return
+     */
     public <A> Q bind(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
         return (Q)this;
@@ -109,13 +124,27 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         return queryEngine;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Define an inner join from the Collection typed path to the alias
+     *
+     * @param <P>
+     * @param collectionPath
+     * @param alias
+     * @return
+     */
     public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Define an inner join from the Map typed path to the alias
+     *
+     * @param <P>
+     * @param mapPath
+     * @param alias
+     * @return
+     */
     public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;

@@ -20,28 +20,28 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
- * ColDeleteClause is an implementation of the {@link DeleteClause} interface for the Querydsl 
+ * CollDeleteClause is an implementation of the {@link DeleteClause} interface for the Querydsl 
  * Collections module
  *
  * @author tiwe
  *
  * @param <T>
  */
-public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>> {
+public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
 
     private final Collection<? extends T> col;
 
     private final Path<T> expr;
 
-    private final ColQuery query;
+    private final CollQuery query;
 
-    public ColDeleteClause(QueryEngine qe, Path<T> expr, Collection<? extends T> col){
-        this.query = new ColQueryImpl(qe).from(expr, col);
+    public CollDeleteClause(QueryEngine qe, Path<T> expr, Collection<? extends T> col){
+        this.query = new CollQuery(qe).from(expr, col);
         this.expr = expr;
         this.col = col;
     }
 
-    public ColDeleteClause(Path<T> expr, Collection<? extends T> col){
+    public CollDeleteClause(Path<T> expr, Collection<? extends T> col){
         this(DefaultQueryEngine.DEFAULT, expr, col);
     }
 
@@ -56,7 +56,7 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>> {
     }
     
     @Override
-    public ColDeleteClause<T> where(Predicate... o) {
+    public CollDeleteClause<T> where(Predicate... o) {
         query.where(o);
         return this;
     }

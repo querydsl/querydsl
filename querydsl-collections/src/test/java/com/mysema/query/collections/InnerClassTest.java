@@ -34,10 +34,10 @@ public class InnerClassTest {
     @Test
     public void Query(){
         Example example = alias(Example.class);
-        assertFalse(ColQueryFactory.from($(example), Arrays.asList(new Example()))
+        assertFalse(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNull())
                 .list($(example)).isEmpty());
-        assertTrue(ColQueryFactory.from($(example), Arrays.asList(new Example()))
+        assertTrue(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNotNull())
                 .list($(example)).isEmpty());
     }

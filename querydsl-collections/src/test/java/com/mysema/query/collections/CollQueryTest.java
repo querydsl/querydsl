@@ -13,7 +13,7 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.collections.ColQueryFactory.from;
+import static com.mysema.query.collections.CollQueryFactory.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -32,15 +32,15 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
-public class ColQueryTest extends AbstractQueryTest {
+public class CollQueryTest extends AbstractQueryTest {
 
     @Test
     public void CustomTemplates() {
-        ColQueryTemplates templates = new ColQueryTemplates() {{
+        CollQueryTemplates templates = new CollQueryTemplates() {{
             add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
             add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
         }};
-        new ColQueryImpl(templates);
+        new CollQuery(templates);
     }
     
     @Test
@@ -83,7 +83,7 @@ public class ColQueryTest extends AbstractQueryTest {
     
     @Test
     public void Clone(){
-        ColQueryImpl query = new ColQueryImpl().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
+        CollQuery query = new CollQuery().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
         assertEquals("cat is not null", query.getMetadata().getWhere().toString());
     }
 

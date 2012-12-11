@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.H2Templates;
-import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -107,7 +107,7 @@ public class QueryPerformanceTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
             QCompanies companies = QCompanies.companies;
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf);
+            SQLQuery query = new SQLQuery(conn, conf);
             query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
         }
         System.err.println("qdsl by id " + (System.currentTimeMillis() - start));    
@@ -121,7 +121,7 @@ public class QueryPerformanceTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
             QCompanies companies = QCompanies.companies;
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf);
+            SQLQuery query = new SQLQuery(conn, conf);
             CloseableIterator<String> it = query.from(companies)
                     .where(companies.id.eq((long)i)).iterate(companies.name);
             try {
@@ -143,7 +143,7 @@ public class QueryPerformanceTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
             QCompanies companies = QCompanies.companies;
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf, new DefaultQueryMetadata().noValidate());
+            SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
             query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
         }
         System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (no validation)");    
@@ -157,7 +157,7 @@ public class QueryPerformanceTest {
         
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {                        
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf);
+            SQLQuery query = new SQLQuery(conn, conf);
             query.from(companies).where(companies.id.eq((long)i)).list(companies.id, companies.name);            
         }
         System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (two cols)");    
@@ -171,7 +171,7 @@ public class QueryPerformanceTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
             QCompanies companies = QCompanies.companies;
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf);
+            SQLQuery query = new SQLQuery(conn, conf);
             query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
         }
         System.err.println("qdsl by name " + (System.currentTimeMillis() - start));    
@@ -185,7 +185,7 @@ public class QueryPerformanceTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
             QCompanies companies = QCompanies.companies;
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf);
+            SQLQuery query = new SQLQuery(conn, conf);
             CloseableIterator<String> it = query.from(companies)
                     .where(companies.name.eq(String.valueOf(i))).iterate(companies.name);
             try {
@@ -207,7 +207,7 @@ public class QueryPerformanceTest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {            
             QCompanies companies = QCompanies.companies;
-            SQLQueryImpl query = new SQLQueryImpl(conn, conf, new DefaultQueryMetadata().noValidate());
+            SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
             query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
         }
         System.err.println("qdsl by name " + (System.currentTimeMillis() - start) + " (no validation)");    

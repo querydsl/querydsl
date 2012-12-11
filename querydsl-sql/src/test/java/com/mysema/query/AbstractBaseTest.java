@@ -28,6 +28,7 @@ import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
@@ -41,7 +42,7 @@ import com.mysema.query.sql.oracle.OracleQuery;
 
 public abstract class AbstractBaseTest {
 
-    private final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLQuery {
+    protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
         
         private TestQuery(Connection conn, Configuration configuration) {
             super(conn, configuration);
@@ -62,8 +63,7 @@ public abstract class AbstractBaseTest {
             return rv;
         }
 
-        @Override
-        public SQLQuery clone(Connection conn) {
+        public TestQuery clone(Connection conn) {
             TestQuery q = new TestQuery(conn, getConfiguration(), getMetadata().clone());
             q.union = union;
             q.unionAll = unionAll;
@@ -116,7 +116,7 @@ public abstract class AbstractBaseTest {
         return new MySQLReplaceClause(connection, templates, path);
     }
     
-    protected SQLQuery query() {
+    protected TestQuery query() {
         return new TestQuery(connection, new Configuration(templates));
     }
     

@@ -19,25 +19,25 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ColQueryFunctionsTest {
+public class CollQueryFunctionsTest {
 
     @Test
     public void Coalesce(){
-        assertEquals("1", ColQueryFunctions.coalesce("1",null));
-        assertEquals("1", ColQueryFunctions.coalesce(null,"1","2"));
-        assertNull(ColQueryFunctions.coalesce(null,null));
+        assertEquals("1", CollQueryFunctions.coalesce("1",null));
+        assertEquals("1", CollQueryFunctions.coalesce(null,"1","2"));
+        assertNull(CollQueryFunctions.coalesce(null,null));
     }
 
     @Test
     public void Like() {
-        assertTrue(ColQueryFunctions.like("abcDOG", "%DOG"));
-        assertTrue(ColQueryFunctions.like("DOGabc", "DOG%"));
-        assertTrue(ColQueryFunctions.like("abcDOGabc", "%DOG%"));        
+        assertTrue(CollQueryFunctions.like("abcDOG", "%DOG"));
+        assertTrue(CollQueryFunctions.like("DOGabc", "DOG%"));
+        assertTrue(CollQueryFunctions.like("abcDOGabc", "%DOG%"));        
     }
     
     @Test
     public void Like_With_Special_Chars() {
-        assertTrue(ColQueryFunctions.like("$DOG", "$DOG"));
-        assertTrue(ColQueryFunctions.like("$DOGabc", "$DOG%"));
+        assertTrue(CollQueryFunctions.like("$DOG", "$DOG"));
+        assertTrue(CollQueryFunctions.like("$DOGabc", "$DOG%"));
     }
 }

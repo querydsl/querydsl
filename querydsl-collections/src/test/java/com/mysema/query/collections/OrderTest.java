@@ -49,7 +49,7 @@ public class OrderTest extends AbstractQueryTest {
     
     @Test
     public void With_count(){
-        ColQuery q = new ColQueryImpl();
+        CollQuery q = new CollQuery();
         q.from(cat, cats);
         long size = q.countDistinct();
         assertTrue(size > 0);

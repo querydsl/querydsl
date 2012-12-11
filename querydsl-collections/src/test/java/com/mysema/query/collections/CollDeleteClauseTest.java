@@ -21,14 +21,14 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ColDeleteClauseTest {
+public class CollDeleteClauseTest {
 
     @Test
     public void Execute() {
         QCat cat = QCat.cat;
         List<Cat> cats = new ArrayList<Cat>(Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl")));
 
-        ColDeleteClause<Cat> deleteClause = new ColDeleteClause<Cat>(cat, cats);
+        CollDeleteClause<Cat> deleteClause = new CollDeleteClause<Cat>(cat, cats);
         deleteClause.where(cat.name.eq("Bob"));
         assertEquals(1, deleteClause.execute());
 

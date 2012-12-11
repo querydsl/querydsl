@@ -31,28 +31,28 @@ public class DistinctTest extends AbstractQueryTest {
 
     @Test
     public void SingleSource() {
-        assertEquals(list1, ColQueryFactory.from(intVar1, list1).list(intVar1));
-        assertEquals(Arrays.asList(1, 2, 3, 4), ColQueryFactory.from(intVar1, list1).listDistinct(intVar1));
-        assertEquals(Arrays.asList(2, 3, 4), ColQueryFactory.from(intVar2, list2).listDistinct(intVar2));
+        assertEquals(list1, CollQueryFactory.from(intVar1, list1).list(intVar1));
+        assertEquals(Arrays.asList(1, 2, 3, 4), CollQueryFactory.from(intVar1, list1).listDistinct(intVar1));
+        assertEquals(Arrays.asList(2, 3, 4), CollQueryFactory.from(intVar2, list2).listDistinct(intVar2));
         
-        assertEquals(Arrays.asList(2, 3, 4), ColQueryFactory.from(intVar2, list2).distinct().list(intVar2));
+        assertEquals(Arrays.asList(2, 3, 4), CollQueryFactory.from(intVar2, list2).distinct().list(intVar2));
     }
 
     @Test
     public void BothSources() {
-        assertEquals(100, ColQueryFactory.from(intVar1, list1).from(intVar2, list2).list(intVar1, intVar2).size());
-        assertEquals(12, ColQueryFactory.from(intVar1, list1).from(intVar2, list2).listDistinct(intVar1, intVar2).size());
+        assertEquals(100, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).list(intVar1, intVar2).size());
+        assertEquals(12, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).listDistinct(intVar1, intVar2).size());
         
-        assertEquals(12, ColQueryFactory.from(intVar1, list1).from(intVar2, list2).distinct().list(intVar1, intVar2).size());
+        assertEquals(12, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).distinct().list(intVar1, intVar2).size());
     }
 
     @Test
     public void CountDistinct() {
-        assertEquals(10, ColQueryFactory.from(intVar1, list1).count());
-        assertEquals(4, ColQueryFactory.from(intVar1, list1).countDistinct());
-        assertEquals(3, ColQueryFactory.from(intVar2, list2).countDistinct());
+        assertEquals(10, CollQueryFactory.from(intVar1, list1).count());
+        assertEquals(4, CollQueryFactory.from(intVar1, list1).countDistinct());
+        assertEquals(3, CollQueryFactory.from(intVar2, list2).countDistinct());
         
-        assertEquals(3, ColQueryFactory.from(intVar2, list2).distinct().count());
+        assertEquals(3, CollQueryFactory.from(intVar2, list2).distinct().count());
     }
 
 }

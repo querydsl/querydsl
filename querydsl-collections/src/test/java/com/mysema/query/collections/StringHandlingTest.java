@@ -50,14 +50,14 @@ public class StringHandlingTest extends AbstractQueryTest {
 
     @Test
     public void StartsWithIgnoreCase() {
-        assertEquals(2, ColQueryFactory.from(a, data).where(a.startsWithIgnoreCase("AB")).count());
-        assertEquals(2, ColQueryFactory.from(a, data).where(a.startsWithIgnoreCase("ab")).count());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("AB")).count());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("ab")).count());
     }
 
     @Test
     public void EndsWithIgnoreCase() {
-        assertEquals(2, ColQueryFactory.from(a, data).where(a.endsWithIgnoreCase("BC")).count());
-        assertEquals(2, ColQueryFactory.from(a, data).where(a.endsWithIgnoreCase("bc")).count());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("BC")).count());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("bc")).count());
     }
 
 }

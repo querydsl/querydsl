@@ -246,7 +246,7 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
     }
   }
 
-  def query = new SQLQueryImpl(connection, templates)
+  def query = new SQLQuery(connection, templates)
 
   def delete(path: RelationalPath[_]) = new SQLDeleteClause(connection, templates, path)
   

@@ -36,7 +36,7 @@ import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.types.Null;
@@ -146,7 +146,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     @SuppressWarnings("unchecked")
     private long executeCompositeMerge() {        
         // select 
-        SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
+        SQLQuery query = new SQLQuery(connection, configuration.getTemplates()).from(entity);
         for (int i=0; i < columns.size(); i++) {
             if (values.get(i) instanceof NullExpression) {
                 query.where(ExpressionUtils.isNull(columns.get(i)));

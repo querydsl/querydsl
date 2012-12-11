@@ -14,120 +14,81 @@
 package com.mysema.query.sql;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 
-import com.mysema.query.Projectable;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 
 /**
- * Query interface for SQL queries
+ * SQLQuery is a JDBC based implementation of the {@link SQLCommonQuery} interface
  *
  * @author tiwe
- *
  */
-public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
+public final class SQLQuery extends AbstractSQLQuery<SQLQuery> implements SQLCommonQuery<SQLQuery> {
 
     /**
-     * If you use forUpdate() with a backend that uses page or row locks, rows examined by the 
-     * query are write-locked until the end of the current transaction.
-     * 
-     * Not supported for SQLite and CUBRID
-     * 
-     * @return
-     */
-    SQLQuery forUpdate();
-    
-    /**
-     * Creates an union expression for the given subqueries
+     * Create a detached SQLQuery instance
+     * The query can be attached via the clone method
      *
-     * @param <RT>
-     * @param sq
-     * @return
+     * @param connection Connection to use
+     * @param templates SQLTemplates to use
      */
-    <RT> Union<RT> union(ListSubQuery<RT>... sq);
-    
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    <RT> SQLQuery union(Path<?> alias, ListSubQuery<RT>... sq);
+    public SQLQuery(SQLTemplates templates) {
+        super(null, new Configuration(templates), new DefaultQueryMetadata());
+    }
 
     /**
-     * Creates an union expression for the given subqueries
+     * Create a new SQLQuery instance
      *
-     * @param <RT>
-     * @param sq
-     * @return
+     * @param conn Connection to use
+     * @param templates SQLTemplates to use
      */
-    <RT> Union<RT> union(SubQueryExpression<RT>... sq);
-    
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    <RT> SQLQuery union(Path<?> alias, SubQueryExpression<RT>... sq);
-    
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    <RT> Union<RT> unionAll(ListSubQuery<RT>... sq);
-    
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    <RT> SQLQuery unionAll(Path<?> alias, ListSubQuery<RT>... sq);
+    public SQLQuery(Connection conn, SQLTemplates templates) {
+        super(conn, new Configuration(templates), new DefaultQueryMetadata());
+    }
 
     /**
-     * Creates an union expression for the given subqueries
+     * Create a new SQLQuery instance
      *
-     * @param <RT>
-     * @param sq
-     * @return
+     * @param conn Connection to use
+     * @param templates SQLTemplates to use
+     * @param metadata
      */
-    <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq);
-
+    public SQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
+        super(conn, new Configuration(templates), metadata);
+    }
 
     /**
-     * Creates an union expression for the given subqueries
+     * Create a new SQLQuery instance
      *
-     * @param <RT>
-     * @param sq
-     * @return
+     * @param conn Connection to use
+     * @param configuration
      */
-    <RT> SQLQuery unionAll(Path<?> alias, SubQueryExpression<RT>... sq);
-        
+    public SQLQuery(Connection conn, Configuration configuration) {
+        super(conn, configuration, new DefaultQueryMetadata());
+    }
+
     /**
-     * Clone the state of the Query for the given Connection
+     * Create a new SQLQuery instance
+     *
+     * @param conn
+     * @param templates
+     * @param metadata
+     */
+    public SQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+        super(conn, configuration, metadata);
+    }
+
+    /**
+     * Clone the state of this query to a new SQLQuery instance with the given Connection
      *
      * @param conn
      * @return
      */
-    SQLQuery clone(Connection conn);
+    public SQLQuery clone(Connection conn) {
+        SQLQuery q = new SQLQuery(conn, getConfiguration(), getMetadata().clone());
+        q.union = union;
+        q.unionAll = unionAll;
+        return q;
+    }
 
-    /**
-     * Get the results as an JDBC result set
-     *
-     * @param args
-     * @return
-     */
-    ResultSet getResults(Expression<?>... args);
-    
-    
 }

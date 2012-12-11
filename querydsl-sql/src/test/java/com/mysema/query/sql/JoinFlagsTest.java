@@ -30,7 +30,7 @@ public class JoinFlagsTest {
 
     private QSurvey s1, s2, s3, s4, s5, s6;
     
-    private SQLQueryImpl query;
+    private SQLQuery query;
     
     @Before
     public void setUp(){
@@ -40,7 +40,7 @@ public class JoinFlagsTest {
         s4 = new QSurvey("s4");    
         s5 = new QSurvey("s5");
         s6 = new QSurvey("s6");        
-        query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(s1);    
     }
 

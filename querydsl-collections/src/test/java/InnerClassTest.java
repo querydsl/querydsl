@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.ColQueryFactory;
+import com.mysema.query.collections.CollQueryFactory;
 
 public class InnerClassTest {
 
@@ -36,10 +36,10 @@ public class InnerClassTest {
     @Test
     public void Query(){
         Example example = alias(Example.class);
-        assertFalse(ColQueryFactory.from($(example), Arrays.asList(new Example()))
+        assertFalse(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNull())
                 .list($(example)).isEmpty());
-        assertTrue(ColQueryFactory.from($(example), Arrays.asList(new Example()))
+        assertTrue(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNotNull())
                 .list($(example)).isEmpty());
     }

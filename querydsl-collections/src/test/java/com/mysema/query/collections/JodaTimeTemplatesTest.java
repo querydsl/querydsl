@@ -13,7 +13,7 @@ import com.mysema.query.types.path.TimePath;
 
 public class JodaTimeTemplatesTest {
     
-    private ColQuery query = new ColQueryImpl(JodaTimeTemplates.DEFAULT);
+    private CollQuery query = new CollQuery(JodaTimeTemplates.DEFAULT);
     
     @Test
     public void DateTime() {

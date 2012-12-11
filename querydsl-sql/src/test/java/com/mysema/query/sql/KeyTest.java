@@ -89,7 +89,7 @@ public class KeyTest {
     }
 
     private SQLQuery query(){
-        return new SQLQueryImpl(SQLTemplates.DEFAULT);
+        return new SQLQuery(SQLTemplates.DEFAULT);
     }
 
 }

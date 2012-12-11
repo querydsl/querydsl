@@ -23,7 +23,7 @@ import javax.inject.Provider;
  * @author tiwe
  *
  */
-public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQueryImpl> {
+public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery> {
 
     public SQLQueryFactoryImpl(SQLTemplates templates, Provider<Connection> connection) {
         this(new Configuration(templates), connection);
@@ -33,8 +33,8 @@ public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQueryImpl> {
         super(configuration, connection);
     }
 
-    public SQLQueryImpl query() {
-        return new SQLQueryImpl(connection.get(), configuration);
+    public SQLQuery query() {
+        return new SQLQuery(connection.get(), configuration);
     }
 
 }

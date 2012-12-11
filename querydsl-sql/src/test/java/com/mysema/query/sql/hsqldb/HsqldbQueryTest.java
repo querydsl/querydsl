@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.domain.QSurvey;
 
 public class HsqldbQueryTest {
@@ -16,7 +16,7 @@ public class HsqldbQueryTest {
     
     @Before
     public void setUp(){
-        query = new SQLQueryImpl(null, new H2Templates(){{
+        query = new SQLQuery(null, new H2Templates(){{
             newLineToSingleSpace();
         }});
     }

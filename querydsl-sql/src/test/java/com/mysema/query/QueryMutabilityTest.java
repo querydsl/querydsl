@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.DerbyTemplates;
-import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.domain.QSurvey;
 
 public class QueryMutabilityTest{
@@ -49,15 +49,15 @@ public class QueryMutabilityTest{
     public void test() throws IOException, SecurityException,
             IllegalArgumentException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
-        SQLQueryImpl query = new SQLQueryImpl(connection, new DerbyTemplates());
+        SQLQuery query = new SQLQuery(connection, new DerbyTemplates());
         query.from(survey);
         new QueryMutability(query).test(survey.id, survey.name);
     }
 
     @Test
     public void Clone(){
-        SQLQueryImpl query = new SQLQueryImpl(new DerbyTemplates()).from(survey);
-        SQLQueryImpl query2 = query.clone(connection);
+        SQLQuery query = new SQLQuery(new DerbyTemplates()).from(survey);
+        SQLQuery query2 = query.clone(connection);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
         query2.list(survey.id);

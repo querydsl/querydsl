@@ -30,7 +30,7 @@ trait SQLHelpers {
   def templates: SQLTemplates
 
   implicit def toRichSimpleQuery[T, R <: RelationalPath[T]](p: RelationalPath[T] with R) = {
-    new RichSimpleQuery[T, R, T, R](p, p, new SQLQueryImpl(connection, templates).from(p) )
+    new RichSimpleQuery[T, R, T, R](p, p, new SQLQuery(connection, templates).from(p) )
   }
   
 }
@@ -47,7 +47,7 @@ trait SQL extends SQLHelpers {
   
   def connection = connectionHolder.get()
                
-  def query() = new SQLQueryImpl(connection, templates)
+  def query() = new SQLQuery(connection, templates)
   
   def from(expr: Expression[_]*) = query.from(expr:_*)
 

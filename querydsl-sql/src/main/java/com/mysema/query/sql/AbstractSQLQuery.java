@@ -184,6 +184,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return limit(1).singleResult(NumberTemplate.ONE) != null;
     }
 
+    /**
+     * If you use forUpdate() with a backend that uses page or row locks, rows examined by the 
+     * query are write-locked until the end of the current transaction.
+     * 
+     * Not supported for SQLite and CUBRID
+     * 
+     * @return
+     */
     public Q forUpdate() {
         return addFlag(Position.END, configuration.getTemplates().getForUpdate());
     }
@@ -298,6 +306,12 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return queryMixin.getMetadata();
     }
 
+    /**
+     * Get the results as an JDBC result set
+     *
+     * @param args
+     * @return
+     */
     public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.addProjection(exprs);
         String queryString = buildQueryString(false);
@@ -528,36 +542,92 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return buildQueryString(false).trim();
     }
 
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
     
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), false));
     }
 
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
     }
     
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), false));
     }
     
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
     }
     
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
     }
 
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
     }
     
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
     }

@@ -55,25 +55,25 @@ public class DefaultEvaluatorFactory {
 
     private final EvaluatorFactory factory;
 
-    private final ColQueryTemplates templates;
+    private final CollQueryTemplates templates;
     
-    public DefaultEvaluatorFactory(ColQueryTemplates templates){
+    public DefaultEvaluatorFactory(CollQueryTemplates templates){
         this(templates,
         Thread.currentThread().getContextClassLoader());
     }
     
-    public DefaultEvaluatorFactory(ColQueryTemplates templates, EvaluatorFactory factory){
+    public DefaultEvaluatorFactory(CollQueryTemplates templates, EvaluatorFactory factory){
         this.templates = templates;
         this.factory = factory;
     }
 
-    protected DefaultEvaluatorFactory(ColQueryTemplates templates,
+    protected DefaultEvaluatorFactory(CollQueryTemplates templates,
             URLClassLoader classLoader, JavaCompiler compiler){
         this.templates = templates;
         this.factory = new JDKEvaluatorFactory(classLoader, compiler);
     }
 
-    protected DefaultEvaluatorFactory(ColQueryTemplates templates, ClassLoader classLoader){
+    protected DefaultEvaluatorFactory(CollQueryTemplates templates, ClassLoader classLoader){
         this.templates = templates;        
         if (classLoader instanceof URLClassLoader) {
             this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader);
@@ -93,7 +93,7 @@ public class DefaultEvaluatorFactory {
      */
     public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expression<?>> sources, 
             Expression<T> projection) {
-        ColQuerySerializer serializer = new ColQuerySerializer(templates);
+        CollQuerySerializer serializer = new CollQuerySerializer(templates);
         serializer.handle(projection);
 
         Map<Object,String> constantToLabel = serializer.getConstantToLabel();
@@ -132,7 +132,7 @@ public class DefaultEvaluatorFactory {
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, 
             Expression<? extends T> source, Predicate filter){
         String typeName = ClassUtils.getName(source.getType());
-        ColQuerySerializer ser = new ColQuerySerializer(templates);
+        CollQuerySerializer ser = new CollQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
         ser.append("for (" + typeName + " "+ source + " : " + source + "_){\n");
         ser.append("    if (").handle(filter).append("){\n");
@@ -170,7 +170,7 @@ public class DefaultEvaluatorFactory {
         List<Type> sourceTypes = new ArrayList<Type>();
         List<Class> sourceClasses = new ArrayList<Class>();
         StringBuilder vars = new StringBuilder();
-        ColQuerySerializer ser = new ColQuerySerializer(templates);
+        CollQuerySerializer ser = new CollQuerySerializer(templates);
         ser.append("java.util.List<Object[]> rv = new java.util.ArrayList<Object[]>();\n");
 
         List<String> anyJoinMatchers = new ArrayList<String>();

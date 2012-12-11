@@ -30,7 +30,7 @@ public abstract class AbstractSQLTemplatesTest {
     
     protected static final QSurvey survey2 = new QSurvey("survey2");
     
-    protected SQLQueryImpl query;
+    protected SQLQuery query;
     
     protected abstract SQLTemplates createTemplates();
 
@@ -38,7 +38,7 @@ public abstract class AbstractSQLTemplatesTest {
     public void setUp(){
         SQLTemplates templates = createTemplates();
         templates.newLineToSingleSpace();
-        query = new SQLQueryImpl(templates);
+        query = new SQLQuery(templates);
     }
     
     @Test

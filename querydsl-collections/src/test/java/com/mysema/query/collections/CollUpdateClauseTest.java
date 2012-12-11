@@ -20,14 +20,14 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ColUpdateClauseTest {
+public class CollUpdateClauseTest {
 
     @Test
     public void Execute() {
         QCat cat = QCat.cat;
         List<Cat> cats = Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl"));
 
-        ColUpdateClause<Cat> updateClause = new ColUpdateClause<Cat>(cat, cats);
+        CollUpdateClause<Cat> updateClause = new CollUpdateClause<Cat>(cat, cats);
         updateClause.where(cat.name.eq("Bob"));
         updateClause.set(cat.name, "Bobby");
         assertEquals(1, updateClause.execute());

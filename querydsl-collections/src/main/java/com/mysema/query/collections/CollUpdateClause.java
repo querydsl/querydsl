@@ -24,26 +24,26 @@ import com.mysema.query.types.Predicate;
 import com.mysema.util.BeanMap;
 
 /**
- * ColUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections
+ * CollUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections
  *
  * @author tiwe
  *
  * @param <T>
  */
-public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>> {
+public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
 
     private final Path<T> expr;
 
     private final Map<Path<?>, Object> paths = new HashMap<Path<?>, Object>();
 
-    private final ColQuery query;
+    private final CollQuery query;
 
-    public ColUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col){
-        this.query = new ColQueryImpl(qe).from(expr, col);
+    public CollUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col){
+        this.query = new CollQuery(qe).from(expr, col);
         this.expr = expr;
     }
 
-    public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
+    public CollUpdateClause(Path<T> expr, Iterable<? extends T> col){
         this(DefaultQueryEngine.DEFAULT, expr, col);
     }
 
@@ -63,26 +63,26 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>> {
     }
 
     @Override
-    public <U> ColUpdateClause<T> set(Path<U> path, U value) {
+    public <U> CollUpdateClause<T> set(Path<U> path, U value) {
         paths.put(path, value);
         return this;
     }
     
 
     @Override
-    public <U> ColUpdateClause<T> set(Path<U> path, Expression<? extends U> expression) {
+    public <U> CollUpdateClause<T> set(Path<U> path, Expression<? extends U> expression) {
         // TODO : implement
         throw new UnsupportedOperationException();
     }
     
     @Override
-    public <U> ColUpdateClause<T> setNull(Path<U> path){
+    public <U> CollUpdateClause<T> setNull(Path<U> path){
         paths.put(path, null);
         return this;
     }
 
     @Override
-    public ColUpdateClause<T> set(List<? extends Path<?>> p, List<?> v) {
+    public CollUpdateClause<T> set(List<? extends Path<?>> p, List<?> v) {
         for (int i = 0; i < p.size(); i++) {
             paths.put(p.get(i), v.get(i));
         }
@@ -90,7 +90,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>> {
     }
 
     @Override
-    public ColUpdateClause<T> where(Predicate... o) {
+    public CollUpdateClause<T> where(Predicate... o) {
         query.where(o);
         return this;
     }

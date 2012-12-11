@@ -13,7 +13,6 @@
  */
 package com.mysema.query.collections;
 
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
@@ -24,23 +23,23 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.template.BooleanTemplate;
 
 /**
- * ColQueryMixin extends {@link QueryMixin} to provide normalization logic specific to this module
+ * CollQueryMixin extends {@link QueryMixin} to provide normalization logic specific to this module
  * 
  * @author tiwe
  *
  * @param <T>
  */
-public class ColQueryMixin<T> extends QueryMixin<T> {
+public class CollQueryMixin<T> extends QueryMixin<T> {
     
     private static final Predicate ANY = BooleanTemplate.create("any");
 
-    public ColQueryMixin() {}
+    public CollQueryMixin() {}
 
-    public ColQueryMixin(QueryMetadata metadata) {
+    public CollQueryMixin(QueryMetadata metadata) {
         super(metadata);
     }
 
-    public ColQueryMixin(T self, QueryMetadata metadata) {
+    public CollQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
     

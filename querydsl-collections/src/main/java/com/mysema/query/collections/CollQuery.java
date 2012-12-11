@@ -15,37 +15,38 @@ package com.mysema.query.collections;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.SimpleQuery;
 
 /**
- * ColQueryImpl is the default implementation of the {@link ColQuery} interface
+ * CollQuery is the default implementation of the {@link SimpleQuery} interface for collections
  *
  * @author tiwe
  *
  */
-public final class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery, Cloneable {
+public final class CollQuery extends AbstractCollQuery<CollQuery> implements SimpleQuery<CollQuery>, Cloneable {
 
     /**
-     * Create a new ColQueryImpl instance
+     * Create a new CollQuery instance
      */
-    public ColQueryImpl() {
+    public CollQuery() {
         super(new DefaultQueryMetadata(), DefaultQueryEngine.DEFAULT);
     }
 
     /**
-     * Creates a new ColQueryImpl instance
+     * Creates a new CollQuery instance
      * 
      * @param templates
      */
-    public ColQueryImpl(ColQueryTemplates templates) {
+    public CollQuery(CollQueryTemplates templates) {
         this(new DefaultQueryEngine(new DefaultEvaluatorFactory(templates)));
     }
     
     /**
-     * Create a new ColQueryImpl instance
+     * Create a new CollQuery instance
      *
      * @param evaluatorFactory
      */
-    public ColQueryImpl(QueryEngine queryEngine) {
+    public CollQuery(QueryEngine queryEngine) {
         super(new DefaultQueryMetadata(), queryEngine);
     }
     
@@ -56,7 +57,7 @@ public final class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implement
      * @param metadata
      * @param evaluatorFactory
      */
-    public ColQueryImpl(QueryMetadata metadata) {
+    public CollQuery(QueryMetadata metadata) {
         super(metadata, DefaultQueryEngine.DEFAULT);
     }
 
@@ -66,7 +67,7 @@ public final class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implement
      * @param metadata
      * @param evaluatorFactory
      */
-    public ColQueryImpl(QueryMetadata metadata, QueryEngine queryEngine) {
+    public CollQuery(QueryMetadata metadata, QueryEngine queryEngine) {
         super(metadata, queryEngine);
     }
 
@@ -74,8 +75,8 @@ public final class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implement
      * Clone the state of this query to a new ColQueryImpl instance
      */
     @Override
-    public ColQueryImpl clone() {
-        return new ColQueryImpl(queryMixin.getMetadata(), getQueryEngine());
+    public CollQuery clone() {
+        return new CollQuery(queryMixin.getMetadata(), getQueryEngine());
     }
 
     /**

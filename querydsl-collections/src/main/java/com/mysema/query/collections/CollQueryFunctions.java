@@ -24,12 +24,12 @@ import javax.annotation.Nullable;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * ColQueryFunctions defines function implementation for use in ColQueryTemplates
+ * CollQueryFunctions defines function implementation for use in ColQueryTemplates
  *
  * @author tiwe
  *
  */
-public final class ColQueryFunctions {
+public final class CollQueryFunctions {
     
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) >= 0 && a.compareTo(c) <= 0;
@@ -157,6 +157,6 @@ public final class ColQueryFunctions {
         }        
     }
     
-    private ColQueryFunctions(){}
+    private CollQueryFunctions(){}
 
 }

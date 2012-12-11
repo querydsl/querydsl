@@ -412,7 +412,7 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     public void DateTime() {
-        SQLQuery query = query().from(employee); 
+        TestQuery query = query().from(employee); 
         System.out.println(query.limit(1).list(employee.datefield.dayOfMonth()));
         System.out.println(query.limit(1).list(employee.datefield.month()));
         System.out.println(query.limit(1).list(employee.datefield.year()));
@@ -475,7 +475,7 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test    
     public void GroupBy_Superior() {
-        SQLQuery qry = query()
+        TestQuery qry = query()
             .from(employee)
             .innerJoin(employee._superiorIdKey, employee2);
         
@@ -1003,11 +1003,9 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     @SkipForQuoted
     public void Serialization(){
-        SQLQuery query = query();
-
+        TestQuery query = query();
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
-
         query.from(survey2);
         assertEquals("from SURVEY s, SURVEY s2", query.toString());
     }

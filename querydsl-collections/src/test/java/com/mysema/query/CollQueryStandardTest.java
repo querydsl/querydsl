@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.collections.Cat;
-import com.mysema.query.collections.ColQueryFactory;
+import com.mysema.query.collections.CollQueryFactory;
 import com.mysema.query.collections.QCat;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
@@ -37,7 +37,7 @@ import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Param;
 
-public class ColQueryStandardTest {
+public class CollQueryStandardTest {
 
     private final Date birthDate = new Date();
 
@@ -61,13 +61,13 @@ public class ColQueryStandardTest {
         @Override
         protected Pair<Projectable,List<Expression<?>>> createQuery() {
             return Pair.of(
-                    (Projectable)ColQueryFactory.from(cat, data).from(otherCat, data),
+                    (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data),
                     Collections.<Expression<?>>emptyList());
         }
         @Override
         protected Pair<Projectable,List<Expression<?>>> createQuery(BooleanExpression filter) {
             return Pair.of(
-                    (Projectable)ColQueryFactory.from(cat, data).from(otherCat, data).where(filter),
+                    (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data).where(filter),
                     Collections.<Expression<?>>singletonList(cat.name));
         }
     };
@@ -94,7 +94,7 @@ public class ColQueryStandardTest {
 
     @Test
     public void TupleProjection(){
-        List<Tuple> tuples = ColQueryFactory.from(cat, data)
+        List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .list(new QTuple(cat.name, cat.birthdate));
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(cat.name));
@@ -105,7 +105,7 @@ public class ColQueryStandardTest {
     @Test
     public void Nested_TupleProjection(){
         Concatenation concat = new Concatenation(cat.name, cat.name);
-        List<Tuple> tuples = ColQueryFactory.from(cat, data)
+        List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .list(new QTuple(concat, cat.name, cat.birthdate));
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(cat.name));
@@ -117,7 +117,7 @@ public class ColQueryStandardTest {
     @SuppressWarnings("unchecked")
     @Test
     public void ArrayProjection(){
-        List<String[]> results =  ColQueryFactory.from(cat, data)
+        List<String[]> results =  CollQueryFactory.from(cat, data)
             .list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
@@ -127,7 +127,7 @@ public class ColQueryStandardTest {
 
     @Test
     public void ConstructorProjection(){
-        List<Projection> projections =  ColQueryFactory.from(cat, data)
+        List<Projection> projections =  CollQueryFactory.from(cat, data)
             .list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
@@ -138,18 +138,18 @@ public class ColQueryStandardTest {
     @Test
     public void Params(){
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob", ColQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
 
     @Test
     public void Params_anon(){
         Param<String> name = new Param<String>(String.class);
-        assertEquals("Bob", ColQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
 
     @Test(expected=ParamNotSetException.class)
     public void Params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob", ColQueryFactory.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
 }

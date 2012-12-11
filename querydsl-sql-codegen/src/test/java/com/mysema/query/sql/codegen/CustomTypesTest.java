@@ -32,7 +32,7 @@ import com.mysema.query.sql.EncryptedString;
 import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.query.sql.QPerson;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;
@@ -98,7 +98,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
         assertEquals(1l, insert.execute());
         
         // query
-        SQLQuery query = new SQLQueryImpl(connection, configuration);
+        SQLQuery query = new SQLQuery(connection, configuration);
         assertEquals(Gender.MALE, query.from(person).where(person.id.eq(10)).uniqueResult(person.gender));
         
         // update
@@ -109,7 +109,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
         update.execute();
         
         // query
-        query = new SQLQueryImpl(connection, configuration);
+        query = new SQLQuery(connection, configuration);
         assertEquals(Gender.FEMALE, query.from(person).where(person.id.eq(10)).uniqueResult(person.gender));
     }
     

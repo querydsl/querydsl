@@ -13,7 +13,7 @@ public class PropertiesTest {
     public void Hidden() {
         QStateHistory history = QStateHistory.stateHistory;
         List<StateHistory> histories = Collections.singletonList(new StateHistory());
-        assertEquals(1, ColQueryFactory.from(history, histories)
+        assertEquals(1, CollQueryFactory.from(history, histories)
                 .where(history.changedAt.isNull()).list(history).size());
     }
     
@@ -21,7 +21,7 @@ public class PropertiesTest {
     public void Hidden2() {
         QStateHistoryOwner historyOwner = QStateHistoryOwner.stateHistoryOwner;
         List<StateHistoryOwner> historyOwners = Collections.singletonList(new StateHistoryOwner());
-        assertEquals(1, ColQueryFactory.from(historyOwner, historyOwners)
+        assertEquals(1, CollQueryFactory.from(historyOwner, historyOwners)
                 .where(historyOwner.stateHistory.isNull()).list(historyOwner).size());
     }
 

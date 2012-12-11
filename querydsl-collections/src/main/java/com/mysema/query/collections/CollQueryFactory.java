@@ -20,11 +20,11 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.types.Path;
 
 /**
- * ColQueryFactory provides static convenience methods for query construction
+ * CollQueryFactory provides static convenience methods for query construction
  *
  * @author tiwe
  */
-public final class ColQueryFactory {
+public final class CollQueryFactory {
 
     /**
      * Create a new delete clause 
@@ -33,8 +33,8 @@ public final class ColQueryFactory {
      * @param col source collection
      * @return
      */
-    public static <A> ColDeleteClause<A> delete(Path<A> path, Collection<A> col) {
-        return new ColDeleteClause<A>(path, col);
+    public static <A> CollDeleteClause<A> delete(Path<A> path, Collection<A> col) {
+        return new CollDeleteClause<A>(path, col);
     }
 
     /**
@@ -44,8 +44,8 @@ public final class ColQueryFactory {
      * @param col source collection
      * @return
      */
-    public static <A> ColQuery from(A alias, Iterable<A> col) {
-        return new ColQueryImpl().from(Alias.$(alias), col);
+    public static <A> CollQuery from(A alias, Iterable<A> col) {
+        return new CollQuery().from(Alias.$(alias), col);
     }
 
     /**
@@ -55,8 +55,8 @@ public final class ColQueryFactory {
      * @param arr source array
      * @return
      */
-    public static <A> ColQuery from(Path<A> path, A... arr) {
-        return new ColQueryImpl().from(path, ImmutableList.copyOf(arr));
+    public static <A> CollQuery from(Path<A> path, A... arr) {
+        return new CollQuery().from(path, ImmutableList.copyOf(arr));
     }
 
     /**
@@ -66,8 +66,8 @@ public final class ColQueryFactory {
      * @param col source collection
      * @return
      */
-    public static <A> ColQuery from(Path<A> path, Iterable<A> col) {
-        return new ColQueryImpl().from(path, col);
+    public static <A> CollQuery from(Path<A> path, Iterable<A> col) {
+        return new CollQuery().from(path, col);
     }
 
     /**
@@ -77,10 +77,10 @@ public final class ColQueryFactory {
      * @param col source collection
      * @return
      */
-    public static <A> ColUpdateClause<A> update(Path<A> path, Iterable<A> col) {
-        return new ColUpdateClause<A>(path, col);
+    public static <A> CollUpdateClause<A> update(Path<A> path, Iterable<A> col) {
+        return new CollUpdateClause<A>(path, col);
     }
 
-    private ColQueryFactory() {}
+    private CollQueryFactory() {}
 
 }

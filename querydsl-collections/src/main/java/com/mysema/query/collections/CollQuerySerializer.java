@@ -38,11 +38,11 @@ import com.mysema.query.types.Template;
 import com.mysema.util.BeanUtils;
 
 /**
- * ColQuerySerializer is a {@link Serializer} implementation for the Java language
+ * CollQuerySerializer is a {@link Serializer} implementation for the Java language
  *
  * @author tiwe
  */
-public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
+public final class CollQuerySerializer extends SerializerBase<CollQuerySerializer> {
 
     private static final Map<Operator<?>, String> operatorSymbols = Maps.newHashMap();
     
@@ -66,7 +66,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         castSuffixes.put(String.class, ".toString()");
     }
     
-    public ColQuerySerializer(ColQueryTemplates templates) {
+    public CollQuerySerializer(CollQueryTemplates templates) {
         super(templates);
     }
 
@@ -97,7 +97,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                         append(".").append(property);
                     } else {
                         // field access by reflection
-                        append(ColQueryFunctions.class.getName() + ".<");
+                        append(CollQueryFunctions.class.getName() + ".<");
                         append(((Class)path.getType()).getName()).append(">get(");
                         handle((Expression<?>) path.getMetadata().getParent());
                         append(", \""+property+"\")");

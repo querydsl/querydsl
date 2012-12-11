@@ -18,17 +18,17 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 
 /**
- * ColQueryTemplates extends {@link JavaTemplates} to add module specific operation
+ * CollQueryTemplates extends {@link JavaTemplates} to add module specific operation
  * templates.
  *
  * @author tiwe
  */
-public class ColQueryTemplates extends JavaTemplates {
+public class CollQueryTemplates extends JavaTemplates {
 
-    public static final ColQueryTemplates DEFAULT = new ColQueryTemplates();
+    public static final CollQueryTemplates DEFAULT = new CollQueryTemplates();
 
-    protected ColQueryTemplates() {
-        String functions = ColQueryFunctions.class.getName();
+    protected CollQueryTemplates() {
+        String functions = CollQueryFunctions.class.getName();
         add(Ops.EQ, "{0}.equals({1})");
         add(Ops.NE, "!{0}.equals({1})");
         add(Ops.INSTANCE_OF, "{1}.isInstance({0})");

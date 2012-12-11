@@ -34,28 +34,28 @@ public class SerializationTest {
 
     @Test
     public void InnerJoin(){        
-        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).innerJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\ninner join SURVEY s2", query.toString());
     }
     
     @Test
     public void LeftJoin(){        
-        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).leftJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nleft join SURVEY s2", query.toString());
     }
     
     @Test
     public void RightJoin(){        
-        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).rightJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nright join SURVEY s2", query.toString());
     }
     
     @Test
     public void FullJoin(){        
-        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).fullJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nfull join SURVEY s2", query.toString());
     }
@@ -125,7 +125,7 @@ public class SerializationTest {
         QSurvey table = QSurvey.survey;
         RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SQLQuery q = new SQLQueryImpl(new SQLServerTemplates());
+        SQLQuery q = new SQLQuery(new SQLServerTemplates());
         q.from(table).join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not());
         
         assertEquals("from SURVEY SURVEY\n" +
@@ -137,7 +137,7 @@ public class SerializationTest {
     @Test
     public void Union() {
         QSurvey table = QSurvey.survey;
-        SQLQuery q = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
         q.union(new SQLSubQuery().from(table).list(table.all()),
                 new SQLSubQuery().from(table).list(table.all()));
         
@@ -152,7 +152,7 @@ public class SerializationTest {
     @Test
     public void Union_GroupBy() {
         QSurvey table = QSurvey.survey;
-        SQLQuery q = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
         q.union(new SQLSubQuery().from(table).list(table.all()),
                 new SQLSubQuery().from(table).list(table.all()))
                 .groupBy(table.id);
@@ -169,7 +169,7 @@ public class SerializationTest {
     @Test
     public void Union2() {
         QSurvey table = QSurvey.survey;
-        SQLQuery q = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
         q.union(table, new SQLSubQuery().from(table).list(table.all()),
                 new SQLSubQuery().from(table).list(table.all()));
         

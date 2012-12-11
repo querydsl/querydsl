@@ -31,7 +31,7 @@ public class QueryMetadataTest extends AbstractQueryTest {
         metadata.addJoin(JoinType.DEFAULT, cat);
         metadata.addWhere(cat.name.startsWith("A"));
         
-        ColQuery query = new ColQueryImpl(metadata);
+        CollQuery query = new CollQuery(metadata);
         query.bind(cat, cats);
         assertEquals(Arrays.asList(c3), query.list(cat));
     }

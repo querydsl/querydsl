@@ -102,7 +102,7 @@ public class SQLSerializerTest {
     }
     
     private SQLQuery query() {
-        return new SQLQueryImpl(SQLTemplates.DEFAULT);
+        return new SQLQuery(SQLTemplates.DEFAULT);
     }
     
     private SQLSubQuery sq() {

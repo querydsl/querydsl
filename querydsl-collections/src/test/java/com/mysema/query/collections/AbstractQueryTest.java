@@ -73,7 +73,7 @@ public abstract class AbstractQueryTest {
         return last;
     }
 
-    static class TestQuery extends AbstractColQuery<TestQuery> {
+    static class TestQuery extends AbstractCollQuery<TestQuery> {
 
         List<Object> res = new ArrayList<Object>();
 

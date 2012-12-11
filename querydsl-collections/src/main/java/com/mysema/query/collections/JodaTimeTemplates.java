@@ -22,9 +22,9 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  *
  */
-public class JodaTimeTemplates extends ColQueryTemplates {
+public class JodaTimeTemplates extends CollQueryTemplates {
 
-    public static final ColQueryTemplates DEFAULT = new JodaTimeTemplates();
+    public static final CollQueryTemplates DEFAULT = new JodaTimeTemplates();
     
     protected JodaTimeTemplates() {
         add(Ops.DateTimeOps.YEAR,         "{0}.getYear()");

@@ -51,7 +51,7 @@ public class InnerJoinTest extends AbstractQueryTest{
 
     @Test
     public void List(){
-        List<Cat> rv = ColQueryFactory.from(cat, cats)
+        List<Cat> rv = CollQueryFactory.from(cat, cats)
             .innerJoin(cat.kittens, kitten)
             .where(cat.name.eq(kitten.name))
             .orderBy(cat.name.asc())
@@ -65,7 +65,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     public void Alias(){
         Cat cc = alias(Cat.class, "cat1");
         Cat ck = alias(Cat.class, "cat2");
-        List<Cat> rv =  ColQueryFactory.from($(cc), cats)
+        List<Cat> rv =  CollQueryFactory.from($(cc), cats)
                         .innerJoin($(cc.getKittens()), $(ck))
                         .where($(cc.getName()).eq($(ck.getName())))
                         .list($(cc));
@@ -75,7 +75,7 @@ public class InnerJoinTest extends AbstractQueryTest{
 
     @Test
     public void Map(){
-        List<Cat> rv = ColQueryFactory.from(cat, cats)
+        List<Cat> rv = CollQueryFactory.from(cat, cats)
             .innerJoin(cat.kittensByName, kitten)
             .where(cat.name.eq(kitten.name))
             .orderBy(cat.name.asc())
