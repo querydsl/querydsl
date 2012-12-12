@@ -269,6 +269,6 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     @Override
     public boolean isEmpty() {
-        return updates.isEmpty();
+        return updates.isEmpty() && batchUpdates.isEmpty();
     }
 }
