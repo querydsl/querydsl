@@ -173,11 +173,11 @@ public class SerializationTest {
         q.union(table, new SQLSubQuery().from(table).list(table.all()),
                 new SQLSubQuery().from(table).list(table.all()));
         
-        assertEquals("from (select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n"+
-            "from SURVEY SURVEY\n" +
+        assertEquals("from ((select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n"+
+            "from SURVEY SURVEY)\n" +
             "union\n" +
-            "select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
-            "from SURVEY SURVEY) as SURVEY", q.toString());
+            "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
+            "from SURVEY SURVEY)) as SURVEY", q.toString());
                 
     }
     

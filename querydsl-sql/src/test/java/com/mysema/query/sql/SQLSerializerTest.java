@@ -100,7 +100,7 @@ public class SQLSerializerTest {
         serializer.serialize(master.getMetadata(), false);
         System.err.println(serializer);
     }
-    
+        
     private SQLQuery query() {
         return new SQLQuery(SQLTemplates.DEFAULT);
     }

@@ -13,11 +13,11 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * UnionUtils provides static utility methods for Union handling
@@ -28,16 +28,20 @@ import com.mysema.query.types.SubQueryExpression;
 public final class UnionUtils {
     
     public static Expression<?> combineUnion(SubQueryExpression<?>[] union, Path<?> alias, SQLTemplates templates, boolean unionAll) {
-        StringBuilder builder = new StringBuilder("(");
+        final boolean wrapped = templates.isUnionsWrapped();
+        final StringBuilder builder = new StringBuilder(wrapped ? "((" : "(");
         String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
+        if (wrapped) {
+            separator = ")" + separator + "(";
+        }
         for (int i = 0; i < union.length; i++) {
             if (i > 0) {
                 builder.append(separator);
             }
             builder.append("{"+i+"}");
         }
-        builder.append(")");
-        Expression<?> combined = Expressions.template(Object.class, builder.toString(), union);
+        builder.append(wrapped ? "))" : ")");
+        Expression<?> combined = TemplateExpressionImpl.create(Object.class, builder.toString(), union);
         return ExpressionUtils.as((Expression)combined, alias);
     }
     
