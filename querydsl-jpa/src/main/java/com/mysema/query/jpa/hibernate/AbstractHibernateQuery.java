@@ -200,7 +200,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
@@ -219,8 +219,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return new IteratorAdapter<RT>(query.iterate());
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
@@ -230,7 +229,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         reset();
         return query.list();
     }
-
+    
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
+    }
+    
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {        
         queryMixin.addProjection(expr);
         Query countQuery = createQuery(toCountRowsString(), null, true);
@@ -279,27 +282,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * support for scrollable <tt>ResultSet</tt>s.<br>
      *
      * @param mode
-     * @param expr1
-     * @param expr2
-     * @param rest
-     * @return
-     */
-    public ScrollableResults scroll(ScrollMode mode, Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
-        Query query = createQuery(expr1, expr2, rest);
-        reset();
-        return query.scroll(mode);
-    }
-
-    /**
-     * Return the query results as <tt>ScrollableResults</tt>. The
-     * scrollability of the returned results depends upon JDBC driver
-     * support for scrollable <tt>ResultSet</tt>s.<br>
-     *
-     * @param mode
      * @param args
      * @return
      */
-    public ScrollableResults scroll(ScrollMode mode, Expression<?>[] args) {
+    public ScrollableResults scroll(ScrollMode mode, Expression<?>... args) {
         Query query = createQuery(args);
         reset();
         return query.scroll(mode);
@@ -387,7 +373,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return (Q)this;
     }
 
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
     

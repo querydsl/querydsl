@@ -61,13 +61,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return projectable.iterate(first, second, rest);
-    }
-
-    @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return projectable.iterate(args);
     }
 
@@ -77,24 +71,13 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return projectable.iterateDistinct(first, second, rest);
-    }
-
-    @Override
-    public CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterateDistinct(Expression<?>... args) {
         return projectable.iterateDistinct(args);
     }
 
     @Override
     public <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection) {
         return projectable.iterateDistinct(projection);
-    }
-
-    @Override
-    public List<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
-        return projectable.list(first, second, rest);
     }
 
     @Override
@@ -108,13 +91,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public List<Tuple> listDistinct(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return projectable.listDistinct(first, second, rest);
-    }
-
-    @Override
-    public List<Tuple> listDistinct(Expression<?>[] args) {
+    public List<Tuple> listDistinct(Expression<?>... args) {
         return projectable.listDistinct(args);
     }
 
@@ -128,6 +105,11 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
         return projectable.listDistinctResults(expr);
     }
 
+    @Override
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return projectable.listResults(args);
+    }
+    
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         return projectable.listResults(expr);
@@ -144,12 +126,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public Tuple singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
-        return projectable.singleResult(first, second, rest);
-    }
-
-    @Override
-    public Tuple singleResult(Expression<?>[] args) {
+    public Tuple singleResult(Expression<?>... args) {
         return projectable.singleResult(args);
     }
 
@@ -164,12 +141,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
     
     @Override
-    public Tuple uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
-        return projectable.uniqueResult(first, second, rest);
-    }
-
-    @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return projectable.uniqueResult(args);
     }
 
@@ -177,6 +149,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     public <RT> RT uniqueResult(Expression<RT> expr) {
         return projectable.uniqueResult(expr);
     }
+
 
 
 }

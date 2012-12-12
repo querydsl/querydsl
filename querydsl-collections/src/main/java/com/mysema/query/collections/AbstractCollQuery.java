@@ -20,7 +20,6 @@ import java.util.Map;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.FilteredClause;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -151,7 +150,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
@@ -166,7 +165,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
     }
 
     @Override
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
@@ -178,6 +177,11 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
         } finally {
             reset();
         }
+    }
+    
+    @Override
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
     }
 
     @Override
@@ -196,7 +200,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
     }
     
     @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2l);

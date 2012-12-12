@@ -35,7 +35,7 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return new EmptyCloseableIterator<Tuple>();
     }
 
@@ -44,6 +44,11 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
         return new EmptyCloseableIterator<RT>();
     }
 
+    @Override
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return SearchResults.emptyResults();
+    }
+    
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         return SearchResults.emptyResults();
@@ -55,7 +60,7 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         if (queryMixin.getMetadata().getModifiers().getLimit() == null){
             limit(2);
         }

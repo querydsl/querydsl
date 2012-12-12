@@ -43,7 +43,7 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         throw new UnsupportedOperationException();
     }
 
@@ -52,6 +52,11 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
         throw new UnsupportedOperationException();
     }
 
+    @Nullable
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        throw new UnsupportedOperationException();
+    }
+    
     @Nullable
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         throw new UnsupportedOperationException();
@@ -81,7 +86,7 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         throw new UnsupportedOperationException();
     }
 

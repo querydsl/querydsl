@@ -354,7 +354,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
@@ -416,7 +416,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
 
     @Override
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
@@ -474,6 +474,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         }
     }
 
+    @Override
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
+    }
+    
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);

@@ -48,20 +48,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final CloseableIterator<Tuple> iterate(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return iterate(merge(first, second, rest));
-    }
-
-    @Override
-    public final CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        queryMixin.setDistinct(true);
-        return iterate(first, second, rest);
-    }
-
-    @Override
-    public final CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args) {
+    public final CloseableIterator<Tuple> iterateDistinct(Expression<?>... args) {
         queryMixin.setDistinct(true);
         return iterate(args);
     }
@@ -73,12 +60,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final List<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
-        return list(merge(first, second, rest));
-    }
-
-    @Override
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return IteratorAdapter.asList(iterate(args));
     }
 
@@ -87,14 +69,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return IteratorAdapter.asList(iterate(projection));
     }
 
-    @Override
-    public final List<Tuple> listDistinct(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        queryMixin.setDistinct(true);
-        return list(first, second, rest);
-    }
-
-    public final List<Tuple> listDistinct(Expression<?>[] args) {
+    public final List<Tuple> listDistinct(Expression<?>... args) {
         queryMixin.setDistinct(true);
         return list(args);
     }
@@ -121,27 +96,13 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return results;
     }
 
-    private Expression<?>[] merge(Expression<?> first, Expression<?> second, Expression<?>... rest){
-        Expression<?>[] args = new Expression<?>[rest.length + 2];
-        args[0] = first;
-        args[1] = second;
-        System.arraycopy(rest, 0, args, 2, rest.length);
-        return args;
-    }
-
     @Override
     public final boolean notExists(){
         return !exists();
     }
 
     @Override
-    public final Tuple singleResult(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return singleResult(merge(first, second, rest));
-    }
-
-    @Override
-    public final Tuple singleResult(Expression<?>[] args) {
+    public final Tuple singleResult(Expression<?>... args) {
         return limit(1).uniqueResult(args);
     }
 
@@ -153,13 +114,6 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     @Override
     public <T> T transform(ResultTransformer<T> transformer) {
         return transformer.transform(this);
-    }
-    
-    
-    @Override
-    public final Tuple uniqueResult(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return uniqueResult(merge(first, second, rest));
     }
     
     @Nullable

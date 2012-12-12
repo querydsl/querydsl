@@ -239,7 +239,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return detach;
     }
 
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return new IteratorAdapter<Tuple>(list(args).iterator(), closeable);
     }
 
@@ -248,7 +248,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     }
 
     @Override
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
@@ -261,6 +261,11 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
 
+    @Override
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
+    }
+    
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
@@ -312,7 +317,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     @Override
     @Nullable
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));        
     }
     

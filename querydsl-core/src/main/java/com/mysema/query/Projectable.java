@@ -57,21 +57,10 @@ public interface Projectable {
     /**
      * iterate over the results for the given projection
      *
-     * @param first
-     * @param second
-     * @param rest
-     * @return an Iterator over the projection
-     */
-    CloseableIterator<Tuple> iterate(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest);
-
-    /**
-     * iterate over the results for the given projection
-     *
      * @param args
      * @return
      */
-    CloseableIterator<Tuple> iterate(Expression<?>[] args);
+    CloseableIterator<Tuple> iterate(Expression<?>... args);
 
     /**
      * iterate over the results for the given projection
@@ -86,23 +75,11 @@ public interface Projectable {
     /**
      * iterate over the distinct results for the given projection
      *
-     * @param first
-     * @param second
-     * @param rest
-     * @return an Iterator over the projection
-     */
-    @Deprecated
-    CloseableIterator<Tuple> iterateDistinct(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest);
-
-    /**
-     * iterate over the distinct results for the given projection
-     *
      * @param args
      * @return
      */
     @Deprecated
-    CloseableIterator<Tuple> iterateDistinct(Expression<?>[] args);
+    CloseableIterator<Tuple> iterateDistinct(Expression<?>... args);
 
     /**
      * iterate over the distinct results for the given projection
@@ -120,23 +97,10 @@ public interface Projectable {
      * 
      * An empty list is returned for no results.
      *
-     * @param first
-     * @param second
-     * @param rest
-     *            rest
-     * @return a List over the projection
-     */
-    List<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
-
-    /**
-     * list the results for the given projection
-     * 
-     * An empty list is returned for no results.
-     *
      * @param args
      * @return
      */
-    List<Tuple> list(Expression<?>[] args);
+    List<Tuple> list(Expression<?>... args);
 
     /**
      * list the results for the given projection
@@ -155,25 +119,11 @@ public interface Projectable {
      * 
      * An empty list is returned for no results.
      *
-     * @param first
-     * @param second
-     * @param rest
-     *            rest
-     * @return a List over the projection
-     */
-    @Deprecated
-    List<Tuple> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
-
-    /**
-     * list the distinct results for the given projection
-     * 
-     * An empty list is returned for no results.
-     *
      * @param args
      * @return
      */
     @Deprecated
-    List<Tuple> listDistinct(Expression<?>[] args);
+    List<Tuple> listDistinct(Expression<?>... args);
 
     /**
      * list the distinct results for the given projection
@@ -188,6 +138,14 @@ public interface Projectable {
     @Deprecated
     <RT> List<RT> listDistinct(Expression<RT> projection);
 
+    /**
+     * list the results for the given projection
+     *
+     * @param args
+     * @return
+     */
+     SearchResults<Tuple> listResults(Expression<?>... args);
+    
     /**
      * list the results for the given projection
      *
@@ -222,19 +180,6 @@ public interface Projectable {
 
     /**
      * return a single result for the given projection or null if no result is found
-     *
-     * <p>for multiple results only the first one is returned</p>
-     *
-     * @param first
-     * @param second
-     * @param rest
-     * @return
-     */
-    @Nullable
-    Tuple singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
-
-    /**
-     * return a single result for the given projection or null if no result is found
      * 
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
      * use the list or iterate methods instead.</p> 
@@ -245,7 +190,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Tuple singleResult(Expression<?>[] args);
+    Tuple singleResult(Expression<?>... args);
 
     /**
      * return a single result for the given projection or null if no result is found
@@ -274,21 +219,6 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if no result is found
-     * 
-     * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
-     * use the list or iterate methods instead.</p> 
-     *
-     * @param first
-     * @param second
-     * @param rest
-     * @throws NonUniqueResultException if there is more than one matching result
-     * @return
-     */
-    @Nullable
-    Tuple uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
-
-    /**
-     * return a unique result for the given projection or null if no result is found
      *
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
      * use the list or iterate methods instead.</p>
@@ -298,7 +228,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Tuple uniqueResult(Expression<?>[] args);
+    Tuple uniqueResult(Expression<?>... args);
 
     /**
      * return a unique result for the given projection or null if no result is found

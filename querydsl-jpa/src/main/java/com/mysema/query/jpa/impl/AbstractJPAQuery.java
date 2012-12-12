@@ -256,7 +256,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
 
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
@@ -265,8 +265,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
@@ -281,6 +280,10 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
 
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
+    }
+    
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
         Query countQuery = createQuery(toCountRowsString(), null, true);
@@ -314,7 +317,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
     

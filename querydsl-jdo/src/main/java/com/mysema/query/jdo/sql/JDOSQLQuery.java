@@ -186,7 +186,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return detach;
     }
 
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
@@ -194,8 +194,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Tuple> list(Expression<?>[] args) {
+    public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
@@ -207,6 +206,10 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
 
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
+    }
+    
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
@@ -242,7 +245,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
 
     @Override
     @Nullable
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
     

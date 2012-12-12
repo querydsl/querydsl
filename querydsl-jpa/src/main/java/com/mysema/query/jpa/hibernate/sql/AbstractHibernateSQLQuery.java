@@ -153,7 +153,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public List<Tuple> list(Expression<?>[] projection) {
+    public List<Tuple> list(Expression<?>... projection) {
         return list(new QTuple(projection));
     }
 
@@ -166,7 +166,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
@@ -175,6 +175,11 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return new IteratorAdapter<RT>(list(projection).iterator());
     }
 
+    @Override
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(new QTuple(args));
+    }
+    
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
@@ -216,7 +221,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
 
