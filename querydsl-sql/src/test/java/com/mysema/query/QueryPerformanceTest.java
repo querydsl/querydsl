@@ -21,6 +21,10 @@ import com.mysema.query.sql.SQLTemplates;
 
 public class QueryPerformanceTest {
     
+    private static final String QUERY = "select COMPANIES.NAME\n" +
+    		"from COMPANIES COMPANIES\n" +
+    		"where COMPANIES.ID = ?";
+    
     private static final int iterations = 1000000;
     
     @BeforeClass
@@ -54,10 +58,9 @@ public class QueryPerformanceTest {
         Connection conn = Connections.getConnection();        
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement(
-                    "select COMPANIES.NAME from COMPANIES COMPANIES where COMPANIES.ID = ?");
+            PreparedStatement stmt = conn.prepareStatement(QUERY);
             try {
-                stmt.setInt(1, i);
+                stmt.setLong(1, i);
                 ResultSet rs = stmt.executeQuery();                
                 try {
                     while (rs.next()) {
@@ -71,6 +74,7 @@ public class QueryPerformanceTest {
                 stmt.close();
             }            
         }
+        // 3464
         System.err.println("jdbc by id " + (System.currentTimeMillis() - start));                    
     }
         
@@ -79,8 +83,7 @@ public class QueryPerformanceTest {
         Connection conn = Connections.getConnection();        
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement(
-                    "select COMPANIES.ID from COMPANIES COMPANIES where COMPANIES.NAME = ?");                                                           
+            PreparedStatement stmt = conn.prepareStatement(QUERY);                                                           
             try {
                 stmt.setString(1, String.valueOf(i));
                 ResultSet rs = stmt.executeQuery();                

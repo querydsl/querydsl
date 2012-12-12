@@ -369,9 +369,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
-            PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
-            ResultSet rs = stmt.executeQuery();
+            final ResultSet rs = stmt.executeQuery();
             
             if (expr == null) {
                 return new SQLResultIterator<RT>(stmt, rs) {
@@ -426,10 +426,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
-            PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
                 setParameters(stmt, constants, constantPaths, queryMixin.getMetadata().getParams());
-                ResultSet rs = stmt.executeQuery();
+                final ResultSet rs = stmt.executeQuery();
                 try {
                     final List<RT> rv = new ArrayList<RT>();    
                     if (expr instanceof FactoryExpression) {
