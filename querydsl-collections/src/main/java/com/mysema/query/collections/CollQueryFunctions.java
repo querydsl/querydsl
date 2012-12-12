@@ -16,8 +16,6 @@ package com.mysema.query.collections;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
@@ -125,18 +123,26 @@ public final class CollQueryFunctions {
         return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH) + 1;
     }
 
-    public static boolean like(String str, String like) {
-        if (like.contains("%") || like.contains("_")) {
-            Matcher m = Pattern.compile("[^\\%_]+").matcher(like);
-            StringBuffer sb = new StringBuffer();
-            while (m.find()) {
-                m.appendReplacement(sb, Matcher.quoteReplacement(Pattern.quote(m.group())));
+    public static boolean like(final String str, String like) {
+        final StringBuilder pattern = new StringBuilder(like.length() + 4);
+        for (int i = 0; i < like.length(); i++) {
+            final char ch = like.charAt(i);
+            if (ch == '%') {
+                pattern.append(".*");
+                continue;
+            } else if (ch == '_') {
+                pattern.append('.');
+                continue;
+            } else if (ch == '.' || ch == '$' || ch == '^') {
+                pattern.append('\\');
             }
-            m.appendTail(sb);
-            return str.matches(sb.toString().replace("%", ".*").replace("_", "."));    
-        } else {
+            pattern.append(ch);
+        }
+        if (pattern.toString().equals(like)) {
             return str.equals(like);
-        }        
+        } else {
+            return str.matches(pattern.toString());    
+        }                  
     }
     
     public static boolean like(String str, String like, char escape) {

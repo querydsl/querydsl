@@ -39,6 +39,28 @@ public class ExpressionUtilsTest {
         assertEquals(".* + path", regex(path.prepend("%")));
         assertEquals("path + .", regex(path.append("_")));
         assertEquals(". + path", regex(path.prepend("_")));
+        
+        
+    }
+    
+    @Test
+    public void LikeToRegexSpeed() {
+        // 4570
+        StringPath path = new StringPath("path");
+        final int iterations = 1000000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            regex(ConstantImpl.create("%"));
+            regex(ConstantImpl.create("abc%"));
+            regex(ConstantImpl.create("%abc"));
+            regex(ConstantImpl.create("_"));
+            regex(path.append("%"));
+            regex(path.prepend("%"));
+            regex(path.append("_"));
+            regex(path.prepend("_"));    
+        }
+        long duration = System.currentTimeMillis() - start;
+        System.err.println(duration);
     }
     
     @Test
@@ -56,6 +78,24 @@ public class ExpressionUtilsTest {
         assertEquals("% + path", like(path.prepend(".*")));
         assertEquals("path + _", like(path.append(".")));
         assertEquals("_ + path", like(path.prepend(".")));
+    }
+    
+    @Test
+    public void RegexToLikeSpeed() {
+        // 3255
+        StringPath path = new StringPath("path");        
+        final int iterations = 1000000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            like(ConstantImpl.create(".*"));
+            like(ConstantImpl.create("."));                
+            like(path.append(".*"));
+            like(path.prepend(".*"));
+            like(path.append("."));
+            like(path.prepend("."));    
+        }
+        long duration = System.currentTimeMillis() - start;
+        System.err.println(duration);
     }
     
     private String regex(Expression<String> expr){

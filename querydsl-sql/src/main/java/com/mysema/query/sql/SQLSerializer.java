@@ -14,7 +14,6 @@
 package com.mysema.query.sql;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -29,13 +28,13 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
@@ -653,19 +652,19 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         if (operator == Ops.STRING_CAST) {
             String typeName = templates.getTypeForCast(String.class);
-            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), 
-                    ConstantImpl.create(typeName)));
+            visitOperation(String.class, SQLTemplates.CAST, 
+                    ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = templates.getTypeForCast(targetType);
-            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), 
-                    ConstantImpl.create(typeName)));
+            visitOperation(targetType, SQLTemplates.CAST, 
+                    ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
                 if (args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator() == SQLTemplates.UNION) {
-                    args = ImmutableList.of(Expressions.operation(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
+                    args = ImmutableList.of(OperationImpl.create(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
                 }
                 super.visitOperation(type, operator, args);
             } else {

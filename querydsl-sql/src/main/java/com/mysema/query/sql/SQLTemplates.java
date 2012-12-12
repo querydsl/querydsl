@@ -475,9 +475,9 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    protected boolean requiresQuotes(String identifier) {
+    protected boolean requiresQuotes(final String identifier) {
         for (int i = 0; i < identifier.length(); i++) {
-            char ch = identifier.charAt(i);
+            final char ch = identifier.charAt(i);
             //0-9,a-z,A-Z_
             if (ch < '0' || (ch > '9' && ch < 'A') || (ch > 'Z' && ch < '_') || ch > 'z') {
                 return true;

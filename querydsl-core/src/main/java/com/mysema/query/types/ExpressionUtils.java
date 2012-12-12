@@ -233,8 +233,6 @@ public final class ExpressionUtils {
         return PredicateOperation.create(Ops.IS_NOT_NULL, left);
     }   
     
-    
-    
     /**
      * Convert the given like pattern to a regex pattern
      * 
@@ -245,34 +243,46 @@ public final class ExpressionUtils {
         return likeToRegex(expr, true);
     }
     
+
     @SuppressWarnings("unchecked")
-    public static Expression<String> likeToRegex(Expression<String> expr, boolean matchStartAndEnd){
+    public static Expression<String> likeToRegex(Expression<String> expr, boolean matchStartAndEnd) {
         // TODO : this should take the escape character into account
         if (expr instanceof Constant<?>) {
-            String like = expr.toString();
-            if (matchStartAndEnd) {
-                if (!like.startsWith("%")) {
-                    like = "^" + like;
+            final String like = expr.toString();
+            final StringBuilder rv = new StringBuilder(like.length() + 4);
+            if (matchStartAndEnd && !like.startsWith("%")) {
+                rv.append('^');
+            }
+            for (int i = 0; i < like.length(); i++) {
+                char ch = like.charAt(i);                
+                if (ch == '.' || ch == '*' || ch == '?') {
+                    rv.append('\\');
+                } else if (ch == '%') {
+                    rv.append(".*"); 
+                    continue;
+                } else if (ch == '_') {
+                    rv.append('.'); 
+                    continue;
                 }
-                if (!like.endsWith("%")) {
-                    like = like + "$";
-                }   
+                rv.append(ch);
+            }
+            if (matchStartAndEnd && !like.endsWith("%")) {
+                rv.append('$');
+            }
+            if (!like.equals(rv.toString())) {
+                return ConstantImpl.create(rv.toString());    
             }            
-            like = like.replace(".", "\\.").replace("*", "\\*").replace("?", "\\?")
-                       .replace("%", ".*").replace("_", ".");
-            return ConstantImpl.create(like);
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0), false);
                 Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1), false);
-                return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
-            } else {
-                return expr;
+                if (lhs != o.getArg(0) || rhs != o.getArg(1)) {
+                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);    
+                }                
             }
-        } else {
-            return expr;    
-        }        
+        }
+        return expr;
     }
     
     /**
@@ -289,7 +299,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
-        Expression<T> rv = (Expression)exprs.get(0);
+        Expression<T> rv = (Expression<T>)exprs.get(0);
         for (int i = 1; i < exprs.size(); i++) {
             rv = OperationImpl.create(clazz, Ops.LIST, rv, exprs.get(i));
         }
@@ -308,28 +318,44 @@ public final class ExpressionUtils {
             }
             builder.append("{"+i+"}");
         }
-        return TemplateExpressionImpl.create(
+        return new TemplateExpressionImpl<Object>(
                 Object.class, 
-                builder.toString(), 
-                expressions.toArray(new Expression[expressions.size()]));
+                TemplateFactory.DEFAULT.create(builder.toString()), 
+                expressions);
     }
     
     @SuppressWarnings("unchecked")
     public static Expression<String> regexToLike(Expression<String> expr){
-        if (expr instanceof Constant<?>) {
-            return ConstantImpl.create(expr.toString().replace(".*", "%").replace(".", "_"));            
+        if (expr instanceof Constant<?>) {           
+            final String str = expr.toString();
+            final StringBuilder rv = new StringBuilder(str.length() + 2);
+            for (int i = 0; i < str.length(); i++) {
+                final char ch = str.charAt(i);
+                if (ch == '.') {
+                    if (i < str.length() - 1 && str.charAt(i+1) == '*') {
+                        rv.append('%');
+                        i++;
+                    } else {
+                        rv.append('_');
+                    }
+                    continue;
+                }
+                rv.append(ch);
+            }
+            if (!rv.toString().equals(str)) {
+                return ConstantImpl.create(rv.toString());
+            }            
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
                 Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
-                return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
-            } else {
-                return expr;
+                if (lhs != o.getArg(0) || rhs != o.getArg(1)) {
+                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);    
+                }                
             }            
-        } else {
-            return expr;    
-        }     
+        }
+        return expr;
     }
     
     /**

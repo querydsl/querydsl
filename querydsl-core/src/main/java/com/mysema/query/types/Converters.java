@@ -25,9 +25,7 @@ import com.google.common.base.Function;
  */
 public final class Converters {
     
-    private final String escape;
-    
-    private final String escape1, escape2, escape3;
+    private final char escape;
     
     /**
      * Create a new Converters instance
@@ -35,10 +33,7 @@ public final class Converters {
      * @param escape escape character to be used
      */
     public Converters(char escape){
-        this.escape = String.valueOf(escape);
-        this.escape1 = escape + "%";
-        this.escape2 = escape + "_";
-        this.escape3 = escape +""+ escape;
+        this.escape = escape;
     }
     
     public final Function<Object,Object> toLowerCase = 
@@ -159,10 +154,15 @@ public final class Converters {
     };
     
     public String escapeForLike(String str) {
-        if (str.contains(escape) || str.contains("%") || str.contains("_")) {
-            str = str.replace(escape, escape3).replace("%", escape1).replace("_", escape2);
+        final StringBuilder rv = new StringBuilder(str.length() + 3);
+        for (int i = 0; i < str.length(); i++) {
+            final char ch = str.charAt(i);
+            if (ch == escape || ch == '%' || ch == '_') {
+                rv.append(escape);
+            }
+            rv.append(ch);
         }
-        return str;
+        return rv.toString();
     }
 
 }

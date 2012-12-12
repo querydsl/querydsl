@@ -14,7 +14,6 @@
 package com.mysema.query.jpa;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +34,7 @@ import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -64,9 +64,9 @@ import com.mysema.util.MathUtils;
  */
 public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
-    private static final Set<Operator<?>> NUMERIC = new HashSet<Operator<?>>(Arrays.<Operator<?>>asList(
+    private static final Set<Operator<?>> NUMERIC = ImmutableSet.<Operator<?>>of(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
-            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN));
+            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN);
 
     private static final String COMMA = ", ";
 
@@ -348,7 +348,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         if (operator.equals(Ops.EQ) && args.get(1) instanceof Operation &&
                 ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = Arrays.<Expression<?>>asList(args.get(0), ((Operation)args.get(1)).getArg(0));
+            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
             
         } else if (operator.equals(Ops.IN)) {
@@ -376,20 +376,20 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             super.visitOperation(type, Ops.LIKE,
                     ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
-        }else if(NUMERIC.contains(operator)) {
+        }else if (NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
 
         } else {
             super.visitOperation(type, operator, args);
         }
-        //
+       
         wrapElements = old;
     }
 
     private void visitNumCast(List<? extends Expression<?>> args) {
         Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
         String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
-        visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
+        visitOperation(targetType, JPQLTemplates.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
     }
 
     private void visitInstanceOf(Class<?> type, Operator<?> operator,

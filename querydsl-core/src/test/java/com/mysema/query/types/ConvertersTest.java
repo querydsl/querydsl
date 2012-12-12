@@ -29,6 +29,17 @@ public class ConvertersTest {
     private static StringPath path = new StringPath("string");
     
     @Test
+    public void EscapeForLikeSpeed() {
+        final int iterations = 1000000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            converters.escapeForLike("ab%cd_");
+        }
+        long duration = System.currentTimeMillis() - start;
+        System.err.println(duration);
+    }
+    
+    @Test
     public void ToLowerCase() {
         assertEquals("abcdef", converters.toLowerCase.apply(constant).toString());
         assertEquals("lower(string)", converters.toLowerCase.apply(path).toString());

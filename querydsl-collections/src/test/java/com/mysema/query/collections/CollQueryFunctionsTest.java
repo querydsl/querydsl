@@ -29,6 +29,20 @@ public class CollQueryFunctionsTest {
     }
 
     @Test
+    public void LikeSpeed() {
+        // 3015
+        final int iterations = 1000000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < iterations; i++) {
+            CollQueryFunctions.like("abcDOG", "%DOG");
+            CollQueryFunctions.like("DOGabc", "DOG%");
+            CollQueryFunctions.like("abcDOGabc", "%DOG%");
+        }
+        long duration = System.currentTimeMillis() - start;
+        System.err.println(duration);
+    }
+    
+    @Test
     public void Like() {
         assertTrue(CollQueryFunctions.like("abcDOG", "%DOG"));
         assertTrue(CollQueryFunctions.like("DOGabc", "DOG%"));
