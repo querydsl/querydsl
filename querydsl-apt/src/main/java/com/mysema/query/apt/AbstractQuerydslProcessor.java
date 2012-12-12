@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -190,6 +191,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         if (entityType.getSuperType() != null) {
             superTypes.push(entityType.getSuperType().getType());    
         }
+        
         while (!superTypes.isEmpty()) {
             Type superType = superTypes.pop();
             if (!context.allTypes.containsKey(superType.getFullName())) {
@@ -198,8 +200,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                     throw new IllegalStateException("Found no type for " + superType.getFullName());
                 }
                 EntityType superEntityType = elementHandler.handleEntityType(typeElement);
-                if (entityType.getSuperType() != null) {
-                    superTypes.push(entityType.getSuperType().getType());
+                if (superEntityType.getSuperType() != null) {
+                    superTypes.push(superEntityType.getSuperType().getType());
                 }
                 context.allTypes.put(superType.getFullName(), superEntityType);
             }    

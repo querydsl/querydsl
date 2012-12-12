@@ -115,6 +115,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
     
     @Test
+    public void Process_ExternalEntityTest() throws IOException {
+        String path = new File("src/test/java/com/mysema/query/domain/ExternalEntityTest.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"ExternalEntityTest");
+    }
+    
+    @Test
     public void QuerydslAnnotationProcessor() throws IOException {
         process(QuerydslAnnotationProcessor.class, CLASSES, "querydsl");
     }

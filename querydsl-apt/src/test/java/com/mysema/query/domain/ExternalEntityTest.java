@@ -13,16 +13,22 @@
  */
 package com.mysema.query.domain;
 
-import org.junit.Ignore;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 
-@Ignore
 public class ExternalEntityTest {
 
     @QueryEntity
     public static class MyEntity extends AbstractEntity<MyEntity> {
         
+    }
+    
+    @Test
+    public void test() {
+        assertNotNull(QExternalEntityTest_MyEntity.myEntity.id);
     }
     
 }
