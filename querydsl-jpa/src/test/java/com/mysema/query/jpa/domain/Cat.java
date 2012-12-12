@@ -38,12 +38,12 @@ public class Cat extends Animal {
     private Color eyecolor;
 
     @OneToMany
-	@JoinTable(name = "kittens", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
+    @JoinTable(name = "kittens", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
     @IndexColumn(name = "ind")
     private List<Cat> kittens = new ArrayList<Cat>();
 
     @OneToMany
-	@JoinTable(name = "kittens_set", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
+    @JoinTable(name = "kittens_set", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
     private Set<Cat> kittensSet;
 
 //    @OneToMany
