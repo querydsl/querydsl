@@ -401,7 +401,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     @Override
     public boolean isEmpty() {
-        return values.isEmpty();
+        return values.isEmpty() && batches.isEmpty();
     }
 
 }
