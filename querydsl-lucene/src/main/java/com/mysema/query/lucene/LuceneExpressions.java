@@ -27,7 +27,7 @@ import com.mysema.query.types.expr.BooleanExpression;
  * @author tiwe
  *
  */
-public final class LuceneUtils {
+public final class LuceneExpressions {
     
     static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>("LUCENE_QUERY", Object.class);
     
@@ -75,6 +75,6 @@ public final class LuceneUtils {
         return new QueryElement(new FuzzyQuery(term, minimumSimilarity, prefixLength));
     }
     
-    private LuceneUtils(){}
+    private LuceneExpressions(){}
 
 }

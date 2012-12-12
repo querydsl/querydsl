@@ -27,7 +27,7 @@ public class TermElement extends StringOperation {
     private static final long serialVersionUID = 2350215644019186076L;
 
     public TermElement(String str) {
-        super(LuceneUtils.TERM, ConstantImpl.create(str));
+        super(LuceneExpressions.TERM, ConstantImpl.create(str));
     }
 
 }

@@ -44,7 +44,7 @@ import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.GroupBy;
 import com.mysema.query.group.QPair;
-import com.mysema.query.jpa.JPAGrammar;
+import com.mysema.query.jpa.JPAExpressions;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.domain.Animal;
@@ -814,14 +814,14 @@ public abstract class AbstractStandardTest {
     @Ignore
     public void Type() {
         assertEquals(Arrays.asList("C","C","C","C","C","C","A"),
-                query().from(animal).orderBy(animal.id.asc()).list(JPAGrammar.type(animal)));
+                query().from(animal).orderBy(animal.id.asc()).list(JPAExpressions.type(animal)));
     }
     
     @Test
     @NoOpenJPA
     public void Type_Order() {
         assertEquals(Arrays.asList(10,1,2,3,4,5,6),
-                query().from(animal).orderBy(JPAGrammar.type(animal).asc(), animal.id.asc())
+                query().from(animal).orderBy(JPAExpressions.type(animal).asc(), animal.id.asc())
                        .list(animal.id));
     }
     

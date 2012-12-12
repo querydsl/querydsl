@@ -13,11 +13,9 @@
  */
 package com.mysema.query.mongodb;
 
-import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.path.ArrayPath;
 
 /**
@@ -50,7 +48,7 @@ public class Point extends ArrayPath<Double> {
      * @return
      */
     public BooleanExpression near(double latVal, double longVal){
-        return BooleanOperation.create(MongodbOps.NEAR, this, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
+        return MongodbExpressions.near(this, latVal, longVal);
     }
 
 }

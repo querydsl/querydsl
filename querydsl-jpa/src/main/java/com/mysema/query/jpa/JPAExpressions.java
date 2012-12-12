@@ -29,40 +29,24 @@ import com.mysema.query.types.expr.StringOperation;
  * @author tiwe
  */
 @SuppressWarnings("unchecked")
-public final class JPAGrammar {
-  
-    /**
-     * @param col
-     * @return
-     */
+public final class JPAExpressions {
+
     public static <A extends Comparable<? super A>> ComparableExpression<A> avg(CollectionExpression<?,A> col) {
         return ComparableOperation.create((Class)col.getParameter(0), Ops.QuantOps.AVG_IN_COL, (Expression<?>)col);
     }
 
-    /**
-     * @param left
-     * @return
-     */
     public static <A extends Comparable<? super A>> ComparableExpression<A> max(CollectionExpression<?,A> left) {
         return ComparableOperation.create((Class)left.getParameter(0), Ops.QuantOps.MAX_IN_COL, (Expression<?>)left);
     }
 
-    /**
-     * @param left
-     * @return
-     */
     public static <A extends Comparable<? super A>> ComparableExpression<A> min(CollectionExpression<?,A> left) {
         return ComparableOperation.create((Class)left.getParameter(0), Ops.QuantOps.MIN_IN_COL, (Expression<?>)left);
     }
-    
-    /**
-     * @param path
-     * @return
-     */
+
     public static StringExpression type(EntityPath<?> path) {
         return StringOperation.create(JPQLTemplates.TYPE, path);
     }
     
-    private JPAGrammar() {}
+    private JPAExpressions() {}
 
 }

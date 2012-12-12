@@ -40,7 +40,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.lucene.LuceneSerializer;
-import com.mysema.query.lucene.LuceneUtils;
+import com.mysema.query.lucene.LuceneExpressions;
 import com.mysema.query.lucene.QueryElement;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
@@ -207,17 +207,17 @@ public class LuceneSerializerTest {
 
     @Test
     public void FuzzyLike() throws Exception{
-        testQuery(LuceneUtils.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
+        testQuery(LuceneExpressions.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
     }
 
     @Test
     public void FuzzyLike_with_Similarity() throws Exception{
-        testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
+        testQuery(LuceneExpressions.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
     }
 
     @Test
     public void FuzzyLike_with_Similarity_and_prefix() throws Exception{
-        testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
+        testQuery(LuceneExpressions.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
     }
 
     @Test

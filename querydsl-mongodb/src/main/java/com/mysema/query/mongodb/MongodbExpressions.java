@@ -13,21 +13,37 @@
  */
 package com.mysema.query.mongodb;
 
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 
 /**
- * Mongodb specific operators
+ * Mongodb specific operations
  * 
  * @author tiwe
  *
  */
-public final class MongodbOps {
+public final class MongodbExpressions {
     
     public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>("NEAR", Number.class, Number.class);
     
     public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>("ELEM_MATCH", Object.class, Object.class);
 
-    private MongodbOps(){}
+    private MongodbExpressions(){}
+    
+    /**
+     * Finds the closest points relative to the given location and orders the results with decreasing promimity
+     *
+     * @param expr
+     * @param latVal latitude
+     * @param longVal longitude
+     * @return
+     */
+    public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal){
+        return BooleanOperation.create(MongodbExpressions.NEAR, expr, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
+    }
     
 }
