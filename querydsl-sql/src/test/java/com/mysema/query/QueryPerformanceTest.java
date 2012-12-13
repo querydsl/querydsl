@@ -25,7 +25,7 @@ public class QueryPerformanceTest {
     		"from COMPANIES COMPANIES\n" +
     		"where COMPANIES.ID = ?";
     
-    private static final int iterations = 1000000;
+    private final Connection conn = Connections.getConnection();
     
     @BeforeClass
     public static void setUpClass() throws SQLException, ClassNotFoundException {
@@ -34,6 +34,7 @@ public class QueryPerformanceTest {
         Statement stmt = conn.createStatement();
         stmt.execute("create or replace table companies (id identity, name varchar(30) unique not null);");
         PreparedStatement pstmt = conn.prepareStatement("insert into companies (name) values (?)");
+        final int iterations = 1000000;
         for (int i = 0; i < iterations; i++) {
             pstmt.setString(1, String.valueOf(i));
             pstmt.execute();
@@ -54,209 +55,240 @@ public class QueryPerformanceTest {
     
     
     @Test
-    public void JDBC() throws SQLException {
-        Connection conn = Connections.getConnection();        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement(QUERY);
-            try {
-                stmt.setLong(1, i);
-                ResultSet rs = stmt.executeQuery();                
-                try {
-                    while (rs.next()) {
-                        rs.getString(1);
-                    }
-                } finally {
-                    rs.close();
+    public void JDBC() throws Exception {
+        Runner.run("jdbc by id", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {
+                    PreparedStatement stmt = conn.prepareStatement(QUERY);
+                    try {
+                        stmt.setLong(1, i);
+                        ResultSet rs = stmt.executeQuery();                
+                        try {
+                            while (rs.next()) {
+                                rs.getString(1);
+                            }
+                        } finally {
+                            rs.close();
+                        }
+                        
+                    } finally {
+                        stmt.close();
+                    }            
                 }
-                
-            } finally {
-                stmt.close();
             }            
-        }
-        // 3464
-        System.err.println("jdbc by id " + (System.currentTimeMillis() - start));                    
+        });                      
     }
         
     @Test
-    public void JDBC2() throws SQLException {
-        Connection conn = Connections.getConnection();        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {
-            PreparedStatement stmt = conn.prepareStatement(QUERY);                                                           
-            try {
-                stmt.setString(1, String.valueOf(i));
-                ResultSet rs = stmt.executeQuery();                
-                try {
-                    while (rs.next()) {
-                        rs.getString(1);
-                    }
-                } finally {
-                    rs.close();
+    public void JDBC2() throws Exception {
+        Runner.run("jdbc by name", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {
+                    PreparedStatement stmt = conn.prepareStatement(QUERY);                                                           
+                    try {
+                        stmt.setString(1, String.valueOf(i));
+                        ResultSet rs = stmt.executeQuery();                
+                        try {
+                            while (rs.next()) {
+                                rs.getString(1);
+                            }
+                        } finally {
+                            rs.close();
+                        }
+                        
+                    } finally {
+                        stmt.close();
+                    }    
+                }  
+            }
+        });               
+    }
+        
+    @Test
+    public void Querydsl1() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+        
+        Runner.run("qdsl by id", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf);
+                    query.from(companies).where(companies.id.eq((long)i))
+                        .list(companies.name);            
+                }                
+            }            
+        });    
+    }
+    
+    @Test
+    public void Querydsl12() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+        
+        Runner.run("qdsl by id (iterated)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf);
+                    CloseableIterator<String> it = query.from(companies)
+                            .where(companies.id.eq((long)i)).iterate(companies.name);
+                    try {
+                        while (it.hasNext()) {
+                            it.next();
+                        }    
+                    } finally {
+                        it.close();
+                    }                       
                 }
-                
-            } finally {
-                stmt.close();
+            }
+            
+        });
+    }
+    
+    @Test
+    public void Querydsl13() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+        
+        Runner.run("qdsl by id (no validation)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
+                    query.from(companies).where(companies.id.eq((long)i))
+                        .list(companies.name);            
+                }                
             }            
-        }
-        System.err.println("jdbc by name " + (System.currentTimeMillis() - start));                    
+        });    
     }
         
     @Test
-    public void Querydsl1() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
-        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            QCompanies companies = QCompanies.companies;
-            SQLQuery query = new SQLQuery(conn, conf);
-            query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
-        }
-        System.err.println("qdsl by id " + (System.currentTimeMillis() - start));    
-    }
-    
-    @Test
-    public void Querydsl12() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
-        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            QCompanies companies = QCompanies.companies;
-            SQLQuery query = new SQLQuery(conn, conf);
-            CloseableIterator<String> it = query.from(companies)
-                    .where(companies.id.eq((long)i)).iterate(companies.name);
-            try {
-                while (it.hasNext()) {
-                    it.next();
-                }    
-            } finally {
-                it.close();
-            }                       
-        }
-        System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (iterated)");    
+    public void Querydsl14() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+                
+        Runner.run("qdsl by id (two cols)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf);
+                    query.from(companies).where(companies.id.eq((long)i))
+                        .list(companies.id, companies.name);            
+                }                
+            }            
+        });            
     }
     
     @Test
-    public void Querydsl13() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
+    public void Querydsl2() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
         
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            QCompanies companies = QCompanies.companies;
-            SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
-            query.from(companies).where(companies.id.eq((long)i)).list(companies.name);            
-        }
-        System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (no validation)");    
+        Runner.run("qdsl by name", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf);
+                    query.from(companies).where(companies.name.eq(String.valueOf(i)))
+                        .list(companies.name);            
+                }                
+            }            
+        });    
     }
-        
+    
     @Test
-    public void Querydsl14() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
+    public void Querydsl22() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+        
+        Runner.run("qdsl by name (iterated)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf);
+                    CloseableIterator<String> it = query.from(companies)
+                            .where(companies.name.eq(String.valueOf(i)))
+                            .iterate(companies.name);
+                    try {
+                        while (it.hasNext()) {
+                            it.next();
+                        }    
+                    } finally {
+                        it.close();
+                    }                       
+                }
+            }            
+        });
+    }
+    
+    @Test
+    public void Querydsl23() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+        
+        Runner.run("qdsl by name (no validation)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
+                    query.from(companies)
+                        .where(companies.name.eq(String.valueOf(i)))
+                        .list(companies.name);            
+                }                
+            }            
+        });    
+    }
+    
+    @Test
+    public void Serialization() throws Exception {
         QCompanies companies = QCompanies.companies;
-        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {                        
-            SQLQuery query = new SQLQuery(conn, conf);
-            query.from(companies).where(companies.id.eq((long)i)).list(companies.id, companies.name);            
-        }
-        System.err.println("qdsl by id " + (System.currentTimeMillis() - start) + " (two cols)");    
-    }
-    
-    @Test
-    public void Querydsl2() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
-        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            QCompanies companies = QCompanies.companies;
-            SQLQuery query = new SQLQuery(conn, conf);
-            query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
-        }
-        System.err.println("qdsl by name " + (System.currentTimeMillis() - start));    
-    }
-    
-    @Test
-    public void Querydsl22() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
-        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            QCompanies companies = QCompanies.companies;
-            SQLQuery query = new SQLQuery(conn, conf);
-            CloseableIterator<String> it = query.from(companies)
-                    .where(companies.name.eq(String.valueOf(i))).iterate(companies.name);
-            try {
-                while (it.hasNext()) {
-                    it.next();
-                }    
-            } finally {
-                it.close();
-            }                       
-        }
-        System.err.println("qdsl by name " + (System.currentTimeMillis() - start) + " (iterated)");    
-    }
-    
-    @Test
-    public void Querydsl23() {
-        Connection conn = Connections.getConnection();        
-        Configuration conf = new Configuration(new H2Templates());
-        
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            QCompanies companies = QCompanies.companies;
-            SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
-            query.from(companies).where(companies.name.eq(String.valueOf(i))).list(companies.name);            
-        }
-        System.err.println("qdsl by name " + (System.currentTimeMillis() - start) + " (no validation)");    
-    }
-    
-    @Test
-    public void Serialization() {
-        QCompanies companies = QCompanies.companies;
-        QueryMetadata md = new DefaultQueryMetadata();
+        final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
         md.addWhere(companies.id.eq(1l));
         md.addProjection(companies.name);
         
-        SQLTemplates templates = new H2Templates();
+        final SQLTemplates templates = new H2Templates();
         
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            SQLSerializer serializer = new SQLSerializer(templates);
-            serializer.serialize(md, false);
-            serializer.getConstants();
-            serializer.getConstantPaths();
-            assertNotNull(serializer.toString());     
-        }
-        System.err.println("ser1 " + (System.currentTimeMillis() - start));    
+        Runner.run("ser1", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    SQLSerializer serializer = new SQLSerializer(templates);
+                    serializer.serialize(md, false);
+                    serializer.getConstants();
+                    serializer.getConstantPaths();
+                    assertNotNull(serializer.toString());     
+                }                
+            }            
+        });   
     }
     
     @Test
-    public void Serialization2() {
+    public void Serialization2() throws Exception {
         QCompanies companies = QCompanies.companies;
-        QueryMetadata md = new DefaultQueryMetadata();
+        final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
         md.addWhere(companies.id.eq(1l));
         md.addProjection(companies.name);
         
-        SQLTemplates templates = new H2Templates();
+        final SQLTemplates templates = new H2Templates();
         
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {            
-            SQLSerializer serializer = new SQLSerializer(templates);
-            serializer.setNormalize(false);
-            serializer.serialize(md, false);
-            serializer.getConstants();
-            serializer.getConstantPaths();
-            assertNotNull(serializer.toString());     
-        }
-        System.err.println("ser2 " + (System.currentTimeMillis() - start) + " (non normalized)");    
+        Runner.run("ser2 (non normalized)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    SQLSerializer serializer = new SQLSerializer(templates);
+                    serializer.setNormalize(false);
+                    serializer.serialize(md, false);
+                    serializer.getConstants();
+                    serializer.getConstantPaths();
+                    assertNotNull(serializer.toString());     
+                }       
+            }
+        });    
     }
 
 }
