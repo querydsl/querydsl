@@ -68,13 +68,7 @@ public class DetachableMixin implements Detachable {
     }
 
     @Override
-    public ListSubQuery<Tuple> list(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return new ListSubQuery<Tuple>(Tuple.class, projection(first, second, rest));
-    }
-
-    @Override
-    public ListSubQuery<Tuple> list(Expression<?>[] args) {
+    public ListSubQuery<Tuple> list(Expression<?>... args) {
         return new ListSubQuery<Tuple>(Tuple.class, projection(args));
     }
 
@@ -154,13 +148,7 @@ public class DetachableMixin implements Detachable {
     }
 
     @Override
-    public SimpleSubQuery<Tuple> unique(Expression<?> first, Expression<?> second, 
-            Expression<?>... rest) {
-        return new SimpleSubQuery<Tuple>(Tuple.class, uniqueProjection(first, second, rest));
-    }
-
-    @Override
-    public SimpleSubQuery<Tuple> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Tuple> unique(Expression<?>... args) {
         return new SimpleSubQuery<Tuple>(Tuple.class, uniqueProjection(args));
     }
 

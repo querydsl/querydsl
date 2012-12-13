@@ -77,11 +77,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         @Override
         public void handle(String template, Object... args) {
-            Expression<?>[] exprs = new Expression[args.length];
-            for (int i = 0; i < args.length; i++) {
-                exprs[i] = new ConstantImpl<Object>(args[i]);
-            }
-            serializer.handle(TemplateExpressionImpl.create(Object.class, template, exprs));
+            serializer.handle(TemplateExpressionImpl.create(Object.class, template, args));
         }
         
     }

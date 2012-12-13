@@ -136,7 +136,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    private void handleTemplate(Template template, List<?> args){
+    protected void handleTemplate(Template template, List<?> args){
         for (Template.Element element : template.getElements()) {
             if (element.getStaticText() != null) {
                 append(element.getStaticText());

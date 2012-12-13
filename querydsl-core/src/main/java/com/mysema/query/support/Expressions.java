@@ -19,6 +19,7 @@ import java.util.Date;
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.NullExpression;
@@ -279,6 +280,18 @@ public final class Expressions {
     public static CaseBuilder cases() {
         return new CaseBuilder();
     }
+    
+    public static SimpleExpression<Tuple> list(SimpleExpression<?>... exprs) {
+        return list(Tuple.class, exprs);
+    }
+    
+    public static <T> SimpleExpression<T> list(Class<T> clazz, SimpleExpression<?>... exprs) {
+        SimpleExpression<T> rv = (SimpleExpression<T>)exprs[0];
+        for (int i = 1; i < exprs.length; i++) {
+            rv = SimpleOperation.create(clazz, Ops.LIST, rv, exprs[i]);
+        }
+        return rv;
+    }  
         
     private Expressions() {}
 

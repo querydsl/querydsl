@@ -4,7 +4,7 @@ import static com.mysema.query.Constants.employee;
 import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.SQLITE;
+import static com.mysema.query.Target.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -18,6 +18,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
@@ -97,6 +98,16 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({DERBY, H2, HSQLDB, SQLITE}) 
+    public void List_In_Query() {
+        QEmployee employee2 = new QEmployee("employee2");
+        query().from(employee)
+            .where(Expressions.list(employee.id, employee.lastname)
+                .in(sq().from(employee2).list(employee2.id, employee2.lastname)))
+            .list(employee.id);
+    }
+    
+    @Test
     public void SubQuerySerialization(){
         SQLSubQuery query = sq();
         query.from(survey);
@@ -121,5 +132,6 @@ public class SubqueriesBase extends AbstractBaseTest {
                 "(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE e) as sq", 
                 serializer.toString());
     }
+    
 
 }

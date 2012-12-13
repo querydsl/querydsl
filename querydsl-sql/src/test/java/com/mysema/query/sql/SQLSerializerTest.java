@@ -123,6 +123,13 @@ public class SQLSerializerTest {
         assertEquals("s.NAME = s.NAME and (s.NAME = s.NAME or s.NAME = s.NAME)", str);
     }
     
-
-
+    @Test
+    public void List_In_Query() {
+        QSurvey survey = QSurvey.survey;
+        Expression<?> expr = Expressions.list(survey.id, survey.name).in(sq().from(survey).list(survey.id, survey.name));
+        
+        String str = new SQLSerializer(SQLTemplates.DEFAULT).handle(expr).toString();
+        assertEquals("(SURVEY.ID, SURVEY.NAME) in (select SURVEY.ID, SURVEY.NAME\nfrom SURVEY SURVEY)", str);
+    }
+    
 }

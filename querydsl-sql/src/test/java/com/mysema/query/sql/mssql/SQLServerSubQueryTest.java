@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.domain.QSurvey;
 
 public class SQLServerSubQueryTest {

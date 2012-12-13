@@ -70,7 +70,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.list(first, second, rest);
     }
 
-    public ListSubQuery<Tuple> list(Expression<?>[] args) {
+    public ListSubQuery<Tuple> list(Expression<?>... args) {
         return detachable.list(args);
     }
 
@@ -107,7 +107,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.unique(first, second, rest);
     }
 
-    public SimpleSubQuery<Tuple> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Tuple> unique(Expression<?>... args) {
         return detachable.unique(args);
     }
 

@@ -49,21 +49,10 @@ public interface Detachable {
     /**
      * Create a projection expression for the given projection
      *
-     * @param first
-     * @param second
-     * @param rest
-     *            rest
-     * @return a List over the projection
-     */
-    ListSubQuery<Tuple> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
-
-    /**
-     * Create a projection expression for the given projection
-     *
      * @param args
      * @return
      */
-    ListSubQuery<Tuple> list(Expression<?>[] args);
+    ListSubQuery<Tuple> list(Expression<?>... args);
     
     /**
      * Create a projection expression for the given projection
@@ -95,20 +84,10 @@ public interface Detachable {
     /**
      * Create a projection expression for the given projection
      *
-     * @param first
-     * @param second
-     * @param rest
-     * @return
-     */
-    SimpleSubQuery<Tuple> unique(Expression<?> first, Expression<?> second, Expression<?>... rest);
-
-    /**
-     * Create a projection expression for the given projection
-     *
      * @param args
      * @return
      */
-    SimpleSubQuery<Tuple> unique(Expression<?>[] args);
+    SimpleSubQuery<Tuple> unique(Expression<?>... args);
     
     /**
      * Create a projection expression for the given projection

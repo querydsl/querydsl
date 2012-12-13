@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.domain.QSurvey;
 
 public class HsqldbQueryTest {
