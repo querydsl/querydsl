@@ -16,8 +16,6 @@ package com.mysema.query.types;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Function;
 
 /**
@@ -30,78 +28,141 @@ public final class Template implements Serializable{
 
     private static final long serialVersionUID = -1697705745769542204L;
 
-    public static final class Element implements Serializable{
+    public static abstract class Element implements Serializable {
+        
+        private static final long serialVersionUID = 3396877288101929387L;
 
-        private static final long serialVersionUID = -6861235060996903489L;
+        public abstract Object convert(List<?> args);
+     
+        public abstract boolean isString();
+        
+    }
+    
+    public static final class AsString extends Element {
+
+        private static final long serialVersionUID = -655362047873616197L;
 
         private final int index;
-
-        @Nullable
-        private final String staticText;
-
-        @Nullable
-        private final transient Function<Object, Object> transformer;
-
-        private final boolean asString;
-
+        
         private final String toString;
-
-        @SuppressWarnings("unchecked")
-        Element(int index, Function<Object, Object> transformer) {
-            this.asString = false;
-            this.transformer = transformer;
+        
+        public AsString(int index) {
             this.index = index;
-            this.staticText = null;
-            this.toString = String.valueOf(index);
-        }
-
-        Element(int index, boolean asString) {
-            this.asString = asString;
-            this.transformer = null;
-            this.index = index;
-            this.staticText = null;
-            this.toString = index + (asString ? "s" : "");
-        }
-
-        Element(String text) {
-            this.asString = false;
-            this.transformer = null;
-            this.index = -1;
-            this.staticText = text;
-            this.toString = "'" + staticText + "'";
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        @Nullable
-        public String getStaticText() {
-            return staticText;
-        }
-
-        public boolean isAsString() {
-            return asString;
-        }
-
-        public boolean hasConverter() {
-            return transformer != null;
-        }
-
-        public Expression<?> convert(Expression<?> source) {
-            return (Expression<?>)transformer.apply(source);
+            this.toString = index + "s";
         }
         
-        public Object convert(Object source) {
-            return transformer.apply(source);
-        }
+        @Override
+        public Object convert(final List<?> args) {
+            final Object arg = args.get(index);
+            return arg instanceof Constant ? arg.toString() : arg;
+        }        
 
         @Override
+        public boolean isString() {
+            return true;
+        }
+        
         public String toString() {
             return toString;
         }
-    }
 
+    }
+    
+    public static final class StaticText extends Element {
+
+        private static final long serialVersionUID = -2791869625053368023L;
+
+        private final String text;
+        
+        private final String toString;
+        
+        public StaticText(String text) {
+            this.text = text;
+            this.toString = "'" + text + "'";
+        }
+
+        @Override
+        public boolean isString() {
+            return true;
+        }
+        
+        @Override
+        public Object convert(List<?> args) {
+            return text;
+        }
+        
+        public String toString() {
+            return toString;
+        }
+        
+    }
+    
+    public static final class Transformed extends Element {
+
+        private static final long serialVersionUID = 702677732175745567L;
+
+        private final int index;
+        
+        private final transient Function<Object, Object> transformer;
+        
+        private final String toString;
+        
+        public Transformed(int index, Function<Object, Object> transformer) {
+            this.index = index;
+            this.transformer = transformer;
+            this.toString = String.valueOf(index);
+        }
+        
+        @Override
+        public Object convert(final List<?> args) {
+            return transformer.apply(args.get(index));
+        }
+
+        @Override
+        public boolean isString() {
+            return false;
+        }
+        
+        public String toString() {
+            return toString;
+        }
+        
+    }
+    
+    public static final class ByIndex extends Element {
+        
+        private static final long serialVersionUID = 4711323946026029998L;
+
+        private final int index;
+        
+        private final String toString;
+
+        public ByIndex(int index) {
+            this.index = index;
+            this.toString = String.valueOf(index);
+        }
+        
+        @Override
+        public Object convert(final List<?> args) {
+            final Object rv = args.get(index);
+            if (rv instanceof Operation && ((Operation)rv).getOperator() == Ops.DELEGATE) {
+                return ((Operation)rv).getArg(0);
+            } else {
+                return rv;
+            }
+        }
+
+        @Override
+        public boolean isString() {
+            return false;
+        }
+        
+        public String toString() {
+            return toString;
+        }
+        
+    }
+    
     private final List<Element> elements;
 
     private final String template;

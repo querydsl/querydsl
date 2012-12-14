@@ -57,7 +57,7 @@ public class TemplateFactory {
             int end = 0;
             while (m.find()) {
                 if (m.start() > end) {
-                    elements.add(new Element(template.substring(end, m.start())));
+                    elements.add(new Template.StaticText(template.substring(end, m.start())));
                 }
                 String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
@@ -111,16 +111,16 @@ public class TemplateFactory {
                 }
                 int index = Integer.parseInt(str);
                 if (asString) {
-                    elements.add(new Element(index, true));
+                    elements.add(new Template.AsString(index));
                 } else if (transformer != null) {
-                    elements.add(new Element(index, transformer));
+                    elements.add(new Template.Transformed(index, transformer));
                 } else {
-                    elements.add(new Element(index, false));
+                    elements.add(new Template.ByIndex(index));
                 }
                 end = m.end();
             }
             if (end < template.length()) {
-                elements.add(new Element(template.substring(end)));
+                elements.add(new Template.StaticText(template.substring(end)));
             }
             elements = ImmutableList.copyOf(elements);
             Template rv = new Template(template, elements);

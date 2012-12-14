@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.path.StringPath;
@@ -44,6 +45,7 @@ public class ExpressionUtilsTest {
     }
     
     @Test
+    @Ignore
     public void LikeToRegexSpeed() {
         // 4570
         StringPath path = new StringPath("path");
@@ -81,6 +83,7 @@ public class ExpressionUtilsTest {
     }
     
     @Test
+    @Ignore
     public void RegexToLikeSpeed() {
         // 3255
         StringPath path = new StringPath("path");        

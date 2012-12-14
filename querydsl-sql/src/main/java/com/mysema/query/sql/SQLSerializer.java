@@ -115,17 +115,17 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void appendAsColumnName(Path<?> path) {
-        String column = path.getMetadata().getName();
+        final String column = path.getMetadata().getName();
         append(templates.quoteIdentifier(column));
     }
     
     private void appendAsSchemaName(RelationalPath<?> path) {
-        String schema = path.getSchemaName();
+        final String schema = path.getSchemaName();
         append(templates.quoteIdentifier(schema));
     }
 
     private void appendAsTableName(RelationalPath<?> path) {
-        String table = path.getTableName();
+        final String table = path.getTableName();
         append(templates.quoteIdentifier(table));
     }
 
@@ -139,9 +139,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @SuppressWarnings("unchecked")
     private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins) {
-        JoinExpression join = joins.get(0);
+        final JoinExpression join = joins.get(0);
         @SuppressWarnings("rawtypes")
-        RelationalPath path = (RelationalPath)join.getTarget();
+        final RelationalPath path = (RelationalPath)join.getTarget();
         if (path.getPrimaryKey() != null) {
             return path.getPrimaryKey().getLocalColumns();
         } else {
@@ -156,7 +156,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
-            RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
+            final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 if (templates.isPrintSchema()) {
                     appendAsSchemaName(pe);
@@ -174,16 +174,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
-        List<? extends Expression<?>> select = metadata.getProjection();
-        List<JoinExpression> joins = metadata.getJoins();
-        Predicate where = metadata.getWhere();
-        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
-        Predicate having = metadata.getHaving();
-        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
-        Set<QueryFlag> flags = metadata.getFlags();
+        final List<? extends Expression<?>> select = metadata.getProjection();
+        final List<JoinExpression> joins = metadata.getJoins();
+        final Predicate where = metadata.getWhere();
+        final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        final Predicate having = metadata.getHaving();
+        final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
 
-        List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>(select.size());
+        final List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>(select.size());
         for (Expression<?> selectExpr : select) {
             if (selectExpr instanceof FactoryExpression) {
                 // transforms constructor arguments into individual select expressions
@@ -283,7 +283,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!orderBy.isEmpty() && !forCountRow) {
             append(templates.getOrderBy());                       
             boolean first = true;
-            for (OrderSpecifier<?> os : orderBy) {
+            for (final OrderSpecifier<?> os : orderBy) {
                 if (!first) {
                     append(COMMA);
                 }
@@ -432,7 +432,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.getSet());
         boolean first = true;
         skipParent = true;
-        for (Pair<Path<?>,Expression<?>> update : updates) {
+        for (final Pair<Path<?>,Expression<?>> update : updates) {
             if (!first) {
                 append(COMMA);
             }                        
@@ -490,15 +490,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeUnion(SubQueryExpression[] sqs, QueryMetadata metadata, boolean unionAll) {
-        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
-        Predicate having = metadata.getHaving();
-        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
-        Set<QueryFlag> flags = metadata.getFlags();
+        final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        final Predicate having = metadata.getHaving();
+        final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        final Set<QueryFlag> flags = metadata.getFlags();
         
         // union
         boolean oldInUnion = inUnion;
         inUnion = true;
-        String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
+        final String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
         if (templates.isUnionsWrapped()) {
             append("(");
             handle(")" + separator + "(", sqs);   
@@ -599,7 +599,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 return null;
             }
         }
-        PathMetadata<?> metadata = path.getMetadata();
+        final PathMetadata<?> metadata = path.getMetadata();
         if (metadata.getParent() != null && !skipParent) {
             visit(metadata.getParent(), context);
             append(".");
@@ -647,13 +647,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }       
         
         if (operator == Ops.STRING_CAST) {
-            String typeName = templates.getTypeForCast(String.class);
+            final String typeName = templates.getTypeForCast(String.class);
             visitOperation(String.class, SQLTemplates.CAST, 
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
-            Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
-            String typeName = templates.getTypeForCast(targetType);
+            final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+            final String typeName = templates.getTypeForCast(targetType);
             visitOperation(targetType, SQLTemplates.CAST, 
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 

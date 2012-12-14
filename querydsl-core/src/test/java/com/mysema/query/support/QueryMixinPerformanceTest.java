@@ -1,16 +1,18 @@
 package com.mysema.query.support;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 
+@Ignore
 public class QueryMixinPerformanceTest {
 
     public static final int iterations = 2000000;
     
-    @Test
+    @Test 
     public void Normal() { // 1791
         EntityPath<DummyEntity> entity = new EntityPathBase<DummyEntity>(DummyEntity.class, "entity");
         EntityPathBase<DummyEntity> other = new EntityPathBase<DummyEntity>(DummyEntity.class, 

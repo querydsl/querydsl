@@ -13,12 +13,12 @@
  */
 package com.mysema.query.support;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.types.Constant;
@@ -26,7 +26,6 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathType;
@@ -112,7 +111,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return handle(joinFlag.getFlag());
     }
 
-    public final S handle(String sep, Expression<?>[] expressions) {
+    public final S handle(final String sep, final Expression<?>[] expressions) {
         boolean first = true;
         for (Expression<?> expr : expressions) {
             if (!first) {
@@ -124,7 +123,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
     
-    public final S handle(String sep, List<?> expressions) {
+    public final S handle(final String sep, final List<?> expressions) {
         boolean first = true;
         for (Object expr : expressions) {
             if (!first) {
@@ -136,23 +135,22 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    protected void handleTemplate(Template template, List<?> args){
-        for (Template.Element element : template.getElements()) {
-            if (element.getStaticText() != null) {
-                append(element.getStaticText());
-            } else if (element.isAsString()) {
-                append(args.get(element.getIndex()).toString());
-            } else if (element.hasConverter()) {
-                handle(element.convert(args.get(element.getIndex())));
+    protected void handleTemplate(final Template template, final List<?> args){
+        for (final Template.Element element : template.getElements()) {
+            Object rv = element.convert(args);
+            if (rv instanceof Expression) {                    
+                ((Expression)rv).accept(this, null);
+            } else if (element.isString()) {
+                builder.append(rv.toString());
             } else {
-                handle(args.get(element.getIndex()));                               
+                visitConstant(rv);
             }
         }
     }
 
-    protected final boolean serialize(QueryFlag.Position position, Set<QueryFlag> flags) {
+    protected final boolean serialize(final QueryFlag.Position position, final Set<QueryFlag> flags) {
         boolean handled = false;
-        for (QueryFlag flag : flags) {
+        for (final QueryFlag flag : flags) {
             if (flag.getPosition() == position) {
                 handle(flag.getFlag());
                 handled = true;
@@ -161,9 +159,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return handled;
     }
     
-    protected final boolean serialize(JoinFlag.Position position, Set<JoinFlag> flags){
+    protected final boolean serialize(final JoinFlag.Position position, final Set<JoinFlag> flags){
         boolean handled = false;
-        for (JoinFlag flag : flags) {
+        for (final JoinFlag flag : flags) {
             if (flag.getPosition() == position) {
                 handle(flag.getFlag());
                 handled = true;
@@ -205,7 +203,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     public void visitConstant(Object constant) {
         if (!getConstantToLabel().containsKey(constant)) {
-            String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
+            final String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
             getConstantToLabel().put(constant, constLabel);
             append(constLabel);
         } else {
@@ -246,50 +244,41 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     @Override
     public Void visit(Path<?> path, Void context) {
-        PathType pathType = path.getMetadata().getPathType();
-        Template template = templates.getTemplate(pathType);
-        List<Object> args = new ArrayList<Object>();
+        final PathType pathType = path.getMetadata().getPathType();
+        final Template template = templates.getTemplate(pathType);
+        final Object element = path.getMetadata().getElement();        
+        List<Object> args;
         if (path.getMetadata().getParent() != null) {
-            args.add(path.getMetadata().getParent());
+            args = ImmutableList.of(path.getMetadata().getParent(), element);
+        } else {
+            args = ImmutableList.of(element);
         }
-        args.add(path.getMetadata().getElement());
         handleTemplate(template, args);
         return null;
     }
     
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
-        Template template = templates.getTemplate(operator);
+    protected void visitOperation(Class<?> type, Operator<?> operator, final List<? extends Expression<?>> args) {
+        final Template template = templates.getTemplate(operator);
         if (template == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
         }
-        int precedence = templates.getPrecedence(operator);
-        for (Template.Element element : template.getElements()) {
-            if (element.getStaticText() != null) {
-                append(element.getStaticText());                
-            } else if (element.isAsString() && args.get(element.getIndex()) instanceof Constant) {
-                // serialize only constants directly
-                append(args.get(element.getIndex()).toString());                
-            } else {
-                int i = element.getIndex();
-                boolean wrap = false;
-                Expression<?> arg = args.get(i);
-                if (arg instanceof Operation && ((Operation)arg).getOperator() == Ops.DELEGATE) {
-                    arg = ((Operation)arg).getArg(0);
-                }
-                if (precedence > -1 && arg instanceof Operation) {
-                    wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
-                }
-                if (element.hasConverter()) {
-                    arg = element.convert(arg);
-                }
-                if (wrap) {
-                    append("(");
-                    handle(arg);
-                    append(")");
+        final int precedence = templates.getPrecedence(operator);
+        for (final Template.Element element : template.getElements()) {
+            final Object rv = element.convert(args);
+            if (rv instanceof Expression) {
+                final Expression<?> expr = (Expression<?>)rv;                
+                if (precedence > -1 && expr instanceof Operation) {
+                    if (precedence < templates.getPrecedence(((Operation<?>) expr).getOperator())) {
+                        append("(").handle(expr).append(")");
+                    } else {
+                        handle(expr);
+                    }
                 } else {
-                    handle(arg);
-                }                
-            }
+                    handle(expr);
+                }                  
+            } else {
+                append(rv.toString());
+            }            
         }
     }
 

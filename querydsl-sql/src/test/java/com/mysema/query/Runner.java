@@ -18,6 +18,7 @@ public final class Runner {
     public static void run(String label, Benchmark benchmark) throws Exception {
         // warmup
         benchmark.run(50000);
+        System.err.println("-- warmup");
         // timing
         long start = System.currentTimeMillis();
         benchmark.run(1000000);

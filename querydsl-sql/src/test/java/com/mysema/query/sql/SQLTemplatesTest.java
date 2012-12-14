@@ -32,7 +32,7 @@ public class SQLTemplatesTest {
     @Test
     public void test(){
         Template template = TemplateFactory.DEFAULT.create("fetch first {0s} rows only");
-        assertTrue(template.getElements().get(1).isAsString());
+        assertTrue(template.getElements().get(1) instanceof Template.AsString);
 
         SQLSerializer serializer = new SQLSerializer(new DerbyTemplates());
         serializer.handle(SimpleTemplate.create(Object.class, template, ConstantImpl.create(5)));

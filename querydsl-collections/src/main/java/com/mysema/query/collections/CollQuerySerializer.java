@@ -121,12 +121,13 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             args.add(path.getMetadata().getElement());
             Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()) {
-                if (element.getStaticText() != null) {
-                    append(element.getStaticText());
-                } else if (element.isAsString()) {
-                    append(args.get(element.getIndex()).toString());
+                Object rv = element.convert(args);
+                if (rv instanceof Expression) {                    
+                    ((Expression)rv).accept(this, context);
+                } else if (element.isString()) {    
+                    append(rv.toString());
                 } else {
-                    handle(args.get(element.getIndex()));                    
+                    visitConstant(rv);
                 }
             }
         }

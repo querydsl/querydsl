@@ -35,6 +35,7 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
@@ -44,7 +45,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Param;
-import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
@@ -118,8 +118,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @SuppressWarnings("unchecked")
     private <T> Expression<?> regexToLike(Operation<T> operation) {
-        List<Expression<?>> args = new ArrayList<Expression<?>>();
-        for (Expression<?> arg : operation.getArgs()) {
+        final List<Expression<?>> args = new ArrayList<Expression<?>>();
+        for (final Expression<?> arg : operation.getArgs()) {
             if (!arg.getType().equals(String.class)) {
                 args.add(arg);
             } else if (arg instanceof Constant) {
@@ -130,10 +130,10 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 args.add(arg);
             }
         }
-        return SimpleOperation.create(
+        return new OperationImpl(
                 operation.getType(),
                 operation.getOperator(),
-                args.<Expression<?>>toArray(new Expression[args.size()]));
+                args);
     }
 
     private Expression<?> regexToLike(String str) {
@@ -142,13 +142,13 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
-        List<? extends Expression<?>> select = metadata.getProjection();
-        List<JoinExpression> joins = metadata.getJoins();
-        Expression<?> source = joins.get(0).getTarget();
-        Predicate where = metadata.getWhere();
-        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
-        Predicate having = metadata.getHaving();
-        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        final List<? extends Expression<?>> select = metadata.getProjection();
+        final List<JoinExpression> joins = metadata.getJoins();
+        final Expression<?> source = joins.get(0).getTarget();
+        final Predicate where = metadata.getWhere();
+        final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        final Predicate having = metadata.getHaving();
+        final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         constantToLabel.push(new HashMap<Object,String>());
         
@@ -222,7 +222,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         if (!orderBy.isEmpty() && !forCountRow) {
             append(ORDER_BY);
             boolean first = true;
-            for (OrderSpecifier<?> os : orderBy) {
+            for (final OrderSpecifier<?> os : orderBy) {
                 if (!first) {
                     append(COMMA);
                 }
@@ -262,10 +262,10 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     private String serializeParameters(Map<ParamExpression<?>, Object> params) {
-        StringBuilder b = new StringBuilder();
+        final StringBuilder b = new StringBuilder();
         b.append(PARAMETERS);
         boolean first = true;
-        List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
+        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
         Collections.sort(entries, comparator);
         for (Map.Entry<Object, String> entry : entries) {
             if (!first) {
@@ -291,14 +291,14 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     private void serializeVariables(List<JoinExpression> joins) {
         append(VARIABLES);
         for (int i = 1; i < joins.size(); i++) {
-            JoinExpression je = joins.get(i);
+            final JoinExpression je = joins.get(i);
             if (i > 1) {
                 append("; ");
             }
 
             // type specifier
             if (je.getTarget() instanceof EntityPath) {
-                EntityPath<?> pe = (EntityPath<?>) je.getTarget();
+                final EntityPath<?> pe = (EntityPath<?>) je.getTarget();
                 if (pe.getMetadata().getParent() == null) {
                     append(pe.getType().getName()).append(" ");
                 }
@@ -338,7 +338,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             
         // exists    
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {
-            SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
+            final SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);
             append(") > 0");
@@ -346,7 +346,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         // not exists    
         } else if (operator.equals(Ops.NOT) && args.get(0) instanceof Operation 
                 && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)) {    
-            SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
+            final SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);
             append(") == 0");

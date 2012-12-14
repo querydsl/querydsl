@@ -130,14 +130,14 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof EntityPath<?>) {
-            EntityPath<?> pe = (EntityPath<?>) je.getTarget();
+            final EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                Entity entityAnnotation = pe.getAnnotatedElement().getAnnotation(Entity.class);
+                final Entity entityAnnotation = pe.getAnnotatedElement().getAnnotation(Entity.class);
                 if (entityAnnotation != null && entityAnnotation.name().length() > 0) {
                     append(entityAnnotation.name());
                 } else if (pe.getType().getPackage() != null) {
-                    String pn = pe.getType().getPackage().getName();
-                    String typeName = pe.getType().getName().substring(pn.length() + 1);
+                    final String pn = pe.getType().getPackage().getName();
+                    final String typeName = pe.getType().getName().substring(pn.length() + 1);
                     append(typeName);
                 } else {
                     append(pe.getType().getName());
@@ -151,12 +151,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
-        List<? extends Expression<?>> select = metadata.getProjection();
-        List<JoinExpression> joins = metadata.getJoins();
-        Predicate where = metadata.getWhere();
-        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
-        Predicate having = metadata.getHaving();
-        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        final List<? extends Expression<?>> select = metadata.getProjection();
+        final List<JoinExpression> joins = metadata.getJoins();
+        final Predicate where = metadata.getWhere();
+        final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        final Predicate having = metadata.getHaving();
+        final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         // select
         boolean inProjectionOrig = inProjection;
@@ -221,7 +221,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (!orderBy.isEmpty() && !forCountRow) {
             append(ORDER_BY);
             boolean first = true;
-            for (OrderSpecifier<?> os : orderBy) {
+            for (final OrderSpecifier<?> os : orderBy) {
                 if (!first) {
                     append(COMMA);
                 }
@@ -252,7 +252,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private void serializeSources(boolean forCountRow, List<JoinExpression> joins) {
         for (int i = 0; i < joins.size(); i++) {
-            JoinExpression je = joins.get(i);
+            final JoinExpression je = joins.get(i);
             if (i > 0) {
                 append(joinTypes.get(je.getType()));
             }
@@ -280,7 +280,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
         append("?");
         if (!getConstantToLabel().containsKey(constant)) {
-            String constLabel = String.valueOf(getConstantToLabel().size()+1);
+            final String constLabel = String.valueOf(getConstantToLabel().size()+1);
             getConstantToLabel().put(constant, constLabel);
             append(constLabel);
         } else {
@@ -295,7 +295,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     public Void visit(ParamExpression<?> param, Void context) {
         append("?");
         if (!getConstantToLabel().containsKey(param)) {
-            String paramLabel = String.valueOf(getConstantToLabel().size()+1);
+            final String paramLabel = String.valueOf(getConstantToLabel().size()+1);
             getConstantToLabel().put(param, paramLabel);
             append(paramLabel);    
         } else {
@@ -367,7 +367,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             visitNumCast(args);
 
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {
-            SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
+            final SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("exists (");
             serialize(subQuery.getMetadata(), false, templates.getExistsProjection());
             append(")");
@@ -387,16 +387,16 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     private void visitNumCast(List<? extends Expression<?>> args) {
-        Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
-        String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
+        final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+        final String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
         visitOperation(targetType, JPQLTemplates.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
     }
 
     private void visitInstanceOf(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
         if (templates.isTypeAsString()) {
-            List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
-            Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
+            final List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
+            final Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
             // use discriminator value instead of fqnm
             if (cl.getAnnotation(DiscriminatorValue.class) != null) {
                 newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
@@ -416,9 +416,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             Path<?> lhs = (Path<?>) args.get(0);
             Constant<?> rhs = (Constant<?>) args.get(1);
-            Metamodel metamodel = entityManager.getMetamodel();
-            PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
-            EntityType<?> entityType = metamodel.entity(args.get(0).getType());
+            final Metamodel metamodel = entityManager.getMetamodel();
+            final PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
+            final EntityType<?> entityType = metamodel.entity(args.get(0).getType());
             if (entityType.hasSingleIdAttribute()) {
                 SingularAttribute<?,?> id = getIdProperty(entityType);
                 // turn lhs into id path
@@ -437,8 +437,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @SuppressWarnings("rawtypes")
     private SingularAttribute<?,?> getIdProperty(EntityType entity) {        
-        Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
-        for (SingularAttribute singularAttribute : singularAttributes) {
+        final Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
+        for (final SingularAttribute singularAttribute : singularAttributes) {
             if (singularAttribute.isId()){
                 return singularAttribute;
             }
@@ -449,8 +449,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitAnyInPath(Class<?> type, List<? extends Expression<?>> args) {
         if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
-            Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
-            Enum constant = (Enum)((Constant)args.get(0)).getConstant();
+            final Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
+            final Enum constant = (Enum)((Constant)args.get(0)).getConstant();
             if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
                 args = ImmutableList.of(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
             } else {
@@ -474,11 +474,11 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
         }
         if (hasConstants && numType != null) {
-            List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args.size());
-            for (Expression<?> arg : args) {
+            final List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args.size());
+            for (final Expression<?> arg : args) {
                 if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
                         && !arg.getType().equals(numType)) {
-                    Number number = (Number) ((Constant)arg).getConstant();
+                    final Number number = (Number) ((Constant)arg).getConstant();
                     newArgs.add(new ConstantImpl(MathUtils.cast(number, (Class)numType)));
                 } else {
                     newArgs.add(arg);
