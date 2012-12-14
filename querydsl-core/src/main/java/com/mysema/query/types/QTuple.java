@@ -36,8 +36,6 @@ import com.mysema.query.Tuple;
  * } 
  * </pre>
  *
- * Duplicate expressions are removed in the constructor.
- *
  * @author tiwe
  *
  */
@@ -104,14 +102,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      */
     public QTuple(Expression<?>... args) {
         super(Tuple.class);        
-        Set<Expression<?>> set = new HashSet<Expression<?>>(args.length);
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        for (Expression<?> arg : args) {
-            if (set.add(arg)) {
-                builder.add(arg);
-            }
-        }        
-        this.args = builder.build();
+        this.args = ImmutableList.copyOf(args);
     }
     
     /**
@@ -119,16 +110,9 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      * 
      * @param args
      */
-    public QTuple(List<? extends Expression<?>> args) {
+    public QTuple(List<Expression<?>> args) {
         super(Tuple.class);
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        for (int i = 0; i < args.size(); i++) {
-            Expression<?> arg = args.get(i);
-            if (args.indexOf(arg) == i) {
-                builder.add(arg);
-            }
-        }
-        this.args = builder.build();
+        this.args = args;
     }
 
     /**
@@ -138,11 +122,11 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      */
     public QTuple(Expression<?>[]... args) {
         super(Tuple.class);
-        Set<Expression<?>> argsSet = new LinkedHashSet<Expression<?>>();
+        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?>[] exprs: args){
-            argsSet.addAll(Arrays.asList(exprs));
+            builder.addAll(Arrays.asList(exprs));
         }
-        this.args = ImmutableList.copyOf(argsSet);
+        this.args = builder.build();
     }
 
     @Override

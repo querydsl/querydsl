@@ -50,7 +50,7 @@ public abstract class MappingProjection<T> extends ExpressionBase<T> implements 
     @SuppressWarnings("unchecked")
     public MappingProjection(Class<? super T> type, Expression<?>... args) {
         super((Class)type);
-        qTuple = new QTuple(args);
+        qTuple = new QTuple(ExpressionUtils.distinctList(args));
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class MappingProjection<T> extends ExpressionBase<T> implements 
     @SuppressWarnings("unchecked")
     public MappingProjection(Class<? super T> type, Expression<?>[]... args) {
         super((Class)type);
-        qTuple = new QTuple(args);
+        qTuple = new QTuple(ExpressionUtils.distinctList(args));
     }
 
     public T newInstance(Object... values) {

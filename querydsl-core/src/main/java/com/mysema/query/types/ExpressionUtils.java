@@ -14,7 +14,9 @@
 package com.mysema.query.types;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -391,6 +393,38 @@ public final class ExpressionUtils {
      */
     public static Predicate or(Predicate left, Predicate right){
         return PredicateOperation.create(Ops.OR, left, right);
+    }
+    
+    /**
+     * @param args
+     * @return
+     */
+    public static List<Expression<?>> distinctList(Expression<?>... args) {
+        final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        final Set<Expression<?>> set = new HashSet<Expression<?>>(args.length);
+        for (Expression<?> arg : args) {
+            if (set.add(arg)) {
+                builder.add(arg);
+            }
+        }
+        return builder.build();
+    }
+    
+    /**
+     * @param args
+     * @return
+     */
+    public static List<Expression<?>> distinctList(Expression<?>[]... args) {
+        final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        final Set<Expression<?>> set = new HashSet<Expression<?>>();
+        for (Expression<?>[] arr : args) {
+            for (Expression<?> arg : arr) {
+                if (set.add(arg)) {
+                    builder.add(arg);
+                }
+            }
+        }
+        return builder.build();
     }
     
     private ExpressionUtils(){}

@@ -54,4 +54,17 @@ public class MappingProjectionTest {
         assertEquals("1", mapping.newInstance("1"));
     }
     
+    @Test
+    public void Distinct_Expressions() {
+        MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str1) {
+            @Override
+            protected Pair<String, String> map(Tuple row) {
+                return Pair.of(row.get(str1), row.get(str1));
+            }            
+        };
+        
+        assertEquals(1, mapping.getArgs().size());
+        assertEquals(Pair.of("1", "1"), mapping.newInstance("1"));
+    }
+    
 }
