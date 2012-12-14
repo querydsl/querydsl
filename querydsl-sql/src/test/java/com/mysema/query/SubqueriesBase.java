@@ -98,7 +98,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, H2, HSQLDB, SQLITE}) 
+    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE}) 
     public void List_In_Query() {
         QEmployee employee2 = new QEmployee("employee2");
         query().from(employee)
