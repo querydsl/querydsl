@@ -280,7 +280,7 @@ public final class Expressions {
     public static CaseBuilder cases() {
         return new CaseBuilder();
     }
-    
+        
     public static SimpleExpression<Tuple> list(SimpleExpression<?>... exprs) {
         return list(Tuple.class, exprs);
     }
