@@ -42,7 +42,7 @@ import com.mysema.query.types.Visitor;
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 
-    private final StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder(128);
            
     private String constantPrefix = "a";
 
