@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExtractorVisitor;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
@@ -97,7 +97,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (e == null) {
             return;
         }
-        e = (Predicate)e.accept(ExtractorVisitor.DEFAULT, null);
+        e = (Predicate)ExpressionUtils.extract(e);
         if (e != null) {
             validate(e);
             having.and(e);
@@ -162,7 +162,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (e == null) {
             return;
         }
-        e = (Predicate)e.accept(ExtractorVisitor.DEFAULT, null);
+        e = (Predicate)ExpressionUtils.extract(e);
         if (e != null) {
             validate(e);
             where.and(e);

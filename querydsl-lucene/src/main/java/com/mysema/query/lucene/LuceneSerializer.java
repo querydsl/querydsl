@@ -47,6 +47,7 @@ import com.google.common.collect.Iterables;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -138,8 +139,6 @@ public class LuceneSerializer {
             return le(operation, metadata);
         } else if (op == Ops.GOE) {
             return ge(operation, metadata);
-        } else if (op == Ops.DELEGATE){
-            return toQuery(operation.getArg(0), metadata);
         } else if (op == LuceneExpressions.LUCENE_QUERY) {
             return ((Constant<Query>)operation.getArg(0)).getConstant();
         }
@@ -531,8 +530,8 @@ public class LuceneSerializer {
     public Query toQuery(Expression<?> expr, QueryMetadata metadata) {
         if (expr instanceof Operation<?>) {
             return toQuery((Operation<?>) expr, metadata);
-        } else{
-            throw new IllegalArgumentException("expr was of unsupported type " + expr.getClass().getName());
+        } else {
+            return toQuery(ExpressionUtils.extract(expr), metadata);
         }
     }
 

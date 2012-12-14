@@ -151,17 +151,17 @@ public class BooleanBuilderTest {
         assertEquals("true || condition", builder.toString());
     }
 
-    @Test
-    public void GetArg(){
-        BooleanBuilder builder = new BooleanBuilder().and(first);
-        assertEquals(first, builder.getArg(0));
-    }
-
-    @Test
-    public void GetArgs(){
-        BooleanBuilder builder = new BooleanBuilder().and(first);
-        assertEquals(Arrays.asList(first), builder.getArgs());
-    }
+//    @Test
+//    public void GetArg(){
+//        BooleanBuilder builder = new BooleanBuilder().and(first);
+//        assertEquals(first, builder.getArg(0));
+//    }
+//
+//    @Test
+//    public void GetArgs(){
+//        BooleanBuilder builder = new BooleanBuilder().and(first);
+//        assertEquals(Arrays.asList(first), builder.getArgs());
+//    }
 
     @Test
     public void Accept(){

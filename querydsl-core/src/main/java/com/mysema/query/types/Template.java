@@ -24,7 +24,7 @@ import com.google.common.base.Function;
  * @author tiwe
  *
  */
-public final class Template implements Serializable{
+public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
 
@@ -144,12 +144,12 @@ public final class Template implements Serializable{
         
         @Override
         public Object convert(final List<?> args) {
-            final Object rv = args.get(index);
-            if (rv instanceof Operation && ((Operation)rv).getOperator() == Ops.DELEGATE) {
-                return ((Operation)rv).getArg(0);
+            final Object arg = args.get(index);
+            if (arg instanceof Expression) {
+                return ExpressionUtils.extract((Expression<?>) arg);    
             } else {
-                return rv;
-            }
+                return arg;
+            }            
         }
 
         @Override

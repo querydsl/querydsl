@@ -18,7 +18,7 @@ import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.ExtractorVisitor;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
@@ -45,7 +45,7 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
         
     @Override
     protected Predicate normalize(Predicate predicate, boolean where) {
-        predicate = (Predicate)predicate.accept(ExtractorVisitor.DEFAULT, null);
+        predicate = (Predicate)ExpressionUtils.extract(predicate);
         if (predicate != null){
             Context context = new Context();            
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);

@@ -88,7 +88,6 @@ import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QTuple;
@@ -123,8 +122,8 @@ public abstract class AbstractStandardTest {
     private static final BooleanExpression cond2 = otherCat.name.length().gt(0);
     
     private static final Predicate condition = ExpressionUtils.and(
-            (Predicate)cond1.accept(ExtractorVisitor.DEFAULT, null),
-            (Predicate)cond2.accept(ExtractorVisitor.DEFAULT, null));
+            (Predicate)ExpressionUtils.extract(cond1),
+            (Predicate)ExpressionUtils.extract(cond2));
 
     private static final Date birthDate;
 

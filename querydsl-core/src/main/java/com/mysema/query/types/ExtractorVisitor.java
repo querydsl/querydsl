@@ -20,7 +20,7 @@ package com.mysema.query.types;
  * @author tiwe
  *
  */
-public final class ExtractorVisitor implements Visitor<Expression<?>,Void> {
+final class ExtractorVisitor implements Visitor<Expression<?>,Void> {
     
     public static final ExtractorVisitor DEFAULT = new ExtractorVisitor();
     

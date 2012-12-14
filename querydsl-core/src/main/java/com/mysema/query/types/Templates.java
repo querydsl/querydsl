@@ -178,7 +178,7 @@ public class Templates {
         add(PathType.VARIABLE, "{0s}");
         add(PathType.DELEGATE, "{0}");
         add(Ops.ORDINAL, "ordinal({0})");
-        add(Ops.DELEGATE, "{0}");
+//        add(Ops.DELEGATE, "{0}");
 
         for (PathType type : new PathType[] {
                 PathType.LISTVALUE,

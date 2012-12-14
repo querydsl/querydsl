@@ -47,11 +47,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
         for (int i = 1; i < sq.size(); i++) {
             rv = SimpleOperation.create((Class)rv.getType(), SQLTemplates.UNION, rv, sq.get(i));
         }
-        if (rv instanceof SimpleExpression) {
-            return (SimpleExpression<T>)rv;
-        } else {
-            return SimpleOperation.create((Class)rv.getType(), Ops.DELEGATE, rv);
-        }
+        return (SimpleExpression<T>)rv;
     }
     
     public <T> SimpleExpression<T> union(SubQueryExpression<T>... sq) {

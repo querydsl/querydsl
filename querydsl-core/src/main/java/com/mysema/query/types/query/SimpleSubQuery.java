@@ -38,7 +38,7 @@ public final class SimpleSubQuery<T> extends DslExpression<T> implements Extende
 
     @Nullable
     private volatile BooleanExpression exists;
-
+    
     public SimpleSubQuery(Class<T> type, QueryMetadata md) {
         super(new SubQueryExpressionImpl<T>(type, md));
         subQueryMixin = (SubQueryExpressionImpl<T>)mixin;

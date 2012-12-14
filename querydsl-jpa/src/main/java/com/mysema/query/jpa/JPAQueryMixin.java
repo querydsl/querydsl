@@ -27,7 +27,6 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -77,7 +76,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     
     @Override    
     protected Predicate normalize(Predicate predicate, boolean where) {
-        predicate = (Predicate)predicate.accept(ExtractorVisitor.DEFAULT, null);
+        predicate = (Predicate) ExpressionUtils.extract(predicate);
         if (predicate != null) {
             // transform any usage
             predicate = (Predicate) predicate.accept(JPACollectionAnyVisitor.DEFAULT, new Context());

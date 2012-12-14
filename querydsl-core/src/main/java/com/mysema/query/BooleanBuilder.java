@@ -13,18 +13,10 @@
  */
 package com.mysema.query;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.ExtractorVisitor;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Visitor;
 
@@ -43,7 +35,7 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  */
-public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boolean> {
+public final class BooleanBuilder implements Predicate, Cloneable  {
 
     private static final long serialVersionUID = -4129485177345542519L;
 
@@ -61,7 +53,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
      * @param initial
      */
     public BooleanBuilder(Predicate initial) {
-        predicate = (Predicate) initial.accept(ExtractorVisitor.DEFAULT, null);
+        predicate = (Predicate)ExpressionUtils.extract(initial);
     }
 
     @Override
@@ -128,25 +120,6 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
         } else {
             return false;
         }
-    }
-
-    @Override
-    public Expression<?> getArg(int index) {
-        if (index == 0) {
-            return predicate;
-        } else {
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
-    @Override
-    public List<Expression<?>> getArgs() {
-        return Collections.<Expression<?>>singletonList(predicate);
-    }
-
-    @Override
-    public Operator<? super Boolean> getOperator() {
-        return Ops.DELEGATE;
     }
 
     @Nullable

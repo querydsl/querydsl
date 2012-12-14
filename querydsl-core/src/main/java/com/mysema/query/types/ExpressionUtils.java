@@ -427,6 +427,14 @@ public final class ExpressionUtils {
         return builder.build();
     }
     
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T> Expression<T> extract(Expression<T> expr) {
+        return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);
+    }
+    
     private ExpressionUtils(){}
     
 }

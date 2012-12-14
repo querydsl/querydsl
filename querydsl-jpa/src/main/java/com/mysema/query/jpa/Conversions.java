@@ -16,7 +16,7 @@ package com.mysema.query.jpa;
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExtractorVisitor;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Ops;
@@ -44,7 +44,7 @@ public final class Conversions {
     }
     
     private static boolean isAggSumWithConversion(Expression<?> expr) {
-        expr = (Expression)expr.accept(ExtractorVisitor.DEFAULT, null);
+        expr = ExpressionUtils.extract(expr);
         if (expr instanceof Operation) {
             Operation<?> operation = (Operation<?>)expr;
             Class<?> type = operation.getType();
@@ -65,7 +65,7 @@ public final class Conversions {
     }
 
     private static boolean isCountAggConversion(Expression<?> expr) {
-        expr = (Expression)expr.accept(ExtractorVisitor.DEFAULT, null);
+        expr = ExpressionUtils.extract(expr);
         if (expr instanceof Operation) {
             Operation<?> operation = (Operation<?>)expr;
             return operation.getOperator() == Ops.AggOps.COUNT_AGG;
