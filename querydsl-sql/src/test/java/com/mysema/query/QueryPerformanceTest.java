@@ -143,13 +143,36 @@ public class QueryPerformanceTest {
                         it.close();
                     }                       
                 }
-            }
-            
+            }            
         });
     }
     
     @Test
     public void Querydsl13() throws Exception {
+        final Configuration conf = new Configuration(new H2Templates());
+        
+        Runner.run("qdsl by id (result set access)", new Benchmark() {
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {            
+                    QCompanies companies = QCompanies.companies;
+                    SQLQuery query = new SQLQuery(conn, conf);
+                    ResultSet rs = query.from(companies)
+                            .where(companies.id.eq((long)i)).getResults(companies.name);          
+                    try {
+                        while (rs.next()) {
+                            rs.getString(1);
+                        }
+                    } finally {
+                        rs.close();
+                    }                 
+                }
+            }            
+        });
+    }
+    
+    @Test
+    public void Querydsl14() throws Exception {
         final Configuration conf = new Configuration(new H2Templates());
         
         Runner.run("qdsl by id (no validation)", new Benchmark() {
@@ -166,7 +189,7 @@ public class QueryPerformanceTest {
     }
         
     @Test
-    public void Querydsl14() throws Exception {
+    public void Querydsl15() throws Exception {
         final Configuration conf = new Configuration(new H2Templates());
                 
         Runner.run("qdsl by id (two cols)", new Benchmark() {
