@@ -13,9 +13,11 @@
  */
 package com.mysema.query.types;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.Tuple;
@@ -33,6 +35,8 @@ import com.mysema.query.Tuple;
  * }
  * } 
  * </pre>
+ *
+ * Duplicate expressions are removed in the constructor.
  *
  * @author tiwe
  *
@@ -99,8 +103,15 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      * @param args
      */
     public QTuple(Expression<?>... args) {
-        super(Tuple.class);
-        this.args = ImmutableList.copyOf(args);
+        super(Tuple.class);        
+        Set<Expression<?>> set = new HashSet<Expression<?>>(args.length);
+        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        for (Expression<?> arg : args) {
+            if (set.add(arg)) {
+                builder.add(arg);
+            }
+        }        
+        this.args = builder.build();
     }
     
     /**
@@ -108,9 +119,16 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      * 
      * @param args
      */
-    public QTuple(List<Expression<?>> args) {
+    public QTuple(List<? extends Expression<?>> args) {
         super(Tuple.class);
-        this.args = args;
+        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        for (int i = 0; i < args.size(); i++) {
+            Expression<?> arg = args.get(i);
+            if (args.indexOf(arg) == i) {
+                builder.add(arg);
+            }
+        }
+        this.args = builder.build();
     }
 
     /**
@@ -120,10 +138,11 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      */
     public QTuple(Expression<?>[]... args) {
         super(Tuple.class);
-        this.args = new ArrayList<Expression<?>>();
+        Set<Expression<?>> argsSet = new LinkedHashSet<Expression<?>>();
         for (Expression<?>[] exprs: args){
-            this.args.addAll(Arrays.asList(exprs));
+            argsSet.addAll(Arrays.asList(exprs));
         }
+        this.args = ImmutableList.copyOf(argsSet);
     }
 
     @Override

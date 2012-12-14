@@ -80,4 +80,18 @@ public class QTupleTest {
         QTuple expr = new QTuple(str1, str2);
         assertEquals(expr.newInstance("str1", "str2").hashCode(), expr.newInstance("str1", "str2").hashCode());
     }
+    
+    @Test
+    public void Duplicates() {
+        QTuple expr = new QTuple(str1, str1);
+        assertEquals(1, expr.getArgs().size());
+        assertEquals(str1, expr.getArgs().get(0));
+    }
+    
+    @Test
+    public void Duplicates2() {
+        QTuple expr = new QTuple(Arrays.asList(str1, str1));
+        assertEquals(1, expr.getArgs().size());
+        assertEquals(str1, expr.getArgs().get(0));
+    }
 }
