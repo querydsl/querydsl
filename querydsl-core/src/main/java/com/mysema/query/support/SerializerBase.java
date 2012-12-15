@@ -49,7 +49,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private String anonParamPrefix = "_";
 
-    private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
+    private final Map<Object,String> constantToLabel = new HashMap<Object,String>(4);
 
     @SuppressWarnings("unchecked")
     private final S self = (S) this;

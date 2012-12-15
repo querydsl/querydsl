@@ -13,9 +13,6 @@
  */
 package com.mysema.query;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +23,9 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OrderSpecifier;
@@ -68,7 +67,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private BooleanBuilder where = new BooleanBuilder();
 
-    // TODO : make sure this is sorted
     private Set<QueryFlag> flags = ImmutableSet.of();
     
     private boolean validate = true;
@@ -77,7 +75,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (list.isEmpty()) {
             return ImmutableList.of(element);
         } else if (list.size() == 1) {
-            list = new ArrayList<T>(list);
+            list = Lists.newArrayList(list);
         }
         list.add(element);
         return list;
@@ -87,7 +85,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (set.isEmpty()) {
             return ImmutableSet.of(element);
         } else if (set.size() == 1) {
-            set = new HashSet<T>(set);
+            set = Sets.newHashSet(set);
+        }
+        set.add(element);
+        return set;
+    }
+    
+    private static <T> Set<T> addSorted(Set<T> set, T element) {
+        if (set.isEmpty()) {
+            return ImmutableSet.of(element);
+        } else if (set.size() == 1) {
+            set = Sets.newLinkedHashSet(set);
         }
         set.add(element);
         return set;
@@ -97,7 +105,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (map.isEmpty()) {
             return ImmutableMap.of(key, value);
         } else if (map.size() == 1) {
-            map = new HashMap<K,V>(map);
+            map = Maps.newHashMap(map);
         }
         map.put(key, value);
         return map;
@@ -118,6 +126,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public DefaultQueryMetadata noValidate() {
         validate = false;
         return this;
+    }
+    
+
+    @Override
+    public void addFlag(QueryFlag flag) {
+        flags = addSorted(flags, flag);        
     }
             
     @Override
@@ -214,16 +228,16 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public QueryMetadata clone(){
         try {
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
-            clone.exprInJoins = new HashSet<Expression<?>>(exprInJoins);
-            clone.groupBy = ImmutableList.copyOf(groupBy);
+            clone.exprInJoins = Sets.newHashSet(exprInJoins);
+            clone.groupBy = Lists.newArrayList(groupBy);
             clone.having = having.clone();
             clone.joins = ImmutableList.copyOf(joins);
             clone.modifiers = new QueryModifiers(modifiers);
-            clone.orderBy = ImmutableList.copyOf(orderBy);
+            clone.orderBy = Lists.newArrayList(orderBy);
             clone.projection = ImmutableList.copyOf(projection);
-            clone.params = ImmutableMap.copyOf(params);
+            clone.params = Maps.newHashMap(params);
             clone.where = where.clone();
-            clone.flags = ImmutableSortedSet.copyOf(flags);
+            clone.flags = Sets.newLinkedHashSet(flags);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);
@@ -329,11 +343,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public <T> void setParam(ParamExpression<T> param, T value) {
         params = put(params, param, value);
-    }
-
-    @Override
-    public void addFlag(QueryFlag flag) {
-        flags = add(flags, flag);        
     }
 
     @Override
