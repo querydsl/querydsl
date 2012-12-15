@@ -30,7 +30,6 @@ import com.mysema.query.types.expr.StringExpression;
 
 public class ExpressionTest {
 
-    @SuppressWarnings("unchecked")
     @Test
     public void test() throws Throwable {
         List<Expression<?>> exprs = new ArrayList<Expression<?>>();

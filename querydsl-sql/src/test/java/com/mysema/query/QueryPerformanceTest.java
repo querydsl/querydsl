@@ -31,6 +31,7 @@ public class QueryPerformanceTest {
     public static void setUpClass() throws SQLException, ClassNotFoundException {
         Connections.initH2();        
         Connection conn = Connections.getConnection();        
+        
         Statement stmt = conn.createStatement();
         stmt.execute("create or replace table companies (id identity, name varchar(30) unique not null);");
         PreparedStatement pstmt = conn.prepareStatement("insert into companies (name) values (?)");
@@ -42,6 +43,8 @@ public class QueryPerformanceTest {
         }        
         pstmt.close();
         stmt.close();
+        
+        conn.setAutoCommit(false);
     }
     
     @AfterClass

@@ -315,7 +315,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.addProjection(exprs);
         String queryString = buildQueryString(false);
-        logger.debug("query : {}", queryString);
+        if (logger.isDebugEnabled()) {
+            logger.debug("query : {}", queryString);    
+        }
+        
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -367,7 +370,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
         String queryString = buildQueryString(false);
-        logger.debug("query : {}", queryString);
+        if (logger.isDebugEnabled()) {
+            logger.debug("query : {}", queryString);    
+        }        
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
@@ -424,7 +429,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     public <RT> List<RT> list(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
         String queryString = buildQueryString(false);
-        logger.debug("query : {}", queryString);
+        if (logger.isDebugEnabled()) {
+            logger.debug("query : {}", queryString);    
+        }        
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
@@ -638,7 +645,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
     
     @Override
-    public Tuple uniqueResult(Expression<?>[] expr) {
+    public Tuple uniqueResult(Expression<?>... expr) {
         return uniqueResult(new QTuple(expr));
     }
 
@@ -654,7 +661,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     
     private long unsafeCount() throws SQLException {
         String queryString = buildQueryString(true);
-        logger.debug("query : {}", queryString);
+        if (logger.isDebugEnabled()) {
+            logger.debug("query : {}", queryString);    
+        }        
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {

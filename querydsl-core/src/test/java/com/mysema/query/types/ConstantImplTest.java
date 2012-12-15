@@ -28,7 +28,7 @@ public class ConstantImplTest {
         assertNotNull(ConstantImpl.create(1l));
         assertNotNull(ConstantImpl.create((short)1));
         assertNotNull(ConstantImpl.create("x"));
-        assertNotNull(ConstantImpl.create("x",true));
+//        assertNotNull(ConstantImpl.create("x",true));
     }
 
 }

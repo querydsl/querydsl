@@ -20,26 +20,36 @@ import com.google.common.collect.ImmutableList;
 /**
  * OperatorImpl is the default implementation of the {@link Operator} interface
  */
-public class OperatorImpl<T> implements Operator<T> {
+public final class OperatorImpl<T> implements Operator<T> {
 
     private static final long serialVersionUID = -2435035383548549877L;
 
-    private final String id;
+    private static volatile int IDS = 100;
+    
+    private final int id;
+    
+    private final String name;
     
     private final List<Class<?>> types;
 
-    public OperatorImpl(String id, Class<?>... types) {
-        this(id, ImmutableList.copyOf(types));
+    public OperatorImpl(String name, Class<?>... types) {
+        this(name, ImmutableList.copyOf(types));
     }
 
-    public OperatorImpl(String id, List<Class<?>> types) {
-        this.id = id;
-        this.types = ImmutableList.copyOf(types);
+    public OperatorImpl(String name, List<Class<?>> types) {
+        this.id = IDS++;
+        this.name = name;
+        this.types = types;
     }
 
     @Override
-    public String getId(){
+    public int getId() {
         return id;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
     }
     
     @Override
@@ -52,7 +62,7 @@ public class OperatorImpl<T> implements Operator<T> {
         if (o == this) {
             return true;
         } else if (o instanceof Operator<?>) {
-            return ((Operator<?>)o).getId().equals(id);
+            return ((Operator<?>)o).getId() == id;
         } else {
             return false;
         }
@@ -60,11 +70,11 @@ public class OperatorImpl<T> implements Operator<T> {
     
     @Override
     public int hashCode(){
-        return id.hashCode();
+        return id;
     }
     
     @Override
     public String toString(){
-        return id;
+        return name;
     }
 }

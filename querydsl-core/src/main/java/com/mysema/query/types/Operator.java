@@ -30,7 +30,14 @@ public interface Operator<T> extends Serializable{
      *
      * @return
      */
-    String getId();
+    int getId();
+    
+    /**
+     * Get the name for this Operator
+     * 
+     * @return
+     */
+    String getName();
 
     /**
      * Get the types related to this operator symbols

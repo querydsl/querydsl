@@ -427,7 +427,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return
      */
     public BooleanExpression like(String str){
-        return BooleanOperation.create(Ops.LIKE, stringValue(), ConstantImpl.create(str));
+        return BooleanOperation.create(Ops.LIKE, stringValue(), new ConstantImpl<String>(str));
     }
 
     /**

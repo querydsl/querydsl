@@ -13,8 +13,8 @@
  */
 package com.mysema.query.types;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -27,9 +27,9 @@ public class Templates {
 
     public static final Templates DEFAULT = new Templates();
 
-    private final Map<Operator<?>, Template> templates = new HashMap<Operator<?>, Template>();
-
-    private final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
+    private final List<Template> templates = new ArrayList<Template>(2000);
+    
+    private final List<Integer> precedence = new ArrayList<Integer>(2000);
 
     private final TemplateFactory templateFactory;
     
@@ -229,25 +229,32 @@ public class Templates {
         add(Ops.QuantOps.ALL, "all {0}");
         //CHECKSTYLE:ON
     }
+    
+    protected final void grow(int target) {
+        for (int i = templates.size(); i <= target; i++) {
+            templates.add(null);
+            precedence.add(-1);
+        }
+    }
 
     protected final void add(Operator<?> op, String pattern) {
-        Template template = templateFactory.create(pattern);
-        templates.put(op, template);
+        grow(op.getId());
+        templates.set(op.getId(), templateFactory.create(pattern));
     }
 
     protected final void add(Operator<?> op, String pattern, int pre) {
-        add(op, pattern);
-        precedence.put(op, pre);
+        grow(op.getId());
+        templates.set(op.getId(), templateFactory.create(pattern));
+        precedence.set(op.getId(), pre);
     }
 
     @Nullable
-    public final Template getTemplate(Operator<?> op) {
-        return templates.get(op);
+    public final Template getTemplate(Operator<?> operator) {
+        return templates.get(operator.getId());
     }
 
     public final int getPrecedence(Operator<?> operator) {
-        Integer rv = precedence.get(operator);
-        return rv != null ? rv.intValue() : -1;
+        return precedence.get(operator.getId()).intValue();
     }
 
 }

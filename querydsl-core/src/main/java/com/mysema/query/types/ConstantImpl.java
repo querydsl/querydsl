@@ -67,22 +67,10 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         }
     }
 
-    /**
-     * Get a constant for the given boolean value
-     * 
-     * @param b
-     * @return
-     */
     public static Constant<Boolean> create(boolean b) {
         return b ? TRUE : FALSE;
     }
-    
-    /**
-     * Get a constant for the given byte value
-     * 
-     * @param i
-     * @return
-     */
+
     public static Constant<Byte> create(byte i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return BYTES[i];
@@ -90,13 +78,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
             return new ConstantImpl<Byte>(Byte.class, Byte.valueOf(i));
         }
     }
-    
-    /**
-     * Get a constant for the given char value
-     * 
-     * @param i
-     * @return
-     */
+
     public static Constant<Character> create(char i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return CHARACTERS[i];
@@ -105,12 +87,6 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         }
     }
 
-    /**
-     * Get a constant for the given int value
-     * 
-     * @param i
-     * @return
-     */
     public static Constant<Integer> create(int i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return INTEGERS[i];
@@ -119,12 +95,6 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         }
     }
 
-    /**
-     * Get a constant for the given long value
-     * 
-     * @param i
-     * @return
-     */
     public static Constant<Long> create(long i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return LONGS[(int)i];
@@ -133,12 +103,6 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         }
     }
 
-    /**
-     * Create a constant for the given short value
-     * 
-     * @param i
-     * @return
-     */
     public static Constant<Short> create(short i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return SHORTS[i];
@@ -146,42 +110,15 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
             return new ConstantImpl<Short>(Short.class, Short.valueOf(i));
         }
     }
-    
-    /**
-     * Create a constant for the given string 
-     * 
-     * @param str
-     * @return
-     */
-    public static Constant<String> create(String str) {
-        return create(str, false);
-    }
 
-    /**
-     * Create a constant for the given string 
-     * 
-     * @param str
-     * @param populateCache whether to add the created constant to the cache
-     * @return
-     */
-    public static Constant<String> create(String str, boolean populateCache) {
+    public static Constant<String> create(String str) {
         if (STRINGS.containsKey(str)) {
             return STRINGS.get(str);
         } else {
-            Constant<String> rv = new ConstantImpl<String>(str);
-            if (populateCache) {
-                STRINGS.put(str, rv);
-            }
-            return rv;
+            return new ConstantImpl<String>(str);
         }
     }
-    
-    /**
-     * Create a constant for the given class
-     * 
-     * @param constant
-     * @return
-     */
+
     public static <T> Constant<Class<T>> create(Class<T> constant) {
         return new ConstantImpl<Class<T>>(constant);
     }

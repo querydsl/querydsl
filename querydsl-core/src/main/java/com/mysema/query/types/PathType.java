@@ -76,7 +76,12 @@ public enum PathType implements Operator<Path<?>> {
     }
 
     @Override
-    public String getId() {
+    public int getId() {
+        return ordinal();
+    }
+    
+    @Override
+    public String getName() {
         return name();
     }
 
