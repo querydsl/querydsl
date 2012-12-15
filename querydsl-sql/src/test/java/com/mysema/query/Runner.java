@@ -18,8 +18,13 @@ public final class Runner {
     public static void run(String label, Benchmark benchmark) throws Exception {
         // warmup
         benchmark.run(50000);
-        System.err.println("-- warmup");
-        // timing
+        System.err.print("- ");
+
+        // run garbage collection
+        System.gc();
+        System.err.print("- ");
+        
+        // perform timing
         long start = System.currentTimeMillis();
         benchmark.run(1000000);
         long end = System.currentTimeMillis();
