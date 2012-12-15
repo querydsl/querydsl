@@ -16,7 +16,6 @@ package com.mysema.query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +23,10 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedSet;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OrderSpecifier;
@@ -43,31 +46,62 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private boolean distinct;
 
-    private Set<Expression<?>> exprInJoins = new HashSet<Expression<?>>();
+    private Set<Expression<?>> exprInJoins = ImmutableSet.of();
 
-    private List<Expression<?>> groupBy = new ArrayList<Expression<?>>();
+    private List<Expression<?>> groupBy = ImmutableList.of();
 
     private BooleanBuilder having = new BooleanBuilder();
 
-    private List<JoinExpression> joins = new ArrayList<JoinExpression>();
+    private List<JoinExpression> joins = ImmutableList.of();
 
     @Nullable
     private QueryModifiers modifiers = QueryModifiers.EMPTY;
 
-    private List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
+    private List<OrderSpecifier<?>> orderBy = ImmutableList.of();
 
-    private List<Expression<?>> projection = new ArrayList<Expression<?>>();
+    private List<Expression<?>> projection = ImmutableList.of();
 
     // NOTE : this is not necessarily serializable
-    private Map<ParamExpression<?>,Object> params = new HashMap<ParamExpression<?>,Object>();
+    private Map<ParamExpression<?>,Object> params = ImmutableMap.<ParamExpression<?>, Object>of();
 
     private boolean unique;
 
     private BooleanBuilder where = new BooleanBuilder();
 
-    private Set<QueryFlag> flags = new LinkedHashSet<QueryFlag>();
+    // TODO : make sure this is sorted
+    private Set<QueryFlag> flags = ImmutableSet.of();
     
     private boolean validate = true;
+    
+    private static <T> List<T> add(List<T> list, T element) {
+        if (list.isEmpty()) {
+            return ImmutableList.of(element);
+        } else if (list.size() == 1) {
+            list = new ArrayList<T>(list);
+        }
+        list.add(element);
+        return list;
+    }
+    
+    private static <T> Set<T> add(Set<T> set, T element) {
+        if (set.isEmpty()) {
+            return ImmutableSet.of(element);
+        } else if (set.size() == 1) {
+            set = new HashSet<T>(set);
+        }
+        set.add(element);
+        return set;
+    }
+    
+    private static <K,V> Map<K,V> put(Map<K,V> map, K key, V value) {
+        if (map.isEmpty()) {
+            return ImmutableMap.of(key, value);
+        } else if (map.size() == 1) {
+            map = new HashMap<K,V>(map);
+        }
+        map.put(key, value);
+        return map;
+    }
     
     /**
      * Create an empty DefaultQueryMetadata instance
@@ -89,7 +123,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void addGroupBy(Expression<?> o) {
         validate(o);
-        groupBy.add(o);
+        groupBy = add(groupBy, o);
     }
 
     @Override
@@ -114,9 +148,9 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         Expression<?> expr = join.getTarget();
         if (!exprInJoins.contains(expr)) {
             validateJoin(join);
-            exprInJoins.add(expr);
+            exprInJoins = add(exprInJoins, expr);
             validate(expr);
-            joins.add(join);
+            joins = add(joins, join);
         } else {
             throw new IllegalStateException(expr + " is already used");
         }
@@ -128,11 +162,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             if (join.getType() == JoinType.DEFAULT) {
                 ensureRoot(path);
             } 
-//            else if (join.getType().isInner()) {
-//                validateJoin(path, innerJoinsAsRoot); 
-//            } else if (join.getType().isOuter()) {
-//                validateJoin(path, outerJoinsAsRoot);
-//            }    
         }         
     }
     
@@ -148,13 +177,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addOrderBy(OrderSpecifier<?> o) {
         // order specifiers can't be validated, since they can refer to projection elements
         // that are declared later
-        orderBy.add(o);
+        orderBy = add(orderBy, o);
     }
 
     @Override
     public void addProjection(Expression<?> o) {
         validate(o);
-        projection.add(o);
+        projection = add(projection, o);
     }
 
     @Override
@@ -170,11 +199,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     public void clearOrderBy(){
-        orderBy = new ArrayList<OrderSpecifier<?>>();
+        orderBy = ImmutableList.of();
     }
 
     public void clearProjection(){
-        projection = new ArrayList<Expression<?>>();
+        projection = ImmutableList.of();
     }
 
     public void clearWhere(){
@@ -186,15 +215,15 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         try {
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
             clone.exprInJoins = new HashSet<Expression<?>>(exprInJoins);
-            clone.groupBy = new ArrayList<Expression<?>>(groupBy);
+            clone.groupBy = ImmutableList.copyOf(groupBy);
             clone.having = having.clone();
-            clone.joins = new ArrayList<JoinExpression>(joins);
+            clone.joins = ImmutableList.copyOf(joins);
             clone.modifiers = new QueryModifiers(modifiers);
-            clone.orderBy = new ArrayList<OrderSpecifier<?>>(orderBy);
-            clone.projection = new ArrayList<Expression<?>>(projection);
-            clone.params = new HashMap<ParamExpression<?>,Object>(params);
+            clone.orderBy = ImmutableList.copyOf(orderBy);
+            clone.projection = ImmutableList.copyOf(projection);
+            clone.params = ImmutableMap.copyOf(params);
             clone.where = where.clone();
-            clone.flags = new LinkedHashSet<QueryFlag>(flags);
+            clone.flags = ImmutableSortedSet.copyOf(flags);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);
@@ -260,7 +289,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void reset() {
         clearProjection();
-        params = new HashMap<ParamExpression<?>,Object>();
+        params = ImmutableMap.of();
         modifiers = QueryModifiers.EMPTY;
     }
 
@@ -299,12 +328,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public <T> void setParam(ParamExpression<T> param, T value) {
-        params.put(param, value);
+        params = put(params, param, value);
     }
 
     @Override
     public void addFlag(QueryFlag flag) {
-        flags.add(flag);        
+        flags = add(flags, flag);        
     }
 
     @Override

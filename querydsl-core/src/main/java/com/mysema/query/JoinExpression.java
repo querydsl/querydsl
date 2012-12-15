@@ -18,6 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 
@@ -26,13 +27,14 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  */
-public final class JoinExpression implements Serializable{
+// TODO : refactor to be immutable
+public final class JoinExpression implements Serializable {
 
     private static final long serialVersionUID = -1131755765747174886L;
 
     private final BooleanBuilder condition = new BooleanBuilder();
 
-    private final Set<JoinFlag> flags = new LinkedHashSet<JoinFlag>();
+    private Set<JoinFlag> flags = ImmutableSet.of();
 
     private final Expression<?> target;
 
@@ -46,7 +48,7 @@ public final class JoinExpression implements Serializable{
      */
     public JoinExpression(JoinType type, Expression<?> target) {
         this.type = type;
-        this.target = target;
+        this.target = target;        
     }
 
     public Predicate getCondition() {
@@ -65,15 +67,19 @@ public final class JoinExpression implements Serializable{
         return type;
     }
 
-    public void addFlag(JoinFlag flag){
+    public void addFlag(JoinFlag flag) {
+        if (flags.isEmpty()) {
+            // TODO : use immutable if possible
+            flags = new LinkedHashSet<JoinFlag>(); 
+        }
         flags.add(flag);
     }
 
-    public boolean hasFlag(JoinFlag flag){
+    public boolean hasFlag(JoinFlag flag) {
         return flags.contains(flag);
     }
     
-    public Set<JoinFlag> getFlags(){
+    public Set<JoinFlag> getFlags() {
         return flags;
     }
 

@@ -13,8 +13,8 @@
  */
 package com.mysema.query.types;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -27,9 +27,9 @@ public class Templates {
 
     public static final Templates DEFAULT = new Templates();
 
-    private final List<Template> templates = new ArrayList<Template>(2000);
+    private final Map<String, Template> templates = new HashMap<String, Template>();
     
-    private final List<Integer> precedence = new ArrayList<Integer>(2000);
+    private final Map<String, Integer> precedence = new HashMap<String, Integer>();
 
     private final TemplateFactory templateFactory;
     
@@ -230,22 +230,16 @@ public class Templates {
         //CHECKSTYLE:ON
     }
     
-    protected final void grow(int target) {
-        for (int i = templates.size(); i <= target; i++) {
-            templates.add(null);
-            precedence.add(-1);
+    protected final void add(Operator<?> op, String pattern) {
+        templates.put(op.getId(), templateFactory.create(pattern));
+        if (!precedence.containsKey(op.getId())) {
+            precedence.put(op.getId(), -1);
         }
     }
 
-    protected final void add(Operator<?> op, String pattern) {
-        grow(op.getId());
-        templates.set(op.getId(), templateFactory.create(pattern));
-    }
-
     protected final void add(Operator<?> op, String pattern, int pre) {
-        grow(op.getId());
-        templates.set(op.getId(), templateFactory.create(pattern));
-        precedence.set(op.getId(), pre);
+        templates.put(op.getId(), templateFactory.create(pattern));
+        precedence.put(op.getId(), pre);
     }
 
     @Nullable

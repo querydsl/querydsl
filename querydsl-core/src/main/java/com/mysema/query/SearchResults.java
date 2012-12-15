@@ -13,10 +13,11 @@
  */
 package com.mysema.query;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * SearchResults bundles data for paged search results
@@ -25,9 +26,11 @@ import javax.annotation.Nullable;
  */
 public final class SearchResults<T> {
 
+    private static final SearchResults EMPTY = new SearchResults(
+            ImmutableList.of(), Long.MAX_VALUE, 0l, 0l); 
+    
     public static <T> SearchResults<T> emptyResults() {
-        return new SearchResults<T>(Collections.<T> emptyList(),
-                Long.MAX_VALUE, 0l, 0l);
+        return (SearchResults<T>)EMPTY;
     };
 
     private final long limit, offset, total;
