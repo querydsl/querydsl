@@ -13,10 +13,11 @@
  */
 package com.mysema.query.types;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import com.google.common.collect.Maps;
 
 /**
  * Templates provides operator patterns for query expression serialization
@@ -26,10 +27,10 @@ import javax.annotation.Nullable;
 public class Templates {
 
     public static final Templates DEFAULT = new Templates();
-
-    private final Map<String, Template> templates = new HashMap<String, Template>();
     
-    private final Map<String, Integer> precedence = new HashMap<String, Integer>();
+    private final Map<Operator<?>, Template> templates = Maps.newIdentityHashMap();
+    
+    private final Map<Operator<?>, Integer> precedence = Maps.newIdentityHashMap();
 
     private final TemplateFactory templateFactory;
     
@@ -231,24 +232,22 @@ public class Templates {
     }
     
     protected final void add(Operator<?> op, String pattern) {
-        templates.put(op.getId(), templateFactory.create(pattern));
-        if (!precedence.containsKey(op.getId())) {
-            precedence.put(op.getId(), -1);
-        }
+        templates.put(op, templateFactory.create(pattern));
     }
 
     protected final void add(Operator<?> op, String pattern, int pre) {
-        templates.put(op.getId(), templateFactory.create(pattern));
-        precedence.put(op.getId(), pre);
+        templates.put(op, templateFactory.create(pattern));
+        precedence.put(op, pre);
     }
 
     @Nullable
-    public final Template getTemplate(Operator<?> operator) {
-        return templates.get(operator.getId());
+    public final Template getTemplate(Operator<?> op) {
+        return templates.get(op);
     }
 
-    public final int getPrecedence(Operator<?> operator) {
-        return precedence.get(operator.getId()).intValue();
+    public final int getPrecedence(Operator<?> op) {
+        final Integer rv = precedence.get(op);
+        return rv != null ? rv.intValue() : -1;
     }
 
 }

@@ -59,7 +59,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata, SQLTemplates templates) {
-        super(new QueryMixin<T>(metadata));
+        super(new QueryMixin<T>(metadata, false));
         this.templates = templates;
         this.queryMixin = (QueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);

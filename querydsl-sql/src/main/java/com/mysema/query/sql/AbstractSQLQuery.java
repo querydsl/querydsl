@@ -88,7 +88,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
-        super(new QueryMixin<Q>(metadata));
+        super(new QueryMixin<Q>(metadata, false));
         this.queryMixin = (QueryMixin<Q>)super.queryMixin;
         this.queryMixin.setSelf((Q) this);        
         this.conn = conn;

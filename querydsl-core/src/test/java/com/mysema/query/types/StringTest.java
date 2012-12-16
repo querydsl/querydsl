@@ -36,14 +36,14 @@ public class StringTest {
         }};
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()){
-            if (field.getType().equals(OperatorImpl.class)){
+            if (field.getType().equals(Operator.class)){
                 Operator op = (Operator)field.get(null);
                 if (ops.getTemplate(op) == null) missing.add(field);
             }
         }
         for (Class<?> cl : Ops.class.getClasses()){
             for (Field field : cl.getFields()){
-                if (field.getType().equals(OperatorImpl.class)){
+                if (field.getType().equals(Operator.class)){
                     Operator op = (Operator)field.get(null);
                     if (ops.getTemplate(op) == null) missing.add(field);
                 }

@@ -42,7 +42,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     private static final class NativeQueryMixin<T> extends QueryMixin<T> {
         private NativeQueryMixin(QueryMetadata metadata) {
-            super(metadata);
+            super(metadata, false);
         }
 
         @Override
