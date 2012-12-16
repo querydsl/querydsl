@@ -25,15 +25,19 @@ public class QueryPerformanceTest {
     		"from COMPANIES COMPANIES\n" +
     		"where COMPANIES.ID = ?";
     
+    private static final SQLTemplates templates = new H2Templates();
+    
+    private static final Configuration conf = new Configuration(templates);
+    
     private final Connection conn = Connections.getConnection();
     
     @BeforeClass
     public static void setUpClass() throws SQLException, ClassNotFoundException {
         Connections.initH2();        
-        Connection conn = Connections.getConnection();        
-        
+        Connection conn = Connections.getConnection();               
         Statement stmt = conn.createStatement();
         stmt.execute("create or replace table companies (id identity, name varchar(30) unique not null);");
+        
         PreparedStatement pstmt = conn.prepareStatement("insert into companies (name) values (?)");
         final int iterations = 1000000;
         for (int i = 0; i < iterations; i++) {
@@ -111,8 +115,6 @@ public class QueryPerformanceTest {
         
     @Test
     public void Querydsl1() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by id", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -128,8 +130,6 @@ public class QueryPerformanceTest {
     
     @Test
     public void Querydsl12() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by id (iterated)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -152,8 +152,6 @@ public class QueryPerformanceTest {
     
     @Test
     public void Querydsl13() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by id (result set access)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -176,8 +174,6 @@ public class QueryPerformanceTest {
     
     @Test
     public void Querydsl14() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by id (no validation)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -193,8 +189,6 @@ public class QueryPerformanceTest {
         
     @Test
     public void Querydsl15() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-                
         Runner.run("qdsl by id (two cols)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -210,8 +204,6 @@ public class QueryPerformanceTest {
     
     @Test
     public void Querydsl2() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by name", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -227,8 +219,6 @@ public class QueryPerformanceTest {
     
     @Test
     public void Querydsl22() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by name (iterated)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -252,8 +242,6 @@ public class QueryPerformanceTest {
     
     @Test
     public void Querydsl23() throws Exception {
-        final Configuration conf = new Configuration(new H2Templates());
-        
         Runner.run("qdsl by name (no validation)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -276,8 +264,6 @@ public class QueryPerformanceTest {
         md.addWhere(companies.id.eq(1l));
         md.addProjection(companies.name);
         
-        final SQLTemplates templates = new H2Templates();
-        
         Runner.run("ser1", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -299,8 +285,6 @@ public class QueryPerformanceTest {
         md.addJoin(JoinType.DEFAULT, companies);
         md.addWhere(companies.id.eq(1l));
         md.addProjection(companies.name);
-        
-        final SQLTemplates templates = new H2Templates();
         
         Runner.run("ser2 (non normalized)", new Benchmark() {
             @Override

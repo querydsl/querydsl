@@ -154,11 +154,11 @@ public final class Connections {
         return new CreateTableClause(connHolder.get(), templates, table);
     }
     
-    private static void dropTable(SQLTemplates templates, String table) throws SQLException{
+    public static void dropTable(SQLTemplates templates, String table) throws SQLException{
         new DropTableClause(connHolder.get(), templates, table).execute();
     }
     
-    private static void dropType(Statement stmt, String type) throws SQLException {
+    public static void dropType(Statement stmt, String type) throws SQLException {
         try {
             stmt.execute("drop type " + type);    
         } catch (SQLException e) {
