@@ -90,6 +90,20 @@ public class QueryMixinTest {
     }
     
     @Test
+    public void Joins() {
+        DummyEntity e = Alias.alias(DummyEntity.class);
+        DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        
+        mixin.join($(e));
+        mixin.on($(e).isNotNull());
+        mixin.join($(e.getOther()),$(e2));
+        mixin.on($(e).isNotNull());
+        
+        assertEquals(2, mixin.getMetadata().getJoins().size());
+        
+    }
+    
+    @Test
     public void LeftJoin(){
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");

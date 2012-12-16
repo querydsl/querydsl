@@ -37,9 +37,7 @@ public final class CollectionUtils {
         if (list.isEmpty()) {
             return ImmutableList.of(element);
         } else if (list instanceof ImmutableList) {
-            final List<T> old = list;
-            list = Lists.newArrayList();
-            list.add(old.get(0));
+            list = Lists.newArrayList(list);
         }
         list.add(element);
         return list;
@@ -49,9 +47,7 @@ public final class CollectionUtils {
         if (set.isEmpty()) {
             return ImmutableSet.of(element);
         } else if (set instanceof ImmutableSet) {
-            final Set<T> old = set;
-            set = Sets.newHashSet();
-            set.add(old.iterator().next());
+            set = Sets.newHashSet(set);
         }
         set.add(element);
         return set;
@@ -61,9 +57,7 @@ public final class CollectionUtils {
         if (set.isEmpty()) {
             return ImmutableSet.of(element);
         } else if (set instanceof ImmutableSet) {
-            Set<T> old = set;
-            set = Sets.newLinkedHashSet();
-            set.add(old.iterator().next());
+            set = Sets.newLinkedHashSet(set);
         }
         set.add(element);
         return set;

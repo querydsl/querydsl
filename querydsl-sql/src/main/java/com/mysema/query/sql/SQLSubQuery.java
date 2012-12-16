@@ -18,7 +18,6 @@ import java.util.List;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.SimpleExpression;

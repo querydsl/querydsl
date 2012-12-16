@@ -19,7 +19,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
@@ -55,6 +57,22 @@ public class SQLSubQueryTest {
         assertEquals(QEmployee.employee.id, exprs.get(0));
         assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
         assertEquals(QEmployee.employee.firstname, exprs.get(2));
+    }
+    
+    @Test
+    public void Complex(){
+        // related to #584795
+        QSurvey survey = new QSurvey("survey");
+        QEmployee emp1 = new QEmployee("emp1");
+        QEmployee emp2 = new QEmployee("emp2");
+        SubQueryExpression<?> subQuery = new SQLSubQuery().from(survey)
+          .innerJoin(emp1)
+           .on(survey.id.eq(emp1.id))
+          .innerJoin(emp2)
+           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
+          .list(survey.id, emp2.firstname);
+        
+        assertEquals(3, subQuery.getMetadata().getJoins().size());
     }
     
 }
