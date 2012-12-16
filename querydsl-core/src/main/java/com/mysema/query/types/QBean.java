@@ -83,6 +83,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
     }
 
     private static Map<String,Expression<?>> createBindings(Expression<?>... args) {
+        
         Map<String,Expression<?>> rv = new LinkedHashMap<String,Expression<?>>(args.length);
         for (Expression<?> expr : args) {
             if (expr instanceof Path<?>) {

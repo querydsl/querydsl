@@ -15,12 +15,13 @@ package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.FactoryExpression;
@@ -37,14 +38,16 @@ public class QBeans extends ExpressionBase<Beans> implements FactoryExpression<B
 
     private static final long serialVersionUID = -4411839816134215923L;
     
-    private final Map<RelationalPath<?>, QBean<?>> qBeans = new LinkedHashMap<RelationalPath<?>, QBean<?>>();
+    private final ImmutableMap<RelationalPath<?>, QBean<?>> qBeans;
     
-    private final List<Expression<?>> expressions = new ArrayList<Expression<?>>();
+    private final ImmutableList<Expression<?>> expressions;
 
     @SuppressWarnings("unchecked")
     public QBeans(RelationalPath<?>... beanPaths) {
         super(Beans.class);
         try {
+            final ImmutableList.Builder<Expression<?>> listBuilder = ImmutableList.builder();
+            final ImmutableMap.Builder<RelationalPath<?>, QBean<?>> mapBuilder = ImmutableMap.builder();
             for (RelationalPath path : beanPaths) {
                 Map<String, Expression<?>> bindings = new LinkedHashMap<String, Expression<?>>();
                 for (Field field : path.getClass().getFields()) {
@@ -52,11 +55,13 @@ public class QBeans extends ExpressionBase<Beans> implements FactoryExpression<B
                         field.setAccessible(true);
                         Expression<?> column = (Expression<?>) field.get(path);
                         bindings.put(field.getName(), column);
-                        expressions.add(column);
+                        listBuilder.add(column);
                     }
                 }
-                qBeans.put(path, new QBean<Object>(path.getType(), bindings));
+                mapBuilder.put(path, new QBean<Object>(path.getType(), bindings));
             }
+            expressions = listBuilder.build();
+            qBeans = mapBuilder.build();
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
