@@ -56,7 +56,7 @@ public class DslTemplate<T> extends DslExpression<T> implements TemplateExpressi
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    public DslTemplate(Class<? extends T> type, Template template, List<?> args) {
+    public DslTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

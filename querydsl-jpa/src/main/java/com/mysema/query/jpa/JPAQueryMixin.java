@@ -14,10 +14,8 @@
 package com.mysema.query.jpa;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.Context;
@@ -58,14 +56,12 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     public T fetch(){
-        List<JoinExpression> joins = getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(FETCH);
+        addJoinFlag(FETCH);
         return getSelf();
     }
 
     public T fetchAll(){
-        List<JoinExpression> joins = getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(FETCH_ALL_PROPERTIES);
+        addJoinFlag(FETCH_ALL_PROPERTIES);
         return getSelf();
     }
     
@@ -100,7 +96,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     private void addCondition(Context context, int i, Path<?> path, boolean where) {
         paths.add(path);
         EntityPath<?> alias = context.replacements.get(i);
-        leftJoin((ListPath)path.getMetadata().getParent(), context.replacements.get(i));
+        leftJoin((Expression)path.getMetadata().getParent(), context.replacements.get(i));
         Expression index = TemplateExpressionImpl.create(Integer.class, "index({0})", alias);
         Object element = path.getMetadata().getElement();
         if (!(element instanceof Expression)) {

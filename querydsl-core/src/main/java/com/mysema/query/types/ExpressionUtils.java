@@ -399,7 +399,7 @@ public final class ExpressionUtils {
      * @param args
      * @return
      */
-    public static List<Expression<?>> distinctList(Expression<?>... args) {
+    public static ImmutableList<Expression<?>> distinctList(Expression<?>... args) {
         final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         final Set<Expression<?>> set = new HashSet<Expression<?>>(args.length);
         for (Expression<?> arg : args) {
@@ -414,7 +414,7 @@ public final class ExpressionUtils {
      * @param args
      * @return
      */
-    public static List<Expression<?>> distinctList(Expression<?>[]... args) {
+    public static ImmutableList<Expression<?>> distinctList(Expression<?>[]... args) {
         final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         final Set<Expression<?>> set = new HashSet<Expression<?>>();
         for (Expression<?>[] arr : args) {

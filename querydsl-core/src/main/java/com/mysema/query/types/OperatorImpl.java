@@ -26,14 +26,14 @@ public final class OperatorImpl<T> implements Operator<T> {
     
     private final String id;
     
-    private final List<Class<?>> types;
+    private final ImmutableList<Class<?>> types;
 
     public OperatorImpl(String id, Class<?>... types) {
         this(id, ImmutableList.copyOf(types));
     }
 
-    public OperatorImpl(String id, List<Class<?>> types) {
-        this.id = id;
+    public OperatorImpl(String id, ImmutableList<Class<?>> types) {
+        this.id = id.intern();
         this.types = types;
     }
 
@@ -52,7 +52,8 @@ public final class OperatorImpl<T> implements Operator<T> {
         if (o == this) {
             return true;
         } else if (o instanceof Operator<?>) {
-            return ((Operator<?>)o).getId().equals(id);
+            // Strings are interned, so this is safe
+            return ((Operator<?>)o).getId() == id;
         } else {
             return false;
         }

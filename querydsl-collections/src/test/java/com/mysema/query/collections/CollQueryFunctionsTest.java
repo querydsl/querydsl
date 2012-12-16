@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CollQueryFunctionsTest {
@@ -28,7 +29,8 @@ public class CollQueryFunctionsTest {
         assertNull(CollQueryFunctions.coalesce(null,null));
     }
 
-    @Test
+    @Test 
+    @Ignore
     public void LikeSpeed() {
         // 3015
         final int iterations = 1000000;

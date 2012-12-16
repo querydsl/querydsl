@@ -53,7 +53,7 @@ public class NumberOperation<T extends Number & Comparable<?>>
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected NumberOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected NumberOperation(Class<? extends T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }

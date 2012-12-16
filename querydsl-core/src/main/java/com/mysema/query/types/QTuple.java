@@ -14,10 +14,7 @@
 package com.mysema.query.types;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.Tuple;
@@ -93,7 +90,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
     private static final long serialVersionUID = -2640616030595420465L;
 
-    private final List<Expression<?>> args;
+    private final ImmutableList<Expression<?>> args;
 
     /**
      * Create a new QTuple instance
@@ -110,7 +107,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
      * 
      * @param args
      */
-    public QTuple(List<Expression<?>> args) {
+    public QTuple(ImmutableList<Expression<?>> args) {
         super(Tuple.class);
         this.args = args;
     }

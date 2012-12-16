@@ -78,13 +78,13 @@ public class DefaultQueryMetadataTest {
     @Test
     public void GetJoins() {
         metadata.addJoin(JoinType.DEFAULT, str);
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)),metadata.getJoins());
+        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
     }
     
     @Test
     public void GetJoins2() {
-        metadata.addJoin(new JoinExpression(JoinType.DEFAULT, str));
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)),metadata.getJoins());
+        metadata.addJoin(JoinType.DEFAULT, str);
+        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
     }
 
     @Test

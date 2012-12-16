@@ -64,7 +64,7 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    public NumberTemplate(Class<T> type, Template template, List<?> args) {
+    public NumberTemplate(Class<T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

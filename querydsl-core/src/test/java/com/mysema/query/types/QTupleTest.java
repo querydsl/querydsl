@@ -20,6 +20,7 @@ import java.util.Arrays;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.path.StringPath;
 
 public class QTupleTest {
@@ -93,7 +94,7 @@ public class QTupleTest {
     @Test
     @Ignore
     public void Duplicates2() {
-        QTuple expr = new QTuple(Arrays.<Expression<?>>asList(str1, str1));
+        QTuple expr = new QTuple(ImmutableList.<Expression<?>>of(str1, str1));
         assertEquals(1, expr.getArgs().size());
         assertEquals(str1, expr.getArgs().get(0));
     }

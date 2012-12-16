@@ -13,7 +13,6 @@
  */
 package com.mysema.query.mongodb;
 
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.ExpressionUtils;
@@ -43,9 +42,8 @@ public class JoinBuilder<K, T> {
     }
     
     public MongodbQuery<K> on(Predicate... conditions) {
-        JoinExpression join = new JoinExpression(JoinType.JOIN, ExpressionUtils.as((Path)ref, target));
-        join.addCondition(ExpressionUtils.allOf(conditions));
-        queryMixin.getMetadata().addJoin(join);
+        queryMixin.addJoin(JoinType.JOIN, ExpressionUtils.as((Path)ref, target));
+        queryMixin.on(conditions);
         return queryMixin.getSelf();
     }
 

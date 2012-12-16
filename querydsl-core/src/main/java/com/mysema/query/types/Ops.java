@@ -25,19 +25,19 @@ import com.google.common.collect.ImmutableList;
  */
 public final class Ops {
 
-    private static final List<Class<?>> BOOLEAN_X_2 = ImmutableList.<Class<?>>of(Boolean.class, Boolean.class);
+    private static final ImmutableList<Class<?>> BOOLEAN_X_2 = ImmutableList.<Class<?>>of(Boolean.class, Boolean.class);
 
-    private static final List<Class<?>> COMPARABLE_X_2 = ImmutableList.<Class<?>>of(Comparable.class, Comparable.class);
+    private static final ImmutableList<Class<?>> COMPARABLE_X_2 = ImmutableList.<Class<?>>of(Comparable.class, Comparable.class);
 
-    private static final List<Class<?>> COMPARABLE_X_3 = ImmutableList.<Class<?>>of(Comparable.class, Comparable.class,Comparable.class);
+    private static final ImmutableList<Class<?>> COMPARABLE_X_3 = ImmutableList.<Class<?>>of(Comparable.class, Comparable.class,Comparable.class);
 
-    private static final List<Class<?>> OBJECT_X_2 = ImmutableList.<Class<?>>of(Object.class, Object.class);
+    private static final ImmutableList<Class<?>> OBJECT_X_2 = ImmutableList.<Class<?>>of(Object.class, Object.class);
 
-    private static final List<Class<?>> NUMBER_X_2 = ImmutableList.<Class<?>>of(Number.class, Number.class);
+    private static final ImmutableList<Class<?>> NUMBER_X_2 = ImmutableList.<Class<?>>of(Number.class, Number.class);
 
-    private static final List<Class<?>> STRING_X_2 = ImmutableList.<Class<?>>of(String.class, String.class);
+    private static final ImmutableList<Class<?>> STRING_X_2 = ImmutableList.<Class<?>>of(String.class, String.class);
     
-    private static final List<Class<?>> STRING_X_3 = ImmutableList.<Class<?>>of(String.class, String.class, String.class);
+    private static final ImmutableList<Class<?>> STRING_X_3 = ImmutableList.<Class<?>>of(String.class, String.class, String.class);
 
     // general
     public static final Operator<Boolean> EQ = new OperatorImpl<Boolean>("EQ",OBJECT_X_2);

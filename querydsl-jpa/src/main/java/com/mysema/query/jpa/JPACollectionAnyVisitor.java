@@ -20,10 +20,10 @@ import javax.persistence.Entity;
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.EntityPathImpl;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
 import com.mysema.query.types.ToStringVisitor;
@@ -46,7 +46,7 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
         JPASubQuery query = new JPASubQuery();
         for (int i = 0; i < c.paths.size(); i++) {
             Path<?> child = c.paths.get(i).getMetadata().getParent();            
-            EntityPath<?> replacement = c.replacements.get(i);
+            EntityPath replacement = c.replacements.get(i);
             if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
                 query.from(replacement);
                 query.where(PredicateOperation.create(Ops.IN, replacement, child));    
@@ -56,7 +56,7 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
                 String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
                 String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);            
                 EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
-                Path newChild = new PathImpl(child.getType(), newParent, child.getMetadata().getElement().toString());            
+                EntityPath newChild = new EntityPathImpl(child.getType(), newParent, child.getMetadata().getElement().toString());            
                 query.from(newParent).innerJoin(newChild, replacement);
                 query.where(ExpressionUtils.eq(newParent, parent));    
             }                

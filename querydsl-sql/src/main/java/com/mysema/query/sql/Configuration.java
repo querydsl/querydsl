@@ -112,7 +112,8 @@ public class Configuration {
     public <T> int set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException{
         Type<T> type = getType(path, (Class)value.getClass());
         type.setValue(stmt, i, value);
-        return type.getSQLTypes().length;        
+        //return type.getSQLTypes().length;
+        return 1; // currently only single column types are supported
     }
 
     @SuppressWarnings("unchecked")

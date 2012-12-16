@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -51,7 +52,8 @@ public class OperationTest {
         operations.add(new TimeOperation(Time.class,Ops.DateTimeOps.CURRENT_TIME, args));
         
         for (Operation<?> operation : operations){
-            Operation<?> other = new OperationImpl(operation.getType(), operation.getOperator(), operation.getArgs());
+            Operation<?> other = new OperationImpl(operation.getType(), operation.getOperator(), 
+                    ImmutableList.copyOf(operation.getArgs()));
             assertEquals(operation.toString(), operation.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
             assertEquals(operation.hashCode(), other.hashCode());
             assertEquals(operation, other);

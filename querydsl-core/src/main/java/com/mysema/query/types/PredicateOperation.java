@@ -13,8 +13,6 @@
  */
 package com.mysema.query.types;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -40,7 +38,7 @@ public class PredicateOperation extends OperationImpl<Boolean> implements Predic
         return new PredicateOperation(operator, ImmutableList.of(one, two));
     }
     
-    public PredicateOperation(Operator<Boolean> operator, List<Expression<?>> args){
+    public PredicateOperation(Operator<Boolean> operator, ImmutableList<Expression<?>> args){
         super(Boolean.class, operator, args);
     }
     

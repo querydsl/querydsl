@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.Query;
 import com.mysema.query.QueryException;
@@ -40,6 +39,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
@@ -78,7 +78,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     private final Configuration configuration;
     
-    protected final SQLQueryMixin<Q> queryMixin;
+    protected final QueryMixin<Q> queryMixin;
     
     protected boolean unionAll;
 
@@ -88,8 +88,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
-        super(new SQLQueryMixin<Q>(metadata));
-        this.queryMixin = (SQLQueryMixin<Q>)super.queryMixin;
+        super(new QueryMixin<Q>(metadata));
+        this.queryMixin = (QueryMixin<Q>)super.queryMixin;
         this.queryMixin.setSelf((Q) this);        
         this.conn = conn;
         this.configuration = configuration;
@@ -115,8 +115,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
      */
     @SuppressWarnings("unchecked")
     public Q addJoinFlag(String flag, JoinFlag.Position position) {
-        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
+        queryMixin.addJoinFlag(new JoinFlag(flag, position));
         return (Q)this;
     }
 
@@ -369,7 +368,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
-        String queryString = buildQueryString(false);
+        final String queryString = buildQueryString(false);
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);    
         }        
@@ -428,7 +427,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     @Override
     public <RT> List<RT> list(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
-        String queryString = buildQueryString(false);
+        final String queryString = buildQueryString(false);
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);    
         }        
@@ -660,7 +659,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
     
     private long unsafeCount() throws SQLException {
-        String queryString = buildQueryString(true);
+        final String queryString = buildQueryString(true);
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);    
         }        

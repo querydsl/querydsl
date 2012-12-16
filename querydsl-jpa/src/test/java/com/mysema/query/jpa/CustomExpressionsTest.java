@@ -13,10 +13,9 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.template.StringTemplate;
@@ -28,7 +27,7 @@ public class CustomExpressionsTest extends AbstractQueryTest{
         private static final long serialVersionUID = 1L;
 
         public MyCustomExpr(Expression<?>... args) {
-            super(TemplateFactory.DEFAULT.create("myCustom({0},{1})"), Arrays.asList(args));
+            super(TemplateFactory.DEFAULT.create("myCustom({0},{1})"), ImmutableList.copyOf(args));
         }
     }
 

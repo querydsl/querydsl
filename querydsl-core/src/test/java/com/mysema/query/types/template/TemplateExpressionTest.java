@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
@@ -41,7 +42,7 @@ public class TemplateExpressionTest {
     public void Constructors(){
         Templates templates = new JavaTemplates();
         Template template = TemplateFactory.DEFAULT.create("{0}");
-        List<Expression<?>> args = Arrays.<Expression<?>>asList(new StringPath("a"));
+        ImmutableList<Expression<?>> args = ImmutableList.<Expression<?>>of(new StringPath("a"));
         List<TemplateExpression<?>> customs = Arrays.<TemplateExpression<?>>asList(
             new BooleanTemplate(template, args),
             new ComparableTemplate<String>(String.class, template, args),

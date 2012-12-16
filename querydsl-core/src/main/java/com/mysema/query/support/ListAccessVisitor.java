@@ -29,6 +29,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
+import com.mysema.query.types.PredicateTemplate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -36,7 +37,6 @@ import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.template.BooleanTemplate;
 
 /**
  * ListAccessVisitor is expression visitor implementation
@@ -85,7 +85,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
         }
         if (context.replace) {             
             if (expr.getType().equals(Boolean.class)) {
-                Predicate predicate = BooleanTemplate.create(expr.getTemplate(), args);
+                Predicate predicate = new PredicateTemplate(expr.getTemplate(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
             } else {
                 return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), ImmutableList.copyOf(args));    

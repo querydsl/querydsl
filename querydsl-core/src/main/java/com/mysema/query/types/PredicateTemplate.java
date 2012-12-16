@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * PredicateTemplate provides a Boolean typed TemplateExpression implementation 
@@ -38,7 +38,7 @@ public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implement
         super(Boolean.class, template, args);
     }
 
-    public PredicateTemplate(Template template, List<?> args){
+    public PredicateTemplate(Template template, ImmutableList<?> args){
         super(Boolean.class, template, args);
     }
     

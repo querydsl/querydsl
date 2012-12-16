@@ -56,7 +56,7 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    public ComparableTemplate(Class<T> type, Template template, List<?> args) {
+    public ComparableTemplate(Class<T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

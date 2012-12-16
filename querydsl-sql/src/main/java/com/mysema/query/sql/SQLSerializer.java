@@ -648,13 +648,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         if (operator == Ops.STRING_CAST) {
             final String typeName = templates.getTypeForCast(String.class);
-            visitOperation(String.class, SQLTemplates.CAST, 
+            super.visitOperation(String.class, SQLTemplates.CAST, 
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             final String typeName = templates.getTypeForCast(targetType);
-            visitOperation(targetType, SQLTemplates.CAST, 
+            super.visitOperation(targetType, SQLTemplates.CAST, 
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.ALIAS) {

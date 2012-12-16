@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.util.BeanMap;
 import com.mysema.util.ReflectionUtils;
 
@@ -117,7 +118,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
 
     private final transient Map<String, Field> fields = new HashMap<String, Field>();
 
-    private final List<Expression<?>> args;
+    private final ImmutableList<Expression<?>> args;
 
     private final boolean fieldAccess;
 
@@ -208,7 +209,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
     public QBean(Class<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
         this.bindings = bindings;
-        this.args = new ArrayList<Expression<?>>(bindings.values());
+        this.args = ImmutableList.copyOf(bindings.values());
         this.fieldAccess = fieldAccess;
         if (fieldAccess){
             initFields();

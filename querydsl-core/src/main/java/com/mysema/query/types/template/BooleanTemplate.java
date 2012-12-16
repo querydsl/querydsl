@@ -59,7 +59,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private final PredicateTemplate templateMixin;
 
-    public BooleanTemplate(Template template, List<?> args) {
+    public BooleanTemplate(Template template, ImmutableList<?> args) {
         super(new PredicateTemplate(template, args));
         this.templateMixin = (PredicateTemplate)mixin;
     }

@@ -50,7 +50,7 @@ public class StringOperation extends StringExpression implements Operation<Strin
         this(op, ImmutableList.copyOf(args));
     }
 
-    protected StringOperation(Operator<? super String> op, List<Expression<?>> args) {
+    protected StringOperation(Operator<? super String> op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<String>(String.class, op, args));
         this.opMixin = (OperationImpl<String>)mixin;
     }

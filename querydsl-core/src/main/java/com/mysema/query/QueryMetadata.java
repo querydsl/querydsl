@@ -54,13 +54,14 @@ public interface QueryMetadata extends Serializable {
      * @param expr
      */
     void addJoin(JoinType joinType, Expression<?> expr);
-    
-    /**
-     * Add the given query join
-     *
-     */
-    void addJoin(JoinExpression join);
 
+    /**
+     * Add the given join flag to the last given join
+     * 
+     * @param flag
+     */
+    void addJoinFlag(JoinFlag flag);
+    
     /**
      * Add the given join condition to the last given join
      *

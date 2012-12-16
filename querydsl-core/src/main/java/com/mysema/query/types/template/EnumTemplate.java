@@ -56,7 +56,7 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    public EnumTemplate(Class<T> type, Template template, List<?> args) {
+    public EnumTemplate(Class<T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

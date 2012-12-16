@@ -13,11 +13,8 @@
  */
 package com.mysema.query.jdo.sql;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
@@ -25,12 +22,12 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLQueryMixin;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
@@ -51,7 +48,7 @@ import com.mysema.query.types.template.SimpleTemplate;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysema.query.Query> extends ProjectableQuery<T> {
 
-    protected final SQLQueryMixin<T> queryMixin;
+    protected final QueryMixin<T> queryMixin;
     
     @Nullable
     protected SubQueryExpression<?>[] union;
@@ -62,9 +59,9 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata, SQLTemplates templates) {
-        super(new SQLQueryMixin<T>(metadata));
+        super(new QueryMixin<T>(metadata));
         this.templates = templates;
-        this.queryMixin = (SQLQueryMixin<T>)super.queryMixin;
+        this.queryMixin = (QueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }
 
@@ -189,12 +186,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
 
     @SuppressWarnings("unchecked")
     public T addJoinFlag(String flag, JoinFlag.Position position) {
-        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
-        if (!joins.isEmpty()) {
-            joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));    
-        } else {
-            throw new IllegalStateException("No joins have been defined");
-        }        
+        queryMixin.addJoinFlag(new JoinFlag(flag, position));                   
         return (T)this;
     }
 

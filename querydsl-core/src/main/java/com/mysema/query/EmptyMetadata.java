@@ -27,12 +27,12 @@ import com.mysema.query.types.Predicate;
  * EmptyMetadata provides a immutable empty QueryMetadata instace
  * 
  * @author tiwe
- *
+ * 
  */
 public final class EmptyMetadata implements QueryMetadata {
-    
+
     private static final long serialVersionUID = 134750105981272499L;
-    
+
     public static final QueryMetadata DEFAULT = new EmptyMetadata();
 
     @Override
@@ -47,11 +47,6 @@ public final class EmptyMetadata implements QueryMetadata {
 
     @Override
     public void addJoin(JoinType joinType, Expression<?> expr) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void addJoin(JoinExpression join) {
         throw new UnsupportedOperationException();
     }
 
@@ -89,9 +84,9 @@ public final class EmptyMetadata implements QueryMetadata {
     public void clearWhere() {
         throw new UnsupportedOperationException();
     }
-    
+
     @Override
-    public QueryMetadata clone(){
+    public QueryMetadata clone() {
         return this;
     }
 
@@ -199,7 +194,10 @@ public final class EmptyMetadata implements QueryMetadata {
     public void setValidate(boolean v) {
         throw new UnsupportedOperationException();
     }
-    
-    
+
+    @Override
+    public void addJoinFlag(JoinFlag flag) {
+        throw new UnsupportedOperationException();
+    }
 
 }

@@ -118,7 +118,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @SuppressWarnings("unchecked")
     private <T> Expression<?> regexToLike(Operation<T> operation) {
-        final List<Expression<?>> args = new ArrayList<Expression<?>>();
+        final ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
         for (final Expression<?> arg : operation.getArgs()) {
             if (!arg.getType().equals(String.class)) {
                 args.add(arg);
@@ -133,7 +133,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return new OperationImpl(
                 operation.getType(),
                 operation.getOperator(),
-                args);
+                args.build());
     }
 
     private Expression<?> regexToLike(String str) {

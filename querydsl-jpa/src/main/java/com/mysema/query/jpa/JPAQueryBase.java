@@ -13,7 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -21,6 +20,7 @@ import javax.persistence.EntityManager;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
@@ -96,11 +96,11 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.from(args);
     }
 
-    public <P> Q fullJoin(Path<? extends Collection<P>> target) {
+    public <P> Q fullJoin(CollectionExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -108,7 +108,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public <P> Q fullJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -124,11 +124,11 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return constants;
     }
 
-    public <P> Q innerJoin(Path<? extends Collection<P>> target) {
+    public <P> Q innerJoin(CollectionExpression<?,P> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
+    public <P> Q innerJoin(CollectionExpression<?,P>target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -136,7 +136,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public <P> Q innerJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -148,11 +148,11 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q join(Path<? extends Collection<P>> target) {
+    public <P> Q join(CollectionExpression<?,P> target) {
         return queryMixin.join(target);
     }
 
-    public <P> Q join(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q join(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -160,7 +160,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.join(target);
     }
 
-    public <P> Q join(EntityPath<P> target, EntityPath<P> alias) {
+    public <P> Q join(EntityPath<P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -172,11 +172,11 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.join(target, alias);
     }
 
-    public <P> Q leftJoin(Path<? extends Collection<P>> target) {
+    public <P> Q leftJoin(CollectionExpression<?,P> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q leftJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
@@ -184,7 +184,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public <P> Q leftJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
@@ -196,11 +196,11 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.leftJoin(target, alias);
     }
 
-    public <P> Q rightJoin(Path<? extends Collection<P>> target) {
+    public <P> Q rightJoin(CollectionExpression<?,P> target) {
         return queryMixin.rightJoin(target);
     }
 
-    public <P> Q rightJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q rightJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
@@ -208,7 +208,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.rightJoin(target);
     }
 
-    public <P> Q rightJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public <P> Q rightJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 

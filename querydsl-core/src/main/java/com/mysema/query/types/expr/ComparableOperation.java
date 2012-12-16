@@ -44,7 +44,7 @@ public class ComparableOperation<T extends Comparable<?>> extends
         this(type, op, ImmutableList.copyOf(args));
     }
     
-    protected ComparableOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected ComparableOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }

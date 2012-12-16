@@ -13,22 +13,19 @@
  */
 package com.mysema.query.support;
 
-import java.util.Collection;
-
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinFlag;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.FactoryExpressionUtils.FactoryExpressionAdapter;
 import com.mysema.query.types.MapExpression;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
@@ -82,8 +79,18 @@ public class QueryMixin<T> {
         this.validateAnyPaths = validateAnyPaths;
     }
 
+    public T addJoin(JoinType joinType, Expression<?> target) {
+        metadata.addJoin(joinType, target);
+        return self;
+    }
+    
     public T addFlag(QueryFlag queryFlag){
         metadata.addFlag(queryFlag);
+        return self;
+    }
+    
+    public T addJoinFlag(JoinFlag flag) {
+        metadata.addJoinFlag(flag);
         return self;
     }
 
@@ -131,24 +138,9 @@ public class QueryMixin<T> {
         }
     }
 
-    protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
+    protected <D> Expression<D> createAlias(Expression expr, Path alias){
         assertRoot(alias);
-        return ExpressionUtils.as(path, alias);
-    }
-
-    protected <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
-        assertRoot(alias);
-        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
-    }
-
-    protected <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
-        assertRoot(alias);
-        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
-    }
-
-    protected <D> Expression<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
-        assertRoot(alias);
-        return ExpressionUtils.as(path, alias);
+        return ExpressionUtils.as(expr, alias);
     }
 
     public final T distinct(){
@@ -168,28 +160,17 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public final <P> T fullJoin(EntityPath<P> target) {
+    public final T fullJoin(Expression<?> target) {
         metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }
 
-    public final <P> T fullJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public final <P> T fullJoin(Expression<P> target, Path<P> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
-
-    public final <P> T fullJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target);
-        return self;
-    }
-
-    public final <P> T fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public final <P> T fullJoin(CollectionExpression<?,P> target, Path<P> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return self;
-    }
-
-    public final <P> T fullJoin(MapExpression<?,P> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }
 
@@ -236,28 +217,18 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public final <P> T innerJoin(EntityPath<P> target) {
+    public final <P> T innerJoin(Expression<P> target) {
         metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
 
-    public final <P> T innerJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public final <P> T innerJoin(Expression<P> target, Path<P> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
 
-    public final <P> T innerJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target);
-        return self;
-    }
-
-    public final <P> T innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
+    public final <P> T innerJoin(CollectionExpression<?,P> target, Path<P> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return self;
-    }
-
-    public final <P> T innerJoin(MapExpression<?,P> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
 
@@ -280,28 +251,18 @@ public class QueryMixin<T> {
         return metadata.isUnique();
     }
 
-    public final <P> T join(EntityPath<P> target) {
+    public final <P> T join(Expression<P> target) {
         metadata.addJoin(JoinType.JOIN, target);
         return self;
     }
 
-    public final <P> T join(EntityPath<P> target, EntityPath<P> alias) {
+    public final <P> T join(Expression<P> target, Path<P> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return getSelf();
     }
 
-    public final <P> T join(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.JOIN, target);
-        return getSelf();
-    }
-
-    public final <P> T join(Path<? extends Collection<P>> target, Path<P> alias) {
+    public final <P> T join(CollectionExpression<?,P> target, Path<P> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
-        return getSelf();
-    }
-
-    public final <P> T join(MapExpression<?,P> target) {
-        metadata.addJoin(JoinType.JOIN, target);
         return getSelf();
     }
 
@@ -316,28 +277,18 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public final <P> T leftJoin(EntityPath<P> target) {
+    public final <P> T leftJoin(Expression<P> target) {
         metadata.addJoin(JoinType.LEFTJOIN, target);
         return self;
     }
 
-    public final <P> T leftJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public final <P> T leftJoin(Expression<P> target, Path<P> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return getSelf();
     }
 
-    public final <P> T leftJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target);
-        return getSelf();
-    }
-
-    public final <P> T leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public final <P> T leftJoin(CollectionExpression<?,P> target, Path<P> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return getSelf();
-    }
-
-    public final <P> T leftJoin(MapExpression<?,P> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target);
         return getSelf();
     }
 
@@ -396,28 +347,18 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public final <P> T rightJoin(EntityPath<P> target) {
+    public final <P> T rightJoin(Expression<P> target) {
         metadata.addJoin(JoinType.RIGHTJOIN, target);
         return self;
     }
 
-    public final <P> T rightJoin(EntityPath<P> target, EntityPath<P> alias) {
+    public final <P> T rightJoin(Expression<P> target, Path<P> alias) {
         metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
         return getSelf();
     }
 
-    public final <P> T rightJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.RIGHTJOIN, target);
-        return getSelf();
-    }
-
-    public final <P> T rightJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public final <P> T rightJoin(CollectionExpression<?,P> target, Path<P> alias) {
         metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
-        return getSelf();
-    }
-
-    public final <P> T rightJoin(MapExpression<?,P> target) {
-        metadata.addJoin(JoinType.RIGHTJOIN, target);
         return getSelf();
     }
 
@@ -463,15 +404,6 @@ public class QueryMixin<T> {
 
     protected Predicate normalize(Predicate condition, boolean where) {
         return condition;
-    }
-    
-    protected final Predicate[] normalize(Predicate[] conditions, boolean where) {
-        for (int i = 0; i < conditions.length; i++) {
-            if (conditions[i] != null) {
-                conditions[i] = normalize(conditions[i], where);    
-            }            
-        }
-        return conditions;
     }
   
     @Override

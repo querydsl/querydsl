@@ -16,6 +16,7 @@ package com.mysema.query.sql;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
@@ -50,8 +51,8 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
         return TemplateFactory.DEFAULT.create(builder.toString());               
     }
     
-    private static final List<Expression<?>> normalizeArgs(Object... args) {
-        List<Expression<?>> expressions = new ArrayList<Expression<?>>();
+    private static final ImmutableList<Expression<?>> normalizeArgs(Object... args) {
+        ImmutableList.Builder<Expression<?>> expressions = ImmutableList.builder();
         for (Object arg : args) {
             if (arg instanceof Expression) {
                 expressions.add((Expression<?>)arg);
@@ -59,7 +60,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
                 expressions.add(new ConstantImpl<Object>(arg));
             }
         }
-        return expressions;
+        return expressions.build();
     }
     
     private final TemplateExpression<T> templateMixin;

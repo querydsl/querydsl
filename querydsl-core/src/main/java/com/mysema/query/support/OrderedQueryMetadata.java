@@ -26,12 +26,13 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 
 /**
- * OrderedQueryMetadata performs no metadata validation and ensures that FROM elements are before JOIN elements
+ * OrderedQueryMetadata performs no metadata validation and ensures that FROM elements are before 
+ * JOIN elements
  * 
  * @author tiwe
  *
  */
-public class OrderedQueryMetadata extends DefaultQueryMetadata{
+public class OrderedQueryMetadata extends DefaultQueryMetadata {
     
     private static final long serialVersionUID = 6326236143414219377L;
 
@@ -45,46 +46,46 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata{
         noValidate();
     }
     
-    @Override
-    public void addJoin(JoinExpression join) {
-        if (joins.contains(join)) {
-            return;
-        }        
-        if (join.getType() == JoinType.DEFAULT) {
-            int index = joins.size();
-            while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT) {
-                index--;
-            }            
-            joins.add(index, join);
-        } else {
-            joins.add(join);
-        }
-        last = join;
-    }
-    
-    @Override
-    public void addJoin(JoinType joinType, Expression<?> expr) {
-        addJoin(new JoinExpression(joinType, expr));
-    }
-
-    @Override
-    public void addJoinCondition(Predicate o) {
-        if (last != null) {
-            last.addCondition(o);
-        }
-    }
-    
-    @Override
-    public QueryMetadata clone(){
-        QueryMetadata md = super.clone();
-        for (JoinExpression join : joins) {
-            md.addJoin(join);
-        }
-        return md;
-    }
-    
-    @Override
-    public List<JoinExpression> getJoins() {
-        return joins;
-    }
+//    @Override
+//    public void addJoin(JoinExpression join) {
+//        if (joins.contains(join)) {
+//            return;
+//        }        
+//        if (join.getType() == JoinType.DEFAULT) {
+//            int index = joins.size();
+//            while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT) {
+//                index--;
+//            }            
+//            joins.add(index, join);
+//        } else {
+//            joins.add(join);
+//        }
+//        last = join;
+//    }
+//    
+//    @Override
+//    public void addJoin(JoinType joinType, Expression<?> expr) {
+//        addJoin(new JoinExpression(joinType, expr));
+//    }
+//
+//    @Override
+//    public void addJoinCondition(Predicate o) {
+//        if (last != null) {
+//            last.addCondition(o);
+//        }
+//    }
+//    
+//    @Override
+//    public QueryMetadata clone(){
+//        QueryMetadata md = super.clone();
+//        for (JoinExpression join : joins) {
+//            md.addJoin(join);
+//        }
+//        return md;
+//    }
+//    
+//    @Override
+//    public List<JoinExpression> getJoins() {
+//        return joins;
+//    }
 }

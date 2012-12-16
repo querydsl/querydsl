@@ -55,7 +55,7 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     private final TemplateExpressionImpl<String> templateMixin;
 
-    public StringTemplate(Template template, List<?> args) {
+    public StringTemplate(Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<String>(String.class, template, args));
         this.templateMixin = (TemplateExpressionImpl<String>)mixin;
     }

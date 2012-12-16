@@ -13,7 +13,7 @@
  */
 package com.mysema.query.types;
 
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -27,9 +27,9 @@ public class Templates {
 
     public static final Templates DEFAULT = new Templates();
 
-    private final Map<String, Template> templates = new HashMap<String, Template>();
+    private final Map<String, Template> templates = new IdentityHashMap<String, Template>();
     
-    private final Map<String, Integer> precedence = new HashMap<String, Integer>();
+    private final Map<String, Integer> precedence = new IdentityHashMap<String, Integer>();
 
     private final TemplateFactory templateFactory;
     

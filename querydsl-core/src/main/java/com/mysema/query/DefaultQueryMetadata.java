@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.mysema.query.util.CollectionUtils.*;
+
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
@@ -49,9 +51,19 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private List<Expression<?>> groupBy = ImmutableList.of();
 
-    private BooleanBuilder having = new BooleanBuilder();
+    @Nullable
+    private Predicate having;
 
     private List<JoinExpression> joins = ImmutableList.of();
+    
+    private Expression<?> joinTarget;
+    
+    private JoinType joinType;
+    
+    @Nullable
+    private Predicate joinCondition;
+    
+    private Set<JoinFlag> joinFlags = ImmutableSet.of();
 
     @Nullable
     private QueryModifiers modifiers = QueryModifiers.EMPTY;
@@ -65,50 +77,19 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private boolean unique;
 
-    private BooleanBuilder where = new BooleanBuilder();
+    @Nullable
+    private Predicate where;
 
     private Set<QueryFlag> flags = ImmutableSet.of();
     
     private boolean validate = true;
     
-    private static <T> List<T> add(List<T> list, T element) {
-        if (list.isEmpty()) {
-            return ImmutableList.of(element);
-        } else if (list.size() == 1) {
-            list = Lists.newArrayList(list);
+    private static Predicate and(Predicate lhs, Predicate rhs) {
+        if (lhs == null) {
+            return rhs;
+        } else {
+            return ExpressionUtils.and(lhs, rhs);
         }
-        list.add(element);
-        return list;
-    }
-    
-    private static <T> Set<T> add(Set<T> set, T element) {
-        if (set.isEmpty()) {
-            return ImmutableSet.of(element);
-        } else if (set.size() == 1) {
-            set = Sets.newHashSet(set);
-        }
-        set.add(element);
-        return set;
-    }
-    
-    private static <T> Set<T> addSorted(Set<T> set, T element) {
-        if (set.isEmpty()) {
-            return ImmutableSet.of(element);
-        } else if (set.size() == 1) {
-            set = Sets.newLinkedHashSet(set);
-        }
-        set.add(element);
-        return set;
-    }
-    
-    private static <K,V> Map<K,V> put(Map<K,V> map, K key, V value) {
-        if (map.isEmpty()) {
-            return ImmutableMap.of(key, value);
-        } else if (map.size() == 1) {
-            map = Maps.newHashMap(map);
-        }
-        map.put(key, value);
-        return map;
     }
     
     /**
@@ -133,62 +114,69 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addFlag(QueryFlag flag) {
         flags = addSorted(flags, flag);        
     }
+    
+    @Override
+    public void addJoinFlag(JoinFlag flag) {
+        joinFlags = addSorted(joinFlags, flag);
+    }
             
     @Override
     public void addGroupBy(Expression<?> o) {
+        addLastJoin();
         validate(o);
         groupBy = add(groupBy, o);
     }
 
     @Override
     public void addHaving(Predicate e) {
+        addLastJoin();
         if (e == null) {
             return;
         }
         e = (Predicate)ExpressionUtils.extract(e);
         if (e != null) {
             validate(e);
-            having.and(e);
+            having = and(having, e);
         }
     }
 
-    @Override
-    public void addJoin(JoinType joinType, Expression<?> expr) {
-        addJoin(new JoinExpression(joinType, expr));
+    private void addLastJoin() {
+        if (joinTarget == null) {
+            return;
+        }                             
+        joins = add(joins, new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
+        
+        joinType = null;
+        joinTarget = null;
+        joinCondition = null;
+        joinFlags = ImmutableSet.of();
     }
     
     @Override
-    public void addJoin(JoinExpression join) {
-        Expression<?> expr = join.getTarget();
+    public void addJoin(JoinType joinType, Expression<?> expr) {
+        addLastJoin();
         if (!exprInJoins.contains(expr)) {
-            validateJoin(join);
-            exprInJoins = add(exprInJoins, expr);
-            validate(expr);
-            joins = add(joins, join);
+            if (expr instanceof Path && ((Path)expr).getMetadata().isRoot()) {
+                exprInJoins = add(exprInJoins, expr);    
+            } else {
+                validate(expr);
+            }            
+            this.joinType = joinType;
+            this.joinTarget = expr;    
         } else {
-            throw new IllegalStateException(expr + " is already used");
-        }
-    }
-
-    private void validateJoin(JoinExpression join) {
-        if (validate && join.getTarget() instanceof Path) {
-            Path<?> path = (Path<?>)join.getTarget();
-            if (join.getType() == JoinType.DEFAULT) {
-                ensureRoot(path);
-            } 
-        }         
+            throw new IllegalStateException(joinTarget + " is already used");
+        }        
     }
     
     @Override
     public void addJoinCondition(Predicate o) {
-        if (!joins.isEmpty()) {
-            validate(o);
-            joins.get(joins.size() - 1).addCondition(o);
-        }
+        validate(o);
+        joinCondition = and(joinCondition, o);        
     }
 
     @Override
     public void addOrderBy(OrderSpecifier<?> o) {
+        addLastJoin();
         // order specifiers can't be validated, since they can refer to projection elements
         // that are declared later
         orderBy = add(orderBy, o);
@@ -196,19 +184,21 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addProjection(Expression<?> o) {
+        addLastJoin();
         validate(o);
         projection = add(projection, o);
     }
 
     @Override
-    public void addWhere(Predicate e) {
+    public void addWhere(Predicate e) {        
         if (e == null) {
             return;
         }
+        addLastJoin();
         e = (Predicate)ExpressionUtils.extract(e);
         if (e != null) {
             validate(e);
-            where.and(e);
+            where = and(where, e);
         }
     }
 
@@ -230,23 +220,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
             clone.exprInJoins = Sets.newHashSet(exprInJoins);
             clone.groupBy = Lists.newArrayList(groupBy);
-            clone.having = having.clone();
+            clone.having = having;
             clone.joins = ImmutableList.copyOf(joins);
-            clone.modifiers = new QueryModifiers(modifiers);
+            clone.modifiers = modifiers;
             clone.orderBy = Lists.newArrayList(orderBy);
             clone.projection = ImmutableList.copyOf(projection);
             clone.params = Maps.newHashMap(params);
-            clone.where = where.clone();
+            clone.where = where;
             clone.flags = Sets.newLinkedHashSet(flags);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);
-        }
-    }
-
-    private void ensureRoot(Path<?> path){        
-        if (!path.getMetadata().isRoot()) {
-            throw new IllegalArgumentException("Only root paths are allowed for joins : " + path);
         }
     }
 
@@ -257,11 +241,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public Predicate getHaving() {
-        return having.getValue();
+        return having;
     }
 
     @Override
     public List<JoinExpression> getJoins() {
+        addLastJoin();
         return joins;
     }
 
@@ -287,7 +272,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public Predicate getWhere() {
-        return where.hasValue() ? where.getValue() : null;
+        return where;
     }
 
     @Override
@@ -357,7 +342,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     private void validate(Expression<?> expr){
         if (validate) {
-            expr.accept(ValidatingVisitor.DEFAULT, exprInJoins);
+            exprInJoins = expr.accept(ValidatingVisitor.DEFAULT, exprInJoins);
         }
     }
     
@@ -371,7 +356,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             QueryMetadata q = (QueryMetadata)o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
-                && Objects.equal(q.getHaving(), having.getValue())
+                && Objects.equal(q.getHaving(), having)
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
                 && q.getJoins().equals(joins)
@@ -379,7 +364,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
                 && q.getProjection().equals(projection)
-                && Objects.equal(q.getWhere(), where.getValue());
+                && Objects.equal(q.getWhere(), where);
             
         } else {
             return false;

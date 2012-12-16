@@ -13,15 +13,13 @@
  */
 package com.mysema.query.sql;
 
-import java.util.List;
-
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
+import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
@@ -37,7 +35,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends DetachableQuery<Q> {
 
-    protected final SQLQueryMixin<Q> queryMixin;
+    protected final QueryMixin<Q> queryMixin;
     
     public AbstractSQLSubQuery() {
         this(new DefaultQueryMetadata().noValidate());
@@ -45,8 +43,8 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
 
     @SuppressWarnings("unchecked")
     public AbstractSQLSubQuery(QueryMetadata metadata) {
-        super(new SQLQueryMixin<Q>(metadata));
-        this.queryMixin = (SQLQueryMixin<Q>)super.queryMixin;
+        super(new QueryMixin<Q>(metadata));
+        this.queryMixin = (QueryMixin<Q>)super.queryMixin;
         this.queryMixin.setSelf((Q)this);
     }
 
@@ -105,8 +103,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      */
     @SuppressWarnings("unchecked")
     public Q addJoinFlag(String flag, JoinFlag.Position position) {
-        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
+        queryMixin.addJoinFlag(new JoinFlag(flag, position));
         return (Q)this;
     }
     

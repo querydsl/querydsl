@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.SQLSerializer;
@@ -70,7 +71,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                         fargs.set(j, ExpressionUtils.as(fargs.get(j), "col__"+(i+1)+"_"+(j+1)));
                     }
                 }
-                args[i] = new QTuple(fargs);
+                args[i] = new QTuple(ImmutableList.copyOf(fargs));
                 modified = true;
                 
             } else if (!isAlias(args[i])) {    

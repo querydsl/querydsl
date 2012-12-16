@@ -28,7 +28,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private static final long serialVersionUID = 6951623726800809083L;
 
-    private final List<?> args;
+    private final ImmutableList<?> args;
 
     private final Template template;
 
@@ -56,7 +56,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
         this(type, template, ImmutableList.copyOf(args));
     }    
     
-    public TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args) {
+    public TemplateExpressionImpl(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(type);
         this.args = args;
         this.template = template;

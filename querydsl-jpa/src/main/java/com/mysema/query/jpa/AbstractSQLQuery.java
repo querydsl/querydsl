@@ -13,9 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.List;
-
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
@@ -23,8 +20,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLQueryMixin;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
@@ -43,7 +40,7 @@ import com.mysema.query.types.template.SimpleTemplate;
  */
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T> {
 
-    private static final class NativeQueryMixin<T> extends SQLQueryMixin<T> {
+    private static final class NativeQueryMixin<T> extends QueryMixin<T> {
         private NativeQueryMixin(QueryMetadata metadata) {
             super(metadata);
         }
@@ -54,12 +51,12 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         }
     }
 
-    protected final SQLQueryMixin<T> queryMixin;
+    protected final QueryMixin<T> queryMixin;
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
         super(new NativeQueryMixin<T>(metadata));
-        this.queryMixin = (SQLQueryMixin<T>)super.queryMixin;
+        this.queryMixin = (QueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }
 
@@ -185,8 +182,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     @SuppressWarnings("unchecked")
     public T addJoinFlag(String flag, JoinFlag.Position position) {
-        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
+        queryMixin.addJoinFlag(new JoinFlag(flag, position));
         return (T)this;
     }
 

@@ -51,7 +51,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
         this(op, ImmutableList.copyOf(args));
     }
     
-    protected BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
+    protected BooleanOperation(Operator<? super Boolean> op, ImmutableList<Expression<?>> args) {
         super(new PredicateOperation((Operator)op, args));
         opMixin = (PredicateOperation)mixin;
     }

@@ -13,14 +13,12 @@
  */
 package com.mysema.query.jdo;
 
-import java.util.Collection;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -49,7 +47,7 @@ public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends Detac
         return queryMixin.from(args);
     }
 
-    public <P> Q from(Path<? extends Collection<P>> target, EntityPath<P> alias) {
+    public <P> Q from(CollectionExpression<?,P> target, EntityPath<P> alias) {
         return queryMixin.join(target, alias);
     }
 

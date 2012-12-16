@@ -14,8 +14,9 @@
 package com.mysema.query;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
@@ -27,14 +28,14 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  */
-// TODO : refactor to be immutable
 public final class JoinExpression implements Serializable {
 
     private static final long serialVersionUID = -1131755765747174886L;
 
-    private final BooleanBuilder condition = new BooleanBuilder();
+    @Nullable
+    private final Predicate condition;
 
-    private Set<JoinFlag> flags = ImmutableSet.of();
+    private final Set<JoinFlag> flags;
 
     private final Expression<?> target;
 
@@ -47,16 +48,29 @@ public final class JoinExpression implements Serializable {
      * @param target
      */
     public JoinExpression(JoinType type, Expression<?> target) {
+        this(type, target, null, ImmutableSet.<JoinFlag>of());
+    }
+            
+    
+    /**
+     * Create a new JoinExpression instance
+     * 
+     * @param type
+     * @param target
+     * @param condition
+     * @param flags
+     */
+    public JoinExpression(JoinType type, Expression<?> target, @Nullable Predicate condition, 
+            Set<JoinFlag> flags) {
         this.type = type;
-        this.target = target;        
+        this.target = target;
+        this.condition = condition;
+        this.flags = flags;
     }
 
+    @Nullable
     public Predicate getCondition() {
-        return condition.getValue();
-    }
-
-    public void addCondition(Predicate c) {
-        condition.and(c);
+        return condition;
     }
 
     public Expression<?> getTarget() {
@@ -65,14 +79,6 @@ public final class JoinExpression implements Serializable {
 
     public JoinType getType() {
         return type;
-    }
-
-    public void addFlag(JoinFlag flag) {
-        if (flags.isEmpty()) {
-            // TODO : use immutable if possible
-            flags = new LinkedHashSet<JoinFlag>(); 
-        }
-        flags.add(flag);
     }
 
     public boolean hasFlag(JoinFlag flag) {
@@ -86,8 +92,8 @@ public final class JoinExpression implements Serializable {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(type).append(" ").append(target);
-        if (condition.getValue() != null) {
-            builder.append(" ON ").append(condition);
+        if (condition != null) {
+            builder.append(" on ").append(condition);
         }
         return builder.toString();
     }

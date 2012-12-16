@@ -56,7 +56,7 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    public SimpleTemplate(Class<? extends T> type, Template template, List<?> args) {
+    public SimpleTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

@@ -53,7 +53,7 @@ public class QueryMetadaSerializationTest {
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
         metadata.addGroupBy(expr);
         metadata.addHaving(expr.isEmpty());        
-        metadata.getJoins().get(0).addFlag(new JoinFlag(""));
+//        metadata.getJoins().get(0).addFlag(new JoinFlag(""));
         metadata.addJoinCondition(expr.isEmpty());
         metadata.addOrderBy(expr.asc());
         metadata.addProjection(expr);

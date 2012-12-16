@@ -16,6 +16,7 @@ package com.mysema.query.jpa;
 import java.util.Collection;
 
 import com.mysema.query.Query;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
@@ -57,7 +58,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q innerJoin(EntityPath<P> target, EntityPath<P> alias);
+    <P> Q innerJoin(EntityPath<P> target, Path<P> alias);
 
     /**
      * Create a inner join with the given target.
@@ -67,7 +68,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q innerJoin(Path<? extends Collection<P>> target);
+    <P> Q innerJoin(CollectionExpression<?, P> target);
 
     /**
      * Create a inner join with the given target and alias.
@@ -77,7 +78,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q innerJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create a inner join with the given target.
@@ -117,7 +118,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q join(EntityPath<P> target, EntityPath<P> alias);
+    <P> Q join(EntityPath<P> target, Path<P> alias);
 
     /**
      * Create a join with the given target.
@@ -127,7 +128,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q join(Path<? extends Collection<P>> target);
+    <P> Q join(CollectionExpression<?,P> target);
 
     /**
      * @param <P>
@@ -135,7 +136,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q join(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q join(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create a join with the given target.
@@ -175,7 +176,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q leftJoin(EntityPath<P> target, EntityPath<P> alias);
+    <P> Q leftJoin(EntityPath<P> target, Path<P> alias);
 
     /**
      * Create a left join with the given target.
@@ -185,7 +186,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q leftJoin(Path<? extends Collection<P>> target);
+    <P> Q leftJoin(CollectionExpression<?,P> target);
 
     /**
      * Create a left join with the given target and alias.
@@ -195,7 +196,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q leftJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create a left join with the given target.
@@ -235,7 +236,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q rightJoin(EntityPath<P> target, EntityPath<P> alias);
+    <P> Q rightJoin(EntityPath<P> target, Path<P> alias);
 
     /**
      * Create a right join with the given target.
@@ -245,7 +246,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q rightJoin(Path<? extends Collection<P>> target);
+    <P> Q rightJoin(CollectionExpression<?,P> target);
 
     /**
      * Create a right join with the given target and alias.
@@ -255,7 +256,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q rightJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q rightJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create a right join with the given target.
@@ -296,7 +297,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q fullJoin(EntityPath<P> target, EntityPath<P> alias);
+    <P> Q fullJoin(EntityPath<P> target, Path<P> alias);
 
     /**
      * Create a full join with the given target.
@@ -306,7 +307,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q fullJoin(Path<? extends Collection<P>> target);
+    <P> Q fullJoin(CollectionExpression<?,P> target);
 
     /**
      * Create a full join with the given target and alias.
@@ -316,7 +317,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q fullJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create a full join with the given target.

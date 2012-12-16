@@ -29,7 +29,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private static final long serialVersionUID = 4796432056083507588L;
 
-    private final List<Expression<?>> args;
+    private final ImmutableList<Expression<?>> args;
 
     private final Operator<? super T> operator;
 
@@ -45,7 +45,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
         this(type, operator, ImmutableList.copyOf(args));
     }
     
-    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, List<Expression<?>> args) {
+    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, ImmutableList<Expression<?>> args) {
         super(type);
         this.operator = operator;
         this.args = args;
