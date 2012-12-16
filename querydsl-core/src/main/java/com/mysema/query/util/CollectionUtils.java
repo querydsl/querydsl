@@ -36,7 +36,7 @@ public final class CollectionUtils {
     public static <T> List<T> add(List<T> list, T element) {
         if (list.isEmpty()) {
             return ImmutableList.of(element);
-        } else if (list.size() == 1) {
+        } else if (list instanceof ImmutableList) {
             final List<T> old = list;
             list = Lists.newArrayList();
             list.add(old.get(0));
@@ -48,7 +48,7 @@ public final class CollectionUtils {
     public static <T> Set<T> add(Set<T> set, T element) {
         if (set.isEmpty()) {
             return ImmutableSet.of(element);
-        } else if (set.size() == 1) {
+        } else if (set instanceof ImmutableSet) {
             final Set<T> old = set;
             set = Sets.newHashSet();
             set.add(old.iterator().next());
@@ -60,7 +60,7 @@ public final class CollectionUtils {
     public static <T> Set<T> addSorted(Set<T> set, T element) {
         if (set.isEmpty()) {
             return ImmutableSet.of(element);
-        } else if (set.size() == 1) {
+        } else if (set instanceof ImmutableSet) {
             Set<T> old = set;
             set = Sets.newLinkedHashSet();
             set.add(old.iterator().next());
@@ -72,7 +72,7 @@ public final class CollectionUtils {
     public static <K,V> Map<K,V> put(Map<K,V> map, K key, V value) {
         if (map.isEmpty()) {
             return ImmutableMap.of(key, value);
-        } else if (map.size() == 1) {
+        } else if (map instanceof ImmutableMap) {
             map = Maps.newHashMap(map);
         }
         map.put(key, value);

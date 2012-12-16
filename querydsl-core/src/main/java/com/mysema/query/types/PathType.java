@@ -70,8 +70,6 @@ public enum PathType implements Operator<Path<?>> {
      */
     VARIABLE;
 
-    private final String id = name().intern();
-    
     @Override
     public List<Class<?>> getTypes() {
         return Collections.emptyList();
@@ -79,7 +77,7 @@ public enum PathType implements Operator<Path<?>> {
 
     @Override
     public String getId() {
-        return id;
+        return name();
     }
     
 }

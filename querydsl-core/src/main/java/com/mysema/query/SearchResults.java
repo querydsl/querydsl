@@ -26,9 +26,10 @@ import com.google.common.collect.ImmutableList;
  */
 public final class SearchResults<T> {
 
-    private static final SearchResults EMPTY = new SearchResults(
+    private static final SearchResults<Object> EMPTY = new SearchResults<Object>(
             ImmutableList.of(), Long.MAX_VALUE, 0l, 0l); 
     
+    @SuppressWarnings("unchecked")
     public static <T> SearchResults<T> emptyResults() {
         return (SearchResults<T>)EMPTY;
     };

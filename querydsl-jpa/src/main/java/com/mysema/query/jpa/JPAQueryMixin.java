@@ -28,7 +28,6 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
-import com.mysema.query.types.path.ListPath;
 
 /**
  * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction

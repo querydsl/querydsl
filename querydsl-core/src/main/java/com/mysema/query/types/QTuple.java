@@ -120,8 +120,8 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
     public QTuple(Expression<?>[]... args) {
         super(Tuple.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        for (Expression<?>[] exprs: args){
-            builder.addAll(Arrays.asList(exprs));
+        for (Expression<?>[] exprs: args) {
+            builder.add(exprs);
         }
         this.args = builder.build();
     }

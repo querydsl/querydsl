@@ -49,7 +49,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private String anonParamPrefix = "_";
 
-    private final Map<Object,String> constantToLabel = new HashMap<Object,String>(4);
+    private Map<Object,String> constantToLabel;
 
     @SuppressWarnings("unchecked")
     private final S self = (S) this;
@@ -82,6 +82,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public Map<Object,String> getConstantToLabel() {
+        if (constantToLabel == null) {
+            constantToLabel = new HashMap<Object,String>(4);   
+        }
         return constantToLabel;
     }
     

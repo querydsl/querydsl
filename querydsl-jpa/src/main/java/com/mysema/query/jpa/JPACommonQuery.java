@@ -13,8 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Collection;
-
 import com.mysema.query.Query;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;

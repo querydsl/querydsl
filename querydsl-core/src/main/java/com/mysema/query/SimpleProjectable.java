@@ -49,6 +49,7 @@ public interface SimpleProjectable<T> {
      *
      * @return
      */
+    @Deprecated
     CloseableIterator<T> iterateDistinct();
 
     /**
@@ -63,6 +64,7 @@ public interface SimpleProjectable<T> {
      *
      * @return
      */
+    @Deprecated
     List<T> listDistinct();
 
     /**
@@ -96,6 +98,7 @@ public interface SimpleProjectable<T> {
      *
      * @return
      */
+    @Deprecated
     SearchResults<T> listDistinctResults();
 
     /**
@@ -110,6 +113,7 @@ public interface SimpleProjectable<T> {
      *
      * @return
      */
+    @Deprecated
     long countDistinct();
 
 }

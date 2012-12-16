@@ -35,7 +35,7 @@ public final class JoinExpression implements Serializable {
     @Nullable
     private final Predicate condition;
 
-    private final Set<JoinFlag> flags;
+    private final ImmutableSet<JoinFlag> flags;
 
     private final Expression<?> target;
 
@@ -65,7 +65,7 @@ public final class JoinExpression implements Serializable {
         this.type = type;
         this.target = target;
         this.condition = condition;
-        this.flags = flags;
+        this.flags = ImmutableSet.copyOf(flags);
     }
 
     @Nullable

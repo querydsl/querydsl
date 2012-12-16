@@ -13,8 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Collection;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
