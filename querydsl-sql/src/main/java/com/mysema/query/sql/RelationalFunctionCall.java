@@ -13,12 +13,8 @@
  */
 package com.mysema.query.sql;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -51,18 +47,6 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
         return TemplateFactory.DEFAULT.create(builder.toString());               
     }
     
-    private static final ImmutableList<Expression<?>> normalizeArgs(Object... args) {
-        ImmutableList.Builder<Expression<?>> expressions = ImmutableList.builder();
-        for (Object arg : args) {
-            if (arg instanceof Expression) {
-                expressions.add((Expression<?>)arg);
-            } else {
-                expressions.add(new ConstantImpl<Object>(arg));
-            }
-        }
-        return expressions.build();
-    }
-    
     private final TemplateExpression<T> templateMixin;
     
     /**
@@ -78,7 +62,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
     }    
     
     public RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
-        super(new TemplateExpressionImpl<T>(type, createTemplate(function, args.length), normalizeArgs(args)));
+        super(TemplateExpressionImpl.create((Class)type, createTemplate(function, args.length), args));
         templateMixin = (TemplateExpression<T>)mixin;
     }    
 

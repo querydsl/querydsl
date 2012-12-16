@@ -89,7 +89,7 @@ public class DetachableMixin implements Detachable {
     }
 
     private Expression<?>[] convert(Object... args) {
-        Expression<?>[] exprs = new Expression[args.length];
+        final Expression<?>[] exprs = new Expression[args.length];
         for (int i = 0; i < exprs.length; i++){
             if (args[i] instanceof Expression<?>) {
                 exprs[i] = (Expression<?>)args[i];

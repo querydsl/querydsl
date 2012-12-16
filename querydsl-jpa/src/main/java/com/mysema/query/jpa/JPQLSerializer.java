@@ -452,7 +452,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             final Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
             final Enum constant = (Enum)((Constant)args.get(0)).getConstant();
             if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
-                args = ImmutableList.of(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
+                args = ImmutableList.of(ConstantImpl.create(constant.ordinal()), args.get(1));
             } else {
                 args = ImmutableList.of(new ConstantImpl<String>(constant.name()), args.get(1));
             }
