@@ -34,37 +34,59 @@ import com.google.common.collect.Sets;
 public final class CollectionUtils {
 
     public static <T> List<T> add(List<T> list, T element) {
-        if (list.isEmpty()) {
+        final int size = list.size();
+        if (size == 0) {
             return ImmutableList.of(element);
         } else if (list instanceof ImmutableList) {
-            list = Lists.newArrayList(list);
+            if (size == 1) {
+                final T val = list.get(0);
+                list = Lists.newArrayList();
+                list.add(val); 
+            } else {
+                list = Lists.newArrayList(list);    
+            }            
         }
         list.add(element);
         return list;
     }
     
     public static <T> Set<T> add(Set<T> set, T element) {
-        if (set.isEmpty()) {
+        final int size = set.size();
+        if (size == 0) {
             return ImmutableSet.of(element);
         } else if (set instanceof ImmutableSet) {
-            set = Sets.newHashSet(set);
+            if (size == 1) {
+                final T val = set.iterator().next();
+                set = Sets.newHashSet();
+                set.add(val);
+            } else {
+                set = Sets.newHashSet(set);    
+            }            
         }
         set.add(element);
         return set;
     }
     
     public static <T> Set<T> addSorted(Set<T> set, T element) {
-        if (set.isEmpty()) {
+        final int size = set.size();
+        if (size == 0) {
             return ImmutableSet.of(element);
         } else if (set instanceof ImmutableSet) {
-            set = Sets.newLinkedHashSet(set);
+            if (size == 1) {
+                final T val = set.iterator().next();
+                set = Sets.newLinkedHashSet();
+                set.add(val);
+            } else {
+                set = Sets.newLinkedHashSet(set);    
+            }            
         }
         set.add(element);
         return set;
     }
     
     public static <K,V> Map<K,V> put(Map<K,V> map, K key, V value) {
-        if (map.isEmpty()) {
+        final int size = map.size();
+        if (size == 0) {
             return ImmutableMap.of(key, value);
         } else if (map instanceof ImmutableMap) {
             map = Maps.newHashMap(map);
