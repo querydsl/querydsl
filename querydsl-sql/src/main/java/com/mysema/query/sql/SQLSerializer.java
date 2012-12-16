@@ -473,7 +473,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         } else {
             append(templates.getFrom());
             for (int i = 0; i < joins.size(); i++) {
-                JoinExpression je = joins.get(i);
+                final JoinExpression je = joins.get(i);
                 if (je.getFlags().isEmpty()) {
                     if (i > 0) {
                         append(templates.getJoinSymbol(je.getType()));
