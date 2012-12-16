@@ -286,11 +286,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
         // order by        
+        if (hasFlags) {
+            serialize(Position.BEFORE_ORDER, flags);    
+        }        
         if (!orderBy.isEmpty() && !forCountRow) {
             stage = Stage.ORDER_BY;
-            if (hasFlags) {
-                serialize(Position.BEFORE_ORDER, flags);    
-            }        
             append(templates.getOrderBy());                       
             boolean first = true;
             for (final OrderSpecifier<?> os : orderBy) {

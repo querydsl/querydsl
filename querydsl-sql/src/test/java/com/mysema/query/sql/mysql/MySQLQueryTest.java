@@ -83,14 +83,28 @@ public class MySQLQueryTest {
     
     @Test
     public void UseIndex(){
-        query.useIndex("col1_index");        
+        query = new MySQLQuery(null, new MySQLTemplates(){{
+            newLineToSingleSpace();
+        }});
+        query.from(survey);
+        query.useIndex("col1_index");
+        query.orderBy(survey.name.asc());
+        query.getMetadata().addProjection(survey.name);
+        
         assertEquals("select survey.NAME from SURVEY survey use_index (col1_index) " +
                      "order by survey.NAME asc", toString(query));
     }
     
     @Test
-    public void UseIndex2(){        
+    public void UseIndex2(){
+        query = new MySQLQuery(null, new MySQLTemplates(){{
+            newLineToSingleSpace();
+        }});
+        query.from(survey);
         query.useIndex("col1_index","col2_index");        
+        query.orderBy(survey.name.asc());
+        query.getMetadata().addProjection(survey.name);
+        
         assertEquals("select survey.NAME from SURVEY survey use_index (col1_index, col2_index) " +
                      "order by survey.NAME asc", toString(query));
     }
