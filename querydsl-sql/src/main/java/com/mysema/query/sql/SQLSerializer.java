@@ -182,15 +182,25 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
-
-        final List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>(select.size());
-        for (Expression<?> selectExpr : select) {
-            if (selectExpr instanceof FactoryExpression) {
-                // transforms constructor arguments into individual select expressions
-                sqlSelect.addAll(((FactoryExpression<?>) selectExpr).getArgs());
+        
+        List<Expression<?>> sqlSelect;
+        if (select.size() == 1) {
+            final Expression<?> first = select.get(0);
+            if (first instanceof FactoryExpression) {
+                sqlSelect = ((FactoryExpression<?>)first).getArgs();
             } else {
-                sqlSelect.add(selectExpr);
-            }
+                sqlSelect = (List)select;
+            }            
+        } else {
+            sqlSelect = new ArrayList<Expression<?>>(select.size());
+            for (Expression<?> selectExpr : select) {
+                if (selectExpr instanceof FactoryExpression) {
+                    // transforms constructor arguments into individual select expressions
+                    sqlSelect.addAll(((FactoryExpression<?>) selectExpr).getArgs());
+                } else {
+                    sqlSelect.add(selectExpr);
+                }
+            }    
         }
                 
         // start

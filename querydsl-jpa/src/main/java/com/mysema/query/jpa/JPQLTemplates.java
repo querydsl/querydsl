@@ -33,11 +33,11 @@ public class JPQLTemplates extends Templates {
 
     public static final char DEFAULT_ESCAPE = '!';
     
-    public static final Operator<String> TYPE = new OperatorImpl<String>("TYPE", Object.class);
+    public static final Operator<String> TYPE = new OperatorImpl<String>("TYPE");
     
-    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
+    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST");
 
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF",Object.class, Object.class);
+    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF");
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
     

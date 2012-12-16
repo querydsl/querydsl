@@ -14,7 +14,6 @@
 package com.mysema.query.types;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Operator represents operator symbols
@@ -32,11 +31,4 @@ public interface Operator<T> extends Serializable{
      */
     String getId();
     
-    /**
-     * Get the types related to this operator symbols
-     *
-     * @return
-     */
-    List<Class<?>> getTypes();
-
 }

@@ -22,18 +22,19 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * Utility methods to create filter expressions for Lucene queries that are not covered by the Querydsl standard expression model
+ * Utility methods to create filter expressions for Lucene queries that are not covered by the 
+ * Querydsl standard expression model
  * 
  * @author tiwe
  *
  */
 public final class LuceneExpressions {
     
-    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>("LUCENE_QUERY", Object.class);
+    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>("LUCENE_QUERY");
     
-    static final Operator<String> PHRASE = new OperatorImpl<String>("PHRASE", String.class);
+    static final Operator<String> PHRASE = new OperatorImpl<String>("PHRASE");
     
-    static final Operator<String> TERM = new OperatorImpl<String>("TERM", String.class);
+    static final Operator<String> TERM = new OperatorImpl<String>("TERM");
     
     /**
      * Create a fuzzy query

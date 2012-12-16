@@ -32,7 +32,7 @@ import com.google.common.collect.ImmutableList;
  */
 @Immutable
 public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> {
-
+    
     private static final long serialVersionUID = 4796432056083507588L;
 
     private final ImmutableList<Expression<?>> args;

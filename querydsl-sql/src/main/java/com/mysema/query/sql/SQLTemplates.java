@@ -37,11 +37,11 @@ import com.mysema.query.types.Templates;
  */
 public class SQLTemplates extends Templates {
     
-    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
+    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST");
     
     public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
 
-    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("NEXTVAL", String.class);
+    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("NEXTVAL");
     
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
@@ -223,134 +223,134 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    public String getAsc() {
+    public final String getAsc() {
         return asc;
     }
 
-    public String getAutoIncrement() {
+    public final String getAutoIncrement() {
         return autoIncrement;
     }
 
-    public String getColumnAlias() {
+    public final String getColumnAlias() {
         return columnAlias;
     }
 
-    public String getCount() {
+    public final String getCount() {
         return count;
     }
 
-    public String getCountStar() {
+    public final String getCountStar() {
         return countStar;
     }
 
-    public String getDeleteFrom() {
+    public final String getDeleteFrom() {
         return deleteFrom;
     }
 
-    public String getDesc() {
+    public final String getDesc() {
         return desc;
     }
 
-    public String getDistinctCountEnd() {
+    public final String getDistinctCountEnd() {
         return distinctCountEnd;
     }
 
-    public String getDistinctCountStart() {
+    public final String getDistinctCountStart() {
         return distinctCountStart;
     }
 
-    public String getDummyTable() {
+    public final String getDummyTable() {
         return dummyTable;
     }
 
-    public String getFrom() {
+    public final String getFrom() {
         return from;
     }
 
-    public String getFullJoin() {
+    public final String getFullJoin() {
         return fullJoin;
     }
 
-    public String getGroupBy() {
+    public final String getGroupBy() {
         return groupBy;
     }
 
-    public String getHaving() {
+    public final String getHaving() {
         return having;
     }
 
-    public String getInnerJoin() {
+    public final String getInnerJoin() {
         return innerJoin;
     }
 
-    public String getInsertInto() {
+    public final String getInsertInto() {
         return insertInto;
     }
 
-    public String getJoin() {
+    public final String getJoin() {
         return join;
     }
 
-    public String getJoinSymbol(JoinType joinType) {
+    public final String getJoinSymbol(JoinType joinType) {
         switch (joinType) {
             case JOIN:      return join;
             case INNERJOIN: return innerJoin;
             case FULLJOIN:  return fullJoin;
             case LEFTJOIN:  return leftJoin;
             case RIGHTJOIN: return rightJoin;
+            default:       return ", ";
         }
-        return ", ";
     }
 
-    public String getKey() {
+    public final String getKey() {
         return key;
     }
 
-    public String getLeftJoin() {
+    public final String getLeftJoin() {
         return leftJoin;
     }
     
-    public String getRightJoin() {
+    public final String getRightJoin() {
         return rightJoin;
     }
 
-    public String getLimitTemplate() {
+    public final String getLimitTemplate() {
         return limitTemplate;
     }
 
-    public String getMergeInto() {
+    public final String getMergeInto() {
         return mergeInto;
     }
 
-    public String getNotNull() {
+    public final String getNotNull() {
         return notNull;
     }
 
-    public String getOffsetTemplate() {
+    public final String getOffsetTemplate() {
         return offsetTemplate;
     }
 
-    public String getOn() {
+    public final String getOn() {
         return on;
     }
 
-    public String getOrderBy() {
+    public final String getOrderBy() {
         return orderBy;
     }
 
-    public String getSelect() {
+    public final String getSelect() {
         return select;
     }
 
-    public String getSelectDistinct() {
+    public final String getSelectDistinct() {
         return selectDistinct;
     }
 
-    public String getSet() {
+    public final String getSet() {
         return set;
     }
 
-    public String getTableAlias() {
+    public final String getTableAlias() {
         return tableAlias;
     }
 
@@ -358,7 +358,7 @@ public class SQLTemplates extends Templates {
         return getTypeForClass(cl);
     }
     
-    public final String getTypeForClass(Class<?> cl) {
+    public String getTypeForClass(Class<?> cl) {
         Class<?> clazz = Primitives.wrap(cl);
         if (class2type.containsKey(clazz)) {
             return class2type.get(clazz);
@@ -367,84 +367,83 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    public String getUnion() {
+    public final String getUnion() {
         return union;
     }
 
-    public String getUnionAll() {
+    public final String getUnionAll() {
         return unionAll;
     }
     
-    public String getUpdate() {
+    public final String getUpdate() {
         return update;
     }
 
-    public String getValues() {
+    public final String getValues() {
         return values;
     }
 
-    public String getWhere() {
+    public final String getWhere() {
         return where;
     }
 
-    public boolean isNativeMerge() {
+    public final boolean isNativeMerge() {
         return nativeMerge;
     }
 
-    public boolean isSupportsAlias() {
+    public final boolean isSupportsAlias() {
         return true;
     }
     
-    public String getCreateIndex() {
+    public final String getCreateIndex() {
         return createIndex;
     }
     
-    public String getCreateUniqueIndex() {
+    public final String getCreateUniqueIndex() {
         return createUniqueIndex;
     }
     
-    public String getCreateTable() {
+    public final String getCreateTable() {
         return createTable;
     }
 
-    public boolean isPrintSchema() {
+    public final boolean isPrintSchema() {
         return printSchema;
     }
     
-    public String getWith() {
+    public final String getWith() {
         return with;
     }
     
-    public boolean isParameterMetadataAvailable() {
+    public final boolean isParameterMetadataAvailable() {
         return parameterMetadataAvailable;
     }
 
-    public boolean isBatchCountViaGetUpdateCount() {
+    public final boolean isBatchCountViaGetUpdateCount() {
         return batchCountViaGetUpdateCount;
     }
     
-    public boolean isBigDecimalSupported() {
+    public final boolean isBigDecimalSupported() {
         return bigDecimalSupported;
     }
 
-    public String getForUpdate() {
+    public final String getForUpdate() {
         return forUpdate;
     }
 
-    public String getForShare() {
+    public final String getForShare() {
         return forShare;
     }
 
-    public boolean isUseQuotes() {
+    public final boolean isUseQuotes() {
         return useQuotes;
     }
     
-    public String getNoWait() {
+    public final String getNoWait() {
         return noWait;
     }
     
-
-    public boolean isUnionsWrapped() {
+    public final boolean isUnionsWrapped() {
         return unionsWrapped;
     }
 
@@ -467,7 +466,7 @@ public class SQLTemplates extends Templates {
         }
     }
     
-    public String quoteIdentifier(String identifier) {
+    public final String quoteIdentifier(String identifier) {
         if (useQuotes || requiresQuotes(identifier)) {
             return quoteStr + identifier + quoteStr;
         } else {

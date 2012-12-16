@@ -115,25 +115,21 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public final S handle(final String sep, final Expression<?>[] expressions) {
-        boolean first = true;
-        for (final Expression<?> expr : expressions) {
-            if (!first) {
+        for (int i = 0; i< expressions.length; i++) {
+            if (i != 0) {
                 append(sep);
             }
-            handle(expr);
-            first = false;
+            handle(expressions[i]);
         }
         return self;
     }
     
     public final S handle(final String sep, final List<?> expressions) {
-        boolean first = true;
-        for (final Object expr : expressions) {
-            if (!first) {
+        for (int i = 0; i < expressions.size(); i++) {
+            if (i != 0) {
                 append(sep);
             }
-            handle((Expression<?>)expr);
-            first = false;
+            handle((Expression<?>)expressions.get(i));
         }
         return self;
     }

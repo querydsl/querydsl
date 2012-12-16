@@ -13,11 +13,6 @@
  */
 package com.mysema.query.types;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
-
 /**
  * PathType represents the relation of a {@link Path} to its parent
  */
@@ -75,11 +70,6 @@ public enum PathType implements Operator<Object> {
     @Override
     public String getId() {
         return name();
-    }
-
-    @Override
-    public List<Class<?>> getTypes() {
-        return ImmutableList.of();
     }
     
 }

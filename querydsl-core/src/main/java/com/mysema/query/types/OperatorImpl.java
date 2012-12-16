@@ -14,12 +14,9 @@
 package com.mysema.query.types;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.concurrent.Immutable;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * OperatorImpl is the default implementation of the {@link Operator} interface
@@ -27,24 +24,17 @@ import com.google.common.collect.ImmutableList;
 @Immutable
 public final class OperatorImpl<T> implements Operator<T> {
 
-    static final Map<String, Operator<?>> OPS = new HashMap<String, Operator<?>>(1000);
+    static final Map<String, Operator<?>> OPS = new HashMap<String, Operator<?>>(150);
     
     private static final long serialVersionUID = -2435035383548549877L;
     
     private final String id;
     
-    private final ImmutableList<Class<?>> types;
-
     private final int hashCode;
     
-    public OperatorImpl(String id, Class<?>... types) {
-        this(id, ImmutableList.copyOf(types));
-    }
-
-    public OperatorImpl(String id, ImmutableList<Class<?>> types) {
+    public OperatorImpl(String id) {
         this.id = id;
         this.hashCode = id.hashCode();
-        this.types = types;
         OPS.put(id, this);
     }
 
@@ -55,15 +45,6 @@ public final class OperatorImpl<T> implements Operator<T> {
      */
     public String getId() {
         return id;
-    }
-    
-    /**
-     * Get the types related to this operator symbols
-     *
-     * @return
-     */
-    public List<Class<?>> getTypes() {
-        return types;
     }
     
     @Override
