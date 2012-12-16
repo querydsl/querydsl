@@ -15,11 +15,14 @@ package com.mysema.query.types;
 
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.collect.ImmutableList;
 
 /**
  * OperatorImpl is the default implementation of the {@link Operator} interface
  */
+@Immutable
 public final class OperatorImpl<T> implements Operator<T> {
 
     private static final long serialVersionUID = -2435035383548549877L;

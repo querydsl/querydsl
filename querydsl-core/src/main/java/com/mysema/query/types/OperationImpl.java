@@ -15,6 +15,8 @@ package com.mysema.query.types;
 
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.collect.ImmutableList;
 
 
@@ -25,6 +27,7 @@ import com.google.common.collect.ImmutableList;
  *
  * @param <T> expression type
  */
+@Immutable
 public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> {
 
     private static final long serialVersionUID = 4796432056083507588L;

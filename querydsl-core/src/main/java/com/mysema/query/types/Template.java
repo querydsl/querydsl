@@ -16,7 +16,10 @@ package com.mysema.query.types;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Template for {@link Operation}, {@link TemplateExpression} and {@link Path} serialization
@@ -24,10 +27,12 @@ import com.google.common.base.Function;
  * @author tiwe
  *
  */
+@Immutable
 public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
 
+    @Immutable
     public static abstract class Element implements Serializable {
         
         private static final long serialVersionUID = 3396877288101929387L;
@@ -163,11 +168,11 @@ public final class Template implements Serializable {
         
     }
     
-    private final List<Element> elements;
+    private final ImmutableList<Element> elements;
 
     private final String template;
 
-    Template(String template, List<Element> elements) {
+    Template(String template, ImmutableList<Element> elements) {
         this.template = template;
         this.elements = elements;
     }

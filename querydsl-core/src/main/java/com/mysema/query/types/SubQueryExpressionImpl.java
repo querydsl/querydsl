@@ -13,6 +13,8 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.mysema.query.QueryMetadata;
 
 /**
@@ -21,6 +23,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
+@Immutable
 public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQueryExpression<T> {
 
     private static final long serialVersionUID = 6775967804458163L;

@@ -16,6 +16,7 @@ package com.mysema.query.types;
 import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import com.mysema.util.ReflectionUtils;
 
@@ -26,6 +27,7 @@ import com.mysema.util.ReflectionUtils;
  *
  * @param <T>
  */
+@Immutable
 public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
 
     private static final long serialVersionUID = -2498447742798348162L;

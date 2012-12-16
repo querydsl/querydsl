@@ -16,6 +16,8 @@ package com.mysema.query.types;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.Tuple;
 
@@ -36,6 +38,7 @@ import com.mysema.query.Tuple;
  * @author tiwe
  *
  */
+@Immutable
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
 
     private final class TupleImpl implements Tuple {

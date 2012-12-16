@@ -14,6 +14,7 @@
 package com.mysema.query.types;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -23,7 +24,8 @@ import com.google.common.collect.ImmutableList;
  * @author tiwe
  *
  */
-public class PredicateOperation extends OperationImpl<Boolean> implements Predicate{
+@Immutable
+public final class PredicateOperation extends OperationImpl<Boolean> implements Predicate{
     
     private static final long serialVersionUID = -5371430939203772072L;
 

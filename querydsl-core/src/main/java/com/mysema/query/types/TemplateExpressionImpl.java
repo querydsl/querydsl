@@ -15,6 +15,8 @@ package com.mysema.query.types;
 
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -24,6 +26,7 @@ import com.google.common.collect.ImmutableList;
  *
  * @param <T> expression type
  */
+@Immutable
 public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 6951623726800809083L;

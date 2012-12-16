@@ -15,6 +15,8 @@ package com.mysema.query.types;
 
 import java.util.UUID;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * ParamExpressionImpl defines a parameter in a query with an optional name
  *
@@ -22,6 +24,7 @@ import java.util.UUID;
  *
  * @param <T> expression type
  */
+@Immutable
 public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamExpression<T> {
 
     private static final long serialVersionUID = -6872502615009012503L;

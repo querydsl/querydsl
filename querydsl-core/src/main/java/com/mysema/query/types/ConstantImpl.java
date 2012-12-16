@@ -19,11 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * ConstantImpl is the default implementation of the Constant interface
  * 
  * @author tiwe
  */
+@Immutable
 @SuppressWarnings("unchecked")
 public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 

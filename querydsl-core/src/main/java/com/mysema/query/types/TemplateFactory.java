@@ -13,9 +13,7 @@
  */
 package com.mysema.query.types;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -53,7 +51,7 @@ public class TemplateFactory {
             return cache.get(template);
         }else{
             Matcher m = elementPattern.matcher(template);
-            List<Element> elements = new ArrayList<Template.Element>();
+            final ImmutableList.Builder<Element> elements = ImmutableList.builder();
             int end = 0;
             while (m.find()) {
                 if (m.start() > end) {
@@ -122,8 +120,7 @@ public class TemplateFactory {
             if (end < template.length()) {
                 elements.add(new Template.StaticText(template.substring(end)));
             }
-            elements = ImmutableList.copyOf(elements);
-            Template rv = new Template(template, elements);
+            Template rv = new Template(template, elements.build());
             cache.put(template, rv);
             return rv;
         }

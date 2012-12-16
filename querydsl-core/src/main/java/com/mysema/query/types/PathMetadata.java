@@ -16,6 +16,7 @@ package com.mysema.query.types;
 import java.io.Serializable;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Objects;
 
@@ -24,6 +25,7 @@ import com.google.common.base.Objects;
  *
  * @author tiwe
  */
+@Immutable
 public final class PathMetadata<T> implements Serializable{
 
     private static final long serialVersionUID = -1055994185028970065L;

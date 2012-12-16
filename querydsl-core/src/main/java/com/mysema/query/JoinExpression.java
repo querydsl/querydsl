@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
@@ -28,6 +29,7 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  */
+@Immutable
 public final class JoinExpression implements Serializable {
 
     private static final long serialVersionUID = -1131755765747174886L;

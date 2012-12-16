@@ -15,12 +15,15 @@ package com.mysema.query.types;
 
 import java.io.Serializable;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * OrderSpecifier represents an order-by-element in a Query instance
  *
  * @param <T> related expression type
  * @author tiwe
  */
+@Immutable
 public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     private static final long serialVersionUID = 3427652988262514678L;

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
@@ -42,6 +43,7 @@ import com.google.common.primitives.Primitives;
  *
  * @param <T> expression type
  */
+@Immutable
 public class ConstructorExpression<T> extends ExpressionBase<T> implements FactoryExpression<T> {
 
     private static final long serialVersionUID = -602747921848073175L;
@@ -79,7 +81,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         return new ConstructorExpression<D>(type, paramTypes, args);
     }
 
-    private final List<Expression<?>> args;
+    private final ImmutableList<Expression<?>> args;
 
     private final Class<?>[] parameterTypes;
     
@@ -90,7 +92,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         this(type, paramTypes, ImmutableList.copyOf(args));
     }
 
-    public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, List<Expression<?>> args) {
+    public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
         super(type);
         this.parameterTypes = getRealParameters(type, paramTypes).clone();
         this.args = args;

@@ -13,11 +13,14 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * @author tiwe
  *
  * @param <T>
  */
+@Immutable
 public class EntityPathImpl<T> extends PathImpl<T> implements EntityPath<T> {
     
     private static final long serialVersionUID = -8536197750265693168L;
