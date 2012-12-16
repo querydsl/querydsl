@@ -346,12 +346,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
-        if (operator.equals(Ops.EQ) && args.get(1) instanceof Operation &&
+        if (operator == Ops.EQ && args.get(1) instanceof Operation &&
                 ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
             args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
             
-        } else if (operator.equals(Ops.IN)) {
+        } else if (operator == Ops.IN) {
             if (args.get(1) instanceof Path) {
                 visitAnyInPath(type, args);
             } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant) {
@@ -360,19 +360,19 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 super.visitOperation(type, operator, args);
             }
 
-        } else if (operator.equals(Ops.INSTANCE_OF)) {
+        } else if (operator == Ops.INSTANCE_OF) {
             visitInstanceOf(type, operator, args);
 
-        } else if (operator.equals(Ops.NUMCAST)) {
+        } else if (operator == Ops.NUMCAST) {
             visitNumCast(args);
 
-        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {
+        } else if (operator == Ops.EXISTS && args.get(0) instanceof SubQueryExpression) {
             final SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("exists (");
             serialize(subQuery.getMetadata(), false, templates.getExistsProjection());
             append(")");
 
-        } else if (operator.equals(Ops.MATCHES) || operator.equals(Ops.MATCHES_IC)) {
+        } else if (operator == Ops.MATCHES || operator == Ops.MATCHES_IC) {
             super.visitOperation(type, Ops.LIKE,
                     ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 

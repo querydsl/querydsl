@@ -62,7 +62,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         this.templates = templates;
     }
     
-    public final S prepend(String str) {
+    public final S prepend(final String str) {
         builder.insert(0, str);
         return self;
     }
@@ -72,7 +72,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    public final S append(String str) {
+    public final S append(final String str) {
         builder.append(str);
         return self;
     }
@@ -116,7 +116,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     public final S handle(final String sep, final Expression<?>[] expressions) {
         boolean first = true;
-        for (Expression<?> expr : expressions) {
+        for (final Expression<?> expr : expressions) {
             if (!first) {
                 append(sep);
             }
@@ -128,7 +128,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     public final S handle(final String sep, final List<?> expressions) {
         boolean first = true;
-        for (Object expr : expressions) {
+        for (final Object expr : expressions) {
             if (!first) {
                 append(sep);
             }
@@ -140,7 +140,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     protected void handleTemplate(final Template template, final List<?> args){
         for (final Template.Element element : template.getElements()) {
-            Object rv = element.convert(args);
+            final Object rv = element.convert(args);
             if (rv instanceof Expression) {                    
                 ((Expression)rv).accept(this, null);
             } else if (element.isString()) {
@@ -265,7 +265,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         if (template == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
         }
-        final int precedence = templates.getPrecedence(operator);
+        final int precedence = templates.getPrecedence(operator);        
         for (final Template.Element element : template.getElements()) {
             final Object rv = element.convert(args);
             if (rv instanceof Expression) {

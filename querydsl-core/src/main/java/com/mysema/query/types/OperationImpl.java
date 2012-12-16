@@ -78,7 +78,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
             return true;
         } else if (o instanceof Operation<?>) {
             Operation<?> op = (Operation<?>)o;
-            return op.getOperator().equals(operator)
+            return op.getOperator() == operator
                 && op.getArgs().equals(args)
                 && op.getType().equals(getType());
         } else {
@@ -106,8 +106,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
             field.set(this, OperatorImpl.OPS.get(operator.getId()));
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-        
+        }        
     }
 
 }

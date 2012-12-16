@@ -13,11 +13,10 @@
  */
 package com.mysema.query.types;
 
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-
-import com.google.common.collect.Maps;
 
 /**
  * Templates provides operator patterns for query expression serialization
@@ -28,9 +27,9 @@ public class Templates {
 
     public static final Templates DEFAULT = new Templates();
     
-    private final Map<Operator<?>, Template> templates = Maps.newIdentityHashMap();
+    private final Map<Operator<?>, Template> templates = new IdentityHashMap<Operator<?>, Template>(150);
     
-    private final Map<Operator<?>, Integer> precedence = Maps.newIdentityHashMap();
+    private final Map<Operator<?>, Integer> precedence = new IdentityHashMap<Operator<?>, Integer>(150);
 
     private final TemplateFactory templateFactory;
     
@@ -233,6 +232,9 @@ public class Templates {
     
     protected final void add(Operator<?> op, String pattern) {
         templates.put(op, templateFactory.create(pattern));
+        if (!precedence.containsKey(op)) {
+            precedence.put(op, -1);
+        }
     }
 
     protected final void add(Operator<?> op, String pattern, int pre) {
@@ -246,8 +248,7 @@ public class Templates {
     }
 
     public final int getPrecedence(Operator<?> op) {
-        final Integer rv = precedence.get(op);
-        return rv != null ? rv.intValue() : -1;
+        return precedence.get(op).intValue();
     }
 
 }

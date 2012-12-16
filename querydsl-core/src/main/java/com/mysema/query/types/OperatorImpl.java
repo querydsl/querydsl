@@ -35,12 +35,15 @@ public final class OperatorImpl<T> implements Operator<T> {
     
     private final ImmutableList<Class<?>> types;
 
+    private final int hashCode;
+    
     public OperatorImpl(String id, Class<?>... types) {
         this(id, ImmutableList.copyOf(types));
     }
 
     public OperatorImpl(String id, ImmutableList<Class<?>> types) {
         this.id = id;
+        this.hashCode = id.hashCode();
         this.types = types;
         OPS.put(id, this);
     }
@@ -66,5 +69,10 @@ public final class OperatorImpl<T> implements Operator<T> {
     @Override
     public String toString(){
         return id;
+    }
+    
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 }

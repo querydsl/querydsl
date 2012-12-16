@@ -44,7 +44,7 @@ import com.mysema.util.BeanUtils;
  */
 public final class CollQuerySerializer extends SerializerBase<CollQuerySerializer> {
 
-    private static final Map<Operator<?>, String> operatorSymbols = Maps.newHashMap();
+    private static final Map<Operator<?>, String> operatorSymbols = Maps.newIdentityHashMap();
     
     private static final Map<Class<?>, String> castSuffixes = Maps.newHashMap();
     
