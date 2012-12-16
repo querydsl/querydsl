@@ -72,7 +72,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
 
     @Override
     public Void visit(Path<?> path, Void context) {
-        PathType pathType = path.getMetadata().getPathType();
+        final PathType pathType = path.getMetadata().getPathType();
 
         if (pathType == PathType.PROPERTY) {
             // TODO : move this to PathMetadata ?!?
@@ -80,9 +80,9 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
                 prefix = "is";
             }
-            String property = path.getMetadata().getName();      
-            String accessor = prefix + BeanUtils.capitalize(property);
-            Class<?> parentType = path.getMetadata().getParent().getType();
+            final String property = path.getMetadata().getName();      
+            final String accessor = prefix + BeanUtils.capitalize(property);
+            final Class<?> parentType = path.getMetadata().getParent().getType();
             try {
                 // getter
                 Method m = getMethod(parentType, accessor);
@@ -119,7 +119,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
                 args.add((Expression<?>)path.getMetadata().getParent());
             }
             args.add(path.getMetadata().getElement());
-            Template template = getTemplate(pathType);
+            final Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()) {
                 Object rv = element.convert(args);
                 if (rv instanceof Expression) {                    
@@ -200,7 +200,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
 
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        handle(new ConstantImpl<Object>(expr));
+        visitConstant(expr);
         append(".newInstance(");
         handle(", ", expr.getArgs());
         append(")");
