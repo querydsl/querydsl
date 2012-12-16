@@ -13,17 +13,15 @@
  */
 package com.mysema.query.support;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Predicate;
 
 /**
  * OrderedQueryMetadata performs no metadata validation and ensures that FROM elements are before 
@@ -36,56 +34,32 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata {
     
     private static final long serialVersionUID = 6326236143414219377L;
 
-    private final List<JoinExpression> joins = new ArrayList<JoinExpression>();
-    
-    @Nullable
-    private JoinExpression last;
+    private List<JoinExpression> joins;
     
     public OrderedQueryMetadata(){
         super();
         noValidate();
     }
     
-//    @Override
-//    public void addJoin(JoinExpression join) {
-//        if (joins.contains(join)) {
-//            return;
-//        }        
-//        if (join.getType() == JoinType.DEFAULT) {
-//            int index = joins.size();
-//            while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT) {
-//                index--;
-//            }            
-//            joins.add(index, join);
-//        } else {
-//            joins.add(join);
-//        }
-//        last = join;
-//    }
-//    
-//    @Override
-//    public void addJoin(JoinType joinType, Expression<?> expr) {
-//        addJoin(new JoinExpression(joinType, expr));
-//    }
-//
-//    @Override
-//    public void addJoinCondition(Predicate o) {
-//        if (last != null) {
-//            last.addCondition(o);
-//        }
-//    }
-//    
-//    @Override
-//    public QueryMetadata clone(){
-//        QueryMetadata md = super.clone();
-//        for (JoinExpression join : joins) {
-//            md.addJoin(join);
-//        }
-//        return md;
-//    }
-//    
-//    @Override
-//    public List<JoinExpression> getJoins() {
-//        return joins;
-//    }
+    @Override
+    public void addJoin(JoinType joinType, Expression<?> expr) {
+        joins = null;
+        super.addJoin(joinType, expr);
+    }
+    
+    @Override
+    public List<JoinExpression> getJoins() {
+        if (joins == null) {
+            joins = Lists.newArrayList();
+            int separator = 0; 
+            for (JoinExpression j : super.getJoins()) {
+                if (j.getType() == JoinType.DEFAULT) {
+                    joins.add(separator++, j);
+                } else {
+                    joins.add(j);                    
+                }
+            }             
+        }        
+        return joins;
+    }
 }

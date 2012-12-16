@@ -163,8 +163,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             }            
             this.joinType = joinType;
             this.joinTarget = expr;    
-        } else {
-            throw new IllegalStateException(joinTarget + " is already used");
+        } else if (validate) {
+            throw new IllegalStateException(expr + " is already used");
         }        
     }
     
