@@ -95,9 +95,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     /**
      * Create an empty DefaultQueryMetadata instance
      */
-    public DefaultQueryMetadata() {
-        
-    }
+    public DefaultQueryMetadata() {}
         
     /**
      * Disable validation
