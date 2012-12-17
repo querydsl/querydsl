@@ -216,16 +216,16 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public QueryMetadata clone(){
         try {
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
-            clone.exprInJoins = Sets.newHashSet(exprInJoins);
-            clone.groupBy = Lists.newArrayList(groupBy);
+            clone.exprInJoins = copyOf(exprInJoins);
+            clone.groupBy = copyOf(groupBy);
             clone.having = having;
-            clone.joins = ImmutableList.copyOf(joins);
+            clone.joins = copyOf(joins);
             clone.modifiers = modifiers;
-            clone.orderBy = Lists.newArrayList(orderBy);
-            clone.projection = ImmutableList.copyOf(projection);
-            clone.params = Maps.newHashMap(params);
+            clone.orderBy = copyOf(orderBy);
+            clone.projection = copyOf(projection);
+            clone.params = copyOf(params);
             clone.where = where;
-            clone.flags = Sets.newLinkedHashSet(flags);
+            clone.flags = copyOfSorted(flags);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);

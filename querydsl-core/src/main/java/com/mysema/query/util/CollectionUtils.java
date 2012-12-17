@@ -50,6 +50,14 @@ public final class CollectionUtils {
         return list;
     }
     
+    public static <T> List<T> copyOf(List<T> list) {
+        if (list instanceof ImmutableList) {
+            return list;
+        } else {
+            return Lists.newArrayList(list);
+        }
+    }
+    
     public static <T> Set<T> add(Set<T> set, T element) {
         final int size = set.size();
         if (size == 0) {
@@ -65,6 +73,14 @@ public final class CollectionUtils {
         }
         set.add(element);
         return set;
+    }
+    
+    public static <T> Set<T> copyOf(Set<T> set) {
+        if (set instanceof ImmutableSet) {
+            return set;
+        } else {
+            return Sets.newHashSet(set);
+        }
     }
     
     public static <T> Set<T> addSorted(Set<T> set, T element) {
@@ -84,6 +100,14 @@ public final class CollectionUtils {
         return set;
     }
     
+    public static <T> Set<T> copyOfSorted(Set<T> set) {
+        if (set instanceof ImmutableSet) {
+            return set;
+        } else {
+            return Sets.newLinkedHashSet(set);
+        }
+    }
+    
     public static <K,V> Map<K,V> put(Map<K,V> map, K key, V value) {
         final int size = map.size();
         if (size == 0) {
@@ -93,6 +117,14 @@ public final class CollectionUtils {
         }
         map.put(key, value);
         return map;
+    }
+    
+    public static <K,V> Map<K,V> copyOf(Map<K,V> map) {
+        if (map instanceof ImmutableMap) {
+            return map;
+        } else {
+            return Maps.newHashMap(map);
+        }
     }
     
     private CollectionUtils() {}
