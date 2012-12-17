@@ -20,10 +20,10 @@ import javax.persistence.Entity;
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.EntityPathImpl;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
 import com.mysema.query.types.ToStringVisitor;
@@ -56,7 +56,8 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
                 String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
                 String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);            
                 EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
-                EntityPath newChild = new EntityPathImpl(child.getType(), newParent, child.getMetadata().getElement().toString());            
+                EntityPath newChild = new EntityPathBase(child.getType(), 
+                        PathMetadataFactory.forProperty(newParent, child.getMetadata().getName()));            
                 query.from(newParent).innerJoin(newChild, replacement);
                 query.where(ExpressionUtils.eq(newParent, parent));    
             }                
