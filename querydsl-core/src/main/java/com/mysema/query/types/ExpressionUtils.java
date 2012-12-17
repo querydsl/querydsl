@@ -323,7 +323,7 @@ public final class ExpressionUtils {
         return new TemplateExpressionImpl<Object>(
                 Object.class, 
                 TemplateFactory.DEFAULT.create(builder.toString()), 
-                expressions);
+                ImmutableList.copyOf(expressions));
     }
     
     @SuppressWarnings("unchecked")
