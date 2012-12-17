@@ -250,18 +250,18 @@ public final class Alias {
 
     @SuppressWarnings("unchecked")
     public static <D extends Comparable<?>> ComparablePath<D> var(D arg) {
-        return new ComparablePath(arg.getClass(), "var"+arg);
+        return new ComparablePath<D>((Class)arg.getClass(), "var"+arg);
     }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<D>> NumberPath<D> var(D arg) {
-        return new NumberPath(arg.getClass(), "var" + arg.getClass().getSimpleName()+arg);
+        return new NumberPath<D>((Class)arg.getClass(), "var" + arg.getClass().getSimpleName()+arg);
     }
 
     @SuppressWarnings("unchecked")
     public static <D> EntityPathBase<D> var(D arg) {
         String var = "var"+ arg.getClass().getSimpleName() + "_" + arg.toString().replace(' ', '_');
-        return new PathBuilder(arg.getClass(), var);
+        return new PathBuilder<D>((Class)arg.getClass(), var);
     }
 
     public static StringPath var(String arg) {

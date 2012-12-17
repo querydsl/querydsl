@@ -16,29 +16,45 @@ package com.mysema.query.sql;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.Tuple;
+import com.mysema.query.types.CollectionExpression;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.ProjectionRole;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 
 /**
  * PrimaryKey defines a primary key on table
  *
  * @author tiwe
  */
-public class PrimaryKey <E> implements Serializable {
+@Immutable
+public final class PrimaryKey<E> implements Serializable, ProjectionRole<Tuple> {
 
     private static final long serialVersionUID = -6913344535043394649L;
 
     private final RelationalPath<?> entity;
 
-    private final List<? extends Path<?>> localColumns;
+    private final ImmutableList<? extends Path<?>> localColumns;
+    
+    @Nullable
+    private volatile Expression<Tuple> mixin;
 
     public PrimaryKey(RelationalPath<?> entity, Path<?>... localColumns) {
         this(entity, ImmutableList.copyOf(localColumns));
     }
 
-    public PrimaryKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns) {
+    public PrimaryKey(RelationalPath<?> entity, ImmutableList<? extends Path<?>> localColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
+        this.mixin = ExpressionUtils.list(Tuple.class, localColumns);
     }
 
     public RelationalPath<?> getEntity() {
@@ -47,6 +63,18 @@ public class PrimaryKey <E> implements Serializable {
 
     public List<? extends Path<?>> getLocalColumns() {
         return localColumns;
+    }
+    
+    public BooleanExpression in(CollectionExpression<?,Tuple> coll) {        
+        return BooleanOperation.create(Ops.IN, getProjection(), coll);
+    }
+
+    @Override
+    public Expression<Tuple> getProjection() {
+        if (mixin == null) {
+            mixin = ExpressionUtils.list(Tuple.class, localColumns);
+        }
+        return mixin;
     }
 
 }

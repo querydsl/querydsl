@@ -21,6 +21,7 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.ProjectionRole;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
@@ -78,6 +79,10 @@ public class DetachableMixin implements Detachable {
         return new ListSubQuery<RT>((Class)projection.getType(), projection(projection));
     }
 
+    public ListSubQuery<Tuple> list(Object arg) {
+        return list((Expression)convert(arg));
+    }
+    
     @Override
     public ListSubQuery<Tuple> list(Object... args) {
         return list(convert(args));
@@ -87,17 +92,23 @@ public class DetachableMixin implements Detachable {
     public SimpleSubQuery<Tuple> unique(Object... args) {
         return unique(convert(args));
     }
+    
+    private Expression<?> convert(Object arg) {
+        if (arg instanceof Expression<?>) {
+            return (Expression<?>)arg;
+        } else if (arg instanceof ProjectionRole) {    
+            return ((ProjectionRole<?>)arg).getProjection();
+        } else if (arg != null) {
+            return new ConstantImpl<Object>(arg);
+        } else {
+            return NullExpression.DEFAULT;
+        }
+    }
 
     private Expression<?>[] convert(Object... args) {
         final Expression<?>[] exprs = new Expression[args.length];
-        for (int i = 0; i < exprs.length; i++){
-            if (args[i] instanceof Expression<?>) {
-                exprs[i] = (Expression<?>)args[i];
-            } else if (args[i] != null) {
-                exprs[i] = new ConstantImpl<Object>(args[i]);
-            } else {
-                exprs[i] = NullExpression.DEFAULT;
-            }
+        for (int i = 0; i < exprs.length; i++) {
+            exprs[i] = convert(args[i]);
         }
         return exprs;
     }

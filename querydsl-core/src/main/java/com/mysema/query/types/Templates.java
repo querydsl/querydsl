@@ -218,6 +218,7 @@ public class Templates {
         add(Ops.AggOps.SUM_AGG, "sum({0})");
         add(Ops.AggOps.COUNT_AGG, "count({0})");
         add(Ops.AggOps.COUNT_DISTINCT_AGG, "count(distinct {0})");
+        add(Ops.AggOps.COUNT_DISTINCT_ALL_AGG, "count(distinct *)");
         add(Ops.AggOps.COUNT_ALL_AGG, "count(*)");
 
         // quantified expressions

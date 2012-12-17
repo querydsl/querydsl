@@ -16,13 +16,22 @@ package com.mysema.query.sql;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.Tuple;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.ProjectionRole;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 
 /**
  * ForeignKey defines a foreign key on a table to another table
@@ -31,22 +40,26 @@ import com.mysema.query.types.path.SimplePath;
  *
  * @param <E>
  */
-public class ForeignKey <E> implements Serializable {
+@Immutable
+public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> {
 
     private static final long serialVersionUID = 2260578033772289023L;
 
     private final RelationalPath<?> entity;
 
-    private final List<? extends Path<?>> localColumns;
+    private final ImmutableList<? extends Path<?>> localColumns;
 
-    private final List<String> foreignColumns;
+    private final ImmutableList<String> foreignColumns;
+    
+    @Nullable
+    private volatile Expression<Tuple> mixin;
 
     public ForeignKey(RelationalPath<?> entity, Path<?> localColumn, String foreignColumn) {
         this(entity, ImmutableList.of(localColumn), ImmutableList.of(foreignColumn));
     }
 
-    public ForeignKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns, 
-            List<String> foreignColumns) {
+    public ForeignKey(RelationalPath<?> entity, ImmutableList<? extends Path<?>> localColumns, 
+            ImmutableList<String> foreignColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
         this.foreignColumns = foreignColumns;
@@ -69,10 +82,22 @@ public class ForeignKey <E> implements Serializable {
         BooleanBuilder builder = new BooleanBuilder();
         for (int i = 0; i < localColumns.size(); i++) {
             Expression<Object> local = (Expression<Object>)localColumns.get(i);
-            Expression<?> foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
+            Expression<?> foreign = new PathImpl(local.getType(), entity, foreignColumns.get(i));
             builder.and(ExpressionUtils.eq(local,foreign));
         }
         return builder.getValue();
+    }
+    
+    public BooleanExpression in(CollectionExpression<?,Tuple> coll) {
+        return BooleanOperation.create(Ops.IN, getProjection(), coll);
+    }
+
+    @Override
+    public Expression<Tuple> getProjection() {
+        if (mixin == null) {
+            mixin = ExpressionUtils.list(Tuple.class, localColumns);
+        }
+        return mixin;
     }
 
 }

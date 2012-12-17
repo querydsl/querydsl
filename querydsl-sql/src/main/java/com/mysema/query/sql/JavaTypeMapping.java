@@ -139,7 +139,7 @@ public class JavaTypeMapping {
                 return defaultTypes.get(cl);
             }    
             cl = cl.getSuperclass(); 
-        }while(!cl.equals(Object.class));
+        } while(!cl.equals(Object.class));
         
         //Look for a registered type in any implemented interfaces
         Set<Class<?>> interfaces = ReflectionUtils.getImplementedInterfaces(clazz);

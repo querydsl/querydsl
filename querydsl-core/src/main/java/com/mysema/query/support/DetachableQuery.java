@@ -43,7 +43,7 @@ import com.mysema.query.types.query.TimeSubQuery;
  */
 public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q> implements Detachable {
 
-    private final Detachable detachableMixin;
+    private final DetachableMixin detachableMixin;
 
     public DetachableQuery(QueryMixin<Q> queryMixin) {
         super(queryMixin);
@@ -70,6 +70,10 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
         return detachableMixin.list(projection);
     }
 
+    public ListSubQuery<Tuple> list(Object arg) {
+        return detachableMixin.list(arg);
+    }
+    
     @Override
     public ListSubQuery<Tuple> list(Object... args) {
         return detachableMixin.list(args);

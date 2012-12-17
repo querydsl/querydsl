@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -71,7 +72,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     //@Override
     public NumberExpression<Long> count(){
         if (count == null) {
-            count = count(Ops.AggOps.COUNT_AGG);    
+            count = count(Ops.AggOps.COUNT_AGG, Ops.AggOps.COUNT_ALL_AGG);    
         }
         return count;
     }
@@ -79,21 +80,26 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     //@Override
     public NumberExpression<Long> countDistinct(){
         if (countDistinct == null) {
-            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);    
+            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG, Ops.AggOps.COUNT_DISTINCT_ALL_AGG);    
         }
         return countDistinct;
     }
     
-    private NumberExpression<Long> count(Operator<Number> operator) {
+    private NumberExpression<Long> count(Operator operator, Operator allOp) {
         QueryMetadata md = subQueryMixin.getMetadata().clone();
         Expression<?> e = null;
         if (md.getProjection().size() == 1) {
             e = md.getProjection().get(0);
-        } else {
-            e = ExpressionUtils.merge(md.getProjection());
+        } else if (!md.getProjection().isEmpty()) {    
+            e = ExpressionUtils.list(Object.class, md.getProjection());
         }
         md.clearProjection();
-        md.addProjection(OperationImpl.create(Long.class, operator, e));
+        if (e != null) {
+            md.addProjection(OperationImpl.create(Long.class, operator, e));    
+        } else {
+            md.addProjection(new OperationImpl(Long.class, allOp, ImmutableList.of()));
+        }
+        
         return new NumberSubQuery<Long>(Long.class, md);
     }
     

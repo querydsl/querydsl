@@ -13,11 +13,15 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.util.CollectionUtils.add;
+import static com.mysema.query.util.CollectionUtils.addSorted;
+import static com.mysema.query.util.CollectionUtils.copyOf;
+import static com.mysema.query.util.CollectionUtils.copyOfSorted;
+import static com.mysema.query.util.CollectionUtils.put;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.mysema.query.util.CollectionUtils.*;
 
 import javax.annotation.Nullable;
 
@@ -25,9 +29,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OrderSpecifier;
@@ -154,7 +155,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addJoin(JoinType joinType, Expression<?> expr) {
         addLastJoin();
         if (!exprInJoins.contains(expr)) {
-            if (expr instanceof Path && ((Path)expr).getMetadata().isRoot()) {
+            if (expr instanceof Path && ((Path<?>)expr).getMetadata().isRoot()) {
                 exprInJoins = add(exprInJoins, expr);    
             } else {
                 validate(expr);

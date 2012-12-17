@@ -22,7 +22,7 @@ package com.mysema.query.types;
  * @author tiwe
  *
  */
-public interface ProjectionRole<T> extends Expression<T> {
+public interface ProjectionRole<T> {
 
     /**
      * Return the custom projection

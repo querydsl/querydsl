@@ -14,6 +14,7 @@
 
 package com.mysema.query.scala.sql
 
+import com.google.common.collect.ImmutableList._
 import com.mysema.scala.ReflectionUtils._
 import com.mysema.query.scala._
 import com.mysema.query.sql._
@@ -66,7 +67,7 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   }
   
   def createForeignKey[F](local: List[_ <: Path[_]], foreign: List[String]) = {
-    val foreignKey = new ForeignKey[F](this, local, foreign)
+    val foreignKey = new ForeignKey[F](this, copyOf(local.iterator), copyOf(foreign.iterator))
     foreignKeys.add(foreignKey)
     foreignKey
   }
@@ -78,7 +79,7 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   }
   
   def createInvForeignKey[F](local: List[_ <: Path[_]], foreign: List[String]) = {
-    val foreignKey = new ForeignKey[F](this, local, foreign)
+    val foreignKey = new ForeignKey[F](this, copyOf(local.iterator), copyOf(foreign.iterator))
     inverseForeignKeys.add(foreignKey)
     foreignKey
   }

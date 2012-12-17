@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.Tuple;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.NullExpression;

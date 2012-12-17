@@ -300,32 +300,14 @@ public final class ExpressionUtils {
      * @param exprs
      * @return
      */
-    public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
+    public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {        
         Expression<T> rv = (Expression<T>)exprs.get(0);
         for (int i = 1; i < exprs.size(); i++) {
             rv = OperationImpl.create(clazz, Ops.LIST, rv, exprs.get(i));
         }
         return rv;
     }    
-    
-    /**
-     * @param expressions
-     * @return
-     */
-    public static Expression<?> merge(List<? extends Expression<?>> expressions) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < expressions.size(); i++) {
-            if (i > 0) {
-                builder.append(", ");
-            }
-            builder.append("{"+i+"}");
-        }
-        return new TemplateExpressionImpl<Object>(
-                Object.class, 
-                TemplateFactory.DEFAULT.create(builder.toString()), 
-                ImmutableList.copyOf(expressions));
-    }
-    
+        
     @SuppressWarnings("unchecked")
     public static Expression<String> regexToLike(Expression<String> expr){
         if (expr instanceof Constant<?>) {           
