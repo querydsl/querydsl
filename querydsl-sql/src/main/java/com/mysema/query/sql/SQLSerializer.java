@@ -33,8 +33,6 @@ import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
@@ -44,7 +42,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
@@ -500,43 +497,47 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
     }
 
-    public void serializeUnion(SubQueryExpression[] sqs, QueryMetadata metadata, boolean unionAll) {
+    public void serializeUnion(Expression<?> union, QueryMetadata metadata, boolean unionAll) {
         final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
         final Predicate having = metadata.getHaving();
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         final Set<QueryFlag> flags = metadata.getFlags();
+        final boolean hasFlags = !flags.isEmpty();
         
         // union
-        boolean oldInUnion = inUnion;
-        inUnion = true;
-        final String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
-        if (templates.isUnionsWrapped()) {
-            append("(");
-            handle(")" + separator + "(", sqs);   
-            append(")");
-        } else {
-            handle(separator, sqs);    
-        }        
-        inUnion = oldInUnion;
-
-        // group by
-        stage = Stage.GROUP_BY;
-        serialize(Position.BEFORE_GROUP_BY, flags);
-        if (!groupBy.isEmpty()) {            
+        Stage oldStage = stage;
+        handle(union);
+        
+        // group by        
+        if (!groupBy.isEmpty()) {
+            stage = Stage.GROUP_BY;
+            if (hasFlags) {
+                serialize(Position.BEFORE_GROUP_BY, flags);    
+            }        
             append(templates.getGroupBy()).handle(COMMA, groupBy);
-            serialize(Position.AFTER_GROUP_BY, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_GROUP_BY, flags);    
+            }            
         }
 
-        // having
-        stage = Stage.HAVING;
-        serialize(Position.BEFORE_HAVING, flags);
+        // having                
         if (having != null) {
+            stage = Stage.HAVING;
+            if (hasFlags) {
+                serialize(Position.BEFORE_HAVING, flags);    
+            }
             append(templates.getHaving()).handle(having);
-            serialize(Position.AFTER_HAVING, flags);
+            if (hasFlags) {
+                serialize(Position.AFTER_HAVING, flags);    
+            }            
         }        
         
         // order by
+        if (hasFlags) {
+            serialize(Position.BEFORE_ORDER, flags);    
+        }     
         if (!orderBy.isEmpty()) {
+            stage = Stage.ORDER_BY;
             append(templates.getOrderBy());
             boolean first = true;
             skipParent = true;
@@ -549,8 +550,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 first = false;
             }
             skipParent = false;
+            if (hasFlags) {
+                serialize(Position.AFTER_ORDER, flags);    
+            }            
         }
 
+        // end
+        if (hasFlags) {
+            serialize(Position.END, flags);    
+        }        
+        
+        // reset stage
+        stage = oldStage;
     }
 
     @Override
@@ -621,7 +632,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(SubQueryExpression<?> query, Void context) {
-        if (inUnion) {
+        if (inUnion && !templates.isUnionsWrapped()) {
             serialize(query.getMetadata(), false);    
         } else {
             append("(");
@@ -631,19 +642,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return null;
     }
     
-    @Override
-    public Void visit(TemplateExpression<?> expr, Void context) {
-        if (expr.getTemplate().toString().toLowerCase().contains("union")) {
-            boolean oldInUnion = inUnion;
-            inUnion = true;
-            super.visit(expr, context);
-            inUnion = oldInUnion;
-        } else {
-            super.visit(expr, context);
-        }
-        return null;
-    }
-
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (args.size() == 2 
@@ -657,7 +655,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             constantPaths.add((Path<?>)args.get(0));
         }       
         
-        if (operator == Ops.STRING_CAST) {
+        if (operator == SQLTemplates.UNION || operator == SQLTemplates.UNION_ALL) {
+            boolean oldUnion = inUnion;
+            inUnion = true;
+            super.visitOperation(type, operator, args);
+            inUnion = oldUnion;
+            
+        } else if (operator == Ops.STRING_CAST) {
             final String typeName = templates.getTypeForCast(String.class);
             super.visitOperation(String.class, SQLTemplates.CAST, 
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
@@ -670,10 +674,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
-                if (args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator() == SQLTemplates.UNION) {
-                    args = ImmutableList.of(OperationImpl.create(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
-                }
-                super.visitOperation(type, operator, args);
+                super.visitOperation(type, operator, args);                               
             } else {
                 // handle only target
                 handle(args.get(1));

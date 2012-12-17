@@ -21,7 +21,7 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  *
  */
-public class H2Templates extends SQLTemplates{
+public class H2Templates extends SQLTemplates {
 
     public H2Templates() {
         this('\\', false);

@@ -15,9 +15,10 @@ package com.mysema.query.sql;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * UnionUtils provides static utility methods for Union handling
@@ -27,24 +28,20 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public final class UnionUtils {
     
-    public static Expression<?> combineUnion(SubQueryExpression<?>[] union, Path<?> alias, SQLTemplates templates, boolean unionAll) {
-        final boolean wrapped = templates.isUnionsWrapped();
-        final StringBuilder builder = new StringBuilder(wrapped ? "((" : "(");
-        String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
-        if (wrapped) {
-            separator = ")" + separator + "(";
-        }
-        for (int i = 0; i < union.length; i++) {
-            if (i > 0) {
-                builder.append(separator);
-            }
-            builder.append("{"+i+"}");
-        }
-        builder.append(wrapped ? "))" : ")");
-        Expression<?> combined = TemplateExpressionImpl.create(Object.class, builder.toString(), union);
-        return ExpressionUtils.as((Expression)combined, alias);
+    public static Expression<?> union(SubQueryExpression<?>[] union, boolean unionAll) {
+        final Operator<Object> operator = unionAll ? SQLTemplates.UNION_ALL : SQLTemplates.UNION;
+        Expression<?> rv = union[0];
+        for (int i = 1; i < union.length; i++) {
+            rv = OperationImpl.create(rv.getType(), operator, rv, union[i]);
+        }        
+        return rv;
     }
-    
+     
+    public static Expression<?> union(SubQueryExpression<?>[] union, Path<?> alias, 
+            boolean unionAll) {
+        final Expression<?> rv = union(union, unionAll);        
+        return ExpressionUtils.as((Expression)rv, alias);
+    }
     
     private UnionUtils() {}
 

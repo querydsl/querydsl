@@ -25,9 +25,9 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction
@@ -96,7 +96,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         paths.add(path);
         EntityPath<?> alias = context.replacements.get(i);
         leftJoin((Expression)path.getMetadata().getParent(), context.replacements.get(i));
-        Expression index = TemplateExpressionImpl.create(Integer.class, "index({0})", alias);
+        Expression index = OperationImpl.create(Integer.class, JPQLTemplates.INDEX, alias);
         Object element = path.getMetadata().getElement();
         if (!(element instanceof Expression)) {
             element = new ConstantImpl(element);

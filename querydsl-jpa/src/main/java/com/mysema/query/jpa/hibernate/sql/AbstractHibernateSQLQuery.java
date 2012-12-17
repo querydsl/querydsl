@@ -81,7 +81,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     protected int timeout = 0;
     
     @Nullable
-    protected SubQueryExpression<?>[] union;
+    protected Expression<?> union;
     
     private boolean unionAll;
 
@@ -261,19 +261,19 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
     
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+        return from(UnionUtils.union(sq, alias, false));
     }
     
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+        return from(UnionUtils.union(sq, alias, false));
     }
         
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+        return from(UnionUtils.union(sq, alias, true));
     }
     
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+        return from(UnionUtils.union(sq, alias, true));
     }    
     
     @SuppressWarnings("unchecked")
@@ -282,8 +282,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
-        this.union = sq;
-        return new UnionImpl<Q, RT>((Q)this, union[0].getMetadata().getProjection());
+        this.union = UnionUtils.union(sq, unionAll);
+        return new UnionImpl<Q, RT>((Q)this, sq[0].getMetadata().getProjection());
     }
     
     /**

@@ -32,6 +32,7 @@ import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
+import com.mysema.query.types.expr.Wildcard;
 
 /**
  * List result subquery
@@ -69,23 +70,21 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         return v.visit(subQueryMixin, context);
     }
 
-    //@Override
     public NumberExpression<Long> count(){
         if (count == null) {
-            count = count(Ops.AggOps.COUNT_AGG, Ops.AggOps.COUNT_ALL_AGG);    
+            count = count(Ops.AggOps.COUNT_AGG);    
         }
         return count;
     }
 
-    //@Override
     public NumberExpression<Long> countDistinct(){
         if (countDistinct == null) {
-            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG, Ops.AggOps.COUNT_DISTINCT_ALL_AGG);    
+            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);    
         }
         return countDistinct;
     }
     
-    private NumberExpression<Long> count(Operator operator, Operator allOp) {
+    private NumberExpression<Long> count(Operator<Long> operator) {
         QueryMetadata md = subQueryMixin.getMetadata().clone();
         Expression<?> e = null;
         if (md.getProjection().size() == 1) {
@@ -96,8 +95,10 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         md.clearProjection();
         if (e != null) {
             md.addProjection(OperationImpl.create(Long.class, operator, e));    
+        } else if (operator == Ops.AggOps.COUNT_AGG) {    
+            md.addProjection(Wildcard.count);
         } else {
-            md.addProjection(new OperationImpl(Long.class, allOp, ImmutableList.of()));
+            md.addProjection(Wildcard.countDistinct);
         }
         
         return new NumberSubQuery<Long>(Long.class, md);

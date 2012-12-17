@@ -14,8 +14,11 @@
 package com.mysema.query.types;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.concurrent.Immutable;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * ArrayConstructorExpression extends {@link ExpressionBase} to represent array initializers
@@ -24,13 +27,14 @@ import java.util.List;
  *
  * @param <T> component type
  */
+@Immutable
 public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implements FactoryExpression<T[]> {
 
     private static final long serialVersionUID = 8667880104290226505L;
 
     private final Class<T> elementType;
 
-    private final List<Expression<?>> args;
+    private final ImmutableList<Expression<?>> args;
 
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Expression<?>... args) {
@@ -41,7 +45,7 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);
         this.elementType = (Class<T>)type.getComponentType();
-        this.args = Arrays.<Expression<?>>asList(args);
+        this.args = ImmutableList.<Expression<?>>copyOf(args);
     }
 
     public final Class<T> getElementType() {

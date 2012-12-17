@@ -32,9 +32,9 @@ public final class LuceneExpressions {
     
     static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>("LUCENE_QUERY");
     
-    static final Operator<String> PHRASE = new OperatorImpl<String>("PHRASE");
+    static final Operator<String> PHRASE = new OperatorImpl<String>("LUCENE_PHRASE");
     
-    static final Operator<String> TERM = new OperatorImpl<String>("TERM");
+    static final Operator<String> TERM = new OperatorImpl<String>("LUCENE_TERM");
     
     /**
      * Create a fuzzy query

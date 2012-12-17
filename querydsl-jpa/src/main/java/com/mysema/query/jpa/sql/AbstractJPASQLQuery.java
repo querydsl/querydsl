@@ -72,7 +72,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     protected final Map<String,Object> hints = new HashMap<String,Object>();
 
     @Nullable
-    protected SubQueryExpression<?>[] union;
+    protected Expression<?> union;
     
     private boolean unionAll;
     
@@ -297,19 +297,19 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
     
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+        return from(UnionUtils.union(sq, alias, false));
     }
     
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+        return from(UnionUtils.union(sq, alias, false));
     }
         
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+        return from(UnionUtils.union(sq, alias, true));
     }
     
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+        return from(UnionUtils.union(sq, alias, true));
     }    
     
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
@@ -317,12 +317,12 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
-        this.union = sq;
-        return new UnionImpl<Q, RT>((Q)this, union[0].getMetadata().getProjection());
+        this.union = UnionUtils.union(sq, unionAll);
+        return new UnionImpl<Q, RT>((Q)this, sq[0].getMetadata().getProjection());
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>[] args) {
+    public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
     

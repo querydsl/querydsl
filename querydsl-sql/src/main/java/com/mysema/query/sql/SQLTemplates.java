@@ -37,11 +37,13 @@ import com.mysema.query.types.Templates;
  */
 public class SQLTemplates extends Templates {
     
-    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST");
+    public static final Operator<Object> CAST = new OperatorImpl<Object>("SQL_CAST");
     
-    public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
+    public static final Operator<Object> UNION = new OperatorImpl<Object>("SQL_UNION");
+    
+    public static final Operator<Object> UNION_ALL = new OperatorImpl<Object>("SQL_UNION_ALL");
 
-    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("NEXTVAL");
+    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("SQL_NEXTVAL");
     
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
@@ -123,10 +125,6 @@ public class SQLTemplates extends Templates {
 
     private String tableAlias = " ";
 
-    private String union = "\nunion\n";
-    
-    private String unionAll = "\nunion all\n";
-
     private String update = "update ";
 
     private String values = "\nvalues ";
@@ -195,7 +193,8 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
 
         add(CAST, "cast({0} as {1s})");
-        add(UNION, "{0}\nunion\n{1}");
+        add(UNION, "{0}\nunion\n{1}", 1);
+        add(UNION_ALL, "{0}\nunion all\n{1}", 1);        
         add(NEXTVAL, "nextval('{0s}')");
         
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
@@ -367,13 +366,6 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    public final String getUnion() {
-        return union;
-    }
-
-    public final String getUnionAll() {
-        return unionAll;
-    }
     
     public final String getUpdate() {
         return update;
@@ -617,14 +609,6 @@ public class SQLTemplates extends Templates {
 
     protected void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
-    }
-
-    protected void setUnion(String union) {
-        this.union = union;
-    }
-
-    protected void setUnionAll(String unionAll) {
-        this.unionAll = unionAll;
     }
     
     protected void setUpdate(String update) {

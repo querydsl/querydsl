@@ -74,7 +74,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     private List<Path<?>> constantPaths;
 
     @Nullable
-    protected SubQueryExpression<?>[] union;
+    protected Expression<?> union;
 
     private final Configuration configuration;
     
@@ -347,8 +347,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
-        this.union = sq;
-        return new UnionImpl<Q ,RT>((Q)this, union[0].getMetadata().getProjection());
+        this.union = UnionUtils.union(sq, unionAll);
+        return new UnionImpl<Q ,RT>((Q)this, sq[0].getMetadata().getProjection());
     }
 
     protected Configuration getConfiguration() {
@@ -572,7 +572,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
      * @return
      */
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), false));
+        return from(UnionUtils.union(sq, alias, false));
     }
 
     /**
@@ -594,7 +594,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
      * @return
      */
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), false));
+        return from(UnionUtils.union(sq, alias, false));
     }
     
     /**
@@ -617,7 +617,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
      * @return
      */
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
+        return from(UnionUtils.union(sq, alias, true));
     }
 
     /**
@@ -640,7 +640,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
      * @return
      */
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
+        return from(UnionUtils.union(sq, alias, true));
     }
     
     @Override

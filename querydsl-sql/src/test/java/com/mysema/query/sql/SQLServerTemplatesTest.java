@@ -53,10 +53,10 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
             sq().unique(two),
             sq().unique(three));
         assertEquals(
-                "(select 1 as col1) " +
-                "union " +
-                "(select 2) " +
-                "union " +
+                "(select 1 as col1)\n" +
+                "union\n" +
+                "(select 2)\n" +
+                "union\n" +
                 "(select 3)", union.toString());
     }
  

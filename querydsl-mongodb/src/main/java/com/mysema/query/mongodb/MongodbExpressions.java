@@ -28,9 +28,9 @@ import com.mysema.query.types.expr.BooleanOperation;
  */
 public final class MongodbExpressions {
     
-    public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>("NEAR");
+    public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>("MONGODB_NEAR");
     
-    public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>("ELEM_MATCH");
+    public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>("MONGODB_ELEM_MATCH");
 
     private MongodbExpressions(){}
     

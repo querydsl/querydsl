@@ -45,10 +45,10 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
             sq().unique(two),
             sq().unique(three));
         assertEquals(
-                "(select 1 col1 from dual) " +
-                "union " +
-                "(select 2 from dual) " +
-                "union " +
+                "(select 1 col1 from dual)\n" +
+                "union\n" +
+                "(select 2 from dual)\n" +
+                "union\n" +
                 "(select 3 from dual)", union.toString());
     }
 

@@ -51,7 +51,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
     protected final QueryMixin<T> queryMixin;
     
     @Nullable
-    protected SubQueryExpression<?>[] union;
+    protected Expression<?> union;
     
     protected boolean unionAll;
     
@@ -222,19 +222,19 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
     }
     
     public <RT> T union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+        return from(UnionUtils.union(sq, alias, false));
     }
     
     public <RT> T union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+        return from(UnionUtils.union(sq, alias, false));
     }
         
     public <RT> T unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+        return from(UnionUtils.union(sq, alias, true));
     }
     
     public <RT> T unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+        return from(UnionUtils.union(sq, alias, true));
     }    
     
     @SuppressWarnings("unchecked")
@@ -243,8 +243,8 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
-        this.union = sq;
-        return new UnionImpl<T, RT>((T)this, union[0].getMetadata().getProjection());
+        this.union = UnionUtils.union(sq, unionAll);
+        return new UnionImpl<T, RT>((T)this, sq[0].getMetadata().getProjection());
     }
 
 }

@@ -196,13 +196,13 @@ public final class Ops {
         
         public static final Operator<Number> SUM_AGG = new OperatorImpl<Number>("SUM_AGG");
         
-        public static final Operator<Number> COUNT_AGG = new OperatorImpl<Number>("COUNT_AGG");
+        public static final Operator<Long> COUNT_AGG = new OperatorImpl<Long>("COUNT_AGG");
         
-        public static final Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>("COUNT_DISTINCT_AGG");
+        public static final Operator<Long> COUNT_DISTINCT_AGG = new OperatorImpl<Long>("COUNT_DISTINCT_AGG");
         
-        public static final Operator<Number> COUNT_DISTINCT_ALL_AGG = new OperatorImpl<Number>("COUNT_DISTINCT_ALL_AGG");
+        public static final Operator<Long> COUNT_DISTINCT_ALL_AGG = new OperatorImpl<Long>("COUNT_DISTINCT_ALL_AGG");
         
-        public static final Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>("COUNT_ALL_AGG");
+        public static final Operator<Long> COUNT_ALL_AGG = new OperatorImpl<Long>("COUNT_ALL_AGG");
         
         private AggOps() {}
     }

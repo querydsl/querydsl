@@ -33,11 +33,13 @@ public class JPQLTemplates extends Templates {
 
     public static final char DEFAULT_ESCAPE = '!';
     
-    public static final Operator<String> TYPE = new OperatorImpl<String>("TYPE");
+    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>("JPA_INDEX");
     
-    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST");
+    public static final Operator<String> TYPE = new OperatorImpl<String>("JPA_TYPE");
+    
+    public static final Operator<Object> CAST = new OperatorImpl<Object>("JPA_CAST");
 
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF");
+    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("JPA_MEMBER_OF");
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
     
@@ -126,6 +128,8 @@ public class JPQLTemplates extends Templates {
 
         add(Ops.INSTANCE_OF, "type({0}) = {1}");
         add(TYPE, "type({0})");
+
+        add(INDEX, "index({0})");
 
         //CHECKSTYLE:ON
     }

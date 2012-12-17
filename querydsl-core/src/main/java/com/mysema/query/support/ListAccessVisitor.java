@@ -73,7 +73,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, Context context) {
-        Object[] args = new Object[expr.getArgs().size()];        
+        final Object[] args = new Object[expr.getArgs().size()];        
         for (int i = 0; i < args.length; i++){
             Context c = new Context();
             if (expr.getArg(i) instanceof Expression) {
@@ -103,7 +103,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Operation<?> expr, Context context) {
-        Expression<?>[] args = new Expression<?>[expr.getArgs().size()];        
+        final Expression<?>[] args = new Expression<?>[expr.getArgs().size()];        
         for (int i = 0; i < args.length; i++) {
             Context c = new Context();
             args[i] = expr.getArg(i).accept(this, c);
@@ -128,16 +128,16 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
-        PathType pathType = expr.getMetadata().getPathType();
+        final PathType pathType = expr.getMetadata().getPathType();
         if (pathType == PathType.LISTVALUE_CONSTANT || pathType == PathType.LISTVALUE){
-            String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
-            EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
+            final String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
+            final EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
             context.add(expr, replacement);
             return replacement;
             
         }else if (expr.getMetadata().getParent() != null){
             Context c = new Context();
-            Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, c);
+            final Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, c);
             if (c.replace){
                 context.add(c);
                 return replaceParent(expr, parent);
