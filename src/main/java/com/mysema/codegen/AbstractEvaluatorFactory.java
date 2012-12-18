@@ -8,18 +8,21 @@ package com.mysema.codegen;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import java.util.Collection;
 
 /**
  * @author tiwe
  *
  */
 public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
+    
+    private final Map<String, Class<?>> cache = new WeakHashMap<String, Class<?>>();
     
     protected ClassLoader loader;
     
@@ -70,17 +73,22 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
             Type[] types, Class<?>[] classes, Map<String, Object> constants) {
         try {
             String id = toId(source, projection.getJavaClass(), types, constants.values());
-            Class<?> clazz;
-            try {
-                clazz = loader.loadClass(id);
-            } catch (ClassNotFoundException e) {
-                compile(source, projection, names, types, id, constants);
-                // reload
-                clazz = loader.loadClass(id);
+            Class<?> clazz = cache.get(id);
+                        
+            if (clazz == null) {
+                try {
+                    clazz = loader.loadClass(id);
+                } catch (ClassNotFoundException e) {
+                    compile(source, projection, names, types, id, constants);
+                    // reload
+                    clazz = loader.loadClass(id);
+                }
+                cache.put(id, clazz);
             }
-
+            
             Object object = !constants.isEmpty() ? clazz.newInstance() : null;
-
+            
+            // TODO : improve this
             for (Map.Entry<String, Object> entry : constants.entrySet()) {
                 Field field = clazz.getField(entry.getKey());
                 field.set(object, entry.getValue());
@@ -103,9 +111,7 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
         } catch (IllegalAccessException e) {
             throw new CodegenException(e);
         }
-
     }
-
 
     protected String toId(String source, Class<?> returnType, Type[] types, Collection<Object> constants) {
         StringBuilder b = new StringBuilder(128);

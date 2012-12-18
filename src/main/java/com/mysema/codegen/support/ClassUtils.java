@@ -24,7 +24,15 @@ public final class ClassUtils {
     }
 
     public static String getFullName(Class<?> cl) {
-        return cl.getCanonicalName();
+//        return cl.getCanonicalName();
+        if (cl.isArray()) {
+            return getFullName(cl.getComponentType()) + "[]";
+        }
+        final String name = cl.getName();
+        if (name.indexOf('$') > 0) {
+            return getFullName(cl.getDeclaringClass()) + "." + cl.getSimpleName();
+        }
+        return name;
     }
 
     public static String getPackageName(Class<?> cl) {
