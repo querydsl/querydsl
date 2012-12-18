@@ -17,43 +17,49 @@ import java.util.Set;
  */
 public final class ClassUtils {
 
+    private static final Set<String> JAVA_LANG = Collections.singleton("java.lang");
+    
     public static String getName(Class<?> cl) {
-        return getName(cl, Collections.singleton("java.lang"), Collections.<String> emptySet());
+        return getName(cl, JAVA_LANG, Collections.<String> emptySet());
     }
 
     public static String getFullName(Class<?> cl) {
-        if (cl.isArray()) {
-            return getFullName(cl.getComponentType()) + "[]";
-        } else {
-            return cl.getCanonicalName();
-        }
+        return cl.getCanonicalName();
     }
 
     public static String getPackageName(Class<?> cl) {
-        if (cl.isArray()) {
-            return getPackageName(cl.getComponentType());
-        } else if (cl.getPackage() != null) {
-            return cl.getPackage().getName();
+        while (cl.isArray()) {
+            cl = cl.getComponentType();
+        }
+        final String name = cl.getName();
+        final int i = name.lastIndexOf('.');
+        if (i > 0) {
+            return name.substring(0, i); 
         } else {
             return "";
         }
     }
-
+    
     public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
-        } else if (cl.getPackage() == null
-                || packages.contains(cl.getPackage().getName())
-                || classes.contains(cl.getCanonicalName())
-                || classes.contains(cl.getCanonicalName().substring(0,
-                        cl.getName().lastIndexOf('.')))) {
-            if (cl.getPackage() != null) {
-                return cl.getCanonicalName().substring(cl.getPackage().getName().length() + 1);
-            } else {
-                return cl.getCanonicalName();
-            }
+        }        
+        if (cl.getName().indexOf('$') > 0) {
+            return getName(cl.getDeclaringClass(), packages, classes) + "." + cl.getSimpleName();
+        }
+        final String canonicalName = cl.getName();
+        final int i = canonicalName.lastIndexOf('.');
+        if (i == -1) {    
+            return canonicalName;        
         } else {
-            return cl.getCanonicalName();
+            final String packageName = canonicalName.substring(0, i);
+            if (packages.contains(packageName)
+                || classes.contains(canonicalName)
+                || classes.contains(canonicalName.substring(0, canonicalName.lastIndexOf('.')))) {
+                return canonicalName.substring(packageName.length() + 1);
+            }  else {
+                return canonicalName;
+            }
         }
     }
 
@@ -73,7 +79,6 @@ public final class ClassUtils {
                 return zuper;
             }
         }
-
         return clazz;
     }
 

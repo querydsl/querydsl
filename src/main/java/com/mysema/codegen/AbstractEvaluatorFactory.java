@@ -108,7 +108,8 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
 
 
     protected String toId(String source, Class<?> returnType, Type[] types, Collection<Object> constants) {
-        StringBuilder b = new StringBuilder("Q");
+        StringBuilder b = new StringBuilder(128);
+        b.append("Q");
         b.append("_").append(source.hashCode());
         b.append("_").append(returnType.getName().hashCode());
         for (Type type : types) {
