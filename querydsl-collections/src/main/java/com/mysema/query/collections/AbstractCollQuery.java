@@ -201,11 +201,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
     
     @Override
     public Tuple uniqueResult(Expression<?>... args) {
-        queryMixin.setUnique(true);
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
-            limit(2l);
-        }
-        return uniqueResult(iterate(args));
+        return uniqueResult(new QTuple(args));
     }
 
     @Override

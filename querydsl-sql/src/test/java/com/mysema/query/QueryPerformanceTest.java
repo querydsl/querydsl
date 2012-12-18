@@ -18,6 +18,8 @@ import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.testutil.Benchmark;
+import com.mysema.testutil.Runner;
 
 public class QueryPerformanceTest {
     

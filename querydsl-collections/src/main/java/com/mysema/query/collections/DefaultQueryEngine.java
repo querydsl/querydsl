@@ -118,7 +118,7 @@ public class DefaultQueryEngine implements QueryEngine {
         List<?> list = ev.evaluate(iterableList.toArray());
 
         if (!count && !list.isEmpty()) {
-            List<Expression<?>> sources = new ArrayList<Expression<?>>();
+            List<Expression<?>> sources = new ArrayList<Expression<?>>(metadata.getJoins().size());
             for (JoinExpression join : metadata.getJoins()) {
                 if (join.getType() == JoinType.DEFAULT){
                     sources.add(join.getTarget());
@@ -152,9 +152,9 @@ public class DefaultQueryEngine implements QueryEngine {
 
     private List evaluateSingleSource(QueryMetadata metadata, Map<Expression<?>, 
             Iterable<?>> iterables, boolean count) {
-        Expression<?> source = metadata.getJoins().get(0).getTarget();
-        List<Expression<?>> sources = Collections.<Expression<?>>singletonList(source);
-        Iterable<?> iterable = iterables.values().iterator().next();
+        final Expression<?> source = metadata.getJoins().get(0).getTarget();
+        final List<Expression<?>> sources = Collections.<Expression<?>>singletonList(source);
+        final Iterable<?> iterable = iterables.values().iterator().next();
         List<?> list;
         if (iterable instanceof List) {
             list = (List)iterable;

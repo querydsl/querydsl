@@ -13,20 +13,25 @@
  */
 package com.mysema.query.collections;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.QueryException;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
-import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operator;
@@ -35,7 +40,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Template;
-import com.mysema.util.BeanUtils;
 
 /**
  * CollQuerySerializer is a {@link Serializer} implementation for the Java language
@@ -44,26 +48,28 @@ import com.mysema.util.BeanUtils;
  */
 public final class CollQuerySerializer extends SerializerBase<CollQuerySerializer> {
 
-    private static final Map<Operator<?>, String> operatorSymbols = Maps.newIdentityHashMap();
+    private static final Set<Class<?>> WRAPPER_TYPES = ImmutableSet.copyOf(Primitives.allWrapperTypes());
     
-    private static final Map<Class<?>, String> castSuffixes = Maps.newHashMap();
+    private static final Map<Operator<?>, String> OPERATOR_SYMBOLS = Maps.newIdentityHashMap();
+    
+    private static final Map<Class<?>, String> CAST_SUFFIXES = Maps.newHashMap();
     
     static {
-        operatorSymbols.put(Ops.EQ, " == ");
-        operatorSymbols.put(Ops.NE, " != ");
-        operatorSymbols.put(Ops.GT, " > ");
-        operatorSymbols.put(Ops.LT, " < ");
-        operatorSymbols.put(Ops.GOE, " >= ");
-        operatorSymbols.put(Ops.LOE, " <= ");
+        OPERATOR_SYMBOLS.put(Ops.EQ, " == ");
+        OPERATOR_SYMBOLS.put(Ops.NE, " != ");
+        OPERATOR_SYMBOLS.put(Ops.GT, " > ");
+        OPERATOR_SYMBOLS.put(Ops.LT, " < ");
+        OPERATOR_SYMBOLS.put(Ops.GOE, " >= ");
+        OPERATOR_SYMBOLS.put(Ops.LOE, " <= ");
         
-        castSuffixes.put(Byte.class, ".byteValue()");
-        castSuffixes.put(Character.class, ".charValue()");
-        castSuffixes.put(Double.class, ".doubleValue()");
-        castSuffixes.put(Float.class, ".floatValue()");
-        castSuffixes.put(Integer.class, ".intValue()");
-        castSuffixes.put(Long.class, ".longValue()");
-        castSuffixes.put(Short.class, ".shortValue()");
-        castSuffixes.put(String.class, ".toString()");
+        CAST_SUFFIXES.put(Byte.class, ".byteValue()");
+        CAST_SUFFIXES.put(Character.class, ".charValue()");
+        CAST_SUFFIXES.put(Double.class, ".doubleValue()");
+        CAST_SUFFIXES.put(Float.class, ".floatValue()");
+        CAST_SUFFIXES.put(Integer.class, ".intValue()");
+        CAST_SUFFIXES.put(Long.class, ".longValue()");
+        CAST_SUFFIXES.put(Short.class, ".shortValue()");
+        CAST_SUFFIXES.put(String.class, ".toString()");
     }
     
     public CollQuerySerializer(CollQueryTemplates templates) {
@@ -73,33 +79,27 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
     @Override
     public Void visit(Path<?> path, Void context) {
         final PathType pathType = path.getMetadata().getPathType();
-
         if (pathType == PathType.PROPERTY) {
-            // TODO : move this to PathMetadata ?!?
-            String prefix = "get";
-            if (path.getType() != null && path.getType().equals(Boolean.class)) {
-                prefix = "is";
-            }
+            final Path<?> parent = path.getMetadata().getParent();
             final String property = path.getMetadata().getName();      
-            final String accessor = prefix + BeanUtils.capitalize(property);
-            final Class<?> parentType = path.getMetadata().getParent().getType();
+            final Class<?> parentType = parent.getType();
             try {
                 // getter
-                Method m = getMethod(parentType, accessor);
+                Method m = getAccessor(parentType, property);
                 if (m != null && Modifier.isPublic(m.getModifiers())) {                    
-                    handle((Expression<?>) path.getMetadata().getParent());
-                    append(".").append(accessor).append("()");    
+                    handle(parent);
+                    append(".").append(m.getName()).append("()");    
                 } else {
                     // field
                     Field f = getField(parentType, property);
                     if (f != null && Modifier.isPublic(f.getModifiers())) {
-                        handle((Expression<?>) path.getMetadata().getParent());
+                        handle(parent);
                         append(".").append(property);
                     } else {
                         // field access by reflection
                         append(CollQueryFunctions.class.getName() + ".<");
                         append(((Class)path.getType()).getName()).append(">get(");
-                        handle((Expression<?>) path.getMetadata().getParent());
+                        handle(parent);
                         append(", \""+property+"\")");
                     }
                 }                
@@ -135,12 +135,19 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
 
     }
     
-    private Method getMethod(Class<?> owner, String method) {
+    private Method getAccessor(Class<?> owner, String property) {
         try {
-            return owner.getMethod(method);
-        } catch (NoSuchMethodException e) {
+            BeanInfo beanInfo = Introspector.getBeanInfo(owner);
+            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+            for(PropertyDescriptor pd : descriptors) {
+                if(pd.getName().equals(property)) {
+                    return pd.getReadMethod();
+                }
+            }
             return null;
-        }
+        } catch (IntrospectionException e) {
+            return null;
+        }        
     }
 
     private Field getField(Class<?> owner, String field) {
@@ -165,8 +172,8 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             handle(source);
         }
         
-        if (castSuffixes.containsKey(targetType)) {
-            append(castSuffixes.get(targetType));
+        if (CAST_SUFFIXES.containsKey(targetType)) {
+            append(CAST_SUFFIXES.get(targetType));
         } else {
             throw new IllegalArgumentException("Unsupported cast type " + targetType.getName());
         }
@@ -174,13 +181,13 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
-        if (args.size() == 2 && operatorSymbols.containsKey(operator) 
+        if (args.size() == 2 && OPERATOR_SYMBOLS.containsKey(operator) 
              && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())){
             handle(args.get(0));
-            append(operatorSymbols.get(operator));
+            append(OPERATOR_SYMBOLS.get(operator));
             handle(args.get(1));
             if (args.get(1) instanceof Constant) {
-                append(castSuffixes.get(args.get(1).getType()));
+                append(CAST_SUFFIXES.get(args.get(1).getType()));
             }
             return;
         }
@@ -194,8 +201,8 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         }
     }
     
-    private static boolean isPrimitive(Class<?> type){
-        return type.isPrimitive() || Primitives.isWrapperType(type);
+    private static boolean isPrimitive(Class<?> type) {
+        return type.isPrimitive() || WRAPPER_TYPES.contains(type);
     }
 
     @Override
