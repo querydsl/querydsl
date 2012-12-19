@@ -14,7 +14,6 @@
 package com.mysema.codegen;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
@@ -28,9 +27,9 @@ import com.mysema.codegen.model.TypeCategory;
  * @author tiwe
  *
  */
-public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
+public abstract class AbstractEvaluatorFactory implements EvaluatorFactory {
     
-    private final Map<String, Class<?>> cache = new WeakHashMap<String, Class<?>>();
+    private final Map<String, Method> cache = new WeakHashMap<String, Method>();
     
     protected ClassLoader loader;
     
@@ -80,10 +79,11 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
     public <T> Evaluator<T> createEvaluator(String source, ClassType projection, String[] names,
             Type[] types, Class<?>[] classes, Map<String, Object> constants) {
         try {
-            String id = toId(source, projection.getJavaClass(), types, constants.values());
-            Class<?> clazz = cache.get(id);
+            final String id = toId(source, projection.getJavaClass(), types, constants.values());
+            Method method = cache.get(id);
                         
-            if (clazz == null) {
+            if (method == null) {
+                Class<?> clazz;
                 try {
                     clazz = loader.loadClass(id);
                 } catch (ClassNotFoundException e) {
@@ -91,32 +91,16 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory{
                     // reload
                     clazz = loader.loadClass(id);
                 }
-                cache.put(id, clazz);
+                method = clazz.getDeclaredMethods()[0];
+                cache.put(id, method);
             }
             
-            Object object = !constants.isEmpty() ? clazz.newInstance() : null;
-            
-            // TODO : improve this
-            for (Map.Entry<String, Object> entry : constants.entrySet()) {
-                Field field = clazz.getField(entry.getKey());
-                field.set(object, entry.getValue());
-            }
-
-            Method method = clazz.getMethod("eval", classes);
-            return new MethodEvaluator<T>(method, object, (Class) projection.getJavaClass());
+            return new MethodEvaluator<T>(method, constants, (Class) projection.getJavaClass());
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {
             throw new CodegenException(e);
-        } catch (NoSuchMethodException e) {
-            throw new CodegenException(e);
-        } catch (NoSuchFieldException e) {
-            throw new CodegenException(e);
-        } catch (InstantiationException e) {
-            throw new CodegenException(e);
         } catch (IOException e) {
-            throw new CodegenException(e);
-        } catch (IllegalAccessException e) {
             throw new CodegenException(e);
         }
     }

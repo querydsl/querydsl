@@ -99,21 +99,17 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
         JavaWriter javaw = new JavaWriter(writer);
         SimpleType idType = new SimpleType(id, "", id);
         javaw.beginClass(idType, null);
-        Parameter[] params = new Parameter[names.length];
-        for (int i = 0; i < params.length; i++) {
+        Parameter[] params = new Parameter[names.length + constants.size()];
+        for (int i = 0; i < names.length; i++) {
             params[i] = new Parameter(names[i], types[i]);
         }
-
+        int i = names.length;
         for (Map.Entry<String, Object> entry : constants.entrySet()) {
             Type type = new ClassType(TypeCategory.SIMPLE, ClassUtils.normalize(entry.getValue().getClass()));
-            javaw.publicField(type, entry.getKey());
+            params[i++] = new Parameter(entry.getKey(), type);
         }
 
-        if (constants.isEmpty()) {
-            javaw.beginStaticMethod(projectionType, "eval", params);
-        } else {
-            javaw.beginPublicMethod(projectionType, "eval", params);
-        }
+        javaw.beginStaticMethod(projectionType, "eval", params);
         javaw.append(source);
         javaw.end();
         javaw.end();

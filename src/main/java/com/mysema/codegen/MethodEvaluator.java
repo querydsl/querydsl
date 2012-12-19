@@ -15,6 +15,7 @@ package com.mysema.codegen;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * @author tiwe
@@ -25,21 +26,26 @@ public final class MethodEvaluator<T> implements Evaluator<T> {
 
     private final Method method;
 
-    private final Object object;
-
     private final Class<? extends T> projectionType;
+    
+    private final Object[] args;
 
-    MethodEvaluator(Method method, Object object, Class<? extends T> projectionType) {
+    MethodEvaluator(Method method, Map<String, Object> constants, Class<? extends T> projectionType) {
         this.method = method;
-        this.object = object;
         this.projectionType = projectionType;
+        this.args = new Object[method.getParameterTypes().length];
+        int i = args.length - constants.size();
+        for (Object value : constants.values()) {
+            args[i++] = value;
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public T evaluate(Object... args) {
         try {
-            return (T) method.invoke(object, args);
+            System.arraycopy(args, 0, this.args, 0, args.length);
+            return (T) method.invoke(null, this.args);
         } catch (IllegalAccessException e) {
             throw new IllegalArgumentException(e);
         } catch (InvocationTargetException e) {
