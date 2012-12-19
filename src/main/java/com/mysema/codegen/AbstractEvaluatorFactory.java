@@ -14,14 +14,18 @@
 package com.mysema.codegen;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.support.ClassUtils;
 
 /**
  * @author tiwe
@@ -44,6 +48,40 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory {
      */
     protected abstract void compile(String source, ClassType projection, String[] names, Type[] types,
             String id, Map<String, Object> constants) throws IOException;
+    
+    /**
+     * @param source
+     * @param projectionType
+     * @param names
+     * @param types
+     * @param id
+     * @param constants
+     * @return
+     * @throws IOException
+     */
+    protected String createSource(String source, ClassType projectionType, String[] names,
+            Type[] types, String id, Map<String, Object> constants) throws IOException {
+        // create source
+        StringWriter writer = new StringWriter();
+        JavaWriter javaw = new JavaWriter(writer);
+        SimpleType idType = new SimpleType(id, "", id);
+        javaw.beginClass(idType, null);
+        Parameter[] params = new Parameter[names.length + constants.size()];
+        for (int i = 0; i < names.length; i++) {
+            params[i] = new Parameter(names[i], types[i]);
+        }
+        int i = names.length;
+        for (Map.Entry<String, Object> entry : constants.entrySet()) {
+            Type type = new ClassType(TypeCategory.SIMPLE, ClassUtils.normalize(entry.getValue().getClass()));
+            params[i++] = new Parameter(entry.getKey(), type);
+        }
+
+        javaw.beginStaticMethod(projectionType, "eval", params);
+        javaw.append(source);
+        javaw.end();
+        javaw.end();
+        return writer.toString();
+    }
 
     
     @Override

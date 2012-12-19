@@ -50,7 +50,6 @@ public interface EvaluatorFactory {
      * @param constants
      * @return
      */
-    @SuppressWarnings(value = "unchecked")
     <T> Evaluator<T> createEvaluator(String source, ClassType projection, String[] names, 
             Type[] types, Class<?>[] classes, Map<String, Object> constants);
     

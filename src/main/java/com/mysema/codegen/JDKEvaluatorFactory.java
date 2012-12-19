@@ -29,11 +29,7 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.support.ClassUtils;
 
 /**
  * JDKEvaluatorFactory is a factory implementation for creating Evaluator instances
@@ -66,27 +62,10 @@ public class JDKEvaluatorFactory extends AbstractEvaluatorFactory {
     protected void compile(String source, ClassType projectionType, String[] names, Type[] types,
             String id, Map<String, Object> constants) throws IOException {
         // create source
-        StringWriter writer = new StringWriter();
-        JavaWriter javaw = new JavaWriter(writer);
-        SimpleType idType = new SimpleType(id, "", id);
-        javaw.beginClass(idType, null);
-        Parameter[] params = new Parameter[names.length + constants.size()];
-        for (int i = 0; i < names.length; i++) {
-            params[i] = new Parameter(names[i], types[i]);
-        }
-        int i = names.length;
-        for (Map.Entry<String, Object> entry : constants.entrySet()) {
-            Type type = new ClassType(TypeCategory.SIMPLE, ClassUtils.normalize(entry.getValue().getClass()));
-            params[i++] = new Parameter(entry.getKey(), type);
-        }
-
-        javaw.beginStaticMethod(projectionType, "eval", params);
-        javaw.append(source);
-        javaw.end();
-        javaw.end();
+        source = createSource(source, projectionType, names, types, id, constants);
 
         // compile
-        SimpleJavaFileObject javaFileObject = new MemSourceFileObject(id, writer.toString());
+        SimpleJavaFileObject javaFileObject = new MemSourceFileObject(id, source);
         Writer out = new StringWriter();
 
         CompilationTask task = compiler.getTask(out, fileManager, null, compilationOptions, null,
@@ -94,7 +73,6 @@ public class JDKEvaluatorFactory extends AbstractEvaluatorFactory {
         if (!task.call().booleanValue()) {
             throw new CodegenException("Compilation of " + source + " failed.\n" + out.toString());
         }
-
     }
 
 }
