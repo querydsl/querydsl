@@ -93,8 +93,18 @@ public class DefaultEvaluatorFactory {
      */
     public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expression<?>> sources, 
             Expression<T> projection) {
-        CollQuerySerializer serializer = new CollQuerySerializer(templates);
-        serializer.handle(projection);
+        final CollQuerySerializer serializer = new CollQuerySerializer(templates);
+        serializer.append("return ");
+        if (projection instanceof FactoryExpression<?>) {
+            serializer.append("(");
+            serializer.append(ClassUtils.getName(projection.getType()));
+            serializer.append(")(");
+            serializer.handle(projection);
+            serializer.append(")");
+        } else {
+            serializer.handle(projection);    
+        }
+        serializer.append(";");
 
         Map<Object,String> constantToLabel = serializer.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
@@ -112,12 +122,7 @@ public class DefaultEvaluatorFactory {
             }
         }
 
-        String javaSource = serializer.toString();
-        if (projection instanceof FactoryExpression<?>) {
-            javaSource = "("+ClassUtils.getName(projection.getType())+")(" + javaSource+")";
-        }
-        
-        return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, 
+        return factory.createEvaluator(serializer.toString(), projection.getType(), names, 
                 types, constants);
     }
 

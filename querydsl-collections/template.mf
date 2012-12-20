@@ -10,4 +10,5 @@ Import-Template:
   javax.annotation.*;version="0",
   javax.tools.*;version="1",
   org.eclipse.jdt.*;version="3.7.2",
-  com.google.common.*;version="${guava.version}"
+  com.google.common.*;version="${guava.version}",
+  org.hamcrest.*;version="1.3";resolution:=optional

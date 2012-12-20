@@ -30,12 +30,10 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
-import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
@@ -115,31 +113,6 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel.peek();
     }
-
-    @SuppressWarnings("unchecked")
-    private <T> Expression<?> regexToLike(Operation<T> operation) {
-        final ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
-        for (final Expression<?> arg : operation.getArgs()) {
-            if (!arg.getType().equals(String.class)) {
-                args.add(arg);
-            } else if (arg instanceof Constant) {
-                args.add(regexToLike(arg.toString()));
-            } else if (arg instanceof Operation) {
-                args.add(regexToLike((Operation)arg));
-            } else {
-                args.add(arg);
-            }
-        }
-        return new OperationImpl(
-                operation.getType(),
-                operation.getOperator(),
-                args.build());
-    }
-
-    private Expression<?> regexToLike(String str) {
-        return ConstantImpl.create(str.replace(".*", "%").replace(".", "_"));
-    }
-
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
         final List<? extends Expression<?>> select = metadata.getProjection();
