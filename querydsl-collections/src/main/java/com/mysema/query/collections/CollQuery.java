@@ -76,7 +76,7 @@ public final class CollQuery extends AbstractCollQuery<CollQuery> implements Sim
      */
     @Override
     public CollQuery clone() {
-        return new CollQuery(queryMixin.getMetadata(), getQueryEngine());
+        return new CollQuery(queryMixin.getMetadata().clone(), getQueryEngine());
     }
 
     /**
