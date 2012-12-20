@@ -25,7 +25,7 @@ public final class StringUtils {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, str);
     }
 
-    public static String escapeJava(String str) {
+    public static String escapeJava(String str) {        
         str = str.replace("\\", "\\\\");
         str = str.replace("\"", "\\\"");
         str = str.replace("\r", "\\\r");

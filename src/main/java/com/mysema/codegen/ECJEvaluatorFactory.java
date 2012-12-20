@@ -151,8 +151,9 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
             }
 
             private boolean isClass(String result) {
-                if (Strings.isNullOrEmpty(result))
+                if (Strings.isNullOrEmpty(result)) {
                     return false;
+                }                    
                 
                 // if it's the class we're compiling, then of course it's a class
                 if (result.equals(targetName)) {
@@ -171,11 +172,7 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
                             is = parentClassLoader.getResourceAsStream("java/lang/" + resourceName);
                         }
                     }
-                    if (is == null) {
-                        return false; // if it's a class, we sure couldn't load it
-                    } else {                        
-                        return true; // we actually loaded the class, so it must be one 
-                    }                    
+                    return is != null;   
                 } finally {
                     if (is != null) {
                         try {
@@ -285,10 +282,11 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
             //    not one of our checked exceptions boxed as unchecked; just rethrow
             Throwable cause = ex.getCause();
             if (cause != null) {
-                if (cause instanceof IOException)
+                if (cause instanceof IOException) {
                     throw (IOException)cause;
-                else if (cause instanceof ClassFormatException)
+                } else if (cause instanceof ClassFormatException) {
                     throw new IOException(cause);
+                }
             }
             throw ex;
         } 

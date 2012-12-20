@@ -32,7 +32,6 @@ public final class ClassUtils {
     }
 
     public static String getFullName(Class<?> cl) {
-//        return cl.getCanonicalName();
         if (cl.isArray()) {
             return getFullName(cl.getComponentType()) + "[]";
         }
@@ -69,10 +68,8 @@ public final class ClassUtils {
             return canonicalName;        
         } else {
             final String packageName = canonicalName.substring(0, i);
-            if (packages.contains(packageName)
-                || classes.contains(canonicalName)
-                || classes.contains(canonicalName.substring(0, canonicalName.lastIndexOf('.')))) {
-                return canonicalName.substring(packageName.length() + 1);
+            if (packages.contains(packageName) || classes.contains(canonicalName)) {
+                return cl.getSimpleName();                        
             }  else {
                 return canonicalName;
             }

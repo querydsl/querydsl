@@ -23,6 +23,8 @@ import java.net.URI;
 
 import javax.tools.SimpleJavaFileObject;
 
+import com.google.common.base.Charsets;
+
 /**
  * MemJavaFileObject defines an in memory compiled Java file
  * 
@@ -45,7 +47,7 @@ public class MemJavaFileObject extends SimpleJavaFileObject {
         if (baos == null) {
             throw new FileNotFoundException(name);
         }
-        return new String(baos.toByteArray());
+        return new String(baos.toByteArray(), Charsets.UTF_8);
     }
 
     @Override
