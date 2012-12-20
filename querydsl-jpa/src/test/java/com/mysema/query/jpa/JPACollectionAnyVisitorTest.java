@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QDomesticCat;
 import com.mysema.query.support.Context;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
@@ -72,6 +73,21 @@ public class JPACollectionAnyVisitorTest {
         assertMatches("exists \\(select 1\n" +
                 "from Cat cat_kittens.*\n" +
                 "where cat_kittens.* in elements\\(cat\\.kittens\\) and cat_kittens.*\\.name = \\?1\\)", serialize(templateExpr));
+    }
+    
+    @Test
+    public void Cast() {
+//        JPAQuery query = new JPAQuery(em).from(QPerson.person);
+//        QDog anyDog = QPerson.person.animals.any().as(QDog.class);
+//        query.where(anyDog.gender.eq("M"));
+//        List<Person> foundOwners = query.list(QPerson.person);
+      
+        QDomesticCat anyCat = QCat.cat.kittens.any().as(QDomesticCat.class);
+        Predicate predicate = anyCat.name.eq("X");
+        
+        assertMatches("exists \\(select 1\n" +
+            "from DomesticCat cat_kittens.*\n" +
+            "where cat_kittens.* in elements\\(cat.kittens\\) and cat_kittens.*\\.name = \\?1\\)", serialize(predicate));
     }
     
     private String serialize(Expression<?> expression){

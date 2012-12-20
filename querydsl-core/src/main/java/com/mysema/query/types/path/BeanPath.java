@@ -28,6 +28,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
@@ -86,7 +87,12 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     public <U extends BeanPath<? extends T>> U as(Class<U> clazz) {
         try {
             if (!casts.containsKey(clazz)) {
-                PathMetadata<T> metadata = PathMetadataFactory.forDelegate(pathMixin);
+                PathMetadata<T> metadata;
+                if (pathMixin.getMetadata().getPathType() != PathType.COLLECTION_ANY) {
+                    metadata = PathMetadataFactory.forDelegate(pathMixin);
+                } else {
+                    metadata = (PathMetadata)pathMixin.getMetadata();
+                }
                 U rv;                
                 if (inits != null) {
                     rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(metadata, inits);
