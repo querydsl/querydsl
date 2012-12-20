@@ -414,7 +414,12 @@ public final class ExpressionUtils {
      * @return
      */
     public static <T> Expression<T> extract(Expression<T> expr) {
-        return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);
+        final Class<?> clazz = expr.getClass();
+        if (clazz == PathImpl.class || clazz == PredicateOperation.class || clazz == ConstantImpl.class) {
+            return expr;
+        } else {
+            return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);    
+        }        
     }
     
     private ExpressionUtils(){}

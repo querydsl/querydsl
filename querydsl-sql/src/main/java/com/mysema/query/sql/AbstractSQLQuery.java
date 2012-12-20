@@ -535,7 +535,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             try {
-                if (ParamExpression.class.isInstance(o)) {
+                if (o instanceof ParamExpression) {
                     if (!params.containsKey(o)) {
                         throw new ParamNotSetException((ParamExpression<?>) o);
                     }

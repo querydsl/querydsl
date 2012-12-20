@@ -25,10 +25,10 @@ public final class Runner {
         System.err.print("- ");
         
         // perform timing
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         benchmark.run(1000000);
-        long end = System.currentTimeMillis();
-        System.err.println(label + " " + (end-start));
+        long end = System.nanoTime();
+        System.err.println(label + " " + ((end-start) / 1000000));
     }
     
     private Runner() {}
