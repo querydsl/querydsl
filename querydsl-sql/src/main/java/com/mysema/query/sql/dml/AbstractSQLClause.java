@@ -57,7 +57,6 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, " +
             		"but got " + constantPaths.size());
         }
-        int counter = 1;
         for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             try {
@@ -67,7 +66,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
                     }
                     o = params.get(o);
                 }
-                counter += configuration.set(stmt, constantPaths.get(i), counter, o);
+                configuration.set(stmt, constantPaths.get(i), i+1, o);
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }

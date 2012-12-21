@@ -31,7 +31,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-public class Configuration {
+public final class Configuration {
     
     /**
      * Default instance
@@ -95,8 +95,7 @@ public class Configuration {
      */
     @Nullable    
     public <T> T get(ResultSet rs, @Nullable Path<?> path, int i, Class<T> clazz) throws SQLException {        
-        Type<T> type = getType(path, clazz);
-        return type.getValue(rs, i);
+        return getType(path, clazz).getValue(rs, i);
     }
     
     /**
@@ -109,11 +108,8 @@ public class Configuration {
      * @throws SQLException
      */
     @SuppressWarnings("unchecked")
-    public <T> int set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException{
-        Type<T> type = getType(path, (Class)value.getClass());
-        type.setValue(stmt, i, value);
-        //return type.getSQLTypes().length;
-        return 1; // currently only single column types are supported
+    public <T> void set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException{
+        getType(path, (Class)value.getClass()).setValue(stmt, i, value);
     }
 
     @SuppressWarnings("unchecked")

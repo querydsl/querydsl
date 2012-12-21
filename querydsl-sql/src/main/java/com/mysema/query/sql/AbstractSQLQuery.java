@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -297,8 +298,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return configuration.get(rs, expr instanceof Path ? (Path)expr : null, i, type);
     }
 
-    private int set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException{
-        return configuration.set(stmt, path, i, value);
+    private void set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException{
+        configuration.set(stmt, path, i, value);
     }
 
     public QueryMetadata getMetadata() {
@@ -531,7 +532,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
             throw new IllegalArgumentException("Expected " + objects.size() + 
                     " paths, but got " + constantPaths.size());
         }
-        int counter = 1;
         for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             try {
@@ -541,7 +541,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
                     }
                     o = params.get(o);
                 }
-                counter += set(stmt, constantPaths.get(i), counter, o);
+                set(stmt, constantPaths.get(i), i+1, o);
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }
