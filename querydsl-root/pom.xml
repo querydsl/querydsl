@@ -431,6 +431,10 @@
             <enabled>false</enabled>
           </releases>
         </repository>
+        <repository>
+          <id>com.springsource.repository.bundles.release</id>         
+          <url>http://repository.springsource.com/maven/bundles/release</url>
+        </repository>
       </repositories>
       
       <pluginRepositories>

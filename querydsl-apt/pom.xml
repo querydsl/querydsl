@@ -47,6 +47,12 @@
       <version>1.0.0.Final</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.roo</groupId>
+      <artifactId>org.springframework.roo.annotations</artifactId>
+      <version>1.0.1.RELEASE</version>
+      <scope>provided</scope>
+    </dependency>
     
     <!-- test -->
     <dependency>
@@ -128,6 +134,7 @@
                 <descriptor>src/main/hibernate.xml</descriptor>
                 <descriptor>src/main/jdo.xml</descriptor>
                 <descriptor>src/main/jpa.xml</descriptor>
+                <descriptor>src/main/roo.xml</descriptor>
               </descriptors>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>

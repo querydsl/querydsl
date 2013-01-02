@@ -13,6 +13,8 @@
  */
 package com.mysema.query.apt;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import org.junit.Test;
 import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
 import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
+import com.mysema.query.apt.roo.RooAnnotationProcessor;
 
 public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
 
@@ -138,6 +141,13 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     @Test
     public void JDOAnnotationProcessor() throws IOException {
         process(JDOAnnotationProcessor.class, CLASSES, "jdo");
+    }
+    
+    @Test
+    public void RooAnnotationProcessor() throws IOException {
+        process(RooAnnotationProcessor.class, CLASSES, "roo");
+        
+        assertTrue(new File("target/roo/com/mysema/query/domain/QRooEntities_MyEntity.java").exists());
     }
     
 }
