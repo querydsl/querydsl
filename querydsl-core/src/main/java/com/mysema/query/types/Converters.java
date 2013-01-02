@@ -25,6 +25,8 @@ import com.google.common.base.Function;
  */
 public final class Converters {
     
+    private static final Constant<String> PERCENT = new ConstantImpl<String>("%");
+    
     private final char escape;
     
     /**
@@ -71,7 +73,7 @@ public final class Converters {
             if (arg instanceof Constant) {
                 return ConstantImpl.create(apply(arg.toString()).toString());
             } else if (arg instanceof Expression) {
-                return OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, ConstantImpl.create("%"));
+                return OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
             } else {
                 return escapeForLike(arg.toString()) + "%"; 
             }
@@ -85,7 +87,7 @@ public final class Converters {
             if (arg instanceof Constant) {
                 return ConstantImpl.create(apply(arg.toString()).toString());            
             } else if (arg instanceof Expression) {
-                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, ConstantImpl.create("%"));
+                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
                 return OperationImpl.create(String.class, Ops.LOWER, concated);
             } else {
                 return escapeForLike(arg.toString().toLowerCase(Locale.ENGLISH)) + "%";
@@ -100,7 +102,7 @@ public final class Converters {
             if (arg instanceof Constant) {
                 return ConstantImpl.create(apply(arg.toString()).toString());
             } else if (arg instanceof Expression) {
-                return OperationImpl.create(String.class, Ops.CONCAT, ConstantImpl.create("%"), (Expression)arg);
+                return OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
             } else {
                 return "%" + escapeForLike(arg.toString()); 
             }
@@ -114,7 +116,7 @@ public final class Converters {
             if (arg instanceof Constant) {
                 return ConstantImpl.create(apply(arg.toString()).toString());
             } else if (arg instanceof Expression) {
-                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, ConstantImpl.create("%"), (Expression)arg);
+                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
                 return OperationImpl.create(String.class, Ops.LOWER, concated);
             } else {
                 return "%" + escapeForLike(arg.toString().toLowerCase(Locale.ENGLISH));
@@ -129,8 +131,8 @@ public final class Converters {
             if (arg instanceof Constant) {
                 return ConstantImpl.create(apply(arg.toString()).toString());
             } else if (arg instanceof Expression) {
-                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, ConstantImpl.create("%"), (Expression)arg);
-                return OperationImpl.create(String.class, Ops.CONCAT, concated, ConstantImpl.create("%"));
+                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                return OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
             } else {
                 return "%" + escapeForLike(arg.toString()) + "%"; 
             }
@@ -144,8 +146,8 @@ public final class Converters {
             if (arg instanceof Constant) {
                 return ConstantImpl.create(apply(arg.toString()).toString());
             } else if (arg instanceof Expression) {
-                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, ConstantImpl.create("%"), (Expression)arg);
-                concated = OperationImpl.create(String.class, Ops.CONCAT, concated, ConstantImpl.create("%"));
+                Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                concated = OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
                 return OperationImpl.create(String.class, Ops.LOWER, concated);
             } else {
                 return "%" + escapeForLike(arg.toString().toLowerCase(Locale.ENGLISH)) + "%"; 

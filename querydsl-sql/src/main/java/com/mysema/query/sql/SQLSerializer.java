@@ -138,7 +138,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 appendAsTableName(pe);
                 append(templates.getTableAlias());
             }
-        }
+        }        
         handle(je.getTarget());
     }
 

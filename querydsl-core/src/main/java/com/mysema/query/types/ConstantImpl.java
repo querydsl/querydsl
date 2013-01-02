@@ -13,12 +13,6 @@
  */
 package com.mysema.query.types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.concurrent.Immutable;
 
 /**
@@ -43,24 +37,12 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
     private static final Constant<Long>[] LONGS = new Constant[CACHE_SIZE];
 
     private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
-
-    private static final Map<String,Constant<String>> STRINGS;
     
     private static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
 
     private static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
 
     static {
-        List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
-        for (int i = 0; i < CACHE_SIZE; i++) {
-            strs.add(String.valueOf(i));
-        }
-
-        STRINGS = new HashMap<String,Constant<String>>(strs.size());
-        for (String str : strs) {
-            STRINGS.put(str, new ConstantImpl<String>(str));
-        }
-        
         for (int i = 0; i < CACHE_SIZE; i++) {
             INTEGERS[i] = new ConstantImpl<Integer>(Integer.class, Integer.valueOf(i));
             SHORTS[i] = new ConstantImpl<Short>(Short.class, Short.valueOf((short)i));
@@ -115,11 +97,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
     }
 
     public static Constant<String> create(String str) {
-        if (STRINGS.containsKey(str)) {
-            return STRINGS.get(str);
-        } else {
-            return new ConstantImpl<String>(str);
-        }
+        return new ConstantImpl<String>(str);
     }
 
     public static <T> Constant<Class<T>> create(Class<T> constant) {
