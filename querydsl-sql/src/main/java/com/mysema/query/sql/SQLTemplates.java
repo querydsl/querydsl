@@ -477,11 +477,11 @@ public class SQLTemplates extends Templates {
         return false;
     }
     
-    public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
-        context.serialize(metadata, forCountRow);
+    public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
+        context.serializeForQuery(metadata, forCountRow);
     }
 
-    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+    protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() != null) {
             context.handle(limitTemplate, mod.getLimit());

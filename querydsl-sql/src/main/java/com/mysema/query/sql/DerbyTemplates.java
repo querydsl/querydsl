@@ -64,7 +64,8 @@ public class DerbyTemplates extends SQLTemplates {
 //        add(Ops.DateTimeOps.DATE_ADD, "date_add({0}, INTERVAL {1} {2s})");
     }
 
-    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+    @Override
+    protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() == null) {
             context.handle(offsetTemplate, mod.getOffset());

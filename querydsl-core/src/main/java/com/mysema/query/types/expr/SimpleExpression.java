@@ -295,7 +295,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public SimpleExpression<T> nullif(T other) {
-        return nullif(Expressions.constant(other));
+        return nullif(new ConstantImpl<T>(other));
     }
 
     /**

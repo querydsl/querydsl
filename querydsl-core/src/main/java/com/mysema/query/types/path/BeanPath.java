@@ -337,7 +337,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         for (int i = 0; i < types.length; i++) {
             exprs[i] = this.instanceOf(types[i]);
         }
-        return Expressions.anyOf(exprs);
+        return BooleanExpression.anyOf(exprs);
     }
 
     @Override

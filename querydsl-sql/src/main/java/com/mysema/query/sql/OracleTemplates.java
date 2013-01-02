@@ -99,7 +99,7 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     @Override
-    public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
+    public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
             QueryModifiers mod = metadata.getModifiers();
 
@@ -125,7 +125,7 @@ public class OracleTemplates extends SQLTemplates {
     }
     
     @Override
-    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+    protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         // do nothing
     }
 

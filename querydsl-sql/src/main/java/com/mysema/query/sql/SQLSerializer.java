@@ -52,34 +52,6 @@ import com.mysema.query.types.TemplateExpressionImpl;
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY}
-
-    private static class SQLSerializationContext implements SerializationContext {
-
-        private final SQLSerializer serializer;
-        
-        public SQLSerializationContext(SQLSerializer serializer) {
-            this.serializer = serializer;
-        }
-        
-        @Override
-        public void serialize(QueryMetadata metadata, boolean forCountRow) {
-            serializer.serializeForQuery(metadata, forCountRow);
-        }
-
-        @Override
-        public SerializationContext append(String str) {
-            serializer.append(str);
-            return this;
-        }
-
-        @Override
-        public void handle(String template, Object... args) {
-            serializer.handle(TemplateExpressionImpl.create(Object.class, template, args));
-        }
-        
-    }
-    
-    private final SerializationContext context = new SQLSerializationContext(this);
     
     private static final String COMMA = ", ";
 
@@ -150,6 +122,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return templates;
     }
 
+    public void handle(String template, Object... args) {
+        handle(TemplateExpressionImpl.create(Object.class, template, args));
+    }
+    
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
@@ -167,10 +143,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
-        templates.serialize(metadata, forCountRow, context);
+        templates.serialize(metadata, forCountRow, this);
     }
 
-    private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
+    void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         final List<? extends Expression<?>> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
         final Predicate where = metadata.getWhere();
@@ -305,7 +281,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         // modifiers
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
-            templates.serializeModifiers(metadata, context);
+            templates.serializeModifiers(metadata, this);
         }
         
         // end

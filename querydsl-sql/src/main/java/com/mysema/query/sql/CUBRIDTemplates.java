@@ -50,7 +50,8 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
     }
     
-    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+    @Override
+    protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() != null) {
             if (mod.getOffset() != null) {
