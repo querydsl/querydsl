@@ -52,7 +52,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
-    protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY}
+    protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS, END}
     
     private static final String COMMA = ", ";
 
@@ -282,11 +282,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         // modifiers
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
+            stage = Stage.MODIFIERS;
             templates.serializeModifiers(metadata, this);
         }
         
         // end
         if (hasFlags) {
+            stage = Stage.END;
             serialize(Position.END, flags);    
         }        
         
