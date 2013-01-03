@@ -20,10 +20,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.google.common.primitives.Primitives;
+import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
@@ -145,6 +147,8 @@ public class SQLTemplates extends Templates {
     
     private boolean unionsWrapped = true;
     
+    private boolean functionJoinsWrapped = false;
+    
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -221,7 +225,7 @@ public class SQLTemplates extends Templates {
             class2type.put(cl, type);
         }
     }
-
+        
     public final String getAsc() {
         return asc;
     }
@@ -439,6 +443,10 @@ public class SQLTemplates extends Templates {
         return unionsWrapped;
     }
 
+    public  final boolean isFunctionJoinsWrapped() {
+        return functionJoinsWrapped;
+    }
+    
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -669,6 +677,10 @@ public class SQLTemplates extends Templates {
 
     protected void setUnionsWrapped(boolean unionsWrapped) {
         this.unionsWrapped = unionsWrapped;
+    }
+
+    protected void setFunctionJoinsWrapped(boolean functionJoinsWrapped) {
+        this.functionJoinsWrapped = functionJoinsWrapped;
     }
     
     

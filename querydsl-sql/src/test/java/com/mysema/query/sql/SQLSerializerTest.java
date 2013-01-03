@@ -78,6 +78,15 @@ public class SQLSerializerTest {
     }
     
     @Test
+    public void Join_To_Function_In_Derby() {
+        SQLQuery query = new SQLQuery(new DerbyTemplates());
+        QSurvey survey = QSurvey.survey;
+        query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
+        query.where(survey.name.isNotNull());
+        assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
+    }
+    
+    @Test
     public void Complex_SubQuery() {
         QSurvey survey = QSurvey.survey;
         

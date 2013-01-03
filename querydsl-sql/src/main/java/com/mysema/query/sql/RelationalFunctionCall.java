@@ -50,7 +50,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
     private final TemplateExpression<T> templateMixin;
     
     /**
-     * Create a new TableValuedFunctionCall for the given function and arguments
+     * Create a new RelationalFunctionCall for the given function and arguments
      * 
      * @param type
      * @param function

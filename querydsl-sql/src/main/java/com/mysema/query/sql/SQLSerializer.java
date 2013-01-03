@@ -42,6 +42,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
@@ -138,7 +139,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 appendAsTableName(pe);
                 append(templates.getTableAlias());
             }
-        }        
+        }
         handle(je.getTarget());
     }
 
@@ -615,6 +616,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             serialize(query.getMetadata(), false);
             append(")");            
         }        
+        return null;
+    }
+    
+    @Override
+    public Void visit(TemplateExpression<?> expr, Void context) {
+        if (stage == Stage.FROM && templates.isFunctionJoinsWrapped()) {
+            append("table(");
+            super.visit(expr, context);
+            append(")");
+        } else {
+            super.visit(expr, context);
+        }
         return null;
     }
     

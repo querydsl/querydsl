@@ -44,6 +44,7 @@ public class DerbyTemplates extends SQLTemplates {
         setDummyTable("sysibm.sysdummy1");        
         addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
+        setFunctionJoinsWrapped(true);
         
         add(Ops.CONCAT, "varchar({0} || {1})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
@@ -63,7 +64,7 @@ public class DerbyTemplates extends SQLTemplates {
         
 //        add(Ops.DateTimeOps.DATE_ADD, "date_add({0}, INTERVAL {1} {2s})");
     }
-
+    
     @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
