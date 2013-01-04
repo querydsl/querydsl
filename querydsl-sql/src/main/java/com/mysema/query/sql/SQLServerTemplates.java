@@ -94,7 +94,7 @@ public class SQLServerTemplates extends SQLTemplates{
             }
             metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
             metadata.clearOrderBy();
-            context.serialize(metadata, forCountRow);
+            context.serializeForQuery(metadata, forCountRow);
             context.append(outerQueryEnd);
             QueryModifiers mod = metadata.getModifiers();
             if (mod.getLimit() == null) {
@@ -106,7 +106,7 @@ public class SQLServerTemplates extends SQLTemplates{
             }
 
         } else {
-            context.serialize(metadata, forCountRow);
+            context.serializeForQuery(metadata, forCountRow);
         }
     }
     

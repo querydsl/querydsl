@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +44,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
+import com.mysema.query.types.TemplateFactory;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -52,7 +53,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
-    protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS, END}
+    protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS}
     
     private static final String COMMA = ", ";
 
@@ -73,6 +74,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private final SQLTemplates templates;
     
     private boolean inUnion = false;
+    
+    private boolean inJoin = false;
     
     public SQLSerializer(SQLTemplates templates) {
         this(templates, false);
@@ -124,7 +127,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void handle(String template, Object... args) {
-        handle(TemplateExpressionImpl.create(Object.class, template, args));
+//        handle(TemplateExpressionImpl.create(Object.class, template, args));
+        handleTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
     
     private void handleJoinTarget(JoinExpression je) {
@@ -140,7 +144,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 append(templates.getTableAlias());
             }
         }
+        inJoin = true;
         handle(je.getTarget());
+        inJoin = false;
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
@@ -179,7 +185,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 
         // start
         if (hasFlags) {
-            serialize(Position.START, flags);    
+            serialize(Position.START, flags);
         }        
 
         // select
@@ -288,7 +294,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         // end
         if (hasFlags) {
-            stage = Stage.END;
             serialize(Position.END, flags);    
         }        
         
@@ -623,7 +628,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     @Override
     public Void visit(TemplateExpression<?> expr, Void context) {
-        if (stage == Stage.FROM && templates.isFunctionJoinsWrapped()) {
+        if (inJoin && templates.isFunctionJoinsWrapped()) {
             append("table(");
             super.visit(expr, context);
             append(")");

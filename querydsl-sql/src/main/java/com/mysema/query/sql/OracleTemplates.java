@@ -105,11 +105,11 @@ public class OracleTemplates extends SQLTemplates {
 
             if (mod.getOffset() == null) {
                 context.append(limitQueryStart);
-                context.serialize(metadata, forCountRow);
+                context.serializeForQuery(metadata, forCountRow);
                 context.handle(limitQueryEnd, mod.getLimit());
             } else {
                 context.append(outerQueryStart);
-                context.serialize(metadata, forCountRow);
+                context.serializeForQuery(metadata, forCountRow);
                 context.append(outerQueryEnd);
 
                 if (mod.getLimit() == null) {
@@ -120,7 +120,7 @@ public class OracleTemplates extends SQLTemplates {
             }
 
         } else {
-            context.serialize(metadata, forCountRow);
+            context.serializeForQuery(metadata, forCountRow);
         }
     }
     

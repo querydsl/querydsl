@@ -20,12 +20,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.google.common.primitives.Primitives;
-import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
