@@ -83,7 +83,7 @@
     
     <para>
     If you use Hibernate annotations in your domain types you should use 
-    the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor
+    the APT processor <code>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</code>
     instead.
     </para>
 
@@ -134,6 +134,16 @@
     and <emphasis>build</emphasis> with your target folder.</para>        
     
   </sect2>  
+  
+  <sect2>
+  
+    <title>Using Querydsl JPA in Roo</title>
+    
+    <para>If you are using Querydsl JPA with Spring Roo you can replace <code>com.mysema.query.apt.jpa.JPAAnnotationProcessor</code>
+    with <code>com.mysema.query.apt.roo.RooAnnotationProcessor</code> which will handle <code>@RooEntity</code> annotated classes instead of 
+    <code>@Entity</code> annotated classes.</para>
+  
+  </sect2>
   
   <sect2>
   	
