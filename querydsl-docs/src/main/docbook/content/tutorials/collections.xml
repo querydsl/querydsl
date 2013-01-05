@@ -209,4 +209,31 @@ for (String name : from(cat,cats)
     
   </sect2>  
   
+  <sect2>
+  
+    <title>Hamcrest matchers</title>
+    
+    <para>Querydsl Collections provides Hamcrest matchers. With these imports</para>
+    
+<programlisting language="java"><![CDATA[    
+import static org.hamcrest.core.IsEqual.equalTo;
+import static com.mysema.query.collections.PathMatcher.hasValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+]]></programlisting>    
+    
+    <para>they can be used like this:</para>
+
+<programlisting language="java"><![CDATA[  
+Car car = new Car();
+car.setHorsePower(123);
+        
+assertThat(car, hasValue($.horsePower));
+assertThat(car, hasValue($.horsePower, equalTo(123)));  
+]]></programlisting>
+
+    <para>The Hamcrest matchers have been contributed by <ulink url="https://github.com/jeroenvs">Jeroen van Schagen</ulink>.</para>
+  
+  </sect2>
+  
 </sect1>
