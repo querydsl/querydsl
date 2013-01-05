@@ -186,7 +186,7 @@ query
   
     <title>Select only relevant fields</title>
   
-    <para>To select only relevant fields you can use the overlaoded projection methods list, 
+    <para>To select only relevant fields you can use the overloaded projection methods list, 
     iterate, uniqueResult and singleResult methods like this</para>
   
   <programlisting language="java"><![CDATA[ 
