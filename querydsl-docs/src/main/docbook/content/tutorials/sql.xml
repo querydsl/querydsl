@@ -95,7 +95,7 @@
 	<title>Code generation via ANT</title>
 	
 	<para>
-		The ANT task com.mysema.query.sql.ant.AntMetaDataExporter of the querydsl-sql module provides 
+		The ANT task <code>com.mysema.query.sql.ant.AntMetaDataExporter</code> of the querydsl-sql module provides 
 		the same functionality as an ANT task.
 		The configuration parameters of the task are jdbcDriverClass, dbUrl, dbUserName, dbPassword, 
 		namePrefix, targetPackage, targetSourceFolder,
@@ -298,7 +298,8 @@ GROUP BY c.last_name
   
   	<para>  
 		To create a subquery you create a SQLSubQuery instance, define the query parameters via from, 
-		where etc and use unique or list to create a subquery, which is just a type-safe Querydsl expression for the query. unique is used for a unique (single) result and list for a list result.
+		where etc and use unique or list to create a subquery, which is just a type-safe Querydsl
+		 expression for the query. unique is used for a unique (single) result and list for a list result.
 	</para>
 
 <programlisting language="java"><![CDATA[ 
@@ -357,7 +358,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
 ]]></programlisting>   
 
   <para>The flags are custom SQL snippets that can be inserted at specific points in the serialization. 
-  The supported positions are the enums of the com.mysema.query.QueryFlag.Position enum class.</para>
+  The supported positions are the enums of the <code>com.mysema.query.QueryFlag.Position</code> enum class.</para>
     
   </sect2>
   

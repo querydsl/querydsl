@@ -11,7 +11,7 @@
     version of the simple type name. For the type Account this would be account :</para>
     
 <programlisting language="java"><![CDATA[     
-public class QAccount extends EntityPathBase<Account>{
+public class QAccount extends EntityPathBase<Account> {
       
     public static final QAccount account = new QAccount("account");
     

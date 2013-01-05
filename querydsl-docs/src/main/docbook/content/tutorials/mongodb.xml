@@ -61,7 +61,7 @@
 
     <para>
       The MorphiaAnnotationProcessor finds domain types annotated with the
-      com.google.code.morphia.annotations.Entity annotation and generates
+      <code>com.google.code.morphia.annotations.Entity</code> annotation and generates
       Querydsl query types for them.
     </para>
     

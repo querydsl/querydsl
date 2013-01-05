@@ -1,0 +1,47 @@
+<sect1>
+    
+    <title>Result post-processing</title>
+    
+    <para>Querydsl contains result post-processing functionality in form of the 
+    <code>com.mysema.query.ResultTransformer</code> interface.</para>
+    
+    <para>Currently this interface has only been used for result aggregation via the GroupBy class.</para>
+    
+ <sect2>
+   
+   <title>GroupBy processing</title>
+   
+   <para>The <code>com.mysema.query.group.GroupBy</code> class provides aggregation functionality
+   which can be used to aggregate query results in memory. Below are some usage examples.</para>
+ 
+   <para>
+     Aggregating parent child relations
+   </para>
+   
+<programlisting language="java"><![CDATA[
+import static com.mysema.query.group.GroupBy.*;
+   
+Map<Integer, List<Comment>> results = query.from(post, comment)
+    .where(comment.post.id.eq(post.id))
+    .transform(groupBy(post.id).as(list(comment)));
+]]></programlisting>                   
+
+    <para>This will return a map of post ids to related comments.</para>
+    
+    <para>Multiple result columns</para>
+
+<programlisting language="java"><![CDATA[    
+Map<Integer, Group> results = query.from(post, comment)
+    .where(comment.post.id.eq(post.id))
+    .transform(groupBy(post.id).as(post.name, set(comment.id)));
+]]></programlisting>                                   
+ 
+    <para>This will return a map of post ids to Group instances with access to post name and comment ids.</para>
+    
+    <para>Group is the GroupBy equivalent to the Tuple interface.</para>
+    
+    <para>More examples can be found <ulink url="https://github.com/mysema/querydsl/blob/master/querydsl-collections/src/test/java/com/mysema/query/collections/GroupByTest.java">here</ulink>.</para>
+ 
+ </sect2>       
+    
+</sect1>    

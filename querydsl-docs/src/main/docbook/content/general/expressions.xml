@@ -6,7 +6,7 @@
     
     	<title>Custom expressions</title>
     	
-    	<para>The com.mysema.query.support.Expressions class is a static factory class for Querydsl 
+    	<para>The <code>com.mysema.query.support.Expressions</code> class is a static factory class for Querydsl 
     	expression construction.</para>
     	
     	<para>The following expression </para>
@@ -35,7 +35,7 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
     
       <title>Custom projections</title>
       
-      <para>For custom projections the com.mysema.query.types.Projections class offers a set of factory 
+      <para>For custom projections the <code>com.mysema.query.types.Projections</code> class offers a set of factory 
       methods for Bean, constructor, Tuple and other projections.</para>
     
     </sect2>
@@ -46,8 +46,8 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
       
       <para>
       To avoid a generic signature in Querydsl query types the type hierarchies are flattened. The 
-      result is that all generated query types are direct subclasses of com.mysema.query.types.path.EntityPathBase 
-      or com.mysema.query.types.path.BeanPath and cannot be directly cast to their Querydsl supertypes.
+      result is that all generated query types are direct subclasses of <code>com.mysema.query.types.path.EntityPathBase</code> 
+      or <code>com.mysema.query.types.path.BeanPath</code> and cannot be directly cast to their Querydsl supertypes.
       </para>
       
       <para>

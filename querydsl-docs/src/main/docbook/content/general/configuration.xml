@@ -7,7 +7,7 @@
       <para>
       By default Querydsl initializes only direct reference properties. In cases where longer 
       initialization paths are required, these have to be annotated in the domain types via 
-      com.mysema.query.annotations.QueryInit annotations. QueryInit is used on properties where 
+      <code>com.mysema.query.annotations.QueryInit</code> annotations. QueryInit is used on properties where 
       deep initializations are needed. The following example demonstrates the usage.       
       </para>
       
@@ -275,7 +275,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 		choice and the classes to mirrored in the value attribute.
 		</para>
 		
-		<para>To actually create the types use the com.mysema.query.apt.QuerydslAnnotationProcessor. 
+		<para>To actually create the types use the <code>com.mysema.query.apt.QuerydslAnnotationProcessor</code>. 
 		In Maven you do it like this :</para>
 		
     <programlisting language="xml"><![CDATA[

@@ -6,6 +6,7 @@ html {
 }
 
 body {
+  color: #333333;
   margin-left:   10%;
   margin-right:  10%;
   font-family:   Arial, Sans-serif;
@@ -25,20 +26,20 @@ hr {
 }
 
 h1,h2,h3,h4 {
-  color:         #234623;
+  /*color:         #234623;*/
   font-family:   Arial, Sans-serif;
 }
 
 pre {
   line-height:   1.0;
-  color:         black;
+  /*color:         black;*/
 }
 
 pre.programlisting {
   font-size:     10pt;
   padding:       7pt 3pt;
-  border:        1pt solid black;
-  /*background:    #eeeeee;*/
+  border: 1px solid #CCCCCC;
+  border-radius: 3px 3px 3px 3px;
   background:    #f8f8f8;
   clear:         both;
 }
@@ -60,31 +61,31 @@ div.table td {
 }
 
 .sidebar {
-    float: right;
-    margin: 10px 0 10px 30px;
-    padding: 10px 20px 20px 20px;
-    width: 33%;
-    border: 1px solid black;
-    background-color: #F4F4F4;
-    font-size: 14px;
+  float: right;
+  margin: 10px 0 10px 30px;
+  padding: 10px 20px 20px 20px;
+  width: 33%;
+  border: 1px solid black;
+  background-color: #F4F4F4;
+  font-size: 14px;
 }
 
 .mediaobject {
-    padding-top: 30px; 
-    padding-bottom: 30px; 
+  padding-top: 30px; 
+  padding-bottom: 30px; 
 }
 
 .legalnotice {
-    font-family: Verdana, Arial, helvetica, sans-serif;
-    font-size: 12px;
-    font-style: italic;
+  font-family: Verdana, Arial, helvetica, sans-serif;
+  font-size: 12px;
+  font-style: italic;
 }
 
 p.releaseinfo {
-    font-size: 100%;
-    font-weight: bold;
-    font-family: Verdana, Arial, helvetica, sans-serif;
-    padding-top: 10px;
+  font-size: 100%;
+  font-weight: bold;
+  font-family: Verdana, Arial, helvetica, sans-serif;
+  padding-top: 10px;
 }
 
 p.pubdate {
@@ -97,4 +98,8 @@ span.productname {
     font-size: 200%;
     font-weight: bold; 
     font-family: Verdana, Arial, helvetica, sans-serif;
+}
+
+.code {
+	font-size: 120%;
 }

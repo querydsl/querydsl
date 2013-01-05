@@ -71,7 +71,7 @@ map.get("X")            map("X")
     
     <para>The RichProjectable and RichSimpleProjectable wrappers should be used to enable Scala
      projections for Querydsl queries.
-    By importing the contents of com.mysema.query.scala.Helpers the needed implicit conversions 
+    By importing the contents of <code>com.mysema.query.scala.Helpers</code> the needed implicit conversions 
     become available.
     </para>
   
@@ -152,7 +152,7 @@ exporter.export(connection.getMetaData)
     
     <para>The domain oriented queries are implemented as implicit conversions from RelationalPath 
     instances into queries. This functionality
-    can be made available by implementing the com.mysema.query.scala.sql.SQLHelpers trait in your 
+    can be made available by implementing the <code>com.mysema.query.scala.sql.SQLHelpers</code> trait in your 
     service or DAO classes.</para>
     
     <para>Using this compact syntax you can use your meta model classes as a starting point for 
@@ -178,7 +178,7 @@ Employee.select(_.firstName, _.lastName)
 Employee.select({ e => e.firstName }, { e => e.lastName })        
 ]]></programlisting>          	    
   
-    <para>See the signature of the com.mysema.query.scala.sql.RichSimpleQuery class for details.</para>
+    <para>See the signature of the <code>com.mysema.query.scala.sql.RichSimpleQuery</code> class for details.</para>
   
   </sect3>
   
@@ -318,7 +318,5 @@ val person = Person as "person"
 ]]></programlisting>    
   	
   </sect2>
-  
-
-  
+    
 </sect1>  
