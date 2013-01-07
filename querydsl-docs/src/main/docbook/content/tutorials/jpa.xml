@@ -140,7 +140,7 @@
     <title>Using Querydsl JPA in Roo</title>
     
     <para>If you are using Querydsl JPA with Spring Roo you can replace <code>com.mysema.query.apt.jpa.JPAAnnotationProcessor</code>
-    with <code>com.mysema.query.apt.roo.RooAnnotationProcessor</code> which will handle <code>@RooEntity</code> annotated classes instead of 
+    with <code>com.mysema.query.apt.roo.RooAnnotationProcessor</code> which will handle <code>@RooJpaEntity</code> annotated classes instead of 
     <code>@Entity</code> annotated classes.</para>
   
   </sect2>

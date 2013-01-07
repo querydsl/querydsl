@@ -50,7 +50,7 @@
     <dependency>
       <groupId>org.springframework.roo</groupId>
       <artifactId>org.springframework.roo.annotations</artifactId>
-      <version>1.0.1.RELEASE</version>
+      <version>1.2.3.RELEASE</version>
       <scope>provided</scope>
     </dependency>
     

@@ -22,7 +22,7 @@ import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.springframework.roo.addon.entity.RooEntity;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
@@ -40,7 +40,7 @@ public class RooAnnotationProcessor extends AbstractQuerydslProcessor {
         
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
-        Class<? extends Annotation> entity = RooEntity.class;
+        Class<? extends Annotation> entity = RooJpaEntity.class;
         Class<? extends Annotation> superType = MappedSuperclass.class;
         Class<? extends Annotation> embeddable = Embeddable.class;
         Class<? extends Annotation> embedded = Embedded.class;
