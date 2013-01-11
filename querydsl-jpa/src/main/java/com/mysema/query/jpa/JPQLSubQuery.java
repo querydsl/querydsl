@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2013, Mysema Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,12 @@
  */
 package com.mysema.query.jpa;
 
-import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.query.Detachable;
 
 /**
- * JPASubQuery is a subquery class for JPA
- *
  * @author tiwe
  *
  */
-public final class JPASubQuery extends AbstractJPASubQuery<JPASubQuery> implements JPQLSubQuery {
-
-    public JPASubQuery() {
-        super();
-    }
-
-    public JPASubQuery(QueryMetadata metadata) {
-        super(metadata);
-    }
+public interface JPQLSubQuery extends Detachable, JPACommonQuery<JPQLSubQuery>{
 
 }

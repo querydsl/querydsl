@@ -17,7 +17,6 @@ import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
 import com.mysema.query.QueryFactory;
-import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;

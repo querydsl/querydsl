@@ -28,5 +28,13 @@ public class JPASubQueryTest {
         assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
         assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
     }
+    
+    public void Via_Interface() {
+        JPQLSubQuery query = new JPASubQuery();
+        query.from(QCat.cat);
+        assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
+        assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
+    }
 
+    
 }
