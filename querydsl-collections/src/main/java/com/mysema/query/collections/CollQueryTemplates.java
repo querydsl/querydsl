@@ -49,6 +49,11 @@ public class CollQueryTemplates extends JavaTemplates {
         add(Ops.MathOps.LOG,  functions + ".log({0},{1})");
         add(Ops.MathOps.RAD,  functions + ".radians({0})");
         add(Ops.MathOps.SIGN, "{0} > 0 ? 1 : -1");
+        
+        add(Ops.ADD, "{0}.add({1})");
+        add(Ops.SUB, "{0}.subtract({1})");
+        add(Ops.MULT, "{0}.multiply({1})");
+        add(Ops.DIV, "{0}.divide({1})");
 
         // Date and Time
         add(Ops.DateTimeOps.YEAR,         functions + ".getYear({0})");
