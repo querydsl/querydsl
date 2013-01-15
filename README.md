@@ -4,7 +4,7 @@ Querydsl is a framework which enables the construction of type-safe SQL-like que
 
 Instead of writing queries as inline strings or externalizing them into XML files they are constructed via a fluent API.
 
-** Getting started **
+**Getting started**
 
 Use these tutorials to get started
 
@@ -15,7 +15,7 @@ Use these tutorials to get started
 * Lucene http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html
 * Collections http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html
 
-** Support **
+**Support**
 
 Free support is provided in the Querydsl Google Group https://groups.google.com/forum/#!forum/querydsl
 
