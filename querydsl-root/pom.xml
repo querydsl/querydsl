@@ -419,7 +419,7 @@
         </repository>
         <repository>
           <id>CUBRID</id>
-          <url> http://maven.cubrid.org </url>
+          <url>http://maven.cubrid.org</url>
         </repository>
         <repository>
           <id>Sonatype snapshots</id>
