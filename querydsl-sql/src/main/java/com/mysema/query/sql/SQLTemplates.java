@@ -24,6 +24,7 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
@@ -485,6 +486,10 @@ public class SQLTemplates extends Templates {
     
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         context.serializeForQuery(metadata, forCountRow);
+        
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());    
+        }   
     }
 
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {

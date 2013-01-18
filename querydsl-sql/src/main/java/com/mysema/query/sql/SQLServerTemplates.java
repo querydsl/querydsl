@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.sql.mssql.SQLServerGrammar;
 import com.mysema.query.types.Ops;
@@ -108,6 +109,10 @@ public class SQLServerTemplates extends SQLTemplates{
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }
+        
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());    
+        }   
     }
     
     @Override

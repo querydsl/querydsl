@@ -292,11 +292,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             templates.serializeModifiers(metadata, this);
         }
         
-        // end
-        if (hasFlags) {
-            serialize(Position.END, flags);    
-        }        
-        
         // reset stage
         stage = oldStage;
 

@@ -1000,6 +1000,12 @@ public class SelectBase extends AbstractBaseTest{
     public void Select_For_Update() {
         query().from(survey).forUpdate().list(survey.id);
     }
+    
+    @Test
+    @ExcludeIn({SQLITE, CUBRID})
+    public void Select_For_Update_UniqueResult() {
+        query().from(survey).forUpdate().uniqueResult(survey.id);
+    }
 
     @Test
     @SkipForQuoted

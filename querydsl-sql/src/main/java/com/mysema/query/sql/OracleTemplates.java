@@ -17,6 +17,7 @@ import java.math.BigInteger;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.Ops;
 
 /**
@@ -122,6 +123,10 @@ public class OracleTemplates extends SQLTemplates {
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }
+        
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());    
+        }   
     }
     
     @Override
