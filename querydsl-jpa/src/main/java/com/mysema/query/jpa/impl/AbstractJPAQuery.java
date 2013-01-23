@@ -329,7 +329,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         try{
             return getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {
-            logger.debug(e.getMessage(),e);
+            logger.trace(e.getMessage(),e);
             return null;
         } catch(javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException();
