@@ -18,8 +18,6 @@ The SQL module provides integration with the JDBC API.
       <version>1.6.1</version>
     </dependency>   
 
-The querydsl-sql-codegen dependency can be skipped, if code generation happens via Maven or Ant.
-
 **Code generation via Maven**
 
 This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :
@@ -64,4 +62,4 @@ Querying with Querydsl SQL is as simple as this :
         .where(customer.firstName.eq("Bob"))
         .list(customer.lastName);
         
-For more information on the Querydsl JDO module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
+For more information on the Querydsl SQL module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
