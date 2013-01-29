@@ -26,7 +26,8 @@ The SQL module provides integration with the JDBC API.
     </dependency>   
 
 The querydsl-sql-codegen dependency can be skipped, if code generation happens via Maven or Ant.
-2.3.2. Code generation via Maven
+
+**Code generation via Maven**
 
 This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :
    
