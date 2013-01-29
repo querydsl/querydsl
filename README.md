@@ -8,12 +8,12 @@ Instead of writing queries as inline strings or externalizing them into XML file
 
 Use these tutorials to get started
 
-* JPA http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration
-* SQL http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
-* JDO http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html
-* Mongodb http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s06.html
-* Lucene http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html
-* Collections http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html
+* [JPA](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration)
+* [SQL](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html)
+* [JDO](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html)
+* [Mongodb](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s06.html)
+* [Lucene](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html)
+* [Collections](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html)
 
 **Support**
 
