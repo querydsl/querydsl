@@ -72,4 +72,4 @@ Here is an example query using the default variable of the QCustomer class
       .where(customer.firstName.eq("Bob"))
       .uniqueResult(customer);
       
-For more information on the Querydsl JPA module read the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration      
+For more information on the Querydsl JPA module read the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html      
