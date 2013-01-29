@@ -1,3 +1,5 @@
+# Querydsl JPA #
+
 The JPA module provides integration with the JPA 2 persistence API.
 
 **Maven integration**
@@ -60,10 +62,14 @@ If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to in
 
 Now you are able to construct JPQL query instances and instances of the query domain model.     
 
-** Example query **
+**Example query**
+
+Here is an example query using the default variable of the QCustomer class
 
     QCustomer customer = QCustomer.customer;
     JPAQuery query = new JPAQuery(entityManager);
     Customer bob = query.from(customer)
       .where(customer.firstName.eq("Bob"))
       .uniqueResult(customer);
+      
+For more information on the Querydsl JPA module read the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration      
