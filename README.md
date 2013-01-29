@@ -27,3 +27,9 @@ Querydsl provides releases via public Maven repositories, but you can build the 
     mvn -Pjenkins,all -DskipTests=true clean install 
 
 For more information visit the project homepage at http://www.querydsl.com/.
+
+**How to contribute**
+
+GitHub pull requests are the way to contribute to Querydsl.
+
+If you are unsure about the details of a contribution, ask on the Querydsl Google Group or create a ticket on GitHub.
