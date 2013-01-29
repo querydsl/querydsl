@@ -71,4 +71,4 @@ Here is an example query using the default variable of the QCustomer class
       .uniqueResult(customer);
     query.close();
 
-For more information on the Querydsl JDO module read the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration
+For more information on the Querydsl JDO module read the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html
