@@ -51,6 +51,9 @@ public class ExtendedNamingStrategyTest {
         assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
         assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", entityModel));
+        
+        assertEquals("_123abc", namingStrategy.getPropertyName("123abc", entityModel));
+        assertEquals("_123Abc", namingStrategy.getPropertyName("123 abc", entityModel));
     }
     
     @Test

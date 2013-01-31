@@ -110,7 +110,13 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     }
     
     protected String normalizePropertyName(String name) {
-        return isReserved(name) ? name + reservedSuffix : name;   
+        if (isReserved(name)) {
+            return name + reservedSuffix;
+        } else if (Character.isDigit(name.charAt(0))) {
+            return "_" + name;
+        } else {
+            return name;
+        }
     }
     
     protected String escape(EntityType entityType, String name) {

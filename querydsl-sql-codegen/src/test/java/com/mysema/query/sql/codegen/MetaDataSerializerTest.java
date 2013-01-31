@@ -61,6 +61,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
                 + "timefield TIME, "
                 + "superior_id int, "
                 + "survey_id int, "
+                + "\"123abc\" int,"
                 + "survey_name varchar(30), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "

@@ -79,7 +79,10 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
         
     private String getPropertyName(String name) {
         String rv = JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
-        return rv.replace('-', '_');
+        rv = Character.isDigit(rv.charAt(0)) ? ("_" + rv) : rv;
+        rv = rv.replace('-', '_');
+        rv = rv.replace(' ', '_');
+        return rv;
     }
     
 }
