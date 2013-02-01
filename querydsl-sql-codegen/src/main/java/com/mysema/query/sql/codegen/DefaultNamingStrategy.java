@@ -64,8 +64,8 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     public String getPropertyName(String columnName, EntityType entityType) {
         if (columnName.length() > 1) {
             String normalized = normalizePropertyName(columnName);
-            return normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
-                    toCamelCase(normalized.substring(1));    
+            return normalizePropertyName(normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
+                    toCamelCase(normalized.substring(1)));    
         } else {
             return columnName.toLowerCase(Locale.ENGLISH);
         }                
