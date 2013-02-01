@@ -16,7 +16,6 @@ package com.mysema.query.sql.codegen;
 import java.util.Locale;
 
 import com.mysema.query.codegen.EntityType;
-import static com.mysema.util.JavaSyntaxUtils.*;
 
 /**
  * DefaultNamingStrategy is the default implementation of the NamingStrategy
@@ -64,9 +63,9 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     @Override
     public String getPropertyName(String columnName, EntityType entityType) {
         if (columnName.length() > 1) {
-            return normalizePropertyName(
-                    columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) 
-                    + toCamelCase(columnName.substring(1)));    
+            String normalized = normalizePropertyName(columnName);
+            return normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
+                    toCamelCase(normalized.substring(1));    
         } else {
             return columnName.toLowerCase(Locale.ENGLISH);
         }                
@@ -110,13 +109,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     }
     
     protected String normalizePropertyName(String name) {
-        if (isReserved(name)) {
-            return name + reservedSuffix;
-        } else if (Character.isDigit(name.charAt(0))) {
-            return "_" + name;
-        } else {
-            return name;
-        }
+        return Naming.normalize(name, reservedSuffix);
     }
     
     protected String escape(EntityType entityType, String name) {
@@ -135,7 +128,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         boolean toLower = str.toUpperCase().equals(str);
         StringBuilder builder = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
-            if (i < str.length() - 1 && (str.charAt(i) == '_' || str.charAt(i) == ' ' || str.charAt(i) == '-')) {
+            if (i < str.length() - 1 && str.charAt(i) == '_') {
                 i += 1;
                 if (i < str.length()) {
                     builder.append(Character.toUpperCase(str.charAt(i)));    

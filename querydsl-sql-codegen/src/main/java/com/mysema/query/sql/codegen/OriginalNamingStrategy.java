@@ -15,7 +15,6 @@ package com.mysema.query.sql.codegen;
 
 import com.mysema.codegen.StringUtils;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.util.JavaSyntaxUtils;
 
 /**
  * OriginalNamingStrategy preserves the table and column names in the conversion
@@ -78,11 +77,7 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
     }
         
     private String getPropertyName(String name) {
-        String rv = JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
-        rv = Character.isDigit(rv.charAt(0)) ? ("_" + rv) : rv;
-        rv = rv.replace('-', '_');
-        rv = rv.replace(' ', '_');
-        return rv;
+        return Naming.normalize(name, reservedSuffix);
     }
     
 }

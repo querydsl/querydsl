@@ -38,7 +38,7 @@ public final class PathMetadata<T> implements Serializable{
     private final Path<?> parent, root;
 
     private final PathType pathType;
-
+    
     public PathMetadata(@Nullable Path<?> parent, Object element, PathType type) {
         this.parent = parent;
         this.element = element;
