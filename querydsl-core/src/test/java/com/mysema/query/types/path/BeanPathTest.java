@@ -60,6 +60,7 @@ public class BeanPathTest {
     public void As_Class(){       
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
         assertEquals(beanPath, otherPath);
+        assertTrue(otherPath.getMetadata().isRoot());
     }
     
     @Test

@@ -43,8 +43,8 @@ public final class PathMetadata<T> implements Serializable{
         this.parent = parent;
         this.element = element;
         this.pathType = type;
-        this.root = parent != null ? parent.getRoot() : null;
         this.hashCode = 31 * element.hashCode() + pathType.hashCode();
+        this.root = parent != null ? parent.getRoot() : null;
     }
     
     @Override
@@ -90,7 +90,7 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public boolean isRoot(){
-        return parent == null;
+        return parent == null || (pathType == PathType.DELEGATE && parent.getMetadata().isRoot()); 
     }
 
 }

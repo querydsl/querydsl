@@ -32,7 +32,6 @@ import com.mysema.query.sql.EncryptedString;
 import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.query.sql.QPerson;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;

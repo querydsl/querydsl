@@ -93,7 +93,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
                     metadata = (PathMetadata)pathMixin.getMetadata();
                 }
                 U rv;                
-                if (inits != null) {
+                // the inits for the subtype will be wider, if it's a variable path
+                if (inits != null && pathMixin.getMetadata().getPathType() != PathType.VARIABLE) {
                     rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(metadata, inits);
                 } else {
                     rv = clazz.getConstructor(PathMetadata.class).newInstance(metadata);
