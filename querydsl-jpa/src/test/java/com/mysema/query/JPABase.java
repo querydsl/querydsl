@@ -161,9 +161,9 @@ public class JPABase extends AbstractStandardTest {
         QCat child = new QCat("kitten");
         
         delete(child)
-            .where(child.id.eq(1), new JPASubQuery()
+            .where(child.id.eq(-100), new JPASubQuery()
                .from(parent)
-               .where(parent.id.eq(2), 
+               .where(parent.id.eq(-200), 
                       child.in(parent.kittens)).exists())
             .execute();
     }
