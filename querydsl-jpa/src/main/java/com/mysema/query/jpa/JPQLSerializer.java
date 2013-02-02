@@ -131,7 +131,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         // type specifier
         if (je.getTarget() instanceof EntityPath<?>) {
             final EntityPath<?> pe = (EntityPath<?>) je.getTarget();
-            if (pe.getMetadata().getParent() == null) {
+            if (pe.getMetadata().isRoot()) {
                 final Entity entityAnnotation = pe.getAnnotatedElement().getAnnotation(Entity.class);
                 if (entityAnnotation != null && entityAnnotation.name().length() > 0) {
                     append(entityAnnotation.name());

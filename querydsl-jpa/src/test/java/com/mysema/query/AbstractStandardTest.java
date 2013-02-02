@@ -369,7 +369,6 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    @Ignore
     public void As() {
         query().from(QAnimal.animal.as(QCat.class)).count();
     }
