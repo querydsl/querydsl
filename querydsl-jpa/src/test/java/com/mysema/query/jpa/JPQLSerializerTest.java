@@ -74,6 +74,25 @@ public class JPQLSerializerTest {
     }
     
     @Test
+    public void Delete_With_SubQuery() {
+        QCat parent = QCat.cat;
+        QCat child = new QCat("kitten");
+        
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, child);
+        md.addWhere(
+            child.id.eq(1)
+            .and(new JPASubQuery()
+                .from(parent)
+                .where(parent.id.eq(2), child.in(parent.kittens)).exists()));
+        serializer.serializeForDelete(md);
+        assertEquals("delete from Cat kitten\n" +
+                "where kitten.id = ?1 and exists (select 1\n" +
+        	"from Cat cat\nwhere cat.id = ?2 and kitten in elements(cat.kittens))", serializer.toString());
+    }
+    
+    @Test
     public void In() {
         //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));
     }

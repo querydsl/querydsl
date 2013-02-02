@@ -27,14 +27,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.JPATestRunner;
 
 /**
@@ -55,6 +59,10 @@ public class JPABase extends AbstractStandardTest {
     @Override
     protected JPAQuery query(){
         return new JPAQuery(entityManager);
+    }
+    
+    protected JPADeleteClause delete(EntityPath<?> path) {
+        return new JPADeleteClause(entityManager, path);
     }
     
     @Override
@@ -135,5 +143,28 @@ public class JPABase extends AbstractStandardTest {
     public void Connection_Access(){
         assertNotNull(query().from(QCat.cat).createQuery(QCat.cat).unwrap(Connection.class));
     }
-
+    
+    @Test
+    @Ignore
+    public void Delete() {
+        delete(QCat.cat).execute();
+    }
+    
+    @Test
+    public void Delete_Where() {
+        delete(QCat.cat).where(QCat.cat.name.eq("XXX")).execute();
+    }
+    
+    @Test
+    public void Delete_Where_SubQuery_Exists() {
+        QCat parent = QCat.cat;
+        QCat child = new QCat("kitten");
+        
+        delete(child)
+            .where(child.id.eq(1), new JPASubQuery()
+               .from(parent)
+               .where(parent.id.eq(2), 
+                      child.in(parent.kittens)).exists())
+            .execute();
+    }
 }
