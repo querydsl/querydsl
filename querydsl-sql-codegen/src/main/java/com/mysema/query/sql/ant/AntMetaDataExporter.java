@@ -137,6 +137,16 @@ public class AntMetaDataExporter extends Task {
      * 
      */
     private boolean lowerCase = false;
+    
+    /**
+     * 
+     */
+    private boolean exportTables = true;
+    
+    /**
+     * 
+     */
+    private boolean exportViews = true;
 
     @Override
     public void execute() throws BuildException {
@@ -173,6 +183,8 @@ public class AntMetaDataExporter extends Task {
             exporter.setValidationAnnotations(validationAnnotations);
             exporter.setSchemaToPackage(schemaToPackage);
             exporter.setLowerCase(lowerCase);
+            exporter.setExportTables(exportTables);
+            exporter.setExportViews(exportViews);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
             }
@@ -362,7 +374,21 @@ public class AntMetaDataExporter extends Task {
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
     }
-    
-    
+
+    public boolean isExportTables() {
+        return exportTables;
+    }
+
+    public void setExportTables(boolean exportTables) {
+        this.exportTables = exportTables;
+    }
+
+    public boolean isExportViews() {
+        return exportViews;
+    }
+
+    public void setExportViews(boolean exportViews) {
+        this.exportViews = exportViews;
+    }
     
 }

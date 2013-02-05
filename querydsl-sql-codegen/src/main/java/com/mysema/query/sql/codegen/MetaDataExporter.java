@@ -20,9 +20,11 @@ import java.nio.charset.Charset;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -87,7 +89,7 @@ public class MetaDataExporter {
     private static final int SCHEMA_NAME = 2;
 
     private static final int TABLE_NAME = 3;
-
+    
     private final SQLCodegenModule module = new SQLCodegenModule();
 
     private final Set<String> classes = new HashSet<String>();
@@ -128,6 +130,10 @@ public class MetaDataExporter {
     private String sourceEncoding = "UTF-8";
 
     private boolean lowerCase = false;
+    
+    private boolean exportTables = true;
+    
+    private boolean exportViews = true;
     
     public MetaDataExporter() {}
         
@@ -206,7 +212,15 @@ public class MetaDataExporter {
                     module.getBeanPrefix(), module.getBeanSuffix(), schemaToPackage);
         }
 
-        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
+        List<String> types = new ArrayList<String>(2);
+        if (exportTables) {
+            types.add("TABLE");            
+        }
+        if (exportViews) {
+            types.add("VIEW");
+        }
+        
+        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[0]));
         try{
             while (tables.next()) {
                 handleTable(md, tables);
@@ -258,7 +272,7 @@ public class MetaDataExporter {
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String catalog = tables.getString(CATALOG_NAME);
         String schema = tables.getString(SCHEMA_NAME);
-        String schemaName = normalize(tables.getString(SCHEMA_NAME));
+        String schemaName = normalize(tables.getString(SCHEMA_NAME));        
         String tableName = normalize(tables.getString(TABLE_NAME));
         String className = namingStrategy.getClassName(tableName);
         EntityType classModel = createEntityType(schemaName, 
@@ -542,6 +556,20 @@ public class MetaDataExporter {
      */
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
+    }
+
+    /**
+     * @param exportTables
+     */
+    public void setExportTables(boolean exportTables) {
+        this.exportTables = exportTables;
+    }
+
+    /**
+     * @param exportViews
+     */
+    public void setExportViews(boolean exportViews) {
+        this.exportViews = exportViews;
     }
     
     
