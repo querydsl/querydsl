@@ -220,7 +220,7 @@ public class MetaDataExporter {
             types.add("VIEW");
         }
         
-        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[0]));
+        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[types.size()]));
         try{
             while (tables.next()) {
                 handleTable(md, tables);
