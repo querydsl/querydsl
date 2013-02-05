@@ -39,6 +39,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
+import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.JPATestRunner;
 
 /**
@@ -156,6 +157,7 @@ public class JPABase extends AbstractStandardTest {
     }
     
     @Test
+    @ExcludeIn(Target.MYSQL)
     public void Delete_Where_SubQuery_Exists() {
         QCat parent = QCat.cat;
         QCat child = new QCat("kitten");
