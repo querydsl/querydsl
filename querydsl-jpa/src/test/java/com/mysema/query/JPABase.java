@@ -34,8 +34,11 @@ import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QChild;
+import com.mysema.query.jpa.domain.QParent;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
@@ -169,4 +172,21 @@ public class JPABase extends AbstractStandardTest {
                       child.in(parent.kittens)).exists())
             .execute();
     }
+
+    @Test
+    public void Delete_Where_SubQuery2() {
+        QChild child = QChild.child;
+        QParent parent = QParent.parent;
+        
+        JPASubQuery subQuery = new JPASubQuery()
+            .from(parent)
+            .where(parent.id.eq(2),                   
+                   child.parent.eq(parent));
+                   //child.in(parent.children));
+        
+        delete(child)
+            .where(child.id.eq(1), subQuery.exists())
+            .execute();        
+    }
+    
 }
