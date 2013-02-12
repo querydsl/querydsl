@@ -102,8 +102,8 @@ public class MetaDataSerializer extends EntitySerializer {
     }
     
     @Override
-    protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
-        String variableName = namingStrategy.getDefaultVariableName(entityType);
+    protected void introDefaultInstance(CodeWriter writer, EntityType entityType, String defaultName) throws IOException {
+        String variableName = !defaultName.isEmpty() ? defaultName : namingStrategy.getDefaultVariableName(entityType);
         String alias = namingStrategy.getDefaultAlias(entityType);
         Type queryType = typeMappings.getPathType(entityType, entityType, true);
         writer.publicStaticFinal(queryType, variableName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");

@@ -60,7 +60,6 @@ public @interface Config {
      */
     boolean createDefaultVariable() default true;
 
-
     /**
      * The name of the default variable in query type
      *
