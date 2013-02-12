@@ -41,4 +41,8 @@ public interface SerializerConfig {
      */
     boolean createDefaultVariable();
 
+    /**
+     * @return the name of the default variable
+     */
+    String defaultVariableName();
 }

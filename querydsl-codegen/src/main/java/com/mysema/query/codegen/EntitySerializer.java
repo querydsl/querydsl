@@ -297,7 +297,7 @@ public class EntitySerializer implements Serializer{
         introFactoryMethods(writer, model);
         introInits(writer, model);
         if (config.createDefaultVariable()) {
-            introDefaultInstance(writer, model);
+            introDefaultInstance(writer, model, config.defaultVariableName());
         }
         if (model.getSuperType() != null && model.getSuperType().getEntityType() != null) {
             introSuper(writer, model);
@@ -344,8 +344,8 @@ public class EntitySerializer implements Serializer{
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(serialVersionUID));
     }
 
-    protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {
-        String simpleName = model.getUncapSimpleName();
+    protected void introDefaultInstance(CodeWriter writer, EntityType model, String defaultName) throws IOException {
+        String simpleName = (!defaultName.isEmpty() ? defaultName : model.getUncapSimpleName());
         Type queryType = typeMappings.getPathType(model, model, true);
         String alias = simpleName;
         if (keywords.contains(simpleName.toUpperCase())) {

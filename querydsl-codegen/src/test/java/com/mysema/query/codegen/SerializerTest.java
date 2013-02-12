@@ -82,7 +82,7 @@ public class SerializerTest {
     @Test
     public void EntitySerializer2() throws Exception {
         new EntitySerializer(typeMappings,Collections.<String>emptyList())
-            .serialize(type, new SimpleSerializerConfig(true,true,true,true), new JavaWriter(writer));
+            .serialize(type, new SimpleSerializerConfig(true,true,true,true,""), new JavaWriter(writer));
     }
 
     @Test
