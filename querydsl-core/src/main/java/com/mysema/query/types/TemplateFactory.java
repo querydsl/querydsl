@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +38,7 @@ public class TemplateFactory {
      */
     public static final TemplateFactory DEFAULT = new TemplateFactory('\\');
 
-    private final Map<String,Template> cache = new HashMap<String,Template>();
+    private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
 
     private final Converters converters;
     

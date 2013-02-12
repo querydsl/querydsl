@@ -929,6 +929,15 @@ public abstract class AbstractStandardTest {
     
     @Test
     @Ignore
+    public void Map_Join() {
+        //select m.text from Show s join s.acts a where key(a) = 'B'
+        QShow show = QShow.show;
+        StringPath act = new StringPath("act");
+        query().from(show).join(show.acts, act);
+    }
+    
+    @Test
+    @Ignore
     public void Size() {
         // NOT SUPPORTED
         query().from(cat).list(cat, cat.kittens.size());

@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringOperation;
 
 /**
- * JPAGrammar provides factory methods for JPQL specific operations
+ * JPAExpressions provides factory methods for JPQL specific operations
  * elements.
  *
  * @author tiwe
