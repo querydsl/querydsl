@@ -23,27 +23,31 @@ import com.mysema.query.annotations.Config;
  */
 public final class SimpleSerializerConfig implements SerializerConfig{
 
-    public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);
+    public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true, "");
 
     public static SerializerConfig getConfig(Config annotation) {
         return new SimpleSerializerConfig(
                 annotation.entityAccessors(),
                 annotation.listAccessors(),
                 annotation.mapAccessors(),
-                annotation.createDefaultVariable());
+                annotation.createDefaultVariable(),
+                annotation.defaultVariableName());
     }
 
     private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable;
+    private final String defaultVariableName;
 
     public SimpleSerializerConfig(
             boolean entityAccessors,
             boolean listAccessors,
             boolean mapAccessors,
-            boolean createDefaultVariable) {
+            boolean createDefaultVariable,
+            String defaultVariableName) {
         this.entityAccessors = entityAccessors;
         this.listAccessors = listAccessors;
         this.mapAccessors = mapAccessors;
         this.createDefaultVariable = createDefaultVariable;
+        this.defaultVariableName = defaultVariableName;
     }
 
     @Override
@@ -66,4 +70,8 @@ public final class SimpleSerializerConfig implements SerializerConfig{
         return createDefaultVariable;
     }
 
+    @Override
+    public String defaultVariableName() {
+        return defaultVariableName;
+    }
 }
