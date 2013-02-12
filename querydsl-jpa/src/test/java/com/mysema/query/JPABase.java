@@ -34,7 +34,6 @@ import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QChild;
@@ -154,12 +153,14 @@ public class JPABase extends AbstractStandardTest {
         delete(QCat.cat).execute();
     }
     
-    @Test
+    @Test 
+    @NoBatooJPA
     public void Delete_Where() {
         delete(QCat.cat).where(QCat.cat.name.eq("XXX")).execute();
     }
     
-    @Test
+    @Test 
+    @NoBatooJPA
     @ExcludeIn(Target.MYSQL)
     public void Delete_Where_SubQuery_Exists() {
         QCat parent = QCat.cat;
@@ -174,6 +175,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
+    @NoBatooJPA
     public void Delete_Where_SubQuery2() {
         QChild child = QChild.child;
         QParent parent = QParent.parent;

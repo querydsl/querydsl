@@ -1010,7 +1010,6 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    @NoBatooJPA
     public void Precedence2() {
         StringPath str = cat.name;
         Predicate where = str.like("Bob%").and(str.like("%ob123")
@@ -1102,7 +1101,6 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    @NoBatooJPA
     public void List_ElementCollection_Of_String() {
         QFoo foo = QFoo.foo;
         StringPath str = new StringPath("str");
