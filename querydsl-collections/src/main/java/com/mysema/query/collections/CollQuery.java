@@ -29,7 +29,7 @@ public final class CollQuery extends AbstractCollQuery<CollQuery> implements Sim
      * Create a new CollQuery instance
      */
     public CollQuery() {
-        super(new DefaultQueryMetadata(), DefaultQueryEngine.DEFAULT);
+        super(new DefaultQueryMetadata(), DefaultQueryEngine.getDefault());
     }
 
     /**
@@ -58,7 +58,7 @@ public final class CollQuery extends AbstractCollQuery<CollQuery> implements Sim
      * @param evaluatorFactory
      */
     public CollQuery(QueryMetadata metadata) {
-        super(metadata, DefaultQueryEngine.DEFAULT);
+        super(metadata, DefaultQueryEngine.getDefault());
     }
 
     /**

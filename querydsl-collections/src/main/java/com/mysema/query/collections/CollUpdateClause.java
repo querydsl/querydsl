@@ -44,7 +44,7 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
     }
 
     public CollUpdateClause(Path<T> expr, Iterable<? extends T> col){
-        this(DefaultQueryEngine.DEFAULT, expr, col);
+        this(DefaultQueryEngine.getDefault(), expr, col);
     }
 
     @Override

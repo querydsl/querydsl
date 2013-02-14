@@ -42,7 +42,7 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
     }
 
     public CollDeleteClause(Path<T> expr, Collection<? extends T> col){
-        this(DefaultQueryEngine.DEFAULT, expr, col);
+        this(DefaultQueryEngine.getDefault(), expr, col);
     }
 
     @Override
