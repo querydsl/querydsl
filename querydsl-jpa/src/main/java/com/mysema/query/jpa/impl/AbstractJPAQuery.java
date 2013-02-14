@@ -58,7 +58,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     private static Class<?> hibernateQueryClass;
     
-    private static Constructor<?> hibernateQueryTransformationConstructor;
+    private static QueryTransformer hibernateQueryTransformer;
     
     static {
         try {
@@ -67,13 +67,17 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             // do nothing
         }
         try {
-            Class<?> clazz = Class.forName("com.mysema.query.jpa.impl.HibernateQueryTransformation");
-            hibernateQueryTransformationConstructor = clazz.getConstructor(Query.class, FactoryExpression.class);
+            hibernateQueryTransformer = (QueryTransformer) Class.forName(
+                    "com.mysema.query.jpa.impl.HibernateQueryTransformation").newInstance();            
         } catch (ClassNotFoundException e) {
             // do nothing
         } catch (SecurityException e) {
             // do nothing
-        } catch (NoSuchMethodException e) {
+        } catch (NoClassDefFoundError e) {
+            // do nothing
+        } catch (InstantiationException e) {
+            // do nothing
+        } catch (IllegalAccessException e) {
             // do nothing
         }
     }
@@ -175,24 +179,15 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         
         if (!forCount && ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null)) {
             Expression<?> expr = wrapped != null ? wrapped : projection.get(0);            
-            Constructor<?> transformation = null;
+            QueryTransformer transformation = null;
             if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
-                transformation = hibernateQueryTransformationConstructor;
+                transformation = hibernateQueryTransformer;
             }
 //            else if (query.getClass().getName().startsWith("org.eclipse.persistence")) {
 //                transformation = "com.mysema.query.jpa.impl.EclipseLinkQueryTransformation";
 //            }
             if (transformation != null) {
-                try {
-                    transformation.newInstance(query, expr);
-                } catch (InstantiationException e) {
-                    throw new QueryException(e);
-                } catch (IllegalAccessException e) {
-                    throw new QueryException(e);
-                } catch (InvocationTargetException e) {
-                    throw new QueryException(e);
-                }
-                
+                transformation.transform(query, (FactoryExpression<?>)expr);                
             } else {
                 this.projection = (FactoryExpression<?>)projection.get(0);
                 if (wrapped != null) {
