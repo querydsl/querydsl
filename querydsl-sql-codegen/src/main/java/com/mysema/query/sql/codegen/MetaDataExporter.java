@@ -73,22 +73,6 @@ import com.mysema.query.sql.support.SizeImpl;
 public class MetaDataExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
-
-    private static final int COLUMN_NAME = 4;
-
-    private static final int COLUMN_TYPE = 5;
-
-    private static final int COLUMN_SIZE = 7;
-    
-    private static final int COLUMN_DIGITS = 9;
-
-    private static final int COLUMN_NULLABLE = 11;
-    
-    private static final int CATALOG_NAME = 1;
-
-    private static final int SCHEMA_NAME = 2;
-
-    private static final int TABLE_NAME = 3;
     
     private final SQLCodegenModule module = new SQLCodegenModule();
 
@@ -235,10 +219,10 @@ public class MetaDataExporter {
     }
 
     private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
-        String columnName = normalize(columns.getString(COLUMN_NAME));
-        int columnType = columns.getInt(COLUMN_TYPE);
-        int columnSize = columns.getInt(COLUMN_SIZE);
-        int columnDigits = columns.getInt(COLUMN_DIGITS);
+        String columnName = normalize(columns.getString("COLUMN_NAME"));
+        int columnType = columns.getInt("DATA_TYPE");
+        int columnSize = columns.getInt("COLUMN_SIZE");
+        int columnDigits = columns.getInt("DECIMAL_DIGITS");
         String propertyName = namingStrategy.getPropertyName(columnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType, columnSize, columnDigits, 
                 tableName, columnName);
@@ -257,11 +241,11 @@ public class MetaDataExporter {
             property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));    
         }        
         if (validationAnnotations) {
-            int nullable = columns.getInt(COLUMN_NULLABLE);
+            int nullable = columns.getInt("NULLABLE");
             if (nullable == DatabaseMetaData.columnNoNulls) {
                 property.addAnnotation(new NotNullImpl());
             }
-            int size = columns.getInt(COLUMN_SIZE);
+            int size = columns.getInt("COLUMN_SIZE");
             if (size > 0 && clazz.equals(String.class)) {
                 property.addAnnotation(new SizeImpl(0, size));
             }
@@ -270,10 +254,10 @@ public class MetaDataExporter {
     }
 
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
-        String catalog = tables.getString(CATALOG_NAME);
-        String schema = tables.getString(SCHEMA_NAME);
-        String schemaName = normalize(tables.getString(SCHEMA_NAME));        
-        String tableName = normalize(tables.getString(TABLE_NAME));
+        String catalog = tables.getString("TABLE_CAT");
+        String schema = tables.getString("TABLE_SCHEM");
+        String schemaName = normalize(tables.getString("TABLE_SCHEM"));        
+        String tableName = normalize(tables.getString("TABLE_NAME"));
         String className = namingStrategy.getClassName(tableName);
         EntityType classModel = createEntityType(schemaName, 
                 namingStrategy.normalizeTableName(tableName), className);

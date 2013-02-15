@@ -61,17 +61,20 @@ public class JDBCTypeMappingTest {
     public void NumericTypes() {
 //        19-...,0   -> Long
 //        6-18,0     -> Integer
-//        4-5,0      -> Short
-//        2-3,0      -> Byte
-//        1,0        -> Boolean
+//        3-5,0      -> Short
+//        1-2,0      -> Byte
+//        0          -> Boolean
+        
 //        17-...,?   -> BigDecimal
 //        0-16,?     -> Double
         assertEquals(typeMapping.get(Types.NUMERIC, 20, 0), Long.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 19, 0), Long.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 6, 0),  Integer.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 5, 0),  Short.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 4, 0),  Short.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 3, 0),  Short.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 2, 0),  Byte.class);
-        assertEquals(typeMapping.get(Types.NUMERIC, 1, 0),  Boolean.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 1, 0),  Byte.class);
         
         assertEquals(typeMapping.get(Types.NUMERIC, 17, 2), BigDecimal.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 5, 2),  Double.class);

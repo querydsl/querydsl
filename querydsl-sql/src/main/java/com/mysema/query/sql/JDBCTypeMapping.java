@@ -114,9 +114,9 @@ public final class JDBCTypeMapping {
                 return Long.class;
             } else if (size > 5) {
                 return Integer.class;
-            } else if (size > 3) {
+            } else if (size > 2) {
                 return Short.class;
-            } else if (size > 1) {
+            } else if (size > 0) {
                 return Byte.class;
             } else {
                 return Boolean.class;
