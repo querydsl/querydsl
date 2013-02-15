@@ -16,6 +16,7 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Ops.MathOps;
 
 /**
  * Extended Math expressions, supported by the SQL module
@@ -155,6 +156,16 @@ public final class MathExpressions {
      */
     public static NumberExpression<Double> random(){
         return NumberExpression.random();
+    }
+    
+    /**
+     * Return a random number expression with the given seed
+     * 
+     * @param seed
+     * @return
+     */
+    public static NumberExpression<Double> random(int seed) {
+        return NumberOperation.create(Double.class, MathOps.RANDOM2, ConstantImpl.create(seed));
     }
 
     /**

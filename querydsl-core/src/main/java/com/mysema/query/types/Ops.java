@@ -293,6 +293,8 @@ public final class Ops {
         
         public static final Operator<Number> RANDOM = new OperatorImpl<Number>("RANDOM");
         
+        public static final Operator<Number> RANDOM2 = new OperatorImpl<Number>("RANDOM2");
+        
         public static final Operator<Number> POWER = new OperatorImpl<Number>("POWER");
         
         public static final Operator<Number> MIN = new OperatorImpl<Number>("MIN");

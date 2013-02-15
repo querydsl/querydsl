@@ -56,6 +56,8 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "cast(strftime('%M',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         add(Ops.DateTimeOps.SECOND, "cast(strftime('%S',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         
+        add(Ops.MathOps.RANDOM, "random()");
+        add(Ops.MathOps.RANDOM2, "random({0})");
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
         

@@ -56,6 +56,7 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
         
+        add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.ROUND, "floor({0})"); // FIXME
         add(Ops.MathOps.POWER, "exp({1} * log({0}))");
         add(Ops.MathOps.LN, "log({0})");

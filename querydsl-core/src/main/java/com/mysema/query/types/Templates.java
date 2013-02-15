@@ -165,6 +165,7 @@ public class Templates {
         add(Ops.MathOps.ROUND, "round({0})");
         add(Ops.MathOps.RAD, "radians({0})");
         add(Ops.MathOps.RANDOM, "random()");
+        add(Ops.MathOps.RANDOM2, "random({0})");
         add(Ops.MathOps.POWER, "pow({0},{1})");
         add(Ops.MathOps.MIN, "min({0},{1})");
         add(Ops.MathOps.MAX, "max({0},{1})");

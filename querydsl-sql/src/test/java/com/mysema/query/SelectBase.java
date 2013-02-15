@@ -25,6 +25,7 @@ import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
@@ -957,6 +958,17 @@ public class SelectBase extends AbstractBaseTest{
             Employee e2 = row.get(employee2);
             assertEquals(e1.getId(), e2.getId());
         }
+    }
+    
+    @Test
+    public void Random() {
+        query().uniqueResult(MathExpressions.random());
+    }
+    
+    @Test
+    @ExcludeIn({ORACLE, POSTGRES, SQLITE})
+    public void Random2() {
+        query().uniqueResult(MathExpressions.random(10));
     }
     
     @Test

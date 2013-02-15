@@ -162,6 +162,7 @@ public class SQLTemplates extends Templates {
 
         // math
         add(Ops.MathOps.RANDOM, "rand()");
+        add(Ops.MathOps.RANDOM2, "rand({0})");
         add(Ops.MathOps.CEIL, "ceiling({0})");
         add(Ops.MathOps.POWER, "power({0},{1})");
         add(Ops.MOD, "mod({0},{1})", -1);
