@@ -1101,6 +1101,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoBatooJPA
     public void List_ElementCollection_Of_String() {
         QFoo foo = QFoo.foo;
         StringPath str = new StringPath("str");

@@ -1255,8 +1255,6 @@ public class SelectBase extends AbstractBaseTest{
         query().from(employee).where(sq1.exists().not()).count();
     }
     
-    
-
     @Test
     public void Wildcard(){
         // wildcard
