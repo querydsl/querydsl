@@ -106,6 +106,7 @@ public class JPABase extends AbstractStandardTest {
         javax.persistence.Query query = query().from(QCat.cat)
                 .setHint("org.hibernate.cacheable", true)
                 .createQuery(QCat.cat);
+        
         assertNotNull(query);
         assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
         assertFalse(query.getResultList().isEmpty());
@@ -115,6 +116,19 @@ public class JPABase extends AbstractStandardTest {
     public void Hint2(){
         assertFalse(query().from(QCat.cat).setHint("org.hibernate.cacheable", true)
                 .list(QCat.cat).isEmpty());
+    }
+    
+    @Test
+    @NoHibernate @NoOpenJPA @NoBatooJPA
+    public void Hint3() {
+        javax.persistence.Query query = query().from(QCat.cat)
+                .setHint("eclipselink.batch.type", "IN")
+                .setHint("eclipselink.batch", "person.workAddress")
+                .setHint("eclipselink.batch", "person.homeAddress")
+                .createQuery(QCat.cat);
+        
+        assertNotNull(query);
+        assertEquals("person.homeAddress", query.getHints().get("eclipselink.batch"));
     }
 
     @Test

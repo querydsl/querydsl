@@ -14,7 +14,6 @@
 package com.mysema.query.jpa.sql;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +26,8 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
@@ -69,7 +70,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     protected final SQLTemplates templates;
     
-    protected final Map<String,Object> hints = new HashMap<String,Object>();
+    protected final Multimap<String,Object> hints = HashMultimap.create();
 
     @Nullable
     protected Expression<?> union;
@@ -137,7 +138,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
             query.setFlushMode(flushMode);
         }
         
-        for (Map.Entry<String, Object> entry : hints.entrySet()) {
+        for (Map.Entry<String, Object> entry : hints.entries()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
         
