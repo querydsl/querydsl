@@ -173,6 +173,14 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
         add(Ops.DateTimeOps.MILLISECOND, "0");
         add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
+        
+        add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year',{1},{0})");
+        add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('month',{1},{0})");
+        add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week',{1},{0})");
+        add(Ops.DateTimeOps.ADD_DAYS, "dateadd('day',{1},{0})");
+        add(Ops.DateTimeOps.ADD_HOURS, "dateadd('hour',{1},{0})");
+        add(Ops.DateTimeOps.ADD_MINUTES, "dateadd('minute',{1},{0})");
+        add(Ops.DateTimeOps.ADD_SECONDS, "dateadd('second',{1},{0})");
 
         // string
         add(Ops.CONCAT, "{0} || {1}", 38);

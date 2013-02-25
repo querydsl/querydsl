@@ -73,8 +73,13 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.AggOps.BOOLEAN_ANY, "bit_or({0})", 0);
         add(Ops.AggOps.BOOLEAN_ALL, "bit_and({0})", 0);
         
-//        add(Ops.DateTimeOps.DATE_ADD, "timestampadd({2s}, {1}, {0})");
-//        add(Ops.DateTimeOps.DATE_DIFF, "timestampdiff({2s}, {0}, {1})");
+        add(Ops.DateTimeOps.ADD_YEARS, "date_add({0}, interval {1s} year)");
+        add(Ops.DateTimeOps.ADD_MONTHS, "date_add({0}, interval {1s} month)");
+        add(Ops.DateTimeOps.ADD_WEEKS, "date_add({0}, interval {1s} week)");
+        add(Ops.DateTimeOps.ADD_DAYS, "date_add({0}, interval {1s} day)");
+        add(Ops.DateTimeOps.ADD_HOURS, "date_add({0}, interval {1s} hour)");
+        add(Ops.DateTimeOps.ADD_MINUTES, "date_add({0}, interval {1s} minute)");
+        add(Ops.DateTimeOps.ADD_SECONDS, "date_add({0}, interval {1s} second)");
         
     }
 

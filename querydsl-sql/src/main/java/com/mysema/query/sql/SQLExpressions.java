@@ -18,6 +18,10 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateOperation;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.DateTimeOperation;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.Wildcard;
@@ -48,12 +52,147 @@ public final class SQLExpressions {
         return BooleanOperation.create(Ops.AggOps.BOOLEAN_ALL, expr);
     }
     
+    /**
+     * @param sequence
+     * @return
+     */
     public static final SimpleExpression<Long> nextval(String sequence) {
         return nextval(Long.class, sequence);
     }    
     
+    /**
+     * @param type
+     * @param sequence
+     * @return
+     */
     public static final <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
         return SimpleOperation.create(type, SQLTemplates.NEXTVAL, ConstantImpl.create(sequence));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addYears(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addMonths(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addWeeks(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addDays(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addHours(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_HOURS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addMinutes(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MINUTES, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> addSeconds(DateTimeExpression<D> date, int days) {
+        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_SECONDS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addYears(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addMonths(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addWeeks(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addDays(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addHours(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_HOURS, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addMinutes(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MINUTES, date, ConstantImpl.create(days));
+    }
+    
+    /**
+     * @param date
+     * @param days
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> addSeconds(DateExpression<D> date, int days) {
+        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_SECONDS, date, ConstantImpl.create(days));
     }
     
     private SQLExpressions() {}

@@ -39,8 +39,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -419,7 +421,28 @@ public class SelectBase extends AbstractBaseTest{
         System.out.println(query.limit(1).list(employee.datefield.month()));
         System.out.println(query.limit(1).list(employee.datefield.year()));
     }
-
+    
+    @Test
+    @ExcludeIn({CUBRID, SQLITE})
+    public void Date_Add() {
+        TestQuery query = query().from(employee);
+        Date date1 = query.singleResult(employee.datefield);
+        Date date2 = query.singleResult(SQLExpressions.addYears(employee.datefield, 1));
+        Date date3 = query.singleResult(SQLExpressions.addMonths(employee.datefield, 1));
+        Date date4 = query.singleResult(SQLExpressions.addDays(employee.datefield, 1));
+        
+        Date date5 = query.singleResult(SQLExpressions.addHours(employee.datefield, 1));
+        Date date6 = query.singleResult(SQLExpressions.addMinutes(employee.datefield, 1));
+        Date date7 = query.singleResult(SQLExpressions.addSeconds(employee.datefield, 1));
+                
+        assertTrue(date2.getTime() > date1.getTime());
+        assertTrue(date3.getTime() > date1.getTime());
+        assertTrue(date4.getTime() > date1.getTime());
+//        assertTrue(date5.getTime() > date1.getTime());
+//        assertTrue(date6.getTime() > date1.getTime());
+//        assertTrue(date7.getTime() > date1.getTime());
+    }
+    
     private double degrees(double x) {
         return x * 180.0 / Math.PI;
     }

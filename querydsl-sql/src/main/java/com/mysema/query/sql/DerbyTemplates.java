@@ -64,6 +64,13 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         
 //        add(Ops.DateTimeOps.DATE_ADD, "date_add({0}, INTERVAL {1} {2s})");
+        add(Ops.DateTimeOps.ADD_YEARS, "{fn timestampadd(SQL_TSI_YEAR, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_MONTHS, "{fn timestampadd(SQL_TSI_MONTH, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_WEEKS, "{fn timestampadd(SQL_TSI_WEEK, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_DAYS, "{fn timestampadd(SQL_TSI_DAY, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_HOURS, "{fn timestampadd(SQL_TSI_HOUR, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_MINUTES, "{fn timestampadd(SQL_TSI_MINUTE, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_SECONDS, "{fn timestampadd(SQL_TSI_SECOND, {1}, {0})}");
     }
     
     @Override

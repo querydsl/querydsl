@@ -82,6 +82,13 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.AggOps.BOOLEAN_ANY, "bool_or({0})", 0);
         add(Ops.AggOps.BOOLEAN_ALL, "bool_and({0})", 0);
 
+        add(Ops.DateTimeOps.ADD_YEARS, "{0} + interval '{1s} years'");
+        add(Ops.DateTimeOps.ADD_MONTHS, "{0} + interval '{1s} months'");
+        add(Ops.DateTimeOps.ADD_WEEKS, "{0} + interval '{1s} weeks'");
+        add(Ops.DateTimeOps.ADD_DAYS, "{0} + interval '{1s} days'");
+        add(Ops.DateTimeOps.ADD_HOURS, "{0} + interval '{1s} hours'");
+        add(Ops.DateTimeOps.ADD_MINUTES, "{0} + interval '{1s} minutes'");
+        add(Ops.DateTimeOps.ADD_SECONDS, "{0} + interval '{1s} seconds'");
         
 //        add(Ops.DateTimeOps.DATE_ADD, "timestamp {0} + interval '{1s} {2s}s'");
 

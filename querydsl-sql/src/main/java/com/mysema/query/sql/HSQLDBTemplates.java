@@ -46,6 +46,14 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        
+        add(Ops.DateTimeOps.ADD_YEARS, "dateadd('yy', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('mm', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_DAYS, "dateadd('dd', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_HOURS, "dateadd('hh', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_MINUTES, "dateadd('mi', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_SECONDS, "dateadd('ss', {1s}, {0})");
     }
     
     @Override

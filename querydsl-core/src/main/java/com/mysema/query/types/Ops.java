@@ -238,6 +238,20 @@ public final class Ops {
         
         public static final Operator<Comparable> CURRENT_TIMESTAMP = new OperatorImpl<Comparable>("CURRENT_TIMESTAMP");
         
+        public static final Operator<Comparable> ADD_YEARS = new OperatorImpl<Comparable>("ADD_YEARS");
+        
+        public static final Operator<Comparable> ADD_MONTHS = new OperatorImpl<Comparable>("ADD_MONTHS");
+        
+        public static final Operator<Comparable> ADD_WEEKS = new OperatorImpl<Comparable>("ADD_WEEKS");
+        
+        public static final Operator<Comparable> ADD_DAYS = new OperatorImpl<Comparable>("ADD_DAYS");
+        
+        public static final Operator<Comparable> ADD_HOURS = new OperatorImpl<Comparable>("ADD_HOURS");        
+        
+        public static final Operator<Comparable> ADD_MINUTES = new OperatorImpl<Comparable>("ADD_MINUTES");
+        
+        public static final Operator<Comparable> ADD_SECONDS = new OperatorImpl<Comparable>("ADD_MINUTES");
+        
         public static final Operator<Integer> HOUR = new OperatorImpl<Integer>("HOUR");
         
         public static final Operator<Integer> MINUTE = new OperatorImpl<Integer>("MINUTE");

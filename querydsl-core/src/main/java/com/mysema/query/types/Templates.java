@@ -141,9 +141,15 @@ public class Templates {
         add(Ops.DateTimeOps.YEAR_MONTH, "yearMonth({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "dayofmonth({0})");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
-//        add(Ops.DateTimeOps.DATE_ADD, "dateadd({0},{1},{2})");
-//        add(Ops.DateTimeOps.DATE_DIFF, "datediff({0},{1},{2})");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");        
+        
+        add(Ops.DateTimeOps.ADD_YEARS, "add_years({0},{1})");
+        add(Ops.DateTimeOps.ADD_MONTHS, "add_months({0},{1})");
+        add(Ops.DateTimeOps.ADD_WEEKS, "add_days({0},{1})");
+        add(Ops.DateTimeOps.ADD_DAYS, "add_days({0},{1})");
+        add(Ops.DateTimeOps.ADD_HOURS, "add_hours({0},{1})");
+        add(Ops.DateTimeOps.ADD_MINUTES, "add_minutes({0},{1})");
+        add(Ops.DateTimeOps.ADD_SECONDS, "add_seconds({0},{1})");
 
         // math
         add(Ops.MathOps.ABS, "abs({0})");
