@@ -216,7 +216,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         Query query = createQuery(projection);
         reset();
-        return new IteratorAdapter<RT>(query.iterate());
+        ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
+        return new ScrollableResultsIterator<RT>(results);
     }
 
     public List<Tuple> list(Expression<?>... args) {

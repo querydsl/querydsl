@@ -17,12 +17,15 @@ import java.util.Iterator;
 
 import javax.persistence.Query;
 
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.ejb.HibernateQuery;
 import org.hibernate.transform.ResultTransformer;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
+import com.mysema.query.jpa.hibernate.ScrollableResultsIterator;
 import com.mysema.query.types.FactoryExpression;
 
 /**
@@ -33,11 +36,21 @@ public class HibernateHandler implements QueryHandler {
 
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
-        Iterator<T> iterator = query.getResultList().iterator();
-        if (projection != null) {
-            return new TransformingIterator<T>(iterator, projection);                
+        if (query instanceof HibernateQuery) {
+            HibernateQuery hQuery = (HibernateQuery)query;
+            ScrollableResults results = hQuery.getHibernateQuery().scroll(ScrollMode.FORWARD_ONLY);
+            CloseableIterator<T> iterator = new ScrollableResultsIterator<T>(results);
+            if (projection != null) {
+                iterator = new TransformingIterator<T>(iterator, projection);
+            }
+            return iterator;
         } else {
-            return new IteratorAdapter<T>(iterator);
+            Iterator<T> iterator = query.getResultList().iterator();
+            if (projection != null) {
+                return new TransformingIterator<T>(iterator, projection);                
+            } else {
+                return new IteratorAdapter<T>(iterator);
+            }        
         }        
     }
     
