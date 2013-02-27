@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
@@ -92,6 +93,16 @@ public class JPABase extends AbstractStandardTest {
         assertEquals("Bob123", cats.get(0).getName());
     }
 
+    @Test
+    public void Iterate() {
+        CloseableIterator<Cat> cats = query().from(QCat.cat).iterate(QCat.cat);
+        while (cats.hasNext()) {
+            Cat cat = cats.next();            
+            assertNotNull(cat);
+        }
+        cats.close();
+    }
+    
     @Test
     public void QueryExposure(){
         //save(new Cat(20));

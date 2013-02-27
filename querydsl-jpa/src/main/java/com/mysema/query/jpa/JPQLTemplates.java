@@ -43,12 +43,20 @@ public class JPQLTemplates extends Templates {
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
     
+    private final QueryHandler queryHandler;
+    
     protected JPQLTemplates() {
-        this(DEFAULT_ESCAPE);
+        this(DEFAULT_ESCAPE, DefaultQueryHandler.DEFAULT);
     }
     
     protected JPQLTemplates(char escape) {
+        this(escape, DefaultQueryHandler.DEFAULT);
+    }
+    
+    protected JPQLTemplates(char escape, QueryHandler queryHandler) {
         super(escape);
+        this.queryHandler = queryHandler;
+        
         //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -168,6 +176,9 @@ public class JPQLTemplates extends Templates {
     public boolean isWithForOn() {
         return false;
     }
-    
 
+    public QueryHandler getQueryHandler() {
+        return queryHandler;
+    }
+    
 }

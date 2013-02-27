@@ -22,6 +22,19 @@ import com.mysema.query.types.Ops;
  *
  */
 public class EclipseLinkTemplates extends JPQLTemplates {
+    
+    private static final QueryHandler QUERY_HANDLER;
+    
+    static {
+        QueryHandler instance;
+        try {
+            instance = (QueryHandler) Class.forName("com.mysema.query.jpa.EclipseLinkHandler").newInstance();
+        } catch (Exception e) {
+            instance = DefaultQueryHandler.DEFAULT;
+        }
+        QUERY_HANDLER = instance;
+    }
+
 
     public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
 
@@ -30,7 +43,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
     }
     
     public EclipseLinkTemplates(char escape) {
-        super(escape);        
+        super(escape, QUERY_HANDLER);        
         add(Ops.STRING_CAST, "cast({0} as varchar)");        
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 

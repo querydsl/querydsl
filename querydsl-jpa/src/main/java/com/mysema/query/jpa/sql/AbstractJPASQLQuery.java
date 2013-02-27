@@ -38,6 +38,8 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.NativeSQLSerializer;
+import com.mysema.query.jpa.QueryHandler;
+import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
@@ -71,6 +73,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     protected final SQLTemplates templates;
     
     protected final Multimap<String,Object> hints = HashMultimap.create();
+    
+    protected final QueryHandler queryHandler;
 
     @Nullable
     protected Expression<?> union;
@@ -86,14 +90,15 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     @Nullable
     protected FactoryExpression<?> projection;
 
-    public AbstractJPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
-        this(entityManager, sqlTemplates, new DefaultQueryMetadata());
+    public AbstractJPASQLQuery(EntityManager em, SQLTemplates sqlTemplates) {
+        this(em, sqlTemplates, new DefaultQueryMetadata());
     }
 
-    public AbstractJPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+    public AbstractJPASQLQuery(EntityManager em, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(metadata);
-        this.entityManager = entityManager;
+        this.entityManager = em;
         this.templates = sqlTemplates;
+        this.queryHandler = JPAProvider.getTemplates(em).getQueryHandler();
     }
 
     private String buildQueryString(boolean forCountRow) {
@@ -230,8 +235,9 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator());
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
+        Query query = createQuery(expr);
+        return queryHandler.<RT>iterate(query, null);
     }
 
     @Override

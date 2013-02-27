@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2013, Mysema Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,18 +11,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.jpa.impl;
+package com.mysema.query.jpa;
 
+import javax.annotation.Nullable;
 import javax.persistence.Query;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.FactoryExpression;
 
 /**
+ * QueryHandler provides injection of provider specific functionality into the query logic
+ * 
  * @author tiwe
  *
  */
-public interface QueryTransformer {
+public interface QueryHandler {
     
-    void transform(Query query, FactoryExpression<?> projection);
-
+    /**
+     * @param query
+     * @return
+     */
+    <T> CloseableIterator<T> iterate(Query query, @Nullable FactoryExpression<?> projection);
+    
+    /**
+     * @param query
+     * @param projection
+     * @return
+     */
+    boolean transform(Query query, FactoryExpression<?> projection);
+    
 }

@@ -28,6 +28,18 @@ import com.mysema.query.types.PathType;
  *
  */
 public class HQLTemplates extends JPQLTemplates {
+    
+    private static final QueryHandler QUERY_HANDLER;
+    
+    static {
+        QueryHandler instance;
+        try {
+            instance = (QueryHandler) Class.forName("com.mysema.query.jpa.HibernateHandler").newInstance();
+        } catch (Exception e) {
+            instance = DefaultQueryHandler.DEFAULT;
+        }
+        QUERY_HANDLER = instance;
+    }
 
     private static final List<Operator<?>> wrapElements = Arrays.<Operator<?>> asList(
             Ops.QuantOps.ALL,
@@ -42,7 +54,7 @@ public class HQLTemplates extends JPQLTemplates {
     }
     
     public HQLTemplates(char escape) {
-        super(escape);
+        super(escape, QUERY_HANDLER);
      // TODO : remove this when Hibernate supports type(alias)
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
      // TODO : remove this when Hibernate supports type(alias)

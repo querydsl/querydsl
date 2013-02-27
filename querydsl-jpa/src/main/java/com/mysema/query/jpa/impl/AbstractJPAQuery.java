@@ -14,7 +14,6 @@
 package com.mysema.query.jpa.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multiset.Entry;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
@@ -40,6 +37,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.JPAQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
@@ -55,35 +53,11 @@ import com.mysema.query.types.QTuple;
 public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JPAQueryBase<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
-
-    private static Class<?> hibernateQueryClass;
-    
-    private static QueryTransformer hibernateQueryTransformer;
-    
-    static {
-        try {
-            hibernateQueryClass = Class.forName("org.hibernate.ejb.HibernateQuery");
-        } catch (ClassNotFoundException e) {
-            // do nothing
-        }
-        try {
-            hibernateQueryTransformer = (QueryTransformer) Class.forName(
-                    "com.mysema.query.jpa.impl.HibernateQueryTransformation").newInstance();            
-        } catch (ClassNotFoundException e) {
-            // do nothing
-        } catch (SecurityException e) {
-            // do nothing
-        } catch (NoClassDefFoundError e) {
-            // do nothing
-        } catch (InstantiationException e) {
-            // do nothing
-        } catch (IllegalAccessException e) {
-            // do nothing
-        }
-    }
     
     protected final Multimap<String,Object> hints = HashMultimap.create();
 
+    protected final QueryHandler queryHandler;
+    
     @Nullable
     protected LockModeType lockMode;
     
@@ -97,8 +71,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         this(em, JPAProvider.getTemplates(em), new DefaultQueryMetadata());
     }
 
-    public AbstractJPAQuery(EntityManager em, JPQLTemplates patterns, QueryMetadata metadata) {
-        super(metadata, patterns, em); 
+    public AbstractJPAQuery(EntityManager em, JPQLTemplates templates, QueryMetadata metadata) {
+        super(metadata, templates, em);
+        this.queryHandler = templates.getQueryHandler();
     }
 
     public long count() {
@@ -179,16 +154,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         
         if (!forCount && ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null)) {
             Expression<?> expr = wrapped != null ? wrapped : projection.get(0);            
-            QueryTransformer transformation = null;
-            if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
-                transformation = hibernateQueryTransformer;
-            }
-//            else if (query.getClass().getName().startsWith("org.eclipse.persistence")) {
-//                transformation = "com.mysema.query.jpa.impl.EclipseLinkQueryTransformation";
-//            }
-            if (transformation != null) {
-                transformation.transform(query, (FactoryExpression<?>)expr);                
-            } else {
+
+            if (!queryHandler.transform(query, (FactoryExpression<?>)expr)) {                
                 this.projection = (FactoryExpression<?>)projection.get(0);
                 if (wrapped != null) {
                     this.projection = wrapped;
@@ -255,8 +222,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         return iterate(new QTuple(args));
     }
 
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator());
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
+        Query query = createQuery(expr);
+        return queryHandler.<RT>iterate(query, projection);
     }
 
     @Override

@@ -11,13 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.jpa.impl;
+package com.mysema.query.jpa;
+
+import java.util.Iterator;
 
 import javax.persistence.Query;
 
 import org.hibernate.ejb.HibernateQuery;
 import org.hibernate.transform.ResultTransformer;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
 import com.mysema.query.types.FactoryExpression;
 
@@ -25,13 +29,26 @@ import com.mysema.query.types.FactoryExpression;
  * @author tiwe
  *
  */
-public class HibernateQueryTransformer implements QueryTransformer {
+public class HibernateHandler implements QueryHandler {
 
     @Override
-    public void transform(Query query, FactoryExpression<?> projection) {
+    public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
+        Iterator<T> iterator = query.getResultList().iterator();
+        if (projection != null) {
+            return new TransformingIterator<T>(iterator, projection);                
+        } else {
+            return new IteratorAdapter<T>(iterator);
+        }        
+    }
+    
+    @Override
+    public boolean transform(Query query, FactoryExpression<?> projection) {
         if (query instanceof HibernateQuery) {
             ResultTransformer transformer = new FactoryExpressionTransformer(projection); 
-            ((HibernateQuery)query).getHibernateQuery().setResultTransformer(transformer);                    
+            ((HibernateQuery)query).getHibernateQuery().setResultTransformer(transformer);
+            return true;
+        } else {
+            return false;
         }
     }
 
