@@ -98,7 +98,7 @@
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>eclipselink</artifactId>
       <version>2.4.0</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
     
     <dependency>
