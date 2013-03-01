@@ -13,6 +13,7 @@
  */
 package com.mysema.query.support;
 
+import com.mysema.query.Detachable;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
@@ -27,7 +28,6 @@ import com.mysema.query.types.query.BooleanSubQuery;
 import com.mysema.query.types.query.ComparableSubQuery;
 import com.mysema.query.types.query.DateSubQuery;
 import com.mysema.query.types.query.DateTimeSubQuery;
-import com.mysema.query.types.query.Detachable;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;

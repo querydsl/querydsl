@@ -13,7 +13,7 @@
  */
 package com.mysema.query.jpa;
 
-import com.mysema.query.types.query.Detachable;
+import com.mysema.query.Detachable;
 
 /**
  * @author tiwe

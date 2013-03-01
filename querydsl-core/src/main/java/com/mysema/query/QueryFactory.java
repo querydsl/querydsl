@@ -13,7 +13,6 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.types.query.Detachable;
 
 /**
  * Common interface for QueryFactory implementations

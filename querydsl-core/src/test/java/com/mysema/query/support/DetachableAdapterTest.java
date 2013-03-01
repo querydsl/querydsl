@@ -19,9 +19,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.Detachable;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.query.Detachable;
 
 
 @SuppressWarnings("unchecked")
