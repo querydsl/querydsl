@@ -24,8 +24,6 @@ import org.hibernate.transform.ResultTransformer;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
-import com.mysema.query.jpa.hibernate.ScrollableResultsIterator;
 import com.mysema.query.types.FactoryExpression;
 
 /**

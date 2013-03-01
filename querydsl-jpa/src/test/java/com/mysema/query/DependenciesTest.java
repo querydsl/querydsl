@@ -32,7 +32,7 @@ public class DependenciesTest {
         jdepend.addDirectory("target/classes/com/mysema/query/jpa/impl");
         jdepend.addDirectory("target/classes/com/mysema/query/jpa/sql");
 
-        jdepend.analyze();    
+        jdepend.analyze();        
         assertFalse(jdepend.containsCycles());
 
     }

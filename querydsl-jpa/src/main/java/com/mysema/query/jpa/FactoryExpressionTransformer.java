@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.jpa.hibernate;
+package com.mysema.query.jpa;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import org.hibernate.transform.ResultTransformer;
 import com.mysema.query.types.FactoryExpression;
 
 /**
- * FactoryExpressionTransformer is a ResultTransformer implementation using the EConstructor for transformation
+ * FactoryExpressionTransformer is a ResultTransformer implementation using JavaPackages for transformation
  * 
  * @author tiwe
  *

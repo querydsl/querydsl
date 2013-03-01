@@ -82,7 +82,7 @@ public class JPABase extends AbstractStandardTest {
     protected void save(Object entity) {
         entityManager.persist(entity);
     }
-    
+        
     @Test
     public void Finder() {
         Map<String,Object> conditions = new HashMap<String,Object>();
