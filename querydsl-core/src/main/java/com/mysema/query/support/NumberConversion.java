@@ -53,7 +53,11 @@ public class NumberConversion<T> extends ExpressionBase<T> implements FactoryExp
 
     @Override
     public T newInstance(Object... args) {
-        return (T)MathUtils.cast((Number)args[0], (Class)getType());
+        if (args[0] != null) {
+            return (T)MathUtils.cast((Number)args[0], (Class)getType());    
+        } else {
+            return null;
+        }        
     }
 
 }

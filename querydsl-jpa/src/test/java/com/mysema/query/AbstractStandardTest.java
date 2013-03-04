@@ -976,6 +976,20 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    public void Sum_NoRows_Double() {
+        query().from(cat)
+            .where(cat.name.eq(UUID.randomUUID().toString()))
+            .uniqueResult(cat.bodyWeight.sum());
+    }
+    
+    @Test
+    public void Sum_NoRows_Float() {
+        query().from(cat)
+            .where(cat.name.eq(UUID.randomUUID().toString()))
+            .uniqueResult(cat.floatProperty.sum());
+    }
+    
+    @Test
     public void Sum_as_Float() {
         float val = query().from(cat).uniqueResult(cat.floatProperty.sum());
         assertTrue(val > 0);
