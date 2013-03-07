@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -1127,7 +1128,7 @@ public abstract class AbstractStandardTest {
     }
         
     @Test
-    @ExcludeIn(MYSQL)
+    @ExcludeIn({MYSQL, DERBY})
     @NoBatooJPA
     public void GroupBy() {
         QAuthor author = QAuthor.author;

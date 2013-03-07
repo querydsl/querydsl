@@ -94,6 +94,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
+    @ExcludeIn(Target.DERBY)
     public void Iterate() {
         CloseableIterator<Cat> cats = query().from(QCat.cat).iterate(QCat.cat);
         while (cats.hasNext()) {
@@ -129,7 +130,7 @@ public class JPABase extends AbstractStandardTest {
                 .list(QCat.cat).isEmpty());
     }
     
-    @Test
+    @Test @Ignore
     @NoHibernate @NoOpenJPA @NoBatooJPA
     public void Hint3() {
         javax.persistence.Query query = query().from(QCat.cat)
