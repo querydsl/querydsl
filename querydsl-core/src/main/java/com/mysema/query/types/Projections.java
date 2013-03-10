@@ -94,6 +94,16 @@ public final class Projections {
     }
     
     /**
+     * Create a Map typed projection for the given expressions
+     * 
+     * @param exprs arguments for the projection
+     * @return
+     */
+    public static QMap map(Expression<?>... exprs) {
+        return new QMap(exprs);
+    }
+    
+    /**
      * Create a Tuple typed projection for the given expressions
      * 
      * @param exprs arguments for the projection
