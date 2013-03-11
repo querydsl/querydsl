@@ -28,13 +28,22 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     private static final long serialVersionUID = 3427652988262514678L;
 
+    public enum NullHandling { Default, NullsFirst, NullsLast }
+    
     private final Order order;
 
     private final Expression<T> target;
+    
+    private final NullHandling nullHandling;
 
-    public OrderSpecifier(Order order, Expression<T> target) {
+    public OrderSpecifier(Order order, Expression<T> target, NullHandling nullhandling) {
         this.order = order;
         this.target = target;
+        this.nullHandling = nullhandling;
+    }
+    
+    public OrderSpecifier(Order order, Expression<T> target) {
+        this(order, target, NullHandling.Default);        
     }
 
     /**
@@ -64,6 +73,27 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
         return target;
     }
 
+    /**
+     * @return
+     */
+    public NullHandling getNullHandling() {
+        return nullHandling;
+    }
+    
+    /**
+     * @return
+     */
+    public OrderSpecifier<T> nullsFirst() {
+        return new OrderSpecifier<T>(order, target, NullHandling.NullsFirst);
+    }
+    
+    /**
+     * @return
+     */
+    public OrderSpecifier<T> nullsLast() {
+        return new OrderSpecifier<T>(order, target, NullHandling.NullsLast);
+    }
+
     @Override
     public String toString() {
         return target + " " + order;
@@ -75,7 +105,8 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
             return true;
         } else if (o instanceof OrderSpecifier) {
             OrderSpecifier<?> os = (OrderSpecifier)o;
-            return os.order.equals(order) && os.target.equals(target);
+            return os.order.equals(order) && os.target.equals(target)
+                    && os.nullHandling.equals(nullHandling);
         } else {
             return false;
         }
