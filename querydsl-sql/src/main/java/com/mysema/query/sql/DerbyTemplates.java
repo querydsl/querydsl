@@ -30,6 +30,15 @@ public class DerbyTemplates extends SQLTemplates {
     private String limitTemplate = "\nfetch first {0s} rows only";
 
     private String offsetTemplate = "\noffset {0s} rows";
+    
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new DerbyTemplates(escape, quote);
+            }            
+        };
+    }
 
     public DerbyTemplates() {
         this('\\',false);

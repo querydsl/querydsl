@@ -24,6 +24,15 @@ import com.mysema.query.types.Ops;
  *
  */
 public class PostgresTemplates extends SQLTemplates {
+    
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new PostgresTemplates(escape, quote);
+            }            
+        };
+    }
 
     public PostgresTemplates() {
         this('\\', false);

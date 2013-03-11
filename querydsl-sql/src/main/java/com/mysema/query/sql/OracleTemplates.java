@@ -15,9 +15,9 @@ package com.mysema.query.sql;
 
 import java.math.BigInteger;
 
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.Ops;
 
 /**
@@ -28,6 +28,15 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  */
 public class OracleTemplates extends SQLTemplates {
+    
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new OracleTemplates(escape, quote);
+            }            
+        };
+    }
 
     private String outerQueryEnd = "\n ) a) where ";
 

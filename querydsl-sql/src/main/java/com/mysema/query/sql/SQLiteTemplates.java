@@ -23,6 +23,15 @@ import com.mysema.query.types.Ops;
  */
 public class SQLiteTemplates extends SQLTemplates {
     
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new SQLiteTemplates(escape, quote);
+            }            
+        };
+    }
+    
     public SQLiteTemplates() {
         this('\\', false);
     }

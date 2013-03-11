@@ -13,6 +13,10 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 public class H2TemplatesTest extends AbstractSQLTemplatesTest{
 
     @Override
@@ -20,4 +24,12 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest{
         return new H2Templates();
     }
 
+    @Test
+    public void Builder() {
+        SQLTemplates templates = H2Templates.builder().quote()
+            .newLineToSingleSpace()
+            .build();
+        
+        assertNotNull(templates);
+    }
 }

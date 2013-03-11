@@ -26,6 +26,15 @@ import com.mysema.query.types.Ops;
  *
  */
 public class MySQLTemplates extends SQLTemplates {
+    
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new MySQLTemplates(escape, quote);
+            }            
+        };
+    }
 
     public MySQLTemplates() {
         this('\\', false);

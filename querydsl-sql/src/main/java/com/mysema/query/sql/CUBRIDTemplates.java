@@ -29,6 +29,15 @@ public class CUBRIDTemplates extends SQLTemplates {
     
     private final String offsetLimitTemplate = "\nlimit {0}, {1}";
 
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new CUBRIDTemplates(escape, quote);
+            }            
+        };
+    }
+    
     public CUBRIDTemplates() {
         this('\\', false);
     }

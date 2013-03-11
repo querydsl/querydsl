@@ -48,6 +48,45 @@ public class SQLTemplates extends Templates {
     
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
+    public static abstract class Builder {
+        
+        protected boolean printSchema, quote, newLineToSingleSpace;
+        
+        protected char escape = '\\';
+        
+        public Builder printSchema() {
+            printSchema = true;
+            return this;
+        }
+        
+        public Builder quote() {
+            quote = true;
+            return this;
+        }
+        
+        public Builder newLineToSingleSpace() {
+            newLineToSingleSpace = true;
+            return this;
+        }
+        
+        public Builder escape(char ch) {
+            escape = ch;
+            return this;
+        }
+        
+        protected abstract SQLTemplates build(char escape, boolean quote);
+        
+        public SQLTemplates build() {
+            SQLTemplates templates = build(escape, quote);
+            if (newLineToSingleSpace) {
+                templates.newLineToSingleSpace();    
+            } 
+            templates.setPrintSchema(printSchema);
+            return templates;            
+        }
+        
+    }
+    
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
     private final String quoteStr;

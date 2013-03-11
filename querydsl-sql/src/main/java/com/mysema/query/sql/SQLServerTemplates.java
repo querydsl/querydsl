@@ -13,9 +13,9 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.sql.mssql.SQLServerGrammar;
 import com.mysema.query.types.Ops;
@@ -30,6 +30,15 @@ import com.mysema.query.types.OrderSpecifier;
  *
  */
 public class SQLServerTemplates extends SQLTemplates{
+    
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new SQLServerTemplates(escape, quote);
+            }            
+        };
+    }
 
     private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
 

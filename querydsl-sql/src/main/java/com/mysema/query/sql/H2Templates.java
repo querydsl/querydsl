@@ -23,6 +23,15 @@ import com.mysema.query.types.Ops;
  */
 public class H2Templates extends SQLTemplates {
 
+    public static Builder builder() {
+        return new Builder() {
+            @Override
+            protected SQLTemplates build(char escape, boolean quote) {
+                return new H2Templates(escape, quote);
+            }            
+        };
+    }
+    
     public H2Templates() {
         this('\\', false);
     }
