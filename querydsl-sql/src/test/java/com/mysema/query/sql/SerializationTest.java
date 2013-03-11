@@ -68,7 +68,17 @@ public class SerializationTest {
         updateClause.set(survey.name, (String)null);
         assertEquals("update SURVEY\nset ID = ?, NAME = ?", updateClause.toString());
     }
-
+    
+    @Test
+    public void Update_Where(){
+        QSurvey survey = new QSurvey("survey");
+        SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
+        updateClause.set(survey.id, 1);
+        updateClause.set(survey.name, (String)null);
+        updateClause.where(survey.name.eq("XXX"));
+        assertEquals("update SURVEY\nset ID = ?, NAME = ?\nwhere SURVEY.NAME = ?", updateClause.toString());
+    }
+    
     @Test
     public void Insert(){
         QSurvey survey = new QSurvey("survey");

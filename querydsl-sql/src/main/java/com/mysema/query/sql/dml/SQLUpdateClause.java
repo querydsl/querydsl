@@ -198,7 +198,6 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         return this;
     }
 
-    @java.lang.SuppressWarnings("unchecked")
     @Override
     public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
