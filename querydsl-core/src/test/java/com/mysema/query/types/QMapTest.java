@@ -17,10 +17,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.path.StringPath;
 
 public class QMapTest {
