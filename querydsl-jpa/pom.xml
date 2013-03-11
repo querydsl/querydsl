@@ -35,19 +35,19 @@
           <artifactId>asm</artifactId>
         </exclusion>
       </exclusions>      
-      <optional>true</optional>      
+      <scope>provided</scope>      
     </dependency>   
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
       <version>${hibernate.version}</version>
-      <optional>true</optional>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
-      <optional>true</optional>
+      <scope>provided</scope>
       <exclusions>    
         <exclusion>
             <groupId>org.slf4j</groupId>
@@ -79,8 +79,7 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.parent.version}</version>
-      <scope>compile</scope>
-      <optional>true</optional> 
+      <scope>provided</scope> 
     </dependency>    
     
     <dependency>
@@ -98,7 +97,7 @@
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>eclipselink</artifactId>
       <version>2.4.0</version>
-      <optional>true</optional>
+      <scope>provided</scope>
     </dependency>
     
     <dependency>
