@@ -177,6 +177,10 @@ public class SQLTemplates extends Templates {
     
     private String createUniqueIndex = "create unique index ";
     
+    private String nullsFirst = " nulls first";
+    
+    private String nullsLast = " nulls last";
+    
     private boolean parameterMetadataAvailable = true;
     
     private boolean batchCountViaGetUpdateCount = false;
@@ -490,8 +494,16 @@ public class SQLTemplates extends Templates {
         return unionsWrapped;
     }
 
-    public  final boolean isFunctionJoinsWrapped() {
+    public final boolean isFunctionJoinsWrapped() {
         return functionJoinsWrapped;
+    }
+    
+    public final String getNullsFirst() {
+        return nullsFirst;
+    }
+    
+    public final String getNullsLast() {
+        return nullsLast;
     }
     
     protected void newLineToSingleSpace() {
@@ -732,6 +744,14 @@ public class SQLTemplates extends Templates {
 
     protected void setFunctionJoinsWrapped(boolean functionJoinsWrapped) {
         this.functionJoinsWrapped = functionJoinsWrapped;
+    }
+
+    protected void setNullsFirst(String nullsFirst) {
+        this.nullsFirst = nullsFirst;
+    }
+
+    protected void setNullsLast(String nullsLast) {
+        this.nullsLast = nullsLast;
     }
     
     

@@ -16,7 +16,7 @@ package com.mysema.query.sql;
 import com.mysema.query.types.Ops;
 
 /**
- * CUBRIDTemplates is a SQL dialect for SQLite
+ * SQLiteTemplates is a SQL dialect for SQLite
  * 
  * @author tiwe
  *
@@ -45,6 +45,8 @@ public class SQLiteTemplates extends SQLTemplates {
         setDummyTable(null);
         setBigDecimalSupported(false);
         setUnionsWrapped(false);
+        setNullsFirst(null);
+        setNullsLast(null);
         add(Ops.MOD, "{0} % {1}");
         
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");

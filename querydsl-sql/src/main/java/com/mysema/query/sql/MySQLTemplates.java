@@ -47,6 +47,9 @@ public class MySQLTemplates extends SQLTemplates {
     public MySQLTemplates(char escape, boolean quote) {
         super("`", escape, quote);
         setParameterMetadataAvailable(false);
+        setNullsFirst(null);
+        setNullsLast(null);
+        
         addClass2TypeMappings("bool", Boolean.class);
         addClass2TypeMappings("int", Integer.class);
         

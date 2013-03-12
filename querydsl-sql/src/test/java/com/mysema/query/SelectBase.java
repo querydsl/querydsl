@@ -42,7 +42,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -801,6 +800,20 @@ public class SelectBase extends AbstractBaseTest{
         query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).count();
         query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).count();
         query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).count();
+    }
+    
+    @Test
+    public void Order_NullsFirst() {
+        query().from(survey)
+            .orderBy(survey.name.asc().nullsFirst())
+            .list(survey.name);
+    }
+    
+    @Test
+    public void Order_NullsLast() {
+        query().from(survey)
+            .orderBy(survey.name.asc().nullsLast())
+            .list(survey.name);
     }
     
     @Test

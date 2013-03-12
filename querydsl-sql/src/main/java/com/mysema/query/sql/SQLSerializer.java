@@ -278,7 +278,29 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     append(COMMA);
                 }
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
+                String order = os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc();
+                if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {                    
+                    if (templates.getNullsFirst() != null) {
+                        append(order);    
+                        append(templates.getNullsFirst());
+                    } else {
+                        append(" is not null, ");
+                        handle(os.getTarget());
+                        append(order);
+                    }                    
+                } else if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsLast) {
+                    if (templates.getNullsLast() != null) {
+                        append(order);
+                        append(templates.getNullsLast());    
+                    } else {
+                        append(" is null, ");
+                        handle(os.getTarget());
+                        append(order);
+                    }
+                    
+                } else {
+                    append(order);
+                }
                 first = false;
             }
             if (hasFlags) {
