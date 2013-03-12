@@ -13,6 +13,10 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 
 
 public class MySQLTemplatesTest extends AbstractSQLTemplatesTest{
@@ -21,6 +25,19 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest{
     protected SQLTemplates createTemplates() {
         return new MySQLTemplates();
     }    
+    
+    @Test
+    public void Order_NullsFirst() {
+        query.from(survey1).orderBy(survey1.name.asc().nullsFirst());
+        assertEquals("from SURVEY survey1 order by survey1.NAME is not null, survey1.NAME asc", query.toString());
+    }
+    
+    @Test
+    public void Order_NullsLast() {
+        query.from(survey1).orderBy(survey1.name.asc().nullsLast());
+        assertEquals("from SURVEY survey1 order by survey1.NAME is null, survey1.NAME asc", query.toString());
+    }
+    
 
 
 }

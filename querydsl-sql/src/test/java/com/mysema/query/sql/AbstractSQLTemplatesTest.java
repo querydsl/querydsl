@@ -72,18 +72,6 @@ public abstract class AbstractSQLTemplatesTest {
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
     
-    @Test
-    public void Order_NullsFirst() {
-        query.from(survey1).orderBy(survey1.name.asc().nullsFirst());
-        assertEquals("from SURVEY survey1 order by survey1.NAME is not null, survey1.NAME asc", query.toString());
-    }
-    
-    @Test
-    public void Order_NullsLast() {
-        query.from(survey1).orderBy(survey1.name.asc().nullsLast());
-        assertEquals("from SURVEY survey1 order by survey1.NAME is null, survey1.NAME asc", query.toString());
-    }
-    
     protected SQLSubQuery sq(){
         return new SQLSubQuery();
     }

@@ -50,6 +50,8 @@ public class CUBRIDTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setDummyTable(null);
         setParameterMetadataAvailable(false);
+        setNullsFirst(null);
+        setNullsLast(null);
         
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
