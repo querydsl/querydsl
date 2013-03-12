@@ -17,8 +17,8 @@
   <properties>
     <character.encoding>UTF-8</character.encoding>
 
-    <scala.version>2.9.1</scala.version>
-    <scala.full.version>2.9.1</scala.full.version>
+    <scala.version>2.10</scala.version>
+    <scala.full.version>2.10.0</scala.full.version>
     <hibernate.version>3.5.1-Final</hibernate.version>
     <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
   </properties>
@@ -32,13 +32,13 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
+      <version>${scala.full.version}</version>
       <scope>provided</scope>
     </dependency>
       <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
-      <version>${scala.version}</version>
+      <version>${scala.full.version}</version>
       <scope>test</scope>
     </dependency>
     
@@ -201,7 +201,7 @@
           <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
+            <version>${scala.full.version}</version>
           </dependency>
         </dependencies>
       </plugin>    
