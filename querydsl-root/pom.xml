@@ -31,7 +31,7 @@
     <oracle.version>10.2.0.5.0</oracle.version>
     <mysql.version>5.1.18</mysql.version>
     <jtds.version>1.2.4</jtds.version>
-    <cubrid.version>8.4.1.2032</cubrid.version>
+    <cubrid.version>8.4.0</cubrid.version>
     <sqlite.version>3.7.2</sqlite.version>
     
     <guava.version>13.0.1</guava.version>
@@ -391,7 +391,7 @@
         </repository>      
         <repository>
           <id>jboss</id>
-          <url>http://repository.jboss.org/maven2</url>
+          <url>http://repository.jboss.org</url>
         </repository>
         <repository>
           <id>jboss2</id>
@@ -453,6 +453,10 @@
         <pluginRepository>
           <id>com.springsource.repository.bundles.release</id>
           <url>http://repository.springsource.com/maven/bundles/release</url>
+        </pluginRepository>
+        <pluginRepository>
+          <id>com.springsource.repository.bundles.external</id>
+          <url>http://repository.springsource.com/maven/bundles/external</url>
         </pluginRepository>
       </pluginRepositories>
     </profile>
