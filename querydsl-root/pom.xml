@@ -414,10 +414,6 @@
           <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
         </repository>
         <repository>
-          <id>scala-tools.org</id>
-          <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
           <id>CUBRID</id>
           <url>http://maven.cubrid.org</url>
         </repository>
@@ -445,10 +441,6 @@
         <pluginRepository>
           <id>datanucleus</id>
           <url>http://www.datanucleus.org/downloads/maven2</url>
-        </pluginRepository>
-        <pluginRepository>
-          <id>scala-tools.org</id>
-          <url>http://scala-tools.org/repo-releases</url>
         </pluginRepository>
         <pluginRepository>
           <id>com.springsource.repository.bundles.release</id>
