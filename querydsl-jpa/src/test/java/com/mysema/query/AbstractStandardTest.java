@@ -751,17 +751,19 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @Ignore
     public void Order_NullsFirst() {
-        query().from(cat)
-            .orderBy(cat.name.asc().nullsFirst())
-            .list(cat);
+        assertNull(query().from(cat)
+            .orderBy(cat.dateField.asc().nullsFirst())
+            .singleResult(cat.dateField));
     }
     
     @Test
+    @Ignore
     public void Order_NullsLast() {
-        query().from(cat)
-            .orderBy(cat.name.asc().nullsLast())
-            .list(cat);        
+        assertNotNull(query().from(cat)
+            .orderBy(cat.dateField.asc().nullsLast())
+            .singleResult(cat.dateField));        
     }
         
     @Test
