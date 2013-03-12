@@ -73,16 +73,13 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     @Nullable
-    private volatile NumberExpression<T> abs, sum, min, max, floor, ceil;
+    private volatile NumberExpression<T> abs, sum, min, max, floor, ceil, round;
 
     @Nullable
     private volatile NumberExpression<Double> avg, sqrt;
 
     @Nullable
     private volatile NumberExpression<T> negation;
-
-    @Nullable
-    private volatile NumberExpression<Integer> round;
 
     public NumberExpression(Expression<T> mixin) {
         super(mixin);
@@ -611,9 +608,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Math#round(double)
      * @see java.lang.Math#round(float)
      */
-    public NumberExpression<Integer> round() {
+    public NumberExpression<T> round() {
         if (round == null) {
-            round = NumberOperation.create(Integer.class, MathOps.ROUND, mixin);
+	    round = NumberOperation.create(getType(), MathOps.ROUND, mixin);
         }
         return round;
     }
