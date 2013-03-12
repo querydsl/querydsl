@@ -749,6 +749,20 @@ public abstract class AbstractStandardTest {
         NumberPath<Double> weight = new NumberPath<Double>(Double.class, "weight");
         query().from(cat).orderBy(weight.asc()).list(cat.bodyWeight.as(weight));
     }
+    
+    @Test
+    public void Order_NullsFirst() {
+        query().from(cat)
+            .orderBy(cat.name.asc().nullsFirst())
+            .list(cat);
+    }
+    
+    @Test
+    public void Order_NullsLast() {
+        query().from(cat)
+            .orderBy(cat.name.asc().nullsLast())
+            .list(cat);        
+    }
         
     @Test
     @NoOpenJPA // FIXME

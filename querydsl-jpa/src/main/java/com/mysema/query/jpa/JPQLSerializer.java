@@ -48,6 +48,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
@@ -226,7 +227,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                     append(COMMA);
                 }
                 handle(os.getTarget());
-                append(" " + os.getOrder().toString().toLowerCase(Locale.ENGLISH));
+                append(os.getOrder() == Order.ASC ? " asc" : " desc");
+                if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {
+                    append(" nulls first");
+                } else if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsLast) {
+                    append(" nulls last");
+                }
                 first = false;
             }
         }
