@@ -1,7 +1,7 @@
 package com.mysema.query.scala
 
 import scala.tools.nsc._
-import scala.tools.nsc.InterpreterResults._
+import scala.tools.nsc.interpreter.IR.Success
 import scala.io.Source.fromFile
 import java.io.File
 
