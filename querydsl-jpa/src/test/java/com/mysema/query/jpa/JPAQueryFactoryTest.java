@@ -15,6 +15,8 @@ package com.mysema.query.jpa;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Date;
+
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
@@ -29,6 +31,8 @@ public class JPAQueryFactoryTest {
 
     private JPAQueryFactory queryFactory;
 
+    private JPQLQueryFactory queryFactory2;
+    
     @Before
     public void setUp(){
         Provider<EntityManager> provider = new Provider<EntityManager>(){
@@ -38,16 +42,27 @@ public class JPAQueryFactoryTest {
             }
         };
         queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, provider);
+        queryFactory2 = queryFactory;
     }
 
     @Test
     public void Query(){
         assertNotNull(queryFactory.query());
     }
+    
+    @Test
+    public void Query2() {
+        queryFactory2.query().from(QAnimal.animal);
+    }
 
     @Test
     public void SubQuery(){
         assertNotNull(queryFactory.subQuery());
+    }
+    
+    @Test
+    public void SubQuery2() {
+        queryFactory2.subQuery().from(QAnimal.animal);
     }
 
     @Test
@@ -59,10 +74,23 @@ public class JPAQueryFactoryTest {
     public void Delete(){
         assertNotNull(queryFactory.delete(QAnimal.animal));
     }
+    
+    @Test
+    public void Delete2() {
+        queryFactory2.delete(QAnimal.animal)
+            .where(QAnimal.animal.bodyWeight.gt(0));
+    }
 
     @Test
     public void Update(){
         assertNotNull(queryFactory.update(QAnimal.animal));
+    }
+    
+    @Test
+    public void Update2() {
+        queryFactory2.update(QAnimal.animal)
+            .set(QAnimal.animal.birthdate, new Date())
+            .where(QAnimal.animal.birthdate.isNull());
     }
 
 }

@@ -16,8 +16,8 @@ package com.mysema.query.jpa.impl;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
-import com.mysema.query.QueryFactory;
 import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.JPQLQueryFactory;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
 
@@ -27,7 +27,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public class JPAQueryFactory implements QueryFactory<JPAQuery, JPASubQuery>  {
+public class JPAQueryFactory implements JPQLQueryFactory  {
 
     private final JPQLTemplates templates;
 
@@ -42,22 +42,27 @@ public class JPAQueryFactory implements QueryFactory<JPAQuery, JPASubQuery>  {
         this.templates = templates;
     }
 
+    @Override
     public JPADeleteClause delete(EntityPath<?> path) {
         return new JPADeleteClause(entityManager.get(), path, templates);
     }
 
+    @Override
     public JPAQuery from(EntityPath<?> from) {
         return query().from(from);
     }
 
+    @Override
     public JPAUpdateClause update(EntityPath<?> path) {
         return new JPAUpdateClause(entityManager.get(), path, templates);
     }
 
+    @Override
     public JPAQuery query() {
         return new JPAQuery(entityManager.get(), templates);
     }
 
+    @Override
     public JPASubQuery subQuery() {
         return new JPASubQuery();
     }
