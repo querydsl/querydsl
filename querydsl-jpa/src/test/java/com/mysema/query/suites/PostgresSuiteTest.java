@@ -1,10 +1,13 @@
 package com.mysema.query.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.query.Mode;
 import com.mysema.query.Target;
+import com.mysema.testutil.ExternalDB;
 
+@Category(ExternalDB.class)
 public class PostgresSuiteTest extends AbstractSuite {
     
     @BeforeClass
