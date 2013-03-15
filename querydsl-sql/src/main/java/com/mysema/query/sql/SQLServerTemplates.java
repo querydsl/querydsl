@@ -17,18 +17,11 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.sql.mssql.RowNumber;
-import com.mysema.query.sql.mssql.SQLServerGrammar;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateFactory;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
- *
- * <p>tested with MS SQL Server 2008 Express</p>
  *
  * @author tiwe
  *
@@ -45,16 +38,6 @@ public class SQLServerTemplates extends SQLTemplates{
     }
     
     private String topTemplate = "top {0} "; 
-
-    private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
-
-    private String limitTemplate = "row_number <= {0}";
-
-    private String offsetTemplate = "row_number > {0}";
-
-    private String outerQueryStart = "with inner_query as \n(\n  ";
-
-    private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
 
     public SQLServerTemplates() {
         this('\\',false);
@@ -116,24 +99,7 @@ public class SQLServerTemplates extends SQLTemplates{
                         Expressions.template(Integer.class, topTemplate, mod.getLimit())));
                 context.serializeForQuery(metadata, forCountRow);
             } else {
-                // row number based limit and offset
-                context.append(outerQueryStart);
-                metadata = metadata.clone();
-                RowNumber rn = new RowNumber();
-                for (OrderSpecifier<?> os : metadata.getOrderBy()) {
-                    rn.orderBy(os);
-                }
-                metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
-                metadata.clearOrderBy();
-                context.serializeForQuery(metadata, forCountRow);
-                context.append(outerQueryEnd);
-                if (mod.getLimit() == null) {
-                    context.handle(offsetTemplate, mod.getOffset());
-                } else if (mod.getOffset() == null) {
-                    context.handle(limitTemplate, mod.getLimit());
-                } else {
-                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
-                }    
+                throw new IllegalStateException("offset not supported");    
             }            
             
         } else {

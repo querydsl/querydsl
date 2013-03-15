@@ -26,7 +26,7 @@ import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.NumberTemplate;
 
 
-public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
+public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     
     @Override
     @Test
@@ -37,7 +37,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Override
     protected SQLTemplates createTemplates() {
-        return new SQLServerTemplates();
+        return new SQLServer2005Templates();
     }
 
     @SuppressWarnings("unchecked")
@@ -64,9 +64,20 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
     public void Limit() {
         query.from(survey1).limit(5);
         query.getMetadata().addProjection(survey1.id);        
-        assertEquals("select top ? survey1.ID from SURVEY survey1", query.toString());
+        assertEquals("with inner_query as  (   " +
+                "select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
+                "select *  from inner_query where row_number <= ?", query.toString());
     }
-        
+    
+    @Test
+    public void Modifiers(){
+        query.from(survey1).limit(5).offset(3);
+        query.getMetadata().addProjection(survey1.id);        
+        assertEquals("with inner_query as  (   " +
+        		"select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
+        		"select *  from inner_query where row_number > ? and row_number <= ?", query.toString());
+    }
+    
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
