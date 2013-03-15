@@ -13,13 +13,17 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.sql.mssql.SQLServerGrammar;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateFactory;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
@@ -39,6 +43,8 @@ public class SQLServerTemplates extends SQLTemplates{
             }            
         };
     }
+    
+    private String topTemplate = "top {0} "; 
 
     private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
 
@@ -102,27 +108,34 @@ public class SQLServerTemplates extends SQLTemplates{
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
-            // TODO : provide simpler template for limit ?!?
-
-            context.append(outerQueryStart);
-            metadata = metadata.clone();
-            RowNumber rn = new RowNumber();
-            for (OrderSpecifier<?> os : metadata.getOrderBy()) {
-                rn.orderBy(os);
-            }
-            metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
-            metadata.clearOrderBy();
-            context.serializeForQuery(metadata, forCountRow);
-            context.append(outerQueryEnd);
             QueryModifiers mod = metadata.getModifiers();
-            if (mod.getLimit() == null) {
-                context.handle(offsetTemplate, mod.getOffset());
-            } else if (mod.getOffset() == null) {
-                context.handle(limitTemplate, mod.getLimit());
+            if (mod.getOffset() == null) {
+                // select top ...
+                metadata = metadata.clone();
+                metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
+                        Expressions.template(Integer.class, topTemplate, mod.getLimit())));
+                context.serializeForQuery(metadata, forCountRow);
             } else {
-                context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
-            }
-
+                // row number based limit and offset
+                context.append(outerQueryStart);
+                metadata = metadata.clone();
+                RowNumber rn = new RowNumber();
+                for (OrderSpecifier<?> os : metadata.getOrderBy()) {
+                    rn.orderBy(os);
+                }
+                metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
+                metadata.clearOrderBy();
+                context.serializeForQuery(metadata, forCountRow);
+                context.append(outerQueryEnd);
+                if (mod.getLimit() == null) {
+                    context.handle(offsetTemplate, mod.getOffset());
+                } else if (mod.getOffset() == null) {
+                    context.handle(limitTemplate, mod.getLimit());
+                } else {
+                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
+                }    
+            }            
+            
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }

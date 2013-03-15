@@ -28,6 +28,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.Template;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.CaseBuilder;
@@ -122,6 +123,10 @@ public final class Expressions {
     }
     
     public static <T> SimpleExpression<T> template(Class<T> cl, String template, Object... args) {
+        return SimpleTemplate.create(cl, template, args);
+    }
+
+    public static <T> SimpleExpression<T> template(Class<T> cl, Template template, Object... args) {
         return SimpleTemplate.create(cl, template, args);
     }
     
