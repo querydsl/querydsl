@@ -368,7 +368,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Iterator<TypeElement> iterator = elements.iterator();        
         while (iterator.hasNext()) {
             TypeElement element = iterator.next();
-            if (element.getQualifiedName().toString().startsWith("java.")) {
+            String name = element.getQualifiedName().toString();
+            if (name.startsWith("java.") || name.startsWith("org.joda.time.")) {
                 iterator.remove();
             } else {
                 boolean annotated = false;
