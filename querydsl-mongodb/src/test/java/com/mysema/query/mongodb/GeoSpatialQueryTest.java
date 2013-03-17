@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
@@ -28,7 +29,9 @@ import com.mysema.query.mongodb.domain.GeoEntity;
 import com.mysema.query.mongodb.domain.QGeoEntity;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
+import com.mysema.testutil.ExternalDB;
 
+@Category(ExternalDB.class)
 public class GeoSpatialQueryTest {
 
     private final String dbname = "geodb";

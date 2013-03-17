@@ -11,6 +11,7 @@ import java.sql.Statement;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.sql.Configuration;
@@ -19,8 +20,10 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.testutil.Benchmark;
+import com.mysema.testutil.Performance;
 import com.mysema.testutil.Runner;
 
+@Category(Performance.class)
 public class QueryPerformanceTest {
     
     private static final String QUERY = "select COMPANIES.NAME\n" +

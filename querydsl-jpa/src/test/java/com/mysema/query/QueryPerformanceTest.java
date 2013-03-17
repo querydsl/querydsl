@@ -8,15 +8,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.testutil.JPATestRunner;
+import com.mysema.testutil.Performance;
 
 @RunWith(JPATestRunner.class)
 @Ignore
+@Category(Performance.class)
 public class QueryPerformanceTest {
 
     private static final int iterations = 1000;

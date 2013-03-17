@@ -16,8 +16,8 @@ package com.mysema.query.mongodb;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.net.UnknownHostException;
@@ -31,6 +31,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
@@ -53,7 +54,9 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
+import com.mysema.testutil.ExternalDB;
 
+@Category(ExternalDB.class)
 public class MongodbQueryTest {
 
     private final Mongo mongo;

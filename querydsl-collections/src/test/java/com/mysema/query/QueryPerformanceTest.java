@@ -7,14 +7,17 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.CollQueryFactory;
 import com.mysema.query.collections.QCat;
 import com.mysema.testutil.Benchmark;
+import com.mysema.testutil.Performance;
 import com.mysema.testutil.Runner;
 
 @Ignore
+@Category(Performance.class)
 public class QueryPerformanceTest {
     
     private static final int size = 1000;

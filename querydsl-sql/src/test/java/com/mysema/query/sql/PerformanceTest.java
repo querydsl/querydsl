@@ -4,12 +4,15 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.testutil.Performance;
 
+@Category(Performance.class)
 public class PerformanceTest {
     
     private QueryMetadata md;
