@@ -86,6 +86,10 @@ trait SimpleExpression[T] extends DslExpression[T] {
   def notIn(right: T*) = in(right: _*).not
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not
+  
+  def nullif(right: T): SimpleExpression[T] = nullif(constant(right))
+  
+  def nullif(right: Expression[T]) = simple[T](getType, NULLIF.asInstanceOf[Operator[T]], this, right)
 
   def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = {
     if (f == null) isNull else f(this.asInstanceOf[M])
@@ -274,6 +278,10 @@ trait NumberExpression[T] extends SimpleExpression[T] {
   def <[U : Numeric](right: Ex[U]) = lt(right)  
 
   def in[U : Numeric](right: Array[U]) = boolean(IN, this, constant(asList(right: _*)))
+  
+  def like(right: String): BooleanExpression = like(constant(right))
+
+  def like(right: Expression[String]) = boolean(Ops.LIKE, this, right)
 
   lazy val min = number[T](getType, AggOps.MIN_AGG, this)
 
