@@ -803,6 +803,7 @@ public class SelectBase extends AbstractBaseTest{
     }
     
     @Test
+    @ExcludeIn(CUBRID)
     public void Order_NullsFirst() {
         query().from(survey)
             .orderBy(survey.name.asc().nullsFirst())
@@ -810,6 +811,7 @@ public class SelectBase extends AbstractBaseTest{
     }
     
     @Test
+    @ExcludeIn(CUBRID)
     public void Order_NullsLast() {
         query().from(survey)
             .orderBy(survey.name.asc().nullsLast())
