@@ -22,7 +22,7 @@ import org.junit.Test;
 public class EmbeddableTest extends AbstractProcessorTest {
 
     @Test
-    public void Process() throws IOException{
+    public void Process() throws IOException {
         List<String> classes = Collections.singletonList("src/test/java/com/mysema/query/domain/Embeddable2Test.java");
         process(QuerydslAnnotationProcessor.class, classes,"embeddable");
     }

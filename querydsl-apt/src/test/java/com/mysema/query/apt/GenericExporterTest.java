@@ -25,7 +25,7 @@ import com.mysema.query.domain.AbstractEntityTest;
 import com.mysema.query.domain.CustomCollection;
 import com.mysema.query.domain.Generic2Test;
 
-public class GenericExporterTest extends AbstractProcessorTest{
+public class GenericExporterTest extends AbstractProcessorTest {
     
     private static final String PACKAGE_PATH = "src/test/java/com/mysema/query/domain/";
     

@@ -29,12 +29,12 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 @Ignore
-public class EntityExtensionsTest extends AbstractProcessorTest{
+public class EntityExtensionsTest extends AbstractProcessorTest {
     
     private static final String packagePath = "src/test/java/com/mysema/query/apt/";
     
     @Test
-    public void Handles_Entity_Extensions_Correctly() throws IOException, InterruptedException{
+    public void Handles_Entity_Extensions_Correctly() throws IOException, InterruptedException {
         File source = new File(packagePath,  "EntityWithExtensions.java");
         File source2 = new File(packagePath, "EntityExtensions.java");
         List<String> sources = Arrays.asList(source.getPath(), source2.getPath());

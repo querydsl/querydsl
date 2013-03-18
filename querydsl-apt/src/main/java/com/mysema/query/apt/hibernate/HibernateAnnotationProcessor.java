@@ -34,7 +34,7 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
  * @see JPAAnnotationProcessor
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*", "org.hibernate.annotations.*"})
-public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
+public class HibernateAnnotationProcessor extends JPAAnnotationProcessor {
     
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {

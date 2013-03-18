@@ -477,7 +477,7 @@ public final class ExtendedTypeFactory {
             }
 
             return entityType;
-        }else{
+        } else {
             return null;
         }
     }

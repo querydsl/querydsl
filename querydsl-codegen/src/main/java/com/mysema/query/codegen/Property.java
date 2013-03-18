@@ -86,8 +86,7 @@ public final class Property implements Comparable<Property> {
             }    
         } else {
             return new Property(targetModel, name, type, inits, targetModel.getSuperType() != null);
-        }
-        
+        }        
     }
 
     @SuppressWarnings("unchecked")

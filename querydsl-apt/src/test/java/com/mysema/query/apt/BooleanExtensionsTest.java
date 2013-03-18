@@ -25,12 +25,12 @@ import org.junit.Test;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
-public class BooleanExtensionsTest extends AbstractProcessorTest{
+public class BooleanExtensionsTest extends AbstractProcessorTest {
 
     private static final String packagePath = "src/test/apt/com/mysema/query/";
 
     @Test
-    public void Process() throws IOException{
+    public void Process() throws IOException {
         List<String> sources = Arrays.asList(
                 new File(packagePath, "BooleanExtensions.java").getPath(),
                 new File(packagePath, "ExampleEntity.java").getPath());
@@ -41,7 +41,7 @@ public class BooleanExtensionsTest extends AbstractProcessorTest{
     }
     
     @Test
-    public void Process2() throws IOException{
+    public void Process2() throws IOException {
         List<String> sources = Arrays.asList(
                 new File(packagePath, "BooleanExtensions2.java").getPath(),
                 new File(packagePath, "ExampleEntity.java").getPath());

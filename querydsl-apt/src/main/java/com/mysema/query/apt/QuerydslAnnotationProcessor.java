@@ -34,7 +34,7 @@ import com.mysema.query.annotations.QueryTransient;
  *
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*"})
-public class QuerydslAnnotationProcessor extends AbstractQuerydslProcessor{
+public class QuerydslAnnotationProcessor extends AbstractQuerydslProcessor {
     
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {

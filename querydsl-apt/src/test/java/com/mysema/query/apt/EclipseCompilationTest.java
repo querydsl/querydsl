@@ -40,7 +40,7 @@ public class EclipseCompilationTest {
 
     @Test
     @Ignore
-    public void test() throws IOException{
+    public void test() throws IOException {
         System.setProperty("jdt.compiler.useSingleThread", "true");
         // select classes
         List<String> classes = new ArrayList<String>();
@@ -74,9 +74,9 @@ public class EclipseCompilationTest {
         options.addAll(classes);
 
         int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
-        if(compilationResult == 0){
+        if (compilationResult == 0) {
             System.out.println("Compilation is successful");
-        }else{
+        } else {
             Assert.fail("Compilation Failed");
         }
 

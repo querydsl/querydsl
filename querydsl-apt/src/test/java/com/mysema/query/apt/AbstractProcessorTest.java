@@ -42,7 +42,7 @@ public abstract class AbstractProcessorTest {
         return classes;
     }
 
-    protected void process(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException{
+    protected void process(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException {
         File out = new File("target/" + target);
         FileUtils.delete(out);
         if (!out.mkdirs()){
@@ -51,7 +51,7 @@ public abstract class AbstractProcessorTest {
         compile(processorClass, classes, target);
     } 
     
-    protected void compile(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException{
+    protected void compile(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException {
         JavaCompiler compiler = new SimpleCompiler();
         System.out.println(compiler.getClass().getName());
         List<String> options = new ArrayList<String>(classes.size() + 3);
@@ -69,9 +69,9 @@ public abstract class AbstractProcessorTest {
         int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
 
 //        Processor.elementCache.clear();
-        if(compilationResult == 0){
+        if (compilationResult == 0) { 
             System.out.println("Compilation is successful");
-        }else{
+        } else {
             Assert.fail("Compilation Failed");
         }
         

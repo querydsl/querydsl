@@ -35,7 +35,7 @@ public class DelegateTest {
     }
 
     @QueryEntity
-    public static class User extends Identifiable{
+    public static class User extends Identifiable {
 
         String name;
 
@@ -44,37 +44,37 @@ public class DelegateTest {
     }
 
     @QueryEntity
-    public static class SimpleUser extends User{
+    public static class SimpleUser extends User {
 
     }
 
     @QueryEntity
-    public static class SimpleUser2 extends SimpleUser{
+    public static class SimpleUser2 extends SimpleUser {
 
     }
 
     @QueryDelegate(User.class)
-    public static Expression<Boolean> isManagedBy(QDelegateTest_User user, User other){
+    public static Expression<Boolean> isManagedBy(QDelegateTest_User user, User other) {
         return ConstantImpl.create(true);
     }
 
     @QueryDelegate(User.class)
-    public static Expression<Boolean> isManagedBy(QDelegateTest_User user, QDelegateTest_User other){
+    public static Expression<Boolean> isManagedBy(QDelegateTest_User user, QDelegateTest_User other) {
         return ConstantImpl.create(true);
     }
 
     @QueryDelegate(User.class)
-    public static Expression<Boolean> simpleMethod(QDelegateTest_User user){
+    public static Expression<Boolean> simpleMethod(QDelegateTest_User user) {
         return ConstantImpl.create(true);
     }
 
     @QueryDelegate(DelegateTest.User.class)
-    public static StringPath getName(QDelegateTest_User user){
+    public static StringPath getName(QDelegateTest_User user) {
         return user.name;
     }
 
     @Test
-    public void User(){
+    public void User() {
         QDelegateTest_User user = QDelegateTest_User.user;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user));
@@ -83,7 +83,7 @@ public class DelegateTest {
     }
 
     @Test
-    public void SimpleUser(){
+    public void SimpleUser() {
         QDelegateTest_SimpleUser user = QDelegateTest_SimpleUser.simpleUser;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user._super));
@@ -91,7 +91,7 @@ public class DelegateTest {
     }
 
     @Test
-    public void SimpleUser2(){
+    public void SimpleUser2() {
         QDelegateTest_SimpleUser2 user = QDelegateTest_SimpleUser2.simpleUser2;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user._super._super));

@@ -30,7 +30,7 @@ public class AnimalTest {
     }
 
     @QueryEntity
-    public static class Cat extends Animal{
+    public static class Cat extends Animal {
 
         @QueryInit("name")
         public Cat mate;
@@ -38,7 +38,7 @@ public class AnimalTest {
     }
 
     @Test
-    public void Properties_Are_Copied_From_Super(){
+    public void Properties_Are_Copied_From_Super() {
         assertTrue("direct copy of StringPath field failed",  QAnimalTest_Cat.cat.name == QAnimalTest_Cat.cat._super.name);
 
     }
