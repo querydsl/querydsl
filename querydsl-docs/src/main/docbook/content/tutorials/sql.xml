@@ -62,17 +62,6 @@
     <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
     <packageName>com.myproject.domain</packageName>
     <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
-	<!--
-      optional elements :      
-      * jdbcUser = connection user
-      * jdbcPassword = connection password
-      * namePrefix = name prefix for generated query classes (default: Q)
-      * schemaPattern = ant style pattern to restrict code generation to certain schemas (default: null)
-      * tableNamePattern = ant style pattern to restrict code generation to certain tables (default: null)
-      * exportBeans = set to true to generate beans as well, see section 2.14.13 (default: false)
-      * innerClassesForKeys = set to true to generate inner classes for keys (default: false)
-      * validationAnnotations = set to false to disable serialization of validation annotations (default: true)
-    -->     
   </configuration>
   <dependencies>
     <dependency>
@@ -88,6 +77,122 @@
   source root
   instead of a compile source root.</para>
   
+  <table>
+    <title>Parameters</title>
+    <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+      <colspec colname='Name'  colwidth="1*"/>
+      <colspec colname='Descriptions'  colwidth="1*"/>
+      <thead>
+        <row>
+          <entry>Name</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>      
+      <tbody>
+        <row>
+          <entry>jdbcDriver</entry>
+          <entry>class name for JDBC driver</entry>
+        </row>
+        <row>
+          <entry>jdbcUrl</entry>
+          <entry>JDBC url</entry>
+        </row>
+        <row>
+          <entry>jdbcUser</entry>
+          <entry>JDBC user</entry>
+        </row>
+        <row>
+          <entry>jdbcPassword</entry>
+          <entry>JDBC password</entry>
+        </row>
+        <row>
+          <entry>namePrefix</entry>
+          <entry>name prefix for generated query classes (default: Q)</entry>
+        </row>
+        <row>
+          <entry>nameSuffix</entry>
+          <entry>name suffix for generated query classes (default: )</entry>
+        </row>
+        <row>
+          <entry>beanPrefix</entry>
+          <entry>name prefix for generated bean classes</entry>
+        </row>
+        <row>
+          <entry>beanSuffix</entry>
+          <entry>name suffix for generated bean classes</entry>
+        </row>
+        <row>
+          <entry>packageName</entry>
+          <entry>package name where source files should be generated</entry>
+        </row>
+        <row>
+          <entry>beanPackageName</entry>
+          <entry>package name where bean files should be generated, (default: packageName)</entry>
+        </row>
+        <row>
+          <entry>schemaPattern</entry>
+          <entry>ant style pattern to restrict code generation to certain schemas (default: null)</entry>
+        </row>
+        <row>
+          <entry>tableNamePattern</entry>
+          <entry>ant style pattern to restrict code generation to certain tables (default: null)</entry>
+        </row>
+        <row>
+          <entry>targetFolder</entry>
+          <entry>target folder where source filder should be generated</entry>
+        </row>
+        <row>
+          <entry>namingStrategyClass</entry>
+          <entry>class name for NamingStrategy class (default: DefaultNamingStrategy)</entry>
+        </row>
+        <row>
+          <entry>beanSerializerClass</entry>
+          <entry>class name for BeanSerializer class (default: BeanSerializer)</entry>
+        </row>
+        <row>
+          <entry>serializerClass</entry>
+          <entry>class name for Serializer class (default: MetaDataSerializer)</entry>
+        </row>
+        <row>
+          <entry>exportBeans</entry>
+          <entry>set to true to generate beans as well, see section 2.14.13 (default: false)</entry>
+        </row>
+        <row>
+          <entry>innerClassesForKeys</entry>
+          <entry>set to true to generate inner classes for keys (default: false)</entry>
+        </row>
+        <row>
+          <entry>validationAnnotations</entry>
+          <entry>set to false to disable serialization of validation annotations (default: true)</entry>
+        </row>
+        <row>
+          <entry>columnAnnotations</entry>
+          <entry>export column annotations (default: false)</entry>
+        </row>
+        <row>
+          <entry>createScalaSources</entry>
+          <entry>whether to export Scala sources instead of Java sources, (default: false)</entry>
+        </row>
+        <row>
+          <entry>schemaToPackage</entry>
+          <entry>append schema name to package (default: false)</entry>
+        </row>
+        <row>
+          <entry>lowerCase</entry>
+          <entry>lower case transformation of names (default: false)</entry>
+        </row>
+        <row>
+          <entry>exportTables</entry>
+          <entry>export tables (default: true)</entry>
+        </row>
+        <row>
+          <entry>exportViews</entry>
+          <entry>export views (default: true)</entry>
+        </row>
+      </tbody>
+    </tgroup>  
+  </table>
+  
   </sect2>
   
   <sect2>
@@ -97,9 +202,7 @@
 	<para>
 		The ANT task <code>com.mysema.query.sql.ant.AntMetaDataExporter</code> of the querydsl-sql module provides 
 		the same functionality as an ANT task.
-		The configuration parameters of the task are jdbcDriverClass, dbUrl, dbUserName, dbPassword, 
-		namePrefix, targetPackage, targetSourceFolder,
-		schemaPattern, tableNamePattern, exportBeans, innerClassesForKeys and validationAnnotations.
+		The configuration parameters of the task are the same as for the Maven plugin.
 	</para>
 	
   </sect2>	

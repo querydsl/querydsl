@@ -127,7 +127,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String targetFolder;
 
     /**
-     * namingstrategy class to override (default: DefaultNamingStrategy.class)
+     * namingstrategy class to override (default: DefaultNamingStrategy)
      *
      * @parameter
      */
