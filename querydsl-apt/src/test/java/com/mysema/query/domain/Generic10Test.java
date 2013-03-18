@@ -11,7 +11,7 @@ public class Generic10Test {
     
     public interface Tradable {}
 
-    public interface Market<T> {}
+    public interface Market<T extends Tradable> {}
     
     @Entity
     public static class FutureTrade implements Tradable {}
@@ -19,6 +19,7 @@ public class Generic10Test {
     @MappedSuperclass
     public static abstract class AbstractTradingMarket<T extends Tradable> implements Market<T>{
 
+        // XXX
         @OneToOne
         private TradingMarketLedger<AbstractTradingMarket<T>> ledger;
     }
@@ -26,6 +27,7 @@ public class Generic10Test {
     @Entity
     public static abstract class AbstractFuturesMarket extends AbstractTradingMarket<FutureTrade> {}
 
+    // XXX
     @Entity
     public static class CommonFuturesMarket extends AbstractFuturesMarket {}
 

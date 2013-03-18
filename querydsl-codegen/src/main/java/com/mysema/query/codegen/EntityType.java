@@ -53,7 +53,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private final Set<Supertype> superTypes;
 
-    private final Map<Object,Object> data = new HashMap<Object,Object>();
+    private final Map<Object, Object> data = new HashMap<Object,Object>();
 
     private String uncapSimpleName;
     

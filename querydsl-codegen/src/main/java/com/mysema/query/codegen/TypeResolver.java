@@ -42,7 +42,7 @@ public final class TypeResolver {
         String varName = getVarName(resolved);        
         if (varName != null) {
             resolved = resolveVar(varName, declaringType, context);
-        } else if(!resolved.getParameters().isEmpty()) {
+        } else if (!resolved.getParameters().isEmpty()) {
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
         
