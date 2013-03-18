@@ -549,6 +549,14 @@ public class SelectBase extends AbstractBaseTest{
             .on(employee.superiorIdKey.on(employee2))
             .list(employee.id, employee2.id);
     }
+    
+    @Test
+    public void Inner_Join_2Conditions() {
+        query().from(employee).innerJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .on(employee2.firstname.isNotNull())
+            .list(employee.id, employee2.id);
+    }
 
     @Test
     public void Join() throws Exception {
