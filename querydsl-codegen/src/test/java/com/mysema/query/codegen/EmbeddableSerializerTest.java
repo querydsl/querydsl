@@ -73,7 +73,7 @@ public class EmbeddableSerializerTest {
         categoryToSuperClass.put(TypeCategory.STRING, "StringPath");
         categoryToSuperClass.put(TypeCategory.BOOLEAN, "BooleanPath");
 
-        for (Map.Entry<TypeCategory, String> entry : categoryToSuperClass.entrySet()){
+        for (Map.Entry<TypeCategory, String> entry : categoryToSuperClass.entrySet()) {
             SimpleType type = new SimpleType(entry.getKey(), "Entity", "", "Entity",false,false);
             EntityType entityType = new EntityType(type);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));

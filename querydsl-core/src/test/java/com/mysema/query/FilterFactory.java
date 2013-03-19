@@ -58,7 +58,7 @@ public class FilterFactory {
         this.target = target;
     }
 
-    public Collection<Predicate> booleanFilters(BooleanExpression expr, BooleanExpression other){
+    public Collection<Predicate> booleanFilters(BooleanExpression expr, BooleanExpression other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.and(other));
         rv.add(expr.or(other));
@@ -69,21 +69,21 @@ public class FilterFactory {
     }
 
     public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr, 
-            CollectionExpression<?,A> other, A knownElement){
+            CollectionExpression<?,A> other, A knownElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-        if (!module.equals(Module.RDFBEAN)){
+        if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         return ImmutableList.copyOf(rv);
     }
 
     public <A> Collection<Predicate> array(ArrayExpression<A> expr, ArrayExpression<A> other, 
-            A knownElement){
+            A knownElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
-        if (!module.equals(Module.RDFBEAN)){
+        if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         rv.add(expr.get(0).eq(knownElement));
@@ -91,7 +91,7 @@ public class FilterFactory {
     }
 
     private <A extends Comparable<A>> Collection<Predicate> comparable(ComparableExpression<A> expr, 
-            ComparableExpression<A> other, A knownValue){
+            ComparableExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(exprFilters(expr, other, knownValue));
         rv.add(expr.gt(other));
@@ -111,7 +111,7 @@ public class FilterFactory {
     }
 
     private <A extends Comparable<A>> Collection<Predicate> dateOrTime(TemporalExpression<A> expr, 
-            TemporalExpression<A> other, A knownValue){
+            TemporalExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.add(expr.after(other));
         rv.add(expr.after(knownValue));
@@ -122,7 +122,7 @@ public class FilterFactory {
 
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Predicate> date(DateExpression<A> expr,
-            DateExpression<A> other, A knownValue){
+            DateExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
@@ -134,7 +134,7 @@ public class FilterFactory {
 
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Predicate> dateTime(DateTimeExpression<A> expr, 
-            DateTimeExpression<A> other, A knownValue){
+            DateTimeExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
@@ -161,7 +161,7 @@ public class FilterFactory {
     }
 
     private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr, 
-            SimpleExpression<A> other, A knownValue){
+            SimpleExpression<A> other, A knownValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.eq(knownValue));
@@ -172,7 +172,7 @@ public class FilterFactory {
     }
 
     public <A, Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A, Q> expr, 
-            ListExpression<A, Q> other, A knownElement){
+            ListExpression<A, Q> other, A knownElement) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));
@@ -188,7 +188,7 @@ public class FilterFactory {
         rv.add(expr.get(knownKey).ne(knownValue));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-        if (!module.equals(Module.RDFBEAN)){
+        if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         return ImmutableList.copyOf(rv);
@@ -196,9 +196,9 @@ public class FilterFactory {
 
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<A>> Collection<Predicate> numeric(NumberExpression<A> expr, 
-            NumberExpression<A> other, A knownValue){
+            NumberExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
-        for (NumberExpression<?> num : projections.numeric(expr, other, knownValue, true)){
+        for (NumberExpression<?> num : projections.numeric(expr, other, knownValue, true)) {
             rv.add(num.lt(expr));
         }
         rv.add(expr.ne(other));
@@ -215,16 +215,16 @@ public class FilterFactory {
         rv.add(expr.in(1,2,3));
         rv.add(expr.in(1l,2l,3l));
 
-        if (expr.getType().equals(Integer.class)){
+        if (expr.getType().equals(Integer.class)) {
             NumberExpression<Integer> eint = (NumberExpression)expr;
             rv.add(eint.between(1, 2));
             rv.add(eint.notBetween(1, 2));
             rv.add(eint.mod(5).eq(0));
-        }else if (expr.getType().equals(Double.class)){
+        }else if (expr.getType().equals(Double.class)) {
             NumberExpression<Double> edouble = (NumberExpression)expr;
             rv.add(edouble.between(1.0, 2.0));
             rv.add(edouble.notBetween(1.0, 2.0));
-        }else if (expr.getType().equals(Long.class)){
+        }else if (expr.getType().equals(Long.class)) {
             NumberExpression<Long> elong = (NumberExpression)expr;
             rv.add(elong.mod(5l).eq(0l));
         }
@@ -235,7 +235,7 @@ public class FilterFactory {
     }
 
     public <A> Collection<Predicate> pathFilters(SimpleExpression<A> expr, 
-            SimpleExpression<A> other, A knownValue){
+            SimpleExpression<A> other, A knownValue) {
         return Arrays.<Predicate>asList(
              expr.isNull(),
              expr.isNotNull()
@@ -244,13 +244,13 @@ public class FilterFactory {
 
     @SuppressWarnings("unchecked")
     public Collection<Predicate> string(StringExpression expr, StringExpression other, 
-            String knownValue){
+            String knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
-        if (expr instanceof Path && other instanceof Path){
+        if (expr instanceof Path && other instanceof Path) {
             rv.addAll(pathFilters(expr, other, knownValue));
         }
         rv.addAll(comparable(expr, other, knownValue));
-        for (SimpleExpression<String> eq : projections.string(expr, other, knownValue)){
+        for (SimpleExpression<String> eq : projections.string(expr, other, knownValue)) {
             rv.add(eq.eq(other));
         }
         rv.add(expr.between("A", "Z"));
@@ -284,7 +284,7 @@ public class FilterFactory {
         rv.add(expr.locate("X", 2).gt(1));
         rv.add(expr.locate(knownValue).gt(1));
 
-//        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
+//        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)) {
 //            rv.add(expr.lastIndexOf(other).gt(0));
 //            rv.add(expr.lastIndexOf(knownValue).gt(0));
 //        }
@@ -312,7 +312,7 @@ public class FilterFactory {
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)
          && !target.equals(Target.SQLITE)
-         && !target.equals(Target.SQLSERVER)){
+         && !target.equals(Target.SQLSERVER)) {
             rv.add(expr.matches(knownValue.substring(0,1)+".*"));
             rv.add(expr.matches(".*"+knownValue.substring(1)));
             rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));
@@ -323,7 +323,7 @@ public class FilterFactory {
         rv.add(expr.notBetween("A", "Z"));
         rv.add(expr.notBetween(other, other));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)){
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)) {
             // https://issues.apache.org/jira/browse/DERBY-4389
             rv.add(new Coalesce<String>(String.class, expr, other).getValue().eq("xxx"));
         }
@@ -335,7 +335,7 @@ public class FilterFactory {
 
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Predicate> time(TimeExpression<A> expr, 
-            TimeExpression<A> other, A knownValue){
+            TimeExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));

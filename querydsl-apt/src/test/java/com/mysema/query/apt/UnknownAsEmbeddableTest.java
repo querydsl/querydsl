@@ -28,7 +28,7 @@ public class UnknownAsEmbeddableTest extends AbstractProcessorTest {
     private static final String packagePath = "src/test/java/com/mysema/query/domain";
 
     @Test
-    public void Process() throws IOException{
+    public void Process() throws IOException {
         List<String> classes = getFiles(packagePath);
         process(QuerydslAnnotationProcessor.class, classes,"unknownAsEmbeddable");
 

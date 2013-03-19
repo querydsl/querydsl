@@ -32,7 +32,7 @@ import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.MapPath;
 import com.mysema.query.types.path.SetPath;
 
-public class RelationTest extends AbstractTest{
+public class RelationTest extends AbstractTest {
 
     public enum MyEnum {
         VAR1, VAR2
@@ -44,7 +44,7 @@ public class RelationTest extends AbstractTest{
     }
 
     @QueryEntity
-    public static class GenericRelations{
+    public static class GenericRelations {
         Collection<Collection<Reference>> col1;
         Collection<List<Reference>> col2;
         Collection<Collection<? extends Reference>> col3;
@@ -114,7 +114,7 @@ public class RelationTest extends AbstractTest{
     }
 
     @Test
-    public void test() throws SecurityException, NoSuchFieldException{
+    public void test() throws SecurityException, NoSuchFieldException {
         cl = QRelationTest_RelationType.class;
         match(EnumPath.class, "enumProperty");
         match(ListPath.class, "enumList");
@@ -154,7 +154,7 @@ public class RelationTest extends AbstractTest{
     }
 
     @Test
-    public void List_Usage(){
+    public void List_Usage() {
         String expected = "relationType.list.get(0).set";
         assertEquals(expected, QRelationTest_RelationType.relationType.list.get(0).set.toString());
 //        assertEquals(expected, QRelationTest_RelationType.relationType.getList(0).set.toString());

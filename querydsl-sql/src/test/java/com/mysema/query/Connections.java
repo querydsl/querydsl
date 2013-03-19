@@ -72,15 +72,15 @@ public final class Connections {
     private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited;
 
     public static void close() throws SQLException{
-        if (stmtHolder.get() != null){
+        if (stmtHolder.get() != null) {
             stmtHolder.get().close();
         }
-        if (connHolder.get() != null){
+        if (connHolder.get() != null) {
             connHolder.get().close();
         }
     }
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         return connHolder.get();
     }
     
@@ -150,7 +150,7 @@ public final class Connections {
         return DriverManager.getConnection("jdbc:sqlite:target/sample.db");
     }
     
-    private static CreateTableClause createTable(SQLTemplates templates, String table){
+    private static CreateTableClause createTable(SQLTemplates templates, String table) {
         return new CreateTableClause(connHolder.get(), templates, table);
     }
     
@@ -168,7 +168,7 @@ public final class Connections {
         }  
     }
     
-    public static Statement getStatement(){
+    public static Statement getStatement() {
         return stmtHolder.get();
     }
 
@@ -194,7 +194,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (derbyInited){
+        if (derbyInited) {
             return;
         }
         
@@ -251,7 +251,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (sqlServerInited){
+        if (sqlServerInited) {
             return;
         }
 
@@ -295,7 +295,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (h2Inited){
+        if (h2Inited) {
             return;
         }
 
@@ -346,7 +346,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (sqliteInited){
+        if (sqliteInited) {
             return;
         }
 
@@ -408,7 +408,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (hsqlInited){
+        if (hsqlInited) {
             return;
         }
 
@@ -462,7 +462,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (cubridInited){
+        if (cubridInited) {
             return;
         }
 
@@ -520,7 +520,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (mysqlInited){
+        if (mysqlInited) {
             return;
         }
 
@@ -577,7 +577,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (oracleInited){
+        if (oracleInited) {
             return;
         }
         
@@ -593,7 +593,7 @@ public final class Connections {
         try {
             stmt.execute("drop sequence survey_seq");    
         } catch(SQLException e) {
-            if (!e.getMessage().contains("sequence does not exist")){
+            if (!e.getMessage().contains("sequence does not exist")) {
                 throw e;
             }
         }
@@ -651,7 +651,7 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (postgresInited){
+        if (postgresInited) {
             return;
         }
 
@@ -717,7 +717,7 @@ public final class Connections {
         stmt.setDouble(4, salary);
         stmt.setDate(5, Constants.date);
         stmt.setTime(6, Constants.time);
-        if (superiorId <= 0){
+        if (superiorId <= 0) {
             stmt.setNull(7, Types.INTEGER);
         }else{
             stmt.setInt(7, superiorId);
@@ -745,11 +745,11 @@ public final class Connections {
 
     private static String quote(String sql, String... identifiers) {
         String rv = sql;
-        for (String id : identifiers){
+        for (String id : identifiers) {
             rv = rv.replace(id,  "\"" + id +  "\"");
         }
         return rv;
     }
 
-    private Connections(){}
+    private Connections() {}
 }

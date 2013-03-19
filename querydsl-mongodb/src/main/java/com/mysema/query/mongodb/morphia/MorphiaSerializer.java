@@ -31,7 +31,7 @@ public class MorphiaSerializer extends MongodbSerializer{
 
     @Override
     protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
-        if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)){
+        if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
             return expr.getAnnotatedElement().getAnnotation(Property.class).value();
         } else {
             return super.getKeyForPath(expr, metadata);

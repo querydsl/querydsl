@@ -29,8 +29,8 @@ public class MySQLQueryTest {
     private QSurvey survey = new QSurvey("survey");
     
     @Before
-    public void setUp(){
-        query = new MySQLQuery(null, new MySQLTemplates(){{
+    public void setUp() {
+        query = new MySQLQuery(null, new MySQLTemplates() {{
             newLineToSingleSpace();
         }});
         query.from(survey);
@@ -82,8 +82,8 @@ public class MySQLQueryTest {
     }
     
     @Test
-    public void UseIndex(){
-        query = new MySQLQuery(null, new MySQLTemplates(){{
+    public void UseIndex() {
+        query = new MySQLQuery(null, new MySQLTemplates() {{
             newLineToSingleSpace();
         }});
         query.from(survey);
@@ -96,8 +96,8 @@ public class MySQLQueryTest {
     }
     
     @Test
-    public void UseIndex2(){
-        query = new MySQLQuery(null, new MySQLTemplates(){{
+    public void UseIndex2() {
+        query = new MySQLQuery(null, new MySQLTemplates() {{
             newLineToSingleSpace();
         }});
         query.from(survey);
@@ -216,7 +216,7 @@ public class MySQLQueryTest {
                      "order by survey.NAME asc lock in share mode", toString(query));
     }
     
-    private String toString(MySQLQuery query){
+    private String toString(MySQLQuery query) {
         return query.toString().replace('\n', ' ');
     }
 

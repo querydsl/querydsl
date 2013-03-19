@@ -17,22 +17,22 @@ import org.junit.Test;
 
 import com.mysema.query.jpa.domain.QShow;
 
-public class MapTest  extends AbstractQueryTest{
+public class MapTest extends AbstractQueryTest {
 
     private QShow show = QShow.show;
     
     @Test
-    public void Contains(){
+    public void Contains() {
         assertToString("show.acts[?1] = ?2", show.acts.contains("x", "y"));
     }
     
     @Test
-    public void Contains_Key(){
+    public void Contains_Key() {
         assertToString("?1 in indices(show.acts)", show.acts.containsKey("x"));
     }
     
     @Test
-    public void Contains_Value(){
+    public void Contains_Value() {
         assertToString("?1 in elements(show.acts)", show.acts.containsValue("y"));
     }
 }

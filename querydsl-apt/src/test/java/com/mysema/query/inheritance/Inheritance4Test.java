@@ -21,7 +21,7 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 
-public class Inheritance4Test extends AbstractTest{
+public class Inheritance4Test extends AbstractTest {
 
     @QueryEntity
     public class EntityWithComparable {
@@ -34,7 +34,7 @@ public class Inheritance4Test extends AbstractTest{
     }
 
     @QueryEntity
-    public class EntityWithNumber extends EntityWithComparable{
+    public class EntityWithNumber extends EntityWithComparable {
         private Long field;
 
         public Long getField() {

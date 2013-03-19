@@ -104,7 +104,7 @@ public class GroovyBeanSerializer implements Serializer {
         writer.javadoc(simpleName + javadocSuffix);
 
         // header
-        for (Annotation annotation : model.getAnnotations()){
+        for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
         if (printSupertype && model.getSuperType() != null) {

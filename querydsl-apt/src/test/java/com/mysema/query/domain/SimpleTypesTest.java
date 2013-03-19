@@ -37,9 +37,9 @@ import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
-public class SimpleTypesTest extends AbstractTest{
+public class SimpleTypesTest extends AbstractTest {
 
-    public enum MyEnum{
+    public enum MyEnum {
         VAL1,
         VAL2
     }
@@ -49,7 +49,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @SuppressWarnings("serial")
-    public static class CustomNumber extends Number{
+    public static class CustomNumber extends Number {
 
         @Override
         public double doubleValue() {
@@ -74,7 +74,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @SuppressWarnings("all")
-    public static class CustomComparableNumber extends CustomNumber implements Comparable<CustomComparableNumber>{
+    public static class CustomComparableNumber extends CustomNumber implements Comparable<CustomComparableNumber> {
 
         @Override
         public int compareTo(CustomComparableNumber o) {
@@ -82,12 +82,12 @@ public class SimpleTypesTest extends AbstractTest{
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return super.hashCode();
         }
 
         @Override
-        public boolean equals(Object o){
+        public boolean equals(Object o) {
             return o instanceof CustomComparableNumber;
         }
     }
@@ -101,12 +101,12 @@ public class SimpleTypesTest extends AbstractTest{
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return super.hashCode();
         }
 
         @Override
-        public boolean equals(Object o){
+        public boolean equals(Object o) {
             return o instanceof CustomComparableLiteral;
         }
     }
@@ -120,12 +120,12 @@ public class SimpleTypesTest extends AbstractTest{
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return super.hashCode();
         }
 
         @Override
-        public boolean equals(Object o){
+        public boolean equals(Object o) {
             return o instanceof CustomGenericComparableLiteral;
         }
     }
@@ -246,7 +246,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @Test
-    public void List_Access(){
+    public void List_Access() {
         // date / time
         QSimpleTypesTest_SimpleTypes.simpleTypes.dateList.get(0).after(new Date());
         QSimpleTypesTest_SimpleTypes.simpleTypes.timeList.get(0).after(new Time(0l));
@@ -264,7 +264,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @Test
-    public void Simple_Types() throws SecurityException, NoSuchFieldException{
+    public void Simple_Types() throws SecurityException, NoSuchFieldException {
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(NumberPath.class, "id");
         match(NumberPath.class, "bigDecimal");
@@ -304,25 +304,25 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @Test
-    public void Custom_Literal() throws SecurityException, NoSuchFieldException{
+    public void Custom_Literal() throws SecurityException, NoSuchFieldException {
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(SimplePath.class, "customLiteral");
     }
 
     @Test
-    public void Custom_ComparableLiteral() throws SecurityException, NoSuchFieldException{
+    public void Custom_ComparableLiteral() throws SecurityException, NoSuchFieldException {
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(ComparablePath.class, "customComparableLiteral");
     }
 
     @Test
-    public void Custom_Number() throws SecurityException, NoSuchFieldException{
+    public void Custom_Number() throws SecurityException, NoSuchFieldException {
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(SimplePath.class, "customNumber");
     }
 
     @Test
-    public void Custom_ComparableNumber() throws SecurityException, NoSuchFieldException{
+    public void Custom_ComparableNumber() throws SecurityException, NoSuchFieldException {
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(NumberPath.class, "customComparableNumber");
     }

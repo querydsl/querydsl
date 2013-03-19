@@ -43,7 +43,7 @@ public final class LuceneExpressions {
      * @param value
      * @return
      */
-    public static BooleanExpression fuzzyLike(Path<String> path, String value){
+    public static BooleanExpression fuzzyLike(Path<String> path, String value) {
         Term term = new Term(path.getMetadata().getName(), value);
         return new QueryElement(new FuzzyQuery(term));
     }
@@ -56,7 +56,7 @@ public final class LuceneExpressions {
      * @param minimumSimilarity
      * @return
      */
-    public static BooleanExpression fuzzyLike(Path<String> path, String value, float minimumSimilarity){
+    public static BooleanExpression fuzzyLike(Path<String> path, String value, float minimumSimilarity) {
         Term term = new Term(path.getMetadata().getName(), value);
         return new QueryElement(new FuzzyQuery(term, minimumSimilarity));
     }
@@ -71,11 +71,11 @@ public final class LuceneExpressions {
      * @return
      */
     public static BooleanExpression fuzzyLike(Path<String> path, String value, 
-            float minimumSimilarity, int prefixLength){
+            float minimumSimilarity, int prefixLength) {
         Term term = new Term(path.getMetadata().getName(), value);
         return new QueryElement(new FuzzyQuery(term, minimumSimilarity, prefixLength));
     }
     
-    private LuceneExpressions(){}
+    private LuceneExpressions() {}
 
 }

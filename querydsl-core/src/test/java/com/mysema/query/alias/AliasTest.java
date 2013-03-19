@@ -23,7 +23,7 @@ import com.mysema.query.types.Path;
 public class AliasTest {
 
     @Test
-    public void Alias(){
+    public void Alias() {
         DomainType domainType = Alias.alias(DomainType.class);
         Alias.alias(DomainType.class, $(domainType.getCollection()).any());
     }
@@ -44,7 +44,7 @@ public class AliasTest {
     }
     
     @Test
-    public void BasicUsage(){
+    public void BasicUsage() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("lower(domainType.firstName)", $(domainType.getFirstName()).lower().toString());
         assertEquals("domainType.age", $(domainType.getAge()).toString());
@@ -67,20 +67,20 @@ public class AliasTest {
     }
     
     @Test
-    public void GetAny(){
+    public void GetAny() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals(DomainType.class, Alias.getAny(domainType).getType());
         assertEquals(String.class, Alias.getAny(domainType.getFirstName()).getType());
     }
 
     @Test
-    public void OtherMethods(){
+    public void OtherMethods() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("domainType", domainType.toString());
     }
 
     @Test
-    public void Var(){
+    public void Var() {
         assertEquals("it", Alias.var().toString());
         assertEquals("varInteger1", Alias.var(1).toString());
         assertEquals("X", Alias.var("X").toString());
@@ -89,7 +89,7 @@ public class AliasTest {
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         return "XXX";
     }
 }

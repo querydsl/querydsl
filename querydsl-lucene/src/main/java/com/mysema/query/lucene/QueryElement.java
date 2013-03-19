@@ -28,7 +28,7 @@ public class QueryElement extends BooleanOperation {
     
     private static final long serialVersionUID = 470868107363840155L;
 
-    public QueryElement(Query query){
+    public QueryElement(Query query) {
         super(LuceneExpressions.LUCENE_QUERY, new ConstantImpl<Query>(query));        
     }
     

@@ -68,7 +68,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * Returns the random expression
      * @return random()
      */
-    public static NumberExpression<Double> random(){
+    public static NumberExpression<Double> random() {
         return random;
     }
 
@@ -101,7 +101,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return abs(this)
      */
     public NumberExpression<T> abs() {
-        if (abs == null){
+        if (abs == null) {
             abs = NumberOperation.create(getType(), MathOps.ABS, mixin);
         }
         return abs;
@@ -132,8 +132,8 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      *  @return avg(this)
      */
-    public NumberExpression<Double> avg(){
-        if (avg == null){
+    public NumberExpression<Double> avg() {
+        if (avg == null) {
             avg = NumberOperation.create(Double.class, Ops.AggOps.AVG_AGG, mixin);
         }
         return avg;
@@ -178,7 +178,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @Override
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
-        if (type.equals(getType())){
+        if (type.equals(getType())) {
             return (NumberExpression<A>) this;
         }else{
             return NumberOperation.create(type, Ops.NUMCAST, mixin, new ConstantImpl<Class<A>>(type));
@@ -194,7 +194,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Math#ceil(double)
      */
     public NumberExpression<T> ceil() {
-        if (ceil == null){
+        if (ceil == null) {
             ceil = NumberOperation.create(getType(), MathOps.CEIL, mixin);
         }
         return ceil;
@@ -423,7 +423,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param str
      * @return
      */
-    public BooleanExpression like(String str){
+    public BooleanExpression like(String str) {
         return BooleanOperation.create(Ops.LIKE, stringValue(), new ConstantImpl<String>(str));
     }
 
@@ -433,7 +433,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param str
      * @return
      */
-    public BooleanExpression like(Expression<String> str){
+    public BooleanExpression like(Expression<String> str) {
         return BooleanOperation.create(Ops.LIKE, stringValue(), str);
     }
     
@@ -533,7 +533,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return max(this)
      */
     @SuppressWarnings("unchecked")
-    public NumberExpression<T> max(){
+    public NumberExpression<T> max() {
         if (max == null) {
             max = NumberOperation.create(getType(), (Operator)Ops.AggOps.MAX_AGG, mixin);
         }
@@ -546,7 +546,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return min(this)
      */
     @SuppressWarnings("unchecked")
-    public NumberExpression<T> min(){
+    public NumberExpression<T> min() {
         if (min == null) {
             min = NumberOperation.create(getType(), (Operator)Ops.AggOps.MIN_AGG, mixin);
         }
@@ -557,7 +557,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param num
      * @return
      */
-    public NumberExpression<T> mod(Expression<T> num){
+    public NumberExpression<T> mod(Expression<T> num) {
         return NumberOperation.create(getType(), Ops.MOD, mixin, num);
     }
 
@@ -565,7 +565,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param num
      * @return
      */
-    public NumberExpression<T> mod(T num){
+    public NumberExpression<T> mod(T num) {
         return NumberOperation.create(getType(), Ops.MOD, mixin, new ConstantImpl<T>(num));
     }
 
@@ -594,7 +594,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @return this * -1
      */
-    public NumberExpression<T> negate(){
+    public NumberExpression<T> negate() {
         if (negation == null) {
             negation = NumberOperation.create(getType(), Ops.NEGATE, mixin);
         }
@@ -630,8 +630,8 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @return sqrt(this)
      */
-    public NumberExpression<Double> sqrt(){
-        if (sqrt == null){
+    public NumberExpression<Double> sqrt() {
+        if (sqrt == null) {
             sqrt = NumberOperation.create(Double.class, MathOps.SQRT, mixin);
         }
         return sqrt;
@@ -662,24 +662,24 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @return sum(this)
      */
-    public NumberExpression<T> sum(){
-        if (sum == null){
+    public NumberExpression<T> sum() {
+        if (sum == null) {
             sum = NumberOperation.create(getType(), Ops.AggOps.SUM_AGG, mixin);
         }
         return sum;
     }
 
     @Override
-    public BooleanExpression in(Number... numbers){
+    public BooleanExpression in(Number... numbers) {
         return super.in(convert(numbers));
     }
 
     @Override
-    public BooleanExpression notIn(Number... numbers){
+    public BooleanExpression notIn(Number... numbers) {
         return super.notIn(convert(numbers));
     }
 
-    private List<T> convert(Number... numbers){
+    private List<T> convert(Number... numbers) {
         List<T> list = new ArrayList<T>(numbers.length);
         for (int i = 0; i < numbers.length; i++) {
             list.add(MathUtils.cast(numbers[i], getType()));

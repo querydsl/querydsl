@@ -84,7 +84,7 @@ public class Delegate {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return delegateType.getFullName() + "." + name + " " + parameters;
     }
 

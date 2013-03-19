@@ -55,7 +55,7 @@ public class ExtendsAndSuperTest {
     }
 
     @Test
-    public void Validate(){
+    public void Validate() {
         QExtendsAndSuperTest_ExtendsAndSuper var = QExtendsAndSuperTest_ExtendsAndSuper.extendsAndSuper;
         assertEquals(Object.class, var.extendsCol.getElementType());
         assertEquals(CharSequence.class, var.extendsCol2.getElementType());
@@ -65,7 +65,7 @@ public class ExtendsAndSuperTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         QExtendsAndSuperTest_ExtendsAndSuper var = QExtendsAndSuperTest_ExtendsAndSuper.extendsAndSuper;
         ExtendsAndSuper<Object> entity = new ExtendsAndSuper<Object>();
         assertNotNull(var.eq(entity));

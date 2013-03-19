@@ -646,7 +646,7 @@ public class LuceneSerializerTest {
     @Test
     public void various() throws Exception{
         MatchingFiltersFactory filters = new MatchingFiltersFactory(Module.LUCENE, Target.LUCENE);
-        for (Predicate filter : filters.string(title, StringConstant.create("jurassic park"))){
+        for (Predicate filter : filters.string(title, StringConstant.create("jurassic park"))) {
             if (unsupportedOperation(filter)) {
                 continue;
             }
@@ -654,7 +654,7 @@ public class LuceneSerializerTest {
             testQuery(filter, 1);
         }
 
-        for (Predicate filter : filters.string(author, StringConstant.create("michael crichton"))){
+        for (Predicate filter : filters.string(author, StringConstant.create("michael crichton"))) {
             if (unsupportedOperation(filter)) {
                 continue;
             }
@@ -662,7 +662,7 @@ public class LuceneSerializerTest {
             testQuery(filter, 1);
         }
 
-        for (Predicate filter : filters.string(title, StringConstant.create("1990"))){
+        for (Predicate filter : filters.string(title, StringConstant.create("1990"))) {
             if (unsupportedOperation(filter)) {
                 continue;
             }

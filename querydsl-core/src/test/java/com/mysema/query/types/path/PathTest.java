@@ -50,7 +50,7 @@ public class PathTest {
     public static class Superclass {
 
         @Nullable
-        public String getProperty4(){
+        public String getProperty4() {
             return null;
         }
     }
@@ -66,24 +66,24 @@ public class PathTest {
         @QueryTransient
         private String property3;
 
-        public String getProperty1(){
+        public String getProperty1() {
             return property1;
         }
 
         @Nonnull
-        public String getProperty2(){
+        public String getProperty2() {
             return property2;
         }
 
         @Nonnull
-        public String getProperty3(){
+        public String getProperty3() {
             return property3;
         }
 
     }
 
     @Test
-    public void GetAnnotatedElement(){
+    public void GetAnnotatedElement() {
         Entity entity = Alias.alias(Entity.class);
         AnnotatedElement element = $(entity).getAnnotatedElement();
 
@@ -92,7 +92,7 @@ public class PathTest {
     }
 
     @Test
-    public void GetAnnotatedElement_for_property(){
+    public void GetAnnotatedElement_for_property() {
         Entity entity = Alias.alias(Entity.class);
         AnnotatedElement property1 = $(entity.getProperty1()).getAnnotatedElement();
         AnnotatedElement property2 = $(entity.getProperty2()).getAnnotatedElement();
@@ -131,7 +131,7 @@ public class PathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Equals(){
+    public void Equals() {
         assertEquals(new StringPath("s"),  new StringPath("s"));
         assertEquals(new BooleanPath("b"), new BooleanPath("b"));
         assertEquals(new NumberPath<Integer>(Integer.class,"n"), new NumberPath<Integer>(Integer.class,"n"));
@@ -149,7 +149,7 @@ public class PathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various_Properties(){
+    public void Various_Properties() {
         Path<?> parent = new PathImpl(Object.class, "parent");
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, parent, "p"));
@@ -168,7 +168,7 @@ public class PathTest {
         paths.add(new StringPath(parent, "p"));
         paths.add(new TimePath(Time.class, parent, "p"));
 
-        for (Path<?> path : paths){
+        for (Path<?> path : paths) {
             Path other = new PathImpl(path.getType(), PathMetadataFactory.forProperty(parent, "p"));
             assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
             assertEquals(path.hashCode(), other.hashCode());
@@ -181,7 +181,7 @@ public class PathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various(){
+    public void Various() {
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, "p"));
         paths.add(new BeanPath(Object.class, "p"));
@@ -199,7 +199,7 @@ public class PathTest {
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
 
-        for (Path<?> path : paths){
+        for (Path<?> path : paths) {
             Path other = new PathImpl(path.getType(), "p");
             assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, null));
             assertEquals(path.hashCode(), other.hashCode());

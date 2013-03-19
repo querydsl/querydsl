@@ -57,18 +57,18 @@ public class OriginalNamingStrategyTest {
     }
     
     @Test
-    public void GetPropertyNameForInverseForeignKey(){
+    public void GetPropertyNameForInverseForeignKey() {
         assertEquals("_fk_superior", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
     }
     
     @Test
-    public void GetPropertyNameForForeignKey(){
+    public void GetPropertyNameForForeignKey() {
         assertEquals("fk_superior", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
         assertEquals("FK_SUPERIOR", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        
     }
     
     @Test
-    public void GetDefaultVariableName(){
+    public void GetDefaultVariableName() {
         assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
     }
 }

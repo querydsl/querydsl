@@ -23,12 +23,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class NamePrefixTest extends AbstractProcessorTest{
+public class NamePrefixTest extends AbstractProcessorTest {
     
     private static final String packagePath = "src/test/java/com/mysema/query/domain/";
 
     @Test
-    public void ProcessAll() throws IOException{
+    public void ProcessAll() throws IOException {
         // works only in Eclipse for the moment
         List<String> classes = getFiles(packagePath);
 

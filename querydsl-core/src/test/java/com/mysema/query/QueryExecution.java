@@ -64,21 +64,21 @@ public abstract class QueryExecution {
 
     private int total;
 
-    public QueryExecution(Module module, Target target){
+    public QueryExecution(Module module, Target target) {
         projections = new ProjectionsFactory(module, target);
         filters = new FilterFactory(projections, module, target);
         matchers = new MatchingFiltersFactory(module, target);
     }
 
-    public QueryExecution(ProjectionsFactory p, FilterFactory f, MatchingFiltersFactory m){
+    public QueryExecution(ProjectionsFactory p, FilterFactory f, MatchingFiltersFactory m) {
         projections = p;
         filters = f;
         matchers = m;
     }
 
-    private void runProjectionQueries(Collection<? extends Expression<?>> projections){
-        if (this.runProjections){
-            for (Expression<?> pr : projections){
+    private void runProjectionQueries(Collection<? extends Expression<?>> projections) {
+        if (this.runProjections) {
+            for (Expression<?> pr : projections) {
                 total++;
                 try{
                     System.err.println(pr);
@@ -102,7 +102,7 @@ public abstract class QueryExecution {
         StringBuilder error = new StringBuilder();
         error.append(expr + " failed : \n");
         error.append(" " + throwable.getClass().getName() + " : " + throwable.getMessage() + "\n");
-        if (throwable.getCause() != null){
+        if (throwable.getCause() != null) {
             throwable = throwable.getCause();
             error.append(" " + throwable.getClass().getName() + " : " + throwable.getMessage() + "\n");
         }
@@ -110,9 +110,9 @@ public abstract class QueryExecution {
         return throwable;
     }
 
-    private void runFilterQueries(Collection<Predicate> filters, boolean matching){
-        if (this.runFilters){
-            for (Predicate f : filters){
+    private void runFilterQueries(Collection<Predicate> filters, boolean matching) {
+        if (this.runFilters) {
+            for (Predicate f : filters) {
                 total++;
                 try{
                     System.err.println(f);
@@ -124,7 +124,7 @@ public abstract class QueryExecution {
                     runFilterDistinct(f);
                     System.err.println();
 
-                    if (counts){
+                    if (counts) {
                         // count
                         runCount(f);
                         System.err.println();
@@ -134,11 +134,11 @@ public abstract class QueryExecution {
                         System.err.println();
                     }
 
-                    if (matching && results == 0){
+                    if (matching && results == 0) {
                         failures.add(f + " failed");
                     }
 
-                }catch(Throwable t){
+                }catch(Throwable t) {
                     t.printStackTrace();
                     t = addError(f, t);
                 }
@@ -206,7 +206,7 @@ public abstract class QueryExecution {
     private int runProjectionDistinct(Expression<?> pr) {
         Pair<Projectable, Expression<?>[]> p = createQuery();
         try{
-            if (p.getSecond().length == 0){
+            if (p.getSecond().length == 0) {
                 return p.getFirst().listDistinct(pr).size();
             }else{
                 Expression<?>[] projection = new Expression[p.getSecond().length + 1];
@@ -221,7 +221,7 @@ public abstract class QueryExecution {
     }
 
     private void close(Projectable p) {
-        if (p instanceof Closeable){
+        if (p instanceof Closeable) {
             try {
                 ((Closeable)p).close();
             } catch (IOException e) {
@@ -231,27 +231,27 @@ public abstract class QueryExecution {
     }
 
     public final void report() {
-        if (!failures.isEmpty() || !errors.isEmpty()){
+        if (!failures.isEmpty() || !errors.isEmpty()) {
             // System.err logging
             System.err.println(failures.size() + " failures");
-            for (String f : failures){
+            for (String f : failures) {
                 System.err.println(f);
             }
             System.err.println();
             System.err.println(errors.size() + " errors");
-            for (String e : errors){
+            for (String e : errors) {
                 System.err.println(e);
             }
 
             // construct String for Assert.fail()
             StringBuffer buffer = new StringBuffer("Failed with ");
-            if (!failures.isEmpty()){
+            if (!failures.isEmpty()) {
                 buffer.append(failures.size()).append(" failure(s) ");
-                if (!errors.isEmpty()){
+                if (!errors.isEmpty()) {
                     buffer.append("and ");
                 }
             }
-            if (!errors.isEmpty()){
+            if (!errors.isEmpty()) {
                 buffer.append(errors.size()).append(" error(s) ");
             }
             buffer.append("of ").append(total).append(" tests\n");

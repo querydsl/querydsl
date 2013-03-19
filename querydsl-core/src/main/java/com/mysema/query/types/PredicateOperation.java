@@ -40,7 +40,7 @@ public final class PredicateOperation extends OperationImpl<Boolean> implements 
         return new PredicateOperation(operator, ImmutableList.of(one, two));
     }
     
-    public PredicateOperation(Operator<Boolean> operator, ImmutableList<Expression<?>> args){
+    public PredicateOperation(Operator<Boolean> operator, ImmutableList<Expression<?>> args) {
         super(Boolean.class, operator, args);
     }
     

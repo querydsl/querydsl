@@ -29,22 +29,22 @@ import com.mysema.query.domain.SuperSupertype;
 public class Inheritance9Test {
 
     @QueryEntity
-    public static class Supertype extends SuperSupertype{
+    public static class Supertype extends SuperSupertype {
 
     }
 
     @QueryEntity
-    public static class Entity1 extends Supertype{
+    public static class Entity1 extends Supertype {
 
     }
 
     @QueryEntity
-    public static class Entity2 extends Supertype{
+    public static class Entity2 extends Supertype {
 
     }
 
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QInheritance9Test_Entity1.entity1.id);
         assertNotNull(QInheritance9Test_Entity1.entity1.version);
         assertNotNull(QInheritance9Test_Entity2.entity2.id);

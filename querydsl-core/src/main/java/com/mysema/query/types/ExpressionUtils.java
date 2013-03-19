@@ -75,7 +75,7 @@ public final class ExpressionUtils {
      * @return
      */
     @Nullable
-    public static Predicate allOf(Predicate... exprs){
+    public static Predicate allOf(Predicate... exprs) {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
@@ -92,7 +92,7 @@ public final class ExpressionUtils {
      * @param right
      * @return
      */
-    public static Predicate and(Predicate left, Predicate right){
+    public static Predicate and(Predicate left, Predicate right) {
         return PredicateOperation.create(Ops.AND, left, right);
     }
     
@@ -104,7 +104,7 @@ public final class ExpressionUtils {
      * @return
      */
     @Nullable
-    public static Predicate anyOf(Collection<Predicate> exprs){
+    public static Predicate anyOf(Collection<Predicate> exprs) {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
@@ -121,7 +121,7 @@ public final class ExpressionUtils {
      * @return
      */
     @Nullable
-    public static Predicate anyOf(Predicate... exprs){
+    public static Predicate anyOf(Predicate... exprs) {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
@@ -159,7 +159,7 @@ public final class ExpressionUtils {
      * @param source
      * @return
      */
-    public static Expression<Long> count(Expression<?> source){
+    public static Expression<Long> count(Expression<?> source) {
         return OperationImpl.create(Long.class, Ops.AggOps.COUNT_AGG, source);
     }
     
@@ -241,7 +241,7 @@ public final class ExpressionUtils {
      * @param expr
      * @return
      */    
-    public static Expression<String> likeToRegex(Expression<String> expr){
+    public static Expression<String> likeToRegex(Expression<String> expr) {
         return likeToRegex(expr, true);
     }
     
@@ -309,7 +309,7 @@ public final class ExpressionUtils {
     }    
         
     @SuppressWarnings("unchecked")
-    public static Expression<String> regexToLike(Expression<String> expr){
+    public static Expression<String> regexToLike(Expression<String> expr) {
         if (expr instanceof Constant<?>) {           
             final String str = expr.toString();
             final StringBuilder rv = new StringBuilder(str.length() + 2);
@@ -373,7 +373,7 @@ public final class ExpressionUtils {
      * @param right
      * @return
      */
-    public static Predicate or(Predicate left, Predicate right){
+    public static Predicate or(Predicate left, Predicate right) {
         return PredicateOperation.create(Ops.OR, left, right);
     }
     
@@ -422,6 +422,6 @@ public final class ExpressionUtils {
         }        
     }
     
-    private ExpressionUtils(){}
+    private ExpressionUtils() {}
     
 }

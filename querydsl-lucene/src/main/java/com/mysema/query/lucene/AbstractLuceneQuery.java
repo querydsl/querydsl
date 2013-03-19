@@ -99,7 +99,7 @@ SimpleProjectable<T> {
         return innerCount() == 0;
     }
 
-    private long innerCount(){
+    private long innerCount() {
         try {
             final int maxDoc = searcher.maxDoc();
             if (maxDoc == 0) {
@@ -129,7 +129,7 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public Q distinct(){
+    public Q distinct() {
         throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
@@ -209,7 +209,7 @@ SimpleProjectable<T> {
         throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
-    private List<T> innerList(){
+    private List<T> innerList() {
         return new IteratorAdapter<T>(iterate()).asList();
     }
 
@@ -225,7 +225,7 @@ SimpleProjectable<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Q load(FieldSelector fieldSelector){
+    public Q load(FieldSelector fieldSelector) {
         this.fieldSelector = fieldSelector;
         return (Q)this;
     }
@@ -237,9 +237,9 @@ SimpleProjectable<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Q load(Path<?>... paths){
+    public Q load(Path<?>... paths) {
         List<String> fields = new ArrayList<String>(paths.length);
-        for (Path<?> path : paths){
+        for (Path<?> path : paths) {
             fields.add(serializer.toField(path));
         }
         this.fieldSelector = new MapFieldSelector(fields);
@@ -316,7 +316,7 @@ SimpleProjectable<T> {
                 throw new NonUniqueResultException("Unique result requested, but " + scoreDocs.length + " found.");
             } else if (scoreDocs.length > index) {
                 Document document;
-                if (fieldSelector != null){
+                if (fieldSelector != null) {
                     document = searcher.doc(scoreDocs[index].doc, fieldSelector);
                 } else {
                     document = searcher.doc(scoreDocs[index].doc);

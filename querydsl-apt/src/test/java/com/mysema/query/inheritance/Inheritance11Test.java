@@ -42,7 +42,7 @@ public class Inheritance11Test {
     }
     
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QInheritance11Test_Foo.foo);
         assertNotNull(QInheritance11Test_FooBase.fooBase);
         assertNotNull(QInheritance11Test_Bar.bar);

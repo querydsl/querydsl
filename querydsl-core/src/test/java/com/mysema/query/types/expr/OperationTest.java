@@ -37,7 +37,7 @@ public class OperationTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various(){
+    public void Various() {
         Expression[] args = new Expression[]{new StringPath("x"), new StringPath("y")};
         List<Operation<?>> operations = new ArrayList<Operation<?>>();
 //        paths.add(new ArrayOperation(String[].class, "p"));
@@ -51,7 +51,7 @@ public class OperationTest {
         operations.add(new StringOperation(Ops.CONCAT, args));
         operations.add(new TimeOperation(Time.class,Ops.DateTimeOps.CURRENT_TIME, args));
         
-        for (Operation<?> operation : operations){
+        for (Operation<?> operation : operations) {
             Operation<?> other = new OperationImpl(operation.getType(), operation.getOperator(), 
                     ImmutableList.copyOf(operation.getArgs()));
             assertEquals(operation.toString(), operation.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));

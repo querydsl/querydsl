@@ -22,7 +22,7 @@ import com.mysema.query.types.expr.StringExpression;
 public class StringConstantTest {
 
     @Test
-    public void test(){
+    public void test() {
         assertEquals("abc", expr("ab").append("c").toString());
         assertEquals("abc", expr("bc").prepend("a").toString());
         assertEquals("abc", expr("ABC").lower().toString());
@@ -31,7 +31,7 @@ public class StringConstantTest {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         assertEquals("abc", expr("ab").append(expr("c")).toString());
         assertEquals("abc", expr("bc").prepend(expr("a")).toString());
         assertEquals("abc", expr("ABC").lower().toString());
@@ -39,7 +39,7 @@ public class StringConstantTest {
         assertEquals("ab",  expr("abc").substring(0,2).toString());
     }
 
-    private StringExpression expr(String str){
+    private StringExpression expr(String str) {
         return StringConstant.create(str);
     }
 }

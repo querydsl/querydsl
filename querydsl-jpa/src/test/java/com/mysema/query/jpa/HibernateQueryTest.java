@@ -24,7 +24,7 @@ import com.mysema.query.jpa.hibernate.HibernateQuery;
 public class HibernateQueryTest {
 
     @Test
-    public void InnerJoin(){
+    public void InnerJoin() {
         HibernateQuery hqlQuery = new HibernateQuery();
         QEmployee employee = QEmployee.employee;
         hqlQuery.from(employee);

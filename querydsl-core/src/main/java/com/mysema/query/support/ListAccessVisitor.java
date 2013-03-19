@@ -74,7 +74,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, Context context) {
         final Object[] args = new Object[expr.getArgs().size()];        
-        for (int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
             Context c = new Context();
             if (expr.getArg(i) instanceof Expression) {
                 args[i] = ((Expression)expr.getArg(i)).accept(this, c);    
@@ -121,7 +121,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
         }        
     }
     
-    protected Predicate exists(Context c, Predicate condition){
+    protected Predicate exists(Context c, Predicate condition) {
         return condition;
     }
 
@@ -129,16 +129,16 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
         final PathType pathType = expr.getMetadata().getPathType();
-        if (pathType == PathType.LISTVALUE_CONSTANT || pathType == PathType.LISTVALUE){
+        if (pathType == PathType.LISTVALUE_CONSTANT || pathType == PathType.LISTVALUE) {
             final String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
             final EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
             context.add(expr, replacement);
             return replacement;
             
-        }else if (expr.getMetadata().getParent() != null){
+        }else if (expr.getMetadata().getParent() != null) {
             Context c = new Context();
             final Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, c);
-            if (c.replace){
+            if (c.replace) {
                 context.add(c);
                 return replaceParent(expr, parent);
             }

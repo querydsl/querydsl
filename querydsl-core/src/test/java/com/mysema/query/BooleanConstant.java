@@ -32,13 +32,13 @@ final class BooleanConstant extends BooleanExpression implements Constant<Boolea
 
     public static final BooleanExpression TRUE = new BooleanConstant(Boolean.TRUE);
 
-    public static BooleanExpression create(Boolean b){
+    public static BooleanExpression create(Boolean b) {
         return b.booleanValue() ? TRUE : FALSE;
     }
 
     private final Boolean constant;
 
-    private BooleanConstant(Boolean b){
+    private BooleanConstant(Boolean b) {
         super(ConstantImpl.create(b.booleanValue()));
         this.constant = b;
     }
@@ -49,7 +49,7 @@ final class BooleanConstant extends BooleanExpression implements Constant<Boolea
     }
     
     @Override
-    public BooleanExpression eq(Boolean b){
+    public BooleanExpression eq(Boolean b) {
         return constant.equals(b) ? TRUE : FALSE;
     }
 
@@ -59,7 +59,7 @@ final class BooleanConstant extends BooleanExpression implements Constant<Boolea
     }
 
     @Override
-    public BooleanExpression ne(Boolean b){
+    public BooleanExpression ne(Boolean b) {
         return constant.equals(b) ? FALSE : TRUE;
     }
 

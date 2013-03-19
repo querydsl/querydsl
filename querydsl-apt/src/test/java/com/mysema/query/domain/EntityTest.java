@@ -78,7 +78,7 @@ public class EntityTest extends AbstractTest {
     }
 
     @Test
-    public void Inheritance(){
+    public void Inheritance() {
         assertNotNull(entity3.entity3Ref.entity2Ref);
         assertNotNull(entity3.entity3Ref.entity3Ref);
 

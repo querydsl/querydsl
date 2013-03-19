@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ConstantImpl;
@@ -30,7 +29,7 @@ import com.mysema.query.types.query.ListSubQuery;
 public class SQLSubQueryTest {
     
     @Test
-    public void Multiple_Projections(){
+    public void Multiple_Projections() {
         SQLSubQuery query = new SQLSubQuery();
         query.from(QEmployee.employee);
         assertEquals(1, query.list(QEmployee.employee).getMetadata().getProjection().size());
@@ -38,7 +37,7 @@ public class SQLSubQueryTest {
     }
 
     @Test
-    public void List(){
+    public void List() {
         SQLSubQuery query = new SQLSubQuery();
         query.from(QEmployee.employee);
         ListSubQuery<?> subQuery = query.list(QEmployee.employee.id, "XXX", QEmployee.employee.firstname);
@@ -49,7 +48,7 @@ public class SQLSubQueryTest {
     }
     
     @Test
-    public void Unique(){
+    public void Unique() {
         SQLSubQuery query = new SQLSubQuery();
         query.from(QEmployee.employee);
         SubQueryExpression<?> subQuery = query.unique(QEmployee.employee.id, "XXX", QEmployee.employee.firstname);
@@ -60,7 +59,7 @@ public class SQLSubQueryTest {
     }
     
     @Test
-    public void Complex(){
+    public void Complex() {
         // related to #584795
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");

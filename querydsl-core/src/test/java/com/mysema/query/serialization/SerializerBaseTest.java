@@ -26,7 +26,7 @@ import com.mysema.query.types.path.StringPath;
 public class SerializerBaseTest {
 
     @Test
-    public void test(){
+    public void test() {
         DummySerializer serializer = new DummySerializer(new JavaTemplates());
         StringPath strPath = new StringPath("str");
         // path

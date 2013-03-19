@@ -86,7 +86,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
     }
     
     @Test
-    public void Insert_Query_Update(){
+    public void Insert_Query_Update() {
         QPerson person = QPerson.person;
         
         // insert

@@ -32,7 +32,7 @@ public class CatTest {
     }
 
     @Test
-    public void DateAsSimple(){
+    public void DateAsSimple() {
         assertTrue(QCat.cat.dateAsSimple.getClass().equals(SimplePath.class));
     }
 }

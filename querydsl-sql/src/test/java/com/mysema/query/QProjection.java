@@ -34,8 +34,8 @@ public class QProjection extends ExpressionBase<Projection> implements FactoryEx
 
     @SuppressWarnings("unchecked")
     @Override
-    public Projection newInstance(final Object... args){
-        return new Projection(){
+    public Projection newInstance(final Object... args) {
+        return new Projection() {
 
             @Override
             public <T> T get(int index, Class<T> type) {
@@ -49,13 +49,13 @@ public class QProjection extends ExpressionBase<Projection> implements FactoryEx
             }
 
             @Override
-            public <T> Expression<T> getExpr(Expression<T> expr){
+            public <T> Expression<T> getExpr(Expression<T> expr) {
                 T val = get(expr);
                 return val != null ? SimpleConstant.create(val) : null;
             }
 
             @Override
-            public <T> Expression<T> getExpr(int index, Class<T> type){
+            public <T> Expression<T> getExpr(int index, Class<T> type) {
                 T val = (T)args[index];
                 return val != null ? SimpleConstant.create(val) : null;
             }

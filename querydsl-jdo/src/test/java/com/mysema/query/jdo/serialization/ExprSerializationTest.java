@@ -48,7 +48,7 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void Aggregation(){
+    public void Aggregation() {
         assertEquals("sum(product.price)", serialize(product.price.sum()));
         assertEquals("min(product.price)", serialize(product.price.min()));
         assertEquals("max(product.price)", serialize(product.price.max()));

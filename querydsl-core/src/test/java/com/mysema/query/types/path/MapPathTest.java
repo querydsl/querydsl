@@ -31,17 +31,17 @@ public class MapPathTest {
     }
     
     @Test
-    public void GetKeytType(){
+    public void GetKeytType() {
         assertEquals(String.class, mapPath.getKeyType());
     }
 
     @Test
-    public void GetValueType(){
+    public void GetValueType() {
         assertEquals(String.class, mapPath.getValueType());
     }
     
     @Test
-    public void GetParameter(){
+    public void GetParameter() {
         assertEquals(String.class, mapPath.getParameter(0));
         assertEquals(String.class, mapPath.getParameter(1));
     }

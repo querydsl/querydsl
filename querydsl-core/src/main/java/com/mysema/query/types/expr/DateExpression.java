@@ -84,7 +84,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> dayOfMonth(){
+    public NumberExpression<Integer> dayOfMonth() {
         if (dayOfMonth == null) {
             dayOfMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, mixin);
         }
@@ -122,7 +122,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return max(this)
      */
-    public DateExpression<T> max(){
+    public DateExpression<T> max() {
         if (max == null) {
             max = DateOperation.create(getType(), Ops.AggOps.MAX_AGG, mixin);
         }
@@ -134,7 +134,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return min(this)
      */
-    public DateExpression<T> min(){
+    public DateExpression<T> min() {
         if (min == null) {
             min = DateOperation.create(getType(), Ops.AggOps.MIN_AGG, mixin);
         }
@@ -146,7 +146,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> month(){
+    public NumberExpression<Integer> month() {
         if (month == null) {
             month = NumberOperation.create(Integer.class, Ops.DateTimeOps.MONTH, mixin);
         }
@@ -170,7 +170,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> year(){
+    public NumberExpression<Integer> year() {
         if (year == null) {
             year = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR, mixin);
         }
@@ -182,7 +182,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> yearMonth(){
+    public NumberExpression<Integer> yearMonth() {
         if (yearMonth == null) {
             yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, mixin);
         }

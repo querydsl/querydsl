@@ -31,17 +31,17 @@ public class JPACollectionAnyVisitorTest {
     private QCat cat = QCat.cat;
     
     @Test
-    public void Path(){
+    public void Path() {
         assertMatches("cat_kittens.*", serialize(cat.kittens.any()));
     }
     
     @Test
-    public void Longer_Path(){
+    public void Longer_Path() {
         assertMatches("cat_kittens.*\\.name", serialize(cat.kittens.any().name));
     }
     
     @Test
-    public void Simple_BooleanOperation(){        
+    public void Simple_BooleanOperation() {        
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
         assertMatches("exists \\(select 1\n" +
                 "from Cat cat_kittens.*\n" +
@@ -49,7 +49,7 @@ public class JPACollectionAnyVisitorTest {
     }
     
     @Test
-    public void Simple_StringOperation(){        
+    public void Simple_StringOperation() {        
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
         assertMatches("exists \\(select 1\n"+
                 "from Cat cat_kittens.*\n" +
@@ -57,7 +57,7 @@ public class JPACollectionAnyVisitorTest {
     }
     
     @Test
-    public void And_Operation(){
+    public void And_Operation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertMatches("exists \\(select 1\n"+
                 "from Cat cat_kittens.*\n" +
@@ -67,7 +67,7 @@ public class JPACollectionAnyVisitorTest {
     }
     
     @Test
-    public void Template(){
+    public void Template() {
         Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}", 
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertMatches("exists \\(select 1\n" +
@@ -90,7 +90,7 @@ public class JPACollectionAnyVisitorTest {
             "where cat_kittens.* in elements\\(cat.kittens\\) and cat_kittens.*\\.name = \\?1\\)", serialize(predicate));
     }
     
-    private String serialize(Expression<?> expression){
+    private String serialize(Expression<?> expression) {
         Expression<?> transformed = expression.accept(JPACollectionAnyVisitor.DEFAULT, new Context());
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT, null);
         serializer.handle(transformed);

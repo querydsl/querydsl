@@ -44,7 +44,7 @@ public class Superclass2Test {
     }
 
     @Entity
-    public static class Subtype extends CommonPersistence{
+    public static class Subtype extends CommonPersistence {
 
     }
 
@@ -54,7 +54,7 @@ public class Superclass2Test {
     }
     
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QSuperclass2Test_Subtype.subtype.createdOn);
     }
     

@@ -20,7 +20,7 @@ import com.mysema.query.types.path.BooleanPath;
 public class EntityExtensions {
     
     @QueryDelegate(EntityWithExtensions.class)
-    public static Predicate extension(QEntityWithExtensions entity){
+    public static Predicate extension(QEntityWithExtensions entity) {
         return new BooleanPath("b");
     }
 

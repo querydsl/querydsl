@@ -34,7 +34,7 @@ public class SearchSerializer extends LuceneSerializer{
      * @param lowerCase
      * @param splitTerms
      */
-    public SearchSerializer(boolean lowerCase, boolean splitTerms){
+    public SearchSerializer(boolean lowerCase, boolean splitTerms) {
         super(lowerCase, splitTerms);
     }
 

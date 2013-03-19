@@ -45,7 +45,7 @@ public class AntMetaDataExporterTest {
     }
     
     @Test
-    public void Execute(){
+    public void Execute() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
         exporter.setJdbcDriverClass("org.h2.Driver");
         exporter.setDbUserName("sa");
@@ -58,7 +58,7 @@ public class AntMetaDataExporterTest {
     }
     
     @Test
-    public void Execute_With_Beans(){
+    public void Execute_With_Beans() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
         exporter.setJdbcDriverClass("org.h2.Driver");
         exporter.setDbUserName("sa");

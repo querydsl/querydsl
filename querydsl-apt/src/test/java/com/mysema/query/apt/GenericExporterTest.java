@@ -126,12 +126,12 @@ public class GenericExporterTest extends AbstractProcessorTest {
     private void execute(List<String> expected, String genericExporterFolder, String aptFolder) throws IOException {
         List<String> failures = new ArrayList<String>();
         int successes = 0;
-        for (File file : new File("target/"+genericExporterFolder+"/com/mysema/query/domain").listFiles()){
+        for (File file : new File("target/"+genericExporterFolder+"/com/mysema/query/domain").listFiles()) {
             File other = new File("target/"+aptFolder+"/com/mysema/query/domain", file.getName());
             if (!other.exists() || !other.isFile()) continue;
             String result1 = Files.toString(file, Charsets.UTF_8);
             String result2 = Files.toString(other, Charsets.UTF_8);
-            if (!result1.equals(result2)){
+            if (!result1.equals(result2)) {
                 if (!expected.contains(file.getName())) {
                     System.err.println(file.getName());
                     failures.add(file.getName());    
@@ -140,7 +140,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
                 successes++;
             }
         }
-        if (!failures.isEmpty()){
+        if (!failures.isEmpty()) {
             fail("Failed with " + failures.size() + " failures, " + successes + " succeeded");
         }
     }

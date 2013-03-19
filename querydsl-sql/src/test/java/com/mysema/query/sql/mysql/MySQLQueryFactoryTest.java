@@ -33,8 +33,8 @@ public class MySQLQueryFactoryTest {
     private MySQLQueryFactory queryFactory;
 
     @Before
-    public void setUp(){
-        Provider<Connection> provider = new Provider<Connection>(){
+    public void setUp() {
+        Provider<Connection> provider = new Provider<Connection>() {
             @Override
             public Connection get() {
                 return EasyMock.createNiceMock(Connection.class);
@@ -44,37 +44,37 @@ public class MySQLQueryFactoryTest {
     }
 
     @Test
-    public void Query(){
+    public void Query() {
         assertNotNull(queryFactory.query());
     }
 
     @Test
-    public void SubQuery(){
+    public void SubQuery() {
         assertNotNull(queryFactory.subQuery());
     }
 
     @Test
-    public void SubQuery_From(){
+    public void SubQuery_From() {
         assertNotNull(queryFactory.subQuery(QSurvey.survey));
     }
 
     @Test
-    public void From(){
+    public void From() {
         assertNotNull(queryFactory.from(QSurvey.survey));
     }
 
     @Test
-    public void Delete(){
+    public void Delete() {
         assertNotNull(queryFactory.delete(QSurvey.survey));
     }
 
     @Test
-    public void Insert(){
+    public void Insert() {
         assertNotNull(queryFactory.insert(QSurvey.survey));
     }
 
     @Test
-    public void InsertIgnore(){
+    public void InsertIgnore() {
         SQLInsertClause clause = queryFactory.insertIgnore(QSurvey.survey);
         assertEquals("insert ignore into SURVEY\nvalues ()", clause.toString());
     }
@@ -92,17 +92,17 @@ public class MySQLQueryFactoryTest {
     }    
     
     @Test
-    public void Replace(){
+    public void Replace() {
         assertNotNull(queryFactory.replace(QSurvey.survey));
     }
 
     @Test
-    public void Update(){
+    public void Update() {
         assertNotNull(queryFactory.update(QSurvey.survey));
     }
 
     @Test
-    public void Merge(){
+    public void Merge() {
         assertNotNull(queryFactory.merge(QSurvey.survey));
     }
 

@@ -89,7 +89,7 @@ public final class PathMetadata<T> implements Serializable{
         return hashCode;
     }
 
-    public boolean isRoot(){
+    public boolean isRoot() {
         return parent == null || (pathType == PathType.DELEGATE && parent.getMetadata().isRoot()); 
     }
 

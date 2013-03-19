@@ -65,7 +65,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BooleanBuilder1(){
+    public void BooleanBuilder1() {
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(cat.eq(cat));
 
@@ -77,7 +77,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BooleanBuilder2(){
+    public void BooleanBuilder2() {
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(cat.eq(cat));
 
@@ -89,12 +89,12 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BooleanBuilder_With_Null_In_Where(){
+    public void BooleanBuilder_With_Null_In_Where() {
         assertEquals("select cat\nfrom Cat cat", sub().from(cat).where(new BooleanBuilder()).toString());
     }
     
     @Test
-    public void BooleanBuilder_With_Null_In_Having(){
+    public void BooleanBuilder_With_Null_In_Having() {
         assertEquals("select cat\nfrom Cat cat\ngroup by cat.name",
                 sub().from(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
     }

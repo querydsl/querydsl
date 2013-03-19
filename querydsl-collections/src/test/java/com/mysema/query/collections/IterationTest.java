@@ -41,22 +41,22 @@ public class IterationTest {
     private List<String> expected = Arrays.asList("data","data");
     
     @Test
-    public void test(){                
+    public void test() {                
         assertEquals(expected, CollQueryFactory.from ($(lt), allData).list($(lt.getData())));
     }
 
     @Test
-    public void test2(){        
+    public void test2() {        
         assertEquals(expected, CollQueryFactory.from ($(lt), Arrays.asList(allData.toArray())).list($(lt.getData())));
     }
     
     @Test
-    public void test3(){                
+    public void test3() {                
         assertEquals(expected, CollQueryFactory.from (lt, allData).list($(lt.getData())));
     }
 
     @Test
-    public void test4(){        
+    public void test4() {        
         assertEquals(expected, CollQueryFactory.from (lt, Arrays.asList(allData.toArray())).list($(lt.getData())));
     }
 }

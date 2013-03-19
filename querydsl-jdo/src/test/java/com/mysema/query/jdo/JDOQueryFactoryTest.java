@@ -29,8 +29,8 @@ public class JDOQueryFactoryTest {
     private JDOQueryFactory queryFactory;
 
     @Before
-    public void setUp(){
-        Provider<PersistenceManager> provider = new Provider<PersistenceManager>(){
+    public void setUp() {
+        Provider<PersistenceManager> provider = new Provider<PersistenceManager>() {
             @Override
             public PersistenceManager get() {
                 return EasyMock.createNiceMock(PersistenceManager.class);
@@ -40,22 +40,22 @@ public class JDOQueryFactoryTest {
     }
 
     @Test
-    public void Query(){
+    public void Query() {
         assertNotNull(queryFactory.query());
     }
 
     @Test
-    public void SubQuery(){
+    public void SubQuery() {
         assertNotNull(queryFactory.subQuery());
     }
 
     @Test
-    public void From(){
+    public void From() {
         assertNotNull(queryFactory.from(QProduct.product));
     }
 
     @Test
-    public void Delete(){
+    public void Delete() {
         assertNotNull(queryFactory.delete(QProduct.product));
     }
 

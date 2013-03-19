@@ -198,7 +198,7 @@ public class DefaultConfiguration implements Configuration {
     }
     
     @Override
-    public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
+    public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements) {
         if (useFields) {
             if (useGetters) {
                 return VisitorConfig.ALL;
@@ -300,7 +300,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public boolean isBlockedGetter(ExecutableElement getter){
+    public boolean isBlockedGetter(ExecutableElement getter) {
         if (getter.getAnnotation(QueryType.class) != null) {
             return false;
         } else {
@@ -338,7 +338,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public boolean isValidGetter(ExecutableElement getter){
+    public boolean isValidGetter(ExecutableElement getter) {
         if (getter.getAnnotation(QueryType.class) != null) {
             return true;
         } else {
@@ -351,7 +351,7 @@ public class DefaultConfiguration implements Configuration {
         module.bind(CodegenModule.PREFIX, namePrefix);
     }
 
-    public void setUseFields(boolean b){
+    public void setUseFields(boolean b) {
         this.useFields = b;
     }
 
@@ -366,7 +366,7 @@ public class DefaultConfiguration implements Configuration {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<String> getKeywords(){
+    public Collection<String> getKeywords() {
         return module.get(Collection.class, CodegenModule.KEYWORDS);
     }
 
@@ -379,7 +379,7 @@ public class DefaultConfiguration implements Configuration {
         module.bind(CodegenModule.SUFFIX, nameSuffix);
     }
 
-    public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType){
+    public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType) {
         module.get(TypeMappings.class).register(new ClassType(type), new ClassType(queryType));
     }
 

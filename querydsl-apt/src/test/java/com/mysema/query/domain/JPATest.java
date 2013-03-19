@@ -21,10 +21,10 @@ import org.junit.Test;
 import com.mysema.query.domain.JDOTest.JDOEntity;
 import com.mysema.query.types.path.StringPath;
 
-public class JPATest extends AbstractTest{
+public class JPATest extends AbstractTest {
 
     @Entity
-    public static class JPAEntity{
+    public static class JPAEntity {
 
         String prop;
 
@@ -36,7 +36,7 @@ public class JPATest extends AbstractTest{
     }
 
     @Test
-    public void test() throws SecurityException, NoSuchFieldException{
+    public void test() throws SecurityException, NoSuchFieldException {
         cl = QJPATest_JPAEntity.class;
         match(StringPath.class, "prop");
         assertMissing("skipped");

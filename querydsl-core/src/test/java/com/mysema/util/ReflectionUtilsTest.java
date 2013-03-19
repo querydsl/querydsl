@@ -27,7 +27,7 @@ import org.junit.Test;
 public class ReflectionUtilsTest {
     
     @Test
-    public void getImplementedInterfaces(){
+    public void getImplementedInterfaces() {
         assertEquals(
             new HashSet<Class<?>>(Arrays.<Class<?>>asList(Appendable.class, CharSequence.class, Serializable.class)), 
             ReflectionUtils.getImplementedInterfaces(StringBuilder.class));

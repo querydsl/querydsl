@@ -33,7 +33,7 @@ public class SubqueriesTest extends AbstractTest{
 /*  "SELECT FROM " + Department.class.getName() + " WHERE this.employees.size() == " +
  *  "(SELECT MAX(d.employees.size()) FROM " + Department.class.getName() + " d)"; */
     @Test
-    public void test1(){
+    public void test1() {
         assertEquals(
           "SELECT FROM com.mysema.query.jdo.models.company.Department " +
           "WHERE this.employees.size() == " +
@@ -48,7 +48,7 @@ public class SubqueriesTest extends AbstractTest{
 /*  "SELECT FROM " + Employee.class.getName() + " WHERE this.weeklyhours > " +
  *  "(SELECT AVG(e.weeklyhours) FROM this.department.employees e)"; */
     @Test
-    public void test2(){
+    public void test2() {
         assertEquals(
           "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
@@ -65,7 +65,7 @@ public class SubqueriesTest extends AbstractTest{
  *   "(SELECT AVG(e.weeklyhours) FROM this.department.employees e " +
  *   " WHERE e.manager == this.manager)"; */
     @Test
-    public void test3(){
+    public void test3() {
         assertEquals(
           "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
@@ -79,7 +79,7 @@ public class SubqueriesTest extends AbstractTest{
 /*  "SELECT FROM " + Employee.class.getName() + " WHERE this.weeklyhours > " +
  *   "(SELECT AVG(e.weeklyhours) FROM " + Employee.class.getName() + " e)"; */
     @Test
-    public void test4(){
+    public void test4() {
         assertEquals(
           "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
@@ -95,7 +95,7 @@ public class SubqueriesTest extends AbstractTest{
  *   " WHERE this.weeklyhours == emp.weeklyhours && " +
  *   "emp.firstname == 'emp1First' VARIABLES Employee emp"; */
     @Test
-    public void test5(){
+    public void test5() {
         assertEquals(
           "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours == e.weeklyhours && this.firstName == a1 " +

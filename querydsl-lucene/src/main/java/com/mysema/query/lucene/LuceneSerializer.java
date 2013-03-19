@@ -422,7 +422,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Path<?> getPath(Expression<?> leftHandSide){
+    private Path<?> getPath(Expression<?> leftHandSide) {
         if (leftHandSide instanceof Path<?>) {
             return (Path<?>)leftHandSide;
         } else if (leftHandSide instanceof Operation<?>) {
@@ -442,9 +442,9 @@ public class LuceneSerializer {
      */
     protected String toField(Path<?> path) {
         String rv = path.getMetadata().getName();
-        if (path.getMetadata().getParent() != null){
+        if (path.getMetadata().getParent() != null) {
             Path<?> parent = path.getMetadata().getParent();
-            if (parent.getMetadata().getPathType() != PathType.VARIABLE){
+            if (parent.getMetadata().getPathType() != PathType.VARIABLE) {
                 rv = toField(parent) + "." + rv;
             }
         }
@@ -481,14 +481,14 @@ public class LuceneSerializer {
             } else {
                 throw new IllegalArgumentException(rightHandSide.toString());
             }
-        } else if (rightHandSide instanceof ParamExpression<?>){
+        } else if (rightHandSide instanceof ParamExpression<?>) {
             Object value = metadata.getParams().get(rightHandSide);
-            if (value == null){
+            if (value == null) {
                 throw new ParamNotSetException((ParamExpression<?>) rightHandSide);
             }
             return convert(leftHandSide, value);
 
-        } else if (rightHandSide instanceof Constant<?>){
+        } else if (rightHandSide instanceof Constant<?>) {
             return convert(leftHandSide, ((Constant<?>)rightHandSide).getConstant());
         } else {
             throw new IllegalArgumentException(rightHandSide.toString());
@@ -504,7 +504,7 @@ public class LuceneSerializer {
      */
     protected String[] convert(Path<?> leftHandSide, Object rightHandSide) {
         String str = rightHandSide.toString();
-        if (lowerCase){
+        if (lowerCase) {
             str = str.toLowerCase();
         }
         if (splitTerms) {
@@ -521,7 +521,7 @@ public class LuceneSerializer {
 
     private String[] convertEscaped(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         String[] str = convert(leftHandSide, rightHandSide, metadata);
-        for (int i = 0; i < str.length; i++){
+        for (int i = 0; i < str.length; i++) {
             str[i] = QueryParser.escape(str[i]);
         }
         return str;

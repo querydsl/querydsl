@@ -29,47 +29,47 @@ public class ListAccessVisitorTest {
     private final QCat cat = QCat.cat;
     
     @Test
-    public void Path(){
+    public void Path() {
         assertEquals("cat_kittens_0", serialize(cat.kittens.get(0)));
     }
     
     @Test
-    public void Longer_Path(){
+    public void Longer_Path() {
         assertEquals("cat_kittens_0.name", serialize(cat.kittens.get(0).name));
     }
     
     @Test
-    public void Very_Long_Path(){
+    public void Very_Long_Path() {
         assertEquals("cat_kittens_0_kittens_1.name", serialize(cat.kittens.get(0).kittens.get(1).name));
     }
     
     @Test
-    public void Simple_BooleanOperation(){        
+    public void Simple_BooleanOperation() {        
         Predicate predicate = cat.kittens.get(0).name.eq("Ruth123");        
         assertEquals("cat_kittens_0.name = Ruth123", serialize(predicate));
     }
     
     @Test
-    public void Simple_StringOperation(){        
+    public void Simple_StringOperation() {        
         Predicate predicate = cat.kittens.get(0).name.substring(1).eq("uth123");        
         assertEquals("substring(cat_kittens_0.name,1) = uth123", serialize(predicate));
     }
     
     @Test
-    public void And_Operation(){
+    public void And_Operation() {
         Predicate predicate = cat.kittens.get(0).name.eq("Ruth123").and(cat.kittens.get(1).bodyWeight.gt(10.0));
         assertEquals("cat_kittens_0.name = Ruth123 && cat_kittens_1.bodyWeight > 10.0", serialize(predicate));
     }
     
     @Test
-    public void Template(){
+    public void Template() {
         Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}", 
                 cat.kittens.get(0).name, ConstantImpl.create("Ruth123"));
         assertEquals("cat_kittens_0.name = Ruth123", serialize(templateExpr));
     }
     
-    private String serialize(Expression<?> expression){
-        ListAccessVisitor visitor = new ListAccessVisitor(){
+    private String serialize(Expression<?> expression) {
+        ListAccessVisitor visitor = new ListAccessVisitor() {
             @Override
             protected Predicate exists(Context c, Predicate condition) {
                 return condition;

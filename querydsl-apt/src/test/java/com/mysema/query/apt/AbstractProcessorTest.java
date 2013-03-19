@@ -32,10 +32,10 @@ public abstract class AbstractProcessorTest {
 
     protected static List<String> getFiles(String path) {
         List<String> classes = new ArrayList<String>();
-        for (File file : new File(path).listFiles()){
-            if (file.getName().endsWith(".java")){
+        for (File file : new File(path).listFiles()) {
+            if (file.getName().endsWith(".java")) {
                 classes.add(file.getPath());
-            }else if (file.isDirectory() && !file.getName().startsWith(".")){
+            }else if (file.isDirectory() && !file.getName().startsWith(".")) {
                 classes.addAll(getFiles(file.getAbsolutePath()));
             }
         }
@@ -45,7 +45,7 @@ public abstract class AbstractProcessorTest {
     protected void process(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException {
         File out = new File("target/" + target);
         FileUtils.delete(out);
-        if (!out.mkdirs()){
+        if (!out.mkdirs()) {
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
         compile(processorClass, classes, target);

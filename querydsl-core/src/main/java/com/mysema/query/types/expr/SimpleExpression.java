@@ -100,7 +100,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      *
      * @return count(this)
      */
-    public NumberExpression<Long> count(){
+    public NumberExpression<Long> count() {
         if (count == null) {
             count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, mixin);
         }
@@ -113,7 +113,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      *
      * @return count(distinct this)
      */
-    public NumberExpression<Long> countDistinct(){
+    public NumberExpression<Long> countDistinct() {
         if (countDistinct == null) {
           countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, mixin);
         }
@@ -242,7 +242,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression notIn(Collection<? extends T> right) {
-        if (right.size() == 1){
+        if (right.size() == 1) {
             return ne(right.iterator().next());
         }else{
             return in(right).not();
@@ -303,7 +303,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @param other
      * @return
      */
-    public CaseForEqBuilder<T> when(T other){
+    public CaseForEqBuilder<T> when(T other) {
         return new CaseForEqBuilder<T>(mixin, new ConstantImpl<T>(other));
     }
 
@@ -313,7 +313,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @param other
      * @return
      */
-    public CaseForEqBuilder<T> when(Expression<? extends T> other){
+    public CaseForEqBuilder<T> when(Expression<? extends T> other) {
         return new CaseForEqBuilder<T>(mixin, other);
     }
 

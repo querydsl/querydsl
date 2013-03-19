@@ -26,13 +26,13 @@ public class InnerClassTest {
 
     public static class Example {
 
-        public String getId(){
+        public String getId() {
             return null;
         }
     }
 
     @Test
-    public void Query(){
+    public void Query() {
         Example example = alias(Example.class);
         assertFalse(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNull())

@@ -28,7 +28,7 @@ import com.mysema.util.BeanMap;
 public class PathBuilderTest {
 
     @Test
-    public void getEnum(){
+    public void getEnum() {
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
         EnumPath<Gender> enumPath = entityPath.getEnum("gender", Gender.class);
         assertNotNull(enumPath.ordinal());
@@ -36,7 +36,7 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void getByExample(){
+    public void getByExample() {
         User user = new User();
         user.setFirstName("firstName");
         user.setLastName("lastName");
@@ -45,7 +45,7 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void getArray(){
+    public void getArray() {
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
         ArrayPath<String> array = entityPath.getArray("array", String[].class);
         assertEquals(String[].class, array.getType());
@@ -53,27 +53,27 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void getList(){
+    public void getList() {
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
         entityPath.getList("list", String.class, StringPath.class).get(0).lower();
         entityPath.getList("list", String.class).get(0);
     }
 
     @Test
-    public void getMap(){
+    public void getMap() {
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
         entityPath.getMap("map", String.class, String.class, StringPath.class).get("").lower();
         entityPath.getMap("map", String.class, String.class).get("");
     }
 
     @SuppressWarnings("unchecked")
-    private <T> BooleanBuilder getByExample(T entity){
+    private <T> BooleanBuilder getByExample(T entity) {
         PathBuilder<T> entityPath = new PathBuilder<T>((Class<T>)entity.getClass(), "entity");
         BooleanBuilder conditions = new BooleanBuilder();
         Map<String, Object> beanMap = new BeanMap(entity);
-        for (Map.Entry<String,Object> entry : beanMap.entrySet()){
-            if (!entry.getKey().equals("class")){
-                if (entry.getValue() != null){
+        for (Map.Entry<String,Object> entry : beanMap.entrySet()) {
+            if (!entry.getKey().equals("class")) {
+                if (entry.getValue() != null) {
                     conditions.and(entityPath.get(entry.getKey()).eq(entry.getValue()));
                 }
             }
@@ -82,7 +82,7 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void Get(){
+    public void Get() {
         PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "int");
         StringPath strPath = new StringPath("str");
@@ -96,7 +96,7 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void Various(){
+    public void Various() {
         PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
         entity.getBoolean("boolean");
         entity.getCollection("col", User.class);

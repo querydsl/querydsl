@@ -26,10 +26,10 @@ import org.junit.runners.model.Statement;
 public class StatementTest {
     
     @Rule
-    public MethodRule rule = new MethodRule(){
+    public MethodRule rule = new MethodRule() {
         @Override
         public Statement apply(final Statement base, FrameworkMethod method, Object target) {
-            return new Statement(){
+            return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
                     System.err.println("in rule");
@@ -43,27 +43,27 @@ public class StatementTest {
     };
     
     @BeforeClass
-    public static void beforeClass(){
+    public static void beforeClass() {
         System.err.println("before class");
     }
     
     @Before
-    public void before(){
+    public void before() {
         System.err.println("before");
     }    
     
     @AfterClass
-    public static void afterClass(){
+    public static void afterClass() {
         System.err.println("after class");
     }
     
     @After
-    public void after(){
+    public void after() {
         System.err.println("after");
     }
     
     @Test
-    public void test(){
+    public void test() {
         System.err.println("test");
     }
 

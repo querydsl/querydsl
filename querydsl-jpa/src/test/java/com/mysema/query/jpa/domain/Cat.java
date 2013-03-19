@@ -54,18 +54,18 @@ public class Cat extends Animal {
     @ManyToOne
     private Cat mate;
 
-    public Cat(){}
+    public Cat() {}
     
-    public Cat(int id){
+    public Cat(int id) {
         setId(id);
     }    
 
-    public Cat(String name, int id){
+    public Cat(String name, int id) {
         setId(id);
         setName( name);
     }
 
-    public Cat(String name, int id, double bodyWeight){
+    public Cat(String name, int id, double bodyWeight) {
         this(name, id);
         setBodyWeight(bodyWeight);
         setFloatProperty((float)bodyWeight);

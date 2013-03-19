@@ -33,25 +33,25 @@ public class CoalesceTest {
     }
     
     @Test
-    public void WithList(){
+    public void WithList() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname).add("xxx");
         assertEquals("coalesce(firstname, lastname, xxx)", c.toString());
     }
 
     @Test
-    public void WithSingleArg(){
+    public void WithSingleArg() {
         Coalesce<String> c = new Coalesce<String>().add("xxx");
         assertEquals("coalesce(xxx)", c.toString());
     }
 
     @Test
-    public void AsComparable(){
+    public void AsComparable() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.getValue().asc();
     }
 
     @Test
-    public void AsString(){
+    public void AsString() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.asString().lower();
     }

@@ -28,7 +28,7 @@ public class ContainerTest extends AbstractTest{
     private Wardrobe wrd = new Wardrobe(), wrd1 = new Wardrobe(), wrd2 = new Wardrobe();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         wrd.setModel("model");
     }
 

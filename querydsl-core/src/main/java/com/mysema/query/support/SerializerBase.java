@@ -134,7 +134,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    protected void handleTemplate(final Template template, final List<?> args){
+    protected void handleTemplate(final Template template, final List<?> args) {
         for (final Template.Element element : template.getElements()) {
             final Object rv = element.convert(args);
             if (rv instanceof Expression) {                    
@@ -158,7 +158,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return handled;
     }
     
-    public final boolean serialize(final JoinFlag.Position position, final Set<JoinFlag> flags){
+    public final boolean serialize(final JoinFlag.Position position, final Set<JoinFlag> flags) {
         boolean handled = false;
         for (final JoinFlag flag : flags) {
             if (flag.getPosition() == position) {
@@ -169,15 +169,15 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return handled;
     }
 
-    public void setConstantPrefix(String prefix){
+    public void setConstantPrefix(String prefix) {
         this.constantPrefix = prefix;
     }
 
-    public void setParamPrefix(String prefix){
+    public void setParamPrefix(String prefix) {
         this.paramPrefix = prefix;
     }
 
-    public void setAnonParamPrefix(String prefix){
+    public void setAnonParamPrefix(String prefix) {
         this.anonParamPrefix = prefix;
     }
     

@@ -61,7 +61,7 @@ public class DetachableMixin implements Detachable {
     }
 
     @Override
-    public BooleanExpression exists(){
+    public BooleanExpression exists() {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No sources given");
         }
@@ -114,11 +114,11 @@ public class DetachableMixin implements Detachable {
     }
 
     @Override
-    public BooleanExpression notExists(){
+    public BooleanExpression notExists() {
         return exists().not();
     }
 
-    private QueryMetadata projection(Expression<?>... projection){
+    private QueryMetadata projection(Expression<?>... projection) {
         QueryMetadata metadata = queryMixin.getMetadata().clone();
         for (Expression<?> expr : projection) {
             metadata.addProjection(nullAsTemplate(expr));             
@@ -126,7 +126,7 @@ public class DetachableMixin implements Detachable {
         return metadata;        
     }
     
-    private Expression<?> nullAsTemplate(@Nullable Expression<?> expr){
+    private Expression<?> nullAsTemplate(@Nullable Expression<?> expr) {
         return expr != null ? expr : NullExpression.DEFAULT;
     }
 
@@ -182,7 +182,7 @@ public class DetachableMixin implements Detachable {
         return new TimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }    
 
-    private QueryMetadata uniqueProjection(Expression<?>... projection){
+    private QueryMetadata uniqueProjection(Expression<?>... projection) {
         QueryMetadata metadata = projection(projection);
         metadata.setUnique(true);
         return metadata;

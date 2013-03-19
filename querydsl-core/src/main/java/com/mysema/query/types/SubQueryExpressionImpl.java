@@ -30,13 +30,13 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
 
     private final QueryMetadata metadata;
 
-    public SubQueryExpressionImpl(Class<? extends T> type, QueryMetadata metadata){
+    public SubQueryExpressionImpl(Class<? extends T> type, QueryMetadata metadata) {
         super(type);
         this.metadata = metadata;
     }
 
     @SuppressWarnings("unchecked")
-    public final boolean equals(Object o){
+    public final boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof SubQueryExpression) {

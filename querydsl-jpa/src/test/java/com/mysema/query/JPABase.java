@@ -61,7 +61,7 @@ public class JPABase extends AbstractStandardTest {
     private EntityManager entityManager;
     
     @Override
-    protected JPAQuery query(){
+    protected JPAQuery query() {
         return new JPAQuery(entityManager);
     }
     
@@ -70,7 +70,7 @@ public class JPABase extends AbstractStandardTest {
     }
     
     @Override
-    protected JPAQuery testQuery(){
+    protected JPAQuery testQuery() {
         return new JPAQuery(entityManager, new DefaultQueryMetadata().noValidate());
     }    
     
@@ -105,7 +105,7 @@ public class JPABase extends AbstractStandardTest {
     }
     
     @Test
-    public void QueryExposure(){
+    public void QueryExposure() {
         //save(new Cat(20));
         List<Cat> results = query().from(QCat.cat).createQuery(QCat.cat).getResultList();
         assertNotNull(results);
@@ -114,7 +114,7 @@ public class JPABase extends AbstractStandardTest {
 
     @Test
     @NoEclipseLink @NoOpenJPA
-    public void Hint(){
+    public void Hint() {
         javax.persistence.Query query = query().from(QCat.cat)
                 .setHint("org.hibernate.cacheable", true)
                 .createQuery(QCat.cat);
@@ -125,7 +125,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
-    public void Hint2(){
+    public void Hint2() {
         assertFalse(query().from(QCat.cat).setHint("org.hibernate.cacheable", true)
                 .list(QCat.cat).isEmpty());
     }
@@ -144,7 +144,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
-    public void LockMode(){
+    public void LockMode() {
         javax.persistence.Query query = query().from(QCat.cat)
                 .setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(QCat.cat);
         assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
@@ -152,7 +152,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
-    public void LockMode2(){
+    public void LockMode2() {
         assertFalse(query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ)
                 .list(QCat.cat).isEmpty());
     }
@@ -163,13 +163,13 @@ public class JPABase extends AbstractStandardTest {
     }
     
     @Test
-    public void Limit1_UniqueResult(){
+    public void Limit1_UniqueResult() {
         assertNotNull(query().from(QCat.cat).limit(1).uniqueResult(QCat.cat));
     }
 
     @Test
     @NoEclipseLink @NoOpenJPA
-    public void Connection_Access(){
+    public void Connection_Access() {
         assertNotNull(query().from(QCat.cat).createQuery(QCat.cat).unwrap(Connection.class));
     }
     

@@ -50,7 +50,7 @@ public abstract class AbstractJDOTest {
         return new JDOQuery(pm, templates, true);
     }
 
-    protected JDOSubQuery sub(){
+    protected JDOSubQuery sub() {
         return new JDOSubQuery();
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractJDOTest {
             pm.newQuery(Product.class).deletePersistentAll();
             tx.commit();
         } finally {
-            if (tx.isActive()){
+            if (tx.isActive()) {
                 tx.rollback();
             }
             pm.close();

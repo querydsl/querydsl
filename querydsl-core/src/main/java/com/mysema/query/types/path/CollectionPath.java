@@ -72,7 +72,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     }
     
     @Override
-    public Q any(){
+    public Q any() {
         if (any == null) {
             any = newInstance(queryType, PathMetadataFactory.forCollectionAny(pathMixin));
         }
@@ -94,7 +94,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 

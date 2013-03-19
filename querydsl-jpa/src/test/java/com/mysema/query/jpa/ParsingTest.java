@@ -533,7 +533,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void Serialization(){
+    public void Serialization() {
         QueryHelper query = query();
 
         query.from(cat);

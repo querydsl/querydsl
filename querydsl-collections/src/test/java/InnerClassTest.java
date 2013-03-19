@@ -12,7 +12,6 @@
  * limitations under the License.
  */
 
-
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
 import static org.junit.Assert.assertFalse;
@@ -28,13 +27,13 @@ public class InnerClassTest {
 
     public static class Example {
 
-        public String getId(){
+        public String getId() {
             return null;
         }
     }
 
     @Test
-    public void Query(){
+    public void Query() {
         Example example = alias(Example.class);
         assertFalse(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNull())

@@ -27,7 +27,7 @@ public class ForeignKeyData implements KeyData {
         this.table = parentTable;
     }
 
-    public void add(String foreignColumn, String parentColumn){
+    public void add(String foreignColumn, String parentColumn) {
         foreignColumns.add(foreignColumn);
         parentColumns.add(parentColumn);
     }

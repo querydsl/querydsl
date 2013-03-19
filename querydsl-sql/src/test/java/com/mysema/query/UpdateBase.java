@@ -84,12 +84,12 @@ public class UpdateBase extends AbstractBaseTest {
     }
     
     @Test
-    public void Update3(){
+    public void Update3() {
         update(survey).set(survey.name, survey.name.append("X")).execute();
     }
 
     @Test
-    public void SetNull(){
+    public void SetNull() {
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList(null);
         long count = query().from(survey).count();
@@ -97,7 +97,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void SetNull2(){
+    public void SetNull2() {
         long count = query().from(survey).count();
         assertEquals(count, update(survey).set(survey.name, (String)null).execute());
     }
@@ -114,7 +114,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
     
     @Test
-    public void Update_with_SubQuery_exists(){
+    public void Update_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
@@ -124,7 +124,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
     
     @Test
-    public void Update_with_SubQuery_exists2(){
+    public void Update_with_SubQuery_exists2() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
@@ -134,7 +134,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
     
     @Test
-    public void Update_with_SubQuery_notExists(){
+    public void Update_with_SubQuery_notExists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);

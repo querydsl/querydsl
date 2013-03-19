@@ -27,7 +27,7 @@ public class DefaultSessionHolder implements SessionHolder{
 
     private final Session session;
 
-    public DefaultSessionHolder(Session session){
+    public DefaultSessionHolder(Session session) {
         this.session = session;
     }
 

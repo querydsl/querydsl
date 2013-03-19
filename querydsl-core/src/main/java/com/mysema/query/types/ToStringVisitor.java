@@ -25,7 +25,7 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
     
     public static final ToStringVisitor DEFAULT = new ToStringVisitor();
 
-    private ToStringVisitor(){}
+    private ToStringVisitor() {}
     
     @Override
     public String visit(Constant<?> e, Templates templates) {

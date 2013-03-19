@@ -30,14 +30,14 @@ public class Cat extends Animal {
 
     private Cat mate;
 
-    public Cat(){}
+    public Cat() {}
 
-    public Cat(String name, int id){
+    public Cat(String name, int id) {
         this.setId(id);
         this.setName( name);
     }
 
-    public Cat(String name, int id, double bodyWeight){
+    public Cat(String name, int id, double bodyWeight) {
         this(name, id);
         this.setBodyWeight(bodyWeight);
     }

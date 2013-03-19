@@ -54,7 +54,7 @@ public final class CollQueryFunctions {
     }
 
     @Nullable
-    public static <T> T coalesce(T... args){
+    public static <T> T coalesce(T... args) {
         for (T arg : args) { 
             if (arg != null) {
                 return arg;
@@ -71,53 +71,53 @@ public final class CollQueryFunctions {
         }
     }
 
-    public static int getDayOfMonth(Date date){
+    public static int getDayOfMonth(Date date) {
         return getField(date, Calendar.DAY_OF_MONTH);
     }
 
-    public static int getDayOfWeek(Date date){
+    public static int getDayOfWeek(Date date) {
         return getField(date, Calendar.DAY_OF_WEEK);
     }
 
-    public static int getDayOfYear(Date date){
+    public static int getDayOfYear(Date date) {
         return getField(date, Calendar.DAY_OF_YEAR);
     }
 
-    private static int getField(Date date, int field){
+    private static int getField(Date date, int field) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(field);
     }
 
-    public static int getHour(Date date){
+    public static int getHour(Date date) {
         return getField(date, Calendar.HOUR_OF_DAY);
     }
 
-    public static int getMilliSecond(Date date){
+    public static int getMilliSecond(Date date) {
         return getField(date, Calendar.MILLISECOND);
     }
 
-    public static int getMinute(Date date){
+    public static int getMinute(Date date) {
         return getField(date, Calendar.MINUTE);
     }
 
-    public static int getMonth(Date date){
+    public static int getMonth(Date date) {
         return getField(date, Calendar.MONTH) + 1;
     }
 
-    public static int getSecond(Date date){
+    public static int getSecond(Date date) {
         return getField(date, Calendar.SECOND);
     }
 
-    public static int getWeek(Date date){
+    public static int getWeek(Date date) {
         return getField(date, Calendar.WEEK_OF_YEAR);
     }
 
-    public static int getYear(Date date){
+    public static int getYear(Date date) {
         return getField(date, Calendar.YEAR);
     }
 
-    public static int getYearMonth(Date date){
+    public static int getYearMonth(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH) + 1;
@@ -163,6 +163,6 @@ public final class CollQueryFunctions {
         }        
     }
     
-    private CollQueryFunctions(){}
+    private CollQueryFunctions() {}
 
 }

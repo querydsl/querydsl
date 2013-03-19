@@ -52,19 +52,19 @@ public class MatchingFiltersFactory {
     }
 
     public <A> Collection<Predicate> array(ArrayExpression<A> expr,  
-            ArrayExpression<A> other, A knownElement, A missingElement){
+            ArrayExpression<A> other, A knownElement, A missingElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
 //        rv.add(expr.isEmpty().not());
-        if (!module.equals(Module.RDFBEAN)){
+        if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         return ImmutableList.copyOf(rv);
     }
 
     public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr,  
-            CollectionExpression<?,A> other, A knownElement, A missingElement){
+            CollectionExpression<?,A> other, A knownElement, A missingElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
-        if (!module.equals(Module.RDFBEAN)){
+        if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.contains(knownElement));
             rv.add(expr.contains(missingElement).not());
         }
@@ -75,7 +75,7 @@ public class MatchingFiltersFactory {
 
     @SuppressWarnings("unchecked")
     private <A extends Comparable> Collection<Predicate> comparable(ComparableExpression<A> expr,  
-            Expression<A> other){
+            Expression<A> other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
@@ -85,19 +85,19 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> date(DateExpression<java.sql.Date> expr, 
-            DateExpression<java.sql.Date> other){
+            DateExpression<java.sql.Date> other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
-                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))){
+                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
                     && !target.equals(Target.CUBRID)
-                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
+                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)) {
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -109,7 +109,7 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> date(DateExpression<java.sql.Date> expr, 
-            DateExpression<java.sql.Date> other, java.sql.Date knownValue){
+            DateExpression<java.sql.Date> other, java.sql.Date knownValue) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(date(expr, other));
         rv.addAll(date(expr, DateConstant.create(knownValue)));
@@ -117,7 +117,7 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr, 
-            DateTimeExpression<java.util.Date> other){
+            DateTimeExpression<java.util.Date> other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
@@ -127,13 +127,13 @@ public class MatchingFiltersFactory {
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
-                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))){
+                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
                     && !target.equals(Target.CUBRID)
-                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
+                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)) {
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -145,7 +145,7 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr, 
-            DateTimeExpression<java.util.Date> other, java.util.Date knownValue){
+            DateTimeExpression<java.util.Date> other, java.util.Date knownValue) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(dateTime(expr, other));
         rv.addAll(dateTime(expr, DateTimeConstant.create(knownValue)));
@@ -153,7 +153,7 @@ public class MatchingFiltersFactory {
     }
 
     public <A,Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A,Q> expr, 
-            ListExpression<A,Q> other, A knownElement, A missingElement){
+            ListExpression<A,Q> other, A knownElement, A missingElement) {
         return collection(expr, other, knownElement, missingElement);
     }
 
@@ -171,7 +171,7 @@ public class MatchingFiltersFactory {
     }
 
     public <A extends Number & Comparable<A>> Collection<Predicate> numeric( 
-            NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+            NumberExpression<A> expr, NumberExpression<A> other, A knownValue) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(numeric(expr, other));
         rv.addAll(numeric(expr, NumberConstant.create(knownValue)));
@@ -179,7 +179,7 @@ public class MatchingFiltersFactory {
     }
 
     public <A extends Number & Comparable<A>> Collection<Predicate> numeric( 
-            NumberExpression<A> expr, NumberExpression<A> other){
+            NumberExpression<A> expr, NumberExpression<A> other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
@@ -192,9 +192,9 @@ public class MatchingFiltersFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public Collection<Predicate> string(StringExpression expr, StringExpression other){
+    public Collection<Predicate> string(StringExpression expr, StringExpression other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
-        if (module != Module.LUCENE){
+        if (module != Module.LUCENE) {
             rv.addAll(comparable(expr, other));
 
             rv.add(expr.charAt(0).eq(other.charAt(0)));
@@ -228,26 +228,26 @@ public class MatchingFiltersFactory {
         rv.add(expr.eq(other));
         rv.add(expr.equalsIgnoreCase(other));
 
-        if (module != Module.LUCENE){
+        if (module != Module.LUCENE) {
             rv.add(expr.indexOf(other).eq(0));            
             rv.add(expr.locate(other).eq(1));
         }
 
-        if (target != Target.DERBY && module != Module.LUCENE){
+        if (target != Target.DERBY && module != Module.LUCENE) {
             rv.add(expr.indexOf(other.substring(1)).eq(1));
             rv.add(expr.indexOf(other.substring(2)).eq(2));
         }
 
-        if (module != Module.LUCENE){
+        if (module != Module.LUCENE) {
             rv.add(expr.isEmpty().not());
             rv.add(expr.isNotEmpty());
         }
 
-        if (module != Module.LUCENE){
+        if (module != Module.LUCENE) {
             rv.add(expr.length().eq(other.length()));
             rv.add(expr.like(other));
             
-            if (module != Module.JDO || other instanceof Constant<?>){
+            if (module != Module.JDO || other instanceof Constant<?>) {
                 rv.add(expr.like(other.substring(0,1).append("%")));
                 rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
                 rv.add(expr.like(other.substring(1).prepend("%")));
@@ -257,17 +257,17 @@ public class MatchingFiltersFactory {
 
         rv.add(expr.lower().eq(other.lower()));
 
-        if (module != Module.LUCENE){
+        if (module != Module.LUCENE) {
             if (!module.equals(Module.SQL)
             || (!target.equals(Target.HSQLDB)
             && !target.equals(Target.H2)
             && !target.equals(Target.DERBY)
             && !target.equals(Target.SQLITE)
-            && !target.equals(Target.SQLSERVER))){
+            && !target.equals(Target.SQLSERVER))) {
                 
                 rv.add(expr.matches(other));
                 
-                if (module != Module.JDO || other instanceof Constant<?>){
+                if (module != Module.JDO || other instanceof Constant<?>) {
                     rv.add(expr.matches(other.substring(0,1).append(".*")));
                     rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
                     rv.add(expr.matches(other.substring(1).prepend(".*")));
@@ -286,7 +286,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.startsWithIgnoreCase(other.substring(0,1)));
         rv.add(expr.startsWithIgnoreCase(other.substring(0,2)));
 
-        if (module != Module.LUCENE){
+        if (module != Module.LUCENE) {
             rv.add(expr.substring(0,1).eq(other.substring(0,1)));
             rv.add(expr.substring(1,2).eq(other.substring(1,2)));
             rv.add(expr.substring(1).eq(other.substring(1)));
@@ -299,7 +299,7 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> string(StringExpression expr, StringExpression other,  
-            String knownValue){
+            String knownValue) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(string(expr, other));
         rv.addAll(string(expr, StringConstant.create(knownValue)));
@@ -307,7 +307,7 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,  
-            TimeExpression<java.sql.Time> other){
+            TimeExpression<java.sql.Time> other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
@@ -318,7 +318,7 @@ public class MatchingFiltersFactory {
     }
 
     public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,  
-            TimeExpression<java.sql.Time> other, java.sql.Time knownValue){
+            TimeExpression<java.sql.Time> other, java.sql.Time knownValue) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(time(expr, other));
         rv.addAll(time(expr, TimeConstant.create(knownValue)));

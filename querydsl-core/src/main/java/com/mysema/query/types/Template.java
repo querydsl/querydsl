@@ -186,7 +186,7 @@ public final class Template implements Serializable {
         return template;
     }
     
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof Template) {
@@ -197,7 +197,7 @@ public final class Template implements Serializable {
     }
     
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return template.hashCode();
     }
 

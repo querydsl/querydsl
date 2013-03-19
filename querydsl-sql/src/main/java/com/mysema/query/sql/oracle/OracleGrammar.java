@@ -28,7 +28,7 @@ import com.mysema.query.types.template.NumberTemplate;
  */
 public final class OracleGrammar {
 
-    private OracleGrammar(){}
+    private OracleGrammar() {}
 
     public static final NumberExpression<Integer> level = NumberTemplate.create(Integer.class, "level");
 

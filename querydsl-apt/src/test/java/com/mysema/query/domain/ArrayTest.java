@@ -22,7 +22,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class ArrayTest {
 
     @QueryEntity
-    public static class ArrayTestEntity{
+    public static class ArrayTestEntity {
         
         ArrayTestEntity[] entityArray;
         
@@ -32,7 +32,7 @@ public class ArrayTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         QArrayTest_ArrayTestEntity entity = QArrayTest_ArrayTestEntity.arrayTestEntity;
         assertEquals(ArrayTestEntity[].class, entity.entityArray.getType());
         assertEquals(ArrayTestEntity.class, entity.entityArray.get(0).getType());

@@ -33,35 +33,35 @@ public class SerializationTest {
     private final Connection connection = EasyMock.createMock(Connection.class);
 
     @Test
-    public void InnerJoin(){        
+    public void InnerJoin() {        
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).innerJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\ninner join SURVEY s2", query.toString());
     }
     
     @Test
-    public void LeftJoin(){        
+    public void LeftJoin() {        
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).leftJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nleft join SURVEY s2", query.toString());
     }
     
     @Test
-    public void RightJoin(){        
+    public void RightJoin() {        
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).rightJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nright join SURVEY s2", query.toString());
     }
     
     @Test
-    public void FullJoin(){        
+    public void FullJoin() {        
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).fullJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nfull join SURVEY s2", query.toString());
     }
         
     @Test
-    public void Update(){
+    public void Update() {
         QSurvey survey = new QSurvey("survey");
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
@@ -70,7 +70,7 @@ public class SerializationTest {
     }
     
     @Test
-    public void Update_Where(){
+    public void Update_Where() {
         QSurvey survey = new QSurvey("survey");
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
@@ -80,7 +80,7 @@ public class SerializationTest {
     }
     
     @Test
-    public void Insert(){
+    public void Insert() {
         QSurvey survey = new QSurvey("survey");
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);
@@ -89,7 +89,7 @@ public class SerializationTest {
     }
     
     @Test
-    public void Delete_with_SubQuery_exists(){
+    public void Delete_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = new SQLDeleteClause(connection, SQLTemplates.DEFAULT,survey1);

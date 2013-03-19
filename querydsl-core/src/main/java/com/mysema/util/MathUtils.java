@@ -24,22 +24,22 @@ import java.math.BigInteger;
  */
 public final class MathUtils {
 
-    private MathUtils(){}
+    private MathUtils() {}
 
     @SuppressWarnings("unchecked")
-    public static <D extends Number & Comparable<?>> D sum(D num1, Number num2){
+    public static <D extends Number & Comparable<?>> D sum(D num1, Number num2) {
         BigDecimal res = new BigDecimal(num1.toString()).add(new BigDecimal(num2.toString()));
         return MathUtils.<D>cast(res, (Class<D>)num1.getClass());
     }
 
     @SuppressWarnings("unchecked")
-    public static <D extends Number & Comparable<?>> D difference(D num1, Number num2){
+    public static <D extends Number & Comparable<?>> D difference(D num1, Number num2) {
         BigDecimal res = new BigDecimal(num1.toString()).subtract(new BigDecimal(num2.toString()));
         return MathUtils.<D>cast(res, (Class<D>)num1.getClass());
     }
 
     @SuppressWarnings("unchecked")
-    public static <D extends Number & Comparable<?>> D cast(Number num, Class<D> type){
+    public static <D extends Number & Comparable<?>> D cast(Number num, Class<D> type) {
         Number rv;
         if (type.equals(Byte.class)) {
             rv = num.byteValue();
@@ -59,7 +59,7 @@ public final class MathUtils {
             } else{
                 rv = new BigDecimal(num.toString());
             }
-        } else if (type.equals(BigInteger.class)){
+        } else if (type.equals(BigInteger.class)) {
             if (num instanceof BigInteger) {
                 rv = num;
             } else if (num instanceof BigDecimal) {

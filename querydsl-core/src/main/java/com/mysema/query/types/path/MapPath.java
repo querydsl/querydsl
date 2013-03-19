@@ -75,11 +75,11 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         return v.visit(pathMixin, context);
     }
 
-    protected PathMetadata<K> forMapAccess(K key){
+    protected PathMetadata<K> forMapAccess(K key) {
         return PathMetadataFactory.forMapAccess(this, key);
     }
 
-    protected PathMetadata<K> forMapAccess(Expression<K> key){
+    protected PathMetadata<K> forMapAccess(Expression<K> key) {
         return PathMetadataFactory.forMapAccess(this, key);
     }
 
@@ -134,7 +134,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 

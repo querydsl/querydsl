@@ -38,7 +38,7 @@ public class FetchPlanTest extends AbstractJDOTest{
     
     @After
     public void tearDown() {
-        if (query != null){
+        if (query != null) {
             query.close();
         }
         super.tearDown();

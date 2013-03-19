@@ -60,7 +60,7 @@ public class NumberOperation<T extends Number & Comparable<?>>
 
     @SuppressWarnings("unchecked")
     @Override
-    public NumberExpression<T> negate(){
+    public NumberExpression<T> negate() {
         if (opMixin.getOperator() == Ops.NEGATE) {
             return (NumberExpression<T>) opMixin.getArg(0);
         } else {

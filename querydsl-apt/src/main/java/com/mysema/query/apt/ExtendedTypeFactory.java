@@ -113,7 +113,7 @@ public final class ExtendedTypeFactory {
         public Type visitDeclared(DeclaredType declaredType, Boolean p) {
             if (declaredType.asElement() instanceof TypeElement) {
                 TypeElement typeElement = (TypeElement)declaredType.asElement();
-                switch(typeElement.getKind()){
+                switch(typeElement.getKind()) {
                 case ENUM:      return createEnumType(declaredType, typeElement, p);
                 case ANNOTATION_TYPE:
                 case CLASS:     return createClassType(declaredType, typeElement, p);
@@ -264,7 +264,7 @@ public final class ExtendedTypeFactory {
             Configuration configuration,
             Set<Class<? extends Annotation>> annotations,
             TypeMappings typeMappings,
-            QueryTypeFactory queryTypeFactory){
+            QueryTypeFactory queryTypeFactory) {
         this.env = env;
         this.defaultType = new TypeExtends(Types.OBJECT);
         this.entityAnnotations = annotations;
@@ -301,7 +301,7 @@ public final class ExtendedTypeFactory {
     }
     
     @Nullable
-    public Type getType(TypeMirror typeMirror, boolean deep){
+    public Type getType(TypeMirror typeMirror, boolean deep) {
         List<String> key = keyBuilder.visit(typeMirror,true);
         if (entityTypeCache.containsKey(key)) {
             return entityTypeCache.get(key);
@@ -381,7 +381,7 @@ public final class ExtendedTypeFactory {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations) {
             if (typeElement.getAnnotation(entityAnn) != null || 
-                    (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)){
+                    (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)) {
                 EntityType entityType = new EntityType(type);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
                 return entityType;
@@ -417,7 +417,7 @@ public final class ExtendedTypeFactory {
 
     private Type createCollectionType(Type baseType, String simpleName, 
             Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        if (!typeMirrors.hasNext()){
+        if (!typeMirrors.hasNext()) {
             return new SimpleType(baseType, defaultType);
         }
         

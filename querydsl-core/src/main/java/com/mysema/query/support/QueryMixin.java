@@ -48,32 +48,32 @@ public class QueryMixin<T> {
 
     private T self;
 
-    public QueryMixin(){
+    public QueryMixin() {
         this.metadata = new DefaultQueryMetadata();
         this.validateAnyPaths = true;
     }
 
-    public QueryMixin(QueryMetadata metadata){
+    public QueryMixin(QueryMetadata metadata) {
         this.metadata = metadata;
         this.validateAnyPaths = true;
     }
     
-    public QueryMixin(QueryMetadata metadata, boolean validateAnyPaths){
+    public QueryMixin(QueryMetadata metadata, boolean validateAnyPaths) {
         this.metadata = metadata;
         this.validateAnyPaths = validateAnyPaths;
     }
 
-    public QueryMixin(T self){
+    public QueryMixin(T self) {
         this(self, new DefaultQueryMetadata());
     }
 
-    public QueryMixin(T self, QueryMetadata metadata){
+    public QueryMixin(T self, QueryMetadata metadata) {
         this.self = self;
         this.metadata = metadata;
         this.validateAnyPaths = true;
     }
     
-    public QueryMixin(T self, QueryMetadata metadata, boolean validateAnyPaths){
+    public QueryMixin(T self, QueryMetadata metadata, boolean validateAnyPaths) {
         this.self = self;
         this.metadata = metadata;
         this.validateAnyPaths = validateAnyPaths;
@@ -84,7 +84,7 @@ public class QueryMixin<T> {
         return self;
     }
     
-    public T addFlag(QueryFlag queryFlag){
+    public T addFlag(QueryFlag queryFlag) {
         metadata.addFlag(queryFlag);
         return self;
     }
@@ -107,15 +107,15 @@ public class QueryMixin<T> {
         return self;
     }
 
-    private <P extends Path<?>> P assertRoot(P p){
-        if (!p.getRoot().equals(p)){
+    private <P extends Path<?>> P assertRoot(P p) {
+        if (!p.getRoot().equals(p)) {
             throw new IllegalArgumentException(p + " is not a root path");
         }
         return p;
     }
 
     @SuppressWarnings("rawtypes")
-    public <RT> Expression<RT> convert(Expression<RT> expr){
+    public <RT> Expression<RT> convert(Expression<RT> expr) {
         if (validateAnyPaths && expr instanceof Path) {
             Context context = new Context();            
             Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
@@ -138,12 +138,12 @@ public class QueryMixin<T> {
         }
     }
 
-    protected <D> Expression<D> createAlias(Expression expr, Path alias){
+    protected <D> Expression<D> createAlias(Expression expr, Path alias) {
         assertRoot(alias);
         return ExpressionUtils.as(expr, alias);
     }
 
-    public final T distinct(){
+    public final T distinct() {
         metadata.setDistinct(true);
         return self;
     }
@@ -189,7 +189,7 @@ public class QueryMixin<T> {
         return metadata;
     }
 
-    public final T getSelf(){
+    public final T getSelf() {
         return self;
     }
 
@@ -318,7 +318,7 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public final T on(Predicate... conditions){
+    public final T on(Predicate... conditions) {
         for (Predicate condition : conditions) {
             metadata.addJoinCondition(normalize(condition, false));
         }
@@ -373,7 +373,7 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public final <P> T set(ParamExpression<P> param, P value){
+    public final <P> T set(ParamExpression<P> param, P value) {
         metadata.setParam(param, value);
         return self;
     }
@@ -382,7 +382,7 @@ public class QueryMixin<T> {
         metadata.setDistinct(distinct);
     }
 
-    public final void setSelf(T self){
+    public final void setSelf(T self) {
         this.self = self;
     }
     

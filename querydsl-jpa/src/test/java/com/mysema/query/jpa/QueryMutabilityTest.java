@@ -36,7 +36,7 @@ public class QueryMutabilityTest{
 
     private Session session;
 
-    protected HibernateSQLQuery query(){
+    protected HibernateSQLQuery query() {
         return new HibernateSQLQuery(session, derbyTemplates);
     }
     public void setSession(Session session) {
@@ -53,7 +53,7 @@ public class QueryMutabilityTest{
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         SAnimal cat = new SAnimal("cat");
         HibernateSQLQuery query = query().from(cat).where(cat.name.isNotNull());
         HibernateSQLQuery query2 = query.clone(session);

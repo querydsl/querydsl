@@ -42,12 +42,12 @@ public class TemplateFactory {
 
     private final Converters converters;
     
-    public TemplateFactory(char escape){
+    public TemplateFactory(char escape) {
         converters = new Converters(escape);
     }
     
-    public Template create(String template){
-        if (cache.containsKey(template)){
+    public Template create(String template) {
+        if (cache.containsKey(template)) {
             return cache.get(template);
         }else{
             Matcher m = elementPattern.matcher(template);
@@ -71,7 +71,7 @@ public class TemplateFactory {
 
                 }
                 int strip = 0;
-                switch (str.charAt(str.length()-1)){
+                switch (str.charAt(str.length()-1)) {
                 case 'l' :
                     transformer = converters.toLowerCase;
                     strip = 1;
@@ -81,8 +81,8 @@ public class TemplateFactory {
                     strip = 1;
                     break;
                 case '%' :
-                    if (transformer == null){
-                        if (str.charAt(str.length()-2) == '%'){
+                    if (transformer == null) {
+                        if (str.charAt(str.length()-2) == '%') {
                             transformer = converters.toStartsWithViaLikeLower;
                             strip = 2;
                         }else{
@@ -90,7 +90,7 @@ public class TemplateFactory {
                             strip = 1;
                         }
                     }else{
-                        if (str.charAt(str.length()-2) == '%'){
+                        if (str.charAt(str.length()-2) == '%') {
                             transformer = converters.toContainsViaLikeLower;
                             strip = 2;
                         }else{

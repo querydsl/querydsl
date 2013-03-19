@@ -22,14 +22,14 @@ public class PrimaryKeyData {
         this.name = name;
     }
     
-    public PrimaryKeyData(String name, String[] c){
+    public PrimaryKeyData(String name, String[] c) {
         this.name = name;
-        for (String column : c){
+        for (String column : c) {
             columns.add(column);
         }
     }
 
-    public void add(String column){
+    public void add(String column) {
         columns.add(column);
     }
 

@@ -46,7 +46,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         }
 
         @Override
-        public <RT> Expression<RT> convert(Expression<RT> expr){
+        public <RT> Expression<RT> convert(Expression<RT> expr) {
             return super.convert(Conversions.convert(expr));
         }
     }

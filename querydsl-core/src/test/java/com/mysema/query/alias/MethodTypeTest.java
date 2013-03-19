@@ -41,7 +41,7 @@ public class MethodTypeTest {
 
     }
 
-    public String getVal(){
+    public String getVal() {
         return "";
     }
 }

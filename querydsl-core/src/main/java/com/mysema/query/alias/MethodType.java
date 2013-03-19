@@ -79,7 +79,7 @@ public enum MethodType{
 
     private final Class<?>[] paramTypes;
 
-    private MethodType(String namePattern, Class<?> returnType, Class<?> ownerType, Class<?>... paramTypes){
+    private MethodType(String namePattern, Class<?> returnType, Class<?> ownerType, Class<?>... paramTypes) {
         this.pattern = Pattern.compile(namePattern);
         this.returnType = returnType;
         this.ownerType = ownerType;
@@ -92,7 +92,7 @@ public enum MethodType{
             if (methodType.pattern.matcher(method.getName()).matches()
                 && (methodType.returnType == Object.class || methodType.returnType.isAssignableFrom(method.getReturnType()))
                 && (methodType.ownerType == Object.class || methodType.ownerType.isAssignableFrom(method.getDeclaringClass()))
-                && Arrays.equals(methodType.paramTypes, method.getParameterTypes())){
+                && Arrays.equals(methodType.paramTypes, method.getParameterTypes())) {
                 return methodType;
             }
         }

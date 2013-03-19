@@ -29,47 +29,47 @@ public class CollectionAnyVisitorTest {
     private QCat cat = QCat.cat;
         
     @Test
-    public void Path(){
+    public void Path() {
         assertMatches("cat_kittens.*", serialize(cat.kittens.any()));
     }
     
     @Test
-    public void Longer_Path(){
+    public void Longer_Path() {
         assertMatches("cat_kittens.*\\.name", serialize(cat.kittens.any().name));
     }
     
     @Test
-    public void Very_Long_Path(){
+    public void Very_Long_Path() {
         assertMatches("cat_kittens.*_kittens.*\\.name", serialize(cat.kittens.any().kittens.any().name));
     }
     
     @Test
-    public void Simple_BooleanOperation(){        
+    public void Simple_BooleanOperation() {        
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
         assertMatches("cat_kittens.*\\.name = Ruth123", serialize(predicate));
     }
     
     @Test
-    public void Simple_StringOperation(){        
+    public void Simple_StringOperation() {        
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
         assertMatches("substring\\(cat_kittens.*\\.name,1\\) = uth123", serialize(predicate));
     }
     
     @Test
-    public void And_Operation(){
+    public void And_Operation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertMatches("cat_kittens.*\\.name = Ruth123 && cat_kittens.*\\.bodyWeight > 10.0", serialize(predicate));
     }
     
     @Test
-    public void Template(){
+    public void Template() {
         Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}", 
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertMatches("cat_kittens.*\\.name = Ruth123", serialize(templateExpr));
     }
     
-    private String serialize(Expression<?> expression){
-        CollectionAnyVisitor visitor = new CollectionAnyVisitor(){
+    private String serialize(Expression<?> expression) {
+        CollectionAnyVisitor visitor = new CollectionAnyVisitor() {
             @Override
             protected Predicate exists(Context c, Predicate condition) {
                 return condition;

@@ -42,7 +42,7 @@ public class BeanSerializerTest {
     private final Writer writer = new StringWriter();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         type = new EntityType(typeModel);                    
     }
@@ -144,7 +144,7 @@ public class BeanSerializerTest {
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
         type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
 
-        for (Class<?> cl : Arrays.<Class<?>>asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)){
+        for (Class<?> cl : Arrays.<Class<?>>asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)) {
             Type classType = new ClassType(TypeCategory.get(cl.getName()), cl);
             type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType));
         }
@@ -164,7 +164,7 @@ public class BeanSerializerTest {
                 "List<DomainClass> listField;",
                 "Map<DomainClass, DomainClass> mapField;",
                 "Set<DomainClass> setField;",
-                "java.sql.Time time;")){
+                "java.sql.Time time;")) {
             assertTrue(prop + " was not contained", str.contains(prop));
         }
     }

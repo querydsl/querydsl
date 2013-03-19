@@ -31,22 +31,22 @@ import com.mysema.query.types.template.StringTemplate;
 public class TemplateTest {
 
     @Test
-    public void ToDate(){
+    public void ToDate() {
         StringExpression str = new StringPath("str");
         assertEquals("to_date(str,'DD-MON-YYYY')", to_date(str, "DD-MON-YYYY").toString());
     }
 
     @Test
-    public void ToChar(){
+    public void ToChar() {
         DateExpression<Date> date = new DatePath<Date>(Date.class,"date");
         assertEquals("to_char(date,'DD-MON-YYYY')", to_char(date, "DD-MON-YYYY").toString());
     }
 
-    private DateExpression<Date> to_date(Expression<String> expr, String pattern){
+    private DateExpression<Date> to_date(Expression<String> expr, String pattern) {
         return DateTemplate.create(Date.class, "to_date({0},'{1s}')", expr, ConstantImpl.create(pattern));
     }
 
-    private StringExpression to_char(Expression<?> expr, String pattern){
+    private StringExpression to_char(Expression<?> expr, String pattern) {
         return StringTemplate.create("to_char({0},'{1s}')", expr, ConstantImpl.create(pattern));
     }
         

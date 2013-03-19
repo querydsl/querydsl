@@ -160,16 +160,16 @@ public class AntMetaDataExporter extends Task {
 
             NamingStrategy namingStrategy = new DefaultNamingStrategy();
             MetaDataExporter exporter = new MetaDataExporter();
-            if (namePrefix != null){
+            if (namePrefix != null) {
                 exporter.setNamePrefix(namePrefix);
             }
-            if (nameSuffix != null){
+            if (nameSuffix != null) {
                 exporter.setNameSuffix(nameSuffix);
             }
-            if (beanPrefix != null){
+            if (beanPrefix != null) {
                 exporter.setBeanPrefix(beanPrefix);
             }
-            if (beanSuffix != null){
+            if (beanSuffix != null) {
                 exporter.setBeanSuffix(beanSuffix);
             }
             exporter.setPackageName(targetPackage);
@@ -185,7 +185,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setLowerCase(lowerCase);
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
-            if (exportBeans){
+            if (exportBeans) {
                 exporter.setBeanSerializer(new BeanSerializer());
             }
             if (sourceEncoding != null) {

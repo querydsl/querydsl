@@ -23,7 +23,7 @@ import com.mysema.query.types.path.BooleanPath;
 public class DateExtensions {
         
     @QueryDelegate(Date.class)
-    public static Predicate extension(DateExpression<Date> date){
+    public static Predicate extension(DateExpression<Date> date) {
         return new BooleanPath("b");
     }
     

@@ -15,8 +15,8 @@ public class PostgresQueryTest {
     private QSurvey survey = new QSurvey("survey");
     
     @Before
-    public void setUp(){
-        query = new PostgresQuery(null, new PostgresTemplates(){{
+    public void setUp() {
+        query = new PostgresQuery(null, new PostgresTemplates() {{
             newLineToSingleSpace();
         }});        
     }
@@ -87,7 +87,7 @@ public class PostgresQueryTest {
         assertEquals("from SURVEY survey for update of SURVEY", toString(query));
     }
     
-    private String toString(PostgresQuery query){
+    private String toString(PostgresQuery query) {
         return query.toString().replace('\n', ' ');
     }
 

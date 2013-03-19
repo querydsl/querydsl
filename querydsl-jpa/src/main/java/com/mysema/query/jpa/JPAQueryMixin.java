@@ -54,18 +54,18 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         super(self, metadata);
     }
 
-    public T fetch(){
+    public T fetch() {
         addJoinFlag(FETCH);
         return getSelf();
     }
 
-    public T fetchAll(){
+    public T fetchAll() {
         addJoinFlag(FETCH_ALL_PROPERTIES);
         return getSelf();
     }
     
     @Override
-    public <RT> Expression<RT> convert(Expression<RT> expr){
+    public <RT> Expression<RT> convert(Expression<RT> expr) {
         return super.convert(Conversions.convert(expr));
     }
     
@@ -79,9 +79,9 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             // transform list access
             Context context = new Context();
             predicate = (Predicate) predicate.accept(ListAccessVisitor.DEFAULT, context);
-            for (int i = 0; i < context.paths.size(); i++){
+            for (int i = 0; i < context.paths.size(); i++) {
                 Path<?> path = context.paths.get(i);            
-                if (!paths.contains(path)){
+                if (!paths.contains(path)) {
                     addCondition(context, i, path, where);
                 }
             }
@@ -102,7 +102,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             element = new ConstantImpl(element);
         }
         Predicate condition = ExpressionUtils.eq(index, (Expression)element); 
-        if (where){
+        if (where) {
             super.where(condition);
         } else {
             super.having(condition);

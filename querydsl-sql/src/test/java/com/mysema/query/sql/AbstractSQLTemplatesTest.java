@@ -35,21 +35,21 @@ public abstract class AbstractSQLTemplatesTest {
     protected abstract SQLTemplates createTemplates();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         SQLTemplates templates = createTemplates();
         templates.newLineToSingleSpace();
         query = new SQLQuery(templates);
     }
     
     @Test
-    public void NoFrom(){
+    public void NoFrom() {
         query.getMetadata().addProjection(NumberTemplate.ONE);
         assertEquals("select 1 from dual", query.toString());
     }
     
     @SuppressWarnings("unchecked")
     @Test
-    public void Union(){        
+    public void Union() {        
         NumberExpression<Integer> one = NumberTemplate.ONE;
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;
@@ -67,12 +67,12 @@ public abstract class AbstractSQLTemplatesTest {
     }
     
     @Test
-    public void InnerJoin(){        
+    public void InnerJoin() {        
         query.from(survey1).innerJoin(survey2);
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
     
-    protected SQLSubQuery sq(){
+    protected SQLSubQuery sq() {
         return new SQLSubQuery();
     }
     

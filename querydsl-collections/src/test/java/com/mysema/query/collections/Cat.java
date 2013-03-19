@@ -61,7 +61,7 @@ public class Cat extends Animal {
         this.name = name;
     }
     
-    public Cat(String name, String kittenName){
+    public Cat(String name, String kittenName) {
         this(name);
         kittens.get(0).setName(kittenName);
     }

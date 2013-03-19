@@ -67,7 +67,7 @@ public final class Property implements Comparable<Property> {
         this.inherited = inherited;
     }
 
-    public void addAnnotation(Annotation annotation){
+    public void addAnnotation(Annotation annotation) {
         annotations.put(annotation.annotationType(), annotation);
     }
 
@@ -90,7 +90,7 @@ public final class Property implements Comparable<Property> {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Annotation> T getAnnotation(Class<T> type){
+    public <T extends Annotation> T getAnnotation(Class<T> type) {
         return (T) annotations.get(type);
     }
 
@@ -104,7 +104,7 @@ public final class Property implements Comparable<Property> {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof Property) {

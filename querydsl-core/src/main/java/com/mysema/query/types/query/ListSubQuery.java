@@ -17,7 +17,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -70,14 +69,14 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         return v.visit(subQueryMixin, context);
     }
 
-    public NumberExpression<Long> count(){
+    public NumberExpression<Long> count() {
         if (count == null) {
             count = count(Ops.AggOps.COUNT_AGG);    
         }
         return count;
     }
 
-    public NumberExpression<Long> countDistinct(){
+    public NumberExpression<Long> countDistinct() {
         if (countDistinct == null) {
             countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);    
         }
@@ -106,7 +105,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     
     @Override
     public BooleanExpression exists() {
-        if (exists == null){
+        if (exists == null) {
             exists = BooleanOperation.create(Ops.EXISTS, mixin);
         }
         return exists;

@@ -101,11 +101,11 @@ public class ExpressionUtilsTest {
         System.err.println(duration);
     }
     
-    private String regex(Expression<String> expr){
+    private String regex(Expression<String> expr) {
         return ExpressionUtils.likeToRegex(expr).toString();
     }
     
-    private String like(Expression<String> expr){
+    private String like(Expression<String> expr) {
         return ExpressionUtils.regexToLike(expr).toString();
     }
     

@@ -29,7 +29,7 @@ public class EvaluatorTransformerTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test(){
+    public void test() {
         DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT);
         QCat cat = QCat.cat;
         Evaluator projectionEvaluator = evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name);

@@ -23,7 +23,7 @@ import com.mysema.query.annotations.QueryInit;
 public class AnimalTest {
 
     @QueryEntity
-    public static class Animal{
+    public static class Animal {
 
         public String name;
 

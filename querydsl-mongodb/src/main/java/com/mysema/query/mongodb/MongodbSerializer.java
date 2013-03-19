@@ -106,7 +106,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             String key = arg.keySet().iterator().next();
 
             Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
-            if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY){
+            if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY) {
                 return asDBObject(key, asDBObject("$not", arg.get(key)));
             } else {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
@@ -212,10 +212,10 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public String visit(Path<?> expr, Void context) {
         PathMetadata<?> metadata = expr.getMetadata();
-        if (metadata.getParent() != null){
-            if (metadata.getPathType() == PathType.COLLECTION_ANY){
+        if (metadata.getParent() != null) {
+            if (metadata.getPathType() == PathType.COLLECTION_ANY) {
                 return visit(metadata.getParent(), context);
-            }else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE){
+            }else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE) {
                 String rv = getKeyForPath(expr, metadata);
                 return visit(metadata.getParent(), context) + "." + rv;
             }
@@ -224,7 +224,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
-        if (expr.getType().equals(ObjectId.class)){
+        if (expr.getType().equals(ObjectId.class)) {
             return "_id";
         } else {
             return metadata.getElement().toString();    

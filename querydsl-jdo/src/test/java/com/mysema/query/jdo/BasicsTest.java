@@ -67,7 +67,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Delete(){
+    public void Delete() {
         long count = query().from(product).count();
         assertEquals(0, delete(product).where(product.name.eq("XXX")).execute());
         assertEquals(count, delete(product).execute());
@@ -79,28 +79,28 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void List_Distinct(){
+    public void List_Distinct() {
         query().from(product).listDistinct(product);
     }
     
     @Test
-    public void List_Distinct_Two_Sources(){
+    public void List_Distinct_Two_Sources() {
         query().from(product, product2).listDistinct(product, product2);
     }
     
     @Test
-    public void Single_Result(){
+    public void Single_Result() {
         query().from(product).singleResult(product);
     }
     
     @Test
-    public void Single_Result_With_Array(){
+    public void Single_Result_With_Array() {
         query().from(product).singleResult(new Expression<?>[]{product});
     }
 
 
     @Test(expected=NonUniqueResultException.class)
-    public void Unique_Result_Throws_Exception_On_Multiple_Results(){
+    public void Unique_Result_Throws_Exception_On_Multiple_Results() {
         query().from(product).uniqueResult(product);
     }
 
@@ -129,29 +129,29 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     @Ignore
-    public void DetachedResults(){
-        for (Product p : detachedQuery().from(product).list(product)){
+    public void DetachedResults() {
+        for (Product p : detachedQuery().from(product).list(product)) {
             System.out.println(p);
         }
     }
 
     @Test
-    public void Empty_BooleanBuilder(){
+    public void Empty_BooleanBuilder() {
         assertEquals("empty boolean builder", 2, query(product, new BooleanBuilder()).size());
     }
 
     @Test
-    public void And(){
+    public void And() {
         assertEquals("and", 1, query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
     }
 
     @Test
-    public void Or(){
+    public void Or() {
         assertEquals("or", 2,  query(product, product.name.eq("Sony Discman").or(product.price.loe(300.00))).size());
     }
 
     @Test
-    public void Not(){
+    public void Not() {
         assertEquals("not", 2, query(product, product.name.eq("Sony MP3 player").not()).size());
     }
 
@@ -168,78 +168,78 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Eq(){
+    public void Eq() {
         assertEquals("eq", 1, query(product, product.price.eq(200.00)).size());
         assertEquals("eq", 0, query(product, product.price.eq(100.00)).size());
     }
 
     @Test
-    public void Ne(){
+    public void Ne() {
         assertEquals("ne", 2, query(product, product.price.ne(100.00)).size());
     }
 
     @Test
-    public void Lt(){
+    public void Lt() {
         assertEquals("lt", 2, query(product, product.price.lt(300.00)).size());
     }
 
     @Test
-    public void Gt(){
+    public void Gt() {
         assertEquals("gt", 1, query(product, product.price.gt(100.00)).size());
     }
 
     @Test
-    public void Goe(){
+    public void Goe() {
         assertEquals("goe", 1, query(product, product.price.goe(100.00)).size());
     }
 
     @Test
-    public void Loe(){
+    public void Loe() {
         assertEquals("loe", 2, query(product, product.price.loe(300.00)).size());
     }
 
     @Test
-    public void Starts_With(){
+    public void Starts_With() {
         assertEquals("startsWith", 1, query(product,product.name.startsWith("Sony Discman")).size());
     }
 
     @Test
-    public void Matches(){
+    public void Matches() {
         assertEquals("matches", 1, query(product,product.name.matches("Sony.*")).size());
     }
 
     @Test
-    public void Like(){
+    public void Like() {
         assertEquals("matches", 1, query(product,product.name.like("Sony%")).size());
     }
 
     @Test
-    public void Ends_With(){
+    public void Ends_With() {
         assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());
     }
 
     @Test
-    public void To_LowerCase(){
+    public void To_LowerCase() {
         assertEquals("toLowerCase", 1, query(product,product.name.lower().eq("sony discman")).size());
     }
 
     @Test
-    public void To_UpperCase(){
+    public void To_UpperCase() {
         assertEquals("toUpperCase", 1, query(product,product.name.upper().eq("SONY DISCMAN")).size());
     }
 
     @Test
-    public void Index_Of(){
+    public void Index_Of() {
         assertEquals("indexOf", 1, query(product,product.name.indexOf("S").eq(0)).size());
     }
 
     @Test
-    public void Substring1(){
+    public void Substring1() {
         assertEquals("substring", 1, query(product,product.name.substring(5).eq("Discman")).size());
     }
 
     @Test
-    public void Substring2(){
+    public void Substring2() {
         assertEquals("substring", 1, query(product,product.name.substring(0, 4).eq("Sony")).size());
     }
 

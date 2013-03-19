@@ -172,7 +172,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression endsWithIgnoreCase(Expression<String> str){
+    public BooleanExpression endsWithIgnoreCase(Expression<String> str) {
         return BooleanOperation.create(Ops.ENDS_WITH_IC, mixin, str);
     }
 
@@ -270,7 +270,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this.isEmpty()
      * @see java.lang.String#isEmpty()
      */
-    public BooleanExpression isEmpty(){
+    public BooleanExpression isEmpty() {
         if (isempty == null) {
             isempty = BooleanOperation.create(Ops.STRING_IS_EMPTY, mixin);
         }
@@ -283,7 +283,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return !this.isEmpty()
      * @see java.lang.String#isEmpty()
      */
-    public BooleanExpression isNotEmpty(){
+    public BooleanExpression isNotEmpty() {
         return isEmpty().not();
     }
 
@@ -306,7 +306,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression like(String str){
+    public BooleanExpression like(String str) {
         return BooleanOperation.create(Ops.LIKE, this, ConstantImpl.create(str));
     }
 
@@ -316,7 +316,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression like(Expression<String> str){
+    public BooleanExpression like(Expression<String> str) {
         return BooleanOperation.create(Ops.LIKE, mixin, str);
     }
     
@@ -326,7 +326,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression like(String str, char escape){
+    public BooleanExpression like(String str, char escape) {
         return BooleanOperation.create(Ops.LIKE_ESCAPE, mixin, ConstantImpl.create(str), ConstantImpl.create(escape));
     }
 
@@ -336,7 +336,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression like(Expression<String> str, char escape){
+    public BooleanExpression like(Expression<String> str, char escape) {
         return BooleanOperation.create(Ops.LIKE_ESCAPE, mixin, str, ConstantImpl.create(escape));
     }
 
@@ -400,7 +400,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this.matches(right)
      * @see java.lang.String#matches(String)
      */
-    public BooleanExpression matches(Expression<String> regex){
+    public BooleanExpression matches(Expression<String> regex) {
         return BooleanOperation.create(Ops.MATCHES, mixin, regex);
     }
 
@@ -411,7 +411,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this.matches(regex)
      * @see java.lang.String#matches(String)
      */
-    public BooleanExpression matches(String regex){
+    public BooleanExpression matches(String regex) {
         return matches(ConstantImpl.create(regex));
     }
 
@@ -420,7 +420,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      *
      * @return max(this)
      */
-    public StringExpression max(){
+    public StringExpression max() {
         if (max == null) {
             max = StringOperation.create(Ops.AggOps.MAX_AGG, mixin);
         }
@@ -432,7 +432,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      *
      * @return min(this)
      */
-    public StringExpression min(){
+    public StringExpression min() {
         if (min == null) {
             min = StringOperation.create(Ops.AggOps.MIN_AGG, mixin);
         }
@@ -470,7 +470,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression notLike(String str){
+    public BooleanExpression notLike(String str) {
         return like(str).not();
     }
 
@@ -480,7 +480,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression notLike(Expression<String> str){
+    public BooleanExpression notLike(Expression<String> str) {
         return like(str).not();
     }
         
@@ -490,7 +490,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression notLike(String str, char escape){
+    public BooleanExpression notLike(String str, char escape) {
         return like(str, escape).not();
     }
 
@@ -500,7 +500,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression notLike(Expression<String> str, char escape){
+    public BooleanExpression notLike(Expression<String> str, char escape) {
         return like(str, escape).not();
     }
     

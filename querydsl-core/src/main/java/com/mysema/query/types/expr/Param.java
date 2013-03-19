@@ -49,7 +49,7 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T> 
         return paramMixin.getName();
     }
 
-    public boolean isAnon(){
+    public boolean isAnon() {
         return paramMixin.isAnon();
     }
 

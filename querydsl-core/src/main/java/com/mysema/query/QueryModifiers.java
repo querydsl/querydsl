@@ -101,7 +101,7 @@ public final class QueryModifiers implements Serializable{
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof QueryModifiers) {
@@ -113,7 +113,7 @@ public final class QueryModifiers implements Serializable{
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hashCode(limit, offset);
     }
 

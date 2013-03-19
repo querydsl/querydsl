@@ -30,13 +30,13 @@ public class DetachableQueryTest {
     private DetachableQuery detachable;
     
     @Before
-    public void setUp(){
+    public void setUp() {
         query = new QueryMixin();
         detachable = new DetachableQuery(query);
     }
     
     @Test
-    public void Projections(){
+    public void Projections() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         query.from((EntityPath)$(e));
         assertNotNull(detachable.exists());

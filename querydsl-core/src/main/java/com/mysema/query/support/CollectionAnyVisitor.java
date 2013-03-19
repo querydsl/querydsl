@@ -119,7 +119,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
             context.add(c);
         }
         if (context.replace) {            
-            if (expr.getType().equals(Boolean.class)){
+            if (expr.getType().equals(Boolean.class)) {
                 Predicate predicate = new PredicateOperation((Operator)expr.getOperator(), ImmutableList.copyOf(args));
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
             } else {

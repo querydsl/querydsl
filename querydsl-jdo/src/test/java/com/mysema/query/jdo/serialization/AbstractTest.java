@@ -21,7 +21,7 @@ import com.mysema.query.types.SubQueryExpression;
 
 public abstract class AbstractTest {
 
-    protected JDOSubQuery query(){
+    protected JDOSubQuery query() {
         return new JDOSubQuery();
     }
 

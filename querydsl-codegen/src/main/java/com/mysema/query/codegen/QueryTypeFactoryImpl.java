@@ -40,7 +40,7 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
     }
     
     @Override
-    public Type create(Type type){
+    public Type create(Type type) {
         if (type.getPackageName().isEmpty()) {
             return createWithoutPackage(type);
         } else {
@@ -48,7 +48,7 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
         }
     }
     
-    private Type createWithPackage(Type type){
+    private Type createWithPackage(Type type) {
         String packageName = type.getPackageName();
         String simpleName = prefix + normalizeName(type.getFullName()
                 .substring(packageName.length()+1)) + suffix;        
@@ -58,12 +58,12 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
                 packageName, simpleName, false, false);
     }
     
-    private Type createWithoutPackage(Type type){
+    private Type createWithoutPackage(Type type) {
         String simpleName = prefix + normalizeName(type.getFullName()) + suffix;
         return new SimpleType(type.getCategory(), simpleName, "", simpleName, false, false);
     }
     
-    private String normalizeName(String name){
+    private String normalizeName(String name) {
         return name.replace('.', '_').replace('$', '_');
     }
 

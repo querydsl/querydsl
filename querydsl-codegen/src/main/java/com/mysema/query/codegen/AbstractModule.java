@@ -42,7 +42,7 @@ public abstract class AbstractModule {
         configure();
     }
 
-    public final <T> AbstractModule bind(Class<T> clazz){
+    public final <T> AbstractModule bind(Class<T> clazz) {
         if (clazz.isInterface()) {
             throw new IllegalArgumentException("Interfaces can't be instantiated");
         }
@@ -50,22 +50,22 @@ public abstract class AbstractModule {
         return this;
     }
 
-    public final <T> AbstractModule bind(String name, Class<? extends T> implementation){
+    public final <T> AbstractModule bind(String name, Class<? extends T> implementation) {
         namedBindings.put(name, implementation);
         return this;
     }
 
-    public final <T> AbstractModule bind(String name, T implementation){
+    public final <T> AbstractModule bind(String name, T implementation) {
         namedInstances.put(name, implementation);
         return this;
     }
 
-    public final <T> AbstractModule bind(Class<T> iface, Class<? extends T> implementation){
+    public final <T> AbstractModule bind(Class<T> iface, Class<? extends T> implementation) {
         bindings.put(iface, implementation);
         return this;
     }
 
-    public final <T> AbstractModule bind(Class<T> iface, T implementation){
+    public final <T> AbstractModule bind(Class<T> iface, T implementation) {
         instances.put(iface, implementation);
         return this;
     }
@@ -73,7 +73,7 @@ public abstract class AbstractModule {
     protected abstract void configure();
 
     @SuppressWarnings("unchecked")
-    public final <T> T get(Class<T> iface){
+    public final <T> T get(Class<T> iface) {
         if (instances.containsKey(iface)) {
             return (T)instances.get(iface);
         } else if (bindings.containsKey(iface)) {
@@ -87,7 +87,7 @@ public abstract class AbstractModule {
     }
 
     @SuppressWarnings("unchecked")
-    public final <T> T get(Class<T> iface, String name){
+    public final <T> T get(Class<T> iface, String name) {
         if (namedInstances.containsKey(name)) {
             return (T)namedInstances.get(name);
         } else if (namedBindings.containsKey(name)) {

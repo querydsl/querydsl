@@ -29,7 +29,7 @@ final class DateConstant<D extends java.util.Date> extends DateExpression<D> imp
 
     private static final long serialVersionUID = -5745611667058255826L;
 
-    public static <D extends java.util.Date> DateExpression<D> create(D date){
+    public static <D extends java.util.Date> DateExpression<D> create(D date) {
         return new DateConstant<D>(date);
     }
 
@@ -51,22 +51,22 @@ final class DateConstant<D extends java.util.Date> extends DateExpression<D> imp
     }
     
     @Override
-    public NumberExpression<Integer> dayOfMonth(){
+    public NumberExpression<Integer> dayOfMonth() {
         return NumberConstant.create(calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
-    public NumberExpression<Integer> month(){
+    public NumberExpression<Integer> month() {
         return NumberConstant.create(calendar.get(Calendar.MONTH) + 1);
     }
 
     @Override
-    public NumberExpression<Integer> year(){
+    public NumberExpression<Integer> year() {
         return NumberConstant.create(calendar.get(Calendar.YEAR));
     }
 
     @Override
-    public NumberExpression<Integer> yearMonth(){
+    public NumberExpression<Integer> yearMonth() {
         return NumberConstant.create(calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.MONTH) + 1);
     }
 

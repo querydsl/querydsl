@@ -13,7 +13,7 @@ public class OracleWithQuotingTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initOracle();
-        Connections.setTemplates(new OracleTemplates(true){{
+        Connections.setTemplates(new OracleTemplates(true) {{
             newLineToSingleSpace();
         }});
     }

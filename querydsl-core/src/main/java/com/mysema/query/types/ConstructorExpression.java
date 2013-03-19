@@ -48,12 +48,12 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     private static final long serialVersionUID = -602747921848073175L;
 
-    private static Class<?> normalize(Class<?> clazz){
+    private static Class<?> normalize(Class<?> clazz) {
         return Primitives.wrap(clazz);
     }
     
     private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {
-        for (Constructor<?> c : type.getConstructors()){
+        for (Constructor<?> c : type.getConstructors()) {
             Class<?>[] paramTypes = c.getParameterTypes();     
             if (c.isVarArgs()) {
                 return paramTypes;
@@ -124,7 +124,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
         } else if (obj instanceof ConstructorExpression<?>) {
             ConstructorExpression<?> c = (ConstructorExpression<?>)obj;

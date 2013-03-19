@@ -25,7 +25,7 @@ public class SimpleProjectableAdapterTest {
     
     @Test
     @SuppressWarnings("unchecked")
-    public void test(){
+    public void test() {
         DummyQuery query = new DummyQuery();
         DummyProjectable projectable = new DummyProjectable();
         SimpleProjectableAdapter simpleQuery = new SimpleProjectableAdapter(query, projectable, new StringPath("a"));

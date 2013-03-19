@@ -61,7 +61,7 @@ public class PagingTest extends AbstractQueryTest {
 
     private CollQuery createQuery(QueryModifiers modifiers) {
         CollQuery query = new CollQuery().from(var, ints);
-        if (modifiers != null){
+        if (modifiers != null) {
             query.restrict(modifiers);
         }
         return query;

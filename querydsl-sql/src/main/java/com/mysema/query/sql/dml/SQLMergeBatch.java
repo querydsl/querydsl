@@ -46,7 +46,7 @@ public class SQLMergeBatch {
         subQuery = sq;
     }
     
-    public List<Path<?>> getKeys(){
+    public List<Path<?>> getKeys() {
         return keys;
     }
 

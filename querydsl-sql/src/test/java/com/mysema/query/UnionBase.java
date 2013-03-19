@@ -52,7 +52,7 @@ public class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.lastname, employee.firstname);
         List<Tuple> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
-        for (Tuple row : list){
+        for (Tuple row : list) {
             assertNotNull(row.get(0, Object.class));
             assertNotNull(row.get(1, Object.class));
         }
@@ -192,7 +192,7 @@ public class UnionBase extends AbstractBaseTest {
         ListSubQuery<Employee> sq2 = sq().from(employee)
                 .list(Projections.constructor(Employee.class, employee.id));        
         List<Employee> employees = query().union(sq1, sq2).list();
-        for (Employee employee : employees){
+        for (Employee employee : employees) {
             assertNotNull(employee);
         }
     }

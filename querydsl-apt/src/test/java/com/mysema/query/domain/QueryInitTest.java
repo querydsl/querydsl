@@ -28,7 +28,7 @@ public class QueryInitTest {
     private static final QQueryInitTest_PEntity2 e2 = QQueryInitTest_PEntity2.pEntity2;
 
     @QueryEntity
-    public static class PEntity{
+    public static class PEntity {
 
         @QueryInit("e3.e4")
         public PEntity2 e2;
@@ -78,7 +78,7 @@ public class QueryInitTest {
     }
 
     @Test
-    public void Basic_Inits(){
+    public void Basic_Inits() {
         // e2
         assertNotNull(e1.e2);
         assertNotNull(e1.e2.e3.e4);
@@ -92,12 +92,12 @@ public class QueryInitTest {
     }
 
     @Test
-    public void Deep_Super_Inits(){
+    public void Deep_Super_Inits() {
         assertNotNull(e1.e22._super.e333);
     }
 
     @Test
-    public void Root_Super_Inits(){
+    public void Root_Super_Inits() {
         assertNotNull(e2.e3333.e4);
         assertNotNull(e2._super.e3333.e4);
     }

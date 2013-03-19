@@ -24,7 +24,7 @@ public class QuerydslConfig2Test {
 
     @Config(entityAccessors=true)
     @QueryEntity
-    public static class Entity extends Superclass{
+    public static class Entity extends Superclass {
 
         Entity prop1;
 
@@ -32,32 +32,32 @@ public class QuerydslConfig2Test {
 
     @Config(createDefaultVariable=false)
     @QueryEntity
-    public static class Entity2 extends Superclass2{
+    public static class Entity2 extends Superclass2 {
 
         Entity prop1;
 
     }
 
     @QueryEntity
-    public static class Superclass{
+    public static class Superclass {
 
         Entity prop2;
     }
 
     @Config(entityAccessors=true)
     @QueryEntity
-    public static class Superclass2{
+    public static class Superclass2 {
 
         Entity prop2;
     }
 
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QQuerydslConfig2Test_Entity.entity);
     }
 
     @Test(expected=NoSuchFieldException.class)
-    public void Create_Default_Variable() throws SecurityException, NoSuchFieldException{
+    public void Create_Default_Variable() throws SecurityException, NoSuchFieldException {
         QQuerydslConfig2Test_Entity2.class.getField("entity2");
     }
 }

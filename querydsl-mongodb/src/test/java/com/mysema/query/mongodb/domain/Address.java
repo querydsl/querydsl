@@ -17,7 +17,7 @@ import com.google.code.morphia.annotations.Embedded;
 
 public final class Address {
 
-    public Address(){
+    public Address() {
         
     }
     

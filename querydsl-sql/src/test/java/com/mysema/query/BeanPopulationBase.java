@@ -36,7 +36,7 @@ public class BeanPopulationBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Insert_Update_Query_and_Delete(){
+    public void Insert_Update_Query_and_Delete() {
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
@@ -64,7 +64,7 @@ public class BeanPopulationBase extends AbstractBaseTest{
     }
 
     @Test
-    public void CustomProjection(){
+    public void CustomProjection() {
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");

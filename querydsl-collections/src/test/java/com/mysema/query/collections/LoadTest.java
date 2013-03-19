@@ -34,9 +34,9 @@ public class LoadTest {
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Test
-    public void Creation(){
+    public void Creation() {
         System.out.println("Evaluator creation #1");
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             long s = System.currentTimeMillis();
             evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob"));
             long e = System.currentTimeMillis();
@@ -45,7 +45,7 @@ public class LoadTest {
         System.out.println();
 
         System.out.println("Evaluator creation #2");
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             long s = System.currentTimeMillis();
             evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
             long e = System.currentTimeMillis();
@@ -55,9 +55,9 @@ public class LoadTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         List<Cat> data = new ArrayList<Cat>(5000);
-        for (int i = 0; i < 1000; i++){
+        for (int i = 0; i < 1000; i++) {
             data.addAll(Arrays.asList(
                     new Cat("Bob" + i),
                     new Cat("Ruth" + i),
@@ -69,7 +69,7 @@ public class LoadTest {
 
         // #1
         System.out.println("Querydsl iteration");
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             long s1 = System.currentTimeMillis();
             List<Cat> bobs1 = CollQueryFactory.from(cat, data).where(cat.name.startsWith("Bob")).list(cat);
             assertEquals(1000, bobs1.size());
@@ -80,10 +80,10 @@ public class LoadTest {
 
         // #2
         System.out.println("Normal iteration");
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             long s2 = System.currentTimeMillis();
             List<Cat> bobs2 = new ArrayList<Cat>();
-            for (Cat c : data){
+            for (Cat c : data) {
                 if (c.getName().startsWith("Bob")) bobs2.add(c);
             }
             assertEquals(1000, bobs2.size());

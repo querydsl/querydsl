@@ -35,7 +35,7 @@ public class QueryMutabilityTest extends AbstractJDOTest{
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         QProduct product = QProduct.product;
         JDOQuery query = new JDOQuery().from(product).where(product.name.isNotNull());
         JDOQuery query2 = query.clone(pm);

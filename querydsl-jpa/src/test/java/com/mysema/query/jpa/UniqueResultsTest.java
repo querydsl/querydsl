@@ -30,7 +30,7 @@ public class UniqueResultsTest {
     private Session session;
 
     @Test
-    public void test(){
+    public void test() {
         session.save(new Cat("Bob1", 1));
         session.save(new Cat("Bob2", 2));
         session.save(new Cat("Bob3", 3));
@@ -42,7 +42,7 @@ public class UniqueResultsTest {
         assertEquals(Long.valueOf(3), query().from(cat).uniqueResult(cat.count()));
     }
 
-    private HibernateQuery query(){
+    private HibernateQuery query() {
         return new HibernateQuery(session);
     }
 

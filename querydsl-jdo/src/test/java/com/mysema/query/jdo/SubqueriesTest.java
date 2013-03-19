@@ -39,7 +39,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
     
     @Test
-    public void List_Contains(){
+    public void List_Contains() {
         query().from(product).where(sub().from(other).list(other.name).contains(product.name)).list(product);
     }
 

@@ -31,7 +31,7 @@ public class TargetRule implements MethodRule {
             ex = method.getDeclaringClass().getAnnotation(ExcludeIn.class);
         }
         // excluded in given targets
-        if (ex != null && Arrays.asList(ex.value()).contains(target)){
+        if (ex != null && Arrays.asList(ex.value()).contains(target)) {
             return false;
         }
         // included only in given targets
@@ -39,7 +39,7 @@ public class TargetRule implements MethodRule {
         if (in == null) {
             in = method.getDeclaringClass().getAnnotation(IncludeIn.class);
         }
-        if (in != null && !Arrays.asList(in.value()).contains(target)){
+        if (in != null && !Arrays.asList(in.value()).contains(target)) {
             return false;
         }
         return true;

@@ -32,7 +32,7 @@ public final class MongodbExpressions {
     
     public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>("MONGODB_ELEM_MATCH");
 
-    private MongodbExpressions(){}
+    private MongodbExpressions() {}
     
     /**
      * Finds the closest points relative to the given location and orders the results with decreasing promimity
@@ -42,7 +42,7 @@ public final class MongodbExpressions {
      * @param longVal longitude
      * @return
      */
-    public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal){
+    public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal) {
         return BooleanOperation.create(MongodbExpressions.NEAR, expr, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
     }
     

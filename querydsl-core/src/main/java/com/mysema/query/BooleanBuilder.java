@@ -123,12 +123,12 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     }
 
     @Nullable
-    public Predicate getValue(){
+    public Predicate getValue() {
         return predicate;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return predicate != null ? predicate.hashCode() : 0;
     }
 
@@ -137,12 +137,12 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
      *
      * @return
      */
-    public boolean hasValue(){
+    public boolean hasValue() {
         return predicate != null;
     }
 
     @Override
-    public BooleanBuilder not(){
+    public BooleanBuilder not() {
         if (predicate != null) {
             predicate = predicate.not();
         }
@@ -186,7 +186,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
      * @param right
      * @return
      */
-    public BooleanBuilder orNot(Predicate right){
+    public BooleanBuilder orNot(Predicate right) {
         return or(right.not());
     }
 
@@ -196,7 +196,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return predicate != null ? predicate.toString() : super.toString();
     }
 

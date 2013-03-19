@@ -59,7 +59,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * 
      * @param property
      */
-    protected void validate(String property){
+    protected void validate(String property) {
         // do nothing
     }
 
@@ -72,7 +72,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
     @SuppressWarnings("unchecked")
     public PathBuilder<Object> get(String property) {
         PathBuilder<Object> path = (PathBuilder) properties.get(property);
-        if (path == null){
+        if (path == null) {
             validate(property);
             path = new PathBuilder<Object>(Object.class, forProperty(property));
             properties.put(property, path);
@@ -116,7 +116,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @param path
      * @return
      */
-    public BooleanPath get(BooleanPath path){
+    public BooleanPath get(BooleanPath path) {
         return getBoolean(toString(path));
     }
 
@@ -165,7 +165,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> ComparablePath<A> get(ComparablePath<A> path){
+    public <A extends Comparable<?>> ComparablePath<A> get(ComparablePath<A> path) {
         return getComparable(toString(path), (Class<A>)path.getType());
     }
 
@@ -188,7 +188,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> DatePath<A> get(DatePath<A> path){
+    public <A extends Comparable<?>> DatePath<A> get(DatePath<A> path) {
         return getDate(toString(path), (Class<A>)path.getType());
     }
 
@@ -211,7 +211,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> DateTimePath<A> get(DateTimePath<A> path){
+    public <A extends Comparable<?>> DateTimePath<A> get(DateTimePath<A> path) {
         return getDateTime(toString(path), (Class<A>)path.getType());
     }
 
@@ -247,7 +247,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Enum<A>> EnumPath<A> get(EnumPath<A> path){
+    public <A extends Enum<A>> EnumPath<A> get(EnumPath<A> path) {
         return getEnum(toString(path), (Class<A>)path.getType());
     }
 
@@ -317,7 +317,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Number & Comparable<?>> NumberPath<A> get(NumberPath<A> path){
+    public <A extends Number & Comparable<?>> NumberPath<A> get(NumberPath<A> path) {
         return getNumber(toString(path), (Class<A>)path.getType());
     }
 
@@ -368,7 +368,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A> SimplePath<A> get(Path<A> path){
+    public <A> SimplePath<A> get(Path<A> path) {
         return getSimple(toString(path), (Class<A>)path.getType());
     }
 
@@ -389,7 +389,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @param path
      * @return
      */
-    public StringPath get(StringPath path){
+    public StringPath get(StringPath path) {
         return getString(toString(path));
     }
 
@@ -409,7 +409,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @param path
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> TimePath<A> get(TimePath<A> path){
+    public <A extends Comparable<?>> TimePath<A> get(TimePath<A> path) {
         return getTime(toString(path), (Class<A>)path.getType());
     }
 
@@ -430,7 +430,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @param path
      * @return
      */
-    private String toString(Path<?> path){
+    private String toString(Path<?> path) {
         return path.getMetadata().getElement().toString();
     }
 

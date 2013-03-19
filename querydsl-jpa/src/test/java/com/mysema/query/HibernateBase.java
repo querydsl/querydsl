@@ -53,16 +53,16 @@ public class HibernateBase extends AbstractStandardTest {
     
     private Session session;
 
-    protected HibernateQuery query(){
+    protected HibernateQuery query() {
         return new HibernateQuery(session, getTemplates());
     }
     
-    protected HibernateQuery testQuery(){
+    protected HibernateQuery testQuery() {
         return new HibernateQuery(new DefaultSessionHolder(session), 
                 getTemplates(), new DefaultQueryMetadata().noValidate());
     }
 
-    protected JPQLTemplates getTemplates(){
+    protected JPQLTemplates getTemplates() {
         return HQLTemplates.DEFAULT;
     }
 
@@ -76,7 +76,7 @@ public class HibernateBase extends AbstractStandardTest {
     }
 
     @Test
-    public void QueryExposure(){
+    public void QueryExposure() {
 //        save(new Cat());
         List<Cat> results = query().from(QCat.cat).createQuery(QCat.cat).list();
         assertNotNull(results);
@@ -89,7 +89,7 @@ public class HibernateBase extends AbstractStandardTest {
     }
 
     @Test
-    public void LockMode(){
+    public void LockMode() {
         query().from(QCat.cat).setLockMode(QCat.cat, LockMode.PESSIMISTIC_WRITE).list(QCat.cat);
     }
     
@@ -103,7 +103,7 @@ public class HibernateBase extends AbstractStandardTest {
         CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(QCat.cat)
                 .createQuery(QCat.cat).scroll());
         assertTrue(cats.hasNext());
-        while (cats.hasNext()){
+        while (cats.hasNext()) {
             assertNotNull(cats.next());
         }
         cats.close();
@@ -115,7 +115,7 @@ public class HibernateBase extends AbstractStandardTest {
                 .from(QCat.cat)
                 .createQuery(QCat.cat.name, QCat.cat.birthdate).scroll(), true);
         assertTrue(rows.hasNext());
-        while (rows.hasNext()){
+        while (rows.hasNext()) {
             Object[] row = rows.next();
             assertEquals(2, row.length);
             assertNotNull(row[0]);

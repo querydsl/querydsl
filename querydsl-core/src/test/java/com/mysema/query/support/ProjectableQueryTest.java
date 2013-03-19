@@ -24,7 +24,7 @@ import com.mysema.query.types.QBean;
 public class ProjectableQueryTest {
         
     @Test
-    public void UniqueResult_Of_Array(){
+    public void UniqueResult_Of_Array() {
        QueryMixin queryMixin = new QueryMixin();
        DummyProjectable projectable = new DummyProjectable(queryMixin);
        projectable.uniqueResult(new Expression[0]);
@@ -32,7 +32,7 @@ public class ProjectableQueryTest {
     }
     
     @Test
-    public void UniqueResult(){
+    public void UniqueResult() {
        QueryMixin queryMixin = new QueryMixin();
        DummyProjectable projectable = new DummyProjectable(queryMixin);
        projectable.uniqueResult(new QBean(Object.class));

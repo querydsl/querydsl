@@ -30,8 +30,8 @@ public class JavaTemplatesTest {
     public void Mappings() throws IllegalArgumentException, IllegalAccessException {
         JavaTemplates templates = new JavaTemplates();
         int matched = 0;
-        for (Field field : Ops.class.getFields()){
-            if (Operator.class.isAssignableFrom(field.getType())){
+        for (Field field : Ops.class.getFields()) {
+            if (Operator.class.isAssignableFrom(field.getType())) {
                 matched++;
                 Operator<?> operator = (Operator<?>) field.get(null);
                 assertNotNull(field.getName() + " missing", templates.getTemplate(operator));

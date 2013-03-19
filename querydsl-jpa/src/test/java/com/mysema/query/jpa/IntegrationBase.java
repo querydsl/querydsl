@@ -86,29 +86,29 @@ public class IntegrationBase extends ParsingTest {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
-    private HibernateDeleteClause delete(EntityPath<?> entity){
+    private HibernateDeleteClause delete(EntityPath<?> entity) {
         return new HibernateDeleteClause(session, entity);
     }
 
-    private HibernateUpdateClause update(EntityPath<?> entity){
+    private HibernateUpdateClause update(EntityPath<?> entity) {
         return new HibernateUpdateClause(session, entity);
     }
 
     @Test
-    public void Scroll(){
+    public void Scroll() {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
         HibernateQuery query = new HibernateQuery(session);
         ScrollableResults results = query.from(QCat.cat).scroll(ScrollMode.SCROLL_INSENSITIVE, QCat.cat);
-        while (results.next()){
+        while (results.next()) {
             System.out.println(results.get(0));
         }
         results.close();
     }
 
     @Test
-    public void Update(){
+    public void Update() {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -123,7 +123,7 @@ public class IntegrationBase extends ParsingTest {
     }
 
     @Test
-    public void Update_with_null(){
+    public void Update_with_null() {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -136,7 +136,7 @@ public class IntegrationBase extends ParsingTest {
     }
 
     @Test
-    public void Delete(){
+    public void Delete() {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -149,7 +149,7 @@ public class IntegrationBase extends ParsingTest {
     @Test
     public void Collection() throws Exception{
         List<Cat> cats = Arrays.asList(new Cat("Bob",10), new Cat("Steve",11));
-        for (Cat cat : cats){
+        for (Cat cat : cats) {
             session.save(cat);
         }
 

@@ -82,7 +82,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
     
     @Test
-    public void Clone(){
+    public void Clone() {
         CollQuery query = new CollQuery().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
         assertEquals("cat is not null", query.getMetadata().getWhere().toString());
     }

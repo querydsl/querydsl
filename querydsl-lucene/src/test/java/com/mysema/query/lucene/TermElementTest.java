@@ -25,7 +25,7 @@ import com.mysema.query.types.path.StringPath;
 public class TermElementTest {
 
     @Test
-    public void test(){
+    public void test() {
         StringPath title = new StringPath("title");
         LuceneSerializer serializer = new LuceneSerializer(false,true);
         QueryMetadata metadata = new DefaultQueryMetadata();
@@ -34,7 +34,7 @@ public class TermElementTest {
     }
 
     @Test
-    public void testEqualsAndHashCode(){
+    public void testEqualsAndHashCode() {
     TermElement el1 = new TermElement("x"), el2 = new TermElement("x"), el3 = new TermElement("y");
         assertEquals(el1, el2);
         assertFalse(el1.equals(el3));

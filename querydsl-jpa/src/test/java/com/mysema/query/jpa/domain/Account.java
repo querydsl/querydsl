@@ -50,7 +50,7 @@ public class Account implements Serializable{
     EmbeddedType embeddedData;
 
     @Test
-    public void test(){
+    public void test() {
         try {
             QAccount.class.getField("serialVersionUID");
             fail("Got serialVersionUID");

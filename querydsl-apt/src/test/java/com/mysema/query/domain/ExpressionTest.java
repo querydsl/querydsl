@@ -70,16 +70,16 @@ public class ExpressionTest {
         // all entities
         toVisit.addAll(exprs);
         // and all their direct properties
-        for (Expression<?> expr : exprs){
-            for (Field field : expr.getClass().getFields()){
+        for (Expression<?> expr : exprs) {
+            for (Field field : expr.getClass().getFields()) {
                 Object rv = field.get(expr);
-                if (rv instanceof Expression){
-                    if (rv instanceof StringExpression){
+                if (rv instanceof Expression) {
+                    if (rv instanceof StringExpression) {
                         StringExpression str = (StringExpression)rv;
                         toVisit.add(str.toLowerCase());
                         toVisit.add(str.charAt(0));
                         toVisit.add(str.isEmpty());
-                    }else if (rv instanceof BooleanExpression){
+                    }else if (rv instanceof BooleanExpression) {
                         BooleanExpression b = (BooleanExpression)rv;
                         toVisit.add(b.not());
                     }
@@ -90,40 +90,40 @@ public class ExpressionTest {
 
         Set<String> failures = new TreeSet<String>();
 
-        for (Expression<?> expr : toVisit){
-            for (Method method : expr.getClass().getMethods()){
+        for (Expression<?> expr : toVisit) {
+            for (Method method : expr.getClass().getMethods()) {
                 if (method.getName().equals("getParameter")) continue;
                 if (method.getName().equals("getArg")) continue;
                 if (method.getReturnType() != void.class
-                 && !method.getReturnType().isPrimitive()){
+                 && !method.getReturnType().isPrimitive()) {
                     Class<?>[] types = method.getParameterTypes();
                     Object[] args;
-                    if (types.length == 0){
+                    if (types.length == 0) {
                         args = new Object[0];
-                    }else if (types.length == 1){
-                        if (types[0] == int.class){
+                    } else if (types.length == 1) {
+                        if (types[0] == int.class) {
                             args = new Object[]{Integer.valueOf(1)};
-                        }else if (types[0] == boolean.class){
+                        } else if (types[0] == boolean.class) {
                             args = new Object[]{Boolean.TRUE};
-                        }else{
+                        } else {
                             continue;
                         }
 
-                    }else{
+                    } else {
                         continue;
                     }
                     Object rv = method.invoke(expr, args);
-                    if (method.invoke(expr, args) != rv){
+                    if (method.invoke(expr, args) != rv) {
                         failures.add(expr.getClass().getSimpleName()+"."+method.getName()+" is unstable");
                     }
                 }
             }
         }
 
-        if (failures.size() > 0){
+        if (failures.size() > 0) {
             System.err.println("Got "+failures.size()+" failures\n");
         }
-        for (String failure : failures){
+        for (String failure : failures) {
             System.err.println(failure);
         }
 

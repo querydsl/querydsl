@@ -10,7 +10,7 @@ public class H2WithSchemaTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(new H2Templates(){{
+        Connections.setTemplates(new H2Templates() {{
             newLineToSingleSpace();
             setPrintSchema(true);
         }});

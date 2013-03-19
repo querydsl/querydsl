@@ -33,17 +33,17 @@ public class NullSafeComparableComparatorTest {
     }
 
     @Test
-    public void Object_Eq_Object(){
+    public void Object_Eq_Object() {
         assertEquals(0, comparator.compare("X", "X"));
     }
 
     @Test
-    public void Object_Lt_Object(){
+    public void Object_Lt_Object() {
         assertTrue(comparator.compare("X", "Y") < 0);
     }
 
     @Test
-    public void Object_Gt_Object(){
+    public void Object_Gt_Object() {
         assertTrue(comparator.compare("Z", "Y") > 0);
     }
 

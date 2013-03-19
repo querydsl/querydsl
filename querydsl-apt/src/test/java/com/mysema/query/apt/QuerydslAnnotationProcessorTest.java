@@ -27,56 +27,56 @@ import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 import com.mysema.query.apt.roo.RooAnnotationProcessor;
 
-public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
+public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest {
 
     private static final String PACKAGE_PATH = "src/test/java/com/mysema/query/domain/";
     
     private static final List<String> CLASSES = getFiles(PACKAGE_PATH);
     
     @Test
-    public void Process() throws IOException{
+    public void Process() throws IOException {
         File file = new File(PACKAGE_PATH, "AbstractEntityTest.java");
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
     }
     
     @Test
-    public void Process_MonitoredCompany() throws IOException{
+    public void Process_MonitoredCompany() throws IOException {
         String path = new File(PACKAGE_PATH, "MonitoredCompany.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"MonitoredCompany");
     }
 
     @Test
-    public void Process_Inheritance3() throws IOException{
+    public void Process_Inheritance3() throws IOException {
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance3Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"Inheritance3Test");
     }
 
     @Test
-    public void Process_Inheritance8() throws IOException{
+    public void Process_Inheritance8() throws IOException {
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance8Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"Inheritance8Test");
     }
 
     @Test
-    public void Process_QueryEmbedded3() throws IOException{
+    public void Process_QueryEmbedded3() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded3Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"QueryEmbedded3Test");
     }
     
     @Test
-    public void Process_QueryEmbedded4() throws IOException{
+    public void Process_QueryEmbedded4() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded4Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"QueryEmbedded4Test");
     }
 
     @Test
-    public void Process_Delegate() throws IOException{
+    public void Process_Delegate() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/DelegateTest.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"DelegateTest");
     }
 
     @Test
-    public void Process_AbstractClasses() throws IOException{
+    public void Process_AbstractClasses() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/AbstractClassesTest.java").getPath();
         process(JPAAnnotationProcessor.class, Collections.singletonList(path),"AbstractClassesTest");
     }
@@ -88,7 +88,7 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
 
     @Test
-    public void Process_GenericSignature() throws IOException{
+    public void Process_GenericSignature() throws IOException {
         String path = new File("src/test/java/com/mysema/query/domain/GenericSignatureTest.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"GenericSignatureTest");
     }

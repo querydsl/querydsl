@@ -26,7 +26,7 @@ public class JPQLQueryTest {
     private HibernateQuery query = new HibernateQuery();
     
     @Before
-    public void setUp(){
+    public void setUp() {
         query.from(cat);
     }
     

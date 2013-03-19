@@ -22,7 +22,7 @@ import com.mysema.query.annotations.QueryInit;
 public class DeepInitializationTest {
 
     @MappedSuperclass
-    public static abstract class AbstractEntity implements Cloneable{
+    public static abstract class AbstractEntity implements Cloneable {
 
         @Id
         @Column(name = "ID")
@@ -34,7 +34,7 @@ public class DeepInitializationTest {
         }
 
         @Override
-        protected Object clone() throws CloneNotSupportedException{
+        protected Object clone() throws CloneNotSupportedException {
             return super.clone();
         }
     }

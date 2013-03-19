@@ -20,11 +20,11 @@ public abstract class AbstractTest {
 
     public Class<?> cl;
 
-    protected void match(Class<?> expectedType, String name) throws SecurityException, NoSuchFieldException{
+    protected void match(Class<?> expectedType, String name) throws SecurityException, NoSuchFieldException {
         assertTrue(cl.getSimpleName()+"."+name + " failed", expectedType.isAssignableFrom(cl.getField(name).getType()));
     }
 
-    protected void assertMissing(String name){
+    protected void assertMissing(String name) {
         try {
             cl.getField(name);
             Assert.fail("Expected missing field : " + cl.getSimpleName() + "." + name);

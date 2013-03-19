@@ -91,6 +91,6 @@ public final class Normalization {
         return false;
     }
     
-    private Normalization(){}
+    private Normalization() {}
 
 }

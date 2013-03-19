@@ -93,7 +93,7 @@ public final class QueryMutability {
 
     private void assertProjectionEmpty() throws IOException{
         assertTrue(metadata.getProjection().isEmpty());
-        if (query instanceof Closeable){
+        if (query instanceof Closeable) {
             ((Closeable)query).close();
         }
         System.err.println();

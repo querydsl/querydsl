@@ -75,7 +75,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void NewInstance(){
+    public void NewInstance() {
         QPerson p = QPerson.person;
         QBean<Person> projection = new QBean<Person>(Person.class, p.id, p.firstName.as("firstName"), p.lastName.as("lastName"));
 

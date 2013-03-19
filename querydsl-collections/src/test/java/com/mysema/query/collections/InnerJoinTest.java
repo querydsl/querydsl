@@ -32,7 +32,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     private List<Cat> cats;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         super.setUp();
         cat = new QCat("c");
         kitten = new QCat("k");
@@ -50,7 +50,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     }
 
     @Test
-    public void List(){
+    public void List() {
         List<Cat> rv = CollQueryFactory.from(cat, cats)
             .innerJoin(cat.kittens, kitten)
             .where(cat.name.eq(kitten.name))
@@ -62,7 +62,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     }
         
     @Test
-    public void Alias(){
+    public void Alias() {
         Cat cc = alias(Cat.class, "cat1");
         Cat ck = alias(Cat.class, "cat2");
         List<Cat> rv =  CollQueryFactory.from($(cc), cats)
@@ -74,7 +74,7 @@ public class InnerJoinTest extends AbstractQueryTest{
 
 
     @Test
-    public void Map(){
+    public void Map() {
         List<Cat> rv = CollQueryFactory.from(cat, cats)
             .innerJoin(cat.kittensByName, kitten)
             .where(cat.name.eq(kitten.name))

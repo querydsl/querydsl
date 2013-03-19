@@ -83,7 +83,7 @@ public final class TypeElementHandler {
 
         // fields
         if (config.visitFieldProperties()) {
-            for (VariableElement field : ElementFilter.fieldsIn(elements)){
+            for (VariableElement field : ElementFilter.fieldsIn(elements)) {
                 String name = field.getSimpleName().toString();
                 if (configuration.isBlockedField(field)) {
                     blockedProperties.add(name);
@@ -98,7 +98,7 @@ public final class TypeElementHandler {
         }
 
         // methods
-        if (config.visitMethodProperties()){
+        if (config.visitMethodProperties()) {
             for (ExecutableElement method : ElementFilter.methodsIn(elements)) {            
                 String name = method.getSimpleName().toString();
                 if (name.startsWith("get") && name.length() > 3 && method.getParameters().isEmpty()) {

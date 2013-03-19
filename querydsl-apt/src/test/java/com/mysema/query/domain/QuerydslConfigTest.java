@@ -27,14 +27,14 @@ public class QuerydslConfigTest {
 
     @Config(entityAccessors=true)
     @QueryEntity
-    public static class Superclass{
+    public static class Superclass {
 
         Entity prop3;
     }
 
     @Config(entityAccessors=true, listAccessors = true, mapAccessors= true)
     @QueryEntity
-    public static class Entity extends Superclass{
+    public static class Entity extends Superclass {
 
         Entity prop1;
 
@@ -46,7 +46,7 @@ public class QuerydslConfigTest {
     }
 
     @Test
-    public void Long_Path(){
+    public void Long_Path() {
         assertEquals("entity.prop1.prop2.prop1", QQuerydslConfigTest_Entity.entity.prop1().prop2().prop1().toString());
     }
 

@@ -88,7 +88,7 @@ public class QBeanTest {
     private BooleanPath married;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         entity = new PathBuilderFactory().create(Entity.class);
         name = entity.getString("name");
         name2 = entity.getString("name2");
@@ -97,7 +97,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Class_and_Exprs(){
+    public void with_Class_and_Exprs() {
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
@@ -106,7 +106,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Path_and_Exprs(){
+    public void with_Path_and_Exprs() {
         QBean<Entity> beanProjection = new QBean<Entity>(entity, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
@@ -115,7 +115,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Class_and_Map(){
+    public void with_Class_and_Map() {
         Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("name", name);
         bindings.put("age", age);
@@ -128,7 +128,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Class_and_Alias(){
+    public void with_Class_and_Alias() {
         StringPath name2 = new StringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
@@ -139,7 +139,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Nested_FactoryExpression(){
+    public void with_Nested_FactoryExpression() {
         Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("age", age);
         bindings.put("name", new Concatenation(name, name2));
@@ -151,7 +151,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Nested_FactoryExpression2(){
+    public void with_Nested_FactoryExpression2() {
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class,
                 age, ExpressionUtils.as(new Concatenation(name, name2), "name"));
         FactoryExpression<Entity> wrappedProjection = FactoryExpressionUtils.wrap(beanProjection);

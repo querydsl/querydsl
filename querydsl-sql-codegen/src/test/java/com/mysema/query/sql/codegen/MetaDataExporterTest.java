@@ -253,7 +253,7 @@ public class MetaDataExporterTest {
         File targetDir = new File(target);
         if (clean) {
             try {
-                if (targetDir.exists()){
+                if (targetDir.exists()) {
                     FileUtils.delete(targetDir);
                 }
             } catch (IOException e) {
@@ -274,7 +274,7 @@ public class MetaDataExporterTest {
         exporter.setTargetFolder(targetDir);
         exporter.setNamingStrategy(namingStrategy);
         exporter.setSchemaToPackage(schemaToPackage);
-        if (withBeans){
+        if (withBeans) {
             exporter.setBeanSerializer(beanSerializer);
         }
         exporter.export(connection.getMetaData());
@@ -283,7 +283,7 @@ public class MetaDataExporterTest {
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err, 
                 classes.toArray(new String[classes.size()]));
-        if(compilationResult == 0){
+        if(compilationResult == 0) {
             System.out.println("Compilation is successful");
         }else{
             Assert.fail("Compilation Failed for " + target);

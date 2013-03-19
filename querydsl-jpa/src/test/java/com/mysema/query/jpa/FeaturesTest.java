@@ -164,7 +164,7 @@ public class FeaturesTest extends AbstractQueryTest {
 //
 //    }
 
-    private <D extends Number & Comparable<?>> NumberPath<D> var(Class<D> cl){
+    private <D extends Number & Comparable<?>> NumberPath<D> var(Class<D> cl) {
         return new NumberPath<D>(cl, "var");
     }
 

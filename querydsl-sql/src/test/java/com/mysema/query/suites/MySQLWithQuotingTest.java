@@ -13,7 +13,7 @@ public class MySQLWithQuotingTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.setTemplates(new MySQLTemplates(true){{
+        Connections.setTemplates(new MySQLTemplates(true) {{
             newLineToSingleSpace();
         }});
     }

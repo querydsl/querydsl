@@ -38,12 +38,12 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
 
     private final CollQuery query;
 
-    public CollUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col){
+    public CollUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col) {
         this.query = new CollQuery(qe).from(expr, col);
         this.expr = expr;
     }
 
-    public CollUpdateClause(Path<T> expr, Iterable<? extends T> col){
+    public CollUpdateClause(Path<T> expr, Iterable<? extends T> col) {
         this(DefaultQueryEngine.getDefault(), expr, col);
     }
 
@@ -76,7 +76,7 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
     }
     
     @Override
-    public <U> CollUpdateClause<T> setNull(Path<U> path){
+    public <U> CollUpdateClause<T> setNull(Path<U> path) {
         paths.put(path, null);
         return this;
     }
@@ -96,7 +96,7 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         return "update " + query;
     }
 

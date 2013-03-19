@@ -32,13 +32,13 @@ public class DetachableAdapterTest {
     private Detachable detachable;
     
     @Before
-    public void setUp(){
+    public void setUp() {
         queryMixin = new QueryMixin();
         detachable = new DetachableAdapter(new DetachableMixin(queryMixin));
     }
     
     @Test
-    public void Projections(){
+    public void Projections() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         queryMixin.from((EntityPath)$(e));
         assertNotNull(detachable.exists());

@@ -26,7 +26,7 @@ import com.mysema.query.annotations.QueryInit;
 public class QueryInit3Test {
 
     @QueryEntity
-    public static class Entity{
+    public static class Entity {
 
         @QueryInit("*.*")
         Entity prop1;
@@ -40,7 +40,7 @@ public class QueryInit3Test {
     }
     
     @Test
-    public void test(){
+    public void test() {
         assertEquals("entity.prop1.prop2.prop1", QQueryInit3Test_Entity.entity.prop1.prop2.prop1.toString());
     }
     

@@ -103,7 +103,7 @@ public class EntitySerializer implements Serializer{
      * @param keywords
      */
     @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords){
+    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
         this.typeMappings = mappings;
         this.keywords = keywords;
     }
@@ -215,7 +215,7 @@ public class EntitySerializer implements Serializer{
     protected void entityAccessor(EntityType model, Property field, CodeWriter writer) throws IOException {
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
         writer.beginPublicMethod(queryType, field.getEscapedName());
-        writer.line("if (", field.getEscapedName(), " == null){");
+        writer.line("if (", field.getEscapedName(), " == null) {");
         writer.line("    ", field.getEscapedName(), " = new ", writer.getRawName(queryType), 
                 "(forProperty(\"", field.getName(), "\"));");
         writer.line("}");
@@ -236,7 +236,7 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected boolean hasOwnEntityProperties(EntityType model){
+    protected boolean hasOwnEntityProperties(EntityType model) {
         if (model.hasEntityFields()) {
             for (Property property : model.getProperties()) {
                 if (!property.isInherited() && property.getType().getCategory() == TypeCategory.ENTITY) {
@@ -312,7 +312,7 @@ public class EntitySerializer implements Serializer{
         Class<? extends Path> pathType;
 
         if (model.getProperties().isEmpty()) {
-            switch(category){
+            switch(category) {
                 case COMPARABLE : pathType = ComparablePath.class; break;
                 case ENUM: pathType = EnumPath.class; break;
                 case DATE: pathType = DatePath.class; break;
@@ -327,7 +327,7 @@ public class EntitySerializer implements Serializer{
             pathType = EntityPathBase.class;
         }
 
-        for (Annotation annotation : model.getAnnotations()){
+        for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
         
@@ -361,7 +361,7 @@ public class EntitySerializer implements Serializer{
 
         for (Constructor c : model.getConstructors()) {
             // begin
-            if (!localName.equals(genericName)){
+            if (!localName.equals(genericName)) {
                 writer.suppressWarnings(UNCHECKED);
             }
             Type returnType = new ClassType(ConstructorExpression.class, model);
@@ -377,7 +377,7 @@ public class EntitySerializer implements Serializer{
             // body
             // TODO : replace with class reference
             writer.beginLine("return new ConstructorExpression<" + genericName + ">(");
-            if (!localName.equals(genericName)){
+            if (!localName.equals(genericName)) {
                 writer.append("(Class)");
             }
             writer.append(localName + DOT_CLASS);
@@ -618,7 +618,7 @@ public class EntitySerializer implements Serializer{
         constructors(model, config, writer);
 
         // delegates
-        for (Delegate delegate : model.getDelegates()){
+        for (Delegate delegate : model.getDelegates()) {
             delegate(model, delegate, config, writer);
         }
 
@@ -688,7 +688,7 @@ public class EntitySerializer implements Serializer{
             // FIXME : the custom types should have the custom type category
             if (typeMappings.isRegistered(property.getType())
                     && property.getType().getCategory() != TypeCategory.CUSTOM
-                    && property.getType().getCategory() != TypeCategory.ENTITY){
+                    && property.getType().getCategory() != TypeCategory.ENTITY) {
                 customField(model, property, config, writer);
                 continue;
             }

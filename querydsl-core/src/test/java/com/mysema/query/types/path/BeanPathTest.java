@@ -50,21 +50,21 @@ public class BeanPathTest {
     private BeanPath<BeanPathTest> beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, "p");
     
     @Test
-    public void As_Path(){        
+    public void As_Path() {        
         SimplePath<BeanPathTest> simplePath = new SimplePath<BeanPathTest>(BeanPathTest.class, "p");
         assertNotNull(beanPath.as(simplePath));
     }
     
     @Test
     @Ignore
-    public void As_Class(){       
+    public void As_Class() {       
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
         assertEquals(beanPath, otherPath);
         assertTrue(otherPath.getMetadata().isRoot());
     }
     
     @Test
-    public void As_Class_Cached(){       
+    public void As_Class_Cached() {       
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
 //        assertEquals(beanPath, otherPath);
         assertTrue(otherPath == beanPath.as(MyBeanPath.class));
@@ -72,7 +72,7 @@ public class BeanPathTest {
     
     @Test
     @Ignore
-    public void As_Class_with_Inits(){       
+    public void As_Class_with_Inits() {       
         beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, 
                 PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
@@ -80,7 +80,7 @@ public class BeanPathTest {
     }
     
     @Test
-    public void As_Class_with_Inits_Cached(){       
+    public void As_Class_with_Inits_Cached() {       
         beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, 
                 PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
@@ -89,12 +89,12 @@ public class BeanPathTest {
     }
     
     @Test
-    public void CreateEnum(){
+    public void CreateEnum() {
         assertNotNull(beanPath.createEnum("property", PropertyType.class));
     }
     
     @Test
-    public void InstanceOf(){
+    public void InstanceOf() {
         assertNotNull(beanPath.instanceOf(BeanPathTest.class));
     }
     

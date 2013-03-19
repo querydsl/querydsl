@@ -10,7 +10,7 @@ public class H2WithQuotingTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(new H2Templates(true){{
+        Connections.setTemplates(new H2Templates(true) {{
             newLineToSingleSpace();
         }});
     }

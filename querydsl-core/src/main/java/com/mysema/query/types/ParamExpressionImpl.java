@@ -68,7 +68,7 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
         return name;
     }
 
-    public final boolean isAnon(){
+    public final boolean isAnon() {
         return anon;
     }
 

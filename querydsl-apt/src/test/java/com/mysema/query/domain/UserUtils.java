@@ -19,10 +19,10 @@ import com.mysema.query.types.path.StringPath;
 
 public final class UserUtils {
 
-    private UserUtils(){}
+    private UserUtils() {}
 
     @QueryDelegate(DelegateTest.User.class)
-    public static StringPath getName(QDelegateTest_User user){
+    public static StringPath getName(QDelegateTest_User user) {
         return user.name;
     }
 

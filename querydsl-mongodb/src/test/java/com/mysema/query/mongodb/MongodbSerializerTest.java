@@ -71,7 +71,7 @@ public class MongodbSerializerTest {
     }
 
     @Test
-    public void Paths(){
+    public void Paths() {
         QUser user = QUser.user;
         assertEquals("user", serializer.visit(user, null));
         assertEquals("addresses", serializer.visit(user.addresses, null));
@@ -81,19 +81,19 @@ public class MongodbSerializerTest {
     }
 
     @Test
-    public void PropertyAnnotation(){
+    public void PropertyAnnotation() {
         QDummyEntity entity = QDummyEntity.dummyEntity;
         assertEquals("prop", serializer.visit(entity.property, null));
     }
 
     @Test
-    public void IndexedAccess(){
+    public void IndexedAccess() {
         QUser user = QUser.user;
         assertEquals("addresses.0.street", serializer.visit(user.addresses.get(0).street, null));
     }
 
     @Test
-    public void CollectionAny(){
+    public void CollectionAny() {
         QUser user = QUser.user;
         assertQuery(user.addresses.any().street.eq("Aakatu"), dbo("addresses.street","Aakatu"));
     }

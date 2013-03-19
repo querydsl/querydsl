@@ -30,7 +30,7 @@ import com.mysema.query.types.template.SimpleTemplate;
 public class SQLTemplatesTest {
 
     @Test
-    public void test(){
+    public void test() {
         Template template = TemplateFactory.DEFAULT.create("fetch first {0s} rows only");
         assertTrue(template.getElements().get(1) instanceof Template.AsString);
 
@@ -40,7 +40,7 @@ public class SQLTemplatesTest {
     }
     
     @Test
-    public void Quote(){
+    public void Quote() {
         Pattern pattern = Pattern.compile("[a-zA-Z0-9_\\-]+");
         assertTrue(pattern.matcher("a1").matches());
         assertTrue(pattern.matcher("a").matches());

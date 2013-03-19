@@ -191,13 +191,13 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void ClassName(){
+    public void ClassName() {
         Type type = factory.get(EnumExample.class);
         assertEquals("com.mysema.query.codegen.TypeFactoryTest.EnumExample", type.getFullName());
     }
 
     @Test
-    public void Blob(){
+    public void Blob() {
         Type blob = factory.get(Blob.class);
         assertEquals("Blob", blob.getSimpleName());
         assertEquals("java.sql.Blob", blob.getFullName());
@@ -205,7 +205,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Boolean(){
+    public void Boolean() {
         Type bo = factory.get(boolean.class);
         assertEquals(TypeCategory.BOOLEAN, bo.getCategory());
         assertEquals("Boolean", bo.getSimpleName());
@@ -214,26 +214,26 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void SimpleType(){
-        for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)){
+    public void SimpleType() {
+        for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)) {
             assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, factory.get(cl).getCategory());
         }
     }
 
     @Test
-    public void NumberType(){
-        for (Class<?> cl : Arrays.<Class<?>>asList(Byte.class, Integer.class)){
+    public void NumberType() {
+        for (Class<?> cl : Arrays.<Class<?>>asList(Byte.class, Integer.class)) {
             assertEquals("wrong type for " + cl.getName(), TypeCategory.NUMERIC, factory.get(cl).getCategory());
         }
     }
 
     @Test
-    public void EnumType(){
+    public void EnumType() {
         assertEquals(TypeCategory.ENUM, factory.get(EnumExample.class).getCategory());
     }
 
     @Test
-    public void UnknownAsEntity(){
+    public void UnknownAsEntity() {
         assertEquals(TypeCategory.SIMPLE, factory.get(TypeFactoryTest.class).getCategory());
 
         factory = new TypeFactory();

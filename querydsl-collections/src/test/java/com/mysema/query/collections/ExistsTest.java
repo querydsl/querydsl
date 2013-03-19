@@ -20,12 +20,12 @@ import org.junit.Test;
 public class ExistsTest extends AbstractQueryTest{
 
     @Test
-    public void Exists(){
+    public void Exists() {
         assertTrue(query().from(cat, cats).where(cat.name.eq("Bob")).exists());
     }
 
     @Test
-    public void NotExists(){
+    public void NotExists() {
         assertTrue(query().from(cat, cats).where(cat.name.eq("Bobby")).notExists());
     }
 

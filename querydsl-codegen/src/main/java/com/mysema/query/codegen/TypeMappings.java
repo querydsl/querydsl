@@ -44,19 +44,19 @@ public abstract class TypeMappings {
 
     private final Map<TypeCategory, Type> templateTypes = new HashMap<TypeCategory, Type>();
     
-    public Type getTemplateType(Type type, EntityType model, boolean raw){
+    public Type getTemplateType(Type type, EntityType model, boolean raw) {
         return getTemplateType(type, model, raw, false, false);
     }
 
-    public Type getTemplateType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    public Type getTemplateType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend) {
         return getQueryType(templateTypes, type, model, raw, rawParameters, extend);
     }
 
-    public Type getExprType(Type type, EntityType model, boolean raw){
+    public Type getExprType(Type type, EntityType model, boolean raw) {
         return getExprType(type, model, raw, false, false);
     }
 
-    public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend) {
         if (queryTypes.containsKey(type.getFullName())) {
             return queryTypes.get(type.getFullName());
         } else {
@@ -64,11 +64,11 @@ public abstract class TypeMappings {
         }
     }
 
-    public Type getPathType(Type type, EntityType model, boolean raw){
+    public Type getPathType(Type type, EntityType model, boolean raw) {
         return getPathType(type, model, raw, false, false);
     }
 
-    public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend) {
         if (queryTypes.containsKey(type.getFullName())) {
             return queryTypes.get(type.getFullName());
         } else {
@@ -77,7 +77,7 @@ public abstract class TypeMappings {
     }
 
     private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw, 
-            boolean rawParameters, boolean extend){
+            boolean rawParameters, boolean extend) {
         Type exprType = types.get(type.getCategory());
         if (type.getCategory() == TypeCategory.ARRAY && types == pathTypes) {
             return getQueryType(type.getComponentType(), model, exprType, raw, rawParameters, extend);
@@ -87,7 +87,7 @@ public abstract class TypeMappings {
     }
 
     public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, 
-            boolean rawParameters, boolean extend){
+            boolean rawParameters, boolean extend) {
         TypeCategory category = type.getCategory();
         if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM) {
             return exprType;
@@ -111,7 +111,7 @@ public abstract class TypeMappings {
     public void register(TypeCategory category,
             @Nullable Class<? extends Expression> expr,
             @Nullable Class<? extends Path> path,
-            @Nullable Class<? extends TemplateExpression> template){
+            @Nullable Class<? extends TemplateExpression> template) {
         if (expr != null) {
             exprTypes.put(category, new ClassType(expr));
         }
@@ -123,11 +123,11 @@ public abstract class TypeMappings {
         }
     }
 
-    public void register(Type type, Type queryType){
+    public void register(Type type, Type queryType) {
         queryTypes.put(type.getFullName(), queryType);
     }
 
-    public boolean isRegistered(Type type){
+    public boolean isRegistered(Type type) {
         return queryTypes.containsKey(type.getFullName());
     }
 }

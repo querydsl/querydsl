@@ -38,8 +38,8 @@ final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D>
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> SimpleExpression<T> create(T val){
-        if (val instanceof Boolean){
+    public static <T> SimpleExpression<T> create(T val) {
+        if (val instanceof Boolean) {
             return (SimpleExpression<T>)BooleanConstant.create((Boolean)val);
         }else{
             return new SimpleConstant<T>(val);
@@ -60,7 +60,7 @@ final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D>
     }
     
     @Override
-    public BooleanExpression eq(D s){
+    public BooleanExpression eq(D s) {
         return BooleanConstant.create(constant.equals(s));
     }
 
@@ -75,7 +75,7 @@ final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D>
     }
 
     @Override
-    public BooleanExpression ne(D s){
+    public BooleanExpression ne(D s) {
         return BooleanConstant.create(!constant.equals(s));
     }
 

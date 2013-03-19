@@ -99,7 +99,7 @@ public class JoinFlag implements Serializable{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return flag.toString();
     }
 

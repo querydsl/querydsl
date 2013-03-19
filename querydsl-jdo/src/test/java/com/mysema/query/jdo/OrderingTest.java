@@ -86,7 +86,7 @@ public class OrderingTest extends AbstractJDOTest {
             query().from(product).orderBy(product.name.desc()).limit(2).list(product.name));
     }
     
-    public void Limit_and_Offset(){
+    public void Limit_and_Offset() {
         assertEquals(Arrays.asList("A2", "A3", "A4"), 
             query().from(product).orderBy(product.name.asc()).offset(2).limit(3).list(product.name));    
     }

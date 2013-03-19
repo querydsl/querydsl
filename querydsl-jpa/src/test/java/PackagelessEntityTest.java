@@ -23,7 +23,7 @@ public class PackagelessEntityTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void PackageLess_Path(){
+    public void PackageLess_Path() {
         JPASubQuery query = new JPASubQuery();
         PathBuilder builder = new PathBuilder(PackagelessEntityTest.class,"entity");
         query.from(builder);

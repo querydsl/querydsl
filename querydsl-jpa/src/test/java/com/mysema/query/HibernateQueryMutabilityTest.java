@@ -33,7 +33,7 @@ public class HibernateQueryMutabilityTest{
 
     private Session session;
 
-    protected HibernateQuery query(){
+    protected HibernateQuery query() {
         return new HibernateQuery(session);
     }
 
@@ -51,7 +51,7 @@ public class HibernateQueryMutabilityTest{
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         QCat cat = QCat.cat;
         HibernateQuery query = query().from(cat).where(cat.name.isNotNull());
         HibernateQuery query2 = query.clone(session);

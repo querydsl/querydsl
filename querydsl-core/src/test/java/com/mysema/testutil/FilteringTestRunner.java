@@ -31,7 +31,7 @@ public class FilteringTestRunner extends BlockJUnit4ClassRunner {
 
     @Override
     public void run(RunNotifier notifier) {
-        if (run){
+        if (run) {
             super.run(notifier);
         }
     }

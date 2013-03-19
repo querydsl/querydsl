@@ -52,10 +52,10 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
     @Override
     protected List<MethodRule> rules(Object test) {
         List<MethodRule> rules = super.rules(test);
-        rules.add(new MethodRule(){
+        rules.add(new MethodRule() {
             @Override
             public Statement apply(final Statement base, FrameworkMethod method, final Object target) {
-                return new Statement(){
+                return new Statement() {
                     @Override
                     public void evaluate() throws Throwable {
                         if (setter == null) {
@@ -112,7 +112,7 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
             }    
         }            
         
-        if (entityManagerFactory != null){
+        if (entityManagerFactory != null) {
             if (entityManagerFactory.getCache() != null) {
                 entityManagerFactory.getCache().evictAll();    
             }            

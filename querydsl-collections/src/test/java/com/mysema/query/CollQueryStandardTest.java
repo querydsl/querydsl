@@ -58,7 +58,7 @@ public class CollQueryStandardTest {
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
     
-    private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM){
+    private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM) {
         @Override
         protected Pair<Projectable, Expression<?>[]> createQuery() {
             return Pair.of(
@@ -74,7 +74,7 @@ public class CollQueryStandardTest {
     };
 
     @Test
-    public void test(){
+    public void test() {
         Cat kitten = data.get(0).getKittens().get(0);
         standardTest.runArrayTests(cat.kittenArray, otherCat.kittenArray, kitten, new Cat());
         standardTest.runBooleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
@@ -94,21 +94,21 @@ public class CollQueryStandardTest {
     }
 
     @Test
-    public void TupleProjection(){
+    public void TupleProjection() {
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .list(new QTuple(cat.name, cat.birthdate));
-        for (Tuple tuple : tuples){
+        for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
         }
     }
     
     @Test
-    public void Nested_TupleProjection(){
+    public void Nested_TupleProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .list(new QTuple(concat, cat.name, cat.birthdate));
-        for (Tuple tuple : tuples){
+        for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
             assertEquals(tuple.get(cat.name) + tuple.get(cat.name), tuple.get(concat));
@@ -117,39 +117,39 @@ public class CollQueryStandardTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void ArrayProjection(){
+    public void ArrayProjection() {
         List<String[]> results =  CollQueryFactory.from(cat, data)
             .list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
-        for (String[] result : results){
+        for (String[] result : results) {
             assertNotNull(result[0]);
         }
     }
 
     @Test
-    public void ConstructorProjection(){
+    public void ConstructorProjection() {
         List<Projection> projections =  CollQueryFactory.from(cat, data)
             .list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
-        for (Projection projection : projections){
+        for (Projection projection : projections) {
             assertNotNull(projection);
         }
     }
     
     @Test
-    public void Params(){
+    public void Params() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
 
     @Test
-    public void Params_anon(){
+    public void Params_anon() {
         Param<String> name = new Param<String>(String.class);
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
 
     @Test(expected=ParamNotSetException.class)
-    public void Params_not_set(){
+    public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
     }

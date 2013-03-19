@@ -10,7 +10,7 @@ public class DerbySuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initDerby();
-        Connections.setTemplates(new DerbyTemplates(){{
+        Connections.setTemplates(new DerbyTemplates() {{
             newLineToSingleSpace();
         }});
     }

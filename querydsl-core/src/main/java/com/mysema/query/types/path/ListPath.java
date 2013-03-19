@@ -78,22 +78,22 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     }
     
     @Override
-    public Q any(){
+    public Q any() {
         if (any == null) {
             any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
         }
         return any;
     }
 
-    protected PathMetadata<Integer> forListAccess(int index){
+    protected PathMetadata<Integer> forListAccess(int index) {
         return PathMetadataFactory.forListAccess(this, index);
     }
 
-    protected PathMetadata<Integer> forListAccess(Expression<Integer> index){
+    protected PathMetadata<Integer> forListAccess(Expression<Integer> index) {
         return PathMetadataFactory.forListAccess(this, index);
     }
 
-    private Q create(int index){
+    private Q create(int index) {
         PathMetadata<Integer> md = forListAccess(index);
         return newInstance(queryType, md);
     }
@@ -131,7 +131,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 

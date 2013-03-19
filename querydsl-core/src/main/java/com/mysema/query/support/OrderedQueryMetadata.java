@@ -15,8 +15,6 @@ package com.mysema.query.support;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
@@ -36,7 +34,7 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata {
 
     private List<JoinExpression> joins;
     
-    public OrderedQueryMetadata(){
+    public OrderedQueryMetadata() {
         super();
         noValidate();
     }

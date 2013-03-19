@@ -45,7 +45,7 @@ public class MultiIterator<T> implements Iterator<Object[]> {
 
     private final Object[] values;
 
-    public MultiIterator(List<? extends Iterable<T>> iterables){
+    public MultiIterator(List<? extends Iterable<T>> iterables) {
         this.iterables = iterables;
         this.iterators = new ArrayList<Iterator<T>>(iterables.size());
         for (int i = 0; i < iterables.size(); i++) {

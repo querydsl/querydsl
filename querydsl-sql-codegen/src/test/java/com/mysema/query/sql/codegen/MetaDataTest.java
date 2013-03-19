@@ -30,7 +30,7 @@ public class MetaDataTest {
     private EntityType classModel;
     
     @Before
-    public void setUp(){
+    public void setUp() {
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         String packageName = "com.myproject.domain";
         String tableName = "vwServiceName";
@@ -43,12 +43,12 @@ public class MetaDataTest {
     }
 
     @Test
-    public void GetSimpleName(){                
+    public void GetSimpleName() {                
         assertEquals("VwServiceName", classModel.getSimpleName());        
     }
     
     @Test
-    public void GetFullName(){
+    public void GetFullName() {
         assertEquals("com.myproject.domain.VwServiceName", classModel.getFullName());
     }
     

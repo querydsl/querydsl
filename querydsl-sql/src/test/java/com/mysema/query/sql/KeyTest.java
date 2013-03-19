@@ -73,7 +73,7 @@ public class KeyTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         QUser user = new QUser("user");
         QUser user2 = new QUser("user2");
         QDepartment department = new QDepartment("department");
@@ -88,7 +88,7 @@ public class KeyTest {
             .innerJoin(department.companyKey, company);
     }
 
-    private SQLQuery query(){
+    private SQLQuery query() {
         return new SQLQuery(SQLTemplates.DEFAULT);
     }
 

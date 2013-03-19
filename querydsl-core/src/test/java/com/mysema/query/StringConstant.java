@@ -36,7 +36,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
 
     private static final long serialVersionUID = 5182804405789674556L;
     
-    public static StringExpression create(String str){
+    public static StringExpression create(String str) {
         return new StringConstant(str);
     }
 
@@ -48,7 +48,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
     @Nullable
     private volatile StringExpression lower, trim, upper;
 
-    StringConstant(String constant){
+    StringConstant(String constant) {
         super(ConstantImpl.create(constant));
         this.constant = constant;
     }
@@ -61,7 +61,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
     @SuppressWarnings("unchecked")
     @Override
     public StringExpression append(Expression<String> s) {
-        if (s instanceof Constant){
+        if (s instanceof Constant) {
             return append(((Constant<String>)s).getConstant());
         }else{
             return super.append(s);
@@ -84,7 +84,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
     }
 
     @Override
-    public BooleanExpression eq(String s){
+    public BooleanExpression eq(String s) {
         return BooleanConstant.create(constant.equals(s));
     }
 
@@ -99,12 +99,12 @@ final class StringConstant extends StringExpression implements Constant<String>{
     }
 
     @Override
-    public BooleanExpression isEmpty(){
+    public BooleanExpression isEmpty() {
         return BooleanConstant.create(constant.isEmpty());
     }
 
     @Override
-    public BooleanExpression isNotEmpty(){
+    public BooleanExpression isNotEmpty() {
         return BooleanConstant.create(!constant.isEmpty());
     }
 
@@ -125,19 +125,19 @@ final class StringConstant extends StringExpression implements Constant<String>{
     }
 
     @Override
-    public BooleanExpression matches(String pattern){
+    public BooleanExpression matches(String pattern) {
         return BooleanConstant.create(constant.matches(pattern));
     }
 
     @Override
-    public BooleanExpression ne(String s){
+    public BooleanExpression ne(String s) {
         return BooleanConstant.create(!constant.equals(s));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public StringExpression prepend(Expression<String> s) {
-        if (s instanceof Constant){
+        if (s instanceof Constant) {
             return prepend(((Constant<String>)s).getConstant());
         }else{
             return super.prepend(s);
@@ -179,7 +179,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
 
     @Override
     public StringExpression upper() {
-        if (upper == null){
+        if (upper == null) {
             upper = new StringConstant(constant.toUpperCase(Locale.ENGLISH));
         }
         return upper;

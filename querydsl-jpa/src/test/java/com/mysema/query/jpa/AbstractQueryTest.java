@@ -23,7 +23,7 @@ public abstract class AbstractQueryTest implements Constants{
         return new QueryHelper(HQLTemplates.DEFAULT);
     }
 
-    protected JPASubQuery sub(){
+    protected JPASubQuery sub() {
         return new JPASubQuery();
     }
 

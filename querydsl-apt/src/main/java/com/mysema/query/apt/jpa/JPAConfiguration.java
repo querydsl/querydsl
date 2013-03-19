@@ -83,7 +83,7 @@ public class JPAConfiguration extends DefaultConfiguration {
    
 
     @Override
-    public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
+    public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements) {
         Access access = e.getAnnotation(Access.class);
         if (access != null) {
             if (access.value() == AccessType.FIELD) {
@@ -102,7 +102,7 @@ public class JPAConfiguration extends DefaultConfiguration {
         return VisitorConfig.get(fields, methods);
     }
     
-    private boolean hasRelevantAnnotation(Element element){
+    private boolean hasRelevantAnnotation(Element element) {
         for (Class<? extends Annotation> annotation : annotations) {
             if (element.getAnnotation(annotation) != null) {
                 return true;

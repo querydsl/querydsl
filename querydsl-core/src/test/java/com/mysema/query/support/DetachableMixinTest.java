@@ -40,13 +40,13 @@ public class DetachableMixinTest {
     private DetachableMixin detachable;
     
     @Before
-    public void setUp(){
+    public void setUp() {
         query = new QueryMixin();
         detachable = new DetachableMixin(query);
     }
     
     @Test
-    public void Projections(){
+    public void Projections() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         query.from((EntityPath)$(e));
         assertNotNull(detachable.exists());
@@ -58,7 +58,7 @@ public class DetachableMixinTest {
     }
     
     @Test
-    public void List_Objects(){
+    public void List_Objects() {
         query.from(new PathImpl(Object.class, "x"));
         ListSubQuery subQuery = detachable.list(new PathImpl(Object.class, "x"), "XXX");
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
@@ -67,7 +67,7 @@ public class DetachableMixinTest {
     }
     
     @Test
-    public void Unique_Objects(){
+    public void Unique_Objects() {
         query.from(new PathImpl(Object.class, "x"));
         SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), "XXX");
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
@@ -76,7 +76,7 @@ public class DetachableMixinTest {
     }
     
     @Test
-    public void Null_As_Template(){
+    public void Null_As_Template() {
         query.from(new PathImpl(Object.class, "x"));
         SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), null);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();

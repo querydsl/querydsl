@@ -24,10 +24,10 @@ import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.TimePath;
 
-public class QueryTypeTest extends AbstractTest{
+public class QueryTypeTest extends AbstractTest {
 
     @QueryEntity
-    public static class QueryTypeEntity{
+    public static class QueryTypeEntity {
         @QueryType(PropertyType.SIMPLE)
         public String stringAsSimple;
 

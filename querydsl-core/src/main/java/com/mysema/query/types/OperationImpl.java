@@ -73,7 +73,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     }
 
     @Override
-    public final boolean equals(Object o){
+    public final boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof Operation<?>) {

@@ -22,12 +22,12 @@ import com.mysema.query.annotations.QueryEntity;
 public class AnnotatedGettersTest {
 
     @QueryEntity
-    public interface Entity{
+    public interface Entity {
         String getName();
     }
 
     @Test
-    public void Annotated_Getter_Is_Supported(){
+    public void Annotated_Getter_Is_Supported() {
         assertNotNull(QAnnotatedGettersTest_Entity.entity.name);
     }
 

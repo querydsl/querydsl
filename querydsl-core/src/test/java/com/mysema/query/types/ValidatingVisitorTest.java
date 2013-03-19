@@ -32,7 +32,7 @@ public class ValidatingVisitorTest {
     private final ValidatingVisitor validator = ValidatingVisitor.DEFAULT;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         known.add(new PathImpl(Object.class, "path"));
     }
 

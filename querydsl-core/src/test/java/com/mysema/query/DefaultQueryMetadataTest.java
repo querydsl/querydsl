@@ -36,28 +36,28 @@ public class DefaultQueryMetadataTest {
     private final StringPath str2 = new StringPath("str2");
 
     @Test
-    public void AddWhere_With_Null(){
+    public void AddWhere_With_Null() {
         metadata.addWhere((Predicate)null);
     }
     
     @Test
-    public void AddWhere_With_BooleanBuilder(){
+    public void AddWhere_With_BooleanBuilder() {
         metadata.addWhere(new BooleanBuilder());
     }
     
     @Test
-    public void AddHaving_With_Null(){
+    public void AddHaving_With_Null() {
         metadata.addWhere((Predicate)null);
     }
     
     @Test
-    public void AddHaving_With_BooleanBuilder(){
+    public void AddHaving_With_BooleanBuilder() {
         metadata.addWhere(new BooleanBuilder());
     }
     
     
     @Test(expected=IllegalArgumentException.class)
-    public void Validation(){
+    public void Validation() {
         metadata.addGroupBy(str);
     }
     
@@ -95,7 +95,7 @@ public class DefaultQueryMetadataTest {
     }
 
     @Test
-    public void setLimit(){
+    public void setLimit() {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         metadata.setModifiers(modifiers);
         metadata.setLimit(3l);
@@ -105,7 +105,7 @@ public class DefaultQueryMetadataTest {
     }
 
     @Test
-    public void setOffset(){
+    public void setOffset() {
         QueryModifiers modifiers = new QueryModifiers(1l,1l);
         metadata.setModifiers(modifiers);
         metadata.setOffset(2l);
@@ -154,7 +154,7 @@ public class DefaultQueryMetadataTest {
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
@@ -179,14 +179,14 @@ public class DefaultQueryMetadataTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void SetParam(){
+    public void SetParam() {
         metadata.setParam(new Param(String.class, "str"), ConstantImpl.create("X"));
         assertEquals(1, metadata.getParams().size());
         assertTrue(metadata.getParams().get(new Param(String.class, "str")).equals(ConstantImpl.create("X")));
     }
     
     @Test
-    public void AddFlag(){
+    public void AddFlag() {
         QueryFlag flag = new QueryFlag(Position.START, "X");
         metadata.addFlag(flag);
         assertTrue(metadata.hasFlag(flag));

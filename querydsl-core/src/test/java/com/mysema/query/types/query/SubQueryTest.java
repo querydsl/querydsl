@@ -32,7 +32,7 @@ public class SubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test(){
+    public void test() {
         Templates templates = new JavaTemplates();
         QueryMetadata metadata = new DefaultQueryMetadata();
         List<ExtendedSubQueryExpression> subQueries = Arrays.<ExtendedSubQueryExpression>asList(
@@ -47,13 +47,13 @@ public class SubQueryTest {
                 new TimeSubQuery(Date.class,metadata)
         );
         ExtendedSubQueryExpression prev = null;
-        for (ExtendedSubQueryExpression sq : subQueries){
+        for (ExtendedSubQueryExpression sq : subQueries) {
             assertNotNull(sq);
             assertNotNull(sq.exists());
             assertNotNull(sq.getMetadata());
             assertNotNull(sq.notExists());
             assertEquals(sq, sq);
-            if (prev != null){
+            if (prev != null) {
                 assertEquals(sq, prev);
             }
             //assertEquals(sq.getType().hashCode(), sq.hashCode());

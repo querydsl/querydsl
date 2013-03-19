@@ -21,24 +21,24 @@ import org.junit.Test;
 public class PathInitsTest {
 
     @Test
-    public void Default(){
+    public void Default() {
         assertFalse(PathInits.DEFAULT.isInitialized(""));
     }
     
     @Test
-    public void IsInitialized(){
+    public void IsInitialized() {
         PathInits inits = new PathInits(".2").get("");
         assertFalse(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
         
     @Test
-    public void Wildcard(){
+    public void Wildcard() {
         assertTrue(new PathInits("*").isInitialized(""));
     }
 
     @Test
-    public void Wildcard2(){
+    public void Wildcard2() {
         PathInits inits = new PathInits(".*").get("");        
         assertTrue(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));

@@ -195,7 +195,7 @@ public class GenericExporter {
      * 
      * @param packages
      */
-    public void export(String... packages){
+    public void export(String... packages) {
         scanPackages(packages);
         innerExport();
     }
@@ -213,7 +213,7 @@ public class GenericExporter {
     }
 
     @SuppressWarnings("unchecked")
-    private void innerExport(){
+    private void innerExport() {
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
         typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
@@ -290,7 +290,7 @@ public class GenericExporter {
             for (Supertype supertype : model.getSuperTypes()) {
                 EntityType entityType = superTypes.get(supertype.getType().getFullName());
                 if (entityType == null) {
-                    if (supertype.getType().getPackageName().startsWith("java.")){
+                    if (supertype.getType().getPackageName().startsWith("java.")) {
                         // skip internal supertypes
                         continue;
                     }
@@ -448,7 +448,7 @@ public class GenericExporter {
         return new Property(entityType, propertyName, propertyType, inits);
     }
 
-    private void scanPackages(String... packages){        
+    private void scanPackages(String... packages) {        
         for (String pkg : packages) {
             try {
                 for (Class<?> cl : ClassPathUtils.scanPackage(classLoader, pkg)) {
@@ -478,7 +478,7 @@ public class GenericExporter {
             String packageName = type.getPackageName();
             String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
             SerializerConfig config = serializerConfig;
-            if (entityType.getKey().isAnnotationPresent(Config.class)){
+            if (entityType.getKey().isAnnotationPresent(Config.class)) {
                 config = SimpleSerializerConfig.getConfig(entityType.getKey().getAnnotation(Config.class));
             }
             String fileSuffix = createScalaSources ? ".scala" : ".java";

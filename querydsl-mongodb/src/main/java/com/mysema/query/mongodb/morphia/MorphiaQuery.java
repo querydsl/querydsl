@@ -43,7 +43,7 @@ public final class MorphiaQuery<K> extends MongodbQuery<K> {
 
     public MorphiaQuery(final Morphia morphia, final Datastore datastore,
             final EntityCache cache, final EntityPath<K> entityPath) {
-        super(datastore.getCollection(entityPath.getType()), new Function<DBObject, K>(){
+        super(datastore.getCollection(entityPath.getType()), new Function<DBObject, K>() {
             @Override
             public K apply(DBObject dbObject) {
                 return morphia.fromDBObject(entityPath.getType(), dbObject, cache);

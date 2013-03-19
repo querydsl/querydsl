@@ -20,7 +20,7 @@ import org.junit.Test;
 public class NullExpressionTest {
 
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(new NullExpression<Object>(Object.class));
     }
     

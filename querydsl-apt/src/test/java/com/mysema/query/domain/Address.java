@@ -6,7 +6,7 @@ import com.mysema.query.annotations.QueryEmbedded;
 @QueryEmbeddable
 public final class Address {
 
-    public Address(){
+    public Address() {
         
     }
     

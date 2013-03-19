@@ -185,7 +185,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     @Override
-    public MongodbQuery<K> distinct(){
+    public MongodbQuery<K> distinct() {
         return queryMixin.distinct();
     }
 
@@ -289,10 +289,10 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, List<Expression<?>> projection,
             QueryModifiers modifiers, List<OrderSpecifier<?>> orderBy) {
         DBCursor cursor = collection.find(createQuery(where), createProjection(projection));
-        if (modifiers.getLimit() != null){
+        if (modifiers.getLimit() != null) {
             cursor.limit(modifiers.getLimit().intValue());
         }
-        if (modifiers.getOffset() != null){
+        if (modifiers.getOffset() != null) {
             cursor.skip(modifiers.getOffset().intValue());
         }
         if (orderBy.size() > 0) {
@@ -326,7 +326,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public K singleResult() {
         try {
             DBCursor c = createCursor().limit(1);
-            if (c.hasNext()){
+            if (c.hasNext()) {
                 return transformer.apply(c.next());
             } else {
                 return null;
@@ -345,13 +345,13 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public K uniqueResult() {
         try {
             Long limit = queryMixin.getMetadata().getModifiers().getLimit();
-            if (limit == null){
+            if (limit == null) {
                 limit = 2l;
             }
             DBCursor c = createCursor().limit(limit.intValue());
-            if (c.hasNext()){
+            if (c.hasNext()) {
                 K rv = transformer.apply(c.next());
-                if (c.hasNext()){
+                if (c.hasNext()) {
                     throw new NonUniqueResultException();
                 }
                 return rv;
@@ -372,7 +372,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public SearchResults<K> listResults() {
         try {
             long total = count();
-            if (total > 0l){
+            if (total > 0l) {
                 return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
             } else {
                 return SearchResults.emptyResults();
@@ -403,7 +403,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     private DBObject createQuery(@Nullable Predicate predicate) {
-        if (predicate != null){
+        if (predicate != null) {
             return (DBObject) serializer.handle(predicate);
         } else {
             return new BasicDBObject();

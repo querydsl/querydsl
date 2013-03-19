@@ -26,7 +26,7 @@ import com.mysema.query.domain.AnimalTest.Cat;
 public class EmbeddableTest {
 
     @QueryEntity
-    public static class EntityWithEmbedded{
+    public static class EntityWithEmbedded {
 
         public WithEntityRef e1;
 
@@ -38,27 +38,27 @@ public class EmbeddableTest {
     }
 
     @QueryEmbeddable
-    public static class WithEntityRef{
+    public static class WithEntityRef {
 
         public Cat cat;
 
     }
 
     @QueryEmbeddable
-    public static class WithStringProp{
+    public static class WithStringProp {
 
         public String str;
     }
 
     @QueryEmbeddable
-    public static class WithEntityAndString extends WithEntityRef{
+    public static class WithEntityAndString extends WithEntityRef {
 
         public String str2;
 
     }
 
     @QueryEmbeddable
-    public static class WithList extends WithStringProp{
+    public static class WithList extends WithStringProp {
 
         public List<Cat> cats;
 
@@ -68,13 +68,13 @@ public class EmbeddableTest {
 
     @QueryEntity
     @QueryEmbeddable
-    public static class EntityAndEmbeddable{
+    public static class EntityAndEmbeddable {
 
     }
 
     @QuerySupertype
     @QueryEmbeddable
-    public static class SuperclassAndEmbeddable{
+    public static class SuperclassAndEmbeddable {
 
     }
 

@@ -28,7 +28,7 @@ import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.TimePath;
 
-public class JodaTimeSupportTest extends AbstractTest{
+public class JodaTimeSupportTest extends AbstractTest {
 
     @QueryEntity
     public static class JodaTimeSupport {

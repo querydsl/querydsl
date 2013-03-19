@@ -22,10 +22,10 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 
-public class BlockingTest extends AbstractTest{
+public class BlockingTest extends AbstractTest {
 
     @QueryEntity
-    public static class Entity{
+    public static class Entity {
 
         Entity field1;
 
@@ -38,7 +38,7 @@ public class BlockingTest extends AbstractTest{
     }
 
     @QueryEntity
-    public static abstract class Entity2{
+    public static abstract class Entity2 {
 
         @QueryTransient
         @QueryType(PropertyType.ENTITY)
@@ -49,7 +49,7 @@ public class BlockingTest extends AbstractTest{
     }
 
     @Test
-    public void Entity_Fields_are_available(){
+    public void Entity_Fields_are_available() {
         assertTrue(QBlockingTest_Entity.entity.field1 != null);
 
         cl = QBlockingTest_Entity.class;

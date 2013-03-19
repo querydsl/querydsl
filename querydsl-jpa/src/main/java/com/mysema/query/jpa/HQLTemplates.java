@@ -77,7 +77,7 @@ public class HQLTemplates extends JPQLTemplates {
     }
 
     @Override
-    public boolean wrapElements(Operator<?> operator){
+    public boolean wrapElements(Operator<?> operator) {
         return wrapElements.contains(operator);
     }
 
@@ -87,7 +87,7 @@ public class HQLTemplates extends JPQLTemplates {
     }
 
     @Override
-    public String getExistsProjection(){
+    public String getExistsProjection() {
         return "1";
     }
     

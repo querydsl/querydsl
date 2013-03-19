@@ -44,8 +44,8 @@ public class EclipseCompilationTest {
         System.setProperty("jdt.compiler.useSingleThread", "true");
         // select classes
         List<String> classes = new ArrayList<String>();
-        for (File file : new File(packagePath).listFiles()){
-            if (file.getName().endsWith(".java")){
+        for (File file : new File(packagePath).listFiles()) {
+            if (file.getName().endsWith(".java")) {
                 classes.add(file.getPath());
             }
         }
@@ -53,7 +53,7 @@ public class EclipseCompilationTest {
         // prepare output
         File out = new File("target/out-eclipse");
         FileUtils.delete(out);
-        if (!out.mkdirs()){
+        if (!out.mkdirs()) {
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
 

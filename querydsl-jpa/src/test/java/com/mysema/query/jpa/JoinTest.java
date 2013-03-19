@@ -38,56 +38,56 @@ public class JoinTest {
 
     
     @Test
-    public void SubQuery_FullJoin(){
+    public void SubQuery_FullJoin() {
         subQuery.from($(alias));
         subQuery.fullJoin($(alias.getNames()), path);
         // TODO : assertions
     }
     
     @Test
-    public void SubQuery_InnerJoin(){
+    public void SubQuery_InnerJoin() {
         subQuery.from($(alias));
         subQuery.innerJoin($(alias.getNames()), path);
         // TODO : assertions
     }
     
     @Test
-    public void SubQuery_Join(){
+    public void SubQuery_Join() {
         subQuery.from($(alias));
         subQuery.join($(alias.getNames()), path);
         // TODO : assertions
     }
 
     @Test
-    public void SubQuery_LeftJoin(){
+    public void SubQuery_LeftJoin() {
         subQuery.from($(alias));
         subQuery.leftJoin($(alias.getNames()), path);
         // TODO : assertions
     }
     
     @Test
-    public void Query_FullJoin(){
+    public void Query_FullJoin() {
         query.from($(alias));
         query.fullJoin($(alias.getNames()), path);
         // TODO : assertions
     }
     
     @Test
-    public void Query_InnerJoin(){
+    public void Query_InnerJoin() {
         query.from($(alias));
         query.innerJoin($(alias.getNames()), path);
         // TODO : assertions
     }
     
     @Test
-    public void Query_Join(){
+    public void Query_Join() {
         query.from($(alias));
         query.join($(alias.getNames()), path);
         // TODO : assertions
     }
     
     @Test
-    public void Query_LeftJoin(){
+    public void Query_LeftJoin() {
         query.from($(alias));
         query.leftJoin($(alias.getNames()), path);
         // TODO : assertions

@@ -28,7 +28,7 @@ public class NumberPathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void BytePath_in(){
+    public void BytePath_in() {
         Operation<?> operation = (Operation<?>) bytePath.in(1, 2, 3);
 
         List<Byte> numbers = (List<Byte>) ((Constant)operation.getArg(1)).getConstant();
@@ -39,7 +39,7 @@ public class NumberPathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void BytePath_notIn(){
+    public void BytePath_notIn() {
         Operation<?> operation = (Operation<?>) bytePath.notIn(1, 2, 3);
         // unwrap negation
         operation = (Operation<?>) operation.getArg(0);

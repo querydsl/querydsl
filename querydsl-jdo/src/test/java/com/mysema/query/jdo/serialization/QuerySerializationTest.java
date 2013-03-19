@@ -27,7 +27,7 @@ public class QuerySerializationTest extends AbstractTest{
     private QProduct other = new QProduct("other");
 
     @Test
-    public void SelectFromWhereOrder(){
+    public void SelectFromWhereOrder() {
         assertEquals(
             "SELECT UNIQUE this.name " +
             "FROM com.mysema.query.jdo.test.domain.Product " +
@@ -42,7 +42,7 @@ public class QuerySerializationTest extends AbstractTest{
     }
 
     @Test
-    public void SelectFromWhereGroupBy(){
+    public void SelectFromWhereGroupBy() {
         assertEquals(
             "SELECT this.name " +
             "FROM com.mysema.query.jdo.test.domain.Product " +
@@ -57,7 +57,7 @@ public class QuerySerializationTest extends AbstractTest{
     }
 
     @Test
-    public void SelectFrom2Sources(){
+    public void SelectFrom2Sources() {
         assertEquals(
             "SELECT this.name " +
             "FROM com.mysema.query.jdo.test.domain.Product " +
@@ -70,7 +70,7 @@ public class QuerySerializationTest extends AbstractTest{
     }
 
     @Test
-    public void WithSubQuery(){
+    public void WithSubQuery() {
         assertEquals(
             "SELECT this.price " +
             "FROM com.mysema.query.jdo.test.domain.Product " +
@@ -83,7 +83,7 @@ public class QuerySerializationTest extends AbstractTest{
     }
 
     @Test
-    public void WithSubQuery2(){
+    public void WithSubQuery2() {
         // FIXME : how to model this ?!?
         assertEquals(
             "SELECT this.name " +
@@ -98,7 +98,7 @@ public class QuerySerializationTest extends AbstractTest{
     }
 
     @Test
-    public void InstanceofQuery(){
+    public void InstanceofQuery() {
         assertEquals(
             "SELECT " +
             "FROM com.mysema.query.jdo.test.domain.Product " +

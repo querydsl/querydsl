@@ -100,7 +100,7 @@ public class InsertBase extends AbstractBaseTest{
     }
         
     @Test
-    public void Insert_Batch(){
+    public void Insert_Batch() {
         SQLInsertClause insert = insert(survey)
             .set(survey.id, 5)
             .set(survey.name, "55")
@@ -155,7 +155,7 @@ public class InsertBase extends AbstractBaseTest{
     }
     
     @Test
-    public void Like_with_Escape(){
+    public void Like_with_Escape() {
         SQLInsertClause insert = insert(survey);
         insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
         insert.set(survey.id, 6).set(survey.name, "a_").addBatch();    
@@ -172,7 +172,7 @@ public class InsertBase extends AbstractBaseTest{
     }
     
     @Test
-    public void InsertBatch_with_Subquery(){
+    public void InsertBatch_with_Subquery() {
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
@@ -234,7 +234,7 @@ public class InsertBase extends AbstractBaseTest{
     }
     
     @Test
-    public void Insert_Alternative_Syntax(){
+    public void Insert_Alternative_Syntax() {
         // with columns
         assertEquals(1, insert(survey)
             .set(survey.id, 3)
@@ -243,7 +243,7 @@ public class InsertBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Complex1(){
+    public void Complex1() {
         // related to #584795
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");
@@ -263,7 +263,7 @@ public class InsertBase extends AbstractBaseTest{
     @Test
     @IncludeIn(MYSQL)
     @SkipForQuoted
-    public void Insert_with_Special_Options(){
+    public void Insert_with_Special_Options() {
         SQLInsertClause clause = insert(survey)
             .columns(survey.id, survey.name)
             .values(3, "Hello");
@@ -277,7 +277,7 @@ public class InsertBase extends AbstractBaseTest{
     @Test
     @IncludeIn(MYSQL)
     @SkipForQuoted
-    public void Replace(){
+    public void Replace() {
         SQLInsertClause clause = mysqlReplace(survey);
         clause.columns(survey.id, survey.name)
             .values(3, "Hello");

@@ -30,7 +30,7 @@ public class DropTableClause {
     }
     
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
-    public void execute(){
+    public void execute() {
         Statement stmt = null;
         try{
             stmt = connection.createStatement();
@@ -38,7 +38,7 @@ public class DropTableClause {
         } catch (SQLException e) {
             // do not rethrow
         }finally{
-            if (stmt != null){
+            if (stmt != null) {
                 try {
                     stmt.close();
                 } catch (SQLException e) {

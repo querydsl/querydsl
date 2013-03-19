@@ -43,7 +43,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return
      */
     @Nullable
-    public static BooleanExpression allOf(BooleanExpression... exprs){
+    public static BooleanExpression allOf(BooleanExpression... exprs) {
         BooleanExpression rv = null;
         for (BooleanExpression b : exprs) {
             rv = rv == null ? b : rv.and(b);
@@ -58,7 +58,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return
      */
     @Nullable
-    public static BooleanExpression anyOf(BooleanExpression... exprs){
+    public static BooleanExpression anyOf(BooleanExpression... exprs) {
         BooleanExpression rv = null;
         for (BooleanExpression b : exprs) {
             rv = rv == null ? b : rv.or(b);
@@ -103,7 +103,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @param predicates
      * @return
      */
-    public BooleanExpression andAnyOf(Predicate... predicates){
+    public BooleanExpression andAnyOf(Predicate... predicates) {
         return and(ExpressionUtils.anyOf(predicates));
     }
 
@@ -140,7 +140,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @param predicates
      * @return
      */
-    public BooleanExpression orAllOf(Predicate... predicates){
+    public BooleanExpression orAllOf(Predicate... predicates) {
         return or(ExpressionUtils.allOf(predicates));
     }
 
@@ -149,7 +149,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      *
      * @return
      */
-    public BooleanExpression isTrue(){
+    public BooleanExpression isTrue() {
         return eq(true);
     }
 
@@ -158,7 +158,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      *
      * @return
      */
-    public BooleanExpression isFalse(){
+    public BooleanExpression isFalse() {
         return eq(false);
     }
 

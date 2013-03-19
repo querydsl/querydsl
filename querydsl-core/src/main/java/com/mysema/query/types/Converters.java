@@ -34,7 +34,7 @@ public final class Converters {
      * 
      * @param escape escape character to be used
      */
-    public Converters(char escape){
+    public Converters(char escape) {
         this.escape = escape;
     }
     
@@ -81,7 +81,7 @@ public final class Converters {
     };
 
     public final Function<Object,Object> toStartsWithViaLikeLower = 
-        new Function<Object,Object>(){
+        new Function<Object,Object>() {
         @Override
         public Object apply(Object arg) {
             if (arg instanceof Constant) {
@@ -96,7 +96,7 @@ public final class Converters {
     };
 
     public final Function<Object,Object> toEndsWithViaLike =
-        new Function<Object,Object>(){
+        new Function<Object,Object>() {
         @Override
         public Object apply(Object arg) {
             if (arg instanceof Constant) {
@@ -110,7 +110,7 @@ public final class Converters {
     };
 
     public final Function<Object,Object> toEndsWithViaLikeLower = 
-        new Function<Object,Object>(){
+        new Function<Object,Object>() {
         @Override
         public Object apply(Object arg) {
             if (arg instanceof Constant) {
@@ -125,7 +125,7 @@ public final class Converters {
     };
 
     public final Function<Object,Object> toContainsViaLike = 
-        new Function<Object,Object>(){
+        new Function<Object,Object>() {
         @Override
         public Object apply(Object arg) {
             if (arg instanceof Constant) {
@@ -140,7 +140,7 @@ public final class Converters {
     };
 
     public final Function<Object,Object> toContainsViaLikeLower = 
-        new Function<Object,Object>(){
+        new Function<Object,Object>() {
         @Override
         public Object apply(Object arg) {
             if (arg instanceof Constant) {

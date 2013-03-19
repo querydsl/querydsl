@@ -46,7 +46,7 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
     @Override
     protected Predicate normalize(Predicate predicate, boolean where) {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
-        if (predicate != null){
+        if (predicate != null) {
             Context context = new Context();            
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.paths.size(); i++) {

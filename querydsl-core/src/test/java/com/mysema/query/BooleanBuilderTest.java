@@ -16,8 +16,6 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.util.Arrays;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -63,19 +61,19 @@ public class BooleanBuilderTest {
     
     @Test(expected=QueryException.class)
     @Ignore
-    public void WrappedBooleanBuilder(){
+    public void WrappedBooleanBuilder() {
         new BooleanBuilder(new BooleanBuilder());
     }
 
     @Test
-    public void Basic(){
+    public void Basic() {
 //        new BooleanBuilder().and(first).or(second);
         assertEquals(first.or(second).toString(),
             new BooleanBuilder().and(first).or(second).toString());
     }
 
     @Test
-    public void Advanced(){
+    public void Advanced() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, second, first);
         builder.orAllOf(first, second, first);
@@ -83,7 +81,7 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void If_Then_Else(){
+    public void If_Then_Else() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(null);
         builder.or(null);
@@ -92,59 +90,59 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void And_null_Supported(){
+    public void And_null_Supported() {
         assertEquals(first, first.and(null));
     }
 
     @Test
-    public void Or_null_Supported(){
+    public void Or_null_Supported() {
         assertEquals(first, first.or(null));
     }
 
     @Test
-    public void And_Not(){
+    public void And_Not() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).andNot(second);
         assertEquals(first.and(second.not()), builder.getValue());
     }
 
     @Test
-    public void Or_Not(){
+    public void Or_Not() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).orNot(second);
         assertEquals(first.or(second.not()), builder.getValue());
     }
 
     @Test
-    public void Not(){
+    public void Not() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).not();
         assertEquals(first.not(), builder.getValue());
     }
 
     @Test
-    public void BooleanBuilder_Equals_BooleanBuilder(){
+    public void BooleanBuilder_Equals_BooleanBuilder() {
         assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
     }
 
     @Test
-    public void Constant_Equals_BooleanBuilder(){
+    public void Constant_Equals_BooleanBuilder() {
         assertFalse(first.equals(new BooleanBuilder(first)));
     }
 
     @Test
-    public void BooleanBuilder_Equals_Constant(){
+    public void BooleanBuilder_Equals_Constant() {
         assertFalse(new BooleanBuilder(first).equals(first));
     }
 
     @Test
-    public void HashCode(){
+    public void HashCode() {
         assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
         assertEquals(new BooleanBuilder().hashCode(), new BooleanBuilder().hashCode());
     }
 
     @Test
-    public void ToString(){
+    public void ToString() {
         BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals("true", builder.toString());
         builder.or(new BooleanPath("condition"));
@@ -152,19 +150,19 @@ public class BooleanBuilderTest {
     }
 
 //    @Test
-//    public void GetArg(){
+//    public void GetArg() {
 //        BooleanBuilder builder = new BooleanBuilder().and(first);
 //        assertEquals(first, builder.getArg(0));
 //    }
 //
 //    @Test
-//    public void GetArgs(){
+//    public void GetArgs() {
 //        BooleanBuilder builder = new BooleanBuilder().and(first);
 //        assertEquals(Arrays.asList(first), builder.getArgs());
 //    }
 
     @Test
-    public void Accept(){
+    public void Accept() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first);
         builder.or(new BooleanPath("condition"));

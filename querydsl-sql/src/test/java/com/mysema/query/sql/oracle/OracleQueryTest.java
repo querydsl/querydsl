@@ -28,8 +28,8 @@ public class OracleQueryTest {
     private QSurvey survey = new QSurvey("survey");
     
     @Before
-    public void setUp(){
-        query = new OracleQuery(null, new OracleTemplates(){{
+    public void setUp() {
+        query = new OracleQuery(null, new OracleTemplates() {{
             newLineToSingleSpace();
         }});
         query.from(survey);
@@ -77,7 +77,7 @@ public class OracleQueryTest {
         assertEquals("from SURVEY survey where rownum < ? order by survey.NAME asc", toString(query));
     }
 
-    private String toString(OracleQuery query){
+    private String toString(OracleQuery query) {
         return query.toString().replace('\n', ' ');
     }
 }

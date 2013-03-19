@@ -42,6 +42,6 @@ public final class Constants {
             "TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
             "VALUE","WHEN","WHERE");
 
-    private Constants(){}
+    private Constants() {}
 
 }

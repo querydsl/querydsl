@@ -281,7 +281,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Set<Element> rv = new HashSet<Element>();
         for (Element element : elements) {
             TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
-            while (superTypeMirror != null){
+            while (superTypeMirror != null) {
                 TypeElement superTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(superTypeMirror);
                 if (superTypeElement != null 
                         && !superTypeElement.toString().startsWith("java.lang.") 
@@ -334,7 +334,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     private void handleEmbeddedType(Element element, Set<Element> elements) {
         TypeMirror type = element.asType();
-        if (element.getKind() == ElementKind.METHOD){
+        if (element.getKind() == ElementKind.METHOD) {
             type = ((ExecutableElement)element).getReturnType();
         }
         String typeName = type.toString();
@@ -344,7 +344,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
          || typeName.startsWith(Set.class.getName())) {
             type = ((DeclaredType)type).getTypeArguments().get(0);
             
-        } else if (typeName.startsWith(Map.class.getName())){
+        } else if (typeName.startsWith(Map.class.getName())) {
             type = ((DeclaredType)type).getTypeArguments().get(1);
         }
         

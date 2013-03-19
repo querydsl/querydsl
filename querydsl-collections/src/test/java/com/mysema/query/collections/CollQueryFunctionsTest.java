@@ -23,7 +23,7 @@ import org.junit.Test;
 public class CollQueryFunctionsTest {
 
     @Test
-    public void Coalesce(){
+    public void Coalesce() {
         assertEquals("1", CollQueryFunctions.coalesce("1",null));
         assertEquals("1", CollQueryFunctions.coalesce(null,"1","2"));
         assertNull(CollQueryFunctions.coalesce(null,null));

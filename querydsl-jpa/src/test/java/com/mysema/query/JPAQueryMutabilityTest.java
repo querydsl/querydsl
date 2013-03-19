@@ -32,7 +32,7 @@ public class JPAQueryMutabilityTest {
 
     private EntityManager entityManager;
 
-    protected JPAQuery query(){
+    protected JPAQuery query() {
         return new JPAQuery(entityManager);
     }
 
@@ -41,7 +41,7 @@ public class JPAQueryMutabilityTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         QCat cat = QCat.cat;
         JPAQuery query = query().from(cat);
 
@@ -78,7 +78,7 @@ public class JPAQueryMutabilityTest {
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         QCat cat = QCat.cat;
         JPAQuery query = query().from(cat).where(cat.name.isNotNull());
         JPAQuery query2 = query.clone(entityManager);

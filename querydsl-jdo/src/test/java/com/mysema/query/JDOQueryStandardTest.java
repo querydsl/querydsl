@@ -104,7 +104,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     }
 
-    private final QueryExecution standardTest = new QueryExecution(Module.JDO, Target.H2){
+    private final QueryExecution standardTest = new QueryExecution(Module.JDO, Target.H2) {
         @Override
         protected Pair<Projectable, Expression<?>[]> createQuery() {
             return Pair.of(
@@ -128,7 +128,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     private final QStore otherStore = new QStore("otherStore");
 
     @Test
-    public void StandardTest(){
+    public void StandardTest() {
         Product p = query().from(product).where(product.name.eq(productName)).limit(1).uniqueResult(product);
         Product p2 = query().from(product).where(product.name.startsWith(otherName)).limit(1).uniqueResult(product);
         standardTest.noProjections();
@@ -150,10 +150,10 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
-    public void TupleProjection(){
+    public void TupleProjection() {
         List<Tuple> tuples = query().from(product).list(new QTuple(product.name, product.price));
         assertFalse(tuples.isEmpty());
-        for (Tuple tuple : tuples){
+        for (Tuple tuple : tuples) {
             assertNotNull(tuple);
             assertNotNull(tuple.get(product.name));
             assertNotNull(tuple.get(product.price));
@@ -165,12 +165,12 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     @SuppressWarnings("unchecked")
     @Test
     @Ignore
-    public void ArrayProjection(){
+    public void ArrayProjection() {
         // typed array not supported
         List<String[]> results = query().from(store)
                 .list(new ArrayConstructorExpression<String>(String[].class, store.name));
         assertFalse(results.isEmpty());
-        for (String[] result : results){
+        for (String[] result : results) {
             assertNotNull(result);
             assertNotNull(result[0]);
         }
@@ -178,43 +178,43 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     @Test
     @Ignore
-    public void ConstructorProjection(){
+    public void ConstructorProjection() {
         List<Projection> results = query().from(store)
                 .list(ConstructorExpression.create(Projection.class, store.name));
         assertFalse(results.isEmpty());
-        for (Projection result : results){
+        for (Projection result : results) {
             assertNotNull(result);
         }
     }
 
     @Test
-    public void Params(){
+    public void Params() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
                 .uniqueResult(product.name));
     }
 
     @Test
-    public void Params_anon(){
+    public void Params_anon() {
         Param<String> name = new Param<String>(String.class);
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
                 .uniqueResult(product.name));
     }
 
     @Test(expected=ParamNotSetException.class)
-    public void Params_not_set(){
+    public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name))
                 .uniqueResult(product.name));
     }
 
     @Test
-    public void Exists(){
+    public void Exists() {
         assertTrue(query().from(product).where(product.name.eq("ABC0")).exists());
     }
 
     @Test
-    public void NotExists(){
+    public void NotExists() {
         assertTrue(query().from(product).where(product.name.eq("XXX")).notExists());
     }
 }

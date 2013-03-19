@@ -59,7 +59,7 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
-    public long count(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables){
+    public long count(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables) {
         if (metadata.getJoins().size() == 1) {
             return evaluateSingleSource(metadata, iterables, true).size();
         } else {
@@ -84,7 +84,7 @@ public class DefaultQueryEngine implements QueryEngine {
 
     @Override
     public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, 
-            Expression<T> projection){
+            Expression<T> projection) {
         if (metadata.getJoins().size() == 1) {
             return evaluateSingleSource(metadata, iterables, false);
         } else {
@@ -127,7 +127,7 @@ public class DefaultQueryEngine implements QueryEngine {
         if (!count && !list.isEmpty()) {
             List<Expression<?>> sources = new ArrayList<Expression<?>>(metadata.getJoins().size());
             for (JoinExpression join : metadata.getJoins()) {
-                if (join.getType() == JoinType.DEFAULT){
+                if (join.getType() == JoinType.DEFAULT) {
                     sources.add(join.getTarget());
                 } else {
                     Operation target = (Operation) join.getTarget();
@@ -178,7 +178,7 @@ public class DefaultQueryEngine implements QueryEngine {
 
         if (!count && !list.isEmpty()) {
             // ordered
-            if (!metadata.getOrderBy().isEmpty()){
+            if (!metadata.getOrderBy().isEmpty()) {
                 // clone list
                 if (list == iterable) {
                     list = new ArrayList(list);
@@ -199,7 +199,7 @@ public class DefaultQueryEngine implements QueryEngine {
         }
 
         // distinct
-        if (metadata.isDistinct()){
+        if (metadata.isDistinct()) {
             list = distinct(list);
         }
 

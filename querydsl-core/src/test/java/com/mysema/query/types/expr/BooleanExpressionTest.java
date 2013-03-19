@@ -26,12 +26,12 @@ public class BooleanExpressionTest {
     private final BooleanExpression c = new BooleanPath("c");
 
     @Test
-    public void AnyOf(){
+    public void AnyOf() {
         assertEquals(a.or(b).or(c), BooleanExpression.anyOf(a, b, c));
     }
 
     @Test
-    public void AllOf(){
+    public void AllOf() {
         assertEquals(a.and(b).and(c), BooleanExpression.allOf(a, b, c));
     }
     
@@ -50,27 +50,27 @@ public class BooleanExpressionTest {
     }
 
     @Test
-    public void AndAnyOf(){
+    public void AndAnyOf() {
         assertEquals(a.and(b.or(c)), a.andAnyOf(b, c));
     }
 
     @Test
-    public void OrAllOf(){
+    public void OrAllOf() {
         assertEquals(a.or(b.and(c)), a.orAllOf(b, c));
     }
 
     @Test
-    public void Not(){
+    public void Not() {
         assertEquals(a, a.not().not());
     }
 
     @Test
-    public void IsTrue(){
+    public void IsTrue() {
         assertEquals(a.eq(true), a.isTrue());
     }
 
     @Test
-    public void IsFalse(){
+    public void IsFalse() {
         assertEquals(a.eq(false), a.isFalse());
     }
 }

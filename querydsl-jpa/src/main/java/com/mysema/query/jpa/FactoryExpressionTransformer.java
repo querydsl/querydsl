@@ -31,7 +31,7 @@ public final class FactoryExpressionTransformer implements ResultTransformer {
 
     private final transient FactoryExpression<?> constructor;
 
-    public FactoryExpressionTransformer(FactoryExpression<?> constructor){
+    public FactoryExpressionTransformer(FactoryExpression<?> constructor) {
         this.constructor = constructor;
     }
 

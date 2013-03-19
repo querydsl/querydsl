@@ -54,10 +54,10 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     @Override
     protected List<MethodRule> rules(Object test) {
         List<MethodRule> rules = super.rules(test);
-        rules.add(new MethodRule(){
+        rules.add(new MethodRule() {
             @Override
             public Statement apply(final Statement base, FrameworkMethod method, final Object target) {
-                return new Statement(){
+                return new Statement() {
                     @Override
                     public void evaluate() throws Throwable {
                         if (setter == null) {
@@ -88,7 +88,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     
     private void start() throws Exception {
         Configuration cfg = new Configuration();
-        for (Class<?> cl : Domain.classes){
+        for (Class<?> cl : Domain.classes) {
             cfg.addAnnotatedClass(cl);
         }
         String mode = Mode.mode.get() + ".properties";
@@ -98,7 +98,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
         }
         Properties props = new Properties();
         InputStream is = HibernateTestRunner.class.getResourceAsStream(mode);
-        if (is == null){
+        if (is == null) {
             throw new IllegalArgumentException("No configuration available at classpath:" + mode);
         }
         props.load(is);
@@ -120,7 +120,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             }    
         }            
         
-        if (sessionFactory != null){
+        if (sessionFactory != null) {
             sessionFactory.getCache().evictEntityRegions();            
             sessionFactory.close();
             sessionFactory = null;                

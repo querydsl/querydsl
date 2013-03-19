@@ -33,7 +33,7 @@ public class QueryMixinTest {
     private QCommonPersistence entity = new QCommonPersistence(PathMetadataFactory.forVariable("entity"));
 
     @Test
-    public void GetJoins_with_condition(){
+    public void GetJoins_with_condition() {
         mixin.innerJoin(entity);
         mixin.on(entity.version.isNull(), entity.version.isNotNull());
 
@@ -44,7 +44,7 @@ public class QueryMixinTest {
     }
 
     @Test
-    public void GetJoins_no_condition(){
+    public void GetJoins_no_condition() {
         mixin.innerJoin(entity);
 
         assertEquals(1, mixin.getMetadata().getJoins().size());
@@ -54,7 +54,7 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void InnerJoin(){
+    public void InnerJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
@@ -72,7 +72,7 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void Join(){
+    public void Join() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
@@ -104,7 +104,7 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void LeftJoin(){
+    public void LeftJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
@@ -122,7 +122,7 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void RightJoin(){
+    public void RightJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
@@ -141,7 +141,7 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void FullJoin(){
+    public void FullJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");

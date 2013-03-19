@@ -35,7 +35,7 @@ import com.mysema.query.sql.types.UtilDateType;
 public class ConfigurationTest {
     
     @Test
-    public void Various(){
+    public void Various() {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.setJavaType(Types.DATE, java.util.Date.class);
         configuration.register(new UtilDateType());
@@ -46,7 +46,7 @@ public class ConfigurationTest {
     }
     
     @Test
-    public void Custom_Type(){
+    public void Custom_Type() {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.setJavaType(Types.BLOB, InputStream.class);
         configuration.register(new InputStreamType());        

@@ -47,7 +47,7 @@ public class Point extends ArrayPath<Double> {
      * @param longVal longitude
      * @return
      */
-    public BooleanExpression near(double latVal, double longVal){
+    public BooleanExpression near(double latVal, double longVal) {
         return MongodbExpressions.near(this, latVal, longVal);
     }
 

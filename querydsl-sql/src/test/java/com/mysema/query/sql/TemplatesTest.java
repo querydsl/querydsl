@@ -18,7 +18,7 @@ import org.junit.Test;
 public class TemplatesTest {
 
     @Test
-    public void test(){
+    public void test() {
         new DerbyTemplates();
         new H2Templates();
         new HSQLDBTemplates();

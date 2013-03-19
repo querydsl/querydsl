@@ -30,7 +30,7 @@ public class AbstractEntityTest {
     }
 
     @QueryEntity
-    public static class CategoryReference{
+    public static class CategoryReference {
 
         @QueryInit("defaultChild")
         public Category<?> category;
@@ -38,7 +38,7 @@ public class AbstractEntityTest {
     }
 
     @Test
-    public void Path_Is_Available(){
+    public void Path_Is_Available() {
         QAbstractEntityTest_CategoryReference categoryReference = QAbstractEntityTest_CategoryReference.categoryReference;
         assertNotNull(categoryReference.category.defaultChild);
     }

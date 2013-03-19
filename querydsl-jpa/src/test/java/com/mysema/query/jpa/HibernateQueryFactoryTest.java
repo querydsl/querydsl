@@ -30,8 +30,8 @@ public class HibernateQueryFactoryTest {
     private HibernateQueryFactory queryFactory;
 
     @Before
-    public void setUp(){
-        Provider<Session> provider = new Provider<Session>(){
+    public void setUp() {
+        Provider<Session> provider = new Provider<Session>() {
             @Override
             public Session get() {
                 return EasyMock.createNiceMock(Session.class);
@@ -41,27 +41,27 @@ public class HibernateQueryFactoryTest {
     }
 
     @Test
-    public void Query(){
+    public void Query() {
         assertNotNull(queryFactory.query());
     }
 
     @Test
-    public void SubQuery(){
+    public void SubQuery() {
         assertNotNull(queryFactory.subQuery());
     }
 
     @Test
-    public void From(){
+    public void From() {
         assertNotNull(queryFactory.from(QAnimal.animal));
     }
 
     @Test
-    public void Delete(){
+    public void Delete() {
         assertNotNull(queryFactory.delete(QAnimal.animal));
     }
 
     @Test
-    public void Update(){
+    public void Update() {
         assertNotNull(queryFactory.update(QAnimal.animal));
     }
 

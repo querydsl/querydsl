@@ -48,7 +48,7 @@ public final class CaseBuilder {
 
         private final Expression<A> target;
 
-        public CaseElement(@Nullable BooleanExpression condition, Expression<A> target){
+        public CaseElement(@Nullable BooleanExpression condition, Expression<A> target) {
             this.condition = condition;
             this.target = target;
         }
@@ -94,7 +94,7 @@ public final class CaseBuilder {
         public Q otherwise(Expression<A> expr) {
             cases.add(0, new CaseElement<A>(null, expr));
             Expression<A> last = null;
-            for (CaseElement<A> element : cases){
+            for (CaseElement<A> element : cases) {
                 if (last == null) {
                     last = SimpleOperation.create(type, Ops.CASE_ELSE,
                             element.getTarget());
@@ -164,7 +164,7 @@ public final class CaseBuilder {
         }
 
         private Cases<Boolean, BooleanExpression> thenBoolean(Expression<Boolean> expr) {
-            return new Cases<Boolean,BooleanExpression>(Boolean.class){
+            return new Cases<Boolean,BooleanExpression>(Boolean.class) {
                 @SuppressWarnings("unchecked")
                 @Override
                 protected BooleanExpression createResult(Class<Boolean> type, Expression<Boolean> last) {
@@ -174,12 +174,12 @@ public final class CaseBuilder {
             }.addCase(when, expr);
         }
 
-        public Cases<String,StringExpression> then(StringExpression expr){
+        public Cases<String,StringExpression> then(StringExpression expr) {
             return thenString(expr);
         }
         
-        private Cases<String,StringExpression> thenString(Expression<String> expr){
-            return new Cases<String,StringExpression>(String.class){
+        private Cases<String,StringExpression> thenString(Expression<String> expr) {
+            return new Cases<String,StringExpression>(String.class) {
                 @SuppressWarnings("unchecked")
                 @Override
                 protected StringExpression createResult(Class<String> type, Expression<String> last) {
@@ -191,7 +191,7 @@ public final class CaseBuilder {
 
         @SuppressWarnings("unchecked")
         public <A> Cases<A, Expression<A>> then(Expression<A> expr) {
-            return new Cases<A,Expression<A>>((Class)expr.getType()){
+            return new Cases<A,Expression<A>>((Class)expr.getType()) {
                 @Override
                 protected Expression<A> createResult(Class<A> type, Expression<A> last) {
                     return SimpleOperation.create(type, Ops.CASE, last);
@@ -206,7 +206,7 @@ public final class CaseBuilder {
         
         @SuppressWarnings("unchecked")
         private <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> thenNumber(Expression<A> expr) {
-            return new Cases<A, NumberExpression<A>>((Class)expr.getType()){
+            return new Cases<A, NumberExpression<A>>((Class)expr.getType()) {
                 @Override
                 protected NumberExpression<A> createResult(Class<A> type, Expression<A> last) {
                     return NumberOperation.create(type, (Operator)Ops.CASE, last);
@@ -215,11 +215,11 @@ public final class CaseBuilder {
             }.addCase(when, expr);
         }
 
-        public Cases<String, StringExpression> then(String str){
+        public Cases<String, StringExpression> then(String str) {
             return thenString(ConstantImpl.create(str));
         }
 
-        public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num){
+        public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num) {
             return thenNumber(new ConstantImpl<A>(num));
         }
         

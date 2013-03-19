@@ -13,7 +13,7 @@ public class CUBRIDSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initCubrid();
-        Connections.setTemplates(new CUBRIDTemplates(){{
+        Connections.setTemplates(new CUBRIDTemplates() {{
             newLineToSingleSpace();
         }});
     }

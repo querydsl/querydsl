@@ -65,7 +65,7 @@ public class DeleteBase extends AbstractBaseTest{
     }
     
     @Test
-    public void Delete_with_SubQuery_exists(){
+    public void Delete_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = delete(survey1);
@@ -75,7 +75,7 @@ public class DeleteBase extends AbstractBaseTest{
     }
     
     @Test
-    public void Delete_with_SubQuery_exists2(){
+    public void Delete_with_SubQuery_exists2() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = delete(survey1);

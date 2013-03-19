@@ -42,7 +42,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void Both(){
+    public void Both() {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         assertEquals(Long.valueOf(1), modifiers.getLimit());
         assertEquals(Long.valueOf(2), modifiers.getOffset());
@@ -50,7 +50,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void Empty(){
+    public void Empty() {
         QueryModifiers modifiers = new QueryModifiers(null, null);
         assertNull(modifiers.getLimit());
         assertNull(modifiers.getOffset());
@@ -58,7 +58,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void HashCode(){
+    public void HashCode() {
         QueryModifiers modifiers1 = new QueryModifiers(null, null);
         QueryModifiers modifiers2 = new QueryModifiers(1l, null);
         QueryModifiers modifiers3 = new QueryModifiers(null, 1l);
@@ -69,17 +69,17 @@ public class QueryModifiersTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void illegalLimit(){
+    public void illegalLimit() {
         QueryModifiers.limit(-1);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void illegalOffset(){
+    public void illegalOffset() {
         QueryModifiers.offset(-1);
     }
     
     @Test
-    public void SubList(){
+    public void SubList() {
         List<Integer> ints = Arrays.asList(1,2,3,4,5);
         assertEquals(Arrays.asList(3,4,5), QueryModifiers.offset(2).subList(ints));
         assertEquals(Arrays.asList(1,2,3), QueryModifiers.limit(3).subList(ints));

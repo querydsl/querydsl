@@ -66,7 +66,7 @@ public class GenericTest {
         }
 
         @Override
-        public boolean equals(Object o){
+        public boolean equals(Object o) {
             return o instanceof GenericComparableType;
         }
     }
@@ -95,12 +95,12 @@ public class GenericTest {
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return super.hashCode();
         }
 
         @Override
-        public boolean equals(Object o){
+        public boolean equals(Object o) {
             return o instanceof GenericNumberType;
         }
     }

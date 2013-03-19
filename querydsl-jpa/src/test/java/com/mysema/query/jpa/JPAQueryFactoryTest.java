@@ -34,8 +34,8 @@ public class JPAQueryFactoryTest {
     private JPQLQueryFactory queryFactory2;
     
     @Before
-    public void setUp(){
-        Provider<EntityManager> provider = new Provider<EntityManager>(){
+    public void setUp() {
+        Provider<EntityManager> provider = new Provider<EntityManager>() {
             @Override
             public EntityManager get() {
                 return EasyMock.createNiceMock(EntityManager.class);
@@ -46,7 +46,7 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void Query(){
+    public void Query() {
         assertNotNull(queryFactory.query());
     }
     
@@ -56,7 +56,7 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void SubQuery(){
+    public void SubQuery() {
         assertNotNull(queryFactory.subQuery());
     }
     
@@ -66,12 +66,12 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void From(){
+    public void From() {
         assertNotNull(queryFactory.from(QAnimal.animal));
     }
 
     @Test
-    public void Delete(){
+    public void Delete() {
         assertNotNull(queryFactory.delete(QAnimal.animal));
     }
     
@@ -82,7 +82,7 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void Update(){
+    public void Update() {
         assertNotNull(queryFactory.update(QAnimal.animal));
     }
     

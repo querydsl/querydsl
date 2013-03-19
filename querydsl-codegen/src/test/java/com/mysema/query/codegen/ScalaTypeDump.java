@@ -50,13 +50,13 @@ public class ScalaTypeDump {
         ScalaWriter writer = new ScalaWriter(w);
         writer.packageDecl("com.mysema.query.scala");
         writer.imports(Expression.class.getPackage());
-        for (Class<?> cl : classes){
+        for (Class<?> cl : classes) {
             Type type = new ClassType(cl);
             Type superClass = new ClassType(cl.getSuperclass());
             writer.beginClass(type, superClass);
-            for (Method m : cl.getDeclaredMethods()){
+            for (Method m : cl.getDeclaredMethods()) {
                 List<Parameter> params = new ArrayList<Parameter>();
-                for (Class<?> paramType : m.getParameterTypes()){
+                for (Class<?> paramType : m.getParameterTypes()) {
                     params.add(new Parameter("arg"+params.size(), new ClassType(paramType)));
                 }
                 Type returnType = new ClassType(m.getReturnType());

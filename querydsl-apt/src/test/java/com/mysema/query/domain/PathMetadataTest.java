@@ -30,7 +30,7 @@ import com.mysema.query.types.expr.StringExpression;
 public class PathMetadataTest {
 
     @Before
-    public void setUp(){
+    public void setUp() {
         assertNotNull(QAnimalTest_Animal.animal);
         assertNotNull(QAnimalTest_Cat.cat);
         assertNotNull(QConstructorTest_Category.category);
@@ -39,7 +39,7 @@ public class PathMetadataTest {
 
     @SuppressWarnings("unchecked")
     @Test    
-    public void test() throws Exception{
+    public void test() throws Exception {
         Field field = ConstantImpl.class.getDeclaredField("STRINGS");
         field.setAccessible(true);
         Map<String, StringExpression> cache = (Map) field.get(null);

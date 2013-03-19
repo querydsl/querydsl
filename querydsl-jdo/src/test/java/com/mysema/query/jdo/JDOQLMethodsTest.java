@@ -38,13 +38,13 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
     private QStore store = QStore.store;
 
     @Test
-    public void test(){
+    public void test() {
         Product p = query().from(product).limit(1).uniqueResult(product);
         for (BooleanExpression f : getFilters(
                 product.name, product.description, "A0",
                 store.products, p,
                 store.productsByName, "A0", p,
-                product.amount)){
+                product.amount)) {
             query().from(store, product).where(f).list(store, product);
         }
     }
@@ -53,7 +53,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
             StringExpression str, StringExpression other, String knownString,
             ListPath<A,?> list, A element,
             MapPath<K,V, ?> map, K key, V value,
-            NumberExpression<Integer> number){
+            NumberExpression<Integer> number) {
         return Arrays.<BooleanExpression>asList(
            // java.lang.String
            str.startsWith(knownString),

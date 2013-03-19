@@ -26,7 +26,7 @@ public class CompilationOverheadTest {
     private static final QCat cat = QCat.cat;
 
     @Test
-    public void test(){
+    public void test() {
         List<BooleanExpression> conditions = Arrays.asList(
             cat.mate.isNull(),
             cat.mate.isNotNull(),
@@ -37,18 +37,18 @@ public class CompilationOverheadTest {
         );
 
         // 1st
-        for (BooleanExpression condition : conditions){
+        for (BooleanExpression condition : conditions) {
             query(condition);
         }
         System.err.println();
 
         // 2nd
-        for (BooleanExpression condition : conditions){
+        for (BooleanExpression condition : conditions) {
             query(condition);
         }
     }
 
-    private void query(BooleanExpression condition){
+    private void query(BooleanExpression condition) {
         long start = System.currentTimeMillis();
         CollQueryFactory.from(cat, Collections.<Cat>emptyList()).where(condition).list(cat);
         long duration = System.currentTimeMillis() - start;

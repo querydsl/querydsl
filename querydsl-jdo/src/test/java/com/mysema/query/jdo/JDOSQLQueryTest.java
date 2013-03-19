@@ -47,7 +47,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
     private final SProduct product = SProduct.product;
     
-    private JDOSQLQuery sql(){
+    private JDOSQLQuery sql() {
         return new JDOSQLQuery(pm, sqlTemplates);
     }
     
@@ -57,27 +57,27 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
 
     @Test
-    public void Count(){        
+    public void Count() {        
         assertEquals(30l, sql().from(product).count());        
     }
     
     @Test(expected=NonUniqueResultException.class)
-    public void UniqueResult(){
+    public void UniqueResult() {
         sql().from(product).uniqueResult(product.name);
     }
     
     @Test
-    public void SingleResult(){
+    public void SingleResult() {
         sql().from(product).singleResult(product.name);
     }
     
     @Test
-    public void SingleResult_With_Array(){
+    public void SingleResult_With_Array() {
         sql().from(product).singleResult(new Expression[]{product.name});
     }
     
     @Test    
-    public void StartsWith_Count(){
+    public void StartsWith_Count() {
         assertEquals(10l, sql().from(product).where(product.name.startsWith("A")).count());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("B")).count());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("C")).count());
@@ -85,7 +85,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     }
     
     @Test
-    public void Eq_Count(){
+    public void Eq_Count() {
         for (int i = 0; i < 10; i++) {
             assertEquals(1l, sql().from(product).where(product.name.eq("A"+i)).count());
             assertEquals(1l, sql().from(product).where(product.name.eq("B"+i)).count());
@@ -94,7 +94,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     }
     
     @Test
-    public void ScalarQueries(){
+    public void ScalarQueries() {
         BooleanExpression filter = product.name.startsWith("A");
         
         // count
@@ -116,7 +116,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         assertEquals(3, sql().from(product).offset(3).limit(3).list(product.name).size());
 
         // list multiple
-        for (Tuple row : sql().from(product).list(product.productId, product.name, product.amount)){
+        for (Tuple row : sql().from(product).list(product.productId, product.name, product.amount)) {
             assertNotNull(row.get(0, Object.class));
             assertNotNull(row.get(1, Object.class));
             assertNotNull(row.get(2, Object.class));
@@ -150,13 +150,13 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     }
 
     @Test
-    public void EntityProjections(){
+    public void EntityProjections() {
         List<Product> products = sql()
             .from(product)
             .list(ConstructorExpression.create(Product.class,
                     product.name, product.description, product.price, product.amount));
         assertEquals(30, products.size());
-        for (Product p : products){
+        for (Product p : products) {
             assertNotNull(p.getName());
             assertNotNull(p.getDescription());
             assertNotNull(p.getPrice());

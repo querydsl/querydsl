@@ -91,7 +91,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return count();
     }
 
-    private FullTextQuery createQuery(boolean forCount){
+    private FullTextQuery createQuery(boolean forCount) {
         QueryMetadata metadata = queryMixin.getMetadata();
         org.apache.lucene.search.Query query = serializer.toQuery(metadata.getWhere(), metadata);
 
@@ -124,11 +124,11 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
 
     @SuppressWarnings("unchecked")
-    public CloseableIterator<T> iterate(){
+    public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(createQuery(false).iterate());
     }
 
-    public CloseableIterator<T> iterateDistinct(){
+    public CloseableIterator<T> iterateDistinct() {
         return iterate();
     }
 

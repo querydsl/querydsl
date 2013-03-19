@@ -32,25 +32,25 @@ public class NestedExpressionTest {
     Concatenation concat2 = new Concatenation(new Concatenation(str1, new Concatenation(str2, str3)), str4);
 
     @Test
-    public void Wrapped_Projection_Has_Right_Arguments(){
+    public void Wrapped_Projection_Has_Right_Arguments() {
         FactoryExpression<String> wrapped = FactoryExpressionUtils.wrap(concat1);
         assertEquals(Arrays.asList(str1, str2, str3), wrapped.getArgs());
     }
 
     @Test
-    public void Wrapped_Projection_Compresses_Projection(){
+    public void Wrapped_Projection_Compresses_Projection() {
         FactoryExpression<String> wrapped = FactoryExpressionUtils.wrap(concat1);
         assertEquals("123", wrapped.newInstance("1","2","3"));
     }
 
     @Test
-    public void Deeply_Wrapped_Projection_Has_Right_Arguments(){
+    public void Deeply_Wrapped_Projection_Has_Right_Arguments() {
         FactoryExpression<String> wrapped = FactoryExpressionUtils.wrap(concat2);
         assertEquals(Arrays.asList(str1, str2, str3, str4), wrapped.getArgs());
     }
 
     @Test
-    public void Deeply_Wrapped_Projection_Compresses_Projection(){
+    public void Deeply_Wrapped_Projection_Compresses_Projection() {
         FactoryExpression<String> wrapped = FactoryExpressionUtils.wrap(concat2);
         assertEquals("1234", wrapped.newInstance("1","2","3","4"));
     }

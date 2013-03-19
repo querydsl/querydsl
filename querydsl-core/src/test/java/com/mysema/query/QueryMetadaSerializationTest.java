@@ -84,17 +84,17 @@ public class QueryMetadaSerializationTest {
     }
     
     @Test
-    public void FullySerizable(){
+    public void FullySerizable() {
         Set<Class<?>> checked = new HashSet<Class<?>>();
         checked.addAll(Arrays.<Class<?>>asList(Collection.class, List.class, Set.class, Map.class, 
                 Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
         classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, 
                 NumberTemplate.class, BeanPath.class, DefaultQueryMetadata.class));
-        while (!classes.isEmpty()){            
+        while (!classes.isEmpty()) {            
             Class<?> clazz = classes.pop();
             checked.add(clazz);
-            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()){     
+            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()) {     
                 System.out.println(clazz.getName());
                 fail(clazz.getName() + " is not serializable");
             }            
@@ -104,15 +104,15 @@ public class QueryMetadaSerializationTest {
                 }
                 Set<Class<?>> types = new HashSet<Class<?>>(3);
                 types.add(field.getType());
-                if (field.getType().getSuperclass() != null){
+                if (field.getType().getSuperclass() != null) {
                     types.add(field.getType().getSuperclass());    
                 }                
-                if (field.getType().getComponentType() != null){
+                if (field.getType().getComponentType() != null) {
                     types.add(field.getType().getComponentType());
                 }
-                if (Collection.class.isAssignableFrom(field.getType())){
+                if (Collection.class.isAssignableFrom(field.getType())) {
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0)); 
-                }else if (Map.class.isAssignableFrom(field.getType())){
+                }else if (Map.class.isAssignableFrom(field.getType())) {
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0));
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 1));
                 }

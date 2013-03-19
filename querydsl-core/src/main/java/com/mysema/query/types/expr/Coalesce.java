@@ -50,12 +50,12 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     public Coalesce(Class<? extends T> type, Expression<?>... exprs) {
         super(type);
         // NOTE : type parameters for the varargs, would result in compiler warnings
-        for (Expression expr : exprs){
+        for (Expression expr : exprs) {
             add(expr);
         }
     }
     
-    public Coalesce(Expression... exprs){
+    public Coalesce(Expression... exprs) {
         // NOTE : type parameters for the varargs, would result in compiler warnings
         this((exprs.length > 0 ? exprs[0].getType() : Object.class), exprs);
     }
@@ -90,7 +90,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         return as(new PathImpl<T>(getType(), alias));
     }
     
-    public final Coalesce<T> add(Expression<T> expr){
+    public final Coalesce<T> add(Expression<T> expr) {
         value = null;
         this.exprs.add(expr);
         return this;
@@ -104,19 +104,19 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         return getValue().desc();
     }
     
-    public final Coalesce<T> add(T constant){
+    public final Coalesce<T> add(T constant) {
         return add(new ConstantImpl<T>(constant));
     }
 
-    public BooleanExpression asBoolean(){
+    public BooleanExpression asBoolean() {
         return BooleanOperation.create(Ops.COALESCE, getExpressionList());
     }
     
-    public DateExpression<T> asDate(){
+    public DateExpression<T> asDate() {
         return (DateExpression<T>) DateOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
-    public DateTimeExpression<T> asDateTime(){
+    public DateTimeExpression<T> asDateTime() {
         return (DateTimeExpression<T>) DateTimeOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
     
@@ -124,19 +124,19 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         return EnumOperation.create((Class)getType(), Ops.COALESCE, getExpressionList());
     }
 
-    public NumberExpression<?> asNumber(){
+    public NumberExpression<?> asNumber() {
         return NumberOperation.create((Class)getType(), Ops.COALESCE, getExpressionList());
     }
 
-    public StringExpression asString(){
+    public StringExpression asString() {
         return StringOperation.create(Ops.COALESCE, getExpressionList());
     }
 
-    public TimeExpression<T> asTime(){
+    public TimeExpression<T> asTime() {
         return (TimeExpression<T>) TimeOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
-    private Expression<?> getExpressionList(){
+    private Expression<?> getExpressionList() {
         return ExpressionUtils.list(getType(), exprs);
     }
     

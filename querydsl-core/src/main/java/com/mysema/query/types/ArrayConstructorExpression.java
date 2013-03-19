@@ -59,8 +59,8 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
 
     @SuppressWarnings("unchecked")
     @Override
-    public T[] newInstance(Object... a){
-        if (a.getClass().getComponentType().equals(elementType)){
+    public T[] newInstance(Object... a) {
+        if (a.getClass().getComponentType().equals(elementType)) {
             return (T[])a;
         } else {
             T[] rv = (T[]) Array.newInstance(elementType, a.length);
@@ -76,7 +76,7 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
         } else if (obj instanceof ArrayConstructorExpression<?>) {
             ArrayConstructorExpression<?> c = (ArrayConstructorExpression<?>)obj;

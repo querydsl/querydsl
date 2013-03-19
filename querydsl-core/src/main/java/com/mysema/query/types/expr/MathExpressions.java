@@ -154,7 +154,7 @@ public final class MathExpressions {
      * Returns the random expression
      * @return random()
      */
-    public static NumberExpression<Double> random(){
+    public static NumberExpression<Double> random() {
         return NumberExpression.random();
     }
     

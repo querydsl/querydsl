@@ -33,7 +33,7 @@ public class JDBCTypeMappingTest {
     }
     
     @Test
-    public void StringTypes(){
+    public void StringTypes() {
         assertEquals(String.class, typeMapping.get(Types.CHAR,0,0));
         assertEquals(String.class, typeMapping.get(Types.NCHAR,0,0));
         assertEquals(String.class, typeMapping.get(Types.CLOB,0,0));
@@ -46,7 +46,7 @@ public class JDBCTypeMappingTest {
     }
     
     @Test
-    public void BlobTypes(){
+    public void BlobTypes() {
         assertEquals(Blob.class, typeMapping.get(Types.BLOB,0,0));        
     }
 

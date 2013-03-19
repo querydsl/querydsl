@@ -25,7 +25,7 @@ import com.mysema.query.domain.AbstractTest;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 
-public class Inheritance3Test extends AbstractTest{
+public class Inheritance3Test extends AbstractTest {
 
     /*
      * TODO : map type variables to BeanModels
@@ -59,25 +59,25 @@ public class Inheritance3Test extends AbstractTest{
     }
 
     @Test
-    public void GenericSupertype() throws SecurityException, NoSuchFieldException{
+    public void GenericSupertype() throws SecurityException, NoSuchFieldException {
         cl = QInheritance3Test_GenericSupertype.class;
         match(SimplePath.class, "field");    
     }
     
     @Test
-    public void GenericSupertypeC() throws SecurityException, NoSuchFieldException{
+    public void GenericSupertypeC() throws SecurityException, NoSuchFieldException {
         cl = QInheritance3Test_GenericSupertypeC.class;
         match(SimplePath.class, "field");    
     }
     
     @Test
-    public void GenericSupertypeS() throws SecurityException, NoSuchFieldException{
+    public void GenericSupertypeS() throws SecurityException, NoSuchFieldException {
         cl = QInheritance3Test_GenericSupertypeS.class;
         match(StringPath.class, "field");
     }
     
     @Test
-    public void GenericSupertypeS2() throws SecurityException, NoSuchFieldException{
+    public void GenericSupertypeS2() throws SecurityException, NoSuchFieldException {
         cl = QInheritance3Test_GenericSupertypeS2.class;
         match(StringPath.class, "field");
     }

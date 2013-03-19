@@ -31,14 +31,14 @@ public class PostgresTemplatesTest extends AbstractSQLTemplatesTest{
     }    
     
     @Test
-    public void NoFrom(){
+    public void NoFrom() {
         query.getMetadata().addProjection(NumberTemplate.ONE);
         assertEquals("select 1", query.toString());
     }
     
     @SuppressWarnings("unchecked")
     @Test
-    public void Union(){        
+    public void Union() {        
         NumberExpression<Integer> one = NumberTemplate.ONE;
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;

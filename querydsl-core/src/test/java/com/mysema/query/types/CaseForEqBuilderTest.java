@@ -33,7 +33,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void NumberTyped(){
+    public void NumberTyped() {
         Customer c = alias(Customer.class, "customer");
 
         NumberExpression<Integer> cases = $(c.getAnnualSpending())
@@ -52,7 +52,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void StringTyped(){
+    public void StringTyped() {
         Customer c = alias(Customer.class, "customer");
 
         StringExpression cases = $(c.getAnnualSpending())
@@ -66,7 +66,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void BooleanTyped(){
+    public void BooleanTyped() {
         Customer c = alias(Customer.class, "customer");
 
         Expression<Boolean> cases = $(c.getAnnualSpending())

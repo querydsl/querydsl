@@ -24,10 +24,10 @@ public class SQLTypeMappingTest {
     @Test
     public void Get() throws IllegalArgumentException, IllegalAccessException {
         JDBCTypeMapping mapping = new JDBCTypeMapping();
-        for (Field field : java.sql.Types.class.getFields()){
-            if (field.getType().equals(int.class)){
+        for (Field field : java.sql.Types.class.getFields()) {
+            if (field.getType().equals(int.class)) {
                 int val = field.getInt(null);
-                if (mapping.get(val,0,0) == null){
+                if (mapping.get(val,0,0) == null) {
                     fail("Got no value for " + field.getName());
                 }
             }

@@ -20,7 +20,7 @@ import org.junit.Test;
 public class TypeTest {
 
     @Test
-    public void test(){
+    public void test() {
         QType1 type1 = QType1.type1;
         QType2 type2 = QType2.type2;
         assertEquals(type2.getType(), type1.property.getType());

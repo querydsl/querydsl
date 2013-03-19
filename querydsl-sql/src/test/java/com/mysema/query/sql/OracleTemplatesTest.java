@@ -35,7 +35,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     
     @SuppressWarnings("unchecked")
     @Test
-    public void Union(){        
+    public void Union() {        
         SimpleExpression<Integer> one = SimpleTemplate.create(Integer.class,"1");
         SimpleExpression<Integer> two = SimpleTemplate.create(Integer.class,"2");
         SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");
@@ -53,7 +53,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     }
 
     @Test
-    public void Modifiers(){
+    public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().addProjection(survey1.id);
         assertEquals("select * from (  " +

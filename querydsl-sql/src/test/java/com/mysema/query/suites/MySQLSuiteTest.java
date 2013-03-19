@@ -13,7 +13,7 @@ public class MySQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.setTemplates(new MySQLTemplates(){{
+        Connections.setTemplates(new MySQLTemplates() {{
             newLineToSingleSpace();
         }});
     }

@@ -47,23 +47,23 @@ public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> impleme
         super(conn, configuration, metadata);
     }
     
-    public <T> CloseableIterator<T> iterate(Class<T> type, Expression<?>... exprs){
+    public <T> CloseableIterator<T> iterate(Class<T> type, Expression<?>... exprs) {
         return iterate(createProjection(type, exprs));
     }
     
-    public <T> T uniqueResult(Class<T> type, Expression<?>... exprs){
+    public <T> T uniqueResult(Class<T> type, Expression<?>... exprs) {
         return uniqueResult(createProjection(type, exprs));
     }
     
-    public <T> List<T> list(Class<T> type, Expression<?>... exprs){
+    public <T> List<T> list(Class<T> type, Expression<?>... exprs) {
         return list(createProjection(type, exprs));
     }
     
-    public <T> SearchResults<T> listResults(Class<T> type, Expression<?>... exprs){
+    public <T> SearchResults<T> listResults(Class<T> type, Expression<?>... exprs) {
         return listResults(createProjection(type, exprs));
     }
     
-    private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs){
+    private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, exprs);
     }
     

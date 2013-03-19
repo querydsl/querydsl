@@ -83,11 +83,11 @@ public abstract class AbstractBaseTest {
     @Rule
     public static MethodRule targetRule = new TargetRule();
     
-    protected SQLUpdateClause update(RelationalPath<?> e){
+    protected SQLUpdateClause update(RelationalPath<?> e) {
         return new SQLUpdateClause(connection, templates, e);
     }
 
-    protected SQLInsertClause insert(RelationalPath<?> e){
+    protected SQLInsertClause insert(RelationalPath<?> e) {
         return new SQLInsertClause(connection, templates, e);
     }
 
@@ -95,11 +95,11 @@ public abstract class AbstractBaseTest {
         return new SQLInsertClause(connection, templates, e, sq);
     }
     
-    protected SQLDeleteClause delete(RelationalPath<?> e){
+    protected SQLDeleteClause delete(RelationalPath<?> e) {
         return new SQLDeleteClause(connection, templates, e);
     }
 
-    protected SQLMergeClause merge(RelationalPath<?> e){
+    protected SQLMergeClause merge(RelationalPath<?> e) {
         return new SQLMergeClause(connection, templates, e);
     }
     
@@ -107,7 +107,7 @@ public abstract class AbstractBaseTest {
         return new ExtendedSQLQuery(connection, templates);
     }
 
-    protected MySQLQuery mysqlQuery(){
+    protected MySQLQuery mysqlQuery() {
         return new MySQLQuery(connection, templates);
     }
     
@@ -124,12 +124,12 @@ public abstract class AbstractBaseTest {
                 new DefaultQueryMetadata().noValidate());
     }
     
-    protected OracleQuery oracleQuery(){
-        return new OracleQuery(connection, templates){
+    protected OracleQuery oracleQuery() {
+        return new OracleQuery(connection, templates) {
             @Override
             protected String buildQueryString(boolean forCountRow) {
                 String rv = super.buildQueryString(forCountRow);
-                if (expectedQuery != null){
+                if (expectedQuery != null) {
                    Assert.assertEquals(expectedQuery, rv.replace('\n', ' '));
                    expectedQuery = null;
                 }
@@ -139,7 +139,7 @@ public abstract class AbstractBaseTest {
         };
     }
 
-    protected SQLSubQuery sq(){
+    protected SQLSubQuery sq() {
         return new SQLSubQuery();
     }
 

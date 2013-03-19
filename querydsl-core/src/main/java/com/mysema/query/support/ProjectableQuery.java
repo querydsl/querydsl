@@ -81,7 +81,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection){
+    public final <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection) {
         queryMixin.setDistinct(true);
         return listResults(projection);
     }
@@ -97,7 +97,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final boolean notExists(){
+    public final boolean notExists() {
         return !exists();
     }
 
@@ -119,9 +119,9 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     @Nullable
     protected <T> T uniqueResult(CloseableIterator<T> it) {
         try{
-            if (it.hasNext()){
+            if (it.hasNext()) {
                 T rv = it.next();
-                if (it.hasNext()){
+                if (it.hasNext()) {
                     throw new NonUniqueResultException();
                 }
                 return rv;

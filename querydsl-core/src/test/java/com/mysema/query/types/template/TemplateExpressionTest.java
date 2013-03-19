@@ -39,7 +39,7 @@ import com.mysema.query.types.path.StringPath;
 public class TemplateExpressionTest {
 
     @Test
-    public void Constructors(){
+    public void Constructors() {
         Templates templates = new JavaTemplates();
         Template template = TemplateFactory.DEFAULT.create("{0}");
         ImmutableList<Expression<?>> args = ImmutableList.<Expression<?>>of(new StringPath("a"));
@@ -55,13 +55,13 @@ public class TemplateExpressionTest {
             new TimeTemplate<Time>(Time.class, template, args)
         );
         TemplateExpression<?> prev = null;
-        for (TemplateExpression<?> custom : customs){
+        for (TemplateExpression<?> custom : customs) {
             assertNotNull(custom);
             assertNotNull(custom.getTemplate());
             assertNotNull(custom.getType());
             assertNotNull(custom.getArgs());
             assertEquals(custom, custom);
-            if (prev != null){
+            if (prev != null) {
                 assertFalse(custom.equals(prev));
             }
             //assertEquals(custom.getType().hashCode(), custom.hashCode());
@@ -71,7 +71,7 @@ public class TemplateExpressionTest {
     }
 
     @Test
-    public void FactoryMethods(){
+    public void FactoryMethods() {
         String template = "";
         Expression<Boolean> arg = ConstantImpl.create(true);
 
@@ -87,7 +87,7 @@ public class TemplateExpressionTest {
     }
 
     @Test
-    public void FactoryMethods2(){
+    public void FactoryMethods2() {
         Template template = TemplateFactory.DEFAULT.create("");
         Expression<Boolean> arg = ConstantImpl.create(true);
 

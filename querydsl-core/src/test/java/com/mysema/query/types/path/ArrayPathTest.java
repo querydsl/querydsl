@@ -23,7 +23,7 @@ import com.mysema.query.types.ConstantImpl;
 public class ArrayPathTest {
 
     @Test
-    public void Get(){
+    public void Get() {
         ArrayPath<String> arrayPath = new ArrayPath<String>(String[].class, "p");
         assertNotNull(arrayPath.get(ConstantImpl.create(0)));
         

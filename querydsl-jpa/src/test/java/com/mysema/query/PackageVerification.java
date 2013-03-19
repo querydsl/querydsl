@@ -49,7 +49,7 @@ public class PackageVerification {
         oneJarClassLoader.loadClass(CodeWriter.class.getName()); // codegen
         oneJarClassLoader.loadClass(Entity.class.getName()); // jpa        
         Class<?> processor;
-        if (hibernateDeps){
+        if (hibernateDeps) {
             oneJarClassLoader.loadClass(org.hibernate.annotations.Type.class.getName()); // hibernate
             processor = HibernateAnnotationProcessor.class;
         }else{

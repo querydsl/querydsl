@@ -58,7 +58,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> hour(){
+    public NumberExpression<Integer> hour() {
         if (hours == null) {
             hours = NumberOperation.create(Integer.class, Ops.DateTimeOps.HOUR, mixin);
         }
@@ -70,7 +70,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> minute(){
+    public NumberExpression<Integer> minute() {
         if (minutes == null) {
             minutes = NumberOperation.create(Integer.class, Ops.DateTimeOps.MINUTE, mixin);
         }
@@ -82,7 +82,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> second(){
+    public NumberExpression<Integer> second() {
         if (seconds == null) {
             seconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.SECOND, mixin);
         }
@@ -95,7 +95,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      *
      * @return
      */
-    public NumberExpression<Integer> milliSecond(){
+    public NumberExpression<Integer> milliSecond() {
         if (milliseconds == null) { 
             milliseconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.MILLISECOND, mixin);
         }

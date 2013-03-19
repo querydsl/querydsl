@@ -10,7 +10,7 @@ public class SQLiteSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initSQLite();
-        Connections.setTemplates(new SQLiteTemplates(){{
+        Connections.setTemplates(new SQLiteTemplates() {{
             newLineToSingleSpace();
         }});
     }

@@ -25,7 +25,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class Inheritance7Test {
 
     @QueryEntity
-    public static class User{
+    public static class User {
 
     }
 
@@ -73,7 +73,7 @@ public class Inheritance7Test {
 
     @Test
     @Ignore
-    public void Parent(){
+    public void Parent() {
         // FIXME
         assertEquals(Category.class, QInheritance7Test_Category.category.parent.getType());
         assertEquals(SubCategory.class, QInheritance7Test_SubCategory.subCategory.parent.getType());
@@ -82,7 +82,7 @@ public class Inheritance7Test {
 
     @Test
     @Ignore
-    public void Children(){
+    public void Children() {
         // FIXME
         assertEquals(Category.class, QInheritance7Test_Category.category.children.getElementType());
         assertEquals(SubCategory.class, QInheritance7Test_SubCategory.subCategory.children.getElementType());

@@ -23,20 +23,20 @@ import com.mysema.query.annotations.QueryInit;
 public class QueryInit2Test {
 
     @QueryEntity
-    public static class Categorization{
+    public static class Categorization {
 
         @QueryInit("account.owner")
         Event event;
     }
 
     @QueryEntity
-    public static class Event{
+    public static class Event {
 
         Account account;
     }
 
     @QueryEntity
-    public static class Activation extends Event{
+    public static class Activation extends Event { 
 
     }
 
@@ -52,7 +52,7 @@ public class QueryInit2Test {
     }
 
     @Test
-    public void Long_Path(){
+    public void Long_Path() {
         assertNotNull(QQueryInit2Test_Categorization.categorization.event.account.owner);
         assertNotNull(QQueryInit2Test_Categorization.categorization.event.as(QQueryInit2Test_Activation.class).account.owner);
     }

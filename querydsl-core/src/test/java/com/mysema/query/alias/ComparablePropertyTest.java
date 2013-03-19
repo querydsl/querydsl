@@ -39,10 +39,10 @@ public class ComparablePropertyTest {
         }
 
         @Override
-        public boolean equals(Object o){
-            if (o == this){
+        public boolean equals(Object o) {
+            if (o == this) {
                 return true;
-            }else if (o instanceof ComparableType){
+            }else if (o instanceof ComparableType) {
                 return true;
             }else{
                 return false;
@@ -50,14 +50,14 @@ public class ComparablePropertyTest {
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return super.hashCode();
         }
 
     }
 
     @Test
-    public void test(){
+    public void test() {
         Entity entity = Alias.alias(Entity.class);
         Alias.$(entity.getProperty());
     }

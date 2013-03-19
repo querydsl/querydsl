@@ -58,7 +58,7 @@ public class JPQLSerializerTest {
         serializer.handle(doublePath.add(1));
         serializer.handle(doublePath.between((float)1.0, 1l));
         serializer.handle(doublePath.lt((byte)1));
-        for (Object constant : serializer.getConstantToLabel().keySet()){
+        for (Object constant : serializer.getConstantToLabel().keySet()) {
             assertEquals(Double.class, constant.getClass());
         }
     }

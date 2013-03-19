@@ -40,7 +40,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable<?>> NumberExpression<T> create(T val){
+    public static <T extends Number & Comparable<?>> NumberExpression<T> create(T val) {
         return new NumberConstant<T>((Class<T>)val.getClass(), val);
     }
 
@@ -57,7 +57,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     }
     
     @Override
-    public BooleanExpression eq(D b){
+    public BooleanExpression eq(D b) {
         return BooleanConstant.create(constant.equals(b));
     }
 
@@ -67,7 +67,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     }
 
     @Override
-    public BooleanExpression ne(D b){
+    public BooleanExpression ne(D b) {
         return BooleanConstant.create(!constant.equals(b));
     }
 
@@ -78,7 +78,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
 
     @Override
     public <N extends Number & Comparable<?>> NumberExpression<D> add(Expression<N> right) {
-        if (right instanceof Constant<?>){
+        if (right instanceof Constant<?>) {
             return add(((Constant<N>)right).getConstant());
         }else{
             return super.add(right);
@@ -92,7 +92,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
 
     @Override
     public <N extends Number & Comparable<?>> NumberExpression<D> subtract(Expression<N> right) {
-        if (right instanceof Constant<?>){
+        if (right instanceof Constant<?>) {
             return subtract(((Constant<N>)right).getConstant());
         }else{
             return super.subtract(right);

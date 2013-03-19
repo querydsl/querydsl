@@ -49,7 +49,7 @@ public class SimpleExpressionTest {
     enum ExampleEnum {A,B}
 
     @Test
-    public void As_usage(){
+    public void As_usage() {
         SimpleExpression<String> str = new StringPath("str");
         assertEquals("str as alias", str.as("alias").toString());
         assertEquals("str as alias", str.as(new StringPath("alias")).toString());
@@ -75,7 +75,7 @@ public class SimpleExpressionTest {
                 StringExpression.class,
                 TimeExpression.class);
 
-        for (Class<?> cl : classes){
+        for (Class<?> cl : classes) {
             Method asPath = cl.getDeclaredMethod("as", Path.class);
             assertEquals(cl, asPath.getReturnType());
 
@@ -86,7 +86,7 @@ public class SimpleExpressionTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various(){
+    public void Various() {
         List<DslExpression<?>> paths = new ArrayList<DslExpression<?>>();
         paths.add(new ArrayPath(String[].class, "p"));
         paths.add(new BeanPath(Object.class, "p"));
@@ -104,7 +104,7 @@ public class SimpleExpressionTest {
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
 
-        for (DslExpression<?> expr : paths){
+        for (DslExpression<?> expr : paths) {
             Path o = new PathImpl(expr.getType(), "o");
             assertEquals(OperationImpl.create(expr.getType(), Ops.ALIAS, expr, o), expr.as("o"));
             Path p = new PathImpl(expr.getType(), "p");
@@ -113,7 +113,7 @@ public class SimpleExpressionTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void Eq_Null(){
+    public void Eq_Null() {
         new SimplePath<Object>(Object.class, "path").eq((Object)null);
     }
 }

@@ -32,17 +32,17 @@ public class Delegate2Test {
         Point point;
     }
     
-    public static class Point{
+    public static class Point {
 
     }
 
     @QueryDelegate(Point.class)
-    public static NumberExpression<Integer> geoDistance(Path<Point> point, Point other){
+    public static NumberExpression<Integer> geoDistance(Path<Point> point, Point other) {
         return NumberTemplate.create(Integer.class, "geo_distance({0},{1})", point, new ConstantImpl<Point>(other));
     }
 
     @Test
-    public void test(){
+    public void test() {
         QDelegate2Test_Entity entity = QDelegate2Test_Entity.entity;
         assertNotNull(entity.point.geoDistance(new Point()));
     }

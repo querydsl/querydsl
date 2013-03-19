@@ -20,12 +20,12 @@ import org.junit.Test;
 public class BooleanTemplateTest {
     
     @Test
-    public void True(){
+    public void True() {
         assertEquals("true", BooleanTemplate.TRUE.toString());
     }
     
     @Test
-    public void False(){
+    public void False() {
         assertEquals("false", BooleanTemplate.FALSE.toString());
     }
 

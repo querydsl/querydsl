@@ -51,7 +51,7 @@ public class SQLSerializerTest {
     }
 
     @Test
-    public void StartsWith(){
+    public void StartsWith() {
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
         QSurvey s1 = new QSurvey("s1");
         serializer.handle(s1.name.startsWith("X"));
@@ -119,7 +119,7 @@ public class SQLSerializerTest {
     }
         
     @Test
-    public void Boolean(){
+    public void Boolean() {
         QSurvey s = new QSurvey("s");
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(s.name.eq(s.name));

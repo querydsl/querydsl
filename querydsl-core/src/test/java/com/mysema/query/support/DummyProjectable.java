@@ -61,7 +61,7 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
 
     @Override
     public Tuple uniqueResult(Expression<?>... args) {
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
         return null;
@@ -69,7 +69,7 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> projection) {
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
         return null;

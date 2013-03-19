@@ -29,10 +29,10 @@ import org.hibernate.type.Type;
  */
 public class ExtendedDerbyDialect extends DerbyDialect{
 
-    private static final CastFunction castFunction = new CastFunction(){
+    private static final CastFunction castFunction = new CastFunction() {
         @Override
         public String render(Type columnType, List args, SessionFactoryImplementor factory) {
-            if (args.get(1).equals("string")){
+            if (args.get(1).equals("string")) {
                 return super.render(columnType, Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);
             }else{
                 return super.render(columnType, args, factory);
@@ -40,7 +40,7 @@ public class ExtendedDerbyDialect extends DerbyDialect{
         }
     };
 
-    public ExtendedDerbyDialect(){
+    public ExtendedDerbyDialect() {
         registerFunction( "concat", new VarArgsSQLFunction( StandardBasicTypes.STRING, "cast ((","||",") as varchar(128))" ) );
         registerFunction( "cast", castFunction );
     }

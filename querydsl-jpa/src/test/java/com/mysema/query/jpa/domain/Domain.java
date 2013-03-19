@@ -23,7 +23,7 @@ import com.mysema.query.jpa.domain4.Library;
 
 public final class Domain {
 
-    private Domain(){}
+    private Domain() {}
 
     public static final List<Class<?>> classes = Arrays.<Class<?>>asList(
             Account.class,

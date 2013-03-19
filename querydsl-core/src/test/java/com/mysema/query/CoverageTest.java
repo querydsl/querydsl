@@ -85,12 +85,12 @@ public class CoverageTest {
         exprs.addAll(projections.map($(entity.getMap()), $(entity.getMap()), "", ""));
         exprs.addAll(filters.map($(entity.getMap()), $(entity.getMap()), "", ""));
 
-        for (Expression<?> e : exprs){
-            if (e instanceof Operation){
+        for (Expression<?> e : exprs) {
+            if (e instanceof Operation) {
                 Operation<?> op = (Operation<?>)e;
-                if (op.getArg(0) instanceof Operation){
+                if (op.getArg(0) instanceof Operation) {
                     usedOperators.add(((Operation<?>)op.getArg(0)).getOperator());
-                }else if (op.getArgs().size() > 1 && op.getArg(1) instanceof Operation){
+                }else if (op.getArgs().size() > 1 && op.getArg(1) instanceof Operation) {
                     usedOperators.add(((Operation<?>)op.getArg(1)).getOperator());
                 }
                 usedOperators.add(op.getOperator());
@@ -133,10 +133,10 @@ public class CoverageTest {
          ));
 
         List<Operator<?>> notContained = new ArrayList<Operator<?>>();
-        for (Field field : Ops.class.getFields()){
-            if (Operator.class.isAssignableFrom(field.getType())){
+        for (Field field : Ops.class.getFields()) {
+            if (Operator.class.isAssignableFrom(field.getType())) {
                 Operator<?> val = (Operator<?>) field.get(null);
-                if (!usedOperators.contains(val)){
+                if (!usedOperators.contains(val)) {
                     System.err.println(field.getName() + " was not contained");
                     notContained.add(val);
                 }

@@ -22,14 +22,14 @@ import com.mysema.query.types.path.SimplePath;
 
 public class UnionSubQueryTest {
     
-    private SQLTemplates templates = new H2Templates(){{
+    private SQLTemplates templates = new H2Templates() {{
         newLineToSingleSpace();
     }};
     
     private SQLSerializer serializer = new SQLSerializer(templates);    
     
     @Test
-    public void UnionSubQuery(){
+    public void UnionSubQuery() {
         SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
         SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
         SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
@@ -48,7 +48,7 @@ public class UnionSubQueryTest {
                 "(select 3 from dual)", serializer.toString());
     }
     
-    protected SQLSubQuery sq(){
+    protected SQLSubQuery sq() {
         return new SQLSubQuery();
     }
 

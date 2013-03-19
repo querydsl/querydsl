@@ -45,12 +45,12 @@ public class JavaTypeMappingTest {
     }
     
     @Test
-    public void GetType_With_Interfaces(){
+    public void GetType_With_Interfaces() {
         assertEquals(BlobType.class, typeMapping.getType(DummyBlob.class).getClass());
     }
     
     @Test
-    public void GetType_for_Object(){
+    public void GetType_for_Object() {
         assertEquals(ObjectType.class, typeMapping.getType(Object.class).getClass());
     }
     

@@ -37,5 +37,5 @@ public final class BeanUtils {
         return Introspector.decapitalize(name);
     }
 
-    private BeanUtils(){}
+    private BeanUtils() {}
 }

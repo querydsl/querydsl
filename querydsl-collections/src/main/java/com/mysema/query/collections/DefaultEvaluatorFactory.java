@@ -57,23 +57,23 @@ public class DefaultEvaluatorFactory {
 
     private final CollQueryTemplates templates;
     
-    public DefaultEvaluatorFactory(CollQueryTemplates templates){
+    public DefaultEvaluatorFactory(CollQueryTemplates templates) {
         this(templates,
         Thread.currentThread().getContextClassLoader());
     }
     
-    public DefaultEvaluatorFactory(CollQueryTemplates templates, EvaluatorFactory factory){
+    public DefaultEvaluatorFactory(CollQueryTemplates templates, EvaluatorFactory factory) {
         this.templates = templates;
         this.factory = factory;
     }
 
     protected DefaultEvaluatorFactory(CollQueryTemplates templates,
-            URLClassLoader classLoader, JavaCompiler compiler){
+            URLClassLoader classLoader, JavaCompiler compiler) {
         this.templates = templates;
         this.factory = new JDKEvaluatorFactory(classLoader, compiler);
     }
 
-    protected DefaultEvaluatorFactory(CollQueryTemplates templates, ClassLoader classLoader){
+    protected DefaultEvaluatorFactory(CollQueryTemplates templates, ClassLoader classLoader) {
         this.templates = templates;        
         if (classLoader instanceof URLClassLoader) {
             this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader);
@@ -117,7 +117,7 @@ public class DefaultEvaluatorFactory {
 
         // normalize types
         for (int i = 0; i < types.length; i++) {
-            if (Primitives.isWrapperType(types[i])){
+            if (Primitives.isWrapperType(types[i])) {
                 types[i] = Primitives.unwrap(types[i]);
             }
         }
@@ -135,12 +135,12 @@ public class DefaultEvaluatorFactory {
      * @return
      */
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, 
-            Expression<? extends T> source, Predicate filter){
+            Expression<? extends T> source, Predicate filter) {
         String typeName = ClassUtils.getName(source.getType());
         CollQuerySerializer ser = new CollQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
-        ser.append("for (" + typeName + " "+ source + " : " + source + "_){\n");
-        ser.append("    if (").handle(filter).append("){\n");
+        ser.append("for (" + typeName + " "+ source + " : " + source + "_) {\n");
+        ser.append("    if (").handle(filter).append(") {\n");
         ser.append("        rv.add("+source+");\n");
         ser.append("    }\n");
         ser.append("}\n");
@@ -170,7 +170,7 @@ public class DefaultEvaluatorFactory {
      */
     @SuppressWarnings("unchecked")
     public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata, 
-            List<JoinExpression> joins, @Nullable Predicate filter){
+            List<JoinExpression> joins, @Nullable Predicate filter) {
         List<String> sourceNames = new ArrayList<String>();
         List<Type> sourceTypes = new ArrayList<Type>();
         List<Class> sourceClasses = new ArrayList<Class>();
@@ -188,7 +188,7 @@ public class DefaultEvaluatorFactory {
                 vars.append(",");
             }
             if (join.getType() == JoinType.DEFAULT) {
-                ser.append("for (" + typeName + " "+ target + " : " + target + "_){\n");
+                ser.append("for (" + typeName + " "+ target + " : " + target + "_) {\n");
                 vars.append(target);
                 sourceNames.add(target+"_");
                 sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
@@ -198,7 +198,7 @@ public class DefaultEvaluatorFactory {
                 Operation alias = (Operation)join.getTarget();
                 boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
                 String matcher = null;
-                if (colAnyJoin){
+                if (colAnyJoin) {
                     matcher = alias.getArg(1).toString() + "_matched";
                     ser.append("boolean " + matcher + " = false;\n");
                     anyJoinMatchers.add(matcher);
@@ -215,9 +215,9 @@ public class DefaultEvaluatorFactory {
                 if (alias.getArg(0).getType().equals(Map.class)) {
                     ser.append(".values()");
                 }
-                ser.append("){\n");
+                ser.append(") {\n");
                 if (matcher != null) {
-                    ser.append("if (!" + matcher + "){\n");
+                    ser.append("if (!" + matcher + ") {\n");
                 }                
                 vars.append(alias.getArg(1));
 
@@ -229,7 +229,7 @@ public class DefaultEvaluatorFactory {
         // filter
         if (filter != null) {
             ser.append("if (");
-            ser.handle(filter).append("){\n");
+            ser.handle(filter).append(") {\n");
             for (String matcher : anyJoinMatchers) {
                 ser.append("    "+ matcher + " = true;\n");
             }

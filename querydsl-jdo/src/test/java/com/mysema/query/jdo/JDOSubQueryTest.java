@@ -22,7 +22,7 @@ import com.mysema.query.jdo.test.domain.QProduct;
 public class JDOSubQueryTest {
     
     @Test
-    public void Multiple_Projections(){
+    public void Multiple_Projections() {
         JDOSubQuery query = new JDOSubQuery();
         query.from(QProduct.product);
         assertEquals(1, query.list(QProduct.product).getMetadata().getProjection().size());

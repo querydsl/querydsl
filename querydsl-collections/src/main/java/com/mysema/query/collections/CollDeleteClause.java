@@ -35,13 +35,13 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
 
     private final CollQuery query;
 
-    public CollDeleteClause(QueryEngine qe, Path<T> expr, Collection<? extends T> col){
+    public CollDeleteClause(QueryEngine qe, Path<T> expr, Collection<? extends T> col) {
         this.query = new CollQuery(qe).from(expr, col);
         this.expr = expr;
         this.col = col;
     }
 
-    public CollDeleteClause(Path<T> expr, Collection<? extends T> col){
+    public CollDeleteClause(Path<T> expr, Collection<? extends T> col) {
         this(DefaultQueryEngine.getDefault(), expr, col);
     }
 
@@ -62,7 +62,7 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "delete " + query.toString();
     }
 }

@@ -31,17 +31,17 @@ public class DateTimeTest extends AbstractQueryTest {
     }
     
     @Test
-    public void CurrentDate2(){
+    public void CurrentDate2() {
         assertToString("current_date", DateTimeExpression.currentDate());
     }
     
     @Test
-    public void CurrentTime(){
+    public void CurrentTime() {
         assertToString("current_time", TimeExpression.currentTime());   
     }
     
     @Test
-    public void CurrentTimestamp(){
+    public void CurrentTimestamp() {
         assertToString("current_timestamp", DateTimeExpression.currentTimestamp());
     }
     

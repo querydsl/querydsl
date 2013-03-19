@@ -30,7 +30,7 @@ public class ExtendedNamingStrategyTest {
     private EntityType entityModel;
     
     @Before
-    public void setUp(){
+    public void setUp() {
         entityModel = new EntityType(Types.OBJECT);
         //entityModel.addAnnotation(new TableImpl("OBJECT"));
         entityModel.getData().put("table", "OBJECT");
@@ -62,7 +62,7 @@ public class ExtendedNamingStrategyTest {
     }
     
     @Test
-    public void GetPropertyNameForInverseForeignKey(){
+    public void GetPropertyNameForInverseForeignKey() {
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
         // fk_order_rows
         assertEquals("rows", namingStrategy.getPropertyNameForInverseForeignKey("fk_order_rows", entityModel));
@@ -71,7 +71,7 @@ public class ExtendedNamingStrategyTest {
     }
     
     @Test
-    public void GetPropertyNameForForeignKey(){
+    public void GetPropertyNameForForeignKey() {
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));   
         // fk_order_rows
@@ -81,13 +81,13 @@ public class ExtendedNamingStrategyTest {
     }
     
     @Test
-    public void GetPropertyNameForPrimaryKey(){
+    public void GetPropertyNameForPrimaryKey() {
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("pk_superior", entityModel));
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("PK_SUPERIOR", entityModel));        
     }
     
     @Test
-    public void GetDefaultVariableName(){
+    public void GetDefaultVariableName() {
         assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
     }
     

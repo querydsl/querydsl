@@ -25,7 +25,7 @@ import com.mysema.query.types.expr.DateExpression;
 public class DateConstantTest {
 
     @Test
-    public void test(){
+    public void test() {
         // 1.1.2000
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH, 1);

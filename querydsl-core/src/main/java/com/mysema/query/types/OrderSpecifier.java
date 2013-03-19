@@ -100,7 +100,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof OrderSpecifier) {
@@ -113,7 +113,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return target.hashCode();
     }
 

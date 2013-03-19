@@ -138,5 +138,5 @@ public final class TypeResolver {
         }
     }
 
-    private TypeResolver(){}
+    private TypeResolver() {}
 }

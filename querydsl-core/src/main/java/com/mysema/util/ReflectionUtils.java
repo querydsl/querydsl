@@ -41,7 +41,7 @@ public final class ReflectionUtils {
 
     private static final AnnotatedElement EMPTY = new Annotations();
 
-    private ReflectionUtils(){}
+    private ReflectionUtils() {}
 
     public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass) {
         Field field = getFieldOrNull(beanClass, propertyName);
@@ -71,7 +71,7 @@ public final class ReflectionUtils {
     }
 
     @Nullable
-    public static Method getGetterOrNull(Class<?> beanClass, String name){
+    public static Method getGetterOrNull(Class<?> beanClass, String name) {
         Method method = getGetterOrNull(beanClass, name, Object.class);
         if (method != null) {
             return method;
@@ -81,7 +81,7 @@ public final class ReflectionUtils {
     }
     
     @Nullable
-    public static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
+    public static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type) {
         String methodName = ((type.equals(Boolean.class) || type.equals(boolean.class)) ? "is" : "get") + BeanUtils.capitalize(name);
         while (beanClass != null && !beanClass.equals(Object.class)) {
             try {
@@ -95,7 +95,7 @@ public final class ReflectionUtils {
 
     }
 
-    public static int getTypeParameterCount(java.lang.reflect.Type type){
+    public static int getTypeParameterCount(java.lang.reflect.Type type) {
         if (type instanceof ParameterizedType) {
             return ((ParameterizedType) type).getActualTypeArguments().length;
         } else if (type instanceof TypeVariable) {
@@ -171,7 +171,7 @@ public final class ReflectionUtils {
         return fields;
     }
     
-    public static Set<Class<?>> getImplementedInterfaces(Class<?> cl){
+    public static Set<Class<?>> getImplementedInterfaces(Class<?> cl) {
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
         Deque<Class<?>> classes = new ArrayDeque<Class<?>>();
         classes.add(cl);

@@ -22,17 +22,17 @@ import com.mysema.query.annotations.QuerySupertype;
 public class SuperclassTest {
 
     @QuerySupertype
-    public static class SuperclassTestSuperclass{
+    public static class SuperclassTestSuperclass {
 
     }
 
     @QuerySupertype
-    public static class SuperclassTestSuperclass2{
+    public static class SuperclassTestSuperclass2 {
         SuperclassTestEntity ref;
     }
 
     @QueryEntity
-    public static class SuperclassTestEntity{
+    public static class SuperclassTestEntity {
         SuperclassTestSuperclass ref;
         SuperclassTestSuperclass2 ref2;
     }

@@ -62,7 +62,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
         String property = pathToProperty.get(path);
         if (property == null) {
             Path<?> parent = path.getMetadata().getParent();            
-            for (Field field : ReflectionUtils.getFields(parent.getClass())){
+            for (Field field : ReflectionUtils.getFields(parent.getClass())) {
                 try {
                     field.setAccessible(true);
                     if (Expression.class.isAssignableFrom(field.getType()) && field.get(parent) == path) {                        
@@ -211,13 +211,13 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
         this.bindings = bindings;
         this.args = ImmutableList.copyOf(bindings.values());
         this.fieldAccess = fieldAccess;
-        if (fieldAccess){
+        if (fieldAccess) {
             initFields();
         }
     }
 
     private void initFields() {
-        for (String property : bindings.keySet()){
+        for (String property : bindings.keySet()) {
             Class<?> beanType = getType();
             while (!beanType.equals(Object.class)) {
                 try {

@@ -31,27 +31,27 @@ public class StringTest {
     @SuppressWarnings("unchecked")
     @Test
     public void PatternAvailability() throws IllegalArgumentException, IllegalAccessException{
-        Templates ops = new Templates(){{
+        Templates ops = new Templates() {{
             // TODO
         }};
         Set<Field> missing = new HashSet<Field>();
-        for (Field field : Ops.class.getFields()){
-            if (field.getType().equals(Operator.class)){
+        for (Field field : Ops.class.getFields()) {
+            if (field.getType().equals(Operator.class)) {
                 Operator op = (Operator)field.get(null);
                 if (ops.getTemplate(op) == null) missing.add(field);
             }
         }
-        for (Class<?> cl : Ops.class.getClasses()){
-            for (Field field : cl.getFields()){
-                if (field.getType().equals(Operator.class)){
+        for (Class<?> cl : Ops.class.getClasses()) {
+            for (Field field : cl.getFields()) {
+                if (field.getType().equals(Operator.class)) {
                     Operator op = (Operator)field.get(null);
                     if (ops.getTemplate(op) == null) missing.add(field);
                 }
             }
         }
 
-        if (!missing.isEmpty()){
-            for (Field field : missing){
+        if (!missing.isEmpty()) {
+            for (Field field : missing) {
                 System.err.println(field.getName());
             }
             fail();
@@ -60,7 +60,7 @@ public class StringTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void ToString(){
+    public void ToString() {
         SomeType alias = alias(SomeType.class, "alias");
 
         // Path toString
@@ -83,13 +83,13 @@ public class StringTest {
 
     public static class SomeType{
 
-        public SomeType(){}
+        public SomeType() {}
         
-        public SomeType(SomeType st){}
+        public SomeType(SomeType st) {}
         
-        public String getName(){return ""; };
+        public String getName() {return ""; };
 
-        public SomeType getRef(){ return null; };
+        public SomeType getRef() { return null; };
 
         public List<SomeType> getRefs() { return null; };
 

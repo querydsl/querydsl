@@ -48,7 +48,7 @@ public final class OperatorImpl<T> implements Operator<T> {
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         return id;
     }
     

@@ -76,7 +76,7 @@ public class TypeTest implements InvocationHandler{
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (args.length == 2){
+        if (args.length == 2) {
             value = args[1];
             return null;
         }else{
@@ -121,7 +121,7 @@ public class TypeTest implements InvocationHandler{
         valueAndType.add(Pair.of(EasyMock.createNiceMock(Blob.class), new BlobType()));
         valueAndType.add(Pair.of(EasyMock.createNiceMock(Clob.class), new ClobType()));
         
-        for (Pair pair : valueAndType){
+        for (Pair pair : valueAndType) {
             value = null;
             Type type = (Type) pair.getSecond();
             assertNull(type.getValue(resultSet, 0));

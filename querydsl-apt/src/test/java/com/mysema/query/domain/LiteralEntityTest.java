@@ -24,12 +24,12 @@ import com.mysema.query.types.path.EnumPath;
 public class LiteralEntityTest {
 
     @QueryEntity
-    enum EnumEntity{
+    enum EnumEntity {
 
     }
 
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QLiteralEntityTest_EnumEntity.enumEntity);
         assertEquals(EnumPath.class, QLiteralEntityTest_EnumEntity.class.getSuperclass());
     }

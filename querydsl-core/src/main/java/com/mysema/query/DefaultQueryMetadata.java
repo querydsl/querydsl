@@ -201,20 +201,20 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
     }
 
-    public void clearOrderBy(){
+    public void clearOrderBy() {
         orderBy = ImmutableList.of();
     }
 
-    public void clearProjection(){
+    public void clearProjection() {
         projection = ImmutableList.of();
     }
 
-    public void clearWhere(){
+    public void clearWhere() {
         where = new BooleanBuilder();
     }
 
     @Override
-    public QueryMetadata clone(){
+    public QueryMetadata clone() {
         try {
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
             clone.exprInJoins = copyOf(exprInJoins);
@@ -255,7 +255,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         return modifiers;
     }
 
-    public Map<ParamExpression<?>,Object> getParams(){
+    public Map<ParamExpression<?>,Object> getParams() {
         return params;
     }
 
@@ -339,7 +339,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         return flags.contains(flag);
     }
     
-    private void validate(Expression<?> expr){
+    private void validate(Expression<?> expr) {
         if (validate) {
             exprInJoins = expr.accept(ValidatingVisitor.DEFAULT, exprInJoins);
         }

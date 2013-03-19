@@ -53,32 +53,32 @@ public abstract class AbstractQueryTest {
     }
 
     @AfterClass
-    public static void tearDownClass(){
+    public static void tearDownClass() {
         sessionFactory.close();
     }
 
     private Session session;
 
-    protected Session getSession(){
+    protected Session getSession() {
         return session;
     }
 
     @SuppressWarnings("unchecked")
     @Before
-    public void setUp(){
+    public void setUp() {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
         // clean up
         List<User> users = session.createQuery("from User").list();
-        for (User user : users){
+        for (User user : users) {
             session.delete(user);
         }
     }
 
     @After
     public void tearDown() throws HibernateException, SQLException{
-        if (!session.getTransaction().wasRolledBack()){
+        if (!session.getTransaction().wasRolledBack()) {
             session.getTransaction().commit();
         }
         session.close();

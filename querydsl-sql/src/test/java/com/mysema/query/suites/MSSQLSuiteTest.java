@@ -12,7 +12,7 @@ public class MSSQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initSQLServer();
-        Connections.setTemplates(new SQLServerTemplates(){{
+        Connections.setTemplates(new SQLServerTemplates() {{
             newLineToSingleSpace();
         }});
     }

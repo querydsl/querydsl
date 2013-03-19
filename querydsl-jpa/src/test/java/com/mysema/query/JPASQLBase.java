@@ -61,7 +61,7 @@ public class JPASQLBase {
     
     private EntityManager entityManager;
     
-    protected JPASQLQuery query(){
+    protected JPASQLQuery query() {
         return new JPASQLQuery(entityManager, templates);
     }
     
@@ -87,28 +87,28 @@ public class JPASQLBase {
     }
     
     @Test
-    public void In(){
+    public void In() {
         assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).count());
     }
 
     @Test
-    public void Count(){
+    public void Count() {
         assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).count());
     }
     
     @Test
-    public void Count_Via_Unique(){
+    public void Count_Via_Unique() {
         assertEquals(Long.valueOf(6), query().from(cat).where(cat.dtype.eq("C"))
                 .uniqueResult(cat.id.count()));
     }
     
     @Test
-    public void CountDistinct(){
+    public void CountDistinct() {
         assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).countDistinct());
     }
     
     @Test
-    public void List(){
+    public void List() {
         assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
     }
         
@@ -127,23 +127,23 @@ public class JPASQLBase {
     }
     
     @Test
-    public void List_With_Limit(){
+    public void List_With_Limit() {
         assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
     }
     
     @Test
     @ExcludeIn({Target.H2, Target.MYSQL})
-    public void List_With_Offset(){
+    public void List_With_Offset() {
         assertEquals(3, query().from(cat).offset(3).list(cat.id).size());    
     }
 
     @Test    
-    public void List_Limit_And_Offset(){
+    public void List_Limit_And_Offset() {
         assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());    
     }
     
     @Test
-    public void List_Multiple(){
+    public void List_Multiple() {
         print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyWeight));    
     }
     
@@ -154,7 +154,7 @@ public class JPASQLBase {
     }
     
     @Test
-    public void List_Results(){
+    public void List_Results() {
         SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc())
                 .listResults(cat.name);
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
@@ -162,27 +162,27 @@ public class JPASQLBase {
     }
     
     @Test
-    public void Unique_Result(){
+    public void Unique_Result() {
         query().from(cat).limit(1).uniqueResult(cat.id);       
     }
     
     @Test
-    public void Unique_Result_Multiple(){
+    public void Unique_Result_Multiple() {
         query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});    
     }
 
     @Test
-    public void Single_Result(){
+    public void Single_Result() {
         query().from(cat).singleResult(cat.id);    
     }
     
     @Test
-    public void Single_Result_Multiple(){
+    public void Single_Result_Multiple() {
         query().from(cat).singleResult(new Expression[]{cat.id});    
     }
         
     @Test
-    public void EntityQueries(){
+    public void EntityQueries() {
         SAnimal cat = new SAnimal("cat");
         SAnimal mate = new SAnimal("mate");
         QCat catEntity = QCat.cat;
@@ -190,7 +190,7 @@ public class JPASQLBase {
         // 1
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).list(catEntity);
         assertEquals(6, cats.size());
-        for (Cat c : cats){
+        for (Cat c : cats) {
             System.out.println(c.getName());
         }
 
@@ -223,21 +223,21 @@ public class JPASQLBase {
 
     @Test
     @Ignore
-    public void EntityProjections(){
+    public void EntityProjections() {
         // not yet supported
         SAnimal cat = new SAnimal("cat");
 
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
                 .list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
         assertEquals(6, cats.size());
-        for (Cat c : cats){
+        for (Cat c : cats) {
             System.out.println(c.getName());
         }
     }
 
     @Test
     @ExcludeIn(Target.H2)
-    public void Wildcard(){
+    public void Wildcard() {
         SAnimal cat = new SAnimal("cat");
 
         List<Tuple> rows = query().from(cat).list(cat.all());
@@ -250,7 +250,7 @@ public class JPASQLBase {
     }
     
     @Test
-    public void Null_as_uniqueResult(){
+    public void Null_as_uniqueResult() {
         SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
                 .uniqueResult(cat.name));
@@ -337,8 +337,8 @@ public class JPASQLBase {
         assertFalse(list.isEmpty());
     }
     
-    private void print(Iterable<Tuple> rows){
-        for (Tuple row : rows){
+    private void print(Iterable<Tuple> rows) {
+        for (Tuple row : rows) {
             System.out.println(row);
         }
     }    

@@ -27,7 +27,7 @@ public class ColumnImpl implements Column {
 
     private final String column;
 
-    public ColumnImpl(String column){
+    public ColumnImpl(String column) {
         this.column = column;
     }
 

@@ -65,37 +65,37 @@ public class QueryEmbeddable3Test {
     }
     
     @Test
-    public void User_rawList(){
+    public void User_rawList() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawList.any().getClass());
     }
     
     @Test
-    public void User_list(){
+    public void User_list() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.list.any().getClass());
     }
     
     @Test
-    public void User_set(){
+    public void User_set() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.set.any().getClass());
     }
     
     @Test
-    public void User_collection(){
+    public void User_collection() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.collection.any().getClass());
     }
     
     @Test
-    public void User_map(){
+    public void User_map() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.map.get("XXX").getClass());
     }
     
     @Test
-    public void User_rawMap1(){
+    public void User_rawMap1() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawMap1.get("XXX").getClass());
     }
     
     @Test
-    public void User_rawMap2(){
+    public void User_rawMap2() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawMap2.get("XXX").getClass());
     }
     

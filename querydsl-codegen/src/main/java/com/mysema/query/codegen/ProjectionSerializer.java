@@ -45,7 +45,7 @@ public final class ProjectionSerializer implements Serializer{
      * @param typeMappings
      */
     @Inject
-    public ProjectionSerializer(TypeMappings typeMappings){
+    public ProjectionSerializer(TypeMappings typeMappings) {
         this.typeMappings = typeMappings;
     }
 

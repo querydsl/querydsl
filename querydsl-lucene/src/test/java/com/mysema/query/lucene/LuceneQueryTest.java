@@ -142,13 +142,13 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void Exists(){
+    public void Exists() {
         assertTrue(query.where(title.eq("Jurassic Park")).exists());
         assertFalse(query.where(title.eq("Jurassic Park X")).exists());
     }
 
     @Test
-    public void NotExists(){
+    public void NotExists() {
         assertFalse(query.where(title.eq("Jurassic Park")).notExists());
         assertTrue(query.where(title.eq("Jurassic Park X")).notExists());
     }
@@ -309,20 +309,20 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void List_Distinct_Property(){
+    public void List_Distinct_Property() {
         assertEquals(4, query.list().size());
         assertEquals(3, query.distinct(year).list().size());
     }
 
     @Test
-    public void List_With_Filter(){
+    public void List_With_Filter() {
         Filter filter = new DuplicateFilter("year");
         assertEquals(4, query.list().size());
         assertEquals(3, query.filter(filter).list().size());
     }
 
     @Test
-    public void Count_Distinct_Property(){
+    public void Count_Distinct_Property() {
         assertEquals(4l, query.count());
         assertEquals(3l, query.distinct(year).count());
     }
@@ -419,28 +419,28 @@ public class LuceneQueryTest {
 
 
     @Test
-    public void Load_List(){
+    public void Load_List() {
         Document document = query.where(title.ne("")).load(title).list().get(0);
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
 
     @Test
-    public void Load_List_FieldSelector(){
+    public void Load_List_FieldSelector() {
         Document document = query.where(title.ne("")).load(new MapFieldSelector("title")).list().get(0);
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
 
     @Test
-    public void Load_SingleResult(){
+    public void Load_SingleResult() {
         Document document = query.where(title.ne("")).load(title).singleResult();
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
 
     @Test
-    public void Load_SingleResult_FieldSelector(){
+    public void Load_SingleResult_FieldSelector() {
         Document document = query.where(title.ne("")).load(new MapFieldSelector("title")).singleResult();
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));

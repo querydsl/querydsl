@@ -72,7 +72,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         try {
             return queryEngine.exists(getMetadata(), iterables);
         } catch (Exception e) {
@@ -82,11 +82,11 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
         }
     }
 
-    private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
+    private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias) {
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
-    private <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
+    private <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias) {
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
@@ -119,7 +119,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
 
     public abstract QueryMetadata getMetadata();
 
-    protected QueryEngine getQueryEngine(){
+    protected QueryEngine getQueryEngine() {
         return queryEngine;
     }
 
@@ -213,7 +213,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends
         return uniqueResult(iterate(expr));
     }
 
-    private void reset(){
+    private void reset() {
         getMetadata().reset();
     }
 

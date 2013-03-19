@@ -445,7 +445,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private SingularAttribute<?,?> getIdProperty(EntityType entity) {        
         final Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
         for (final SingularAttribute singularAttribute : singularAttributes) {
-            if (singularAttribute.isId()){
+            if (singularAttribute.isId()) {
                 return singularAttribute;
             }
         }

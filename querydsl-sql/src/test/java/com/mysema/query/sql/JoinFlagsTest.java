@@ -33,7 +33,7 @@ public class JoinFlagsTest {
     private SQLQuery query;
     
     @Before
-    public void setUp(){
+    public void setUp() {
         s1 = new QSurvey("s");
         s2 = new QSurvey("s2");    
         s3 = new QSurvey("s3");    
@@ -45,7 +45,7 @@ public class JoinFlagsTest {
     }
 
     @Test
-    public void JoinFlag_BeforeCondition(){
+    public void JoinFlag_BeforeCondition() {
         query.innerJoin(s2).on(s1.eq(s2));
         query.addJoinFlag(" a ", JoinFlag.Position.BEFORE_CONDITION);
         
@@ -55,7 +55,7 @@ public class JoinFlagsTest {
     }
     
     @Test
-    public void JoinFlags_BeforeTarget(){
+    public void JoinFlags_BeforeTarget() {
         query.innerJoin(s3).on(s1.eq(s3));
         query.addJoinFlag(" b ", JoinFlag.Position.BEFORE_TARGET);
         
@@ -65,7 +65,7 @@ public class JoinFlagsTest {
     }
     
     @Test
-    public void JoinFlags_End(){
+    public void JoinFlags_End() {
         query.innerJoin(s4).on(s1.eq(s4));
         query.addJoinFlag(" c ", JoinFlag.Position.END);
         
@@ -75,7 +75,7 @@ public class JoinFlagsTest {
     }
     
     @Test
-    public void JoinFlags_Override(){
+    public void JoinFlags_Override() {
         query.innerJoin(s5).on(s1.eq(s5));
         query.addJoinFlag(" d ", JoinFlag.Position.OVERRIDE);
         
@@ -84,7 +84,7 @@ public class JoinFlagsTest {
     }
     
     @Test
-    public void JoinFlags_Start(){
+    public void JoinFlags_Start() {
         query.innerJoin(s6).on(s1.eq(s6));
         query.addJoinFlag(" e ", JoinFlag.Position.START);
         

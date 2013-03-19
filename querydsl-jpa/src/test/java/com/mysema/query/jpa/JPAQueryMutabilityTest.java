@@ -40,7 +40,7 @@ public class JPAQueryMutabilityTest{
 
     private EntityManager entityManager;
 
-    protected JPASQLQuery query(){
+    protected JPASQLQuery query() {
         return new JPASQLQuery(entityManager, derbyTemplates);
     }
 
@@ -61,7 +61,7 @@ public class JPAQueryMutabilityTest{
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         SAnimal cat = new SAnimal("cat");
         JPASQLQuery query = query().from(cat).where(cat.name.isNotNull());
         JPASQLQuery query2 = query.clone(entityManager);

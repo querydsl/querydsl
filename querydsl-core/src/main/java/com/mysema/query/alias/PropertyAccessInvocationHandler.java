@@ -231,7 +231,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = pathFactory.createEnumPath((Class)type, metadata);
             rv = type.getEnumConstants()[0];
 
-        } else if (type.isArray()){
+        } else if (type.isArray()) {
             path = pathFactory.createArrayPath((Class)type, metadata);
             rv = Array.newInstance(type.getComponentType(), 5);
 

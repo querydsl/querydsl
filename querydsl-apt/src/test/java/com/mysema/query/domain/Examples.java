@@ -16,7 +16,7 @@ public class Examples {
     }
     
     @QueryEntity
-    public static class SimpleEntity extends Supertype{
+    public static class SimpleEntity extends Supertype {
 
     }
 

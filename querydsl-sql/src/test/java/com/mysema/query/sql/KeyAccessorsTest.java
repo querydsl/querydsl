@@ -64,7 +64,7 @@ public class KeyAccessorsTest {
     }
 
     @Test
-    public void Keys(){
+    public void Keys() {
         assertNotNull(QEmployee.employee.pk.sysIdx53);
         assertNotNull(QEmployee.employee.fk.superiorFk);
         assertNotNull(QEmployee.employee.fk._superiorFk);

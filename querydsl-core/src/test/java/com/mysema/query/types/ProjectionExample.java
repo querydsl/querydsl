@@ -19,20 +19,20 @@ public class ProjectionExample{
     
     public String text;
     
-    public ProjectionExample(){
+    public ProjectionExample() {
 
     }
 
-    public ProjectionExample(Long id){
+    public ProjectionExample(Long id) {
         this.id = id;
     }
 
-    public ProjectionExample(long id, String text){
+    public ProjectionExample(long id, String text) {
         this.id = id;
         this.text = text;
     }
 
-    public ProjectionExample(CharSequence text){
+    public ProjectionExample(CharSequence text) {
         this.text = text.toString();
     }
 }

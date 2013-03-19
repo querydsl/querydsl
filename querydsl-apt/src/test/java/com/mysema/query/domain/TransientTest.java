@@ -42,7 +42,7 @@ public class TransientTest {
     }
     
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QTransientTest_ExampleEntity.exampleEntity.property1);
         assertNotNull(QTransientTest_ExampleEntity.exampleEntity.property3);
     }

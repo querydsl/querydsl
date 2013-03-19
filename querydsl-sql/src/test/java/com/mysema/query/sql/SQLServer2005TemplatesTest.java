@@ -30,7 +30,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     
     @Override
     @Test
-    public void NoFrom(){
+    public void NoFrom() {
         query.getMetadata().addProjection(NumberTemplate.ONE);
         assertEquals("select 1", query.toString());
     }
@@ -43,7 +43,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     @SuppressWarnings("unchecked")
     @Test
     @Override
-    public void Union(){        
+    public void Union() {        
         NumberExpression<Integer> one = NumberTemplate.ONE;
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;
@@ -70,7 +70,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     }
     
     @Test
-    public void Modifiers(){
+    public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().addProjection(survey1.id);        
         assertEquals("with inner_query as  (   " +

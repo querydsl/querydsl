@@ -24,7 +24,7 @@ public class QueryElementTest {
 
     @Test
     @Ignore
-    public void test(){
+    public void test() {
         QueryElement element = new QueryElement(new TermQuery(new Term("str","text")));
         assertEquals("str:text",element.toString());
         //assertEquals(element.getQuery().hashCode(), element.hashCode());

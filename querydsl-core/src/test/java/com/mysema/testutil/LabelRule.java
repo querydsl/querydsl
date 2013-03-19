@@ -28,7 +28,7 @@ public class LabelRule implements MethodRule{
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
         Label label = target.getClass().getAnnotation(Label.class);
         boolean run = true;
-        if (label != null){
+        if (label != null) {
             run = isExecuted(method.getMethod(), label.value()); 
         }
         return run ? base : EmptyStatement.DEFAULT;
@@ -37,12 +37,12 @@ public class LabelRule implements MethodRule{
     private boolean isExecuted(Method method, Target target) {
         ExcludeIn ex = method.getAnnotation(ExcludeIn.class);
         // excluded in given targets
-        if (ex != null && Arrays.asList(ex.value()).contains(target)){
+        if (ex != null && Arrays.asList(ex.value()).contains(target)) {
             return false;
         }
         // included only in given targets
         IncludeIn in = method.getAnnotation(IncludeIn.class);
-        if (in != null && !Arrays.asList(in.value()).contains(target)){
+        if (in != null && !Arrays.asList(in.value()).contains(target)) {
             return false;
         }
         return true;

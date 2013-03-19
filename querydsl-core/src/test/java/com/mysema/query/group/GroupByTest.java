@@ -239,7 +239,7 @@ public class GroupByTest {
     @Test
     public void Transform_Via_GroupByProjection() {        
         Map<Integer, Post> results = POST_W_COMMENTS2.transform(
-                new GroupByProjection<Integer, Post>(postId, postName, set(qComment)){
+                new GroupByProjection<Integer, Post>(postId, postName, set(qComment)) {
                     @Override
                     protected Post transform(Group group) {
                         return new Post(
@@ -328,7 +328,7 @@ public class GroupByTest {
     }
     
     private static Projectable projectable(final Object[]... rows) {
-        return new AbstractProjectable(){
+        return new AbstractProjectable() {
             public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
                 return iterator(rows);
             }

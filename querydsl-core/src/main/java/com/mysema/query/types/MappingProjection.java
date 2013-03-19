@@ -26,7 +26,7 @@ import com.mysema.query.Tuple;
  * <p>Example</p>
  * 
  * <pre>
- * MappingProjection&lt;Pair&lt;String,String&gt;&gt; mapping = new MappingProjection&lt;Pair&lt;String,String&gt;&gt;(Pair.class, str1, str2){
+ * MappingProjection&lt;Pair&lt;String,String&gt;&gt; mapping = new MappingProjection&lt;Pair&lt;String,String&gt;&gt;(Pair.class, str1, str2) {
  *     {@code @Override}
  *     protected Pair&lt;String, String&gt; map(Tuple row) {
  *         return Pair.of(row.get(str1), row.get(str2));

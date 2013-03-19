@@ -25,15 +25,15 @@ import org.junit.Test;
 public class OpsTest {
 
     @Test
-    public void test(){
+    public void test() {
         Map<String,Field> fields = new HashMap<String,Field>();
         for (Class<?> cl : Arrays.<Class<?>>asList(Ops.class,
                 Ops.DateTimeOps.class,
                 Ops.MathOps.class,
-                Ops.StringOps.class)){
-            for (Field field : cl.getDeclaredFields()){
+                Ops.StringOps.class)) {
+            for (Field field : cl.getDeclaredFields()) {
                 Field old = fields.put(field.getName(), field);
-                if (old != null){
+                if (old != null) {
                     fail("Duplicate field name " + field.getName() +
                             " in " + field.getDeclaringClass().getSimpleName() +
                             " and " +

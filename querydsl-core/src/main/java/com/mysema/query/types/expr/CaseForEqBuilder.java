@@ -51,7 +51,7 @@ public final class CaseForEqBuilder<D> {
 
         private final Expression<?> target;
 
-        public CaseElement(@Nullable Expression<? extends D> eq, Expression<?> target){
+        public CaseElement(@Nullable Expression<? extends D> eq, Expression<?> target) {
             this.eq = eq;
             this.target = target;
         }
@@ -79,9 +79,9 @@ public final class CaseForEqBuilder<D> {
         this.other = other;
     }
 
-    public <T> Cases<T,Expression<T>> then(Expression<T> then){
+    public <T> Cases<T,Expression<T>> then(Expression<T> then) {
         type = then.getType();
-        return new Cases<T,Expression<T>>(){
+        return new Cases<T,Expression<T>>() {
             @Override
             protected Expression<T> createResult(Class<T> type, Expression<T> last) {
                 return SimpleOperation.create((Class<T>)type, Ops.CASE_EQ, base, last);
@@ -89,7 +89,7 @@ public final class CaseForEqBuilder<D> {
         }.when(other).then(then);
     }
 
-    public <T> Cases<T,Expression<T>> then(T then){
+    public <T> Cases<T,Expression<T>> then(T then) {
         return then(new ConstantImpl<T>(then));
     }
     
@@ -97,17 +97,17 @@ public final class CaseForEqBuilder<D> {
         return then((Expression<T>)NullExpression.DEFAULT);
     }
 
-    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then){
+    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then) {
         return thenNumber(new ConstantImpl<T>(then));
     }
 
-    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(NumberExpression<T> then){
+    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(NumberExpression<T> then) {
         return thenNumber(then);
     }
     
-    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> thenNumber(Expression<T> then){
+    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> thenNumber(Expression<T> then) {
         type = then.getType();
-        return new Cases<T,NumberExpression<T>>(){
+        return new Cases<T,NumberExpression<T>>() {
             @SuppressWarnings("unchecked")
             @Override
             protected NumberExpression<T> createResult(Class<T> type, Expression<T> last) {
@@ -117,17 +117,17 @@ public final class CaseForEqBuilder<D> {
         }.when(other).then(then);
     }
 
-    public Cases<String,StringExpression> then(StringExpression then){
+    public Cases<String,StringExpression> then(StringExpression then) {
         return thenString(then);
     }
 
-    public Cases<String,StringExpression> then(String then){
+    public Cases<String,StringExpression> then(String then) {
         return thenString(ConstantImpl.create(then));
     }
     
-    private Cases<String,StringExpression> thenString(Expression<String> then){
+    private Cases<String,StringExpression> thenString(Expression<String> then) {
         type = then.getType();
-        return new Cases<String,StringExpression>(){
+        return new Cases<String,StringExpression>() {
             @SuppressWarnings("unchecked")
             @Override
             protected StringExpression createResult(Class<String> type, Expression<String> last) {
@@ -139,11 +139,11 @@ public final class CaseForEqBuilder<D> {
 
     public abstract class Cases<T, Q extends Expression<T>> {
 
-        public CaseWhen<T,Q> when(Expression<? extends D> when){
+        public CaseWhen<T,Q> when(Expression<? extends D> when) {
             return new CaseWhen<T,Q>(this, when);
         }
 
-        public CaseWhen<T,Q> when(D when){
+        public CaseWhen<T,Q> when(D when) {
             return when(new ConstantImpl<D>(when));
         }
 
@@ -168,7 +168,7 @@ public final class CaseForEqBuilder<D> {
 
         protected abstract Q createResult(Class<T> type, Expression<T> last);
 
-        public Q otherwise(T otherwise){
+        public Q otherwise(T otherwise) {
             return otherwise(new ConstantImpl<T>(otherwise));
         }
     }
@@ -184,12 +184,12 @@ public final class CaseForEqBuilder<D> {
             this.when = when;
         }
 
-        public Cases<T, Q> then(Expression<T> then){
+        public Cases<T, Q> then(Expression<T> then) {
             caseElements.add(0, new CaseElement<D>(when, then));
             return cases;
         }
 
-        public Cases<T, Q> then(T then){
+        public Cases<T, Q> then(T then) {
             return then(new ConstantImpl<T>(then));
         }
 

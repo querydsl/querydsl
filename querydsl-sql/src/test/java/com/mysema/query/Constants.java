@@ -20,7 +20,7 @@ import com.mysema.query.sql.domain.QSurvey;
 
 public final class Constants {
 
-    private Constants(){}
+    private Constants() {}
 
     public static final java.sql.Date date;
 

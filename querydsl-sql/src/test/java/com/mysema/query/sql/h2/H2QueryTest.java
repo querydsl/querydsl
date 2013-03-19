@@ -14,8 +14,8 @@ public class H2QueryTest {
     private QSurvey survey = new QSurvey("survey");
     
     @Before
-    public void setUp(){
-        query = new SQLQuery(null, new H2Templates(){{
+    public void setUp() {
+        query = new SQLQuery(null, new H2Templates() {{
             newLineToSingleSpace();
         }});
     }

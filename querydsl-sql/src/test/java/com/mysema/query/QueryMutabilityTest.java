@@ -55,7 +55,7 @@ public class QueryMutabilityTest{
     }
 
     @Test
-    public void Clone(){
+    public void Clone() {
         SQLQuery query = new SQLQuery(new DerbyTemplates()).from(survey);
         SQLQuery query2 = query.clone(connection);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());

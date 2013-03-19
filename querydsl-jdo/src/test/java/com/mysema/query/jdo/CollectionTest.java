@@ -30,44 +30,44 @@ public class CollectionTest extends AbstractJDOTest {
     private final QStore store = QStore.store;
     
     @Test
-    public void Contains_Key(){
+    public void Contains_Key() {
         query(store, store.productsByName.containsKey("XXX"));
     }
     
     @Test
-    public void Contains_Value(){
+    public void Contains_Value() {
         Product product = query().from(QProduct.product).list(QProduct.product).get(0);
         query(store, store.productsByName.containsValue(product));
     }
     
     @Test
     @Ignore
-    public void Get(){
+    public void Get() {
         query(store, store.products.get(0).name.isNotNull());
     }
     
     @Test
-    public void isEmpty(){
+    public void isEmpty() {
         query(store, store.products.isEmpty());
     }    
 
     @Test
-    public void isNotEmpty(){
+    public void isNotEmpty() {
         query(store, store.products.isNotEmpty());
     }
     
     @Test
-    public void Size(){
+    public void Size() {
         query(store, store.products.size().gt(0));
     }
     
     @Test
-    public void Collection_Any(){
+    public void Collection_Any() {
         query(store, store.products.any().name.eq("Sony Discman"));
     }
     
     @Test
-    public void Collection_Any_And(){
+    public void Collection_Any_And() {
         query(store, store.products.any().name.eq("Sony Discman").and(store.products.any().price.gt(10.0)));
     }
     

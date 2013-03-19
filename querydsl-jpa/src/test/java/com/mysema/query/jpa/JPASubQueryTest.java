@@ -22,7 +22,7 @@ import com.mysema.query.jpa.domain.QCat;
 public class JPASubQueryTest {
     
     @Test
-    public void Multiple_Projections(){
+    public void Multiple_Projections() {
         JPASubQuery query = new JPASubQuery();
         query.from(QCat.cat);
         assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());

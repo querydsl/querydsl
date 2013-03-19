@@ -35,36 +35,36 @@ public class QueryProjectionTest {
     @QueryEntity
     @Entity
     @PersistenceCapable
-    public static class EntityWithProjection{
+    public static class EntityWithProjection {
 
-        public EntityWithProjection(long id){
-
-        }
-
-        @QueryProjection
-        public EntityWithProjection(String name){
+        public EntityWithProjection(long id) {
 
         }
 
         @QueryProjection
-        public EntityWithProjection(@QueryType(PropertyType.SIMPLE) Long id){
+        public EntityWithProjection(String name) {
 
         }
 
         @QueryProjection
-        public EntityWithProjection(long id, CharSequence name){
+        public EntityWithProjection(@QueryType(PropertyType.SIMPLE) Long id) {
 
         }
 
         @QueryProjection
-        public EntityWithProjection(String id, CharSequence name){
+        public EntityWithProjection(long id, CharSequence name) {
+
+        }
+
+        @QueryProjection
+        public EntityWithProjection(String id, CharSequence name) {
 
         }
 
     }
 
     @Test
-    public void Entity_Case(){
+    public void Entity_Case() {
         NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
         StringExpression stringExpr = new StringPath("x");
         
@@ -76,42 +76,42 @@ public class QueryProjectionTest {
 
     public static class DTOWithProjection {
 
-        public DTOWithProjection(long id){
+        public DTOWithProjection(long id) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(@QueryType(PropertyType.SIMPLE) Long id){
+        public DTOWithProjection(@QueryType(PropertyType.SIMPLE) Long id) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(String name){
+        public DTOWithProjection(String name) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(EntityWithProjection entity){
+        public DTOWithProjection(EntityWithProjection entity) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(long id, CharSequence name){
+        public DTOWithProjection(long id, CharSequence name) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(String id, CharSequence name){
+        public DTOWithProjection(String id, CharSequence name) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(DTOWithProjection dto, long id, Long id2, String str, CharSequence c){
+        public DTOWithProjection(DTOWithProjection dto, long id, Long id2, String str, CharSequence c) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(String id, CharSequence name, Map<Long,String> map1, Map<DTOWithProjection, Long> map2){
+        public DTOWithProjection(String id, CharSequence name, Map<Long,String> map1, Map<DTOWithProjection, Long> map2) {
 
         }
     }

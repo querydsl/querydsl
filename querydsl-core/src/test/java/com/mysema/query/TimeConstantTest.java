@@ -25,7 +25,7 @@ import com.mysema.query.types.expr.TimeExpression;
 public class TimeConstantTest {
 
     @Test
-    public void test(){
+    public void test() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 13);
         cal.set(Calendar.MINUTE,      30);

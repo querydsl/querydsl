@@ -138,46 +138,46 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void Exists(){
+    public void Exists() {
         assertTrue(where(user.firstName.eq("Jaakko")).exists());
         assertFalse(where(user.firstName.eq("JaakkoX")).exists());
         assertTrue(where(user.id.eq(u1.getId())).exists());
     }
 
     @Test
-    public void Find_By_Id(){
+    public void Find_By_Id() {
         assertNotNull(where(user.id.eq(u1.getId())).singleResult() != null);
     }
     
     @Test
-    public void NotExists(){
+    public void NotExists() {
         assertFalse(where(user.firstName.eq("Jaakko")).notExists());
         assertTrue(where(user.firstName.eq("JaakkoX")).notExists());
     }
 
     @Test
-    public void UniqueResult(){
+    public void UniqueResult() {
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
     }
 
     @Test(expected=NonUniqueResultException.class)
-    public void UniqueResultContract(){
+    public void UniqueResultContract() {
         where(user.firstName.isNotNull()).uniqueResult();
     }
 
     @Test
-    public void SingleResult(){
+    public void SingleResult() {
         where(user.firstName.isNotNull()).singleResult();
     }
 
     @Test
-    public void LongPath(){
+    public void LongPath() {
         assertEquals(2, query().where(user.mainAddress().city().name.eq("Helsinki")).count());
         assertEquals(2, query().where(user.mainAddress().city().name.eq("Tampere")).count());
     }
 
     @Test
-    public void CollectionPath(){
+    public void CollectionPath() {
         assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
     }
@@ -195,18 +195,18 @@ public class MongodbQueryTest {
     }
 
     @Test
-    public void IndexedAccess(){
+    public void IndexedAccess() {
         assertEquals(1, query().where(user.addresses.get(0).street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.get(1).street.eq("Aakatu1")).count());
     }
 
     @Test
-    public void Count(){
+    public void Count() {
         assertEquals(4, query().count());
     }
 
     @Test
-    public void Order(){
+    public void Order() {
         List<User> users = query().orderBy(user.age.asc()).list();
         assertEquals(asList(u1, u2, u3, u4), users);
 
@@ -215,13 +215,13 @@ public class MongodbQueryTest {
     }
 
     @Test
-    public void Restrict(){
+    public void Restrict() {
         assertEquals(asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
         assertEquals(asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
     }
 
     @Test
-    public void ListResults(){
+    public void ListResults() {
         SearchResults<User> results = query().limit(2).orderBy(user.age.asc()).listResults();
         assertEquals(4l, results.getTotal());
         assertEquals(2, results.getResults().size());
@@ -232,7 +232,7 @@ public class MongodbQueryTest {
     }
 
     @Test
-    public void EmptyResults(){
+    public void EmptyResults() {
         SearchResults<User> results = query().where(user.firstName.eq("XXX")).listResults();
         assertEquals(0l, results.getTotal());
         assertEquals(Collections.emptyList(), results.getResults());
@@ -290,17 +290,17 @@ public class MongodbQueryTest {
     }
 
     @Test
-    public void IsNotNull(){
+    public void IsNotNull() {
         assertQuery(user.firstName.isNotNull(), u3, u4, u2, u1);
     }
 
     @Test
-    public void IsNull(){
+    public void IsNull() {
         assertQuery(user.firstName.isNull());
     }
 
     @Test
-    public void IsEmpty(){
+    public void IsEmpty() {
         assertQuery(user.firstName.isEmpty());
     }
 
@@ -312,7 +312,7 @@ public class MongodbQueryTest {
     }
 
     @Test
-    public void Or(){
+    public void Or() {
         assertQuery(user.lastName.eq("Aakkonen").or(user.lastName.eq("BeekkoNen")), u3, u4);
     }
 
@@ -354,7 +354,7 @@ public class MongodbQueryTest {
     }
 
     @Test
-    public void Various(){
+    public void Various() {
         StringPath str = user.lastName;
         List<Predicate> predicates = new ArrayList<Predicate>();
         predicates.add(str.between("a", "b"));
@@ -380,7 +380,7 @@ public class MongodbQueryTest {
         predicates.add(str.startsWith("a"));
         predicates.add(str.startsWithIgnoreCase("a"));
 
-        for (Predicate predicate : predicates){
+        for (Predicate predicate : predicates) {
             where(predicate).count();
             where(predicate.not()).count();
         }
@@ -472,7 +472,7 @@ public class MongodbQueryTest {
         User user = new User(first, last, age, new Date());
         user.setGender(Gender.MALE);
         user.setMainAddress(mainAddress);
-        for (Address address : addresses){
+        for (Address address : addresses) {
             user.addAddress(address);
         }
         ds.save(user);

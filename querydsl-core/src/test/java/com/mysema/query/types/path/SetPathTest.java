@@ -26,19 +26,19 @@ public class SetPathTest {
             PathMetadataFactory.forVariable("stringPath"));
     
     @Test
-    public void ToString(){        
+    public void ToString() {        
         assertEquals("stringPath", stringPath.toString());
         assertEquals("any(stringPath)", stringPath.any().toString());
         assertEquals("eqIc(any(stringPath),X)", stringPath.any().equalsIgnoreCase("X").toString());
     }
     
     @Test
-    public void GetElementType(){
+    public void GetElementType() {
         assertEquals(String.class, stringPath.getElementType());
     }
     
     @Test
-    public void GetParameter(){        
+    public void GetParameter() {        
         assertEquals(String.class, stringPath.getParameter(0));
     }
 

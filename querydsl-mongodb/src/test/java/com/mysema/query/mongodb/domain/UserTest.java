@@ -20,7 +20,7 @@ import com.google.code.morphia.Morphia;
 public class UserTest {
     
     @Test
-    public void Map(){
+    public void Map() {
         City tampere = new City("Tampere", 61.30, 23.50);
         
         User user = new User();

@@ -24,19 +24,19 @@ import com.mysema.query.jpa.domain.QUser;
 public class SubQueryTest extends AbstractQueryTest{
 
     @Test(expected=IllegalArgumentException.class)
-    public void WrongUsage(){
+    public void WrongUsage() {
         sub().exists();
     }
 
     @Test
-    public void Single_Source(){
+    public void Single_Source() {
         JPASubQuery query = sub();
         query.from(cat);
         assertEquals("select cat\nfrom Cat cat", query.toString());
     }
     
     @Test
-    public void Multiple_Sources(){
+    public void Multiple_Sources() {
         JPASubQuery query = sub();
         query.from(cat);
         query.from(fatcat);
@@ -50,13 +50,13 @@ public class SubQueryTest extends AbstractQueryTest{
     }
         
     @Test
-    public void InnerJoin(){
+    public void InnerJoin() {
         assertEquals("select cat\nfrom Cat cat\n  inner join cat.mate", 
                 sub().from(cat).innerJoin(cat.mate).toString());
     }
     
     @Test
-    public void InnerJoin2(){
+    public void InnerJoin2() {
         QEmployee employee = QEmployee.employee;
         QUser user = QUser.user;
         assertEquals("select employee\nfrom Employee employee\n  inner join employee.user as user", 
@@ -64,73 +64,73 @@ public class SubQueryTest extends AbstractQueryTest{
     }
         
     @Test
-    public void LeftJoin(){
+    public void LeftJoin() {
         assertEquals("select cat\nfrom Cat cat\n  left join cat.mate", 
                 sub().from(cat).leftJoin(cat.mate).toString());
     }
     
     @Test
-    public void FullJoin(){
+    public void FullJoin() {
         assertEquals("select cat\nfrom Cat cat\n  full join cat.mate", 
                 sub().from(cat).fullJoin(cat.mate).toString());
     }
     
     @Test
-    public void Join(){
+    public void Join() {
         assertEquals("select cat\nfrom Cat cat\n  inner join cat.mate", 
                 sub().from(cat).join(cat.mate).toString());
     }
 
     @Test
-    public void UniqueProjection(){
+    public void UniqueProjection() {
         assertToString("(select cat from Cat cat)", 
                 sub().from(cat).unique(cat));
     }
 
     @Test
-    public void ListProjection(){
+    public void ListProjection() {
         assertToString("(select cat from Cat cat)", 
                 sub().from(cat).list(cat));
     }
     
     @Test
-    public void ListContains(){
+    public void ListContains() {
         assertToString("cat1 in (select cat from Cat cat)", 
                 sub().from(cat).list(cat).contains(cat1));
     }
     
     @Test
-    public void Exists(){
+    public void Exists() {
         assertToString("exists (select 1 from Cat cat)",                        
                 sub().from(cat).exists());
     }
     
     @Test
-    public void Exists_Where(){
+    public void Exists_Where() {
         assertToString("exists (select 1 from Cat cat where cat.weight < ?1)", 
                 sub().from(cat).where(cat.weight.lt(1)).exists());
     }
     
     @Test
-    public void Exists_Via_Unique(){
+    public void Exists_Via_Unique() {
         assertToString("exists (select 1 from Cat cat where cat.weight < ?1)", 
                 sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
     }
     
     @Test
-    public void NotExists(){
+    public void NotExists() {
         assertToString("not exists (select 1 from Cat cat)",                        
                 sub().from(cat).notExists());            
     }
     
     @Test
-    public void NotExists_Where(){
+    public void NotExists_Where() {
         assertToString("not exists (select 1 from Cat cat where cat.weight < ?1)",
                 sub().from(cat).where(cat.weight.lt(1)).notExists());    
     }
     
     @Test
-    public void NotExists_Via_Unique(){
+    public void NotExists_Via_Unique() {
         assertToString("not exists (select 1 from Cat cat where cat.weight < ?1)", 
                 sub().from(cat).where(cat.weight.lt(1)).unique(cat).notExists());   
     }
@@ -142,7 +142,7 @@ public class SubQueryTest extends AbstractQueryTest{
     }
     
     @Test
-    public void Count_Via_List(){
+    public void Count_Via_List() {
         assertToString("(select count(cat) from Cat cat)",                        
                 sub().from(cat).list(cat).count());
     }
@@ -168,7 +168,7 @@ public class SubQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void Indexed_Access(){
+    public void Indexed_Access() {
         assertToString("(select count(cat) from Cat cat   " +
         		"left join cat.kittens as cat_kittens_0 " +
         		"where index(cat_kittens_0) = ?1 and cat_kittens_0.name = ?2)", 
@@ -177,7 +177,7 @@ public class SubQueryTest extends AbstractQueryTest{
     }
     
     @Test
-    public void Indexed_Access_Without_Constant(){
+    public void Indexed_Access_Without_Constant() {
         assertToString("(select count(cat) from Cat cat   " +
                         "left join cat.kittens as cat_kittens_cat_id " +
                         "where index(cat_kittens_cat_id) = cat.id and cat_kittens_cat_id.name = ?1)", 

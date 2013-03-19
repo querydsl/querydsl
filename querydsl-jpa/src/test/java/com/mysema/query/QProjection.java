@@ -10,7 +10,7 @@ public class QProjection extends ConstructorExpression<Projection>{
 
     private static final long serialVersionUID = -5866362075090550839L;
 
-    public QProjection(StringExpression str, QCat cat){
+    public QProjection(StringExpression str, QCat cat) {
         super(Projection.class, 
                 new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
     }

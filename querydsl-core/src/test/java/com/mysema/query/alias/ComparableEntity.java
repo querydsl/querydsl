@@ -24,7 +24,7 @@ public class ComparableEntity implements Comparable<ComparableEntity>{
         return o == this;
     }
     
-    public String getProperty(){
+    public String getProperty() {
         return "";
     }
 

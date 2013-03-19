@@ -27,7 +27,7 @@ final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpressio
 
     private static final long serialVersionUID = 4578416585568476532L;
 
-    public static <D extends java.util.Date> DateTimeExpression<D> create(D date){
+    public static <D extends java.util.Date> DateTimeExpression<D> create(D date) {
         return new DateTimeConstant<D>(date);
     }
 
@@ -48,22 +48,22 @@ final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpressio
     }
     
     @Override
-    public NumberExpression<Integer> dayOfMonth(){
+    public NumberExpression<Integer> dayOfMonth() {
         return date.dayOfMonth();
     }
 
     @Override
-    public NumberExpression<Integer> month(){
+    public NumberExpression<Integer> month() {
         return date.month();
     }
 
     @Override
-    public NumberExpression<Integer> year(){
+    public NumberExpression<Integer> year() {
         return date.year();
     }
 
     @Override
-    public NumberExpression<Integer> yearMonth(){
+    public NumberExpression<Integer> yearMonth() {
         return date.yearMonth();
     }
 

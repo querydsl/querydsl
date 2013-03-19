@@ -20,7 +20,7 @@ import org.junit.Test;
 public class TemplateTest {
 
     @Test
-    public void test(){
+    public void test() {
         TemplateFactory factory = new TemplateFactory('\\');
         match("[0, ' + ', 1, ' + ', 2]", factory.create("{0} + {1} + {2}"));
         match("['blah ', 0, ' + ', 1, ' + ', 2, ' XXX']", factory.create("blah {0} + {1} + {2} XXX"));
@@ -31,7 +31,7 @@ public class TemplateTest {
     }
 
     @Test
-    public void like(){
+    public void like() {
         TemplateFactory factory = new TemplateFactory('\\');
         match("[0]",                     factory.create("{0%}"));
         match("[0]",                     factory.create("{%0}"));

@@ -23,14 +23,14 @@ import com.mysema.query.types.path.NumberPath;
 public class OracleGrammarTest {
 
     @Test
-    public void Constants(){
+    public void Constants() {
         assertNotNull(OracleGrammar.level);
         assertNotNull(OracleGrammar.rownum);
         assertNotNull(OracleGrammar.sysdate);
     }
 
     @Test
-    public void SumOver(){
+    public void SumOver() {
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
         SumOver<Integer> sumOver = OracleGrammar.sumOver(intPath).orderBy(intPath).partition(intPath);
         assertEquals("sum(intPath) over (partition by intPath order by intPath)", sumOver.toString());
