@@ -36,7 +36,7 @@ trait Projections {
    * @return
    */
   def create[T](expressions: Ex[_]*)(implicit mf: Manifest[T]) = {
-    val clazz = mf.erasure.asInstanceOf[Class[T]]
+    val clazz = mf.runtimeClass.asInstanceOf[Class[T]]
     try {
       clazz.getConstructor()
       ProjectionsFactory.fields[T](clazz, expressions:_*)
