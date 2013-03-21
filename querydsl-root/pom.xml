@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.0.0.BETA2-SNAPSHOT</version>
+  <version>3.0.0</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>http://www.querydsl.com</url>
@@ -152,16 +152,9 @@
           <version>0.3.1</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugin</groupId>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.15</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.surefire</groupId>
-              <artifactId>surefire-junit47</artifactId>
-              <version>2.12</version>
-            </dependency>
-          </dependencies>
+          <version>2.14</version>
         </plugin>
         <plugin>
           <groupId>com.springsource.bundlor</groupId>
@@ -285,6 +278,13 @@
           <argLine>-Xms256m -Xmx512m</argLine>
           <excludedGroups>com.mysema.testutil.ExternalDB</excludedGroups>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-junit47</artifactId>
+            <version>2.14</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
@@ -470,7 +470,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
-              <excludedGroups></excludedGroups>
+              <excludedGroups>none</excludedGroups>
             </configuration>
           </plugin>
         </plugins>
