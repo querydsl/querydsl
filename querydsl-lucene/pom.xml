@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${project.version}</version>
     </dependency>
     
     <dependency>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${project.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
      <artifactId>querydsl-apt</artifactId>
-     <version>${version}</version>
+     <version>${project.version}</version>
     </dependency>
   </dependencies>
 
