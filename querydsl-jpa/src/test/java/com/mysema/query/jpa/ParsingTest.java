@@ -344,7 +344,8 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @NoEclipseLink
+    @Ignore
+    //@NoEclipseLink
     public void DocoExamples97_10() throws Exception {
         query().from(log, payment).where(
                 log.item.instanceOf(Payment.class),
