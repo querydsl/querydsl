@@ -212,6 +212,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     public String toString() {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+            serializer.setStrict(false);
             serializer.serialize(queryMixin.getMetadata(), false);
             return serializer.toString().trim();
         } else {

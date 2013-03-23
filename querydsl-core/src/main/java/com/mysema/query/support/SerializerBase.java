@@ -58,6 +58,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     private boolean normalize = true;
     
+    private boolean strict = true;
+    
     public SerializerBase(Templates templates) {
         this.templates = templates;
     }
@@ -184,6 +186,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public void setNormalize(boolean normalize) {
         this.normalize = normalize;       
     }
+    
+    public void setStrict(boolean strict) {
+        this.strict = strict;
+    }
 
     @Override
     public String toString() {
@@ -258,27 +264,33 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     protected void visitOperation(Class<?> type, Operator<?> operator, final List<? extends Expression<?>> args) {
         final Template template = templates.getTemplate(operator);
-        if (template == null) {
-            throw new IllegalArgumentException("Got no pattern for " + operator);
-        }
-        final int precedence = templates.getPrecedence(operator);        
-        for (final Template.Element element : template.getElements()) {
-            final Object rv = element.convert(args);
-            if (rv instanceof Expression) {
-                final Expression<?> expr = (Expression<?>)rv;                
-                if (precedence > -1 && expr instanceof Operation) {
-                    if (precedence < templates.getPrecedence(((Operation<?>) expr).getOperator())) {
-                        append("(").handle(expr).append(")");
+        if (template != null) {
+            final int precedence = templates.getPrecedence(operator);        
+            for (final Template.Element element : template.getElements()) {
+                final Object rv = element.convert(args);
+                if (rv instanceof Expression) {
+                    final Expression<?> expr = (Expression<?>)rv;                
+                    if (precedence > -1 && expr instanceof Operation) {
+                        if (precedence < templates.getPrecedence(((Operation<?>) expr).getOperator())) {
+                            append("(").handle(expr).append(")");
+                        } else {
+                            handle(expr);
+                        }
                     } else {
                         handle(expr);
-                    }
+                    }                  
                 } else {
-                    handle(expr);
-                }                  
-            } else {
-                append(rv.toString());
-            }            
-        }
+                    append(rv.toString());
+                }            
+            }    
+        } else if (strict) {
+            throw new IllegalArgumentException("Got no pattern for " + operator);
+        } else {
+            append(operator.toString());
+            append("(");
+            handle(", ", args);
+            append(")");
+        }        
     }
 
 

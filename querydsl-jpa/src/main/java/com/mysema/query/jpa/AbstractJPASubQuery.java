@@ -200,6 +200,7 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
     public String toString() {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT, null);
+            serializer.setStrict(false);
             serializer.serialize(queryMixin.getMetadata(), false, null);
             return serializer.toString().trim();
         } else {

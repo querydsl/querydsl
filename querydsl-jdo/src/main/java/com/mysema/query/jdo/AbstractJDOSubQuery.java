@@ -56,6 +56,7 @@ public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends Detac
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
             JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
+            serializer.setStrict(false);
             serializer.serialize(queryMixin.getMetadata(), false, false);
             return serializer.toString().trim();
         } else {

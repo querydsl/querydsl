@@ -23,10 +23,24 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.query.ListSubQuery;
 
 public class SQLSubQueryTest {
+    
+    @Test
+    public void UnknownOperator() {
+        Operator op = new OperatorImpl("unknownfn");
+        SQLSubQuery query = new SQLSubQuery();
+        query.from(QEmployee.employee)
+            .where(BooleanOperation.create(op, QEmployee.employee.id));
+        
+        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
+        
+    }
     
     @Test
     public void Multiple_Projections() {
