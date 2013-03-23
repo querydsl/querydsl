@@ -24,10 +24,6 @@ import com.mysema.query.types.Ops;
  *
  */
 public class CUBRIDTemplates extends SQLTemplates {
-    
-    private final String limitTemplate = "\nlimit {0}";
-    
-    private final String offsetLimitTemplate = "\nlimit {0}, {1}";
 
     public static Builder builder() {
         return new Builder() {
@@ -37,6 +33,10 @@ public class CUBRIDTemplates extends SQLTemplates {
             }            
         };
     }
+    
+    private String limitTemplate = "\nlimit {0}";
+    
+    private String offsetLimitTemplate = "\nlimit {0}, {1}";
     
     public CUBRIDTemplates() {
         this('\\', false);
