@@ -20,7 +20,7 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLQuery;
@@ -36,7 +36,7 @@ import com.mysema.query.sql.SQLTemplates;
 public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> implements SQLCommonQuery<PostgresQuery> {
     
     public PostgresQuery(Connection conn) {
-        this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());
+        this(conn, new Configuration(new PostgresTemplates()), new DefaultQueryMetadata());
     }
     
     public PostgresQuery(Connection conn, SQLTemplates templates) {
