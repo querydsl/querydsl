@@ -38,5 +38,7 @@ public final class Naming {
             return sb.toString();
         }
     }
+    
+    private Naming() {}
 
 }
