@@ -27,6 +27,8 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanOperation;
+import com.mysema.query.types.expr.Wildcard;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.query.ListSubQuery;
 
 public class SQLSubQueryTest {
@@ -86,6 +88,29 @@ public class SQLSubQueryTest {
           .list(survey.id, emp2.firstname);
         
         assertEquals(3, subQuery.getMetadata().getJoins().size());
+    }
+    
+    @Test
+    public void Validate() {
+        NumberPath<Long> operatorTotalPermits = new NumberPath<Long>(Long.class, "operator_total_permits");
+        QSurvey survey = new QSurvey("survey");
+        
+        // select survey.name, count(*) as operator_total_permits
+        // from survey
+        // where survey.name >= "A"
+        // group by survey.name
+        // order by operator_total_permits asc
+        // limit 10
+        
+        Expression<?> e = new SQLSubQuery().from(survey)
+            .where(survey.name.goe("A"))
+            .groupBy(survey.name)
+            .orderBy(operatorTotalPermits.asc())
+            .limit(10)
+            .list(survey.name, Wildcard.count.as(operatorTotalPermits))
+            .as("top");        
+        
+        new SQLQuery(null, SQLTemplates.DEFAULT).from(e);
     }
     
 }
