@@ -23,17 +23,19 @@ public class JPASubQueryTest {
     
     @Test
     public void Multiple_Projections() {
+        QCat cat = QCat.cat;
         JPASubQuery query = new JPASubQuery();
-        query.from(QCat.cat);
-        assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
-        assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
+        query.from(cat);
+        assertEquals(1, query.list(cat).getMetadata().getProjection().size());
+        assertEquals(1, query.list(cat).getMetadata().getProjection().size());
     }
     
     public void Via_Interface() {
+        QCat cat = QCat.cat;
         JPQLSubQuery query = new JPASubQuery();
-        query.from(QCat.cat);
-        assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
-        assertEquals(1, query.list(QCat.cat).getMetadata().getProjection().size());
+        query.from(cat);
+        assertEquals(1, query.list(cat).getMetadata().getProjection().size());
+        assertEquals(1, query.list(cat).getMetadata().getProjection().size());
     }
 
     

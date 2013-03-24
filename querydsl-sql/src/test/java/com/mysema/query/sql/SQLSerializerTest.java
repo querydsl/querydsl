@@ -33,10 +33,13 @@ import com.mysema.query.types.path.PathBuilder;
 
 public class SQLSerializerTest {
     
+    private static final QEmployee employee = QEmployee.employee;
+
+    private static final QSurvey survey = QSurvey.survey;
+    
     @Test
     public void Count() {
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
-        QEmployee employee = QEmployee.employee;
+        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);        
         serializer.handle(employee.id.count().add(employee.id.countDistinct()));
         assertEquals("count(EMPLOYEE.ID) + count(distinct EMPLOYEE.ID)", serializer.toString());
     }
@@ -45,7 +48,6 @@ public class SQLSerializerTest {
     public void Some() {
         //select some((e.FIRSTNAME is not null)) from EMPLOYEE 
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
-        QEmployee employee = QEmployee.employee;
         serializer.handle(SQLExpressions.any(employee.firstname.isNotNull()));
         assertEquals("some(EMPLOYEE.FIRSTNAME is not null)", serializer.toString());
     }
@@ -62,7 +64,6 @@ public class SQLSerializerTest {
     @Test
     public void From_Function() {
         SQLQuery query = query();
-        QSurvey survey = QSurvey.survey;
         query.from(Expressions.template(Survey.class, "functionCall()")).join(survey);
         query.where(survey.name.isNotNull());
         assertEquals("from functionCall()\njoin SURVEY SURVEY\nwhere SURVEY.NAME is not null", query.toString());
@@ -71,7 +72,6 @@ public class SQLSerializerTest {
     @Test
     public void Join_To_Function_With_Alias() {
         SQLQuery query = query();
-        QSurvey survey = QSurvey.survey;
         query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin functionCall() as fc\nwhere SURVEY.NAME is not null", query.toString());
@@ -80,16 +80,13 @@ public class SQLSerializerTest {
     @Test
     public void Join_To_Function_In_Derby() {
         SQLQuery query = new SQLQuery(new DerbyTemplates());
-        QSurvey survey = QSurvey.survey;
         query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
     }
     
     @Test
-    public void Complex_SubQuery() {
-        QSurvey survey = QSurvey.survey;
-        
+    public void Complex_SubQuery() {               
         // create sub queries
         List<SubQueryExpression<Tuple>> sq = new ArrayList<SubQueryExpression<Tuple>>();
         String[] strs = new String[]{"a","b","c"};
@@ -134,7 +131,6 @@ public class SQLSerializerTest {
     
     @Test
     public void List_In_Query() {
-        QSurvey survey = QSurvey.survey;
         Expression<?> expr = Expressions.list(survey.id, survey.name).in(sq().from(survey).list(survey.id, survey.name));
         
         String str = new SQLSerializer(SQLTemplates.DEFAULT).handle(expr).toString();

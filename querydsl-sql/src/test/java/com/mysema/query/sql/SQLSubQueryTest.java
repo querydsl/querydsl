@@ -33,45 +33,46 @@ import com.mysema.query.types.query.ListSubQuery;
 
 public class SQLSubQueryTest {
     
+    private static final QEmployee employee = QEmployee.employee;
+    
     @Test
     public void UnknownOperator() {
         Operator op = new OperatorImpl("unknownfn");
         SQLSubQuery query = new SQLSubQuery();
-        query.from(QEmployee.employee)
-            .where(BooleanOperation.create(op, QEmployee.employee.id));
+        query.from(employee)
+            .where(BooleanOperation.create(op, employee.id));
         
-        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
-        
+        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());        
     }
     
     @Test
     public void Multiple_Projections() {
         SQLSubQuery query = new SQLSubQuery();
-        query.from(QEmployee.employee);
-        assertEquals(1, query.list(QEmployee.employee).getMetadata().getProjection().size());
-        assertEquals(1, query.list(QEmployee.employee).getMetadata().getProjection().size());
+        query.from(employee);
+        assertEquals(1, query.list(employee).getMetadata().getProjection().size());
+        assertEquals(1, query.list(employee).getMetadata().getProjection().size());
     }
 
     @Test
     public void List() {
         SQLSubQuery query = new SQLSubQuery();
-        query.from(QEmployee.employee);
-        ListSubQuery<?> subQuery = query.list(QEmployee.employee.id, "XXX", QEmployee.employee.firstname);
+        query.from(employee);
+        ListSubQuery<?> subQuery = query.list(employee.id, "XXX", employee.firstname);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
-        assertEquals(QEmployee.employee.id, exprs.get(0));
+        assertEquals(employee.id, exprs.get(0));
         assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
-        assertEquals(QEmployee.employee.firstname, exprs.get(2));
+        assertEquals(employee.firstname, exprs.get(2));
     }
     
     @Test
     public void Unique() {
         SQLSubQuery query = new SQLSubQuery();
-        query.from(QEmployee.employee);
-        SubQueryExpression<?> subQuery = query.unique(QEmployee.employee.id, "XXX", QEmployee.employee.firstname);
+        query.from(employee);
+        SubQueryExpression<?> subQuery = query.unique(employee.id, "XXX", employee.firstname);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
-        assertEquals(QEmployee.employee.id, exprs.get(0));
+        assertEquals(employee.id, exprs.get(0));
         assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
-        assertEquals(QEmployee.employee.firstname, exprs.get(2));
+        assertEquals(employee.firstname, exprs.get(2));
     }
     
     @Test

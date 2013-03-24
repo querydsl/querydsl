@@ -45,6 +45,8 @@ import com.mysema.testutil.HibernateTestRunner;
 @RunWith(HibernateTestRunner.class)
 public class HibernateBase extends AbstractStandardTest {
     
+    private static final QCat cat = QCat.cat;
+    
     @Rule
     public static MethodRule jpaProviderRule = new JPAProviderRule();
     
@@ -78,30 +80,30 @@ public class HibernateBase extends AbstractStandardTest {
     @Test
     public void QueryExposure() {
 //        save(new Cat());
-        List<Cat> results = query().from(QCat.cat).createQuery(QCat.cat).list();
+        List<Cat> results = query().from(cat).createQuery(cat).list();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
     
     @Test
     public void WithComment() {
-        query().from(QCat.cat).setComment("my comment").list(QCat.cat);
+        query().from(cat).setComment("my comment").list(cat);
     }
 
     @Test
     public void LockMode() {
-        query().from(QCat.cat).setLockMode(QCat.cat, LockMode.PESSIMISTIC_WRITE).list(QCat.cat);
+        query().from(cat).setLockMode(cat, LockMode.PESSIMISTIC_WRITE).list(cat);
     }
     
     @Test
     public void FlushMode() {
-        query().from(QCat.cat).setFlushMode(org.hibernate.FlushMode.AUTO).list(QCat.cat);
+        query().from(cat).setFlushMode(org.hibernate.FlushMode.AUTO).list(cat);
     }
 
     @Test
     public void Scroll() throws IOException{
-        CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(QCat.cat)
-                .createQuery(QCat.cat).scroll());
+        CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(cat)
+                .createQuery(cat).scroll());
         assertTrue(cats.hasNext());
         while (cats.hasNext()) {
             assertNotNull(cats.next());
@@ -112,8 +114,8 @@ public class HibernateBase extends AbstractStandardTest {
     @Test
     public void ScrollArray() throws IOException{
         CloseableIterator<Object[]> rows = new ScrollableResultsIterator<Object[]>(query()
-                .from(QCat.cat)
-                .createQuery(QCat.cat.name, QCat.cat.birthdate).scroll(), true);
+                .from(cat)
+                .createQuery(cat.name, cat.birthdate).scroll(), true);
         assertTrue(rows.hasNext());
         while (rows.hasNext()) {
             Object[] row = rows.next();

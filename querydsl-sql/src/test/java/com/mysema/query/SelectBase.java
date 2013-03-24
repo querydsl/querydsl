@@ -935,7 +935,6 @@ public class SelectBase extends AbstractBaseTest{
     
     @Test
     public void QBeanUsage() {
-        QSurvey survey = QSurvey.survey;
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         List<Survey> surveys = 
             query().from(

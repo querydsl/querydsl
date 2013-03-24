@@ -31,7 +31,7 @@ import com.mysema.query.sql.domain.QSurvey;
 public class MySQLQueryFactoryTest {
 
     private MySQLQueryFactory queryFactory;
-
+    
     @Before
     public void setUp() {
         Provider<Connection> provider = new Provider<Connection>() {

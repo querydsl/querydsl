@@ -42,11 +42,12 @@ public class JPQLSerializerTest {
     
     @Test
     public void Join_With() {
+        QCat cat = QCat.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);        
         QueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, QCat.cat);
-        md.addJoin(JoinType.INNERJOIN, QCat.cat.mate);
-        md.addJoinCondition(QCat.cat.mate.alive);
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addJoin(JoinType.INNERJOIN, cat.mate);
+        md.addJoinCondition(cat.mate.alive);
         serializer.serialize(md, false, null);
         assertEquals("select cat\nfrom Cat cat\n  inner join cat.mate with cat.mate.alive", serializer.toString());
     }
@@ -65,10 +66,11 @@ public class JPQLSerializerTest {
 
     @Test
     public void Delete_Clause_Uses_DELETE_FROM() {
+        QEmployee employee = QEmployee.employee;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, QEmployee.employee);
-        md.addWhere(QEmployee.employee.lastName.isNull());
+        md.addJoin(JoinType.DEFAULT, employee);
+        md.addWhere(employee.lastName.isNull());
         serializer.serializeForDelete(md);
         assertEquals("delete from Employee employee\nwhere employee.lastName is null", serializer.toString());
     }

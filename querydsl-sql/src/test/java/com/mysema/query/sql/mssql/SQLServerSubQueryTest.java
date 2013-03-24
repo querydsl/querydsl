@@ -21,9 +21,10 @@ import com.mysema.query.sql.domain.QSurvey;
 
 public class SQLServerSubQueryTest {
 
+    private static final QSurvey survey = QSurvey.survey;
+    
     @Test
-    public void TableHints_Single() {
-        QSurvey survey = QSurvey.survey;
+    public void TableHints_Single() {        
         SQLServerSubQuery query = new SQLServerSubQuery();
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT)\nwhere SURVEY.NAME is null", query.toString());
@@ -31,7 +32,6 @@ public class SQLServerSubQueryTest {
     
     @Test
     public void TableHints_Multiple() {
-        QSurvey survey = QSurvey.survey;
         SQLServerSubQuery query = new SQLServerSubQuery();
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT, SQLServerTableHints.NOLOCK).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT, NOLOCK)\nwhere SURVEY.NAME is null", query.toString());
@@ -39,7 +39,6 @@ public class SQLServerSubQueryTest {
     
     @Test
     public void TableHints_Multiple2() {
-        QSurvey survey = QSurvey.survey;
         QSurvey survey2 = new QSurvey("survey2");
         SQLServerSubQuery query = new SQLServerSubQuery();
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT)

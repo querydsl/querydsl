@@ -22,7 +22,8 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<Cat> kittens = CollQueryFactory.from(QCat.cat, Arrays.asList(a,b)).list(QCat.cat.kittens.any());
+        QCat cat = QCat.cat;
+        List<Cat> kittens = CollQueryFactory.from(cat, Arrays.asList(a,b)).list(cat.kittens.any());
         assertEquals(Arrays.asList(aa,ab,ac,ba,bb), kittens);
         
     }
@@ -40,8 +41,9 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<String> kittens = CollQueryFactory.from(QCat.cat, Arrays.asList(a,b))
-                .list(QCat.cat.kittens.any().name);
+        QCat cat = QCat.cat;
+        List<String> kittens = CollQueryFactory.from(cat, Arrays.asList(a,b))
+                .list(cat.kittens.any().name);
         assertEquals(Arrays.asList("aa","ab","ac","ba","bb"), kittens);
     }
     
@@ -58,9 +60,10 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<Cat> kittens = CollQueryFactory.from(QCat.cat, Arrays.asList(a,b))
-                .where(QCat.cat.kittens.any().name.startsWith("a"))
-                .list(QCat.cat.kittens.any());
+        QCat cat = QCat.cat;
+        List<Cat> kittens = CollQueryFactory.from(cat, Arrays.asList(a,b))
+                .where(cat.kittens.any().name.startsWith("a"))
+                .list(cat.kittens.any());
         
         assertEquals(Arrays.asList(aa,ab,ac), kittens);
         
@@ -79,9 +82,10 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
         
-        List<String> kittens = CollQueryFactory.from(QCat.cat, Arrays.asList(a,b))
-                .where(QCat.cat.kittens.any().name.startsWith("a"))
-                .list(QCat.cat.kittens.any().name);
+        QCat cat = QCat.cat;
+        List<String> kittens = CollQueryFactory.from(cat, Arrays.asList(a,b))
+                .where(cat.kittens.any().name.startsWith("a"))
+                .list(cat.kittens.any().name);
         
         assertEquals(Arrays.asList("aa","ab","ac"), kittens);
         

@@ -12,9 +12,10 @@ import com.mysema.query.types.Path;
 
 public class DefaultMapperTest extends AbstractMapperTest {
     
+    private static final QEmployee emp = QEmployee.employee;
+    
     @Test
-    public void Extract() {
-        QEmployee emp = QEmployee.employee;
+    public void Extract() {        
         Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, employee);        
         assertEquals(employee.getDatefield(), values.get(emp.datefield));
         assertEquals(employee.getFirstname(), values.get(emp.firstname));
@@ -26,7 +27,6 @@ public class DefaultMapperTest extends AbstractMapperTest {
     
     @Test
     public void Extract2() {
-        QEmployee emp = QEmployee.employee;
         Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, new EmployeeX());
         assertTrue(values.isEmpty());
     }

@@ -22,8 +22,9 @@ public class JoinUsageTest {
     
     @Test(expected=IllegalStateException.class)
     public void Join_Already_Declared() {
+        QSurvey survey = QSurvey.survey;
         SQLSubQuery subQuery = new SQLSubQuery(new DefaultQueryMetadata());
-        subQuery.from(QSurvey.survey).fullJoin(QSurvey.survey);
+        subQuery.from(survey).fullJoin(survey);
     }
 
 }

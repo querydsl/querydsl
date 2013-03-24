@@ -51,6 +51,8 @@ import com.mysema.testutil.JPATestRunner;
  */
 @RunWith(JPATestRunner.class)
 public class JPABase extends AbstractStandardTest {
+    
+    private static final QCat cat = QCat.cat;
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
@@ -96,7 +98,7 @@ public class JPABase extends AbstractStandardTest {
     @Test
     @ExcludeIn(Target.DERBY)
     public void Iterate() {
-        CloseableIterator<Cat> cats = query().from(QCat.cat).iterate(QCat.cat);
+        CloseableIterator<Cat> cats = query().from(cat).iterate(cat);
         while (cats.hasNext()) {
             Cat cat = cats.next();            
             assertNotNull(cat);
@@ -107,7 +109,7 @@ public class JPABase extends AbstractStandardTest {
     @Test
     public void QueryExposure() {
         //save(new Cat(20));
-        List<Cat> results = query().from(QCat.cat).createQuery(QCat.cat).getResultList();
+        List<Cat> results = query().from(cat).createQuery(cat).getResultList();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
@@ -115,9 +117,9 @@ public class JPABase extends AbstractStandardTest {
     @Test
     @NoEclipseLink @NoOpenJPA
     public void Hint() {
-        javax.persistence.Query query = query().from(QCat.cat)
+        javax.persistence.Query query = query().from(cat)
                 .setHint("org.hibernate.cacheable", true)
-                .createQuery(QCat.cat);
+                .createQuery(cat);
         
         assertNotNull(query);
         assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
@@ -126,18 +128,18 @@ public class JPABase extends AbstractStandardTest {
 
     @Test
     public void Hint2() {
-        assertFalse(query().from(QCat.cat).setHint("org.hibernate.cacheable", true)
-                .list(QCat.cat).isEmpty());
+        assertFalse(query().from(cat).setHint("org.hibernate.cacheable", true)
+                .list(cat).isEmpty());
     }
     
     @Test @Ignore
     @NoHibernate @NoOpenJPA @NoBatooJPA
     public void Hint3() {
-        javax.persistence.Query query = query().from(QCat.cat)
+        javax.persistence.Query query = query().from(cat)
                 .setHint("eclipselink.batch.type", "IN")
                 .setHint("eclipselink.batch", "person.workAddress")
                 .setHint("eclipselink.batch", "person.homeAddress")
-                .createQuery(QCat.cat);
+                .createQuery(cat);
         
         assertNotNull(query);
         assertEquals("person.homeAddress", query.getHints().get("eclipselink.batch"));
@@ -145,51 +147,51 @@ public class JPABase extends AbstractStandardTest {
 
     @Test
     public void LockMode() {
-        javax.persistence.Query query = query().from(QCat.cat)
-                .setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(QCat.cat);
+        javax.persistence.Query query = query().from(cat)
+                .setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(cat);
         assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
         assertFalse(query.getResultList().isEmpty());
     }
 
     @Test
     public void LockMode2() {
-        assertFalse(query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ)
-                .list(QCat.cat).isEmpty());
+        assertFalse(query().from(cat).setLockMode(LockModeType.PESSIMISTIC_READ)
+                .list(cat).isEmpty());
     }
 
     @Test
     public void FlushMode() {
-        assertFalse(query().from(QCat.cat).setFlushMode(FlushModeType.AUTO).list(QCat.cat).isEmpty());
+        assertFalse(query().from(cat).setFlushMode(FlushModeType.AUTO).list(cat).isEmpty());
     }
     
     @Test
     public void Limit1_UniqueResult() {
-        assertNotNull(query().from(QCat.cat).limit(1).uniqueResult(QCat.cat));
+        assertNotNull(query().from(cat).limit(1).uniqueResult(cat));
     }
 
     @Test
     @NoEclipseLink @NoOpenJPA
     public void Connection_Access() {
-        assertNotNull(query().from(QCat.cat).createQuery(QCat.cat).unwrap(Connection.class));
+        assertNotNull(query().from(cat).createQuery(cat).unwrap(Connection.class));
     }
     
     @Test
     @Ignore
     public void Delete() {
-        delete(QCat.cat).execute();
+        delete(cat).execute();
     }
     
     @Test 
     @NoBatooJPA
     public void Delete_Where() {
-        delete(QCat.cat).where(QCat.cat.name.eq("XXX")).execute();
+        delete(cat).where(cat.name.eq("XXX")).execute();
     }
     
     @Test 
     @NoBatooJPA
     @ExcludeIn(Target.MYSQL)
     public void Delete_Where_SubQuery_Exists() {
-        QCat parent = QCat.cat;
+        QCat parent = cat;
         QCat child = new QCat("kitten");
         
         delete(child)

@@ -99,8 +99,9 @@ public class IntegrationBase extends ParsingTest {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
+        QCat cat = QCat.cat;
         HibernateQuery query = new HibernateQuery(session);
-        ScrollableResults results = query.from(QCat.cat).scroll(ScrollMode.SCROLL_INSENSITIVE, QCat.cat);
+        ScrollableResults results = query.from(cat).scroll(ScrollMode.SCROLL_INSENSITIVE, cat);
         while (results.next()) {
             System.out.println(results.get(0));
         }

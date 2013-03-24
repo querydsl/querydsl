@@ -30,6 +30,8 @@ import com.mysema.query.types.path.PathBuilder;
 
 public class SerializationTest {
     
+    private static final QSurvey survey = QSurvey.survey;
+    
     private final Connection connection = EasyMock.createMock(Connection.class);
 
     @Test
@@ -62,7 +64,6 @@ public class SerializationTest {
         
     @Test
     public void Update() {
-        QSurvey survey = new QSurvey("survey");
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
         updateClause.set(survey.name, (String)null);
@@ -71,7 +72,6 @@ public class SerializationTest {
     
     @Test
     public void Update_Where() {
-        QSurvey survey = new QSurvey("survey");
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
         updateClause.set(survey.name, (String)null);
@@ -81,7 +81,6 @@ public class SerializationTest {
     
     @Test
     public void Insert() {
-        QSurvey survey = new QSurvey("survey");
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);
         insertClause.set(survey.name, (String)null);
@@ -110,14 +109,12 @@ public class SerializationTest {
     
     @Test
     public void FunctionCall() {
-        //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
-
-        QSurvey table = QSurvey.survey;
         RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         SQLSubQuery sq = new SQLSubQuery();
-        SubQueryExpression<?> expr = sq.from(table)
-            .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).list(table.name);
+        SubQueryExpression<?> expr = sq.from(survey)
+            .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not())
+            .list(survey.name);
         
         SQLSerializer serializer = new SQLSerializer(new SQLServerTemplates());
         serializer.serialize(expr.getMetadata(), false);
@@ -130,26 +127,22 @@ public class SerializationTest {
     
     @Test
     public void FunctionCall2() {
-        //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
-
-        QSurvey table = QSurvey.survey;
         RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         SQLQuery q = new SQLQuery(new SQLServerTemplates());
-        q.from(table).join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not());
+        q.from(survey)
+            .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
         
         assertEquals("from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?) as tokFunc\n" +
                 "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
-
     }
     
     @Test
     public void Union() {
-        QSurvey table = QSurvey.survey;
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
-        q.union(new SQLSubQuery().from(table).list(table.all()),
-                new SQLSubQuery().from(table).list(table.all()));
+        q.union(new SQLSubQuery().from(survey).list(survey.all()),
+                new SQLSubQuery().from(survey).list(survey.all()));
         
         assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)\n" +
@@ -161,11 +154,10 @@ public class SerializationTest {
     
     @Test
     public void Union_GroupBy() {
-        QSurvey table = QSurvey.survey;
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
-        q.union(new SQLSubQuery().from(table).list(table.all()),
-                new SQLSubQuery().from(table).list(table.all()))
-                .groupBy(table.id);
+        q.union(new SQLSubQuery().from(survey).list(survey.all()),
+                new SQLSubQuery().from(survey).list(survey.all()))
+                .groupBy(survey.id);
         
         assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)\n" +
@@ -178,10 +170,10 @@ public class SerializationTest {
     
     @Test
     public void Union2() {
-        QSurvey table = QSurvey.survey;
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
-        q.union(table, new SQLSubQuery().from(table).list(table.all()),
-                new SQLSubQuery().from(table).list(table.all()));
+        q.union(survey, 
+                new SQLSubQuery().from(survey).list(survey.all()),
+                new SQLSubQuery().from(survey).list(survey.all()));
         
         assertEquals("from ((select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n"+
             "from SURVEY SURVEY)\n" +

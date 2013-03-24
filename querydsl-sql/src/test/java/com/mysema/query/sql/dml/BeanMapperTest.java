@@ -12,10 +12,11 @@ import com.mysema.query.types.Path;
 
 public class BeanMapperTest extends AbstractMapperTest {
     
+    private static final QEmployee emp = QEmployee.employee;
+    
     @Test
     public void Extract() {
-        Map<Path<?>, Object> values = BeanMapper.DEFAULT.createMap(QEmployee.employee, employee);
-        QEmployee emp = QEmployee.employee;
+        Map<Path<?>, Object> values = BeanMapper.DEFAULT.createMap(emp, employee);        
         assertEquals(employee.getDatefield(), values.get(emp.datefield));
         assertEquals(employee.getFirstname(), values.get(emp.firstname));
         assertEquals(employee.getLastname(), values.get(emp.lastname));
@@ -26,7 +27,7 @@ public class BeanMapperTest extends AbstractMapperTest {
     
     @Test
     public void Extract2() {
-        Map<Path<?>, Object> values = BeanMapper.DEFAULT.createMap(QEmployee.employee, new EmployeeX());
+        Map<Path<?>, Object> values = BeanMapper.DEFAULT.createMap(emp, new EmployeeX());
         assertTrue(values.isEmpty());
     }
 
