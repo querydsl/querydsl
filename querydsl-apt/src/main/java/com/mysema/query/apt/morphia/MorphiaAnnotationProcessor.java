@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.mongodb.morphia;
+package com.mysema.query.apt.morphia;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -26,7 +26,6 @@ import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.DefaultConfiguration;
-import com.mysema.query.mongodb.Point;
 
 /**
  * Annotation processor to create Querydsl query types for Morphia annotated classes
@@ -45,7 +44,12 @@ public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> skip = Transient.class;
         DefaultConfiguration conf = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), 
                 entities, entity, null, null, embedded, skip);
-        conf.addCustomType(Double[].class, Point.class);
+        try {
+            Class cl = Class.forName("com.mysema.query.mongodb.Point");
+            conf.addCustomType(Double[].class, cl);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
         return conf;
     }
 

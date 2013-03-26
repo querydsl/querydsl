@@ -16,4 +16,5 @@ Import-Template:
 Excluded-Imports:
   javax.persistence.*;version="[2.0.0,2.1.0)",
   javax.jdo.*;version="[2.0.0,3.0.0)",
-  org.springframework.roo.*;version="1.2.3"
+  org.springframework.roo.*;version="1.2.3",
+  com.google.code.morphia.annotations.*;version="0.99"

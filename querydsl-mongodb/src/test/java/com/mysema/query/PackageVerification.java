@@ -27,7 +27,7 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor;
+import com.mysema.query.apt.morphia.MorphiaAnnotationProcessor;
 import com.mysema.query.types.Expression;
 
 public class PackageVerification {
