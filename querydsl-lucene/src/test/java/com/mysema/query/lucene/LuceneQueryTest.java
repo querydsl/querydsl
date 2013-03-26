@@ -36,12 +36,12 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.MapFieldSelector;
 import org.apache.lucene.document.NumericField;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriter.MaxFieldLength;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.DuplicateFilter;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
@@ -76,7 +76,7 @@ public class LuceneQueryTest {
 
     private RAMDirectory idx;
     private IndexWriter writer;
-    private Searcher searcher;
+    private IndexSearcher searcher;
 
     private Document createDocument(final String docTitle,
             final String docAuthor, final String docText, final int docYear,
@@ -100,6 +100,7 @@ public class LuceneQueryTest {
         year = entityPath.year;
         gross = entityPath.gross;
 
+        
         idx = new RAMDirectory();
         writer = createWriter(idx);
 
@@ -119,16 +120,18 @@ public class LuceneQueryTest {
                         "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein",
                         "Bubble sort", 1990, 30.50));
 
-        writer.optimize();
         writer.close();
-
-        searcher = new IndexSearcher(idx);
+        
+        IndexReader reader = IndexReader.open(idx);
+        searcher = new IndexSearcher(reader);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
     }
 
-    private IndexWriter createWriter(RAMDirectory idx2) throws Exception {
-        return new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_30), true,
-                               MaxFieldLength.UNLIMITED);
+    private IndexWriter createWriter(RAMDirectory idx) throws Exception {
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31, 
+                new StandardAnalyzer(Version.LUCENE_30))
+            .setOpenMode(IndexWriterConfig.OpenMode.CREATE);        
+        return new IndexWriter(idx, config);
     }
 
     @After
@@ -164,7 +167,7 @@ public class LuceneQueryTest {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
-        expect(searcher.maxDoc()).andThrow(new IOException());
+        expect(searcher.maxDoc()).andThrow(new IllegalArgumentException());
         replay(searcher);
         query.where(title.eq("Jurassic Park"));
         query.count();
@@ -208,7 +211,8 @@ public class LuceneQueryTest {
         writer.addDocument(d3);
         writer.close();
 
-        searcher = new IndexSearcher(idx);
+        IndexReader reader = IndexReader.open(idx);
+        searcher = new IndexSearcher(reader);
         query = new LuceneQuery(new LuceneSerializer(true, true, Locale.ENGLISH), searcher);
         assertEquals(3, query.list().size());
         List<Document> results = query.where(sort.startsWith("a")).orderBy(sort.asc()).list();
@@ -571,7 +575,7 @@ public class LuceneQueryTest {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
-        expect(searcher.maxDoc()).andThrow(new IOException());
+        expect(searcher.maxDoc()).andThrow(new IllegalArgumentException());
         replay(searcher);
         query.where(title.eq("Jurassic Park"));
         query.uniqueResult();
@@ -718,11 +722,11 @@ public class LuceneQueryTest {
     @Test
     public void Empty_Index_Should_Return_Empty_List() throws Exception {
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(
-                Version.LUCENE_30), true, MaxFieldLength.UNLIMITED);
-        writer.optimize();
+        
+        writer = createWriter(idx);
         writer.close();
-        searcher = new IndexSearcher(idx);
+        IndexReader reader = IndexReader.open(idx);
+        searcher = new IndexSearcher(reader);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         assertTrue(query.list().isEmpty());
     }

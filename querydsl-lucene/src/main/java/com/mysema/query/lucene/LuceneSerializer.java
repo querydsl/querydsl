@@ -56,6 +56,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathType;
+
 /**
  * Serializes Querydsl queries to Lucene queries.
  *

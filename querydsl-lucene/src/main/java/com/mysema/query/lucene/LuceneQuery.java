@@ -14,7 +14,7 @@
 package com.mysema.query.lucene;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.IndexSearcher;
 
 import com.google.common.base.Function;
 
@@ -32,11 +32,11 @@ public class LuceneQuery extends AbstractLuceneQuery<Document, LuceneQuery> {
         }        
     };
   
-    public LuceneQuery(Searcher searcher) {
+    public LuceneQuery(IndexSearcher searcher) {
         super(searcher, TRANSFORMER);
     }
 
-    public LuceneQuery(LuceneSerializer luceneSerializer, Searcher searcher) {
+    public LuceneQuery(LuceneSerializer luceneSerializer, IndexSearcher searcher) {
         super(luceneSerializer, searcher, TRANSFORMER);
     }
 

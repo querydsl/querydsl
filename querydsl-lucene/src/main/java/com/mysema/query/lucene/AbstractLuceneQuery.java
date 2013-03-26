@@ -27,7 +27,7 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Sort;
 
 import com.google.common.base.Function;
@@ -61,7 +61,7 @@ SimpleProjectable<T> {
 
     private final QueryMixin<Q> queryMixin;
 
-    private final Searcher searcher;
+    private final IndexSearcher searcher;
 
     private final LuceneSerializer serializer;
 
@@ -77,7 +77,7 @@ SimpleProjectable<T> {
     private Sort querySort;
 
     @SuppressWarnings("unchecked")
-    public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
+    public AbstractLuceneQuery(LuceneSerializer serializer, IndexSearcher searcher,
             Function<Document, T> transformer) {
         queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata().noValidate());
         this.serializer = serializer;
@@ -85,7 +85,7 @@ SimpleProjectable<T> {
         this.transformer = transformer;
     }
 
-    public AbstractLuceneQuery(Searcher searcher, Function<Document, T> transformer) {
+    public AbstractLuceneQuery(IndexSearcher searcher, Function<Document, T> transformer) {
         this(LuceneSerializer.DEFAULT, searcher, transformer);
     }
 
@@ -106,7 +106,9 @@ SimpleProjectable<T> {
                 return 0;
             }
             return searcher.search(createQuery(), filter, maxDoc).totalHits;
-        } catch (final IOException e) {
+        } catch (IOException e) {
+            throw new QueryException(e);
+        } catch (IllegalArgumentException e) {
             throw new QueryException(e);
         }
     }
@@ -174,7 +176,9 @@ SimpleProjectable<T> {
             if (limit == 0) {
                 return new EmptyCloseableIterator<T>();
             }
-        } catch (final IOException e) {
+        } catch (IOException e) {
+            throw new QueryException(e);
+        } catch (IllegalArgumentException e) {
             throw new QueryException(e);
         }
         if (queryLimit != null && queryLimit.intValue() < limit) {
@@ -326,6 +330,8 @@ SimpleProjectable<T> {
                 return null;
             }
         } catch (IOException e) {
+            throw new QueryException(e);
+        }  catch (IllegalArgumentException e) {
             throw new QueryException(e);
         }
     }

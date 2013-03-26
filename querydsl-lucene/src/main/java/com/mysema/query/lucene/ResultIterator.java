@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
 
 import com.google.common.base.Function;
 import com.mysema.commons.lang.CloseableIterator;
@@ -39,14 +39,14 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
 
     private int cursor;
 
-    private final Searcher searcher;
+    private final IndexSearcher searcher;
 
     @Nullable
     private final FieldSelector fieldSelector;
 
     private final Function<Document,T> transformer;
 
-    public ResultIterator(ScoreDoc[] scoreDocs, int offset, Searcher searcher, 
+    public ResultIterator(ScoreDoc[] scoreDocs, int offset, IndexSearcher searcher, 
             @Nullable FieldSelector fieldSelector, Function<Document, T> transformer) {
         this.scoreDocs = scoreDocs.clone();
         this.cursor = offset;

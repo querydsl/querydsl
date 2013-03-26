@@ -15,16 +15,22 @@
   <description>Lucene support for Querydsl</description>
   <packaging>jar</packaging>
   
+  <properties>
+    <lucene.version>3.6.2</lucene.version>
+  </properties>
+  
   <dependencies>   
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-core</artifactId>
-      <version>3.0.3</version>
+      <version>${lucene.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-queries</artifactId>
-      <version>3.0.3</version>
+      <version>${lucene.version}</version>
+      <scope>provided</scope>
     </dependency>            
     <dependency>
       <groupId>com.mysema.querydsl</groupId>

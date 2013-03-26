@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 package com.mysema.query;
-import static com.mysema.query.QPerson.*;
+import static com.mysema.query.QPerson.person;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -22,11 +22,11 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriter.MaxFieldLength;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
@@ -41,7 +41,7 @@ import com.mysema.query.types.path.StringPath;
 public class LuceneSerializerNotTokenizedTest {
     private RAMDirectory idx;
     private IndexWriter writer;
-    private Searcher searcher;
+    private IndexSearcher searcher;
     private LuceneSerializer serializer;
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
@@ -68,7 +68,10 @@ public class LuceneSerializerNotTokenizedTest {
     public void Before() throws Exception {
         serializer = new LuceneSerializer(false, false);
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_30), true, MaxFieldLength.UNLIMITED);
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31, 
+                new StandardAnalyzer(Version.LUCENE_30))
+            .setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+        writer = new IndexWriter(idx, config);
 
         writer.addDocument(createDocument(clooney));
         writer.addDocument(createDocument(pitt));
@@ -80,10 +83,10 @@ public class LuceneSerializerNotTokenizedTest {
         }
         writer.addDocument(document);
 
-        writer.optimize();
         writer.close();
 
-        searcher = new IndexSearcher(idx);
+        IndexReader reader = IndexReader.open(idx);
+        searcher = new IndexSearcher(reader);
     }
 
     @Test

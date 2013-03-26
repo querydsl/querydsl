@@ -25,11 +25,11 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.NumericField;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriter.MaxFieldLength;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.NumericUtils;
@@ -81,9 +81,10 @@ public class LuceneSerializerTest {
     private static final String BYTE_PREFIX_CODED = NumericUtils.intToPrefixCoded(1);
     private static final String FLOAT_PREFIX_CODED = NumericUtils.floatToPrefixCoded((float)1.0);
 
+    private IndexWriterConfig config;
     private RAMDirectory idx;
     private IndexWriter writer;
-    private Searcher searcher;
+    private IndexSearcher searcher;
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -124,14 +125,17 @@ public class LuceneSerializerTest {
         floatField = entityPath.getNumber("floatField", Float.class);
 
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_30), true, MaxFieldLength.UNLIMITED);
+        config = new IndexWriterConfig(Version.LUCENE_31, 
+                new StandardAnalyzer(Version.LUCENE_30))
+            .setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+        writer = new IndexWriter(idx, config);
 
         writer.addDocument(createDocument());
 
-        writer.optimize();
         writer.close();
 
-        searcher = new IndexSearcher(idx);
+        IndexReader reader = IndexReader.open(idx);
+        searcher = new IndexSearcher(reader);
     }
 
     @After
