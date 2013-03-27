@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.0.0.BUILD-SNAPSHOT</version>
+  <version>3.1.0</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>http://www.querydsl.com</url>
@@ -475,7 +475,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
-              <excludedGroups></excludedGroups>
+              <excludedGroups/>
             </configuration>
           </plugin>
         </plugins>
