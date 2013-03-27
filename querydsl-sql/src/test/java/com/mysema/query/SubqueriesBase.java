@@ -20,12 +20,15 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.support.Expressions;
+import com.mysema.query.types.expr.Param;
+import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
@@ -46,6 +49,14 @@ public class SubqueriesBase extends AbstractBaseTest {
         assertFalse(list.isEmpty());
     }
 
+    @Test
+    public void SubQuery_Params() {
+        Param<String> aParam = new Param<String>(String.class, "param");
+        SQLSubQuery subQuery = new SQLSubQuery().from(employee).where(employee.firstname.eq(aParam));
+        subQuery.set(aParam, "Mike");
+
+        assertEquals(1, query().from(subQuery.list(Wildcard.all)).count());
+    }    
     
     @Test
     public void SubQuery_Alias() {

@@ -33,6 +33,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamsVisitor;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.ValidatingVisitor;
@@ -82,6 +83,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private Predicate where;
 
     private Set<QueryFlag> flags = ImmutableSet.of();
+    
+    private boolean extractParams = true;
     
     private boolean validate = true;
     
@@ -340,6 +343,9 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
     
     private void validate(Expression<?> expr) {
+        if (extractParams) {
+            expr.accept(ParamsVisitor.DEFAULT, this);
+        }
         if (validate) {
             exprInJoins = expr.accept(ValidatingVisitor.DEFAULT, exprInJoins);
         }
