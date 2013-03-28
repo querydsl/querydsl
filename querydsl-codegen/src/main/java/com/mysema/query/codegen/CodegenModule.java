@@ -15,14 +15,13 @@ package com.mysema.query.codegen;
 
 import java.util.Collections;
 
-
 /**
  * CodegenModule provides a module general serialization
  * 
  * @author tiwe
  *
  */
-public class CodegenModule  extends AbstractModule{
+public class CodegenModule  extends AbstractModule {
 
     public static final String PREFIX = "prefix";
 

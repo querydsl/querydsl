@@ -17,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -29,24 +28,27 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
+import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.types.Expression;
 
 public class PackageVerification {
     
     @Test
-    public void Verify_Package() throws ClassNotFoundException, IOException{
+    public void Verify_Package() throws Exception{
         String version = System.getProperty("version");
         verify(new File("target/querydsl-jdo-"+version+"-apt-one-jar.jar"));        
     }
 
-    private void verify(File oneJar) throws ClassNotFoundException, IOException {
+    private void verify(File oneJar) throws Exception {
         assertTrue(oneJar.getPath() + " doesn't exist", oneJar.exists());
         // verify classLoader
         URLClassLoader oneJarClassLoader = new URLClassLoader(new URL[]{oneJar.toURI().toURL()});
         oneJarClassLoader.loadClass(Expression.class.getName()); // querydsl-core
         oneJarClassLoader.loadClass(CodeWriter.class.getName()); // codegen
+        oneJarClassLoader.loadClass(CodegenModule.class.getName()).newInstance();
         oneJarClassLoader.loadClass(PersistenceCapable.class.getName()); // jdo        
-        oneJarClassLoader.loadClass(JDOAnnotationProcessor.class.getName()); // querydsl-apt
+        Class cl = oneJarClassLoader.loadClass(JDOAnnotationProcessor.class.getName()); // querydsl-apt
+        cl.newInstance();
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
         assertEquals(JDOAnnotationProcessor.class.getName(), 
                 Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));

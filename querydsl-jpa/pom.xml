@@ -80,7 +80,7 @@
       <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
-      <optional>true</optional> 
+      <optional>true</optional>
     </dependency>    
     
     <dependency>
