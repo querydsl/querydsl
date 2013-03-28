@@ -719,7 +719,7 @@ public final class Connections {
         stmt.setTime(6, Constants.time);
         if (superiorId <= 0) {
             stmt.setNull(7, Types.INTEGER);
-        }else{
+        } else {
             stmt.setInt(7, superiorId);
         }
         stmt.execute();

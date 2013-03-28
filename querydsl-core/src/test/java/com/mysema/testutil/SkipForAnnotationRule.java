@@ -37,7 +37,7 @@ public class SkipForAnnotationRule implements MethodRule {
         if (target.getClass().getAnnotation(classAnnotation) != null
           && method.getMethod().getAnnotation(methodAnnotation) != null) {
             return EmptyStatement.DEFAULT;
-        }else{
+        } else {
             return base;
         }
     }

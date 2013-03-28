@@ -617,7 +617,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 }                
                 appendAsTableName((RelationalPath<?>)path);
                 return null;
-            }else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
+            } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
                 appendAsColumnName(path);
                 return null;
             }

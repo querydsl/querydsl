@@ -49,7 +49,7 @@ public class TemplateFactory {
     public Template create(String template) {
         if (cache.containsKey(template)) {
             return cache.get(template);
-        }else{
+        } else {
             Matcher m = elementPattern.matcher(template);
             final ImmutableList.Builder<Element> elements = ImmutableList.builder();
             int end = 0;
@@ -85,15 +85,15 @@ public class TemplateFactory {
                         if (str.charAt(str.length()-2) == '%') {
                             transformer = converters.toStartsWithViaLikeLower;
                             strip = 2;
-                        }else{
+                        } else {
                             transformer = converters.toStartsWithViaLike;
                             strip = 1;
                         }
-                    }else{
+                    } else {
                         if (str.charAt(str.length()-2) == '%') {
                             transformer = converters.toContainsViaLikeLower;
                             strip = 2;
-                        }else{
+                        } else {
                             transformer = converters.toContainsViaLike;
                             strip = 1;
                         }

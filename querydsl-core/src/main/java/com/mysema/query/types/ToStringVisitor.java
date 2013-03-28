@@ -90,7 +90,7 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
                     }
                 }                
                 return builder.toString();
-            }else{
+            } else {
                 throw new IllegalArgumentException("No pattern for " + p.getMetadata().getPathType());
             }
         } else {

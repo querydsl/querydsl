@@ -56,7 +56,7 @@ public final class MathUtils {
         } else if (type.equals(BigDecimal.class)) {
             if (num instanceof BigDecimal) {
                 rv = num;
-            } else{
+            } else {
                 rv = new BigDecimal(num.toString());
             }
         } else if (type.equals(BigInteger.class)) {

@@ -135,7 +135,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
             context.add(expr, replacement);
             return replacement;
             
-        }else if (expr.getMetadata().getParent() != null) {
+        } else if (expr.getMetadata().getParent() != null) {
             Context c = new Context();
             final Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, c);
             if (c.replace) {

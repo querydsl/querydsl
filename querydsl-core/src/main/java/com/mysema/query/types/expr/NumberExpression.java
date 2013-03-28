@@ -180,7 +180,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
         if (type.equals(getType())) {
             return (NumberExpression<A>) this;
-        }else{
+        } else {
             return NumberOperation.create(type, Ops.NUMCAST, mixin, new ConstantImpl<Class<A>>(type));
         }
     }

@@ -87,7 +87,7 @@ public class DerbyTemplates extends SQLTemplates {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() == null) {
             context.handle(offsetTemplate, mod.getOffset());
-        }else if (mod.getOffset() == null) {
+        } else if (mod.getOffset() == null) {
             context.handle(limitTemplate, mod.getLimit());
         } else {
             context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());

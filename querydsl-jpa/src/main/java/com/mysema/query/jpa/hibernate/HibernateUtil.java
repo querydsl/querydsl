@@ -77,7 +77,7 @@ public final class HibernateUtil {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val.getClass().isArray()) {
             query.setParameterList(key, (Object[]) val);
-        }else if (TYPES.containsKey(val.getClass())) {
+        } else if (TYPES.containsKey(val.getClass())) {
             query.setParameter(key, val, TYPES.get(val.getClass()));
         } else {
             query.setParameter(key, val);

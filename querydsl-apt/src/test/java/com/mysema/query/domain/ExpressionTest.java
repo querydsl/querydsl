@@ -79,7 +79,7 @@ public class ExpressionTest {
                         toVisit.add(str.toLowerCase());
                         toVisit.add(str.charAt(0));
                         toVisit.add(str.isEmpty());
-                    }else if (rv instanceof BooleanExpression) {
+                    } else if (rv instanceof BooleanExpression) {
                         BooleanExpression b = (BooleanExpression)rv;
                         toVisit.add(b.not());
                     }

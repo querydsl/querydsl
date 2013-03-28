@@ -146,7 +146,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         } else if (!select.isEmpty()) {
             if (metadata.isDistinct()) {
                 append(SELECT_DISTINCT);
-            }else if (metadata.isUnique() && !subQuery) {
+            } else if (metadata.isUnique() && !subQuery) {
                 append(SELECT_UNIQUE);
             } else {
                 append(SELECT);

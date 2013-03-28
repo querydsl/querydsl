@@ -285,7 +285,7 @@ public class MetaDataExporterTest {
                 classes.toArray(new String[classes.size()]));
         if(compilationResult == 0) {
             System.out.println("Compilation is successful");
-        }else{
+        } else {
             Assert.fail("Compilation Failed for " + target);
         }
     }

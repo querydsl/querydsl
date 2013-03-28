@@ -79,7 +79,7 @@ public class TypeTest implements InvocationHandler{
         if (args.length == 2) {
             value = args[1];
             return null;
-        }else{
+        } else {
             return value;
         }
     }

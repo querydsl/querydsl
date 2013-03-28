@@ -162,7 +162,7 @@ public final class Alias {
         EntityPathBase<D> rv = aliasFactory.<EntityPathBase<D>> getCurrentAndReset();
         if (rv != null) {
             return rv;
-        }else if (arg instanceof EntityPath<?>) {    
+        } else if (arg instanceof EntityPath<?>) {    
             return (EntityPathBase<D>)arg; //NOSONAR
         } else if (arg instanceof ManagedObject) {
             return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
@@ -177,7 +177,7 @@ public final class Alias {
         P rv = aliasFactory.<P>getCurrentAndReset();
         if (rv != null) {
             return rv;
-        }else if (arg instanceof Path<?>) {    
+        } else if (arg instanceof Path<?>) {    
             return (P)arg;
         } else if (arg instanceof ManagedObject) {
             return (P) ((ManagedObject) arg).__mappedPath();

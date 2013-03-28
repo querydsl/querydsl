@@ -135,7 +135,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
                 }                               
             } else if (toLower) {
                 builder.append(Character.toLowerCase(str.charAt(i)));
-            } else{
+            } else {
                 builder.append(str.charAt(i));
             }
         }

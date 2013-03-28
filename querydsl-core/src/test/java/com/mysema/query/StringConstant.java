@@ -63,7 +63,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
     public StringExpression append(Expression<String> s) {
         if (s instanceof Constant) {
             return append(((Constant<String>)s).getConstant());
-        }else{
+        } else {
             return super.append(s);
         }
     }
@@ -139,7 +139,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
     public StringExpression prepend(Expression<String> s) {
         if (s instanceof Constant) {
             return prepend(((Constant<String>)s).getConstant());
-        }else{
+        } else {
             return super.prepend(s);
         }
     }

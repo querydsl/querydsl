@@ -146,7 +146,7 @@ public class JavaTypeMapping {
         for (Class<?> itf : interfaces) {
             if (typeByClass.containsKey(itf)) {
                 return typeByClass.get(itf);
-            }else if (defaultTypes.containsKey(itf)) {
+            } else if (defaultTypes.containsKey(itf)) {
                 return defaultTypes.get(itf);
             }
         }

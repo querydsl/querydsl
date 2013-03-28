@@ -146,7 +146,7 @@ public class RowNumber extends MutableExpressionBase<Long> {
     public boolean equals(Object o) {
         if (o == this) {
             return true;
-        }else if (o instanceof RowNumber) {
+        } else if (o instanceof RowNumber) {
             RowNumber rn = (RowNumber)o;
             return partitionBy.equals(rn.partitionBy) && orderBy.equals(rn.orderBy);
         } else {

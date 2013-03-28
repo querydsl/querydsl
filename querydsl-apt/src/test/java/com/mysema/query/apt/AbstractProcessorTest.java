@@ -35,7 +35,7 @@ public abstract class AbstractProcessorTest {
         for (File file : new File(path).listFiles()) {
             if (file.getName().endsWith(".java")) {
                 classes.add(file.getPath());
-            }else if (file.isDirectory() && !file.getName().startsWith(".")) {
+            } else if (file.isDirectory() && !file.getName().startsWith(".")) {
                 classes.addAll(getFiles(file.getAbsolutePath()));
             }
         }

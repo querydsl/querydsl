@@ -232,7 +232,7 @@ public class MetaDataExporter {
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)) {
             fieldType = TypeCategory.NUMERIC;
-        }else if (Enum.class.isAssignableFrom(clazz)) {
+        } else if (Enum.class.isAssignableFrom(clazz)) {
             fieldType = TypeCategory.ENUM;
         }
         Type typeModel = new ClassType(fieldType, clazz);

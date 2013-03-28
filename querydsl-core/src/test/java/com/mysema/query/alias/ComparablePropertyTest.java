@@ -42,9 +42,9 @@ public class ComparablePropertyTest {
         public boolean equals(Object o) {
             if (o == this) {
                 return true;
-            }else if (o instanceof ComparableType) {
+            } else if (o instanceof ComparableType) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

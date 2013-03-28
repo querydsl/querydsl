@@ -170,7 +170,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     public <T> SQLUpdateClause set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, (Expression<?>)value));
-        }else if (value != null) {
+        } else if (value != null) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, new ConstantImpl<Object>(value)));
         } else {
             setNull(path);
@@ -199,7 +199,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), (Expression<?>)values.get(i)));
-            }else if (values.get(i) != null) {
+            } else if (values.get(i) != null) {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new ConstantImpl<Object>(values.get(i))));
             } else {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), Null.CONSTANT));

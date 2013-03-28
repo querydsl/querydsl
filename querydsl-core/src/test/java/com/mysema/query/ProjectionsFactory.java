@@ -174,7 +174,7 @@ public class ProjectionsFactory {
             rv.add(expr.longValue());
             rv.add(expr.shortValue());
             return ImmutableList.copyOf(rv);
-        }else{
+        } else {
             return Collections.emptySet();
         }
     }

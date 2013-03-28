@@ -208,7 +208,7 @@ public abstract class QueryExecution {
         try{
             if (p.getSecond().length == 0) {
                 return p.getFirst().listDistinct(pr).size();
-            }else{
+            } else {
                 Expression<?>[] projection = new Expression[p.getSecond().length + 1];
                 projection[0] = pr;
                 System.arraycopy(p.getSecond(), 0, projection, 1, p.getSecond().length);
@@ -262,7 +262,7 @@ public abstract class QueryExecution {
                 buffer.append(e + "\n");
             }
             Assert.fail(buffer.toString());
-        }else{
+        } else {
             System.out.println("Success with " + total + " tests");
         }
     }

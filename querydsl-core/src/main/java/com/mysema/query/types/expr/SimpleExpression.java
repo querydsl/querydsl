@@ -244,7 +244,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     public BooleanExpression notIn(Collection<? extends T> right) {
         if (right.size() == 1) {
             return ne(right.iterator().next());
-        }else{
+        } else {
             return in(right).not();
         }
     }

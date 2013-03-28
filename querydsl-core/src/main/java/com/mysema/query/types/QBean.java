@@ -246,7 +246,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                         fields.get(entry.getKey()).set(rv, value);
                     }
                 }
-            }else{
+            } else {
                 Map<String, Object> beanMap = new BeanMap(rv);
                 for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()) {
                     Object value = a[this.args.indexOf(entry.getValue())];

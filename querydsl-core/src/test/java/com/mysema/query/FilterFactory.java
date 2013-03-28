@@ -220,11 +220,11 @@ public class FilterFactory {
             rv.add(eint.between(1, 2));
             rv.add(eint.notBetween(1, 2));
             rv.add(eint.mod(5).eq(0));
-        }else if (expr.getType().equals(Double.class)) {
+        } else if (expr.getType().equals(Double.class)) {
             NumberExpression<Double> edouble = (NumberExpression)expr;
             rv.add(edouble.between(1.0, 2.0));
             rv.add(edouble.notBetween(1.0, 2.0));
-        }else if (expr.getType().equals(Long.class)) {
+        } else if (expr.getType().equals(Long.class)) {
             NumberExpression<Long> elong = (NumberExpression)expr;
             rv.add(elong.mod(5l).eq(0l));
         }

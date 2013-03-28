@@ -34,7 +34,7 @@ public class ExtendedDerbyDialect extends DerbyDialect{
         public String render(Type columnType, List args, SessionFactoryImplementor factory) {
             if (args.get(1).equals("string")) {
                 return super.render(columnType, Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);
-            }else{
+            } else {
                 return super.render(columnType, args, factory);
             }
         }

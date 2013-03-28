@@ -328,7 +328,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         columns.add(path);
         if (value instanceof Expression<?>) {
             values.add((Expression<?>)value);
-        }else if (value != null) {
+        } else if (value != null) {
             values.add(new ConstantImpl<T>(value));
         } else {
             //values.add(new NullExpression<T>(path.getType()));

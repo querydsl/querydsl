@@ -125,7 +125,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
                     throw new NonUniqueResultException();
                 }
                 return rv;
-            }else{
+            } else {
                 return null;
             }
         }finally{

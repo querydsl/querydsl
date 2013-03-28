@@ -645,7 +645,7 @@ public class EntitySerializer implements Serializer{
             if (!superType.getEntityType().hasEntityFields()) {
                 value.append("_super." + field.getEscapedName());
             }
-        }else{
+        } else {
             value.append(factoryMethod + "(\"" + field.getName() + QUOTE);
             for (String arg : args) {
                 value.append(COMMA + arg);

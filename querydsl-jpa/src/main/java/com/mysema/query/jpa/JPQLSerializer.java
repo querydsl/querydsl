@@ -382,7 +382,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             super.visitOperation(type, Ops.LIKE,
                     ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
-        }else if (NUMERIC.contains(operator)) {
+        } else if (NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
 
         } else {

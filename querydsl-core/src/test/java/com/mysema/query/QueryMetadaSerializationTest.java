@@ -112,7 +112,7 @@ public class QueryMetadaSerializationTest {
                 }
                 if (Collection.class.isAssignableFrom(field.getType())) {
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0)); 
-                }else if (Map.class.isAssignableFrom(field.getType())) {
+                } else if (Map.class.isAssignableFrom(field.getType())) {
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0));
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 1));
                 }
