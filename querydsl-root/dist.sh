@@ -9,7 +9,7 @@ echo "Creating release bundles"
 for module in collections hibernate-search jpa jdo lucene sql sql-codegen
 do
   cd ../querydsl-$module
-  mvn -DskipTests clean assembly:assembly
+  mvn -Dtest=X clean assembly:assembly
 done
 
 echo "Creating reference documentation"
