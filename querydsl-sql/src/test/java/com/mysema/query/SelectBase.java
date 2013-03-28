@@ -62,7 +62,6 @@ import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
-import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
