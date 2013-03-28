@@ -29,6 +29,7 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.Param;
 
 public class UpdateBase extends AbstractBaseTest {
 
@@ -120,6 +121,21 @@ public class UpdateBase extends AbstractBaseTest {
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(new SQLSubQuery().from(employee).where(survey1.id.eq(employee.id)).exists());
+        update.execute();
+    }
+    
+    @Test
+    public void Update_with_SubQuery_exists_Params() {
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        
+        Param<Integer> param = new Param<Integer>(Integer.class, "param");
+        SQLSubQuery sq = sq().from(employee).where(employee.id.eq(param));
+        sq.set(param, -12478923);
+        
+        SQLUpdateClause update = update(survey1);
+        update.set(survey1.name, "AA");
+        update.where(sq.exists());
         update.execute();
     }
     

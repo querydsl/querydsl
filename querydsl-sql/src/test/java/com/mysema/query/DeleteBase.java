@@ -23,9 +23,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 
 public class DeleteBase extends AbstractBaseTest{
@@ -71,6 +73,20 @@ public class DeleteBase extends AbstractBaseTest{
         SQLDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"), 
                 sq().from(employee).where(survey1.id.eq(employee.id)).exists());
+        delete.execute();
+    }
+    
+    @Test
+    public void Delete_with_SubQuery_exists_Params() {        
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        
+        Param<Integer> param = new Param<Integer>(Integer.class, "param");
+        SQLSubQuery sq = sq().from(employee).where(employee.id.eq(param));
+        sq.set(param, -12478923);
+        
+        SQLDeleteClause delete = delete(survey1);
+        delete.where(survey1.name.eq("XXX"), sq.exists());
         delete.execute();
     }
     

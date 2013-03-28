@@ -22,9 +22,9 @@ import java.util.Map;
 import com.mysema.query.QueryException;
 import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.Param;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
@@ -52,7 +52,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
      * @param params map of param to value for param resolving
      */
     protected void setParameters(PreparedStatement stmt, List<?> objects, 
-            List<Path<?>> constantPaths, Map<Param<?>, ?> params) {
+            List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, " +
             		"but got " + constantPaths.size());
@@ -60,9 +60,9 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             try {
-                if (Param.class.isInstance(o)) {
+                if (o instanceof ParamExpression) {
                     if (!params.containsKey(o)) {
-                        throw new ParamNotSetException((Param<?>) o);
+                        throw new ParamNotSetException((ParamExpression<?>) o);
                     }
                     o = params.get(o);
                 }

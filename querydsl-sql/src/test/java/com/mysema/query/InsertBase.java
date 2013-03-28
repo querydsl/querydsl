@@ -15,6 +15,10 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -37,10 +41,9 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
-
-import static com.mysema.query.Target.*;
 
 public class InsertBase extends AbstractBaseTest{
 
@@ -78,6 +81,19 @@ public class InsertBase extends AbstractBaseTest{
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
+            .execute());
+    }
+    
+    @Test
+    public void Insert_With_SubQuery_Params() {
+        Param<Integer> param = new Param<Integer>(Integer.class, "param");
+        SQLSubQuery sq = sq().from(survey2);
+        sq.set(param, 20);
+        
+        int count = (int)query().from(survey).count();
+        assertEquals(count, insert(survey)
+            .columns(survey.id, survey.name)
+            .select(sq.list(survey2.id.add(param), survey2.name))
             .execute());
     }
     

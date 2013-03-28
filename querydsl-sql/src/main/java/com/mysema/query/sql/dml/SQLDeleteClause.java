@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * SQLDeleteClause defines a DELETE clause
@@ -113,7 +111,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForDelete(batches.get(0), entity);
@@ -122,14 +120,14 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             
             // add first batch
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
             
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForDelete(batches.get(i), entity);
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
             }
         }

@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +43,9 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.Param;
 import com.mysema.util.ResultSetAdapter;
 
 /**
@@ -238,7 +237,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 SQLInsertBatch batch = batches.get(i);
                 serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
             }
         }
@@ -263,8 +262,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         } else {
             stmt = connection.prepareStatement(queryString);
         }
-        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
-                Collections.<Param<?>,Object>emptyMap());
+        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         return stmt;
     }
 
@@ -319,6 +317,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     @Override
     public SQLInsertClause select(SubQueryExpression<?> sq) {
         subQuery = sq;
+        for (Map.Entry<ParamExpression<?>, Object> entry : sq.getMetadata().getParams().entrySet()) {
+            metadata.setParam((ParamExpression)entry.getKey(), entry.getValue());
+        }
         return this;
     }
 

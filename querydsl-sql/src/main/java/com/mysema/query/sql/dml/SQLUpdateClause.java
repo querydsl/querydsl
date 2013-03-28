@@ -42,7 +42,6 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * SQLUpdateClause defines a UPDATE clause
@@ -125,8 +124,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
-                    Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForUpdate(batchMetadata.get(0), entity, batchUpdates.get(0));
@@ -135,16 +133,14 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             
             // add first batch
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
-                    Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
             
             // add other batches
             for (int i = 1; i < batchUpdates.size(); i++) {
                 serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
-                        Collections.<Param<?>,Object>emptyMap());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
             }
         }

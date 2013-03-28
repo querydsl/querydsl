@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -36,7 +35,6 @@ import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.types.Null;
@@ -46,7 +44,6 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.Param;
 
 /**
  * SQLMergeClause defines an MERGE INTO clause
@@ -186,8 +183,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
-                    Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
             serializer.serializeForMerge(metadata, entity, 
                     batches.get(0).getKeys(), batches.get(0).getColumns(), 
@@ -195,8 +191,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
-                    Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             
             // add first batch
             stmt.addBatch();
@@ -206,7 +201,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 SQLMergeBatch batch = batches.get(i);
                 serializer = new SQLSerializer(configuration.getTemplates(), true);
                 serializer.serializeForMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
             }
         }
