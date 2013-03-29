@@ -71,7 +71,9 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     
     @Override    
     protected Predicate normalize(Predicate predicate, boolean where) {
-        predicate = (Predicate) ExpressionUtils.extract(predicate);
+        if (predicate != null) {
+            predicate = (Predicate) ExpressionUtils.extract(predicate);    
+        }        
         if (predicate != null) {
             // transform any usage
             predicate = (Predicate) predicate.accept(JPACollectionAnyVisitor.DEFAULT, new Context());

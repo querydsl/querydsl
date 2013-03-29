@@ -23,6 +23,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.domain.QCommonPersistence;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 
 public class QueryMixinTest {
@@ -32,6 +33,11 @@ public class QueryMixinTest {
 
     private QCommonPersistence entity = new QCommonPersistence(PathMetadataFactory.forVariable("entity"));
 
+    @Test
+    public void Where_Null() {
+        mixin.where((Predicate)null);
+    }
+    
     @Test
     public void GetJoins_with_condition() {
         mixin.innerJoin(entity);
