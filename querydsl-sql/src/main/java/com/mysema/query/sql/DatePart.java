@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2012, Mysema Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,26 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql.mssql;
+package com.mysema.query.sql;
 
-/**
- * @author tiwe
- * 
- * Use com.mysema.query.sql.DatePart instead
- *
- */
-@Deprecated
 public enum DatePart {
     year,
-    quarter,
     month,
-    dayofyear,
-    day,
     week,
+    day,    
     hour,
     minute,
     second,
-    millisecond,
-    microsecond,
-    nanosecond
+    millisecond
 }

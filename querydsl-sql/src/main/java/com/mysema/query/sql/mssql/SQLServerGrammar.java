@@ -62,10 +62,12 @@ public final class SQLServerGrammar {
         return new ConstantImpl<T>(constant);
     }
     
+    @Deprecated
     public static <D extends Comparable<D>> NumberExpression<Integer> datediff(DatePart datePart, D start, D end) {
         return NumberTemplate.create(Integer.class, DATEDIFF, constant(datePart.name()), constant(start), constant(end));
     }
     
+    @Deprecated
     public static <D extends Comparable<D>> DateExpression<D> dateadd(DatePart datePart, int num, D date) {
         return DateTemplate.<D>create((Class<D>)date.getClass(), DATEADD, constant(datePart.name()), constant(num), constant(date));
     }

@@ -93,6 +93,8 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "date_add({0}, interval {1s} minute)");
         add(Ops.DateTimeOps.ADD_SECONDS, "date_add({0}, interval {1s} second)");
         
+        add(Ops.DateTimeOps.DIFF_DAYS, "datediff({0}, {1})");
+        
     }
 
 }

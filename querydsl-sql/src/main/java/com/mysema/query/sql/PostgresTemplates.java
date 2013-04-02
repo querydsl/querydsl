@@ -99,7 +99,7 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "{0} + interval '{1s} minutes'");
         add(Ops.DateTimeOps.ADD_SECONDS, "{0} + interval '{1s} seconds'");
         
-//        add(Ops.DateTimeOps.DATE_ADD, "timestamp {0} + interval '{1s} {2s}s'");
+        // TODO
 
     }
 

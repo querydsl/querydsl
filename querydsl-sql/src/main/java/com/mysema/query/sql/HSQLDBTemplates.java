@@ -63,6 +63,14 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_HOURS, "dateadd('hh', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_MINUTES, "dateadd('mi', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_SECONDS, "dateadd('ss', {1s}, {0})");
+        
+        add(Ops.DateTimeOps.DIFF_YEARS, "datediff('yy', {0}, {1})");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "datediff('mm', {0}, {1})");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "datediff('week', {0}, {1})");
+        add(Ops.DateTimeOps.DIFF_DAYS, "datediff('dd', {0}, {1})");
+        add(Ops.DateTimeOps.DIFF_HOURS, "datediff('hh', {0}, {1})");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('mi', {0}, {1})");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('ss', {0}, {1})");
     }
     
     @Override

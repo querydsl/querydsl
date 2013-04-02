@@ -55,6 +55,7 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.Group;
 import com.mysema.query.group.GroupBy;
 import com.mysema.query.sql.Beans;
+import com.mysema.query.sql.DatePart;
 import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLExpressions;
@@ -439,6 +440,45 @@ public class SelectBase extends AbstractBaseTest{
 //        assertTrue(date5.getTime() > date1.getTime());
 //        assertTrue(date6.getTime() > date1.getTime());
 //        assertTrue(date7.getTime() > date1.getTime());
+    }
+    
+    @Test
+    @ExcludeIn({CUBRID, SQLITE, HSQLDB, MYSQL})
+    public void Date_Diff() {
+        QEmployee employee2 = new QEmployee("employee2");
+        TestQuery query = query().from(employee, employee2);
+        
+        for (DatePart dp : DatePart.values()) {
+            if (dp != DatePart.millisecond) {
+                query.singleResult(
+                    SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+            }
+        }
+    }
+    
+    @Test
+    @IncludeIn(HSQLDB)
+    public void Date_Diff_HSQLDB() {
+        QEmployee employee2 = new QEmployee("employee2");
+        TestQuery query = query().from(employee, employee2);
+        
+        for (DatePart dp : new DatePart[]{DatePart.year, DatePart.month, DatePart.day}) {
+            if (dp != DatePart.millisecond) {
+                query.singleResult(
+                    SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+            }
+        }
+    }
+    
+    @Test
+    @IncludeIn(MYSQL)
+    public void Date_Diff_MySQL() {
+        QEmployee employee2 = new QEmployee("employee2");
+        TestQuery query = query().from(employee, employee2);
+        
+        query.singleResult(
+                SQLExpressions.datediff(DatePart.day, employee.datefield, employee2.datefield));
+        
     }
     
     private double degrees(double x) {

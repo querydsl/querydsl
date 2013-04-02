@@ -250,7 +250,21 @@ public final class Ops {
         
         public static final Operator<Comparable> ADD_MINUTES = new OperatorImpl<Comparable>("ADD_MINUTES");
         
-        public static final Operator<Comparable> ADD_SECONDS = new OperatorImpl<Comparable>("ADD_MINUTES");
+        public static final Operator<Comparable> ADD_SECONDS = new OperatorImpl<Comparable>("ADD_SECONDS");
+        
+        public static final Operator<Comparable> DIFF_YEARS = new OperatorImpl<Comparable>("DIFF_YEARS");
+        
+        public static final Operator<Comparable> DIFF_MONTHS = new OperatorImpl<Comparable>("DIFF_MONTHS");
+        
+        public static final Operator<Comparable> DIFF_WEEKS = new OperatorImpl<Comparable>("DIFF_WEEKS");
+        
+        public static final Operator<Comparable> DIFF_DAYS = new OperatorImpl<Comparable>("DIFF_DAYS");
+        
+        public static final Operator<Comparable> DIFF_HOURS = new OperatorImpl<Comparable>("DIFF_HOURS");        
+        
+        public static final Operator<Comparable> DIFF_MINUTES = new OperatorImpl<Comparable>("DIFF_MINUTES");
+        
+        public static final Operator<Comparable> DIFF_SECONDS = new OperatorImpl<Comparable>("DIFF_SECONDS");
         
         public static final Operator<Integer> HOUR = new OperatorImpl<Integer>("HOUR");
         

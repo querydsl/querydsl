@@ -73,6 +73,8 @@ public abstract class AbstractBaseTest {
     private Connection connection = Connections.getConnection();
     
     private SQLTemplates templates = Connections.getTemplates();
+    
+    private Configuration configuration = new Configuration(templates);
 
     @Nullable
     protected String expectedQuery;
@@ -84,48 +86,48 @@ public abstract class AbstractBaseTest {
     public static MethodRule targetRule = new TargetRule();
     
     protected SQLUpdateClause update(RelationalPath<?> e) {
-        return new SQLUpdateClause(connection, templates, e);
+        return new SQLUpdateClause(connection, configuration, e);
     }
 
     protected SQLInsertClause insert(RelationalPath<?> e) {
-        return new SQLInsertClause(connection, templates, e);
+        return new SQLInsertClause(connection, configuration, e);
     }
 
     protected SQLInsertClause insert(RelationalPath<?> e, AbstractSQLSubQuery<?> sq) {
-        return new SQLInsertClause(connection, templates, e, sq);
+        return new SQLInsertClause(connection, configuration, e, sq);
     }
     
     protected SQLDeleteClause delete(RelationalPath<?> e) {
-        return new SQLDeleteClause(connection, templates, e);
+        return new SQLDeleteClause(connection, configuration, e);
     }
 
     protected SQLMergeClause merge(RelationalPath<?> e) {
-        return new SQLMergeClause(connection, templates, e);
+        return new SQLMergeClause(connection, configuration, e);
     }
     
     protected ExtendedSQLQuery extQuery() {
-        return new ExtendedSQLQuery(connection, templates);
+        return new ExtendedSQLQuery(connection, configuration);
     }
 
     protected MySQLQuery mysqlQuery() {
-        return new MySQLQuery(connection, templates);
+        return new MySQLQuery(connection, configuration);
     }
     
     protected SQLInsertClause mysqlReplace(RelationalPath<?> path) {
-        return new MySQLReplaceClause(connection, templates, path);
+        return new MySQLReplaceClause(connection, configuration, path);
     }
     
     protected TestQuery query() {
-        return new TestQuery(connection, new Configuration(templates));
+        return new TestQuery(connection, configuration);
     }
     
     protected TestQuery testQuery() {
-        return new TestQuery(connection, new Configuration(templates), 
+        return new TestQuery(connection, configuration, 
                 new DefaultQueryMetadata().noValidate());
     }
     
     protected OracleQuery oracleQuery() {
-        return new OracleQuery(connection, templates) {
+        return new OracleQuery(connection, configuration) {
             @Override
             protected String buildQueryString(boolean forCountRow) {
                 String rv = super.buildQueryString(forCountRow);

@@ -111,8 +111,13 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "{0} + interval '{1s}' minute");
         add(Ops.DateTimeOps.ADD_SECONDS, "{0} + interval '{1s}' second");
         
-//        add(Ops.DateTimeOps.DATE_ADD, "{0} + interval '{1s}' {2s}");
-//        add(Ops.DateTimeOps.DATE_DIFF, "{1} - {0}"); // FIXME
+        add(Ops.DateTimeOps.DIFF_YEARS, "round(({1} - {0}) / 365)");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "round(({1} - {0}) / 30)");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "round(({1} - {0}) / 7)");
+        add(Ops.DateTimeOps.DIFF_DAYS, "round({1} - {0})");
+        add(Ops.DateTimeOps.DIFF_HOURS, "round(({1} - {0}) * 24)");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "round(({1} - {0}) * 1440)");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "round(({1} - {0}) * 86400)");
 
     }
 

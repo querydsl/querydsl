@@ -13,8 +13,13 @@
  */
 package com.mysema.query.sql;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.mysema.query.sql.DatePart;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
@@ -22,6 +27,8 @@ import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateOperation;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.DateTimeOperation;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.Wildcard;
@@ -32,7 +39,32 @@ import com.mysema.query.types.expr.Wildcard;
  * @author tiwe
  *
  */
+@SuppressWarnings("rawtypes")
 public final class SQLExpressions {
+    
+    private static final Map<DatePart, Operator> DATE_ADD_OPS = new HashMap<DatePart, Operator>();
+    
+    private static final Map<DatePart, Operator> DATE_DIFF_OPS = new HashMap<DatePart, Operator>();
+    
+    static {
+        DATE_ADD_OPS.put(DatePart.year, Ops.DateTimeOps.ADD_YEARS);
+        DATE_ADD_OPS.put(DatePart.month, Ops.DateTimeOps.ADD_MONTHS);
+        DATE_ADD_OPS.put(DatePart.week, Ops.DateTimeOps.ADD_WEEKS);
+        DATE_ADD_OPS.put(DatePart.day, Ops.DateTimeOps.ADD_DAYS);
+        DATE_ADD_OPS.put(DatePart.hour, Ops.DateTimeOps.ADD_HOURS);
+        DATE_ADD_OPS.put(DatePart.minute, Ops.DateTimeOps.ADD_MINUTES);
+        DATE_ADD_OPS.put(DatePart.second, Ops.DateTimeOps.ADD_SECONDS);
+        DATE_ADD_OPS.put(DatePart.millisecond, null); // TODO
+        
+        DATE_DIFF_OPS.put(DatePart.year, Ops.DateTimeOps.DIFF_YEARS);
+        DATE_DIFF_OPS.put(DatePart.month, Ops.DateTimeOps.DIFF_MONTHS);
+        DATE_DIFF_OPS.put(DatePart.week, Ops.DateTimeOps.DIFF_WEEKS);
+        DATE_DIFF_OPS.put(DatePart.day, Ops.DateTimeOps.DIFF_DAYS);
+        DATE_DIFF_OPS.put(DatePart.hour, Ops.DateTimeOps.DIFF_HOURS);
+        DATE_DIFF_OPS.put(DatePart.minute, Ops.DateTimeOps.DIFF_MINUTES);
+        DATE_DIFF_OPS.put(DatePart.second, Ops.DateTimeOps.DIFF_SECONDS);
+        DATE_DIFF_OPS.put(DatePart.millisecond, null); // TODO
+    }
     
     public static final Expression<Object[]> all = Wildcard.all;
     
@@ -67,6 +99,46 @@ public final class SQLExpressions {
      */
     public static final <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
         return SimpleOperation.create(type, SQLTemplates.NEXTVAL, ConstantImpl.create(sequence));
+    }
+    
+    /**
+     * @param unit
+     * @param date
+     * @param num
+     * @return
+     */
+    public static <D extends Comparable> DateTimeExpression<D> dateadd(DatePart unit, DateTimeExpression<D> date, int num) {
+        return DateTimeOperation.create((Class)date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(num));
+    }
+    
+    /**
+     * @param unit
+     * @param date
+     * @param num
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> dateadd(DatePart unit, DateExpression<D> date, int num) {
+        return DateOperation.create((Class)date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(num));
+    }
+    
+    /**
+     * @param unit
+     * @param start
+     * @param end
+     * @return
+     */
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, DateExpression<D> start, DateExpression<D> end) {
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
+    }
+    
+    /**
+     * @param unit
+     * @param start
+     * @param end
+     * @return
+     */
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, DateTimeExpression<D> start, DateTimeExpression<D> end) {
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
     }
     
     /**
@@ -136,7 +208,7 @@ public final class SQLExpressions {
      * @param date
      * @param days
      * @return
-     */
+     */    
     public static <D extends Comparable> DateExpression<D> addYears(DateExpression<D> date, int days) {
         return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(days));
     }

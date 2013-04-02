@@ -80,6 +80,14 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_HOURS, "{fn timestampadd(SQL_TSI_HOUR, {1}, {0})}");
         add(Ops.DateTimeOps.ADD_MINUTES, "{fn timestampadd(SQL_TSI_MINUTE, {1}, {0})}");
         add(Ops.DateTimeOps.ADD_SECONDS, "{fn timestampadd(SQL_TSI_SECOND, {1}, {0})}");
+        
+        add(Ops.DateTimeOps.DIFF_YEARS, "{fn timestampdiff(SQL_TSI_YEAR, {0}, {1})}");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "{fn timestampdiff(SQL_TSI_MONTH, {0}, {1})}");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "{fn timestampdiff(SQL_TSI_WEEK, {0}, {1})}");
+        add(Ops.DateTimeOps.DIFF_DAYS, "{fn timestampdiff(SQL_TSI_DAY, {0}, {1})}");
+        add(Ops.DateTimeOps.DIFF_HOURS, "{fn timestampdiff(SQL_TSI_HOUR, {0}, {1})}");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "{fn timestampdiff(SQL_TSI_MINUTE, {0}, {1})}");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "{fn timestampdiff(SQL_TSI_SECOND, {0}, {1})}");
     }
     
     @Override
