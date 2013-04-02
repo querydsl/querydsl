@@ -690,7 +690,18 @@ public abstract class AbstractStandardTest {
     @Test
     public void Contains3() {
         assertEquals(1l, query().from(cat).where(cat.name.contains("_")).count());
-    }	
+    }
+    
+    @Test
+    public void Contains4() {
+        QEmployee employee = QEmployee.employee;
+        query().from(employee)
+               .where(
+                   employee.jobFunctions.contains(JobFunction.CODER),
+                   employee.jobFunctions.contains(JobFunction.CONSULTANT),
+                   employee.jobFunctions.size().eq(2))
+               .list(employee);                                         
+    }
 
     @Test
     public void Length() {
