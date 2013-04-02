@@ -30,8 +30,8 @@ public class GroupByTest extends AbstractJDOTest {
 
     @Test
     public void Distinct() {
-        assertEquals(3, query().from(product).listDistinct(product.description).size());
-        assertEquals(3, query().from(product).listDistinct(product.price).size());
+        assertEquals(3, query().from(product).distinct().list(product.description).size());
+        assertEquals(3, query().from(product).distinct().list(product.price).size());
     }
 
     @Test

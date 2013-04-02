@@ -44,7 +44,7 @@ public class OrderTest extends AbstractQueryTest {
     public void test2() {
         List<String> orderedNames = Arrays.asList("Alex","Bob","Francis","Kitty"); 
         assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).list(cat.name));
-        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).listDistinct(cat.name));
+        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).distinct().list(cat.name));
     }
     
     @Test
@@ -55,7 +55,7 @@ public class OrderTest extends AbstractQueryTest {
         assertTrue(size > 0);
         q.offset(0).limit(10);
         q.orderBy(cat.name.asc());
-        assertEquals(Arrays.asList("Alex","Bob","Francis","Kitty"), q.listDistinct(cat.name));
+        assertEquals(Arrays.asList("Alex","Bob","Francis","Kitty"), q.distinct().list(cat.name));
     }
 
     @Test

@@ -50,11 +50,6 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return IteratorAdapter.asList(iterate(projection));
     }
 
-    public final List<Tuple> listDistinct(Expression<?>... args) {
-        queryMixin.setDistinct(true);
-        return list(args);
-    }
-
     @Override
     public final <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
         List<Tuple> list = list(key, value);

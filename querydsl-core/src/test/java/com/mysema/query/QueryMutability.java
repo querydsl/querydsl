@@ -65,7 +65,7 @@ public final class QueryMutability<T extends QueryBase<T> & Projectable> {
         query.list(p1, p2);
         assertProjectionEmpty();
 
-        System.err.println("listDistinct");
+        System.err.println("distinct list");
         query.distinct().list(p1);
         assertProjectionEmpty();
 
@@ -76,7 +76,7 @@ public final class QueryMutability<T extends QueryBase<T> & Projectable> {
         query.listResults(p1);
         assertProjectionEmpty();
 
-        System.err.println("listDistinctResults");
+        System.err.println("distinct listResults");
         query.distinct().listResults(p1);
         assertProjectionEmpty();
 

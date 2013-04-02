@@ -80,12 +80,12 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void List_Distinct() {
-        query().from(product).listDistinct(product);
+        query().from(product).distinct().list(product);
     }
     
     @Test
     public void List_Distinct_Two_Sources() {
-        query().from(product, product2).listDistinct(product, product2);
+        query().from(product, product2).distinct().list(product, product2);
     }
     
     @Test
