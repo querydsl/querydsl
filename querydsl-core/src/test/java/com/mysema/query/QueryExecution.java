@@ -22,6 +22,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.support.QueryBase;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
@@ -162,7 +163,8 @@ public abstract class QueryExecution {
     private long runCountDistinct(Predicate f) {
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
-            return p.getFirst().countDistinct();
+            ((QueryBase)p.getFirst()).distinct();
+            return p.getFirst().count();
         }finally{
             close(p.getFirst());
         }
@@ -180,7 +182,8 @@ public abstract class QueryExecution {
     private int runFilterDistinct(Predicate f) {
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
-            return p.getFirst().listDistinct(p.getSecond()).size();
+            ((QueryBase)p.getFirst()).distinct();
+            return p.getFirst().list(p.getSecond()).size();
         }finally{
             close(p.getFirst());
         }
@@ -206,13 +209,14 @@ public abstract class QueryExecution {
     private int runProjectionDistinct(Expression<?> pr) {
         Pair<Projectable, Expression<?>[]> p = createQuery();
         try{
+            ((QueryBase)p.getFirst()).distinct();
             if (p.getSecond().length == 0) {
-                return p.getFirst().listDistinct(pr).size();
+                return p.getFirst().list(pr).size();
             } else {
                 Expression<?>[] projection = new Expression[p.getSecond().length + 1];
                 projection[0] = pr;
                 System.arraycopy(p.getSecond(), 0, projection, 1, p.getSecond().length);
-                return p.getFirst().listDistinct(projection).size();
+                return p.getFirst().list(projection).size();
             }
 
         }finally{

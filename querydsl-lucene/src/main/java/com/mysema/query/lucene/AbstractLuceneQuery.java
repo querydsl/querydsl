@@ -118,11 +118,6 @@ SimpleProjectable<T> {
         return innerCount();
     }
 
-    @Override
-    public long countDistinct() {
-        throw new UnsupportedOperationException("use distinct(path) instead");
-    }
-
     private Query createQuery() {
         if (queryMixin.getMetadata().getWhere() == null) {
             return new MatchAllDocsQuery();
@@ -208,11 +203,6 @@ SimpleProjectable<T> {
         }
     }
 
-    @Override
-    public CloseableIterator<T> iterateDistinct() {
-        throw new UnsupportedOperationException("use distinct(path) instead");
-    }
-
     private List<T> innerList() {
         return new IteratorAdapter<T>(iterate()).asList();
     }
@@ -248,16 +238,6 @@ SimpleProjectable<T> {
         }
         this.fieldSelector = new MapFieldSelector(fields);
         return (Q)this;
-    }
-
-    @Override
-    public List<T> listDistinct() {
-        throw new UnsupportedOperationException("use distinct(path) instead");
-    }
-
-    @Override
-    public SearchResults<T> listDistinctResults() {
-        throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
     @Override

@@ -47,16 +47,16 @@ public class JPAQueryMutabilityTest {
 
         query.count();
         assertProjectionEmpty(query);
-        query.countDistinct();
+        query.distinct().count();
         assertProjectionEmpty(query);
 
         query.iterate(cat);
         assertProjectionEmpty(query);
         query.iterate(cat,cat);
         assertProjectionEmpty(query);
-        query.iterateDistinct(cat);
+        query.distinct().iterate(cat);
         assertProjectionEmpty(query);
-        query.iterateDistinct(cat,cat);
+        query.distinct().iterate(cat,cat);
         assertProjectionEmpty(query);
 
         query.list(cat);
@@ -70,7 +70,7 @@ public class JPAQueryMutabilityTest {
 
         query.listResults(cat);
         assertProjectionEmpty(query);
-        query.listDistinctResults(cat);
+        query.distinct().listResults(cat);
         assertProjectionEmpty(query);
 
         query.map(cat.name, cat);

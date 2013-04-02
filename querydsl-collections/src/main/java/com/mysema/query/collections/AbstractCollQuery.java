@@ -47,7 +47,7 @@ import com.mysema.query.types.QTuple;
  *
  * @author tiwe
  */
-public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>>  extends ProjectableQuery<Q> {
+public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends ProjectableQuery<Q> {
 
     private final Map<Expression<?>, Iterable<?>> iterables = new HashMap<Expression<?>, Iterable<?>>();
 

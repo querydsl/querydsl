@@ -25,15 +25,14 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
+/**
+ * @author tiwe
+ *
+ */
 public class AbstractProjectable implements Projectable {
 
     @Override
     public long count() {
-        return 0;
-    }
-
-    @Override
-    public long countDistinct() {
         return 0;
     }
 
@@ -58,16 +57,6 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Tuple> iterateDistinct(Expression<?>... args) {
-        return new EmptyCloseableIterator<Tuple>();
-    }
-
-    @Override
-    public <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection) {
-        return new EmptyCloseableIterator<RT>();
-    }
-
-    @Override
     public List<Tuple> list(Expression<?>... args) {
         return Collections.emptyList();
     }
@@ -78,27 +67,12 @@ public class AbstractProjectable implements Projectable {
     }
 
     @Override
-    public List<Tuple> listDistinct(Expression<?>... args) {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public <RT> List<RT> listDistinct(Expression<RT> projection) {
-        return Collections.emptyList();
-    }
-
-    @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
         return null;
     }
     
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
-        return new SearchResults<RT>(Collections.<RT>emptyList(), null, null, 0l);
-    }
-
-    @Override
-    public <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection) {
         return new SearchResults<RT>(Collections.<RT>emptyList(), null, null, 0l);
     }
 

@@ -49,8 +49,8 @@ public class DistinctTest extends AbstractQueryTest {
     @Test
     public void CountDistinct() {
         assertEquals(10, CollQueryFactory.from(intVar1, list1).count());
-        assertEquals(4, CollQueryFactory.from(intVar1, list1).countDistinct());
-        assertEquals(3, CollQueryFactory.from(intVar2, list2).countDistinct());
+        assertEquals(4, CollQueryFactory.from(intVar1, list1).distinct().count());
+        assertEquals(3, CollQueryFactory.from(intVar2, list2).distinct().count());
         
         assertEquals(3, CollQueryFactory.from(intVar2, list2).distinct().count());
     }

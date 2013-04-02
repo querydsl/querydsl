@@ -24,7 +24,6 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
-import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
@@ -42,24 +41,6 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final long countDistinct() {
-        queryMixin.setDistinct(true);
-        return count();
-    }
-
-    @Override
-    public final CloseableIterator<Tuple> iterateDistinct(Expression<?>... args) {
-        queryMixin.setDistinct(true);
-        return iterate(args);
-    }
-
-    @Override
-    public final <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection) {
-        queryMixin.setDistinct(true);
-        return iterate(projection);
-    }
-
-    @Override
     public List<Tuple> list(Expression<?>... args) {
         return IteratorAdapter.asList(iterate(args));
     }
@@ -72,18 +53,6 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     public final List<Tuple> listDistinct(Expression<?>... args) {
         queryMixin.setDistinct(true);
         return list(args);
-    }
-
-    @Override
-    public final <RT> List<RT> listDistinct(Expression<RT> projection) {
-        queryMixin.setDistinct(true);
-        return list(projection);
-    }
-
-    @Override
-    public final <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection) {
-        queryMixin.setDistinct(true);
-        return listResults(projection);
     }
 
     @Override

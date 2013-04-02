@@ -70,11 +70,6 @@ public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectabl
     }
 
     @Override
-    public long countDistinct() {
-        return projectable.countDistinct();
-    }
-
-    @Override
     public SimpleProjectableAdapter<T> distinct() {
         query.distinct();
         return this;
@@ -92,23 +87,8 @@ public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectabl
     }
 
     @Override
-    public CloseableIterator<T> iterateDistinct() {
-        return projectable.iterateDistinct(projection);
-    }
-
-    @Override
     public List<T> list() {
         return projectable.list(projection);
-    }
-
-    @Override
-    public List<T> listDistinct() {
-        return projectable.listDistinct(projection);
-    }
-
-    @Override
-    public SearchResults<T> listDistinctResults() {
-        return projectable.listDistinctResults(projection);
     }
 
     @Override

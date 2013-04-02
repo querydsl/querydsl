@@ -177,7 +177,7 @@ public class LuceneQueryTest {
     @Test(expected=UnsupportedOperationException.class)
     public void CountDistinct() {
         query.where(year.between(1900, 3000));
-        assertEquals(3, query.countDistinct());
+        assertEquals(3, query.distinct().count());
     }
 
     @Test
@@ -598,7 +598,7 @@ public class LuceneQueryTest {
     public void ListDistinct() {
         query.where(year.between(1900, 2000).or(title.startsWith("Jura")));
         query.orderBy(year.asc());
-        final List<Document> documents = query.listDistinct();
+        final List<Document> documents = query.distinct().list();
         assertFalse(documents.isEmpty());
         assertEquals(3, documents.size());
     }
@@ -623,7 +623,7 @@ public class LuceneQueryTest {
                 title.eq("The Lord of the Rings")));
         query.restrict(new QueryModifiers(1l, 1l));
         query.orderBy(year.asc());
-        final SearchResults<Document> results = query.listDistinctResults();
+        final SearchResults<Document> results = query.distinct().listResults();
         assertFalse(results.isEmpty());
         assertEquals("1954", results.getResults().get(0).get("year"));
         assertEquals(1, results.getLimit());

@@ -30,7 +30,7 @@ public class QueryMutabilityTest {
         QCat cat = QCat.cat;
         CollQuery query = new CollQuery();
         query.from(cat, Collections.<Cat> emptyList());
-        new QueryMutability(query).test(cat.id, cat.name);
+        new QueryMutability<CollQuery>(query).test(cat.id, cat.name);
 
     }
 

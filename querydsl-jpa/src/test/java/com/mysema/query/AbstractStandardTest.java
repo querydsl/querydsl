@@ -425,13 +425,13 @@ public abstract class AbstractStandardTest {
         System.out.println();
 
         System.out.println("-- list distinct results");
-        res = query().from(cat).limit(2).listDistinctResults(cat.birthdate);
+        res = query().from(cat).limit(2).distinct().listResults(cat.birthdate);
         assertEquals(1, res.getResults().size());
         assertEquals(1l, res.getTotal());
         System.out.println();
 
         System.out.println("-- list distinct");
-        assertEquals(1, query().from(cat).listDistinct(cat.birthdate).size());
+        assertEquals(1, query().from(cat).distinct().list(cat.birthdate).size());
     }
     
     @Test

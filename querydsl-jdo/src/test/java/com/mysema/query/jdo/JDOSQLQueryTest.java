@@ -101,7 +101,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         assertEquals(10l, sql().from(product).where(filter).count());
 
         // countDistinct
-        assertEquals(10l, sql().from(product).where(filter).countDistinct());
+        assertEquals(10l, sql().from(product).where(filter).distinct().count());
 
         // list
         assertEquals(10, sql().from(product).where(filter).list(product.name).size());

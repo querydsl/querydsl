@@ -46,11 +46,6 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public long countDistinct() {
-        return projectable.countDistinct();
-    }
-
-    @Override
     public boolean exists() {
         return projectable.exists();
     }
@@ -71,16 +66,6 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Tuple> iterateDistinct(Expression<?>... args) {
-        return projectable.iterateDistinct(args);
-    }
-
-    @Override
-    public <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection) {
-        return projectable.iterateDistinct(projection);
-    }
-
-    @Override
     public List<Tuple> list(Expression<?>[] args) {
         return projectable.list(args);
     }
@@ -88,21 +73,6 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
         return projectable.list(projection);
-    }
-
-    @Override
-    public List<Tuple> listDistinct(Expression<?>... args) {
-        return projectable.listDistinct(args);
-    }
-
-    @Override
-    public <RT> List<RT> listDistinct(Expression<RT> projection) {
-        return projectable.listDistinct(projection);
-    }
-
-    @Override
-    public <RT> SearchResults<RT> listDistinctResults(Expression<RT> expr) {
-        return projectable.listDistinctResults(expr);
     }
 
     @Override

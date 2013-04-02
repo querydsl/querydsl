@@ -45,27 +45,11 @@ public interface SimpleProjectable<T> {
     CloseableIterator<T> iterate();
 
     /**
-     * Get the projection as a typed closeable Iterator with distinct elements
-     *
-     * @return
-     */
-    @Deprecated
-    CloseableIterator<T> iterateDistinct();
-
-    /**
      * Get the projection as a typed List
      *
      * @return
      */
     List<T> list();
-
-    /**
-     * Get the projection as a typed List with distinct elements
-     *
-     * @return
-     */
-    @Deprecated
-    List<T> listDistinct();
 
     /**
      * Get the projection as a single result or null if no result is found
@@ -94,26 +78,10 @@ public interface SimpleProjectable<T> {
     SearchResults<T> listResults();
 
     /**
-     * Get the projection in {@link SearchResults} form with distinct element
-     *
-     * @return
-     */
-    @Deprecated
-    SearchResults<T> listDistinctResults();
-
-    /**
      * Get the count of matched elements
      *
      * @return
      */
     long count();
-
-    /**
-     * Get the count of distinct matched elements
-     *
-     * @return
-     */
-    @Deprecated
-    long countDistinct();
 
 }

@@ -38,13 +38,6 @@ public interface Projectable {
     long count();
 
     /**
-     * return the amount of distinct matched rows
-     */
-    @Nonnegative
-    @Deprecated
-    long countDistinct();
-
-    /**
      * @return true, if rows matching the given criteria exist, otherwise false
      */
     boolean exists();
@@ -73,26 +66,6 @@ public interface Projectable {
     <RT> CloseableIterator<RT> iterate(Expression<RT> projection);
 
     /**
-     * iterate over the distinct results for the given projection
-     *
-     * @param args
-     * @return
-     */
-    @Deprecated
-    CloseableIterator<Tuple> iterateDistinct(Expression<?>... args);
-
-    /**
-     * iterate over the distinct results for the given projection
-     *
-     * @param <RT>
-     *            generic type of the Iteratpr
-     * @param projection
-     * @return an Iterator over the projection
-     */
-    @Deprecated
-    <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection);
-
-    /**
      * list the results for the given projection
      * 
      * An empty list is returned for no results.
@@ -115,30 +88,6 @@ public interface Projectable {
     <RT> List<RT> list(Expression<RT> projection);
 
     /**
-     * list the distinct results for the given projection
-     * 
-     * An empty list is returned for no results.
-     *
-     * @param args
-     * @return
-     */
-    @Deprecated
-    List<Tuple> listDistinct(Expression<?>... args);
-
-    /**
-     * list the distinct results for the given projection
-     * 
-     * An empty list is returned for no results.
-     *
-     * @param <RT>
-     *            generic type of the List
-     * @param projection
-     * @return a List over the projection
-     */
-    @Deprecated
-    <RT> List<RT> listDistinct(Expression<RT> projection);
-
-    /**
      * list the results for the given projection
      *
      * @param args
@@ -154,16 +103,6 @@ public interface Projectable {
      * @return
      */
     <RT> SearchResults<RT> listResults(Expression<RT> projection);
-
-    /**
-     * list the distinct results for the given projection
-     *
-     * @param <RT>
-     * @param projection
-     * @return
-     */
-    @Deprecated
-    <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection);
 
     /**
      * return the given projection as a Map instance using key and value for Map population

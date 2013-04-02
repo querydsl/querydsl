@@ -19,15 +19,16 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import com.mysema.query.support.QueryBase;
 import com.mysema.query.types.Expression;
 
-public final class QueryMutability {
+public final class QueryMutability<T extends QueryBase<T> & Projectable> {
 
-    private final Projectable query;
+    private final T query;
 
     private final QueryMetadata metadata;
 
-    public QueryMutability(Projectable query) throws SecurityException,
+    public QueryMutability(T query) throws SecurityException,
             NoSuchMethodException, IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         this.query = query;
@@ -40,7 +41,7 @@ public final class QueryMutability {
         assertProjectionEmpty();
 
         System.err.println("countDistinct");
-        query.countDistinct();
+        query.distinct().count();
         assertProjectionEmpty();
 
         System.err.println("iterate");
@@ -51,10 +52,10 @@ public final class QueryMutability {
         assertProjectionEmpty();
 
         System.err.println("iterateDistinct");
-        query.iterateDistinct(p1);
+        query.distinct().iterate(p1);
         assertProjectionEmpty();
 
-        query.iterateDistinct(p1, p2);
+        query.distinct().iterate(p1, p2);
         assertProjectionEmpty();
 
         System.err.println("list");
@@ -65,10 +66,10 @@ public final class QueryMutability {
         assertProjectionEmpty();
 
         System.err.println("listDistinct");
-        query.listDistinct(p1);
+        query.distinct().list(p1);
         assertProjectionEmpty();
 
-        query.listDistinct(p1, p2);
+        query.distinct().list(p1, p2);
         assertProjectionEmpty();
 
         System.err.println("listResults");
@@ -76,7 +77,7 @@ public final class QueryMutability {
         assertProjectionEmpty();
 
         System.err.println("listDistinctResults");
-        query.listDistinctResults(p1);
+        query.distinct().listResults(p1);
         assertProjectionEmpty();
 
         System.err.println("map");

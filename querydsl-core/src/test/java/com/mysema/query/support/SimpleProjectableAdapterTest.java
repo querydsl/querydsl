@@ -31,10 +31,10 @@ public class SimpleProjectableAdapterTest {
         SimpleProjectableAdapter simpleQuery = new SimpleProjectableAdapter(query, projectable, new StringPath("a"));
         
         simpleQuery.count();
-        simpleQuery.countDistinct();
+        simpleQuery.distinct().count();
         assertNotNull(simpleQuery.list());
-        assertNotNull(simpleQuery.listDistinct());
-        assertNotNull(simpleQuery.listDistinctResults());
+        assertNotNull(simpleQuery.distinct().list());
+        assertNotNull(simpleQuery.distinct().listResults());
         assertNotNull(simpleQuery.listResults());
         assertNull(simpleQuery.uniqueResult());
     }

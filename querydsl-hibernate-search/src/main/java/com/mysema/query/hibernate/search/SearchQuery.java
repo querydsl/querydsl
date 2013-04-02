@@ -86,11 +86,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return createQuery(true).getResultSize();
     }
 
-    @Override
-    public long countDistinct() {
-        return count();
-    }
-
     private FullTextQuery createQuery(boolean forCount) {
         QueryMetadata metadata = queryMixin.getMetadata();
         org.apache.lucene.search.Query query = serializer.toQuery(metadata.getWhere(), metadata);
@@ -141,16 +136,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     @Override
     public List<T> list() {
         return createQuery(false).list();
-    }
-
-    @Override
-    public List<T> listDistinct() {
-        return list();
-    }
-
-    @Override
-    public SearchResults<T> listDistinctResults() {
-        return listResults();
     }
 
     @SuppressWarnings("unchecked")

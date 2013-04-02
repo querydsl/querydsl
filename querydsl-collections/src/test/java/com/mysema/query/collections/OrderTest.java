@@ -51,7 +51,7 @@ public class OrderTest extends AbstractQueryTest {
     public void With_count() {
         CollQuery q = new CollQuery();
         q.from(cat, cats);
-        long size = q.countDistinct();
+        long size = q.distinct().count();
         assertTrue(size > 0);
         q.offset(0).limit(10);
         q.orderBy(cat.name.asc());

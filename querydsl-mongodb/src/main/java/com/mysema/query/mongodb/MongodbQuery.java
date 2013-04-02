@@ -256,11 +256,6 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         };
     }
 
-    @Override
-    public CloseableIterator<K> iterateDistinct() {
-        return iterate();
-    }
-
     public List<K> list(Path<?>... paths) {
         queryMixin.addProjection(paths);
         return list();
@@ -310,11 +305,6 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
             return obj;
         }
         return null;
-    }
-
-    @Override
-    public List<K> listDistinct() {
-        return list();
     }
     
     public K singleResult(Path<?>...paths) {
@@ -383,11 +373,6 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     @Override
-    public SearchResults<K> listDistinctResults() {
-        return listResults();
-    }
-
-    @Override
     public long count() {
         try {
             Predicate filter = createFilter(queryMixin.getMetadata());            
@@ -395,11 +380,6 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         } catch (NoResults ex) {
             return 0l;
         }        
-    }
-
-    @Override
-    public long countDistinct() {
-        return count();
     }
 
     private DBObject createQuery(@Nullable Predicate predicate) {

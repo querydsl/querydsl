@@ -447,14 +447,14 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     public void Distinct_Count() {
-        long count1 = query().from(employee).countDistinct();
+        long count1 = query().from(employee).distinct().count();
         long count2 = query().from(employee).distinct().count();
         assertEquals(count1, count2);
     }
 
     @Test
     public void Distinct_List() {
-        List<Integer> lengths1 = query().from(employee).listDistinct(employee.firstname.length());
+        List<Integer> lengths1 = query().from(employee).distinct().list(employee.firstname.length());
         List<Integer> lengths2 = query().from(employee).distinct().list(employee.firstname.length());
         assertEquals(lengths1, lengths2);
     }

@@ -104,7 +104,7 @@ public class JPASQLBase {
     
     @Test
     public void CountDistinct() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).countDistinct());
+        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).distinct().count());
     }
     
     @Test
