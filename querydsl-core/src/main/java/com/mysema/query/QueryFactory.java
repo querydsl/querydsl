@@ -19,8 +19,8 @@ package com.mysema.query;
  * 
  * @author tiwe
  * 
- * @param <Q>
- * @param <SQ>
+ * @param <Q> Query type
+ * @param <SQ> Subquery type
  */
 public interface QueryFactory<Q extends Query<?>, SQ extends Detachable> {
     /**
