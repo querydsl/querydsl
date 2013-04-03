@@ -32,10 +32,10 @@ public final class SQLServerGrammar {
 
     private SQLServerGrammar() {}
     
-    // TODO : generalize
+    @Deprecated
     private static final Template DATEDIFF = TemplateFactory.DEFAULT.create("datediff({0s},{1},{2})");
 
-    // TODO : generalize
+    @Deprecated
     private static final Template DATEADD = TemplateFactory.DEFAULT.create("dateadd({0s},{1},{2})");
     
     public static final NumberExpression<Long> rowNumber = NumberTemplate.create(Long.class, "row_number");
