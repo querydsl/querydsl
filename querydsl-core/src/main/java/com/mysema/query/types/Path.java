@@ -38,9 +38,9 @@ public interface Path<T> extends Expression<T> {
 
     /**
      * Return the annotated element related to the given path
-     * For property paths the annotated element contains the annotations of the
+     * <p>For property paths the annotated element contains the annotations of the
      * related field and/or getter method and for all others paths the annotated element
-     * is the expression type.
+     * is the expression type.</p>
      *
      * @return
      */
