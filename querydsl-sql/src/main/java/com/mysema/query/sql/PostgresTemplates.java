@@ -99,7 +99,21 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "{0} + interval '{1s} minutes'");
         add(Ops.DateTimeOps.ADD_SECONDS, "{0} + interval '{1s} seconds'");
         
-        // TODO
+        String yearsDiff = "date_part('year', age({1}, {0}))"; 
+        String monthsDiff = "(" + yearsDiff + " * 12 + date_part('month', age({1}, {0})))";
+        String weeksDiff = "trunc(date_part('day', age({1}, {0}))/7)";
+        String daysDiff = "date_part('day', age({1}, {0}))";
+        String hoursDiff = "("+ daysDiff + " * 24 + date_part('hour', age({1}, {0})))";
+        String minutesDiff = "(" + hoursDiff + " * 60 + date_part('minute', age({1}, {0})))";
+        String secondsDiff =  "(" +  minutesDiff + " * 60 + date_part('minute', age({1}, {0})))";
+        
+        add(Ops.DateTimeOps.DIFF_YEARS,   yearsDiff);
+        add(Ops.DateTimeOps.DIFF_MONTHS,  monthsDiff);
+        add(Ops.DateTimeOps.DIFF_WEEKS,   weeksDiff);
+        add(Ops.DateTimeOps.DIFF_DAYS,    daysDiff);
+        add(Ops.DateTimeOps.DIFF_HOURS,   hoursDiff);
+        add(Ops.DateTimeOps.DIFF_MINUTES, minutesDiff);
+        add(Ops.DateTimeOps.DIFF_SECONDS, secondsDiff);
 
     }
 

@@ -225,13 +225,13 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.ADD_MINUTES, "dateadd('minute',{1},{0})");
         add(Ops.DateTimeOps.ADD_SECONDS, "dateadd('second',{1},{0})");
         
-        add(Ops.DateTimeOps.DIFF_YEARS, "datediff('year',{1},{0})");
-        add(Ops.DateTimeOps.DIFF_MONTHS, "datediff('month',{1},{0})");
-        add(Ops.DateTimeOps.DIFF_WEEKS, "datediff('week',{1},{0})");
-        add(Ops.DateTimeOps.DIFF_DAYS, "datediff('day',{1},{0})");
-        add(Ops.DateTimeOps.DIFF_HOURS, "datediff('hour',{1},{0})");
-        add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('minute',{1},{0})");
-        add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('second',{1},{0})");
+        add(Ops.DateTimeOps.DIFF_YEARS, "datediff('year',{0},{1})");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "datediff('month',{0},{1})");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "datediff('week',{0},{1})");
+        add(Ops.DateTimeOps.DIFF_DAYS, "datediff('day',{0},{1})");
+        add(Ops.DateTimeOps.DIFF_HOURS, "datediff('hour',{0},{1})");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('minute',{0},{1})");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('second',{0},{1})");
 
         // string
         add(Ops.CONCAT, "{0} || {1}", 38);

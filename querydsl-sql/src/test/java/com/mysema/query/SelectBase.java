@@ -448,10 +448,12 @@ public class SelectBase extends AbstractBaseTest{
         QEmployee employee2 = new QEmployee("employee2");
         TestQuery query = query().from(employee, employee2);
         
+        Date date = new Date(0);
         for (DatePart dp : DatePart.values()) {
             if (dp != DatePart.millisecond) {
-                query.singleResult(
-                    SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+                query.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+                query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
+                query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
             }
         }
     }
@@ -481,6 +483,49 @@ public class SelectBase extends AbstractBaseTest{
         
     }
     
+    @Test
+    @IncludeIn({DERBY, H2, POSTGRES})
+    public void Date_Diff2() {
+        TestQuery query = query().from(employee).limit(1);
+        
+        Date date = new Date(0);
+        int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
+        int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));
+        // weeeks
+        int days = query.singleResult(SQLExpressions.datediff(DatePart.day, date, employee.datefield));
+        int hours = query.singleResult(SQLExpressions.datediff(DatePart.hour, date, employee.datefield));
+        int minutes = query.singleResult(SQLExpressions.datediff(DatePart.minute, date, employee.datefield));
+        int seconds = query.singleResult(SQLExpressions.datediff(DatePart.second, date, employee.datefield));
+        
+        assertEquals(30,       years);
+        assertEquals(361,      months);
+        assertEquals(263736,   hours);
+        assertEquals(15824160, minutes);
+        assertEquals(949449600, seconds);
+    }
+    
+    @Test
+    @IncludeIn(ORACLE)
+    public void Date_Diff2_Oracle() {
+        TestQuery query = query().from(employee).limit(1);
+        
+        Date date = new Date(0);
+        int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
+        int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));
+        // weeeks
+        int days = query.singleResult(SQLExpressions.datediff(DatePart.day, date, employee.datefield));
+        int hours = query.singleResult(SQLExpressions.datediff(DatePart.hour, date, employee.datefield));
+        int minutes = query.singleResult(SQLExpressions.datediff(DatePart.minute, date, employee.datefield));
+        int seconds = query.singleResult(SQLExpressions.datediff(DatePart.second, date, employee.datefield));
+        
+        assertEquals(30,       years);
+        assertEquals(366,      months);
+        assertEquals(10989,    days);
+        assertEquals(263736,   hours);
+        assertEquals(15824160, minutes);
+        assertEquals(949449600, seconds);
+    }
+     
     private double degrees(double x) {
         return x * 180.0 / Math.PI;
     }

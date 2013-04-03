@@ -16,7 +16,6 @@ package com.mysema.query.sql;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.sql.DatePart;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
@@ -127,7 +126,8 @@ public final class SQLExpressions {
      * @param end
      * @return
      */
-    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, DateExpression<D> start, DateExpression<D> end) {
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
+            DateExpression<D> start, DateExpression<D> end) {
         return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
     }
     
@@ -137,8 +137,53 @@ public final class SQLExpressions {
      * @param end
      * @return
      */
-    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, DateTimeExpression<D> start, DateTimeExpression<D> end) {
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
+            D start, DateExpression<D> end) {
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), new ConstantImpl<D>(start), end);
+    }
+    
+    /**
+     * @param unit
+     * @param start
+     * @param end
+     * @return
+     */
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
+            DateExpression<D> start, D end) {
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, new ConstantImpl<D>(end));
+    }
+    
+    /**
+     * @param unit
+     * @param start
+     * @param end
+     * @return
+     */
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
+            DateTimeExpression<D> start, DateTimeExpression<D> end) {
         return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
+    }
+    
+    /**
+     * @param unit
+     * @param start
+     * @param end
+     * @return
+     */
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
+            D start, DateTimeExpression<D> end) {
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), new ConstantImpl<D>(start), end);
+    }
+    
+    /**
+     * @param unit
+     * @param start
+     * @param end
+     * @return
+     */
+    public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
+            DateTimeExpression<D> start, D end) {
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, new ConstantImpl<D>(end));
     }
     
     /**
