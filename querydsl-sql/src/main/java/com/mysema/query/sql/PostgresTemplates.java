@@ -101,8 +101,8 @@ public class PostgresTemplates extends SQLTemplates {
         
         String yearsDiff = "date_part('year', age({1}, {0}))"; 
         String monthsDiff = "(" + yearsDiff + " * 12 + date_part('month', age({1}, {0})))";
-        String weeksDiff = "trunc(date_part('day', age({1}, {0}))/7)";
-        String daysDiff = "date_part('day', age({1}, {0}))";
+        String weeksDiff =  "trunc(({1}::date - {0}::date)/7)";
+        String daysDiff = "({1}::date - {0}::date)";
         String hoursDiff = "("+ daysDiff + " * 24 + date_part('hour', age({1}, {0})))";
         String minutesDiff = "(" + hoursDiff + " * 60 + date_part('minute', age({1}, {0})))";
         String secondsDiff =  "(" +  minutesDiff + " * 60 + date_part('minute', age({1}, {0})))";
