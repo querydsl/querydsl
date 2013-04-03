@@ -430,16 +430,9 @@ public class SelectBase extends AbstractBaseTest{
         Date date3 = query.singleResult(SQLExpressions.addMonths(employee.datefield, 1));
         Date date4 = query.singleResult(SQLExpressions.addDays(employee.datefield, 1));
         
-        Date date5 = query.singleResult(SQLExpressions.addHours(employee.datefield, 1));
-        Date date6 = query.singleResult(SQLExpressions.addMinutes(employee.datefield, 1));
-        Date date7 = query.singleResult(SQLExpressions.addSeconds(employee.datefield, 1));
-                
         assertTrue(date2.getTime() > date1.getTime());
         assertTrue(date3.getTime() > date1.getTime());
         assertTrue(date4.getTime() > date1.getTime());
-//        assertTrue(date5.getTime() > date1.getTime());
-//        assertTrue(date6.getTime() > date1.getTime());
-//        assertTrue(date7.getTime() > date1.getTime());
     }
     
     @Test
