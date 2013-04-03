@@ -26,12 +26,24 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public final class Wildcard {
     
+    /**
+     * Wilcard expression (*) for all columns
+     */
     public static final Expression<Object[]> all = TemplateExpressionImpl.create(Object[].class, "*");
 
+    /**
+     * Wildcard count expression (count(*))
+     */
     public static final NumberExpression<Long> count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_ALL_AGG);
     
+    /**
+     * Wilcard count distinct expression ((count(distinct *))
+     */
     public static final NumberExpression<Long> countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_ALL_AGG);
 
+    /**
+     * Wilcard count distinct expression ((count(distinct *))
+     */
     public static final NumberExpression<Integer> countAsInt = NumberOperation.create(Integer.class, (Operator)Ops.AggOps.COUNT_ALL_AGG);
 
     private Wildcard() {}

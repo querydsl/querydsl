@@ -188,7 +188,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.5</version>
+        <version>2.6</version>
         <configuration>
           <outputDirectory>${project.build.directory}/dist/apidocs</outputDirectory>
           <reportOutputDirectory>${project.build.directory}/dist/apidocs</reportOutputDirectory>
@@ -489,12 +489,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.5</version>
+        <version>2.6</version>
         <configuration>
-          <links>
-            <link>http://java.sun.com/javase/6/docs/api/</link>
-            <link>http://www.hibernate.org/hib_docs/v3/api/</link>
-          </links>
+          <detectJavaApiLink>true</detectJavaApiLink>
         </configuration>
       </plugin>
       <plugin>

@@ -65,8 +65,14 @@ public final class SQLExpressions {
         DATE_DIFF_OPS.put(DatePart.millisecond, null); // TODO
     }
     
+    /**
+     * Wildcard expression
+     */
     public static final Expression<Object[]> all = Wildcard.all;
     
+    /**
+     * Wilcard count expression
+     */
     public static final Expression<Long> countAll = Wildcard.count;
     
     /**
