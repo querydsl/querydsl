@@ -145,11 +145,19 @@ public class Templates {
         
         add(Ops.DateTimeOps.ADD_YEARS, "add_years({0},{1})");
         add(Ops.DateTimeOps.ADD_MONTHS, "add_months({0},{1})");
-        add(Ops.DateTimeOps.ADD_WEEKS, "add_days({0},{1})");
+        add(Ops.DateTimeOps.ADD_WEEKS, "add_weeks({0},{1})");
         add(Ops.DateTimeOps.ADD_DAYS, "add_days({0},{1})");
         add(Ops.DateTimeOps.ADD_HOURS, "add_hours({0},{1})");
         add(Ops.DateTimeOps.ADD_MINUTES, "add_minutes({0},{1})");
         add(Ops.DateTimeOps.ADD_SECONDS, "add_seconds({0},{1})");
+        
+        add(Ops.DateTimeOps.DIFF_YEARS, "diff_years({0},{1})");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "diff_months({0},{1})");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "diff_weeks({0},{1})");
+        add(Ops.DateTimeOps.DIFF_DAYS, "diff_days({0},{1})");
+        add(Ops.DateTimeOps.DIFF_HOURS, "diff_hours({0},{1})");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "diff_minutes({0},{1})");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "diff_seconds({0},{1})");
 
         // math
         add(Ops.MathOps.ABS, "abs({0})");
