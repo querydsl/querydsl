@@ -91,7 +91,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     /**
      * Get a milliseconds expression (range 0-999)
-     * <p>Is always 0 in HQL and JDOQL modules</p>
+     * <p>Is always 0 in JPA and JDO modules</p>
      *
      * @return
      */
