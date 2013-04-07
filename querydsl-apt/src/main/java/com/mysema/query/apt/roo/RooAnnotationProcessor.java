@@ -29,7 +29,7 @@ import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.jpa.JPAConfiguration;
 
 /**
- * AnnotationProcessor for Spring Roo which takes {@link RooEntity}, {@link MappedSuperclass}, 
+ * AnnotationProcessor for Spring Roo which takes {@link RooJpaEntity}, {@link MappedSuperclass}, 
  * {@link Embeddable} and {@link Transient} into account
  * 
  * @author tiwe
