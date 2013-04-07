@@ -35,7 +35,7 @@ import com.mysema.query.apt.jpa.JPAConfiguration;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*"})
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*","org.springframework.roo.addon.jpa.entity.*"})
 public class RooAnnotationProcessor extends AbstractQuerydslProcessor {
         
     @Override
