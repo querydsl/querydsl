@@ -13,8 +13,6 @@
  */
 package com.mysema.query.maven;
 
-import com.mysema.query.codegen.GenericExporter;
-
 /**
  * GenericExporterMojo calls the GenericExporter tool using the classpath of the module
  * 
@@ -22,10 +20,4 @@ import com.mysema.query.codegen.GenericExporter;
  * @requiresDependencyResolution test
  */
 public class GenericExporterMojo extends AbstractExporterMojo {
-
-    @Override
-    protected void configure(GenericExporter exporter) {
-        // do nothing        
-    }
-
 }

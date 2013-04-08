@@ -30,7 +30,7 @@ import com.mysema.query.codegen.GenericExporter;
 public class JDOExporterMojo extends AbstractExporterMojo {
 
     @Override
-    protected void configure(GenericExporter exporter) {
+    protected void configureSpecifically(GenericExporter exporter) {
         exporter.setEmbeddableAnnotation(EmbeddedOnly.class);
         exporter.setEmbeddedAnnotation(Embedded.class);
         exporter.setEntityAnnotation(PersistenceCapable.class);
