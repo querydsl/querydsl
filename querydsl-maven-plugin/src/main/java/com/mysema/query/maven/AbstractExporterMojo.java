@@ -50,7 +50,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean scala;
 
     /**
-     * @parameter
+     * @parameter required=true
      */
     private String[] packages;
 
