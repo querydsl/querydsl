@@ -448,7 +448,10 @@ public class GenericExporter {
         return new Property(entityType, propertyName, propertyType, inits);
     }
 
-    private void scanPackages(String... packages) {        
+    private void scanPackages(String... packages) {
+        if (packages == null) {
+            return;
+        }
         for (String pkg : packages) {
             try {
                 for (Class<?> cl : ClassPathUtils.scanPackage(classLoader, pkg)) {
