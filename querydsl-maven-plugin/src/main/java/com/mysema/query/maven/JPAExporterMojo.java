@@ -31,7 +31,7 @@ import com.mysema.query.codegen.GenericExporter;
 public class JPAExporterMojo extends AbstractExporterMojo {
 
     @Override
-    protected void configure(GenericExporter exporter) {
+    protected void configureSpecifically(GenericExporter exporter) {
         exporter.setEmbeddableAnnotation(Embeddable.class);
         exporter.setEmbeddedAnnotation(Embedded.class);
         exporter.setEntityAnnotation(Entity.class);

@@ -53,6 +53,16 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
      * @parameter required=true
      */
     private String[] packages;
+    
+    /**
+     * @parameter default-value=true
+     */
+    private boolean handleFields = true;
+
+    /**
+     * @parameter default-value=true
+     */
+    private boolean handleMethods = true;
 
     /**
      * @parameter expression="${project}" readonly=true required=true
@@ -113,7 +123,26 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         exporter.export(packages);        
     }
 
-    protected abstract void configure(GenericExporter exporter);
+    /**
+     * Configures the {@link GenericExporter} generically; subclasses may override if desired.
+     * @see #configureSpecifically(GenericExporter)
+     */
+    protected void configure(GenericExporter exporter) {
+        exporter.setHandleFields(handleFields);
+        exporter.setHandleMethods(handleMethods);
+        
+        configureSpecifically(exporter);
+    }
+
+    /**
+     * Configures the {@link GenericExporter} specifically for the technology at
+     * hand. This method is intended to be overridden, but not required if there
+     * are no specifics to be configured.
+     * 
+     * @see #configure(GenericExporter)
+     */
+    protected void configureSpecifically(GenericExporter exporter) {
+    }
 
     @SuppressWarnings("unchecked")
     protected ClassLoader getProjectClassLoader() throws DependencyResolutionRequiredException,
@@ -178,4 +207,11 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         this.buildContext = buildContext;
     }
     
+    public void setHandleFields(boolean handleFields) {
+        this.handleFields = handleFields;
+    }
+    
+    public void setHandleMethods(boolean handleMethods) {
+        this.handleMethods = handleMethods;
+    }
 }
