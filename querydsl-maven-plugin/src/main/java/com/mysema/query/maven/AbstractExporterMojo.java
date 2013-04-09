@@ -124,24 +124,11 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     }
 
     /**
-     * Configures the {@link GenericExporter} generically; subclasses may override if desired.
-     * @see #configureSpecifically(GenericExporter)
+     * Configures the {@link GenericExporter}; subclasses may override if desired.
      */
     protected void configure(GenericExporter exporter) {
         exporter.setHandleFields(handleFields);
         exporter.setHandleMethods(handleMethods);
-        
-        configureSpecifically(exporter);
-    }
-
-    /**
-     * Configures the {@link GenericExporter} specifically for the technology at
-     * hand. This method is intended to be overridden, but not required if there
-     * are no specifics to be configured.
-     * 
-     * @see #configure(GenericExporter)
-     */
-    protected void configureSpecifically(GenericExporter exporter) {
     }
 
     @SuppressWarnings("unchecked")

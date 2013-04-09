@@ -20,4 +20,5 @@ package com.mysema.query.maven;
  * @requiresDependencyResolution test
  */
 public class GenericExporterMojo extends AbstractExporterMojo {
+    
 }
