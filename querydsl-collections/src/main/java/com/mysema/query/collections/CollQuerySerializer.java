@@ -67,6 +67,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         OPERATOR_SYMBOLS.put(Ops.MULT, " * ");
         OPERATOR_SYMBOLS.put(Ops.DIV, " / ");
         
+        CAST_SUFFIXES.put(Boolean.class, ".booleanValue()");
         CAST_SUFFIXES.put(Byte.class, ".byteValue()");
         CAST_SUFFIXES.put(Character.class, ".charValue()");
         CAST_SUFFIXES.put(Double.class, ".doubleValue()");
