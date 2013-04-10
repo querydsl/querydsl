@@ -55,7 +55,7 @@ public class JPASQLBase {
     @Rule
     public static MethodRule hibernateOnly = new JPAProviderRule();
             
-    private final SAnimal cat = new SAnimal("cat");
+    private static final SAnimal cat = new SAnimal("cat");
     
     private final SQLTemplates templates = Mode.getSQLTemplates();
     

@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.mysema.query.types.Expression;
 
-public abstract class AbstractQueryTest implements Constants{
+public abstract class AbstractQueryTest implements Constants {
 
     protected QueryHelper query() {
         return new QueryHelper(HQLTemplates.DEFAULT);

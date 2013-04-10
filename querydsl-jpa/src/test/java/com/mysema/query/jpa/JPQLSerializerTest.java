@@ -106,5 +106,13 @@ public class JPQLSerializerTest {
         assertEquals("str like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }
+    
+    @Test
+    public void StringContainsIc() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.handle(new StringPath("str").containsIgnoreCase("ABc!"));
+        assertEquals("lower(str) like ?1 escape '!'", serializer.toString());
+        assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
+    }
 }
  

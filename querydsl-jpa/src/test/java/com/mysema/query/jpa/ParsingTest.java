@@ -48,7 +48,7 @@ import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.testutil.ExcludeIn;
 
-public class ParsingTest extends AbstractQueryTest{
+public class ParsingTest extends AbstractQueryTest {
 
     @Test
     @Ignore

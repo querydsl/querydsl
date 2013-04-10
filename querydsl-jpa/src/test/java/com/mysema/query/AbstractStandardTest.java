@@ -224,6 +224,7 @@ public abstract class AbstractStandardTest {
         Foo foo = new Foo();
         foo.id = 1;
         foo.names = Arrays.asList("a","b");
+        foo.bar = "München";
         save(foo);
     }
 
@@ -701,6 +702,12 @@ public abstract class AbstractStandardTest {
                    employee.jobFunctions.contains(JobFunction.CONSULTANT),
                    employee.jobFunctions.size().eq(2))
                .list(employee);                                         
+    }
+    
+    @Test
+    public void Contains_Ic() {
+        QFoo foo = QFoo.foo;
+        assertEquals(1, query().from(foo).where(foo.bar.containsIgnoreCase("München")).count());
     }
 
     @Test
