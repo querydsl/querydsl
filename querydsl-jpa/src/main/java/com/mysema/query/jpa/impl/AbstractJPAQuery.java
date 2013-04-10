@@ -129,11 +129,13 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         Query query = entityManager.createQuery(queryString);
         JPAUtil.setConstants(query, getConstants(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
-            if (modifiers.getLimit() != null) {
-                query.setMaxResults(modifiers.getLimit().intValue());
+            Integer limit = modifiers.getLimitAsInteger();
+            Integer offset = modifiers.getOffsetAsInteger();
+            if (limit != null) {
+                query.setMaxResults(limit.intValue());
             }
-            if (modifiers.getOffset() != null) {
-                query.setFirstResult(modifiers.getOffset().intValue());
+            if (offset != null) {
+                query.setFirstResult(offset.intValue());
             }
         }
         if (lockMode != null) {

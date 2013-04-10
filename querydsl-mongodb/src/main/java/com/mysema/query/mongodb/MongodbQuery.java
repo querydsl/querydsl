@@ -284,11 +284,13 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, List<Expression<?>> projection,
             QueryModifiers modifiers, List<OrderSpecifier<?>> orderBy) {
         DBCursor cursor = collection.find(createQuery(where), createProjection(projection));
-        if (modifiers.getLimit() != null) {
-            cursor.limit(modifiers.getLimit().intValue());
+        Integer limit = modifiers.getLimitAsInteger();
+        Integer offset = modifiers.getOffsetAsInteger();
+        if (limit != null) {
+            cursor.limit(limit.intValue());
         }
-        if (modifiers.getOffset() != null) {
-            cursor.skip(modifiers.getOffset().intValue());
+        if (offset != null) {
+            cursor.skip(offset.intValue());
         }
         if (orderBy.size() > 0) {
             cursor.sort(serializer.toSort(orderBy));

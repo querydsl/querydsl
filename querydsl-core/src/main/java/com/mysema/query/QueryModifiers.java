@@ -32,6 +32,14 @@ public final class QueryModifiers implements Serializable{
 
     public static final QueryModifiers EMPTY = new QueryModifiers();
     
+    private static final int toInt(Long l) {
+        if (l.longValue() <= Integer.MAX_VALUE) {
+            return l.intValue();
+        } else {
+            return Integer.MAX_VALUE;
+        }
+    }
+    
     public static QueryModifiers limit(@Nonnegative long limit) {
         return new QueryModifiers(Long.valueOf(limit), null);
     }
@@ -42,7 +50,7 @@ public final class QueryModifiers implements Serializable{
 
     @Nullable
     private final Long limit, offset;
-
+    
     private QueryModifiers() {
         limit = null;
         offset = null;
@@ -68,10 +76,20 @@ public final class QueryModifiers implements Serializable{
     public Long getLimit() {
         return limit;
     }
+    
+    @Nullable
+    public Integer getLimitAsInteger() {
+        return limit != null ? toInt(limit) : null;
+    }
 
     @Nullable
     public Long getOffset() {
         return offset;
+    }
+    
+    @Nullable
+    public Integer getOffsetAsInteger() {
+        return offset != null ? toInt(offset) : null;
     }
 
     /**
@@ -92,8 +110,8 @@ public final class QueryModifiers implements Serializable{
      */
     public <T> List<T> subList(List<T> list) {
         if (!list.isEmpty()) {
-            int from = offset != null ? offset.intValue() : 0;
-            int to = limit != null ? (from + limit.intValue()) : list.size();
+            int from = offset != null ? toInt(offset) : 0;
+            int to = limit != null ? (from + toInt(limit)) : list.size();
             return list.subList(from, Math.min(to,list.size()));
         } else {
             return list;

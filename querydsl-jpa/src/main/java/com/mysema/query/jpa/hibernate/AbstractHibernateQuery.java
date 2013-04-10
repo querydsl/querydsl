@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
@@ -171,11 +170,13 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
 
         if (modifiers != null && modifiers.isRestricting()) {
-            if (modifiers.getLimit() != null) {
-                query.setMaxResults(modifiers.getLimit().intValue());
+            Integer limit = modifiers.getLimitAsInteger();
+            Integer offset = modifiers.getOffsetAsInteger();
+            if (limit != null) {
+                query.setMaxResults(limit.intValue());
             }
-            if (modifiers.getOffset() != null) {
-                query.setFirstResult(modifiers.getOffset().intValue());
+            if (offset != null) {
+                query.setFirstResult(offset.intValue());
             }
         }
 

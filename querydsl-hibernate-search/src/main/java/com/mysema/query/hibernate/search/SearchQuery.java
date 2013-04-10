@@ -15,6 +15,7 @@ package com.mysema.query.hibernate.search;
 
 import java.util.List;
 
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
@@ -88,8 +89,12 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private FullTextQuery createQuery(boolean forCount) {
         QueryMetadata metadata = queryMixin.getMetadata();
-        org.apache.lucene.search.Query query = serializer.toQuery(metadata.getWhere(), metadata);
-
+        org.apache.lucene.search.Query query;
+        if (metadata.getWhere() != null) {
+            query = serializer.toQuery(metadata.getWhere(), metadata);
+        } else {
+            query = new MatchAllDocsQuery();
+        } 
         FullTextQuery fullTextQuery = session.createFullTextQuery(query, path.getType());
 
         // order
@@ -100,11 +105,13 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         // paging
         QueryModifiers modifiers = metadata.getModifiers();
         if (modifiers != null && modifiers.isRestricting() && !forCount) {
-            if (modifiers.getLimit() != null) {
-                fullTextQuery.setMaxResults(modifiers.getLimit().intValue());
+            Integer limit = modifiers.getLimitAsInteger();
+            Integer offset = modifiers.getOffsetAsInteger();
+            if (limit != null) {
+                fullTextQuery.setMaxResults(limit.intValue());
             }
-            if (modifiers.getOffset() != null) {
-                fullTextQuery.setFirstResult(modifiers.getOffset().intValue());
+            if (offset != null) {
+                fullTextQuery.setFirstResult(offset.intValue());
             }
         }
         return fullTextQuery;

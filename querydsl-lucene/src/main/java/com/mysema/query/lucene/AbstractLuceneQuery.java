@@ -161,8 +161,8 @@ SimpleProjectable<T> {
     public CloseableIterator<T> iterate() {
         final QueryMetadata metadata = queryMixin.getMetadata();
         final List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
-        final Long queryLimit = metadata.getModifiers().getLimit();
-        final Long queryOffset = metadata.getModifiers().getOffset();
+        final Integer queryLimit = metadata.getModifiers().getLimitAsInteger();
+        final Integer queryOffset = metadata.getModifiers().getOffsetAsInteger();
         Sort sort = querySort;
         int limit;
         final int offset = queryOffset != null ? queryOffset.intValue() : 0;

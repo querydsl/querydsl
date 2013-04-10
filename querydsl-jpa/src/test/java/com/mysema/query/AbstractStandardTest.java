@@ -753,6 +753,11 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void Limit3() {
+        assertEquals(6, query().from(cat).limit(Long.MAX_VALUE).list(cat).size());
+    }
+    
+    @Test
     public void Min() {
         query().from(cat).uniqueResult(cat.bodyWeight.min());
     }

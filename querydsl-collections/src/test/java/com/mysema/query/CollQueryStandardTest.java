@@ -153,4 +153,10 @@ public class CollQueryStandardTest {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
+    
+    @Test
+    public void Limit() {
+        CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).list(cat);
+    }
+   
 }

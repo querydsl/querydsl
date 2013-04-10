@@ -23,11 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
-import com.mysema.query.hibernate.search.SearchQuery;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -139,6 +139,16 @@ public class SearchQueryTest extends AbstractQueryTest {
         List<String> asc = getFirstNames(users.getResults());
         assertEquals(Arrays.asList("Anton", "Barbara"), asc);
         assertEquals(4, users.getTotal());
+    }
+    
+    @Test
+    public void No_Where() {
+        assertEquals(5, query().list().size());
+    }
+    
+    @Test @Ignore // OufOfMemoryError
+    public void Limit_Max_Value() {
+        assertEquals(5, query().limit(Long.MAX_VALUE).list().size());
     }
 
     private List<String> getFirstNames(List<User> users) {

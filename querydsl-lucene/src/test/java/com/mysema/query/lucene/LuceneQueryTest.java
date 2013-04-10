@@ -735,4 +735,9 @@ public class LuceneQueryTest {
     public void List_Results_Throws_An_Illegal_Argument_Exception_When_Sum_Of_Limit_And_Offset_Is_Negative() {
         query.limit(1).offset(Integer.MAX_VALUE).listResults();
     }
+    
+    @Test
+    public void Limit_Max_Value() {
+        assertEquals(4, query.limit(Long.MAX_VALUE).list().size());
+    }
 }

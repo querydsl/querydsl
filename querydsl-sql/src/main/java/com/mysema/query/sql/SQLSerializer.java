@@ -127,7 +127,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void handle(String template, Object... args) {
-//        handle(TemplateExpressionImpl.create(Object.class, template, args));
         handleTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
     
