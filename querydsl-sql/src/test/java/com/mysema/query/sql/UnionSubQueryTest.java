@@ -29,7 +29,7 @@ public class UnionSubQueryTest {
     private SQLSerializer serializer = new SQLSerializer(templates);    
     
     @Test
-    public void UnionSubQuery() {
+    public void Union_SubQuery() {
         SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
         SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
         SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
@@ -47,6 +47,27 @@ public class UnionSubQueryTest {
                 "union\n" +
                 "(select 3 from dual)", serializer.toString());
     }
+    
+    @Test
+    public void UnionAll_SubQuery() {
+        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
+        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
+        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
+        SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        Expression<?> union = sq().unionAll(
+            sq().unique(one.as(col1)),
+            sq().unique(two),
+            sq().unique(three));
+        
+        serializer.handle(union);
+        assertEquals(
+                "(select 1 as col1 from dual)\n" +
+                "union all\n" +
+                "(select 2 from dual)\n" +
+                "union all\n" +
+                "(select 3 from dual)", serializer.toString());
+    }
+    
     
     protected SQLSubQuery sq() {
         return new SQLSubQuery();

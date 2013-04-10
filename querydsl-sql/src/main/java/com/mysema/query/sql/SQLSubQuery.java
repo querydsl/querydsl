@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -41,16 +42,28 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <T> SimpleExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
+    private <T> SimpleExpression<T> union(Operator<Object> op, List<? extends SubQueryExpression<T>> sq) {
         Expression<T> rv = sq.get(0);
         for (int i = 1; i < sq.size(); i++) {
-            rv = SimpleOperation.create((Class)rv.getType(), SQLTemplates.UNION, rv, sq.get(i));
+            rv = SimpleOperation.create((Class)rv.getType(), op, rv, sq.get(i));
         }
         return (SimpleExpression<T>)rv;
     }
     
+    public <T> SimpleExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
+        return union(SQLTemplates.UNION, sq);
+    }
+    
     public <T> SimpleExpression<T> union(SubQueryExpression<T>... sq) {
         return union(Arrays.asList(sq));
+    }
+    
+    public <T> SimpleExpression<T> unionAll(List<? extends SubQueryExpression<T>> sq) {
+        return union(SQLTemplates.UNION_ALL, sq);
+    }
+    
+    public <T> SimpleExpression<T> unionAll(SubQueryExpression<T>... sq) {
+        return unionAll(Arrays.asList(sq));
     }
     
     @Override
