@@ -41,6 +41,10 @@
               <stylesheetResource>file:${basedir}/src/main/styles/html/custom.xsl</stylesheetResource>
             </format>
             <format>
+              <formatName>html_single</formatName>
+              <finalName>index.html</finalName>
+            </format>
+            <format>
               <formatName>pdf</formatName>
               <profilingTypeName>two_pass</profilingTypeName>
               <stylesheetResource>file:${basedir}/src/main/styles/pdf/custom.xsl</stylesheetResource>
