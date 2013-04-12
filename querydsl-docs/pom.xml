@@ -43,6 +43,7 @@
             <format>
               <formatName>html_single</formatName>
               <finalName>index.html</finalName>
+              <stylesheetResource>file:${basedir}/src/main/styles/html_single/custom.xsl</stylesheetResource>
             </format>
             <format>
               <formatName>pdf</formatName>
