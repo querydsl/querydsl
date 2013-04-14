@@ -129,7 +129,7 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory {
                     // reload
                     clazz = loader.loadClass(id);
                 }
-                method = clazz.getDeclaredMethods()[0];
+                method = findEvalMethod(clazz);
                 cache.put(id, method);
             }
             
@@ -141,6 +141,26 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory {
         } catch (IOException e) {
             throw new CodegenException(e);
         }
+    }
+
+    protected Method findEvalMethod(Class<?> clazz) {
+        /*
+         * Note 1:
+         * Some Java instrumentation tools (e.g. JaCoCo) insert code into
+         * classes at runtime. This means that the static eval() method *could*
+         * not be the first method of our runtime generated classes anymore.
+         *
+         * Note 2:
+         * We can't use clazz.getDeclaredMethod(name, classes), as the argument
+         * types of the eval() method could be normalized (see createSource()).
+         */
+        for (Method method : clazz.getDeclaredMethods()) {
+            if ("eval".equals(method.getName())) {
+                return method;
+            }
+        }
+
+        throw new IllegalArgumentException("Couldn't find eval method!");
     }
 
     protected String toId(String source, Class<?> returnType, Type[] types, Collection<Object> constants) {
