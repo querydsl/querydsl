@@ -115,13 +115,13 @@
       </snapshots>
 	</repository>
   </repositories>  
+-->
   
   <pluginRepositories>
     <pluginRepository>
-        <id>com.springsource.repository.bundles.release</id>
-        <url>http://repository.springsource.com/maven/bundles/release</url>
+      <id>com.springsource.repository.bundles.release</id>
+      <url>http://repository.springsource.com/maven/bundles/release</url>
     </pluginRepository>
   </pluginRepositories>
- -->  
-  
+
 </project>
