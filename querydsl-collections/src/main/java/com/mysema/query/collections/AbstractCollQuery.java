@@ -24,6 +24,7 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
+import com.mysema.query.SimpleQuery;
 import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Expression;
@@ -47,7 +48,7 @@ import com.mysema.query.types.QTuple;
  *
  * @author tiwe
  */
-public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends ProjectableQuery<Q> {
+public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends ProjectableQuery<Q> implements SimpleQuery<Q> {
 
     private final Map<Expression<?>, Iterable<?>> iterables = new HashMap<Expression<?>, Iterable<?>>();
 

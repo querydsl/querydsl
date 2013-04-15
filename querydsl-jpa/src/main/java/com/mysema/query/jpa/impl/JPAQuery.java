@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLTemplates;
 
 /**
@@ -26,7 +25,7 @@ import com.mysema.query.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQuery {
+public final class JPAQuery extends AbstractJPAQuery<JPAQuery> {
 
     /**
      * Creates a new detached query

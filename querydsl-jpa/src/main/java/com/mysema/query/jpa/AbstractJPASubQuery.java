@@ -33,7 +33,7 @@ import com.mysema.query.types.template.NumberTemplate;
  *
  * @param <Q> concrete subtype
  */
-public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends DetachableQuery<Q> { 
+public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends DetachableQuery<Q> implements JPQLSubQuery { 
 
     private final JPAQueryMixin<Q> queryMixin;
 

@@ -31,7 +31,7 @@ import com.mysema.query.types.template.NumberTemplate;
  * @author tiwe
  *
  */
-public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQLCommonQuery<SQLSubQuery> {
+public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> {
 
     public SQLSubQuery() {
         super();

@@ -27,7 +27,7 @@ import com.mysema.query.types.Expression;
  *
  * @param <Q>
  */
-public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends DetachableQuery<Q> {
+public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends DetachableQuery<Q> implements JDOCommonQuery<Q> {
 
     public AbstractJDOSubQuery() {
         this(new DefaultQueryMetadata().noValidate());

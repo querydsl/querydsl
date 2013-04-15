@@ -23,7 +23,7 @@ import com.mysema.query.QueryMetadata;
  *
  * @author tiwe
  */
-public final class SQLQuery extends AbstractSQLQuery<SQLQuery> implements SQLCommonQuery<SQLQuery> {
+public final class SQLQuery extends AbstractSQLQuery<SQLQuery> {
 
     /**
      * Create a detached SQLQuery instance

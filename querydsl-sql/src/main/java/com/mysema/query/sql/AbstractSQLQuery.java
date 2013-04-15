@@ -63,8 +63,8 @@ import com.mysema.util.ResultSetAdapter;
  * 
  * @param <Q> concrete subtype
  */
-public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> extends
-        ProjectableQuery<Q> {
+public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>> extends
+        ProjectableQuery<Q> implements SQLCommonQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
     

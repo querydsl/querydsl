@@ -33,7 +33,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * @author tiwe
  *
  */
-public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends DetachableQuery<Q> {
+public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends DetachableQuery<Q> implements SQLCommonQuery<Q> {
 
     protected final QueryMixin<Q> queryMixin;
     

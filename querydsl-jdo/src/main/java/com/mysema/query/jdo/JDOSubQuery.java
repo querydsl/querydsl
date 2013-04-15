@@ -27,7 +27,7 @@ import com.mysema.query.types.query.NumberSubQuery;
  * @author tiwe
  *
  */
-public class JDOSubQuery extends AbstractJDOSubQuery<JDOSubQuery> implements JDOCommonQuery<JDOSubQuery> {
+public class JDOSubQuery extends AbstractJDOSubQuery<JDOSubQuery> {
     
     public JDOSubQuery() {
         super();

@@ -32,7 +32,7 @@ import com.mysema.query.types.template.NumberTemplate;
  *
  * @author tiwe
  */
-public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends ProjectableQuery<Q> {
+public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends ProjectableQuery<Q> implements JPQLQuery {
 
     private Map<Object,String> constants;
 
