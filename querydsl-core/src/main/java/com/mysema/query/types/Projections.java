@@ -36,6 +36,12 @@ public final class Projections {
     /**
      * Create a Bean populating projection for the given type and expressions
      * 
+     * <p>Example</p>
+     * <pre>
+     * UserDTO dto = query.singleResult(
+     *     Projections.bean(UserDTO.class, user.firstName, user.lastName));
+     * </pre>
+     * 
      * @param <T>
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -60,6 +66,12 @@ public final class Projections {
     /**
      * Create a constructor invocation projection for the given type and expressions
      * 
+     * <p>Example</p>
+     * <pre>
+     * UserDTO dto = query.singleResult(
+     *     Projections.constructor(UserDTO.class, user.firstName, user.lastName));
+     * </pre>
+     * 
      * @param <T>
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -71,6 +83,12 @@ public final class Projections {
     
     /**
      * Create a field access based Bean populating projection for the given type and expressions
+     * 
+     * <p>Example</p>
+     * <pre>
+     * UserDTO dto = query.singleResult(
+     *     Projections.fields(UserDTO.class, user.firstName, user.lastName));
+     * </pre>
      * 
      * @param <T>
      * @param type type of the projection
@@ -95,6 +113,12 @@ public final class Projections {
     
     /**
      * Create a Map typed projection for the given expressions
+     * 
+     * <p>Example</p>
+     * <pre>
+     * Map&lt;Expression&lt;?&gt;, ?&gt; map = query.singleResult(
+     *     Projections.map(user.firstName, user.lastName);     
+     * </pre>
      * 
      * @param exprs arguments for the projection
      * @return

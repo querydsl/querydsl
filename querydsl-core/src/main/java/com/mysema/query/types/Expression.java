@@ -20,6 +20,17 @@ import javax.annotation.Nullable;
 /**
  * Expression defines a general typed expression in a Query instance. The generic type parameter
  * is a reference to the type the expression is bound to.
+ * 
+ * <p>The central Expression subinterfaces are</p>
+ * <ul>
+ *   <li>Constant - for constants such as Strings, numbers and entity instances</li>
+ *   <li>FactoryExpression - for row based result processing</li>
+ *   <li>Operation - for common supported operations and function calls</li>
+ *   <li>ParamExpression - for bindable query parameters</li>
+ *   <li>Path - for variables, properties and collection member access</li>
+ *   <li>SubQueryExpression - for subqueries</li>
+ *   <li>TemplateExpression - for custom syntax</li>
+ * </ul>
  *
  * @author tiwe
  *

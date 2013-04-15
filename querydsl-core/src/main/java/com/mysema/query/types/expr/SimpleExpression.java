@@ -122,6 +122,8 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
     /**
      * Get a <code>this == right</code> expression
+     * 
+     * <p>Use expr.isNull() instead of expr.eq(null)</p>
      *
      * @param right rhs of the comparison
      * @return

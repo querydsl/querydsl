@@ -31,8 +31,18 @@ import com.mysema.query.Tuple;
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
  *     System.out.println("lastName " + row.get(employee.lastName)); 
- * }
- * } 
+ * }} 
+ * </pre>
+ * 
+ * <p>Since Tuple projection is the default for multi column projections, the above is equivalent to this code</p>
+ * 
+ * <pre>
+ * {@code 
+ * List<Tuple> result = query.from(employee).list(employee.firstName, employee.lastName);
+ * for (Tuple row : result) {
+ *     System.out.println("firstName " + row.get(employee.firstName));
+ *     System.out.println("lastName " + row.get(employee.lastName)); 
+ * }} 
  * </pre>
  *
  * @author tiwe

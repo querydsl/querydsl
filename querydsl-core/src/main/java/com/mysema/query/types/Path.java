@@ -16,8 +16,8 @@ package com.mysema.query.types;
 import java.lang.reflect.AnnotatedElement;
 
 /**
- * Path represents a path expression. Paths refer to variables and properties in a query.
- *
+ * Path represents a path expression. Paths refer to variables, properties and collection members access.
+ * 
  * @author tiwe
  */
 public interface Path<T> extends Expression<T> {
