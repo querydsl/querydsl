@@ -28,7 +28,7 @@ import com.mysema.query.types.Predicate;
 public interface Query<Q extends Query<Q>> extends SimpleQuery<Q> {
 
     /**
-     * Defines the grouping/aggregation expressions
+     * Add grouping/aggregation expressions
      *
      * @param o
      * @return
@@ -36,7 +36,7 @@ public interface Query<Q extends Query<Q>> extends SimpleQuery<Q> {
     Q groupBy(Expression<?>... o);
 
     /**
-     * Defines the filters for aggregation
+     * Add filters for aggregation
      *
      * @param o
      * @return

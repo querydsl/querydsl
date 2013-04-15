@@ -26,6 +26,8 @@ public interface FilteredClause<C extends FilteredClause<C>> {
     
     /**
      * Adds the given filter conditions
+     * 
+     * <p>Skips null arguments</p>
      *
      * @param o filter conditions to be added
      * @return

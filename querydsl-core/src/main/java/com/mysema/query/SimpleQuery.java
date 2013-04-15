@@ -29,7 +29,7 @@ import com.mysema.query.types.ParamExpression;
 public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q> {
 
     /**
-     * Defines the limit / max results for the query results
+     * Set the limit / max results for the query results
      *
      * @param limit
      * @return
@@ -37,7 +37,7 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
     Q limit(@Nonnegative long limit);
 
     /**
-     * Defines the offset for the query results
+     * Set the offset for the query results
      *
      * @param offset
      * @return
@@ -45,7 +45,7 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
     Q offset(@Nonnegative long offset);
 
     /**
-     * Defines both limit and offset of the query results
+     * Set both limit and offset of the query results
      *
      * @param modifiers
      * @return
@@ -53,7 +53,7 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
     Q restrict(QueryModifiers modifiers);
 
     /**
-     * Defines the order expressions
+     * Add order expressions
      *
      * @param o
      * @return
