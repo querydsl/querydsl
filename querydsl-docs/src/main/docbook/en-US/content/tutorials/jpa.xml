@@ -369,7 +369,7 @@ from Cat as cat
 <programlisting language="java"><![CDATA[ 
 query.from(cat)
     .leftJoin(cat.kittens, kitten)
-    .with(kitten.bodyWeight.gt(10.0))
+    .on(kitten.bodyWeight.gt(10.0))
     .list(cat);
 ]]></programlisting>
 
@@ -378,7 +378,7 @@ query.from(cat)
 <programlisting>  
 from Cat as cat
     left join cat.kittens as kitten
-    with kitten.bodyWeight > 10.0  
+    on kitten.bodyWeight > 10.0  
 </programlisting>  
   
   </sect2>
@@ -391,7 +391,7 @@ from Cat as cat
   
   <para><emphasis>from :</emphasis> Define the query sources here.</para>
   
-  <para><emphasis>innerJoin, join, leftJoin, fullJoin, with</emphasis> : Define join elements using these constructs. 
+  <para><emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis> : Define join elements using these constructs. 
   For the join methods the first argument is the join source and the second the target (alias).</para>
   
   <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or 
