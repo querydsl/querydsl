@@ -148,8 +148,8 @@
         </plugin>
         <plugin>
           <groupId>com.mysema.maven</groupId>
-          <artifactId>maven-apt-plugin</artifactId>
-          <version>0.3.1</version>
+          <artifactId>apt-maven-plugin</artifactId>
+          <version>1.0.9</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

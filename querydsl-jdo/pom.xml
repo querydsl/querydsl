@@ -224,7 +224,6 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
-        <version>1.0.5</version>
         <executions>
           <execution>
             <goals>
