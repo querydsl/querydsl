@@ -11,7 +11,7 @@ body {
   margin: 15px 30px;
 }
 
-div.book, div.chapter, div.appendix, div.part {
+div.book, div.chapter, div.appendix, div.part, body > div.sect1 {
   margin-left: 10%;
   margin-right: 10%;	
 }	
@@ -26,7 +26,7 @@ p {
 
 hr {
     background: none repeat scroll 0 0 #CCCCFF;
-    border: 1px solid #CCCCFF;
+    border: 1px solid #CCCCC;
 }
 
 h1,h2,h3,h4 {
@@ -41,7 +41,7 @@ pre {
 
 pre.programlisting {
   font-size:     10pt;
-  padding:       7pt 3pt;
+  padding:       6pt 10pt;
   border: 1px solid #CCCCCC;
   border-radius: 3px 3px 3px 3px;
   background:    #f8f8f8;
@@ -110,5 +110,5 @@ span.productname {
 
 a {
 	text-decoration: none;
-	color: #5193D4;
+	color: #3030D8;
 }

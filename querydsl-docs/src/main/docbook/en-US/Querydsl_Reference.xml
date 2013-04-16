@@ -6,8 +6,7 @@
 ]>
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
     <bookinfo>
-        <title>Querydsl</title>
-        <subtitle>Reference Documentation</subtitle>
+        <title>Querydsl - Reference Documentation</title>
         <!-- Type-safe queries for Java -->
         <productname>Querydsl</productname>    
         <releaseinfo>&versionNumber;</releaseinfo>
