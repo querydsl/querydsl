@@ -6,11 +6,15 @@ html {
 }
 
 body {
-  color: #333333;
-  margin-left:   10%;
-  margin-right:  10%;
+  color: #333333;  
   font-family:   Arial, Sans-serif;
+  margin: 15px 30px;
 }
+
+div.book, div.chapter, div.appendix, div.part {
+  margin-left: 10%;
+  margin-right: 10%;	
+}	
 
 div {
   margin:        0pt;
@@ -21,8 +25,8 @@ p {
 }
 
 hr {
-  border:        1px solid gray;
-  background:    gray;
+    background: none repeat scroll 0 0 #CCCCFF;
+    border: 1px solid #CCCCFF;
 }
 
 h1,h2,h3,h4 {
@@ -102,4 +106,9 @@ span.productname {
 
 .code {
 	font-size: 120%;
+}
+
+a {
+	text-decoration: none;
+	color: #5193D4;
 }
