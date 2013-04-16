@@ -52,7 +52,7 @@ import com.mysema.query.types.QTuple;
  *
  * @param <Q>
  */
-public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends ProjectableQuery<Q> {
+public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends ProjectableQuery<Q> implements JDOQLQuery{
 
     private static final Logger logger = LoggerFactory.getLogger(JDOQuery.class);
 
