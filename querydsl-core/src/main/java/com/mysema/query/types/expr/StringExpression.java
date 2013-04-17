@@ -395,6 +395,9 @@ public abstract class StringExpression extends ComparableExpression<String> {
 
     /**
      * Return true if this String matches the given regular expression
+     * 
+     * <p>Some implementations such as Querydsl JPA will try to convert a regex expression into like 
+     * form and will throw an Exception when this fails</p>
      *
      * @param regex
      * @return this.matches(right)
@@ -406,6 +409,9 @@ public abstract class StringExpression extends ComparableExpression<String> {
 
     /**
      * Return true if this String matches the given regular expression
+     * 
+     * <p>Some implementations such as Querydsl JPA will try to convert a regex expression into like 
+     * form and will throw an Exception when this fails</p>
      *
      * @param regex
      * @return this.matches(regex)
