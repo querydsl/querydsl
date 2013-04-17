@@ -47,11 +47,9 @@
 
     <toc/>
 
-    <xi:include href="content/preface.xml"/>    
-    
+    <xi:include href="content/preface.xml"/>       
     <xi:include href="content/intro.xml" />
-    <xi:include href="content/tutorials.xml"/>
-    
+    <xi:include href="content/tutorials.xml"/>    
     <xi:include href="content/general.xml"/>                
     <xi:include href="content/troubleshooting.xml"/>
     

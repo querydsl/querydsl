@@ -3,11 +3,14 @@
 <chapter id="general" xmlns:xi="http://www.w3.org/2001/XInclude">
     <title>General usage</title>
     
-	<xi:include href="general/expressions.xml" />
-	<xi:include href="general/result-processing.xml"/>
+    <para>
+    The General usage section covers aspects that are not covered in the tutorial section of the reference documentation.
+    It follows a use case oriented structure.
+    </para>
+    
+	<xi:include href="general/query-construction.xml" />
+	<xi:include href="general/result-handling.xml"/>
 	<xi:include href="general/codegen.xml"/>
-	<xi:include href="general/configuration.xml" />
-	<xi:include href="general/best-practices.xml" />
-    <xi:include href="general/alias.xml" />
-                       
+	<xi:include href="general/alias.xml" />
+                           
 </chapter>    

@@ -1,0 +1,141 @@
+<sect1>
+
+  <title>Result handling</title>
+  
+  <para>Querydsl provides two ways to customize results, FactoryExpressions for row based transformation
+  and ResultTransformer for aggregation.</para>
+
+  <para>The <code>com.mysema.query.types.FactoryExpression</code> interface is used for Bean creation,
+  constructor invocation and for the creation of more complex objects.</para>
+  
+  <para>For the <code>com.mysema.query.ResultTransformer</code> interface <code>GroupBy</code> is the
+  main implementation </para>
+
+  <sect2>
+
+    <title>Bean population</title>
+
+    <para>TODO</para>
+
+  </sect2>
+
+
+  <sect2>
+    <title>Constructor invocations</title>
+    
+    <para>
+      Querydsl provides the possibility to use constructor invocations in projections.
+      To use a constructor in a query projection, you need to annotate it with the
+      QueryProjection annotation:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+class CustomerDTO {
+
+  @QueryProjection
+  public CustomerDTO(long id, String name){
+     ...
+  }
+
+}
+]]></programlisting>
+
+    <para>And then you can use it like this in the query</para>
+
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
+JPQLQuery query = new HibernateQuery(session);
+List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id, customer.name));     
+]]></programlisting>
+
+    <para>While the example is Hibernate specific, this feature is
+      available in all modules.
+    </para>
+
+    <para>If the type with the QueryProjection annotation is not an annotated entity
+      type, you can use the constructor projection like in the example, but if the 
+      annotated type would be an entity type, then the constructor projection would need to be 
+      created via a call to the static create method of the query type :
+    </para>
+
+    <programlisting language="java"><![CDATA[
+@Entity
+class Customer {
+
+  @QueryProjection
+  public Customer(long id, String name){
+     ...
+  }
+
+}
+]]></programlisting>
+
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
+JPQLQuery query = new HibernateQuery(session);
+List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, customer.name));   
+]]></programlisting>
+
+    <para>Alternatively, if code generation is not an option, you can
+      create a constructor
+      projection like this :
+    </para>
+
+    <programlisting language="java"><![CDATA[
+List<Customer> dtos = query.from(customer)
+    .list(ConstructorExpression.create(Customer.class, customer.id, customer.name));   
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>GroupBy processing</title>
+
+    <para>
+      The
+      <code>com.mysema.query.group.GroupBy</code>
+      class provides aggregation functionality which can be used to aggregate query results
+      in memory. Below are some usage examples.
+    </para>
+
+    <para>
+      Aggregating parent child relations
+    </para>
+
+    <programlisting language="java"><![CDATA[
+import static com.mysema.query.group.GroupBy.*;
+   
+Map<Integer, List<Comment>> results = query.from(post, comment)
+    .where(comment.post.id.eq(post.id))
+    .transform(groupBy(post.id).as(list(comment)));
+]]></programlisting>
+
+    <para>This will return a map of post ids to related comments.</para>
+
+    <para>Multiple result columns</para>
+
+    <programlisting language="java"><![CDATA[    
+Map<Integer, Group> results = query.from(post, comment)
+    .where(comment.post.id.eq(post.id))
+    .transform(groupBy(post.id).as(post.name, set(comment.id)));
+]]></programlisting>
+
+    <para>This will return a map of post ids to Group instances with
+      access to post name
+      and comment ids.
+    </para>
+
+    <para>Group is the GroupBy equivalent to the Tuple interface.</para>
+
+    <para>
+      More examples can be found
+      <ulink
+        url="https://github.com/mysema/querydsl/blob/master/querydsl-collections/src/test/java/com/mysema/query/collections/GroupByTest.java"
+      >here</ulink>
+      .
+    </para>
+
+  </sect2>
+
+</sect1>    

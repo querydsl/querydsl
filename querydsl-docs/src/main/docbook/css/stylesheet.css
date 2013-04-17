@@ -105,7 +105,12 @@ span.productname {
 }
 
 .code {
-	font-size: 120%;
+	font-size: 14px;
+	color: 0000C0;
+}
+
+div.table td, div.table th {
+    padding: 7px;
 }
 
 a {

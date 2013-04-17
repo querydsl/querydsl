@@ -1,98 +1,95 @@
 <sect1 id="alias">
-    
+
   <title>Alias usage</title>
 
   <para>
-    In cases where code generation is not an option, alias objects
-    can be used as path references for expression construction. They can be used via proxied Java Bean 
-    objects through getter method invocations.
+    In cases where code generation is not an option, alias objects can be used as path
+    references for expression construction. They can be used via proxied Java Bean objects
+    through getter method invocations.
   </para>
 
   <para>
-    The following examples demonstrate how alias objects can be used
-    as replacements for expression creation based on generated types.
+    The following examples demonstrate how alias objects can be used as replacements
+    for expression creation based on generated types.
   </para>
 
   <para>
     At first an example query with APT generated domain types :
   </para>
 
-  <programlisting language="java">
+  <programlisting language="java"><![CDATA[
 QCat cat = new QCat("cat");
-for (String name : from(cat,cats)
-  .where(cat.kittens.size().gt(0))
-  .iterate(cat.name)){
+for (String name : query.from(cat,cats)
+    .where(cat.kittens.size().gt(0))
+    .list(cat.name)){
     System.out.println(name);
 }
-  </programlisting>
+]]></programlisting>
 
   <para>
-    And now with an alias instance for the Cat class. The call
-    "c.getKittens()" inside the dollar-method is internally transformed
-    into the property path c.kittens.
+    And now with an alias instance for the Cat class. The call <code>c.getKittens()</code> inside
+    the dollar-method is internally transformed into the property path <code>c.kittens</code>.
   </para>
 
-  <programlisting language="java">
+  <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
-for (String name : from($(c),cats)
-  .where($(c.getKittens()).size().gt(0))
-  .iterate($(c.getName()))){
+for (String name : query.from($(c),cats)
+    .where($(c.getKittens()).size().gt(0))
+    .list($(c.getName()))){
     System.out.println(name);
 }
-  </programlisting>
+]]></programlisting>
 
   <para>
     To use the alias functionality in your code, add the following two
     imports
   </para>
 
-  <programlisting language="java">
+  <programlisting language="java"><![CDATA[
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-  </programlisting>
+]]></programlisting>
 
   <para>
-    The following example is a variation of the previous, where the access to
-    the list size happens inside the dollar-method invocation.
+    The following example is a variation of the previous, where the access to the list
+    size happens inside the dollar-method invocation.
   </para>
 
-  <programlisting language="java">
+  <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
-for (String name : from($(c),cats)
-  .where($(c.getKittens().size()).gt(0))
-  .iterate($(c.getName()))){
+for (String name : query.from($(c),cats)
+    .where($(c.getKittens().size()).gt(0))
+    .list($(c.getName()))){
     System.out.println(name);
 }
-  </programlisting>
+]]></programlisting>
 
   <para>
-    All non-primitive and non-String typed properties of aliases are aliases
-    themselves. So you may cascade method calls until you hit a
-    primitive or String type in the dollar-method scope.
-    e.g.
+    All non-primitive and non-final typed properties of aliases are aliases
+    themselves. So you may cascade method calls until you hit a primitive or final type
+    in the dollar-method scope. e.g.
   </para>
 
-  <programlisting language="java">
+  <programlisting language="java"><![CDATA[
 $(c.getMate().getName())
-  </programlisting>
+]]></programlisting>
 
   <para>
     is transformed into *c.mate.name* internally, but
   </para>
 
-  <programlisting language="java">
+  <programlisting language="java"><![CDATA[
 $(c.getMate().getName().toLowerCase())
-  </programlisting>
+]]></programlisting>
 
   <para>
-    is not transformed properly, since the toLowerCase() invocation is not
-    tracked.
+    is not transformed properly, since the <code>toLowerCase()</code> invocation is not tracked.
   </para>
 
   <para>
-    Note also that you may only invoke getters, size(), contains(Object) and
-    get(int) on alias types. All other invocations throw exceptions.
+    Note also that you may only invoke getters, size(), contains(Object) and get(int)
+    on alias types. All other invocations throw exceptions.
   </para>
-        
-  </sect1>
+
+</sect1>
   

@@ -9,21 +9,21 @@
     <para>
       Querydsl was born out of the need to maintain HQL queries in a typesafe way.
       Incremental construction of HQL queries requires String concatenation and results
-      in hard to read code. Unsafe references to domain types and properties 
+      in hard to read code. Unsafe references to domain types and properties
       via plain Strings were another issue with String based HQL construction.
-      </para>
+    </para>
 
     <para>
-      With a changing domain model type-safety brings huge benefits in
-      software development. Domain changes are directly reflected in
-      queries and autocomplete in query construction makes query construction
-      faster and safer.
-      </para>
+      With a changing domain model type-safety brings huge benefits in software
+      development. Domain changes are directly reflected in queries and autocomplete in
+      query construction makes query construction faster and safer.
+    </para>
 
     <para>
-      HQL for Hibernate was the first target language for Querydsl, but nowadays it supports
-      JPA, JDO, JDBC, Lucene, Hibernate Search, MongoDB, Collections and RDFBean as backends.   
-      </para>
+      HQL for Hibernate was the first target language for Querydsl, but nowadays it
+      supports JPA, JDO, JDBC, Lucene, Hibernate Search, MongoDB, Collections and RDFBean
+      as backends.
+    </para>
 
   </sect1>
 
@@ -31,24 +31,28 @@
 
     <title>Principles</title>
 
-    <para><emphasis>Type safety</emphasis> is the core principle of Querydsl. Queries are
-      constructed based on generated query types that
-      reflect the properties of your domain types. Also function/method invocations are
-      constructed in a fully type-safe manner.</para>
-       
-    <para><emphasis>Consistency</emphasis> is another important principle. The query paths and operations are the same
-    in all implementations and also the Query interfaces have a common base interface.
-    </para>   
-    
     <para>
-    All query instances can be reused multiple times. 
-    After the projection the paging data (limit and offset) and the definition of the projection are removed.
+      <emphasis>Type safety</emphasis>
+      is the core principle of Querydsl. Queries are constructed based on generated query
+      types that reflect the properties of your domain types. Also function/method
+      invocations are constructed in a fully type-safe manner.
     </para>
-    
+
     <para>
-    To get an impression of the expressivity of the Querydsl query and expression types go to 
-    the javadocs and explore
-    com.mysema.query.Query, com.mysema.query.Projectable and com.mysema.query.types.Expression.
+      <emphasis>Consistency</emphasis>
+      is another important principle. The query paths and operations are the same
+      in all implementations and also the Query interfaces have a common base interface.
+    </para>
+
+    <para>
+      All query instances can be reused multiple times. After the projection the paging data 
+      (limit and offset) and the definition of the projection are removed.
+    </para>
+
+    <para>
+      To get an impression of the expressivity of the Querydsl query and expression types go to
+      the javadocs and explore <code>com.mysema.query.Query</code>, <code>com.mysema.query.Projectable</code> 
+      and <code>com.mysema.query.types.Expression</code>.
     </para>
 
   </sect1>
