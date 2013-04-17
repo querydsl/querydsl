@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.QueryException;
 
 
 /**
@@ -313,9 +314,10 @@ public final class ExpressionUtils {
         if (expr instanceof Constant<?>) {           
             final String str = expr.toString();
             final StringBuilder rv = new StringBuilder(str.length() + 2);
+            boolean escape = false;
             for (int i = 0; i < str.length(); i++) {
                 final char ch = str.charAt(i);
-                if (ch == '.') {
+                if (!escape && ch == '.') {
                     if (i < str.length() - 1 && str.charAt(i+1) == '*') {
                         rv.append('%');
                         i++;
@@ -323,8 +325,16 @@ public final class ExpressionUtils {
                         rv.append('_');
                     }
                     continue;
+                } else if (!escape && ch == '\\') {
+                    escape = true;
+                    continue;
+                } else if (!escape && (ch == '[' || ch == ']' || ch == '^' || ch == '.' || ch == '*')) {
+                    throw new QueryException("'" + str + "' can't be converted to like form");
+                } else if (escape && (ch == 'd' || ch == 'D' || ch == 's' || ch == 'S' || ch == 'w' || ch == 'W')) {
+                    throw new QueryException("'" + str + "' can't be converted to like form");                    
                 }
                 rv.append(ch);
+                escape = false;
             }
             if (!rv.toString().equals(str)) {
                 return ConstantImpl.create(rv.toString());
