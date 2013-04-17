@@ -13,6 +13,7 @@
  */
 package com.mysema.query.jpa.impl;
 
+import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
@@ -29,12 +30,14 @@ import com.mysema.query.types.EntityPath;
  */
 public class JPAQueryFactory implements JPQLQueryFactory  {
 
+    @Nullable
     private final JPQLTemplates templates;
 
     private final Provider<EntityManager> entityManager;
 
     public JPAQueryFactory(Provider<EntityManager> entityManager) {
-        this(JPQLTemplates.DEFAULT, entityManager);
+        this.entityManager = entityManager;
+        this.templates = null;
     }
 
     public JPAQueryFactory(JPQLTemplates templates, Provider<EntityManager> entityManager) {
@@ -44,7 +47,11 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
 
     @Override
     public JPADeleteClause delete(EntityPath<?> path) {
-        return new JPADeleteClause(entityManager.get(), path, templates);
+        if (templates != null) {
+            return new JPADeleteClause(entityManager.get(), path, templates);    
+        } else {
+            return new JPADeleteClause(entityManager.get(), path);
+        }        
     }
 
     @Override
@@ -54,12 +61,20 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
 
     @Override
     public JPAUpdateClause update(EntityPath<?> path) {
-        return new JPAUpdateClause(entityManager.get(), path, templates);
+        if (templates != null) {
+            return new JPAUpdateClause(entityManager.get(), path, templates);    
+        } else {
+            return new JPAUpdateClause(entityManager.get(), path);
+        }        
     }
 
     @Override
     public JPAQuery query() {
-        return new JPAQuery(entityManager.get(), templates);
+        if (templates != null) {
+            return new JPAQuery(entityManager.get(), templates);    
+        } else {
+            return new JPAQuery(entityManager.get());
+        }        
     }
 
     @Override

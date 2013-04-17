@@ -29,20 +29,28 @@ import com.mysema.query.jpa.impl.JPAQueryFactory;
 
 public class JPAQueryFactoryTest {
 
+    private EntityManager mock;
+    
     private JPAQueryFactory queryFactory;
-
+    
     private JPQLQueryFactory queryFactory2;
+
+    private JPAQueryFactory queryFactory3;
     
     @Before
     public void setUp() {
+        mock = EasyMock.createMock(EntityManager.class); 
         Provider<EntityManager> provider = new Provider<EntityManager>() {
             @Override
             public EntityManager get() {
-                return EasyMock.createNiceMock(EntityManager.class);
+                return mock;
             }
         };
         queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, provider);
         queryFactory2 = queryFactory;
+        
+        queryFactory3 = new JPAQueryFactory(provider);
+        
     }
 
     @Test
@@ -54,6 +62,16 @@ public class JPAQueryFactoryTest {
     public void Query2() {
         queryFactory2.query().from(QAnimal.animal);
     }
+    
+    @Test
+    public void Query3() {
+        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.replay(mock);
+        
+        queryFactory3.query().from(QAnimal.animal);
+        
+        EasyMock.verify(mock);
+    }
 
     @Test
     public void SubQuery() {
@@ -63,6 +81,11 @@ public class JPAQueryFactoryTest {
     @Test
     public void SubQuery2() {
         queryFactory2.subQuery().from(QAnimal.animal);
+    }
+    
+    @Test
+    public void SubQuery3() {
+        queryFactory3.subQuery().from(QAnimal.animal);
     }
 
     @Test
@@ -80,6 +103,16 @@ public class JPAQueryFactoryTest {
         queryFactory2.delete(QAnimal.animal)
             .where(QAnimal.animal.bodyWeight.gt(0));
     }
+    
+    @Test
+    public void Delete3() {
+        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.replay(mock);
+        
+        assertNotNull(queryFactory3.delete(QAnimal.animal));
+        
+        EasyMock.verify(mock);
+    }
 
     @Test
     public void Update() {
@@ -91,6 +124,16 @@ public class JPAQueryFactoryTest {
         queryFactory2.update(QAnimal.animal)
             .set(QAnimal.animal.birthdate, new Date())
             .where(QAnimal.animal.birthdate.isNull());
+    }
+    
+    @Test
+    public void Update3() {
+        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.replay(mock);
+        
+        assertNotNull(queryFactory3.update(QAnimal.animal));
+        
+        EasyMock.verify(mock);
     }
 
 }
