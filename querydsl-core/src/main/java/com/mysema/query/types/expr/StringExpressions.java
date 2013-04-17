@@ -77,8 +77,6 @@ public final class StringExpressions {
         return StringOperation.create(Ops.StringOps.RPAD, in, length);
     }
     
-    private StringExpressions() {}
-
     /**
      * @param in
      * @param length
@@ -86,8 +84,7 @@ public final class StringExpressions {
      * @return
      */
     public static StringExpression lpad(Expression<String> in, NumberExpression<Integer> length, char c) {
-        return StringOperation.create(Ops.StringOps.LPAD2, in, length, ConstantImpl.create(c));
-        
+        return StringOperation.create(Ops.StringOps.LPAD2, in, length, ConstantImpl.create(c));        
     }
 
     /**
@@ -97,8 +94,7 @@ public final class StringExpressions {
      * @return
      */
     public static StringExpression lpad(Expression<String> in, int length, char c) {
-        return StringOperation.create(Ops.StringOps.LPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));
-        
+        return StringOperation.create(Ops.StringOps.LPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));        
     }
 
     /**
@@ -108,8 +104,7 @@ public final class StringExpressions {
      * @return
      */
     public static StringExpression rpad(Expression<String> in, NumberExpression<Integer> length, char c) {
-        return StringOperation.create(Ops.StringOps.RPAD2, in, length, ConstantImpl.create(c));
-        
+        return StringOperation.create(Ops.StringOps.RPAD2, in, length, ConstantImpl.create(c));        
     }
 
     /**
@@ -119,8 +114,9 @@ public final class StringExpressions {
      * @return
      */
     public static StringExpression rpad(Expression<String> in, int length, char c) {
-        return StringOperation.create(Ops.StringOps.RPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));
-        
+        return StringOperation.create(Ops.StringOps.RPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));        
     }
+    
+    private StringExpressions() {}
 
 }
