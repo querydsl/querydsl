@@ -10,8 +10,7 @@
 
     <title>Creating the Querydsl query types</title>
     <para>
-      See
-      <link linkend="jpa_integration">Querying JPA/Hibernate sources</link>
+      See <link linkend="jpa_integration">Querying JPA/Hibernate sources</link>
       for instructions on how to create query types.
     </para>
   </sect2>
@@ -19,7 +18,7 @@
   <sect2>
     <title>Querying</title>
 
-    <para>Querying with Querydsl Hibernate Search is as simple as this :
+    <para>Querying with Querydsl Hibernate Search is as simple as this:
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -44,8 +43,7 @@ List<User> list = query
     <para>
       In the query serialization the only difference to the Querydsl Lucene module is that
       paths are treated differently.
-      For
-      <emphasis>org.hibernate.search.annotations.Field</emphasis>
+      For <code>org.hibernate.search.annotations.Field</code>
       annotated properties the
       name attribute is used with the property name as fallback for the field name.
     </para>

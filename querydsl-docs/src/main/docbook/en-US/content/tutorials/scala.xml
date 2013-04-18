@@ -5,8 +5,7 @@
   <title>Querying in Scala</title>
 
   <para>Generic support for Querydsl usage in Scala is available via querydsl-scala
-    module. To add
-    it to your Maven build, use the following snippet :
+    module. To add it to your Maven build, use the following snippet :
   </para>
 
   <programlisting language="xml"><![CDATA[
@@ -22,12 +21,13 @@
     <title>DSL expressions for Scala</title>
 
     <para>Querydsl for Scala provides an alternative DSL for expression construction. The
-      Scala DSL
-      utilizes language features such as operator overloading,
+      Scala DSL utilizes language features such as operator overloading,
       function pointers and implicit imports for enhanced readability and conciseness.
     </para>
 
     <para>Here is an overview of the main alternatives :</para>
+
+<!-- TODO use a table for this -->
 
     <programlisting><![CDATA[
 //Standard              Alternative
@@ -71,23 +71,19 @@ map.get("X")            map("X")
     <title>Improved projections</title>
 
     <para>The Querydsl Scala module offers a few implicit conversion to make Querydsl
-      query
-      projections more Scala compatible.
+      query projections more Scala compatible.
     </para>
 
     <para>
-      The RichProjectable and RichSimpleProjectable wrappers should be used to enable
-      Scala
-      projections for Querydsl queries.
-      By importing the contents of
-      <code>com.mysema.query.scala.Helpers</code>
-      the needed implicit conversions
-      become available.
+      The <code>RichProjectable</code> and <code>RichSimpleProjectable</code> wrappers should be used to enable
+      Scala projections for Querydsl queries.
+      By importing the contents of <code>com.mysema.query.scala.Helpers</code>
+      the needed implicit conversions become available.
     </para>
 
     <para>
-      For example the following query with the standard API would return a java.util.List of
-      type Object[].
+      For example the following query with the standard API would return a <code>java.util.List</code> of
+      type <code>Object[]</code>.
     </para>
 
     <programlisting language="java"><![CDATA[  
@@ -95,8 +91,7 @@ query.from(person).list(person.firstName, person.lastName, person.age)
 ]]></programlisting>
 
     <para>With the added conversions you can use select instead of list for Scala list
-      typed results,
-      unique instead of uniqueResult for
+      typed results, unique instead of uniqueResult for
       Option typed results and single instead of singleResult for Option typed results.
     </para>
 
@@ -110,8 +105,7 @@ query.from(person).select(person.firstName, person.lastName, person.age)
 ]]></programlisting>
 
     <para>In this case the result type would be List[(String,String,Integer)] or in other
-      words List
-      of Tuple3[String,String,Integer].
+      words List of Tuple3[String,String,Integer].
     </para>
 
   </sect2>
@@ -122,9 +116,7 @@ query.from(person).select(person.firstName, person.lastName, person.age)
 
     <para>
       Like with Querydsl SQL for Java you need to generate Query types to be able to construct
-      your
-      queries.
-      The following code examples show how this is done :
+      your queries. The following code examples show how this is done :
     </para>
 
     <para>Generation without Bean types :</para>
@@ -165,24 +157,19 @@ exporter.export(connection.getMetaData)
       <title>Compact queries</title>
 
       <para>Querydsl Scala provides a compact query syntax for Querydsl SQL. The syntax is
-        inspired by
-        domain oriented query syntaxes like that
-        from the Rogue framework.
+        inspired by domain oriented query syntaxes like that from the Rogue framework.
       </para>
 
       <para>
         The domain oriented queries are implemented as implicit conversions from
-        RelationalPath
-        instances into queries. This functionality
+        <code>RelationalPath</code> instances into queries. This functionality
         can be made available by implementing the
         <code>com.mysema.query.scala.sql.SQLHelpers</code>
-        trait in your
-        service or DAO classes.
+        trait in your service or DAO classes.
       </para>
 
       <para>Using this compact syntax you can use your meta model classes as a starting
-        point for
-        queries.
+        point for queries.
       </para>
 
       <para>Instead of the following normal syntax</para>
@@ -199,10 +186,8 @@ Employee.select(_.firstName, _.lastName)
 ]]></programlisting>
 
       <para>Instead of giving expressions to orderBy, where, select, single and unique you
-        can give
-        functions which take the root expression of
-        the query and return another expression. The expanded form of the previous example would
-        be
+        can give functions which take the root expression of
+        the query and return another expression. The expanded form of the previous example would be
       </para>
 
       <programlisting language="java"><![CDATA[    
@@ -210,8 +195,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
 ]]></programlisting>
 
       <para>
-        See the signature of the
-        <code>com.mysema.query.scala.sql.RichSimpleQuery</code>
+        See the signature of the <code>com.mysema.query.scala.sql.RichSimpleQuery</code>
         class for details.
       </para>
 
@@ -222,8 +206,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
       <title>Code generation</title>
 
       <para>Scala sources for SQL metatypes and projections can be generated with
-        querydsl-maven-plugin.
-        Here is an example configuration
+        querydsl-maven-plugin. Here is an example configuration
       </para>
 
       <programlisting language="xml"><![CDATA[      
@@ -271,11 +254,10 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
     <title>Querying with other backends</title>
 
     <para>When querying with other backends the Expression model has to be created
-      manually or
-      alternatively the alias functionality can be used.
+      manually or alternatively the alias functionality can be used.
     </para>
 
-    <para>Here is a minimal example with JPA/Hibernate :</para>
+    <para>Here is a minimal example with JPA :</para>
 
     <programlisting language="java"><![CDATA[  
 @Entity

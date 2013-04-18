@@ -11,7 +11,7 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependencies to your Maven project :
+      Add the following dependencies to your Maven project:
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -44,9 +44,7 @@
 
     <title>Code generation via Maven</title>
 
-    <para>This functionality is also available as a Maven plugin. The presented example
-      can be declared
-      like this in the POM :
+    <para>This functionality should be primarily used via the Maven plugin. Here is an example:
     </para>
 
     <programlisting language="xml"><![CDATA[   
@@ -78,10 +76,8 @@
 ]]></programlisting>
 
     <para>
-      Use the goal
-      <emphasis>test-export</emphasis>
-      to add the targetFolder as a test compile
-      source root
+      Use the goal <emphasis>test-export</emphasis>
+      to add the targetFolder as a test compile source root
       instead of a compile source root.
     </para>
 
@@ -215,10 +211,8 @@
     <title>Code generation via ANT</title>
 
     <para>
-      The ANT task
-      <code>com.mysema.query.sql.ant.AntMetaDataExporter</code>
-      of the querydsl-sql module provides
-      the same functionality as an ANT task.
+      The ANT task <code>com.mysema.query.sql.ant.AntMetaDataExporter</code>
+      of the querydsl-sql module provides the same functionality as an ANT task.
       The configuration parameters of the task are the same as for the Maven plugin.
     </para>
 
@@ -228,7 +222,7 @@
 
     <title>Creating the query types</title>
 
-    <para>To get started export your schema into Querydsl query types like this :</para>
+    <para>To get started export your schema into Querydsl query types like this:</para>
 
     <programlisting language="java"><![CDATA[  
 java.sql.Connection conn = ...;
@@ -239,21 +233,18 @@ exporter.export(conn.getMetaData());
 ]]></programlisting>
 
     <para>This declares that the database schema is to be mirrored into the
-      com.myproject.domain
-      package in the target/generated-sources/java folder.
+      com.myproject.domain package in the target/generated-sources/java folder.
     </para>
 
     <para>
       The generated types have the table name transformed to mixed case as the class name and a
-      similar
-      mixed case transformation
-      applied to the columns which are available as property paths in the query type.
+      similar mixed case transformation applied to the columns which are available as property 
+      paths in the query type.
     </para>
 
     <para>
-      In addition to this primary key and foreign key constraints are provided as fields which
-      can be
-      used for compact join declarations.
+      In addition to this primary key and foreign key constraints are provided as fields 
+      which can be used for compact join declarations.
     </para>
 
   </sect2>
@@ -262,7 +253,7 @@ exporter.export(conn.getMetaData());
 
     <title>Querying</title>
 
-    <para>Querying with Querydsl SQL is as simple as this :</para>
+    <para>Querying with Querydsl SQL is as simple as this:</para>
 
     <programlisting language="java"><![CDATA[ 
 QCustomer customer = new QCustomer("c");
@@ -276,13 +267,9 @@ List<String> lastNames = query.from(customer)
 
     <para>
       which is transformed into the following sql query, assuming that the related table
-      name is
-      <emphasis>customer</emphasis>
-      and the columns
-      <emphasis>first_name</emphasis>
-      and
-      <emphasis>last_name</emphasis>
-      :
+      name is <emphasis>customer</emphasis>
+      and the columns <emphasis>first_name</emphasis>
+      and <emphasis>last_name</emphasis>:
     </para>
 
     <programlisting><![CDATA[     
@@ -292,9 +279,7 @@ WHERE c.first_name = 'Bob'
 ]]></programlisting>
 
     <para>Querydsl uses SQL dialects to customize the SQL serialization needed for
-      different
-      relational databases. The
-      available dialects are :
+      different relational databases. The available dialects are:
     </para>
 
     <itemizedlist>
@@ -336,44 +321,44 @@ WHERE c.first_name = 'Bob'
     <para>Use the the cascading methods of the SQLQuery class like this</para>
 
     <para>
-      <emphasis>from :</emphasis>
-      Define the query sources here.
+      <emphasis>from:</emphasis>
+      Add the query sources here.
     </para>
 
     <para>
-      <emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis>
-      : Define join elements using these constructs.
+      <emphasis>innerJoin, join, leftJoin, fullJoin, on:</emphasis>
+      Add join elements using these constructs.
       For the join methods the first argument is the join source and the second the target
       (alias).
     </para>
 
     <para>
-      <emphasis>where :</emphasis>
-      Define the query filters, either in varargs form separated via commas or
+      <emphasis>where:</emphasis>
+      Add query filters, either in varargs form separated via commas or
       cascaded via the and-operator.
     </para>
 
     <para>
-      <emphasis>groupBy :</emphasis>
-      Define the group by arguments in varargs form.
+      <emphasis>groupBy:</emphasis>
+      Add group by arguments in varargs form.
     </para>
 
     <para>
-      <emphasis>having :</emphasis>
-      Define the having filter of the "group by" grouping as an varags array of
+      <emphasis>having:</emphasis>
+      Add having filter of the "group by" grouping as an varags array of
       Predicate expressions.
     </para>
 
     <para>
-      <emphasis>orderBy :</emphasis>
-      Define the ordering of the result as an varargs array of order expressions.
+      <emphasis>orderBy:</emphasis>
+      Add ordering of the result as an varargs array of order expressions.
       Use asc() and desc() on numeric, string and other comparable expression to access the
       OrderSpecifier instances.
     </para>
 
     <para>
-      <emphasis>limit, offset, restrict :</emphasis>
-      Define the paging of the result. Limit for max results,
+      <emphasis>limit, offset, restrict:</emphasis>
+      Set the paging of the result. Limit for max results,
       offset for skipping rows and restrict for defining both in one call.
     </para>
 
@@ -383,7 +368,7 @@ WHERE c.first_name = 'Bob'
 
     <title>Joins</title>
 
-    <para>Joins are constructed using the following syntax :</para>
+    <para>Joins are constructed using the following syntax:</para>
 
     <programlisting language="java"><![CDATA[ 
 QCustomer customer = QCustomer.customer;
@@ -393,7 +378,7 @@ query.from(customer)
     .list(customer.firstName, customer.lastName, company.name);
 ]]></programlisting>
 
-    <para>and for a left join :</para>
+    <para>and for a left join:</para>
 
     <programlisting language="java"><![CDATA[ 
 query.from(customer)
@@ -401,7 +386,7 @@ query.from(customer)
     .list(customer.firstName, customer.lastName, company.name);
 ]]></programlisting>
 
-    <para>Alternatively the join condition can also be written out :</para>
+    <para>Alternatively the join condition can also be written out:</para>
 
     <programlisting language="java"><![CDATA[ 
 query.from(customer)
@@ -464,8 +449,7 @@ GROUP BY c.last_name
 
     <para>
       To create a subquery you create a SQLSubQuery instance, define the query parameters via
-      from,
-      where etc and use unique or list to create a subquery, which is just a type-safe Querydsl
+      from, where etc and use unique or list to create a subquery, which is just a type-safe Querydsl
       expression for the query. unique is used for a unique (single) result and list for a
       list result.
     </para>
@@ -494,13 +478,12 @@ query.from(customer).where(
     <title>Query extension support</title>
 
     <para>Custom query extensions to support engine specific syntax can be created by
-      subclassing
-      AbstractSQLQuery and adding flagging methods like
-      in the given MySQLQuery example :
+      subclassing AbstractSQLQuery and adding flagging methods like
+      in the given MySQLQuery example:
     </para>
 
     <programlisting language="java"><![CDATA[          
-public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
+public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     
     public MySQLQuery(Connection conn) {
         this(conn, new MySQLTemplates(), new DefaultQueryMetadata());
@@ -529,10 +512,8 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
 
     <para>
       The flags are custom SQL snippets that can be inserted at specific points in the
-      serialization.
-      The supported positions are the enums of the
-      <code>com.mysema.query.QueryFlag.Position</code>
-      enum class.
+      serialization. The supported positions are the enums of the
+      <code>com.mysema.query.QueryFlag.Position</code> enum class.
     </para>
 
   </sect2>
@@ -542,8 +523,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
     <title>Using Data manipulation commands</title>
 
     <para>All the DMLClause implementation in the Querydsl SQL module take three
-      parameters, the
-      Connection, the SQLTemplates instance
+      parameters, the Connection, the SQLTemplates instance
       used in the queries and the main entity the DMLClause is bound to.
     </para>
 
@@ -643,14 +623,12 @@ new SQLDelecteClause(conn, dialect, survey)
     <title>Batch support in DML clauses</title>
 
     <para>Querydsl SQL supports usage of JDBC batch updates through the DML APIs. If you
-      have
-      consecutive DML calls with a similar structure,
+      have consecutive DML calls with a similar structure,
       you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how
-      it
-      works for UPDATE, DELETE and INSERT.
+      it works for UPDATE, DELETE and INSERT.
     </para>
 
-    <para>Update :</para>
+    <para>Update:</para>
 
     <programlisting language="java"><![CDATA[   	
 QSurvey survey = QSurvey.survey;
@@ -692,7 +670,7 @@ assertEquals(2, insert.execute());
     <title>Bean class generation</title>
 
     <para>To create JavaBean DTO types for the tables of your schema use the
-      MetaDataExporter like this :</para>
+      MetaDataExporter like this:</para>
 
     <programlisting language="java"><![CDATA[  
 java.sql.Connection conn = ...;
@@ -704,9 +682,8 @@ exporter.export(conn.getMetaData());
 ]]></programlisting>
 
     <para>Now you can use the bean types as arguments to the populate method in DML
-      clauses and you
-      can project directly
-      to bean types in queries. Here is a simple example in JUnit form :
+      clauses and you can project directly
+      to bean types in queries. Here is a simple example in JUnit form:
     </para>
 
     <programlisting language="java"><![CDATA[    	
@@ -730,7 +707,7 @@ assertEquals("John", smith.getFirstname());
 assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
 ]]></programlisting>
 
-    <para>The factory methods used in the previous example are here :</para>
+    <para>The factory methods used in the previous example are here:</para>
 
     <programlisting language="java"><![CDATA[      	
 protected SQLUpdateClause update(RelationalPath<?> e){
@@ -757,19 +734,19 @@ protected SQLQuery query() {
 
   </sect2>
 
+<!-- 
   <sect2>
 
     <title>Custom syntax expressions</title>
 
     <para>
       If you need to specify SQL function calls in Querydsl you can use TemplateExpressions to
-      express them. For general
-      expressions you can use the SimpleTemplate class and for typed expressions BooleanTemplate,
-      ComparableTemplate, DateTemplate,
+      express them. For general expressions you can use the SimpleTemplate class and for typed 
+      expressions BooleanTemplate, ComparableTemplate, DateTemplate,
       DateTimeTemplate, EnumTemplate, NumberTemplate, StringTemplate and TimeTemplate.
     </para>
 
-    <para>Here is an example for SimpleTemplate usage :</para>
+    <para>Here is an example for SimpleTemplate usage:</para>
 
     <programlisting language="java"><![CDATA[
 Expression<?> arg1 = ...;
@@ -777,7 +754,7 @@ Expression<?> arg2 = ...;
 Expression<String> expression = SimpleTemplate.create(String.class, "myfunction({0},{1})", arg1, arg2);		
 ]]></programlisting>
 
-    <para>And here is an example for a Number typed template expression :</para>
+    <para>And here is an example for a Number typed template expression:</para>
 
     <programlisting language="java"><![CDATA[
 Expression<?> arg1 = ...;
@@ -786,16 +763,16 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
 ]]></programlisting>
 
   </sect2>
+ -->  
 
   <sect2>
 
     <title>Custom types</title>
 
     <para>Querydsl SQL provides the possibility to declare custom type mappings for
-      ResultSet/Statement
-      interaction. The custom type mappings can be
+      ResultSet/Statement interaction. The custom type mappings can be
       declared in com.mysema.query.sql.Configuration instances, which are supplied as constructor
-      arguments to the actual queries :
+      arguments to the actual queries:
     </para>
 
     <programlisting language="java"><![CDATA[    

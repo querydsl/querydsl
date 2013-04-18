@@ -61,7 +61,7 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
       for path generation.
     </para>
 
-    <para>String property :</para>
+    <para>String property:</para>
 
     <programlisting language="java"><![CDATA[
 PathBuilder&lt;User&gt; entityPath = new
@@ -74,26 +74,26 @@ entityPath.get("userName", String.class);
 entityPath.getString("userName").lower();
 ]]></programlisting>
 
-    <para>List property with component type : </para>
+    <para>List property with component type: </para>
 
     <programlisting language="java"><![CDATA[
 entityPath.getList("list",
 String.class).get(0);
 ]]></programlisting>
 
-    <para>Using a component expression type :</para>
+    <para>Using a component expression type:</para>
 
     <programlisting language="java"><![CDATA[
 entityPath.getList("list", String.class, StringPath.class).get(0).lower();
 ]]></programlisting>
 
-    <para>Map property with key and value type : </para>
+    <para>Map property with key and value type: </para>
 
     <programlisting language="java"><![CDATA[
 entityPath.getMap("map", String.class, String.class).get("key");
 ]]></programlisting>
 
-    <para>Using a component expression type :</para>
+    <para>Using a component expression type:</para>
 
     <programlisting language="java"><![CDATA[
 entityPath.getMap("map", String.class, String.class, StringPath.class).get("key").lower();
@@ -106,7 +106,7 @@ entityPath.getMap("map", String.class, String.class, StringPath.class).get("key"
 
     <para>
       To construct complex boolean expressions, use the <code>com.mysema.query.BooleanBuilder</code> class. It
-      implements Predicate and can be used in cascaded form :
+      implements Predicate and can be used in cascaded form:
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -131,8 +131,7 @@ public List<Customer> getCustomer(String... names){
     <title>Case expressions</title>
 
     <para>To construct case-when-then-else expressions use the
-      <code>CaseBuilder</code> class like this
-      :
+      <code>CaseBuilder</code> class like this:
     </para>
 
     <programlisting language="java"><![CDATA[    
@@ -145,9 +144,7 @@ Expression<String> cases = new CaseBuilder()
 // The cases expression can now be used in a projection or condition        
 ]]></programlisting>
 
-    <para>For case expressions with equals-operations use the following
-      simpler form
-      instead :
+    <para>For case expressions with equals-operations use the following simpler form instead:
     </para>
 
     <programlisting language="java"><![CDATA[    

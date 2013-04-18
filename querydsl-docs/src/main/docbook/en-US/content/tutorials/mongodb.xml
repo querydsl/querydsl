@@ -10,7 +10,7 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependencies to your Maven project :
+      Add the following dependencies to your Maven project:
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -36,8 +36,7 @@
 
     <para>
       And now, configure the Maven APT plugin which generates the query types
-      used by
-      Querydsl :
+      used by Querydsl:
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -70,27 +69,22 @@
     <para>
       The MorphiaAnnotationProcessor finds domain types annotated with the
       <code>com.google.code.morphia.annotations.Entity</code>
-      annotation and generates
-      Querydsl query types for them.
+      annotation and generates Querydsl query types for them.
     </para>
 
     <para>
-      Run clean install and you will get your Query
-      types generated into
+      Run clean install and you will get your Query types generated into
       target/generated-sources/java.
     </para>
 
     <para>
       If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to
-      include
-      target/generated-sources/java
-      as a source folder.
+      include target/generated-sources/java as a source folder.
     </para>
 
     <para>
       Now you are able to construct Mongodb queries and instances of the
-      query domain
-      model.
+      query domain model.
     </para>
 
   </sect2>
@@ -99,7 +93,7 @@
 
     <title>Querying</title>
 
-    <para>Querying with Querydsl Mongodb with Morphia is as simple as this :
+    <para>Querying with Querydsl Mongodb with Morphia is as simple as this:
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -122,8 +116,8 @@ List<User> list = query
     <para>Use the the cascading methods of the MongodbQuery class like this</para>
 
     <para>
-      <emphasis>where :</emphasis>
-      Define the query filters, either in varargs form separated via commas or
+      <emphasis>where:</emphasis>
+      Add the query filters, either in varargs form separated via commas or
       cascaded via the and-operator. Supported operations are operations performed on PStrings except
       <emphasis>
         matches
@@ -139,15 +133,15 @@ List<User> list = query
     </para>
 
     <para>
-      <emphasis>orderBy :</emphasis>
-      Define the ordering of the result as an varargs array of order expressions.
+      <emphasis>orderBy:</emphasis>
+      Add ordering of the result as an varargs array of order expressions.
       Use asc() and desc() on numeric, string and other comparable expression to access the
       OrderSpecifier instances.
     </para>
 
     <para>
-      <emphasis>limit, offset, restrict :</emphasis>
-      Define the paging of the result. Limit for max results,
+      <emphasis>limit, offset, restrict:</emphasis>
+      Set the paging of the result. Limit for max results,
       offset for skipping rows and restrict for defining both in one call.
     </para>
 
@@ -203,8 +197,7 @@ query
     <title>Geospatial queries</title>
 
     <para>Support for geospatial queries is available for Double typed arrays (Double[])
-      via the
-      near-method :
+      via the near-method:
     </para>
 
     <programlisting language="java"><![CDATA[ 
@@ -220,8 +213,7 @@ query
     <title>Select only relevant fields</title>
 
     <para>To select only relevant fields you can use the overloaded projection methods
-      list,
-      iterate, uniqueResult and singleResult methods like this
+      list, iterate, uniqueResult and singleResult methods like this
     </para>
 
     <programlisting language="java"><![CDATA[ 

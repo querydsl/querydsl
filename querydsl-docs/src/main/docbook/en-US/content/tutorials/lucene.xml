@@ -11,7 +11,7 @@
     <title>Creating the query types</title>
 
     <para>With fields year and title a manually created query type could look something
-      like this :</para>
+      like this:</para>
 
     <programlisting language="java"><![CDATA[ 
 public class QDocument extends EntityPathBase<Document>{
@@ -37,7 +37,7 @@ public class QDocument extends EntityPathBase<Document>{
   <sect2>
     <title>Querying</title>
 
-    <para>Querying with Querydsl Lucene is as simple as this :</para>
+    <para>Querying with Querydsl Lucene is as simple as this:</para>
 
     <programlisting language="java"><![CDATA[ 
 QDocument doc = new QDocument("doc");
@@ -49,7 +49,7 @@ List<Document> documents = query
     .list();
 ]]></programlisting>
 
-    <para>which is transformed into the following Lucene query :</para>
+    <para>which is transformed into the following Lucene query:</para>
 
     <programlisting><![CDATA[     
 +year:[1800 TO 2000] +title:huckle*
@@ -64,8 +64,8 @@ List<Document> documents = query
     <para>Use the the cascading methods of the LuceneQuery class like this</para>
 
     <para>
-      <emphasis>where :</emphasis>
-      Define the query filters, either in varargs form separated via commas or
+      <emphasis>where:</emphasis>
+      Add the query filters, either in varargs form separated via commas or
       cascaded via the and-operator. Supported operations are operations performed on PStrings except
       <emphasis>
         matches
@@ -81,15 +81,15 @@ List<Document> documents = query
     </para>
 
     <para>
-      <emphasis>orderBy :</emphasis>
-      Define the ordering of the result as an varargs array of order expressions.
+      <emphasis>orderBy:</emphasis>
+      Add ordering of the result as an varargs array of order expressions.
       Use asc() and desc() on numeric, string and other comparable expression to access the
       OrderSpecifier instances.
     </para>
 
     <para>
-      <emphasis>limit, offset, restrict :</emphasis>
-      Define the paging of the result. Limit for max results,
+      <emphasis>limit, offset, restrict:</emphasis>
+      Set the paging of the result. Limit for max results,
       offset for skipping rows and restrict for defining both in one call.
     </para>
 
@@ -117,8 +117,7 @@ title:*
     <para>The results are sorted ascending based on title and year.</para>
 
     <para>Alternatively a sort method call can be used to declare the sort logic as a Sort
-      instance
-      instead
+      instance instead
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -164,12 +163,12 @@ query
     <title>Fuzzy searches</title>
 
     <para>Fuzzy searches can be expressed via fuzzyLike methods in the
-      com.mysema.query.lucene.LuceneUtils class :
+      <code>com.mysema.query.lucene.LuceneExpressions</code> class:
     </para>
 
     <programlisting language="java"><![CDATA[ 
 query
-    .where(LuceneUtils.fuzzyLike(doc.title, "Hello"))
+    .where(LuceneExpressions.fuzzyLike(doc.title, "Hello"))
     .list();
 ]]></programlisting>
 
@@ -179,7 +178,7 @@ query
 
     <title>Applying Lucene filters to queries</title>
 
-    <para>It is possible to apply a single Lucene filter to the query like this :</para>
+    <para>It is possible to apply a single Lucene filter to the query like this:</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -188,7 +187,7 @@ query
     .list();
 ]]></programlisting>
 
-    <para>A shortcut for distinct filtering is provided via the distinct(Path) method :
+    <para>A shortcut for distinct filtering is provided via the distinct(Path) method:
     </para>
 
     <programlisting language="java"><![CDATA[ 

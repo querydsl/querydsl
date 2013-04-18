@@ -6,27 +6,73 @@
   and ResultTransformer for aggregation.</para>
 
   <para>The <code>com.mysema.query.types.FactoryExpression</code> interface is used for Bean creation,
-  constructor invocation and for the creation of more complex objects.</para>
+  constructor invocation and for the creation of more complex objects. The functionality of the 
+  FactoryExpression implementations of Querydsl can be accessed via the 
+  <code>com.mysema.query.types.Projections</code> class.</para>
   
   <para>For the <code>com.mysema.query.ResultTransformer</code> interface <code>GroupBy</code> is the
-  main implementation </para>
+  main implementation.</para>
+
+  <sect2>
+    <title>Tuples</title>
+    
+    <para>Since Querydsl 3.0 the default type for multi-column results is <code>com.mysema.query.Tuple</code>.
+    Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para> 
+    
+    <programlisting language="java"><![CDATA[
+List<Tuple> result = query.from(employee).list(employee.firstName, employee.lastName);
+for (Tuple row : result) {
+     System.out.println("firstName " + row.get(employee.firstName));
+     System.out.println("lastName " + row.get(employee.lastName)); 
+}}     
+]]></programlisting>    
+
+    <para>This example could also have been written via the QTuple expression class like this</para>
+    
+    <programlisting language="java"><![CDATA[
+List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
+for (Tuple row : result) {
+     System.out.println("firstName " + row.get(employee.firstName));
+     System.out.println("lastName " + row.get(employee.lastName)); 
+}}     
+]]></programlisting>        
+  
+  </sect2>
 
   <sect2>
 
     <title>Bean population</title>
 
-    <para>TODO</para>
+    <para>In cases where Beans need to be populated based on the results of the query, Bean projections
+    can be used like this</para>
+    
+    <programlisting language="java"><![CDATA[
+List<UserDTO> dtos = query.list(
+    Projections.bean(UserDTO.class, user.firstName, user.lastName));
+]]></programlisting>
+
+   <para>When fields should be directly used instead of setters the following variant can be
+   used instead</para>
+   
+<programlisting language="java"><![CDATA[
+List<UserDTO> dtos = query.list(
+    Projections.fields(UserDTO.class, user.firstName, user.lastName));
+]]></programlisting>   
 
   </sect2>
 
-
   <sect2>
-    <title>Constructor invocations</title>
+    <title>Constructor usage</title>
     
-    <para>
-      Querydsl provides the possibility to use constructor invocations in projections.
-      To use a constructor in a query projection, you need to annotate it with the
-      QueryProjection annotation:
+    <para>Constructor based row transformation can be used like this</para>
+    
+    <programlisting language="java"><![CDATA[
+List<UserDTO> dtos = query.list(
+    Projections.bean(UserDTO.class, user.firstName, user.lastName));
+]]></programlisting>
+
+    <para>As an alternative to the generic Constructor expression usage constructors
+    can also be annotated with the <code>QueryProjection</code> annotation:
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -55,7 +101,7 @@ List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id,
     <para>If the type with the QueryProjection annotation is not an annotated entity
       type, you can use the constructor projection like in the example, but if the 
       annotated type would be an entity type, then the constructor projection would need to be 
-      created via a call to the static create method of the query type :
+      created via a call to the static create method of the query type:
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -77,8 +123,7 @@ List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, cu
 ]]></programlisting>
 
     <para>Alternatively, if code generation is not an option, you can
-      create a constructor
-      projection like this :
+      create a constructor projection like this:
     </para>
 
     <programlisting language="java"><![CDATA[
