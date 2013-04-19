@@ -1,0 +1,214 @@
+<sect1 id="creating_queries">
+
+  <title>Creating queries</title>
+
+  <para>Query construction in Querydsl involves calling query methods with expression arguments. Since
+  query methods are mostly module specific and have already been presented in the tutorial section, 
+  this part will focus on expressions.</para>
+  
+  <para>Expressions are normally constructed by accessing fields and calling methods on the generated 
+  expression types of your domain module. For cases where code generation is not applicable generic ways 
+  to construct expressions can be used instead</para>
+  
+  <sect2>
+    <title>Complex predicates</title>
+
+    <para>
+      To construct complex boolean expressions, use the <code>com.mysema.query.BooleanBuilder</code> class. It
+      implements Predicate and can be used in cascaded form:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+public List<Customer> getCustomer(String... names){
+    QCustomer customer = QCustomer.customer;    
+    JPAQuery query = new JPAQuery(entityManager).from(customer);    
+    BooleanBuilder builder = new BoolenBuilder();
+    for (String name : names){
+        builder.or(customer.name.eq(name));
+    }
+    query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...  
+    return query.list(customer);
+}
+]]></programlisting>
+
+    <para><code>BooleanBuilder</code> is mutable and represents initially null and after each <code>and</code>
+    or <code>or</code> call the result of the operation.</para>
+
+  </sect2>  
+
+  <sect2>
+
+    <title>Dynamic expressions</title>
+
+    <para>
+      The <code>com.mysema.query.support.Expressions</code>
+      class is a static factory class for dynamic expression construction.
+      The factory methods are named by the returned type and are mostly self-documenting.
+    </para>
+    
+    <para>
+    In general the <code>Expressions</code> class should be used only in cases where fluent DSL forms
+    can't be used, such as dynamic paths, custom syntax or custom operations.  
+    </para>
+    
+    <para>The following expression </para>
+
+    <programlisting language="java"><![CDATA[
+QPerson person = QPerson.person; 	    
+person.firstName.startsWith("P");
+]]></programlisting>
+
+    <para>could be constructed like this if Q-types wouldn't be available </para>
+
+    <programlisting language="java"><![CDATA[
+Path<Person> person = Expressions.path(Person.class, "person");
+Path<String> personFirstName = Expressions.path(String.class, person, "firstName");
+Constant<String> constant = Expressions.constant("P");
+Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
+]]></programlisting>
+
+    <para>Path instances represent variables and properties, Constants are constants,
+      Operations are operations and TemplateExpression instances can be used to express
+      expressions as String templates.
+    </para>
+
+  </sect2>
+  
+  <sect2>
+  
+    <title>Dynamic paths</title>
+
+    <para>In addition to the <code>Expressions</code> based expression creation Querydsl provides
+    also a more fluent API for dynamic path creation.</para>
+
+    <para>
+      For dynamic path generation the <code>com.mysema.query.types.path.PathBuilder</code> class can be used. It extends
+      <code>EntityPathBase</code> and can be used as an alternative to class generation and alias-usage
+      for path generation.
+    </para>
+    
+    <para>
+    Compared to the Expressions API PathBuilder doesn't provide direct support for unknown operations
+    or custom syntax, but the syntax is closer to the normal DSL.
+    </para>
+
+    <para>String property:</para>
+
+    <programlisting language="java"><![CDATA[
+PathBuilder<User> entityPath = new
+PathBuilder<User>(User.class, "entity");
+// fully generic access
+entityPath.get("userName");
+// .. or with supplied type
+entityPath.get("userName", String.class);
+// .. and correct signature
+entityPath.getString("userName").lower();
+]]></programlisting>
+
+    <para>List property with component type: </para>
+
+    <programlisting language="java"><![CDATA[
+entityPath.getList("list", String.class).get(0);
+]]></programlisting>
+
+    <para>Using a component expression type:</para>
+
+    <programlisting language="java"><![CDATA[
+entityPath.getList("list", String.class, StringPath.class).get(0).lower();
+]]></programlisting>
+
+    <para>Map property with key and value type: </para>
+
+    <programlisting language="java"><![CDATA[
+entityPath.getMap("map", String.class, String.class).get("key");
+]]></programlisting>
+
+    <para>Using a component expression type:</para>
+
+    <programlisting language="java"><![CDATA[
+entityPath.getMap("map", String.class, String.class, StringPath.class).get("key").lower();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>Case expressions</title>
+
+    <para>To construct case-when-then-else expressions use the
+      <code>CaseBuilder</code> class like this:
+    </para>
+
+    <programlisting language="java"><![CDATA[    
+QCustomer customer = QCustomer.customer;    
+Expression<String> cases = new CaseBuilder()
+    .when(customer.annualSpending.gt(10000)).then("Premier")
+    .when(customer.annualSpending.gt(5000)).then("Gold")
+    .when(customer.annualSpending.gt(2000)).then("Silver")
+    .otherwise("Bronze");
+// The cases expression can now be used in a projection or condition        
+]]></programlisting>
+
+    <para>For case expressions with equals-operations use the following simpler form instead:
+    </para>
+
+    <programlisting language="java"><![CDATA[    
+QCustomer customer = QCustomer.customer;    
+Expression<String> cases = customer.annualSpending
+    .when(10000).then("Premier")
+    .when(5000).then("Gold")
+    .when(2000).then("Silver")
+    .otherwise("Bronze");
+// The cases expression can now be used in a projection or condition        
+]]></programlisting>
+
+    <para>Case expressions are not yet supported in JDOQL.</para>
+
+  </sect2>
+  
+  <sect2>
+
+    <title>Casting expressions</title>
+
+    <para>
+      To avoid a generic signature in expression types the type hierarchies are
+      flattened. The result is that all generated query types are direct subclasses of
+      <code>com.mysema.query.types.path.EntityPathBase</code>
+      or
+      <code>com.mysema.query.types.path.BeanPath</code>
+      and cannot be directly cast to their logical supertypes.
+    </para>
+
+    <para>
+      Instead of a direct Java cast, the supertype reference is accessible via the
+      <code>_super</code> field. A _super-field is available in all generated query types with a single
+      supertype:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+// from Account
+QAccount extends EntityPathBase<Account>{
+    // ...
+}
+
+// from BankAccount extends Account
+QBankAccount extends EntityPathBase<BankAccount>{
+
+    public final QAccount _super = new QAccount(this);
+    
+    // ...
+}            
+]]></programlisting>
+
+    <para>To cast from a supertype to a subtype you can use the
+      as-method of the
+      EntityPathBase class:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+QAccount account = new QAccount("account");
+QBankAccount bankAccount = account.as(QBankAccount.class);    
+]]></programlisting>
+
+  </sect2>  
+
+</sect1>    
