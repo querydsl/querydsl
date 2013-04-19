@@ -64,8 +64,8 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
     <para>String property:</para>
 
     <programlisting language="java"><![CDATA[
-PathBuilder&lt;User&gt; entityPath = new
-PathBuilder&lt;User&gt;(User.class, "entity");
+PathBuilder<User> entityPath = new
+PathBuilder<User>(User.class, "entity");
 // fully generic access
 entityPath.get("userName");
 // .. or with supplied type
@@ -77,8 +77,7 @@ entityPath.getString("userName").lower();
     <para>List property with component type: </para>
 
     <programlisting language="java"><![CDATA[
-entityPath.getList("list",
-String.class).get(0);
+entityPath.getList("list", String.class).get(0);
 ]]></programlisting>
 
     <para>Using a component expression type:</para>
