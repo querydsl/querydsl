@@ -450,6 +450,65 @@ exporter.export(DomainClass.class.getPackage());
       <para>The goals generic-export, jpa-export and jdo-export of the querydsl-maven-plugin
         can be used for GenericExporter usage via Maven.
       </para>
+      
+      <para>
+      The different goals are mapped to the Querydsl, JPA and JDO annotations. 
+      </para>
+      
+      <para>The configuration elements are</para>
+      
+      <table>
+        <title>Maven configuration</title>
+        <tgroup cols='3' align='left' colsep='1' rowsep='1'>
+          <colspec colname='Type' colwidth="1*" />
+          <colspec colname='Element' colwidth="1*" />
+          <colspec colname='Descriptions' colwidth="1*" />
+          <thead>
+            <row>
+              <entry>Type</entry>
+              <entry>Element</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>File</entry>
+              <entry>targetFolder</entry>
+              <entry>target folder generated sources</entry>
+            </row>
+            <row>    
+              <entry>boolean</entry>       
+              <entry>scala</entry>
+              <entry>true, if Scala sources should be generated instead (default: false)</entry>
+            </row>
+            <row>
+              <entry>String[]</entry>
+              <entry>packages</entry>
+              <entry>packages to be intropsected for entity classes</entry>
+            </row>
+            <row> 
+              <entry>boolean</entry>
+              <entry>handleFields</entry>
+              <entry>true, if fields should be treated as properties (default: true)</entry>
+            </row>
+            <row>
+              <entry>boolean</entry>
+              <entry>handleMethods</entry>
+              <entry>true, if getters should be treated as properties (default: true)</entry>
+            </row>
+            <row>
+              <entry>String</entry>
+              <entry>sourceEncoding</entry>
+              <entry>charset encoding for the generated source files</entry>
+            </row>
+            <row>
+              <entry>boolean</entry>
+              <entry>testClasspath</entry>
+              <entry>true, if the test classpath should be used instead</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>      
 
       <para>Here is an example for JPA annotated classes</para>
 
