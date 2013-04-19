@@ -1,6 +1,6 @@
 <sect1>
 
-  <title>Query construction</title>
+  <title>Creating queries</title>
 
   <para>Query construction in Querydsl involves calling query methods with expression arguments. Since
   query methods are mostly module specific and have already been presented in the tutorial section, 
@@ -9,6 +9,32 @@
   <para>Expressions are normally constructed by accessing fields and calling methods on the generated 
   expression types of your domain module. For cases where code generation is not applicable generic ways 
   to construct expressions can be used instead</para>
+  
+  <sect2>
+    <title>Complex predicates</title>
+
+    <para>
+      To construct complex boolean expressions, use the <code>com.mysema.query.BooleanBuilder</code> class. It
+      implements Predicate and can be used in cascaded form:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+public List<Customer> getCustomer(String... names){
+    QCustomer customer = QCustomer.customer;    
+    JPAQuery query = new JPAQuery(entityManager).from(customer);    
+    BooleanBuilder builder = new BoolenBuilder();
+    for (String name : names){
+        builder.or(customer.name.eq(name));
+    }
+    query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...  
+    return query.list(customer);
+}
+]]></programlisting>
+
+    <para><code>BooleanBuilder</code> is mutable and represents initially null and after each <code>and</code>
+    or <code>or</code> call the result of the operation.</para>
+
+  </sect2>  
 
   <sect2>
 
@@ -97,32 +123,6 @@ entityPath.getMap("map", String.class, String.class).get("key");
     <programlisting language="java"><![CDATA[
 entityPath.getMap("map", String.class, String.class, StringPath.class).get("key").lower();
 ]]></programlisting>
-
-  </sect2>
-
-  <sect2>
-    <title>Complex boolean expressions</title>
-
-    <para>
-      To construct complex boolean expressions, use the <code>com.mysema.query.BooleanBuilder</code> class. It
-      implements Predicate and can be used in cascaded form:
-    </para>
-
-    <programlisting language="java"><![CDATA[
-public List<Customer> getCustomer(String... names){
-    QCustomer customer = QCustomer.customer;    
-    JPAQuery query = new JPAQuery(entityManager).from(customer);    
-    BooleanBuilder builder = new BoolenBuilder();
-    for (String name : names){
-        builder.or(customer.name.eq(name));
-    }
-    query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...  
-    return query.list(customer);
-}
-]]></programlisting>
-
-    <para><code>BooleanBuilder</code> is mutable and represents initially null and after each <code>and</code>
-    or <code>or</code> call the result of the operation.</para>
 
   </sect2>
 

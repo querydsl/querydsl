@@ -14,7 +14,8 @@
   main implementation.</para>
 
   <sect2>
-    <title>Tuples</title>
+  
+    <title>Returning multiple columns</title>
     
     <para>Since Querydsl 3.0 the default type for multi-column results is <code>com.mysema.query.Tuple</code>.
     Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para> 
@@ -135,7 +136,7 @@ List<Customer> dtos = query.from(customer)
 
   <sect2>
 
-    <title>GroupBy processing</title>
+    <title>Result aggregation</title>
 
     <para>
       The
