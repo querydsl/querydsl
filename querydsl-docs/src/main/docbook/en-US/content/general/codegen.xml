@@ -411,7 +411,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 
   <sect2>
 
-    <title>GenericExporter usage</title>
+    <title>Classpath based code generation</title>
     
      <para>For cases where annotated Java sources
     are not available, such as the usage of a different JVM
@@ -443,19 +443,17 @@ exporter.export(DomainClass.class.getPackage());
       class and subpackages to the target/generated-sources/java directory.
     </para>
 
-  </sect2>
+    <sect3>
 
-  <sect2>
+      <title>Usage via Maven</title>
 
-    <title>Usage via Maven</title>
+      <para>The goals generic-export, jpa-export and jdo-export of the querydsl-maven-plugin
+        can be used for GenericExporter usage via Maven.
+      </para>
 
-    <para>The goals generic-export, jpa-export and jdo-export of the querydsl-maven-plugin
-      can be used for GenericExporter usage via Maven.
-    </para>
+      <para>Here is an example for JPA annotated classes</para>
 
-    <para>Here is an example for JPA annotated classes</para>
-
-    <programlisting language="xml"><![CDATA[    		
+      <programlisting language="xml"><![CDATA[            
 <plugin>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-maven-plugin</artifactId>
@@ -473,17 +471,18 @@ exporter.export(DomainClass.class.getPackage());
       </configuration>      
     </execution>
   </executions>
-</plugin>    		
+</plugin>           
 ]]></programlisting>
 
-    <para>This will export the JPA annotated classes of the <code>com.example.domain</code> package and
+      <para>This will export the JPA annotated classes of the <code>com.example.domain</code> package and
       subpackages to the target/generated-sources/java directory.
-    </para>
+      </para>
 
-    <para>If you need Scala output of the classes, use a variant of the following
-      configuration</para>
+      <para>If you need Scala output of the classes, use a variant of the following
+      configuration
+      </para>
 
-    <programlisting language="xml"><![CDATA[    					
+      <programlisting language="xml"><![CDATA[                        
 <plugin>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-maven-plugin</artifactId>
@@ -514,8 +513,10 @@ exporter.export(DomainClass.class.getPackage());
       </configuration>
     </execution>
   </executions>
-</plugin>    			
+</plugin>               
 ]]></programlisting>
+
+    </sect3>
 
   </sect2>
 
