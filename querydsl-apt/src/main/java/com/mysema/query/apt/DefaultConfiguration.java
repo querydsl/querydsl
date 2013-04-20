@@ -152,13 +152,13 @@ public class DefaultConfiguration implements Configuration {
             createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
         }
         if (options.containsKey(QUERYDSL_PACKAGE_SUFFIX)) {
-            module.bind(CodegenModule.PACKAGE_SUFFIX, options.get(QUERYDSL_PACKAGE_SUFFIX));
+            module.bind(CodegenModule.PACKAGE_SUFFIX, Strings.nullToEmpty(options.get(QUERYDSL_PACKAGE_SUFFIX)));
         }
         if (options.containsKey(QUERYDSL_PREFIX)) {
-            module.bind(CodegenModule.PREFIX, options.get(QUERYDSL_PREFIX));
+            module.bind(CodegenModule.PREFIX, Strings.nullToEmpty(options.get(QUERYDSL_PREFIX)));
         }
         if (options.containsKey(QUERYDSL_SUFFIX)) {
-            module.bind(CodegenModule.SUFFIX, options.get(QUERYDSL_SUFFIX));
+            module.bind(CodegenModule.SUFFIX, Strings.nullToEmpty(options.get(QUERYDSL_SUFFIX)));
         }
         if (options.containsKey(QUERYDSL_UNKNOWN_AS_EMBEDDABLE)) {
             unknownAsEmbedded = Boolean.valueOf(options.get(QUERYDSL_UNKNOWN_AS_EMBEDDABLE));
