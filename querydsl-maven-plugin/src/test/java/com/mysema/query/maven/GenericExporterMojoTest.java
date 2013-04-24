@@ -1,12 +1,13 @@
 package com.mysema.query.maven;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class GenericExporterMojoTest {
@@ -26,7 +27,7 @@ public class GenericExporterMojoTest {
         assertTrue(file.exists());
     }
     
-    @Test
+    @Test @Ignore
     public void Compile() throws MojoExecutionException, MojoFailureException {
         new File("target/classes2").mkdir();
         MavenProject mavenProject = new MavenProject();
