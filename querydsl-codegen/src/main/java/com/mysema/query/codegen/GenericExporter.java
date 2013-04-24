@@ -138,6 +138,8 @@ public class GenericExporter {
     
     private final ClassLoader classLoader;
     
+    private Set<File> generatedFiles = new HashSet<File>();
+    
     /**
      * Create a GenericExporter instance using the given classloader and charset for serializing 
      * source files
@@ -492,6 +494,7 @@ public class GenericExporter {
     private void write(Serializer serializer, String path, SerializerConfig serializerConfig, 
             EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
+        generatedFiles.add(targetFile);
         Writer w = writerFor(targetFile);
         try {
             CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
@@ -512,6 +515,14 @@ public class GenericExporter {
         }
     }
 
+
+    /**
+     * @return
+     */
+    public Set<File> getGeneratedFiles() {
+        return generatedFiles;
+    }
+    
     /**
      * Set the entity annotation
      * 
@@ -658,5 +669,6 @@ public class GenericExporter {
     public void addStopClass(Class<?> cl) {
         stopClasses.add(cl);
     }
+
     
 }

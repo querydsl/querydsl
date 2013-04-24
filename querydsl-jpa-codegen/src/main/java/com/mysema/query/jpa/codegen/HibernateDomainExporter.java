@@ -117,6 +117,9 @@ public class HibernateDomainExporter {
     
     private final Charset charset;
 
+    private final Set<File> generatedFiles = new HashSet<File>();
+    
+    
     /**
      * Create a new HibernateDomainExporter instance
      * 
@@ -258,6 +261,10 @@ public class HibernateDomainExporter {
         serialize(superTypes, supertypeSerializer);
         serialize(embeddableTypes, embeddableSerializer);
         serialize(entityTypes, entitySerializer);
+    }
+    
+    public Set<File> getGeneratedFiles() {
+        return generatedFiles;
     }
 
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, 
@@ -511,6 +518,7 @@ public class HibernateDomainExporter {
 
     private void write(Serializer serializer, String path, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
+        generatedFiles.add(targetFile);
         Writer w = writerFor(targetFile);
         try{
             CodeWriter writer = new JavaWriter(w);

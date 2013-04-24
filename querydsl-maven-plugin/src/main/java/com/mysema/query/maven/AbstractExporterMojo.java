@@ -14,12 +14,21 @@
 package com.mysema.query.maven;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -80,6 +89,16 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean testClasspath;
 
     /**
+     * @parameter default-value=false
+     */
+    private boolean compile;
+    
+    /**
+     * @parameter
+     */
+    private Map<String, String> compilerOptions;
+    
+    /**
      * @component
      */
     private BuildContext buildContext;
@@ -102,8 +121,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
             throw new MojoFailureException(e.getMessage(), e);
         }
 
-        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset
-                .defaultCharset();
+        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
         GenericExporter exporter = new GenericExporter(classLoader, charset);
         exporter.setTargetFolder(targetFolder);
 
@@ -119,8 +137,93 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
             }
         }
 
-        configure(exporter);
+        configure(exporter);        
+        getLog().info("Generating sources");        
         exporter.export(packages);        
+        
+        if (compile) {            
+            try {
+                compile(exporter.getGeneratedFiles());
+            } catch (IOException e) {
+                throw new MojoFailureException(e.getMessage(), e);
+            }
+        }
+    }
+
+    private void compile(Set<File> generatedFiles) throws IOException {
+        getLog().info("Compiling");
+        JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager sjfm = jc.getStandardFileManager(null, null, null);
+        try {
+            Iterable<? extends JavaFileObject> fileObjects = sjfm.getJavaFileObjectsFromFiles(generatedFiles);
+            List<String> opts = getCompilerOptions();                
+            jc.getTask(null, null, null, opts, null, fileObjects).call();    
+        } finally {
+            sjfm.close();    
+        }                               
+    }
+    
+    @SuppressWarnings("unchecked")
+    private String buildCompileClasspath() {
+        List<String> pathElements = null;
+        try {
+            if (testClasspath) {
+                pathElements = project.getTestClasspathElements();
+            } else {
+                pathElements = project.getCompileClasspathElements();
+            }
+        } catch (DependencyResolutionRequiredException e) {
+            getLog().warn("exception calling getCompileClasspathElements", e);
+            return null;
+        }
+
+        if (pathElements.isEmpty()) {
+            return null;
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < pathElements.size(); i++) {
+            if (i > 0) {
+                result.append(File.pathSeparatorChar);
+            }
+            result.append(pathElements.get(i));                
+        }
+        return result.toString();
+    }
+
+    private List<String> getCompilerOptions() {
+        Map<String, String> compilerOpts = new LinkedHashMap<String, String>();
+        
+        // classpath
+        String cp = buildCompileClasspath();
+        if (cp != null) {
+            compilerOpts.put("cp", cp);    
+        }        
+        
+        if (sourceEncoding != null) {
+            compilerOpts.put("encoding", sourceEncoding);
+        }
+        
+        if (testClasspath) {
+            compilerOpts.put("d", project.getBuild().getTestOutputDirectory());
+        } else {
+            compilerOpts.put("d", project.getBuild().getOutputDirectory());
+        } 
+        
+        if (compilerOptions != null) {
+            compilerOpts.putAll(compilerOptions);    
+        }
+        
+        List<String> opts = new ArrayList<String>(compilerOpts.size() * 2);
+
+        for (Map.Entry<String, String> compilerOption : compilerOpts.entrySet()) {
+            opts.add("-" + compilerOption.getKey());
+            String value = compilerOption.getValue();
+            if (value != null) {
+                opts.add(value);
+            }
+        }
+        return opts;
     }
 
     /**
@@ -164,6 +267,10 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         } else {
             return true;
         }        
+    }
+    
+    public void setCompile(boolean compile) {
+        this.compile = compile;
     }
 
     public void setTargetFolder(File targetFolder) {
