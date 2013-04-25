@@ -4,10 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GenericExporterMojoTest {
@@ -27,23 +24,4 @@ public class GenericExporterMojoTest {
         assertTrue(file.exists());
     }
     
-    @Test @Ignore
-    public void Compile() throws MojoExecutionException, MojoFailureException {
-        new File("target/classes2").mkdir();
-        MavenProject mavenProject = new MavenProject();
-        mavenProject.getBuild().setOutputDirectory("target/classes2");
-        
-        GenericExporterMojo mojo = new GenericExporterMojo();
-        mojo.setCompile(true);
-        mojo.setTargetFolder(new File("target/generated-test-data2"));
-        mojo.setPackages(new String[]{"com.mysema.query.maven"});
-        mojo.setProject( mavenProject);        
-        mojo.execute();
-        
-        File file = new File("target/generated-test-data2/com/mysema/query/maven/QEntity.java"); 
-        assertTrue(file.exists());
-        file = new File("target/classes2/com/mysema/query/maven/QEntity.class");
-        assertTrue(file.exists());
-    }
-
 }

@@ -36,12 +36,17 @@
       <artifactId>maven-project</artifactId>
       <version>${mvn.version}</version>
     </dependency>
-    
+      
     <dependency>
       <groupId>org.sonatype.plexus</groupId>
       <artifactId>plexus-build-api</artifactId>
       <version>0.0.7</version>
-    </dependency>  
+    </dependency>
+   <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.5.8</version>
+    </dependency>
 
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
