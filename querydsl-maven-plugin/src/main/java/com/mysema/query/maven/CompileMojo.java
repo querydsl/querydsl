@@ -39,6 +39,7 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * CompilerMojo compiles the sources generated in the other tasks
  * 
  * @goal compile
+ * @requiresDependencyResolution test
  *
  */
 public class CompileMojo extends AbstractMojo {
@@ -54,7 +55,7 @@ public class CompileMojo extends AbstractMojo {
     /**
      * @parameter
      */
-    private File targetFolder;
+    private File sourceFolder;
     
     /**
      * @parameter
@@ -183,7 +184,7 @@ public class CompileMojo extends AbstractMojo {
         JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager sjfm = jc.getStandardFileManager(null, null, null);
         try {
-            Set<File> generatedFiles = getJavaFiles(targetFolder);
+            Set<File> generatedFiles = getJavaFiles(sourceFolder);
             Iterable<? extends JavaFileObject> fileObjects = sjfm.getJavaFileObjectsFromFiles(generatedFiles);
             List<String> opts = getCompilerOptions();                
             jc.getTask(null, null, null, opts, null, fileObjects).call();    
