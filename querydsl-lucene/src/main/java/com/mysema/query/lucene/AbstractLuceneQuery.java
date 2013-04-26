@@ -14,20 +14,19 @@
 package com.mysema.query.lucene;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.FieldSelector;
-import org.apache.lucene.document.MapFieldSelector;
-import org.apache.lucene.search.DuplicateFilter;
+import org.apache.lucene.sandbox.queries.DuplicateFilter;
 import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Sort;
 
 import com.google.common.base.Function;
@@ -68,7 +67,7 @@ SimpleProjectable<T> {
     private final Function<Document, T> transformer;
 
     @Nullable
-    private FieldSelector fieldSelector;
+    private Set<String> fieldsToLoad;
 
     @Nullable
     private Filter filter;
@@ -101,7 +100,7 @@ SimpleProjectable<T> {
 
     private long innerCount() {
         try {
-            final int maxDoc = searcher.maxDoc();
+            final int maxDoc = searcher.getIndexReader().maxDoc();
             if (maxDoc == 0) {
                 return 0;
             }
@@ -195,7 +194,7 @@ SimpleProjectable<T> {
                 scoreDocs = searcher.search(createQuery(), filter, sumOfLimitAndOffset).scoreDocs;
             }
             if (offset < scoreDocs.length) {
-                return new ResultIterator<T>(scoreDocs, offset, searcher, fieldSelector, transformer);
+                return new ResultIterator<T>(scoreDocs, offset, searcher, fieldsToLoad, transformer);
             }
             return new EmptyCloseableIterator<T>();
         } catch (final IOException e) {
@@ -213,14 +212,14 @@ SimpleProjectable<T> {
     }
 
     /**
-     * Set the given FieldSelector to the query
+     * Set the given fields to load
      *
-     * @param fieldSelector
+     * @param fieldsToLoad
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Q load(FieldSelector fieldSelector) {
-        this.fieldSelector = fieldSelector;
+    public Q load(Set<String> fieldsToLoad) {
+        this.fieldsToLoad = fieldsToLoad;
         return (Q)this;
     }
 
@@ -232,11 +231,11 @@ SimpleProjectable<T> {
      */
     @SuppressWarnings("unchecked")
     public Q load(Path<?>... paths) {
-        List<String> fields = new ArrayList<String>(paths.length);
+        Set<String> fields = new HashSet<String>();
         for (Path<?> path : paths) {
             fields.add(serializer.toField(path));
         }
-        this.fieldSelector = new MapFieldSelector(fields);
+        this.fieldsToLoad = fields;
         return (Q)this;
     }
 
@@ -300,8 +299,8 @@ SimpleProjectable<T> {
                 throw new NonUniqueResultException("Unique result requested, but " + scoreDocs.length + " found.");
             } else if (scoreDocs.length > index) {
                 Document document;
-                if (fieldSelector != null) {
-                    document = searcher.doc(scoreDocs[index].doc, fieldSelector);
+                if (fieldsToLoad != null) {
+                    document = searcher.doc(scoreDocs[index].doc, fieldsToLoad);
                 } else {
                     document = searcher.doc(scoreDocs[index].doc);
                 }
@@ -341,6 +340,6 @@ SimpleProjectable<T> {
     }
 
     private int maxDoc() throws IOException {
-        return searcher.maxDoc();
+        return searcher.getIndexReader().maxDoc();
     }
 }

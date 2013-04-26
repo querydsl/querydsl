@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -40,6 +40,7 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
+import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.NumericUtils;
 
 import com.google.common.base.Splitter;
@@ -64,17 +65,17 @@ import com.mysema.query.types.PathType;
  *
  */
 public class LuceneSerializer {
-    private static final Map<Class<?>, Integer> sortFields = new HashMap<Class<?>, Integer>();
+    private static final Map<Class<?>, SortField.Type> sortFields = new HashMap<Class<?>, SortField.Type>();
 
     static {
-        sortFields.put(Integer.class, SortField.INT);
-        sortFields.put(Float.class, SortField.FLOAT);
-        sortFields.put(Long.class, SortField.LONG);
-        sortFields.put(Double.class, SortField.DOUBLE);
-        sortFields.put(Short.class, SortField.SHORT);
-        sortFields.put(Byte.class, SortField.BYTE);
-        sortFields.put(BigDecimal.class, SortField.DOUBLE);
-        sortFields.put(BigInteger.class, SortField.LONG);
+        sortFields.put(Integer.class, SortField.Type.INT);
+        sortFields.put(Float.class, SortField.Type.FLOAT);
+        sortFields.put(Long.class, SortField.Type.LONG);
+        sortFields.put(Double.class, SortField.Type.DOUBLE);
+        sortFields.put(Short.class, SortField.Type.SHORT);
+        sortFields.put(Byte.class, SortField.Type.BYTE);
+        sortFields.put(BigDecimal.class, SortField.Type.DOUBLE);
+        sortFields.put(BigInteger.class, SortField.Type.LONG);
     }
     
     private static final Splitter WS_SPLITTER = Splitter.on(Pattern.compile("\\s+"));
@@ -200,23 +201,25 @@ public class LuceneSerializer {
     }
 
 
-    private String convertNumber(Number number) {
-        if (Integer.class.isInstance(number)) {
-            return NumericUtils.intToPrefixCoded(number.intValue());
-        } else if (Double.class.isInstance(number)) {
-            return NumericUtils.doubleToPrefixCoded(number.doubleValue());
-        } else if (Long.class.isInstance(number)) {
-            return NumericUtils.longToPrefixCoded(number.longValue());
+    private BytesRef convertNumber(Number number) {
+        if (Integer.class.isInstance(number) || Byte.class.isInstance(number) || Short.class.isInstance(number)) {
+            BytesRef bytes = new BytesRef(NumericUtils.BUF_SIZE_INT);
+            NumericUtils.intToPrefixCoded(number.intValue(), 0, bytes);
+            return bytes;
+        } else if (Double.class.isInstance(number) || BigDecimal.class.isInstance(number)) {
+            BytesRef bytes = new BytesRef(NumericUtils.BUF_SIZE_LONG);
+            long l = NumericUtils.doubleToSortableLong(number.doubleValue());
+            NumericUtils.longToPrefixCoded(l, 0, bytes);
+            return bytes;
+        } else if (Long.class.isInstance(number) || BigInteger.class.isInstance(number)) {
+            BytesRef bytes = new BytesRef(NumericUtils.BUF_SIZE_LONG);
+            NumericUtils.longToPrefixCoded(number.longValue(), 0, bytes);
+            return bytes;
         } else if (Float.class.isInstance(number)) {
-            return NumericUtils.floatToPrefixCoded(number.floatValue());
-        } else if (Byte.class.isInstance(number)) {
-            return NumericUtils.intToPrefixCoded(number.intValue());
-        } else if (Short.class.isInstance(number)) {
-            return NumericUtils.intToPrefixCoded(number.intValue());
-        } else if (BigDecimal.class.isInstance(number)) {
-            return NumericUtils.doubleToPrefixCoded(number.doubleValue());
-        } else if (BigInteger.class.isInstance(number)) {
-            return NumericUtils.longToPrefixCoded(number.longValue());
+            BytesRef bytes = new BytesRef(NumericUtils.BUF_SIZE_INT);
+            int i = NumericUtils.floatToSortableInt(number.floatValue());
+            NumericUtils.intToPrefixCoded(i, 0, bytes);
+            return bytes;
         } else {
             throw new IllegalArgumentException("Unsupported numeric type "
                     + number.getClass().getName());
@@ -409,14 +412,14 @@ public class LuceneSerializer {
             QueryMetadata metadata) {
 
         if (min == null) {
-            return new TermRangeQuery(
+            return TermRangeQuery.newStringRange(
                     field, null, convert(leftHandSide, max, metadata)[0], minInc, maxInc);
         } else if (max == null) {
-            return new TermRangeQuery(
+            return TermRangeQuery.newStringRange(
                     field, convert(leftHandSide, min, metadata)[0],
                     null, minInc, maxInc);
         } else {
-            return new TermRangeQuery(
+            return TermRangeQuery.newStringRange(
                     field, convert(leftHandSide, min, metadata)[0],
                     convert(leftHandSide, max, metadata)[0],
                     minInc, maxInc);
@@ -512,7 +515,6 @@ public class LuceneSerializer {
             if (str.equals("")) {
                 return new String[] { str };
             } else {
-//                return StringUtils.split(str);
                 return Iterables.toArray(WS_SPLITTER.split(str), String.class);
             }
         } else {
@@ -548,7 +550,7 @@ public class LuceneSerializer {
             if (Number.class.isAssignableFrom(type)) {
                 sorts.add(new SortField(toField(path), sortFields.get(type), reverse));
             } else {
-                sorts.add(new SortField(toField(path), sortLocale, reverse));
+                sorts.add(new SortField(toField(path), SortField.Type.STRING, reverse));
             }
         }
         Sort sort = new Sort();

@@ -53,12 +53,12 @@ public final class LuceneExpressions {
      * 
      * @param path
      * @param value
-     * @param minimumSimilarity
+     * @param maxEdits
      * @return
      */
-    public static BooleanExpression fuzzyLike(Path<String> path, String value, float minimumSimilarity) {
+    public static BooleanExpression fuzzyLike(Path<String> path, String value, int maxEdits) {
         Term term = new Term(path.getMetadata().getName(), value);
-        return new QueryElement(new FuzzyQuery(term, minimumSimilarity));
+        return new QueryElement(new FuzzyQuery(term, maxEdits));
     }
     
     /**
@@ -66,14 +66,14 @@ public final class LuceneExpressions {
      * 
      * @param path
      * @param value
-     * @param minimumSimilarity
+     * @param maxEdits
      * @param prefixLength
      * @return
      */
     public static BooleanExpression fuzzyLike(Path<String> path, String value, 
-            float minimumSimilarity, int prefixLength) {
+            int maxEdits, int prefixLength) {
         Term term = new Term(path.getMetadata().getName(), value);
-        return new QueryElement(new FuzzyQuery(term, minimumSimilarity, prefixLength));
+        return new QueryElement(new FuzzyQuery(term, maxEdits, prefixLength));
     }
     
     private LuceneExpressions() {}

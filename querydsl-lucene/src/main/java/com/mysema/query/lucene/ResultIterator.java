@@ -14,11 +14,11 @@
 package com.mysema.query.lucene;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 
@@ -42,16 +42,16 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
     private final IndexSearcher searcher;
 
     @Nullable
-    private final FieldSelector fieldSelector;
+    private final Set<String> fieldsToLoad;
 
     private final Function<Document,T> transformer;
 
     public ResultIterator(ScoreDoc[] scoreDocs, int offset, IndexSearcher searcher, 
-            @Nullable FieldSelector fieldSelector, Function<Document, T> transformer) {
+            @Nullable Set<String> fieldsToLoad, Function<Document, T> transformer) {
         this.scoreDocs = scoreDocs.clone();
         this.cursor = offset;
         this.searcher = searcher;
-        this.fieldSelector = fieldSelector;
+        this.fieldsToLoad = fieldsToLoad;
         this.transformer = transformer;
     }
 
@@ -64,8 +64,8 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
     public T next() {
         try {
             Document document;
-            if (fieldSelector != null) {
-                document = searcher.doc(scoreDocs[cursor++].doc, fieldSelector);
+            if (fieldsToLoad != null) {
+                document = searcher.doc(scoreDocs[cursor++].doc, fieldsToLoad);
             } else {
                 document = searcher.doc(scoreDocs[cursor++].doc);
             }
