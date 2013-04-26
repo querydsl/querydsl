@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -41,17 +42,17 @@ public class User implements Serializable {
     @DocumentId
     private Long id;
 
-    @Field(index = Index.UN_TOKENIZED, store = Store.YES)
+    @Field(analyze = Analyze.NO, index = Index.YES, store = Store.YES)
     private String firstName;
 
-    @Field(index = Index.UN_TOKENIZED, store = Store.YES)
+    @Field(analyze = Analyze.NO, index = Index.YES, store = Store.YES)
     private String lastName;
 
-    @Field(index = Index.UN_TOKENIZED, store = Store.YES)
+    @Field(analyze = Analyze.NO, index = Index.YES, store = Store.YES)
     private String middleName;
 
     @NaturalId
-    @Field(name="email", index = Index.UN_TOKENIZED, store = Store.YES)
+    @Field(analyze = Analyze.NO, name="email", index = Index.YES, store = Store.YES)
     private String emailAddress;
 
     public Long getId() {

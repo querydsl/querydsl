@@ -54,7 +54,9 @@ public abstract class AbstractQueryTest {
 
     @AfterClass
     public static void tearDownClass() {
-        sessionFactory.close();
+        if (sessionFactory != null) {
+            sessionFactory.close();    
+        }        
     }
 
     private Session session;

@@ -15,42 +15,68 @@
   <description>Hibernate Search support for querydsl</description>
   <packaging>jar</packaging>
   
+  <properties>
+    <hibernate.version>4.1.7.Final</hibernate.version>
+    <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
+    <hibernate.search.version>4.2.0.Final</hibernate.search.version>
+    <lucene.version>3.6.2</lucene.version>
+  </properties>
+  
   <dependencies> 
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-lucene</artifactId>
-      <version>${project.version}</version>
+      <version>3.1.1</version>
+      <!-- XXX uses older one, since 3.1.2 uses Lucene 4 -->
     </dependency>
     
     <!-- backend dependencies -->
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>3.3.2.GA</version>
-        <scope>provided</scope>
-    </dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+      </exclusions>      
+      <scope>provided</scope>      
+    </dependency>   
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-annotations</artifactId>
-        <version>3.4.0.GA</version>
-        <scope>provided</scope>
-    </dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
+      <scope>provided</scope>
+      <exclusions>    
+        <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>      
+    </dependency>    
+ 
     <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>3.1.0.GA</version>
-        <scope>provided</scope>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
+      <scope>compile</scope>
     </dependency>
+
     <dependency>
         <groupId>org.apache.lucene</groupId>
         <artifactId>lucene-core</artifactId>
-        <version>2.9.0</version>
+        <version>${lucene.version}</version>
         <scope>provided</scope>
     </dependency>   
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-search</artifactId>
-      <version>3.1.1.GA</version>
+      <version>${hibernate.search.version}</version>
       <scope>provided</scope>
       <exclusions>
        <exclusion> 
