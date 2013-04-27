@@ -14,21 +14,12 @@
 package com.mysema.query.maven;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -49,7 +40,7 @@ import com.mysema.query.codegen.TypeMappings;
 public abstract class AbstractExporterMojo extends AbstractMojo {
 
     /**
-     * @parameter
+     * @parameter required=true
      */
     private File targetFolder;
 

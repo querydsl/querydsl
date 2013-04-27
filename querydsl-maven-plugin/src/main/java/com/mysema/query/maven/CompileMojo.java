@@ -53,7 +53,7 @@ public class CompileMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
-     * @parameter
+     * @parameter required=true
      */
     private File sourceFolder;
     
