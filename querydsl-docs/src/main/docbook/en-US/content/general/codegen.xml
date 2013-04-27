@@ -534,13 +534,88 @@ exporter.export(DomainClass.class.getPackage());
 ]]></programlisting>
 
       <para>This will export the JPA annotated classes of the <code>com.example.domain</code> package and
-      subpackages to the target/generated-sources/java directory.
+      subpackages to the target/generated-sources/java directory.           
       </para>
+      
+      <para>If you need to compile the generated sources directly after that, then you can use
+      the <code>compile</code> goal for that.</para>
+    
+ <programlisting language="xml"><![CDATA[                        
+<execution>
+  <goals>
+    <goal>compile</goal>
+  </goals>
+  <configuration>
+    <sourceFolder>target/generated-sources/scala</targetFolder>
+    <packages>
+      <package>com.example.domain</package>
+    </packages>       
+  </configuration>
+</execution>         
+]]></programlisting>    
+    
+    <para>The <code>compile</code> goal has the following configuration elements</para>
+    
+    <table>
+      <title>Maven configuration</title>
+      <tgroup cols='3' align='left' colsep='1' rowsep='1'>
+        <colspec colname='Type' colwidth="1*" />
+        <colspec colname='Element' colwidth="1*" />
+        <colspec colname='Descriptions' colwidth="1*" />
+        <thead>
+          <row>
+            <entry>Type</entry>
+            <entry>Element</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>File</entry>
+            <entry>sourceFolder</entry>
+            <entry>source folder with generated sources</entry>
+          </row>
+          <row>
+            <entry>String</entry>
+            <entry>sourceEncoding</entry>
+            <entry>charset encoding of sources</entry>
+          </row>
+          <row>
+            <entry>String</entry>
+            <entry>source</entry>
+            <entry>-source option for compiler</entry>
+          </row>
+          <row>
+            <entry>String</entry>
+            <entry>target</entry>
+            <entry>-target option for compiler</entry>
+          </row>
+          <row>
+            <entry>boolean</entry>
+            <entry>testClasspath</entry>
+            <entry>true, if the test classpath should be used instead</entry>
+          </row>
+          <row>
+            <entry>Map</entry>
+            <entry>compilerOptions</entry>
+            <entry>options for compiler</entry>
+          </row>            
+        </tbody>
+      </tgroup>
+    </table>    
+    
+    <para>All options except <code>sourceFolder</code> are optional.</para>
+    
+  </sect3>
+  
+  <sect3>
+  
+    <title>Scala support</title>      
 
       <para>If you need Scala output of the classes, use a variant of the following
       configuration
       </para>
-
+      
       <programlisting language="xml"><![CDATA[                        
 <plugin>
   <groupId>com.mysema.querydsl</groupId>
