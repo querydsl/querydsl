@@ -381,8 +381,14 @@ public class HibernateDomainExporter {
             if (collection.getElement() instanceof OneToMany) {
                 String entityName = ((OneToMany)collection.getElement()).getReferencedEntityName();
                 if (entityName != null) {
-                    Type componentType = typeFactory.get(Class.forName(entityName));
-                    propertyType = new SimpleType(propertyType, componentType);    
+                    if (collection.isMap()) {
+                        Type keyType = typeFactory.get(Class.forName(propertyType.getParameters().get(0).getFullName()));
+                        Type valueType = typeFactory.get(Class.forName(entityName));
+                        propertyType = new SimpleType(propertyType, keyType, valueType);
+                    } else {
+                        Type componentType = typeFactory.get(Class.forName(entityName));
+                        propertyType = new SimpleType(propertyType, componentType);
+                    }
                 }                
             } else if (collection.getElement() instanceof Component) {
                 Component component = (Component)collection.getElement();            
