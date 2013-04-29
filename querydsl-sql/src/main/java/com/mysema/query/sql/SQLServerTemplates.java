@@ -37,7 +37,7 @@ public class SQLServerTemplates extends SQLTemplates{
         };
     }
     
-    private String topTemplate = "top {0} "; 
+    private String topTemplate = "top {0s} "; 
 
     public SQLServerTemplates() {
         this('\\',false);
