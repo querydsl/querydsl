@@ -64,7 +64,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
     public void Limit() {
         query.from(survey1).limit(5);
         query.getMetadata().addProjection(survey1.id);        
-        assertEquals("select top ? survey1.ID from SURVEY survey1", query.toString());
+        assertEquals("select top 5 survey1.ID from SURVEY survey1", query.toString());
     }
         
     @Test
