@@ -64,18 +64,14 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest{
     public void Limit() {
         query.from(survey1).limit(5);
         query.getMetadata().addProjection(survey1.id);        
-        assertEquals("with inner_query as  (   " +
-                "select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
-                "select *  from inner_query where row_number <= ?", query.toString());
+        assertEquals("select survey1.ID from SURVEY survey1 fetch first ? rows only", query.toString());
     }
     
     @Test
     public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().addProjection(survey1.id);        
-        assertEquals("with inner_query as  (   " +
-        		"select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
-        		"select *  from inner_query where row_number > ? and row_number <= ?", query.toString());
+        assertEquals("select survey1.ID from SURVEY survey1 offset ? rows fetch next ? rows only", query.toString());
     }
     
     @Test
