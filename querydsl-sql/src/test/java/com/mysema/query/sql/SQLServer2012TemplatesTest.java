@@ -64,7 +64,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest{
     public void Limit() {
         query.from(survey1).limit(5);
         query.getMetadata().addProjection(survey1.id);        
-        assertEquals("select survey1.ID from SURVEY survey1 fetch first ? rows only", query.toString());
+        assertEquals("select survey1.ID from SURVEY survey1 offset ? rows fetch next ? rows only", query.toString());
     }
     
     @Test

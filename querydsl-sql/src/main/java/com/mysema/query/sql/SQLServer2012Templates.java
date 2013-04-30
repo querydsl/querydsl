@@ -27,8 +27,6 @@ public class SQLServer2012Templates extends SQLServerTemplates {
     
     private String limitOffsetTemplate = "\noffset {1} rows fetch next {0} rows only";
 
-    private String limitTemplate = "\nfetch first {0} rows only";
-
     private String offsetTemplate = "\noffset {0} rows";
     
     public static Builder builder() {
@@ -67,7 +65,7 @@ public class SQLServer2012Templates extends SQLServerTemplates {
         if (mod.getLimit() == null) {
             context.handle(offsetTemplate, mod.getOffset());
         } else if (mod.getOffset() == null) {
-            context.handle(limitTemplate, mod.getLimit());
+            context.handle(limitOffsetTemplate, mod.getLimit(), 0);
         } else {
             context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());
         }
