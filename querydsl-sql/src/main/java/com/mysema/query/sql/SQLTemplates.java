@@ -141,7 +141,7 @@ public class SQLTemplates extends Templates {
     
     private String rightJoin = "\nright join ";;
 
-    private final String limitTemplate = "\nlimit {0}";
+    private String limitTemplate = "\nlimit {0}";
 
     private String mergeInto = "merge into ";
 

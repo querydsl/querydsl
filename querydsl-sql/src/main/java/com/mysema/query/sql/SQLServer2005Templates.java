@@ -22,12 +22,9 @@ import com.mysema.query.types.OrderSpecifier;
 
 
 /**
- * SQLServerTemplates is an SQL dialect for Microsoft SQL Server 2005 and later
+ * SQLServer2005Templates is an SQL dialect for Microsoft SQL Server 2005 and 2008
  *
- * <p>tested with MS SQL Server 2008 Express</p>
- * 
  * @author tiwe
- *
  */
 public class SQLServer2005Templates extends SQLServerTemplates {
     
@@ -35,7 +32,7 @@ public class SQLServer2005Templates extends SQLServerTemplates {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
-                return new SQLServerTemplates(escape, quote);
+                return new SQLServer2005Templates(escape, quote);
             }            
         };
     }
