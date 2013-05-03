@@ -46,6 +46,20 @@ public class SQLTemplates extends Templates {
 
     public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("SQL_NEXTVAL");
     
+    public static final Operator<Long> ROWNUMBER = new OperatorImpl<Long>("ROWNUMBER");
+    
+    public static final Operator<Long> RANK = new OperatorImpl<Long>("RANK");
+    
+    public static final Operator<Long> DENSERANK = new OperatorImpl<Long>("DENSERANK");
+    
+    public static final Operator<Object> FIRST = new OperatorImpl<Object>("FIRST");
+    
+    public static final Operator<Object> LAST = new OperatorImpl<Object>("LAST");
+    
+    public static final Operator<Object> LEAD = new OperatorImpl<Object>("LAST");
+    
+    public static final Operator<Object> LAG = new OperatorImpl<Object>("LAST");
+    
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
     public static abstract class Builder {
@@ -259,6 +273,14 @@ public class SQLTemplates extends Templates {
         add(UNION, "{0}\nunion\n{1}", 1);
         add(UNION_ALL, "{0}\nunion all\n{1}", 1);        
         add(NEXTVAL, "nextval('{0s}')");
+        
+        add(ROWNUMBER, "row_number()");
+        add(RANK, "rank()");
+        add(DENSERANK, "dense_rank()");
+        add(FIRST, "first({0})");
+        add(LAST, "last({0})");
+        add(LEAD, "lead({0})");
+        add(LAG, "lag({0})");
         
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");

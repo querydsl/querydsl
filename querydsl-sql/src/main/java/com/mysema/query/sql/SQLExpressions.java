@@ -333,6 +333,113 @@ public final class SQLExpressions {
         return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
     }
     
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> sum(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.SUM_AGG, expr);
+    }
+    
+    /**
+     * @param expr
+     * @return
+     */
+    public static WindowOver<Long> count(Expression<?> expr) {
+        return new WindowOver<Long>(Long.class, Ops.AggOps.COUNT_AGG, expr);
+    }
+    
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> avg(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.AVG_AGG, expr);
+    }
+    
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Comparable> WindowOver<T> min(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.MIN_AGG, expr);
+    }
+    
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Comparable> WindowOver<T> max(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.MAX_AGG, expr);
+    }
+    
+    /**
+     * expr evaluated at the row that is one row after the current row within the partition;
+     * 
+     * @param expr
+     * @return
+     */
+    public static <T> WindowOver<T> lead(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LEAD, expr);
+    } 
+    
+    /**
+     * expr evaluated at the row that is one row before the current row within the partition
+     * 
+     * @param expr
+     * @return
+     */
+    public static <T> WindowOver<T> lag(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LAG, expr);
+    } 
+    
+    /**
+     * rank of the current row with gaps; same as row_number of its first peer
+     * 
+     * @return
+     */
+    public static WindowOver<Long> rank() {
+        return new WindowOver<Long>(Long.class, SQLTemplates.RANK);
+    } 
+    
+    /**
+     * rank of the current row without gaps; this function counts peer groups
+     * 
+     * @return
+     */
+    public static WindowOver<Long> denseRank() {
+        return new WindowOver<Long>(Long.class, SQLTemplates.DENSERANK);
+    }  
+    
+    /**
+     * number of the current row within its partition, counting from 1
+     * 
+     * @return
+     */
+    public static WindowOver<Long> rowNumber() {
+        return new WindowOver<Long>(Long.class, SQLTemplates.ROWNUMBER);
+    }
+    
+    /**
+     * returns value evaluated at the row that is the first row of the window frame
+     * 
+     * @param expr
+     * @return
+     */
+    public static <T> WindowOver<T> first(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.FIRST, expr);
+    }
+    
+    /**
+     * returns value evaluated at the row that is the last row of the window frame
+     * 
+     * @param expr
+     * @return
+     */
+    public static <T> WindowOver<T> last(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LAST, expr);
+    } 
+    
     private SQLExpressions() {}
 
 }
