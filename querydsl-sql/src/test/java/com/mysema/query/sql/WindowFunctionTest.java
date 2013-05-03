@@ -35,8 +35,8 @@ public class WindowFunctionTest {
         assertEquals("rank()", toString(SQLExpressions.rank()));
         assertEquals("dense_rank()", toString(SQLExpressions.denseRank()));
         assertEquals("row_number()", toString(SQLExpressions.rowNumber()));
-        assertEquals("first(path)", toString(SQLExpressions.first(path)));
-        assertEquals("last(path)", toString(SQLExpressions.last(path)));
+        assertEquals("first_value(path)", toString(SQLExpressions.firstValue(path)));
+        assertEquals("last_value(path)", toString(SQLExpressions.lastValue(path)));
         
     }
     

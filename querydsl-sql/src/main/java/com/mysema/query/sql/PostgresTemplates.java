@@ -114,7 +114,6 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS,   hoursDiff);
         add(Ops.DateTimeOps.DIFF_MINUTES, minutesDiff);
         add(Ops.DateTimeOps.DIFF_SECONDS, secondsDiff);
-
     }
 
 }

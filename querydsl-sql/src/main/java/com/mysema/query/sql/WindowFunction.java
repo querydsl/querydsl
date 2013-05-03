@@ -19,8 +19,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MutableExpressionBase;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -32,8 +34,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
 
     private static final long serialVersionUID = -4130672293308756779L;
 
-    // TODO : change this to List<OrderSpecifier<?>>
-    private List<Expression<?>> orderBy = new ArrayList<Expression<?>>();
+    private final List<Expression<?>> orderBy = new ArrayList<Expression<?>>();
 
     @Nullable
     private Expression<?> partitionBy;
@@ -49,13 +50,16 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
     
     public SimpleExpression<A> getValue() {
         if (value == null) {
-            List<Expression<?>> args = new ArrayList<Expression<?>>();
+            int size = 0;
+            ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
             StringBuilder builder = new StringBuilder();            
             builder.append("{0} over (");
             args.add(target);
+            size++;
             if (partitionBy != null) {
                 builder.append("partition by {1}");
                 args.add(partitionBy);
+                size++;
             }
             if (!orderBy.isEmpty()) {
                 if (partitionBy != null) {
@@ -67,16 +71,16 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     if (!first) {
                         builder.append(", ");
                     }
-                    builder.append("{" + args.size()+"}");
+                    builder.append("{" + size+"}");
                     args.add(expr);
                     first = false;
                 }
             }
             builder.append(")");
-            value = SimpleTemplate.<A>create(
-                    (Class<A>)target.getType(),
-                    builder.toString(),
-                    args.toArray(new Expression[args.size()]));
+            value = new SimpleTemplate<A>(
+                    target.getType(),
+                    TemplateFactory.DEFAULT.create(builder.toString()),
+                    args.build());
         }
         return value;
     }

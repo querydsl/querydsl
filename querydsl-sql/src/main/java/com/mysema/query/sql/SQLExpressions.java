@@ -426,8 +426,8 @@ public final class SQLExpressions {
      * @param expr
      * @return
      */
-    public static <T> WindowOver<T> first(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.FIRST, expr);
+    public static <T> WindowOver<T> firstValue(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.FIRSTVALUE, expr);
     }
     
     /**
@@ -436,8 +436,8 @@ public final class SQLExpressions {
      * @param expr
      * @return
      */
-    public static <T> WindowOver<T> last(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LAST, expr);
+    public static <T> WindowOver<T> lastValue(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LASTVALUE, expr);
     } 
     
     private SQLExpressions() {}

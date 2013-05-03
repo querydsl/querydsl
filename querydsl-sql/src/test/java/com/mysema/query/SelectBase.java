@@ -42,6 +42,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +60,7 @@ import com.mysema.query.sql.DatePart;
 import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLExpressions;
+import com.mysema.query.sql.WindowOver;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
@@ -1376,6 +1378,30 @@ public class SelectBase extends AbstractBaseTest{
     public void Where_Exists_Not() throws SQLException {
         NumberSubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         query().from(employee).where(sq1.exists().not()).count();
+    }
+    
+    @Test
+    @IncludeIn({POSTGRES, ORACLE})
+    public void WindowFunctions() {
+        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
+        NumberPath<Integer> path = survey.id;
+        exprs.add(SQLExpressions.sum(path));
+        exprs.add(SQLExpressions.count(path));
+        exprs.add(SQLExpressions.avg(path));
+        exprs.add(SQLExpressions.min(path));
+        exprs.add(SQLExpressions.max(path));
+        exprs.add(SQLExpressions.lead(path));
+        exprs.add(SQLExpressions.lag(path));
+        exprs.add(SQLExpressions.rank());
+        exprs.add(SQLExpressions.denseRank());
+        exprs.add(SQLExpressions.rowNumber());
+        exprs.add(SQLExpressions.firstValue(path));
+        exprs.add(SQLExpressions.lastValue(path));
+        
+        for (WindowOver<?> wo : exprs) {
+            query().from(survey).list(wo.over().partition(survey.name).orderBy(survey.id));
+        }
+        
     }
     
     @Test

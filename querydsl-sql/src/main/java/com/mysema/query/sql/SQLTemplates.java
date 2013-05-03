@@ -52,9 +52,9 @@ public class SQLTemplates extends Templates {
     
     public static final Operator<Long> DENSERANK = new OperatorImpl<Long>("DENSERANK");
     
-    public static final Operator<Object> FIRST = new OperatorImpl<Object>("FIRST");
+    public static final Operator<Object> FIRSTVALUE = new OperatorImpl<Object>("FIRSTVALUE");
     
-    public static final Operator<Object> LAST = new OperatorImpl<Object>("LAST");
+    public static final Operator<Object> LASTVALUE = new OperatorImpl<Object>("LASTVALUE");
     
     public static final Operator<Object> LEAD = new OperatorImpl<Object>("LAST");
     
@@ -277,8 +277,8 @@ public class SQLTemplates extends Templates {
         add(ROWNUMBER, "row_number()");
         add(RANK, "rank()");
         add(DENSERANK, "dense_rank()");
-        add(FIRST, "first({0})");
-        add(LAST, "last({0})");
+        add(FIRSTVALUE, "first_value({0})");
+        add(LASTVALUE, "last_value({0})");
         add(LEAD, "lead({0})");
         add(LAG, "lag({0})");
         
