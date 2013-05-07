@@ -15,46 +15,57 @@ package com.mysema.query.sql.mssql;
 
 import static com.mysema.query.Constants.employee;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
-import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class RowNumberTest {
+import static com.mysema.query.sql.SQLExpressions.rowNumber;
 
+import com.mysema.query.sql.SQLSerializer;
+import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.WindowFunction;
+import com.mysema.query.types.Expression;
+
+public class WindowFunctionTest {
+
+    private static String toString(Expression<?> e) {
+        return new SQLSerializer(SQLTemplates.DEFAULT).handle(e).toString();
+    }
+    
 //    ROW_NUMBER() OVER (ORDER BY OrderDate) AS 'RowNumber'
 
 //    ROW_NUMBER() OVER( PARTITION BY PostalCode ORDER BY SalesYTD DESC)
-    
+
     @Test
     public void Mutable() {
-        RowNumber rn = rowNumber().orderBy(employee.firstname);
-        assertEquals("row_number() over (order by e.FIRSTNAME)", rn.toString());
-        assertEquals("row_number() over (order by e.FIRSTNAME, e.LASTNAME)", rn.orderBy(employee.lastname).toString());
+        WindowFunction<Long> rn = rowNumber().over().orderBy(employee.firstname);
+        assertEquals("row_number() over (order by e.FIRSTNAME)", toString(rn));
+        assertEquals("row_number() over (order by e.FIRSTNAME, e.LASTNAME)", toString(rn.orderBy(employee.lastname)));
     }
     
     @Test
     public void OrderBy() {
         assertEquals("row_number() over (order by e.FIRSTNAME)",
-            rowNumber().orderBy(employee.firstname.asc()).toString());
+            toString(rowNumber().over().orderBy(employee.firstname.asc())));
 
         assertEquals("row_number() over (order by e.FIRSTNAME)",
-            rowNumber().orderBy(employee.firstname).toString());
+            toString(rowNumber().over().orderBy(employee.firstname)));
 
         assertEquals("row_number() over (order by e.FIRSTNAME) as rn",
-            rowNumber().orderBy(employee.firstname.asc()).as(rn).toString());
+            toString(rowNumber().over().orderBy(employee.firstname.asc()).as(rn)));
 
         assertEquals("row_number() over (order by e.FIRSTNAME desc)",
-            rowNumber().orderBy(employee.firstname.desc()).toString());
+            toString(rowNumber().over().orderBy(employee.firstname.desc())));
     }
-       
+        
     @Test
     public void PartitionBy() {
         assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME)",
-            rowNumber().partitionBy(employee.lastname).orderBy(employee.firstname.asc()).toString());
+            toString(rowNumber().over().partitionBy(employee.lastname).orderBy(employee.firstname.asc())));
 
         assertEquals("row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME)",
-            rowNumber().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc()).toString());        
+            toString(rowNumber().over().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc())));        
     }
+    
 
 }

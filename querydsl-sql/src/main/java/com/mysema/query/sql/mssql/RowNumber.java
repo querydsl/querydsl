@@ -32,9 +32,12 @@ import com.mysema.query.types.template.NumberTemplate;
  * <p>RowNumber doesn't provide the full interface for number expressions. To get an immutable copy with the full
  * expressiveness of Number expressions, call getValue().</p>
  *
+ * <p>Use SQLExpressions.rowNumber(expr).over(...) instead
+ *
  * @author tiwe
  *
  */
+@Deprecated
 public class RowNumber extends MutableExpressionBase<Long> {
 
     private static final long serialVersionUID = 3499501725767772281L;

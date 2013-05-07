@@ -17,14 +17,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MutableExpressionBase;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.ComparableExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.template.SimpleTemplate;
 
 /**
@@ -34,10 +36,9 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
 
     private static final long serialVersionUID = -4130672293308756779L;
 
-    private final List<Expression<?>> orderBy = new ArrayList<Expression<?>>();
+    private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
-    @Nullable
-    private Expression<?> partitionBy;
+    private final List<Expression<?>> partitionBy = new ArrayList<Expression<?>>();
 
     private final Expression<A> target;
     
@@ -56,24 +57,37 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
             builder.append("{0} over (");
             args.add(target);
             size++;
-            if (partitionBy != null) {
-                builder.append("partition by {1}");
-                args.add(partitionBy);
-                size++;
+            if (!partitionBy.isEmpty()) {
+                builder.append("partition by ");
+                boolean first = true;
+                for (Expression<?> expr : partitionBy) {
+                    if (!first) {
+                        builder.append(", ");
+                    }                    
+                    builder.append("{" + size + "}");
+                    args.add(expr);
+                    size++;
+                    first = false;
+                }
+                
             }
             if (!orderBy.isEmpty()) {
-                if (partitionBy != null) {
+                if (!partitionBy.isEmpty()) {
                     builder.append(" ");
                 }
                 builder.append("order by ");
                 boolean first = true;
-                for (Expression<?> expr : orderBy) {
+                for (OrderSpecifier<?> expr : orderBy) {
                     if (!first) {
                         builder.append(", ");
                     }
-                    builder.append("{" + size+"}");
-                    args.add(expr);
-                    first = false;
+                    builder.append("{" + size + "}");
+                    if (!expr.isAscending()) {
+                        builder.append(" desc");
+                    }
+                    args.add(expr.getTarget());
+                    size++;
+                    first = false;                    
                 }
             }
             builder.append(")");
@@ -84,7 +98,12 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         }
         return value;
     }
-
+    
+    @SuppressWarnings("unchecked")
+    public SimpleExpression<A> as(Expression<A> alias) {
+        return SimpleOperation.create((Class<A>)getType(),Ops.ALIAS, this, alias);
+    }
+    
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {        
         return getValue().accept(v, context);
@@ -104,15 +123,23 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         }
     }
 
-    public WindowFunction<A> orderBy(Expression<?>... orderBy) {
+    public WindowFunction<A> orderBy(ComparableExpressionBase<?>... orderBy) {
+        value = null;
+        for (ComparableExpressionBase<?> e : orderBy) {
+            this.orderBy.add(e.asc());    
+        }        
+        return this;
+    }
+    
+    public WindowFunction<A> orderBy(OrderSpecifier<?>... orderBy) {
         value = null;
         this.orderBy.addAll(Arrays.asList(orderBy));
         return this;
     }
     
-    public WindowFunction<A> partition(Expression<?> partitionBy) {
+    public WindowFunction<A> partitionBy(Expression<?>... partitionBy) {
         value = null;
-        this.partitionBy = partitionBy;
+        this.partitionBy.addAll(Arrays.asList(partitionBy));
         return this;
     }
 

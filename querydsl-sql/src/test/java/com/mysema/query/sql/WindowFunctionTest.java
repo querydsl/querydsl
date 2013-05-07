@@ -18,7 +18,7 @@ public class WindowFunctionTest {
     public void Complex() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
-        Expression<?> wf = SQLExpressions.sum(path).over().partition(path2).orderBy(path);
+        Expression<?> wf = SQLExpressions.sum(path).over().partitionBy(path2).orderBy(path);
         assertEquals("sum(path) over (partition by path2 order by path)", toString(wf));
     }
     

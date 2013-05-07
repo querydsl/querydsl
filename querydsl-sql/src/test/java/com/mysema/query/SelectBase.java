@@ -1399,7 +1399,7 @@ public class SelectBase extends AbstractBaseTest{
         exprs.add(SQLExpressions.lastValue(path));
         
         for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partition(survey.name).orderBy(survey.id));
+            query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
         }
         
     }

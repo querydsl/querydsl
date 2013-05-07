@@ -38,6 +38,13 @@ public final class OracleGrammar {
 
     public static final DateExpression<Date> sysdate = DateTemplate.create(Date.class, "sysdate");
 
+    /**
+     * Replace with SQLExpressions.sum(expr).over(...
+     * 
+     * @param expr
+     * @return
+     */
+    @Deprecated
     public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expression<A> expr) {
         return new SumOver<A>(expr);
     }
