@@ -65,6 +65,12 @@ public final class SQLExpressions {
         DATE_DIFF_OPS.put(DatePart.millisecond, null); // TODO
     }
     
+    private static final WindowOver<Long> rank = new WindowOver<Long>(Long.class, SQLTemplates.RANK);
+    
+    private static final WindowOver<Long> denseRank = new WindowOver<Long>(Long.class, SQLTemplates.DENSERANK); 
+    
+    private static final WindowOver<Long> rowNumber = new WindowOver<Long>(Long.class, SQLTemplates.ROWNUMBER);
+    
     /**
      * Wildcard expression
      */
@@ -392,14 +398,14 @@ public final class SQLExpressions {
     public static <T> WindowOver<T> lag(Expression<T> expr) {
         return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LAG, expr);
     } 
-    
+        
     /**
      * rank of the current row with gaps; same as row_number of its first peer
      * 
      * @return
      */
     public static WindowOver<Long> rank() {
-        return new WindowOver<Long>(Long.class, SQLTemplates.RANK);
+        return rank;
     } 
     
     /**
@@ -408,7 +414,7 @@ public final class SQLExpressions {
      * @return
      */
     public static WindowOver<Long> denseRank() {
-        return new WindowOver<Long>(Long.class, SQLTemplates.DENSERANK);
+        return denseRank;
     }  
     
     /**
@@ -417,7 +423,7 @@ public final class SQLExpressions {
      * @return
      */
     public static WindowOver<Long> rowNumber() {
-        return new WindowOver<Long>(Long.class, SQLTemplates.ROWNUMBER);
+        return rowNumber;
     }
     
     /**
