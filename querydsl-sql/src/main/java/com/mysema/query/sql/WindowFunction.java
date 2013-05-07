@@ -123,6 +123,12 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         }
     }
 
+    public WindowFunction<A> orderBy(ComparableExpressionBase<?> orderBy) {
+        value = null;
+        this.orderBy.add(orderBy.asc());
+        return this;
+    }
+    
     public WindowFunction<A> orderBy(ComparableExpressionBase<?>... orderBy) {
         value = null;
         for (ComparableExpressionBase<?> e : orderBy) {
@@ -131,10 +137,22 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         return this;
     }
     
+    public WindowFunction<A> orderBy(OrderSpecifier<?> orderBy) {
+        value = null;
+        this.orderBy.add(orderBy);
+        return this;
+    }
+    
     public WindowFunction<A> orderBy(OrderSpecifier<?>... orderBy) {
         value = null;
         this.orderBy.addAll(Arrays.asList(orderBy));
         return this;
+    }
+    
+    public WindowFunction<A> partitionBy(Expression<?> partitionBy) {
+        value = null;
+        this.partitionBy.add(partitionBy);
+        return this;        
     }
     
     public WindowFunction<A> partitionBy(Expression<?>... partitionBy) {
