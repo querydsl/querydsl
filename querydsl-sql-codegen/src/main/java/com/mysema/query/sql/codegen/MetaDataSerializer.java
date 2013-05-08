@@ -257,8 +257,8 @@ public class MetaDataSerializer extends EntitySerializer {
                         local.append(", ");
                         foreign.append(", ");
                     }
-                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model));
-                    foreign.append("\"" +foreignKey.getParentColumns().get(0) + "\"");
+                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(i), model));
+                    foreign.append("\"" +foreignKey.getParentColumns().get(i) + "\"");
                 }
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
