@@ -222,6 +222,7 @@ public class JPABase extends AbstractStandardTest {
     }
     
     @Test
+    @Ignore // isn't a valid JPQL query
     public void Subquery_UniqueResult() {
         QCat cat2 = new QCat("cat2");
 
