@@ -32,8 +32,11 @@ import com.mysema.query.types.template.NumberTemplate;
  * <p>SumOver doesn't provide the full interface for number expressions. To get an immutable copy with the full
  * expressiveness of Number expressions, call getValue().</p>
  *
+ * <p>Use the functionality in SQLExpressions instead</p>
+ *
  * @author tiwe
  */
+@Deprecated
 public class SumOver<A extends Number & Comparable<? super A>> extends MutableExpressionBase<A> {
 
     private static final long serialVersionUID = -4130672293308756779L;
