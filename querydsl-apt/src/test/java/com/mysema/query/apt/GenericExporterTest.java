@@ -86,6 +86,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QCustomCollection_MyCustomCollection.java");
         expected.add("QCustomCollection_MyCustomCollection2.java");
         
+        expected.add("QTemporalTest_MyEntity.java");
+        
         // FIXME
         expected.add("QGeneric4Test_HidaBez.java");
         expected.add("QGeneric4Test_HidaBezGruppe.java");       

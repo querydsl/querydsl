@@ -59,6 +59,7 @@ import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.types.Expression;
+import com.mysema.util.Annotations;
 
 /**
  * DefaultConfiguration is a simple implementation of the {@link Configuration} interface
@@ -288,6 +289,11 @@ public class DefaultConfiguration implements Configuration {
         return module.get(SupertypeSerializer.class);
     }
 
+    @Override
+    public void inspect(Element element, Annotations annotations) {
+        // do nothing        
+    }
+    
     @Override
     public boolean isBlockedField(VariableElement field) {
         if (field.getAnnotation(QueryType.class) != null) {

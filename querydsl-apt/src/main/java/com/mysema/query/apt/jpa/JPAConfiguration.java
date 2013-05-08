@@ -43,12 +43,15 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.DefaultConfiguration;
+import com.mysema.query.apt.QueryTypeImpl;
 import com.mysema.query.apt.VisitorConfig;
 import com.mysema.query.codegen.Keywords;
+import com.mysema.util.Annotations;
 
 /**
  * Configuration for {@link JPAAnnotationProcessor}
@@ -101,6 +104,21 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
         return VisitorConfig.get(fields, methods);
     }
+    
+    @Override
+    public void inspect(Element element, Annotations annotations) {
+        Temporal temporal = element.getAnnotation(Temporal.class);
+        if (temporal != null) {
+            PropertyType propertyType = null;
+            switch (temporal.value()) {
+            case DATE: propertyType = PropertyType.DATE; break;
+            case TIME: propertyType = PropertyType.TIME; break;
+            case TIMESTAMP: propertyType = PropertyType.DATETIME;
+            }
+            annotations.addAnnotation(new QueryTypeImpl(propertyType));
+        }
+    }
+
     
     private boolean hasRelevantAnnotation(Element element) {
         for (Class<? extends Annotation> annotation : annotations) {

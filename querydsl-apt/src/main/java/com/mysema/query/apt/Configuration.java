@@ -29,6 +29,7 @@ import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.Annotations;
 
 /**
  * Configuration defines the configuration options for APT based Querydsl code generation
@@ -202,5 +203,11 @@ public interface Configuration {
      * @return
      */
     boolean isExcludedClass(String className);
+
+    /**
+     * @param element
+     * @param annotations
+     */
+    void inspect(Element element, Annotations annotations);
     
 }

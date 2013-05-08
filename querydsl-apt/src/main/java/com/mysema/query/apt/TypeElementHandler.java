@@ -89,6 +89,7 @@ public final class TypeElementHandler {
                     blockedProperties.add(name);
                 } else if (configuration.isValidField(field)) {
                     Annotations annotations = new Annotations();
+                    configuration.inspect(field, annotations);
                     annotations.addAnnotation(field.getAnnotation(QueryType.class));
                     annotations.addAnnotation(field.getAnnotation(QueryInit.class));
                     propertyAnnotations.put(name, annotations);
@@ -117,6 +118,7 @@ public final class TypeElementHandler {
                         annotations = new Annotations();
                         propertyAnnotations.put(name, annotations);
                     }
+                    configuration.inspect(method, annotations);
                     annotations.addAnnotation(method.getAnnotation(QueryType.class));
                     annotations.addAnnotation(method.getAnnotation(QueryInit.class));
                     propertyTypes.put(name, method.getReturnType());
