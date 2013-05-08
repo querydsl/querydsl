@@ -37,11 +37,13 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QCatSummary;
 import com.mysema.query.jpa.domain.QChild;
 import com.mysema.query.jpa.domain.QParent;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.JPATestRunner;
 
@@ -217,6 +219,16 @@ public class JPABase extends AbstractStandardTest {
         delete(child)
             .where(child.id.eq(1), subQuery.exists())
             .execute();        
+    }
+    
+    @Test
+    public void Subquery_UniqueResult() {
+        QCat cat2 = new QCat("cat2");
+
+        BooleanExpression exists = new JPASubQuery().from(cat2).where(cat2.eyecolor.isNotNull()).exists();
+        assertNotNull(query().from(cat)
+                .where(cat.breed.eq(0).not())
+                .singleResult(new QCatSummary(cat.breed.count(), exists)));
     }
     
 }
