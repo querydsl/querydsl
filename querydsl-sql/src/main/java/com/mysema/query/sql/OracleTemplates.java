@@ -92,6 +92,7 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MathOps.RAD, "({0} * "+Math.PI+" / 180)");
 
         // Date / time
+        add(Ops.DateTimeOps.DATE, "trunc({0})");
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");

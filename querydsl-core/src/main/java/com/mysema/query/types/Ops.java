@@ -232,6 +232,8 @@ public final class Ops {
     @SuppressWarnings("unchecked")
     public static final class DateTimeOps {
         
+        public static final Operator<Comparable> DATE = new OperatorImpl<Comparable>("DATE");
+        
         public static final Operator<Comparable> CURRENT_DATE = new OperatorImpl<Comparable>("CURRENT_DATE");
         
         public static final Operator<Comparable> CURRENT_TIME = new OperatorImpl<Comparable>("CURRENT_TIME");

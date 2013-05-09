@@ -117,6 +117,27 @@ public final class SQLExpressions {
     }
     
     /**
+     * Convert timestamp to date
+     * 
+     * @param dateTime
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> date(DateTimeExpression<D> dateTime) {
+        return DateOperation.create((Class)dateTime.getType(), Ops.DateTimeOps.DATE, dateTime);
+    }
+    
+    /**
+     * Convert timestamp to date
+     * 
+     * @param type
+     * @param dateTime
+     * @return
+     */
+    public static <D extends Comparable> DateExpression<D> date(Class<D> type, DateTimeExpression<?> dateTime) {
+        return DateOperation.create(type, Ops.DateTimeOps.DATE, dateTime);
+    }
+    
+    /**
      * Get a dateadd(unit, date, amount) expression
      * 
      * @param unit

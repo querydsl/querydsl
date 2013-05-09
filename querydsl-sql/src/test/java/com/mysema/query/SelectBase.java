@@ -82,6 +82,7 @@ import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
+import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.MathExpressions;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.Param;
@@ -413,6 +414,11 @@ public class SelectBase extends AbstractBaseTest{
             assertNotNull(tuple.getExpr(employee.firstname));
             assertNotNull(tuple.getExpr(employee.lastname));
         }
+    }
+    
+    @Test
+    public void DateTime_To_Date() {
+        query().singleResult(SQLExpressions.date(DateTimeExpression.currentTimestamp()));
     }
 
     @Test
