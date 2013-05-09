@@ -108,7 +108,7 @@ public class JPAConfiguration extends DefaultConfiguration {
     @Override
     public void inspect(Element element, Annotations annotations) {
         Temporal temporal = element.getAnnotation(Temporal.class);
-        if (temporal != null) {
+        if (temporal != null && element.getAnnotation(ElementCollection.class) == null) {
             PropertyType propertyType = null;
             switch (temporal.value()) {
             case DATE: propertyType = PropertyType.DATE; break;
