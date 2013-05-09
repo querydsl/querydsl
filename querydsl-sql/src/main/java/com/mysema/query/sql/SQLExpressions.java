@@ -45,6 +45,8 @@ public final class SQLExpressions {
     
     private static final Map<DatePart, Operator> DATE_DIFF_OPS = new HashMap<DatePart, Operator>();
     
+    private static final Map<DatePart, Operator> DATE_TRUNC_OPS = new HashMap<DatePart, Operator>();
+    
     static {
         DATE_ADD_OPS.put(DatePart.year, Ops.DateTimeOps.ADD_YEARS);
         DATE_ADD_OPS.put(DatePart.month, Ops.DateTimeOps.ADD_MONTHS);
@@ -63,6 +65,15 @@ public final class SQLExpressions {
         DATE_DIFF_OPS.put(DatePart.minute, Ops.DateTimeOps.DIFF_MINUTES);
         DATE_DIFF_OPS.put(DatePart.second, Ops.DateTimeOps.DIFF_SECONDS);
         DATE_DIFF_OPS.put(DatePart.millisecond, null); // TODO
+        
+        DATE_TRUNC_OPS.put(DatePart.year, Ops.DateTimeOps.TRUNC_YEAR);
+        DATE_TRUNC_OPS.put(DatePart.month, Ops.DateTimeOps.TRUNC_MONTH);
+        DATE_TRUNC_OPS.put(DatePart.week, Ops.DateTimeOps.TRUNC_WEEK);
+        DATE_TRUNC_OPS.put(DatePart.day, Ops.DateTimeOps.TRUNC_DAY);
+        DATE_TRUNC_OPS.put(DatePart.hour, Ops.DateTimeOps.TRUNC_HOUR);
+        DATE_TRUNC_OPS.put(DatePart.minute, Ops.DateTimeOps.TRUNC_MINUTE);
+        DATE_TRUNC_OPS.put(DatePart.second, Ops.DateTimeOps.TRUNC_SECOND);
+        
     }
     
     private static final WindowOver<Long> rank = new WindowOver<Long>(Long.class, SQLTemplates.RANK);
@@ -237,6 +248,26 @@ public final class SQLExpressions {
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit, 
             DateTimeExpression<D> start, D end) {
         return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, new ConstantImpl<D>(end));
+    }
+    
+    /**
+     * Truncate the given date expression
+     * 
+     * @param unit
+     * @param expr
+     */
+    public static <D extends Comparable> DateExpression<D> datetrunc(DatePart unit, DateExpression<D> expr) {
+        return DateOperation.create(expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+    }
+    
+    /**
+     * Truncate the given datetime expression
+     * 
+     * @param unit
+     * @param expr
+     */
+    public static <D extends Comparable> DateTimeExpression<D> datetrunc(DatePart unit, DateTimeExpression<D> expr) {
+        return DateTimeOperation.create(expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
     
     /**

@@ -246,6 +246,14 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.DIFF_HOURS, "datediff('hour',{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('minute',{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('second',{0},{1})");
+        
+        add(Ops.DateTimeOps.TRUNC_YEAR, "date_trunc('year',{0})");
+        add(Ops.DateTimeOps.TRUNC_MONTH, "date_trunc('month',{0})");
+        add(Ops.DateTimeOps.TRUNC_WEEK, "date_trunc('week',{0})");
+        add(Ops.DateTimeOps.TRUNC_DAY, "date_trunc('day',{0})");
+        add(Ops.DateTimeOps.TRUNC_HOUR, "date_trunc('hour',{0})");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "date_trunc('minute',{0})");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "date_trunc('second',{0})");
 
         // string
         add(Ops.CONCAT, "{0} || {1}", 38);

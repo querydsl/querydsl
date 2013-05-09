@@ -71,6 +71,8 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS, "datediff('hh', {0}, {1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('mi', {0}, {1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('ss', {0}, {1})");
+        
+        add(Ops.DateTimeOps.DATE, "convert({0}, date)");
     }
     
     @Override

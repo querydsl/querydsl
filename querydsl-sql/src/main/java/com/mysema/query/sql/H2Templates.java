@@ -52,6 +52,8 @@ public class H2Templates extends SQLTemplates {
         
 //        add(Ops.DateTimeOps.DATE_ADD, "dateadd('{2s}', {1}, {0})");
 //        add(Ops.DateTimeOps.DATE_DIFF, "datediff('{2s}', {0}, {1})");
+        
+        add(Ops.DateTimeOps.DATE, "convert({0}, date)");
     }
 
 }

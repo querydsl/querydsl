@@ -120,6 +120,13 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "round(({1} - {0}) * 1440)");
         add(Ops.DateTimeOps.DIFF_SECONDS, "round(({1} - {0}) * 86400)");
 
+        add(Ops.DateTimeOps.TRUNC_YEAR, "trunc({0}, 'year')");
+        add(Ops.DateTimeOps.TRUNC_MONTH, "trunc({0}, 'month')");
+        add(Ops.DateTimeOps.TRUNC_WEEK, "trunc({0}, 'w')");
+        add(Ops.DateTimeOps.TRUNC_DAY, "trunc({0}, 'day')");
+        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc({0}, 'hh')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc({0}, 'mi')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "{0}"); // not truncated
     }
 
     @Override

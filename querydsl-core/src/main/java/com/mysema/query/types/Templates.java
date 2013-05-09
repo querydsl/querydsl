@@ -160,6 +160,14 @@ public class Templates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "diff_minutes({0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "diff_seconds({0},{1})");
 
+        add(Ops.DateTimeOps.TRUNC_YEAR, "trunc_year({0})");
+        add(Ops.DateTimeOps.TRUNC_MONTH, "trunc_month({0})");
+        add(Ops.DateTimeOps.TRUNC_WEEK, "trunc_week({0})");
+        add(Ops.DateTimeOps.TRUNC_DAY, "trunc_day({0})");
+        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc_hour({0})");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_minute({0})");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "trunc_second({0})");
+                
         // math
         add(Ops.MathOps.ABS, "abs({0})");
         add(Ops.MathOps.ACOS, "acos({0})");

@@ -268,6 +268,20 @@ public final class Ops {
         
         public static final Operator<Comparable> DIFF_SECONDS = new OperatorImpl<Comparable>("DIFF_SECONDS");
         
+        public static final Operator<Comparable> TRUNC_YEAR = new OperatorImpl<Comparable>("TRUNC_YEAR");
+        
+        public static final Operator<Comparable> TRUNC_MONTH = new OperatorImpl<Comparable>("TRUNC_MONTH");
+        
+        public static final Operator<Comparable> TRUNC_WEEK = new OperatorImpl<Comparable>("TRUNC_WEEK");
+        
+        public static final Operator<Comparable> TRUNC_DAY = new OperatorImpl<Comparable>("TRUNC_DAY");
+        
+        public static final Operator<Comparable> TRUNC_HOUR = new OperatorImpl<Comparable>("TRUNC_HOUR");        
+        
+        public static final Operator<Comparable> TRUNC_MINUTE = new OperatorImpl<Comparable>("TRUNC_MINUTE");
+        
+        public static final Operator<Comparable> TRUNC_SECOND = new OperatorImpl<Comparable>("TRUNC_SECOND");
+        
         public static final Operator<Integer> HOUR = new OperatorImpl<Integer>("HOUR");
         
         public static final Operator<Integer> MINUTE = new OperatorImpl<Integer>("MINUTE");
