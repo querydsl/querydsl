@@ -35,10 +35,6 @@ public class Catalog {
     @Id
     int id;
 
-//    @OneToMany
-//    @Sort(type = SortType.NATURAL)
-//    SortedSet<Price> prices;
-
     @OneToMany
     Set<Price> prices;
 }

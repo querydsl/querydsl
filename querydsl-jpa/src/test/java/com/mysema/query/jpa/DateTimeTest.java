@@ -57,9 +57,9 @@ public class DateTimeTest extends AbstractQueryTest {
     
     @Test
     public void DateOperations2() {
-        catalog.effectiveDate.second();
-        catalog.effectiveDate.minute();
-        catalog.effectiveDate.hour();
+//        catalog.effectiveDate.second();
+//        catalog.effectiveDate.minute();
+//        catalog.effectiveDate.hour();
         catalog.effectiveDate.dayOfMonth();
         catalog.effectiveDate.month();
         catalog.effectiveDate.year();
