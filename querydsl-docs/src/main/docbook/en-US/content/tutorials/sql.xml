@@ -517,6 +517,24 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     </para>
 
   </sect2>
+  
+  <sect2>
+  
+    <title>Window functions</title>
+    
+    <para>Window functions are supported in Querydsl via the methods in the <code>SQLExpressions</code> class.</para>
+    
+    <para>Usage example:</para>
+    
+    <programlisting language="java"><![CDATA[
+query.from(employee)
+    .list(SQLExpressions.rowNumber()
+        .over()
+        .partitionBy(employee.name)
+        .orderBy(employee.id));
+]]></programlisting>
+  
+  </sect2>
 
   <sect2>
 
