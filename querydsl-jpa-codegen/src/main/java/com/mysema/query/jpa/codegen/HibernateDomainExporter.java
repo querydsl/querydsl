@@ -365,6 +365,20 @@ public class HibernateDomainExporter {
             // ignore
         }
         Type propertyType = getType(cl, clazz, p.getName());
+        switch (propertyType.getCategory()) {
+        case DATE:            
+        case TIME:
+        case DATETIME:
+            String type = p.getType().getName();
+            if ("time".equals(type)) {
+                propertyType = propertyType.as(TypeCategory.TIME);
+            } else if ("date".equals(type)) {
+                propertyType = propertyType.as(TypeCategory.DATE);
+            } else if ("timestamp".equals(type)) {
+                propertyType = propertyType.as(TypeCategory.DATETIME);
+            }
+        }
+        
         if (p.isComposite()) {
             EntityType embeddedType = createEmbeddableType(propertyType);
             Iterator<?> properties = ((Component)p.getValue()).getPropertyIterator();
