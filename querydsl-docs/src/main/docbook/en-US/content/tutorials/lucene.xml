@@ -5,6 +5,48 @@
   <title>Querying Lucene</title>
 
   <para>This chapter describes the querying functionality of the Lucene module.</para>
+  
+  <sect2>
+    <title>Maven integration</title>
+
+    <para>
+      Querydsl Lucene can be used via the querydsl-lucene3 module for Lucene 3 and querydsl-lucene4
+      for Lucene 4
+    </para>
+    
+    <para>Lucene 3:</para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-lucene3</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>    
+]]></programlisting>
+
+  <para>Lucene 4:</para>
+  
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-lucene4</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>    
+]]></programlisting>  
+
+  </sect2>
 
   <sect2>
 
