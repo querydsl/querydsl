@@ -379,7 +379,8 @@
         <module>../querydsl-jdo</module>
                 
         <!-- Lucene related -->
-        <module>../querydsl-lucene</module>
+        <module>../querydsl-lucene3</module>
+        <module>../querydsl-lucene4</module>
         <module>../querydsl-hibernate-search</module>
         
         <!-- NoSQL -->
@@ -395,7 +396,7 @@
       <modules>
         <module>../querydsl-core</module>
         <module>../querydsl-codegen</module>
-        <module>../querydsl-lucene</module>  
+        <module>../querydsl-lucene3</module>  
         <module>../querydsl-hibernate-search</module>        
       </modules>
     </profile>   
@@ -433,7 +434,8 @@
         <module>../querydsl-core</module>
         <module>../querydsl-codegen</module>
         <module>../querydsl-apt</module> 
-        <module>../querydsl-lucene</module>         
+        <module>../querydsl-lucene3</module>         
+        <module>../querydsl-lucene4</module>
       </modules>
     </profile>     
     

@@ -25,9 +25,8 @@
   <dependencies> 
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-lucene</artifactId>
-      <version>3.1.1</version>
-      <!-- XXX uses older one, since 3.1.2 uses Lucene 4 -->
+      <artifactId>querydsl-lucene3</artifactId>
+      <version>${project.version}</version>
     </dependency>
     
     <!-- backend dependencies -->
