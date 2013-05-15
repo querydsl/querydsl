@@ -55,6 +55,18 @@ public final class FactoryExpressionUtils {
         public <R, C> R accept(Visitor<R, C> v, C context) {
             return v.visit(this, context);
         }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            } else if (o instanceof FactoryExpression) {
+                FactoryExpression<?> e = (FactoryExpression<?>)o;
+                return args.equals(e.getArgs()) && getType().equals(e.getType());
+            } else {
+                return false;
+            }
+        }
 
     }
     

@@ -24,6 +24,9 @@ import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
+import com.mysema.query.types.QTuple;
 
 /**
  * Groups results by the first expression.
@@ -151,6 +154,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
         
         // create groups
+//        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(new QTuple(expressions));
         CloseableIterator<Tuple> iter = projectable.iterate(expressions);
         try {
             while (iter.hasNext()) {
