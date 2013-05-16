@@ -50,7 +50,7 @@ public class ProjectionsFactory {
         this.target = target;
     }
 
-    public <A> Collection<Expression<?>> array(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement) {
+    public <A> Collection<Expression<?>> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other, A knownElement) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size());

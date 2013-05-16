@@ -80,7 +80,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public <A> Collection<Predicate> array(ArrayExpression<A> expr, ArrayExpression<A> other, 
+    public <A> Collection<Predicate> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other, 
             A knownElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         if (!module.equals(Module.RDFBEAN)) {

@@ -51,8 +51,8 @@ public class MatchingFiltersFactory {
         this.target = target;
     }
 
-    public <A> Collection<Predicate> array(ArrayExpression<A> expr,  
-            ArrayExpression<A> other, A knownElement, A missingElement) {
+    public <A> Collection<Predicate> array(ArrayExpression<A[], A> expr,  
+            ArrayExpression<A[], A> other, A knownElement, A missingElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
 //        rv.add(expr.isEmpty().not());
         if (!module.equals(Module.RDFBEAN)) {

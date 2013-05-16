@@ -47,7 +47,7 @@ public class DefaultPathFactory implements PathFactory {
 
     @Override
     public <T> Path<T[]> createArrayPath(Class<T[]> arrayType, PathMetadata<?> metadata) {
-        return new ArrayPath<T>(arrayType, metadata);
+        return new ArrayPath<T[], T>(arrayType, metadata);
     }
 
     @Override

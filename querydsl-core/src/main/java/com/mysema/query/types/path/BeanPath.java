@@ -135,8 +135,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @param type
      * @return
      */
-    protected <A> ArrayPath<A> createArray(String property, Class<? super A[]> type) {
-        return add(new ArrayPath<A>(type, forProperty(property)));
+    protected <A, E> ArrayPath<A, E> createArray(String property, Class<? super A> type) {
+        return add(new ArrayPath<A, E>(type, forProperty(property)));
     }
 
     /**

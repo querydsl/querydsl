@@ -18,6 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
+import com.google.common.primitives.Primitives;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -34,33 +35,34 @@ import com.mysema.query.types.expr.SimpleExpression;
  * ArrayPath represents an array typed path
  *
  * @author tiwe
- *
+ * 
+ * @param <A> array type
  * @param <E> component type
  */
-public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, ArrayExpression<E> {
+public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, ArrayExpression<A, E> {
 
     private static final long serialVersionUID = 7795049264874048226L;
 
     private final Class<E> componentType;
 
-    private final PathImpl<E[]> pathMixin;
+    private final PathImpl<A> pathMixin;
 
     @Nullable
     private volatile NumberExpression<Integer> size;
 
-    public ArrayPath(Class<? super E[]> type, String variable) {
+    public ArrayPath(Class<? super A> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable));
     }
     
-    public ArrayPath(Class<? super E[]> type, Path<?> parent, String property) {
+    public ArrayPath(Class<? super A> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
     
     @SuppressWarnings("unchecked")
-    public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
-        super(new PathImpl<E[]>((Class)type, metadata));
-        this.pathMixin = (PathImpl<E[]>)mixin;
-        this.componentType = (Class<E>)type.getComponentType();
+    public ArrayPath(Class<? super A> type, PathMetadata<?> metadata) {
+        super(new PathImpl<A>((Class)type, metadata));
+        this.pathMixin = (PathImpl<A>)mixin;
+        this.componentType = Primitives.wrap((Class<E>)type.getComponentType());
     }
 
     @Override

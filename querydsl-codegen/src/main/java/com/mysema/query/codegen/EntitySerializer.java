@@ -681,6 +681,29 @@ public class EntitySerializer implements Serializer{
             writer.publicFinal(queryType, field.getEscapedName(), value);
         }
     }
+    
+    // TODO move this to codegen
+    private Type wrap(Type type) {
+        if (type.equals(Types.BOOLEAN_P)) {
+            return Types.BOOLEAN;
+        } else if (type.equals(Types.BYTE_P)) {
+            return Types.BYTE;
+        } else if (type.equals(Types.CHAR)) {
+            return Types.CHARACTER;
+        } else if (type.equals(Types.DOUBLE_P)) {
+            return Types.DOUBLE;            
+        } else if (type.equals(Types.FLOAT_P)) {
+            return Types.FLOAT;
+        } else if (type.equals(Types.INT)) {
+            return Types.INTEGER;
+        } else if (type.equals(Types.LONG_P)) {
+            return Types.LONG;
+        } else if (type.equals(Types.SHORT_P)) {
+            return Types.SHORT;
+        } else {
+            return type;
+        }                               
+    }
 
     protected void serializeProperties(EntityType model,  SerializerConfig config, 
             CodeWriter writer) throws IOException {
@@ -741,8 +764,10 @@ public class EntitySerializer implements Serializer{
                 customField(model, property, config, writer);
                 break;
 
-            case ARRAY:
-                serialize(model, property, new ClassType(ArrayPath.class, property.getType().getComponentType()), 
+            case ARRAY:                
+                serialize(model, property, new ClassType(ArrayPath.class,
+                        property.getType(),
+                        wrap(property.getType().getComponentType())), 
                         writer, "createArray", localRawName + DOT_CLASS);
                 break;
 

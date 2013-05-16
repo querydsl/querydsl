@@ -79,11 +79,7 @@ public abstract class TypeMappings {
     private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw, 
             boolean rawParameters, boolean extend) {
         Type exprType = types.get(type.getCategory());
-        if (type.getCategory() == TypeCategory.ARRAY && types == pathTypes) {
-            return getQueryType(type.getComponentType(), model, exprType, raw, rawParameters, extend);
-        } else {
-            return getQueryType(type, model, exprType, raw, rawParameters, extend);    
-        }        
+        return getQueryType(type, model, exprType, raw, rawParameters, extend);
     }
 
     public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, 

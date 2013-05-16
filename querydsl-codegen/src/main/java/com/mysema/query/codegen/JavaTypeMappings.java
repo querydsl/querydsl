@@ -63,7 +63,7 @@ public class JavaTypeMappings extends TypeMappings {
         register(TypeCategory.NUMERIC,    NumberExpression.class,     NumberPath.class,     NumberTemplate.class);
         register(TypeCategory.SIMPLE,     Expression.class,           SimplePath.class,     SimpleTemplate.class);
 
-        register(TypeCategory.ARRAY,      Expression.class,           ArrayPath.class,      SimpleTemplate.class);
+        register(TypeCategory.ARRAY,      Expression.class,           SimplePath.class,     SimpleTemplate.class);
         register(TypeCategory.COLLECTION, Expression.class,           SimplePath.class,     SimpleTemplate.class);
         register(TypeCategory.SET,        Expression.class,           SimplePath.class,     SimpleTemplate.class);
         register(TypeCategory.LIST,       Expression.class,           SimplePath.class,     SimpleTemplate.class);

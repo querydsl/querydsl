@@ -22,9 +22,10 @@ import com.mysema.query.types.Expression;
  *
  * @author tiwe
  *
+ * @param <A> array type
  * @param <T> array element type
  */
-public interface ArrayExpression<T> extends Expression<T[]> {
+public interface ArrayExpression<A, T> extends Expression<A> {
 
     /**
      * Get the size of the array

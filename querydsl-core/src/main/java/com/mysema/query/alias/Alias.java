@@ -71,8 +71,8 @@ public final class Alias {
         return aliasFactory.<D>getCurrentAndReset();
     }
 
-    public static <D> ArrayPath<D> $(D[] arg) {
-    return aliasFactory.<ArrayPath<D>> getCurrentAndReset();
+    public static <D> ArrayPath<D[], D> $(D[] arg) {
+        return aliasFactory.<ArrayPath<D[], D>> getCurrentAndReset();
     }
 
     public static NumberPath<BigDecimal> $(BigDecimal arg) {

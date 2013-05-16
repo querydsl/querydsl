@@ -47,7 +47,7 @@ public class PathBuilderTest {
     @Test
     public void getArray() {
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
-        ArrayPath<String> array = entityPath.getArray("array", String[].class);
+        ArrayPath<String[], String> array = entityPath.getArray("array", String[].class);
         assertEquals(String[].class, array.getType());
         assertEquals(String.class, array.getElementType());
     }

@@ -107,7 +107,11 @@ public final class TypeFactory {
         Type[] parameters = getParameters(cl, genericType);
 
         if (cl.isArray()) {
-            value = get(cl.getComponentType()).asArrayType();
+            Type componentType = get(cl.getComponentType());
+            if (Types.PRIMITIVES.containsKey(componentType)) {
+                componentType = Types.PRIMITIVES.get(componentType);
+            }
+            value = componentType.asArrayType();
         } else if (cl.isEnum()) {
             value = new ClassType(TypeCategory.ENUM, cl);
         } else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)) {

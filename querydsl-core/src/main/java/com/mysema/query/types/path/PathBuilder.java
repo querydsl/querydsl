@@ -110,11 +110,12 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * Get a PArray instance for the given property and the given array type
      *
      * @param <A>
+     * @param <E>
      * @param property property name
      * @param type
      * @return
      */
-    public <A> ArrayPath<A> getArray(String property, Class<A[]> type) {
+    public <A, E> ArrayPath<A, E> getArray(String property, Class<A> type) {
         validate(property);
         return super.createArray(property, type);
     }

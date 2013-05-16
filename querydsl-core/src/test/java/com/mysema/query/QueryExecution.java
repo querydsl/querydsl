@@ -286,7 +286,7 @@ public abstract class QueryExecution {
         return this;
     }
 
-    public final <A> void runArrayTests(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement, A missingElement) {
+    public final <A> void runArrayTests(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other, A knownElement, A missingElement) {
         runFilterQueries(matchers.array(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.array(expr, other, knownElement), false);
         runProjectionQueries(projections.array(expr, other, knownElement));

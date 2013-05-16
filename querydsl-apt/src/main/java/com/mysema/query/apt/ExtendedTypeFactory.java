@@ -98,6 +98,20 @@ public final class ExtendedTypeFactory {
             default: return null;
             }
         }
+        
+        private Type getPrimitive(PrimitiveType primitiveType) {
+            switch (primitiveType.getKind()) {
+            case BOOLEAN: return Types.BOOLEAN_P;
+            case BYTE: return Types.BYTE_P;
+            case SHORT: return Types.SHORT_P;
+            case INT: return Types.INT;
+            case LONG: return Types.LONG_P;
+            case CHAR: return Types.CHAR;
+            case FLOAT: return Types.FLOAT_P;
+            case DOUBLE: return Types.DOUBLE_P;
+            default: return null;
+            }
+        }
 
         @Override
         public Type visitNull(NullType nullType, Boolean p) {
@@ -106,6 +120,12 @@ public final class ExtendedTypeFactory {
 
         @Override
         public Type visitArray(ArrayType arrayType, Boolean p) {
+            if (arrayType.getComponentType() instanceof PrimitiveType) {
+                Type type = getPrimitive((PrimitiveType) arrayType.getComponentType());
+                if (type != null) {
+                    return type.asArrayType();
+                }
+            }
             return visit(arrayType.getComponentType(), p).asArrayType();
         }
 

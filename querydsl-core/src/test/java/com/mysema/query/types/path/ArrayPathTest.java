@@ -24,7 +24,7 @@ public class ArrayPathTest {
 
     @Test
     public void Get() {
-        ArrayPath<String> arrayPath = new ArrayPath<String>(String[].class, "p");
+        ArrayPath<String[], String> arrayPath = new ArrayPath<String[], String>(String[].class, "p");
         assertNotNull(arrayPath.get(ConstantImpl.create(0)));
         
     }
