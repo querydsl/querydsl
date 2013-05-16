@@ -10,7 +10,6 @@ import static org.easymock.EasyMock.verify;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.EmptyCloseableIterator;
@@ -40,7 +39,6 @@ public class GroupBy3Test {
     }
     
     @Test
-    @Ignore
     public void Query() {
         QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.riskAnalysis;
         QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
@@ -60,6 +58,7 @@ public class GroupBy3Test {
                 riskAnalysis.id, 
                 riskAnalysis.id, 
                 assetThreat.id, 
+                // XXX set wrapping shouldn't be here
                 set(Projections.bean(Threat.class, threat.id)))))
             .andReturn(new EmptyCloseableIterator());
         replay(projectable);

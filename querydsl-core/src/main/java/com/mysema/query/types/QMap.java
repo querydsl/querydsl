@@ -88,6 +88,18 @@ public class QMap extends ExpressionBase<Map<Expression<?>,?>> implements Factor
     public List<Expression<?>> getArgs() {
         return args;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (obj instanceof FactoryExpression) {
+            FactoryExpression<?> c = (FactoryExpression<?>)obj;
+            return args.equals(c.getArgs()) && getType().equals(c.getType());
+        } else {
+            return false;
+        }
+    }
 
     @Override
     @Nullable

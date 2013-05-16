@@ -78,9 +78,9 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj instanceof ArrayConstructorExpression<?>) {
-            ArrayConstructorExpression<?> c = (ArrayConstructorExpression<?>)obj;
-            return args.equals(c.args) && getType().equals(c.getType());
+        } else if (obj instanceof FactoryExpression<?>) {
+            FactoryExpression<?> c = (FactoryExpression<?>)obj;
+            return args.equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;
         }

@@ -329,8 +329,8 @@ public class GroupByTest {
     
     private static Projectable projectable(final Object[]... rows) {
         return new AbstractProjectable() {
-            public CloseableIterator<Tuple> iterate(Expression<?>[] args) {
-                return iterator(rows);
+            public <T> CloseableIterator<T> iterate(Expression<T> arg) {
+                return (CloseableIterator)iterator(rows);
             }
         };
     }

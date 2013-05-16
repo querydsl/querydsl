@@ -154,8 +154,8 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
         
         // create groups
-//        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(new QTuple(expressions));
-        CloseableIterator<Tuple> iter = projectable.iterate(expressions);
+        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(new QTuple(expressions));
+        CloseableIterator<Tuple> iter = projectable.iterate(expr);
         try {
             while (iter.hasNext()) {
                 Object[] row = iter.next().toArray();
