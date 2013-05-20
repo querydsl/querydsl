@@ -197,6 +197,17 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
         return queryMixin.on(conditions);
     }
     
+    @Override
+    public Q limit(long l) {
+        throw new UnsupportedOperationException("JPQL doesn't support limit on subqueries");
+    }
+    
+    @Override
+    public Q offset(long o) {
+        throw new UnsupportedOperationException("JPQL doesn't support offset on subqueries");
+    }
+    
+    
     public String toString() {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT, null);
