@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.NativeSQLSerializer;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLSerializer;
@@ -55,7 +55,8 @@ public class RelationalFunctionCallTest {
         SubQueryExpression<?> expr = sq.from(table)
             .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).list(table.name);
         
-        SQLSerializer serializer = new NativeSQLSerializer(new SQLServerTemplates());
+        Configuration conf = new Configuration(new SQLServerTemplates());
+        SQLSerializer serializer = new NativeSQLSerializer(conf);
         serializer.serialize(expr.getMetadata(), false);
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +

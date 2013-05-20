@@ -39,6 +39,7 @@ import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
@@ -76,7 +77,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     private final SessionHolder session;
 
-    protected final SQLTemplates templates;
+    protected final Configuration configuration;
 
     protected int timeout = 0;
     
@@ -85,22 +86,22 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     
     private boolean unionAll;
 
-    public AbstractHibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
-        this(new DefaultSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
+    public AbstractHibernateSQLQuery(Session session, Configuration conf) {
+        this(new DefaultSessionHolder(session), conf, new DefaultQueryMetadata());
     }
 
-    public AbstractHibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates) {
-        this(new StatelessSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
+    public AbstractHibernateSQLQuery(StatelessSession session, Configuration conf) {
+        this(new StatelessSessionHolder(session), conf, new DefaultQueryMetadata());
     }
 
-    public AbstractHibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+    public AbstractHibernateSQLQuery(SessionHolder session, Configuration conf, QueryMetadata metadata) {
         super(metadata);
         this.session = session;
-        this.templates = sqlTemplates;
+        this.configuration = conf;
     }
     
     private String buildQueryString(boolean forCountRow) {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(templates);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration);
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {

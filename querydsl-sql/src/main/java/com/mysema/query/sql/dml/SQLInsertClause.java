@@ -215,7 +215,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
     
     private PreparedStatement createStatement(boolean withKeys) throws SQLException{
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()])); 
             values.clear();
@@ -235,7 +235,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 SQLInsertBatch batch = batches.get(i);
-                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                serializer = new SQLSerializer(configuration, true);
                 serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
@@ -368,7 +368,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     @Override
     public String toString() {
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
         serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
         return serializer.toString();
     }

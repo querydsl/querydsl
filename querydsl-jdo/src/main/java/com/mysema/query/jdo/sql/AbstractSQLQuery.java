@@ -19,6 +19,7 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
@@ -55,12 +56,12 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
     
     protected boolean unionAll;
     
-    protected final SQLTemplates templates;
+    protected final Configuration configuration;
     
     @SuppressWarnings("unchecked")
-    public AbstractSQLQuery(QueryMetadata metadata, SQLTemplates templates) {
+    public AbstractSQLQuery(QueryMetadata metadata, Configuration conf) {
         super(new QueryMixin<T>(metadata, false));
-        this.templates = templates;
+        this.configuration = conf;
         this.queryMixin = (QueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }

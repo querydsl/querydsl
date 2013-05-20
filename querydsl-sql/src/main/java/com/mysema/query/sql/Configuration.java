@@ -16,9 +16,12 @@ package com.mysema.query.sql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Maps;
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
@@ -41,6 +44,12 @@ public final class Configuration {
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
     
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
+    
+    private final Map<String, String> schemas = Maps.newHashMap();
+    
+    private final Map<Pair<String, String>, String> schemaTables = Maps.newHashMap();
+    
+    private final Map<String, String> tables = Maps.newHashMap();
     
     private final SQLTemplates templates;
     
@@ -99,6 +108,41 @@ public final class Configuration {
     }
     
     /**
+     * Get schema override or schema
+     * 
+     * @param schema
+     * @return
+     */
+    public String getSchema(String schema) {
+        if (schemas.containsKey(schema)) {
+            return schemas.get(schema);
+        } else {
+            return schema;
+        }
+    }
+    
+    /**
+     * Get table override or table
+     * 
+     * @param schema
+     * @param table
+     * @return
+     */
+    public String getTable(String schema, String table) {
+        if (!schemaTables.isEmpty() && schema != null) {
+            Pair<String, String> key = Pair.of(schema, table);
+            if (schemaTables.containsKey(key)) {
+                return schemaTables.get(key);
+            }
+        }
+        if (tables.containsKey(table)) {
+            return tables.get(table);
+        } else {
+            return table;
+        }        
+    }
+        
+    /**
      * @param <T>
      * @param stmt
      * @param path
@@ -124,6 +168,40 @@ public final class Configuration {
             }                        
         }
         return javaTypeMapping.getType(clazz);
+    }
+    
+    /**
+     * Register a schema override
+     * 
+     * @param oldSchema
+     * @param newSchema
+     * @return
+     */
+    public String registerSchemaOverride(String oldSchema, String newSchema) {
+        return schemas.put(oldSchema, newSchema);
+    }
+    
+    /**
+     * Register a table override
+     * 
+     * @param oldTable
+     * @param newTable
+     * @return
+     */
+    public String registerTableOverride(String oldTable, String newTable) {
+        return tables.put(oldTable, newTable);
+    }
+    
+    /**
+     * Register a schema specific table override
+     * 
+     * @param schema
+     * @param oldTable
+     * @param newTable
+     * @return
+     */
+    public String registerTableOverride(String schema, String oldTable, String newTable) {
+        return schemaTables.put(Pair.of(schema, oldTable), newTable);
     }
     
     /**

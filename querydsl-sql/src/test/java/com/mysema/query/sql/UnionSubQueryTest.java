@@ -22,11 +22,9 @@ import com.mysema.query.types.path.SimplePath;
 
 public class UnionSubQueryTest {
     
-    private SQLTemplates templates = new H2Templates() {{
-        newLineToSingleSpace();
-    }};
+    private SQLTemplates templates = H2Templates.builder().newLineToSingleSpace().build();
     
-    private SQLSerializer serializer = new SQLSerializer(templates);    
+    private SQLSerializer serializer = new SQLSerializer(new Configuration(templates));    
     
     @Test
     public void Union_SubQuery() {

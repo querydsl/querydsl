@@ -59,6 +59,15 @@ public final class SQLQuery extends AbstractSQLQuery<SQLQuery> {
 
     /**
      * Create a new SQLQuery instance
+     * 
+     * @param configuration
+     */
+    public SQLQuery( Configuration configuration) {
+        this(null, configuration);
+    }
+    
+    /**
+     * Create a new SQLQuery instance
      *
      * @param conn Connection to use
      * @param configuration

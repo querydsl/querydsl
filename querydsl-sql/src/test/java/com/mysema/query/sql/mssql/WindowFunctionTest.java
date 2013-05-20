@@ -14,22 +14,21 @@
 package com.mysema.query.sql.mssql;
 
 import static com.mysema.query.Constants.employee;
+import static com.mysema.query.sql.SQLExpressions.rowNumber;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import static com.mysema.query.sql.SQLExpressions.rowNumber;
-
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.WindowFunction;
 import com.mysema.query.types.Expression;
 
 public class WindowFunctionTest {
 
     private static String toString(Expression<?> e) {
-        return new SQLSerializer(SQLTemplates.DEFAULT).handle(e).toString();
+        return new SQLSerializer(Configuration.DEFAULT).handle(e).toString();
     }
     
 //    ROW_NUMBER() OVER (ORDER BY OrderDate) AS 'RowNumber'

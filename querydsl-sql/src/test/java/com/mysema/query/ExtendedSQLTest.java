@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLSerializer;
@@ -87,7 +88,7 @@ public class ExtendedSQLTest {
         query.getMetadata().addProjection(author.lastName);
         query.getMetadata().addProjection(Wildcard.count);
 
-        SQLSerializer serializer = new SQLSerializer(new MySQLTemplates());
+        SQLSerializer serializer = new SQLSerializer(new Configuration(new MySQLTemplates()));
         serializer.serialize(query.getMetadata(), false);
         
         assertEquals("select author.FIRST_NAME, author.LAST_NAME, count(*)\n"+

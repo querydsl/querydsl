@@ -39,7 +39,7 @@ public class SQLSerializerTest {
     
     @Test
     public void Count() {
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);        
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);        
         serializer.handle(employee.id.count().add(employee.id.countDistinct()));
         assertEquals("count(EMPLOYEE.ID) + count(distinct EMPLOYEE.ID)", serializer.toString());
     }
@@ -47,14 +47,14 @@ public class SQLSerializerTest {
     @Test
     public void Some() {
         //select some((e.FIRSTNAME is not null)) from EMPLOYEE 
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(SQLExpressions.any(employee.firstname.isNotNull()));
         assertEquals("some(EMPLOYEE.FIRSTNAME is not null)", serializer.toString());
     }
 
     @Test
     public void StartsWith() {
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         QSurvey s1 = new QSurvey("s1");
         serializer.handle(s1.name.startsWith("X"));
         assertEquals("s1.NAME like ? escape '\\'", serializer.toString());
@@ -86,6 +86,16 @@ public class SQLSerializerTest {
     }
     
     @Test
+    public void Override() {
+        Configuration conf = new Configuration(new DerbyTemplates());
+        conf.registerTableOverride("SURVEY", "surveys");
+        
+        SQLQuery query = new SQLQuery(conf);
+        query.from(survey);
+        assertEquals("from surveys SURVEY", query.toString());
+    }
+    
+    @Test
     public void Complex_SubQuery() {               
         // create sub queries
         List<SubQueryExpression<Tuple>> sq = new ArrayList<SubQueryExpression<Tuple>>();
@@ -102,7 +112,7 @@ public class SQLSerializerTest {
                 .groupBy(subAlias.get("prop1"))
                 .list(subAlias.get("prop2"));
         
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(master.getMetadata(), false);
         System.err.println(serializer);
     }
@@ -125,7 +135,7 @@ public class SQLSerializerTest {
         bb2.or(s.name.eq(s.name));
         bb2.or(s.name.eq(s.name));
 
-        String str = new SQLSerializer(SQLTemplates.DEFAULT).handle(bb1.and(bb2)).toString();
+        String str = new SQLSerializer(Configuration.DEFAULT).handle(bb1.and(bb2)).toString();
         assertEquals("s.NAME = s.NAME and (s.NAME = s.NAME or s.NAME = s.NAME)", str);
     }
     
@@ -133,7 +143,7 @@ public class SQLSerializerTest {
     public void List_In_Query() {
         Expression<?> expr = Expressions.list(survey.id, survey.name).in(sq().from(survey).list(survey.id, survey.name));
         
-        String str = new SQLSerializer(SQLTemplates.DEFAULT).handle(expr).toString();
+        String str = new SQLSerializer(Configuration.DEFAULT).handle(expr).toString();
         assertEquals("(SURVEY.ID, SURVEY.NAME) in (select SURVEY.ID, SURVEY.NAME\nfrom SURVEY SURVEY)", str);
     }
     

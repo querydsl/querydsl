@@ -273,7 +273,7 @@ public class QueryPerformanceTest {
             @Override
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
-                    SQLSerializer serializer = new SQLSerializer(templates);
+                    SQLSerializer serializer = new SQLSerializer(conf);
                     serializer.serialize(md, false);
                     serializer.getConstants();
                     serializer.getConstantPaths();
@@ -295,7 +295,7 @@ public class QueryPerformanceTest {
             @Override
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
-                    SQLSerializer serializer = new SQLSerializer(templates);
+                    SQLSerializer serializer = new SQLSerializer(conf);
                     serializer.setNormalize(false);
                     serializer.serialize(md, false);
                     serializer.getConstants();

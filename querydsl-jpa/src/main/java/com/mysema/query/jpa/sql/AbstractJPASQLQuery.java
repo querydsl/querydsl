@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
@@ -41,6 +40,7 @@ import com.mysema.query.jpa.NativeSQLSerializer;
 import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
@@ -70,7 +70,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     private final EntityManager entityManager;
 
-    protected final SQLTemplates templates;
+    protected final Configuration configuration;
     
     protected final Multimap<String,Object> hints = HashMultimap.create();
     
@@ -90,19 +90,19 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     @Nullable
     protected FactoryExpression<?> projection;
 
-    public AbstractJPASQLQuery(EntityManager em, SQLTemplates sqlTemplates) {
-        this(em, sqlTemplates, new DefaultQueryMetadata());
+    public AbstractJPASQLQuery(EntityManager em, Configuration configuration) {
+        this(em, configuration, new DefaultQueryMetadata().noValidate());
     }
 
-    public AbstractJPASQLQuery(EntityManager em, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+    public AbstractJPASQLQuery(EntityManager em, Configuration configuration, QueryMetadata metadata) {
         super(metadata);
         this.entityManager = em;
-        this.templates = sqlTemplates;
+        this.configuration = configuration;
         this.queryHandler = JPAProvider.getTemplates(em).getQueryHandler();
     }
 
     private String buildQueryString(boolean forCountRow) {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(templates);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration);
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {

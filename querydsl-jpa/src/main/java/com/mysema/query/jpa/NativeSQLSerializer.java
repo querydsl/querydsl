@@ -24,6 +24,7 @@ import javax.persistence.Entity;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
@@ -45,8 +46,8 @@ public final class NativeSQLSerializer extends SQLSerializer {
 
     private final List<Path<?>> entityPaths = new ArrayList<Path<?>>();
 
-    public NativeSQLSerializer(SQLTemplates templates) {
-        super(templates);
+    public NativeSQLSerializer(Configuration configuration) {
+        super(configuration);
     }
     
     @Override

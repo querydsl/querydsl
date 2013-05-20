@@ -16,6 +16,7 @@ package com.mysema.query.jpa.sql;
 import javax.persistence.EntityManager;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -29,15 +30,23 @@ import com.mysema.query.sql.SQLTemplates;
 public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> implements SQLCommonQuery<JPASQLQuery> {
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
-        super(entityManager, sqlTemplates);
+        super(entityManager, new Configuration(sqlTemplates));
+    }
+    
+    public JPASQLQuery(EntityManager entityManager, Configuration conf) {
+        super(entityManager, conf);
     }
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates, QueryMetadata metadata) {
-        super(entityManager, sqlTemplates, metadata);
+        super(entityManager, new Configuration(sqlTemplates), metadata);
+    }
+    
+    public JPASQLQuery(EntityManager entityManager, Configuration conf, QueryMetadata metadata) {
+        super(entityManager, conf, metadata);
     }
     
     public JPASQLQuery clone(EntityManager entityManager) {
-        JPASQLQuery q = new JPASQLQuery(entityManager, templates, getMetadata().clone());
+        JPASQLQuery q = new JPASQLQuery(entityManager, configuration, getMetadata().clone());
         q.flushMode = flushMode;
         q.hints.putAll(hints);
         q.lockMode = lockMode;

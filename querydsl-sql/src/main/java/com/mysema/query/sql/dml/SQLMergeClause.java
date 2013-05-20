@@ -176,7 +176,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
     
     private PreparedStatement createStatement() throws SQLException{
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
         PreparedStatement stmt = null;
         if (batches.isEmpty()) {
             serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
@@ -199,7 +199,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 SQLMergeBatch batch = batches.get(i);
-                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                serializer = new SQLSerializer(configuration, true);
                 serializer.serializeForMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
@@ -270,7 +270,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     
     @Override
     public String toString() {
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
         serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
         return serializer.toString();
     }

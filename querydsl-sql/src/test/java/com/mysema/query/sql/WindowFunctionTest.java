@@ -11,7 +11,7 @@ import com.mysema.query.types.path.NumberPath;
 public class WindowFunctionTest {
 
     private static String toString(Expression<?> e) {
-        return new SQLSerializer(SQLTemplates.DEFAULT).handle(e).toString();
+        return new SQLSerializer(Configuration.DEFAULT).handle(e).toString();
     }
     
     @Test

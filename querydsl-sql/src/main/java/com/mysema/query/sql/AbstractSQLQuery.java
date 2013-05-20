@@ -200,7 +200,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
     
     protected SQLSerializer createSerializer() {
-        return new SQLSerializer(configuration.getTemplates());
+        return new SQLSerializer(configuration);
     }
 
     public Q from(Expression<?> arg) {

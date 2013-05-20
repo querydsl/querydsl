@@ -26,7 +26,7 @@ public class DerbyTemplatesTest {
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
-        assertEquals("next value for myseq", new SQLSerializer(new DerbyTemplates()).handle(nextval).toString());        
+        assertEquals("next value for myseq", new SQLSerializer(new Configuration(new DerbyTemplates())).handle(nextval).toString());        
     }
 
 }

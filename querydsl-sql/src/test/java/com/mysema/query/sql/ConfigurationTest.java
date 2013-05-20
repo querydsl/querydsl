@@ -61,5 +61,17 @@ public class ConfigurationTest {
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         configuration.set(stmt, QSurvey.survey.name, 0, Null.DEFAULT);
     }
+    
+    @Test
+    public void Get_Schema() {
+        Configuration configuration = new Configuration(new H2Templates());
+        configuration.registerSchemaOverride("public", "pub");
+        configuration.registerTableOverride("employee", "emp");
+        configuration.registerTableOverride("public", "employee", "employees");
+        
+        assertEquals("pub", configuration.getSchema("public"));
+        assertEquals("emp", configuration.getTable("", "employee"));
+        assertEquals("employees", configuration.getTable("public", "employee"));
+    }
         
 }

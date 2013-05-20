@@ -19,6 +19,8 @@ public class PerformanceTest {
     
     private SQLTemplates templates;
     
+    private Configuration configuration;
+    
     int iterations;
     
     @Before
@@ -30,6 +32,7 @@ public class PerformanceTest {
         md.addProjection(survey.name);
         
         templates = new H2Templates();
+        configuration = new Configuration(templates);
         
         iterations =  1000000;
     }
@@ -38,7 +41,7 @@ public class PerformanceTest {
     public void NonNormalized() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            SQLSerializer serializer = new SQLSerializer(templates);
+            SQLSerializer serializer = new SQLSerializer(configuration);
             serializer.setNormalize(false);
             serializer.serialize(md, false);
             serializer.getConstants();
@@ -52,7 +55,7 @@ public class PerformanceTest {
     public void Default() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            SQLSerializer serializer = new SQLSerializer(templates);
+            SQLSerializer serializer = new SQLSerializer(configuration);
             serializer.serialize(md, false);
             serializer.getConstants();
             serializer.getConstantPaths();

@@ -21,6 +21,7 @@ import org.junit.Test;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.jpa.domain.sql.SAnimal;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
 
 
@@ -29,7 +30,8 @@ public class NativeSQLSerializerTest {
     @Test
     @Ignore
     public void In() {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(new MySQLTemplates());
+        Configuration conf = new Configuration(new MySQLTemplates());
+        NativeSQLSerializer serializer = new NativeSQLSerializer(conf);
         DefaultQueryMetadata md = new DefaultQueryMetadata();
         SAnimal cat = SAnimal.animal;
         md.addJoin(JoinType.DEFAULT, cat);

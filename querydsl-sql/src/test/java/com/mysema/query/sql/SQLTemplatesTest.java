@@ -34,7 +34,7 @@ public class SQLTemplatesTest {
         Template template = TemplateFactory.DEFAULT.create("fetch first {0s} rows only");
         assertTrue(template.getElements().get(1) instanceof Template.AsString);
 
-        SQLSerializer serializer = new SQLSerializer(new DerbyTemplates());
+        SQLSerializer serializer = new SQLSerializer(new Configuration(new DerbyTemplates()));
         serializer.handle(SimpleTemplate.create(Object.class, template, ConstantImpl.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
@@ -61,7 +61,7 @@ public class SQLTemplatesTest {
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
-        assertEquals("nextval('myseq')", new SQLSerializer(SQLTemplates.DEFAULT).handle(nextval).toString());
+        assertEquals("nextval('myseq')", new SQLSerializer(new Configuration(SQLTemplates.DEFAULT)).handle(nextval).toString());
         // Derby OK
         // H2 OK
         // HSQLDB OK

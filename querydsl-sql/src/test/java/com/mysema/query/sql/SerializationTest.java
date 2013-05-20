@@ -102,7 +102,7 @@ public class SerializationTest {
     @Test
     public void Nextval() {
         SubQueryExpression<?> sq = new SQLSubQuery().from(QSurvey.survey).list(SQLExpressions.nextval("myseq"));
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(sq.getMetadata(), false);
         assertEquals("select nextval('myseq')\nfrom SURVEY SURVEY", serializer.toString());
     }
@@ -116,7 +116,7 @@ public class SerializationTest {
             .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not())
             .list(survey.name);
         
-        SQLSerializer serializer = new SQLSerializer(new SQLServerTemplates());
+        SQLSerializer serializer = new SQLSerializer(new Configuration(new SQLServerTemplates()));
         serializer.serialize(expr.getMetadata(), false);
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +

@@ -21,10 +21,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.support.Expressions;
@@ -157,7 +157,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     public void SubQuerySerialization2() {
         NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
 
         serializer.handle(
                 sq()

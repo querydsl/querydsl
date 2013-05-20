@@ -119,14 +119,14 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
         if (batchUpdates.isEmpty()) {
-            SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+            SQLSerializer serializer = new SQLSerializer(configuration, true);
             serializer.serializeForUpdate(metadata, entity, updates);
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
-            SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+            SQLSerializer serializer = new SQLSerializer(configuration, true);
             serializer.serializeForUpdate(batchMetadata.get(0), entity, batchUpdates.get(0));
             queryString = serializer.toString();
             logger.debug(queryString);
@@ -138,7 +138,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             
             // add other batches
             for (int i = 1; i < batchUpdates.size(); i++) {
-                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                serializer = new SQLSerializer(configuration, true);
                 serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
@@ -223,7 +223,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     @Override
     public String toString() {
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
         serializer.serializeForUpdate(metadata, entity, updates);
         return serializer.toString();
     }

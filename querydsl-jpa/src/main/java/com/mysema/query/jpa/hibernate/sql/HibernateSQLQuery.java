@@ -19,6 +19,7 @@ import org.hibernate.StatelessSession;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.SessionHolder;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -32,19 +33,31 @@ import com.mysema.query.sql.SQLTemplates;
 public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQuery> implements SQLCommonQuery<HibernateSQLQuery> {
 
     public HibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
-        super(session, sqlTemplates);
+        super(session, new Configuration(sqlTemplates));
+    }
+    
+    public HibernateSQLQuery(Session session, Configuration conf) {
+        super(session, conf);
     }
 
     public HibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates) {
-        super(session, sqlTemplates);
+        super(session, new Configuration(sqlTemplates));
+    }
+    
+    public HibernateSQLQuery(StatelessSession session, Configuration conf) {
+        super(session, conf);
     }
     
     public HibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
-        super(session, sqlTemplates, metadata);
+        super(session, new Configuration(sqlTemplates), metadata);
+    }
+    
+    public HibernateSQLQuery(SessionHolder session, Configuration conf, QueryMetadata metadata) {
+        super(session, conf, metadata);
     }
     
     public HibernateSQLQuery clone(Session session) {
-        HibernateSQLQuery q = new HibernateSQLQuery(new DefaultSessionHolder(session), templates, getMetadata().clone());
+        HibernateSQLQuery q = new HibernateSQLQuery(new DefaultSessionHolder(session), configuration, getMetadata().clone());
         q.cacheable = cacheable;
         q.cacheRegion = cacheRegion;
         q.fetchSize = fetchSize;

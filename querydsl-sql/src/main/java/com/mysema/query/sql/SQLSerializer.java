@@ -71,19 +71,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     private RelationalPath<?> entity;
 
+    private final Configuration configuration;
+    
     private final SQLTemplates templates;
     
     private boolean inUnion = false;
     
     private boolean inJoin = false;
     
-    public SQLSerializer(SQLTemplates templates) {
-        this(templates, false);
+    public SQLSerializer(Configuration conf) {
+        this(conf, false);
     }
     
-    public SQLSerializer(SQLTemplates templates, boolean dml) {
-        super(templates);
-        this.templates = templates;
+    public SQLSerializer(Configuration conf, boolean dml) {
+        super(conf.getTemplates());
+        this.configuration = conf;
+        this.templates = conf.getTemplates();
         this.dml = dml;
     }
 
@@ -93,12 +96,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
     
     private void appendAsSchemaName(RelationalPath<?> path) {
-        final String schema = path.getSchemaName();
+        final String schema = configuration.getSchema(path.getSchemaName());
         append(templates.quoteIdentifier(schema));
     }
 
     private void appendAsTableName(RelationalPath<?> path) {
-        final String table = path.getTableName();
+        final String table = configuration.getTable(path.getSchemaName(), path.getTableName());
         append(templates.quoteIdentifier(table));
     }
 

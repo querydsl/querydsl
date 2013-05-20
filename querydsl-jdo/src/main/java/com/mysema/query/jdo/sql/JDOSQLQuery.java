@@ -37,6 +37,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
@@ -76,14 +77,18 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     
 
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
-        this(persistenceManager, templates, new DefaultQueryMetadata(), false);
+        this(persistenceManager, new Configuration(templates), new DefaultQueryMetadata().noValidate(), false);
+    }
+    
+    public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, Configuration configuration) {
+        this(persistenceManager, configuration, new DefaultQueryMetadata().noValidate(), false);
     }
 
     public JDOSQLQuery(
             @Nullable PersistenceManager persistenceManager,
-            SQLTemplates templates,
+            Configuration configuration,
             QueryMetadata metadata, boolean detach) {
-        super(metadata, templates);
+        super(metadata, configuration);
         this.persistenceManager = persistenceManager;
         this.detach = detach;
     }
@@ -107,7 +112,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     private Query createQuery(boolean forCount) {
-        SQLSerializer serializer = new SQLSerializer(templates);
+        SQLSerializer serializer = new SQLSerializer(configuration);
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
@@ -234,7 +239,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     @Override
     public String toString() {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            SQLSerializer serializer = new SQLSerializer(templates);
+            SQLSerializer serializer = new SQLSerializer(configuration);
             serializer.serialize(queryMixin.getMetadata(), false);
             return serializer.toString().trim();
         } else {
