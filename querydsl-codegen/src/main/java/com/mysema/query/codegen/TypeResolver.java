@@ -41,7 +41,7 @@ public final class TypeResolver {
         
         String varName = getVarName(resolved);        
         if (varName != null) {
-            resolved = resolveVar(varName, declaringType, context);
+            resolved = resolveVar(resolved, varName, declaringType, context);
         } else if (!resolved.getParameters().isEmpty()) {
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
@@ -60,12 +60,13 @@ public final class TypeResolver {
     }
 
     /**
+     * @param resolved
      * @param varName
      * @param declaringType
      * @param context
      * @return
      */
-    private static Type resolveVar(String varName, Type declaringType, EntityType context) {
+    private static Type resolveVar(Type resolved, String varName, Type declaringType, EntityType context) {
         // get parameter index of var in declaring type
         int index = -1;
         for (int i = 0; i < declaringType.getParameters().size(); i++) {
@@ -83,8 +84,13 @@ public final class TypeResolver {
         Supertype type = context.getSuperType();            
         while (!type.getEntityType().equals(declaringType)) {
             type = type.getEntityType().getSuperType();                
-        }
-        return type.getType().getParameters().get(index);
+        }        
+        if (!type.getType().getParameters().isEmpty()) {
+            return type.getType().getParameters().get(index);    
+        } else {
+            // raw type
+            return resolved;
+        }        
     }
 
     /**
