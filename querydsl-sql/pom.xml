@@ -12,6 +12,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
   <name>Querydsl - SQL support</name>
+  <version>3.1.2.SOLITA</version>
   <description>SQL support for Querydsl</description>
   <packaging>jar</packaging>
 
@@ -19,7 +20,7 @@
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
-      <version>${project.version}</version>
+      <version>3.1.2.BUILD-SNAPSHOT</version>
     </dependency>    
     <dependency>
       <groupId>joda-time</groupId>
@@ -119,7 +120,7 @@
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
-      <version>${project.version}</version>
+      <version>3.1.2.BUILD-SNAPSHOT</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>    
@@ -180,7 +181,7 @@
       <plugin>
         <groupId>com.mysema.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>3.1.2.BUILD-SNAPSHOT</version>
         <executions>
           <execution>
             <goals>
