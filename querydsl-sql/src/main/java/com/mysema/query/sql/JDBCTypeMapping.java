@@ -101,7 +101,7 @@ public final class JDBCTypeMapping {
         types.put(sqlType, javaType);
     }
     
-    public void registerNumeric(int size, int digits, Class<? extends Number> javaType) {
+    public void registerNumeric(int size, int digits, Class<?> javaType) {
         numericTypes.put(Pair.of(size, digits), javaType);
     }
 
