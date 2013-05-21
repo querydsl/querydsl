@@ -151,12 +151,12 @@ public final class Configuration {
      * @return
      * @throws SQLException
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> void set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException{
         getType(path, (Class)value.getClass()).setValue(stmt, i, value);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
         if (hasTableColumnTypes && path != null && !clazz.equals(Null.class) 
                 && path.getMetadata().getParent() instanceof RelationalPath) {
@@ -221,7 +221,7 @@ public final class Configuration {
      * @param digits
      * @param javaType
      */
-    public void registerNumeric(int size, int digits, Class<? extends Number> javaType) {
+    public void registerNumeric(int size, int digits, Class<?> javaType) {
         jdbcTypeMapping.registerNumeric(size, digits, javaType);
     }
 
