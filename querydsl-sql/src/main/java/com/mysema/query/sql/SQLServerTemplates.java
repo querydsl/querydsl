@@ -26,7 +26,7 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  *
  */
-public class SQLServerTemplates extends SQLTemplates{
+public class SQLServerTemplates extends SQLTemplates {
     
     public static Builder builder() {
         return new Builder() {
@@ -53,6 +53,7 @@ public class SQLServerTemplates extends SQLTemplates{
         setDummyTable("");
 
         // String
+        add(Ops.CONCAT, "{0} + {1}", 13);
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
         add(Ops.INDEX_OF, "charindex({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1");
