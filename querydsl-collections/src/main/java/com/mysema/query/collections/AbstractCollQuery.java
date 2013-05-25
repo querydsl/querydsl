@@ -149,6 +149,32 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
+    
+    /**
+     * Define a left join from the Collection typed path to the alias
+     *
+     * @param <P>
+     * @param collectionPath
+     * @param alias
+     * @return
+     */
+    public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+        return (Q)this;
+    }
+
+    /**
+     * Define a left join from the Map typed path to the alias
+     *
+     * @param <P>
+     * @param mapPath
+     * @param alias
+     * @return
+     */
+    public <P> Q leftJoin(MapExpression<?,P> target, Path<P> alias) {
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+        return (Q)this;
+    }
 
     @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {

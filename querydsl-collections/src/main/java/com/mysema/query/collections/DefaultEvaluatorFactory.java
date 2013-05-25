@@ -187,16 +187,20 @@ public class DefaultEvaluatorFactory {
             if (vars.length() > 0) {
                 vars.append(",");
             }
-            if (join.getType() == JoinType.DEFAULT) {
+            switch (join.getType()) {
+            case DEFAULT:
                 ser.append("for (" + typeName + " "+ target + " : " + target + "_) {\n");
                 vars.append(target);
                 sourceNames.add(target+"_");
                 sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
                 sourceClasses.add(Iterable.class);
+                break;
 
-            } else if (join.getType() == JoinType.INNERJOIN) {
+            case INNERJOIN:
+            case LEFTJOIN:
                 Operation alias = (Operation)join.getTarget();
                 boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
+                boolean leftJoin = join.getType() == JoinType.LEFTJOIN;
                 String matcher = null;
                 if (colAnyJoin) {
                     matcher = alias.getArg(1).toString() + "_matched";
@@ -204,6 +208,9 @@ public class DefaultEvaluatorFactory {
                     anyJoinMatchers.add(matcher);
                 }
                 ser.append("for (" + typeName + " " + alias.getArg(1) + " : ");
+                if (leftJoin) {
+                    ser.append(CollQueryFunctions.class.getName()+".leftJoin(");
+                }                
                 if (colAnyJoin) {
                     Context context = new Context();
                     Expression<?> replacement = (Expression<?>) alias.getArg(0)
@@ -215,13 +222,17 @@ public class DefaultEvaluatorFactory {
                 if (alias.getArg(0).getType().equals(Map.class)) {
                     ser.append(".values()");
                 }
+                if (leftJoin) {
+                    ser.append(")");
+                }
                 ser.append(") {\n");
                 if (matcher != null) {
                     ser.append("if (!" + matcher + ") {\n");
                 }                
                 vars.append(alias.getArg(1));
-
-            } else {
+                break;
+                
+            default:
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }
         }
@@ -248,7 +259,7 @@ public class DefaultEvaluatorFactory {
 
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
-
+        
         ClassType projectionType = new ClassType(TypeCategory.LIST, List.class, Types.OBJECTS);
         return factory.createEvaluator(
                 ser.toString(),

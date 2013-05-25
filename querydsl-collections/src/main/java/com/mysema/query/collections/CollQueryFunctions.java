@@ -14,8 +14,11 @@
 package com.mysema.query.collections;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -29,6 +32,8 @@ import com.mysema.util.ReflectionUtils;
  */
 public final class CollQueryFunctions {
     
+    private static final List<Object> nullList = Arrays.<Object>asList((Object)null);
+        
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) >= 0 && a.compareTo(c) <= 0;
     }
@@ -122,7 +127,15 @@ public final class CollQueryFunctions {
         cal.setTime(date);
         return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH) + 1;
     }
-
+    
+    public static <T> Collection<T> leftJoin(Collection<T> coll) {
+        if (coll.isEmpty()) {
+            return (List) nullList;
+        } else {
+            return coll;
+        }
+    }
+    
     public static boolean like(final String str, String like) {
         final StringBuilder pattern = new StringBuilder(like.length() + 4);
         for (int i = 0; i < like.length(); i++) {
