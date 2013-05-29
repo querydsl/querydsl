@@ -56,9 +56,9 @@ public class SQLTemplates extends Templates {
     
     public static final Operator<Object> LASTVALUE = new OperatorImpl<Object>("LASTVALUE");
     
-    public static final Operator<Object> LEAD = new OperatorImpl<Object>("LAST");
+    public static final Operator<Object> LEAD = new OperatorImpl<Object>("LEAD");
     
-    public static final Operator<Object> LAG = new OperatorImpl<Object>("LAST");
+    public static final Operator<Object> LAG = new OperatorImpl<Object>("LAG");
     
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
