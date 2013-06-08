@@ -96,4 +96,9 @@ public class DefaultNamingStrategyTest {
         assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
     }
     
+    @Test
+    public void Spaces() {
+        assertEquals("a_b", namingStrategy.getPropertyName("a  b", entityModel));
+    }
+        
 }

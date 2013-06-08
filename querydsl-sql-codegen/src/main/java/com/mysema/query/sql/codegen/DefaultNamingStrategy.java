@@ -95,17 +95,17 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String normalizeColumnName(String columnName) {
-        return columnName;
+        return columnName.replaceAll("\r", "").replaceAll("\n", " ");
     }
 
     @Override
     public String normalizeTableName(String tableName) {
-        return tableName;
+        return tableName.replaceAll("\r", "").replaceAll("\n", " ");
     }
 
     @Override
     public String normalizeSchemaName(String schemaName) {
-        return schemaName;
+        return schemaName.replaceAll("\r", "").replaceAll("\n", " ");
     }
     
     protected String normalizePropertyName(String name) {

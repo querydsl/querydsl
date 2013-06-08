@@ -26,9 +26,7 @@ import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.AbstractJDBCTest;
-import com.mysema.query.sql.codegen.DefaultNamingStrategy;
-import com.mysema.query.sql.codegen.MetaDataExporter;
-import com.mysema.query.sql.codegen.NamingStrategy;
+import com.mysema.query.codegen.BeanSerializer;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
 
@@ -50,6 +48,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         
         // date_time
         statement.execute("create table date_time_test (dt datetime)");
+        
+        // spaces
+        statement.execute("create table spaces (\"spaces  \n 1\" date)");
         
         // employee
         statement.execute("create table employee("
@@ -74,6 +75,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setBeanSerializerClass(BeanSerializer.class);
         exporter.setNamePrefix(namePrefix);
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/cust1"));
