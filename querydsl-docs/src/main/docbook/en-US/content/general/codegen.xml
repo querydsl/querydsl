@@ -547,9 +547,6 @@ exporter.export(DomainClass.class.getPackage());
   </goals>
   <configuration>
     <sourceFolder>target/generated-sources/scala</targetFolder>
-    <packages>
-      <package>com.example.domain</package>
-    </packages>       
   </configuration>
 </execution>         
 ]]></programlisting>    
