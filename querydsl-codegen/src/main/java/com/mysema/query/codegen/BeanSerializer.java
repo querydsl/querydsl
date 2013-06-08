@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Generated;
+
 import com.google.common.base.Function;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.Parameter;
@@ -101,6 +103,7 @@ public class BeanSerializer implements Serializer{
 
         // imports
         Set<String> importedClasses = getAnnotationTypes(model);
+        importedClasses.add(Generated.class.getName());
         if (model.hasLists()) {
             importedClasses.add(List.class.getName());
         }
@@ -125,6 +128,9 @@ public class BeanSerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
+        
+        writer.line("@Generated(\"", getClass().getName(), "\")");
+        
         if (printSupertype && model.getSuperType() != null) {
             writer.beginClass(model, model.getSuperType().getType());
         } else {
