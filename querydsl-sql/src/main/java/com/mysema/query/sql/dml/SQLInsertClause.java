@@ -163,6 +163,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return executeWithKey((Class<T>)path.getType(), path);
     }
     
+    /**
+     * Execute the clause and return the generated key cast to the given type.
+     * If no rows were created, null is returned, otherwise the key of the first row is returned.
+     *
+     * @param <T>
+     * @param type
+     * @return
+     */
     public <T> T executeWithKey(Class<T> type) {
         return executeWithKey(type, null);
     }
@@ -183,8 +191,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     /**
-     * Execute the clause and return the generated keys with the type of the given path.
-     * If now rows were created and empty list is returned.
+     * Execute the clause and return the generated key with the type of the given path. 
+     * If no rows were created, or the referenced column is not a generated key, null is returned. 
+     * Otherwise, the key of the first row is returned.
      *
      * @param <T>
      * @param path
