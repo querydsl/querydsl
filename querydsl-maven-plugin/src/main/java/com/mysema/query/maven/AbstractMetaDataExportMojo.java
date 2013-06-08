@@ -158,7 +158,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean innerClassesForKeys;
 
     /**
-     * export validation annotations (default: true)
+     * export validation annotations (default: false)
      *
      * @parameter default-value=false
      */

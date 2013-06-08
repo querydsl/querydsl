@@ -172,8 +172,8 @@
           </row>
           <row>
             <entry>validationAnnotations</entry>
-            <entry>set to false to disable serialization of validation annotations
-              (default: true)</entry>
+            <entry>set to true to enable serialization of validation annotations
+              (default: false)</entry>
           </row>
           <row>
             <entry>columnAnnotations</entry>
