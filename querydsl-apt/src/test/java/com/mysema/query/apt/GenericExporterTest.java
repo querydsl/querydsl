@@ -79,6 +79,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         List<String> expected = new ArrayList<String>();
         // projections are not supported
         expected.add("QQueryProjectionTest_EntityWithProjection.java");
+        expected.add("QTemporal2Test_Cheque.java");
         // GenericExporter doesn't include field/method selection
         expected.add("QFileAttachment.java");        
         expected.add("QJodaTest_BaseEntity.java");        
