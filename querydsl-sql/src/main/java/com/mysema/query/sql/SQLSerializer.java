@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,6 +43,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateFactory;
 
@@ -52,37 +54,37 @@ import com.mysema.query.types.TemplateFactory;
  * @author tiwe
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
-    
+
     protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS}
-    
+
     private static final String COMMA = ", ";
 
     private final List<Path<?>> constantPaths = new ArrayList<Path<?>>();
-    
+
     private final List<Object> constants = new ArrayList<Object>();
 
     private final boolean dml;
-    
+
     protected Stage stage = Stage.SELECT;
 
     private boolean skipParent;
 
     private boolean dmlWithSchema;
-    
+
     private RelationalPath<?> entity;
 
     private final Configuration configuration;
-    
+
     private final SQLTemplates templates;
-    
+
     private boolean inUnion = false;
-    
+
     private boolean inJoin = false;
-    
+
     public SQLSerializer(Configuration conf) {
         this(conf, false);
     }
-    
+
     public SQLSerializer(Configuration conf, boolean dml) {
         super(conf.getTemplates());
         this.configuration = conf;
@@ -94,7 +96,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final String column = path.getMetadata().getName();
         append(templates.quoteIdentifier(column));
     }
-    
+
     private void appendAsSchemaName(RelationalPath<?> path) {
         final String schema = configuration.getSchema(path.getSchemaName());
         append(templates.quoteIdentifier(schema));
@@ -108,7 +110,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public List<Object> getConstants() {
         return constants;
     }
-    
+
     public List<Path<?>> getConstantPaths() {
         return constantPaths;
     }
@@ -122,7 +124,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             return path.getPrimaryKey().getLocalColumns();
         } else {
             return path.getColumns();
-        }        
+        }
     }
 
     protected SQLTemplates getTemplates() {
@@ -132,7 +134,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public void handle(String template, Object... args) {
         handleTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
-    
+
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
@@ -141,7 +143,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (templates.isPrintSchema()) {
                     appendAsSchemaName(pe);
                     append(".");
-                }     
+                }
                 appendAsTableName(pe);
                 append(templates.getTableAlias());
             }
@@ -164,7 +166,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
-        
+
         List<Expression<?>> sqlSelect;
         if (select.size() == 1) {
             final Expression<?> first = select.get(0);
@@ -172,7 +174,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 sqlSelect = ((FactoryExpression<?>)first).getArgs();
             } else {
                 sqlSelect = (List)select;
-            }            
+            }
         } else {
             sqlSelect = new ArrayList<Expression<?>>(select.size());
             for (Expression<?> selectExpr : select) {
@@ -182,23 +184,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 } else {
                     sqlSelect.add(selectExpr);
                 }
-            }    
+            }
         }
-                
+
         // start
         if (hasFlags) {
             serialize(Position.START, flags);
-        }        
+        }
 
         // select
         Stage oldStage = stage;
         stage = Stage.SELECT;
         if (forCountRow) {
-            append(templates.getSelect());      
+            append(templates.getSelect());
             if (hasFlags) {
-                serialize(Position.AFTER_SELECT, flags);    
-            }            
-            
+                serialize(Position.AFTER_SELECT, flags);
+            }
+
             if (!metadata.isDistinct()) {
                 append(templates.getCountStar());
             } else {
@@ -218,62 +220,62 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 append(templates.getSelectDistinct());
             }
             if (hasFlags) {
-                serialize(Position.AFTER_SELECT, flags);    
-            }            
-            
+                serialize(Position.AFTER_SELECT, flags);
+            }
+
             handle(COMMA, sqlSelect);
         }
         if (hasFlags) {
-            serialize(Position.AFTER_PROJECTION, flags);    
-        }        
+            serialize(Position.AFTER_PROJECTION, flags);
+        }
 
         // from
         stage = Stage.FROM;
         serializeSources(joins);
-        
-        // where              
+
+        // where
         if (where != null) {
             stage = Stage.WHERE;
             if (hasFlags) {
-                serialize(Position.BEFORE_FILTERS, flags);    
-            }    
+                serialize(Position.BEFORE_FILTERS, flags);
+            }
             append(templates.getWhere()).handle(where);
             if (hasFlags) {
-                serialize(Position.AFTER_FILTERS, flags);    
-            }            
-        }        
+                serialize(Position.AFTER_FILTERS, flags);
+            }
+        }
 
         // group by
         if (!groupBy.isEmpty()) {
             stage = Stage.GROUP_BY;
             if (hasFlags) {
-                serialize(Position.BEFORE_GROUP_BY, flags);    
-            }        
+                serialize(Position.BEFORE_GROUP_BY, flags);
+            }
             append(templates.getGroupBy()).handle(COMMA, groupBy);
             if (hasFlags) {
-                serialize(Position.AFTER_GROUP_BY, flags);    
-            }            
+                serialize(Position.AFTER_GROUP_BY, flags);
+            }
         }
 
         // having
         if (having != null) {
             stage = Stage.HAVING;
             if (hasFlags) {
-                serialize(Position.BEFORE_HAVING, flags);    
-            }        
+                serialize(Position.BEFORE_HAVING, flags);
+            }
             append(templates.getHaving()).handle(having);
             if (hasFlags) {
-                serialize(Position.AFTER_HAVING, flags);    
-            }            
+                serialize(Position.AFTER_HAVING, flags);
+            }
         }
-        
-        // order by        
+
+        // order by
         if (hasFlags) {
-            serialize(Position.BEFORE_ORDER, flags);    
-        }        
+            serialize(Position.BEFORE_ORDER, flags);
+        }
         if (!orderBy.isEmpty() && !forCountRow) {
             stage = Stage.ORDER_BY;
-            append(templates.getOrderBy());                       
+            append(templates.getOrderBy());
             boolean first = true;
             for (final OrderSpecifier<?> os : orderBy) {
                 if (!first) {
@@ -281,41 +283,41 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 }
                 handle(os.getTarget());
                 String order = os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc();
-                if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {                    
+                if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {
                     if (templates.getNullsFirst() != null) {
-                        append(order);    
+                        append(order);
                         append(templates.getNullsFirst());
                     } else {
                         append(" is not null, ");
                         handle(os.getTarget());
                         append(order);
-                    }                    
+                    }
                 } else if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsLast) {
                     if (templates.getNullsLast() != null) {
                         append(order);
-                        append(templates.getNullsLast());    
+                        append(templates.getNullsLast());
                     } else {
                         append(" is null, ");
                         handle(os.getTarget());
                         append(order);
                     }
-                    
+
                 } else {
                     append(order);
                 }
                 first = false;
             }
             if (hasFlags) {
-                serialize(Position.AFTER_ORDER, flags);    
-            }            
+                serialize(Position.AFTER_ORDER, flags);
+            }
         }
-        
+
         // modifiers
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
             stage = Stage.MODIFIERS;
             templates.serializeModifiers(metadata, this);
         }
-        
+
         // reset stage
         stage = oldStage;
 
@@ -323,30 +325,30 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
         this.entity = entity;
-        serialize(Position.START, metadata.getFlags());        
+        serialize(Position.START, metadata.getFlags());
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
-            append(templates.getDeleteFrom());    
-        }        
+            append(templates.getDeleteFrom());
+        }
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
-        
+
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
-        }        
+        }
         serialize(Position.END, metadata.getFlags());
-        
+
     }
 
     public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
-        
+
         serialize(Position.START, metadata.getFlags());
-        
+
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
-            append(templates.getMergeInto());    
-        }        
+            append(templates.getMergeInto());
+        }
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
@@ -375,24 +377,24 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     constantPaths.add(columns.get(i));
                 }
             }
-            
+
             // values
             append(templates.getValues());
             append("(").handle(COMMA, values).append(") ");
         }
-        
+
         serialize(Position.END, metadata.getFlags());
     }
 
     public void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
-        
+
         serialize(Position.START, metadata.getFlags());
-        
+
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
-            append(templates.getInsertInto());    
-        }        
+            append(templates.getInsertInto());
+        }
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
@@ -408,34 +410,34 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (subQuery != null) {
             append("\n");
             serialize(subQuery.getMetadata(), false);
-                        
+
         } else {
             for (int i = 0; i < columns.size(); i++) {
                 if (values.get(i) instanceof Constant<?>) {
                     constantPaths.add(columns.get(i));
                 }
             }
-            
+
             // values
             append(templates.getValues());
             append("(");
             handle(COMMA, values);
-            append(")");            
+            append(")");
         }
-        
+
         serialize(Position.END, metadata.getFlags());
-        
+
     }
 
-    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, 
+    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity,
             List<Pair<Path<?>, Expression<?>>> updates) {
         this.entity = entity;
-        
+
         serialize(Position.START, metadata.getFlags());
-        
+
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
-            append(templates.getUpdate());    
-        }        
+            append(templates.getUpdate());
+        }
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
@@ -446,7 +448,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         for (final Pair<Path<?>,Expression<?>> update : updates) {
             if (!first) {
                 append(COMMA);
-            }                        
+            }
             handle(update.getFirst());
             append(" = ");
             if (update.getSecond() instanceof Constant<?>) {
@@ -456,15 +458,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             first = false;
         }
         skipParent = false;
-        
+
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
         }
-        
+
         serialize(Position.END, metadata.getFlags());
     }
 
-    private void serializeSources(List<JoinExpression> joins) {        
+    private void serializeSources(List<JoinExpression> joins) {
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
             if (!Strings.isNullOrEmpty(dummyTable)) {
@@ -482,22 +484,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     handleJoinTarget(je);
                     if (je.getCondition() != null) {
                         append(templates.getOn()).handle(je.getCondition());
-                    }                           
+                    }
                 } else {
                     serialize(JoinFlag.Position.START, je.getFlags());
                     if (!serialize(JoinFlag.Position.OVERRIDE, je.getFlags()) && i > 0) {
                         append(templates.getJoinSymbol(je.getType()));
-                    }                    
+                    }
                     serialize(JoinFlag.Position.BEFORE_TARGET, je.getFlags());
-                    handleJoinTarget(je);                    
+                    handleJoinTarget(je);
                     serialize(JoinFlag.Position.BEFORE_CONDITION, je.getFlags());
                     if (je.getCondition() != null) {
                         append(templates.getOn()).handle(je.getCondition());
-                    }                    
+                    }
                     serialize(JoinFlag.Position.END, je.getFlags());
                 }
-            }    
-        }        
+            }
+        }
     }
 
     public void serializeUnion(Expression<?> union, QueryMetadata metadata, boolean unionAll) {
@@ -506,39 +508,39 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
-        
+
         // union
         Stage oldStage = stage;
         handle(union);
-        
-        // group by        
+
+        // group by
         if (!groupBy.isEmpty()) {
             stage = Stage.GROUP_BY;
             if (hasFlags) {
-                serialize(Position.BEFORE_GROUP_BY, flags);    
-            }        
+                serialize(Position.BEFORE_GROUP_BY, flags);
+            }
             append(templates.getGroupBy()).handle(COMMA, groupBy);
             if (hasFlags) {
-                serialize(Position.AFTER_GROUP_BY, flags);    
-            }            
+                serialize(Position.AFTER_GROUP_BY, flags);
+            }
         }
 
-        // having                
+        // having
         if (having != null) {
             stage = Stage.HAVING;
             if (hasFlags) {
-                serialize(Position.BEFORE_HAVING, flags);    
+                serialize(Position.BEFORE_HAVING, flags);
             }
             append(templates.getHaving()).handle(having);
             if (hasFlags) {
-                serialize(Position.AFTER_HAVING, flags);    
-            }            
-        }        
-        
+                serialize(Position.AFTER_HAVING, flags);
+            }
+        }
+
         // order by
         if (hasFlags) {
-            serialize(Position.BEFORE_ORDER, flags);    
-        }     
+            serialize(Position.BEFORE_ORDER, flags);
+        }
         if (!orderBy.isEmpty()) {
             stage = Stage.ORDER_BY;
             append(templates.getOrderBy());
@@ -554,15 +556,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             skipParent = false;
             if (hasFlags) {
-                serialize(Position.AFTER_ORDER, flags);    
-            }            
+                serialize(Position.AFTER_ORDER, flags);
+            }
         }
 
         // end
         if (hasFlags) {
-            serialize(Position.END, flags);    
-        }        
-        
+            serialize(Position.END, flags);
+        }
+
         // reset stage
         stage = oldStage;
     }
@@ -584,14 +586,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 first = false;
             }
             append(")");
-            
+
             int size = ((Collection)constant).size() - 1;
             Path<?> lastPath = constantPaths.get(constantPaths.size()-1);
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
             }
         } else {
-            append("?");            
+            append("?");
             constants.add(constant);
             if (constantPaths.size() < constants.size()) {
                 constantPaths.add(null);
@@ -616,7 +618,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (dmlWithSchema && templates.isPrintSchema()) {
                     appendAsSchemaName((RelationalPath<?>)path);
                     append(".");
-                }                
+                }
                 appendAsTableName((RelationalPath<?>)path);
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
@@ -629,22 +631,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             visit(metadata.getParent(), context);
             append(".");
         }
-        append(templates.quoteIdentifier(metadata.getName()));    
+        append(templates.quoteIdentifier(metadata.getName()));
         return null;
     }
 
     @Override
     public Void visit(SubQueryExpression<?> query, Void context) {
         if (inUnion && !templates.isUnionsWrapped()) {
-            serialize(query.getMetadata(), false);    
+            serialize(query.getMetadata(), false);
         } else {
             append("(");
             serialize(query.getMetadata(), false);
-            append(")");            
-        }        
+            append(")");
+        }
         return null;
     }
-    
+
     @Override
     public Void visit(TemplateExpression<?> expr, Void context) {
         if (inJoin && templates.isFunctionJoinsWrapped()) {
@@ -656,45 +658,46 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         return null;
     }
-    
+
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
-        if (args.size() == 2 
-         && args.get(0) instanceof Path<?> 
+        if (args.size() == 2
+         && args.get(0) instanceof Path<?>
          && args.get(1) instanceof Constant<?>
-         && operator != Ops.STRING_CAST 
-         && operator != Ops.NUMCAST
-         && operator != Ops.SUBSTR_1ARG
-         && operator != Ops.CHAR_AT
-         && operator != SQLTemplates.CAST) {
-            constantPaths.add((Path<?>)args.get(0));
-        }       
-        
+         && operator != Ops.NUMCAST) {
+            for (Element element : templates.getTemplate(operator).getElements()) {
+                if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
+                    constantPaths.add((Path<?>)args.get(0));
+                    break;
+                }
+            }
+        }
+
         if (operator == SQLTemplates.UNION || operator == SQLTemplates.UNION_ALL) {
             boolean oldUnion = inUnion;
             inUnion = true;
             super.visitOperation(type, operator, args);
             inUnion = oldUnion;
-            
+
         } else if (operator == Ops.STRING_CAST) {
             final String typeName = templates.getTypeForCast(String.class);
-            super.visitOperation(String.class, SQLTemplates.CAST, 
+            super.visitOperation(String.class, SQLTemplates.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             final String typeName = templates.getTypeForCast(targetType);
-            super.visitOperation(targetType, SQLTemplates.CAST, 
+            super.visitOperation(targetType, SQLTemplates.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
-                super.visitOperation(type, operator, args);                               
+                super.visitOperation(type, operator, args);
             } else {
                 // handle only target
                 handle(args.get(1));
             }
-            
+
         } else {
             super.visitOperation(type, operator, args);
         }

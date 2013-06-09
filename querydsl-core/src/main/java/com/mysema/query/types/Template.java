@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,53 +34,54 @@ public final class Template implements Serializable {
 
     @Immutable
     public static abstract class Element implements Serializable {
-        
+
         private static final long serialVersionUID = 3396877288101929387L;
 
         public abstract Object convert(List<?> args);
-     
+
         public abstract boolean isString();
-        
+
     }
-    
+
     public static final class AsString extends Element {
 
         private static final long serialVersionUID = -655362047873616197L;
 
         private final int index;
-        
+
         private final String toString;
-        
+
         public AsString(int index) {
             this.index = index;
             this.toString = index + "s";
         }
-        
+
         @Override
         public Object convert(final List<?> args) {
             final Object arg = args.get(index);
             return arg instanceof Constant ? arg.toString() : arg;
-        }        
+        }
 
         @Override
         public boolean isString() {
             return true;
         }
-        
+
+        @Override
         public String toString() {
             return toString;
         }
 
     }
-    
+
     public static final class StaticText extends Element {
 
         private static final long serialVersionUID = -2791869625053368023L;
 
         private final String text;
-        
+
         private final String toString;
-        
+
         public StaticText(String text) {
             this.text = text;
             this.toString = "'" + text + "'";
@@ -90,34 +91,35 @@ public final class Template implements Serializable {
         public boolean isString() {
             return true;
         }
-        
+
         @Override
         public Object convert(List<?> args) {
             return text;
         }
-        
+
+        @Override
         public String toString() {
             return toString;
         }
-        
+
     }
-    
+
     public static final class Transformed extends Element {
 
         private static final long serialVersionUID = 702677732175745567L;
 
         private final int index;
-        
+
         private final transient Function<Object, Object> transformer;
-        
+
         private final String toString;
-        
+
         public Transformed(int index, Function<Object, Object> transformer) {
             this.index = index;
             this.transformer = transformer;
             this.toString = String.valueOf(index);
         }
-        
+
         @Override
         public Object convert(final List<?> args) {
             return transformer.apply(args.get(index));
@@ -127,47 +129,53 @@ public final class Template implements Serializable {
         public boolean isString() {
             return false;
         }
-        
+
+        @Override
         public String toString() {
             return toString;
         }
-        
+
     }
-    
+
     public static final class ByIndex extends Element {
-        
+
         private static final long serialVersionUID = 4711323946026029998L;
 
         private final int index;
-        
+
         private final String toString;
 
         public ByIndex(int index) {
             this.index = index;
             this.toString = String.valueOf(index);
         }
-        
+
         @Override
         public Object convert(final List<?> args) {
             final Object arg = args.get(index);
             if (arg instanceof Expression) {
-                return ExpressionUtils.extract((Expression<?>) arg);    
+                return ExpressionUtils.extract((Expression<?>) arg);
             } else {
                 return arg;
-            }            
+            }
+        }
+
+        public int getIndex() {
+            return index;
         }
 
         @Override
         public boolean isString() {
             return false;
         }
-        
+
+        @Override
         public String toString() {
             return toString;
         }
-        
+
     }
-    
+
     private final ImmutableList<Element> elements;
 
     private final String template;
@@ -185,7 +193,8 @@ public final class Template implements Serializable {
     public String toString() {
         return template;
     }
-    
+
+    @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
@@ -195,7 +204,7 @@ public final class Template implements Serializable {
             return false;
         }
     }
-    
+
     @Override
     public int hashCode() {
         return template.hashCode();
