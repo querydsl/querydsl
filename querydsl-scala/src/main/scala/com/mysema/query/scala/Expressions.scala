@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,32 +41,32 @@ trait DslExpression[T] extends Expression[T] {
 
   def as(right: Path[T]): DslExpression[T] = dsl(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
-  def as(alias: String): DslExpression[T] = as(new PathImpl[T](getType, alias))    
-  
+  def as(alias: String): DslExpression[T] = as(new PathImpl[T](getType, alias))
+
 }
 
 trait SimpleExpression[T] extends DslExpression[T] {
-  
+
   override def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
-  override def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))    
-  
+  override def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))
+
   def eq(right: T): BooleanExpression = eq(constant(right))
-  
+
   def eq(right: Expression[T]) = boolean(EQ, this, right)
-  
+
   def ===(right: T) = eq(right)
-  
+
   def ===(right: Expression[T]) = eq(right)
-  
+
   def ne(right: T): BooleanExpression = ne(constant(right))
 
-  def ne(right: Expression[T]) = boolean(NE, this, right)    
+  def ne(right: Expression[T]) = boolean(NE, this, right)
 
   def !==(right: T) = ne(right)
-  
-  def !==(right: Expression[T]) = ne(right)  
-  
+
+  def !==(right: Expression[T]) = ne(right)
+
   lazy val count = number[Long](classOf[Long], AggOps.COUNT_AGG, this)
 
   def in(right: Collection[T]) = boolean(IN, this, constant(right))
@@ -86,17 +86,17 @@ trait SimpleExpression[T] extends DslExpression[T] {
   def notIn(right: T*) = in(right: _*).not
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not
-  
+
   def nullif(right: T): SimpleExpression[T] = nullif(constant(right))
-  
+
   def nullif(right: Expression[T]) = simple[T](getType, NULLIF.asInstanceOf[Operator[T]], this, right)
 
   def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = {
     if (f == null) isNull else f(this.asInstanceOf[M])
   }
-  
+
   def not[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not
-  
+
 }
 
 trait ArrayExpression[T <: Array[_]] extends DslExpression[T] {
@@ -105,7 +105,7 @@ trait ArrayExpression[T <: Array[_]] extends DslExpression[T] {
 
 }
 
-trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] 
+trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]]
   extends DslExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
   lazy val size = number[Int](classOf[Int], COL_SIZE, this)
@@ -119,7 +119,7 @@ trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]]
   def contains(child: Expression[C]) = boolean(IN, child, this)
 
   def any(): Q
-  
+
 }
 
 trait CollectionExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBase[java.util.Collection[T], T, Q] {}
@@ -129,18 +129,18 @@ trait SetExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBase
 trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBase[java.util.List[T], T, Q] {
 
   def get(i: Int): Q
-  
+
   def get(i: Expression[Integer]): Q
-  
+
   def apply(i: Int) = get(i)
-  
+
   def apply(i: Expression[Integer]) = get(i)
-    
+
 }
 
-trait MapExpression[K, V, Q <: Expression[_ >: V]] 
+trait MapExpression[K, V, Q <: Expression[_ >: V]]
   extends DslExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
-    
+
   lazy val size = number[Int](classOf[Int], MAP_SIZE, this)
 
   lazy val isEmpty = boolean(MAP_IS_EMPTY, this)
@@ -156,13 +156,13 @@ trait MapExpression[K, V, Q <: Expression[_ >: V]]
   def containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v)
 
   def get(key: K): Q
-  
+
   def get(key: Expression[K]): Q
-  
+
   def apply(key: K) = get(key)
-  
-  def apply(key: Expression[K]) = get(key)  
-  
+
+  def apply(key: Expression[K]) = get(key)
+
 }
 
 trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {
@@ -174,65 +174,65 @@ trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {
 }
 
 trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[T] {
-  
+
   def lt(right: T): BooleanExpression = lt(constant(right))
 
   def lt(right: Expression[T]): BooleanExpression = boolean(LT, this, right)
 
   def <(right: T) = lt(right)
-  
+
   def <(right: Expression[T]) = lt(right)
-  
+
   def between(left: T, right: T): BooleanExpression = between(constant(left), constant(right))
 
-  def between(left: Expression[T], right: Expression[T]) = boolean(BETWEEN, this, left, right) 
+  def between(left: Expression[T], right: Expression[T]) = boolean(BETWEEN, this, left, right)
 
   def notBetween(left: T, right: T): BooleanExpression = notBetween(constant(left), constant(right))
 
   def notBetween(left: Expression[T], right: Expression[T]) = between(left, right).not
-  
+
   def gt(right: T): BooleanExpression = gt(constant(right))
 
   def gt(right: Expression[T]) = boolean(GT, this, right)
-  
+
   def >(right: T) = gt(right)
-  
+
   def >(right: Expression[T]) = gt(right)
-  
+
   def goe(right: T): BooleanExpression = goe(constant(right))
 
   def goe(right: Expression[T]) = boolean(GOE, this, right)
-  
+
   def >=(right: T) = goe(right)
-  
+
   def >=(right: Expression[T]) = goe(right)
-  
+
   def loe(right: T): BooleanExpression = loe(constant(right))
 
   def loe(right: Expression[T]) = boolean(LOE, this, right)
-  
+
   def <=(right: T) = loe(right)
-  
+
   def <=(right: Expression[T]) = loe(right)
 
   override def as(right: Path[T]) = comparable(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
-  override def as(alias: String): ComparableExpression[T] = as(new PathImpl[T](getType, alias))  
-  
+  override def as(alias: String): ComparableExpression[T] = as(new PathImpl[T](getType, alias))
+
 }
 
 trait NumberExpression[T] extends SimpleExpression[T] {
-  
+
   implicit def numeric: Numeric[T] // to be implemented in classes
-  
+
   lazy val asc = new OrderSpecifier[java.lang.Double](Order.ASC, this.asInstanceOf[Ex[java.lang.Double]])
 
   lazy val desc = new OrderSpecifier[java.lang.Double](Order.DESC, this.asInstanceOf[Ex[java.lang.Double]])
-    
+
   def add[U : Numeric](right: Ex[U]) = number[T](getType, Ops.ADD, this, right)
 
   def add[U : Numeric](right: U): NumberExpression[T] = add(constant(right))
-  
+
   def +[U : Numeric](right: Ex[U]) = add(right)
 
   def +[U : Numeric](right: U) = add(right)
@@ -242,15 +242,15 @@ trait NumberExpression[T] extends SimpleExpression[T] {
   def goe[U : Numeric](right: Ex[U]) = boolean(Ops.GOE, this, right)
 
   def >=[U : Numeric](right: U) = goe(right)
-  
+
   def >=[U : Numeric](right: Ex[U]) = goe(right)
-  
+
   def gt[U : Numeric](right: U): BooleanExpression = gt(constant(right))
 
   def gt[U : Numeric](right: Ex[U]) = boolean(Ops.GT, this, right)
-  
+
   def >[U : Numeric](right: U) = gt(right)
-  
+
   def >[U : Numeric](right: Ex[U]) = gt(right)
 
   def between[U : Numeric](left: U, right: U) = boolean(Ops.BETWEEN, this, constant(left), constant(right))
@@ -266,19 +266,19 @@ trait NumberExpression[T] extends SimpleExpression[T] {
   def loe[U : Numeric](right: Ex[U]) = boolean(Ops.LOE, this, right)
 
   def <=[U : Numeric](right: U) = loe(right)
-  
+
   def <=[U : Numeric](right: Ex[U]) = loe(right)
-  
+
   def lt[U : Numeric](right: U): BooleanExpression = lt(constant(right))
 
   def lt[U : Numeric](right: Ex[U]) = boolean(Ops.LT, this, right)
-  
+
   def <[U : Numeric](right: U) = lt(right)
-  
-  def <[U : Numeric](right: Ex[U]) = lt(right)  
+
+  def <[U : Numeric](right: Ex[U]) = lt(right)
 
   def in[U : Numeric](right: Array[U]) = boolean(IN, this, constant(asList(right: _*)))
-  
+
   def like(right: String): BooleanExpression = like(constant(right))
 
   def like(right: Expression[String]) = boolean(Ops.LIKE, this, right)
@@ -294,10 +294,10 @@ trait NumberExpression[T] extends SimpleExpression[T] {
   def subtract[U : Numeric](right: Ex[U]) = number[T](getType, Ops.SUB, this, right)
 
   def subtract[U : Numeric](right: U): NumberExpression[T] = subtract(constant(right))
-  
+
   def -[U : Numeric](right: Ex[U]) = subtract(right)
 
-  def -[U : Numeric](right: U) = subtract(right)  
+  def -[U : Numeric](right: U) = subtract(right)
 
   def notIn[U : Numeric](right: Array[U]) = boolean(IN, this, constant(asList(right: _*))).not
 
@@ -307,25 +307,25 @@ trait NumberExpression[T] extends SimpleExpression[T] {
 
   def /[U : Numeric](right: Ex[U]) = divide(right)
 
-  def /[U : Numeric](right: U) = divide(right)     
-  
+  def /[U : Numeric](right: U) = divide(right)
+
   def multiply[U : Numeric](right: Ex[U]) = number[T](getType, Ops.MULT, this, right)
 
   def multiply[U : Numeric](right: U): NumberExpression[T] = multiply(constant(right))
-  
+
   def *[U : Numeric](right: Ex[U]) = multiply(right)
 
-  def *[U : Numeric](right: U) = multiply(right)    
+  def *[U : Numeric](right: U) = multiply(right)
 
   def negate = number[T](getType, Ops.NEGATE, this)
 
   def mod[U : Numeric](right: Ex[U]) = number[T](getType, Ops.MOD, this, right)
 
   def mod[U : Numeric](right: U): NumberExpression[T] = mod(constant(right))
-  
+
   def %[U : Numeric](right: Ex[U]) = mod(right)
 
-  def %[U : Numeric](right: U) = mod(right)  
+  def %[U : Numeric](right: U) = mod(right)
 
   lazy val sqrt = number[Double](classOf[Double], MathOps.SQRT, this)
 
@@ -348,7 +348,7 @@ trait NumberExpression[T] extends SimpleExpression[T] {
   lazy val floor = number[T](getType, MathOps.FLOOR, this)
 
   lazy val round = number[T](getType, MathOps.ROUND, this)
-  
+
   def unary_-() = negate
 
   private def castToNum[A : Numeric](t: Class[A]): NumberExpression[A] = {
@@ -358,39 +358,39 @@ trait NumberExpression[T] extends SimpleExpression[T] {
       number[A](t, Ops.NUMCAST, this, constant(t))
     }
   }
-  
+
   override def as(right: Path[T]) = number(getType, ALIAS, this, right)
 
-  override def as(alias: String): NumberExpression[T] = as(new PathImpl[T](getType, alias))  
+  override def as(alias: String): NumberExpression[T] = as(new PathImpl[T](getType, alias))
 
 }
 
 object BooleanExpression {
-    
+
   def allOf(expr: BooleanExpression*) = expr reduceLeft { _ && _ }
-      
+
   def anyOf(expr: BooleanExpression*) = expr reduceLeft { _ || _ }
-    
+
 }
 
 trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Predicate {
-    
+
   def and(right: Predicate) = boolean(Ops.AND, this, right)
-      
+
   def andAnyOf(expr: BooleanExpression*) = and(BooleanExpression.anyOf(expr:_*))
 
   def &&(right: Predicate) = and(right)
-  
+
   def or(right: Predicate) = boolean(Ops.OR, this, right)
 
   def orAllOf(expr: BooleanExpression*) = or(BooleanExpression.allOf(expr:_*))
-  
+
   def ||(right: Predicate) = or(right)
-  
+
   def not() = boolean(Ops.NOT, this)
-  
+
   def unary_! = not()
-  
+
   override def as(right: Path[java.lang.Boolean]) = boolean(ALIAS.asInstanceOf[Operator[java.lang.Boolean]], this, right)
 
   override def as(alias: String): BooleanExpression = as(new PathImpl[java.lang.Boolean](getType, alias))
@@ -403,12 +403,12 @@ trait StringExpression extends ComparableExpression[String] {
 
   def like(right: Expression[String]) = boolean(Ops.LIKE, this, right)
 
-  def append(right: Expression[String]) = string(Ops.CONCAT, this, right) 
+  def append(right: Expression[String]) = string(Ops.CONCAT, this, right)
 
   def append(right: String): StringExpression = append(constant(right))
-  
+
   def +(right: Expression[String]) = append(right)
-  
+
   def +(right: String) = append(right)
 
   def concat(right: Expression[String]) = append(right)
@@ -425,57 +425,57 @@ trait StringExpression extends ComparableExpression[String] {
 
   def upper = toUpperCase
 
-  def matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right) 
+  def matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right)
 
-  def matches(right: String): BooleanExpression = matches(constant(right)) 
+  def matches(right: String): BooleanExpression = matches(constant(right))
 
-  def indexOf(right: Expression[String]) = number[Int](classOf[Int], Ops.INDEX_OF, this, right) 
+  def indexOf(right: Expression[String]) = number[Int](classOf[Int], Ops.INDEX_OF, this, right)
 
-  def indexOf(right: String): NumberExpression[Int] = indexOf(constant(right)) 
+  def indexOf(right: String): NumberExpression[Int] = indexOf(constant(right))
 
   def indexOf(left: String, right: Int): NumberExpression[Int] = indexOf(constant(left), right)
 
   def indexOf(left: Expression[String], right: Int) = {
     number[Int](classOf[Int], Ops.INDEX_OF_2ARGS, this, left, constant(right))
-  } 
+  }
 
-  def charAt(right: Expression[Int]) = simple(classOf[Character], Ops.CHAR_AT, this, right) 
+  def charAt(right: Expression[Int]) = simple(classOf[Character], Ops.CHAR_AT, this, right)
 
-  def charAt(right: Int): SimpleExpression[Character] = charAt(constant(right)) 
+  def charAt(right: Int): SimpleExpression[Character] = charAt(constant(right))
 
   def contains(right: Expression[String]) = boolean(Ops.STRING_CONTAINS, this, right)
 
   def contains(right: String): BooleanExpression = contains(constant(right))
 
-  def endsWith(right: Expression[String]) = boolean(Ops.ENDS_WITH, this, right) 
+  def endsWith(right: Expression[String]) = boolean(Ops.ENDS_WITH, this, right)
 
-  def endsWith(right: String): BooleanExpression = endsWith(constant(right)) 
+  def endsWith(right: String): BooleanExpression = endsWith(constant(right))
 
-  def equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right) 
+  def equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right)
 
-  def equalsIgnoreCase(right: String): BooleanExpression = equalsIgnoreCase(constant(right)) 
+  def equalsIgnoreCase(right: String): BooleanExpression = equalsIgnoreCase(constant(right))
 
-  lazy val isEmpty = boolean(Ops.STRING_IS_EMPTY, this) 
+  lazy val isEmpty = boolean(Ops.STRING_IS_EMPTY, this)
 
-  lazy val length = number[Int](classOf[Int], Ops.STRING_LENGTH, this) 
+  lazy val length = number[Int](classOf[Int], Ops.STRING_LENGTH, this)
 
-  def startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right) 
+  def startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right)
 
-  def startsWith(right: String): BooleanExpression = startsWith(constant(right)) 
+  def startsWith(right: String): BooleanExpression = startsWith(constant(right))
 
-  def substring(right: Int) = string(Ops.SUBSTR_1ARG, this, constant(right)) 
+  def substring(right: Int) = string(Ops.SUBSTR_1ARG, this, constant(right))
 
-  def substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1)) 
+  def substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1))
 
-  lazy val toLowerCase = string(Ops.LOWER, this) 
+  lazy val toLowerCase = string(Ops.LOWER, this)
 
-  lazy val toUpperCase = string(Ops.UPPER, this) 
+  lazy val toUpperCase = string(Ops.UPPER, this)
 
-  def trim() = string(Ops.TRIM, this) 
+  def trim() = string(Ops.TRIM, this)
 
-  def containsIgnoreCase(right: Expression[String]) = boolean(Ops.STRING_CONTAINS_IC, this, right) 
+  def containsIgnoreCase(right: Expression[String]) = boolean(Ops.STRING_CONTAINS_IC, this, right)
 
-  def containsIgnoreCase(right: String): BooleanExpression = containsIgnoreCase(constant(right)) 
+  def containsIgnoreCase(right: String): BooleanExpression = containsIgnoreCase(constant(right))
 
   def endsWithIgnoreCase(right: Expression[String]) = boolean(Ops.ENDS_WITH_IC, this, right)
 
@@ -490,7 +490,7 @@ trait StringExpression extends ComparableExpression[String] {
   override def as(right: Path[String]) = string(ALIAS.asInstanceOf[Operator[String]], this, right)
 
   override def as(alias: String): StringExpression = as(new PathImpl[String](getType, alias))
-  
+
 }
 
 trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
@@ -517,8 +517,8 @@ trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   override def as(right: Path[T]) = time(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
-  override def as(alias: String): TimeExpression[T] = as(new PathImpl[T](getType, alias))  
-  
+  override def as(alias: String): TimeExpression[T] = as(new PathImpl[T](getType, alias))
+
 }
 
 trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
@@ -539,7 +539,9 @@ trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   lazy val year = number(classOf[Integer], DateTimeOps.YEAR, this)
 
-  lazy val yearMonth = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this)
+  lazy val yearMonth = year.multiply(100).add(month)
+
+  lazy val yearWeek = year.multiply(100).add(week)
 
   lazy val hour = number(classOf[Integer], DateTimeOps.HOUR, this)
 
@@ -551,7 +553,7 @@ trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   override def as(right: Path[T]) = dateTime(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
-  override def as(alias: String): DateTimeExpression[T] = as(new PathImpl[T](getType, alias))  
+  override def as(alias: String): DateTimeExpression[T] = as(new PathImpl[T](getType, alias))
 
 }
 
@@ -573,12 +575,14 @@ trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   lazy val year = number(classOf[Integer], DateTimeOps.YEAR, this)
 
-  lazy val yearMonth = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this)
+  lazy val yearMonth = year.multiply(100).add(month)
+
+  lazy val yearWeek = year.multiply(100).add(week)
 
   override def as(right: Path[T]) = date(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
   override def as(alias: String): DateExpression[T] = as(new PathImpl[T](getType, alias))
-    
+
 }
 
 trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
@@ -590,6 +594,6 @@ trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
   override def as(alias: String): EnumExpression[T] = as(new PathImpl[T](getType, alias))
 
   def mapToId[T <: { def id: java.lang.Long }](events: List[T]) = events groupBy (_.id.longValue) toList
-  
+
 }
 
