@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,17 +26,17 @@ import javax.annotation.Nullable;
 public class Templates {
 
     public static final Templates DEFAULT = new Templates();
-    
+
     private final Map<Operator<?>, Template> templates = new IdentityHashMap<Operator<?>, Template>(150);
-    
+
     private final Map<Operator<?>, Integer> precedence = new IdentityHashMap<Operator<?>, Integer>(150);
 
     private final TemplateFactory templateFactory;
-    
+
     protected Templates() {
         this('\\');
     }
-    
+
     protected Templates(char escape) {
         templateFactory = new TemplateFactory(escape);
         //CHECKSTYLE:OFF
@@ -88,7 +88,7 @@ public class Templates {
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(Ops.ALIAS, "{0} as {1}", 0);
-        
+
         add(Ops.EXISTS, "exists({0})");
 
         add(Ops.NUMCAST, "cast({0},{1})");
@@ -139,11 +139,10 @@ public class Templates {
         add(Ops.DateTimeOps.WEEK, "week({0})");
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "yearMonth({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "dayofmonth({0})");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");        
-        
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
+
         add(Ops.DateTimeOps.ADD_YEARS, "add_years({0},{1})");
         add(Ops.DateTimeOps.ADD_MONTHS, "add_months({0},{1})");
         add(Ops.DateTimeOps.ADD_WEEKS, "add_weeks({0},{1})");
@@ -151,7 +150,7 @@ public class Templates {
         add(Ops.DateTimeOps.ADD_HOURS, "add_hours({0},{1})");
         add(Ops.DateTimeOps.ADD_MINUTES, "add_minutes({0},{1})");
         add(Ops.DateTimeOps.ADD_SECONDS, "add_seconds({0},{1})");
-        
+
         add(Ops.DateTimeOps.DIFF_YEARS, "diff_years({0},{1})");
         add(Ops.DateTimeOps.DIFF_MONTHS, "diff_months({0},{1})");
         add(Ops.DateTimeOps.DIFF_WEEKS, "diff_weeks({0},{1})");
@@ -167,7 +166,7 @@ public class Templates {
         add(Ops.DateTimeOps.TRUNC_HOUR, "trunc_hour({0})");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_minute({0})");
         add(Ops.DateTimeOps.TRUNC_SECOND, "trunc_second({0})");
-                
+
         // math
         add(Ops.MathOps.ABS, "abs({0})");
         add(Ops.MathOps.ACOS, "acos({0})");
@@ -227,7 +226,7 @@ public class Templates {
 
         // coalesce
         add(Ops.COALESCE, "coalesce({0})");
-        
+
         add(Ops.NULLIF, "nullif({0},{1})");
 
         // subquery
@@ -254,7 +253,7 @@ public class Templates {
         add(Ops.QuantOps.ALL, "all {0}");
         //CHECKSTYLE:ON
     }
-    
+
     protected final void add(Operator<?> op, String pattern) {
         templates.put(op, templateFactory.create(pattern));
         if (!precedence.containsKey(op)) {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,31 +32,31 @@ import com.mysema.query.types.Templates;
 public class JPQLTemplates extends Templates {
 
     public static final char DEFAULT_ESCAPE = '!';
-    
+
     public static final Operator<Integer> INDEX = new OperatorImpl<Integer>("JPA_INDEX");
-    
+
     public static final Operator<String> TYPE = new OperatorImpl<String>("JPA_TYPE");
-    
+
     public static final Operator<Object> CAST = new OperatorImpl<Object>("JPA_CAST");
 
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("JPA_MEMBER_OF");
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
-    
+
     private final QueryHandler queryHandler;
-    
+
     protected JPQLTemplates() {
         this(DEFAULT_ESCAPE, DefaultQueryHandler.DEFAULT);
     }
-    
+
     protected JPQLTemplates(char escape) {
         this(escape, DefaultQueryHandler.DEFAULT);
     }
-    
+
     protected JPQLTemplates(char escape, QueryHandler queryHandler) {
         super(escape);
         this.queryHandler = queryHandler;
-        
+
         //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -78,7 +78,7 @@ public class JPQLTemplates extends Templates {
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(CAST, "cast({0} as {1s})");
         add(Ops.NUMCAST, "cast({0} as {1s})");
-        
+
         // collection
         add(MEMBER_OF, "{0} member of {1}");
 
@@ -115,7 +115,7 @@ public class JPQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
-        
+
         add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in HQL
         add(Ops.DateTimeOps.SECOND, "second({0})");
         add(Ops.DateTimeOps.MINUTE, "minute({0})");
@@ -123,7 +123,6 @@ public class JPQLTemplates extends Templates {
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
 
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");
@@ -150,7 +149,7 @@ public class JPQLTemplates extends Templates {
         // TODO : get rid of this when Hibernate supports type(alias)
         return false;
     }
-    
+
     public boolean isEnumInPathSupported() {
         return true;
     }
@@ -158,21 +157,21 @@ public class JPQLTemplates extends Templates {
     public boolean isPathInEntitiesSupported() {
         return true;
     }
-    
+
     public boolean isSelect1Supported() {
         return false;
     }
-        
+
     @Nullable
     public String getExistsProjection() {
         return null;
     }
-    
+
     public boolean wrapConstant(Object constant) {
         // related : https://hibernate.onjira.com/browse/HHH-6913
         return false;
     }
-    
+
     public boolean isWithForOn() {
         return false;
     }
@@ -180,5 +179,5 @@ public class JPQLTemplates extends Templates {
     public QueryHandler getQueryHandler() {
         return queryHandler;
     }
-    
+
 }

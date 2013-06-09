@@ -78,7 +78,6 @@ public class PostgresTemplates extends SQLTemplates {
 
         // Date / time
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
         add(Ops.DateTimeOps.WEEK, "extract(week from {0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");

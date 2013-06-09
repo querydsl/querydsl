@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,25 +17,25 @@ import com.mysema.query.types.Ops;
 
 /**
  * SQLiteTemplates is a SQL dialect for SQLite
- * 
+ *
  * @author tiwe
  *
  */
 public class SQLiteTemplates extends SQLTemplates {
-    
+
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new SQLiteTemplates(escape, quote);
-            }            
+            }
         };
     }
-    
+
     public SQLiteTemplates() {
         this('\\', false);
     }
-    
+
     public SQLiteTemplates(boolean quote) {
         this('\\', quote);
     }
@@ -48,16 +48,15 @@ public class SQLiteTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
         add(Ops.MOD, "{0} % {1}");
-        
+
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2s}+1)-1");
-        
+
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
         add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2s})");
-                
+
         // TODO : optimize
         add(Ops.DateTimeOps.YEAR, "cast(strftime('%Y',{0} / 1000, 'unixepoch', 'localtime') as integer)");
-        add(Ops.DateTimeOps.YEAR_MONTH, "strftime('%Y',{0} / 1000, 'unixepoch', 'localtime') * 100 + strftime('%m',{0} / 1000, 'unixepoch', 'localtime')");
         add(Ops.DateTimeOps.MONTH, "cast(strftime('%m',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         add(Ops.DateTimeOps.WEEK, "cast(strftime('%W',{0} / 1000, 'unixepoch', 'localtime') as integer) + 1");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "cast(strftime('%d',{0} / 1000, 'unixepoch', 'localtime') as integer)");
@@ -66,7 +65,7 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "cast(strftime('%H',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         add(Ops.DateTimeOps.MINUTE, "cast(strftime('%M',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         add(Ops.DateTimeOps.SECOND, "cast(strftime('%S',{0} / 1000, 'unixepoch', 'localtime') as integer)");
-        
+
         add(Ops.DateTimeOps.ADD_YEARS, "date({0}, '+{1s} year')");
         add(Ops.DateTimeOps.ADD_MONTHS, "date({0}, '+{1s} month')");
         add(Ops.DateTimeOps.ADD_WEEKS, "date({0}, '+{1s} week')");
@@ -74,14 +73,14 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_HOURS, "date({0}, '+{1s} hour')");
         add(Ops.DateTimeOps.ADD_MINUTES, "date({0}, '+{1s} minute')");
         add(Ops.DateTimeOps.ADD_SECONDS, "date({0}, '+{1s} second')");
-        
+
         add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.RANDOM2, "random({0})");
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
-        
+
 //        add(Ops.StringOps.LPAD, "concat(repeat(' ', {1} - length({0})), {0})");
 //        add(Ops.StringOps.RPAD, "concat({0}, repeat(' ', {1} - length({0})))");
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,14 +28,14 @@ public class H2Templates extends SQLTemplates {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new H2Templates(escape, quote);
-            }            
+            }
         };
     }
-    
+
     public H2Templates() {
         this('\\', false);
     }
-    
+
     public H2Templates(boolean quote) {
         this('\\', quote);
     }
@@ -45,14 +45,11 @@ public class H2Templates extends SQLTemplates {
         setNativeMerge(true);
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
-        
+
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
         add(Ops.MathOps.COTH, "(cosh({0}) / sinh({0}))");
-        
-//        add(Ops.DateTimeOps.DATE_ADD, "dateadd('{2s}', {1}, {0})");
-//        add(Ops.DateTimeOps.DATE_DIFF, "datediff('{2s}', {0}, {1})");
-        
+
         add(Ops.DateTimeOps.DATE, "convert({0}, date)");
     }
 

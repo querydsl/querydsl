@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,22 +27,22 @@ import com.mysema.query.types.Ops;
  *
  */
 public class SQLServerTemplates extends SQLTemplates {
-    
+
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new SQLServerTemplates(escape, quote);
-            }            
+            }
         };
     }
-    
-    private String topTemplate = "top {0s} "; 
+
+    private String topTemplate = "top {0s} ";
 
     public SQLServerTemplates() {
         this('\\',false);
     }
-    
+
     public SQLServerTemplates(boolean quote) {
         this('\\',quote);
     }
@@ -66,7 +66,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
         add(NEXTVAL, "{0s}.nextval");
-        
+
         // Date / time
         add(Ops.DateTimeOps.YEAR, "datepart(year, {0})");
         add(Ops.DateTimeOps.MONTH, "datepart(month, {0})");
@@ -78,7 +78,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "datepart(minute, {0})");
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
-        
+
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('month', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week', {1s}, {0})");
@@ -100,22 +100,22 @@ public class SQLServerTemplates extends SQLTemplates {
                         Expressions.template(Integer.class, topTemplate, mod.getLimit())));
                 context.serializeForQuery(metadata, forCountRow);
             } else {
-                throw new IllegalStateException("offset not supported");    
-            }            
-            
+                throw new IllegalStateException("offset not supported");
+            }
+
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }
-        
+
         if (!metadata.getFlags().isEmpty()) {
-            context.serialize(Position.END, metadata.getFlags());    
-        }   
+            context.serialize(Position.END, metadata.getFlags());
+        }
     }
-    
+
     @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         // do nothing
     }
 
-    
+
 }

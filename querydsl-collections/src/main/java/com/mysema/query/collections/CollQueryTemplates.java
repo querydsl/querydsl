@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,7 +49,7 @@ public class CollQueryTemplates extends JavaTemplates {
         add(Ops.MathOps.LOG,  functions + ".log({0},{1})");
         add(Ops.MathOps.RAD,  functions + ".radians({0})");
         add(Ops.MathOps.SIGN, "{0} > 0 ? 1 : -1");
-        
+
         add(Ops.ADD, "{0}.add({1})");
         add(Ops.SUB, "{0}.subtract({1})");
         add(Ops.MULT, "{0}.multiply({1})");
@@ -57,7 +57,6 @@ public class CollQueryTemplates extends JavaTemplates {
 
         // Date and Time
         add(Ops.DateTimeOps.YEAR,         functions + ".getYear({0})");
-        add(Ops.DateTimeOps.YEAR_MONTH,   functions + ".getYearMonth({0})");
         add(Ops.DateTimeOps.MONTH,        functions + ".getMonth({0})");
         add(Ops.DateTimeOps.WEEK,         functions + ".getWeek({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK,  functions + ".getDayOfWeek({0})");
@@ -86,7 +85,7 @@ public class CollQueryTemplates extends JavaTemplates {
 
         // coalesce
         add(Ops.COALESCE, functions + ".coalesce({0})");
-        
+
         add(Ops.NULLIF, functions + ".nullif({0}, {1})");
 
     }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -68,7 +68,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr, 
+    public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr,
             CollectionExpression<?,A> other, A knownElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.contains(knownElement));
@@ -80,7 +80,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public <A> Collection<Predicate> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other, 
+    public <A> Collection<Predicate> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other,
             A knownElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         if (!module.equals(Module.RDFBEAN)) {
@@ -90,7 +90,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    private <A extends Comparable<A>> Collection<Predicate> comparable(ComparableExpression<A> expr, 
+    private <A extends Comparable<A>> Collection<Predicate> comparable(ComparableExpression<A> expr,
             ComparableExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(exprFilters(expr, other, knownValue));
@@ -110,7 +110,7 @@ public class FilterFactory {
 
     }
 
-    private <A extends Comparable<A>> Collection<Predicate> dateOrTime(TemporalExpression<A> expr, 
+    private <A extends Comparable<A>> Collection<Predicate> dateOrTime(TemporalExpression<A> expr,
             TemporalExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.add(expr.after(other));
@@ -129,11 +129,13 @@ public class FilterFactory {
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
+        rv.add(expr.yearMonth().eq(other.yearMonth()));
+        rv.add(expr.yearWeek().eq(other.yearWeek()));
         return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<Predicate> dateTime(DateTimeExpression<A> expr, 
+    public <A extends Comparable> Collection<Predicate> dateTime(DateTimeExpression<A> expr,
             DateTimeExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(comparable(expr, other, knownValue));
@@ -148,6 +150,7 @@ public class FilterFactory {
         rv.add(expr.year().eq(other.year()));
 
         rv.add(expr.yearMonth().eq(other.yearMonth()));
+        rv.add(expr.yearWeek().eq(other.yearWeek()));
 
         rv.add(expr.hour().eq(1));
         rv.add(expr.hour().eq(other.hour()));
@@ -160,7 +163,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr, 
+    private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr,
             SimpleExpression<A> other, A knownValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
@@ -171,7 +174,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public <A, Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A, Q> expr, 
+    public <A, Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A, Q> expr,
             ListExpression<A, Q> other, A knownElement) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(collection(expr, other, knownElement));
@@ -179,7 +182,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public <K,V> Collection<Predicate> map(MapExpressionBase<K,V,?> expr, 
+    public <K,V> Collection<Predicate> map(MapExpressionBase<K,V,?> expr,
             MapExpression<K,V> other, K knownKey, V knownValue) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.add(expr.containsKey(knownKey));
@@ -195,7 +198,7 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Number & Comparable<A>> Collection<Predicate> numeric(NumberExpression<A> expr, 
+    public <A extends Number & Comparable<A>> Collection<Predicate> numeric(NumberExpression<A> expr,
             NumberExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         for (NumberExpression<?> num : projections.numeric(expr, other, knownValue, true)) {
@@ -234,7 +237,7 @@ public class FilterFactory {
         return ImmutableList.copyOf(rv);
     }
 
-    public <A> Collection<Predicate> pathFilters(SimpleExpression<A> expr, 
+    public <A> Collection<Predicate> pathFilters(SimpleExpression<A> expr,
             SimpleExpression<A> other, A knownValue) {
         return Arrays.<Predicate>asList(
              expr.isNull(),
@@ -243,7 +246,7 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Predicate> string(StringExpression expr, StringExpression other, 
+    public Collection<Predicate> string(StringExpression expr, StringExpression other,
             String knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         if (expr instanceof Path && other instanceof Path) {
@@ -279,7 +282,7 @@ public class FilterFactory {
         rv.add(expr.indexOf(other).gt(0));
         rv.add(expr.indexOf("X", 1).gt(0));
         rv.add(expr.indexOf(knownValue).gt(0));
-        
+
         rv.add(expr.locate(other).gt(1));
         rv.add(expr.locate("X", 2).gt(1));
         rv.add(expr.locate(knownValue).gt(1));
@@ -299,7 +302,7 @@ public class FilterFactory {
         rv.add(expr.like(knownValue.substring(0,1)+"%"));
         rv.add(expr.like("%"+knownValue.substring(1)));
         rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));
-        
+
         rv.add(expr.like(knownValue.substring(0,1)+"%", '!'));
         rv.add(expr.like("%"+knownValue.substring(1), '!'));
         rv.add(expr.like("%"+knownValue.substring(1,2)+"%", '!'));
@@ -307,7 +310,7 @@ public class FilterFactory {
         rv.add(expr.notLike(knownValue.substring(0,1)+"%"));
         rv.add(expr.notLike("%"+knownValue.substring(1)));
         rv.add(expr.notLike("%"+knownValue.substring(1,2)+"%"));
-        
+
         if (!target.equals(Target.DERBY)
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)
@@ -329,12 +332,12 @@ public class FilterFactory {
         }
 
 //        rv.add(expr.in(IntervalImpl.create("A", "Z")));
-        
+
         return ImmutableList.copyOf(rv);
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<Predicate> time(TimeExpression<A> expr, 
+    public <A extends Comparable> Collection<Predicate> time(TimeExpression<A> expr,
             TimeExpression<A> other, A knownValue) {
         List<Predicate> rv = new ArrayList<Predicate>();
         rv.addAll(comparable(expr, other, knownValue));

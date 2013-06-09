@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,9 +22,9 @@ import java.util.Map;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
@@ -37,80 +37,80 @@ import com.mysema.query.types.Templates;
  * @author tiwe
  */
 public class SQLTemplates extends Templates {
-    
+
     public static final Operator<Object> CAST = new OperatorImpl<Object>("SQL_CAST");
-    
+
     public static final Operator<Object> UNION = new OperatorImpl<Object>("SQL_UNION");
-    
+
     public static final Operator<Object> UNION_ALL = new OperatorImpl<Object>("SQL_UNION_ALL");
 
     public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("SQL_NEXTVAL");
-    
+
     public static final Operator<Long> ROWNUMBER = new OperatorImpl<Long>("ROWNUMBER");
-    
+
     public static final Operator<Long> RANK = new OperatorImpl<Long>("RANK");
-    
+
     public static final Operator<Long> DENSERANK = new OperatorImpl<Long>("DENSERANK");
-    
+
     public static final Operator<Object> FIRSTVALUE = new OperatorImpl<Object>("FIRSTVALUE");
-    
+
     public static final Operator<Object> LASTVALUE = new OperatorImpl<Object>("LASTVALUE");
-    
+
     public static final Operator<Object> LEAD = new OperatorImpl<Object>("LEAD");
-    
+
     public static final Operator<Object> LAG = new OperatorImpl<Object>("LAG");
-    
+
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
-    
+
     public static abstract class Builder {
-        
+
         protected boolean printSchema, quote, newLineToSingleSpace;
-        
+
         protected char escape = '\\';
-        
+
         public Builder printSchema() {
             printSchema = true;
             return this;
         }
-        
+
         public Builder quote() {
             quote = true;
             return this;
         }
-        
+
         public Builder newLineToSingleSpace() {
             newLineToSingleSpace = true;
             return this;
         }
-        
+
         public Builder escape(char ch) {
             escape = ch;
             return this;
         }
-        
+
         protected abstract SQLTemplates build(char escape, boolean quote);
-        
+
         public SQLTemplates build() {
             SQLTemplates templates = build(escape, quote);
             if (newLineToSingleSpace) {
-                templates.newLineToSingleSpace();    
-            } 
+                templates.newLineToSingleSpace();
+            }
             templates.setPrintSchema(printSchema);
-            return templates;            
+            return templates;
         }
-        
+
     }
-    
+
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
     private final String quoteStr;
-    
+
     private final boolean useQuotes;
-    
+
     private boolean printSchema;
 
     private String createTable = "create table ";
-    
+
     private String asc = " asc";
 
     private String autoIncrement = " auto_increment";
@@ -132,11 +132,11 @@ public class SQLTemplates extends Templates {
     private String dummyTable = "dual";
 
     private String forUpdate = "\nfor update";
-    
+
     private String forShare = "\nfor share";
-    
+
     private String from = "\nfrom ";
-    
+
     private String fullJoin = "\nfull join ";
 
     private String groupBy = "\ngroup by ";
@@ -152,7 +152,7 @@ public class SQLTemplates extends Templates {
     private String key = "key";
 
     private String leftJoin = "\nleft join ";
-    
+
     private String rightJoin = "\nright join ";;
 
     private String limitTemplate = "\nlimit {0}";
@@ -162,7 +162,7 @@ public class SQLTemplates extends Templates {
     private boolean nativeMerge;
 
     private String notNull = " not null";
-    
+
     private String noWait = " nowait";
 
     private String offsetTemplate = "\noffset {0}";
@@ -182,34 +182,34 @@ public class SQLTemplates extends Templates {
     private String update = "update ";
 
     private String values = "\nvalues ";
-    
+
     private String where = "\nwhere ";
-    
+
     private String with = "with ";
-    
+
     private String createIndex = "create index ";
-    
+
     private String createUniqueIndex = "create unique index ";
-    
+
     private String nullsFirst = " nulls first";
-    
+
     private String nullsLast = " nulls last";
-    
+
     private boolean parameterMetadataAvailable = true;
-    
+
     private boolean batchCountViaGetUpdateCount = false;
-    
+
     private boolean bigDecimalSupported = true;
-    
+
     private boolean unionsWrapped = true;
-    
+
     private boolean functionJoinsWrapped = false;
-    
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
-        
+
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 35);
@@ -229,8 +229,7 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
         add(Ops.DateTimeOps.MILLISECOND, "0");
-        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
-        
+
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year',{1},{0})");
         add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('month',{1},{0})");
         add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week',{1},{0})");
@@ -238,7 +237,7 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.ADD_HOURS, "dateadd('hour',{1},{0})");
         add(Ops.DateTimeOps.ADD_MINUTES, "dateadd('minute',{1},{0})");
         add(Ops.DateTimeOps.ADD_SECONDS, "dateadd('second',{1},{0})");
-        
+
         add(Ops.DateTimeOps.DIFF_YEARS, "datediff('year',{0},{1})");
         add(Ops.DateTimeOps.DIFF_MONTHS, "datediff('month',{0},{1})");
         add(Ops.DateTimeOps.DIFF_WEEKS, "datediff('week',{0},{1})");
@@ -246,7 +245,7 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.DIFF_HOURS, "datediff('hour',{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('minute',{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('second',{0},{1})");
-        
+
         add(Ops.DateTimeOps.TRUNC_YEAR, "date_trunc('year',{0})");
         add(Ops.DateTimeOps.TRUNC_MONTH, "date_trunc('month',{0})");
         add(Ops.DateTimeOps.TRUNC_WEEK, "date_trunc('week',{0})");
@@ -267,7 +266,7 @@ public class SQLTemplates extends Templates {
         add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})");
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
-        
+
         // like with escape
         add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
         add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'");
@@ -279,9 +278,9 @@ public class SQLTemplates extends Templates {
 
         add(CAST, "cast({0} as {1s})");
         add(UNION, "{0}\nunion\n{1}", 1);
-        add(UNION_ALL, "{0}\nunion all\n{1}", 1);        
+        add(UNION_ALL, "{0}\nunion all\n{1}", 1);
         add(NEXTVAL, "nextval('{0s}')");
-        
+
         add(ROWNUMBER, "row_number()");
         add(RANK, "rank()");
         add(DENSERANK, "dense_rank()");
@@ -289,7 +288,7 @@ public class SQLTemplates extends Templates {
         add(LASTVALUE, "last_value({0})");
         add(LEAD, "lead({0})");
         add(LAG, "lag({0})");
-        
+
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
 
@@ -298,12 +297,12 @@ public class SQLTemplates extends Templates {
                 Short.class, String.class }) {
             class2type.put(cl, cl.getSimpleName().toLowerCase(Locale.ENGLISH));
         }
-        
+
         class2type.put(Boolean.class, "bit");
         class2type.put(Byte.class, "tinyint");
         class2type.put(Long.class, "bigint");
         class2type.put(Short.class, "smallint");
-        class2type.put(String.class, "varchar");        
+        class2type.put(String.class, "varchar");
         class2type.put(java.sql.Date.class, "date");
         class2type.put(java.sql.Time.class, "time");
         class2type.put(java.sql.Timestamp.class, "timestamp");
@@ -314,7 +313,7 @@ public class SQLTemplates extends Templates {
             class2type.put(cl, type);
         }
     }
-        
+
     public final String getAsc() {
         return asc;
     }
@@ -401,7 +400,7 @@ public class SQLTemplates extends Templates {
     public final String getLeftJoin() {
         return leftJoin;
     }
-    
+
     public final String getRightJoin() {
         return rightJoin;
     }
@@ -449,7 +448,7 @@ public class SQLTemplates extends Templates {
     public String getTypeForCast(Class<?> cl) {
         return getTypeForClass(cl);
     }
-    
+
     public String getTypeForClass(Class<?> cl) {
         Class<?> clazz = Primitives.wrap(cl);
         if (class2type.containsKey(clazz)) {
@@ -459,7 +458,7 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    
+
     public final String getUpdate() {
         return update;
     }
@@ -479,15 +478,15 @@ public class SQLTemplates extends Templates {
     public final boolean isSupportsAlias() {
         return true;
     }
-    
+
     public final String getCreateIndex() {
         return createIndex;
     }
-    
+
     public final String getCreateUniqueIndex() {
         return createUniqueIndex;
     }
-    
+
     public final String getCreateTable() {
         return createTable;
     }
@@ -495,11 +494,11 @@ public class SQLTemplates extends Templates {
     public final boolean isPrintSchema() {
         return printSchema;
     }
-    
+
     public final String getWith() {
         return with;
     }
-    
+
     public final boolean isParameterMetadataAvailable() {
         return parameterMetadataAvailable;
     }
@@ -507,7 +506,7 @@ public class SQLTemplates extends Templates {
     public final boolean isBatchCountViaGetUpdateCount() {
         return batchCountViaGetUpdateCount;
     }
-    
+
     public final boolean isBigDecimalSupported() {
         return bigDecimalSupported;
     }
@@ -523,11 +522,11 @@ public class SQLTemplates extends Templates {
     public final boolean isUseQuotes() {
         return useQuotes;
     }
-    
+
     public final String getNoWait() {
         return noWait;
     }
-    
+
     public final boolean isUnionsWrapped() {
         return unionsWrapped;
     }
@@ -535,15 +534,15 @@ public class SQLTemplates extends Templates {
     public final boolean isFunctionJoinsWrapped() {
         return functionJoinsWrapped;
     }
-    
+
     public final String getNullsFirst() {
         return nullsFirst;
     }
-    
+
     public final String getNullsLast() {
         return nullsLast;
     }
-    
+
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -559,10 +558,10 @@ public class SQLTemplates extends Templates {
                 } catch (IllegalAccessException e) {
                     throw new QueryException(e.getMessage(), e);
                 }
-            }    
+            }
         }
     }
-    
+
     public final String quoteIdentifier(String identifier) {
         if (useQuotes || requiresQuotes(identifier)) {
             return quoteStr + identifier + quoteStr;
@@ -577,17 +576,17 @@ public class SQLTemplates extends Templates {
             //0-9,a-z,A-Z_
             if (ch < '0' || (ch > '9' && ch < 'A') || (ch > 'Z' && ch < '_') || ch > 'z') {
                 return true;
-            }            
+            }
         }
         return false;
     }
-    
+
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         context.serializeForQuery(metadata, forCountRow);
-        
+
         if (!metadata.getFlags().isEmpty()) {
-            context.serialize(Position.END, metadata.getFlags());    
-        }   
+            context.serialize(Position.END, metadata.getFlags());
+        }
     }
 
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
@@ -675,7 +674,7 @@ public class SQLTemplates extends Templates {
     protected void setLeftJoin(String leftJoin) {
         this.leftJoin = leftJoin;
     }
-    
+
     protected void setRightJoin(String rightJoin) {
         this.rightJoin = rightJoin;
     }
@@ -719,7 +718,7 @@ public class SQLTemplates extends Templates {
     protected void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
     }
-    
+
     protected void setUpdate(String update) {
         this.update = update;
     }
@@ -731,15 +730,15 @@ public class SQLTemplates extends Templates {
     protected void setWhere(String where) {
         this.where = where;
     }
-    
+
     protected void setWith(String with) {
         this.with = with;
     }
-    
+
     protected void setCreateIndex(String createIndex) {
         this.createIndex = createIndex;
     }
-    
+
     protected void setCreateUniqueIndex(String createUniqueIndex) {
         this.createUniqueIndex = createUniqueIndex;
     }
@@ -755,7 +754,7 @@ public class SQLTemplates extends Templates {
     protected void setParameterMetadataAvailable(boolean parameterMetadataAvailable) {
         this.parameterMetadataAvailable = parameterMetadataAvailable;
     }
-    
+
     protected void setBatchCountViaGetUpdateCount(boolean batchCountViaGetUpdateCount) {
         this.batchCountViaGetUpdateCount = batchCountViaGetUpdateCount;
     }
@@ -763,15 +762,15 @@ public class SQLTemplates extends Templates {
     protected void setBigDecimalSupported(boolean bigDecimalSupported) {
         this.bigDecimalSupported = bigDecimalSupported;
     }
-    
+
     protected void setForUpdate(String forUpdate) {
         this.forUpdate = forUpdate;
     }
-   
+
     protected void setForShare(String forShare) {
         this.forShare = forShare;
-    }       
-   
+    }
+
     protected void setNoWait(String noWait) {
         this.noWait = noWait;
     }
@@ -791,7 +790,7 @@ public class SQLTemplates extends Templates {
     protected void setNullsLast(String nullsLast) {
         this.nullsLast = nullsLast;
     }
-    
-    
+
+
 
 }

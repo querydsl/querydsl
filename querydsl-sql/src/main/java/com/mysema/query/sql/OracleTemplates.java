@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,13 +28,13 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  */
 public class OracleTemplates extends SQLTemplates {
-    
+
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new OracleTemplates(escape, quote);
-            }            
+            }
         };
     }
 
@@ -53,7 +53,7 @@ public class OracleTemplates extends SQLTemplates {
     public OracleTemplates() {
         this('\\', false);
     }
-    
+
     public OracleTemplates(boolean quote) {
         this('\\',quote);
     }
@@ -80,12 +80,12 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
-        
+
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");
         add(Ops.MathOps.RANDOM, "dbms_random.value");
         add(Ops.MathOps.LN, "ln({0})");
-        add(Ops.MathOps.LOG, "log({1},{0})");        
+        add(Ops.MathOps.LOG, "log({1},{0})");
         add(Ops.MathOps.COT, "(cos({0}) / sin({0}))");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.DEG, "({0} * 180 / "+Math.PI+")");
@@ -94,7 +94,6 @@ public class OracleTemplates extends SQLTemplates {
         // Date / time
         add(Ops.DateTimeOps.DATE, "trunc({0})");
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
         add(Ops.DateTimeOps.WEEK, "to_number(to_char({0},'WW'))");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "to_number(to_char({0},'DD'))");
@@ -103,7 +102,7 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "to_number(to_char({0},'HH24'))");
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
-        
+
         add(Ops.DateTimeOps.ADD_YEARS, "{0} + interval '{1s}' year");
         add(Ops.DateTimeOps.ADD_MONTHS, "{0} + interval '{1s}' month");
         add(Ops.DateTimeOps.ADD_WEEKS, "{0} + interval '{1s}' week");
@@ -111,7 +110,7 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_HOURS, "{0} + interval '{1s}' hour");
         add(Ops.DateTimeOps.ADD_MINUTES, "{0} + interval '{1s}' minute");
         add(Ops.DateTimeOps.ADD_SECONDS, "{0} + interval '{1s}' second");
-        
+
         add(Ops.DateTimeOps.DIFF_YEARS, "round(({1} - {0}) / 365)");
         add(Ops.DateTimeOps.DIFF_MONTHS, "round(({1} - {0}) / 30)");
         add(Ops.DateTimeOps.DIFF_WEEKS, "round(({1} - {0}) / 7)");
@@ -153,12 +152,12 @@ public class OracleTemplates extends SQLTemplates {
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }
-        
+
         if (!metadata.getFlags().isEmpty()) {
-            context.serialize(Position.END, metadata.getFlags());    
-        }   
+            context.serialize(Position.END, metadata.getFlags());
+        }
     }
-    
+
     @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         // do nothing

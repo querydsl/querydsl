@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,7 +63,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     private volatile DateExpression min, max;
 
     @Nullable
-    private volatile NumberExpression<Integer> week, month, year, yearMonth;
+    private volatile NumberExpression<Integer> week, month, year, yearMonth, yearWeek;
 
     public DateExpression(Expression<T> mixin) {
         super(mixin);
@@ -78,7 +78,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     public DateExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-    
+
     /**
      * Get a day of month expression (range 1-31)
      *
@@ -98,7 +98,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> dayOfWeek() {
-        if (dayOfWeek == null) { 
+        if (dayOfWeek == null) {
             dayOfWeek = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, mixin);
         }
         return dayOfWeek;
@@ -184,8 +184,20 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      */
     public NumberExpression<Integer> yearMonth() {
         if (yearMonth == null) {
-            yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, mixin);
+            yearMonth = year().multiply(100).add(month());
         }
         return yearMonth;
+    }
+
+    /**
+     * Get a year / week expression
+     *
+     * @return
+     */
+    public NumberExpression<Integer> yearWeek() {
+        if (yearWeek == null) {
+            yearWeek = year().multiply(100).add(week());
+        }
+        return yearWeek;
     }
 }

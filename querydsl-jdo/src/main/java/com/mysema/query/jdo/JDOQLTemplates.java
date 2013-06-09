@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,6 @@ public final class JDOQLTemplates extends JavaTemplates {
 
         // Date
         add(Ops.DateTimeOps.MONTH, "({0}.getMonth() + 1)"); // getMonth() in JDO returns a range from 0-11
-        add(Ops.DateTimeOps.YEAR_MONTH, "({0}.getYear() * 100 + {0}.getMonth() + 1)");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDay()");
         add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in JDOQL
 
