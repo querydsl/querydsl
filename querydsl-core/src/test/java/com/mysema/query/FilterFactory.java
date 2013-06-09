@@ -130,7 +130,9 @@ public class FilterFactory {
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        rv.add(expr.yearWeek().eq(other.yearWeek()));
+        if (module.equals(Module.SQL)) {
+            rv.add(expr.yearWeek().eq(other.yearWeek()));
+        }
         return ImmutableList.copyOf(rv);
     }
 
@@ -150,7 +152,9 @@ public class FilterFactory {
         rv.add(expr.year().eq(other.year()));
 
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        rv.add(expr.yearWeek().eq(other.yearWeek()));
+        if (module.equals(Module.SQL)) {
+            rv.add(expr.yearWeek().eq(other.yearWeek()));
+        }
 
         rv.add(expr.hour().eq(1));
         rv.add(expr.hour().eq(other.hour()));
