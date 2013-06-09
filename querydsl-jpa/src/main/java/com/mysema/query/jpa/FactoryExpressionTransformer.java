@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,8 +20,8 @@ import org.hibernate.transform.ResultTransformer;
 import com.mysema.query.types.FactoryExpression;
 
 /**
- * FactoryExpressionTransformer is a ResultTransformer implementation using JavaPackages for transformation
- * 
+ * FactoryExpressionTransformer is a ResultTransformer implementation using FactoryExpression for transformation
+ *
  * @author tiwe
  *
  */
@@ -29,10 +29,10 @@ public final class FactoryExpressionTransformer implements ResultTransformer {
 
     private static final long serialVersionUID = -3625957233853100239L;
 
-    private final transient FactoryExpression<?> constructor;
+    private final transient FactoryExpression<?> projection;
 
-    public FactoryExpressionTransformer(FactoryExpression<?> constructor) {
-        this.constructor = constructor;
+    public FactoryExpressionTransformer(FactoryExpression<?> projection) {
+        this.projection = projection;
     }
 
     @Override
@@ -42,7 +42,12 @@ public final class FactoryExpressionTransformer implements ResultTransformer {
 
     @Override
     public Object transformTuple(Object[] tuple, String[] aliases) {
-        return constructor.newInstance(tuple);
+        if (projection.getArgs().size() < tuple.length) {
+            Object[] shortened = new Object[projection.getArgs().size()];
+            System.arraycopy(tuple, 0, shortened, 0, shortened.length);
+            tuple = shortened;
+        }
+        return projection.newInstance(tuple);
     }
 
 }

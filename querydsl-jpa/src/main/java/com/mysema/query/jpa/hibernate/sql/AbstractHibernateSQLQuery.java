@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,6 @@ import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.sql.UnionUtils;
@@ -53,7 +52,7 @@ import com.mysema.query.types.query.ListSubQuery;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
@@ -80,10 +79,10 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     protected final Configuration configuration;
 
     protected int timeout = 0;
-    
+
     @Nullable
     protected Expression<?> union;
-    
+
     private boolean unionAll;
 
     public AbstractHibernateSQLQuery(Session session, Configuration conf) {
@@ -99,7 +98,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         this.session = session;
         this.configuration = conf;
     }
-    
+
     private String buildQueryString(boolean forCountRow) {
         NativeSQLSerializer serializer = new NativeSQLSerializer(configuration);
         if (union != null) {
@@ -109,7 +108,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
                 throw new IllegalArgumentException("No joins given");
             }
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
-        }        
+        }
         constants = serializer.getConstantToLabel();
         entityPaths = serializer.getEntityPaths();
         return serializer.toString();
@@ -180,7 +179,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public SearchResults<Tuple> listResults(Expression<?>... args) {
         return listResults(new QTuple(args));
     }
-    
+
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
@@ -250,7 +249,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
     }
-    
+
     public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
@@ -260,23 +259,23 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         unionAll = true;
         return innerUnion(sq);
     }
-    
+
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
-    
+
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
-        
+
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
     }
-    
+
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
-    }    
-    
+    }
+
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
         queryMixin.getMetadata().setValidate(false);
@@ -286,7 +285,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         this.union = UnionUtils.union(sq, unionAll);
         return new UnionImpl<Q, RT>((Q)this, sq[0].getMetadata().getProjection());
     }
-    
+
     /**
      * Enable caching of this query result set.
      * @param cacheable Should the query results be cacheable?

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,37 +55,37 @@ import com.mysema.query.types.query.ListSubQuery;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
  */
 public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
-    
+
     @Nullable
     private Map<Object,String> constants;
 
     private final EntityManager entityManager;
 
     protected final Configuration configuration;
-    
+
     protected final Multimap<String,Object> hints = HashMultimap.create();
-    
+
     protected final QueryHandler queryHandler;
 
     @Nullable
     protected Expression<?> union;
-    
+
     private boolean unionAll;
-    
+
     @Nullable
     protected LockModeType lockMode;
-    
+
     @Nullable
     protected FlushModeType flushMode;
-    
+
     @Nullable
     protected FactoryExpression<?> projection;
 
@@ -108,8 +108,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
             if (queryMixin.getMetadata().getJoins().isEmpty()) {
                 throw new IllegalArgumentException("No joins given");
             }
-            serializer.serialize(queryMixin.getMetadata(), forCountRow);    
-        }        
+            serializer.serialize(queryMixin.getMetadata(), forCountRow);
+        }
         constants = serializer.getConstantToLabel();
         return serializer.toString();
     }
@@ -134,27 +134,27 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         } else {
             query = entityManager.createNativeQuery(queryString);
         }
-        
+
         if (lockMode != null) {
             query.setLockMode(lockMode);
         }
         if (flushMode != null) {
             query.setFlushMode(flushMode);
         }
-        
+
         for (Map.Entry<String, Object> entry : hints.entries()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
-        
+
 
         // set constants
         JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
-        
-        FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;        
+
+        FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;
         if ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null) {
-            
+
             // TODO : add conversion logic like in AbstractJPAQuery
-            
+
             this.projection = (FactoryExpression)projection.get(0);
             if (wrapped != null) {
                 this.projection = wrapped;
@@ -162,7 +162,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
                 getMetadata().addProjection(wrapped);
             }
         }
-        
+
         return query;
     }
 
@@ -170,10 +170,10 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
-    
+
     /**
      * Transforms results using FactoryExpression if ResultTransformer can't be used
-     * 
+     *
      * @param query
      * @return
      */
@@ -184,23 +184,31 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
             List<Object> rv = new ArrayList<Object>(results.size());
             for (Object o : results) {
                 if (o != null) {
+                    Object[] arr;
                     if (!o.getClass().isArray()) {
-                        o = new Object[]{o};
-                    }   
-                    rv.add(projection.newInstance((Object[])o));
+                        arr = new Object[]{o};
+                    } else {
+                        arr = (Object[])o;
+                    }
+                    if (projection.getArgs().size() < arr.length) {
+                        Object[] shortened = new Object[projection.getArgs().size()];
+                        System.arraycopy(arr, 0, shortened, 0, shortened.length);
+                        arr = shortened;
+                    }
+                    rv.add(projection.newInstance(arr));
                 } else {
                     rv.add(null);
-                }                
+                }
             }
             return rv;
         } else {
             return query.getResultList();
         }
     }
-    
+
     /**
      * Transforms results using FactoryExpression if ResultTransformer can't be used
-     * 
+     *
      * @param query
      * @return
      */
@@ -212,10 +220,10 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
                 if (!result.getClass().isArray()) {
                     result = new Object[]{result};
                 }
-                return projection.newInstance((Object[])result);    
+                return projection.newInstance((Object[])result);
             } else {
                 return null;
-            }            
+            }
         } else {
             return query.getSingleResult();
         }
@@ -243,7 +251,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     public SearchResults<Tuple> listResults(Expression<?>... args) {
         return listResults(new QTuple(args));
     }
-    
+
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
@@ -283,7 +291,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     protected String toQueryString() {
         return buildQueryString(false);
     }
-    
+
     public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
@@ -291,7 +299,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
     }
-    
+
     public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
@@ -301,23 +309,23 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         unionAll = true;
         return innerUnion(sq);
     }
-    
+
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
-    
+
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
-        
+
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
     }
-    
+
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
-    }    
-    
+    }
+
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
         queryMixin.getMetadata().setValidate(false);
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
@@ -331,16 +339,16 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
         return (RT)uniqueResult(query);
     }
-    
+
     @Nullable
-    private Object uniqueResult(Query query) {        
+    private Object uniqueResult(Query query) {
         try{
             return getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {
@@ -358,7 +366,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         this.lockMode = lockMode;
         return (Q)this;
     }
-    
+
     @SuppressWarnings("unchecked")
     public Q setFlushMode(FlushModeType flushMode) {
         this.flushMode = flushMode;
@@ -370,5 +378,5 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         hints.put(name, value);
         return (Q)this;
     }
-    
+
 }

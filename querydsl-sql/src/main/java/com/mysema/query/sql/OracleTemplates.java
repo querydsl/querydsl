@@ -38,13 +38,13 @@ public class OracleTemplates extends SQLTemplates {
         };
     }
 
-    private String outerQueryEnd = "\n ) a) where ";
-
     private String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
 
-    private String limitQueryEnd = "\n) where rownum <= {0}";
+    private String outerQueryEnd = "\n ) a) where ";
 
     private String limitQueryStart = "select * from (\n  ";
+
+    private String limitQueryEnd = "\n) where rownum <= {0}";
 
     private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
 
