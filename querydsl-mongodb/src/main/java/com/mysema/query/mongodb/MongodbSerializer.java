@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,22 @@ import org.bson.types.ObjectId;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.Visitor;
 
 /**
  * Serializes the given Querydsl query to a DBObject query for MongoDB
@@ -51,9 +66,9 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public Object visit(Constant<?> expr, Void context) {
         if (Enum.class.isAssignableFrom(expr.getType())) {
-            return ((Enum<?>)expr.getConstant()).name(); 
+            return ((Enum<?>)expr.getConstant()).name();
         } else {
-            return expr.getConstant();            
+            return expr.getConstant();
         }
     }
 
@@ -87,16 +102,25 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     public Object visit(Operation<?> expr, Void context) {
         Operator<?> op = expr.getOperator();
         if (op == Ops.EQ) {
-            return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
+            if (expr.getArg(0) instanceof Operation) {
+                Operation<?> lhs = (Operation<?>)expr.getArg(0);
+                if (lhs.getOperator() == Ops.COL_SIZE || lhs.getOperator() == Ops.ARRAY_SIZE) {
+                    return asDBObject(asDBKey(lhs, 0), asDBObject("$size", asDBValue(expr, 1)));
+                } else {
+                    throw new UnsupportedOperationException("Illegal operation " + expr);
+                }
+            } else {
+                return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
+            }
 
         } else if (op == Ops.STRING_IS_EMPTY) {
             return asDBObject(asDBKey(expr, 0), "");
-            
+
         } else if (op == Ops.AND) {
             BasicDBObject left = (BasicDBObject) handle(expr.getArg(0));
             left.putAll((BSONObject) handle(expr.getArg(1)));
             return left;
-            
+
         } else if (op == Ops.NOT) {
             //Handle the not's child
             BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
@@ -111,101 +135,101 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             } else {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
             }
-            
+
         } else if (op == Ops.OR) {
             BasicDBList list = new BasicDBList();
             list.add(handle(expr.getArg(0)));
             list.add(handle(expr.getArg(1)));
             return asDBObject("$or", list);
-            
+
         } else if (op == Ops.NE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
-            
+
         } else if (op == Ops.STARTS_WITH) {
-            return asDBObject(asDBKey(expr, 0), 
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile("^" + regexValue(expr, 1)));
-            
+
         } else if (op == Ops.STARTS_WITH_IC) {
-            return asDBObject(asDBKey(expr, 0),          
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-            
+
         } else if (op == Ops.ENDS_WITH) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
-            
+
         } else if (op == Ops.ENDS_WITH_IC) {
             return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
-            
+
         } else if (op == Ops.EQ_IGNORE_CASE) {
             return asDBObject(asDBKey(expr, 0),
                     Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
-            
+
         } else if (op == Ops.STRING_CONTAINS) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
-            
+
         } else if (op == Ops.STRING_CONTAINS_IC) {
             return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
-            
+
         } else if (op == Ops.MATCHES) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
-            
+
         } else if (op == Ops.MATCHES_IC) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
-            
-        } else if (op == Ops.LIKE) {    
+
+        } else if (op == Ops.LIKE) {
             String regex = ExpressionUtils.likeToRegex((Expression)expr.getArg(1)).toString();
             return asDBObject(asDBKey(expr, 0), Pattern.compile(regex));
-            
+
         } else if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gte", asDBValue(expr, 1));
             value.append("$lte", asDBValue(expr, 2));
             return asDBObject(asDBKey(expr, 0), value);
-            
+
         } else if (op == Ops.IN) {
             int constIndex = 0;
-            int exprIndex = 1;            
+            int exprIndex = 1;
             if (expr.getArg(1) instanceof Constant<?>) {
                 constIndex = 1;
                 exprIndex = 0;
-            }   
+            }
             if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
                 Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
-                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));    
+                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));
             } else {
                 return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
             }
-            
+
         } else if (op == Ops.LT) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
-            
+
         } else if (op == Ops.GT) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gt", asDBValue(expr, 1)));
-            
+
         } else if (op == Ops.LOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lte", asDBValue(expr, 1)));
-            
+
         } else if (op == Ops.GOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
-            
+
         } else if (op == Ops.IS_NULL) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
-            
+
         } else if (op == Ops.IS_NOT_NULL) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
-            
+
         } else if (op == Ops.CONTAINS_KEY) {
             Path<?> path = (Path<?>) expr.getArg(0);
             Expression<?> key = expr.getArg(1);
             return asDBObject(visit(path, context) + "." + key.toString(), asDBObject("$exists", true));
-            
+
         } else if (op == MongodbExpressions.NEAR) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
-            
+
         } else if (op == MongodbExpressions.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }
-        
+
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
 
@@ -219,7 +243,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                 String rv = getKeyForPath(expr, metadata);
                 return visit(metadata.getParent(), context) + "." + rv;
             }
-        } 
+        }
         return getKeyForPath(expr, metadata);
     }
 
@@ -227,8 +251,8 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         if (expr.getType().equals(ObjectId.class)) {
             return "_id";
         } else {
-            return metadata.getElement().toString();    
-        }        
+            return metadata.getElement().toString();
+        }
     }
 
     @Override

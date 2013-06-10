@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -61,8 +61,8 @@ public class MongodbQueryTest {
 
     private final Mongo mongo;
     private final Morphia morphia;
-    private final Datastore ds; 
-    
+    private final Datastore ds;
+
     private final String dbname = "testdb";
     private final QUser user = QUser.user;
     private final QItem item = QItem.item;
@@ -76,8 +76,8 @@ public class MongodbQueryTest {
         mongo = new Mongo();
         morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class);
         ds = morphia.createDatastore(mongo, dbname, null, null);
-    }    
-    
+    }
+
     @Before
     public void before() throws UnknownHostException, MongoException {
         ds.delete(ds.createQuery(Item.class));
@@ -94,49 +94,49 @@ public class MongodbQueryTest {
         u3 = addUser("Jaana", "Aakkonen", 40, new Address("Ceekatu","00300", tampere));
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
     }
-    
+
     @Test
     public void List_Keys() {
         User u = where(user.firstName.eq("Jaakko")).list(user.firstName, user.mainAddress().street).get(0);
-        assertEquals("Jaakko", u.getFirstName());        
+        assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
         assertEquals("Aakatu", u.getMainAddress().street);
         assertNull(u.getMainAddress().postCode);
     }
-    
+
     @Test
     public void SingleResult_Keys() {
         User u = where(user.firstName.eq("Jaakko")).singleResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
-    
+
     @Test
     public void UniqueResult_Keys() {
         User u = where(user.firstName.eq("Jaakko")).uniqueResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
-    
+
     @Test
     public void Contains_Key() {
         MapEntity entity = new MapEntity();
         entity.getProperties().put("key", "value");
         ds.save(entity);
-        
+
         assertTrue(query(mapEntity).where(mapEntity.properties.get("key").isNotNull()).exists());
         assertFalse(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull()).exists());
-        
+
         assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key")).exists());
         assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key2")).exists());
     }
- 
+
     @Test
     public void Equals_Ignore_Case() {
         assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).exists());
         assertFalse(where(user.firstName.equalsIgnoreCase("AaKk")).exists());
     }
-    
+
     @Test
     public void Exists() {
         assertTrue(where(user.firstName.eq("Jaakko")).exists());
@@ -148,7 +148,7 @@ public class MongodbQueryTest {
     public void Find_By_Id() {
         assertNotNull(where(user.id.eq(u1.getId())).singleResult() != null);
     }
-    
+
     @Test
     public void NotExists() {
         assertFalse(where(user.firstName.eq("Jaakko")).notExists());
@@ -181,7 +181,7 @@ public class MongodbQueryTest {
         assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
     }
-    
+
     @Test
     public void ElemMatch() {
 //      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1"}}}
@@ -279,14 +279,14 @@ public class MongodbQueryTest {
 
         assertQuery(user.firstName.matches(".*aa.*[^i]$"), u3, u4, u1);
     }
-    
+
     @Test
     public void Like() {
         assertQuery(user.firstName.like("Jaan"));
         assertQuery(user.firstName.like("Jaan%"), u3, u4);
         assertQuery(user.firstName.like("jaan%"));
-        
-        assertQuery(user.lastName.like("%unen"), u2, u1);        
+
+        assertQuery(user.lastName.like("%unen"), u2, u1);
     }
 
     @Test
@@ -385,38 +385,43 @@ public class MongodbQueryTest {
             where(predicate.not()).count();
         }
     }
-    
+
     @Test
     public void Enum_Eq() {
         assertQuery(user.gender.eq(Gender.MALE), u3, u4, u2, u1);
     }
-    
+
     @Test
     public void Enum_Ne() {
         assertQuery(user.gender.ne(Gender.MALE));
     }
-    
+
     @Test
     public void In_ObjectIds() {
         Item i = new Item();
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
         ds.save(i);
-        
+
         assertTrue(where(item, item.ctds.contains(i.getCtds().get(0))).count() > 0);
         assertTrue(where(item, item.ctds.contains(ObjectId.get())).count() == 0);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void In_ObjectIds2() {
         Item i = new Item();
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
         ds.save(i);
-        
+
         assertTrue(where(item, item.ctds.any().in(i.getCtds())).count() > 0);
         assertTrue(where(item, item.ctds.any().in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
     }
-        
+
+    @Test
+    public void Size() {
+        assertQuery(user.addresses.size().eq(2), u1);
+    }
+
     //TODO
     // - test dates
     // - test with empty values and nulls
@@ -433,7 +438,7 @@ public class MongodbQueryTest {
     private <T> MongodbQuery<T> where(EntityPath<T> entity, Predicate... e) {
         return new MorphiaQuery<T>(morphia, ds, entity).where(e);
     }
-    
+
     private MongodbQuery<User> where(Predicate ... e) {
         return query().where(e);
     }
@@ -441,7 +446,7 @@ public class MongodbQueryTest {
     private MongodbQuery<User> query() {
         return new MorphiaQuery<User>(morphia, ds, user);
     }
-    
+
     private <T> MongodbQuery<T> query(EntityPath<T> path) {
         return new MorphiaQuery<T>(morphia, ds, path);
     }
