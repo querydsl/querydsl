@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -68,13 +68,13 @@ public class InsertBase extends AbstractBaseTest{
                 .columns(survey.id, survey.name)
                 .values(3, "Hello").execute());
     }
-    
+
     @Test
     public void Insert_Without_Columns() {
         assertEquals(1, insert(survey).values(4, "Hello", "World").execute());
-            
+
     }
-    
+
     @Test
     public void Insert_With_SubQuery() {
         int count = (int)query().from(survey).count();
@@ -83,20 +83,20 @@ public class InsertBase extends AbstractBaseTest{
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
             .execute());
     }
-    
+
     @Test
     public void Insert_With_SubQuery_Params() {
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
         SQLSubQuery sq = sq().from(survey2);
         sq.set(param, 20);
-        
+
         int count = (int)query().from(survey).count();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(sq.list(survey2.id.add(param), survey2.name))
             .execute());
     }
-    
+
     @Test
     public void Insert_With_SubQuery_Via_Constructor() {
         int count = (int)query().from(survey).count();
@@ -104,34 +104,34 @@ public class InsertBase extends AbstractBaseTest{
         insert.set(survey.id, survey2.id.add(20));
         insert.set(survey.name, survey2.name);
         assertEquals(count, insert.execute());
-    }    
-    
+    }
+
     @Test
     public void Insert_With_SubQuery_Without_Columns() {
         int count = (int)query().from(survey).count();
         assertEquals(count, insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name, survey2.name2))
             .execute());
-        
+
     }
-        
+
     @Test
     public void Insert_Batch() {
         SQLInsertClause insert = insert(survey)
             .set(survey.id, 5)
             .set(survey.name, "55")
             .addBatch();
-        
+
         insert.set(survey.id, 6)
             .set(survey.name, "66")
             .addBatch();
-     
+
         assertEquals(2, insert.execute());
-        
+
         assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
         assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
     }
-    
+
     @Test
     @ExcludeIn(ORACLE)
     public void Insert_Nulls_In_Batch() {
@@ -143,14 +143,14 @@ public class InsertBase extends AbstractBaseTest{
         SQLInsertClause sic = insert(survey);
         sic.columns(survey.name, survey.name2).values(null, null).addBatch();
         sic.columns(survey.name, survey.name2).values(null, "X").addBatch();
-        sic.execute();        
+        sic.execute();
     }
-    
+
     @Test
-    @Ignore 
+    @Ignore
     @ExcludeIn({DERBY})
     public void Insert_Nulls_In_Batch2() {
-        Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS; 
+        Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS;
 //        QFoo f= QFoo.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
 //        Foo f1=new Foo();
@@ -167,42 +167,42 @@ public class InsertBase extends AbstractBaseTest{
         e.setFirstname("X");
         sic.populate(e, mapper).addBatch();
         sic.execute();
-        
+
     }
-    
+
     @Test
     public void Like_with_Escape() {
         SQLInsertClause insert = insert(survey);
         insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
-        insert.set(survey.id, 6).set(survey.name, "a_").addBatch();    
+        insert.set(survey.id, 6).set(survey.name, "a_").addBatch();
         insert.set(survey.id, 7).set(survey.name, "a%").addBatch();
         assertEquals(3, insert.execute());
-        
-        assertEquals(1l, query().from(survey).where(survey.name.like("a\\%")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a\\_")).count());
+
+        assertEquals(1l, query().from(survey).where(survey.name.like("a\\%", '\\')).count());
+        assertEquals(1l, query().from(survey).where(survey.name.like("a\\_", '\\')).count());
         assertEquals(3l, query().from(survey).where(survey.name.like("a%")).count());
         assertEquals(2l, query().from(survey).where(survey.name.like("a_")).count());
-        
+
         assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).count());
         assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).count());
     }
-    
+
     @Test
     public void InsertBatch_with_Subquery() {
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
             .addBatch();
-        
+
         insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(40), survey2.name))
             .addBatch();
-        
+
         insert.execute();
 //        assertEquals(1, insert.execute());
     }
-    
+
  // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
 
     @Test
@@ -213,13 +213,13 @@ public class InsertBase extends AbstractBaseTest{
         assertTrue(rs.getObject(1) != null);
         rs.close();
     }
-    
+
     @Test
     @ExcludeIn(CUBRID)
     public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
-    
+
     @Test
     @ExcludeIn(CUBRID)
     public void Insert_With_Keys_Projected2() throws SQLException{
@@ -232,23 +232,23 @@ public class InsertBase extends AbstractBaseTest{
     public void Insert_Null_With_Columns() {
         assertEquals(1, insert(survey)
                 .columns(survey.id, survey.name)
-                .values(3, null).execute());    
+                .values(3, null).execute());
     }
 
     @Test
     public void Insert_Null_Without_Columns() {
         assertEquals(1, insert(survey)
-                .values(4, null, null).execute());        
+                .values(4, null, null).execute());
     }
-    
+
     @Test
     public void Insert_With_Set() {
         assertEquals(1, insert(survey)
                 .set(survey.id, 5)
                 .set(survey.name, (String)null)
-                .execute());   
+                .execute());
     }
-    
+
     @Test
     public void Insert_Alternative_Syntax() {
         // with columns
@@ -272,10 +272,10 @@ public class InsertBase extends AbstractBaseTest{
           .innerJoin(emp2)
            .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
           .list(survey.id, emp2.firstname));
-        
+
         insert.execute();
     }
-    
+
     @Test
     @IncludeIn(MYSQL)
     @SkipForQuoted
@@ -283,11 +283,11 @@ public class InsertBase extends AbstractBaseTest{
         SQLInsertClause clause = insert(survey)
             .columns(survey.id, survey.name)
             .values(3, "Hello");
-        
+
         clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
-        
+
         assertEquals("insert ignore into SURVEY (ID, NAME) values (?, ?)", clause.toString());
-        clause.execute();        
+        clause.execute();
     }
 
     @Test
@@ -297,7 +297,7 @@ public class InsertBase extends AbstractBaseTest{
         SQLInsertClause clause = mysqlReplace(survey);
         clause.columns(survey.id, survey.name)
             .values(3, "Hello");
-        
+
         assertEquals("replace into SURVEY (ID, NAME) values (?, ?)", clause.toString());
         clause.execute();
     }
@@ -307,6 +307,6 @@ public class InsertBase extends AbstractBaseTest{
         insert(survey).values(11, "Hello World", "a\\b").execute();
         assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).count());
     }
-    
+
 
 }

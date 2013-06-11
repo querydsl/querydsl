@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -86,7 +86,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private static final String SELECT_COUNT = "select count(";
 
     private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
-    
+
     private static final String SELECT_DISTINCT = "select distinct ";
 
     private static final String SET = "\nset ";
@@ -96,7 +96,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private static final String WHERE = "\nwhere ";
 
     private static final String WITH = " with ";
-    
+
     private static final String ON = " on ";
 
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
@@ -104,9 +104,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private final JPQLTemplates templates;
 
     private final EntityManager entityManager;
-    
+
     private boolean inProjection = false;
-    
+
     static{
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
@@ -121,7 +121,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     public JPQLSerializer(JPQLTemplates templates) {
         this(templates, null);
     }
-    
+
     public JPQLSerializer(JPQLTemplates templates, EntityManager em) {
         super(templates);
         this.templates = templates;
@@ -176,8 +176,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                     handle(joins.get(0).getTarget());
                 } else {
                     // TODO : make sure this works
-                    handle(COMMA, select);    
-                }                
+                    handle(COMMA, select);
+                }
             } else {
                 handle(joins.get(0).getTarget());
             }
@@ -190,10 +190,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 append(SELECT_DISTINCT);
             }
             if (!select.isEmpty()) {
-                handle(COMMA, select);    
+                handle(COMMA, select);
             } else {
                 handle(metadata.getJoins().get(0).getTarget());
-            }            
+            }
             append("\n");
 
         }
@@ -272,7 +272,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
 
             if (je.getCondition() != null) {
-                append(templates.isWithForOn() ? WITH : ON);             
+                append(templates.isWithForOn() ? WITH : ON);
                 handle(je.getCondition());
             }
         }
@@ -303,10 +303,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (!getConstantToLabel().containsKey(param)) {
             final String paramLabel = String.valueOf(getConstantToLabel().size()+1);
             getConstantToLabel().put(param, paramLabel);
-            append(paramLabel);    
+            append(paramLabel);
         } else {
             append(getConstantToLabel().get(param));
-        }        
+        }
         return null;
     }
 
@@ -341,7 +341,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             super.visit(expr, context);
             append(")");
         } else {
-            super.visit(expr, context);    
+            super.visit(expr, context);
         }
         return null;
     }
@@ -356,13 +356,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
             args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
-            
+
         } else if (operator == Ops.IN) {
             if (args.get(1) instanceof Path) {
                 visitAnyInPath(type, args);
             } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant) {
                 visitPathInCollection(type, operator, args);
-            } else {                
+            } else {
                 super.visitOperation(type, operator, args);
             }
 
@@ -382,13 +382,19 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             super.visitOperation(type, Ops.LIKE,
                     ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
+        } else if (operator == Ops.LIKE && args.get(1) instanceof Constant) {
+            final String escape = String.valueOf(templates.getEscapeChar());
+            final String escaped = args.get(1).toString().replace(escape, escape + escape);
+            super.visitOperation(String.class, Ops.LIKE,
+                    ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
+
         } else if (NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
 
         } else {
             super.visitOperation(type, operator, args);
         }
-       
+
         wrapElements = old;
     }
 
@@ -418,7 +424,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
-        // NOTE turns entityPath in collection into entityPath.id in (collection of ids)                
+        // NOTE turns entityPath in collection into entityPath.id in (collection of ids)
         if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             Path<?> lhs = (Path<?>) args.get(0);
             Constant<?> rhs = (Constant<?>) args.get(1);
@@ -442,7 +448,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @SuppressWarnings("rawtypes")
-    private SingularAttribute<?,?> getIdProperty(EntityType entity) {        
+    private SingularAttribute<?,?> getIdProperty(EntityType entity) {
         final Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
         for (final SingularAttribute singularAttribute : singularAttributes) {
             if (singularAttribute.isId()) {
@@ -462,7 +468,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             } else {
                 args = ImmutableList.of(new ConstantImpl<String>(constant.name()), args.get(1));
             }
-        }                
+        }
         super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
     }
 

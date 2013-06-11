@@ -695,6 +695,12 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    public void Like() {
+        query().from(employee).where(employee.firstname.like("\\")).count();
+        query().from(employee).where(employee.firstname.like("\\\\")).count();
+    }
+
+    @Test
     public void Limit() throws SQLException {
         // limit
         query().from(employee)

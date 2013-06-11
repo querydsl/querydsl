@@ -33,11 +33,14 @@ public class Templates {
 
     private final TemplateFactory templateFactory;
 
+    private final char escape;
+
     protected Templates() {
         this('\\');
     }
 
     protected Templates(char escape) {
+        this.escape = escape;
         templateFactory = new TemplateFactory(escape);
         //CHECKSTYLE:OFF
 
@@ -265,6 +268,10 @@ public class Templates {
     protected final void add(Operator<?> op, String pattern, int pre) {
         templates.put(op, templateFactory.create(pattern));
         precedence.put(op, pre);
+    }
+
+    public final char getEscapeChar() {
+        return escape;
     }
 
     @Nullable

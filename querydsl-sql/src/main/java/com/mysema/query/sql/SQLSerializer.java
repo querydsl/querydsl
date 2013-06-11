@@ -679,6 +679,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             super.visitOperation(type, operator, args);
             inUnion = oldUnion;
 
+        } else if (operator == Ops.LIKE && args.get(1) instanceof Constant) {
+            final String escape = String.valueOf(templates.getEscapeChar());
+            final String escaped = args.get(1).toString().replace(escape, escape + escape);
+            super.visitOperation(String.class, Ops.LIKE,
+                    ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
+
         } else if (operator == Ops.STRING_CAST) {
             final String typeName = templates.getTypeForCast(String.class);
             super.visitOperation(String.class, SQLTemplates.CAST,
