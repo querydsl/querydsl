@@ -22,8 +22,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.joda.time.DateTime;
-
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -125,8 +123,9 @@ public final class CollQueryFunctions {
     }
 
     public static int getYearWeek(Date date) {
-        DateTime dateTime = new DateTime(date);
-        return dateTime.getWeekyear() * 100 + dateTime.getWeekOfWeekyear();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.WEEK_OF_YEAR);
     }
 
     public static <T> Collection<T> leftJoin(Collection<T> coll) {
