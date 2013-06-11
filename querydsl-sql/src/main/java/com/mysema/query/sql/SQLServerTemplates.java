@@ -79,6 +79,8 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
 
+        add(Ops.DateTimeOps.YEAR_WEEK, "(datepart(year, {0}) * 100 + datepart(isowk, {0}))");
+
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('month', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week', {1s}, {0})");

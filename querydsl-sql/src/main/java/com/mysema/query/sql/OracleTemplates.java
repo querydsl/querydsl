@@ -103,6 +103,8 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
 
+        add(Ops.DateTimeOps.YEAR_WEEK, "to_number(to_char({0},'IYYY') || to_char({0},'IW'))");
+
         add(Ops.DateTimeOps.ADD_YEARS, "{0} + interval '{1s}' year");
         add(Ops.DateTimeOps.ADD_MONTHS, "{0} + interval '{1s}' month");
         add(Ops.DateTimeOps.ADD_WEEKS, "{0} + interval '{1s}' week");

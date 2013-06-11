@@ -264,13 +264,13 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a year / week expression
+     * Get a ISO yearweek expression
      *
      * @return
      */
     public NumberExpression<Integer> yearWeek() {
         if (yearWeek == null) {
-            yearWeek = year().multiply(100).add(week());
+            yearWeek = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_WEEK, mixin);
         }
         return yearWeek;
     }

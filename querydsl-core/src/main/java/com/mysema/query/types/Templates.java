@@ -139,6 +139,7 @@ public class Templates {
         add(Ops.DateTimeOps.WEEK, "week({0})");
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
+        add(Ops.DateTimeOps.YEAR_WEEK, "yearweek({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "dayofmonth({0})");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");

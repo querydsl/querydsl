@@ -298,6 +298,8 @@ public final class Ops {
 
         public static final Operator<Integer> WEEK = new OperatorImpl<Integer>("WEEK");
 
+        public static final Operator<Integer> YEAR_WEEK = new OperatorImpl<Integer>("YEAR_WEEK");
+
         public static final Operator<Integer> DAY_OF_WEEK = new OperatorImpl<Integer>("DAY_OF_WEEK");
 
         public static final Operator<Integer> DAY_OF_MONTH = new OperatorImpl<Integer>("DAY_OF_MONTH");

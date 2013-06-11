@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,20 +24,20 @@ import com.mysema.query.types.Ops;
  *
  */
 public class PostgresTemplates extends SQLTemplates {
-    
+
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new PostgresTemplates(escape, quote);
-            }            
+            }
         };
     }
 
     public PostgresTemplates() {
         this('\\', false);
     }
-    
+
     public PostgresTemplates(boolean quote) {
         this('\\', quote);
     }
@@ -64,9 +64,9 @@ public class PostgresTemplates extends SQLTemplates {
             add(Ops.STARTS_WITH, "{0} like {1%}");
             add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");
             add(Ops.STRING_CONTAINS, "{0} like {%1%}");
-            add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");    
-        }        
-        
+            add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");
+        }
+
         // Number
         add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.LN, "ln({0})");
@@ -86,7 +86,9 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
-        
+
+        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(isoyear from {0}) * 100 + extract(week from {0}))");
+
         add(Ops.AggOps.BOOLEAN_ANY, "bool_or({0})", 0);
         add(Ops.AggOps.BOOLEAN_ALL, "bool_and({0})", 0);
 
@@ -97,15 +99,15 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_HOURS, "{0} + interval '{1s} hours'");
         add(Ops.DateTimeOps.ADD_MINUTES, "{0} + interval '{1s} minutes'");
         add(Ops.DateTimeOps.ADD_SECONDS, "{0} + interval '{1s} seconds'");
-        
-        String yearsDiff = "date_part('year', age({1}, {0}))"; 
+
+        String yearsDiff = "date_part('year', age({1}, {0}))";
         String monthsDiff = "(" + yearsDiff + " * 12 + date_part('month', age({1}, {0})))";
         String weeksDiff =  "trunc(({1}::date - {0}::date)/7)";
         String daysDiff = "({1}::date - {0}::date)";
         String hoursDiff = "("+ daysDiff + " * 24 + date_part('hour', age({1}, {0})))";
         String minutesDiff = "(" + hoursDiff + " * 60 + date_part('minute', age({1}, {0})))";
         String secondsDiff =  "(" +  minutesDiff + " * 60 + date_part('minute', age({1}, {0})))";
-        
+
         add(Ops.DateTimeOps.DIFF_YEARS,   yearsDiff);
         add(Ops.DateTimeOps.DIFF_MONTHS,  monthsDiff);
         add(Ops.DateTimeOps.DIFF_WEEKS,   weeksDiff);

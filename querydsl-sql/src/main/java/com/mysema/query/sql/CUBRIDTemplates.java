@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import com.mysema.query.types.Ops;
 
 /**
  * CUBRIDTemplates is a SQL dialect for CUBRID
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,18 +30,18 @@ public class CUBRIDTemplates extends SQLTemplates {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new CUBRIDTemplates(escape, quote);
-            }            
+            }
         };
     }
-    
+
     private String limitTemplate = "\nlimit {0}";
-    
+
     private String offsetLimitTemplate = "\nlimit {0}, {1}";
-    
+
     public CUBRIDTemplates() {
         this('\\', false);
     }
-    
+
     public CUBRIDTemplates(boolean quote) {
         this('\\',quote);
     }
@@ -52,7 +52,7 @@ public class CUBRIDTemplates extends SQLTemplates {
         setParameterMetadataAvailable(false);
         setNullsFirst(null);
         setNullsLast(null);
-        
+
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
@@ -60,7 +60,7 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
     }
-    
+
     @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
@@ -68,9 +68,9 @@ public class CUBRIDTemplates extends SQLTemplates {
             if (mod.getOffset() != null) {
                 context.handle(offsetLimitTemplate, mod.getOffset(), mod.getLimit());
             } else {
-                context.handle(limitTemplate, mod.getLimit());    
-            }            
+                context.handle(limitTemplate, mod.getLimit());
+            }
         }
     }
-    
+
 }

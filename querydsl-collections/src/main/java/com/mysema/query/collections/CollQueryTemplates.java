@@ -67,6 +67,8 @@ public class CollQueryTemplates extends JavaTemplates {
         add(Ops.DateTimeOps.SECOND,       functions + ".getSecond({0})");
         add(Ops.DateTimeOps.MILLISECOND,  functions + ".getMilliSecond({0})");
 
+        add(Ops.DateTimeOps.YEAR_WEEK,    functions + ".getYearWeek({0})");
+
         // String
         add(Ops.LIKE, functions + ".like({0},{1})");
         add(Ops.LIKE_ESCAPE, functions + ".like({0},{1},{2})");

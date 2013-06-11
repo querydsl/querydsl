@@ -37,6 +37,8 @@ public class JodaTimeTemplates extends CollQueryTemplates {
         add(Ops.DateTimeOps.MINUTE,       "{0}.getMinuteOfHour()");
         add(Ops.DateTimeOps.SECOND,       "{0}.getSecondOfMinute()");
         add(Ops.DateTimeOps.MILLISECOND,  "{0}.getMillisOfSecond()");
+
+        add(Ops.DateTimeOps.YEAR_WEEK,    "({0}.getWeekyear() * 100 + {0}.getWeekOfWeekyear())");
     }
 
 }
