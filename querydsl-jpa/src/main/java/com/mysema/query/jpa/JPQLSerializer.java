@@ -227,12 +227,14 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                     append(COMMA);
                 }
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? " asc" : " desc");
                 if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {
-                    append(" nulls first");
+                    append(" is not null, ");
+                    handle(os.getTarget());
                 } else if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsLast) {
-                    append(" nulls last");
+                    append(" is null, ");
+                    handle(os.getTarget());
                 }
+                append(os.getOrder() == Order.ASC ? " asc" : " desc");
                 first = false;
             }
         }

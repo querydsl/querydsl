@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class JPQLSerializerTest {
-        
+
     @Test
     public void FromWithCustomEntityName() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
@@ -39,11 +39,11 @@ public class JPQLSerializerTest {
         serializer.serialize(md, false, null);
         assertEquals("select entity\nfrom Location2 entity", serializer.toString());
     }
-    
+
     @Test
     public void Join_With() {
         QCat cat = QCat.cat;
-        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);        
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
         md.addJoin(JoinType.INNERJOIN, cat.mate);
@@ -74,12 +74,12 @@ public class JPQLSerializerTest {
         serializer.serializeForDelete(md);
         assertEquals("delete from Employee employee\nwhere employee.lastName is null", serializer.toString());
     }
-    
+
     @Test
     public void Delete_With_SubQuery() {
         QCat parent = QCat.cat;
         QCat child = new QCat("kitten");
-        
+
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, child);
@@ -93,12 +93,12 @@ public class JPQLSerializerTest {
                 "where kitten.id = ?1 and exists (select 1\n" +
         	"from Cat cat\nwhere cat.id = ?2 and kitten in elements(cat.kittens))", serializer.toString());
     }
-    
+
     @Test
     public void In() {
         //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));
     }
-    
+
     @Test
     public void Like() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
@@ -106,7 +106,7 @@ public class JPQLSerializerTest {
         assertEquals("str like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }
-    
+
     @Test
     public void StringContainsIc() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
@@ -114,5 +114,30 @@ public class JPQLSerializerTest {
         assertEquals("lower(str) like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }
+
+    @Test
+    public void NullsFirst() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addOrderBy(cat.name.asc().nullsFirst());
+        serializer.serialize(md, false, null);
+        assertEquals("select cat\n" +
+        	     "from Cat cat\n" +
+        	     "order by cat.name is not null, cat.name asc", serializer.toString());
+    }
+
+    @Test
+    public void NullsLast() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addOrderBy(cat.name.asc().nullsLast());
+        serializer.serialize(md, false, null);
+        assertEquals("select cat\n" +
+                     "from Cat cat\n" +
+                     "order by cat.name is null, cat.name asc", serializer.toString());
+    }
 }
- 
