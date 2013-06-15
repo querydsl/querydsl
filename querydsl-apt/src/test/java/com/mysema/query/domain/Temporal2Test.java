@@ -11,6 +11,8 @@ import javax.persistence.TemporalType;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryProjection;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
 
 public class Temporal2Test {
 
@@ -19,7 +21,7 @@ public class Temporal2Test {
         @Temporal(TemporalType.DATE)
         private Date dataVencimento;
 
-        @Column(precision=15, scale=2)        
+        @Column(precision=15, scale=2)
         private BigDecimal valor;
 
         @QueryProjection
@@ -27,12 +29,14 @@ public class Temporal2Test {
             this.dataVencimento = dataVencimento;
             this.valor = valor;
         }
-        
+
     }
-    
+
     @Test
     public void test() {
-        
+        DatePath<Date> datePath = new DatePath<Date>(Date.class, "date");
+        NumberPath<BigDecimal> numberPath = new NumberPath<BigDecimal>(BigDecimal.class, "num");
+        new QTemporal2Test_Cheque(datePath, numberPath);
     }
-    
+
 }
