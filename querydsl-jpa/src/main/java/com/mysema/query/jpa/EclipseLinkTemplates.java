@@ -49,6 +49,13 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         add(Ops.STRING_CAST, "cast({0} as varchar)");        
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 
+		add(Ops.DateTimeOps.MILLISECOND, "extract(microsecond from {0})");
+		add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
+		add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
+		add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
+		add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
+		add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
+		add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
     }
     
     @Override
