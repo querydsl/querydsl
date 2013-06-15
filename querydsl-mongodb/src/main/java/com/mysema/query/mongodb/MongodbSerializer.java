@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 
+import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -117,9 +118,17 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(asDBKey(expr, 0), "");
 
         } else if (op == Ops.AND) {
-            BasicDBObject left = (BasicDBObject) handle(expr.getArg(0));
-            left.putAll((BSONObject) handle(expr.getArg(1)));
-            return left;
+            BSONObject lhs = (BSONObject) handle(expr.getArg(0));
+            BSONObject rhs = (BSONObject) handle(expr.getArg(1));
+            if (Sets.intersection(lhs.keySet(), rhs.keySet()).isEmpty()) {
+                lhs.putAll(rhs);
+                return lhs;
+            } else {
+                BasicDBList list = new BasicDBList();
+                list.add(handle(expr.getArg(0)));
+                list.add(handle(expr.getArg(1)));
+                return asDBObject("$and", list);
+            }
 
         } else if (op == Ops.NOT) {
             //Handle the not's child

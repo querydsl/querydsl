@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mysema.query.mongodb.domain.QDummyEntity;
@@ -141,8 +142,9 @@ public class MongodbSerializerTest {
 
         assertQuery(
                 year.gt(1).and(year.lt(10)),
-                dbo("year", dbo("$gt", 1)).
-                append("year", dbo("$lt", 10))
+                dbo("$and", dblist(
+                  dbo("year", dbo("$gt", 1)),
+                  dbo("year", dbo("$lt", 10))))
         );
 
         assertQuery(
@@ -216,11 +218,16 @@ public class MongodbSerializerTest {
         if (value.length == 1) {
             return new BasicDBObject(key, value[0]);
         }
-
         return new BasicDBObject(key, value);
     }
 
-
+    public static BasicDBList dblist(Object... contents) {
+        BasicDBList list = new BasicDBList();
+        for (Object o : contents) {
+            list.add(o);
+        }
+        return list;
+    }
 
 
 }
