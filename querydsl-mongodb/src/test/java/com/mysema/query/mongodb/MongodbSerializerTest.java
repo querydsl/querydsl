@@ -196,6 +196,17 @@ public class MongodbSerializerTest {
     }
 
     @Test
+    public void And() {
+        assertQuery(
+            title.startsWithIgnoreCase("a").and(title.endsWithIgnoreCase("b")),
+
+            dbo("$and", dblist(
+                dbo("title", dbo("$regex", "^\\Qa\\E").append("$options", "i")),
+                dbo("title", dbo("$regex", "\\Qb\\E$").append("$options", "i")))));
+
+    }
+
+    @Test
     public void Not() {
         assertQuery(title.eq("A").not(), dbo("title", dbo("$ne","A")));
 
