@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.DslExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.template.NumberTemplate;
 
@@ -40,32 +40,32 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> {
     public SQLSubQuery(QueryMetadata metadata) {
         super(metadata);
     }
-    
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private <T> SimpleExpression<T> union(Operator<Object> op, List<? extends SubQueryExpression<T>> sq) {
+    private <T> DslExpression<T> union(Operator<Object> op, List<? extends SubQueryExpression<T>> sq) {
         Expression<T> rv = sq.get(0);
         for (int i = 1; i < sq.size(); i++) {
             rv = SimpleOperation.create((Class)rv.getType(), op, rv, sq.get(i));
         }
-        return (SimpleExpression<T>)rv;
+        return (DslExpression<T>)rv;
     }
-    
-    public <T> SimpleExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
+
+    public <T> DslExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
         return union(SQLTemplates.UNION, sq);
     }
-    
-    public <T> SimpleExpression<T> union(SubQueryExpression<T>... sq) {
+
+    public <T> DslExpression<T> union(SubQueryExpression<T>... sq) {
         return union(Arrays.asList(sq));
     }
-    
-    public <T> SimpleExpression<T> unionAll(List<? extends SubQueryExpression<T>> sq) {
+
+    public <T> DslExpression<T> unionAll(List<? extends SubQueryExpression<T>> sq) {
         return union(SQLTemplates.UNION_ALL, sq);
     }
-    
-    public <T> SimpleExpression<T> unionAll(SubQueryExpression<T>... sq) {
+
+    public <T> DslExpression<T> unionAll(SubQueryExpression<T>... sq) {
         return unionAll(Arrays.asList(sq));
     }
-    
+
     @Override
     public BooleanExpression exists() {
         return unique(NumberTemplate.ONE).exists();

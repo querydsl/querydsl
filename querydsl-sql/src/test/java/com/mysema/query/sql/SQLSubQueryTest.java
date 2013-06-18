@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ConstantImpl;
@@ -32,19 +33,19 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.query.ListSubQuery;
 
 public class SQLSubQueryTest {
-    
+
     private static final QEmployee employee = QEmployee.employee;
-    
+
     @Test
     public void UnknownOperator() {
         Operator op = new OperatorImpl("unknownfn");
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee)
             .where(BooleanOperation.create(op, employee.id));
-        
-        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());        
+
+        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
     }
-    
+
     @Test
     public void Multiple_Projections() {
         SQLSubQuery query = new SQLSubQuery();
@@ -63,7 +64,7 @@ public class SQLSubQueryTest {
         assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
-    
+
     @Test
     public void Unique() {
         SQLSubQuery query = new SQLSubQuery();
@@ -74,7 +75,7 @@ public class SQLSubQueryTest {
         assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
-    
+
     @Test
     public void Complex() {
         // related to #584795
@@ -87,31 +88,39 @@ public class SQLSubQueryTest {
           .innerJoin(emp2)
            .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
           .list(survey.id, emp2.firstname);
-        
+
         assertEquals(3, subQuery.getMetadata().getJoins().size());
     }
-    
+
     @Test
     public void Validate() {
         NumberPath<Long> operatorTotalPermits = new NumberPath<Long>(Long.class, "operator_total_permits");
         QSurvey survey = new QSurvey("survey");
-        
+
         // select survey.name, count(*) as operator_total_permits
         // from survey
         // where survey.name >= "A"
         // group by survey.name
         // order by operator_total_permits asc
         // limit 10
-        
+
         Expression<?> e = new SQLSubQuery().from(survey)
             .where(survey.name.goe("A"))
             .groupBy(survey.name)
             .orderBy(operatorTotalPermits.asc())
             .limit(10)
             .list(survey.name, Wildcard.count.as(operatorTotalPermits))
-            .as("top");        
-        
+            .as("top");
+
         new SQLQuery(null, SQLTemplates.DEFAULT).from(e);
     }
-    
+
+    @Test
+    public void Union() {
+        ListSubQuery<Object> q1 = new ListSubQuery<Object>(Object.class, new DefaultQueryMetadata());
+        ListSubQuery<Object> q2 = new ListSubQuery<Object>(Object.class, new DefaultQueryMetadata());
+        new SQLSubQuery().union(q1, q2);
+        new SQLSubQuery().union(q1);
+    }
+
 }
