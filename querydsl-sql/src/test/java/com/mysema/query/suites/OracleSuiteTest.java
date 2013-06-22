@@ -13,9 +13,7 @@ public class OracleSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initOracle();
-        Connections.setTemplates(new OracleTemplates() {{
-            newLineToSingleSpace();
-        }});
+        Connections.setTemplates(OracleTemplates.builder().newLineToSingleSpace().build());
     }
-    
+
 }

@@ -13,9 +13,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initPostgres();
-        Connections.setTemplates(new PostgresTemplates(true) {{
-            newLineToSingleSpace();
-        }});
+        Connections.setTemplates(PostgresTemplates.builder().quote().newLineToSingleSpace().build());
     }
-    
+
 }

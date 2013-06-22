@@ -10,9 +10,7 @@ public class HsqldbSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initHSQL();
-        Connections.setTemplates(new HSQLDBTemplates() {{
-            newLineToSingleSpace();
-        }});
+        Connections.setTemplates(HSQLDBTemplates.builder().newLineToSingleSpace().build());
     }
-    
+
 }

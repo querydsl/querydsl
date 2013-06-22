@@ -6,13 +6,11 @@ import com.mysema.query.Connections;
 import com.mysema.query.sql.H2Templates;
 
 public class H2WithQuotingTest extends AbstractSuite {
-        
+
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(new H2Templates(true) {{
-            newLineToSingleSpace();
-        }});
+        Connections.setTemplates(H2Templates.builder().quote().newLineToSingleSpace().build());
     }
 
 }
