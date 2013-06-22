@@ -171,13 +171,13 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLITE})
+    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLITE})
+    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
@@ -387,8 +387,8 @@ public class SelectBase extends AbstractBaseTest{
     @SkipForQuoted
     @ExcludeIn(ORACLE)
     public void Count_All() {
-        expectedQuery = "select count(*) as rowCount from EMPLOYEE e";
-        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
+        expectedQuery = "select count(*) as rc from EMPLOYEE e";
+        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rc");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
 
@@ -396,8 +396,8 @@ public class SelectBase extends AbstractBaseTest{
     @SkipForQuoted
     @IncludeIn(ORACLE)
     public void Count_All_Oracle() {
-        expectedQuery = "select count(*) rowCount from EMPLOYEE e";
-        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
+        expectedQuery = "select count(*) rc from EMPLOYEE e";
+        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rc");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
 
@@ -436,7 +436,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLITE})
+    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLSERVER, SQLITE})
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -796,7 +796,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({SQLITE, DERBY})
+    @ExcludeIn({SQLITE, SQLSERVER, DERBY})
     public void LPad() {
         assertEquals("  ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
         assertEquals("!!ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
@@ -862,6 +862,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(SQLSERVER) // FIXME
     public void Math() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
 
@@ -963,7 +964,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({DERBY,HSQLDB,ORACLE})
+    @ExcludeIn({DERBY, HSQLDB, ORACLE, SQLSERVER})
     @SkipForQuoted
     public void Path_Alias() {
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
@@ -1135,7 +1136,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({SQLITE, DERBY})
+    @ExcludeIn({SQLITE, SQLSERVER, DERBY})
     public void Rpad() {
         assertEquals("ab  ", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
         assertEquals("ab!!", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
@@ -1163,13 +1164,13 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({SQLITE, CUBRID})
+    @ExcludeIn({SQLITE, SQLSERVER, CUBRID})
     public void Select_For_Update() {
         query().from(survey).forUpdate().list(survey.id);
     }
 
     @Test
-    @ExcludeIn({SQLITE, CUBRID})
+    @ExcludeIn({SQLITE, SQLSERVER, CUBRID})
     public void Select_For_Update_UniqueResult() {
         query().from(survey).forUpdate().uniqueResult(survey.id);
     }

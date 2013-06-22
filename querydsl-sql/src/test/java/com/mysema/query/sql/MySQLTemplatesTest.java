@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,20 +24,20 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest{
     @Override
     protected SQLTemplates createTemplates() {
         return new MySQLTemplates();
-    }    
-    
+    }
+
     @Test
     public void Order_NullsFirst() {
         query.from(survey1).orderBy(survey1.name.asc().nullsFirst());
-        assertEquals("from SURVEY survey1 order by survey1.NAME is not null, survey1.NAME asc", query.toString());
+        assertEquals("from SURVEY survey1 order by (case when survey1.NAME is null then 0 else 1 end), survey1.NAME asc", query.toString());
     }
-    
+
     @Test
     public void Order_NullsLast() {
         query.from(survey1).orderBy(survey1.name.asc().nullsLast());
-        assertEquals("from SURVEY survey1 order by survey1.NAME is null, survey1.NAME asc", query.toString());
+        assertEquals("from SURVEY survey1 order by (case when survey1.NAME is null then 1 else 0 end), survey1.NAME asc", query.toString());
     }
-    
+
 
 
 }

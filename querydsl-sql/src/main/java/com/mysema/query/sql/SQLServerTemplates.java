@@ -51,6 +51,8 @@ public class SQLServerTemplates extends SQLTemplates {
         super("\"", escape, quote);
         addClass2TypeMappings("decimal", Double.class);
         setDummyTable("");
+        setNullsFirst(null);
+        setNullsLast(null);
 
         // String
         add(Ops.CONCAT, "{0} + {1}", 13);
@@ -65,7 +67,15 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2})");
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
+        add(Ops.StringOps.LOCATE, "charindex({0},{1})");
+        add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2})");
+
         add(NEXTVAL, "{0s}.nextval");
+
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
+        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
+        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 
         // Date / time
         add(Ops.DateTimeOps.YEAR, "datepart(year, {0})");
@@ -81,13 +91,23 @@ public class SQLServerTemplates extends SQLTemplates {
 
         add(Ops.DateTimeOps.YEAR_WEEK, "(datepart(year, {0}) * 100 + datepart(isowk, {0}))");
 
-        add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year', {1s}, {0})");
-        add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('month', {1s}, {0})");
-        add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week', {1s}, {0})");
-        add(Ops.DateTimeOps.ADD_DAYS, "dateadd('day', {1s}, {0})");
-        add(Ops.DateTimeOps.ADD_HOURS, "dateadd('hour', {1s}, {0})");
-        add(Ops.DateTimeOps.ADD_MINUTES, "dateadd('minute', {1s}, {0})");
-        add(Ops.DateTimeOps.ADD_SECONDS, "dateadd('second', {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_YEARS, "dateadd(year, {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_MONTHS, "dateadd(month, {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_WEEKS, "dateadd(week, {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_DAYS, "dateadd(day, {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_HOURS, "dateadd(hour, {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_MINUTES, "dateadd(minute, {1s}, {0})");
+        add(Ops.DateTimeOps.ADD_SECONDS, "dateadd(second, {1s}, {0})");
+
+        add(Ops.DateTimeOps.DIFF_YEARS, "datediff(year,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "datediff(month,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "datediff(week,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_DAYS, "datediff(day,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_HOURS, "datediff(hour,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "datediff(minute,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
+
+        add(Ops.DateTimeOps.DATE, "cast({0} as date)");
 
     }
 

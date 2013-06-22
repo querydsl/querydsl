@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,18 +42,18 @@ public final class Connections {
     public static final int TEST_ROW_COUNT = 100;
 
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
-    
+
     private static ThreadLocal<Target> targetHolder = new ThreadLocal<Target>();
-    
+
     private static ThreadLocal<SQLTemplates> templatesHolder = new ThreadLocal<SQLTemplates>();
 
     // datetest
     private static final String CREATE_TABLE_DATETEST = "create table DATE_TEST(DATE_TEST date)";
 
     // survey
-    private static final String CREATE_TABLE_SURVEY = 
+    private static final String CREATE_TABLE_SURVEY =
             "create table SURVEY(ID int auto_increment, NAME varchar(30), NAME2 varchar(30))";
-    
+
     // test
     private static final String CREATE_TABLE_TEST = "create table TEST(NAME varchar(255))";
 
@@ -83,15 +83,15 @@ public final class Connections {
     public static Connection getConnection() {
         return connHolder.get();
     }
-    
+
     public static Target getTarget() {
         return targetHolder.get();
     }
-    
+
     public static SQLTemplates getTemplates() {
         return templatesHolder.get();
     }
-    
+
     public static void setTemplates(SQLTemplates templates) {
         templatesHolder.set(templates);
     }
@@ -143,31 +143,31 @@ public final class Connections {
         String url = "jdbc:cubrid:localhost:30000:demodb:public::";
         return DriverManager.getConnection(url);
     }
-    
+
     private static Connection getSQLite() throws SQLException, ClassNotFoundException {
         //System.setProperty("sqlite.purejava", "true");
         Class.forName("org.sqlite.JDBC");
         return DriverManager.getConnection("jdbc:sqlite:target/sample.db");
     }
-    
+
     private static CreateTableClause createTable(SQLTemplates templates, String table) {
         return new CreateTableClause(connHolder.get(), templates, table);
     }
-    
+
     public static void dropTable(SQLTemplates templates, String table) throws SQLException{
         new DropTableClause(connHolder.get(), templates, table).execute();
     }
-    
+
     public static void dropType(Statement stmt, String type) throws SQLException {
         try {
-            stmt.execute("drop type " + type);    
+            stmt.execute("drop type " + type);
         } catch (SQLException e) {
             if (!e.getMessage().contains("does not exist")) {
                 throw e;
             }
-        }  
+        }
     }
-    
+
     public static Statement getStatement() {
         return stmtHolder.get();
     }
@@ -185,7 +185,7 @@ public final class Connections {
         .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE","ID")
         .execute();
     }
-    
+
     public static void initDerby() throws SQLException, ClassNotFoundException {
         targetHolder.set(Target.DERBY);
         SQLTemplates templates = new DerbyTemplates();
@@ -197,9 +197,9 @@ public final class Connections {
         if (derbyInited) {
             return;
         }
-        
+
         // types
-        dropType(stmt, "price restrict");    
+        dropType(stmt, "price restrict");
         stmt.execute("create type price external name 'com.example.Price' language java");
 
         // survey
@@ -227,9 +227,9 @@ public final class Connections {
 
         // employee
         dropTable(templates, "EMPLOYEE");
-        
+
         createEmployeeTable(templates);
-        
+
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -257,8 +257,8 @@ public final class Connections {
 
         // survey
         dropTable(templates, "SURVEY");
-        stmt.execute(CREATE_TABLE_SURVEY);
-        stmt.execute("insert into SURVEY values (1, 'Hello World')");
+        stmt.execute("create table SURVEY(ID int, NAME varchar(30), NAME2 varchar(30))");
+        stmt.execute("insert into SURVEY values (1, 'Hello World', 'Hello')");
 
         // test
         dropTable(templates, "TEST");
@@ -302,13 +302,13 @@ public final class Connections {
         // qtest
         stmt.execute("drop table QTEST if exists");
         stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");
-        
+
         // survey
         stmt.execute("drop table SURVEY if exists");
         stmt.execute(CREATE_TABLE_SURVEY);
-        stmt.execute("insert into SURVEY values (1, 'Hello World','Hello');");
+        stmt.execute("insert into SURVEY values (1, 'Hello World', 'Hello');");
         stmt.execute("alter table SURVEY alter column id int auto_increment");
-        
+
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
@@ -328,7 +328,7 @@ public final class Connections {
         createEmployeeTable(templates);
         stmt.execute("alter table EMPLOYEE alter column id int auto_increment");
         addEmployees(INSERT_INTO_EMPLOYEE);
-        
+
 
         // date_test and time_test
         stmt.execute("drop table TIME_TEST if exists");
@@ -337,7 +337,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         h2Inited = true;
     }
-    
+
     public static void initSQLite() throws SQLException, ClassNotFoundException{
         targetHolder.set(Target.SQLITE);
 //        SQLTemplates templates = new SQLiteTemplates();
@@ -353,7 +353,7 @@ public final class Connections {
         // qtest
         stmt.execute("drop table if exists QTEST");
         stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");
-        
+
         // survey
         stmt.execute("drop table if exists SURVEY");
         stmt.execute("create table SURVEY(ID int auto_increment, " +
@@ -361,7 +361,7 @@ public final class Connections {
                 "NAME2 varchar(30)," +
                 "constraint suryey_pk primary key(ID))");
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
-        
+
         // test
         stmt.execute("drop table if exists TEST");
         stmt.execute(CREATE_TABLE_TEST);
@@ -388,9 +388,9 @@ public final class Connections {
                 "SUPERIOR_ID INT, " +
                 "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID),"+
                 "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
-              ")");        
+              ")");
         addEmployees(INSERT_INTO_EMPLOYEE);
-        
+
 
         // date_test and time_test
         stmt.execute("drop table if exists TIME_TEST");
@@ -416,7 +416,7 @@ public final class Connections {
         stmt.execute("drop table DUAL if exists");
         stmt.execute("create table DUAL ( DUMMY varchar(1) )");
         stmt.execute("insert into DUAL (DUMMY) values ('X')");
-        
+
         // survey
         stmt.execute("drop table SURVEY if exists");
         //stmt.execute(CREATE_TABLE_SURVEY);
@@ -425,7 +425,7 @@ public final class Connections {
                 "NAME varchar(30)," +
                 "NAME2 varchar(30))");
         stmt.execute("insert into SURVEY values (1, 'Hello World', 'Hello')");
-        
+
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
@@ -453,7 +453,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         hsqlInited = true;
     }
-    
+
     public static void initCubrid() throws SQLException, ClassNotFoundException{
         targetHolder.set(Target.CUBRID);
         //SQLTemplates templates = new MySQLTemplates();
@@ -500,8 +500,8 @@ public final class Connections {
           "TIMEFIELD TIME, " +
           "SUPERIOR_ID INT, " +
           "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
-        ")"); 
-                        
+        ")");
+
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -557,8 +557,8 @@ public final class Connections {
           "TIMEFIELD TIME, " +
           "SUPERIOR_ID INT, " +
           "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
-        ")"); 
-        		
+        ")");
+
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -580,7 +580,7 @@ public final class Connections {
         if (oracleInited) {
             return;
         }
-        
+
         // types
         stmt.execute("create or replace type ssn_t as object (ssn_type char(11))");
 
@@ -589,16 +589,16 @@ public final class Connections {
         stmt.execute("create table SURVEY (ID number(10,0), " +
         		"NAME varchar(30 char)," +
         		"NAME2 varchar(30 char))");
-        
+
         try {
-            stmt.execute("drop sequence survey_seq");    
+            stmt.execute("drop sequence survey_seq");
         } catch(SQLException e) {
             if (!e.getMessage().contains("sequence does not exist")) {
                 throw e;
             }
         }
-                
-        stmt.execute("create sequence survey_seq");        
+
+        stmt.execute("create sequence survey_seq");
         stmt.execute("create or replace trigger survey_trigger\n"+
           "before insert on survey\n"+
           "for each row\n" +
@@ -606,7 +606,7 @@ public final class Connections {
           "begin\n"+
           "  select survey_seq.nextval into :new.id from dual;\n"+
           "end;\n");
-        
+
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello')");
 
         // test
@@ -658,20 +658,20 @@ public final class Connections {
         // types
         dropType(stmt, "u_country");
         stmt.execute("create type u_country as enum ('Brazil', 'England', 'Germany')");
-        
+
         dropType(stmt, "u_street_type");
         stmt.execute("create type u_street_type as (street VARCHAR(100), number VARCHAR(30))");
-        
+
         // survey
         dropTable(templates, "SURVEY");
         try {
-            stmt.execute("drop sequence SURVEY_SEQ");    
+            stmt.execute("drop sequence SURVEY_SEQ");
         } catch(SQLException e) {
             if (!e.getMessage().contains("does not exist")) {
                 throw e;
             }
-        }        
-        stmt.execute("create sequence SURVEY_SEQ");        
+        }
+        stmt.execute("create sequence SURVEY_SEQ");
         stmt.execute("create table \"SURVEY\"(" +
         		"\"ID\" int DEFAULT NEXTVAL('SURVEY_SEQ'), " +
         		"\"NAME\" varchar(30), \"NAME2\" varchar(30))");

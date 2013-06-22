@@ -1,6 +1,6 @@
 /*
  * Copyright 2013, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,16 +27,16 @@ import com.mysema.query.types.OrderSpecifier;
  * @author tiwe
  */
 public class SQLServer2005Templates extends SQLServerTemplates {
-    
+
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
                 return new SQLServer2005Templates(escape, quote);
-            }            
+            }
         };
     }
-    
+
     private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
 
     private String limitTemplate = "row_number <= {0}";
@@ -46,11 +46,11 @@ public class SQLServer2005Templates extends SQLServerTemplates {
     private String outerQueryStart = "with inner_query as \n(\n  ";
 
     private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
-    
+
     public SQLServer2005Templates() {
         this('\\',false);
     }
-    
+
     public SQLServer2005Templates(boolean quote) {
         this('\\',quote);
     }
@@ -58,10 +58,13 @@ public class SQLServer2005Templates extends SQLServerTemplates {
     public SQLServer2005Templates(char escape, boolean quote) {
         super(escape, quote);
     }
-    
+
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
-        if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
+        if (metadata.getModifiers().getOffset() == null) {
+            super.serialize(metadata, forCountRow, context);
+            return;
+        } else if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
             QueryModifiers mod = metadata.getModifiers();
             context.append(outerQueryStart);
             metadata = metadata.clone();
@@ -79,15 +82,15 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 context.handle(limitTemplate, mod.getLimit());
             } else {
                 context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
-            }              
-            
+            }
+
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }
-        
+
         if (!metadata.getFlags().isEmpty()) {
-            context.serialize(Position.END, metadata.getFlags());    
-        }   
+            context.serialize(Position.END, metadata.getFlags());
+        }
     }
 
 }

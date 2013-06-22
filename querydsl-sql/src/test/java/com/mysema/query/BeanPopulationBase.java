@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,12 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.POSTGRES;
+import static com.mysema.query.Target.SQLITE;
+import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -23,13 +29,12 @@ import com.mysema.query.sql.dml.BeanMapper;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.testutil.ExcludeIn;
-import static com.mysema.query.Target.*;
 
-@ExcludeIn({CUBRID,DERBY,ORACLE,POSTGRES,SQLITE})
+@ExcludeIn({CUBRID, DERBY, ORACLE, SQLSERVER, POSTGRES, SQLITE})
 public class BeanPopulationBase extends AbstractBaseTest{
 
     private final QEmployee e = new QEmployee("e");
-    
+
     @After
     public void tearDown() {
         delete(e).where(e.firstname.eq("John")).execute();
@@ -56,11 +61,11 @@ public class BeanPopulationBase extends AbstractBaseTest{
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
     }
 
-    @Test    
+    @Test
     public void Populate_With_BeanMapper() {
         Employee employee = new Employee();
         employee.setFirstname("John");
-        insert(e).populate(employee, new BeanMapper()).execute();        
+        insert(e).populate(employee, new BeanMapper()).execute();
     }
 
     @Test
