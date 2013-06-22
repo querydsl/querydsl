@@ -760,7 +760,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE,DERBY,SQLSERVER,CUBRID})
+    @ExcludeIn({ORACLE, DERBY, SQLSERVER, CUBRID})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
