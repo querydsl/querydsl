@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,19 +15,25 @@ package com.mysema.query.sql.codegen;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.sql.codegen.NamingStrategy;
-import com.mysema.query.sql.codegen.OriginalNamingStrategy;
 
 public class OriginalNamingStrategyTest {
 
     private NamingStrategy namingStrategy = new OriginalNamingStrategy();
-    
-    private EntityType entityModel = new EntityType(Types.OBJECT);
-    
+
+    private EntityType entityModel;
+
+    @Before
+    public void setUp() {
+        entityModel = new EntityType(Types.OBJECT);
+        //entityModel.addAnnotation(new TableImpl("OBJECT"));
+        entityModel.getData().put("table", "OBJECT");
+    }
+
     @Test
     public void GetClassName() {
         assertEquals("user_data", namingStrategy.getClassName("user_data"));
@@ -36,17 +42,17 @@ public class OriginalNamingStrategyTest {
         assertEquals("u_", namingStrategy.getClassName("u_"));
         assertEquals("us_",namingStrategy.getClassName("us_"));
     }
-    
+
     @Test
     public void GetPropertyName() {
         assertEquals("while_col", namingStrategy.getPropertyName("while", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
         assertEquals("user_id", namingStrategy.getPropertyName("user_id", entityModel));
         assertEquals("accountEvent_id", namingStrategy.getPropertyName("accountEvent_id", entityModel));
-        
+
         assertEquals("_123abc", namingStrategy.getPropertyName("123abc", entityModel));
         assertEquals("_123_abc", namingStrategy.getPropertyName("123 abc", entityModel));
-        
+
         assertEquals("_123_abc_def", namingStrategy.getPropertyName("#123#abc#def", entityModel));
     }
 
@@ -55,20 +61,20 @@ public class OriginalNamingStrategyTest {
         assertEquals("A_FOOBAR", namingStrategy.getPropertyName("A-FOOBAR" , entityModel));
         assertEquals("A_FOOBAR", namingStrategy.getPropertyName("A_FOOBAR" , entityModel));
     }
-    
+
     @Test
     public void GetPropertyNameForInverseForeignKey() {
         assertEquals("_fk_superior", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
     }
-    
+
     @Test
     public void GetPropertyNameForForeignKey() {
         assertEquals("fk_superior", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
-        assertEquals("FK_SUPERIOR", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        
+        assertEquals("FK_SUPERIOR", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));
     }
-    
+
     @Test
     public void GetDefaultVariableName() {
-        assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
+        assertEquals("OBJECT", namingStrategy.getDefaultVariableName(entityModel));
     }
 }

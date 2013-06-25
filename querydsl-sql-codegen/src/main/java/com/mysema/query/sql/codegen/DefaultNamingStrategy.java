@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,19 +25,19 @@ import com.mysema.query.codegen.EntityType;
  *
  */
 public class DefaultNamingStrategy extends AbstractNamingStrategy {
-    
+
     public DefaultNamingStrategy() {
         reservedSuffix = "Col";
     }
-    
+
     @Override
     public String getClassName(String tableName) {
         if (tableName.length() > 1) {
-            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) + 
-                    toCamelCase(tableName.substring(1));    
+            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) +
+                    toCamelCase(tableName.substring(1));
         } else {
             return tableName.toUpperCase(Locale.ENGLISH);
-        }        
+        }
     }
 
     @Override
@@ -47,9 +47,9 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getDefaultVariableName(EntityType entityType) {
-        return escape(entityType, toCamelCase(entityType.getData().get("table").toString()));    
+        return escape(entityType, toCamelCase(entityType.getData().get("table").toString()));
     }
-    
+
     @Override
     public String getForeignKeysVariable(EntityType entityType) {
         return escape(entityType, foreignKeysVariable);
@@ -64,11 +64,11 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     public String getPropertyName(String columnName, EntityType entityType) {
         if (columnName.length() > 1) {
             String normalized = normalizePropertyName(columnName);
-            return normalizePropertyName(normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
-                    toCamelCase(normalized.substring(1)));    
+            return normalizePropertyName(normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) +
+                    toCamelCase(normalized.substring(1)));
         } else {
             return columnName.toLowerCase(Locale.ENGLISH);
-        }                
+        }
     }
 
     @Override
@@ -83,14 +83,14 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     public String getPropertyNameForInverseForeignKey(String fkName, EntityType entityType) {
         return "_" + getPropertyNameForForeignKey(fkName, entityType);
     }
-    
+
 
     @Override
     public String getPropertyNameForPrimaryKey(String pkName, EntityType entityType) {
         if (pkName.toLowerCase().startsWith("pk_")) {
             pkName = pkName.substring(3) + "_" + pkName.substring(0,2);
         }
-        return getPropertyName(pkName, entityType);        
+        return getPropertyName(pkName, entityType);
     }
 
     @Override
@@ -107,21 +107,9 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     public String normalizeSchemaName(String schemaName) {
         return schemaName.replaceAll("\r", "").replaceAll("\n", " ");
     }
-    
+
     protected String normalizePropertyName(String name) {
         return Naming.normalize(name, reservedSuffix);
-    }
-    
-    protected String escape(EntityType entityType, String name) {
-        int suffix = 0;
-        while (true) {
-            String candidate = suffix > 0 ? name + suffix : name;
-            if (entityType.getEscapedPropertyNames().contains(candidate)) {
-                suffix++;
-            } else {
-                return candidate;
-            }
-        }      
     }
 
     protected String toCamelCase(String str) {
@@ -131,8 +119,8 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
             if (i < str.length() - 1 && str.charAt(i) == '_') {
                 i += 1;
                 if (i < str.length()) {
-                    builder.append(Character.toUpperCase(str.charAt(i)));    
-                }                               
+                    builder.append(Character.toUpperCase(str.charAt(i)));
+                }
             } else if (toLower) {
                 builder.append(Character.toLowerCase(str.charAt(i)));
             } else {
@@ -141,5 +129,5 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         }
         return builder.toString();
     }
-    
+
 }

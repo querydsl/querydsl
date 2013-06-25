@@ -43,6 +43,18 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
         return packageName + "." + suffix;
     }
     
+    protected String escape(EntityType entityType, String name) {
+        int suffix = 0;
+        while (true) {
+            String candidate = suffix > 0 ? name + suffix : name;
+            if (entityType.getEscapedPropertyNames().contains(candidate)) {
+                suffix++;
+            } else {
+                return candidate;
+            }
+        }      
+    }
+    
     @Override
     public String getForeignKeysClassName() {
         return foreignKeysClassName;

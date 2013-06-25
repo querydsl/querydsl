@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql.codegen;
 
-import com.mysema.codegen.StringUtils;
 import com.mysema.query.codegen.EntityType;
 
 /**
@@ -23,7 +22,7 @@ import com.mysema.query.codegen.EntityType;
  *
  */
 public class OriginalNamingStrategy extends AbstractNamingStrategy {
-    
+
     @Override
     public String getClassName(String tableName) {
         return tableName;
@@ -31,17 +30,16 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getDefaultAlias(EntityType entityType) {
-        String table = (String)entityType.getData().get("table");
-        return table != null ? table : getDefaultVariableName(entityType);
+        return entityType.getData().get("table").toString();
     }
 
     @Override
-    public String getDefaultVariableName( EntityType entityType) {
-        return StringUtils.uncapitalize(entityType.getSimpleName());
+    public String getDefaultVariableName(EntityType entityType) {
+        return escape(entityType, entityType.getData().get("table").toString());
     }
 
     @Override
-    public String getPropertyName(String columnName, EntityType entityType) {        
+    public String getPropertyName(String columnName, EntityType entityType) {
         return getPropertyName(columnName);
     }
 
@@ -60,24 +58,23 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
         return getPropertyName(primaryKeyName);
     }
 
-
     @Override
     public String normalizeColumnName(String columnName) {
-        return columnName;
+        return columnName.replaceAll("\r", "").replaceAll("\n", " ");
     }
 
     @Override
     public String normalizeTableName(String tableName) {
-        return tableName;
+        return tableName.replaceAll("\r", "").replaceAll("\n", " ");
     }
-    
+
     @Override
     public String normalizeSchemaName(String schemaName) {
-        return schemaName;
+        return schemaName.replaceAll("\r", "").replaceAll("\n", " ");
     }
-        
+
     private String getPropertyName(String name) {
         return Naming.normalize(name, reservedSuffix);
     }
-    
+
 }
