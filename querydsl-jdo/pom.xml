@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.2.1.BUILD-SNAPSHOT</version>
+    <version>3.2.1</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -16,8 +16,8 @@
   <packaging>jar</packaging>
 
   <properties>   
-    <dn.version>3.2.0-m1</dn.version>
-    <dn.plugin.version>3.2.0-m1</dn.plugin.version>
+    <dn.version>3.2.0-release</dn.version>
+    <dn.plugin.version>3.2.0-release</dn.plugin.version>
   </properties>
 
   <dependencies>
@@ -147,7 +147,7 @@
       <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
-        <artifactId>maven-datanucleus-plugin</artifactId>
+        <artifactId>datanucleus-maven-plugin</artifactId>
         <version>${dn.plugin.version}</version>
         <configuration>
             <metadataDirectory>target/test-classes</metadataDirectory>
@@ -170,6 +170,12 @@
           <dependency>
             <groupId>org.datanucleus</groupId>
             <artifactId>datanucleus-api-jdo</artifactId>
+            <version>${dn.version}</version>
+            <scope>runtime</scope>
+          </dependency>
+          <dependency>
+            <groupId>org.datanucleus</groupId>
+            <artifactId>datanucleus-core</artifactId>
             <version>${dn.version}</version>
             <scope>runtime</scope>
           </dependency>
