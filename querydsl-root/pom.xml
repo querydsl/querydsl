@@ -61,6 +61,12 @@
       <artifactId>easymock</artifactId>
       <version>3.0</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib-nodep</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   
