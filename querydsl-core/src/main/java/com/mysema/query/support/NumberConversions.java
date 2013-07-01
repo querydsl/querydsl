@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import com.mysema.util.MathUtils;
 /**
  * NumberConversions ensures that the results of a projection involving numeric expressions
  * confirm to the types of the numeric expressions
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -34,7 +34,7 @@ public class NumberConversions<T> extends ExpressionBase<T> implements FactoryEx
     private static final long serialVersionUID = -7834053123363933721L;
 
     private final FactoryExpression<T> expr;
-    
+
     public NumberConversions(FactoryExpression<T> expr) {
         super(expr.getType());
         this.expr = expr;
@@ -55,7 +55,12 @@ public class NumberConversions<T> extends ExpressionBase<T> implements FactoryEx
         for (int i = 0; i < args.length; i++) {
             Class<?> type = expr.getArgs().get(i).getType();
             if (args[i] instanceof Number && !args[i].getClass().equals(type)) {
-                args[i] = MathUtils.cast((Number)args[i], (Class)type);
+                if (type.equals(Boolean.class)) {
+                    args[i] = ((Number)args[i]).intValue() > 0;
+                } else {
+                    args[i] = MathUtils.cast((Number)args[i], (Class)type);
+                }
+
             }
         }
         return expr.newInstance(args);
