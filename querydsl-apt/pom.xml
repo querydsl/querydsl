@@ -102,6 +102,13 @@
     </dependency>
     
     <dependency>
+      <groupId>org.joda</groupId>
+      <artifactId>joda-money</artifactId>
+      <version>0.9</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
       <groupId>org.eclipse.jdt.core.compiler</groupId>
       <artifactId>ecj</artifactId>
       <version>3.7.1</version>
