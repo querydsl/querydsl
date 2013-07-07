@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,14 +44,14 @@ import com.mysema.query.types.OrderSpecifier;
 public class DefaultQueryEngine implements QueryEngine {
 
     private static volatile QueryEngine DEFAULT;
-    
+
     public static QueryEngine getDefault() {
         if (DEFAULT == null) {
-            DEFAULT = new DefaultQueryEngine(new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT));        
+            DEFAULT = new DefaultQueryEngine(new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT));
         }
         return DEFAULT;
-    }    
-    
+    }
+
     private final DefaultEvaluatorFactory evaluatorFactory;
 
     public DefaultQueryEngine(DefaultEvaluatorFactory evaluatorFactory) {
@@ -83,7 +83,7 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
-    public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, 
+    public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables,
             Expression<T> projection) {
         if (metadata.getJoins().size() == 1) {
             return evaluateSingleSource(metadata, iterables, false);
@@ -112,7 +112,7 @@ public class DefaultQueryEngine implements QueryEngine {
         return rv;
     }
 
-    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expression<?>, 
+    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expression<?>,
             Iterable<?>> iterables, boolean count) {
         // from where
         Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata, metadata.getJoins(), metadata.getWhere());
@@ -157,7 +157,7 @@ public class DefaultQueryEngine implements QueryEngine {
         return list;
     }
 
-    private List evaluateSingleSource(QueryMetadata metadata, Map<Expression<?>, 
+    private List evaluateSingleSource(QueryMetadata metadata, Map<Expression<?>,
             Iterable<?>> iterables, boolean count) {
         final Expression<?> source = metadata.getJoins().get(0).getTarget();
         final List<Expression<?>> sources = Collections.<Expression<?>>singletonList(source);

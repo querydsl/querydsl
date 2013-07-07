@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -56,12 +56,12 @@ public class DefaultEvaluatorFactory {
     private final EvaluatorFactory factory;
 
     private final CollQueryTemplates templates;
-    
+
     public DefaultEvaluatorFactory(CollQueryTemplates templates) {
         this(templates,
         Thread.currentThread().getContextClassLoader());
     }
-    
+
     public DefaultEvaluatorFactory(CollQueryTemplates templates, EvaluatorFactory factory) {
         this.templates = templates;
         this.factory = factory;
@@ -74,7 +74,7 @@ public class DefaultEvaluatorFactory {
     }
 
     protected DefaultEvaluatorFactory(CollQueryTemplates templates, ClassLoader classLoader) {
-        this.templates = templates;        
+        this.templates = templates;
         if (classLoader instanceof URLClassLoader) {
             this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader);
         } else {
@@ -82,7 +82,7 @@ public class DefaultEvaluatorFactory {
             this.factory = new ECJEvaluatorFactory(classLoader);
         }
     }
-    
+
     /**
      * Create an Evaluator for the given query sources and projection
      *
@@ -91,7 +91,7 @@ public class DefaultEvaluatorFactory {
      * @param projection
      * @return
      */
-    public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expression<?>> sources, 
+    public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expression<?>> sources,
             Expression<T> projection) {
         final CollQuerySerializer serializer = new CollQuerySerializer(templates);
         serializer.append("return ");
@@ -102,7 +102,7 @@ public class DefaultEvaluatorFactory {
             serializer.handle(projection);
             serializer.append(")");
         } else {
-            serializer.handle(projection);    
+            serializer.handle(projection);
         }
         serializer.append(";");
 
@@ -122,7 +122,7 @@ public class DefaultEvaluatorFactory {
             }
         }
 
-        return factory.createEvaluator(serializer.toString(), projection.getType(), names, 
+        return factory.createEvaluator(serializer.toString(), projection.getType(), names,
                 types, constants);
     }
 
@@ -134,15 +134,17 @@ public class DefaultEvaluatorFactory {
      * @param filter
      * @return
      */
-    public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, 
+    public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata,
             Expression<? extends T> source, Predicate filter) {
         String typeName = ClassUtils.getName(source.getType());
         CollQuerySerializer ser = new CollQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
         ser.append("for (" + typeName + " "+ source + " : " + source + "_) {\n");
-        ser.append("    if (").handle(filter).append(") {\n");
-        ser.append("        rv.add("+source+");\n");
-        ser.append("    }\n");
+        ser.append("    try {\n");
+        ser.append("        if (").handle(filter).append(") {\n");
+        ser.append("            rv.add("+source+");\n");
+        ser.append("        }\n");
+        ser.append("    } catch (NullPointerException npe) { }\n");
         ser.append("}\n");
         ser.append("return rv;");
 
@@ -151,7 +153,7 @@ public class DefaultEvaluatorFactory {
 
         Type sourceType = new ClassType(TypeCategory.SIMPLE, source.getType());
         ClassType sourceListType = new ClassType(TypeCategory.SIMPLE, Iterable.class, sourceType);
-        
+
         return factory.createEvaluator(
                 ser.toString(),
                 sourceListType,
@@ -168,12 +170,11 @@ public class DefaultEvaluatorFactory {
      * @param filter
      * @return
      */
-    @SuppressWarnings("unchecked")
-    public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata, 
+    public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata,
             List<JoinExpression> joins, @Nullable Predicate filter) {
         List<String> sourceNames = new ArrayList<String>();
         List<Type> sourceTypes = new ArrayList<Type>();
-        List<Class> sourceClasses = new ArrayList<Class>();
+        List<Class<?>> sourceClasses = new ArrayList<Class<?>>();
         StringBuilder vars = new StringBuilder();
         CollQuerySerializer ser = new CollQuerySerializer(templates);
         ser.append("java.util.List<Object[]> rv = new java.util.ArrayList<Object[]>();\n");
@@ -198,7 +199,7 @@ public class DefaultEvaluatorFactory {
 
             case INNERJOIN:
             case LEFTJOIN:
-                Operation alias = (Operation)join.getTarget();
+                Operation<?> alias = (Operation<?>)join.getTarget();
                 boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
                 boolean leftJoin = join.getType() == JoinType.LEFTJOIN;
                 String matcher = null;
@@ -210,12 +211,12 @@ public class DefaultEvaluatorFactory {
                 ser.append("for (" + typeName + " " + alias.getArg(1) + " : ");
                 if (leftJoin) {
                     ser.append(CollQueryFunctions.class.getName()+".leftJoin(");
-                }                
+                }
                 if (colAnyJoin) {
                     Context context = new Context();
-                    Expression<?> replacement = (Expression<?>) alias.getArg(0)
+                    Expression<?> replacement = alias.getArg(0)
                             .accept(CollectionAnyVisitor.DEFAULT, context);
-                    ser.handle(replacement);                    
+                    ser.handle(replacement);
                 } else {
                     ser.handle(alias.getArg(0));
                 }
@@ -228,10 +229,10 @@ public class DefaultEvaluatorFactory {
                 ser.append(") {\n");
                 if (matcher != null) {
                     ser.append("if (!" + matcher + ") {\n");
-                }                
+                }
                 vars.append(alias.getArg(1));
                 break;
-                
+
             default:
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }
@@ -239,6 +240,7 @@ public class DefaultEvaluatorFactory {
 
         // filter
         if (filter != null) {
+            ser.append("try {\n");
             ser.append("if (");
             ser.handle(filter).append(") {\n");
             for (String matcher : anyJoinMatchers) {
@@ -246,6 +248,7 @@ public class DefaultEvaluatorFactory {
             }
             ser.append("    rv.add(new Object[]{"+vars+"});\n");
             ser.append("}\n");
+            ser.append("} catch (NullPointerException npe) { }\n");
         } else {
             ser.append("rv.add(new Object[]{"+vars+"});\n");
         }
@@ -259,7 +262,7 @@ public class DefaultEvaluatorFactory {
 
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
-        
+
         ClassType projectionType = new ClassType(TypeCategory.LIST, List.class, Types.OBJECTS);
         return factory.createEvaluator(
                 ser.toString(),
@@ -270,7 +273,7 @@ public class DefaultEvaluatorFactory {
                 constants);
     }
 
-    private Map<String, Object> getConstants(QueryMetadata metadata, 
+    private Map<String, Object> getConstants(QueryMetadata metadata,
             Map<Object, String> constantToLabel) {
         Map<String,Object> constants = new HashMap<String,Object>();
         for (Map.Entry<Object,String> entry : constantToLabel.entrySet()) {

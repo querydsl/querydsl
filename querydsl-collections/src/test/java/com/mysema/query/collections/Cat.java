@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
@@ -33,11 +35,11 @@ public class Cat extends Animal {
 
     private Color eyecolor;
 
-    private List<Cat> kittens;
+    private List<Cat> kittens = Lists.newArrayList();
 
     private Cat[] kittenArray;
 
-    private Map<String, Cat> kittensByName;
+    private Map<String, Cat> kittensByName = Maps.newHashMap();
 
     private Cat mate;
 
@@ -60,7 +62,7 @@ public class Cat extends Animal {
         this.kittensByName = Collections.singletonMap("Kitty", kitten);
         this.name = name;
     }
-    
+
     public Cat(String name, String kittenName) {
         this(name);
         kittens.get(0).setName(kittenName);
@@ -159,6 +161,7 @@ public class Cat extends Animal {
         this.kittenArray = kittenArray.clone();
     }
 
+    @Override
     public String toString() {
         return name;
     }

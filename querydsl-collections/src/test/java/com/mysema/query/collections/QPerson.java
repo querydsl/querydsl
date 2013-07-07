@@ -5,8 +5,9 @@ import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.StringPath;
 
 public class QPerson extends BeanPath<Person> {
+
     public final StringPath name = createString("name");
-    
+
     public static QPerson car = new QPerson(new BeanPath<Person>(Person.class, "person"));
 
     public QPerson(BeanPath<? extends Person> entity) {
