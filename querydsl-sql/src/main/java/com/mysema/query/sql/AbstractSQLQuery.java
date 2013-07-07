@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
@@ -55,19 +56,19 @@ import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
 
 /**
- * 
+ *
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
  *
  * @author tiwe
- * 
+ *
  * @param <Q> concrete subtype
  */
 public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>> extends
         ProjectableQuery<Q> implements SQLCommonQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
-    
+
     @Nullable
     private final Connection conn;
 
@@ -81,9 +82,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     protected Expression<?> union;
 
     private final Configuration configuration;
-    
+
     protected final QueryMixin<Q> queryMixin;
-    
+
     protected boolean unionAll;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
@@ -93,19 +94,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata, false));
-        this.queryMixin = (QueryMixin<Q>)super.queryMixin;
-        this.queryMixin.setSelf((Q) this);        
+        this.queryMixin = super.queryMixin;
+        this.queryMixin.setSelf((Q) this);
         this.conn = conn;
         this.configuration = configuration;
     }
 
     /**
-     * Add the given String literal as a join flag to the last added join with the position 
+     * Add the given String literal as a join flag to the last added join with the position
      * BEFORE_TARGET
      *
      * @param flag
      * @return
      */
+    @Override
     public Q addJoinFlag(String flag) {
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
@@ -117,6 +119,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      * @param position
      * @return
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Q addJoinFlag(String flag, JoinFlag.Position position) {
         queryMixin.addJoinFlag(new JoinFlag(flag, position));
@@ -131,6 +134,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      * @param expr expression of the flag
      * @return
      */
+    @Override
     public Q addFlag(Position position, String prefix, Expression<?> expr) {
         Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
@@ -143,6 +147,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      * @param flag
      * @return
      */
+    @Override
     public Q addFlag(Position position, String flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -154,6 +159,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      * @param flag
      * @return
      */
+    @Override
     public Q addFlag(Position position, Expression<?> flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -188,17 +194,17 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     /**
-     * If you use forUpdate() with a backend that uses page or row locks, rows examined by the 
+     * If you use forUpdate() with a backend that uses page or row locks, rows examined by the
      * query are write-locked until the end of the current transaction.
-     * 
+     *
      * Not supported for SQLite and CUBRID
-     * 
+     *
      * @return
      */
     public Q forUpdate() {
         return addFlag(Position.END, configuration.getTemplates().getForUpdate());
     }
-    
+
     protected SQLSerializer createSerializer() {
         return new SQLSerializer(configuration);
     }
@@ -206,92 +212,114 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public Q from(Expression<?> arg) {
         return queryMixin.from(arg);
     }
-    
+
+    @Override
     public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
 
+    @Override
     public Q fullJoin(RelationalPath<?> target) {
         return queryMixin.fullJoin(target);
     }
-    
+
+    @Override
     public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
+    @Override
     public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
+    @Override
     public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
 
+    @Override
     public Q innerJoin(RelationalPath<?> target) {
         return queryMixin.innerJoin(target);
     }
-    
+
+    @Override
     public <E> Q innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
+    @Override
     public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
+    @Override
     public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
     }
 
+    @Override
     public Q join(RelationalPath<?> target) {
         return queryMixin.join(target);
     }
-    
+
+    @Override
     public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.join(target, alias);
     }
 
+    @Override
     public Q join(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.join(target, alias);
     }
 
+    @Override
     public <E> Q join(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.join(entity).on(key.on(entity));
     }
 
+    @Override
     public Q leftJoin(RelationalPath<?> target) {
         return queryMixin.leftJoin(target);
     }
-    
+
+    @Override
     public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
+    @Override
     public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
+    @Override
     public <E> Q leftJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.leftJoin(entity).on(key.on(entity));
     }
 
+    @Override
     public Q rightJoin(RelationalPath<?> target) {
         return queryMixin.rightJoin(target);
     }
-    
+
+    @Override
     public <E> Q rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
+    @Override
     public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
+    @Override
     public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
@@ -310,6 +338,28 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     /**
+     * Get the query as an SQL query string and bindings
+     *
+     * @param exprs
+     * @return
+     */
+    public SQLBindings getSQL(Expression<?>... exprs) {
+        queryMixin.addProjection(exprs);
+        String queryString = buildQueryString(false);
+        ImmutableList.Builder<Object> args = ImmutableList.builder();
+        Map<ParamExpression<?>, Object> params = getMetadata().getParams();
+        for (Object o : constants) {
+            if (o instanceof ParamExpression) {
+                if (!params.containsKey(o)) {
+                    throw new ParamNotSetException((ParamExpression<?>) o);
+                }
+            }
+            args.add(o);
+        }
+        return new SQLBindings(queryString, args.build());
+    }
+
+    /**
      * Get the results as an JDBC result set
      *
      * @param args
@@ -319,9 +369,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         queryMixin.addProjection(exprs);
         String queryString = buildQueryString(false);
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);    
+            logger.debug("query : {}", queryString);
         }
-        
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -374,13 +423,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
         final String queryString = buildQueryString(false);
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);    
-        }        
+            logger.debug("query : {}", queryString);
+        }
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
             final ResultSet rs = stmt.executeQuery();
-            
+
             if (expr == null) {
                 return new SQLResultIterator<RT>(stmt, rs) {
                     @Override
@@ -433,15 +482,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         expr = queryMixin.addProjection(expr);
         final String queryString = buildQueryString(false);
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);    
-        }        
+            logger.debug("query : {}", queryString);
+        }
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
                 setParameters(stmt, constants, constantPaths, queryMixin.getMetadata().getParams());
                 final ResultSet rs = stmt.executeQuery();
                 try {
-                    final List<RT> rv = new ArrayList<RT>();    
+                    final List<RT> rv = new ArrayList<RT>();
                     if (expr instanceof FactoryExpression) {
                         FactoryExpression<RT> fe = (FactoryExpression<RT>)expr;
                         while (rs.next()) {
@@ -458,7 +507,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                     } else {
                         while (rs.next()) {
                             rv.add(get(rs, expr, 1, expr.getType()));
-                        } 
+                        }
                     }
                     return rv;
                 } catch (IllegalAccessException e) {
@@ -471,8 +520,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                     throw new QueryException(e);
                 } finally {
                     rs.close();
-                }                 
-                
+                }
+
             } finally {
                 stmt.close();
             }
@@ -488,7 +537,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public SearchResults<Tuple> listResults(Expression<?>... args) {
         return listResults(new QTuple(args));
     }
-    
+
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
@@ -515,11 +564,12 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         }
         return c.newInstance(args);
     }
-    
+
     public Q on(Predicate condition) {
         return queryMixin.on(condition);
     }
 
+    @Override
     public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }
@@ -529,10 +579,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         constants = null;
     }
 
-    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, 
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths,
             Map<ParamExpression<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
-            throw new IllegalArgumentException("Expected " + objects.size() + 
+            throw new IllegalArgumentException("Expected " + objects.size() +
                     " paths, but got " + constantPaths.size());
         }
         for (int i = 0; i < objects.size(); i++) {
@@ -566,7 +616,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
-    
+
     /**
      * Creates an union expression for the given subqueries
      *
@@ -588,7 +638,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
     }
-    
+
     /**
      * Creates an union expression for the given subqueries
      *
@@ -599,7 +649,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
-    
+
     /**
      * Creates an union expression for the given subqueries
      *
@@ -611,7 +661,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         unionAll = true;
         return innerUnion(sq);
     }
-    
+
     /**
      * Creates an union expression for the given subqueries
      *
@@ -634,7 +684,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         unionAll = true;
         return innerUnion(sq);
     }
-    
+
     /**
      * Creates an union expression for the given subqueries
      *
@@ -645,7 +695,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
     }
-    
+
     @Override
     public Tuple uniqueResult(Expression<?>... expr) {
         return uniqueResult(new QTuple(expr));
@@ -653,19 +703,19 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        if (getMetadata().getModifiers().getLimit() == null 
+        if (getMetadata().getModifiers().getLimit() == null
            && !expr.toString().contains("count(")) {
-            limit(2);    
-        }        
+            limit(2);
+        }
         CloseableIterator<RT> iterator = iterate(expr);
         return uniqueResult(iterator);
     }
-    
+
     private long unsafeCount() throws SQLException {
         final String queryString = buildQueryString(true);
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);    
-        }        
+            logger.debug("query : {}", queryString);
+        }
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
