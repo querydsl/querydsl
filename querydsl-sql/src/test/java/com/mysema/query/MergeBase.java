@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,8 +15,13 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.H2;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.After;
@@ -25,9 +30,10 @@ import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
+import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
-
-import static com.mysema.query.Target.*;
 
 public class MergeBase extends AbstractBaseTest{
 
@@ -61,7 +67,7 @@ public class MergeBase extends AbstractBaseTest{
             .set(survey.id, 5)
             .set(survey.name, "Hello World").execute());
     }
-    
+
     @Test
     public void Merge_with_Keys_Columns_and_Values_using_null() {
         // keys + columns + values
@@ -72,7 +78,7 @@ public class MergeBase extends AbstractBaseTest{
 
     @Test
     @IncludeIn(H2)
-    public void Merge_with_Keys_and_SubQuery() {    
+    public void Merge_with_Keys_and_SubQuery() {
         assertEquals(1, insert(survey).set(survey.id, 6).set(survey.name, "H").execute());
 
         // keys + subquery
@@ -80,7 +86,47 @@ public class MergeBase extends AbstractBaseTest{
         assertEquals(2, merge(survey).keys(survey.id).select(
                 sq().from(survey2).list(survey2.id.add(1), survey2.name, survey2.name2)).execute());
     }
-    
+
+    @Test
+    @ExcludeIn({H2, CUBRID})
+    public void Merge_With_Keys() throws SQLException{
+        ResultSet rs = merge(survey).keys(survey.id)
+                .set(survey.id, 7)
+                .set(survey.name, "Hello World").executeWithKeys();
+        assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
+        rs.close();
+    }
+
+    @Test
+    @ExcludeIn({H2, CUBRID})
+    public void Merge_With_Keys_Projected() throws SQLException{
+        assertNotNull(merge(survey).keys(survey.id)
+                .set(survey.id, 8)
+                .set(survey.name, "Hello you").executeWithKey(survey.id));
+    }
+
+    @Test
+    @ExcludeIn({H2, CUBRID})
+    public void Merge_With_Keys_Projected2() throws SQLException{
+        Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
+        Object id = merge(survey).keys(survey.id)
+                .set(survey.id, 9)
+                .set(survey.name, "Hello you").executeWithKey(idPath);
+        assertNotNull(id);
+    }
+
+    @Test
+    @ExcludeIn(CUBRID)
+    public void Merge_With_Keys_Null_Id() throws SQLException{
+        ResultSet rs = merge(survey).keys(survey.id)
+                .setNull(survey.id)
+                .set(survey.name, "Hello World").executeWithKeys();
+        assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
+        rs.close();
+    }
+
     @Test
     @IncludeIn(H2)
     public void MergeBatch() {
@@ -89,19 +135,19 @@ public class MergeBase extends AbstractBaseTest{
             .set(survey.id, 5)
             .set(survey.name, "5")
             .addBatch();
-        
+
         merge
             .keys(survey.id)
             .set(survey.id, 6)
             .set(survey.name, "6")
             .addBatch();
-     
+
         assertEquals(2, merge.execute());
-        
+
         assertEquals(1l, query().from(survey).where(survey.name.eq("5")).count());
         assertEquals(1l, query().from(survey).where(survey.name.eq("6")).count());
     }
-    
+
     @Test
     @IncludeIn(H2)
     public void MergeBatch_with_subquery() {
@@ -110,14 +156,15 @@ public class MergeBase extends AbstractBaseTest{
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
             .addBatch();
-        
+
         merge(survey)
             .keys(survey.id)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(40), survey2.name))
             .addBatch();
-        
+
         merge.execute();
 //        assertEquals(1, insert.execute());
     }
+
 }

@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -335,15 +334,11 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         logger.debug(queryString);
         PreparedStatement stmt;
         if (withKeys) {
-            if (entity.getPrimaryKey() != null) {
-                String[] target = new String[entity.getPrimaryKey().getLocalColumns().size()];
-                for (int i = 0; i < target.length; i++) {
-                    target[i] = entity.getPrimaryKey().getLocalColumns().get(i).getMetadata().getName();
-                }
-                stmt = connection.prepareStatement(queryString, target);
-            } else {
-                stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+            String[] target = new String[keys.size()];
+            for (int i = 0; i < target.length; i++) {
+                target[i] = keys.get(i).getMetadata().getName();
             }
+            stmt = connection.prepareStatement(queryString, target);
         } else {
             stmt = connection.prepareStatement(queryString);
         }
