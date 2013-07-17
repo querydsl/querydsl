@@ -281,7 +281,6 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     protected void reset() {
         queryMixin.getMetadata().reset();
-//        entityPaths = null;
         constants = null;
     }
 
