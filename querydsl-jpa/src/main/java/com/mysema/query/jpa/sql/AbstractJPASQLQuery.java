@@ -152,14 +152,15 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
         FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;
         if ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null) {
+            Expression<?> expr = wrapped != null ? wrapped : projection.get(0);
 
-            // TODO : add conversion logic like in AbstractJPAQuery
-
-            this.projection = (FactoryExpression)projection.get(0);
-            if (wrapped != null) {
-                this.projection = wrapped;
-                getMetadata().clearProjection();
-                getMetadata().addProjection(wrapped);
+            if (!queryHandler.transform(query, (FactoryExpression<?>)expr)) {
+                this.projection = (FactoryExpression)projection.get(0);
+                if (wrapped != null) {
+                    this.projection = wrapped;
+                    getMetadata().clearProjection();
+                    getMetadata().addProjection(wrapped);
+                }
             }
         }
 
