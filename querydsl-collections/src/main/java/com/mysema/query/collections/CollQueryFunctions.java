@@ -18,10 +18,17 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.util.MathUtils;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -31,6 +38,44 @@ import com.mysema.util.ReflectionUtils;
  *
  */
 public final class CollQueryFunctions {
+
+    private interface BinaryFunction {
+
+        Number apply(Number num1, Number num2);
+    }
+
+    private static final BinaryFunction SUM = new BinaryFunction() {
+        @Override
+        public Number apply(Number num1, Number num2) {
+            if (num1 instanceof Double || num1 instanceof Float) {
+                return num1.doubleValue() + num2.doubleValue();
+            } else {
+                return num1.longValue() + num2.longValue();
+            }
+        }
+    };
+
+    private static final BinaryFunction MAX = new BinaryFunction() {
+        @Override
+        public Number apply(Number num1, Number num2) {
+            if (num1 instanceof Double || num1 instanceof Float) {
+                return Math.max(num1.doubleValue(), num2.doubleValue());
+            } else {
+                return Math.max(num1.longValue(), num2.longValue());
+            }
+        }
+    };
+
+    private static final BinaryFunction MIN = new BinaryFunction() {
+        @Override
+        public Number apply(Number num1, Number num2) {
+            if (num1 instanceof Double || num1 instanceof Float) {
+                return Math.min(num1.doubleValue(), num2.doubleValue());
+            } else {
+                return Math.min(num1.longValue(), num2.longValue());
+            }
+        }
+    };
 
     private static final List<Object> nullList = Arrays.<Object>asList((Object)null);
 
@@ -136,6 +181,37 @@ public final class CollQueryFunctions {
         }
     }
 
+    private static Number reduce(Iterable<Number> source, BinaryFunction f) {
+        Iterator<Number> it = source.iterator();
+        Number result = it.next();
+        while (it.hasNext()) {
+            result = f.apply(result, it.next());
+        }
+        return result;
+    }
+
+    public static Number aggregate(Collection<Number> source, Expression<?> expr, Operator<?> aggregator) {
+        if (aggregator == Ops.AggOps.AVG_AGG) {
+            Number sum = reduce(source, SUM);
+            return sum.doubleValue() / source.size();
+        } else if (aggregator == Ops.AggOps.COUNT_AGG) {
+            return Long.valueOf(source.size());
+        } else if (aggregator == Ops.AggOps.COUNT_DISTINCT_AGG) {
+            if (!Set.class.isInstance(source)) {
+                source = new HashSet(source);
+            }
+            return Long.valueOf(source.size());
+        } else if (aggregator == Ops.AggOps.MAX_AGG) {
+            return MathUtils.cast(reduce(source, MAX), (Class)expr.getType());
+        } else if (aggregator == Ops.AggOps.MIN_AGG) {
+            return MathUtils.cast(reduce(source, MIN), (Class)expr.getType());
+        } else if (aggregator == Ops.AggOps.SUM_AGG) {
+            return MathUtils.cast(reduce(source, SUM), (Class)expr.getType());
+        } else {
+            throw new IllegalArgumentException("Unknown operator " + aggregator);
+        }
+    }
+
     public static boolean like(final String str, String like) {
         final StringBuilder pattern = new StringBuilder(like.length() + 4);
         for (int i = 0; i < like.length(); i++) {
@@ -177,5 +253,6 @@ public final class CollQueryFunctions {
     }
 
     private CollQueryFunctions() {}
+
 
 }

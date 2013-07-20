@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.util.List;
+import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Ops provides the operators for the fluent query grammar.
@@ -172,11 +172,19 @@ public final class Ops {
     // subquery operations
     public static final Operator<Boolean> EXISTS = new OperatorImpl<Boolean>("EXISTS");
 
-    public static final List<Operator<?>> equalsOps = ImmutableList.<Operator<?>>of(EQ);
+    public static final Set<Operator<?>> equalsOps = ImmutableSet.<Operator<?>>of(EQ);
 
-    public static final List<Operator<?>> notEqualsOps = ImmutableList.<Operator<?>>of(NE);
+    public static final Set<Operator<?>> notEqualsOps = ImmutableSet.<Operator<?>>of(NE);
 
-    public static final List<Operator<?>> compareOps = ImmutableList.<Operator<?>>of(EQ, NE, LT, GT, GOE, LOE);
+    public static final Set<Operator<?>> compareOps = ImmutableSet.<Operator<?>>of(EQ, NE, LT, GT, GOE, LOE);
+
+    public static final Set<Operator<?>> aggOps = ImmutableSet.of(
+            Ops.AggOps.AVG_AGG,
+            Ops.AggOps.COUNT_AGG,
+            Ops.AggOps.COUNT_DISTINCT_AGG,
+            Ops.AggOps.MAX_AGG,
+            Ops.AggOps.MIN_AGG,
+            Ops.AggOps.SUM_AGG);
 
     /**
      * Aggregation operators

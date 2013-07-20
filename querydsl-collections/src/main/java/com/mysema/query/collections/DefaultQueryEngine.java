@@ -31,6 +31,8 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 
@@ -138,6 +140,8 @@ public class DefaultQueryEngine implements QueryEngine {
             if (!metadata.getOrderBy().isEmpty()) {
                 order(metadata, sources, list);
             }
+            // projection
+            list = project(metadata, sources, list);
             // limit + offset
             if (metadata.getModifiers().isRestricting()) {
                 list = metadata.getModifiers().subList(list);
@@ -145,8 +149,6 @@ public class DefaultQueryEngine implements QueryEngine {
             if (list.isEmpty()) {
                 return list;
             }
-            // projection
-            list = project(metadata, sources, list);
         }
 
         // distinct
@@ -185,16 +187,16 @@ public class DefaultQueryEngine implements QueryEngine {
                 }
                 order(metadata, sources, list);
             }
+            // projection
+            if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)) {
+                list = project(metadata, sources, list);
+            }
             // limit + offset
             if (metadata.getModifiers().isRestricting()) {
                 list = metadata.getModifiers().subList(list);
             }
             if (list.isEmpty()) {
                 return list;
-            }
-            // projection
-            if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)) {
-                list = project(metadata, sources, list);
             }
         }
 
@@ -222,11 +224,22 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
-        Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, metadata.getProjection().get(0));
+        Expression<?> projection = metadata.getProjection().get(0);
+        Operator<?> aggregator = null;
+        if (projection instanceof Operation && Ops.aggOps.contains(((Operation)projection).getOperator())) {
+            Operation<?> aggregation = (Operation<?>)projection;
+            aggregator = aggregation.getOperator();
+            projection = aggregation.getArg(0);
+        }
+        Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, projection);
         EvaluatorFunction transformer = new EvaluatorFunction(projectionEvaluator);
         List target = new ArrayList();
         Iterators.addAll(target, Iterators.transform(list.iterator(), transformer));
-        return target;
+        if (aggregator != null) {
+            return ImmutableList.of(CollQueryFunctions.aggregate(target, projection, aggregator));
+        } else {
+            return target;
+        }
     }
 
 

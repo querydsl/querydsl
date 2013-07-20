@@ -89,7 +89,6 @@ public class CollQueryTemplates extends JavaTemplates {
         add(Ops.COALESCE, functions + ".coalesce({0})");
 
         add(Ops.NULLIF, functions + ".nullif({0}, {1})");
-
     }
 
 }
