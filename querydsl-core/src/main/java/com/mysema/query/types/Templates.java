@@ -189,6 +189,7 @@ public class Templates {
         add(Ops.MathOps.SIN, "sin({0})");
         add(Ops.MathOps.SINH, "sinh({0})");
         add(Ops.MathOps.ROUND, "round({0})");
+        add(Ops.MathOps.ROUND2, "round({0},{1})");
         add(Ops.MathOps.RAD, "radians({0})");
         add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.RANDOM2, "random({0})");

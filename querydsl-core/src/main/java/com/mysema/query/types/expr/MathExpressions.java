@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,12 +20,12 @@ import com.mysema.query.types.Ops.MathOps;
 
 /**
  * Extended Math expressions, supported by the SQL module
- * 
+ *
  * @author tiwe
  *
  */
 public final class MathExpressions {
-    
+
     /**
      * @param num
      * @return acos(num)
@@ -49,7 +49,7 @@ public final class MathExpressions {
     public static <A extends Number & Comparable<?>> NumberExpression<Double> atan(Expression<A> num) {
         return NumberOperation.create(Double.class, Ops.MathOps.ATAN, num);
     }
-    
+
     /**
      * @param num
      * @return cos(num)
@@ -157,15 +157,36 @@ public final class MathExpressions {
     public static NumberExpression<Double> random() {
         return NumberExpression.random();
     }
-    
+
     /**
      * Return a random number expression with the given seed
-     * 
+     *
      * @param seed
      * @return
      */
     public static NumberExpression<Double> random(int seed) {
         return NumberOperation.create(Double.class, MathOps.RANDOM2, ConstantImpl.create(seed));
+    }
+
+    /**
+     * Round to nearest integer
+     *
+     * @param num
+     * @return
+     */
+    public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num) {
+        return NumberOperation.create(num.getType(), MathOps.ROUND, num);
+    }
+
+    /**
+     * Round to s decimal places
+     *
+     * @param num
+     * @params s
+     * @return
+     */
+    public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num, int s) {
+        return NumberOperation.create(num.getType(), MathOps.ROUND2, num, ConstantImpl.create(s));
     }
 
     /**

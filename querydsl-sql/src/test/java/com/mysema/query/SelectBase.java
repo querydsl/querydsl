@@ -888,6 +888,15 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn({DERBY, SQLSERVER})
+    public void Round() {
+        Expression<Double> expr = Expressions.numberTemplate(Double.class, "1.32");
+
+        assertEquals(Double.valueOf(1.0), unique(MathExpressions.round(expr)));
+        assertEquals(Double.valueOf(1.3), unique(MathExpressions.round(expr, 1)));
+    }
+
+    @Test
     public void Nested_Tuple_Projection() {
         Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
         List<Tuple> tuples = query().from(employee)

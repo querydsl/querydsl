@@ -335,6 +335,8 @@ public final class Ops {
 
         public static final Operator<Number> ROUND = new OperatorImpl<Number>("ROUND");
 
+        public static final Operator<Number> ROUND2 = new OperatorImpl<Number>("ROUND");
+
         public static final Operator<Number> RANDOM = new OperatorImpl<Number>("RANDOM");
 
         public static final Operator<Number> RANDOM2 = new OperatorImpl<Number>("RANDOM2");
