@@ -38,11 +38,6 @@
       <artifactId>cglib</artifactId>
       <version>${cglib.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-util</artifactId>
-      <version>4.0</version>
-    </dependency>
     
     <!--  test -->    
     <dependency>
