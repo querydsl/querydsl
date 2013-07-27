@@ -1336,6 +1336,13 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    public void Tuple2() {
+        query().from(employee)
+            .list(Expressions.as(ConstantImpl.create("1"),"code"),
+                  employee.id);
+    }
+
+    @Test
     public void TwoColumns() {
         // two columns
         for (Tuple row : query().from(survey).list(survey.id, survey.name)) {
