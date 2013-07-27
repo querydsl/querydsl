@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,11 +38,11 @@ import com.mysema.query.Mode;
 public class JPATestRunner extends BlockJUnit4ClassRunner {
 
     private EntityManagerFactory entityManagerFactory;
-    
+
     private EntityManager entityManager;
-    
+
     private Method setter;
-    
+
     private boolean isDerby;
 
     public JPATestRunner(Class<?> klass) throws InitializationError{
@@ -59,18 +59,18 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
                     @Override
                     public void evaluate() throws Throwable {
                         if (setter == null) {
-                            setter = target.getClass().getMethod("setEntityManager", EntityManager.class);    
-                        }                         
-                        setter.invoke(target, entityManager);                            
+                            setter = target.getClass().getMethod("setEntityManager", EntityManager.class);
+                        }
+                        setter.invoke(target, entityManager);
                         base.evaluate();
-                    }                                  
+                    }
                 };
             }
-            
+
         });
         return rules;
     }
-    
+
     @Override
     public void run(final RunNotifier notifier) {
         try {
@@ -79,17 +79,17 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
-        } finally {   
+        } finally {
             shutdown();
         }
 
     }
-    
+
     private void start() throws Exception {
         String mode = Mode.mode.get();
         if (mode == null) {
             mode = "h2perf";
-        }        
+        }
         System.out.println(mode);
         isDerby = mode.contains("derby");
         if (isDerby) {
@@ -97,38 +97,38 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
         }
         entityManagerFactory = Persistence.createEntityManagerFactory(mode);
         entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();        
+        entityManager.getTransaction().begin();
     }
-    
+
     private void shutdown() {
         if (entityManager != null) {
             try {
                 if (entityManager.getTransaction().isActive()) {
                     entityManager.getTransaction().rollback();
-                }                     
+                }
             } finally {
-                entityManager.close();    
+                entityManager.close();
                 entityManager = null;
-            }    
-        }            
-        
+            }
+        }
+
         if (entityManagerFactory != null) {
             if (entityManagerFactory.getCache() != null) {
-                entityManagerFactory.getCache().evictAll();    
-            }            
+                entityManagerFactory.getCache().evictAll();
+            }
             entityManagerFactory.close();
             entityManagerFactory = null;
         }
-        
+
         // clean shutdown of derby
         if (isDerby) {
-            try {                    
+            try {
                 DriverManager.getConnection("jdbc:derby:;shutdown=true");
             } catch (SQLException e) {
                 if (!e.getMessage().equals("Derby system shutdown.")) {
-                    throw new RuntimeException(e);    
-                }                    
-            } 
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 }
