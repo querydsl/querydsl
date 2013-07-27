@@ -418,6 +418,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    @NoHibernate
     public void Constant2() {
         query().from(cat).map(cat.id,  Expressions.constant("name"));
     }
