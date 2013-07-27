@@ -794,7 +794,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @Ignore
+    @NoBatooJPA
     public void Order_NullsFirst() {
         assertNull(query().from(cat)
             .orderBy(cat.dateField.asc().nullsFirst())
@@ -802,7 +802,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @Ignore
+    @NoBatooJPA
     public void Order_NullsLast() {
         assertNotNull(query().from(cat)
             .orderBy(cat.dateField.asc().nullsLast())
