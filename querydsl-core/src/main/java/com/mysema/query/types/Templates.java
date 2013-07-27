@@ -220,8 +220,8 @@ public class Templates {
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
 
         // case
-        add(Ops.CASE, "case {0} end");
-        add(Ops.CASE_WHEN,  "when {0} then {1} {2}");
+        add(Ops.CASE, "case {0} end", 0);
+        add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 0);
         add(Ops.CASE_ELSE,  "else {0}");
 
         // case for

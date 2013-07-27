@@ -23,12 +23,37 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.domain.QCat;
 import com.mysema.query.jpa.domain.Location;
 import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class JPQLSerializerTest {
+
+    @Test
+    public void Case() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
+                .when(cat.toes.eq(3)).then(3)
+                .otherwise(4);
+        serializer.handle(expr);
+        assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else ?3 end", serializer.toString());
+    }
+
+
+    @Test
+    public void Case2() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
+                .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                .otherwise(4);
+        serializer.handle(expr);
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
+    }
 
     @Test
     public void FromWithCustomEntityName() {

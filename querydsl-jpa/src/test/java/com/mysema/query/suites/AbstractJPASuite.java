@@ -1,6 +1,6 @@
 package com.mysema.query.suites;
 
-import org.junit.BeforeClass;
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -20,8 +20,8 @@ import com.mysema.query.jpa.SerializationBase;
     SerializationBase.class})
 public abstract class AbstractJPASuite {
 
-    @BeforeClass
-    public static void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDownClas() throws Exception {
         Mode.mode.remove();
         Mode.target.remove();
     }

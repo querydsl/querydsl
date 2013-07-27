@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 
 import javax.persistence.EntityManager;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -23,40 +24,46 @@ import com.mysema.testutil.Performance;
 public class QueryPerformanceTest {
 
     private static final int iterations = 1000;
-    
+
     private EntityManager entityManager;
-    
+
     @BeforeClass
     public static void setUpClass() {
         Mode.mode.set("h2perf");
         Mode.target.set(Target.H2);
     }
-    
+
+    @AfterClass
+    public static void tearDownClass() {
+        Mode.mode.remove();
+        Mode.target.remove();
+    }
+
     private JPAQuery query() {
         return new JPAQuery(entityManager);
     }
-        
+
     @Before
     public void setUp() {
         if (query().from(QCat.cat).notExists()) {
             for (int i = 0; i < iterations; i++) {
                 entityManager.persist(new Cat(String.valueOf(i), i + 100));
-            }         
-            entityManager.flush();    
-        }        
+            }
+            entityManager.flush();
+        }
     }
-    
+
     @Test
     public void ById_Raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             Cat cat = (Cat)entityManager.createQuery("select cat from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
-            assertNotNull(cat);            
+            assertNotNull(cat);
         }
         System.err.println("by id - raw" + (System.currentTimeMillis() - start));
     }
-    
+
     @Test
     public void ById_Qdsl() {
         long start = System.currentTimeMillis();
@@ -67,7 +74,7 @@ public class QueryPerformanceTest {
         }
         System.err.println("by id - dsl" + (System.currentTimeMillis() - start));
     }
-    
+
     @Test
     public void ById_TwoCols_Raw() {
         long start = System.currentTimeMillis();
@@ -75,11 +82,11 @@ public class QueryPerformanceTest {
             Object[] row = (Object[])entityManager.createQuery(
                     "select cat.id, cat.name from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
-            assertNotNull(row);            
+            assertNotNull(row);
         }
         System.err.println("by id - 2 cols - raw" + (System.currentTimeMillis() - start));
     }
-    
+
     @Test
     public void ById_TwoCols_Qdsl() {
         long start = System.currentTimeMillis();
@@ -90,11 +97,11 @@ public class QueryPerformanceTest {
         }
         System.err.println("by id - 2 cols - dsl" + (System.currentTimeMillis() - start));
     }
-    
-    
+
+
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    
-    
+
+
 }

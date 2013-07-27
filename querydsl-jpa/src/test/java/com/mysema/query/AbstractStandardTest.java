@@ -418,6 +418,11 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void Constant2() {
+        query().from(cat).map(cat.id,  Expressions.constant("name"));
+    }
+
+    @Test
     public void DistinctResults() {
         System.out.println("-- list results");
         SearchResults<Date> res = query().from(cat).limit(2).listResults(cat.birthdate);
@@ -609,6 +614,14 @@ public abstract class AbstractStandardTest {
     @Ignore // FIXME https://github.com/mysema/querydsl/issues/185
     public void Case() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
+    }
+
+    @Test
+    public void Case2() {
+        query().from(cat)
+            .list(Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
+                                     .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                                     .otherwise(4));
     }
 
     @Test
