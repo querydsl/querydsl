@@ -150,7 +150,7 @@ public class JPQLSerializerTest {
         serializer.serialize(md, false, null);
         assertEquals("select cat\n" +
         	     "from Cat cat\n" +
-        	     "order by cat.name is not null, cat.name asc", serializer.toString());
+        	     "order by cat.name asc nulls first", serializer.toString());
     }
 
     @Test
@@ -163,6 +163,6 @@ public class JPQLSerializerTest {
         serializer.serialize(md, false, null);
         assertEquals("select cat\n" +
                      "from Cat cat\n" +
-                     "order by cat.name is null, cat.name asc", serializer.toString());
+                     "order by cat.name asc nulls last", serializer.toString());
     }
 }
