@@ -16,11 +16,11 @@ package com.mysema.query.types;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import com.mysema.util.BeanMap;
 import com.mysema.util.ReflectionUtils;
 
@@ -81,9 +81,9 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
         return property;
     }
 
-    private static Map<String,Expression<?>> createBindings(Expression<?>... args) {
+    private static ImmutableMap<String,Expression<?>> createBindings(Expression<?>... args) {
         
-        Map<String,Expression<?>> rv = new LinkedHashMap<String,Expression<?>>(args.length);
+        Builder<String, Expression<?>> rv = ImmutableMap.builder();
         for (Expression<?> expr : args) {
             if (expr instanceof Path<?>) {
                 Path<?> path = (Path<?>)expr;
@@ -110,15 +110,13 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                 throw new IllegalArgumentException("Unsupported expression " + expr);
             }
         }
-        return rv;
+        return rv.build();
     }
 
 
-    private final Map<String, ? extends Expression<?>> bindings;
+    private final ImmutableMap<String, Expression<?>> bindings;
 
     private final transient Map<String, Field> fields = new HashMap<String, Field>();
-
-    private final ImmutableList<Expression<?>> args;
 
     private final boolean fieldAccess;
 
@@ -208,8 +206,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
      */
     public QBean(Class<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
-        this.bindings = bindings;
-        this.args = ImmutableList.copyOf(bindings.values());
+        this.bindings = ImmutableMap.copyOf(bindings);
         this.fieldAccess = fieldAccess;
         if (fieldAccess) {
             initFields();
@@ -240,20 +237,22 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
         try {
             T rv = getType().newInstance();
             if (fieldAccess) {
-                for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()) {
-                    Object value = a[this.args.indexOf(entry.getValue())];
-                    if (value != null) {
-                        fields.get(entry.getKey()).set(rv, value);
-                    }
-                }
+            	List<String> keys = bindings.keySet().asList();
+            	for (int i = 0; i < keys.size(); i++) {
+            		Object value = a[i];
+            		if (value != null) {
+            			fields.get(keys.get(i)).set(rv, value);
+            		}
+				}
             } else {
                 Map<String, Object> beanMap = new BeanMap(rv);
-                for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()) {
-                    Object value = a[this.args.indexOf(entry.getValue())];
-                    if (value != null) {
-                        beanMap.put(entry.getKey(), value);
-                    }
-                }
+                List<String> keys = bindings.keySet().asList();
+            	for (int i = 0; i < keys.size(); i++) {
+            		Object value = a[i];
+            		if (value != null) {
+            			beanMap.put(keys.get(i), value);
+            		}
+				}
             }
             return rv;
         } catch (InstantiationException e) {
@@ -293,7 +292,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
             return true;
         } else if (obj instanceof QBean<?>) {
             QBean<?> c = (QBean<?>)obj;
-            return args.equals(c.args) && getType().equals(c.getType());
+            return getArgs().equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;
         }
@@ -301,7 +300,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
 
     @Override
     public List<Expression<?>> getArgs() {
-        return args;
+        return bindings.values().asList();
     }
 
 }
