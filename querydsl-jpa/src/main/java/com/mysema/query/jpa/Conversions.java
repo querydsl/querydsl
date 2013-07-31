@@ -13,6 +13,8 @@
  */
 package com.mysema.query.jpa;
 
+import javax.persistence.Entity;
+
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
 import com.mysema.query.types.Expression;
@@ -20,6 +22,10 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateExpressionImpl;
+import com.mysema.query.types.TemplateFactory;
 
 /**
  * Conversions provides module specific projection conversion functionality
@@ -28,6 +34,8 @@ import com.mysema.query.types.Ops;
  *
  */
 public final class Conversions {
+
+    private static final Template ALL = TemplateFactory.DEFAULT.create("{0}.*");
 
     public static <RT> Expression<RT> convert(Expression<RT> expr) {
         if (isAggSumWithConversion(expr) || isCountAggConversion(expr)) {
@@ -44,7 +52,12 @@ public final class Conversions {
     }
 
     public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {
-        if (Number.class.isAssignableFrom(expr.getType())) {
+        if (expr instanceof Path && expr.getType().isAnnotationPresent(Entity.class)) {
+            Path<?> path = (Path<?>)expr;
+            if (path.getMetadata().getParent() == null) {
+                return (Expression)TemplateExpressionImpl.create(expr.getType(), ALL, expr);
+            }
+        } else if (Number.class.isAssignableFrom(expr.getType())) {
             return new NumberConversion<RT>(expr);
         } else if (expr instanceof FactoryExpression) {
             FactoryExpression<RT> factorye = (FactoryExpression<RT>)expr;

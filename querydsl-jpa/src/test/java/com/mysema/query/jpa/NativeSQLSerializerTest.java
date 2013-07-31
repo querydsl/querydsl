@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@ package com.mysema.query.jpa;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
@@ -26,9 +25,8 @@ import com.mysema.query.sql.MySQLTemplates;
 
 
 public class NativeSQLSerializerTest {
-    
+
     @Test
-    @Ignore
     public void In() {
         Configuration conf = new Configuration(new MySQLTemplates());
         NativeSQLSerializer serializer = new NativeSQLSerializer(conf);
@@ -38,7 +36,9 @@ public class NativeSQLSerializerTest {
         md.addWhere(cat.name.in("X", "Y"));
         md.addProjection(cat.id);
         serializer.serialize(md, false);
-        assertEquals("cat.*.id in ?1", serializer.toString());        
+        assertEquals("select animal_.id\n" +
+        	"from animal_ animal_\n" +
+        	"where animal_.name in (?1, ?2)", serializer.toString());
     }
 
 }

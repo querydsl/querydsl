@@ -120,14 +120,9 @@ public final class NativeSQLSerializer extends SQLSerializer {
 
     @Override
     public Void visit(Path<?> path, Void context) {
+        super.visit(path, context);
         if (path.getMetadata().getParent() == null && path.getType().isAnnotationPresent(Entity.class)) {
-            super.visit(path, context);
-            if (stage == Stage.SELECT) {
-                append(".*");
-            }
             entityPaths.add(path);
-        } else {
-            super.visit(path, context);
         }
         return null;
     }

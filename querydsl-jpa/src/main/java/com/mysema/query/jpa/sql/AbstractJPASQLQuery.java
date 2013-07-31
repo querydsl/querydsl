@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
@@ -124,7 +125,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         logQuery(queryString);
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
-        if (projection.get(0) instanceof EntityPath) {
+        if (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class)) {
             if (projection.size() == 1) {
                 query = entityManager.createNativeQuery(queryString, projection.get(0).getType());
             } else {
