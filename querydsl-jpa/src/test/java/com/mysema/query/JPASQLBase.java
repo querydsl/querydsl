@@ -215,9 +215,8 @@ public class JPASQLBase {
     }
 
     @Test
-    @Ignore
     public void EntityQueries2() {
-        QCat catEntity = QCat.cat;
+        QCat catEntity = new QCat("animal_");
         query().from(catEntity).list(catEntity.toes.max());
     }
 
