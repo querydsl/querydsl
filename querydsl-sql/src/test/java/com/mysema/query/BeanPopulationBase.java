@@ -41,34 +41,6 @@ public class BeanPopulationBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Insert_Update_Query_and_Delete() {
-        // Insert
-        Employee employee = new Employee();
-        employee.setFirstname("John");
-        Integer id = insert(e).populate(employee).executeWithKey(e.id);
-        assertNotNull(id);
-        employee.setId(id);
-
-        // Update
-        employee.setLastname("S");
-        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
-
-        // Query
-        Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).uniqueResult(e);
-        assertEquals("John", smith.getFirstname());
-
-        // Delete (no changes needed)
-        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
-    }
-
-    @Test
-    public void Populate_With_BeanMapper() {
-        Employee employee = new Employee();
-        employee.setFirstname("John");
-        insert(e).populate(employee, new BeanMapper()).execute();
-    }
-
-    @Test
     public void CustomProjection() {
         // Insert
         Employee employee = new Employee();
@@ -105,7 +77,32 @@ public class BeanPopulationBase extends AbstractBaseTest{
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
     }
 
+    @Test
+    public void Insert_Update_Query_and_Delete() {
+        // Insert
+        Employee employee = new Employee();
+        employee.setFirstname("John");
+        Integer id = insert(e).populate(employee).executeWithKey(e.id);
+        assertNotNull(id);
+        employee.setId(id);
 
+        // Update
+        employee.setLastname("S");
+        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
+        // Query
+        Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).uniqueResult(e);
+        assertEquals("John", smith.getFirstname());
+
+        // Delete (no changes needed)
+        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
+    }
+
+    @Test
+    public void Populate_With_BeanMapper() {
+        Employee employee = new Employee();
+        employee.setFirstname("John");
+        insert(e).populate(employee, new BeanMapper()).execute();
+    }
 
 }

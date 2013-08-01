@@ -240,7 +240,6 @@ public class MongodbQueryTest {
 
     @Test
     public void EqInAndOrderByQueries() {
-
         assertQuery(user.firstName.eq("Jaakko"), u1);
         assertQuery(user.firstName.equalsIgnoreCase("jaakko"), u1);
         assertQuery(user.lastName.eq("Aakkonen"), u3);
@@ -265,7 +264,6 @@ public class MongodbQueryTest {
 
     @Test
     public void RegexQueries() {
-
         assertQuery(user.firstName.startsWith("Jaan"), u3, u4);
         assertQuery(user.firstName.startsWith("jaan"));
         assertQuery(user.firstName.startsWithIgnoreCase("jaan"), u3, u4);
@@ -330,7 +328,6 @@ public class MongodbQueryTest {
 
     @Test
     public void Iterate() {
-
         User a = addUser("A", "A");
         User b = addUser("A1", "B");
         User c = addUser("A2", "C");
@@ -343,7 +340,6 @@ public class MongodbQueryTest {
         assertEquals(b, i.next());
         assertEquals(c, i.next());
         assertEquals(false, i.hasNext());
-
     }
 
     @Test

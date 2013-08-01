@@ -89,11 +89,6 @@ public class JPASQLBase {
     }
 
     @Test
-    public void In() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).count());
-    }
-
-    @Test
     public void Count() {
         assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).count());
     }
@@ -110,89 +105,17 @@ public class JPASQLBase {
     }
 
     @Test
-    public void List() {
-        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
-    }
+    @Ignore
+    public void EntityProjections() {
+        // not yet supported
+        SAnimal cat = new SAnimal("cat");
 
-    @Test
-    public void Limit_Offset() {
-        assertEquals(2, query().from(cat).limit(2).offset(2).list(cat.id, cat.name).size());
-    }
-
-    @Test
-    @ExcludeIn(Target.H2)
-    public void List_Wildcard() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).list(Wildcard.all).size());
-    }
-
-    @Test
-    public void List_Non_Path() {
-        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(
-                cat.birthdate.year(),
-                cat.birthdate.month(),
-                cat.birthdate.dayOfMonth()).size());
-    }
-
-    @Test
-    public void List_With_Limit() {
-        assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
-    }
-
-    @Test
-    @ExcludeIn({Target.H2, Target.MYSQL})
-    public void List_With_Offset() {
-        assertEquals(3, query().from(cat).offset(3).list(cat.id).size());
-    }
-
-    @Test
-    public void List_Limit_And_Offset() {
-        assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());
-    }
-
-    @Test
-    public void List_Limit_And_Offset2() {
-        List<Tuple> tuples = query().from(cat).offset(3).limit(3).list(cat.id, cat.name);
-        assertEquals(3, tuples.size());
-        assertEquals(2, tuples.get(0).size());
-    }
-
-    @Test
-    public void List_Multiple() {
-        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyWeight));
-    }
-
-    @Test
-    public void List_With_Count() {
-        print(query().from(cat).where(cat.dtype.eq("C")).groupBy(cat.name)
-                .list(cat.name, cat.id.count()));
-    }
-
-    @Test
-    public void List_Results() {
-        SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc())
-                .listResults(cat.name);
-        assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
-        assertEquals(6l, results.getTotal());
-    }
-
-    @Test
-    public void Unique_Result() {
-        query().from(cat).limit(1).uniqueResult(cat.id);
-    }
-
-    @Test
-    public void Unique_Result_Multiple() {
-        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});
-    }
-
-    @Test
-    public void Single_Result() {
-        query().from(cat).singleResult(cat.id);
-    }
-
-    @Test
-    public void Single_Result_Multiple() {
-        query().from(cat).singleResult(new Expression[]{cat.id});
+        List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
+                .list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
+        assertEquals(6, cats.size());
+        for (Cat c : cats) {
+            System.out.println(c.getName());
+        }
     }
 
     @Test
@@ -217,12 +140,6 @@ public class JPASQLBase {
     }
 
     @Test
-    public void EntityQueries2() {
-        QCat catEntity = new QCat("animal_");
-        query().from(catEntity).list(catEntity.toes.max());
-    }
-
-    @Test
     public void EntityQueries_CreateQuery() {
         SAnimal cat = new SAnimal("cat");
         QCat catEntity = QCat.cat;
@@ -242,38 +159,80 @@ public class JPASQLBase {
     }
 
     @Test
-    @Ignore
-    public void EntityProjections() {
-        // not yet supported
-        SAnimal cat = new SAnimal("cat");
+    public void EntityQueries2() {
+        QCat catEntity = new QCat("animal_");
+        query().from(catEntity).list(catEntity.toes.max());
+    }
 
-        List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
-                .list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
-        assertEquals(6, cats.size());
-        for (Cat c : cats) {
-            System.out.println(c.getName());
-        }
+    @Test
+    public void In() {
+        assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).count());
+    }
+
+    @Test
+    public void Limit_Offset() {
+        assertEquals(2, query().from(cat).limit(2).offset(2).list(cat.id, cat.name).size());
+    }
+
+    @Test
+    public void List() {
+        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
+    }
+
+    @Test
+    public void List_Limit_And_Offset() {
+        assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());
+    }
+
+    @Test
+    public void List_Limit_And_Offset2() {
+        List<Tuple> tuples = query().from(cat).offset(3).limit(3).list(cat.id, cat.name);
+        assertEquals(3, tuples.size());
+        assertEquals(2, tuples.get(0).size());
+    }
+
+    @Test
+    public void List_Multiple() {
+        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyWeight));
+    }
+
+    @Test
+    public void List_Non_Path() {
+        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(
+                cat.birthdate.year(),
+                cat.birthdate.month(),
+                cat.birthdate.dayOfMonth()).size());
+    }
+
+    @Test
+    public void List_Results() {
+        SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc())
+                .listResults(cat.name);
+        assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
+        assertEquals(6l, results.getTotal());
     }
 
     @Test
     @ExcludeIn(Target.H2)
-    public void Wildcard() {
-        SAnimal cat = new SAnimal("cat");
-
-        List<Tuple> rows = query().from(cat).list(cat.all());
-        assertEquals(6, rows.size());
-        print(rows);
-
-//        rows = query().from(cat).list(cat.id, cat.all());
-//        assertEquals(6, rows.size());
-//        print(rows);
+    public void List_Wildcard() {
+        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).list(Wildcard.all).size());
     }
 
     @Test
-    public void Null_as_uniqueResult() {
-        SAnimal cat = new SAnimal("cat");
-        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
-                .uniqueResult(cat.name));
+    public void List_With_Count() {
+        print(query().from(cat).where(cat.dtype.eq("C")).groupBy(cat.name)
+                .list(cat.name, cat.id.count()));
+    }
+
+    @Test
+    public void List_With_Limit() {
+        assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
+    }
+
+    @Test
+    @ExcludeIn({Target.H2, Target.MYSQL})
+    public void List_With_Offset() {
+        assertEquals(3, query().from(cat).offset(3).list(cat.id).size());
     }
 
     @Test
@@ -283,12 +242,45 @@ public class JPASQLBase {
     }
 
     @Test
+    public void Null_as_uniqueResult() {
+        SAnimal cat = new SAnimal("cat");
+        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
+                .uniqueResult(cat.name));
+    }
+
+    private void print(Iterable<Tuple> rows) {
+        for (Tuple row : rows) {
+            System.out.println(row);
+        }
+    }
+
+    @Test
+    public void Single_Result() {
+        query().from(cat).singleResult(cat.id);
+    }
+
+    @Test
+    public void Single_Result_Multiple() {
+        query().from(cat).singleResult(new Expression[]{cat.id});
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void Union() throws SQLException {
         SAnimal cat = new SAnimal("cat");
         SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_All() {
+        SAnimal cat = new SAnimal("cat");
+        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
+        List<Integer> list = query().unionAll(sq1, sq2).list();
         assertFalse(list.isEmpty());
     }
 
@@ -354,19 +346,27 @@ public class JPASQLBase {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void Union_All() {
-        SAnimal cat = new SAnimal("cat");
-        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
-        List<Integer> list = query().unionAll(sq1, sq2).list();
-        assertFalse(list.isEmpty());
+    public void Unique_Result() {
+        query().from(cat).limit(1).uniqueResult(cat.id);
     }
 
-    private void print(Iterable<Tuple> rows) {
-        for (Tuple row : rows) {
-            System.out.println(row);
-        }
+    @Test
+    public void Unique_Result_Multiple() {
+        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});
+    }
+
+    @Test
+    @ExcludeIn(Target.H2)
+    public void Wildcard() {
+        SAnimal cat = new SAnimal("cat");
+
+        List<Tuple> rows = query().from(cat).list(cat.all());
+        assertEquals(6, rows.size());
+        print(rows);
+
+//        rows = query().from(cat).list(cat.id, cat.all());
+//        assertEquals(6, rows.size());
+//        print(rows);
     }
 
 }

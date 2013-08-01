@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -48,54 +48,54 @@ public class DeleteBase extends AbstractBaseTest{
     }
 
     @Test
+    public void Batch() throws SQLException{
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
+
+        SQLDeleteClause delete = delete(survey);
+        delete.where(survey.name.eq("A")).addBatch();
+        delete.where(survey.name.eq("B")).addBatch();
+        assertEquals(2, delete.execute());
+    }
+
+    @Test
     @ExcludeIn(MYSQL)
     public void Delete() throws SQLException{
         long count = query().from(survey).count();
         assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
         assertEquals(count, delete(survey).execute());
     }
-    
-    @Test
-    public void Batch() throws SQLException{
-        insert(survey).values(2, "A","B").execute();
-        insert(survey).values(3, "B","C").execute();
-        
-        SQLDeleteClause delete = delete(survey);
-        delete.where(survey.name.eq("A")).addBatch();
-        delete.where(survey.name.eq("B")).addBatch();
-        assertEquals(2, delete.execute());        
-    }
-    
+
     @Test
     public void Delete_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = delete(survey1);
-        delete.where(survey1.name.eq("XXX"), 
+        delete.where(survey1.name.eq("XXX"),
                 sq().from(employee).where(survey1.id.eq(employee.id)).exists());
         delete.execute();
     }
-    
+
     @Test
-    public void Delete_with_SubQuery_exists_Params() {        
+    public void Delete_with_SubQuery_exists_Params() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
-        
+
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
         SQLSubQuery sq = sq().from(employee).where(employee.id.eq(param));
         sq.set(param, -12478923);
-        
+
         SQLDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"), sq.exists());
         delete.execute();
     }
-    
+
     @Test
     public void Delete_with_SubQuery_exists2() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = delete(survey1);
-        delete.where(survey1.name.eq("XXX"), 
+        delete.where(survey1.name.eq("XXX"),
                 sq().from(employee).where(survey1.name.eq(employee.lastname)).exists());
         delete.execute();
     }

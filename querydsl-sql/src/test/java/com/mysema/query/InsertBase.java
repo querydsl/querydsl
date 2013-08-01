@@ -63,6 +63,101 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Complex1() {
+        // related to #584795
+        QSurvey survey = new QSurvey("survey");
+        QEmployee emp1 = new QEmployee("emp1");
+        QEmployee emp2 = new QEmployee("emp2");
+        SQLInsertClause insert = insert(survey);
+        insert.columns(survey.id, survey.name);
+        insert.select(new SQLSubQuery().from(survey)
+          .innerJoin(emp1)
+           .on(survey.id.eq(emp1.id))
+          .innerJoin(emp2)
+           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
+          .list(survey.id, emp2.firstname));
+
+        insert.execute();
+    }
+
+    @Test
+    public void Insert_Alternative_Syntax() {
+        // with columns
+        assertEquals(1, insert(survey)
+            .set(survey.id, 3)
+            .set(survey.name, "Hello")
+            .execute());
+    }
+
+    @Test
+    public void Insert_Batch() {
+        SQLInsertClause insert = insert(survey)
+            .set(survey.id, 5)
+            .set(survey.name, "55")
+            .addBatch();
+
+        insert.set(survey.id, 6)
+            .set(survey.name, "66")
+            .addBatch();
+
+        assertEquals(2, insert.execute());
+
+        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
+    }
+
+    @Test
+    public void Insert_Null_With_Columns() {
+        assertEquals(1, insert(survey)
+                .columns(survey.id, survey.name)
+                .values(3, null).execute());
+    }
+
+    @Test
+    public void Insert_Null_Without_Columns() {
+        assertEquals(1, insert(survey)
+                .values(4, null, null).execute());
+    }
+
+    @Test
+    @ExcludeIn(ORACLE)
+    public void Insert_Nulls_In_Batch() {
+//        QFoo f= QFoo.foo;
+//        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
+//        sic.columns(f.c1,f.c2).values(null,null).addBatch();
+//        sic.columns(f.c1,f.c2).values(null,1).addBatch();
+//        sic.execute();
+        SQLInsertClause sic = insert(survey);
+        sic.columns(survey.name, survey.name2).values(null, null).addBatch();
+        sic.columns(survey.name, survey.name2).values(null, "X").addBatch();
+        sic.execute();
+    }
+
+    @Test
+    @Ignore
+    @ExcludeIn({DERBY})
+    public void Insert_Nulls_In_Batch2() {
+        Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS;
+//        QFoo f= QFoo.foo;
+//        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
+//        Foo f1=new Foo();
+//        sic.populate(f1).addBatch();
+//        f1=new Foo();
+//        f1.setC1(1);
+//        sic.populate(f1).addBatch();
+//        sic.execute();
+        QEmployee employee = QEmployee.employee;
+        SQLInsertClause sic = insert(employee);
+        Employee e = new Employee();
+        sic.populate(e, mapper).addBatch();
+        e = new Employee();
+        e.setFirstname("X");
+        sic.populate(e, mapper).addBatch();
+        sic.execute();
+
+    }
+
+    @Test
     public void Insert_With_Columns() {
         assertEquals(1, insert(survey)
                 .columns(survey.id, survey.name)
@@ -70,9 +165,50 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Without_Columns() {
-        assertEquals(1, insert(survey).values(4, "Hello", "World").execute());
+    @ExcludeIn(CUBRID)
+    public void Insert_With_Keys() throws SQLException{
+        ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
+        assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
+        rs.close();
+    }
 
+    @Test
+    @ExcludeIn(CUBRID)
+    public void Insert_With_Keys_Projected() throws SQLException{
+        assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
+    }
+
+    @Test
+    @ExcludeIn(CUBRID)
+    public void Insert_With_Keys_Projected2() throws SQLException{
+        Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
+        Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
+        assertNotNull(id);
+    }
+
+ // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
+
+    @Test
+    public void Insert_With_Set() {
+        assertEquals(1, insert(survey)
+                .set(survey.id, 5)
+                .set(survey.name, (String)null)
+                .execute());
+    }
+
+    @Test
+    @IncludeIn(MYSQL)
+    @SkipForQuoted
+    public void Insert_with_Special_Options() {
+        SQLInsertClause clause = insert(survey)
+            .columns(survey.id, survey.name)
+            .values(3, "Hello");
+
+        clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
+
+        assertEquals("insert ignore into SURVEY (ID, NAME) values (?, ?)", clause.toString());
+        clause.execute();
     }
 
     @Test
@@ -116,58 +252,31 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Batch() {
+    public void Insert_Without_Columns() {
+        assertEquals(1, insert(survey).values(4, "Hello", "World").execute());
+
+    }
+
+    @Test
+    public void InsertBatch_with_Subquery() {
         SQLInsertClause insert = insert(survey)
-            .set(survey.id, 5)
-            .set(survey.name, "55")
+            .columns(survey.id, survey.name)
+            .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
             .addBatch();
 
-        insert.set(survey.id, 6)
-            .set(survey.name, "66")
+        insert(survey)
+            .columns(survey.id, survey.name)
+            .select(sq().from(survey2).list(survey2.id.add(40), survey2.name))
             .addBatch();
 
-        assertEquals(2, insert.execute());
-
-        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
+        insert.execute();
+//        assertEquals(1, insert.execute());
     }
 
     @Test
-    @ExcludeIn(ORACLE)
-    public void Insert_Nulls_In_Batch() {
-//        QFoo f= QFoo.foo;
-//        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
-//        sic.columns(f.c1,f.c2).values(null,null).addBatch();
-//        sic.columns(f.c1,f.c2).values(null,1).addBatch();
-//        sic.execute();
-        SQLInsertClause sic = insert(survey);
-        sic.columns(survey.name, survey.name2).values(null, null).addBatch();
-        sic.columns(survey.name, survey.name2).values(null, "X").addBatch();
-        sic.execute();
-    }
-
-    @Test
-    @Ignore
-    @ExcludeIn({DERBY})
-    public void Insert_Nulls_In_Batch2() {
-        Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS;
-//        QFoo f= QFoo.foo;
-//        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
-//        Foo f1=new Foo();
-//        sic.populate(f1).addBatch();
-//        f1=new Foo();
-//        f1.setC1(1);
-//        sic.populate(f1).addBatch();
-//        sic.execute();
-        QEmployee employee = QEmployee.employee;
-        SQLInsertClause sic = insert(employee);
-        Employee e = new Employee();
-        sic.populate(e, mapper).addBatch();
-        e = new Employee();
-        e.setFirstname("X");
-        sic.populate(e, mapper).addBatch();
-        sic.execute();
-
+    public void Like() {
+        insert(survey).values(11, "Hello World", "a\\b").execute();
+        assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).count());
     }
 
     @Test
@@ -188,109 +297,6 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void InsertBatch_with_Subquery() {
-        SQLInsertClause insert = insert(survey)
-            .columns(survey.id, survey.name)
-            .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
-            .addBatch();
-
-        insert(survey)
-            .columns(survey.id, survey.name)
-            .select(sq().from(survey2).list(survey2.id.add(40), survey2.name))
-            .addBatch();
-
-        insert.execute();
-//        assertEquals(1, insert.execute());
-    }
-
- // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
-
-    @Test
-    @ExcludeIn(CUBRID)
-    public void Insert_With_Keys() throws SQLException{
-        ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
-        assertTrue(rs.next());
-        assertTrue(rs.getObject(1) != null);
-        rs.close();
-    }
-
-    @Test
-    @ExcludeIn(CUBRID)
-    public void Insert_With_Keys_Projected() throws SQLException{
-        assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
-    }
-
-    @Test
-    @ExcludeIn(CUBRID)
-    public void Insert_With_Keys_Projected2() throws SQLException{
-        Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
-        Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
-        assertNotNull(id);
-    }
-
-    @Test
-    public void Insert_Null_With_Columns() {
-        assertEquals(1, insert(survey)
-                .columns(survey.id, survey.name)
-                .values(3, null).execute());
-    }
-
-    @Test
-    public void Insert_Null_Without_Columns() {
-        assertEquals(1, insert(survey)
-                .values(4, null, null).execute());
-    }
-
-    @Test
-    public void Insert_With_Set() {
-        assertEquals(1, insert(survey)
-                .set(survey.id, 5)
-                .set(survey.name, (String)null)
-                .execute());
-    }
-
-    @Test
-    public void Insert_Alternative_Syntax() {
-        // with columns
-        assertEquals(1, insert(survey)
-            .set(survey.id, 3)
-            .set(survey.name, "Hello")
-            .execute());
-    }
-
-    @Test
-    public void Complex1() {
-        // related to #584795
-        QSurvey survey = new QSurvey("survey");
-        QEmployee emp1 = new QEmployee("emp1");
-        QEmployee emp2 = new QEmployee("emp2");
-        SQLInsertClause insert = insert(survey);
-        insert.columns(survey.id, survey.name);
-        insert.select(new SQLSubQuery().from(survey)
-          .innerJoin(emp1)
-           .on(survey.id.eq(emp1.id))
-          .innerJoin(emp2)
-           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
-          .list(survey.id, emp2.firstname));
-
-        insert.execute();
-    }
-
-    @Test
-    @IncludeIn(MYSQL)
-    @SkipForQuoted
-    public void Insert_with_Special_Options() {
-        SQLInsertClause clause = insert(survey)
-            .columns(survey.id, survey.name)
-            .values(3, "Hello");
-
-        clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
-
-        assertEquals("insert ignore into SURVEY (ID, NAME) values (?, ?)", clause.toString());
-        clause.execute();
-    }
-
-    @Test
     @IncludeIn(MYSQL)
     @SkipForQuoted
     public void Replace() {
@@ -300,12 +306,6 @@ public class InsertBase extends AbstractBaseTest {
 
         assertEquals("replace into SURVEY (ID, NAME) values (?, ?)", clause.toString());
         clause.execute();
-    }
-
-    @Test
-    public void Like() {
-        insert(survey).values(11, "Hello World", "a\\b").execute();
-        assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).count());
     }
 
 

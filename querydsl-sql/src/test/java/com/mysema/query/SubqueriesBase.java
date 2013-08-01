@@ -39,6 +39,32 @@ import com.mysema.testutil.ExcludeIn;
 public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
+    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE, SQLSERVER})
+    public void Keys() {
+        QEmployee employee2 = new QEmployee("employee2");
+        ForeignKey<Employee> nameKey1 = new ForeignKey<Employee>(employee,
+                ImmutableList.of(employee.firstname, employee.lastname),
+                ImmutableList.of("a", "b"));
+        ForeignKey<Employee> nameKey2 = new ForeignKey<Employee>(employee,
+                ImmutableList.of(employee.firstname, employee.lastname),
+                ImmutableList.of("a", "b"));
+
+        query().from(employee)
+        .where(nameKey1.in(sq().from(employee2).list(nameKey2)))
+            .list(employee.id);
+    }
+
+    @Test
+    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE, SQLSERVER})
+    public void List_In_Query() {
+        QEmployee employee2 = new QEmployee("employee2");
+        query().from(employee)
+            .where(Expressions.list(employee.id, employee.lastname)
+                .in(sq().from(employee2).list(employee2.id, employee2.lastname)))
+            .list(employee.id);
+    }
+
+    @Test
     @SkipForQuoted
     public void SubQueries() throws SQLException {
         // subquery in where block
@@ -49,16 +75,6 @@ public class SubqueriesBase extends AbstractBaseTest {
         .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
         .list(employee.id);
         assertFalse(list.isEmpty());
-    }
-
-    @Test
-    @ExcludeIn({MYSQL, POSTGRES, DERBY, SQLSERVER})
-    public void SubQuery_Params() {
-        Param<String> aParam = new Param<String>(String.class, "param");
-        SQLSubQuery subQuery = new SQLSubQuery().from(employee).where(employee.firstname.eq(aParam));
-        subQuery.set(aParam, "Mike");
-
-        assertEquals(1, query().from(subQuery.list(Wildcard.all)).count());
     }
 
     @Test
@@ -97,6 +113,16 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({MYSQL, POSTGRES, DERBY, SQLSERVER})
+    public void SubQuery_Params() {
+        Param<String> aParam = new Param<String>(String.class, "param");
+        SQLSubQuery subQuery = new SQLSubQuery().from(employee).where(employee.firstname.eq(aParam));
+        subQuery.set(aParam, "Mike");
+
+        assertEquals(1, query().from(subQuery.list(Wildcard.all)).count());
+    }
+
+    @Test
     @ExcludeIn(SQLITE)
     public void SubQuery_RightJoin() {
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
@@ -116,32 +142,6 @@ public class SubqueriesBase extends AbstractBaseTest {
         List<Integer> ids1 = query().from(employee).list(employee.id);
         List<Integer> ids2 = query().from(sq().from(employee).list(employee.id).as(employee)).list(employee.id);
         assertEquals(ids1, ids2);
-    }
-
-    @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE, SQLSERVER})
-    public void List_In_Query() {
-        QEmployee employee2 = new QEmployee("employee2");
-        query().from(employee)
-            .where(Expressions.list(employee.id, employee.lastname)
-                .in(sq().from(employee2).list(employee2.id, employee2.lastname)))
-            .list(employee.id);
-    }
-
-    @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE, SQLSERVER})
-    public void Keys() {
-        QEmployee employee2 = new QEmployee("employee2");
-        ForeignKey<Employee> nameKey1 = new ForeignKey<Employee>(employee,
-                ImmutableList.of(employee.firstname, employee.lastname),
-                ImmutableList.of("a", "b"));
-        ForeignKey<Employee> nameKey2 = new ForeignKey<Employee>(employee,
-                ImmutableList.of(employee.firstname, employee.lastname),
-                ImmutableList.of("a", "b"));
-
-        query().from(employee)
-        .where(nameKey1.in(sq().from(employee2).list(nameKey2)))
-            .list(employee.id);
     }
 
     @Test

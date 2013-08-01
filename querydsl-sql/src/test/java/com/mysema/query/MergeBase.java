@@ -52,6 +52,29 @@ public class MergeBase extends AbstractBaseTest{
         reset();
     }
 
+
+    @Test
+    @ExcludeIn({H2, CUBRID})
+    public void Merge_With_Keys() throws SQLException{
+        ResultSet rs = merge(survey).keys(survey.id)
+                .set(survey.id, 7)
+                .set(survey.name, "Hello World").executeWithKeys();
+        assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
+        rs.close();
+    }
+
+    @Test
+    @IncludeIn(H2)
+    public void Merge_with_Keys_and_SubQuery() {
+        assertEquals(1, insert(survey).set(survey.id, 6).set(survey.name, "H").execute());
+
+        // keys + subquery
+        QSurvey survey2 = new QSurvey("survey2");
+        assertEquals(2, merge(survey).keys(survey.id).select(
+                sq().from(survey2).list(survey2.id.add(1), survey2.name, survey2.name2)).execute());
+    }
+
     @Test
     @IncludeIn(H2)
     public void Merge_with_Keys_and_Values() {
@@ -77,21 +100,10 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(H2)
-    public void Merge_with_Keys_and_SubQuery() {
-        assertEquals(1, insert(survey).set(survey.id, 6).set(survey.name, "H").execute());
-
-        // keys + subquery
-        QSurvey survey2 = new QSurvey("survey2");
-        assertEquals(2, merge(survey).keys(survey.id).select(
-                sq().from(survey2).list(survey2.id.add(1), survey2.name, survey2.name2)).execute());
-    }
-
-    @Test
-    @ExcludeIn({H2, CUBRID})
-    public void Merge_With_Keys() throws SQLException{
+    @ExcludeIn(CUBRID)
+    public void Merge_With_Keys_Null_Id() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
-                .set(survey.id, 7)
+                .setNull(survey.id)
                 .set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
         assertTrue(rs.getObject(1) != null);
@@ -114,17 +126,6 @@ public class MergeBase extends AbstractBaseTest{
                 .set(survey.id, 9)
                 .set(survey.name, "Hello you").executeWithKey(idPath);
         assertNotNull(id);
-    }
-
-    @Test
-    @ExcludeIn(CUBRID)
-    public void Merge_With_Keys_Null_Id() throws SQLException{
-        ResultSet rs = merge(survey).keys(survey.id)
-                .setNull(survey.id)
-                .set(survey.name, "Hello World").executeWithKeys();
-        assertTrue(rs.next());
-        assertTrue(rs.getObject(1) != null);
-        rs.close();
     }
 
     @Test

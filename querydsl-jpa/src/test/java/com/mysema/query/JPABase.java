@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,31 +53,31 @@ import com.mysema.testutil.JPATestRunner;
  */
 @RunWith(JPATestRunner.class)
 public class JPABase extends AbstractStandardTest {
-    
+
     private static final QCat cat = QCat.cat;
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
-    
+
     @Rule
     public static MethodRule jpaProviderRule = new JPAProviderRule();
-    
+
     private EntityManager entityManager;
-    
+
     @Override
     protected JPAQuery query() {
         return new JPAQuery(entityManager);
     }
-    
+
     protected JPADeleteClause delete(EntityPath<?> path) {
         return new JPADeleteClause(entityManager, path);
     }
-    
+
     @Override
     protected JPAQuery testQuery() {
         return new JPAQuery(entityManager, new DefaultQueryMetadata().noValidate());
-    }    
-    
+    }
+
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -86,34 +86,70 @@ public class JPABase extends AbstractStandardTest {
     protected void save(Object entity) {
         entityManager.persist(entity);
     }
-        
+
+    @Test
+    @NoEclipseLink @NoOpenJPA
+    public void Connection_Access() {
+        assertNotNull(query().from(cat).createQuery(cat).unwrap(Connection.class));
+    }
+
+    @Test
+    @Ignore
+    public void Delete() {
+        delete(cat).execute();
+    }
+
+    @Test
+    @NoBatooJPA
+    public void Delete_Where() {
+        delete(cat).where(cat.name.eq("XXX")).execute();
+    }
+
+    @Test
+    @NoBatooJPA
+    @ExcludeIn(Target.MYSQL)
+    public void Delete_Where_SubQuery_Exists() {
+        QCat parent = cat;
+        QCat child = new QCat("kitten");
+
+        delete(child)
+            .where(child.id.eq(-100), new JPASubQuery()
+               .from(parent)
+               .where(parent.id.eq(-200),
+                      child.in(parent.kittens)).exists())
+            .execute();
+    }
+
+    @Test
+    @NoBatooJPA
+    public void Delete_Where_SubQuery2() {
+        QChild child = QChild.child;
+        QParent parent = QParent.parent;
+
+        JPASubQuery subQuery = new JPASubQuery()
+            .from(parent)
+            .where(parent.id.eq(2),
+                   child.parent.eq(parent));
+                   //child.in(parent.children));
+
+        delete(child)
+            .where(child.id.eq(1), subQuery.exists())
+            .execute();
+    }
+
     @Test
     public void Finder() {
         Map<String,Object> conditions = new HashMap<String,Object>();
         conditions.put("name", "Bob123");
-        
+
         List<Cat> cats = CustomFinder.findCustom(entityManager, Cat.class, conditions, "name");
         assertEquals(1, cats.size());
         assertEquals("Bob123", cats.get(0).getName());
     }
 
     @Test
-    @ExcludeIn(Target.DERBY)
-    public void Iterate() {
-        CloseableIterator<Cat> cats = query().from(cat).iterate(cat);
-        while (cats.hasNext()) {
-            Cat cat = cats.next();            
-            assertNotNull(cat);
-        }
-        cats.close();
-    }
-    
-    @Test
-    public void QueryExposure() {
-        //save(new Cat(20));
-        List<Cat> results = query().from(cat).createQuery(cat).getResultList();
-        assertNotNull(results);
-        assertFalse(results.isEmpty());
+    public void FlushMode() {
+        assertFalse(query().from(cat).setFlushMode(FlushModeType.AUTO).list(cat).isEmpty());
     }
 
     @Test
@@ -122,7 +158,7 @@ public class JPABase extends AbstractStandardTest {
         javax.persistence.Query query = query().from(cat)
                 .setHint("org.hibernate.cacheable", true)
                 .createQuery(cat);
-        
+
         assertNotNull(query);
         assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
         assertFalse(query.getResultList().isEmpty());
@@ -133,7 +169,7 @@ public class JPABase extends AbstractStandardTest {
         assertFalse(query().from(cat).setHint("org.hibernate.cacheable", true)
                 .list(cat).isEmpty());
     }
-    
+
     @Test @Ignore
     @NoHibernate @NoOpenJPA @NoBatooJPA
     public void Hint3() {
@@ -142,9 +178,25 @@ public class JPABase extends AbstractStandardTest {
                 .setHint("eclipselink.batch", "person.workAddress")
                 .setHint("eclipselink.batch", "person.homeAddress")
                 .createQuery(cat);
-        
+
         assertNotNull(query);
         assertEquals("person.homeAddress", query.getHints().get("eclipselink.batch"));
+    }
+
+    @Test
+    @ExcludeIn(Target.DERBY)
+    public void Iterate() {
+        CloseableIterator<Cat> cats = query().from(cat).iterate(cat);
+        while (cats.hasNext()) {
+            Cat cat = cats.next();
+            assertNotNull(cat);
+        }
+        cats.close();
+    }
+
+    @Test
+    public void Limit1_UniqueResult() {
+        assertNotNull(query().from(cat).limit(1).uniqueResult(cat));
     }
 
     @Test
@@ -162,65 +214,13 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
-    public void FlushMode() {
-        assertFalse(query().from(cat).setFlushMode(FlushModeType.AUTO).list(cat).isEmpty());
-    }
-    
-    @Test
-    public void Limit1_UniqueResult() {
-        assertNotNull(query().from(cat).limit(1).uniqueResult(cat));
+    public void QueryExposure() {
+        //save(new Cat(20));
+        List<Cat> results = query().from(cat).createQuery(cat).getResultList();
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
     }
 
-    @Test
-    @NoEclipseLink @NoOpenJPA
-    public void Connection_Access() {
-        assertNotNull(query().from(cat).createQuery(cat).unwrap(Connection.class));
-    }
-    
-    @Test
-    @Ignore
-    public void Delete() {
-        delete(cat).execute();
-    }
-    
-    @Test 
-    @NoBatooJPA
-    public void Delete_Where() {
-        delete(cat).where(cat.name.eq("XXX")).execute();
-    }
-    
-    @Test 
-    @NoBatooJPA
-    @ExcludeIn(Target.MYSQL)
-    public void Delete_Where_SubQuery_Exists() {
-        QCat parent = cat;
-        QCat child = new QCat("kitten");
-        
-        delete(child)
-            .where(child.id.eq(-100), new JPASubQuery()
-               .from(parent)
-               .where(parent.id.eq(-200), 
-                      child.in(parent.kittens)).exists())
-            .execute();
-    }
-
-    @Test
-    @NoBatooJPA
-    public void Delete_Where_SubQuery2() {
-        QChild child = QChild.child;
-        QParent parent = QParent.parent;
-        
-        JPASubQuery subQuery = new JPASubQuery()
-            .from(parent)
-            .where(parent.id.eq(2),                   
-                   child.parent.eq(parent));
-                   //child.in(parent.children));
-        
-        delete(child)
-            .where(child.id.eq(1), subQuery.exists())
-            .execute();        
-    }
-    
     @Test
     @Ignore // isn't a valid JPQL query
     public void Subquery_UniqueResult() {
@@ -231,5 +231,5 @@ public class JPABase extends AbstractStandardTest {
                 .where(cat.breed.eq(0).not())
                 .singleResult(new QCatSummary(cat.breed.count(), exists)));
     }
-    
+
 }
