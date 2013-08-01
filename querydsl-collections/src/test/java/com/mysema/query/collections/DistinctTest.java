@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,7 +34,7 @@ public class DistinctTest extends AbstractQueryTest {
         assertEquals(list1, CollQueryFactory.from(intVar1, list1).list(intVar1));
         assertEquals(Arrays.asList(1, 2, 3, 4), CollQueryFactory.from(intVar1, list1).distinct().list(intVar1));
         assertEquals(Arrays.asList(2, 3, 4), CollQueryFactory.from(intVar2, list2).distinct().list(intVar2));
-        
+
         assertEquals(Arrays.asList(2, 3, 4), CollQueryFactory.from(intVar2, list2).distinct().list(intVar2));
     }
 
@@ -42,7 +42,7 @@ public class DistinctTest extends AbstractQueryTest {
     public void BothSources() {
         assertEquals(100, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).list(intVar1, intVar2).size());
         assertEquals(12, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).distinct().list(intVar1, intVar2).size());
-        
+
         assertEquals(12, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).distinct().list(intVar1, intVar2).size());
     }
 
@@ -51,8 +51,13 @@ public class DistinctTest extends AbstractQueryTest {
         assertEquals(10, CollQueryFactory.from(intVar1, list1).count());
         assertEquals(4, CollQueryFactory.from(intVar1, list1).distinct().count());
         assertEquals(3, CollQueryFactory.from(intVar2, list2).distinct().count());
-        
+
         assertEquals(3, CollQueryFactory.from(intVar2, list2).distinct().count());
+    }
+
+    @Test
+    public void Null() {
+        CollQueryFactory.from(intVar1, Arrays.asList(null, 1)).distinct().list(intVar1);
     }
 
 }

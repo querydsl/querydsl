@@ -96,7 +96,7 @@ public class DefaultQueryEngine implements QueryEngine {
 
     private <T> List<T> distinct(List<T> list) {
         List<T> rv = new ArrayList<T>(list.size());
-        if (!list.isEmpty() && list.get(0).getClass().isArray()) {
+        if (!list.isEmpty() && list.get(0) != null && list.get(0).getClass().isArray()) {
             Set set = new HashSet(list.size());
             for (T o : list) {
                 if (set.add(ImmutableList.copyOf((Object[])o))) {
