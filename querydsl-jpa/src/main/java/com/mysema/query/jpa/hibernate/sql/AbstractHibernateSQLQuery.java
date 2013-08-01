@@ -17,15 +17,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.persistence.Entity;
 
 import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
@@ -35,20 +37,17 @@ import com.mysema.query.Tuple;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.FactoryExpressionTransformer;
 import com.mysema.query.jpa.NativeSQLSerializer;
+import com.mysema.query.jpa.ScrollableResultsIterator;
 import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.Union;
-import com.mysema.query.sql.UnionImpl;
-import com.mysema.query.sql.UnionUtils;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Path;
+import com.mysema.query.types.Operation;
 import com.mysema.query.types.QTuple;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.query.ListSubQuery;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -69,9 +68,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     @Nullable
     private Map<Object,String> constants;
 
-    @Nullable
-    private List<Path<?>> entityPaths;
-
     protected int fetchSize = 0;
 
     private final SessionHolder session;
@@ -79,11 +75,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     protected final Configuration configuration;
 
     protected int timeout = 0;
-
-    @Nullable
-    protected Expression<?> union;
-
-    private boolean unionAll;
 
     public AbstractHibernateSQLQuery(Session session, Configuration conf) {
         this(new DefaultSessionHolder(session), conf, new DefaultQueryMetadata());
@@ -107,7 +98,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
         constants = serializer.getConstantToLabel();
-        entityPaths = serializer.getEntityPaths();
         return serializer.toString();
     }
 
@@ -123,11 +113,17 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         // set constants
         HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         // set entity paths
-        for (Path<?> path : entityPaths) {
-            query.addEntity(path.toString(), path.getType());
+        List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
+        if (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class)) {
+            if (projection.size() == 1) {
+                Expression<?> expr = projection.get(0);
+                if (expr instanceof Operation) {
+                    expr = ((Operation)expr).getArg(0);
+                }
+                query.addEntity(expr.toString(), expr.getType());
+            }
         }
         // set result transformer, if projection is an EConstructor instance
-        List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression) {
             query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
         }
@@ -169,7 +165,10 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator());
+        Query query = createQuery(projection);
+        reset();
+        ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
+        return new ScrollableResultsIterator<RT>(results);
     }
 
     @Override
@@ -205,7 +204,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     protected void reset() {
         queryMixin.getMetadata().reset();
-        entityPaths = null;
         constants = null;
     }
 
@@ -237,50 +235,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         }catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }
-    }
-
-    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    @SuppressWarnings("unchecked")
-    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        queryMixin.getMetadata().setValidate(false);
-        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("Don't mix union and from");
-        }
-        this.union = UnionUtils.union(sq, unionAll);
-        return new UnionImpl<Q, RT>((Q)this, sq[0].getMetadata().getProjection());
     }
 
     /**

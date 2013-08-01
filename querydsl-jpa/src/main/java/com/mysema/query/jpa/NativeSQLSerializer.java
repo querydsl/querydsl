@@ -13,13 +13,10 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.Entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -42,8 +39,6 @@ import com.mysema.query.types.QTuple;
  *
  */
 public final class NativeSQLSerializer extends SQLSerializer {
-
-    private final List<Path<?>> entityPaths = new ArrayList<Path<?>>();
 
     public NativeSQLSerializer(Configuration configuration) {
         super(configuration);
@@ -116,19 +111,6 @@ public final class NativeSQLSerializer extends SQLSerializer {
         } else {
             append("?"+getConstantToLabel().get(constant));
         }
-    }
-
-    @Override
-    public Void visit(Path<?> path, Void context) {
-        super.visit(path, context);
-        if (path.getMetadata().getParent() == null && path.getType().isAnnotationPresent(Entity.class)) {
-            entityPaths.add(path);
-        }
-        return null;
-    }
-
-    public List<Path<?>> getEntityPaths() {
-        return entityPaths;
     }
 
 }

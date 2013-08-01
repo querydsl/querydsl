@@ -43,7 +43,7 @@ import com.mysema.testutil.HibernateTestRunner;
  *
  */
 @RunWith(HibernateTestRunner.class)
-public class HibernateBase extends AbstractStandardTest {
+public class HibernateBase extends AbstractJPATest {
     
     private static final QCat cat = QCat.cat;
     

@@ -13,13 +13,19 @@
  */
 package com.mysema.query.jpa;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.JoinFlag;
+import com.mysema.query.Query;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.Union;
+import com.mysema.query.sql.UnionImpl;
+import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
@@ -28,6 +34,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Wildcard;
+import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
 
@@ -38,7 +45,7 @@ import com.mysema.query.types.template.SimpleTemplate;
  *
  * @param <T> concrete subtype
  */
-public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T> {
+public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query> extends ProjectableQuery<T> {
 
     private static final class NativeQueryMixin<T> extends QueryMixin<T> {
         private NativeQueryMixin(QueryMetadata metadata) {
@@ -52,6 +59,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     protected final QueryMixin<T> queryMixin;
+
+    @Nullable
+    protected Expression<?> union;
+
+    protected boolean unionAll;
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
@@ -174,6 +186,50 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     public T rightJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.rightJoin(o, alias);
+    }
+
+    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+
+    public <RT> T union(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(UnionUtils.union(sq, alias, false));
+    }
+
+    public <RT> T union(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.union(sq, alias, false));
+    }
+
+    public <RT> T unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(UnionUtils.union(sq, alias, true));
+    }
+
+    public <RT> T unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.union(sq, alias, true));
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
+        queryMixin.getMetadata().setValidate(false);
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
+            throw new IllegalArgumentException("Don't mix union and from");
+        }
+        this.union = UnionUtils.union(sq, unionAll);
+        return new UnionImpl<T, RT>((T)this, sq[0].getMetadata().getProjection());
     }
 
     public T addJoinFlag(String flag) {

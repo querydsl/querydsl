@@ -42,17 +42,11 @@ import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.Union;
-import com.mysema.query.sql.UnionImpl;
-import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.QTuple;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.query.ListSubQuery;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -75,11 +69,6 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     protected final Multimap<String,Object> hints = HashMultimap.create();
 
     protected final QueryHandler queryHandler;
-
-    @Nullable
-    protected Expression<?> union;
-
-    private boolean unionAll;
 
     @Nullable
     protected LockModeType lockMode;
@@ -288,49 +277,6 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     protected String toQueryString() {
         return buildQueryString(false);
-    }
-
-    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        queryMixin.getMetadata().setValidate(false);
-        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("Don't mix union and from");
-        }
-        this.union = UnionUtils.union(sq, unionAll);
-        return new UnionImpl<Q, RT>((Q)this, sq[0].getMetadata().getProjection());
     }
 
     @Override

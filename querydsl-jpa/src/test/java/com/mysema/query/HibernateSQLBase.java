@@ -14,13 +14,6 @@
 package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -34,18 +27,12 @@ import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.jpa.hibernate.sql.HibernateSQLQuery;
-import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.DateExpression;
-import com.mysema.query.types.expr.Wildcard;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.HibernateTestRunner;
 
 @RunWith(HibernateTestRunner.class)
-public class HibernateSQLBase {
+public class HibernateSQLBase extends AbstractSQLTest {
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
@@ -56,12 +43,9 @@ public class HibernateSQLBase {
 
     private Session session;
 
+    @Override
     protected HibernateSQLQuery query() {
         return new HibernateSQLQuery(session, templates);
-    }
-
-    protected SQLSubQuery sq() {
-        return new SQLSubQuery();
     }
 
     public void setSession(Session session) {
@@ -79,52 +63,6 @@ public class HibernateSQLBase {
             session.save(new Cat("Tim",6));
             session.flush();
         }
-    }
-
-    @Test
-    public void Count() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).count());
-    }
-
-    @Test
-    @ExcludeIn(Target.H2)
-    public void Count_Via_Unique() {
-        assertEquals(Long.valueOf(6), query().from(cat).where(cat.dtype.eq("C")).uniqueResult(cat.id.count()));
-    }
-
-    @Test
-    public void CountDistinct() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).distinct().count());
-    }
-
-    @Test
-    @ExcludeIn(Target.ORACLE)
-    public void EntityProjections() {
-        SAnimal cat = new SAnimal("cat");
-
-        List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
-            .list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
-        assertEquals(6, cats.size());
-        for (Cat c : cats) System.out.println(c.getName());
-    }
-
-    @Test
-    public void EntityQueries() {
-        SAnimal cat = new SAnimal("cat");
-        SAnimal mate = new SAnimal("mate");
-        QCat catEntity = QCat.cat;
-
-        // 1
-        List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).list(catEntity);
-        assertEquals(6, cats.size());
-        for (Cat c : cats) System.out.println(c.getName());
-
-        // 2
-        cats = query().from(cat)
-            .innerJoin(mate).on(cat.mateId.eq(mate.id))
-            .where(cat.dtype.eq("C"), mate.dtype.eq("C"))
-            .list(catEntity);
-        assertTrue(cats.isEmpty());
     }
 
     @Test
@@ -146,120 +84,5 @@ public class HibernateSQLBase {
         assertEquals(6, query.list().size());
     }
 
-    @Test
-    public void In() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).count());
-    }
-
-    @Test
-    public void List() {
-        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
-    }
-
-    @Test
-    public void List_Limit_And_Offset() {
-        assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());
-    }
-
-    @Test
-    public void List_Limit_And_Offset2() {
-        List<Tuple> tuples = query().from(cat).offset(3).limit(3).list(cat.id, cat.name);
-        assertEquals(3, tuples.size());
-        assertEquals(2, tuples.get(0).size());
-    }
-
-    @Test
-    public void List_Multiple() {
-        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyWeight));
-    }
-
-    @Test
-    public void List_Results() {
-        SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
-        assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
-        assertEquals(6l, results.getTotal());
-    }
-
-    @Test
-    @ExcludeIn(Target.H2)
-    public void List_Wildcard() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).list(Wildcard.all).size());
-    }
-
-    @Test
-    public void List_With_Limit() {
-        assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
-    }
-
-    @Test
-    @ExcludeIn({Target.H2, Target.MYSQL})
-    public void List_With_Offset() {
-        assertEquals(3, query().from(cat).offset(3).list(cat.id).size());
-    }
-
-    @Test
-    public void No_From() {
-        assertNotNull(query().singleResult(DateExpression.currentDate()));
-    }
-
-    private void print(Iterable<Tuple> rows) {
-        for (Tuple row : rows) {
-            System.out.println(row);
-        }
-    }
-
-    @Test
-    public void Single_Result() {
-        query().from(cat).singleResult(cat.id);
-    }
-
-    @Test
-    public void Single_Result_Multiple() {
-        query().from(cat).singleResult(new Expression[]{cat.id});
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union() throws SQLException {
-        SAnimal cat = new SAnimal("cat");
-        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
-        List<Integer> list = query().union(sq1, sq2).list();
-        assertFalse(list.isEmpty());
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union_All() {
-        SAnimal cat = new SAnimal("cat");
-        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
-        List<Integer> list = query().unionAll(sq1, sq2).list();
-        assertFalse(list.isEmpty());
-    }
-
-    @Test
-    public void Unique_Result() {
-        query().from(cat).limit(1).uniqueResult(cat.id);
-    }
-
-    @Test
-    public void Unique_Result_Multiple() {
-        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});
-    }
-
-    @Test
-    @ExcludeIn(Target.H2)
-    public void Wildcard() {
-        SAnimal cat = new SAnimal("cat");
-
-        List<Tuple> rows = query().from(cat).list(cat.all());
-        assertEquals(6, rows.size());
-        print(rows);
-
-//        rows = query().from(cat).list(cat.id, cat.all());
-//        assertEquals(6, rows.size());
-//        print(rows);
-    }
 
 }

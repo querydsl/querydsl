@@ -106,7 +106,7 @@ import com.mysema.testutil.ExcludeIn;
  * @author tiwe
  *
  */
-public abstract class AbstractStandardTest {
+public abstract class AbstractJPATest {
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
 
@@ -279,17 +279,17 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Any_In_Order() {
-        query().from(cat).orderBy(cat.kittens.any().name.asc()).list(cat);
+        assertFalse(query().from(cat).orderBy(cat.kittens.any().name.asc()).list(cat).isEmpty());
     }
 
     @Test
     public void Any_In_Projection() {
-        query().from(cat).list(cat.kittens.any());
+        assertFalse(query().from(cat).list(cat.kittens.any()).isEmpty());
     }
 
     @Test
     public void Any_In_Projection2() {
-        query().from(cat).list(cat.kittens.any().name);
+        assertFalse(query().from(cat).list(cat.kittens.any().name).isEmpty());
     }
 
     @Test
@@ -345,7 +345,7 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void As() {
-        query().from(QAnimal.animal.as(QCat.class)).count();
+        assertTrue(query().from(QAnimal.animal.as(QCat.class)).count() > 0);
     }
 
     @Test
@@ -408,7 +408,7 @@ public abstract class AbstractStandardTest {
     @Test
     @NoHibernate
     public void Constant2() {
-        query().from(cat).map(cat.id,  Expressions.constant("name"));
+        assertFalse(query().from(cat).map(cat.id, Expressions.constant("name")).isEmpty());
     }
 
     @Test

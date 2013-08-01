@@ -52,7 +52,7 @@ import com.mysema.testutil.JPATestRunner;
  *
  */
 @RunWith(JPATestRunner.class)
-public class JPABase extends AbstractStandardTest {
+public class JPABase extends AbstractJPATest {
 
     private static final QCat cat = QCat.cat;
 
