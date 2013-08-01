@@ -277,6 +277,7 @@ public class JPASQLBase {
     }
 
     @Test
+    @ExcludeIn(Target.HSQLDB)
     public void No_From() {
         assertNotNull(query().singleResult(DateExpression.currentDate()));
     }
