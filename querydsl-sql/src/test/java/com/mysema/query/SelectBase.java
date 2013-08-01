@@ -82,6 +82,7 @@ import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
+import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.MathExpressions;
 import com.mysema.query.types.expr.NumberExpression;
@@ -912,6 +913,11 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     public void NotExists() {
         assertTrue(query().from(employee).where(employee.firstname.eq("Barb")).notExists());
+    }
+
+    @Test
+    public void No_From() {
+        assertNotNull(query().singleResult(DateExpression.currentDate()));
     }
 
     @Test

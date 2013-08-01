@@ -15,6 +15,7 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -42,6 +43,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.JPATestRunner;
@@ -272,6 +274,11 @@ public class JPASQLBase {
         SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
                 .uniqueResult(cat.name));
+    }
+
+    @Test
+    public void No_From() {
+        assertNotNull(query().singleResult(DateExpression.currentDate()));
     }
 
     @Test

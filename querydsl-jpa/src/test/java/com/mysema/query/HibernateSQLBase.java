@@ -15,6 +15,7 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
@@ -38,6 +39,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.HibernateTestRunner;
@@ -144,6 +146,11 @@ public class HibernateSQLBase {
         SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
         assertEquals(6l, results.getTotal());
+    }
+
+    @Test
+    public void No_From() {
+        assertNotNull(query().singleResult(DateExpression.currentDate()));
     }
 
     @Test

@@ -106,9 +106,6 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
-            if (queryMixin.getMetadata().getJoins().isEmpty()) {
-                throw new IllegalArgumentException("No joins given");
-            }
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
         constants = serializer.getConstantToLabel();
