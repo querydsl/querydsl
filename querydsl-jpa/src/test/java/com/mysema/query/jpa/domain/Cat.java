@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,14 +55,20 @@ public class Cat extends Animal {
     private Cat mate;
 
     public Cat() {}
-    
+
     public Cat(int id) {
         setId(id);
-    }    
+    }
 
     public Cat(String name, int id) {
         setId(id);
         setName( name);
+    }
+
+    public Cat(String name, int id, List<Cat> k) {
+        setId(id);
+        setName( name);
+        kittens.addAll(k);
     }
 
     public Cat(String name, int id, double bodyWeight) {

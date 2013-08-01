@@ -91,6 +91,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.Projections;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
@@ -1217,6 +1218,27 @@ public abstract class AbstractJPATest {
                 .listResults(new QTuple(cat.name, cat));
         assertEquals(1, tuples.getResults().size());
         assertTrue(tuples.getTotal() > 0);
+    }
+
+    @Test
+    public void Transform_GroupBy() {
+        QCat kitten = new QCat("kitten");
+        query().from(cat).innerJoin(cat.kittens, kitten)
+            .transform(GroupBy.groupBy(cat.id)
+                    .as(Projections.constructor(Cat.class, cat.name, cat.id,
+                            GroupBy.list(Projections.constructor(Cat.class, kitten.name, kitten.id)))));
+
+    }
+
+    @Test
+    @Ignore
+    public void Transform_GroupBy_Alias() {
+        QCat kitten = new QCat("kitten");
+        query().from(cat).innerJoin(cat.kittens, kitten)
+            .transform(GroupBy.groupBy(cat.id)
+                    .as(Projections.constructor(Cat.class, cat.name, cat.id,
+                            GroupBy.list(Projections.constructor(Cat.class, kitten.name, kitten.id)).as("k"))));
+
     }
 
     @Test
