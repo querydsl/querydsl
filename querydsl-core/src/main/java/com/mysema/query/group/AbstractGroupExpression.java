@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,19 +29,19 @@ import com.mysema.query.types.expr.DslOperation;
  * @param <R>
  */
 public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T, R> {
-    
+
     private static final long serialVersionUID = 1509709546966783160L;
-    
+
     private final Class<? extends R> type;
-    
+
     private final Expression<T> expr;
-    
+
     @SuppressWarnings("unchecked")
     public AbstractGroupExpression(Class<? super R> type, Expression<T> expr) {
-        this.type = (Class)type;        
+        this.type = (Class)type;
         this.expr = expr;
     }
-    
+
     /**
      * Create an alias for the expression
      *
@@ -49,7 +49,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
      */
     @SuppressWarnings("unchecked")
     public DslExpression<R> as(Path<R> alias) {
-        return DslOperation.create((Class<R>)getType(),Ops.ALIAS, this, alias);
+        return DslOperation.create((Class<R>)getType(), Ops.ALIAS, this, alias);
     }
 
     /**
@@ -58,19 +58,19 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
      * @return
      */
     public DslExpression<R> as(String alias) {
-        return as(new PathImpl<R>((Class<R>)getType(), alias));
+        return as(new PathImpl<R>(getType(), alias));
     }
-    
+
     @Override
     public Expression<T> getExpression() {
         return expr;
     }
-    
+
     @Override
     public <R, C> R accept(Visitor<R, C> v, C context) {
         return expr.accept(v, context);
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o != null && getClass().equals(o.getClass())) {
@@ -79,20 +79,20 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
             return false;
         }
     }
-    
+
     @Override
     public Class<? extends R> getType() {
         return type;
     }
-    
+
     @Override
     public int hashCode() {
         return expr.hashCode();
     }
-    
+
     @Override
     public String toString() {
         return expr.toString();
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,24 +21,26 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Ops;
 
 /**
  * Default implementation of the Group interface
- * 
+ *
  * @author sasa
  * @author tiwe
- * 
+ *
  */
 class GroupImpl implements Group {
-    
+
     private final Map<Expression<?>, GroupCollector<?,?>> groupCollectorMap = new LinkedHashMap<Expression<?>, GroupCollector<?,?>>();
-    
+
     private final List<GroupExpression<?, ?>> groupExpressions;
-    
+
     private final List<GroupCollector<?,?>> groupCollectors = new ArrayList<GroupCollector<?,?>>();
-    
+
     private final List<QPair<?, ?>> maps;
-    
+
     public GroupImpl(List<GroupExpression<?, ?>> columnDefinitions,  List<QPair<?, ?>> maps) {
         this.groupExpressions = columnDefinitions;
         this.maps = maps;
@@ -46,9 +48,13 @@ class GroupImpl implements Group {
             GroupExpression<?, ?> coldef = columnDefinitions.get(i);
             GroupCollector<?,?> collector = groupCollectorMap.get(coldef.getExpression());
             if (collector == null) {
-                collector = coldef.createGroupCollector();                
-                groupCollectorMap.put(coldef.getExpression(), collector);    
-            }            
+                collector = coldef.createGroupCollector();
+                Expression<?> coldefExpr = coldef.getExpression();
+                groupCollectorMap.put(coldefExpr, collector);
+                if (coldefExpr instanceof Operation && ((Operation)coldefExpr).getOperator() == Ops.ALIAS) {
+                    groupCollectorMap.put(((Operation)coldefExpr).getArg(1), collector);
+                }
+            }
             groupCollectors.add(collector);
         }
     }
@@ -61,7 +67,7 @@ class GroupImpl implements Group {
             i++;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private <T, R> R get(Expression<T> expr) {
         GroupCollector<T,R> col = (GroupCollector<T,R>) groupCollectorMap.get(expr);
@@ -74,19 +80,20 @@ class GroupImpl implements Group {
     @Override
     @SuppressWarnings("unchecked")
     public <T, R> R getGroup(GroupExpression<T, R> definition) {
-        for (GroupExpression<?, ?> def : groupExpressions) {            
+        for (GroupExpression<?, ?> def : groupExpressions) {
             if (def.equals(definition)) {
                 return (R) groupCollectorMap.get(def.getExpression()).get();
             }
         }
         throw new NoSuchElementException(definition.toString());
     }
-    
+
     @Override
     public <T> List<T> getList(Expression<T> expr) {
         return this.<T, List<T>>get(expr);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value) {
         for (QPair<?, ?> pair : maps) {

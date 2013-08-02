@@ -43,6 +43,7 @@ import antlr.TokenStreamException;
 
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.group.Group;
 import com.mysema.query.group.GroupBy;
 import com.mysema.query.group.QPair;
 import com.mysema.query.jpa.JPAExpressions;
@@ -100,6 +101,7 @@ import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.testutil.ExcludeIn;
 
@@ -1224,22 +1226,31 @@ public abstract class AbstractJPATest {
     @ExcludeIn(Target.DERBY)
     public void Transform_GroupBy() {
         QCat kitten = new QCat("kitten");
-        query().from(cat).innerJoin(cat.kittens, kitten)
+        Map<Integer, Cat> result = query().from(cat).innerJoin(cat.kittens, kitten)
             .transform(GroupBy.groupBy(cat.id)
                     .as(Projections.constructor(Cat.class, cat.name, cat.id,
                             GroupBy.list(Projections.constructor(Cat.class, kitten.name, kitten.id)))));
 
+        for (Cat entry : result.values()) {
+            assertEquals(1, entry.getKittens().size());
+        }
     }
 
     @Test
-    @Ignore
+    @ExcludeIn(Target.DERBY)
     public void Transform_GroupBy_Alias() {
         QCat kitten = new QCat("kitten");
-        query().from(cat).innerJoin(cat.kittens, kitten)
+        SimplePath<Cat> k = new SimplePath<Cat>(Cat.class, "k");
+        Map<Integer, Group> result = query().from(cat).innerJoin(cat.kittens, kitten)
             .transform(GroupBy.groupBy(cat.id)
-                    .as(Projections.constructor(Cat.class, cat.name, cat.id,
-                            GroupBy.list(Projections.constructor(Cat.class, kitten.name, kitten.id)).as("k"))));
+                    .as(cat.name, cat.id,
+                        GroupBy.list(Projections.constructor(Cat.class, kitten.name, kitten.id).as(k))));
 
+        for (Group entry : result.values()) {
+            assertNotNull(entry.getOne(cat.id));
+            assertNotNull(entry.getOne(cat.name));
+            assertNotNull(entry.getList(k));
+        }
     }
 
     @Test
