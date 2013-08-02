@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,11 +29,10 @@ import com.mysema.query.sql.types.EnumByNameType;
 import com.mysema.query.sql.types.InputStreamType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.StringType;
-import com.mysema.query.sql.types.UntypedNullType;
 import com.mysema.query.sql.types.UtilDateType;
 
 public class ConfigurationTest {
-    
+
     @Test
     public void Various() {
         Configuration configuration = new Configuration(new H2Templates());
@@ -41,37 +40,37 @@ public class ConfigurationTest {
         configuration.register(new UtilDateType());
         configuration.register("person", "secureId", new EncryptedString());
         configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
-        configuration.register(new StringType());        
+        configuration.register(new StringType());
         assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, 0,0,"person", "gender"));
     }
-    
+
     @Test
     public void Custom_Type() {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.setJavaType(Types.BLOB, InputStream.class);
-        configuration.register(new InputStreamType());        
+        configuration.register(new InputStreamType());
         assertEquals(InputStream.class, configuration.getJavaType(Types.BLOB, 0,0,"", ""));
     }
-    
+
     @Test
     public void Set_Null() throws SQLException {
         Configuration configuration = new Configuration(new H2Templates());
-        configuration.register(new UntypedNullType());
-        configuration.register("SURVEY", "NAME",  new EncryptedString());        
+//        configuration.register(new UntypedNullType());
+        configuration.register("SURVEY", "NAME",  new EncryptedString());
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         configuration.set(stmt, QSurvey.survey.name, 0, Null.DEFAULT);
     }
-    
+
     @Test
     public void Get_Schema() {
         Configuration configuration = new Configuration(new H2Templates());
         configuration.registerSchemaOverride("public", "pub");
         configuration.registerTableOverride("employee", "emp");
         configuration.registerTableOverride("public", "employee", "employees");
-        
+
         assertEquals("pub", configuration.getSchema("public"));
         assertEquals("emp", configuration.getTable("", "employee"));
         assertEquals("employees", configuration.getTable("public", "employee"));
     }
-        
+
 }

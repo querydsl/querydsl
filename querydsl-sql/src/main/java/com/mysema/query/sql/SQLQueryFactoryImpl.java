@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,8 +14,10 @@
 package com.mysema.query.sql;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.inject.Provider;
+import javax.sql.DataSource;
 
 /**
  * Factory class for query and DML clause creation
@@ -25,6 +27,25 @@ import javax.inject.Provider;
  */
 public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery> {
 
+    static class DataSourceProvider implements Provider<Connection> {
+
+        private final DataSource ds;
+
+        public DataSourceProvider(DataSource ds) {
+            this.ds = ds;
+        }
+
+        @Override
+        public Connection get() {
+            try {
+                return ds.getConnection();
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+
+    }
+
     public SQLQueryFactoryImpl(SQLTemplates templates, Provider<Connection> connection) {
         this(new Configuration(templates), connection);
     }
@@ -33,6 +54,11 @@ public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery> {
         super(configuration, connection);
     }
 
+    public SQLQueryFactoryImpl(Configuration configuration, DataSource dataSource) {
+        super(configuration, new DataSourceProvider(dataSource));
+    }
+
+    @Override
     public SQLQuery query() {
         return new SQLQuery(connection.get(), configuration);
     }

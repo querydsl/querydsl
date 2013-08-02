@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,10 +33,12 @@ import com.mysema.query.sql.types.Null;
 public final class JDBCTypeMapping {
 
     private static final Map<Integer, Class<?>> defaultTypes = new HashMap<Integer, Class<?>>();
-    
+
+    private static final Map<Class<?>, Integer> defaultSqlTypes = new HashMap<Class<?>, Integer>();
+
     static{
         registerDefault(-101, Object.class);
-        
+
         // BOOLEAN
         registerDefault(Types.BIT, Boolean.class);
         registerDefault(Types.BOOLEAN, Boolean.class);
@@ -55,7 +57,7 @@ public final class JDBCTypeMapping {
         // DATE and TIME
         registerDefault(Types.DATE, java.sql.Date.class);
         registerDefault(Types.TIME, java.sql.Time.class);
-        registerDefault(Types.TIMESTAMP, java.sql.Timestamp.class); 
+        registerDefault(Types.TIMESTAMP, java.sql.Timestamp.class);
 
         // TEXT
         registerDefault(Types.CHAR, String.class);
@@ -72,10 +74,10 @@ public final class JDBCTypeMapping {
         registerDefault(Types.BINARY, byte[].class);
         registerDefault(Types.LONGVARBINARY, byte[].class);
         registerDefault(Types.VARBINARY, byte[].class);
-        
+
         // BLOB
         registerDefault(Types.BLOB, Blob.class);
-        
+
         // OTHER
         registerDefault(Types.ARRAY, Object[].class);
         registerDefault(Types.DISTINCT, Object.class);
@@ -86,21 +88,25 @@ public final class JDBCTypeMapping {
         registerDefault(Types.REF, Object.class);
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
-        
+
     }
-    
+
     private static void registerDefault(int sqlType, Class<?> javaType) {
         defaultTypes.put(sqlType, javaType);
+        defaultSqlTypes.put(javaType, sqlType);
     }
-    
+
     private final Map<Integer, Class<?>> types = new HashMap<Integer, Class<?>>();
-    
+
+    private final Map<Class<?>, Integer> sqlTypes = new HashMap<Class<?>, Integer>();
+
     private final Map<Pair<Integer,Integer>, Class<?>> numericTypes = new HashMap<Pair<Integer,Integer>, Class<?>>();
-    
+
     public void register(int sqlType, Class<?> javaType) {
         types.put(sqlType, javaType);
+        sqlTypes.put(javaType, sqlType);
     }
-    
+
     public void registerNumeric(int size, int digits, Class<?> javaType) {
         numericTypes.put(Pair.of(size, digits), javaType);
     }
@@ -108,7 +114,7 @@ public final class JDBCTypeMapping {
     private Class<?> getNumericClass(int size, int digits) {
         Pair<Integer,Integer> key = Pair.of(size, digits);
         if (numericTypes.containsKey(key)) {
-            return numericTypes.get(key);            
+            return numericTypes.get(key);
         } else if (digits == 0) {
             if (size > 18) {
                 return Long.class;
@@ -129,16 +135,25 @@ public final class JDBCTypeMapping {
             }
         }
     }
-    
+
     @Nullable
     public Class<?> get(int sqlType, int size, int digits) {
         if (sqlType == Types.NUMERIC || sqlType == Types.DECIMAL) {
-            return getNumericClass(size, digits);        
+            return getNumericClass(size, digits);
         } else if (types.containsKey(sqlType)) {
             return types.get(sqlType);
         } else {
             return defaultTypes.get(sqlType);
-        }        
+        }
+    }
+
+    @Nullable
+    public Integer get(Class<?> clazz) {
+        if (sqlTypes.containsKey(clazz)) {
+            return sqlTypes.get(clazz);
+        } else {
+            return defaultSqlTypes.get(clazz);
+        }
     }
 
 }
