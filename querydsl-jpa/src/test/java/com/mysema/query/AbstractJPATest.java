@@ -353,6 +353,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoHibernate
+    @NoBatooJPA
     public void Case() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
     }
