@@ -1249,7 +1249,7 @@ public abstract class AbstractJPATest {
         for (Group entry : result.values()) {
             assertNotNull(entry.getOne(cat.id));
             assertNotNull(entry.getOne(cat.name));
-            assertNotNull(entry.getList(k));
+            assertFalse(entry.getList(k).isEmpty());
         }
     }
 
