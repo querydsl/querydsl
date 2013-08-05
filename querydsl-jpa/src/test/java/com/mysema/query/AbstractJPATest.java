@@ -352,8 +352,15 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @Ignore // FIXME https://github.com/mysema/querydsl/issues/185
+    @NoHibernate
     public void Case() {
+        query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
+    }
+
+    @Test(expected=ClassCastException.class)
+    @NoEclipseLink
+    @NoBatooJPA
+    public void Case_Hibernate() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
     }
 
