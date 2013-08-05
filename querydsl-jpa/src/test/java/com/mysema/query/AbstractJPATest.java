@@ -408,6 +408,14 @@ public abstract class AbstractJPATest {
         query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", new StringPath("const"))));
     }
 
+    @Test(expected=NullPointerException.class)
+    @NoEclipseLink
+    @NoBatooJPA
+    public void Constant_Hibernate() {
+        //select cat.id, ?1 as const from Cat cat
+        query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", new StringPath("const"))));
+    }
+
     @Test
     @NoHibernate
     public void Constant2() {
