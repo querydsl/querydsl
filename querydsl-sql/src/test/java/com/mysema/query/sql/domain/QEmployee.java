@@ -15,6 +15,7 @@ package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
 
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
@@ -33,9 +34,9 @@ public class QEmployee extends RelationalPathBase<Employee> {
     
     public static final QEmployee employee = new QEmployee("EMPLOYEE");
 
-    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumberColumn("id", Integer.class, ColumnMetadata.named("ID"));
 
-    public final StringPath firstname = createString("FIRSTNAME");
+    public final StringPath firstname = createStringColumn("firstname", ColumnMetadata.named("FIRSTNAME"));
 
     public final StringPath lastname = createString("LASTNAME");
 
