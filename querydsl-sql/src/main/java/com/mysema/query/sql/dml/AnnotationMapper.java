@@ -19,6 +19,7 @@ import java.util.Map;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.Column;
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
@@ -51,7 +52,7 @@ public class AnnotationMapper implements Mapper<Object> {
         try {
             Map<String, Path<?>> columnToPath = new HashMap<String, Path<?>>();
             for (Path<?> column : path.getColumns()) {
-                columnToPath.put(column.getMetadata().getName(), column);
+                columnToPath.put(ColumnMetadata.getColumnMetadata(column).getName(), column);
             }
             Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();        
             for (Field field : ReflectionUtils.getFields(object.getClass())) {

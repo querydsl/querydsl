@@ -23,27 +23,28 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.ProjectionRole;
 
 /**
- * RelationalPath extends {@link EntityPath} to provide access to relational metadata
+ * RelationalPath extends {@link EntityPath} to provide access to relational
+ * metadata
  * 
  * @author tiwe
- *
+ * 
  */
 public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
-   
+
     /**
      * Get the schema name
      * 
      * @return
      */
     String getSchemaName();
-    
+
     /**
      * Get the table name
      * 
      * @return
      */
     String getTableName();
-    
+
     /**
      * Get all columns
      * 
@@ -73,4 +74,11 @@ public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
      */
     Collection<ForeignKey<?>> getInverseForeignKeys();
 
+    /**
+     * Returns the metadata for this path or null if none was assigned. See
+     * {@link ColumnMetadata#getColumnMetadata(Path)} for a null safe
+     * alternative
+     */
+    @Nullable
+    ColumnMetadata getColumnMetadata(Path<?> column);
 }

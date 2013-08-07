@@ -34,7 +34,7 @@ public class ForeignKeyTest {
         foreignKey = new ForeignKey<Employee>(employee, 
                ImmutableList.of(employee.superiorId, employee.firstname), 
                ImmutableList.of("ID", "FN"));
-        assertEquals("employee.SUPERIOR_ID = employee2.ID && employee.FIRSTNAME = employee2.FN", foreignKey.on(employee2).toString());
+        assertEquals("employee.SUPERIOR_ID = employee2.ID && employee.firstname = employee2.FN", foreignKey.on(employee2).toString());
     }
 
 }

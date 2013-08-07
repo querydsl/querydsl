@@ -33,6 +33,7 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.StoreClause;
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
@@ -336,7 +337,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         if (withKeys) {
             String[] target = new String[keys.size()];
             for (int i = 0; i < target.length; i++) {
-                target[i] = keys.get(i).getMetadata().getName();
+                target[i] = ColumnMetadata.getColumnMetadata(keys.get(i)).getName();
             }
             stmt = connection.prepareStatement(queryString, target);
         } else {

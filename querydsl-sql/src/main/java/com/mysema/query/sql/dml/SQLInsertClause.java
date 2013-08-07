@@ -36,6 +36,7 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.AbstractSQLSubQuery;
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
@@ -50,11 +51,12 @@ import com.mysema.util.ResultSetAdapter;
 
 /**
  * SQLInsertClause defines an INSERT INTO clause
- *
+ * 
  * @author tiwe
- *
+ * 
  */
-public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implements InsertClause<SQLInsertClause> {
+public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implements
+        InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
@@ -88,13 +90,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         this.subQueryBuilder = subQuery;
     }
 
-    public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity,
-            AbstractSQLSubQuery<?> subQuery) {
+    public SQLInsertClause(Connection connection, Configuration configuration,
+            RelationalPath<?> entity, AbstractSQLSubQuery<?> subQuery) {
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
+    public SQLInsertClause(Connection connection, Configuration configuration,
+            RelationalPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;
@@ -103,7 +106,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     /**
      * Add the given String literal at the given position as a query flag
-     *
+     * 
      * @param position
      * @param flag
      * @return
@@ -115,7 +118,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     /**
      * Add the given Expression at the given position as a query flag
-     *
+     * 
      * @param position
      * @param flag
      * @return
@@ -125,10 +128,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return this;
     }
 
-
     /**
      * Add the current state of bindings as a batch item
-     *
+     * 
      * @return
      */
     public SQLInsertClause addBatch() {
@@ -150,9 +152,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     /**
-     * Execute the clause and return the generated key with the type of the given path.
-     * If no rows were created, null is returned, otherwise the key of the first row is returned.
-     *
+     * Execute the clause and return the generated key with the type of the
+     * given path. If no rows were created, null is returned, otherwise the key
+     * of the first row is returned.
+     * 
      * @param <T>
      * @param path
      * @return
@@ -160,13 +163,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     @SuppressWarnings("unchecked")
     @Nullable
     public <T> T executeWithKey(Path<T> path) {
-        return executeWithKey((Class<T>)path.getType(), path);
+        return executeWithKey((Class<T>) path.getType(), path);
     }
 
     /**
      * Execute the clause and return the generated key cast to the given type.
-     * If no rows were created, null is returned, otherwise the key of the first row is returned.
-     *
+     * If no rows were created, null is returned, otherwise the key of the first
+     * row is returned.
+     * 
      * @param <T>
      * @param type
      * @return
@@ -177,7 +181,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
-        try{
+        try {
             if (rs.next()) {
                 return configuration.get(rs, path, 1, type);
             } else {
@@ -185,23 +189,24 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             }
         } catch (SQLException e) {
             throw new QueryException(e.getMessage(), e);
-        }finally{
+        } finally {
             close(rs);
         }
     }
 
     /**
-     * Execute the clause and return the generated key with the type of the given path.
-     * If no rows were created, or the referenced column is not a generated key, null is returned.
-     * Otherwise, the key of the first row is returned.
-     *
+     * Execute the clause and return the generated key with the type of the
+     * given path. If no rows were created, or the referenced column is not a
+     * generated key, null is returned. Otherwise, the key of the first row is
+     * returned.
+     * 
      * @param <T>
      * @param path
      * @return
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> executeWithKeys(Path<T> path) {
-        return executeWithKeys((Class<T>)path.getType(), path);
+        return executeWithKeys((Class<T>) path.getType(), path);
     }
 
     public <T> List<T> executeWithKeys(Class<T> type) {
@@ -210,7 +215,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
-        try{
+        try {
             List<T> rv = new ArrayList<T>();
             while (rs.next()) {
                 rv.add(configuration.get(rs, path, 1, type));
@@ -218,12 +223,12 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             return rv;
         } catch (SQLException e) {
             throw new QueryException(e.getMessage(), e);
-        }finally{
+        } finally {
             close(rs);
         }
     }
 
-    private PreparedStatement createStatement(boolean withKeys) throws SQLException{
+    private PreparedStatement createStatement(boolean withKeys) throws SQLException {
         SQLSerializer serializer = new SQLSerializer(configuration, true);
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
@@ -234,8 +239,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
         } else {
-            serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(),
-                    batches.get(0).getValues(), batches.get(0).getSubQuery());
+            serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches
+                    .get(0).getValues(), batches.get(0).getSubQuery());
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
 
             // add first batch
@@ -245,8 +250,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             for (int i = 1; i < batches.size(); i++) {
                 SQLInsertBatch batch = batches.get(i);
                 serializer = new SQLSerializer(configuration, true);
-                serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
+                serializer.serializeForInsert(metadata, entity, batch.getColumns(),
+                        batch.getValues(), batch.getSubQuery());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
+                        metadata.getParams());
                 stmt.addBatch();
             }
         }
@@ -262,7 +269,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             if (entity.getPrimaryKey() != null) {
                 String[] target = new String[entity.getPrimaryKey().getLocalColumns().size()];
                 for (int i = 0; i < target.length; i++) {
-                    target[i] = entity.getPrimaryKey().getLocalColumns().get(i).getMetadata().getName();
+                    Path<?> path = entity.getPrimaryKey().getLocalColumns().get(i);
+                    String column = ColumnMetadata.getColumnMetadata(path).getName();
+                    target[i] = column;
                 }
                 stmt = connection.prepareStatement(queryString, target);
             } else {
@@ -271,13 +280,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         } else {
             stmt = connection.prepareStatement(queryString);
         }
-        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
+        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
+                metadata.getParams());
         return stmt;
     }
 
     /**
      * Execute the clause and return the generated keys as a ResultSet
-     *
+     * 
      * @return
      */
     public ResultSet executeWithKeys() {
@@ -300,7 +310,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 }
             };
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for "
+                    + queryString, e);
         }
     }
 
@@ -315,7 +326,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for "
+                    + queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
@@ -327,7 +339,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     public SQLInsertClause select(SubQueryExpression<?> sq) {
         subQuery = sq;
         for (Map.Entry<ParamExpression<?>, Object> entry : sq.getMetadata().getParams().entrySet()) {
-            metadata.setParam((ParamExpression)entry.getKey(), entry.getValue());
+            metadata.setParam((ParamExpression) entry.getKey(), entry.getValue());
         }
         return this;
     }
@@ -336,7 +348,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     public <T> SQLInsertClause set(Path<T> path, T value) {
         columns.add(path);
         if (value instanceof Expression<?>) {
-            values.add((Expression<?>)value);
+            values.add((Expression<?>) value);
         } else if (value != null) {
             values.add(new ConstantImpl<T>(value));
         } else {
@@ -381,9 +393,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     /**
-     * Populate the INSERT clause with the properties of the given bean.
-     * The properties need to match the fields of the clause's entity instance.
-     *
+     * Populate the INSERT clause with the properties of the given bean. The
+     * properties need to match the fields of the clause's entity instance.
+     * 
      * @param bean
      * @return
      */
@@ -392,8 +404,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     /**
-     * Populate the INSERT clause with the properties of the given bean using the given Mapper.
-     *
+     * Populate the INSERT clause with the properties of the given bean using
+     * the given Mapper.
+     * 
      * @param obj
      * @param mapper
      * @return
@@ -402,7 +415,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     public <T> SQLInsertClause populate(T obj, Mapper<T> mapper) {
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
         for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
-            set((Path)entry.getKey(), entry.getValue());
+            set((Path) entry.getKey(), entry.getValue());
         }
         return this;
     }
