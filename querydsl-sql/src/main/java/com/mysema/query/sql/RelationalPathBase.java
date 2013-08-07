@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,9 +38,9 @@ import com.mysema.query.types.path.TimePath;
 
 /**
  * RelationalPathBase is a base class for {@link RelationalPath} implementations
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <T>
  *            entity type
  */
@@ -54,7 +54,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
-    private final Map<Path<?>, ColumnMetadata> metadata = Maps.newHashMap();
+    private final Map<Path<?>, ColumnMetadata> columnMetadata = Maps.newHashMap();
 
     private final List<ForeignKey<?>> foreignKeys = new ArrayList<ForeignKey<?>>();
 
@@ -105,51 +105,42 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         return foreignKey;
     }
 
-    protected StringPath createStringColumn(String name, ColumnMetadata metadata) {
-        StringPath stringPath = createString(name);
-        this.metadata.put(stringPath, metadata);
-        return stringPath;
+    private <P extends Path<?>> P addMetadata(P path, ColumnMetadata metadata) {
+        columnMetadata.put(path, metadata);
+        return path;
+    }
+
+    protected StringPath createStringColumn(String property, ColumnMetadata metadata) {
+        return addMetadata(createString(property), metadata);
     }
 
     protected BooleanPath createBooleanColumn(String property, ColumnMetadata metadata) {
-        BooleanPath booleanPath = createBoolean(property);
-        this.metadata.put(booleanPath, metadata);
-        return booleanPath;
+        return addMetadata(createBoolean(property), metadata);
     }
 
     protected <A extends Comparable> DatePath<A> createDateColumn(String property,
             Class<? super A> type, ColumnMetadata metadata) {
-        DatePath<A> datePath = createDate(property, type);
-        this.metadata.put(datePath, metadata);
-        return datePath;
+        return addMetadata(createDate(property, type), metadata);
     }
 
     protected <A extends Comparable> DateTimePath<A> createDateTimeColumn(String property,
             Class<? super A> type, ColumnMetadata metadata) {
-        DateTimePath<A> dateTimePath = createDateTime(property, type);
-        this.metadata.put(dateTimePath, metadata);
-        return dateTimePath;
+        return addMetadata(createDateTime(property, type), metadata);
     }
 
     protected <A extends Comparable> TimePath<A> createTimeColumn(String property,
             Class<? super A> type, ColumnMetadata metadata) {
-        TimePath<A> timePath = createTime(property, type);
-        this.metadata.put(timePath, metadata);
-        return timePath;
+        return addMetadata(createTime(property, type), metadata);
     }
 
     protected <A extends Enum<A>> EnumPath<A> createEnumColumn(String property, Class<A> type,
             ColumnMetadata metadata) {
-        EnumPath<A> enumPath = createEnum(property, type);
-        this.metadata.put(enumPath, metadata);
-        return enumPath;
+        return addMetadata(createEnum(property, type), metadata);
     }
 
     protected <A extends Number & Comparable<?>> NumberPath<A> createNumberColumn(String property,
             Class<? super A> type, ColumnMetadata metadata) {
-        NumberPath<A> numberPath = createNumber(property, type);
-        this.metadata.put(numberPath, metadata);
-        return numberPath;
+        return addMetadata(createNumber(property, type), metadata);
     }
 
     @Override
@@ -204,7 +195,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     @Override
     public ColumnMetadata getColumnMetadata(Path<?> column) {
-        return metadata.get(column);
+        return columnMetadata.get(column);
     }
 
 }

@@ -1,8 +1,20 @@
+/*
+ * Copyright 2013, Mysema Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mysema.query.sql;
 
 import java.sql.Types;
 
-import com.google.common.base.Preconditions;
 import com.mysema.query.types.Path;
 
 /**
@@ -29,7 +41,7 @@ public class ColumnMetadata {
      * Creates default column meta data with the given column name, but without
      * any type or constraint information. Use the fluent builder methods to
      * further configure it.
-     * 
+     *
      * @throws NullPointerException
      *             if the name is null
      */
@@ -40,17 +52,24 @@ public class ColumnMetadata {
     private static int UNDEFINED = -1;
 
     private final String name;
+
     private final Integer jdbcType;
+
     private final boolean nullable;
+
     private final int length;
+
     private final int precision;
+
     private final int scale;
+
     private final boolean updateable;
+
     private final boolean insertable;
 
     private ColumnMetadata(String name, Integer jdbcType, boolean nullable, int length,
             int precision, int scale, boolean updateable, boolean insertable) {
-        this.name = Preconditions.checkNotNull(name, "Name cannot be null");
+        this.name = name;
         this.jdbcType = jdbcType;
         this.nullable = nullable;
         this.length = length;
@@ -70,20 +89,19 @@ public class ColumnMetadata {
 
     /**
      * The JDBC type of this column.
-     * 
+     *
      * @see Types
      * @see ColumnMetadata#hasJdbcType()
      * @throws IllegalStateException
      *             if this metadata has no type information
      */
     public int getJdbcType() {
-        Preconditions.checkState(hasJdbcType(), name + " has no jdbc type");
         return jdbcType;
     }
 
     /**
      * Returns a new column with the given type information
-     * 
+     *
      * @see Types
      */
     public ColumnMetadata ofType(int jdbcType) {
@@ -105,13 +123,12 @@ public class ColumnMetadata {
 
     /**
      * The length constraint of this column.
-     * 
+     *
      * @see ColumnMetadata#hasLength()
      * @throws IllegalStateException
      *             if this column has no length constraint
      */
     public int getLength() {
-        Preconditions.checkState(hasLength(), name + " has no length");
         return length;
     }
 
@@ -122,41 +139,36 @@ public class ColumnMetadata {
     /**
      * Returns a new column with the given length constraint. The length must be
      * > 0.
-     * 
+     *
      * @throws IllegalStateException
      *             if precision and scale have already been defined
      * @throws IllegalArgumentException
      *             if the length is invalid
      */
     public ColumnMetadata withlength(int length) {
-        Preconditions.checkState(scale == UNDEFINED && precision == UNDEFINED,
-                "Cannot define both length and scale/precision");
-        Preconditions.checkArgument(length > 0, "Length must be > 0");
         return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
                 insertable);
     }
 
     /**
      * Returns the precision of this numeric column.
-     * 
+     *
      * @see ColumnMetadata#hasPrecisionAndScale()
      * @throws IllegalStateException
      *             if this column has no precision
      */
     public int getPrecision() {
-        Preconditions.checkState(hasPrecisionAndScale(), name + " has no precision");
         return precision;
     }
 
     /**
      * Returns the scale of this numeric column
-     * 
+     *
      * @see ColumnMetadata#hasPrecisionAndScale()
      * @throws IllegalStateException
      *             if this column has no scale
      */
     public int getScale() {
-        Preconditions.checkState(hasPrecisionAndScale(), name + " has no scale");
         return scale;
     }
 
@@ -167,17 +179,13 @@ public class ColumnMetadata {
     /**
      * Returns a new column with the given precision and scale constraint. Both
      * must be > 0.
-     * 
+     *
      * @throws IllegalStateException
      *             if a length constraint has already been added
      * @throws IllegalArgumentException
      *             if precision or scale are invalid
      */
     public ColumnMetadata withPrecisionAndScale(int precision, int scale) {
-        Preconditions.checkState(length == UNDEFINED,
-                "Cannot define both length and scale/precision");
-        Preconditions.checkArgument(precision > 0, "Precision must be > 0");
-        Preconditions.checkArgument(scale > 0, "Scale must be > 0");
         return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
                 insertable);
     }
