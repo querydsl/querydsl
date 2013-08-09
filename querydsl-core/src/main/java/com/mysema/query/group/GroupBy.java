@@ -27,6 +27,8 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.Visitor;
 
@@ -164,9 +166,14 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
             if (expr instanceof GroupExpression<?,?>) {
                 GroupExpression<?,?> groupExpr = (GroupExpression<?,?>)expr;
                 groupExpressions.add(groupExpr);
-                projection.add(groupExpr.getExpression());
+                Expression<?> colExpression = groupExpr.getExpression();
+                if (colExpression instanceof Operation && ((Operation)colExpression).getOperator() == Ops.ALIAS) {
+                    projection.add(((Operation)colExpression).getArg(0));
+                } else {
+                    projection.add(colExpression);
+                }
                 if (groupExpr instanceof GMap) {
-                    maps.add((QPair<?, ?>) groupExpr.getExpression());
+                    maps.add((QPair<?, ?>) colExpression);
                 }
             } else {
                 groupExpressions.add(new GOne(expr));
