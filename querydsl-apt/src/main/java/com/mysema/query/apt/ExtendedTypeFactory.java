@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -67,7 +67,7 @@ public final class ExtendedTypeFactory {
     private final Map<List<String>, Type> typeCache = new HashMap<List<String>, Type>();
 
     private final Map<List<String>, EntityType> entityTypeCache = new HashMap<List<String>, EntityType>();
-    
+
     private final Type defaultType;
 
     private final Set<Class<? extends Annotation>> entityAnnotations;
@@ -81,7 +81,7 @@ public final class ExtendedTypeFactory {
     private final QueryTypeFactory queryTypeFactory;
 
     private boolean doubleIndexEntities = true;
-    
+
     private final TypeVisitor<Type, Boolean> visitor = new AbstractTypeVisitor6<Type, Boolean>() {
 
         @Override
@@ -98,7 +98,7 @@ public final class ExtendedTypeFactory {
             default: return null;
             }
         }
-        
+
         private Type getPrimitive(PrimitiveType primitiveType) {
             switch (primitiveType.getKind()) {
             case BOOLEAN: return Types.BOOLEAN_P;
@@ -191,11 +191,11 @@ public final class ExtendedTypeFactory {
         public Type visitUnknown(TypeMirror t, Boolean p) {
             return defaultType;
         }
-        
+
     };
 
     // TODO : return TypeMirror instead ?!?
-    
+
     private final TypeVisitor<List<String>, Boolean> keyBuilder = new AbstractTypeVisitor6<List<String>, Boolean>() {
 
         private List<String> visitBase(TypeMirror t) {
@@ -207,10 +207,10 @@ public final class ExtendedTypeFactory {
             rv.add(name);
             return rv;
         }
-        
+
         @Override
         public List<String> visitPrimitive(PrimitiveType t, Boolean p) {
-            return visit(env.getTypeUtils().boxedClass(t).asType(), p);
+            return Collections.singletonList(t.toString());
         }
 
         @Override
@@ -227,7 +227,7 @@ public final class ExtendedTypeFactory {
 
         @Override
         public List<String> visitDeclared(DeclaredType t, Boolean p) {
-            List<String> rv = visitBase(t);            
+            List<String> rv = visitBase(t);
             for (TypeMirror arg : t.getTypeArguments()) {
                 if (p) {
                     rv.addAll(visit(arg, false));
@@ -257,7 +257,7 @@ public final class ExtendedTypeFactory {
 
         @Override
         public List<String> visitWildcard(WildcardType t, Boolean p) {
-            List<String> rv = visitBase(t); 
+            List<String> rv = visitBase(t);
             if (t.getExtendsBound() != null) {
                 rv.addAll(visit(t.getExtendsBound(), p));
             }
@@ -276,9 +276,9 @@ public final class ExtendedTypeFactory {
         public List<String> visitNoType(NoType t, Boolean p) {
             return Collections.singletonList("Object");
         }
-        
+
     };
-    
+
     public ExtendedTypeFactory(
             ProcessingEnvironment env,
             Configuration configuration,
@@ -298,12 +298,12 @@ public final class ExtendedTypeFactory {
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
     }
-    
+
     private TypeMirror getErasedType(Class<?> clazz) {
         return env.getTypeUtils().erasure(env.getElementUtils().getTypeElement(clazz.getName()).asType());
     }
-    
-    private Type createType(TypeElement typeElement, TypeCategory category, 
+
+    private Type createType(TypeElement typeElement, TypeCategory category,
             List<? extends TypeMirror> typeArgs, boolean deep) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
@@ -319,7 +319,7 @@ public final class ExtendedTypeFactory {
     public Collection<EntityType> getEntityTypes() {
         return entityTypeCache.values();
     }
-    
+
     @Nullable
     public Type getType(TypeMirror typeMirror, boolean deep) {
         List<String> key = keyBuilder.visit(typeMirror,true);
@@ -351,16 +351,16 @@ public final class ExtendedTypeFactory {
         // other
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
-        
-        if (typeCategory != TypeCategory.NUMERIC 
-                && isAssignable(typeElement.asType(), comparableType) 
+
+        if (typeCategory != TypeCategory.NUMERIC
+                && isAssignable(typeElement.asType(), comparableType)
                 && isSubType(typeElement.asType(), numberType)) {
             typeCategory = TypeCategory.NUMERIC;
-            
-        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) 
+
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
                 && isAssignable(typeElement.asType(), comparableType)) {
             typeCategory = TypeCategory.COMPARABLE;
-            
+
         } if (typeCategory == TypeCategory.SIMPLE) {
             for (Class<? extends Annotation> entityAnn : entityAnnotations) {
                 if (typeElement.getAnnotation(entityAnn) != null) {
@@ -368,9 +368,9 @@ public final class ExtendedTypeFactory {
                 }
             }
         }
-        
+
         List<? extends TypeMirror> arguments = declaredType.getTypeArguments();
-        
+
         // for intersection types etc
         if (name.equals("")) {
             TypeMirror type = objectType;
@@ -389,9 +389,9 @@ public final class ExtendedTypeFactory {
                 arguments = ((DeclaredType)type).getTypeArguments();
             }
         }
-        
+
         Type type = createType(typeElement, typeCategory, arguments, deep);
-        
+
         TypeMirror superType = typeElement.getSuperclass();
         TypeElement superTypeElement = null;
         if (superType instanceof DeclaredType) {
@@ -400,12 +400,12 @@ public final class ExtendedTypeFactory {
 
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations) {
-            if (typeElement.getAnnotation(entityAnn) != null || 
+            if (typeElement.getAnnotation(entityAnn) != null ||
                     (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)) {
                 EntityType entityType = new EntityType(type);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
                 return entityType;
-            } 
+            }
         }
         return type;
     }
@@ -414,12 +414,12 @@ public final class ExtendedTypeFactory {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(Types.MAP, defaultType, defaultType);
         }
-        
+
         Type keyType = getType(typeMirrors.next(), deep);
         if (keyType == null) {
             keyType = defaultType;
         }
-        
+
         Type valueType = getType(typeMirrors.next(), deep);
         if (valueType == null) {
             valueType = defaultType;
@@ -435,12 +435,12 @@ public final class ExtendedTypeFactory {
         return new SimpleType(Types.MAP, keyType, valueType);
     }
 
-    private Type createCollectionType(Type baseType, String simpleName, 
+    private Type createCollectionType(Type baseType, String simpleName,
             Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(baseType, defaultType);
         }
-        
+
         Type componentType = getType(typeMirrors.next(), deep);
         if (componentType == null) {
             componentType = defaultType;
@@ -457,7 +457,7 @@ public final class ExtendedTypeFactory {
     }
 
     @Nullable
-    public EntityType getEntityType(TypeMirror typeMirror, boolean deep) { 
+    public EntityType getEntityType(TypeMirror typeMirror, boolean deep) {
         List<String> key = keyBuilder.visit(typeMirror, true);
         // get from cache
         if (entityTypeCache.containsKey(key)) {
@@ -523,10 +523,10 @@ public final class ExtendedTypeFactory {
                 return createType(typeElement, TypeCategory.ENTITY, declaredType.getTypeArguments(), deep);
             }
         }
-        
+
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
-        
+
         if (isAssignable(declaredType, mapType)) {
             return createMapType(simpleName, i, deep);
 
@@ -544,7 +544,7 @@ public final class ExtendedTypeFactory {
             return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
         }
     }
-    
+
     private Set<Type> getSupertypes(TypeMirror typeMirror, Type type, boolean deep) {
         boolean doubleIndex = doubleIndexEntities;
         doubleIndexEntities = false;
@@ -557,18 +557,18 @@ public final class ExtendedTypeFactory {
             if (e.getKind() == ElementKind.CLASS) {
                 if (e.getSuperclass().getKind() != TypeKind.NONE) {
                     TypeMirror supertype = normalize(e.getSuperclass());
-                    if (supertype instanceof DeclaredType 
+                    if (supertype instanceof DeclaredType
                             && ((DeclaredType)supertype).asElement().getAnnotation(QueryExclude.class) != null) {
                         return Collections.emptySet();
                     } else {
-                        Type superClass = getType(supertype, deep);                   
+                        Type superClass = getType(supertype, deep);
                         if (superClass == null) {
                             System.err.println("Got no type for " + supertype);
                         } else  if (!superClass.getFullName().startsWith("java")) {
                             superTypes = Collections.singleton(getType(supertype, deep));
-                        }    
+                        }
                     }
-                    
+
                 }
             // interface
             } else {
@@ -587,7 +587,7 @@ public final class ExtendedTypeFactory {
         doubleIndexEntities = doubleIndex;
         return superTypes;
     }
-    
+
     private boolean isAssignable(TypeMirror type, TypeMirror iface) {
         return env.getTypeUtils().isAssignable(type, iface)
             // XXX Eclipse 3.6 support
@@ -595,11 +595,11 @@ public final class ExtendedTypeFactory {
     }
 
     private boolean isSubType(TypeMirror type1, TypeMirror clazz) {
-        return env.getTypeUtils().isSubtype(type1, clazz) 
+        return env.getTypeUtils().isSubtype(type1, clazz)
              // XXX Eclipse 3.6 support
-             ||  env.getTypeUtils().directSupertypes(type1).contains(clazz); 
+             ||  env.getTypeUtils().directSupertypes(type1).contains(clazz);
     }
-    
+
     private TypeMirror normalize(TypeMirror type) {
         if (type.getKind() == TypeKind.TYPEVAR) {
             TypeVariable typeVar = (TypeVariable)type;
@@ -619,7 +619,7 @@ public final class ExtendedTypeFactory {
         for (EntityType entityType : entityTypeCache.values()) {
             if (entityType.getProperties().isEmpty()) {
                 for (Map.Entry<List<String>, EntityType> entry : entityTypeCache.entrySet()) {
-                    if (entry.getKey().get(0).equals(entityType.getFullName()) && 
+                    if (entry.getKey().get(0).equals(entityType.getFullName()) &&
                         !entry.getValue().getProperties().isEmpty()) {
                         for (Property property : entry.getValue().getProperties()) {
                             entityType.addProperty(property);

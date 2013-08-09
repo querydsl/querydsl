@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,7 +47,7 @@ public final class TypeFactory {
     private static final Type ANY = new TypeExtends(Types.OBJECT);
 
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
-    
+
     private final List<Class<? extends Annotation>> entityAnnotations;
 
     private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
@@ -69,7 +69,7 @@ public final class TypeFactory {
         }
         return (EntityType) get(true, cl, generic);
     }
-    
+
     public Type get(Class<?> cl) {
         return get(isEntityClass(cl), cl, cl);
     }
@@ -77,8 +77,8 @@ public final class TypeFactory {
     public Type get(Class<?> cl, java.lang.reflect.Type genericType) {
         return get(isEntityClass(cl), cl, genericType);
     }
-    
-    public Type get(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {        
+
+    public Type get(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
@@ -87,7 +87,7 @@ public final class TypeFactory {
                 cache.put(key, value);
             }
             return value;
-            
+
         } else {
             Type value = create(entity, cl, genericType, key);
             cache.put(key, value);
@@ -101,14 +101,14 @@ public final class TypeFactory {
             cl = Primitives.wrap(cl);
         }
         Type value;
-        Type[] tempParams = (Type[]) Array.newInstance(Type.class, 
+        Type[] tempParams = (Type[]) Array.newInstance(Type.class,
                 ReflectionUtils.getTypeParameterCount(genericType));
         cache.put(key, new ClassType(cl, tempParams));
         Type[] parameters = getParameters(cl, genericType);
 
         if (cl.isArray()) {
             Type componentType = get(cl.getComponentType());
-            if (Types.PRIMITIVES.containsKey(componentType)) {
+            if (cl.getComponentType().isPrimitive()) {
                 componentType = Types.PRIMITIVES.get(componentType);
             }
             value = componentType.asArrayType();
@@ -125,11 +125,11 @@ public final class TypeFactory {
         } else if (Set.class.isAssignableFrom(cl)) {
             value = new SimpleType(Types.SET, asGeneric(parameters[0]));
         } else if (Collection.class.isAssignableFrom(cl)) {
-            value = new SimpleType(Types.COLLECTION, asGeneric(parameters[0]));            
+            value = new SimpleType(Types.COLLECTION, asGeneric(parameters[0]));
         } else {
             value = createOther(cl, entity, parameters);
         }
-        
+
         if (genericType instanceof TypeVariable) {
             TypeVariable tv = (TypeVariable)genericType;
             if (tv.getBounds().length == 1 && tv.getBounds()[0].equals(Object.class)) {
@@ -137,19 +137,19 @@ public final class TypeFactory {
             } else {
                 value = new TypeExtends(tv.getName(), value);
             }
-        } 
+        }
 
         if (entity && !(value instanceof EntityType)) {
             value = new EntityType(value);
         }
         return value;
     }
-    
+
     private Type asGeneric(Type type) {
         if (type.getParameters().size() == 0) {
             int count = type.getJavaClass().getTypeParameters().length;
             if (count > 0) {
-                return new SimpleType(type, new Type[count]); 
+                return new SimpleType(type, new Type[count]);
             }
         }
         return type;
@@ -175,11 +175,11 @@ public final class TypeFactory {
         if (parameterCount > 0) {
             return getGenericParameters(cl, genericType, parameterCount);
         } else if (Map.class.isAssignableFrom(cl)) {
-            return new Type[]{ Types.OBJECT, Types.OBJECT };        
+            return new Type[]{ Types.OBJECT, Types.OBJECT };
         } else if (Collection.class.isAssignableFrom(cl)) {
-            return new Type[]{ Types.OBJECT }; 
+            return new Type[]{ Types.OBJECT };
         } else {
-            return new Type[0]; 
+            return new Type[0];
         }
     }
 
@@ -187,7 +187,7 @@ public final class TypeFactory {
             int parameterCount) {
         Type[] types = new Type[parameterCount];
         for (int i = 0; i < types.length; i++) {
-            types[i] = getGenericParameter(cl, genericType, i);            
+            types[i] = getGenericParameter(cl, genericType, i);
         }
         return types;
     }
@@ -199,15 +199,15 @@ public final class TypeFactory {
             TypeVariable variable = (TypeVariable)parameter;
             Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), parameter);
             return new TypeExtends(variable.getName(), rv);
-        } else if (parameter instanceof WildcardType 
+        } else if (parameter instanceof WildcardType
             && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
-            && ((WildcardType)parameter).getLowerBounds().length == 0) {            
+            && ((WildcardType)parameter).getLowerBounds().length == 0) {
             return ANY;
         } else {
             Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), parameter);
             if (parameter instanceof WildcardType) {
                 rv = new TypeExtends(rv);
-            } 
+            }
             return rv;
         }
     }
@@ -220,25 +220,25 @@ public final class TypeFactory {
         }
         return embeddableTypes.contains(cl);
     }
-    
+
     public void extendTypes() {
         for (Map.Entry<List<java.lang.reflect.Type>, Type> entry : cache.entrySet()) {
             if (entry.getValue() instanceof EntityType) {
                 EntityType entityType = (EntityType)entry.getValue();
                 if (entityType.getProperties().isEmpty()) {
-                    for (Type type : cache.values()) {                    
-                        if (type.getFullName().equals(entityType.getFullName()) && type instanceof EntityType) {    
+                    for (Type type : cache.values()) {
+                        if (type.getFullName().equals(entityType.getFullName()) && type instanceof EntityType) {
                             EntityType base = (EntityType)type;
                             for (Property property : base.getProperties()) {
                                 entityType.addProperty(property);
-                            }       
+                            }
                         }
                     }
                 }
             }
         }
     }
-    
+
     public void setUnknownAsEntity(boolean unknownAsEntity) {
         this.unknownAsEntity = unknownAsEntity;
     }
