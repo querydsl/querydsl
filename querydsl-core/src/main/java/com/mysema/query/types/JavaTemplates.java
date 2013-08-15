@@ -84,6 +84,8 @@ public class JavaTemplates extends Templates {
         add(Ops.DateTimeOps.WEEK, "{0}.getWeek()");
         add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "{0}.getYear() * 100 + {0}.getMonth()");
+
         // case
         add(Ops.CASE, "({0})");
         add(Ops.CASE_WHEN,  "({0}) ? ({1}) : ({2})");

@@ -618,6 +618,15 @@ public class SelectBase extends AbstractBaseTest{
         assertEquals("Mason", emps.get(21).get(employee2.lastname));
     }
 
+    @Test
+    public void GroupBy_YearMonth() {
+        query().from(employee)
+               .groupBy(employee.datefield.yearMonth())
+               .orderBy(employee.datefield.yearMonth().asc())
+               .list(employee.id.count());
+    }
+
+
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {

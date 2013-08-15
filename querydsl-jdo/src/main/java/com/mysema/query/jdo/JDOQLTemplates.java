@@ -42,6 +42,8 @@ public final class JDOQLTemplates extends JavaTemplates {
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDay()");
         add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in JDOQL
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "({0}.getYear() * 100 + {0}.getMonth() + 1)");
+
         // other
         add(Ops.ALIAS, "{0} {1}");
     }

@@ -661,6 +661,14 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void GroupBy_YearMonth() {
+        query().from(cat)
+               .groupBy(cat.birthdate.yearMonth())
+               .orderBy(cat.birthdate.yearMonth().asc())
+               .list(cat.id.count());
+    }
+
+    @Test
     public void In() {
         query().from(cat).where(cat.id.in(Arrays.asList(1,2,3))).count();
         query().from(cat).where(cat.name.in(Arrays.asList("A","B","C"))).count();

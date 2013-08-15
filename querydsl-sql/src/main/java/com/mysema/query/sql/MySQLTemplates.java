@@ -84,6 +84,7 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.AggOps.BOOLEAN_ANY, "bit_or({0})", 0);
         add(Ops.AggOps.BOOLEAN_ALL, "bit_and({0})", 0);
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "yearweek({0})");
 
         add(Ops.DateTimeOps.ADD_YEARS, "date_add({0}, interval {1s} year)");

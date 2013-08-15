@@ -124,6 +124,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
+
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");
         add(PathType.VARIABLE, "{0s}");

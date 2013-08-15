@@ -230,6 +230,7 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
         add(Ops.DateTimeOps.MILLISECOND, "0");
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "(year({0}) * 100 + month({0}))");
         add(Ops.DateTimeOps.YEAR_WEEK, "(year({0}) * 100 + week({0}))");
 
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year',{1},{0})");
