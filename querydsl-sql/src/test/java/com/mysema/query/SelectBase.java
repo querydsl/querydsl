@@ -1271,6 +1271,14 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    public void Substring() {
+        //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
+        query().from(employee)
+               .where(employee.firstname.substring(-3, 1).eq(employee.firstname.substring(-2, 1)))
+               .list(employee.id);
+    }
+
+    @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
     public void SumOver() throws SQLException{

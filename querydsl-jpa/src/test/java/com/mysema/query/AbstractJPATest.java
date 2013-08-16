@@ -1081,6 +1081,21 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Substring_From_Right() {
+        query().from(cat)
+            .where(cat.name.substring(-1, 1).eq(cat.name.substring(-2, 1)))
+            .list(cat);
+    }
+
+    @Test
+    public void Substring_From_Right2() {
+        query().from(cat)
+            .where(cat.name.substring(cat.name.length().subtract(1), 1)
+                    .eq(cat.name.substring(cat.name.length().subtract(2), 1)))
+            .list(cat);
+    }
+
+    @Test
     @ExcludeIn(Target.ORACLE)
     public void Subtract_BigDecimal() {
         QSimpleTypes entity = new QSimpleTypes("entity1");

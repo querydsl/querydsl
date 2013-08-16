@@ -141,6 +141,14 @@ public class JPQLSerializerTest {
     }
 
     @Test
+    public void Substring() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QCat cat = QCat.cat;
+        serializer.handle(cat.name.substring(cat.name.length().subtract(1), 1));
+        assertEquals("substring(cat.name,(length(cat.name) - ?1)+1,1-(length(cat.name) - ?1))", serializer.toString());
+    }
+
+    @Test
     public void NullsFirst() {
         QCat cat = QCat.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
