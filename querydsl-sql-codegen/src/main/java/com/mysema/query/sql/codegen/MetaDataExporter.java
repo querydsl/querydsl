@@ -227,7 +227,7 @@ public class MetaDataExporter {
         Class<?> clazz = configuration.getJavaType(columnType, columnSize, columnDigits,
                 tableName, columnName);
         if (clazz == null) {
-            throw new IllegalStateException("Found no mapping for " + columnType);
+            throw new IllegalStateException("Found no mapping for " + columnType + " (" + tableName + "." + columnName + ")");
         }
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)) {
