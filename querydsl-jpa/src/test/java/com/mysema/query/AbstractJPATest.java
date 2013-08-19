@@ -14,7 +14,9 @@
 package com.mysema.query;
 
 import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -234,7 +236,7 @@ public abstract class AbstractJPATest {
 
 
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Add_BigDecimal() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
@@ -506,7 +508,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Divide() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
@@ -529,7 +531,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Divide_BigDecimal() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
@@ -746,7 +748,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = QBookMark.bookMark;
@@ -878,7 +880,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Multiply() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
@@ -888,7 +890,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Multiply_BigDecimal() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
@@ -1034,7 +1036,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.MYSQL)
+    @ExcludeIn(MYSQL)
     @NoOpenJPA
     public void StringOperations() {
         // NOTE : locate in MYSQL is case-insensitive
@@ -1090,16 +1092,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(DERBY)
+    @ExcludeIn({HSQLDB, DERBY})
     public void Substring_From_Right2() {
         query().from(cat)
-            .where(cat.name.substring(cat.name.length().subtract(1), 1)
-                    .eq(cat.name.substring(cat.name.length().subtract(2), 1)))
+            .where(cat.name.substring(cat.name.length().subtract(1), cat.name.length())
+                    .eq(cat.name.substring(cat.name.length().subtract(2), cat.name.length().subtract(1))))
             .list(cat);
     }
 
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Subtract_BigDecimal() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
@@ -1265,7 +1267,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.DERBY)
+    @ExcludeIn(DERBY)
     public void Transform_GroupBy() {
         QCat kitten = new QCat("kitten");
         Map<Integer, Cat> result = query().from(cat).innerJoin(cat.kittens, kitten)
@@ -1279,7 +1281,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(Target.DERBY)
+    @ExcludeIn(DERBY)
     public void Transform_GroupBy_Alias() {
         QCat kitten = new QCat("kitten");
         SimplePath<Cat> k = new SimplePath<Cat>(Cat.class, "k");
