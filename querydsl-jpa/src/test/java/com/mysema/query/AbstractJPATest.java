@@ -661,6 +661,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink
     public void GroupBy_YearMonth() {
         query().from(cat)
                .groupBy(cat.birthdate.yearMonth())
@@ -1081,6 +1082,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(DERBY)
     public void Substring_From_Right() {
         query().from(cat)
             .where(cat.name.substring(-1, 1).eq(cat.name.substring(-2, 1)))
@@ -1088,6 +1090,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(DERBY)
     public void Substring_From_Right2() {
         query().from(cat)
             .where(cat.name.substring(cat.name.length().subtract(1), 1)
