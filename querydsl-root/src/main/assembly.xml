@@ -19,6 +19,7 @@
         <include>*.jar</include>
       </includes>
 	  <excludes>
+        <exclude>*-javadoc.jar</exclude>
 	  	<exclude>*-tests.jar</exclude>
 	  	<exclude>*-one-jar.jar</exclude>
 	    <exclude>*-sources.jar</exclude>	
