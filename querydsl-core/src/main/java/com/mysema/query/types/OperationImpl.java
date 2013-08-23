@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ import com.google.common.collect.ImmutableList;
  */
 @Immutable
 public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> {
-    
+
     private static final long serialVersionUID = 4796432056083507588L;
 
     private final ImmutableList<Expression<?>> args;
@@ -42,15 +42,15 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?> one) {
         return new OperationImpl<RT>(type, operator, ImmutableList.<Expression<?>>of(one));
     }
-    
+
     public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?> one, Expression<?> two) {
         return new OperationImpl<RT>(type, operator, ImmutableList.of(one, two));
     }
-    
+
     protected OperationImpl(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args) {
         this(type, operator, ImmutableList.copyOf(args));
     }
-    
+
     public OperationImpl(Class<? extends T> type, Operator<? super T> operator, ImmutableList<Expression<?>> args) {
         super(type);
         this.operator = operator;
@@ -90,15 +90,15 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     /**
      * Resets operator field to singleton version
-     * 
+     *
      * @param ois
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {        
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         try {
             ois.defaultReadObject();
             Field field = OperationImpl.class.getDeclaredField("operator");
@@ -106,7 +106,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
             field.set(this, OperatorImpl.OPS.get(operator.getId()));
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }        
+        }
     }
 
 }
