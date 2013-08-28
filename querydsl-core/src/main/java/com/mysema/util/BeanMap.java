@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Function;
+import com.google.common.primitives.Primitives;
 
 /**
  * An implementation of Map for JavaBeans which uses introspection to
@@ -69,41 +70,49 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     static {
         defaultFunctions.put(Boolean.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Boolean.valueOf(input.toString());
             }
         });
         defaultFunctions.put(Character.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Character.valueOf(input.toString().charAt(0));
             }
         });
         defaultFunctions.put(Byte.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Byte.valueOf(input.toString());
             }
         });
         defaultFunctions.put(Short.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Short.valueOf(input.toString());
             }
         });
         defaultFunctions.put(Integer.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Integer.valueOf(input.toString());
             }
         });
         defaultFunctions.put(Long.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Long.valueOf(input.toString());
             }
         });
         defaultFunctions.put(Float.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Float.valueOf(input.toString());
             }
         });
         defaultFunctions.put(Double.TYPE, new Function() {
+            @Override
             public Object apply(Object input) {
                 return Double.valueOf(input.toString());
             }
@@ -135,6 +144,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     // Map interface
     //-------------------------------------------------------------------------
 
+    @Override
     public String toString() {
         return "BeanMap<" + String.valueOf(bean) + ">";
     }
@@ -162,6 +172,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * <p/>
      * <ul>
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         BeanMap newMap = (BeanMap) super.clone();
 
@@ -230,6 +241,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * the mappings are not actually removed from the map (the mappings for a
      * BeanMap are fixed).
      */
+    @Override
     public void clear() {
         if (bean == null) {
             return;
@@ -305,6 +317,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      *                                  define a property with that name; or if the bean property with
      *                                  that name is read-only
      */
+    @Override
     public Object put(String name, Object value) throws IllegalArgumentException, ClassCastException {
         if (bean != null) {
             Object oldValue = get(name);
@@ -333,6 +346,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      *
      * @return the number of properties defined by the bean
      */
+    @Override
     public int size() {
         return readMethods.size();
     }
@@ -348,6 +362,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @return BeanMap keys.  The Set returned by this method is not
      *         modifiable.
      */
+    @Override
     public Set<String> keySet() {
         return readMethods.keySet();
     }
@@ -359,12 +374,15 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      *
      * @return the unmodifiable set of mappings
      */
+    @Override
     public Set<Entry<String, Object>> entrySet() {
         return new AbstractSet<Entry<String, Object>>() {
+            @Override
             public Iterator<Entry<String, Object>> iterator() {
                 return entryIterator();
             }
 
+            @Override
             public int size() {
                 return BeanMap.this.readMethods.size();
             }
@@ -377,6 +395,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @return values for the BeanMap.  The returned collection is not
      *         modifiable.
      */
+    @Override
     public Collection<Object> values() {
         List<Object> answer = new ArrayList<Object>(readMethods.size());
         for (Iterator<Object> iter = valueIterator(); iter.hasNext();) {
@@ -397,7 +416,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      *         property exists
      */
     public Class<?> getType(String name) {
-        return (Class<?>) types.get(name);
+        return types.get(name);
     }
 
     /**
@@ -419,15 +438,18 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     public Iterator<Object> valueIterator() {
         final Iterator<String> iter = keyIterator();
         return new Iterator<Object>() {
+            @Override
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
+            @Override
             public Object next() {
                 Object key = iter.next();
                 return get(key);
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException("remove() not supported for BeanMap");
             }
@@ -442,16 +464,19 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     public Iterator<Entry<String, Object>> entryIterator() {
         final Iterator<String> iter = keyIterator();
         return new Iterator<Entry<String, Object>>() {
+            @Override
             public boolean hasNext() {
                 return iter.hasNext();
             }
 
+            @Override
             public Entry<String, Object> next() {
                 String key = iter.next();
                 Object value = get(key);
                 return new MyMapEntry(BeanMap.this, key, value);
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException("remove() not supported for BeanMap");
             }
@@ -500,7 +525,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @return the mutator method for the property, or null
      */
     public Method getWriteMethod(String name) {
-        return (Method) writeMethods.get(name);
+        return writeMethods.get(name);
     }
 
 
@@ -548,7 +573,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 }
             }
         } catch (IntrospectionException e) {
-            
+
         }
     }
 
@@ -574,9 +599,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
         private final BeanMap owner;
 
         private String key;
-        
+
         private Object value;
-        
+
         /**
          * Constructs a new <code>MyMapEntry</code>.
          *
@@ -596,6 +621,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
          * @param value the new value for the entry
          * @return the old value for the entry
          */
+        @Override
         public Object setValue(Object value) {
             String key = getKey();
             Object oldValue = owner.get(key);
@@ -637,6 +663,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 Class<?>[] types = method.getParameterTypes();
                 if (types != null && types.length > 0) {
                     Class<?> paramType = types[0];
+                    if (paramType.isPrimitive()) {
+                        paramType = Primitives.wrap(paramType);
+                    }
                     if (!paramType.isAssignableFrom(value.getClass())) {
                         value = convertType(paramType, value);
                     }
@@ -684,7 +713,6 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected Object convertType(Class<?> newType, Object value) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
         // try call constructor
         Class<?>[] types = {value.getClass()};
         try {
@@ -709,7 +737,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      *         or null if the given type is not a primitive type
      */
     protected Function<?,?> getTypeFunction(Class<?> aType) {
-        return (Function<?,?>) defaultFunctions.get(aType);
+        return defaultFunctions.get(aType);
     }
 
 }
