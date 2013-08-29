@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,22 +42,22 @@ public class QueryProjectionTest {
         }
 
         @QueryProjection
-        public EntityWithProjection(String name) {
+        public EntityWithProjection(String param0) {
 
         }
 
         @QueryProjection
-        public EntityWithProjection(@QueryType(PropertyType.SIMPLE) Long id) {
+        public EntityWithProjection(@QueryType(PropertyType.SIMPLE) Long param0) {
 
         }
 
         @QueryProjection
-        public EntityWithProjection(long id, CharSequence name) {
+        public EntityWithProjection(long param0, CharSequence param1) {
 
         }
 
         @QueryProjection
-        public EntityWithProjection(String id, CharSequence name) {
+        public EntityWithProjection(String param0, CharSequence param1) {
 
         }
 
@@ -67,7 +67,7 @@ public class QueryProjectionTest {
     public void Entity_Case() {
         NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
         StringExpression stringExpr = new StringPath("x");
-        
+
         QQueryProjectionTest_EntityWithProjection.create(longExpr).newInstance(0l);
         QQueryProjectionTest_EntityWithProjection.create(stringExpr).newInstance("");
         QQueryProjectionTest_EntityWithProjection.create(longExpr, stringExpr).newInstance(0l,"");
@@ -81,37 +81,37 @@ public class QueryProjectionTest {
         }
 
         @QueryProjection
-        public DTOWithProjection(@QueryType(PropertyType.SIMPLE) Long id) {
+        public DTOWithProjection(@QueryType(PropertyType.SIMPLE) Long param0) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(String name) {
+        public DTOWithProjection(String param0) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(EntityWithProjection entity) {
+        public DTOWithProjection(EntityWithProjection param0) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(long id, CharSequence name) {
+        public DTOWithProjection(long param0, CharSequence param1) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(String id, CharSequence name) {
+        public DTOWithProjection(String param0, CharSequence param1) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(DTOWithProjection dto, long id, Long id2, String str, CharSequence c) {
+        public DTOWithProjection(DTOWithProjection param0, long param1, Long param2, String param3, CharSequence param4) {
 
         }
 
         @QueryProjection
-        public DTOWithProjection(String id, CharSequence name, Map<Long,String> map1, Map<DTOWithProjection, Long> map2) {
+        public DTOWithProjection(String param0, CharSequence param1, Map<Long,String> param2, Map<DTOWithProjection, Long> param3) {
 
         }
     }
@@ -120,7 +120,7 @@ public class QueryProjectionTest {
     public void Dto_Case() throws SecurityException, NoSuchMethodException{
         NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
         StringExpression stringExpr = new StringPath("x");
-        
+
         new QQueryProjectionTest_DTOWithProjection(longExpr).newInstance(0l);
         new QQueryProjectionTest_DTOWithProjection(stringExpr).newInstance("");
         new QQueryProjectionTest_DTOWithProjection(longExpr, stringExpr).newInstance(0l,"");

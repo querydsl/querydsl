@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -37,10 +38,13 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
@@ -52,6 +56,7 @@ import com.mysema.query.annotations.QueryEmbedded;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.annotations.QueryInit;
+import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
@@ -60,18 +65,18 @@ import com.mysema.util.ClassPathUtils;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * GenericExporter provides query type serialization logic for cases where APT annotation processors 
- * can't be used. GenericExporter scans the classpath for classes annotated with specified annotations 
+ * GenericExporter provides query type serialization logic for cases where APT annotation processors
+ * can't be used. GenericExporter scans the classpath for classes annotated with specified annotations
  * in specific packages and mirrors them into Querydsl expression types.
- * 
+ *
  * <p>Example with Querydsl annotations: </p>
  * <pre>
  * {@code
  * GenericExporter exporter = new GenericExporter();
  * exporter.setTargetFolder(new File("target/generated-sources/java"));
- * exporter.export(com.example.domain.Entity.class.getPackage());}  
+ * exporter.export(com.example.domain.Entity.class.getPackage());}
  * </pre>
- * 
+ *
  * <p>Example with JPA annotations:</p>
  * <pre>
  * {@code
@@ -79,18 +84,18 @@ import com.mysema.util.ReflectionUtils;
  * exporter.setKeywords(Keywords.JPA);
  * exporter.setEntityAnnotation(Entity.class);
  * exporter.setEmbeddableAnnotation(Embeddable.class);
- * exporter.setEmbeddedAnnotation(Embedded.class);        
+ * exporter.setEmbeddedAnnotation(Embedded.class);
  * exporter.setSupertypeAnnotation(MappedSuperclass.class);
  * exporter.setSkipAnnotation(Transient.class);
  * exporter.setTargetFolder(new File("target/generated-sources/java"));
  * exporter.export(com.example.domain.Entity.class.getPackage());}
  * </pre>
- * 
+ *
  * @author tiwe
  *
  */
 public class GenericExporter {
-    
+
     private Class<? extends Annotation> entityAnnotation = QueryEntity.class;
 
     private Class<? extends Annotation> supertypeAnnotation = QuerySupertype.class;
@@ -102,23 +107,25 @@ public class GenericExporter {
     private Class<? extends Annotation> skipAnnotation = QueryTransient.class;
 
     private boolean createScalaSources = false;
-    
-    private final Set<Class<?>> stopClasses = new HashSet<Class<?>>();
-    
-    private final Map<String, EntityType> allTypes = new HashMap<String, EntityType>();
 
-    private final Map<Class<?>, EntityType> entityTypes = new HashMap<Class<?>, EntityType>();
+    private final Set<Class<?>> stopClasses = Sets.newHashSet();
 
-    private final Map<Class<?>, EntityType> superTypes = new HashMap<Class<?>, EntityType>();
+    private final Map<String, EntityType> allTypes = Maps.newHashMap();
 
-    private final Map<Class<?>, EntityType> embeddableTypes = new HashMap<Class<?>, EntityType>();
+    private final Map<Class<?>, EntityType> entityTypes = Maps.newHashMap();
+
+    private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
+
+    private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
+
+    private final Map<Class<?>, EntityType> projectionTypes = Maps.newHashMap();
 
     private final CodegenModule codegenModule = new CodegenModule();
 
     private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
-    
+
     private boolean handleFields = true, handleMethods = true;
-    
+
     @Nullable
     private File targetFolder;
 
@@ -133,17 +140,17 @@ public class GenericExporter {
 
     @Nullable
     private Class<? extends Serializer> serializerClass;
-    
+
     private final Charset charset;
-    
+
     private final ClassLoader classLoader;
-    
+
     private Set<File> generatedFiles = new HashSet<File>();
-    
+
     /**
-     * Create a GenericExporter instance using the given classloader and charset for serializing 
+     * Create a GenericExporter instance using the given classloader and charset for serializing
      * source files
-     * 
+     *
      * @param classLoader
      * @param charset
      */
@@ -151,37 +158,37 @@ public class GenericExporter {
         this.classLoader = classLoader;
         this.charset = charset;
         stopClasses.add(Object.class);
-        stopClasses.add(Enum.class);        
+        stopClasses.add(Enum.class);
     }
-    
+
     /**
      * Create a GenericExporter instance using the given classloader and default charset
-     * 
+     *
      * @param classLoader
      */
     public GenericExporter(ClassLoader classLoader) {
         this(classLoader, Charset.defaultCharset());
     }
-    
+
     /**
      * Create a GenericExporter instance using the context classloader and the given charset
-     * 
+     *
      * @param charset
      */
     public GenericExporter(Charset charset) {
         this(Thread.currentThread().getContextClassLoader(), charset);
-    }    
-    
+    }
+
     /**
      * Create a GenericExporter instance using the context classloader and default charset
      */
     public GenericExporter() {
         this(Thread.currentThread().getContextClassLoader(), Charset.defaultCharset());
     }
-    
+
     /**
      * Export the given packages
-     * 
+     *
      * @param packages
      */
     public void export(Package... packages) {
@@ -191,20 +198,20 @@ public class GenericExporter {
         }
         export(pkgs);
     }
-    
+
     /**
      * Export the given packages
-     * 
+     *
      * @param packages
      */
     public void export(String... packages) {
         scanPackages(packages);
         innerExport();
     }
-        
+
     /**
      * Export the given classes
-     * 
+     *
      * @param classes
      */
     public void export(Class<?>...classes) {
@@ -235,9 +242,15 @@ public class GenericExporter {
             createEntityType(cl, entityTypes);
         }
 
-        // add properties
-        for (Map<Class<?>, EntityType> entries : Arrays.asList(superTypes, embeddableTypes, entityTypes)) {
+        // process projections
+        for (Class<?> cl : projectionTypes.keySet()) {
+            createEntityType(cl, projectionTypes);
+        }
+
+        // add constructors and properties
+        for (Map<Class<?>, EntityType> entries : Arrays.asList(superTypes, embeddableTypes, entityTypes, projectionTypes)) {
             for (Map.Entry<Class<?>, EntityType> entry : Sets.newHashSet(entries.entrySet())) {
+                addConstructors(entry.getKey(), entry.getValue());
                 addProperties(entry.getKey(), entry.getValue());
             }
         }
@@ -253,22 +266,24 @@ public class GenericExporter {
         for (EntityType type : embeddableTypes.values()) {
             addSupertypeFields(type, allTypes, handled);
         }
-        
+
         // extend types
         typeFactory.extendTypes();
 
         try {
-            Serializer supertypeSerializer, entitySerializer, embeddableSerializer;
+            Serializer supertypeSerializer, entitySerializer, embeddableSerializer, projectionSerializer;
 
             if (serializerClass != null) {
                 Serializer serializer = codegenModule.get(serializerClass);
                 supertypeSerializer = serializer;
                 entitySerializer = serializer;
                 embeddableSerializer = serializer;
+                projectionSerializer = serializer;
             } else {
                 supertypeSerializer = codegenModule.get(SupertypeSerializer.class);
                 entitySerializer = codegenModule.get(EntitySerializer.class);
                 embeddableSerializer = codegenModule.get(EmbeddableSerializer.class);
+                projectionSerializer = codegenModule.get(ProjectionSerializer.class);
             }
 
             // serialize super types
@@ -280,13 +295,16 @@ public class GenericExporter {
             // serialize embeddables
             serialize(embeddableSerializer, embeddableTypes);
 
+            // serialize projections
+            serialize(projectionSerializer, projectionTypes);
+
         } catch (IOException e) {
             throw new QueryException(e);
         }
 
     }
 
-    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, 
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes,
             Set<EntityType> handled) {
         if (handled.add(model)) {
             for (Supertype supertype : model.getSuperTypes()) {
@@ -321,19 +339,19 @@ public class GenericExporter {
             types.put(cl, type);
             String fullName = ClassUtils.getFullName(cl);
             if (!allTypes.containsKey(fullName)) {
-                allTypes.put(fullName, type);    
-            }            
+                allTypes.put(fullName, type);
+            }
 
             typeMappings.register(type, queryTypeFactory.create(type));
             if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())
-                && !cl.getSuperclass().isAnnotationPresent(QueryExclude.class)) {                
+                && !cl.getSuperclass().isAnnotationPresent(QueryExclude.class)) {
                 type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
             if (cl.isInterface()) {
                 for (Class<?> iface : cl.getInterfaces()) {
                     if (!stopClasses.contains(iface) && !iface.isAnnotationPresent(QueryExclude.class)) {
-                        type.addSupertype(new Supertype(typeFactory.get(iface)));    
-                    }                    
+                        type.addSupertype(new Supertype(typeFactory.get(iface)));
+                    }
                 }
             }
 
@@ -341,9 +359,30 @@ public class GenericExporter {
         }
     }
 
+    private void addConstructors(Class<?> cl, EntityType type) {
+        for (Constructor<?> constructor : cl.getConstructors()) {
+            if (constructor.getAnnotation(QueryProjection.class) != null) {
+                List<Parameter> parameters = Lists.newArrayList();
+                for (int i = 0; i < constructor.getParameterTypes().length; i++) {
+                    Type parameterType = typeFactory.get(
+                            constructor.getParameterTypes()[i],
+                            constructor.getGenericParameterTypes()[i]);
+                    for (Annotation annotation : constructor.getParameterAnnotations()[i]) {
+                        if (annotation.annotationType().equals(QueryType.class)) {
+                            QueryType queryType = (QueryType)annotation;
+                            parameterType = parameterType.as(TypeCategory.valueOf(queryType.value().name()));
+                        }
+                    }
+                    parameters.add(new Parameter("param" + i, parameterType));
+                }
+                type.addConstructor(new com.mysema.codegen.model.Constructor(parameters));
+            }
+        }
+    }
+
     private void addProperties(Class<?> cl, EntityType type) {
         Set<String> handled = new HashSet<String>();
-        
+
         // fields
         if (handleFields) {
             for (Field field : cl.getDeclaredFields()) {
@@ -365,15 +404,15 @@ public class GenericExporter {
                     }
                     handled.add(field.getName());
                 }
-            }    
-        }        
+            }
+        }
 
         // getters
         if (handleMethods) {
             for (Method method : cl.getDeclaredMethods()) {
                 String name = method.getName();
                 if (method.getParameterTypes().length == 0
-                    && ((name.startsWith("get") && name.length() > 3)  
+                    && ((name.startsWith("get") && name.length() > 3)
                      || (name.startsWith("is") && name.length() > 2))) {
                     String propertyName;
                     if (name.startsWith("get")) {
@@ -390,13 +429,13 @@ public class GenericExporter {
                         type.addProperty(property);
                     }
                 }
-            }    
-        }        
+            }
+        }
     }
 
-    private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, 
-            java.lang.reflect.Type genericType) {        
-        Type propertyType = null;     
+    private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type,
+            java.lang.reflect.Type genericType) {
+        Type propertyType = null;
         if (annotated.isAnnotationPresent(embeddedAnnotation)) {
             Class<?> embeddableType = type;
             if (Collection.class.isAssignableFrom(type)) {
@@ -406,15 +445,15 @@ public class GenericExporter {
             }
             if (!embeddableType.getName().startsWith("java.")) {
                 typeFactory.addEmbeddableType(embeddableType);
-                if (!embeddableTypes.containsKey(embeddableType) 
+                if (!embeddableTypes.containsKey(embeddableType)
                   && !entityTypes.containsKey(embeddableType)
                   && !superTypes.containsKey(embeddableType)) {
                     EntityType entityType = createEntityType(embeddableType, embeddableTypes);
                     addProperties(embeddableType, entityType);
                     if (embeddableType == type) {
-                        propertyType = entityType;  
+                        propertyType = entityType;
                     }
-                }    
+                }
             }
         }
         if (propertyType == null) {
@@ -422,18 +461,18 @@ public class GenericExporter {
             if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))) {
                 String fullName = ClassUtils.getFullName(type);
                 if (!allTypes.containsKey(fullName)) {
-                    allTypes.put(fullName, (EntityType)propertyType);    
-                }                
+                    allTypes.put(fullName, (EntityType)propertyType);
+                }
             }
         }
         return propertyType;
     }
 
     @Nullable
-    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, 
+    private Property createProperty(EntityType entityType, String propertyName, Type propertyType,
             AnnotatedElement annotated) {
         List<String> inits = Collections.<String>emptyList();
-        if (annotated.isAnnotationPresent(skipAnnotation) 
+        if (annotated.isAnnotationPresent(skipAnnotation)
             && !annotated.isAnnotationPresent(QueryType.class)) {
             return null;
         }
@@ -444,7 +483,7 @@ public class GenericExporter {
             QueryType queryType = annotated.getAnnotation(QueryType.class);
             if (queryType.value().equals(PropertyType.NONE)) {
                 return null;
-            }            
+            }
             propertyType = propertyType.as(TypeCategory.valueOf(queryType.value().name()));
         }
         return new Property(entityType, propertyName, propertyType, inits);
@@ -467,13 +506,20 @@ public class GenericExporter {
 
     private void handleClass(Class<?> cl) {
         if (stopClasses.contains(cl) || cl.isAnnotationPresent(QueryExclude.class)) {
-            return;                                       
+            return;
         } else if (cl.getAnnotation(entityAnnotation) != null) {
             entityTypes.put(cl, null);
         } else if (cl.getAnnotation(embeddableAnnotation) != null) {
             embeddableTypes.put(cl, null);
         } else if (cl.getAnnotation(supertypeAnnotation) != null) {
             superTypes.put(cl, null);
+        } else {
+            for (Constructor<?> constructor : cl.getConstructors()) {
+                if (constructor.getAnnotation(QueryProjection.class) != null) {
+                    projectionTypes.put(cl, null);
+                    break;
+                }
+            }
         }
     }
 
@@ -491,7 +537,7 @@ public class GenericExporter {
         }
     }
 
-    private void write(Serializer serializer, String path, SerializerConfig serializerConfig, 
+    private void write(Serializer serializer, String path, SerializerConfig serializerConfig,
             EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
@@ -522,10 +568,10 @@ public class GenericExporter {
     public Set<File> getGeneratedFiles() {
         return generatedFiles;
     }
-    
+
     /**
      * Set the entity annotation
-     * 
+     *
      * @param entityAnnotation
      */
     public void setEntityAnnotation(Class<? extends Annotation> entityAnnotation) {
@@ -534,7 +580,7 @@ public class GenericExporter {
 
     /**
      * Set the supertype annotation
-     * 
+     *
      * @param supertypeAnnotation
      */
     public void setSupertypeAnnotation(
@@ -544,7 +590,7 @@ public class GenericExporter {
 
     /**
      * Set the embeddable annotation
-     * 
+     *
      * @param embeddableAnnotation
      */
     public void setEmbeddableAnnotation(
@@ -554,7 +600,7 @@ public class GenericExporter {
 
     /**
      * Set the embedded annotation
-     * 
+     *
      * @param embeddedAnnotation
      */
     public void setEmbeddedAnnotation(Class<? extends Annotation> embeddedAnnotation) {
@@ -563,7 +609,7 @@ public class GenericExporter {
 
     /**
      * Set the skip annotation
-     * 
+     *
      * @param skipAnnotation
      */
     public void setSkipAnnotation(Class<? extends Annotation> skipAnnotation) {
@@ -572,7 +618,7 @@ public class GenericExporter {
 
     /**
      * Set the target folder for generated sources
-     * 
+     *
      * @param targetFolder
      */
     public void setTargetFolder(File targetFolder) {
@@ -581,17 +627,17 @@ public class GenericExporter {
 
     /**
      * Set the serializer class to be used
-     * 
+     *
      * @param serializerClass
      */
     public void setSerializerClass(Class<? extends Serializer> serializerClass) {
         codegenModule.bind(serializerClass);
         this.serializerClass = serializerClass;
     }
-    
+
     /**
      * Set the typemappings class to be used
-     * 
+     *
      * @param typeMappingsClass
      */
     public void setTypeMappingsClass(Class<? extends TypeMappings> typeMappingsClass) {
@@ -600,34 +646,34 @@ public class GenericExporter {
 
     /**
      * Set whether Scala sources are generated
-     * 
+     *
      * @param createScalaSources
      */
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
     }
-    
+
     /**
      * Set the keywords to be used
-     * 
+     *
      * @param keywords
      */
     public void setKeywords(Collection<String> keywords) {
         codegenModule.bind(CodegenModule.KEYWORDS, keywords);
     }
-    
+
     /**
      * Set the name prefix
-     * 
+     *
      * @param prefix
      */
     public void setNamePrefix(String prefix) {
         codegenModule.bind(CodegenModule.PREFIX, prefix);
     }
-    
+
     /**
      * Set the name suffix
-     * 
+     *
      * @param suffix
      */
     public void setNameSuffix(String suffix) {
@@ -636,39 +682,39 @@ public class GenericExporter {
 
     /**
      * Set the package suffix
-     * 
+     *
      * @param suffix
      */
     public void setPackageSuffix(String suffix) {
         codegenModule.bind(CodegenModule.PACKAGE_SUFFIX, suffix);
     }
-    
+
     /**
      * Set whether fields are handled (default true)
-     * 
+     *
      * @param b
      */
     public void setHandleFields(boolean b) {
         handleFields = b;
     }
-    
+
     /**
      * Set whether fields are handled (default true)
-     * 
+     *
      * @param b
      */
     public void setHandleMethods(boolean b) {
         handleMethods = b;
     }
-    
+
     /**
      * Add a stop class to be used (default Object.class and Enum.class)
-     * 
+     *
      * @param cl
      */
     public void addStopClass(Class<?> cl) {
         stopClasses.add(cl);
     }
 
-    
+
 }
