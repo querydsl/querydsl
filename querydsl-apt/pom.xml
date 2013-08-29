@@ -163,6 +163,7 @@
                 <descriptor>src/main/jpa.xml</descriptor>
                 <descriptor>src/main/morphia.xml</descriptor>
                 <descriptor>src/main/roo.xml</descriptor>
+                <descriptor>src/main/onejar.xml</descriptor>
               </descriptors>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
