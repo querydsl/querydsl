@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,9 @@ public interface JPQLQuery extends JPACommonQuery<JPQLQuery>, Projectable {
 
     /**
      * Add the "fetch" flag to the last defined join
+     *
+     * Mind that collection joins might result in duplicate rows and that "inner join fetch"
+     * will restrict your result set.
      *
      * @return
      */
