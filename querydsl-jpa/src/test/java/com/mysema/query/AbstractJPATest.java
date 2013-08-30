@@ -1281,6 +1281,20 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Transform_GroupBy2() {
+        QCat kitten = new QCat("kitten");
+        Map<List<?>, Group> result = query().from(cat).innerJoin(cat.kittens, kitten)
+            .transform(GroupBy.groupBy(cat.id, kitten.id)
+                    .as(cat, kitten));
+
+        assertFalse(result.isEmpty());
+        for (Tuple row : query().from(cat).innerJoin(cat.kittens, kitten)
+                                .list(cat, kitten)) {
+            assertNotNull(result.get(Arrays.asList(row.get(cat).getId(), row.get(kitten).getId())));
+        }
+    }
+
+    @Test
     @ExcludeIn(DERBY)
     public void Transform_GroupBy_Alias() {
         QCat kitten = new QCat("kitten");
