@@ -1,4 +1,4 @@
-# Querydsl #
+## Querydsl
 
 Querydsl is a framework which enables the construction of type-safe SQL-like queries for multiple backends including JPA, JDO and SQL in Java.
 
