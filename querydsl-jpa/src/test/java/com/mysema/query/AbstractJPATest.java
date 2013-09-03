@@ -1281,6 +1281,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(DERBY)
     public void Transform_GroupBy2() {
         QCat kitten = new QCat("kitten");
         Map<List<?>, Group> result = query().from(cat).innerJoin(cat.kittens, kitten)
