@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,12 +21,18 @@ import java.sql.Types;
 
 import org.joda.time.LocalDate;
 
+/**
+ * LocalDateType maps LocalDate to Date on the JDBC level
+ *
+ * @author tiwe
+ *
+ */
 public class LocalDateType extends AbstractType<LocalDate> {
-    
+
     public LocalDateType() {
         super(Types.DATE);
     }
-    
+
     public LocalDateType(int type) {
         super(type);
     }
@@ -35,7 +41,7 @@ public class LocalDateType extends AbstractType<LocalDate> {
     public Class<LocalDate> getReturnedClass() {
         return LocalDate.class;
     }
-    
+
     @Override
     public LocalDate getValue(ResultSet rs, int startIndex) throws SQLException {
         Date date = rs.getDate(startIndex);

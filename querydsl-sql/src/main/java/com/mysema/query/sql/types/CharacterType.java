@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,11 +19,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * CharacterType maps Character to Character on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class CharacterType extends AbstractType<Character> {
-    
+
     public CharacterType() {
         super(Types.CHAR);
     }
@@ -46,7 +48,7 @@ public class CharacterType extends AbstractType<Character> {
     @Override
     public void setValue(PreparedStatement st, int startIndex, Character value)
             throws SQLException {
-        st.setString(startIndex, value.toString());        
+        st.setString(startIndex, value.toString());
     }
 
 }

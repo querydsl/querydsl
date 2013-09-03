@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,11 +19,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * BooleanType maps Boolean to Boolean on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class BooleanType extends AbstractType<Boolean> {
-    
+
     public BooleanType() {
         super(Types.BOOLEAN);
     }
@@ -45,7 +47,7 @@ public class BooleanType extends AbstractType<Boolean> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Boolean value) throws SQLException {
-        st.setBoolean(startIndex, value);            
+        st.setBoolean(startIndex, value);
     }
 
 }

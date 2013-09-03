@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,19 +20,21 @@ import java.sql.Time;
 import java.sql.Types;
 
 /**
+ * TimeType maps Time to Time on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class TimeType extends AbstractType<Time> {
-    
+
     public TimeType() {
         super(Types.TIME);
     }
-    
+
     public TimeType(int type) {
         super(type);
     }
-    
+
     @Override
     public Time getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getTime(startIndex);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +21,14 @@ import java.sql.Types;
 
 import org.joda.time.DateTime;
 
+/**
+ * DateTimeType maps DateTime to Timestamp on the JDBC level
+ *
+ * @author tiwe
+ *
+ */
 public class DateTimeType extends AbstractType<DateTime> {
-    
+
     public DateTimeType() {
         super(Types.TIMESTAMP);
     }
@@ -44,7 +50,7 @@ public class DateTimeType extends AbstractType<DateTime> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, DateTime value) throws SQLException {
-        st.setTimestamp(startIndex, new Timestamp(value.getMillis()));        
+        st.setTimestamp(startIndex, new Timestamp(value.getMillis()));
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * StringType maps String to String on the JDBC level
+ *
  * @author tiwe
  *
  */
@@ -27,11 +29,11 @@ public class StringType extends AbstractType<String> {
     public StringType() {
         super(Types.VARCHAR);
     }
-    
+
     public StringType(int type) {
         super(type);
     }
-    
+
     @Override
     public String getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getString(startIndex);
@@ -46,7 +48,7 @@ public class StringType extends AbstractType<String> {
     public void setValue(PreparedStatement st, int startIndex, String value)
             throws SQLException {
         st.setString(startIndex, value);
-        
+
     }
 
 }

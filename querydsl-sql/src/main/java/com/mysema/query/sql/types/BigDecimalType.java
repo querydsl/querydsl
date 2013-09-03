@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,15 +20,17 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * BigDecimalType maps BigDecimal to BigDecimal on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class BigDecimalType extends AbstractType<BigDecimal> {
-    
+
     public BigDecimalType() {
         super(Types.DECIMAL);
     }
-    
+
     public BigDecimalType(int type) {
         super(type);
     }
@@ -46,7 +48,7 @@ public class BigDecimalType extends AbstractType<BigDecimal> {
     @Override
     public void setValue(PreparedStatement st, int startIndex, BigDecimal value)
             throws SQLException {
-        st.setBigDecimal(startIndex, value);        
+        st.setBigDecimal(startIndex, value);
     }
 
 }

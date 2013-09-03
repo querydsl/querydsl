@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * URLType maps URL to URL on the JDBC level
+ *
  * @author tiwe
  *
  */
@@ -28,11 +30,11 @@ public class URLType extends AbstractType<URL> {
     public URLType() {
         super(Types.VARCHAR);
     }
-    
+
     public URLType(int type) {
         super(type);
     }
-    
+
     @Override
     public URL getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getURL(startIndex);
