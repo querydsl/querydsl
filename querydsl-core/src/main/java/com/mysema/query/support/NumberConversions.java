@@ -57,10 +57,9 @@ public class NumberConversions<T> extends ExpressionBase<T> implements FactoryEx
             if (args[i] instanceof Number && !args[i].getClass().equals(type)) {
                 if (type.equals(Boolean.class)) {
                     args[i] = ((Number)args[i]).intValue() > 0;
-                } else {
+                } else if (Number.class.isAssignableFrom(type)){
                     args[i] = MathUtils.cast((Number)args[i], (Class)type);
                 }
-
             }
         }
         return expr.newInstance(args);
