@@ -15,6 +15,7 @@ package com.mysema.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayDeque;
@@ -91,14 +92,15 @@ public final class ClassPathUtils {
 
     private static void scanJar(ClassLoader classLoader, Set<Class<?>> classes, URL url, 
             String packagePath) throws IOException {
-        String[] fileAndPath = JAR_URL_SEPARATOR.split(url.getFile().substring(5));
-        JarFile jarFile = new JarFile(fileAndPath[0]);
+        // See http://stackoverflow.com/a/402771/14731
+        JarURLConnection connection = (JarURLConnection) url.openConnection();
+        JarFile jarFile = connection.getJarFile();
         try {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();            
                 if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) 
-                        && entry.getName().startsWith(fileAndPath[1].substring(1))) {
+                        && entry.getName().startsWith(connection.getEntryName())) {
                     String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
                     Class<?> cl = safeClassForName(classLoader, className);
                     if (cl != null) {
