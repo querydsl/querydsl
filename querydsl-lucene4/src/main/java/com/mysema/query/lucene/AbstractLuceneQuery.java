@@ -28,6 +28,7 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 
@@ -122,11 +123,20 @@ SimpleProjectable<T> {
         return innerCount();
     }
 
-    private Query createQuery() {
+    protected Query createQuery() {
         if (queryMixin.getMetadata().getWhere() == null) {
             return new MatchAllDocsQuery();
         }
         return serializer.toQuery(queryMixin.getMetadata().getWhere(), queryMixin.getMetadata());
+    }
+
+    /**
+     * Create a filter for constraints defined in this query
+     *
+     * @return
+     */
+    public Filter asFilter() {
+        return new QueryWrapperFilter(createQuery());
     }
 
     @Override
