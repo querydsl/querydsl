@@ -32,6 +32,8 @@ import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Visitor;
 
 /**
+ * RelationalPathExtractor extracts RelationlPath instances from expressions and queries
+ *
  * @author tiwe
  *
  */
