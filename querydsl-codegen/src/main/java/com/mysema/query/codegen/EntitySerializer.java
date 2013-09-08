@@ -136,10 +136,10 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(path.getMetadata());");
             } else {
-                writer.line("super((Class)path.getType(), path.getMetadata()" +additionalParams+");");
+                writer.line("super(path.getType(), path.getMetadata()" +additionalParams+");");
             }            
         } else {
-            writer.line("this((Class)path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.line("this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
         }
         writer.end();
 
