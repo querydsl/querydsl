@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,22 +25,19 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.regex.Pattern;
 
 /**
  * ClassPathUtils provides classpath scanning functionality
- * 
+ *
  * @author tiwe
  *
  */
 public final class ClassPathUtils {
-    
-    private static final Pattern JAR_URL_SEPARATOR = Pattern.compile("!");
-    
+
     public static Set<Class<?>> scanPackage(ClassLoader classLoader, Package pkg) throws IOException {
         return scanPackage(classLoader, pkg.getName());
     }
-    
+
     public static Set<Class<?>> scanPackage(ClassLoader classLoader, String pkg) throws IOException {
         String packagePath = pkg.replace('.', '/');
         Enumeration<URL> urls = classLoader.getResources(packagePath);
@@ -60,7 +57,7 @@ public final class ClassPathUtils {
         return classes;
     }
 
-    private static void scanDirectory(ClassLoader classLoader, String pkg, Set<Class<?>> classes, 
+    private static void scanDirectory(ClassLoader classLoader, String pkg, Set<Class<?>> classes,
             URL url, String packageName) throws IOException {
         Deque<File> files = new ArrayDeque<File>();
         String packagePath;
@@ -81,8 +78,8 @@ public final class ClassPathUtils {
                         Class<?> cl = safeClassForName(classLoader, className);
                         if (cl != null) {
                             classes.add(cl);
-                        }    
-                    }                    
+                        }
+                    }
                 } else if (child.isDirectory()) {
                     files.add(child);
                 }
@@ -90,7 +87,7 @@ public final class ClassPathUtils {
         }
     }
 
-    private static void scanJar(ClassLoader classLoader, Set<Class<?>> classes, URL url, 
+    private static void scanJar(ClassLoader classLoader, Set<Class<?>> classes, URL url,
             String packagePath) throws IOException {
         // See http://stackoverflow.com/a/402771/14731
         JarURLConnection connection = (JarURLConnection) url.openConnection();
@@ -98,8 +95,8 @@ public final class ClassPathUtils {
         try {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
-                JarEntry entry = entries.nextElement();            
-                if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) 
+                JarEntry entry = entries.nextElement();
+                if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath)
                         && entry.getName().startsWith(connection.getEntryName())) {
                     String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
                     Class<?> cl = safeClassForName(classLoader, className);
@@ -107,12 +104,12 @@ public final class ClassPathUtils {
                         classes.add(cl);
                     }
                 }
-            }    
+            }
         } finally {
-            jarFile.close();    
-        }                
+            jarFile.close();
+        }
     }
-    
+
     public static Class<?> safeClassForName(ClassLoader classLoader, String className) {
         try {
             if (className.startsWith("com.sun")) {
@@ -128,5 +125,5 @@ public final class ClassPathUtils {
     }
 
     private ClassPathUtils() {}
-    
+
 }
