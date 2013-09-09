@@ -22,7 +22,7 @@
 public List<Customer> getCustomer(String... names){
     QCustomer customer = QCustomer.customer;    
     JPAQuery query = new JPAQuery(entityManager).from(customer);    
-    BooleanBuilder builder = new BoolenBuilder();
+    BooleanBuilder builder = new BooleanBuilder();
     for (String name : names){
         builder.or(customer.name.eq(name));
     }
