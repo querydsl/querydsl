@@ -462,6 +462,7 @@
         <module>../querydsl-codegen</module>
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
+        <module>../querydsl-maven-plugin</module>        
       </modules>
     </profile>        
   
