@@ -19,6 +19,8 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQueryExpression;
 
 /**
  * Factory interface for query and clause creation.
@@ -57,6 +59,22 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
      * @return
      */
     Q from(Expression<?> from);
+
+    /**
+     * Create a new SELECT query
+     *
+     * @param from
+     * @return
+     */
+    Q from(Expression<?>... from);
+
+    /**
+     * Create a new SELECT query
+     *
+     * @param from
+     * @return
+     */
+    Q from(SubQueryExpression<?> subQuery, Path<?> alias);
 
     /**
      * Create a new INSERT INTO clause
