@@ -70,7 +70,15 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
                 }
             }
         }
-        throw new ExpressionException("Got no matching constructor");
+        // prepare error message
+        final StringBuilder formattedTypes = new StringBuilder();
+        for(Class<?> typ : givenTypes) {
+            if(formattedTypes.length() > 0) {
+                formattedTypes.append(", ");
+            }
+            formattedTypes.append(typ.getName());
+        }
+        throw new ExpressionException("Got no matching constructor. Class: " + type.getName() +", Parameters: " + formattedTypes.toString());
     }
 
     public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args) {
