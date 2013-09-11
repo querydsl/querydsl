@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,15 +27,15 @@ import com.google.common.primitives.Primitives;
 
 /**
  * ConstructorExpression represents a constructor invocation
- * 
+ *
  * <p>Example</p>
- * 
+ *
  * <pre>
  * {@code
  * QEmployee employee = QEmployee.employee;
  * List<EmployeeInfo> result = query.from(employee)
  *   .where(employee.valid.eq(true))
- *   .list(ConstructorExpression.create(EmployeeInfo.class, employee.firstName, employee.lastName)); 
+ *   .list(ConstructorExpression.create(EmployeeInfo.class, employee.firstName, employee.lastName));
  * }
  * </pre>
  *
@@ -51,10 +51,10 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     private static Class<?> normalize(Class<?> clazz) {
         return Primitives.wrap(clazz);
     }
-    
+
     private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {
         for (Constructor<?> c : type.getConstructors()) {
-            Class<?>[] paramTypes = c.getParameterTypes();     
+            Class<?>[] paramTypes = c.getParameterTypes();
             if (c.isVarArgs()) {
                 return paramTypes;
             } else if (paramTypes.length == givenTypes.length) {
@@ -71,14 +71,15 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             }
         }
         // prepare error message
-        final StringBuilder formattedTypes = new StringBuilder();
-        for(Class<?> typ : givenTypes) {
-            if(formattedTypes.length() > 0) {
+        StringBuilder formattedTypes = new StringBuilder();
+        for (Class<?> typ : givenTypes) {
+            if (formattedTypes.length() > 0) {
                 formattedTypes.append(", ");
             }
             formattedTypes.append(typ.getName());
         }
-        throw new ExpressionException("Got no matching constructor. Class: " + type.getName() +", Parameters: " + formattedTypes.toString());
+        throw new ExpressionException("Got no matching constructor. Class: " +
+                type.getName() +", parameters: " + formattedTypes.toString());
     }
 
     public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args) {
@@ -92,10 +93,10 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     private final ImmutableList<Expression<?>> args;
 
     private final Class<?>[] parameterTypes;
-    
+
     @Nullable
     private transient Constructor<?> constructor;
-    
+
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));
     }
@@ -113,7 +114,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
      */
     @SuppressWarnings("unchecked")
     public Expression<T> as(Path<T> alias) {
-        return OperationImpl.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+        return OperationImpl.create(getType(),Ops.ALIAS, this, alias);
     }
 
     /**
@@ -124,7 +125,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     public Expression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-    
+
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
@@ -144,10 +145,12 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         }
     }
 
+    @Override
     public final List<Expression<?>> getArgs() {
         return args;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public T newInstance(Object... args) {
         try {
@@ -157,19 +160,19 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             if (constructor.isVarArgs()) {
                 Class<?>[] paramTypes = constructor.getParameterTypes();
                 // constructor args
-                Object[] cargs = new Object[paramTypes.length];                
+                Object[] cargs = new Object[paramTypes.length];
                 System.arraycopy(args, 0, cargs, 0, cargs.length - 1);
                 // array with vargs
                 int size = args.length - cargs.length + 1;
                 Object array = Array.newInstance(
                         paramTypes[paramTypes.length - 1].getComponentType(), size);
                 cargs[cargs.length - 1] = array;
-                System.arraycopy(args, cargs.length - 1, array, 0, size);                
+                System.arraycopy(args, cargs.length - 1, array, 0, size);
                 return (T) constructor.newInstance(cargs);
             } else {
-                return (T) constructor.newInstance(args);    
-            }            
-            
+                return (T) constructor.newInstance(args);
+            }
+
         } catch (SecurityException e) {
            throw new ExpressionException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
