@@ -133,13 +133,19 @@ public class EntitySerializer implements Serializer{
             writer.beginConstructor(new Parameter("path", type));
         }       
         if (!hasEntityFields) {            
+            writer.append("super(");
             if (stringOrBoolean) {
-                writer.line("super(path.getMetadata());");
+                writer.line("path.getMetadata());");
             } else {
-                writer.line("super(path.getType(), path.getMetadata()" +additionalParams+");");
+                if (!localName.equals(genericName))
+                    writer.append("(Class)");
+                writer.line("path.getType(), path.getMetadata()" +additionalParams+");");
             }            
         } else {
-            writer.line("this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.append("this(");
+            if (!localName.equals(genericName))
+                writer.append("(Class)");
+            writer.line("path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
         }
         writer.end();
 
