@@ -110,7 +110,7 @@ SimpleProjectable<T> {
             if (maxDoc == 0) {
                 return 0;
             }
-            return searcher.search(createQuery(), getFilter(), maxDoc).totalHits;
+            return searcher.search(createQuery(), getFilter(), maxDoc, Sort.INDEXORDER, false, false).totalHits;
         } catch (IOException e) {
             throw new QueryException(e);
         } catch (IllegalArgumentException e) {
@@ -220,9 +220,9 @@ SimpleProjectable<T> {
                 throw new QueryException("The given limit (" + limit + ") and offset (" + offset + ") cause an integer overflow.");
             }
             if (sort != null) {
-                scoreDocs = searcher.search(createQuery(), getFilter(), sumOfLimitAndOffset, sort).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), getFilter(), sumOfLimitAndOffset, sort, false, false).scoreDocs;
             } else {
-                scoreDocs = searcher.search(createQuery(), getFilter(), sumOfLimitAndOffset).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), getFilter(), sumOfLimitAndOffset, Sort.INDEXORDER, false, false).scoreDocs;
             }
             if (offset < scoreDocs.length) {
                 return new ResultIterator<T>(scoreDocs, offset, searcher, fieldsToLoad, transformer);
@@ -317,7 +317,7 @@ SimpleProjectable<T> {
             if (maxDoc == 0) {
                 return null;
             }
-            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), getFilter(), maxDoc).scoreDocs;
+            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), getFilter(), maxDoc, Sort.INDEXORDER, false, false).scoreDocs;
             int index = 0;
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Long offset = modifiers.getOffset();
