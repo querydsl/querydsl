@@ -118,12 +118,15 @@ public class EntitySerializer implements Serializer{
                 || model.getOriginalCategory() == TypeCategory.BOOLEAN;
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
         String additionalParams = getAdditionalConstructorParameter(model);
+        String classCast = localName.equals(genericName) ? EMPTY : "(Class)";
 
         // String
         constructorsForVariables(writer, model);
 
         // Path
-        writer.suppressWarnings("all");
+        if (!localName.equals(genericName)) {
+            writer.suppressWarnings("all");
+        }
         Type simpleModel = new SimpleType(model);
         if (model.isFinal()) {
             Type type = new ClassType(Path.class, simpleModel);
@@ -133,21 +136,13 @@ public class EntitySerializer implements Serializer{
             writer.beginConstructor(new Parameter("path", type));
         }
         if (!hasEntityFields) {
-            writer.append("super(");
             if (stringOrBoolean) {
-                writer.line("path.getMetadata());");
+                writer.line("super(path.getMetadata());");
             } else {
-                if (!localName.equals(genericName)) {
-                    writer.append("(Class)");
-                }
-                writer.line("path.getType(), path.getMetadata()" +additionalParams+");");
+                writer.line("super(", classCast, "path.getType(), path.getMetadata()" +additionalParams+");");
             }
         } else {
-            writer.append("this(");
-            if (!localName.equals(genericName)) {
-                writer.append("(Class)");
-            }
-            writer.line("path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.line("this(", classCast, "path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
         }
         writer.end();
 
@@ -164,8 +159,7 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(metadata);");
             } else {
-                writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)",
-                        localName, ".class, metadata" + additionalParams + ");");
+                writer.line("super(", classCast, localName, ".class, metadata" + additionalParams + ");");
             }
             writer.end();
         }
@@ -176,8 +170,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("all");
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
-            writer.line(thisOrSuper, "(", localName.equals(genericName) ? EMPTY : "(Class)",
-                    localName, ".class, metadata, inits" + additionalParams+ ");");
+            writer.line(thisOrSuper, "(", classCast, localName, ".class, metadata, inits" + additionalParams+ ");");
             writer.end();
         }
 
