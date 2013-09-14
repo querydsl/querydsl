@@ -44,6 +44,8 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
@@ -722,6 +724,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         }
         CloseableIterator<RT> iterator = iterate(expr);
         return uniqueResult(iterator);
+    }
+
+    @Override
+    public Q withRecursive(Path<?> alias, SubQueryExpression<?> query) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, query);
+    }
+
+    @Override
+    public Q with(Path<?> alias, SubQueryExpression<?> query) {
+        Expression<?> expr = OperationImpl.create(alias.getType(), Ops.ALIAS, alias, query);
+        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
     private long unsafeCount() throws SQLException {

@@ -25,9 +25,11 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.Templates;
 
 /**
@@ -37,6 +39,8 @@ import com.mysema.query.types.Templates;
  * @author tiwe
  */
 public class SQLTemplates extends Templates {
+
+    public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
     public static final Operator<Object> CAST = new OperatorImpl<Object>("SQL_CAST");
 
@@ -186,6 +190,8 @@ public class SQLTemplates extends Templates {
     private String where = "\nwhere ";
 
     private String with = "with ";
+
+    private String withRecursive = "with recursive ";
 
     private String createIndex = "create index ";
 
@@ -502,6 +508,10 @@ public class SQLTemplates extends Templates {
         return with;
     }
 
+    public final String getWithRecursive() {
+        return withRecursive;
+    }
+
     public final boolean isParameterMetadataAvailable() {
         return parameterMetadataAvailable;
     }
@@ -736,6 +746,10 @@ public class SQLTemplates extends Templates {
 
     protected void setWith(String with) {
         this.with = with;
+    }
+
+    protected void setWithRecursive(String withRecursive) {
+        this.withRecursive = withRecursive;
     }
 
     protected void setCreateIndex(String createIndex) {
