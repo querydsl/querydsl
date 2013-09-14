@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,6 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
@@ -52,15 +51,15 @@ import com.mysema.query.types.QTuple;
  * @author tiwe
  *
  */
-public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery> {
-    
+public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
+
     private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
-    
+
     private final Closeable closeable = new Closeable() {
         @Override
         public void close() throws IOException {
-            JDOSQLQuery.this.close();            
-        }        
+            JDOSQLQuery.this.close();
+        }
     };
 
     private final boolean detach;
@@ -71,15 +70,15 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     private final PersistenceManager persistenceManager;
 
     private List<Query> queries = new ArrayList<Query>(2);
-    
+
     @Nullable
     private FactoryExpression<?> projection;
-    
+
 
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
         this(persistenceManager, new Configuration(templates), new DefaultQueryMetadata().noValidate(), false);
     }
-    
+
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, Configuration configuration) {
         this(persistenceManager, configuration, new DefaultQueryMetadata().noValidate(), false);
     }
@@ -99,6 +98,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         }
     }
 
+    @Override
     public long count() {
         Query query = createQuery(true);
         query.setUnique(true);
@@ -116,9 +116,9 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
-            serializer.serialize(queryMixin.getMetadata(), forCount);    
+            serializer.serialize(queryMixin.getMetadata(), forCount);
         }
-        
+
 
         // create Query
         if (logger.isDebugEnabled()) {
@@ -148,7 +148,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
             return persistenceManager.detachCopy(results);
         }
     }
-    
+
     private Object project(FactoryExpression<?> expr, Object row) {
         if (row == null) {
             return null;
@@ -183,6 +183,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return rv;
     }
 
+    @Override
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
@@ -191,18 +192,22 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return detach;
     }
 
+    @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(new QTuple(args));
     }
 
+    @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
+    @Override
     public List<Tuple> list(Expression<?>... args) {
         return list(new QTuple(args));
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         queryMixin.addProjection(expr);
@@ -211,10 +216,12 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
 
+    @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
         return listResults(new QTuple(args));
     }
-    
+
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
@@ -253,7 +260,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     public Tuple uniqueResult(Expression<?>... args) {
         return uniqueResult(new QTuple(args));
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     @Nullable
@@ -261,7 +268,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         queryMixin.addProjection(expr);
         return (RT)uniqueResult();
     }
-    
+
     @Nullable
     private Object uniqueResult() {
         if (getMetadata().getModifiers().getLimit() == null) {

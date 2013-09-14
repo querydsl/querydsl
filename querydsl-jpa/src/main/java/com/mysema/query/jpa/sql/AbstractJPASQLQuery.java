@@ -55,7 +55,7 @@ import com.mysema.query.types.QTuple;
  *
  * @param <Q>
  */
-public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
+public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com.mysema.query.Query<Q>> extends AbstractSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
 
