@@ -60,15 +60,15 @@ public final class JDBCTypeMapping {
         registerDefault(Types.TIMESTAMP, java.sql.Timestamp.class);
 
         // TEXT
-        registerDefault(Types.CHAR, String.class);
         registerDefault(Types.NCHAR, String.class);
-        registerDefault(Types.CLOB, String.class);
+        registerDefault(Types.CHAR, String.class);
         registerDefault(Types.NCLOB, String.class);
-        registerDefault(Types.LONGVARCHAR, String.class);
+        registerDefault(Types.CLOB, String.class);
         registerDefault(Types.LONGNVARCHAR, String.class);
+        registerDefault(Types.LONGVARCHAR, String.class);
         registerDefault(Types.SQLXML, String.class);
-        registerDefault(Types.VARCHAR, String.class);
         registerDefault(Types.NVARCHAR, String.class);
+        registerDefault(Types.VARCHAR, String.class);
 
         // byte[]
         registerDefault(Types.BINARY, byte[].class);
