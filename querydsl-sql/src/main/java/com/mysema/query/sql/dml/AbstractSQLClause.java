@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,36 +22,48 @@ import java.util.Map;
 import com.mysema.query.QueryException;
 import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLListener;
+import com.mysema.query.sql.SQLListeners;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
- * 
+ *
  * @author tiwe
  *
  */
 public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implements DMLClause<C> {
-    
+
     protected final Configuration configuration;
-    
+
+    protected final SQLListeners listeners;
+
     /**
      * @param configuration
      */
     public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
+        this.listeners = new SQLListeners(configuration.getListener());
     }
-    
+
+    /**
+     * @param listener
+     */
+    public void addListener(SQLListener listener) {
+        listeners.add(listener);
+    }
+
     /**
      * Set the parameters to the given PreparedStatement
-     * 
+     *
      * @param stmt preparedStatement to be populated
      * @param objects list of constants
      * @param constantPaths list of paths related to the constants
      * @param params map of param to value for param resolving
      */
-    protected void setParameters(PreparedStatement stmt, List<?> objects, 
+    protected void setParameters(PreparedStatement stmt, List<?> objects,
             List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, " +
@@ -71,8 +83,8 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
                 throw new IllegalArgumentException(e);
             }
         }
-    }    
-    
+    }
+
     protected long executeBatch(PreparedStatement stmt) throws SQLException {
         if (configuration.getTemplates().isBatchCountViaGetUpdateCount()) {
             stmt.executeBatch();
@@ -85,7 +97,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
             return rv;
         }
     }
-        
+
     protected void close(PreparedStatement stmt) {
         try {
             stmt.close();

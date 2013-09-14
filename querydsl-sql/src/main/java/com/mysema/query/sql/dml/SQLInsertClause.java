@@ -284,8 +284,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         try {
             final PreparedStatement stmt = createStatement(true);
             if (batches.isEmpty()) {
+                listeners.notifyInsert(metadata, entity, columns, values, subQuery);
                 stmt.executeUpdate();
             } else {
+                listeners.notifyInserts(metadata, entity, batches);
                 stmt.executeBatch();
             }
             ResultSet rs = stmt.getGeneratedKeys();
@@ -310,8 +312,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         try {
             stmt = createStatement(false);
             if (batches.isEmpty()) {
+                listeners.notifyInsert(metadata, entity, columns, values, subQuery);
                 return stmt.executeUpdate();
             } else {
+                listeners.notifyInserts(metadata, entity, batches);
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {

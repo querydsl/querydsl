@@ -83,6 +83,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     private final Configuration configuration;
 
+    private final SQLListeners listeners;
+
     protected final QueryMixin<Q> queryMixin;
 
     protected boolean unionAll;
@@ -98,6 +100,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         this.queryMixin.setSelf((Q) this);
         this.conn = conn;
         this.configuration = configuration;
+        this.listeners = new SQLListeners(configuration.getListener());
+    }
+
+    /**
+     * @param listener
+     */
+    public void addListener(SQLListener listener) {
+        listeners.add(listener);
     }
 
     /**
@@ -371,6 +381,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        listeners.notifyQuery(queryMixin.getMetadata());
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -425,6 +436,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        listeners.notifyQuery(queryMixin.getMetadata());
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
@@ -484,6 +496,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        listeners.notifyQuery(queryMixin.getMetadata());
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {

@@ -28,7 +28,7 @@ import com.mysema.query.types.SubQueryExpression;
  * @author tiwe
  *
  */
-interface SQLListener {
+public interface SQLListener {
 
     /**
      * @param md

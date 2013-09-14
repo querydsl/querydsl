@@ -150,8 +150,10 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         try {
             stmt = createStatement();
             if (batches.isEmpty()) {
+                listeners.notifyUpdate(metadata, entity, updates);
                 return stmt.executeUpdate();
             } else {
+                listeners.notifyUpdates(metadata, entity, batches);
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
