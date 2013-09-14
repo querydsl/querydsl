@@ -25,6 +25,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
+ * Listener interface for SQL queries and clauses
+ *
  * @author tiwe
  *
  */
