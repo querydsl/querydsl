@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,34 +21,33 @@ import com.mysema.query.types.Path;
 
 /**
  * Context is used in {@link CollectionAnyVisitor} as the visitor context
- * 
+ *
  * @author tiwe
  *
  */
 public class Context {
-    
+
     public boolean replace;
-    
-    public final List<Path<?>> paths = new ArrayList<Path<?>>(); 
-        
-    public final List<EntityPath<?>> replacements = new ArrayList<EntityPath<?>>();    
-            
+
+    public final List<Path<?>> paths = new ArrayList<Path<?>>();
+
+    public final List<EntityPath<?>> replacements = new ArrayList<EntityPath<?>>();
+
     public void add(Path<?> anyPath, EntityPath<?> replacement) {
         replace = true;
         paths.add(anyPath);
         replacements.add(replacement);
     }
-    
+
     public void add(Context c) {
         replace |= c.replace;
         paths.addAll(c.paths);
         replacements.addAll(c.replacements);
-
     }
 
     public void clear() {
         paths.clear();
-        replacements.clear();            
+        replacements.clear();
     }
-    
+
 }

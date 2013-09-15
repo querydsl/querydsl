@@ -1,12 +1,13 @@
 package com.mysema.query;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
+
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
@@ -29,9 +30,8 @@ public class QCompanies extends com.mysema.query.sql.RelationalPathBase<QCompani
         super(QCompanies.class, forVariable(variable), "PUBLIC", "COMPANIES");
     }
 
-    @SuppressWarnings("all")
     public QCompanies(Path<? extends QCompanies> path) {
-        super((Class)path.getType(), path.getMetadata(), "PUBLIC", "COMPANIES");
+        super(path.getType(), path.getMetadata(), "PUBLIC", "COMPANIES");
     }
 
     public QCompanies(PathMetadata<?> metadata) {
