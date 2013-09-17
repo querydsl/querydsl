@@ -235,6 +235,8 @@ public class InsertBase extends AbstractBaseTest {
                            .where(survey2.name.eq("MyModule")).notExists())
                 .unique(Expressions.constant("MyModule")))
             .execute());
+
+        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule")).count());
     }
 
     @Test
