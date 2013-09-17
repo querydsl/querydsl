@@ -240,6 +240,23 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({HSQLDB, DERBY})
+    public void Insert_With_SubQuery3() {
+//        insert into modules(name)
+//        select 'MyModule'
+//        where not exists
+//        (select 1 from modules where modules.name = 'MyModule')
+
+        assertEquals(1, insert(survey).columns(survey.name).select(
+            sq().where(sq().from(survey2)
+                           .where(survey2.name.eq("MyModule2")).notExists())
+                .unique(Expressions.constant("MyModule2")))
+            .execute());
+
+        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule2")).count());
+    }
+
+    @Test
     public void Insert_With_SubQuery_Params() {
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
         SQLSubQuery sq = sq().from(survey2);
