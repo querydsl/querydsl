@@ -583,6 +583,23 @@ new SQLInsertClause(conn, dialect, survey)
     .execute();
 ]]></programlisting>
 
+    <para>As an alternative to the columns/values usage, Querydsl provides also a set
+     method which can be used like this</para>
+    
+    <programlisting language="java"><![CDATA[
+QSurvey survey = QSurvey.survey;
+  
+new SQLInsertClause(conn, dialect, survey)
+    .set(survey.id, 3)
+    .set(survey.name, "Hello").execute();
+]]></programlisting>    
+
+     <para>which is equivalent to the first example. Usage of the set method always 
+     expands internally to columns and values.</para>
+     
+     <para>Beware that if you are using SQLInsertClause with subqueries you probably want to use the select 
+     method instead which maps the result set of zero to many rows to the insert clause instead of a single row.</para>
+
     </sect3>
 
     <sect3>
