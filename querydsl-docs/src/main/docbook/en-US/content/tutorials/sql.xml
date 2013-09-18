@@ -474,6 +474,22 @@ query.from(customer).where(
   </sect2>
 
   <sect2>
+  
+    <title>Selecting literals</title>
+    
+    <para>To select literals you need to create constant instances for it like this.</para>
+    
+    <programlisting language="java"><![CDATA[
+query.list(Expressions.constant(1),
+           Expressions.constant("abc"));    
+]]></programlisting>     
+
+    <para>The class  <code>com.mysema.query.support.Expressions</code> offers also other useful static methods for
+    projections, operation and template creation.</para>
+  
+  </sect2>
+
+  <sect2>
 
     <title>Query extension support</title>
 
