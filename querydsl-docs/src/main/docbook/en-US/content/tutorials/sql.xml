@@ -613,8 +613,19 @@ new SQLInsertClause(conn, dialect, survey)
      <para>which is equivalent to the first example. Usage of the set method always 
      expands internally to columns and values.</para>
      
-     <para>Beware that if you are using SQLInsertClause with subqueries you probably want to use the select 
-     method instead which maps the result set of zero to many rows to the insert clause instead of a single row.</para>
+     <para>Beware that</para>
+     
+     <programlisting language="java"><![CDATA[
+columns(...).select(...)
+]]></programlisting>    
+
+     <para>maps the result set of the given query to be inserted whereas</para>
+
+<programlisting language="java"><![CDATA[
+set(...)
+]]></programlisting>    
+
+     <para>maps single columns and nulls are used for empty subquery results.</para>
 
     </sect3>
 
