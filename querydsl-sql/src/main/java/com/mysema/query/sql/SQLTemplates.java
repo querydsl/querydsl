@@ -64,6 +64,8 @@ public class SQLTemplates extends Templates {
 
     public static final Operator<Object> LAG = new OperatorImpl<Object>("LAG");
 
+    public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>("WITH_ALIAS");
+
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
     public static abstract class Builder {
@@ -215,6 +217,8 @@ public class SQLTemplates extends Templates {
         super(escape);
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
+
+        add(WITH_ALIAS, "{0} as {1}", 0);
 
         // boolean
         add(Ops.AND, "{0} and {1}", 36);

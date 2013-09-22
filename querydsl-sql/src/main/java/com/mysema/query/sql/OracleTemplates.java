@@ -62,6 +62,7 @@ public class OracleTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setParameterMetadataAvailable(false);
         setBatchCountViaGetUpdateCount(true);
+        setWithRecursive("with ");
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);
