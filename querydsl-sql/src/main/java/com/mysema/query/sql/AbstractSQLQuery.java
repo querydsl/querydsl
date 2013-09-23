@@ -101,7 +101,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         this.queryMixin.setSelf((Q) this);
         this.conn = conn;
         this.configuration = configuration;
-        this.listeners = new SQLListeners(configuration.getListener());
+        this.listeners = new SQLListeners(configuration.getListeners());
     }
 
     /**

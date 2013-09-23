@@ -45,7 +45,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
      */
     public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
-        this.listeners = new SQLListeners(configuration.getListener());
+        this.listeners = new SQLListeners(configuration.getListeners());
     }
 
     /**

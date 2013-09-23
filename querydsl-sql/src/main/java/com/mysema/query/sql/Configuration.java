@@ -255,7 +255,7 @@ public final class Configuration {
     /**
      * @return
      */
-    public SQLListener getListener() {
+    public SQLListeners getListeners() {
         return listeners;
     }
 
