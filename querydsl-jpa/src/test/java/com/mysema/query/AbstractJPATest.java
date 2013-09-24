@@ -490,6 +490,24 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Count_Distinct() {
+        QCat cat = QCat.cat;
+        query().from(cat)
+            .groupBy(cat.id)
+            .list(cat.id, cat.breed.countDistinct());
+    }
+
+    @Test
+    @NoBatooJPA
+    @NoHibernate
+    public void Count_Distinct2() {
+        QCat cat = QCat.cat;
+        query().from(cat)
+            .groupBy(cat.id)
+            .list(cat.id, cat.birthdate.dayOfMonth().countDistinct());
+    }
+
+    @Test
     public void DistinctResults() {
         System.out.println("-- list results");
         SearchResults<Date> res = query().from(cat).limit(2).listResults(cat.birthdate);
