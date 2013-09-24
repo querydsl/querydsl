@@ -861,6 +861,17 @@ configuration.registerNumeric(5,2,Float.class);
     <para>This will map the Float type to the NUMERIC(5,2) type.</para>
 
   </sect2>
+  
+  <sect2>
+  
+    <title>Listening to queries and clauses</title>
+    
+    <para>SQLListener is a listener interface that can be used to listen to queries and DML clause. SQLListener
+    instances can be registered either on the configuration and on the query/clause level via the addListener method.</para>
+  
+    <para>Use cases for listeners are data synchronization, logging, cacheing and validation.</para>
+  
+  </sect2>
 
 
 </sect1>    
