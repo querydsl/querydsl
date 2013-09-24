@@ -737,6 +737,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
+    public Q with(Path<?> alias, Expression<?> query) {
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, query);
+        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
+    }
+
     private long unsafeCount() throws SQLException {
         final String queryString = buildQueryString(true);
         if (logger.isDebugEnabled()) {
