@@ -66,6 +66,8 @@ public class SQLTemplates extends Templates {
 
     public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>("WITH_ALIAS");
 
+    public static final Operator<Object> WITH_COLUMNS = new OperatorImpl<Object>("WITH_COLUMNS");
+
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
     public static abstract class Builder {
@@ -219,6 +221,7 @@ public class SQLTemplates extends Templates {
         this.useQuotes = useQuotes;
 
         add(WITH_ALIAS, "{0} as {1}", 0);
+        add(WITH_COLUMNS, "{0} {1}", 0);
 
         // boolean
         add(Ops.AND, "{0} and {1}", 36);

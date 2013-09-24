@@ -1467,11 +1467,33 @@ public class SelectBase extends AbstractBaseTest{
                .list(employee.id, employee2.id, employee3.id);
     }
 
+    @Test
+    @IncludeIn({HSQLDB, ORACLE, POSTGRES})
+    public void With3() {
+        query().with(employee2, employee2.all()).as(
+                sq().from(employee)
+                  .where(employee.firstname.eq("Tom"))
+                  .list(Wildcard.all))
+               .from(employee, employee2)
+               .list(employee.id, employee2.id);
+    }
 
     @Test
     @IncludeIn({ORACLE, POSTGRES})
     public void With_Recursive() {
         query().withRecursive(employee2, sq().from(employee)
+                  .where(employee.firstname.eq("Tom"))
+                  .list(Wildcard.all))
+               .from(employee, employee2)
+               .list(employee.id, employee2.id);
+    }
+
+
+    @Test
+    @IncludeIn({ORACLE, POSTGRES})
+    public void With_Recursive2() {
+        query().withRecursive(employee2, employee2.all()).as(
+                sq().from(employee)
                   .where(employee.firstname.eq("Tom"))
                   .list(Wildcard.all))
                .from(employee, employee2)

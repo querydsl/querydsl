@@ -737,6 +737,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 handle(args.get(1));
             }
 
+        } else if (operator == SQLTemplates.WITH_COLUMNS) {
+            boolean oldSkipParent = skipParent;
+            skipParent = true;
+            super.visitOperation(type, operator, args);
+            skipParent = oldSkipParent;
+
         } else {
             super.visitOperation(type, operator, args);
         }

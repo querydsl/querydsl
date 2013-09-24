@@ -161,7 +161,7 @@ public class SQLSerializerTest {
         QEmployee e = QEmployee.employee;
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         SQLQuery query = new SQLQuery(SQLTemplates.DEFAULT);
-        query.with(sub,
+        query.withRecursive(sub,
                 sq().unionAll(
                     sq().from(e).where(e.firstname.eq("Mike"))
                         .list(e.id, e.firstname, e.superiorId),
@@ -173,7 +173,43 @@ public class SQLSerializerTest {
         md.addProjection(Wildcard.all);
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(md, false);
-        assertEquals("with sub as ((select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.SUPERIOR_ID\n" +
+        assertEquals("with recursive sub as ((select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.SUPERIOR_ID\n" +
+                "from EMPLOYEE EMPLOYEE\n" +
+                "where EMPLOYEE.FIRSTNAME = ?)\n" +
+                "union all\n" +
+                "(select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.SUPERIOR_ID\n" +
+                "from EMPLOYEE EMPLOYEE, sub\n" +
+                "where EMPLOYEE.SUPERIOR_ID = sub.ID))\n" +
+                "select *\n" +
+                "from sub", serializer.toString());
+
+    }
+
+    @Test
+    public void WithRecursive2() {
+        /*with sub (id, firstname, superior_id) as (
+            select id, firstname, superior_id from employee where firstname like 'Mike'
+            union all
+            select employee.id, employee.firstname, employee.superior_id from sub, employee
+            where employee.superior_id = sub.id)
+        select * from sub;*/
+
+        QEmployee e = QEmployee.employee;
+        PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
+        SQLQuery query = new SQLQuery(SQLTemplates.DEFAULT);
+        query.withRecursive(sub, sub.get(e.id), sub.get(e.firstname), sub.get(e.superiorId)).as(
+                sq().unionAll(
+                    sq().from(e).where(e.firstname.eq("Mike"))
+                        .list(e.id, e.firstname, e.superiorId),
+                    sq().from(e, sub).where(e.superiorId.eq(sub.get(e.id)))
+                        .list(e.id, e.firstname, e.superiorId)))
+             .from(sub);
+
+        QueryMetadata md = query.getMetadata();
+        md.addProjection(Wildcard.all);
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.serialize(md, false);
+        assertEquals("with recursive sub (ID, FIRSTNAME, SUPERIOR_ID) as ((select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.SUPERIOR_ID\n" +
                 "from EMPLOYEE EMPLOYEE\n" +
                 "where EMPLOYEE.FIRSTNAME = ?)\n" +
                 "union all\n" +
