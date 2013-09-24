@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,14 +31,14 @@ public final class PathMetadata<T> implements Serializable{
     private static final long serialVersionUID = -1055994185028970065L;
 
     private final Object element;
-    
+
     private final int hashCode;
 
     @Nullable
     private final Path<?> parent, root;
 
     private final PathType pathType;
-    
+
     public PathMetadata(@Nullable Path<?> parent, Object element, PathType type) {
         this.parent = parent;
         this.element = element;
@@ -46,12 +46,12 @@ public final class PathMetadata<T> implements Serializable{
         this.hashCode = 31 * element.hashCode() + pathType.hashCode();
         this.root = parent != null ? parent.getRoot() : null;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj instanceof PathMetadata<?>) { 
+        } else if (obj instanceof PathMetadata<?>) {
             PathMetadata<?> p = (PathMetadata<?>) obj;
             return element.equals(p.element) &&
                     pathType == p.pathType &&
@@ -65,16 +65,21 @@ public final class PathMetadata<T> implements Serializable{
     public Object getElement() {
         return element;
     }
-    
+
     public String getName() {
-        return (String)element;
+        if (pathType == PathType.VARIABLE || pathType == PathType.PROPERTY) {
+            return (String)element;
+        } else {
+            throw new IllegalStateException("name property not available for path of type " + pathType +
+                    ". Use getElement() to access the generic path element.");
+        }
     }
 
     @Nullable
     public Path<?> getParent() {
         return parent;
     }
-    
+
     public PathType getPathType() {
         return pathType;
     }
@@ -90,7 +95,7 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public boolean isRoot() {
-        return parent == null || (pathType == PathType.DELEGATE && parent.getMetadata().isRoot()); 
+        return parent == null || (pathType == PathType.DELEGATE && parent.getMetadata().isRoot());
     }
 
 }
