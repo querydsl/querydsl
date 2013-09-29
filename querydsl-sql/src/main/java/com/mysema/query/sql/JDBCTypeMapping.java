@@ -122,7 +122,7 @@ public final class JDBCTypeMapping {
                 return Integer.class;
             } else if (size > 2) {
                 return Short.class;
-            } else if (size > 0) {
+            } else if (size > 1) {
                 return Byte.class;
             } else {
                 return Boolean.class;
