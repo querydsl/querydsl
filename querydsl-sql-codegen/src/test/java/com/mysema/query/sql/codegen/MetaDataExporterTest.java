@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,20 +44,20 @@ import com.mysema.util.FileUtils;
 public class MetaDataExporterTest {
 
     private static final List<Serializer> BEAN_SERIALIZERS = Arrays.<Serializer>asList(
-            new BeanSerializer()); 
-    
+            new BeanSerializer());
+
     private static Connection connection;
 
     private Statement statement;
-    
+
     private Serializer beanSerializer;
 
     private boolean clean = true;
-    
+
     private boolean exportColumns = false;
-    
+
     private boolean schemaToPackage = false;
-    
+
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException{
         Class.forName("org.h2.Driver");
@@ -93,6 +93,9 @@ public class MetaDataExporterTest {
             // complex type
             stmt.execute("create table survey (id int, name varchar(30))");
 
+            // new line
+            stmt.execute("create table \"new\nline\" (id int)");
+
             stmt.execute("create table employee("
                     + "id INT, "
                     + "firstname VARCHAR(50), "
@@ -105,10 +108,10 @@ public class MetaDataExporterTest {
                     + "survey_name varchar(30), "
                     + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                     + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
-            
+
             // multi key
             stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT, CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
-            
+
         }finally{
             stmt.close();
         }
@@ -137,7 +140,7 @@ public class MetaDataExporterTest {
 
     private String beanPackageName = null;
 
-    
+
     @Test
     public void NormalSettings_Repetition() throws SQLException {
         test("Q", "", "", "", defaultNaming, "target/1", false, false);
@@ -145,17 +148,17 @@ public class MetaDataExporterTest {
         File file = new File("target/1/test/QEmployee.java");
         long lastModified = file.lastModified();
         assertTrue(file.exists());
-        
-        clean = false;        
+
+        clean = false;
         test("Q", "", "", "", defaultNaming, "target/1", false, false);
-        assertEquals(lastModified, file.lastModified()); 
+        assertEquals(lastModified, file.lastModified());
     }
-    
+
     @Test
     public void Multiple() throws SQLException {
         // TODO : refactor this to use new JUnit constructs
         boolean[] trueAndFalse = new boolean[]{true, false};
-        int counter = 0; 
+        int counter = 0;
         for (String namePrefix : Arrays.asList("", "Q", "Query")) {
         for (String nameSuffix : Arrays.asList("", "Type")) {
         for (String beanPrefix : Arrays.asList("", "Bean")) {
@@ -176,7 +179,7 @@ public class MetaDataExporterTest {
                  ns, "target/multiple_"+counter, withBeans, withInnerClasses);
         }}}}}}}}}}}
     }
-    
+
     @Test
     public void Explicit_Configuration() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
@@ -188,7 +191,7 @@ public class MetaDataExporterTest {
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setBeanPackageName("test2");
         exporter.export(connection.getMetaData());
-        
+
         assertTrue(new File("target/7/test/QDateTest.java").exists());
         assertTrue(new File("target/7/test2/DateTest.java").exists());
     }
@@ -200,7 +203,7 @@ public class MetaDataExporterTest {
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/8"));
         exporter.export(connection.getMetaData());
-        
+
         assertTrue(new File("target/8/test/QDateTest.java").exists());
     }
 
@@ -213,7 +216,7 @@ public class MetaDataExporterTest {
         exporter.setNameSuffix("Type");
         exporter.setTargetFolder(new File("target/9"));
         exporter.export(connection.getMetaData());
-        
+
         assertTrue(new File("target/9/test/DateTestType.java").exists());
     }
 
@@ -227,7 +230,7 @@ public class MetaDataExporterTest {
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setTargetFolder(new File("target/a"));
         exporter.export(connection.getMetaData());
-        
+
         assertTrue(new File("target/a/test/DateTest.java").exists());
         assertTrue(new File("target/a/test/BeanDateTest.java").exists());
     }
@@ -242,12 +245,12 @@ public class MetaDataExporterTest {
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setTargetFolder(new File("target/b"));
         exporter.export(connection.getMetaData());
-        
+
         assertTrue(new File("target/b/test/DateTest.java").exists());
         assertTrue(new File("target/b/test/DateTestBean.java").exists());
     }
-    
-    private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix, 
+
+    private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, String target, boolean withBeans,
             boolean withInnerClasses) throws SQLException{
         File targetDir = new File(target);
@@ -258,8 +261,8 @@ public class MetaDataExporterTest {
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }    
-        }        
+            }
+        }
 
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setColumnAnnotations(exportColumns);
@@ -281,7 +284,7 @@ public class MetaDataExporterTest {
 
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
-        int compilationResult = compiler.run(null, System.out, System.err, 
+        int compilationResult = compiler.run(null, System.out, System.err,
                 classes.toArray(new String[classes.size()]));
         if(compilationResult == 0) {
             System.out.println("Compilation is successful");

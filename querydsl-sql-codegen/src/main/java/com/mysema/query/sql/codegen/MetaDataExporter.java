@@ -158,11 +158,11 @@ public class MetaDataExporter {
         }
     }
 
-    protected Property createProperty(EntityType classModel, String columnName,
+    protected Property createProperty(EntityType classModel, String normalizedColumnName,
             String propertyName, Type typeModel) {
         return new Property(
                 classModel,
-                namingStrategy.normalizeColumnName(columnName),
+                normalizedColumnName,
                 propertyName,
                 typeModel,
                 Collections.<String>emptyList(),
@@ -220,10 +220,11 @@ public class MetaDataExporter {
 
     private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
         String columnName = normalize(columns.getString("COLUMN_NAME"));
+        String normalizedColumnName = namingStrategy.normalizeColumnName(columnName);
         int columnType = columns.getInt("DATA_TYPE");
         int columnSize = columns.getInt("COLUMN_SIZE");
         int columnDigits = columns.getInt("DECIMAL_DIGITS");
-        String propertyName = namingStrategy.getPropertyName(columnName, classModel);
+        String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType, columnSize, columnDigits,
                 tableName, columnName);
         if (clazz == null) {
@@ -236,9 +237,9 @@ public class MetaDataExporter {
             fieldType = TypeCategory.ENUM;
         }
         Type typeModel = new ClassType(fieldType, clazz);
-        Property property = createProperty(classModel, columnName, propertyName, typeModel);
+        Property property = createProperty(classModel, normalizedColumnName, propertyName, typeModel);
         if (columnAnnotations) {
-            property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));
+            property.addAnnotation(new ColumnImpl(normalizedColumnName));
         }
         if (validationAnnotations) {
             int nullable = columns.getInt("NULLABLE");
@@ -258,9 +259,9 @@ public class MetaDataExporter {
         String schema = tables.getString("TABLE_SCHEM");
         String schemaName = normalize(tables.getString("TABLE_SCHEM"));
         String tableName = normalize(tables.getString("TABLE_NAME"));
-        String className = namingStrategy.getClassName(tableName);
-        EntityType classModel = createEntityType(schemaName,
-                namingStrategy.normalizeTableName(tableName), className);
+        String normalizedTableName = namingStrategy.normalizeTableName(tableName);
+        String className = namingStrategy.getClassName(normalizedTableName);
+        EntityType classModel = createEntityType(schemaName, normalizedTableName, className);
 
         // collect primary keys
         Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory

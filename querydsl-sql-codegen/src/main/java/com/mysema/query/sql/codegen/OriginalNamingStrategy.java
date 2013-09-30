@@ -25,7 +25,7 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getClassName(String tableName) {
-        return tableName;
+        return Naming.normalize(tableName, reservedSuffix);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getDefaultVariableName(EntityType entityType) {
-        return escape(entityType, entityType.getData().get("table").toString());
+        return Naming.normalize(escape(entityType, entityType.getData().get("table").toString()), reservedSuffix);
     }
 
     @Override
