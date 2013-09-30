@@ -96,6 +96,8 @@ public class MetaDataExporterTest {
             // new line
             stmt.execute("create table \"new\nline\" (id int)");
 
+            stmt.execute("create table newline2 (id int, \"new\nline\" int)");
+
             stmt.execute("create table employee("
                     + "id INT, "
                     + "firstname VARCHAR(50), "
