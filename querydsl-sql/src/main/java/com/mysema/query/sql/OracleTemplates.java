@@ -46,7 +46,7 @@ public class OracleTemplates extends SQLTemplates {
 
     private String limitQueryEnd = "\n) where rownum <= {0}";
 
-    private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
+    private String limitOffsetTemplate = "rn > {0s} and rownum <= {1s}";
 
     private String offsetTemplate = "rn > {0}";
 
@@ -149,7 +149,7 @@ public class OracleTemplates extends SQLTemplates {
                 if (mod.getLimit() == null) {
                     context.handle(offsetTemplate, mod.getOffset());
                 } else {
-                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
+                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit());
                 }
             }
 
