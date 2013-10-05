@@ -149,8 +149,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         handle(je.getTarget());
     }
 
-
-
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
         final List<? extends Expression<?>> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
