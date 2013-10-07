@@ -933,8 +933,14 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    public void NotExists() {
+    public void Not_Exists() {
         assertTrue(query().from(cat).where(cat.kittens.any().name.eq("XXX")).notExists());
+    }
+
+    @Test
+    public void Not_In() {
+        query().from(cat).where(cat.id.notIn(1,2,3)).count();
+        query().from(cat).where(cat.name.notIn("A","B","C")).count();
     }
 
     @Test
