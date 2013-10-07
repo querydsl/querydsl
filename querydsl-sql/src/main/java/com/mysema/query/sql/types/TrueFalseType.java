@@ -21,6 +21,8 @@ import java.sql.Types;
 import javax.annotation.Nullable;
 
 /**
+ * TrueFalseType maps Boolean to 'T'/'F' on the JDBC level
+ *
  * @author tiwe
  *
  */

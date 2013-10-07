@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 /**
+ * LocaleType maps Locale to String on the JDBC level
+ *
  * @author tiwe
  *
  */

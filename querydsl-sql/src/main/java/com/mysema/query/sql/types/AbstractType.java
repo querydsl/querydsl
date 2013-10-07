@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,21 @@
  */
 package com.mysema.query.sql.types;
 
-
+/**
+ * Common abstract superclass for Type implementations
+ *
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class AbstractType<T> implements Type<T> {
-    
+
     private final int type;
-    
+
     public AbstractType(int type) {
         this.type = type;
     }
-    
+
     @Override
     public final int[] getSQLTypes() {
         return new int[]{type};

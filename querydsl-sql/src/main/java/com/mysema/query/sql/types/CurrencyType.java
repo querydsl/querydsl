@@ -22,13 +22,15 @@ import java.util.Currency;
 import javax.annotation.Nullable;
 
 /**
+ * CurrencyType maps Currency to String on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class CurrencyType extends AbstractType<Currency> {
 
     public CurrencyType() {
-        super(Types.TIMESTAMP);
+        super(Types.VARCHAR);
     }
 
     public CurrencyType(int type) {

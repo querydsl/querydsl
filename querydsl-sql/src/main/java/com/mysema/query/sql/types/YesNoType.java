@@ -21,6 +21,8 @@ import java.sql.Types;
 import javax.annotation.Nullable;
 
 /**
+ * YesNoType maps Boolean to 'Y'/'N' on the JDBC level
+ *
  * @author tiwe
  *
  */
