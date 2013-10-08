@@ -54,8 +54,8 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
     private static final ImmutableList<Expression<?>> createBindings(List<Expression<?>> exprs) {
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?> e : exprs) {
-            if (e instanceof Operation && ((Operation)e).getOperator() == Ops.ALIAS) {
-                builder.add(((Operation)e).getArg(1));
+            if (e instanceof Operation && ((Operation<?>)e).getOperator() == Ops.ALIAS) {
+                builder.add(((Operation<?>)e).getArg(1));
             } else {
                 builder.add(e);
             }
