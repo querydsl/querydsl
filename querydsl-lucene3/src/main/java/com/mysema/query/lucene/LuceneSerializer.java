@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,7 +76,7 @@ public class LuceneSerializer {
         sortFields.put(BigDecimal.class, SortField.DOUBLE);
         sortFields.put(BigInteger.class, SortField.LONG);
     }
-    
+
     private static final Splitter WS_SPLITTER = Splitter.on(Pattern.compile("\\s+"));
 
     public static final LuceneSerializer DEFAULT = new LuceneSerializer(false, true);
@@ -84,7 +84,7 @@ public class LuceneSerializer {
     private final boolean lowerCase;
 
     private final boolean splitTerms;
-    
+
     private final Locale sortLocale;
 
     public LuceneSerializer(boolean lowerCase, boolean splitTerms) {
@@ -96,7 +96,7 @@ public class LuceneSerializer {
         this.splitTerms = splitTerms;
         this.sortLocale = sortLocale;
     }
-    
+
     private Query toQuery(Operation<?> operation, QueryMetadata metadata) {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
@@ -132,6 +132,8 @@ public class LuceneSerializer {
             return between(operation, metadata);
         } else if (op == Ops.IN) {
             return in(operation, metadata, false);
+        } else if (op == Ops.NOT_IN) {
+            return notIn(operation, metadata, false);
         } else if (op == Ops.LT) {
             return lt(operation, metadata);
         } else if (op == Ops.GT) {
@@ -243,6 +245,13 @@ public class LuceneSerializer {
             String[] str = convert(path, value);
             bq.add(eq(field, str, ignoreCase), Occur.SHOULD);
         }
+        return bq;
+    }
+
+    protected Query notIn(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
+        BooleanQuery bq = new BooleanQuery();
+        bq.add(new BooleanClause(in(operation, metadata, false), Occur.MUST_NOT));
+        bq.add(new BooleanClause(new MatchAllDocsQuery(), Occur.MUST));
         return bq;
     }
 
@@ -369,7 +378,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings({"unchecked"})
-    protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min, 
+    protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min,
             @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {

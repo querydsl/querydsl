@@ -51,6 +51,8 @@ public final class Ops {
     // collection
     public static final Operator<Boolean> IN = new OperatorImpl<Boolean>("IN"); // cmp. contains
 
+    public static final Operator<Boolean> NOT_IN = new OperatorImpl<Boolean>("NOT_IN");
+
     public static final Operator<Boolean> COL_IS_EMPTY = new OperatorImpl<Boolean>("COL_IS_EMPTY");
 
     public static final Operator<Number>  COL_SIZE = new OperatorImpl<Number>("COL_SIZE");

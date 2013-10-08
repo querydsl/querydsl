@@ -93,6 +93,7 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Projections;
 import com.mysema.query.types.QTuple;
@@ -106,6 +107,7 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.testutil.ExcludeIn;
+import com.mysema.testutil.IncludeIn;
 
 /**
  * @author tiwe
@@ -147,7 +149,6 @@ public abstract class AbstractJPATest {
         date = new java.sql.Date(cal.getTimeInMillis());
         time = new java.sql.Time(cal.getTimeInMillis());
     }
-
 
     protected Target getTarget() {
         return Mode.target.get();
@@ -234,7 +235,6 @@ public abstract class AbstractJPATest {
         save(foo);
     }
 
-
     @Test
     @ExcludeIn(ORACLE)
     public void Add_BigDecimal() {
@@ -301,30 +301,31 @@ public abstract class AbstractJPATest {
     public void Any_In1() {
         //select cat from Cat cat where exists (
         //  select cat_kittens from Cat cat_kittens where cat_kittens member of cat.kittens and cat_kittens in ?1)
-        query().from(cat).where(cat.kittens.any().in(savedCats)).list(cat);
+        assertFalse(query().from(cat).where(cat.kittens.any().in(savedCats)).list(cat).isEmpty());
     }
 
     @Test
     public void Any_In11() {
         List<Integer> ids = Lists.newArrayList();
         for (Cat cat : savedCats) ids.add(cat.getId());
-        query().from(cat).where(cat.kittens.any().id.in(ids)).list(cat);
+        assertFalse(query().from(cat).where(cat.kittens.any().id.in(ids)).list(cat).isEmpty());
     }
 
     @Test
     public void Any_In2() {
-        query().from(cat).where(
+        assertFalse(query().from(cat).where(
                 cat.kittens.any().in(savedCats),
                 cat.kittens.any().in(savedCats.subList(0, 1)).not())
-            .list(cat);
+            .list(cat).isEmpty());
     }
 
     @Test
+    @NoBatooJPA
     public void Any_In3() {
         QEmployee employee = QEmployee.employee;
-        query().from(employee).where(
+        assertFalse(query().from(employee).where(
                 employee.jobFunctions.any().in(JobFunction.CODER, JobFunction.CONSULTANT))
-                .list(employee);
+                .list(employee).isEmpty());
     }
 
     @Test
@@ -377,7 +378,11 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Cast() {
-        query().from(cat).list(cat.bodyWeight.castToNum(Integer.class));
+        List<Cat> cats = query().from(cat).list(cat);
+        List<Integer> weights = query().from(cat).list(cat.bodyWeight.castToNum(Integer.class));
+        for (int i = 0; i < cats.size(); i++) {
+            assertEquals(Integer.valueOf((int)(cats.get(i).getBodyWeight())), weights.get(i));
+        }
     }
 
     @Test
@@ -415,7 +420,13 @@ public abstract class AbstractJPATest {
     @NoHibernate
     public void Constant() {
         //select cat.id, ?1 as const from Cat cat
-        query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", new StringPath("const"))));
+        List<Cat> cats = query().from(cat).list(cat);
+        Path<String> path = new StringPath("const");
+        List<Tuple> tuples = query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", path)));
+        for (int i = 0; i < cats.size(); i++) {
+            assertEquals(Integer.valueOf(cats.get(i).getId()), tuples.get(i).get(cat.id));
+            assertEquals("abc", tuples.get(i).get(path));
+        }
     }
 
     @Test(expected=NullPointerException.class)
@@ -691,6 +702,8 @@ public abstract class AbstractJPATest {
 
     @Test
     public void In() {
+        assertEquals(3l, query().from(cat).where(cat.name.in("Bob123", "Ruth123", "Felix123")).count());
+
         query().from(cat).where(cat.id.in(Arrays.asList(1,2,3))).count();
         query().from(cat).where(cat.name.in(Arrays.asList("A","B","C"))).count();
     }
@@ -726,6 +739,13 @@ public abstract class AbstractJPATest {
     @Test
     public void In7() {
         query().from(cat).where(cat.kittens.any().in(savedCats)).count();
+    }
+
+    @Test
+    @IncludeIn(Target.H2)
+    @NoBatooJPA
+    public void In_Empty() {
+        query().from(cat).where(cat.name.in(Collections.<String>emptyList())).count();
     }
 
     @Test
@@ -939,8 +959,18 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Not_In() {
+        long all = query().from(cat).count();
+        assertEquals(all - 3l, query().from(cat).where(cat.name.notIn("Bob123", "Ruth123", "Felix123")).count());
+
         query().from(cat).where(cat.id.notIn(1,2,3)).count();
         query().from(cat).where(cat.name.notIn("A","B","C")).count();
+    }
+
+    @Test
+    @IncludeIn(Target.H2)
+    @NoBatooJPA
+    public void Not_In_Empty() {
+        query().from(cat).where(cat.name.notIn(Collections.<String>emptyList())).count();
     }
 
     @Test

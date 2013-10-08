@@ -34,6 +34,7 @@ public class JavaTemplates extends Templates {
 
         // collection
         add(Ops.IN, "{1}.contains({0})");
+        add(Ops.NOT_IN, "!{1}.contains({0})");
         add(Ops.COL_IS_EMPTY, "{0}.isEmpty()");
         add(Ops.COL_SIZE, "{0}.size()");
 

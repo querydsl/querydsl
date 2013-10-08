@@ -88,6 +88,7 @@ public class Templates {
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
         add(Ops.NE, "{0} != {1}", 25);
         add(Ops.IN, "{0} in {1}", 27);
+        add(Ops.NOT_IN, "{0} not in {1}", 27);
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(Ops.ALIAS, "{0} as {1}", 0);

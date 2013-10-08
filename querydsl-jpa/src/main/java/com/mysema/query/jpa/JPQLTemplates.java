@@ -41,6 +41,8 @@ public class JPQLTemplates extends Templates {
 
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("JPA_MEMBER_OF");
 
+    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>("JPA_NOT_MEMBER_OF");
+
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
 
     private final QueryHandler queryHandler;
@@ -81,6 +83,7 @@ public class JPQLTemplates extends Templates {
 
         // collection
         add(MEMBER_OF, "{0} member of {1}");
+        add(NOT_MEMBER_OF, "{0} not member of {1}");
 
         add(Ops.IN, "{0} in {1}");
         add(Ops.COL_IS_EMPTY, "{0} is empty");

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,7 +46,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
     @Nullable
     private volatile BooleanExpression isnull, isnotnull;
-    
+
     public SimpleExpression(Expression<T> mixin) {
         super(mixin);
     }
@@ -57,6 +57,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      *
      * @return
      */
+    @Override
     @SuppressWarnings("unchecked")
     public SimpleExpression<T> as(Path<T> alias) {
         return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, mixin, alias);
@@ -67,10 +68,11 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      *
      * @return
      */
+    @Override
     public SimpleExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-    
+
     /**
      * Create a <code>this is not null</code> expression
      *
@@ -122,7 +124,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
     /**
      * Get a <code>this == right</code> expression
-     * 
+     *
      * <p>Use expr.isNull() instead of expr.eq(null)</p>
      *
      * @param right rhs of the comparison
@@ -145,7 +147,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     public BooleanExpression eq(Expression<? super T> right) {
         return BooleanOperation.create(Ops.EQ, mixin, right);
     }
-    
+
     /**
      * @param right
      * @return
@@ -220,7 +222,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     public BooleanExpression ne(Expression<? super T> right) {
         return BooleanOperation.create(Ops.NE, mixin, right);
     }
-    
+
     /**
      * @param right
      * @return
@@ -247,7 +249,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.size() == 1) {
             return ne(right.iterator().next());
         } else {
-            return in(right).not();
+            return BooleanOperation.create(Ops.NOT_IN, mixin, new ConstantImpl<Collection<? extends T>>(right));
         }
     }
 
@@ -261,7 +263,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return ne(right[0]);
         } else {
-            return in(right).not();
+            return BooleanOperation.create(Ops.NOT_IN, mixin, new ConstantImpl<List<T>>(ImmutableList.copyOf(right)));
         }
     }
 
@@ -272,13 +274,13 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public final BooleanExpression notIn(CollectionExpression<?,? extends T> right) {
-        return in(right).not();
+        return BooleanOperation.create(Ops.NOT_IN, mixin, right);
     }
 
-    
+
     /**
      * Get a <code>nullif(this, other)</code> expression
-     * 
+     *
      * @param expr
      * @param other
      * @return
@@ -287,10 +289,10 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     public SimpleExpression<T> nullif(Expression<T> other) {
         return SimpleOperation.create((Class<T>)this.getType(), Ops.NULLIF, this, other);
     }
-    
+
     /**
      * Get a <code>nullif(this, other)</code> expression
-     * 
+     *
      * @param expr
      * @param other
      * @return

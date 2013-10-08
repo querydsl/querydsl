@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,26 +23,26 @@ import com.mysema.query.Tuple;
 
 /**
  * QTuple represents a projection of type Tuple
- * 
+ *
  * <p>Usage example:</p>
  * <pre>
- * {@code 
+ * {@code
  * List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
- *     System.out.println("lastName " + row.get(employee.lastName)); 
- * }} 
+ *     System.out.println("lastName " + row.get(employee.lastName));
+ * }}
  * </pre>
- * 
+ *
  * <p>Since Tuple projection is the default for multi column projections, the above is equivalent to this code</p>
- * 
+ *
  * <pre>
- * {@code 
+ * {@code
  * List<Tuple> result = query.from(employee).list(employee.firstName, employee.lastName);
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
- *     System.out.println("lastName " + row.get(employee.lastName)); 
- * }} 
+ *     System.out.println("lastName " + row.get(employee.lastName));
+ * }}
  * </pre>
  *
  * @author tiwe
@@ -50,6 +50,18 @@ import com.mysema.query.Tuple;
  */
 @Immutable
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
+
+    private static final ImmutableList<Expression<?>> createBindings(List<Expression<?>> exprs) {
+        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        for (Expression<?> e : exprs) {
+            if (e instanceof Operation && ((Operation)e).getOperator() == Ops.ALIAS) {
+                builder.add(((Operation)e).getArg(1));
+            } else {
+                builder.add(e);
+            }
+        }
+        return builder.build();
+    }
 
     private final class TupleImpl implements Tuple {
         private final Object[] a;
@@ -65,7 +77,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
         @Override
         public <T> T get(Expression<T> expr) {
-            int index = QTuple.this.args.indexOf(expr);
+            int index = QTuple.this.bindings.indexOf(expr);
             return index != -1 ? (T) a[index] : null;
         }
 
@@ -105,29 +117,33 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
     private final ImmutableList<Expression<?>> args;
 
+    private final ImmutableList<Expression<?>> bindings;
+
     /**
      * Create a new QTuple instance
-     * 
+     *
      * @param args
      */
     public QTuple(Expression<?>... args) {
-        super(Tuple.class);        
+        super(Tuple.class);
         this.args = ImmutableList.copyOf(args);
+        this.bindings = createBindings(this.args);
     }
-    
+
     /**
      * Create a new QTuple instance
-     * 
+     *
      * @param args
      */
     public QTuple(ImmutableList<Expression<?>> args) {
         super(Tuple.class);
         this.args = args;
+        this.bindings = createBindings(this.args);
     }
 
     /**
      * Create a new QTuple instance
-     * 
+     *
      * @param args
      */
     public QTuple(Expression<?>[]... args) {
@@ -137,6 +153,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
             builder.add(exprs);
         }
         this.args = builder.build();
+        this.bindings = createBindings(this.args);
     }
 
     @Override
