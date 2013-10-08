@@ -86,6 +86,7 @@ public class JPQLTemplates extends Templates {
         add(NOT_MEMBER_OF, "{0} not member of {1}");
 
         add(Ops.IN, "{0} in {1}");
+        add(Ops.NOT_IN, "{0} not in {1}");
         add(Ops.COL_IS_EMPTY, "{0} is empty");
         add(Ops.COL_SIZE, "size({0})");
         add(Ops.ARRAY_SIZE, "size({0})");
