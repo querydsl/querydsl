@@ -1271,6 +1271,28 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(SQLITE)
+    public void String_Left() {
+        assertEquals("John", query().from(employee).where(employee.lastname.eq("Johnson"))
+                                    .singleResult(SQLExpressions.left(employee.lastname, 4)));
+    }
+
+    @Test
+    @ExcludeIn({DERBY, SQLITE})
+    public void String_Right() {
+        assertEquals("son", query().from(employee).where(employee.lastname.eq("Johnson"))
+                                   .singleResult(SQLExpressions.right(employee.lastname, 3)));
+    }
+
+    @Test
+    @ExcludeIn({DERBY, SQLITE})
+    public void String_Left_Right() {
+        assertEquals("hn", query().from(employee).where(employee.lastname.eq("Johnson"))
+                                  .singleResult(SQLExpressions.right(SQLExpressions.left(employee.lastname, 4), 2)));
+    }
+
+    @Test
+    @ExcludeIn(DERBY)
     public void Substring() {
         //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
         query().from(employee)

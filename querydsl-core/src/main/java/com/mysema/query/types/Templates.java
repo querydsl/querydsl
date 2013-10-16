@@ -121,6 +121,8 @@ public class Templates {
         add(Ops.LIKE, "{0} like {1}", 26);
         add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", 26);
 
+        add(Ops.StringOps.LEFT, "left({0},{1})");
+        add(Ops.StringOps.RIGHT, "right({0},{1})");
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
         add(Ops.StringOps.LOCATE, "locate({0},{1})");

@@ -389,6 +389,10 @@ public final class Ops {
      */
     public static final class StringOps {
 
+        public static final Operator<String> LEFT = new OperatorImpl<String>("LEFT");
+
+        public static final Operator<String> RIGHT = new OperatorImpl<String>("RIGHT");
+
         public static final Operator<String> LTRIM = new OperatorImpl<String>("LTRIM");
 
         public static final Operator<String> RTRIM = new OperatorImpl<String>("RTRIM");
