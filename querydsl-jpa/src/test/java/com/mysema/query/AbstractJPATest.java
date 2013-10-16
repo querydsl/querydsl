@@ -101,6 +101,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.NumberPath;
@@ -205,6 +206,7 @@ public abstract class AbstractJPATest {
         save(show);
 
         Company company = new Company();
+        company.name = "1234567890123456789012345678901234567890"; // 40
         company.id = 1;
         company.ratingOrdinal = Company.Rating.A;
         company.ratingString = Company.Rating.AA;
@@ -1135,6 +1137,29 @@ public abstract class AbstractJPATest {
         for (String str : query().from(cat).list(cat.name.substring(1,2))) {
             assertEquals(1, str.length());
         }
+    }
+
+    @Test
+    public void Substring2() {
+        QCompany company = QCompany.company;
+        StringExpression name = company.name;
+        JPQLQuery query = query().from(company);
+        String str = query.singleResult(company.name);
+
+        assertEquals(Integer.valueOf(29),
+                query.singleResult(name.length().subtract(11)));
+
+        assertEquals(str.substring(0, 7),
+                query.singleResult(name.substring(0, 7)));
+
+        assertEquals(str.substring(15),
+                query.singleResult(name.substring(15)));
+
+        assertEquals(str.substring(str.length()),
+                query.singleResult(name.substring(name.length())));
+
+        assertEquals(str.substring(str.length() - 11),
+                query.singleResult(name.substring(name.length().subtract(11))));
     }
 
     @Test
