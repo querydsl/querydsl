@@ -1143,7 +1143,8 @@ public abstract class AbstractJPATest {
     public void Substring2() {
         QCompany company = QCompany.company;
         StringExpression name = company.name;
-        JPQLQuery query = query().from(company);
+        Integer companyId = query().from(company).singleResult(company.id);
+        JPQLQuery query = query().from(company).where(company.id.eq(companyId));
         String str = query.singleResult(company.name);
 
         assertEquals(Integer.valueOf(29),
