@@ -143,6 +143,9 @@ public class GenericExporterTest extends AbstractProcessorTest {
             }
         }
         if (!failures.isEmpty()) {
+            for (String failure : failures) {
+                System.err.println(failure);
+            }
             fail("Failed with " + failures.size() + " failures, " + successes + " succeeded");
         }
     }
