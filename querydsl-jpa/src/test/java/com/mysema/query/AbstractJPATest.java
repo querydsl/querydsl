@@ -1140,6 +1140,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoBatooJPA
     public void Substring2() {
         QCompany company = QCompany.company;
         StringExpression name = company.name;
