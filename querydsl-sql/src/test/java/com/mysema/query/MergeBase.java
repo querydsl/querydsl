@@ -16,6 +16,7 @@ package com.mysema.query;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.POSTGRES;
 import static org.junit.Assert.assertEquals;
@@ -101,7 +102,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, POSTGRES})
+    @ExcludeIn({CUBRID, DERBY, POSTGRES})
     public void Merge_With_Keys_Null_Id() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
                 .setNull(survey.id)

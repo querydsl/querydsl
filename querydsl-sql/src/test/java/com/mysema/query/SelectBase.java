@@ -468,7 +468,7 @@ public class SelectBase extends AbstractBaseTest{
         Date date = new Date(0);
         int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
         int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));
-        // weeeks
+        // weeks
         int days = query.singleResult(SQLExpressions.datediff(DatePart.day, date, employee.datefield));
         int hours = query.singleResult(SQLExpressions.datediff(DatePart.hour, date, employee.datefield));
         int minutes = query.singleResult(SQLExpressions.datediff(DatePart.minute, date, employee.datefield));
@@ -1374,6 +1374,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(DERBY)
     public void Tuple2() {
         query().from(employee)
             .list(Expressions.as(ConstantImpl.create("1"),"code"),

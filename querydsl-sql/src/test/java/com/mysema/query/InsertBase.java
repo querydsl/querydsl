@@ -116,6 +116,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(DERBY)
     public void Insert_Null_Without_Columns() {
         assertEquals(1, insert(survey)
                 .values(4, null, null).execute());
