@@ -81,6 +81,8 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
+        add(Ops.StringOps.LEFT, "substr({0},1,{1})");
+        add(Ops.StringOps.RIGHT, "substr({0},-{1s},length({0}))");
 
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");

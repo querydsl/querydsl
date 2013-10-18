@@ -748,7 +748,7 @@ public class SelectBase extends AbstractBaseTest{
         query().from(employee).offset(3).list(employee.id);
 
         // limit offset
-        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > 3 and rn <= 7";
+        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > 3 and rownum <= 4";
         query().from(employee).limit(4).offset(3).list(employee.id);
     }
 
