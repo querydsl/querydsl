@@ -320,12 +320,6 @@ query.from(person)
   .list(person)
 ]]></programlisting>
 
-    <para>The main import for Querydsl Scala integration is the following</para>
-
-    <programlisting language="java"><![CDATA[
-import com.mysema.query.scala.Conversions._
-]]></programlisting>
-
     <para>The factory method for query creation is</para>
 
     <programlisting language="java"><![CDATA[
@@ -337,6 +331,8 @@ def query() = new JPAQuery(entityManager)
     <programlisting language="java"><![CDATA[
 val person = Person as "person"
 ]]></programlisting>
+
+    <para>Note: the Scala support is not yet available if you use Hibernate with an XML based configuration. HibernateDomainExporter currently only outputs Java source files.</para>
 
   </sect2>
 
