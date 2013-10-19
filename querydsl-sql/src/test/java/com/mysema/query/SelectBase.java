@@ -1292,6 +1292,13 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn({DERBY, SQLITE})
+    public void String_Right_Left() {
+        assertEquals("ns", query().from(employee).where(employee.lastname.eq("Johnson"))
+                                  .singleResult(SQLExpressions.left(SQLExpressions.right(employee.lastname, 4), 2)));
+    }
+
+    @Test
     @ExcludeIn(DERBY)
     public void Substring() {
         //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
