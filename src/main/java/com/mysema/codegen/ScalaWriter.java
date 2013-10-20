@@ -353,6 +353,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @Override
+    public String getClassConstant(String className) {
+        return "classOf[" + className + "]";
+    }
+
+    @Override
     public String getGenericName(boolean asArgType, Type type) {
         if (type.getParameters().isEmpty()) {
             return getRawName(type);

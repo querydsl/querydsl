@@ -303,6 +303,12 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
                         + value + SEMICOLON).nl();
     }
 
+
+    @Override
+    public String getClassConstant(String className) {
+        return className + ".class";
+    }
+
     @Override
     public String getGenericName(boolean asArgType, Type type) {
         return type.getGenericName(asArgType, packages, classes);

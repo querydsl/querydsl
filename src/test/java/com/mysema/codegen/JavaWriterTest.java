@@ -224,6 +224,11 @@ public class JavaWriterTest {
     }
 
     @Test
+    public void ClassConstants() {
+        assertEquals("SomeClass.class", writer.getClassConstant("SomeClass"));
+    }
+
+    @Test
     public void Fields() throws IOException {
         writer.beginClass(testType);
         // private
@@ -330,5 +335,4 @@ public class JavaWriterTest {
 
         match("/testSuppressWarnings", w.toString());
     }
-
 }
