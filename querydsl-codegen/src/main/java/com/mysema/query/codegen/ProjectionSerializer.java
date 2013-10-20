@@ -71,7 +71,7 @@ public final class ProjectionSerializer implements Serializer{
 //        writer.suppressWarnings("serial");
         Type superType = new ClassType(TypeCategory.SIMPLE, ConstructorExpression.class, model);
         writer.beginClass(queryType, superType);
-        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()) + "L");
     }
 
     protected void outro(EntityType model, CodeWriter writer) throws IOException {

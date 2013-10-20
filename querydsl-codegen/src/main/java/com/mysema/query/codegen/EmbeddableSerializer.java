@@ -93,7 +93,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
         }
 
         // TODO : generate proper serialVersionUID here
-        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()) + "L");
     }
 
     @Override
