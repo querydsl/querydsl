@@ -377,7 +377,7 @@ public class ScalaWriterTest {
 
         System.out.println(w);
 
-        assertTrue(w.toString().contains("public JavaWriterTest(a: Int) {"));
+        assertTrue(w.toString().contains("def this(a: Int) {"));
     }
 
     @Test
