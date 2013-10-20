@@ -97,7 +97,8 @@ public final class ProjectionSerializer implements Serializer{
             });
 
             // body
-            writer.beginLine("super(" + localName + ".class");
+            writer.beginLine("super(" + writer.getClassConstant(localName));
+            // TODO: Fix for Scala (Array[Class])
             writer.append(", new Class[]{");
             boolean first = true;
             
@@ -107,10 +108,9 @@ public final class ProjectionSerializer implements Serializer{
                 }
                 if (Types.PRIMITIVES.containsKey(p.getType())) {
                     Type primitive = Types.PRIMITIVES.get(p.getType());
-                    writer.append(primitive.getFullName()+".class");
+                    writer.append(writer.getClassConstant(primitive.getFullName()));
                 } else {
-                    writer.append(writer.getRawName(p.getType()));
-                    writer.append(".class");
+                    writer.append(writer.getClassConstant(writer.getRawName(p.getType())));
                 }
                 first = false;
             }

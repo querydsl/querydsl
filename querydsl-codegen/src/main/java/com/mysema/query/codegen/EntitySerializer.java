@@ -16,7 +16,6 @@ package com.mysema.query.codegen;
 import static com.mysema.codegen.Symbols.ASSIGN;
 import static com.mysema.codegen.Symbols.COMMA;
 import static com.mysema.codegen.Symbols.DOT;
-import static com.mysema.codegen.Symbols.DOT_CLASS;
 import static com.mysema.codegen.Symbols.EMPTY;
 import static com.mysema.codegen.Symbols.NEW;
 import static com.mysema.codegen.Symbols.QUOTE;
@@ -159,7 +158,7 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(metadata);");
             } else {
-                writer.line("super(", classCast, localName, ".class, metadata" + additionalParams + ");");
+                writer.line("super(", classCast, writer.getClassConstant(localName) + COMMA + " metadata" + additionalParams + ");");
             }
             writer.end();
         }
@@ -170,7 +169,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("all");
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
-            writer.line(thisOrSuper, "(", classCast, localName, ".class, metadata, inits" + additionalParams+ ");");
+            writer.line(thisOrSuper, "(", classCast, writer.getClassConstant(localName) + COMMA + " metadata, inits" + additionalParams+ ");");
             writer.end();
         }
 
@@ -207,7 +206,7 @@ public class EntitySerializer implements Serializer{
             writer.line(thisOrSuper,"(forVariable(variable)",additionalParams,");");
         } else {
             writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
-                    localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
+             writer.getClassConstant(localName) + COMMA + " forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
                             additionalParams,");");
         }
         writer.end();
@@ -381,7 +380,7 @@ public class EntitySerializer implements Serializer{
             if (!localName.equals(genericName)) {
                 writer.append("(Class)");
             }
-            writer.append(localName + DOT_CLASS);
+            writer.append(writer.getClassConstant(localName));
             writer.append(", new Class[]{");
             boolean first = true;
             for (Parameter p : c.getParameters()) {
@@ -390,10 +389,9 @@ public class EntitySerializer implements Serializer{
                 }
                 if (Types.PRIMITIVES.containsKey(p.getType())) {
                     Type primitive = Types.PRIMITIVES.get(p.getType());
-                    writer.append(primitive.getFullName()+DOT_CLASS);
+                    writer.append(writer.getClassConstant(primitive.getFullName()));
                 } else {
-                    writer.append(writer.getRawName(p.getType()));
-                    writer.append(DOT_CLASS);
+                    writer.append(writer.getClassConstant(writer.getRawName(p.getType())));
                 }
                 first = false;
             }
@@ -735,31 +733,31 @@ public class EntitySerializer implements Serializer{
                 break;
 
             case SIMPLE:
-                serialize(model, property, queryType, writer, "createSimple", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createSimple", writer.getClassConstant(localRawName));
                 break;
 
             case COMPARABLE:
-                serialize(model, property, queryType, writer, "createComparable", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createComparable", writer.getClassConstant(localRawName));
                 break;
 
             case ENUM:
-                serialize(model, property, queryType, writer, "createEnum", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createEnum", writer.getClassConstant(localRawName));
                 break;
 
             case DATE:
-                serialize(model, property, queryType, writer, "createDate", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createDate", writer.getClassConstant(localRawName));
                 break;
 
             case DATETIME:
-                serialize(model, property, queryType, writer, "createDateTime", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createDateTime", writer.getClassConstant(localRawName));
                 break;
 
             case TIME:
-                serialize(model, property, queryType, writer, "createTime", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createTime", writer.getClassConstant(localRawName));
                 break;
 
             case NUMERIC:
-                serialize(model, property, queryType, writer, "createNumber", localRawName + DOT_CLASS);
+                serialize(model, property, queryType, writer, "createNumber", writer.getClassConstant(localRawName));
                 break;
 
             case CUSTOM:
@@ -770,7 +768,7 @@ public class EntitySerializer implements Serializer{
                 serialize(model, property, new ClassType(ArrayPath.class,
                         property.getType(),
                         wrap(property.getType().getComponentType())),
-                        writer, "createArray", localRawName + DOT_CLASS);
+                        writer, "createArray", writer.getClassConstant(localRawName));
                 break;
 
             case COLLECTION:
@@ -781,7 +779,7 @@ public class EntitySerializer implements Serializer{
 
                 serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createCollection",
-                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS, inits);
+                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
                 break;
 
             case SET:
@@ -792,7 +790,7 @@ public class EntitySerializer implements Serializer{
 
                 serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createSet",
-                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS, inits);
+                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
                 break;
 
             case LIST:
@@ -803,7 +801,7 @@ public class EntitySerializer implements Serializer{
 
                 serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createList",
-                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS, inits);
+                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
                 break;
 
             case MAP:
@@ -818,7 +816,7 @@ public class EntitySerializer implements Serializer{
                         getRaw(property.getParameter(1)), genericQueryType),
                         writer, "this.<" + genericKey + COMMA + genericValue + COMMA +
                             writer.getGenericName(true, genericQueryType) + ">createMap",
-                        keyType+DOT_CLASS, valueType+DOT_CLASS, writer.getRawName(queryType)+DOT_CLASS);
+                 writer.getClassConstant(keyType), writer.getClassConstant(valueType), writer.getClassConstant(writer.getRawName(queryType)));
                 break;
 
             case ENTITY:
