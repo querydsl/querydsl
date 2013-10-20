@@ -74,6 +74,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     private static final String VAL = "val ";
 
+    private static final String THIS = "this";
+
     private static final String TRAIT = "trait ";
 
     private final Set<String> classes = new HashSet<String>();
@@ -253,13 +255,13 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     @Override
     public <T> ScalaWriter beginConstructor(Collection<T> parameters,
             Function<T, Parameter> transformer) throws IOException {
-        beginLine(PUBLIC + type.getSimpleName()).params(parameters, transformer).append(" {").nl();
+        beginLine(DEF + THIS).params(parameters, transformer).append(" {").nl();
         return goIn();
     }
 
     @Override
     public ScalaWriter beginConstructor(Parameter... params) throws IOException {
-        beginLine(PUBLIC + type.getSimpleName()).params(params).append(" {").nl();
+        beginLine(DEF + THIS).params(params).append(" {").nl();
         return goIn();
     }
 
