@@ -367,6 +367,11 @@ public class ScalaWriterTest {
     }
 
     @Test
+    public void ClassConstants() {
+        assertEquals("classOf[SomeClass]", writer.getClassConstant("SomeClass"));
+    }
+
+    @Test
     public void Primitive() throws IOException {
         writer.beginClass(testType);
 
@@ -381,7 +386,7 @@ public class ScalaWriterTest {
     }
 
     @Test
-    public void Primive_Types() throws IOException {
+    public void Primitive_Types() throws IOException {
         writer.field(Types.BOOLEAN_P, "field");
         writer.field(Types.BYTE_P, "field");
         writer.field(Types.CHAR, "field");
@@ -417,5 +422,4 @@ public class ScalaWriterTest {
         assertTrue(w.toString().contains("`class`: JavaWriterTest"));
         assertTrue(w.toString().contains("`var`(): JavaWriterTest"));
     }
-
 }

@@ -33,6 +33,8 @@ public interface CodeWriter extends Appendable {
 
     String getGenericName(boolean asArgType, Type type);
 
+    String getClassConstant(String className);
+
     CodeWriter annotation(Annotation annotation) throws IOException;
 
     CodeWriter annotation(Class<? extends Annotation> annotation) throws IOException;
