@@ -187,6 +187,7 @@
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
                 <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 
                 <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
+                <processor>com.mysema.query.apt.roo.RooAnnotationProcessor</processor>
               </processors>              
             </configuration>
           </execution>                            
