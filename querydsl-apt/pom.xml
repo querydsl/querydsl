@@ -18,7 +18,7 @@
   <properties>
     <hibernate.version>4.1.7.Final</hibernate.version>
     <jdo.version>2.3-eb</jdo.version>
-    <morphia.version>0.99</morphia.version>
+    <morphia.version>0.105</morphia.version>
   </properties>
 
   <dependencies>
@@ -68,7 +68,7 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.google.code.morphia</groupId>
+      <groupId>org.mongodb.morphia</groupId>
       <artifactId>morphia</artifactId>
       <version>${morphia.version}</version>
       <scope>provided</scope>

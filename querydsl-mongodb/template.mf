@@ -2,9 +2,9 @@ Bundle-SymbolicName: com.mysema.querydsl.mongodb
 Bundle-Name: Querydsl Mongodb
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
-Import-Template:
-  com.google.code.morphia.*;version="${morphia.version}";resolution:=optional,
+Import-Template:  
   com.mongodb.*;version="0",
+  org.mongodb.morphia.*;version="${morphia.version}";resolution:=optional,
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.apt;version="${project.version}";resolution:=optional,
   com.mysema.query.*;version="${project.version}",

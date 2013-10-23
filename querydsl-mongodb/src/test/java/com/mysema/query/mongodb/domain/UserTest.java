@@ -14,8 +14,7 @@
 package com.mysema.query.mongodb.domain;
 
 import org.junit.Test;
-
-import com.google.code.morphia.Morphia;
+import org.mongodb.morphia.Morphia;
 
 public class UserTest {
     

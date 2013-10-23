@@ -17,7 +17,7 @@
 
   <properties>
     <mongodb.version>2.10.0</mongodb.version>
-    <morphia.version>0.99</morphia.version>
+    <morphia.version>0.105</morphia.version>
   </properties>
 
   <dependencies>
@@ -27,7 +27,7 @@
       <version>${mongodb.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.code.morphia</groupId>
+      <groupId>org.mongodb.morphia</groupId>
       <artifactId>morphia</artifactId>
       <version>${morphia.version}</version>
       <optional>true</optional>

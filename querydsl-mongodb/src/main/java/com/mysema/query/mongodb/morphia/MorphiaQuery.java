@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,11 @@
  */
 package com.mysema.query.mongodb.morphia;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.Morphia;
-import com.google.code.morphia.mapping.cache.DefaultEntityCache;
-import com.google.code.morphia.mapping.cache.EntityCache;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.cache.DefaultEntityCache;
+import org.mongodb.morphia.mapping.cache.EntityCache;
+
 import com.google.common.base.Function;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -34,7 +35,7 @@ import com.mysema.query.types.EntityPath;
 public final class MorphiaQuery<K> extends MongodbQuery<K> {
 
     private final EntityCache cache;
-    
+
     private final Datastore datastore;
 
     public MorphiaQuery(Morphia morphia, Datastore datastore, EntityPath<K> entityPath) {
