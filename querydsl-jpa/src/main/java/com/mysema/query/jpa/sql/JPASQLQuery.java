@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@ import javax.persistence.EntityManager;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -27,12 +26,12 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> implements SQLCommonQuery<JPASQLQuery> {
+public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> {
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
         super(entityManager, new Configuration(sqlTemplates));
     }
-    
+
     public JPASQLQuery(EntityManager entityManager, Configuration conf) {
         super(entityManager, conf);
     }
@@ -40,11 +39,11 @@ public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> implemen
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(entityManager, new Configuration(sqlTemplates), metadata);
     }
-    
+
     public JPASQLQuery(EntityManager entityManager, Configuration conf, QueryMetadata metadata) {
         super(entityManager, conf, metadata);
     }
-    
+
     public JPASQLQuery clone(EntityManager entityManager) {
         JPASQLQuery q = new JPASQLQuery(entityManager, configuration, getMetadata().clone());
         q.flushMode = flushMode;

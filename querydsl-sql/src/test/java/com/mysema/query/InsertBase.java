@@ -17,6 +17,7 @@ import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
@@ -39,6 +40,7 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.expr.Param;
@@ -114,6 +116,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(DERBY)
     public void Insert_Null_Without_Columns() {
         assertEquals(1, insert(survey)
                 .values(4, null, null).execute());
@@ -218,6 +221,40 @@ public class InsertBase extends AbstractBaseTest {
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
             .execute());
+    }
+
+    @Test
+    @ExcludeIn({HSQLDB, DERBY})
+    public void Insert_With_SubQuery2() {
+//        insert into modules(name)
+//        select 'MyModule'
+//        where not exists
+//        (select 1 from modules where modules.name = 'MyModule')
+
+        assertEquals(1, insert(survey).set(survey.name,
+            sq().where(sq().from(survey2)
+                           .where(survey2.name.eq("MyModule")).notExists())
+                .unique(Expressions.constant("MyModule")))
+            .execute());
+
+        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule")).count());
+    }
+
+    @Test
+    @ExcludeIn({HSQLDB, DERBY})
+    public void Insert_With_SubQuery3() {
+//        insert into modules(name)
+//        select 'MyModule'
+//        where not exists
+//        (select 1 from modules where modules.name = 'MyModule')
+
+        assertEquals(1, insert(survey).columns(survey.name).select(
+            sq().where(sq().from(survey2)
+                           .where(survey2.name.eq("MyModule2")).notExists())
+                .unique(Expressions.constant("MyModule2")))
+            .execute());
+
+        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule2")).count());
     }
 
     @Test

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,7 @@
 package com.mysema.query.lucene;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,15 +22,18 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.queries.ChainedFilter;
 import org.apache.lucene.sandbox.queries.DuplicateFilter;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -69,9 +73,11 @@ SimpleProjectable<T> {
     @Nullable
     private Set<String> fieldsToLoad;
 
+    private List<Filter> filters = ImmutableList.of();
+
     @Nullable
-    private Filter filter;
-    
+    private Filter _filter;
+
     @Nullable
     private Sort querySort;
 
@@ -104,7 +110,7 @@ SimpleProjectable<T> {
             if (maxDoc == 0) {
                 return 0;
             }
-            return searcher.search(createQuery(), filter, maxDoc).totalHits;
+            return searcher.search(createQuery(), getFilter(), maxDoc, Sort.INDEXORDER, false, false).totalHits;
         } catch (IOException e) {
             throw new QueryException(e);
         } catch (IllegalArgumentException e) {
@@ -117,11 +123,20 @@ SimpleProjectable<T> {
         return innerCount();
     }
 
-    private Query createQuery() {
+    protected Query createQuery() {
         if (queryMixin.getMetadata().getWhere() == null) {
             return new MatchAllDocsQuery();
         }
         return serializer.toQuery(queryMixin.getMetadata().getWhere(), queryMixin.getMetadata());
+    }
+
+    /**
+     * Create a filter for constraints defined in this query
+     *
+     * @return
+     */
+    public Filter asFilter() {
+        return new QueryWrapperFilter(createQuery());
     }
 
     @Override
@@ -147,8 +162,24 @@ SimpleProjectable<T> {
      */
     @SuppressWarnings("unchecked")
     public Q filter(Filter filter) {
-        this.filter = filter;
+        if (filters.isEmpty()) {
+            this._filter = filter;
+            filters = ImmutableList.of(filter);
+        } else {
+            this._filter = null;
+            if (filters.size() == 1) {
+                filters = new ArrayList<Filter>();
+            }
+            filters.add(filter);
+        }
         return (Q)this;
+    }
+
+    private Filter getFilter() {
+        if (_filter == null && !filters.isEmpty()) {
+            _filter = new ChainedFilter(filters.toArray(new Filter[filters.size()]));
+        }
+        return _filter;
     }
 
     @Override
@@ -189,9 +220,9 @@ SimpleProjectable<T> {
                 throw new QueryException("The given limit (" + limit + ") and offset (" + offset + ") cause an integer overflow.");
             }
             if (sort != null) {
-                scoreDocs = searcher.search(createQuery(), filter, sumOfLimitAndOffset, sort).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), getFilter(), sumOfLimitAndOffset, sort, false, false).scoreDocs;
             } else {
-                scoreDocs = searcher.search(createQuery(), filter, sumOfLimitAndOffset).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), getFilter(), sumOfLimitAndOffset, Sort.INDEXORDER, false, false).scoreDocs;
             }
             if (offset < scoreDocs.length) {
                 return new ResultIterator<T>(scoreDocs, offset, searcher, fieldsToLoad, transformer);
@@ -257,7 +288,7 @@ SimpleProjectable<T> {
     public Q orderBy(OrderSpecifier<?> o) {
         return queryMixin.orderBy(o);
     }
-    
+
     @Override
     public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
@@ -272,7 +303,7 @@ SimpleProjectable<T> {
     public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
     }
-    
+
     @SuppressWarnings("unchecked")
     public Q sort(Sort sort) {
         this.querySort = sort;
@@ -286,7 +317,7 @@ SimpleProjectable<T> {
             if (maxDoc == 0) {
                 return null;
             }
-            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), filter, maxDoc).scoreDocs;
+            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), getFilter(), maxDoc, Sort.INDEXORDER, false, false).scoreDocs;
             int index = 0;
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Long offset = modifiers.getOffset();
@@ -324,7 +355,7 @@ SimpleProjectable<T> {
     public T uniqueResult() {
         return oneResult(true);
     }
-    
+
     public Q where(Predicate e) {
         return queryMixin.where(e);
     }

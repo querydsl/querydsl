@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,11 +31,12 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @Override
     protected SQLTemplates createTemplates() {
         return new OracleTemplates();
-    }    
-    
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {        
+    public void Union() {
         SimpleExpression<Integer> one = SimpleTemplate.create(Integer.class,"1");
         SimpleExpression<Integer> two = SimpleTemplate.create(Integer.class,"2");
         SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");
@@ -60,13 +61,13 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         		"select a.*, rownum rn from (   " +
         		"select survey1.ID from SURVEY survey1  ) " +
         		"a) " +
-        		"where rn > 3 and rn <= 8", query.toString());
+        		"where rn > 3 and rownum <= 5", query.toString());
     }
-    
+
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
-        assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());        
+        assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());
     }
 
 }

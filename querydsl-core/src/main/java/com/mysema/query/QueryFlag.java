@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,94 +21,99 @@ import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * Defines a positioned flag in a Query for customization of query serialization
- * 
+ *
  * @author tiwe
  *
  */
 public class QueryFlag implements Serializable{
-    
+
     private static final long serialVersionUID = -7131081607441961628L;
 
-    public enum Position {        
-        
+    public enum Position {
+
         /**
-         * Start of the query 
+         *
+         */
+        WITH,
+
+        /**
+         * Start of the query
          */
         START,
-        
+
         /**
          * Override for the first element (e.g SELECT, INSERT)
          */
         START_OVERRIDE,
-        
+
         /**
          * After the first element (after select)
          */
         AFTER_SELECT,
-        
+
         /**
          * After the projection (after select ...)
          */
         AFTER_PROJECTION,
-        
+
         /**
          * Before the filter conditions (where)
          */
         BEFORE_FILTERS,
-        
+
         /**
          * After the filter conditions (where)
          */
         AFTER_FILTERS,
-        
+
         /**
          * Before group by
          */
         BEFORE_GROUP_BY,
-        
+
         /**
-         * After group by 
+         * After group by
          */
         AFTER_GROUP_BY,
-        
+
         /**
          * Before having
          */
         BEFORE_HAVING,
-        
+
         /**
          * After having
          */
         AFTER_HAVING,
-        
+
         /**
          * Before order (by)
          */
         BEFORE_ORDER,
-        
+
         /**
          * After order (by)
          */
         AFTER_ORDER,
-        
+
         /**
-         * After all other tokens 
+         * After all other tokens
          */
-        END        
-        
+        END
+
     }
-    
+
     private final Position position;
-    
+
     private final Expression<?> flag;
-    
+
     public QueryFlag(Position position, String flag) {
         this(position, TemplateExpressionImpl.create(Object.class, flag));
     }
-    
+
     public QueryFlag(Position position, Expression<?> flag) {
         this.position = position;
-        this.flag = flag;        
+        this.flag = flag;
     }
 
     public Position getPosition() {

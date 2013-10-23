@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,9 +19,14 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQueryExpression;
 
 /**
- * Factory interface for query and clause creation
+ * Factory interface for query and clause creation.
+ *
+ * <p>The default implementation is {@link SQLQueryFactoryImpl} and should be used for general
+ * query creation. Type specific variants are available if database specific queries need to be created.</p>
  *
  * @author tiwe
  *
@@ -41,7 +46,7 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
 
     /**
      * Create a new DELETE clause
-     * 
+     *
      * @param path
      * @return
      */
@@ -49,15 +54,31 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
 
     /**
      * Create a new SELECT query
-     * 
+     *
      * @param from
      * @return
      */
     Q from(Expression<?> from);
 
     /**
+     * Create a new SELECT query
+     *
+     * @param from
+     * @return
+     */
+    Q from(Expression<?>... from);
+
+    /**
+     * Create a new SELECT query
+     *
+     * @param from
+     * @return
+     */
+    Q from(SubQueryExpression<?> subQuery, Path<?> alias);
+
+    /**
      * Create a new INSERT INTO clause
-     * 
+     *
      * @param path
      * @return
      */
@@ -65,7 +86,7 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
 
     /**
      * Create a new MERGE clause
-     * 
+     *
      * @param path
      * @return
      */
@@ -73,7 +94,7 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
 
     /**
      * Create a new UPDATE clause
-     * 
+     *
      * @param path
      * @return
      */
@@ -82,11 +103,13 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
     /* (non-Javadoc)
      * @see com.mysema.query.QueryFactory#query()
      */
+    @Override
     Q query();
 
     /* (non-Javadoc)
      * @see com.mysema.query.QueryFactory#subQuery()
      */
+    @Override
     SQ subQuery();
 
     /**

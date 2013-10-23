@@ -6,14 +6,14 @@ import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.types.path.SimplePath;
 
 public class Array2Test {
-    
+
     public static class Example {
-    
+
         byte[] imageData;
 
-        @QueryProjection    
-        public Example(byte[] imageData) {
-            this.imageData = imageData;
+        @QueryProjection
+        public Example(byte[] param0) {
+            this.imageData = param0;
         }
     }
 

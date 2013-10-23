@@ -57,7 +57,7 @@ import com.mysema.query.types.QTuple;
  * @param <Q>
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
+public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q> & com.mysema.query.Query<Q>> extends AbstractSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
 

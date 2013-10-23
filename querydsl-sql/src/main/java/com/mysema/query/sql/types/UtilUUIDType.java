@@ -19,6 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.UUID;
 
+/**
+ * UtilUUIDType maps UUID to String on the JDBC level
+ *
+ * @author tiwe
+ *
+ */
 public class UtilUUIDType extends AbstractType<UUID> {
 
     public UtilUUIDType() {
@@ -41,6 +47,6 @@ public class UtilUUIDType extends AbstractType<UUID> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, UUID value) throws SQLException {
-        st.setObject(startIndex, value);
+        st.setString(startIndex, value.toString());
     }
 }

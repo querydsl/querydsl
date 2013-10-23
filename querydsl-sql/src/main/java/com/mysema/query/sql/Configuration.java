@@ -53,6 +53,8 @@ public final class Configuration {
 
     private final SQLTemplates templates;
 
+    private final SQLListeners listeners = new SQLListeners();
+
     private boolean hasTableColumnTypes = false;
 
     /**
@@ -241,6 +243,20 @@ public final class Configuration {
     public void register(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
         hasTableColumnTypes = true;
+    }
+
+    /**
+     * @param listeners
+     */
+    public void addListener(SQLListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * @return
+     */
+    public SQLListeners getListeners() {
+        return listeners;
     }
 
 }

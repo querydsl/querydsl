@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,12 +15,12 @@ package com.mysema.query.apt;
 
 /**
  * APT options supported by Querydsl
- * 
+ *
  * @author tiwe
  *
  */
 public final class APTOptions {
-    
+
     public static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
 
     public static final String QUERYDSL_PREFIX = "querydsl.prefix";
@@ -38,9 +38,13 @@ public final class APTOptions {
     public static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
 
     public static final String QUERYDSL_EXCLUDED_CLASSES = "querydsl.excludedClasses";
-    
+
+    public static final String QUERYDSL_INCLUDED_PACKAGES = "querydsl.includedPackages";
+
+    public static final String QUERYDSL_INCLUDED_CLASSES = "querydsl.includedClasses";
+
     public static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
 
     private APTOptions() {}
-    
+
 }

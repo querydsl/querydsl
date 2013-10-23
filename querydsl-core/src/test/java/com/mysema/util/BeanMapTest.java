@@ -13,12 +13,12 @@ import com.google.common.collect.Sets;
 public class BeanMapTest {
 
     private BeanMap beanMap;
-    
+
     @Before
     public void setUp() {
         beanMap = new BeanMap(new Entity());
     }
-    
+
     @Test
     public void Size() {
         assertEquals(4, beanMap.size());
@@ -28,6 +28,12 @@ public class BeanMapTest {
     public void Clear() {
         beanMap.clear();
         assertEquals(4, beanMap.size());
+    }
+
+    @Test
+    public void Primitives() {
+        beanMap.put("id", 5);
+        assertEquals(5, ((Entity)beanMap.getBean()).getId());
     }
 
     @Test
@@ -52,7 +58,7 @@ public class BeanMapTest {
 
     @Test
     public void PutAllWriteable() {
-        
+
     }
 
     @Test
@@ -62,7 +68,7 @@ public class BeanMapTest {
 
     @Test
     public void ContainsValueObject() {
-        
+
     }
 
     @Test
@@ -90,7 +96,7 @@ public class BeanMapTest {
 
     @Test
     public void GetType() {
-        
+
     }
 
     @Test

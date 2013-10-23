@@ -6,7 +6,7 @@ echo "Creating javadocs"
 mvn javadoc:aggregate
 
 echo "Creating release bundles"
-for module in collections hibernate-search jpa jdo lucene3 lucene4 sql sql-codegen
+for module in apt collections hibernate-search jpa jdo lucene3 lucene4 sql sql-codegen
 do
   cd ../querydsl-$module
   mvn -Dtest=X clean assembly:assembly

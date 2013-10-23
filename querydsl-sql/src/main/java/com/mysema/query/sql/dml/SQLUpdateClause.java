@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,30 +57,28 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     private final RelationalPath<?> entity;
 
-    private final List<QueryMetadata> batchMetadata = new ArrayList<QueryMetadata>();
-    
-    private final List<List<Pair<Path<?>,Expression<?>>>> batchUpdates = new ArrayList<List<Pair<Path<?>,Expression<?>>>>();
-    
+    private final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
+
     private List<Pair<Path<?>,Expression<?>>> updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
 
     private QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
     private transient String queryString;
-    
+
     public SQLUpdateClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
-    
+
     public SQLUpdateClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
-    
+
     /**
      * Add the given String literal at the given position as a query flag
-     * 
+     *
      * @param position
      * @param flag
      * @return
@@ -89,7 +87,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
-    
+
     /**
      * Add the given Expression at the given position as a query flag
      *
@@ -101,15 +99,14 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
-    
+
     /**
      * Add the current state of bindings as a batch item
-     * 
+     *
      * @return
      */
     public SQLUpdateClause addBatch() {
-        batchUpdates.add(updates);
-        batchMetadata.add(metadata);
+        batches.add(new SQLUpdateBatch(metadata, updates));
         updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -118,7 +115,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
-        if (batchUpdates.isEmpty()) {
+        if (batches.isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(configuration, true);
             serializer.serializeForUpdate(metadata, entity, updates);
             queryString = serializer.toString();
@@ -127,36 +124,38 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
             SQLSerializer serializer = new SQLSerializer(configuration, true);
-            serializer.serializeForUpdate(batchMetadata.get(0), entity, batchUpdates.get(0));
+            serializer.serializeForUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
             queryString = serializer.toString();
             logger.debug(queryString);
-            
+
             // add first batch
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
-            
+
             // add other batches
-            for (int i = 1; i < batchUpdates.size(); i++) {
+            for (int i = 1; i < batches.size(); i++) {
                 serializer = new SQLSerializer(configuration, true);
-                serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
+                serializer.serializeForUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
             }
         }
         return stmt;
     }
-    
+
     @Override
     public long execute() {
         PreparedStatement stmt = null;
         try {
             stmt = createStatement();
-            if (batchUpdates.isEmpty()) {
-                return stmt.executeUpdate();    
+            if (batches.isEmpty()) {
+                listeners.notifyUpdate(metadata, entity, updates);
+                return stmt.executeUpdate();
             } else {
+                listeners.notifyUpdates(metadata, entity, batches);
                 return executeBatch(stmt);
-            }  
+            }
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
@@ -165,7 +164,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             }
         }
     }
-    
+
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
@@ -177,17 +176,17 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         }
         return this;
     }
-    
+
     @Override
     public <T> SQLUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));    
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));
         } else {
             setNull(path);
-        }        
+        }
         return this;
     }
-    
+
     @Override
     public <T> SQLUpdateClause setNull(Path<T> path) {
         updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
@@ -212,12 +211,12 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         metadata.addWhere(p);
         return this;
     }
-    
+
     @Override
     public SQLUpdateClause where(Predicate... o) {
         for (Predicate p : o) {
-            metadata.addWhere(p);    
-        }        
+            metadata.addWhere(p);
+        }
         return this;
     }
 
@@ -232,7 +231,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
      * Populate the UPDATE clause with the properties of the given bean.
      * The properties need to match the fields of the clause's entity instance.
      * Primary key columns are skipped in the population.
-     * 
+     *
      * @param bean
      * @return
      */
@@ -240,30 +239,30 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     public SQLUpdateClause populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
-    
+
     /**
      * Populate the UPDATE clause with the properties of the given bean using the given Mapper.
-     * 
+     *
      * @param obj
      * @param mapper
      * @return
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> SQLUpdateClause populate(T obj, Mapper<T> mapper) {
-        Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null 
-                ? entity.getPrimaryKey().getLocalColumns() 
+        Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null
+                ? entity.getPrimaryKey().getLocalColumns()
                 : Collections.<Path<?>>emptyList();
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
         for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
             if (!primaryKeyColumns.contains(entry.getKey())) {
-                set((Path)entry.getKey(), entry.getValue());    
-            }            
-        }        
+                set((Path)entry.getKey(), entry.getValue());
+            }
+        }
         return this;
     }
 
     @Override
     public boolean isEmpty() {
-        return updates.isEmpty() && batchUpdates.isEmpty();
+        return updates.isEmpty() && batches.isEmpty();
     }
 }

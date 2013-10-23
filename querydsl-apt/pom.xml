@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.2.3.BUILD-SNAPSHOT</version>
+    <version>3.2.5.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -18,7 +18,7 @@
   <properties>
     <hibernate.version>4.1.7.Final</hibernate.version>
     <jdo.version>2.3-eb</jdo.version>
-    <morphia.version>0.99</morphia.version>
+    <morphia.version>0.105</morphia.version>
   </properties>
 
   <dependencies>
@@ -68,7 +68,7 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.google.code.morphia</groupId>
+      <groupId>org.mongodb.morphia</groupId>
       <artifactId>morphia</artifactId>
       <version>${morphia.version}</version>
       <scope>provided</scope>
@@ -140,7 +140,6 @@
          
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4.3</version>
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
@@ -163,6 +162,7 @@
                 <descriptor>src/main/jpa.xml</descriptor>
                 <descriptor>src/main/morphia.xml</descriptor>
                 <descriptor>src/main/roo.xml</descriptor>
+                <descriptor>src/main/onejar.xml</descriptor>
               </descriptors>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
@@ -187,6 +187,7 @@
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
                 <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 
                 <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
+                <processor>com.mysema.query.apt.roo.RooAnnotationProcessor</processor>
               </processors>              
             </configuration>
           </execution>                            

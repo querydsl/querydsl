@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public class SimpleTypesTest extends AbstractTest {
         VAL1,
         VAL2
     }
-    
+
     public static class CustomLiteral {
 
     }
@@ -73,8 +73,9 @@ public class SimpleTypesTest extends AbstractTest {
 
     }
 
-    @SuppressWarnings("all")
     public static class CustomComparableNumber extends CustomNumber implements Comparable<CustomComparableNumber> {
+
+        private static final long serialVersionUID = 4398583038967396133L;
 
         @Override
         public int compareTo(CustomComparableNumber o) {
@@ -92,7 +93,6 @@ public class SimpleTypesTest extends AbstractTest {
         }
     }
 
-    @SuppressWarnings("all")
     public static class CustomComparableLiteral implements Comparable<CustomComparableLiteral> {
 
         @Override
@@ -111,8 +111,7 @@ public class SimpleTypesTest extends AbstractTest {
         }
     }
 
-    @SuppressWarnings("all")
-    public static class CustomGenericComparableLiteral<A> implements Comparable<CustomComparableLiteral> {
+    public static class CustomGenericComparableLiteral<C> implements Comparable<CustomComparableLiteral> {
 
         @Override
         public int compareTo(CustomComparableLiteral o) {
@@ -148,7 +147,7 @@ public class SimpleTypesTest extends AbstractTest {
         Byte bbyte;
         List<Byte> bbyteList;
         byte bbyte2;
-        
+
         Short sshort;
         List<Short> sshortList;
         short sshort2;
@@ -231,16 +230,16 @@ public class SimpleTypesTest extends AbstractTest {
 
         @QueryTransient
         String skipMe;
-        
+
         MyEnum myEnum;
-        
+
         int[] intArray;
         byte[] byteArray;
         long[] longArray;
         float[] floatArray;
         double[] doubleArray;
         short[] shortArray;
-        
+
         @QueryType(PropertyType.SIMPLE)
         byte[] byteArrayAsSimple;
     }
@@ -299,7 +298,7 @@ public class SimpleTypesTest extends AbstractTest {
 
         match(SimplePath.class, "clob");
         match(SimplePath.class, "blob");
-        
+
         match(EnumPath.class, "myEnum");
     }
 

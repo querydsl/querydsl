@@ -662,6 +662,12 @@ public final class Connections {
         dropType(stmt, "u_street_type");
         stmt.execute("create type u_street_type as (street VARCHAR(100), number VARCHAR(30))");
 
+        // arrays
+        dropTable(templates, "ARRAYTEST");
+        stmt.execute("create table \"ARRAYTEST\" (\n" +
+            "\"ID\" bigint primary key,\n" +
+            "\"MYARRAY\" varchar(8)[])");
+
         // survey
         dropTable(templates, "SURVEY");
         try {

@@ -51,6 +51,8 @@ public final class Ops {
     // collection
     public static final Operator<Boolean> IN = new OperatorImpl<Boolean>("IN"); // cmp. contains
 
+    public static final Operator<Boolean> NOT_IN = new OperatorImpl<Boolean>("NOT_IN");
+
     public static final Operator<Boolean> COL_IS_EMPTY = new OperatorImpl<Boolean>("COL_IS_EMPTY");
 
     public static final Operator<Number>  COL_SIZE = new OperatorImpl<Number>("COL_SIZE");
@@ -304,6 +306,8 @@ public final class Ops {
 
         public static final Operator<Integer> WEEK = new OperatorImpl<Integer>("WEEK");
 
+        public static final Operator<Integer> YEAR_MONTH = new OperatorImpl<Integer>("YEAR_MONTH");
+
         public static final Operator<Integer> YEAR_WEEK = new OperatorImpl<Integer>("YEAR_WEEK");
 
         public static final Operator<Integer> DAY_OF_WEEK = new OperatorImpl<Integer>("DAY_OF_WEEK");
@@ -384,6 +388,10 @@ public final class Ops {
      * String operators
      */
     public static final class StringOps {
+
+        public static final Operator<String> LEFT = new OperatorImpl<String>("LEFT");
+
+        public static final Operator<String> RIGHT = new OperatorImpl<String>("RIGHT");
 
         public static final Operator<String> LTRIM = new OperatorImpl<String>("LTRIM");
 

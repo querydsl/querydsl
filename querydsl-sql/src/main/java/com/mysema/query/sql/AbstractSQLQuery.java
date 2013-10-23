@@ -39,11 +39,13 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
@@ -83,6 +85,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     private final Configuration configuration;
 
+    private final SQLListeners listeners;
+
     protected final QueryMixin<Q> queryMixin;
 
     protected boolean unionAll;
@@ -98,6 +102,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         this.queryMixin.setSelf((Q) this);
         this.conn = conn;
         this.configuration = configuration;
+        this.listeners = new SQLListeners(configuration.getListeners());
+    }
+
+    /**
+     * @param listener
+     */
+    public void addListener(SQLListener listener) {
+        listeners.add(listener);
     }
 
     /**
@@ -371,6 +383,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        listeners.notifyQuery(queryMixin.getMetadata());
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -425,6 +438,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        listeners.notifyQuery(queryMixin.getMetadata());
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
@@ -484,6 +498,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        listeners.notifyQuery(queryMixin.getMetadata());
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
@@ -709,6 +724,39 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         }
         CloseableIterator<RT> iterator = iterate(expr);
         return uniqueResult(iterator);
+    }
+
+    @Override
+    public Q withRecursive(Path<?> alias, SubQueryExpression<?> query) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, query);
+    }
+
+    public Q withRecursive(Path<?> alias, Expression<?> query) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, query);
+    }
+
+    public WithBuilder<Q> withRecursive(Path<?> alias, Path<?>... columns) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, columns);
+    }
+
+    @Override
+    public Q with(Path<?> alias, SubQueryExpression<?> query) {
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, query);
+        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
+    }
+
+    public Q with(Path<?> alias, Expression<?> query) {
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, query);
+        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
+    }
+
+    public WithBuilder<Q> with(Path<?> alias, Path<?>... columns) {
+        Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
+        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLTemplates.WITH_COLUMNS, alias, columnsCombined);
+        return new WithBuilder<Q>(queryMixin, aliasCombined);
     }
 
     private long unsafeCount() throws SQLException {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,11 +19,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
+ * BytesType maps byte[] to byte[] on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class BytesType extends AbstractType<byte[]> {
-    
+
     public BytesType() {
         super(Types.BLOB);
     }

@@ -41,6 +41,8 @@ public class JPQLTemplates extends Templates {
 
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("JPA_MEMBER_OF");
 
+    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>("JPA_NOT_MEMBER_OF");
+
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
 
     private final QueryHandler queryHandler;
@@ -81,8 +83,10 @@ public class JPQLTemplates extends Templates {
 
         // collection
         add(MEMBER_OF, "{0} member of {1}");
+        add(NOT_MEMBER_OF, "{0} not member of {1}");
 
         add(Ops.IN, "{0} in {1}");
+        add(Ops.NOT_IN, "{0} not in {1}");
         add(Ops.COL_IS_EMPTY, "{0} is empty");
         add(Ops.COL_SIZE, "size({0})");
         add(Ops.ARRAY_SIZE, "size({0})");
@@ -93,8 +97,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'", 27); // TODO : support real regexes
         add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'", 27); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})");
+        add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)", 1);
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})", 1);
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
@@ -123,6 +127,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
+
+        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
 
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");

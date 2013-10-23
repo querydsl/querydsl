@@ -169,7 +169,7 @@
       metadata to create your Querydsl model.
     </para>
 
-    <para><code>com.mysema.query.jpa.hibernate.HibernateDomainExporter</code> provides the
+    <para><code>com.mysema.query.jpa.codegen.HibernateDomainExporter</code> provides the
       functionality for this:</para>
 
     <programlisting language="java"><![CDATA[

@@ -258,7 +258,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public NumberExpression<Integer> yearMonth() {
         if (yearMonth == null) {
-            yearMonth = year().multiply(100).add(month());
+            yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, mixin);
         }
         return yearMonth;
     }

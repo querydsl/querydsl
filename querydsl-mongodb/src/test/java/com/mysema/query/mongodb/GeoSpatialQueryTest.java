@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,19 +15,20 @@ package com.mysema.query.mongodb;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.Morphia;
 import com.mongodb.BasicDBObject;
-import com.mysema.query.mongodb.domain.City;
+import com.mongodb.Mongo;
+import com.mongodb.MongoException;
 import com.mysema.query.mongodb.domain.GeoEntity;
 import com.mysema.query.mongodb.domain.QGeoEntity;
-import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
 import com.mysema.testutil.ExternalDB;
 
@@ -35,12 +36,16 @@ import com.mysema.testutil.ExternalDB;
 public class GeoSpatialQueryTest {
 
     private final String dbname = "geodb";
-    private final Morphia morphia = new Morphia().map(GeoEntity.class);
-    private final Datastore ds = morphia.createDatastore(dbname);
+    private final Mongo mongo;
+    private final Morphia morphia;
+    private final Datastore ds;
     private final QGeoEntity geoEntity = new QGeoEntity("geoEntity");
 
-    User u1, u2, u3, u4;
-    City tampere, helsinki;
+    public GeoSpatialQueryTest() throws UnknownHostException, MongoException {
+        mongo = new Mongo();
+        morphia = new Morphia().map(GeoEntity.class);
+        ds = morphia.createDatastore(mongo, dbname);
+    }
 
     @Before
     public void before() {

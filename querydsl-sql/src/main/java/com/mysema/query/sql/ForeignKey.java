@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,7 +50,7 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
     private final ImmutableList<? extends Path<?>> localColumns;
 
     private final ImmutableList<String> foreignColumns;
-    
+
     @Nullable
     private volatile Expression<Tuple> mixin;
 
@@ -58,7 +58,7 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
         this(entity, ImmutableList.of(localColumn), ImmutableList.of(foreignColumn));
     }
 
-    public ForeignKey(RelationalPath<?> entity, ImmutableList<? extends Path<?>> localColumns, 
+    public ForeignKey(RelationalPath<?> entity, ImmutableList<? extends Path<?>> localColumns,
             ImmutableList<String> foreignColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
@@ -87,7 +87,7 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
         }
         return builder.getValue();
     }
-    
+
     public BooleanExpression in(CollectionExpression<?,Tuple> coll) {
         return BooleanOperation.create(Ops.IN, getProjection(), coll);
     }

@@ -474,6 +474,22 @@ query.from(customer).where(
   </sect2>
 
   <sect2>
+  
+    <title>Selecting literals</title>
+    
+    <para>To select literals you need to create constant instances for it like this.</para>
+    
+    <programlisting language="java"><![CDATA[
+query.list(Expressions.constant(1),
+           Expressions.constant("abc"));    
+]]></programlisting>     
+
+    <para>The class  <code>com.mysema.query.support.Expressions</code> offers also other useful static methods for
+    projections, operation and template creation.</para>
+  
+  </sect2>
+
+  <sect2>
 
     <title>Query extension support</title>
 
@@ -582,6 +598,34 @@ new SQLInsertClause(conn, dialect, survey)
     .select(new SQLSubQuery().from(survey2).list(survey2.id.add(10), survey2.name))
     .execute();
 ]]></programlisting>
+
+    <para>As an alternative to the columns/values usage, Querydsl provides also a set
+     method which can be used like this</para>
+    
+    <programlisting language="java"><![CDATA[
+QSurvey survey = QSurvey.survey;
+  
+new SQLInsertClause(conn, dialect, survey)
+    .set(survey.id, 3)
+    .set(survey.name, "Hello").execute();
+]]></programlisting>    
+
+     <para>which is equivalent to the first example. Usage of the set method always 
+     expands internally to columns and values.</para>
+     
+     <para>Beware that</para>
+     
+     <programlisting language="java"><![CDATA[
+columns(...).select(...)
+]]></programlisting>    
+
+     <para>maps the result set of the given query to be inserted whereas</para>
+
+<programlisting language="java"><![CDATA[
+set(...)
+]]></programlisting>    
+
+     <para>maps single columns and nulls are used for empty subquery results.</para>
 
     </sect3>
 
@@ -816,6 +860,17 @@ configuration.registerNumeric(5,2,Float.class);
 
     <para>This will map the Float type to the NUMERIC(5,2) type.</para>
 
+  </sect2>
+  
+  <sect2>
+  
+    <title>Listening to queries and clauses</title>
+    
+    <para>SQLListener is a listener interface that can be used to listen to queries and DML clause. SQLListener
+    instances can be registered either on the configuration and on the query/clause level via the addListener method.</para>
+  
+    <para>Use cases for listeners are data synchronization, logging, cacheing and validation.</para>
+  
   </sect2>
 
 

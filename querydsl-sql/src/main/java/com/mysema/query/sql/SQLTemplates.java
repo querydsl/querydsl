@@ -25,9 +25,11 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.Templates;
 
 /**
@@ -37,6 +39,8 @@ import com.mysema.query.types.Templates;
  * @author tiwe
  */
 public class SQLTemplates extends Templates {
+
+    public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
     public static final Operator<Object> CAST = new OperatorImpl<Object>("SQL_CAST");
 
@@ -59,6 +63,10 @@ public class SQLTemplates extends Templates {
     public static final Operator<Object> LEAD = new OperatorImpl<Object>("LEAD");
 
     public static final Operator<Object> LAG = new OperatorImpl<Object>("LAG");
+
+    public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>("WITH_ALIAS");
+
+    public static final Operator<Object> WITH_COLUMNS = new OperatorImpl<Object>("WITH_COLUMNS");
 
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
@@ -187,6 +195,8 @@ public class SQLTemplates extends Templates {
 
     private String with = "with ";
 
+    private String withRecursive = "with recursive ";
+
     private String createIndex = "create index ";
 
     private String createUniqueIndex = "create unique index ";
@@ -210,6 +220,9 @@ public class SQLTemplates extends Templates {
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
 
+        add(WITH_ALIAS, "{0} as {1}", 0);
+        add(WITH_COLUMNS, "{0} {1}", 0);
+
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 35);
@@ -230,6 +243,7 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
         add(Ops.DateTimeOps.MILLISECOND, "0");
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "(year({0}) * 100 + month({0}))");
         add(Ops.DateTimeOps.YEAR_WEEK, "(year({0}) * 100 + week({0}))");
 
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year',{1},{0})");
@@ -264,8 +278,8 @@ public class SQLTemplates extends Templates {
         add(Ops.INDEX_OF, "locate({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1");
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
-        add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)");
-        add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})");
+        add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)", 1);
+        add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})", 1);
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
 
@@ -499,6 +513,10 @@ public class SQLTemplates extends Templates {
 
     public final String getWith() {
         return with;
+    }
+
+    public final String getWithRecursive() {
+        return withRecursive;
     }
 
     public final boolean isParameterMetadataAvailable() {
@@ -735,6 +753,10 @@ public class SQLTemplates extends Templates {
 
     protected void setWith(String with) {
         this.with = with;
+    }
+
+    protected void setWithRecursive(String withRecursive) {
+        this.withRecursive = withRecursive;
     }
 
     protected void setCreateIndex(String createIndex) {

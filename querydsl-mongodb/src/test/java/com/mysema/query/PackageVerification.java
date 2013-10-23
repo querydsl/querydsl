@@ -22,7 +22,6 @@ import java.net.URLClassLoader;
 
 import org.junit.Test;
 
-import com.google.code.morphia.annotations.Entity;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;

@@ -180,12 +180,20 @@ import com.mysema.query.annotations.Config;
             <entry>set where unknown non-annotated classes should be treated as embeddable (default: false)</entry>
           </row>
           <row>
+            <entry>querydsl.includedPackages</entry>
+            <entry>comma separated list of packages to be included into code generation (default: all)</entry>
+          </row>
+          <row>
+            <entry>querydsl.includedClasses</entry>
+            <entry>comma separated list of class names to be included into code generation (default: all)</entry>
+          </row>          
+          <row>
             <entry>querydsl.excludedPackages</entry>
-            <entry>comma separated list of packages to be excluded from code generation</entry>
+            <entry>comma separated list of packages to be excluded from code generation (default: none)</entry>
           </row>
           <row>
             <entry>querydsl.excludedClasses</entry>
-            <entry>comma separated list of class names to be excluded from code generation</entry>
+            <entry>comma separated list of class names to be excluded from code generation (default: none)</entry>
           </row>
           
         </tbody>

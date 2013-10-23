@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,8 @@ import static com.mysema.query.apt.APTOptions.QUERYDSL_CREATE_DEFAULT_VARIABLE;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_ENTITY_ACCESSORS;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_CLASSES;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_PACKAGES;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_INCLUDED_CLASSES;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_INCLUDED_PACKAGES;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_LIST_ACCESSORS;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_MAP_ACCESSORS;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_PACKAGE_SUFFIX;
@@ -72,7 +74,7 @@ public class DefaultConfiguration implements Configuration {
     private static final String DEFAULT_SEPARATOR = ",";
 
     private boolean unknownAsEmbedded;
-    
+
     private final CodegenModule module = new CodegenModule();
 
     private final SerializerConfig defaultSerializerConfig;
@@ -82,16 +84,16 @@ public class DefaultConfiguration implements Configuration {
     protected final Class<? extends Annotation> entityAnn;
 
     @Nonnull
-    private final Set<String> excludedPackages;
+    private final Set<String> excludedPackages, excludedClasses;
 
     @Nonnull
-    private final Set<String> excludedClasses;
+    private final Set<String> includedPackages, includedClasses;
 
     @Nullable
     protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
 
     private final Set<Class<? extends Annotation>> entityAnnotations = new HashSet<Class<? extends Annotation>>();
-    
+
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
     private boolean useFields = true, useGetters = true;
@@ -106,8 +108,10 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> embeddedAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
-		this.excludedClasses = new HashSet<String>();
-		this.excludedPackages = new HashSet<String>();
+        this.excludedClasses = new HashSet<String>();
+        this.excludedPackages = new HashSet<String>();
+        this.includedClasses = new HashSet<String>();
+        this.includedPackages = new HashSet<String>();
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);
         this.entitiesAnn = entitiesAnn;
@@ -116,7 +120,7 @@ public class DefaultConfiguration implements Configuration {
         this.embeddableAnn = embeddableAnn;
         this.embeddedAnn = embeddedAnn;
         this.skipAnn = skipAnn;
-        
+
         entityAnnotations.add(entityAnn);
         if (superTypeAnn != null) {
             entityAnnotations.add(superTypeAnn);
@@ -139,7 +143,7 @@ public class DefaultConfiguration implements Configuration {
         boolean listAccessors = false;
         boolean mapAccessors = false;
         boolean createDefaultVariable = true;
-        
+
         if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)) {
             entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));
         }
@@ -164,7 +168,7 @@ public class DefaultConfiguration implements Configuration {
         if (options.containsKey(QUERYDSL_UNKNOWN_AS_EMBEDDABLE)) {
             unknownAsEmbedded = Boolean.valueOf(options.get(QUERYDSL_UNKNOWN_AS_EMBEDDABLE));
         }
-        
+
         if (options.containsKey(QUERYDSL_EXCLUDED_PACKAGES)) {
             String packageString = options.get(QUERYDSL_EXCLUDED_PACKAGES);
             if (!Strings.isNullOrEmpty(packageString)) {
@@ -173,7 +177,7 @@ public class DefaultConfiguration implements Configuration {
                 }
             }
         }
-        
+
         if (options.containsKey(QUERYDSL_EXCLUDED_CLASSES)) {
             String classString = options.get(QUERYDSL_EXCLUDED_CLASSES);
             if (!Strings.isNullOrEmpty(classString)) {
@@ -183,7 +187,25 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
-        defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, 
+        if (options.containsKey(QUERYDSL_INCLUDED_PACKAGES)) {
+            String packageString = options.get(QUERYDSL_INCLUDED_PACKAGES);
+            if (!Strings.isNullOrEmpty(packageString)) {
+                for (String packageName : packageString.split(DEFAULT_SEPARATOR)) {
+                    includedPackages.add(packageName);
+                }
+            }
+        }
+
+        if (options.containsKey(QUERYDSL_INCLUDED_CLASSES)) {
+            String classString = options.get(QUERYDSL_INCLUDED_CLASSES);
+            if (!Strings.isNullOrEmpty(classString)) {
+                for (String className : classString.split(DEFAULT_SEPARATOR)) {
+                    includedClasses.add(className);
+                }
+            }
+        }
+
+        defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");
 
     }
@@ -197,7 +219,7 @@ public class DefaultConfiguration implements Configuration {
     public void addExcludedPackage(String packageName) {
         excludedPackages.add(packageName);
     }
-    
+
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements) {
         if (useFields) {
@@ -250,7 +272,7 @@ public class DefaultConfiguration implements Configuration {
     public Set<Class<? extends Annotation>> getEntityAnnotations() {
         return entityAnnotations;
     }
-    
+
     @Override
     public Serializer getEntitySerializer() {
         return module.get(EntitySerializer.class);
@@ -291,9 +313,9 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public void inspect(Element element, Annotations annotations) {
-        // do nothing        
+        // do nothing
     }
-    
+
     @Override
     public boolean isBlockedField(VariableElement field) {
         if (field.getAnnotation(QueryType.class) != null) {
@@ -396,9 +418,23 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isExcludedPackage(@Nonnull String packageName) {
-        for (String excludedPackage : excludedPackages) {
-            if (packageName.startsWith(excludedPackage)) {
+        if (!includedPackages.isEmpty()) {
+            boolean included = false;
+            for (String includedPackage : includedPackages) {
+                if (packageName.startsWith(includedPackage)) {
+                    included = true;
+                    break;
+                }
+            }
+            if (!included) {
                 return true;
+            }
+        }
+        if (!excludedPackages.isEmpty()) {
+            for (String excludedPackage : excludedPackages) {
+                if (packageName.startsWith(excludedPackage)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -406,9 +442,14 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isExcludedClass(@Nonnull String className) {
-        return excludedClasses.contains(className);
+        if (!includedClasses.isEmpty() && !includedClasses.contains(className)) {
+            return true;
+        } else {
+            return excludedClasses.contains(className);
+        }
     }
 
+    @Override
     public boolean isUnknownAsEmbedded() {
         return unknownAsEmbedded;
     }
@@ -416,5 +457,5 @@ public class DefaultConfiguration implements Configuration {
     public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
         this.unknownAsEmbedded = unknownAsEmbedded;
     }
-        
+
 }

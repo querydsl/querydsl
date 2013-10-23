@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,19 +20,21 @@ import java.sql.Timestamp;
 import java.sql.Types;
 
 /**
+ * TimestampType maps Timestamp to Timestamp on the JDBC level
+ *
  * @author tiwe
  *
  */
 public class TimestampType extends AbstractType<Timestamp> {
-    
+
     public TimestampType() {
         super(Types.TIMESTAMP);
     }
-    
+
     public TimestampType(int type) {
         super(type);
     }
-    
+
     @Override
     public Timestamp getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getTimestamp(startIndex);
@@ -47,5 +49,5 @@ public class TimestampType extends AbstractType<Timestamp> {
     public void setValue(PreparedStatement st, int startIndex, Timestamp value) throws SQLException {
         st.setTimestamp(startIndex, value);
     }
-    
+
 }

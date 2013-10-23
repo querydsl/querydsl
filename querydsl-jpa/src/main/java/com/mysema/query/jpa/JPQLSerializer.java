@@ -149,8 +149,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         handle(je.getTarget());
     }
 
-
-
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
         final List<? extends Expression<?>> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
@@ -357,9 +355,14 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
 
-        } else if (operator == Ops.IN) {
+        } else if (operator == Ops.NE && args.get(1) instanceof Operation &&
+                ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
+            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
+            visitOperation(type, Ops.NOT_IN, args);
+
+        } else if (operator == Ops.IN || operator == Ops.NOT_IN) {
             if (args.get(1) instanceof Path) {
-                visitAnyInPath(type, args);
+                visitAnyInPath(type, operator, args);
             } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant) {
                 visitPathInCollection(type, operator, args);
             } else {
@@ -459,7 +462,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void visitAnyInPath(Class<?> type, List<? extends Expression<?>> args) {
+    private void visitAnyInPath(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
             final Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
             final Enum constant = (Enum)((Constant)args.get(0)).getConstant();
@@ -469,7 +472,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 args = ImmutableList.of(new ConstantImpl<String>(constant.name()), args.get(1));
             }
         }
-        super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
+        super.visitOperation(type,
+                operator == Ops.IN ? JPQLTemplates.MEMBER_OF : JPQLTemplates.NOT_MEMBER_OF,
+                args);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

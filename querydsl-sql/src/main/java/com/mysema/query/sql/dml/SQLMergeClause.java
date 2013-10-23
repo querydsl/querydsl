@@ -219,8 +219,10 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             if (configuration.getTemplates().isNativeMerge()) {
                 final PreparedStatement stmt = createStatement(true);
                 if (batches.isEmpty()) {
+                    listeners.notifyMerge(metadata, entity, keys, columns, values, subQuery);
                     stmt.executeUpdate();
                 } else {
+                    listeners.notifyMerges(metadata, entity, batches);
                     stmt.executeBatch();
                 }
                 ResultSet rs = stmt.getGeneratedKeys();
@@ -352,8 +354,10 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         try {
             stmt = createStatement(false);
             if (batches.isEmpty()) {
+                listeners.notifyMerge(metadata, entity, keys, columns, values, subQuery);
                 return stmt.executeUpdate();
             } else {
+                listeners.notifyMerges(metadata, entity, batches);
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {

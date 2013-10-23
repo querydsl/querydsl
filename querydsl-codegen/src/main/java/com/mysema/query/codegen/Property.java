@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,19 +51,19 @@ public final class Property implements Comparable<Property> {
         this(declaringType, name, type, inits, false);
     }
 
-    public Property(EntityType declaringType, String name, Type type, List<String> inits, 
+    public Property(EntityType declaringType, String name, Type type, List<String> inits,
             boolean inherited) {
-        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type, 
+        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type,
                 inits, inherited);
     }
 
-    public Property(EntityType declaringType, String name, String escapedName, Type type, 
+    public Property(EntityType declaringType, String name, String escapedName, Type type,
             List<String> inits, boolean inherited) {
         this.declaringType = declaringType;
         this.name = name;
         this.escapedName = escapedName;
         this.type = type;
-        this.inits = inits;  
+        this.inits = inits;
         this.inherited = inherited;
     }
 
@@ -79,14 +79,14 @@ public final class Property implements Comparable<Property> {
     public Property createCopy(EntityType targetModel) {
         if (!declaringType.getParameters().isEmpty()) {
             Type newType = TypeResolver.resolve(type, declaringType, targetModel);
-            if (!newType.equals(type)) {
+            if (!newType.equals(type) || !newType.getClass().equals(type.getClass())) {
                 return new Property(targetModel, name, newType, inits, false);
             } else {
                 return new Property(targetModel, name, type, inits, targetModel.getSuperType() != null);
-            }    
+            }
         } else {
             return new Property(targetModel, name, type, inits, targetModel.getSuperType() != null);
-        }        
+        }
     }
 
     @SuppressWarnings("unchecked")

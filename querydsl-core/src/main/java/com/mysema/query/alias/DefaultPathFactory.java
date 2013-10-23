@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ import com.mysema.query.types.path.TimePath;
 
 /**
  * DefaultPathFactory is the default implementation of the {@link PathFactory} interface
- * 
+ *
  * @author tiwe
  *
  */
@@ -55,7 +55,6 @@ public class DefaultPathFactory implements PathFactory {
         return new BooleanPath(metadata);
     }
 
-    @SuppressWarnings("all")
     @Override
     public <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new CollectionPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
@@ -70,34 +69,31 @@ public class DefaultPathFactory implements PathFactory {
     public <T extends Comparable<?>> Path<T> createDatePath(Class<T> type, PathMetadata<?> metadata) {
         return new DatePath<T>(type, metadata);
     }
-    
+
     @Override
     public <T extends Comparable<?>> Path<T> createDateTimePath(Class<T> type, PathMetadata<?> metadata) {
         return new DateTimePath<T>(type, metadata);
     }
 
-    @SuppressWarnings("all")
     @Override
     public <T> Path<T> createEntityPath(Class<T> type, PathMetadata<?> metadata) {
         if (Comparable.class.isAssignableFrom(type)) {
             return new ComparableEntityPath(type, metadata);
         } else {
-            return new EntityPathBase<T>(type, metadata);    
-        }        
+            return new EntityPathBase<T>(type, metadata);
+        }
     }
 
     @Override
     public <T extends Enum<T>> Path<T> createEnumPath( Class<T> type, PathMetadata<?> metadata) {
         return new EnumPath<T>(type, metadata);
     }
-    
-    @SuppressWarnings("all")
+
     @Override
     public <E> Path<List<E>> createListPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new ListPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
     }
 
-    @SuppressWarnings("all")
     @Override
     public <K, V> Path<Map<K, V>> createMapPath(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
         return new MapPath<K,V,EntityPathBase<V>>(keyType, valueType, (Class)EntityPathBase.class, metadata);
@@ -108,7 +104,6 @@ public class DefaultPathFactory implements PathFactory {
         return new NumberPath<T>(type, metadata);
     }
 
-    @SuppressWarnings("all")
     @Override
     public <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new SetPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);

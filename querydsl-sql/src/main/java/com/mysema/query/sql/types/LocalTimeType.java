@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,12 +21,18 @@ import java.sql.Types;
 
 import org.joda.time.LocalTime;
 
+/**
+ * LocalTimeType maps LocalTime to Time on the JDBC level
+ *
+ * @author tiwe
+ *
+ */
 public class LocalTimeType extends AbstractType<LocalTime> {
-    
+
     public LocalTimeType() {
         super(Types.TIME);
     }
-    
+
     public LocalTimeType(int type) {
         super(type);
     }
@@ -44,7 +50,7 @@ public class LocalTimeType extends AbstractType<LocalTime> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalTime value) throws SQLException {
-        st.setTime(startIndex, new Time(value.toDateTimeToday().getMillis()));        
+        st.setTime(startIndex, new Time(value.toDateTimeToday().getMillis()));
     }
 
 }

@@ -187,6 +187,33 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
 
+        // with
+        if (hasFlags){
+            boolean handled = false;
+            boolean recursive = false;
+            for (QueryFlag flag : flags) {
+                if (flag.getPosition() == Position.WITH) {
+                    if (flag.getFlag() == SQLTemplates.RECURSIVE) {
+                        recursive = true;
+                        continue;
+                    }
+                    if (handled) {
+                        append(", ");
+                    }
+                    handle(flag.getFlag());
+                    handled = true;
+                }
+            }
+            if (handled) {
+                if (recursive) {
+                    prepend(templates.getWithRecursive());
+                } else {
+                    prepend(templates.getWith());
+                }
+                append("\n");
+            }
+        }
+
         // start
         if (hasFlags) {
             serialize(Position.START, flags);
@@ -709,6 +736,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 // handle only target
                 handle(args.get(1));
             }
+
+        } else if (operator == SQLTemplates.WITH_COLUMNS) {
+            boolean oldSkipParent = skipParent;
+            skipParent = true;
+            super.visitOperation(type, operator, args);
+            skipParent = oldSkipParent;
 
         } else {
             super.visitOperation(type, operator, args);

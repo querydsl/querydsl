@@ -209,6 +209,20 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                 return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
             }
 
+        } else if (op == Ops.NOT_IN) {
+            int constIndex = 0;
+            int exprIndex = 1;
+            if (expr.getArg(1) instanceof Constant<?>) {
+                constIndex = 1;
+                exprIndex = 0;
+            }
+            if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
+                Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
+                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$nin", values.toArray()));
+            } else {
+                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
+            }
+
         } else if (op == Ops.LT) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
 

@@ -41,6 +41,8 @@ public class OriginalNamingStrategyTest {
         assertEquals("us",namingStrategy.getClassName("us"));
         assertEquals("u_", namingStrategy.getClassName("u_"));
         assertEquals("us_",namingStrategy.getClassName("us_"));
+
+        assertEquals("new_line", namingStrategy.getClassName("new line"));
     }
 
     @Test
@@ -54,6 +56,8 @@ public class OriginalNamingStrategyTest {
         assertEquals("_123_abc", namingStrategy.getPropertyName("123 abc", entityModel));
 
         assertEquals("_123_abc_def", namingStrategy.getPropertyName("#123#abc#def", entityModel));
+
+        assertEquals("new_line", namingStrategy.getPropertyName("new line", entityModel));
     }
 
     @Test

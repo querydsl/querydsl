@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,13 +23,13 @@ import com.mysema.query.types.SubQueryExpression;
 
 /**
  * SQLCommonQuery is a common interface for SQLQuery and SQLSubQuery
- * 
+ *
  * @author tiwe
  *
  * @param <Q> concrete type
  */
 public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
-    
+
     /**
      * Add the given Expression as a query flag
      *
@@ -38,7 +38,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q addFlag(Position position, Expression<?> flag);
-    
+
     /**
      * Add the given String literal as query flag
      *
@@ -59,7 +59,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q addFlag(Position position, String prefix, Expression<?> expr);
 
     /**
-     * Add the given String literal as a join flag to the last added join with the 
+     * Add the given String literal as a join flag to the last added join with the
      * position BEFORE_TARGET
      *
      * @param flag
@@ -86,13 +86,13 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
 
     /**
      * Adds a sub query source
-     * 
+     *
      * @param subQuery
      * @param alias
      * @return
      */
     Q from(SubQueryExpression<?> subQuery, Path<?> alias);
-    
+
     /**
      * Adds a full join to the given target
      *
@@ -100,7 +100,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q fullJoin(RelationalPath<?> o);
-    
+
     /**
      * Adds a full join to the given target
      *
@@ -108,7 +108,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     <E> Q fullJoin(RelationalFunctionCall<E> o, Path<E> alias);
-    
+
     /**
      * Adds a full join to the given target
      *
@@ -124,7 +124,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q fullJoin(SubQueryExpression<?> o, Path<?> alias);
-    
+
     /**
      * Adds an inner join to the given target
      *
@@ -132,7 +132,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q innerJoin(RelationalPath<?> o);
-    
+
     /**
      * Adds a full join to the given target
      *
@@ -164,7 +164,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q join(RelationalPath<?> o);
-    
+
     /**
      * Adds a full join to the given target
      *
@@ -172,7 +172,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     <E> Q join(RelationalFunctionCall<E> o, Path<E> alias);
-    
+
     /**
      * Adds a join to the given target
      *
@@ -188,7 +188,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q join(SubQueryExpression<?> o, Path<?> alias);
-    
+
     /**
      * Adds a left join to the given target
      *
@@ -196,7 +196,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q leftJoin(RelationalPath<?> o);
-    
+
     /**
      * Adds a full join to the given target
      *
@@ -212,7 +212,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     <E> Q leftJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
-    
+
     /**
      * Adds a left join to the given target
      *
@@ -228,7 +228,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q on(Predicate... conditions);
-    
+
     /**
      * Adds a right join to the given target
      *
@@ -244,7 +244,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     <E> Q rightJoin(RelationalFunctionCall<E> o, Path<E> alias);
-    
+
     /**
      * Adds a right join to the given target
      *
@@ -260,6 +260,20 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q rightJoin(SubQueryExpression<?> o, Path<?> alias);
+
+    /**
+     * Adds a common table expression
+     *
+     * @return
+     */
+    Q with(Path<?> alias, SubQueryExpression<?> o);
+
+    /**
+     * Adds a common table expression
+     *
+     * @return
+     */
+    Q withRecursive(Path<?> alias, SubQueryExpression<?> o);
 
 
 }

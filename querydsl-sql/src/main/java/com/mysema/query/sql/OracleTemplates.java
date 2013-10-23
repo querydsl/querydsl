@@ -46,7 +46,7 @@ public class OracleTemplates extends SQLTemplates {
 
     private String limitQueryEnd = "\n) where rownum <= {0}";
 
-    private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
+    private String limitOffsetTemplate = "rn > {0s} and rownum <= {1s}";
 
     private String offsetTemplate = "rn > {0}";
 
@@ -62,6 +62,7 @@ public class OracleTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setParameterMetadataAvailable(false);
         setBatchCountViaGetUpdateCount(true);
+        setWithRecursive("with ");
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);
@@ -80,6 +81,8 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
+        add(Ops.StringOps.LEFT, "substr({0},1,{1})");
+        add(Ops.StringOps.RIGHT, "substr({0},-{1s},length({0}))");
 
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");
@@ -103,6 +106,7 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "to_number(to_char({0},'IYYY') || to_char({0},'IW'))");
 
         add(Ops.DateTimeOps.ADD_YEARS, "{0} + interval '{1s}' year");
@@ -147,7 +151,7 @@ public class OracleTemplates extends SQLTemplates {
                 if (mod.getLimit() == null) {
                     context.handle(offsetTemplate, mod.getOffset());
                 } else {
-                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
+                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit());
                 }
             }
 

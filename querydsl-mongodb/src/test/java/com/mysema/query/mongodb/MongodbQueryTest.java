@@ -32,9 +32,9 @@ import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.Morphia;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mysema.query.NonUniqueResultException;
@@ -75,7 +75,7 @@ public class MongodbQueryTest {
     public MongodbQueryTest() throws UnknownHostException, MongoException {
         mongo = new Mongo();
         morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class);
-        ds = morphia.createDatastore(mongo, dbname, null, null);
+        ds = morphia.createDatastore(mongo, dbname);
     }
 
     @Before
@@ -402,7 +402,6 @@ public class MongodbQueryTest {
         assertTrue(where(item, item.ctds.contains(ObjectId.get())).count() == 0);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void In_ObjectIds2() {
         Item i = new Item();

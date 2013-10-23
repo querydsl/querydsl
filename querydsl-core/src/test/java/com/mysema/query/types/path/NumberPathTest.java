@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,8 +41,6 @@ public class NumberPathTest {
     @Test
     public void BytePath_notIn() {
         Operation<?> operation = (Operation<?>) bytePath.notIn(1, 2, 3);
-        // unwrap negation
-        operation = (Operation<?>) operation.getArg(0);
 
         List<Byte> numbers = (List<Byte>) ((Constant)operation.getArg(1)).getConstant();
         assertEquals(Byte.valueOf((byte)1), numbers.get(0));

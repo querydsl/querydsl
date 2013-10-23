@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,11 +52,11 @@ public class TypeFactoryTest {
         List<? extends A> field;
 
     }
-    
+
     static class ComparableEntity<T extends Comparable<? super T>> implements Serializable {
 
         private static final long serialVersionUID = 4781357420221474135L;
-        
+
     }
 
     private TypeFactory factory = new TypeFactory();
@@ -70,13 +70,13 @@ public class TypeFactoryTest {
         assertEquals(Types.OBJECT, type.getParameters().get(0));
     }
 
-    @Test 
+    @Test
     public void Parameters() {
         EntityType type = factory.getEntityType(Examples.Complex.class);
         assertEquals(1, type.getParameters().size());
         assertEquals(TypeExtends.class, type.getParameters().get(0).getClass());
     }
-    
+
     @Test
     public void Map_Field_Parameters() throws SecurityException, NoSuchFieldException {
         Field field = Examples.ComplexCollections.class.getDeclaredField("map2");
@@ -86,20 +86,20 @@ public class TypeFactoryTest {
         assertEquals(1, valueType.getParameters().size());
         assertEquals(TypeExtends.class, valueType.getParameters().get(0).getClass());
     }
-    
+
     @Test
     public void OrderBys() throws SecurityException, NoSuchFieldException {
         Field field = Examples.OrderBys.class.getDeclaredField("orderBy");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
     }
-    
+
     @Test
     public void SubEntity() {
         Type type = factory.get(Examples.SubEntity.class);
         assertEquals(0, type.getParameters().size());
     }
-    
+
     @Test
     public void AbstractEntity_Code() throws SecurityException, NoSuchFieldException {
         Field field = EmbeddedTest.AbstractEntity.class.getDeclaredField("code");
@@ -107,7 +107,7 @@ public class TypeFactoryTest {
         assertTrue(type instanceof TypeExtends);
         assertEquals("C", ((TypeExtends)type).getVarName());
     }
-    
+
     @Test
     public void SimpleTypes_classList5() throws SecurityException, NoSuchFieldException {
         Field field = Examples.SimpleTypes.class.getDeclaredField("classList5");
@@ -117,7 +117,7 @@ public class TypeFactoryTest {
         assertEquals(ClassType.class, parameter.getClass());
         assertEquals(TypeExtends.class, parameter.getParameters().get(0).getClass());
     }
-    
+
     @Test
     public void Collection_Of_Collection() throws SecurityException, NoSuchFieldException {
         Field field = Examples.GenericRelations.class.getDeclaredField("col3");
@@ -126,12 +126,12 @@ public class TypeFactoryTest {
         Type valueType = type.getParameters().get(0);
         assertEquals(TypeExtends.class, valueType.getParameters().get(0).getClass());
     }
-    
+
     @Test
     public void Generics_WildCard() throws SecurityException, NoSuchFieldException{
         Field field = getClass().getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
-        assertEquals(1, type.getParameters().size());        
+        assertEquals(1, type.getParameters().size());
         assertEquals(TypeExtends.class, type.getParameters().get(0).getClass());
 //        assertNull(type.getParameters().get(0));
     }
@@ -143,7 +143,7 @@ public class TypeFactoryTest {
         assertEquals(1, type.getParameters().size());
         assertEquals(Types.OBJECT, type.getParameters().get(0));
     }
-    
+
     @Test
     public void Generics_TypeVariable() {
         Type type = factory.getEntityType(Generic2Test.AbstractCollectionAttribute.class);
@@ -151,7 +151,7 @@ public class TypeFactoryTest {
         TypeExtends t = (TypeExtends) type.getParameters().get(0);
         assertEquals("T", t.getVarName());
     }
-    
+
     @Test
     public void Generics_Wildcard() throws SecurityException, NoSuchFieldException {
         Field field = DefaultQueryMetadata.class.getDeclaredField("exprInJoins");
@@ -163,7 +163,7 @@ public class TypeFactoryTest {
         assertEquals(TypeExtends.class, parameter.getClass());
         assertNull(((TypeExtends)parameter).getVarName());
     }
-    
+
     @Test
     public void ComparableEntity() {
         Type type = factory.getEntityType(ComparableEntity.class);
@@ -239,6 +239,12 @@ public class TypeFactoryTest {
         factory = new TypeFactory();
         factory.setUnknownAsEntity(true);
         assertEquals(TypeCategory.CUSTOM, factory.get(TypeFactoryTest.class).getCategory());
+    }
+
+    @Test
+    public void ArrayType() {
+        assertEquals(Types.BYTE.asArrayType(), factory.get(Byte[].class));
+        assertEquals(Types.BYTE_P.asArrayType(), factory.get(byte[].class));
     }
 
 }

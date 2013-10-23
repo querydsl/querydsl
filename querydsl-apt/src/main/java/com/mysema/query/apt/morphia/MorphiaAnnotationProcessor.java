@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,9 +19,10 @@ import java.util.Collections;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 
-import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Transient;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Transient;
+
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
@@ -33,16 +34,16 @@ import com.mysema.query.apt.DefaultConfiguration;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes({"com.mysema.query.annotations.*","com.google.code.morphia.annotations.*"})
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*","org.mongodb.morphia.annotations.*"})
 public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
-    
+
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
         Class<? extends Annotation> entities = QueryEntities.class;
         Class<? extends Annotation> entity = Entity.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        DefaultConfiguration conf = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), 
+        DefaultConfiguration conf = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(),
                 entities, entity, null, null, embedded, skip);
         try {
             Class cl = Class.forName("com.mysema.query.mongodb.Point");

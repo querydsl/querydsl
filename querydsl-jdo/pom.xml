@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.2.3.BUILD-SNAPSHOT</version>
+    <version>3.2.5.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -128,20 +128,20 @@
       </plugin>      
     
       <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-          <executions>
-              <execution>
-                <id>apt</id>
-              <goals>
-                  <goal>jar</goal>                
-              </goals>    
-              <configuration>
-                <classifier>apt</classifier>
-                <classesDirectory>src/apt</classesDirectory>                                    
-              </configuration>              
-           </execution>            
-          </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>apt</id>
+            <goals>
+              <goal>jar</goal>                
+            </goals>    
+            <configuration>
+              <classifier>apt</classifier>
+              <classesDirectory>src/apt</classesDirectory>                                    
+            </configuration>              
+          </execution>            
+        </executions>
       </plugin> 
         
       <!-- this plugin does the JDO class enhancement -->
@@ -186,7 +186,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
-              <id>apt-one-jar</id>
+            <id>apt-one-jar</id>
             <goals>
               <goal>single</goal>    
             </goals>
@@ -204,7 +204,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.6</version>
         <executions>
           <execution>
           <id>verification</id>    

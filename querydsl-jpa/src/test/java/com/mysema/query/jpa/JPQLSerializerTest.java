@@ -15,6 +15,8 @@ package com.mysema.query.jpa;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
@@ -121,7 +123,16 @@ public class JPQLSerializerTest {
 
     @Test
     public void In() {
-        //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.handle(new NumberPath<Integer>(Integer.class, "id").in(Arrays.asList(1, 2)));
+        assertEquals("id in (?1)", serializer.toString());
+    }
+
+    @Test
+    public void Not_In() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.handle(new NumberPath<Integer>(Integer.class, "id").notIn(Arrays.asList(1, 2)));
+        assertEquals("id not in (?1)", serializer.toString());
     }
 
     @Test
@@ -138,6 +149,14 @@ public class JPQLSerializerTest {
         serializer.handle(new StringPath("str").containsIgnoreCase("ABc!"));
         assertEquals("lower(str) like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
+    }
+
+    @Test
+    public void Substring() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QCat cat = QCat.cat;
+        serializer.handle(cat.name.substring(cat.name.length().subtract(1), 1));
+        assertEquals("substring(cat.name,(length(cat.name) - ?1)+1,1-(length(cat.name) - ?1))", serializer.toString());
     }
 
     @Test

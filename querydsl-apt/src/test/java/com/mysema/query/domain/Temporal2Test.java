@@ -25,9 +25,9 @@ public class Temporal2Test {
         private BigDecimal valor;
 
         @QueryProjection
-        public Cheque(Date dataVencimento, BigDecimal valor) {
-            this.dataVencimento = dataVencimento;
-            this.valor = valor;
+        public Cheque(Date param0, BigDecimal param1) {
+            this.dataVencimento = param0;
+            this.valor = param1;
         }
 
     }

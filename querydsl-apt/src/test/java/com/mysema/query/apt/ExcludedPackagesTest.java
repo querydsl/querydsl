@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +31,7 @@ public class ExcludedPackagesTest extends AbstractProcessorTest {
     @Test
     public void Process() throws IOException {
         List<String> classes = getFiles(packagePath);
-        process(QuerydslAnnotationProcessor.class, classes,"excludedPackages");
+        process(QuerydslAnnotationProcessor.class, classes, "excludedPackages");
 
         assertFalse(new File("target/excludedPackages/com/mysema/query/domain/p1").exists());
         assertTrue(new File("target/excludedPackages/com/mysema/query/domain/p2").exists());

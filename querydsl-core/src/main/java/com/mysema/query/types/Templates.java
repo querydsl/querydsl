@@ -88,6 +88,7 @@ public class Templates {
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
         add(Ops.NE, "{0} != {1}", 25);
         add(Ops.IN, "{0} in {1}", 27);
+        add(Ops.NOT_IN, "{0} not in {1}", 27);
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(Ops.ALIAS, "{0} as {1}", 0);
@@ -120,6 +121,8 @@ public class Templates {
         add(Ops.LIKE, "{0} like {1}", 26);
         add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", 26);
 
+        add(Ops.StringOps.LEFT, "left({0},{1})");
+        add(Ops.StringOps.RIGHT, "right({0},{1})");
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
@@ -142,6 +145,7 @@ public class Templates {
         add(Ops.DateTimeOps.WEEK, "week({0})");
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "yearMonth({0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "yearweek({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "dayofmonth({0})");

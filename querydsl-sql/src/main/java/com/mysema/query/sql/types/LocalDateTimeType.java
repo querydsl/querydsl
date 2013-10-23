@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,16 +21,22 @@ import java.sql.Types;
 
 import org.joda.time.LocalDateTime;
 
+/**
+ * LocalDateTimeType maps LocalDateTime to Timestamp on the JDBC level
+ *
+ * @author tiwe
+ *
+ */
 public class LocalDateTimeType extends AbstractType<LocalDateTime> {
-    
+
     public LocalDateTimeType() {
         super(Types.TIMESTAMP);
     }
-    
+
     public LocalDateTimeType(int type) {
         super(type);
     }
-    
+
     @Override
     public Class<LocalDateTime> getReturnedClass() {
         return LocalDateTime.class;

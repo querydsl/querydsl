@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,25 +51,25 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     private final RelationalPath<?> entity;
 
     private final List<QueryMetadata> batches = new ArrayList<QueryMetadata>();
-    
+
     private QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
     private transient String queryString;
-    
+
     public SQLDeleteClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
-    
+
     public SQLDeleteClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
-    
+
     /**
-     * Add the given String literal at the given position as a query flag 
-     * 
+     * Add the given String literal at the given position as a query flag
+     *
      * @param position
      * @param flag
      * @return
@@ -78,7 +78,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
-    
+
     /**
      * Add the given Expression at the given position as a query flag
      *
@@ -90,10 +90,10 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
-    
+
     /**
-     * Add current state of bindings as a batch item 
-     * 
+     * Add current state of bindings as a batch item
+     *
      * @return
      */
     public SQLDeleteClause addBatch() {
@@ -102,7 +102,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         metadata.addJoin(JoinType.DEFAULT, entity);
         return this;
     }
-    
+
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
         if (batches.isEmpty()) {
@@ -117,12 +117,12 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             serializer.serializeForDelete(batches.get(0), entity);
             queryString = serializer.toString();
             logger.debug(queryString);
-            
+
             // add first batch
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
-            
+
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 serializer = new SQLSerializer(configuration, true);
@@ -140,10 +140,12 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         try {
             stmt = createStatement();
             if (batches.isEmpty()) {
-                return stmt.executeUpdate();    
+                listeners.notifyDelete(metadata, entity);
+                return stmt.executeUpdate();
             } else {
+                listeners.notifyDeletes(metadata, entity, batches);
                 return executeBatch(stmt);
-            }  
+            }
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
@@ -152,20 +154,20 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             }
         }
     }
-    
+
     public SQLDeleteClause where(Predicate p) {
         metadata.addWhere(p);
         return this;
     }
-    
+
     @Override
     public SQLDeleteClause where(Predicate... o) {
         for (Predicate p : o) {
-            metadata.addWhere(p);    
-        }        
+            metadata.addWhere(p);
+        }
         return this;
     }
-    
+
     @Override
     public String toString() {
         SQLSerializer serializer = new SQLSerializer(configuration, true);

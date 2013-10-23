@@ -121,6 +121,12 @@ public final class CollQueryFunctions {
         }
     }
 
+    public static int getYearMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH) + 1;
+    }
+
     public static int getDayOfMonth(Date date) {
         return getField(date, Calendar.DAY_OF_MONTH);
     }

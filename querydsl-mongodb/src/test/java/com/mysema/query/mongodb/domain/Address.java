@@ -13,7 +13,7 @@
  */
 package com.mysema.query.mongodb.domain;
 
-import com.google.code.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Embedded;
 
 public final class Address {
 

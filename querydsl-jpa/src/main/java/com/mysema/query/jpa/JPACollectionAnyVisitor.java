@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,41 +32,41 @@ import com.mysema.query.types.path.EntityPathBase;
 /**
  * JPACollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
  * extensions
- * 
+ *
  * @author tiwe
  *
  */
 public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
-    
+
     public static final JPACollectionAnyVisitor DEFAULT = new JPACollectionAnyVisitor();
-    
+
+    @SuppressWarnings("unchecked")
     @Override
-    @SuppressWarnings("all")
     protected Predicate exists(Context c, Predicate condition) {
         JPASubQuery query = new JPASubQuery();
         for (int i = 0; i < c.paths.size(); i++) {
-            Path<?> child = c.paths.get(i).getMetadata().getParent();            
-            EntityPath replacement = c.replacements.get(i);
+            Path<?> child = c.paths.get(i).getMetadata().getParent();
+            EntityPath<Object> replacement = (EntityPath<Object>) c.replacements.get(i);
             if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
                 query.from(replacement);
-                query.where(PredicateOperation.create(Ops.IN, replacement, child));    
+                query.where(PredicateOperation.create(Ops.IN, replacement, child));
             } else {
                 // join via parent
                 Path<?> parent = child.getMetadata().getParent();
                 String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
-                String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);            
-                EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
-                EntityPath newChild = new EntityPathBase(child.getType(), 
-                        PathMetadataFactory.forProperty(newParent, child.getMetadata().getName()));            
+                String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
+                EntityPathBase<Object> newParent = new EntityPathBase<Object>(parent.getType(), prefix + suffix);
+                EntityPath<Object> newChild = new EntityPathBase<Object>(child.getType(),
+                        PathMetadataFactory.forProperty(newParent, child.getMetadata().getName()));
                 query.from(newParent).innerJoin(newChild, replacement);
-                query.where(ExpressionUtils.eq(newParent, parent));    
-            }                
-        }        
+                query.where(ExpressionUtils.eq(newParent, parent));
+            }
+        }
         c.clear();
         query.where(condition);
         return query.exists();
     }
-    
+
     private JPACollectionAnyVisitor() {}
 
 }
