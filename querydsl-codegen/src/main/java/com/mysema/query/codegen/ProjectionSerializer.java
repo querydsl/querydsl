@@ -71,7 +71,7 @@ public final class ProjectionSerializer implements Serializer{
 //        writer.suppressWarnings("serial");
         Type superType = new ClassType(TypeCategory.SIMPLE, ConstructorExpression.class, model);
         writer.beginClass(queryType, superType);
-        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()) + "L");
     }
 
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
@@ -97,7 +97,8 @@ public final class ProjectionSerializer implements Serializer{
             });
 
             // body
-            writer.beginLine("super(" + localName + ".class");
+            writer.beginLine("super(" + writer.getClassConstant(localName));
+            // TODO: Fix for Scala (Array[Class])
             writer.append(", new Class[]{");
             boolean first = true;
             
@@ -107,10 +108,9 @@ public final class ProjectionSerializer implements Serializer{
                 }
                 if (Types.PRIMITIVES.containsKey(p.getType())) {
                     Type primitive = Types.PRIMITIVES.get(p.getType());
-                    writer.append(primitive.getFullName()+".class");
+                    writer.append(writer.getClassConstant(primitive.getFullName()));
                 } else {
-                    writer.append(writer.getRawName(p.getType()));
-                    writer.append(".class");
+                    writer.append(writer.getClassConstant(writer.getRawName(p.getType())));
                 }
                 first = false;
             }
