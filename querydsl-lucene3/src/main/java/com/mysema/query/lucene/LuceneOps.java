@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.jpa;
+package com.mysema.query.lucene;
 
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
@@ -20,19 +20,16 @@ import com.mysema.query.types.OperatorImpl;
  * @author tiwe
  *
  */
-public final class JPQLOps {
+public final class LuceneOps {
 
-    private static final String NS = JPQLOps.class.getName();
+    private static final String NS = LuceneOps.class.getName();
 
-    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>(NS, "JPA_INDEX");
+    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>(NS, "LUCENE_QUERY");
 
-    public static final Operator<String> TYPE = new OperatorImpl<String>(NS, "JPA_TYPE");
+    static final Operator<String> PHRASE = new OperatorImpl<String>(NS, "LUCENE_PHRASE");
 
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "JPA_CAST");
+    static final Operator<String> TERM = new OperatorImpl<String>(NS, "LUCENE_TERM");
 
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(NS, "JPA_MEMBER_OF");
+    private LuceneOps() {}
 
-    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>(NS, "JPA_NOT_MEMBER_OF");
-
-    private JPQLOps(){}
 }

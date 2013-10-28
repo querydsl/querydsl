@@ -246,10 +246,10 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             Expression<?> key = expr.getArg(1);
             return asDBObject(visit(path, context) + "." + key.toString(), asDBObject("$exists", true));
 
-        } else if (op == MongodbExpressions.NEAR) {
+        } else if (op == MongodbOps.NEAR) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
 
-        } else if (op == MongodbExpressions.ELEM_MATCH) {
+        } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,29 +16,21 @@ package com.mysema.query.lucene;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.FuzzyQuery;
 
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * Utility methods to create filter expressions for Lucene queries that are not covered by the 
+ * Utility methods to create filter expressions for Lucene queries that are not covered by the
  * Querydsl standard expression model
- * 
+ *
  * @author tiwe
  *
  */
 public final class LuceneExpressions {
-    
-    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>("LUCENE_QUERY");
-    
-    static final Operator<String> PHRASE = new OperatorImpl<String>("LUCENE_PHRASE");
-    
-    static final Operator<String> TERM = new OperatorImpl<String>("LUCENE_TERM");
-    
+
     /**
      * Create a fuzzy query
-     * 
+     *
      * @param path
      * @param value
      * @return
@@ -47,10 +39,10 @@ public final class LuceneExpressions {
         Term term = new Term(path.getMetadata().getName(), value);
         return new QueryElement(new FuzzyQuery(term));
     }
-    
+
     /**
      * Create a fuzzy query
-     * 
+     *
      * @param path
      * @param value
      * @param maxEdits
@@ -60,22 +52,22 @@ public final class LuceneExpressions {
         Term term = new Term(path.getMetadata().getName(), value);
         return new QueryElement(new FuzzyQuery(term, maxEdits));
     }
-    
+
     /**
      * Create a fuzzy query
-     * 
+     *
      * @param path
      * @param value
      * @param maxEdits
      * @param prefixLength
      * @return
      */
-    public static BooleanExpression fuzzyLike(Path<String> path, String value, 
+    public static BooleanExpression fuzzyLike(Path<String> path, String value,
             int maxEdits, int prefixLength) {
         Term term = new Term(path.getMetadata().getName(), value);
         return new QueryElement(new FuzzyQuery(term, maxEdits, prefixLength));
     }
-    
+
     private LuceneExpressions() {}
 
 }

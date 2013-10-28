@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.jpa;
+package com.mysema.query.mongodb;
 
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
@@ -20,19 +20,14 @@ import com.mysema.query.types.OperatorImpl;
  * @author tiwe
  *
  */
-public final class JPQLOps {
+public final class MongodbOps {
 
-    private static final String NS = JPQLOps.class.getName();
+    private static final String NS = MongodbOps.class.getName();
 
-    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>(NS, "JPA_INDEX");
+    public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>(NS, "MONGODB_NEAR");
 
-    public static final Operator<String> TYPE = new OperatorImpl<String>(NS, "JPA_TYPE");
+    public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>(NS, "MONGODB_ELEM_MATCH");
 
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "JPA_CAST");
+    private MongodbOps() {}
 
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(NS, "JPA_MEMBER_OF");
-
-    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>(NS, "JPA_NOT_MEMBER_OF");
-
-    private JPQLOps(){}
 }

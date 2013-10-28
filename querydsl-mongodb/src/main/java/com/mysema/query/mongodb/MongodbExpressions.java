@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,25 +15,19 @@ package com.mysema.query.mongodb;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 
 /**
  * Mongodb specific operations
- * 
+ *
  * @author tiwe
  *
  */
 public final class MongodbExpressions {
-    
-    public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>("MONGODB_NEAR");
-    
-    public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>("MONGODB_ELEM_MATCH");
 
     private MongodbExpressions() {}
-    
+
     /**
      * Finds the closest points relative to the given location and orders the results with decreasing promimity
      *
@@ -43,7 +37,7 @@ public final class MongodbExpressions {
      * @return
      */
     public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal) {
-        return BooleanOperation.create(MongodbExpressions.NEAR, expr, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
+        return BooleanOperation.create(MongodbOps.NEAR, expr, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
     }
-    
+
 }

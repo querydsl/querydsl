@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@ import com.mysema.query.types.PredicateOperation;
 
 /**
  * AnyEmbeddedBuilder is a builder for constraints on embedded objects
- * 
+ *
  * @author tiwe
  *
  * @param <K>
@@ -32,18 +32,18 @@ import com.mysema.query.types.PredicateOperation;
 public class AnyEmbeddedBuilder<K> {
 
     private final QueryMixin<MongodbQuery<K>> queryMixin;
-    
+
     private final Path<? extends Collection<?>> collection;
-    
+
     public AnyEmbeddedBuilder(QueryMixin<MongodbQuery<K>> queryMixin,
             Path<? extends Collection<?>> collection) {
         this.queryMixin = queryMixin;
-        this.collection = collection;        
+        this.collection = collection;
     }
 
     public MongodbQuery<K> on(Predicate... conditions) {
         return queryMixin.where(PredicateOperation.create(
-                MongodbExpressions.ELEM_MATCH, collection, ExpressionUtils.allOf(conditions)));
+                MongodbOps.ELEM_MATCH, collection, ExpressionUtils.allOf(conditions)));
     }
-    
+
 }
