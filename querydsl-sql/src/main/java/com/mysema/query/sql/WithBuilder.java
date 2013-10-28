@@ -35,7 +35,7 @@ public class WithBuilder<R> {
     }
 
     public R as(Expression<?> expr) {
-        Expression<?> flag = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, expr);
+        Expression<?> flag = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, expr);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, flag));
     }
 

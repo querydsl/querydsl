@@ -245,7 +245,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
 
     @Override
     public Q with(Path<?> alias, SubQueryExpression<?> target) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, target);
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, target);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 

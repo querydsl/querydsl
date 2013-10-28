@@ -51,7 +51,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> {
     }
 
     public <T> DslExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
-        return union(SQLTemplates.UNION, sq);
+        return union(SQLOps.UNION, sq);
     }
 
     public <T> DslExpression<T> union(SubQueryExpression<T>... sq) {
@@ -59,7 +59,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> {
     }
 
     public <T> DslExpression<T> unionAll(List<? extends SubQueryExpression<T>> sq) {
-        return union(SQLTemplates.UNION_ALL, sq);
+        return union(SQLOps.UNION_ALL, sq);
     }
 
     public <T> DslExpression<T> unionAll(SubQueryExpression<T>... sq) {

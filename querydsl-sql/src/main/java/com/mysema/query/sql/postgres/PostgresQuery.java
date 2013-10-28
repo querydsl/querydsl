@@ -23,6 +23,7 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLCommonQuery;
+import com.mysema.query.sql.SQLOps;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -55,14 +56,14 @@ public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> implements SQ
      * @return
      */
     public PostgresQuery forShare() {
-        return addFlag(SQLTemplates.FOR_SHARE_FLAG);
+        return addFlag(SQLOps.FOR_SHARE_FLAG);
     }
 
     /**
      * @return
      */
     public PostgresQuery noWait() {
-        return addFlag(SQLTemplates.NO_WAIT_FLAG);
+        return addFlag(SQLOps.NO_WAIT_FLAG);
     }
 
     /**

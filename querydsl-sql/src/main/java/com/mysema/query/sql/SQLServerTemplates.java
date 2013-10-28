@@ -70,7 +70,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
         add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2})");
 
-        add(NEXTVAL, "{0s}.nextval");
+        add(SQLOps.NEXTVAL, "{0s}.nextval");
 
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");

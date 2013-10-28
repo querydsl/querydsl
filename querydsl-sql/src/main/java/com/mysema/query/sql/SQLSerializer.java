@@ -706,7 +706,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
 
-        if (operator == SQLTemplates.UNION || operator == SQLTemplates.UNION_ALL) {
+        if (operator == SQLOps.UNION || operator == SQLOps.UNION_ALL) {
             boolean oldUnion = inUnion;
             inUnion = true;
             super.visitOperation(type, operator, args);
@@ -720,13 +720,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         } else if (operator == Ops.STRING_CAST) {
             final String typeName = templates.getTypeForCast(String.class);
-            super.visitOperation(String.class, SQLTemplates.CAST,
+            super.visitOperation(String.class, SQLOps.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             final String typeName = templates.getTypeForCast(targetType);
-            super.visitOperation(targetType, SQLTemplates.CAST,
+            super.visitOperation(targetType, SQLOps.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.ALIAS) {
@@ -737,7 +737,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 handle(args.get(1));
             }
 
-        } else if (operator == SQLTemplates.WITH_COLUMNS) {
+        } else if (operator == SQLOps.WITH_COLUMNS) {
             boolean oldSkipParent = skipParent;
             skipParent = true;
             super.visitOperation(type, operator, args);

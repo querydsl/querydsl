@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,14 +38,14 @@ public class SQLTemplatesTest {
         serializer.handle(SimpleTemplate.create(Object.class, template, ConstantImpl.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
-    
+
     @Test
     public void Quote() {
         Pattern pattern = Pattern.compile("[a-zA-Z0-9_\\-]+");
         assertTrue(pattern.matcher("a1").matches());
         assertTrue(pattern.matcher("a").matches());
     }
-    
+
     @Test
     public void Quoting_Performance() {
         // 385 -> 63
@@ -57,10 +57,10 @@ public class SQLTemplatesTest {
         }
         System.err.println(System.currentTimeMillis() - start);
     }
-    
+
     @Test
     public void NextVal() {
-        Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
+        Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("nextval('myseq')", new SQLSerializer(new Configuration(SQLTemplates.DEFAULT)).handle(nextval).toString());
         // Derby OK
         // H2 OK
@@ -69,8 +69,8 @@ public class SQLTemplatesTest {
         // MySQL
         // Oracle OK
         // Postgres OK
-        
+
     }
-    
-    
+
+
 }

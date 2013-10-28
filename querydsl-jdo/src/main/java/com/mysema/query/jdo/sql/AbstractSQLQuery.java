@@ -24,6 +24,7 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLCommonQuery;
+import com.mysema.query.sql.SQLOps;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
@@ -276,7 +277,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
 
     @Override
     public T with(Path<?> alias, SubQueryExpression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, query);
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 

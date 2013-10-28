@@ -404,7 +404,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private void visitNumCast(List<? extends Expression<?>> args) {
         final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
         final String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
-        visitOperation(targetType, JPQLTemplates.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+        visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
     }
 
     private void visitInstanceOf(Class<?> type, Operator<?> operator,
@@ -473,7 +473,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
         }
         super.visitOperation(type,
-                operator == Ops.IN ? JPQLTemplates.MEMBER_OF : JPQLTemplates.NOT_MEMBER_OF,
+                operator == Ops.IN ? JPQLOps.MEMBER_OF : JPQLOps.NOT_MEMBER_OF,
                 args);
     }
 
