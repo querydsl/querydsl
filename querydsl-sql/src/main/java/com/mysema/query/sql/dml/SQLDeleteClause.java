@@ -140,10 +140,10 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         try {
             stmt = createStatement();
             if (batches.isEmpty()) {
-                listeners.notifyDelete(metadata, entity);
+                listeners.notifyDelete(entity, metadata);
                 return stmt.executeUpdate();
             } else {
-                listeners.notifyDeletes(metadata, entity, batches);
+                listeners.notifyDeletes(entity, batches);
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {

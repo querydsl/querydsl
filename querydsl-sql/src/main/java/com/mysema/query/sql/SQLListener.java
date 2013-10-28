@@ -33,72 +33,87 @@ import com.mysema.query.types.SubQueryExpression;
 public interface SQLListener {
 
     /**
-     * @param md
+     * Notify about a query
+     *
+     * @param md metadata of the query
      */
     void notifyQuery(QueryMetadata md);
 
     /**
-     * @param md
-     * @param entity
+     * Notify about a deletion
+     *
+     * @param entity table to be deleted from
+     * @param md metadata of deletion
      */
-    void notifyDelete(QueryMetadata md, RelationalPath<?> entity);
+    void notifyDelete(RelationalPath<?> entity, QueryMetadata md);
 
     /**
-     * @param md
-     * @param entity
-     * @param batches
+     * Notify about a batch deletion
+     *
+     * @param entity table to be deleted from
+     * @param batches metadata of batches
      */
-    void notifyDeletes(QueryMetadata md, RelationalPath<?> entity,
-            List<QueryMetadata> batches);
+    void notifyDeletes(RelationalPath<?> entity, List<QueryMetadata> batches);
 
     /**
-     * @param md
-     * @param entity
-     * @param keys
-     * @param columns
-     * @param values
-     * @param subQuery
+     * Notify about a merge
+     *
+     * @param entity table to be merged
+     * @param md metadata of merge
+     * @param keys key columns
+     * @param columns columns to be updated/inserted
+     * @param values values
+     * @param subQuery optional sub query
      */
-    void notifyMerge(QueryMetadata md, RelationalPath<?> entity, List<Path<?>> keys,
+    void notifyMerge(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery);
 
     /**
-     * @param md
-     * @param entity
-     * @param batches
+     * Notify about a batch merge
+     *
+     * @param entity table to be merged
+     * @param md metadata of merge
+     * @param batches metadata of batches
      */
-    void notifyMerges(QueryMetadata md, RelationalPath<?> entity, List<SQLMergeBatch> batches);
+    void notifyMerges(RelationalPath<?> entity, QueryMetadata md, List<SQLMergeBatch> batches);
 
     /**
-     * @param md
-     * @param entity
-     * @param columns
-     * @param values
-     * @param subQuery
+     * Notify about an insertion
+     *
+     * @param entity table to be inserted into
+     * @param md metadata of insertion
+     * @param columns columns to be inserted into
+     * @param values values to be inserted into
+     * @param subQuery optional sub query
      */
-    void notifyInsert(QueryMetadata md, RelationalPath<?> entity, List<Path<?>> columns,
+    void notifyInsert(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> columns,
             List<Expression<?>> values, SubQueryExpression<?> subQuery);
 
     /**
-     * @param md
-     * @param entity
-     * @param batches
+     * Notify about a batch insertion
+     *
+     * @param entity table to be inserted into
+     * @param md metadata of insertion
+     * @param batches metadata of batches
      */
-    void notifyInserts(QueryMetadata md, RelationalPath<?> entity, List<SQLInsertBatch> batches);
+    void notifyInserts(RelationalPath<?> entity, QueryMetadata md, List<SQLInsertBatch> batches);
 
     /**
-     * @param md
-     * @param entity
-     * @param updates
+     * Notify about an update operation
+     *
+     * @param entity table to be updated
+     * @param md metadata of update
+     * @param updates metadata of batches
      */
-    void notifyUpdate(QueryMetadata md, RelationalPath<?> entity,
+    void notifyUpdate(RelationalPath<?> entity, QueryMetadata md,
             List<Pair<Path<?>, Expression<?>>> updates);
 
     /**
-     * @param md
-     * @param entity
-     * @param batches
+     * Notify about a batch update
+     *
+     * @param entity table to be updated
+     * @param batches metadata of batches
      */
-    void notifyUpdates(QueryMetadata md, RelationalPath<?> entity, List<SQLUpdateBatch> batches);
+    void notifyUpdates(RelationalPath<?> entity, List<SQLUpdateBatch> batches);
 
 }
