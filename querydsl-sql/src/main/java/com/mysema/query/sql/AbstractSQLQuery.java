@@ -153,6 +153,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     /**
+     * Add the given query flag
+     *
+     * @param flag
+     * @return
+     */
+    public Q addFlag(QueryFlag flag) {
+        return queryMixin.addFlag(flag);
+    }
+
+    /**
      * Add the given String literal as query flag
      *
      * @param position
@@ -214,7 +224,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      * @return
      */
     public Q forUpdate() {
-        return addFlag(Position.END, configuration.getTemplates().getForUpdate());
+        return addFlag(SQLOps.FOR_UPDATE_FLAG);
     }
 
     protected SQLSerializer createSerializer() {
@@ -744,18 +754,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     @Override
     public Q with(Path<?> alias, SubQueryExpression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, query);
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
     public Q with(Path<?> alias, Expression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLTemplates.WITH_ALIAS, alias, query);
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
     public WithBuilder<Q> with(Path<?> alias, Path<?>... columns) {
         Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
-        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLTemplates.WITH_COLUMNS, alias, columnsCombined);
+        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
         return new WithBuilder<Q>(queryMixin, aliasCombined);
     }
 

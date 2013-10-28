@@ -78,11 +78,11 @@ public final class SQLExpressions {
 
     }
 
-    private static final WindowOver<Long> rank = new WindowOver<Long>(Long.class, SQLTemplates.RANK);
+    private static final WindowOver<Long> rank = new WindowOver<Long>(Long.class, SQLOps.RANK);
 
-    private static final WindowOver<Long> denseRank = new WindowOver<Long>(Long.class, SQLTemplates.DENSERANK);
+    private static final WindowOver<Long> denseRank = new WindowOver<Long>(Long.class, SQLOps.DENSERANK);
 
-    private static final WindowOver<Long> rowNumber = new WindowOver<Long>(Long.class, SQLTemplates.ROWNUMBER);
+    private static final WindowOver<Long> rowNumber = new WindowOver<Long>(Long.class, SQLOps.ROWNUMBER);
 
     /**
      * Wildcard expression
@@ -126,7 +126,7 @@ public final class SQLExpressions {
      * @return
      */
     public static final <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
-        return SimpleOperation.create(type, SQLTemplates.NEXTVAL, ConstantImpl.create(sequence));
+        return SimpleOperation.create(type, SQLOps.NEXTVAL, ConstantImpl.create(sequence));
     }
 
     /**
@@ -440,7 +440,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> lead(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LEAD, expr);
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.LEAD, expr);
     }
 
     /**
@@ -450,7 +450,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> lag(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LAG, expr);
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.LAG, expr);
     }
 
     /**
@@ -487,7 +487,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> firstValue(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.FIRSTVALUE, expr);
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.FIRSTVALUE, expr);
     }
 
     /**
@@ -497,7 +497,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> lastValue(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLTemplates.LASTVALUE, expr);
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.LASTVALUE, expr);
     }
 
     /**

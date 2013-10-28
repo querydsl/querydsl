@@ -65,6 +65,7 @@ import com.mysema.query.jpa.domain.Entity2;
 import com.mysema.query.jpa.domain.FloatProjection;
 import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
+import com.mysema.query.jpa.domain.Numeric;
 import com.mysema.query.jpa.domain.QAnimal;
 import com.mysema.query.jpa.domain.QAuthor;
 import com.mysema.query.jpa.domain.QBook;
@@ -77,6 +78,7 @@ import com.mysema.query.jpa.domain.QFloatProjection;
 import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QHuman;
 import com.mysema.query.jpa.domain.QMammal;
+import com.mysema.query.jpa.domain.QNumeric;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QSimpleTypes;
 import com.mysema.query.jpa.domain.QUser;
@@ -235,6 +237,10 @@ public abstract class AbstractJPATest {
         foo.names = Arrays.asList("a","b");
         foo.bar = "München";
         save(foo);
+
+        Numeric numeric = new Numeric();
+        numeric.setValue(BigDecimal.valueOf(26.9));
+        save(numeric);
     }
 
     @Test
@@ -979,6 +985,14 @@ public abstract class AbstractJPATest {
     public void Null_as_uniqueResult() {
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
                 .uniqueResult(cat));
+    }
+
+    @Test
+    @NoEclipseLink
+    public void Numeric() {
+        QNumeric numeric = QNumeric.numeric;
+        BigDecimal singleResult = query().from(numeric).singleResult(numeric.value);
+        assertEquals(26.9, singleResult.doubleValue(), 0.001);
     }
 
     @Test

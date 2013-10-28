@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -61,6 +61,7 @@ public final class Domain {
             NameList.class,
             Nationality.class,
             Novel.class,
+            Numeric.class,
             Order.class,
             Parameter.class,
             Parent.class,
@@ -79,7 +80,7 @@ public final class Domain {
             Superclass.class,
             User.class,
             World.class,
-            
+
             BookID.class,
             BookMark.class,
             BookVersion.class,

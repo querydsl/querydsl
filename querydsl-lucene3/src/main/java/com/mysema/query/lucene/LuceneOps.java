@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2013, Mysema Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,23 @@
  */
 package com.mysema.query.lucene;
 
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.expr.StringOperation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.OperatorImpl;
 
 /**
- * TermElement represents the embedded String as a term
- *
  * @author tiwe
  *
  */
-public class TermElement extends StringOperation {
+public final class LuceneOps {
 
-    private static final long serialVersionUID = 2350215644019186076L;
+    private static final String NS = LuceneOps.class.getName();
 
-    public TermElement(String str) {
-        super(LuceneOps.TERM, ConstantImpl.create(str));
-    }
+    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>(NS, "LUCENE_QUERY");
+
+    static final Operator<String> PHRASE = new OperatorImpl<String>(NS, "LUCENE_PHRASE");
+
+    static final Operator<String> TERM = new OperatorImpl<String>(NS, "LUCENE_TERM");
+
+    private LuceneOps() {}
 
 }

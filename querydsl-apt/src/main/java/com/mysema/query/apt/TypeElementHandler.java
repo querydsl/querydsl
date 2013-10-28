@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -66,7 +66,7 @@ public final class TypeElementHandler {
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
     }
-    
+
 
     public EntityType handleEntityType(TypeElement element) {
         EntityType entityType = typeFactory.getEntityType(element.asType(), true);
@@ -74,8 +74,9 @@ public final class TypeElementHandler {
         VisitorConfig config = configuration.getConfig(element, elements);
         Set<String> blockedProperties = new HashSet<String>();
         Map<String, TypeMirror> propertyTypes = new HashMap<String, TypeMirror>();
+        Map<String, TypeMirror> fixedTypes = new HashMap<String, TypeMirror>();
         Map<String, Annotations> propertyAnnotations = new HashMap<String, Annotations>();
-        
+
         // constructors
         if (config.visitConstructors()) {
             handleConstructors(entityType, elements);
@@ -94,13 +95,17 @@ public final class TypeElementHandler {
                     annotations.addAnnotation(field.getAnnotation(QueryInit.class));
                     propertyAnnotations.put(name, annotations);
                     propertyTypes.put(name, field.asType());
+                    TypeMirror fixedType = configuration.getRealType(field);
+                    if (fixedType != null) {
+                        fixedTypes.put(name, fixedType);
+                    }
                 }
             }
         }
 
         // methods
         if (config.visitMethodProperties()) {
-            for (ExecutableElement method : ElementFilter.methodsIn(elements)) {            
+            for (ExecutableElement method : ElementFilter.methodsIn(elements)) {
                 String name = method.getSimpleName().toString();
                 if (name.startsWith("get") && name.length() > 3 && method.getParameters().isEmpty()) {
                     name = BeanUtils.uncapitalize(name.substring(3));
@@ -122,23 +127,28 @@ public final class TypeElementHandler {
                     annotations.addAnnotation(method.getAnnotation(QueryType.class));
                     annotations.addAnnotation(method.getAnnotation(QueryInit.class));
                     propertyTypes.put(name, method.getReturnType());
+                    TypeMirror fixedType = configuration.getRealType(method);
+                    if (fixedType != null) {
+                        fixedTypes.put(name, fixedType);
+                    }
                 }
             }
         }
 
         // fixed types override property types
+        propertyTypes.putAll(fixedTypes);
         for (Map.Entry<String, Annotations> entry : propertyAnnotations.entrySet()) {
             Property property = toProperty(entityType, entry.getKey(), propertyTypes.get(entry.getKey()), entry.getValue());
             if (property != null) {
-                entityType.addProperty(property);    
+                entityType.addProperty(property);
             }
         }
 
         return entityType;
     }
 
-    
-    private Property toProperty(EntityType entityType, String name, TypeMirror type, 
+
+    private Property toProperty(EntityType entityType, String name, TypeMirror type,
             Annotations annotations) {
         // type
         Type propertyType = typeFactory.getType(type, true);
@@ -152,15 +162,15 @@ public final class TypeElementHandler {
                 propertyType = propertyType.as(typeCategory);
             } else {
                 return null;
-            }                        
-        } 
-        
+            }
+        }
+
         // inits
         List<String> inits = Collections.<String>emptyList();
         if (annotations.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotations.getAnnotation(QueryInit.class).value());            
+            inits = ImmutableList.copyOf(annotations.getAnnotation(QueryInit.class).value());
         }
-        
+
         return new Property(entityType, name, propertyType, inits);
     }
 
@@ -178,7 +188,7 @@ public final class TypeElementHandler {
         Type rv = typeFactory.getType(element.asType(), true);
         if (element.getAnnotation(QueryType.class) != null) {
             QueryType qt = element.getAnnotation(QueryType.class);
-            if (qt.value() != PropertyType.NONE) {                
+            if (qt.value() != PropertyType.NONE) {
                 TypeCategory typeCategory = TypeCategory.valueOf(qt.value().name());
                 rv = rv.as(typeCategory);
             }
@@ -193,7 +203,7 @@ public final class TypeElementHandler {
                 entityType.addConstructor(new Constructor(parameters));
             }
         }
-    }   
+    }
 
     public List<Parameter> transformParams(List<? extends VariableElement> params) {
         List<Parameter> parameters = new ArrayList<Parameter>(params.size());

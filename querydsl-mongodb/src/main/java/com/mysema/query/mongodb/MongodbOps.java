@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2013, Mysema Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,23 +11,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.lucene;
+package com.mysema.query.mongodb;
 
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.expr.StringOperation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.OperatorImpl;
 
 /**
- * TermElement represents the embedded String as a term
- *
  * @author tiwe
  *
  */
-public class TermElement extends StringOperation {
+public final class MongodbOps {
 
-    private static final long serialVersionUID = 2350215644019186076L;
+    private static final String NS = MongodbOps.class.getName();
 
-    public TermElement(String str) {
-        super(LuceneOps.TERM, ConstantImpl.create(str));
-    }
+    public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>(NS, "MONGODB_NEAR");
+
+    public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>(NS, "MONGODB_ELEM_MATCH");
+
+    private MongodbOps() {}
 
 }

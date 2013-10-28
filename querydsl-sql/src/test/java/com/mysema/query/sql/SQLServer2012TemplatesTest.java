@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import com.mysema.query.types.template.NumberTemplate;
 
 
 public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest{
-    
+
     @Override
     @Test
     public void NoFrom() {
@@ -43,7 +43,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest{
     @SuppressWarnings("unchecked")
     @Test
     @Override
-    public void Union() {        
+    public void Union() {
         NumberExpression<Integer> one = NumberTemplate.ONE;
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;
@@ -59,25 +59,25 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest{
                 "union\n" +
                 "(select 3)", union.toString());
     }
- 
+
     @Test
     public void Limit() {
         query.from(survey1).limit(5);
-        query.getMetadata().addProjection(survey1.id);        
+        query.getMetadata().addProjection(survey1.id);
         assertEquals("select survey1.ID from SURVEY survey1 offset ? rows fetch next ? rows only", query.toString());
     }
-    
+
     @Test
     public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
-        query.getMetadata().addProjection(survey1.id);        
+        query.getMetadata().addProjection(survey1.id);
         assertEquals("select survey1.ID from SURVEY survey1 offset ? rows fetch next ? rows only", query.toString());
     }
-    
+
     @Test
     public void NextVal() {
-        Operation<String> nextval = OperationImpl.create(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
-        assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());        
+        Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
+        assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());
     }
 
 }

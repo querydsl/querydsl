@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,27 +22,27 @@ import com.mysema.query.types.SubQueryExpression;
 
 /**
  * UnionUtils provides static utility methods for Union handling
- * 
+ *
  * @author tiwe
  *
  */
 public final class UnionUtils {
-    
+
     public static Expression<?> union(SubQueryExpression<?>[] union, boolean unionAll) {
-        final Operator<Object> operator = unionAll ? SQLTemplates.UNION_ALL : SQLTemplates.UNION;
+        final Operator<Object> operator = unionAll ? SQLOps.UNION_ALL : SQLOps.UNION;
         Expression<?> rv = union[0];
         for (int i = 1; i < union.length; i++) {
             rv = OperationImpl.create(rv.getType(), operator, rv, union[i]);
-        }        
+        }
         return rv;
     }
-     
-    public static Expression<?> union(SubQueryExpression<?>[] union, Path<?> alias, 
+
+    public static Expression<?> union(SubQueryExpression<?>[] union, Path<?> alias,
             boolean unionAll) {
-        final Expression<?> rv = union(union, unionAll);        
+        final Expression<?> rv = union(union, unionAll);
         return ExpressionUtils.as((Expression)rv, alias);
     }
-    
+
     private UnionUtils() {}
 
 }

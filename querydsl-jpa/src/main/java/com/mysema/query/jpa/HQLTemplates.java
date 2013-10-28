@@ -60,10 +60,10 @@ public class HQLTemplates extends JPQLTemplates {
      // TODO : remove this when Hibernate supports type(alias)
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
      // TODO : remove this when Hibernate supports type(alias)
-        add(TYPE, "{0}.class");
+        add(JPQLOps.TYPE, "{0}.class");
      // TODO : remove this when Hibernate supports member of properly
-        add(MEMBER_OF, "{0} in elements({1})");
-        add(NOT_MEMBER_OF, "{0} not in elements({1})");
+        add(JPQLOps.MEMBER_OF, "{0} in elements({1})");
+        add(JPQLOps.NOT_MEMBER_OF, "{0} not in elements({1})");
 
         // path types
         for (PathType type : new PathType[] {

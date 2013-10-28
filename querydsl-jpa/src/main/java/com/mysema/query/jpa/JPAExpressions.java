@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@ public final class JPAExpressions {
 
     /**
      * Get the avg(col) expression
-     * 
+     *
      * @param col
      * @return
      */
@@ -43,7 +43,7 @@ public final class JPAExpressions {
 
     /**
      * Get the max(col) expression
-     * 
+     *
      * @param left
      * @return
      */
@@ -53,7 +53,7 @@ public final class JPAExpressions {
 
     /**
      * Get the min(col) expression
-     * 
+     *
      * @param left
      * @return
      */
@@ -63,14 +63,14 @@ public final class JPAExpressions {
 
     /**
      * Get the type(path) expression
-     * 
+     *
      * @param path
      * @return
      */
     public static StringExpression type(EntityPath<?> path) {
-        return StringOperation.create(JPQLTemplates.TYPE, path);
+        return StringOperation.create(JPQLOps.TYPE, path);
     }
-    
+
     private JPAExpressions() {}
 
 }

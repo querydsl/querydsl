@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,11 +25,11 @@ import com.mysema.query.types.expr.BooleanOperation;
  *
  */
 public class QueryElement extends BooleanOperation {
-    
+
     private static final long serialVersionUID = 470868107363840155L;
 
     public QueryElement(Query query) {
-        super(LuceneExpressions.LUCENE_QUERY, new ConstantImpl<Query>(query));        
+        super(LuceneOps.LUCENE_QUERY, new ConstantImpl<Query>(query));
     }
-    
+
 }

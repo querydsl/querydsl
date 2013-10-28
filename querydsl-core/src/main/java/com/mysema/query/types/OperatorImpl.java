@@ -52,7 +52,11 @@ public final class OperatorImpl<T> implements Operator<T> {
 
     private final int hashCode;
 
-    public OperatorImpl(String id) {
+    public OperatorImpl(String ns, String local) {
+        this(ns + "#" + local);
+    }
+
+    private OperatorImpl(String id) {
         this.id = id;
         this.hashCode = id.hashCode();
         OPS.put(id, this);

@@ -150,6 +150,7 @@
         <class>com.mysema.query.jpa.domain.Named</class>
         <class>com.mysema.query.jpa.domain.Nationality</class>
         <class>com.mysema.query.jpa.domain.Novel</class>
+        <class>com.mysema.query.jpa.domain.Numeric</class>
         <class>com.mysema.query.jpa.domain.Order</class>
         <class>com.mysema.query.jpa.domain.Parameter</class>
         <class>com.mysema.query.jpa.domain.Payment</class>

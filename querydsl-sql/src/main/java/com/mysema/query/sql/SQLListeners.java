@@ -28,6 +28,9 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
+ * SQLListeners is an SQLListener implementation which dispatches the
+ * notifications to a list of SQLListener instances
+ *
  * @author tiwe
  *
  */
@@ -61,88 +64,86 @@ public class SQLListeners implements SQLListener {
     }
 
     @Override
-    public void notifyDelete(QueryMetadata md, RelationalPath<?> entity) {
+    public void notifyDelete(RelationalPath<?> entity, QueryMetadata md) {
         if (parent != null) {
-            parent.notifyDelete(md, entity);
+            parent.notifyDelete(entity, md);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyDelete(md, entity);
+            listener.notifyDelete(entity, md);
         }
     }
 
     @Override
-    public void notifyDeletes(QueryMetadata md, RelationalPath<?> entity,
-            List<QueryMetadata> batches) {
+    public void notifyDeletes(RelationalPath<?> entity, List<QueryMetadata> batches) {
         if (parent != null) {
-            parent.notifyDeletes(md, entity, batches);
+            parent.notifyDeletes(entity, batches);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyDeletes(md, entity, batches);
+            listener.notifyDeletes(entity, batches);
         }
     }
 
     @Override
-    public void notifyMerge(QueryMetadata md, RelationalPath<?> entity, List<Path<?>> keys,
+    public void notifyMerge(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
         if (parent != null) {
-            parent.notifyMerge(md, entity, keys, columns, values, subQuery);
+            parent.notifyMerge(entity, md, keys, columns, values, subQuery);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyMerge(md, entity, keys, columns, values, subQuery);
+            listener.notifyMerge(entity, md, keys, columns, values, subQuery);
         }
     }
 
     @Override
-    public void notifyMerges(QueryMetadata md, RelationalPath<?> entity, List<SQLMergeBatch> batches) {
+    public void notifyMerges(RelationalPath<?> entity, QueryMetadata md, List<SQLMergeBatch> batches) {
         if (parent != null) {
-            parent.notifyMerges(md, entity, batches);
+            parent.notifyMerges(entity, md, batches);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyMerges(md, entity, batches);
+            listener.notifyMerges(entity, md, batches);
         }
     }
 
     @Override
-    public void notifyInsert(QueryMetadata md, RelationalPath<?> entity, List<Path<?>> columns,
+    public void notifyInsert(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> columns,
             List<Expression<?>> values, SubQueryExpression<?> subQuery) {
         if (parent != null) {
-            parent.notifyInsert(md, entity, columns, values, subQuery);
+            parent.notifyInsert(entity, md, columns, values, subQuery);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyInsert(md, entity, columns, values, subQuery);
+            listener.notifyInsert(entity, md, columns, values, subQuery);
         }
     }
 
     @Override
-    public void notifyInserts(QueryMetadata md, RelationalPath<?> entity,
+    public void notifyInserts(RelationalPath<?> entity, QueryMetadata md,
             List<SQLInsertBatch> batches) {
         if (parent != null) {
-            parent.notifyInserts(md, entity, batches);
+            parent.notifyInserts(entity, md, batches);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyInserts(md, entity, batches);
+            listener.notifyInserts(entity, md, batches);
         }
     }
 
     @Override
-    public void notifyUpdate(QueryMetadata md, RelationalPath<?> entity,
+    public void notifyUpdate(RelationalPath<?> entity, QueryMetadata md,
             List<Pair<Path<?>, Expression<?>>> updates) {
         if (parent != null) {
-            parent.notifyUpdate(md, entity, updates);
+            parent.notifyUpdate(entity, md, updates);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyUpdate(md, entity, updates);
+            listener.notifyUpdate(entity, md, updates);
         }
     }
 
     @Override
-    public void notifyUpdates(QueryMetadata md, RelationalPath<?> entity,
-            List<SQLUpdateBatch> batches) {
+    public void notifyUpdates(RelationalPath<?> entity, List<SQLUpdateBatch> batches) {
         if (parent != null) {
-            parent.notifyUpdates(md, entity, batches);
+            parent.notifyUpdates(entity, batches);
         }
         for (SQLListener listener : listeners) {
-            listener.notifyUpdates(md, entity, batches);
+            listener.notifyUpdates(entity, batches);
         }
     }
 

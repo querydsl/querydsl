@@ -142,7 +142,7 @@ public class LuceneSerializer {
             return le(operation, metadata);
         } else if (op == Ops.GOE) {
             return ge(operation, metadata);
-        } else if (op == LuceneExpressions.LUCENE_QUERY) {
+        } else if (op == LuceneOps.LUCENE_QUERY) {
             return ((Constant<Query>)operation.getArg(0)).getConstant();
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
@@ -484,9 +484,9 @@ public class LuceneSerializer {
     protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         if (rightHandSide instanceof Operation) {
             Operation<?> operation = (Operation<?>)rightHandSide;
-            if (operation.getOperator() == LuceneExpressions.PHRASE) {
+            if (operation.getOperator() == LuceneOps.PHRASE) {
                 return Iterables.toArray(WS_SPLITTER.split(operation.getArg(0).toString()), String.class);
-            } else if (operation.getOperator() == LuceneExpressions.TERM) {
+            } else if (operation.getOperator() == LuceneOps.TERM) {
                 return new String[] { operation.getArg(0).toString() };
             } else {
                 throw new IllegalArgumentException(rightHandSide.toString());

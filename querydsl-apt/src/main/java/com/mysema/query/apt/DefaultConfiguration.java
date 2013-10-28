@@ -43,6 +43,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
@@ -447,6 +448,17 @@ public class DefaultConfiguration implements Configuration {
         } else {
             return excludedClasses.contains(className);
         }
+    }
+
+
+    @Override
+    public TypeMirror getRealType(ExecutableElement method) {
+        return null;
+    }
+
+    @Override
+    public TypeMirror getRealType(VariableElement field) {
+        return null;
     }
 
     @Override

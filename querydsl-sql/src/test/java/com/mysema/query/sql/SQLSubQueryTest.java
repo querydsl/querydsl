@@ -38,7 +38,7 @@ public class SQLSubQueryTest {
 
     @Test
     public void UnknownOperator() {
-        Operator op = new OperatorImpl("unknownfn");
+        Operator op = new OperatorImpl(SQLSubQueryTest.class.getName(), "unknownfn");
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee)
             .where(BooleanOperation.create(op, employee.id));

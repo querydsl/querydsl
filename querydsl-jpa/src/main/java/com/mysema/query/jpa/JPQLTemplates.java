@@ -16,7 +16,6 @@ package com.mysema.query.jpa;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
@@ -32,16 +31,6 @@ import com.mysema.query.types.Templates;
 public class JPQLTemplates extends Templates {
 
     public static final char DEFAULT_ESCAPE = '!';
-
-    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>("JPA_INDEX");
-
-    public static final Operator<String> TYPE = new OperatorImpl<String>("JPA_TYPE");
-
-    public static final Operator<Object> CAST = new OperatorImpl<Object>("JPA_CAST");
-
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("JPA_MEMBER_OF");
-
-    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>("JPA_NOT_MEMBER_OF");
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
 
@@ -78,12 +67,12 @@ public class JPQLTemplates extends Templates {
         add(Ops.NE, "{0} <> {1}", 25);
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
-        add(CAST, "cast({0} as {1s})");
+        add(JPQLOps.CAST, "cast({0} as {1s})");
         add(Ops.NUMCAST, "cast({0} as {1s})");
 
         // collection
-        add(MEMBER_OF, "{0} member of {1}");
-        add(NOT_MEMBER_OF, "{0} not member of {1}");
+        add(JPQLOps.MEMBER_OF, "{0} member of {1}");
+        add(JPQLOps.NOT_MEMBER_OF, "{0} not member of {1}");
 
         add(Ops.IN, "{0} in {1}");
         add(Ops.NOT_IN, "{0} not in {1}");
@@ -140,9 +129,9 @@ public class JPQLTemplates extends Templates {
         add(Ops.CASE_EQ_ELSE,  "else {0}");
 
         add(Ops.INSTANCE_OF, "type({0}) = {1}");
-        add(TYPE, "type({0})");
+        add(JPQLOps.TYPE, "type({0})");
 
-        add(INDEX, "index({0})");
+        add(JPQLOps.INDEX, "index({0})");
 
         //CHECKSTYLE:ON
     }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,9 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
@@ -49,13 +53,14 @@ import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.QueryTypeImpl;
+import com.mysema.query.apt.TypeUtils;
 import com.mysema.query.apt.VisitorConfig;
 import com.mysema.query.codegen.Keywords;
 import com.mysema.util.Annotations;
 
 /**
  * Configuration for {@link JPAAnnotationProcessor}
- * 
+ *
  * @author tiwe
  * @see JPAAnnotationProcessor
  */
@@ -78,12 +83,12 @@ public class JPAConfiguration extends DefaultConfiguration {
     protected List<Class<? extends Annotation>> getAnnotations() {
         return ImmutableList.of(
             Access.class, Basic.class, Column.class, ElementCollection.class,
-            Embedded.class, EmbeddedId.class, Enumerated.class, GeneratedValue.class, Id.class, 
-            JoinColumn.class, ManyToOne.class, ManyToMany.class, MapKeyEnumerated.class, 
-            OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class, 
+            Embedded.class, EmbeddedId.class, Enumerated.class, GeneratedValue.class, Id.class,
+            JoinColumn.class, ManyToOne.class, ManyToMany.class, MapKeyEnumerated.class,
+            OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class,
             QueryTransient.class, Temporal.class, Transient.class, Version.class);
     }
-   
+
 
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements) {
@@ -104,7 +109,26 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
         return VisitorConfig.get(fields, methods);
     }
-    
+
+    @Override
+    public TypeMirror getRealType(ExecutableElement method) {
+        return getManyToOneType(method);
+    }
+
+    @Override
+    public TypeMirror getRealType(VariableElement field) {
+        return getManyToOneType(field);
+    }
+
+    private TypeMirror getManyToOneType(Element element) {
+        AnnotationMirror mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToOne.class);
+        if (mirror != null) {
+            return TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void inspect(Element element, Annotations annotations) {
         Temporal temporal = element.getAnnotation(Temporal.class);
@@ -119,7 +143,6 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
     }
 
-    
     private boolean hasRelevantAnnotation(Element element) {
         for (Class<? extends Annotation> annotation : annotations) {
             if (element.getAnnotation(annotation) != null) {

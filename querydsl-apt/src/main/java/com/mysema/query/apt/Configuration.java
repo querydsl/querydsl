@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.QueryTypeFactory;
@@ -38,12 +39,12 @@ import com.mysema.util.Annotations;
  *
  */
 public interface Configuration {
-    
+
     /**
      * @return
      */
     boolean isUnknownAsEmbedded();
-    
+
     /**
      * @return
      */
@@ -88,7 +89,7 @@ public interface Configuration {
      * @return
      */
     Class<? extends Annotation> getEntityAnnotation();
-    
+
     /**
      * @return
      */
@@ -103,7 +104,7 @@ public interface Configuration {
      * @return
      */
     String getNamePrefix();
-    
+
     /**
      * @return
      */
@@ -181,23 +182,35 @@ public interface Configuration {
      * @return
      */
     QueryTypeFactory getQueryTypeFactory();
-    
+
     /**
      * @param packageName
      */
     public void addExcludedPackage(String packageName);
-    
+
     /**
      * @param className
      */
     public void addExcludedClass(String className);
-    
+
+    /**
+     * @param method
+     * @return
+     */
+    TypeMirror getRealType(ExecutableElement method);
+
+    /**
+     * @param field
+     * @return
+     */
+    TypeMirror getRealType(VariableElement field);
+
     /**
      * @param packageName
      * @return
      */
     boolean isExcludedPackage(String packageName);
-    
+
     /**
      * @param className
      * @return
@@ -209,5 +222,5 @@ public interface Configuration {
      * @param annotations
      */
     void inspect(Element element, Annotations annotations);
-    
+
 }

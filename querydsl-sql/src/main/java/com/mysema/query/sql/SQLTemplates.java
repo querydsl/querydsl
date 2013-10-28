@@ -26,8 +26,6 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.Templates;
@@ -41,32 +39,6 @@ import com.mysema.query.types.Templates;
 public class SQLTemplates extends Templates {
 
     public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
-
-    public static final Operator<Object> CAST = new OperatorImpl<Object>("SQL_CAST");
-
-    public static final Operator<Object> UNION = new OperatorImpl<Object>("SQL_UNION");
-
-    public static final Operator<Object> UNION_ALL = new OperatorImpl<Object>("SQL_UNION_ALL");
-
-    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("SQL_NEXTVAL");
-
-    public static final Operator<Long> ROWNUMBER = new OperatorImpl<Long>("ROWNUMBER");
-
-    public static final Operator<Long> RANK = new OperatorImpl<Long>("RANK");
-
-    public static final Operator<Long> DENSERANK = new OperatorImpl<Long>("DENSERANK");
-
-    public static final Operator<Object> FIRSTVALUE = new OperatorImpl<Object>("FIRSTVALUE");
-
-    public static final Operator<Object> LASTVALUE = new OperatorImpl<Object>("LASTVALUE");
-
-    public static final Operator<Object> LEAD = new OperatorImpl<Object>("LEAD");
-
-    public static final Operator<Object> LAG = new OperatorImpl<Object>("LAG");
-
-    public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>("WITH_ALIAS");
-
-    public static final Operator<Object> WITH_COLUMNS = new OperatorImpl<Object>("WITH_COLUMNS");
 
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
@@ -139,10 +111,6 @@ public class SQLTemplates extends Templates {
 
     private String dummyTable = "dual";
 
-    private String forUpdate = "\nfor update";
-
-    private String forShare = "\nfor share";
-
     private String from = "\nfrom ";
 
     private String fullJoin = "\nfull join ";
@@ -170,8 +138,6 @@ public class SQLTemplates extends Templates {
     private boolean nativeMerge;
 
     private String notNull = " not null";
-
-    private String noWait = " nowait";
 
     private String offsetTemplate = "\noffset {0}";
 
@@ -220,8 +186,12 @@ public class SQLTemplates extends Templates {
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
 
-        add(WITH_ALIAS, "{0} as {1}", 0);
-        add(WITH_COLUMNS, "{0} {1}", 0);
+        // flags
+        add(SQLOps.WITH_ALIAS, "{0} as {1}", 0);
+        add(SQLOps.WITH_COLUMNS, "{0} {1}", 0);
+        add(SQLOps.FOR_UPDATE, "\nfor update");
+        add(SQLOps.FOR_SHARE, "\nfor share");
+        add(SQLOps.NO_WAIT, " nowait");
 
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -292,18 +262,18 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
 
-        add(CAST, "cast({0} as {1s})");
-        add(UNION, "{0}\nunion\n{1}", 1);
-        add(UNION_ALL, "{0}\nunion all\n{1}", 1);
-        add(NEXTVAL, "nextval('{0s}')");
+        add(SQLOps.CAST, "cast({0} as {1s})");
+        add(SQLOps.UNION, "{0}\nunion\n{1}", 1);
+        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", 1);
+        add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
-        add(ROWNUMBER, "row_number()");
-        add(RANK, "rank()");
-        add(DENSERANK, "dense_rank()");
-        add(FIRSTVALUE, "first_value({0})");
-        add(LASTVALUE, "last_value({0})");
-        add(LEAD, "lead({0})");
-        add(LAG, "lag({0})");
+        add(SQLOps.ROWNUMBER, "row_number()");
+        add(SQLOps.RANK, "rank()");
+        add(SQLOps.DENSERANK, "dense_rank()");
+        add(SQLOps.FIRSTVALUE, "first_value({0})");
+        add(SQLOps.LASTVALUE, "last_value({0})");
+        add(SQLOps.LEAD, "lead({0})");
+        add(SQLOps.LAG, "lag({0})");
 
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
@@ -531,20 +501,8 @@ public class SQLTemplates extends Templates {
         return bigDecimalSupported;
     }
 
-    public final String getForUpdate() {
-        return forUpdate;
-    }
-
-    public final String getForShare() {
-        return forShare;
-    }
-
     public final boolean isUseQuotes() {
         return useQuotes;
-    }
-
-    public final String getNoWait() {
-        return noWait;
     }
 
     public final boolean isUnionsWrapped() {
@@ -785,18 +743,6 @@ public class SQLTemplates extends Templates {
 
     protected void setBigDecimalSupported(boolean bigDecimalSupported) {
         this.bigDecimalSupported = bigDecimalSupported;
-    }
-
-    protected void setForUpdate(String forUpdate) {
-        this.forUpdate = forUpdate;
-    }
-
-    protected void setForShare(String forShare) {
-        this.forShare = forShare;
-    }
-
-    protected void setNoWait(String noWait) {
-        this.noWait = noWait;
     }
 
     protected void setUnionsWrapped(boolean unionsWrapped) {

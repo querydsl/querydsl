@@ -1,5 +1,6 @@
 package com.mysema.query.types;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.lang.reflect.Field;
@@ -15,5 +16,10 @@ public class OperatorImplTest {
         field.setAccessible(true);
         Map map = (Map) field.get(null);
         assertFalse(map.isEmpty());
+    }
+
+    @Test
+    public void GetId() {
+        assertEquals("com.mysema.query.types.Ops#ALIAS", Ops.ALIAS.getId());
     }
 }
