@@ -28,6 +28,9 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
+ * SQLListeners is an SQLListener implementation which dispatches the
+ * notifications to a list of SQLListener instances
+ *
  * @author tiwe
  *
  */

@@ -153,6 +153,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     /**
+     * Add the given query flag
+     *
+     * @param flag
+     * @return
+     */
+    public Q addFlag(QueryFlag flag) {
+        return queryMixin.addFlag(flag);
+    }
+
+    /**
      * Add the given String literal as query flag
      *
      * @param position
@@ -214,7 +224,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      * @return
      */
     public Q forUpdate() {
-        return addFlag(Position.END, configuration.getTemplates().getForUpdate());
+        return addFlag(SQLTemplates.FOR_UPDATE_FLAG);
     }
 
     protected SQLSerializer createSerializer() {

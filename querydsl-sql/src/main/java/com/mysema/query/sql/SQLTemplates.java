@@ -19,13 +19,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
@@ -67,6 +70,21 @@ public class SQLTemplates extends Templates {
     public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>("WITH_ALIAS");
 
     public static final Operator<Object> WITH_COLUMNS = new OperatorImpl<Object>("WITH_COLUMNS");
+
+    public static final Operator<Object> NO_WAIT = new OperatorImpl<Object>("NO_WAIT");
+
+    public static final Operator<Object> FOR_UPDATE = new OperatorImpl<Object>("FOR_UPDATE");
+
+    public static final Operator<Object> FOR_SHARE = new OperatorImpl<Object>("FOR_SHARE");
+
+    public static final QueryFlag NO_WAIT_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
+            Object.class, NO_WAIT, ImmutableList.<Expression<?>>of()));
+
+    public static final QueryFlag FOR_UPDATE_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
+            Object.class, FOR_UPDATE, ImmutableList.<Expression<?>>of()));
+
+    public static final QueryFlag FOR_SHARE_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
+            Object.class, FOR_SHARE, ImmutableList.<Expression<?>>of()));
 
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
@@ -139,10 +157,6 @@ public class SQLTemplates extends Templates {
 
     private String dummyTable = "dual";
 
-    private String forUpdate = "\nfor update";
-
-    private String forShare = "\nfor share";
-
     private String from = "\nfrom ";
 
     private String fullJoin = "\nfull join ";
@@ -170,8 +184,6 @@ public class SQLTemplates extends Templates {
     private boolean nativeMerge;
 
     private String notNull = " not null";
-
-    private String noWait = " nowait";
 
     private String offsetTemplate = "\noffset {0}";
 
@@ -222,6 +234,9 @@ public class SQLTemplates extends Templates {
 
         add(WITH_ALIAS, "{0} as {1}", 0);
         add(WITH_COLUMNS, "{0} {1}", 0);
+        add(FOR_UPDATE, "\nfor update");
+        add(FOR_SHARE, "\nfor share");
+        add(NO_WAIT, " nowait");
 
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -531,20 +546,8 @@ public class SQLTemplates extends Templates {
         return bigDecimalSupported;
     }
 
-    public final String getForUpdate() {
-        return forUpdate;
-    }
-
-    public final String getForShare() {
-        return forShare;
-    }
-
     public final boolean isUseQuotes() {
         return useQuotes;
-    }
-
-    public final String getNoWait() {
-        return noWait;
     }
 
     public final boolean isUnionsWrapped() {
@@ -785,18 +788,6 @@ public class SQLTemplates extends Templates {
 
     protected void setBigDecimalSupported(boolean bigDecimalSupported) {
         this.bigDecimalSupported = bigDecimalSupported;
-    }
-
-    protected void setForUpdate(String forUpdate) {
-        this.forUpdate = forUpdate;
-    }
-
-    protected void setForShare(String forShare) {
-        this.forShare = forShare;
-    }
-
-    protected void setNoWait(String noWait) {
-        this.noWait = noWait;
     }
 
     protected void setUnionsWrapped(boolean unionsWrapped) {
