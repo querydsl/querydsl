@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,16 +23,26 @@ import com.mysema.query.QueryMetadata;
 
 /**
  * ValidatingVisitor visits expressions and ensures that only known path instances are used
- * 
+ *
  * @author tiwe
  *
  */
 public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<Expression<?>>>, Serializable {
 
     private static final long serialVersionUID = 691350069621050872L;
-    
+
     public static final ValidatingVisitor DEFAULT = new ValidatingVisitor();
-        
+
+    private final String errorTemplate;
+
+    public ValidatingVisitor() {
+        this.errorTemplate = "Undeclared path '%s'. Add this path as a source to the query to be able to reference it.";
+    }
+
+    public ValidatingVisitor(String errorTemplate) {
+        this.errorTemplate = errorTemplate;
+    }
+
     @Override
     public Set<Expression<?>> visit(Constant<?> expr, Set<Expression<?>> known) {
         return known;
@@ -52,7 +62,7 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
             known = add(known, expr.getArg(1));
         }
         for (Expression<?> arg : expr.getArgs()) {
-            known = arg.accept(this, known);            
+            known = arg.accept(this, known);
         }
         return known;
     }
@@ -63,10 +73,9 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
     }
 
     @Override
-    public Set<Expression<?>> visit(Path<?> expr, Set<Expression<?>> known) {               
+    public Set<Expression<?>> visit(Path<?> expr, Set<Expression<?>> known) {
         if (!known.contains(expr.getRoot())) {
-            throw new IllegalArgumentException("Undeclared path '" + expr.getRoot() + "'. " +
-                    "Add this path as a source to the query to be able to reference it.");
+            throw new IllegalArgumentException(String.format(errorTemplate,  expr.getRoot()));
         }
         return known;
     }
@@ -79,7 +88,7 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
         for (Expression<?> p : md.getProjection()) {
             known = p.accept(this, known);
         }
-        for (OrderSpecifier<?> o : md.getOrderBy()) { 
+        for (OrderSpecifier<?> o : md.getOrderBy()) {
             known = o.getTarget().accept(this, known);
         }
         for (Expression<?> g : md.getGroupBy()) {
@@ -104,15 +113,15 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
         }
         return known;
     }
-    
+
     private Set<Expression<?>> visitJoins(Iterable<JoinExpression> joins, Set<Expression<?>> known) {
         for (JoinExpression j : joins) {
             final Expression<?> expr = j.getTarget();
             if (expr instanceof Path && ((Path)expr).getMetadata().isRoot()) {
-                known = add(known, expr);    
+                known = add(known, expr);
             } else {
-                known = expr.accept(this, known);    
-            }            
+                known = expr.accept(this, known);
+            }
             if (j.getCondition() != null) {
                 known = j.getCondition().accept(this, known);
             }
@@ -120,5 +129,4 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
         return known;
     }
 
-    private ValidatingVisitor() {}
 }

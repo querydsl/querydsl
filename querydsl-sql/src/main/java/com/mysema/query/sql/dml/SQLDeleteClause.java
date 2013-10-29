@@ -35,6 +35,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.ValidatingVisitor;
 
 /**
  * SQLDeleteClause defines a DELETE clause
@@ -46,13 +47,17 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
 
     private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 
+    private static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
+    		"A delete operation can only reference a single table. " +
+    		"Consider this alternative: DELETE ... WHERE EXISTS (subquery)");
+
     private final Connection connection;
 
     private final RelationalPath<?> entity;
 
     private final List<QueryMetadata> batches = new ArrayList<QueryMetadata>();
 
-    private QueryMetadata metadata = new DefaultQueryMetadata();
+    private DefaultQueryMetadata metadata = new DefaultQueryMetadata();
 
     private transient String queryString;
 
@@ -65,6 +70,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         this.connection = connection;
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.setValidatingVisitor(validatingVisitor);
     }
 
     /**
@@ -100,6 +106,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.setValidatingVisitor(validatingVisitor);
         return this;
     }
 

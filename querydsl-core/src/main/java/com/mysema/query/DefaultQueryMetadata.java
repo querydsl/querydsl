@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,14 +57,14 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private Predicate having;
 
     private List<JoinExpression> joins = ImmutableList.of();
-    
+
     private Expression<?> joinTarget;
-    
+
     private JoinType joinType;
-    
+
     @Nullable
     private Predicate joinCondition;
-    
+
     private Set<JoinFlag> joinFlags = ImmutableSet.of();
 
     @Nullable
@@ -83,11 +83,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private Predicate where;
 
     private Set<QueryFlag> flags = ImmutableSet.of();
-    
+
     private boolean extractParams = true;
-    
+
     private boolean validate = true;
-    
+
+    private ValidatingVisitor validatingVisitor = ValidatingVisitor.DEFAULT;
+
     private static Predicate and(Predicate lhs, Predicate rhs) {
         if (lhs == null) {
             return rhs;
@@ -95,33 +97,33 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             return ExpressionUtils.and(lhs, rhs);
         }
     }
-    
+
     /**
      * Create an empty DefaultQueryMetadata instance
      */
     public DefaultQueryMetadata() {}
-        
+
     /**
      * Disable validation
-     * 
+     *
      * @return
      */
     public DefaultQueryMetadata noValidate() {
         validate = false;
         return this;
     }
-    
+
 
     @Override
     public void addFlag(QueryFlag flag) {
-        flags = addSorted(flags, flag);        
+        flags = addSorted(flags, flag);
     }
-    
+
     @Override
     public void addJoinFlag(JoinFlag flag) {
         joinFlags = addSorted(joinFlags, flag);
     }
-            
+
     @Override
     public void addGroupBy(Expression<?> o) {
         addLastJoin();
@@ -145,35 +147,35 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private void addLastJoin() {
         if (joinTarget == null) {
             return;
-        }                             
+        }
         joins = add(joins, new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
-        
+
         joinType = null;
         joinTarget = null;
         joinCondition = null;
         joinFlags = ImmutableSet.of();
     }
-    
+
     @Override
     public void addJoin(JoinType joinType, Expression<?> expr) {
         addLastJoin();
         if (!exprInJoins.contains(expr)) {
             if (expr instanceof Path && ((Path<?>)expr).getMetadata().isRoot()) {
-                exprInJoins = add(exprInJoins, expr);    
+                exprInJoins = add(exprInJoins, expr);
             } else {
                 validate(expr);
-            }            
+            }
             this.joinType = joinType;
-            this.joinTarget = expr;    
+            this.joinTarget = expr;
         } else if (validate) {
             throw new IllegalStateException(expr + " is already used");
-        }        
+        }
     }
-    
+
     @Override
     public void addJoinCondition(Predicate o) {
         validate(o);
-        joinCondition = and(joinCondition, o);        
+        joinCondition = and(joinCondition, o);
     }
 
     @Override
@@ -192,7 +194,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void addWhere(Predicate e) {        
+    public void addWhere(Predicate e) {
         if (e == null) {
             return;
         }
@@ -204,14 +206,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
     }
 
+    @Override
     public void clearOrderBy() {
         orderBy = ImmutableList.of();
     }
 
+    @Override
     public void clearProjection() {
         projection = ImmutableList.of();
     }
 
+    @Override
     public void clearWhere() {
         where = new BooleanBuilder();
     }
@@ -258,6 +263,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         return modifiers;
     }
 
+    @Override
     public Map<ParamExpression<?>,Object> getParams() {
         return params;
     }
@@ -341,20 +347,25 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public boolean hasFlag(QueryFlag flag) {
         return flags.contains(flag);
     }
-    
+
     private void validate(Expression<?> expr) {
         if (extractParams) {
             expr.accept(ParamsVisitor.DEFAULT, this);
         }
         if (validate) {
-            exprInJoins = expr.accept(ValidatingVisitor.DEFAULT, exprInJoins);
+            exprInJoins = expr.accept(validatingVisitor, exprInJoins);
         }
     }
-    
+
+    @Override
     public void setValidate(boolean v) {
         this.validate = v;
     }
-    
+
+    public void setValidatingVisitor(ValidatingVisitor visitor) {
+        this.validatingVisitor = visitor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof QueryMetadata) {
@@ -370,17 +381,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
                 && q.getParams().equals(params)
                 && q.getProjection().equals(projection)
                 && Objects.equal(q.getWhere(), where);
-            
+
         } else {
             return false;
         }
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(flags, groupBy, having, joins, modifiers, 
-                orderBy, params, projection, unique, where);        
+        return Objects.hashCode(flags, groupBy, having, joins, modifiers,
+                orderBy, params, projection, unique, where);
     }
-    
-    
+
+
 }
