@@ -27,7 +27,7 @@ public class ColumnMetadataTest {
 
     @Test
     public void testFullyConfigured() {
-        ColumnMetadata column = ColumnMetadata.named("Person").withlength(10).nonInsertable()
+        ColumnMetadata column = ColumnMetadata.named("Person").withLength(10).nonInsertable()
                 .nonUpdateable().notNull().ofType(Types.BIGINT);
         assertEquals("Person", column.getName());
         assertTrue(column.hasJdbcType());

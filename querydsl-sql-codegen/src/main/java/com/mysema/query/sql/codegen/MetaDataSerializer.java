@@ -153,7 +153,14 @@ public class MetaDataSerializer extends EntitySerializer {
         for (Property property : model.getProperties()) {
             String name = property.getName();
             ColumnMetadata metadata = (ColumnMetadata) property.getData().get("COLUMN");
-            writer.line("addMetadata(", name, ", ColumnMetadata.named(\"", metadata.getName(), "\"));");
+            StringBuilder columnMeta = new StringBuilder();
+            columnMeta.append("ColumnMetadata");
+            columnMeta.append(".named(\"" + metadata.getName() + "\")");
+            columnMeta.append(".ofType(" + metadata.getJdbcType() + ")");
+            if (!metadata.isNullable()) {
+                columnMeta.append(".notNull()");
+            }
+            writer.line("addMetadata(", name, ", ", columnMeta.toString(), ");");
         }
         writer.end();
 

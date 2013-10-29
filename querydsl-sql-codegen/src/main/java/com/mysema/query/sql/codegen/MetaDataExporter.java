@@ -240,9 +240,11 @@ public class MetaDataExporter {
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, normalizedColumnName, propertyName, typeModel);
-        Map<Object, Object> data = property.getData();
-        data.put("COLUMN", ColumnMetadata.named(normalizedColumnName).ofType(columnType));
-        // TODO nullable, length, precision, scale, updatable, insertable
+        ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType);
+        if (nullable == DatabaseMetaData.columnNoNulls) {
+            column = column.notNull();
+        }
+        property.getData().put("COLUMN", column);
 
         if (columnAnnotations) {
             property.addAnnotation(new ColumnImpl(normalizedColumnName));
@@ -561,7 +563,5 @@ public class MetaDataExporter {
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
     }
-
-
 
 }

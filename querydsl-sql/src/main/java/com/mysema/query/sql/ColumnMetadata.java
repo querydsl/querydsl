@@ -39,7 +39,7 @@ public class ColumnMetadata {
 
     public static String getName(Path<?> path) {
         Path<?> parent = path.getMetadata().getParent();
-        if (parent != null && parent instanceof RelationalPath) {
+        if (parent instanceof RelationalPath) {
             ColumnMetadata columnMetadata = ((RelationalPath<?>) parent).getColumnMetadata(path);
             if (columnMetadata != null) {
                 return columnMetadata.getName();
@@ -146,7 +146,7 @@ public class ColumnMetadata {
     /**
      * Returns a new column with the given length constraint. The length must be > 0.
      */
-    public ColumnMetadata withlength(int length) {
+    public ColumnMetadata withLength(int length) {
         return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
                 insertable);
     }

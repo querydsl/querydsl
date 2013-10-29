@@ -39,14 +39,17 @@ public class QPerson extends RelationalPathBase<QPerson> {
 
     public QPerson(String variable) {
         super(QPerson.class, PathMetadataFactory.forVariable(variable), null, "PERSON");
+        addMetadata();
     }
 
     public QPerson(BeanPath<? extends QPerson> entity) {
         super(entity.getType(), entity.getMetadata(), null, "PERSON");
+        addMetadata();
     }
 
     public QPerson(PathMetadata<?> metadata) {
         super(QPerson.class, metadata, null, "PERSON");
+        addMetadata();
     }
 
     protected void addMetadata() {
