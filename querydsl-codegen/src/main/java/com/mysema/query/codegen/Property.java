@@ -41,6 +41,8 @@ public final class Property implements Comparable<Property> {
 
     private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 
+    private final Map<Object, Object> data = new HashMap<Object,Object>();
+
     private final Type type;
 
     public Property(EntityType declaringType, String name, Type type) {
@@ -133,6 +135,10 @@ public final class Property implements Comparable<Property> {
 
     public Type getParameter(int i) {
         return type.getParameters().get(i);
+    }
+
+    public Map<Object, Object> getData() {
+        return data;
     }
 
     public Type getType() {

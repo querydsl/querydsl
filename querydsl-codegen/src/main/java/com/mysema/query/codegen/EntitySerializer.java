@@ -140,6 +140,7 @@ public class EntitySerializer implements Serializer{
             } else {
                 writer.line("super(", classCast, "path.getType(), path.getMetadata()" +additionalParams+");");
             }
+            constructorContent(writer, model);
         } else {
             writer.line("this(", classCast, "path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
         }
@@ -160,6 +161,7 @@ public class EntitySerializer implements Serializer{
             } else {
                 writer.line("super(", classCast, writer.getClassConstant(localName) + COMMA + " metadata" + additionalParams + ");");
             }
+            constructorContent(writer, model);
             writer.end();
         }
 
@@ -170,6 +172,9 @@ public class EntitySerializer implements Serializer{
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
             writer.line(thisOrSuper, "(", classCast, writer.getClassConstant(localName) + COMMA + " metadata, inits" + additionalParams+ ");");
+            if (!hasEntityFields) {
+                constructorContent(writer, model);
+            }
             writer.end();
         }
 
@@ -179,9 +184,14 @@ public class EntitySerializer implements Serializer{
             writer.beginConstructor(new Parameter("type", type), PATH_METADATA, PATH_INITS);
             writer.line("super(type, metadata, inits"+additionalParams+");");
             initEntityFields(writer, config, model);
+            constructorContent(writer, model);
             writer.end();
         }
 
+    }
+
+    protected void constructorContent(CodeWriter writer, EntityType model) throws IOException {
+        // override in subclasses
     }
 
     protected String getAdditionalConstructorParameter(EntityType model) {
@@ -206,8 +216,11 @@ public class EntitySerializer implements Serializer{
             writer.line(thisOrSuper,"(forVariable(variable)",additionalParams,");");
         } else {
             writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
-             writer.getClassConstant(localName) + COMMA + " forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
+            writer.getClassConstant(localName) + COMMA + " forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
                             additionalParams,");");
+        }
+        if (!hasEntityFields) {
+            constructorContent(writer, model);
         }
         writer.end();
     }

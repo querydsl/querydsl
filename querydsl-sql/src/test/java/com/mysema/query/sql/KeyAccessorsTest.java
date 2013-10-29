@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,9 +49,9 @@ public class KeyAccessorsTest {
 
         }
 
-        public final NumberPath<Integer> id = createNumber("ID", Integer.class);
+        public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-        public final NumberPath<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
+        public final NumberPath<Integer> superiorId = createNumber("superiorId", Integer.class);
 
         public final PrimaryKeys pk = new PrimaryKeys();
 
@@ -59,6 +59,12 @@ public class KeyAccessorsTest {
 
         public QEmployee(String variable) {
             super(QEmployee.class, forVariable(variable), null, "EMPLOYEE");
+            addMetadata();
+        }
+
+        protected void addMetadata() {
+            addMetadata(id, ColumnMetadata.named("ID"));
+            addMetadata(id, ColumnMetadata.named("SUPERIOR_ID"));
         }
 
     }

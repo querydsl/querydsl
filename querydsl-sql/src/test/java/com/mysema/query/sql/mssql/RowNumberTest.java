@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,36 +25,36 @@ public class RowNumberTest {
 //    ROW_NUMBER() OVER (ORDER BY OrderDate) AS 'RowNumber'
 
 //    ROW_NUMBER() OVER( PARTITION BY PostalCode ORDER BY SalesYTD DESC)
-    
+
     @Test
     public void Mutable() {
         RowNumber rn = rowNumber().orderBy(employee.firstname);
-        assertEquals("row_number() over (order by e.FIRSTNAME)", rn.toString());
-        assertEquals("row_number() over (order by e.FIRSTNAME, e.LASTNAME)", rn.orderBy(employee.lastname).toString());
+        assertEquals("row_number() over (order by e.firstname)", rn.toString());
+        assertEquals("row_number() over (order by e.firstname, e.lastname)", rn.orderBy(employee.lastname).toString());
     }
-    
+
     @Test
     public void OrderBy() {
-        assertEquals("row_number() over (order by e.FIRSTNAME)",
+        assertEquals("row_number() over (order by e.firstname)",
             rowNumber().orderBy(employee.firstname.asc()).toString());
 
-        assertEquals("row_number() over (order by e.FIRSTNAME)",
+        assertEquals("row_number() over (order by e.firstname)",
             rowNumber().orderBy(employee.firstname).toString());
 
-        assertEquals("row_number() over (order by e.FIRSTNAME) as rn",
+        assertEquals("row_number() over (order by e.firstname) as rn",
             rowNumber().orderBy(employee.firstname.asc()).as(rn).toString());
 
-        assertEquals("row_number() over (order by e.FIRSTNAME desc)",
+        assertEquals("row_number() over (order by e.firstname desc)",
             rowNumber().orderBy(employee.firstname.desc()).toString());
     }
-       
+
     @Test
     public void PartitionBy() {
-        assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME)",
+        assertEquals("row_number() over (partition by e.lastname order by e.firstname)",
             rowNumber().partitionBy(employee.lastname).orderBy(employee.firstname.asc()).toString());
 
-        assertEquals("row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME)",
-            rowNumber().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc()).toString());        
+        assertEquals("row_number() over (partition by e.lastname, e.firstname order by e.firstname)",
+            rowNumber().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc()).toString());
     }
 
 }

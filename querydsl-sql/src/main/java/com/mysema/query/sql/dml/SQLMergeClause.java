@@ -339,7 +339,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         if (withKeys) {
             String[] target = new String[keys.size()];
             for (int i = 0; i < target.length; i++) {
-                target[i] = ColumnMetadata.getColumnMetadata(keys.get(i)).getName();
+                target[i] = ColumnMetadata.getName(keys.get(i));
             }
             stmt = connection.prepareStatement(queryString, target);
         } else {

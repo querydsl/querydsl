@@ -28,13 +28,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
 
 /**
  * RelationalPathBase is a base class for {@link RelationalPath} implementations
@@ -44,7 +37,6 @@ import com.mysema.query.types.path.TimePath;
  * @param <T>
  *            entity type
  */
-@SuppressWarnings("rawtypes")
 public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath<T> {
 
     private static final long serialVersionUID = -7031357250283629202L;
@@ -105,42 +97,9 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         return foreignKey;
     }
 
-    private <P extends Path<?>> P addMetadata(P path, ColumnMetadata metadata) {
+    protected <P extends Path<?>> P addMetadata(P path, ColumnMetadata metadata) {
         columnMetadata.put(path, metadata);
         return path;
-    }
-
-    protected StringPath createStringColumn(String property, ColumnMetadata metadata) {
-        return addMetadata(createString(property), metadata);
-    }
-
-    protected BooleanPath createBooleanColumn(String property, ColumnMetadata metadata) {
-        return addMetadata(createBoolean(property), metadata);
-    }
-
-    protected <A extends Comparable> DatePath<A> createDateColumn(String property,
-            Class<? super A> type, ColumnMetadata metadata) {
-        return addMetadata(createDate(property, type), metadata);
-    }
-
-    protected <A extends Comparable> DateTimePath<A> createDateTimeColumn(String property,
-            Class<? super A> type, ColumnMetadata metadata) {
-        return addMetadata(createDateTime(property, type), metadata);
-    }
-
-    protected <A extends Comparable> TimePath<A> createTimeColumn(String property,
-            Class<? super A> type, ColumnMetadata metadata) {
-        return addMetadata(createTime(property, type), metadata);
-    }
-
-    protected <A extends Enum<A>> EnumPath<A> createEnumColumn(String property, Class<A> type,
-            ColumnMetadata metadata) {
-        return addMetadata(createEnum(property, type), metadata);
-    }
-
-    protected <A extends Number & Comparable<?>> NumberPath<A> createNumberColumn(String property,
-            Class<? super A> type, ColumnMetadata metadata) {
-        return addMetadata(createNumber(property, type), metadata);
     }
 
     @Override

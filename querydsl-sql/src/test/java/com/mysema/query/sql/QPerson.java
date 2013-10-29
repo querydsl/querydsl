@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,13 +27,13 @@ public class QPerson extends RelationalPathBase<QPerson> {
 
     public static final QPerson person = new QPerson("PERSON");
 
-    public final StringPath firstname = createString("FIRSTNAME");
+    public final StringPath firstname = createString("firstname");
 
-    public final EnumPath<com.mysema.query.alias.Gender> gender = createEnum("GENDER", com.mysema.query.alias.Gender.class);
+    public final EnumPath<com.mysema.query.alias.Gender> gender = createEnum("gender", com.mysema.query.alias.Gender.class);
 
-    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final StringPath securedid = createString("SECUREDID");
+    public final StringPath securedid = createString("securedid");
 
     public final PrimaryKey<QPerson> sysIdx118 = createPrimaryKey(id);
 
@@ -47,6 +47,13 @@ public class QPerson extends RelationalPathBase<QPerson> {
 
     public QPerson(PathMetadata<?> metadata) {
         super(QPerson.class, metadata, null, "PERSON");
+    }
+
+    protected void addMetadata() {
+        addMetadata(id, ColumnMetadata.named("ID"));
+        addMetadata(firstname, ColumnMetadata.named("FIRSTNAME"));
+        addMetadata(securedid, ColumnMetadata.named("SECUREDID"));
+        addMetadata(gender, ColumnMetadata.named("GENDER"));
     }
 
 }

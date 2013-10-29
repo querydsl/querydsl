@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.RelationalPathBase;
@@ -20,41 +21,55 @@ import com.mysema.query.types.path.StringPath;
 public class ExtendedSQLTest {
 
     public static class QAuthor extends RelationalPathBase<QAuthor> {
-        
+
         private static final long serialVersionUID = -512402580246687292L;
-        
+
         public static final QAuthor author = new QAuthor("author");
-        
+
+        public final NumberPath<Integer> id = createNumber("id", Integer.class);
+
+        public final StringPath firstName = createString("firstName");
+
+        public final StringPath lastName = createString("lastName");
+
         public QAuthor(String variable) {
             super(QAuthor.class, PathMetadataFactory.forVariable(variable), null, "AUTHOR");
+            addMetadata();
         }
-        
-        public final NumberPath<Integer> id = createNumber("ID", Integer.class);
-        
-        public final StringPath firstName = createString("FIRST_NAME");
-        
-        public final StringPath lastName = createString("LAST_NAME");
+
+        protected void addMetadata() {
+            addMetadata(id, ColumnMetadata.named("ID"));
+            addMetadata(firstName, ColumnMetadata.named("FIRST_NAME"));
+            addMetadata(lastName, ColumnMetadata.named("LAST_NAME"));
+        }
 
     }
-    
+
     public static class QBook extends RelationalPathBase<QBook> {
 
         private static final long serialVersionUID = 4842689279054229095L;
 
         public static final QBook book = new QBook("book");
-        
+
+        public final NumberPath<Integer> authorId = createNumber("authorId", Integer.class);
+
+        public final StringPath language = createString("language");
+
+        public final DatePath<Date> published = createDate("published", Date.class);
+
         public QBook(String variable) {
             super(QBook.class, PathMetadataFactory.forVariable(variable), null, "BOOK");
+            addMetadata();
         }
-        
-        public final NumberPath<Integer> authorId = createNumber("AUTHOR_ID", Integer.class);
-                
-        public final StringPath language = createString("LANGUAGE");
-        
-        public final DatePath<Date> published = createDate("PUBLISHED", Date.class);
-        
+
+        protected void addMetadata() {
+            addMetadata(authorId, ColumnMetadata.named("AUTHOR_ID"));
+            addMetadata(language, ColumnMetadata.named("LANGUAGE"));
+            addMetadata(published, ColumnMetadata.named("PUBLISHED"));
+        }
+
     }
-    
+
     @Test
     public void test() {
 //        SELECT FIRST_NAME, LAST_NAME, COUNT(*)
@@ -69,7 +84,7 @@ public class ExtendedSQLTest {
 //      OFFSET 1
 //         FOR UPDATE
 //          OF FIRST_NAME, LAST_NAME
-        
+
         QAuthor author = QAuthor.author;
         QBook book = QBook.book;
         MySQLQuery query = new MySQLQuery(null);
@@ -83,14 +98,14 @@ public class ExtendedSQLTest {
            .offset(1)
            .forUpdate();
            // of(author.firstName, author.lastName)
-        
+
         query.getMetadata().addProjection(author.firstName);
         query.getMetadata().addProjection(author.lastName);
         query.getMetadata().addProjection(Wildcard.count);
 
         SQLSerializer serializer = new SQLSerializer(new Configuration(new MySQLTemplates()));
         serializer.serialize(query.getMetadata(), false);
-        
+
         assertEquals("select author.FIRST_NAME, author.LAST_NAME, count(*)\n"+
                      "from AUTHOR author\n"+
                      "join BOOK book\n"+
@@ -102,7 +117,7 @@ public class ExtendedSQLTest {
                      "limit ?\n"+
                      "offset ?\n"+
                      "for update", serializer.toString());
-           
+
     }
-    
+
 }

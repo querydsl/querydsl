@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
@@ -31,20 +32,29 @@ public class QBeanTest {
     public static class QPerson extends RelationalPathBase<QPerson> {
         private static final long serialVersionUID = 609527362;
         public static final QPerson person = new QPerson("PERSON");
-        public final StringPath firstName = createString("FIRST_NAME");
-        public final NumberPath<Integer> id = createNumber("ID", Integer.class);
-        public final StringPath lastName = createString("LAST_NAME");
+        public final StringPath firstName = createString("firstName");
+        public final NumberPath<Integer> id = createNumber("id", Integer.class);
+        public final StringPath lastName = createString("lastName");
 
         public QPerson(String variable) {
            super(QPerson.class, PathMetadataFactory.forVariable(variable), null, "PERSON");
+           addMetadata();
         }
 
         public QPerson(BeanPath<? extends QPerson> entity) {
             super(entity.getType(), entity.getMetadata(), null, "PERSON");
+            addMetadata();
         }
 
         public QPerson(PathMetadata<?> metadata) {
             super(QPerson.class, metadata, null, "PERSON");
+            addMetadata();
+        }
+
+        public void addMetadata() {
+            addMetadata(firstName, ColumnMetadata.named("FIRST_NAME"));
+            addMetadata(lastName, ColumnMetadata.named("LAST_NAME"));
+            addMetadata(id, ColumnMetadata.named("ID"));
         }
 
     }

@@ -37,6 +37,17 @@ public class ColumnMetadata {
         return ColumnMetadata.named(path.getMetadata().getName());
     }
 
+    public static String getName(Path<?> path) {
+        Path<?> parent = path.getMetadata().getParent();
+        if (parent != null && parent instanceof RelationalPath) {
+            ColumnMetadata columnMetadata = ((RelationalPath<?>) parent).getColumnMetadata(path);
+            if (columnMetadata != null) {
+                return columnMetadata.getName();
+            }
+        }
+        return path.getMetadata().getName();
+    }
+
     /**
      * Creates default column meta data with the given column name, but without
      * any type or constraint information. Use the fluent builder methods to
@@ -92,8 +103,6 @@ public class ColumnMetadata {
      *
      * @see Types
      * @see ColumnMetadata#hasJdbcType()
-     * @throws IllegalStateException
-     *             if this metadata has no type information
      */
     public int getJdbcType() {
         return jdbcType;
@@ -125,8 +134,6 @@ public class ColumnMetadata {
      * The length constraint of this column.
      *
      * @see ColumnMetadata#hasLength()
-     * @throws IllegalStateException
-     *             if this column has no length constraint
      */
     public int getLength() {
         return length;
@@ -137,13 +144,7 @@ public class ColumnMetadata {
     }
 
     /**
-     * Returns a new column with the given length constraint. The length must be
-     * > 0.
-     *
-     * @throws IllegalStateException
-     *             if precision and scale have already been defined
-     * @throws IllegalArgumentException
-     *             if the length is invalid
+     * Returns a new column with the given length constraint. The length must be > 0.
      */
     public ColumnMetadata withlength(int length) {
         return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
@@ -154,8 +155,6 @@ public class ColumnMetadata {
      * Returns the precision of this numeric column.
      *
      * @see ColumnMetadata#hasPrecisionAndScale()
-     * @throws IllegalStateException
-     *             if this column has no precision
      */
     public int getPrecision() {
         return precision;
@@ -165,8 +164,6 @@ public class ColumnMetadata {
      * Returns the scale of this numeric column
      *
      * @see ColumnMetadata#hasPrecisionAndScale()
-     * @throws IllegalStateException
-     *             if this column has no scale
      */
     public int getScale() {
         return scale;
@@ -179,11 +176,6 @@ public class ColumnMetadata {
     /**
      * Returns a new column with the given precision and scale constraint. Both
      * must be > 0.
-     *
-     * @throws IllegalStateException
-     *             if a length constraint has already been added
-     * @throws IllegalArgumentException
-     *             if precision or scale are invalid
      */
     public ColumnMetadata withPrecisionAndScale(int precision, int scale) {
         return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,

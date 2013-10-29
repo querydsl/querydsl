@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,34 +27,34 @@ import com.mysema.util.ReflectionUtils;
 
 /**
  * Creates the mapping via @Column annotated fields in the object. Field names don't have to match those in the RelationalPath.
- * 
+ *
  * @author tiwe
  *
  */
 public class AnnotationMapper implements Mapper<Object> {
 
     public static final AnnotationMapper DEFAULT = new AnnotationMapper(false);
-    
+
     public static final AnnotationMapper WITH_NULL_BINDINGS = new AnnotationMapper(true);
-    
+
     private final boolean withNullBindings;
-    
+
     public AnnotationMapper() {
         this(false);
     }
-    
+
     public AnnotationMapper(boolean withNullBindings) {
         this.withNullBindings = withNullBindings;
     }
-    
+
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> path, Object object) {
         try {
             Map<String, Path<?>> columnToPath = new HashMap<String, Path<?>>();
             for (Path<?> column : path.getColumns()) {
-                columnToPath.put(ColumnMetadata.getColumnMetadata(column).getName(), column);
+                columnToPath.put(ColumnMetadata.getName(column), column);
             }
-            Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();        
+            Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
             for (Field field : ReflectionUtils.getFields(object.getClass())) {
                 Column ann = field.getAnnotation(Column.class);
                 if (ann != null) {
@@ -62,18 +62,18 @@ public class AnnotationMapper implements Mapper<Object> {
                     Object propertyValue = field.get(object);
                     if (propertyValue != null) {
                         if (columnToPath.containsKey(ann.value())) {
-                            values.put(columnToPath.get(ann.value()), propertyValue);    
-                        }                        
+                            values.put(columnToPath.get(ann.value()), propertyValue);
+                        }
                     } else if (withNullBindings) {
                         values.put(columnToPath.get(ann.value()), Null.DEFAULT);
                     }
                 }
             }
-            return values;    
+            return values;
         } catch (IllegalAccessException e) {
             throw new QueryException(e);
         }
-        
+
     }
 
 }

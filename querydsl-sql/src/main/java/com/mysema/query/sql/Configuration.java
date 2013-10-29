@@ -169,7 +169,7 @@ public final class Configuration {
         if (hasTableColumnTypes && path != null && !clazz.equals(Null.class)
                 && path.getMetadata().getParent() instanceof RelationalPath) {
             String table = ((RelationalPath)path.getMetadata().getParent()).getTableName();
-            String column = ColumnMetadata.getColumnMetadata(path).getName();
+            String column = ColumnMetadata.getName(path);
             Type<T> type = (Type)javaTypeMapping.getType(table, column);
             if (type != null) {
                 return type;

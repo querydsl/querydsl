@@ -49,6 +49,7 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.sql.ColumnImpl;
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
@@ -162,7 +163,7 @@ public class MetaDataExporter {
             String propertyName, Type typeModel) {
         return new Property(
                 classModel,
-                normalizedColumnName,
+                propertyName,
                 propertyName,
                 typeModel,
                 Collections.<String>emptyList(),
@@ -224,6 +225,7 @@ public class MetaDataExporter {
         int columnType = columns.getInt("DATA_TYPE");
         int columnSize = columns.getInt("COLUMN_SIZE");
         int columnDigits = columns.getInt("DECIMAL_DIGITS");
+        int nullable = columns.getInt("NULLABLE");
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType, columnSize, columnDigits,
                 tableName, columnName);
@@ -238,11 +240,14 @@ public class MetaDataExporter {
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, normalizedColumnName, propertyName, typeModel);
+        Map<Object, Object> data = property.getData();
+        data.put("COLUMN", ColumnMetadata.named(normalizedColumnName).ofType(columnType));
+        // TODO nullable, length, precision, scale, updatable, insertable
+
         if (columnAnnotations) {
             property.addAnnotation(new ColumnImpl(normalizedColumnName));
         }
         if (validationAnnotations) {
-            int nullable = columns.getInt("NULLABLE");
             if (nullable == DatabaseMetaData.columnNoNulls) {
                 property.addAnnotation(new NotNullImpl());
             }

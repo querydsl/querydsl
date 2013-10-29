@@ -14,7 +14,6 @@
 package com.mysema.query.types;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,6 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mysema.util.BeanMap;
-import com.mysema.util.ReflectionUtils;
 
 /**
  * QBean is a JavaBean populating projection type
@@ -46,55 +44,12 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
 
     private static final long serialVersionUID = -8210214512730989778L;
 
-    private static final Map<Path<?>, String> pathToProperty = Collections.synchronizedMap(new HashMap<Path<?>, String>());
-
-    private static Class<?> relationalPathClass = null;
-
-    static {
-        try {
-            relationalPathClass = Class.forName("com.mysema.query.sql.RelationalPath");
-        } catch (ClassNotFoundException e) {
-            // do nothing
-        }
-    }
-
-    private static final String resolvePropertyViaFields(Path<?> path) {
-        String property = pathToProperty.get(path);
-        if (property == null) {
-            Path<?> parent = path.getMetadata().getParent();
-            for (Field field : ReflectionUtils.getFields(parent.getClass())) {
-                try {
-                    field.setAccessible(true);
-                    if (Expression.class.isAssignableFrom(field.getType()) && field.get(parent) == path) {
-                        property = field.getName();
-                        break;
-                    }
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            if (property == null) {
-                property = path.getMetadata().getName();
-            }
-            pathToProperty.put(path, property);
-        }
-        return property;
-    }
-
     private static ImmutableMap<String,Expression<?>> createBindings(Expression<?>... args) {
         Builder<String, Expression<?>> rv = ImmutableMap.builder();
         for (Expression<?> expr : args) {
             if (expr instanceof Path<?>) {
                 Path<?> path = (Path<?>)expr;
-                String property;
-                if (path.getMetadata().getParent() != null
-                   && relationalPathClass != null
-                   && relationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())) {
-                    property = resolvePropertyViaFields(path);
-                } else {
-                    property = path.getMetadata().getName();
-                }
-                rv.put(property, expr);
+                rv.put(path.getMetadata().getName(), expr);
             } else if (expr instanceof Operation<?>) {
                 Operation<?> operation = (Operation<?>)expr;
                 if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>) {

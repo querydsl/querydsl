@@ -43,7 +43,7 @@ public class SQLSubQueryTest {
         query.from(employee)
             .where(BooleanOperation.create(op, employee.id));
 
-        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
+        assertEquals("from EMPLOYEE EMPLOYEE\nwhere com.mysema.query.sql.SQLSubQueryTest#unknownfn(EMPLOYEE.ID)", query.toString());
     }
 
     @Test

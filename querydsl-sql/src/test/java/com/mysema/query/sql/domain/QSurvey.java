@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql.domain;
 
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.PathMetadata;
@@ -25,23 +26,31 @@ import com.mysema.query.types.path.StringPath;
 public class QSurvey extends RelationalPathBase<QSurvey>{
 
     private static final long serialVersionUID = -7427577079709192842L;
-    
+
     public static final QSurvey survey = new QSurvey("SURVEY");
 
-    public final StringPath name = createString("NAME");
-    
-    public final StringPath name2 = createString("NAME2");
+    public final StringPath name = createString("name");
 
-    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
-    
+    public final StringPath name2 = createString("name2");
+
+    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+
     public final PrimaryKey<QSurvey> idKey = createPrimaryKey(id);
 
     public QSurvey(String path) {
         super(QSurvey.class, PathMetadataFactory.forVariable(path), "PUBLIC", "SURVEY");
+        addMetadata();
     }
 
     public QSurvey(PathMetadata<?> metadata) {
         super(QSurvey.class, metadata, "PUBLIC", "SURVEY");
+        addMetadata();
     }
-    
+
+    protected void addMetadata() {
+        addMetadata(name, ColumnMetadata.named("NAME"));
+        addMetadata(name2, ColumnMetadata.named("NAME2"));
+        addMetadata(id, ColumnMetadata.named("ID"));
+    }
+
 }

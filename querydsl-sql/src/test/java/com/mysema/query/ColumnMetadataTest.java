@@ -25,54 +25,6 @@ public class ColumnMetadataTest {
         assertTrue(column.isNullable());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void exceptionOnMissingType() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.getJdbcType();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void exceptionOnMissingLength() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.getLength();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void exceptionOnMissingPrecision() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.getPrecision();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void exceptionOnMissingScale() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.getScale();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void notBothPrecisionAndLength() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.withlength(1).withPrecisionAndScale(1, 1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void lengthMustBePositive() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.withlength(-1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void scaleMustBePositive() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.withPrecisionAndScale(1, -1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void precisionMustBePositive() {
-        ColumnMetadata column = ColumnMetadata.named("Person");
-        column.withPrecisionAndScale(-1, 1);
-    }
-
     @Test
     public void testFullyConfigured() {
         ColumnMetadata column = ColumnMetadata.named("Person").withlength(10).nonInsertable()

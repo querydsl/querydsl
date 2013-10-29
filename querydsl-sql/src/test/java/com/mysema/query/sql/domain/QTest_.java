@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ public class QTest_ extends EntityPathBase<Object> {
     private static final long serialVersionUID = -8421112749591552595L;
 
     public final StringPath name = createString("NAME");
-        
+
     public QTest_(String path) {
         super(Object.class, PathMetadataFactory.forVariable(path));
     }
@@ -32,4 +32,5 @@ public class QTest_ extends EntityPathBase<Object> {
     public QTest_(PathMetadata<?> metadata) {
         super(Object.class, metadata);
     }
+
 }

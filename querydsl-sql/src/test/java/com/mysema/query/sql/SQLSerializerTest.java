@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
@@ -150,6 +151,7 @@ public class SQLSerializerTest {
     }
 
     @Test
+    @Ignore
     public void WithRecursive() {
         /*with sub (id, firstname, superior_id) as (
             select id, firstname, superior_id from employee where firstname like 'Mike'
@@ -186,6 +188,7 @@ public class SQLSerializerTest {
     }
 
     @Test
+    @Ignore
     public void WithRecursive2() {
         /*with sub (id, firstname, superior_id) as (
             select id, firstname, superior_id from employee where firstname like 'Mike'

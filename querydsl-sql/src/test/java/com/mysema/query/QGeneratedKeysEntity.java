@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.NumberPath;
@@ -23,12 +24,17 @@ public class QGeneratedKeysEntity extends RelationalPathBase<QGeneratedKeysEntit
 
     private static final long serialVersionUID = 2002306246819687158L;
 
-    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final StringPath name = createString("NAME");
+    public final StringPath name = createString("name");
 
     public QGeneratedKeysEntity(String name) {
         super(QGeneratedKeysEntity.class, PathMetadataFactory.forVariable(name), null, "GENERATED_KEYS");
+    }
+
+    protected void addMetadata() {
+        addMetadata(id, ColumnMetadata.named("ID"));
+        addMetadata(name, ColumnMetadata.named("NAME"));
     }
 
 }

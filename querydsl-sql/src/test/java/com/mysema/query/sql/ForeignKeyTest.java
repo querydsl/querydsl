@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,12 +29,12 @@ public class ForeignKeyTest {
         QEmployee employee2 = new QEmployee("employee2");
 
         ForeignKey<Employee> foreignKey = new ForeignKey<Employee>(employee, employee.superiorId, "ID");
-        assertEquals("employee.SUPERIOR_ID = employee2.ID", foreignKey.on(employee2).toString());
+        assertEquals("employee.superiorId = employee2.ID", foreignKey.on(employee2).toString());
 
-        foreignKey = new ForeignKey<Employee>(employee, 
-               ImmutableList.of(employee.superiorId, employee.firstname), 
+        foreignKey = new ForeignKey<Employee>(employee,
+               ImmutableList.of(employee.superiorId, employee.firstname),
                ImmutableList.of("ID", "FN"));
-        assertEquals("employee.SUPERIOR_ID = employee2.ID && employee.firstname = employee2.FN", foreignKey.on(employee2).toString());
+        assertEquals("employee.superiorId = employee2.ID && employee.firstname = employee2.FN", foreignKey.on(employee2).toString());
     }
 
 }

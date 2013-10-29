@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,8 +32,10 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
@@ -54,7 +56,7 @@ public class MetaDataSerializer extends EntitySerializer {
     private final NamingStrategy namingStrategy;
 
     private final boolean innerClassesForKeys;
-    
+
     /**
      * Create a new MetaDataSerializer instance
      *
@@ -73,18 +75,23 @@ public class MetaDataSerializer extends EntitySerializer {
     }
 
     @Override
+    protected void constructorContent(CodeWriter writer, EntityType model) throws IOException {
+        writer.line("addMetadata();");
+    }
+
+    @Override
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
 
         writer.line("@Generated(\"", getClass().getName(), "\")");
-        
-        TypeCategory category = model.getOriginalCategory();      
+
+        TypeCategory category = model.getOriginalCategory();
         // serialize annotations only, if no bean types are used
         if (model.equals(queryType)) {
             for (Annotation annotation : model.getAnnotations()) {
                 writer.annotation(annotation);
-            }    
-        }        
+            }
+        }
         writer.beginClass(queryType, new ClassType(category, RelationalPathBase.class, model));
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }
@@ -93,14 +100,14 @@ public class MetaDataSerializer extends EntitySerializer {
     protected String getAdditionalConstructorParameter(EntityType model) {
         StringBuilder builder = new StringBuilder();
         if (model.getData().containsKey("schema")) {
-            builder.append(", \"").append(model.getData().get("schema")).append("\"");    
+            builder.append(", \"").append(model.getData().get("schema")).append("\"");
         } else {
             builder.append(", null");
         }
         builder.append(", \"").append(model.getData().get("table")).append("\"");
         return builder.toString();
     }
-    
+
     @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType, String defaultName) throws IOException {
         String variableName = !defaultName.isEmpty() ? defaultName : namingStrategy.getDefaultVariableName(entityType);
@@ -112,34 +119,50 @@ public class MetaDataSerializer extends EntitySerializer {
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);
-        
-        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) 
+
+        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>)
                 model.getData().get(ForeignKeyData.class);
         Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)
                 model.getData().get(InverseForeignKeyData.class);
         boolean addJavaUtilImport = false;
-        if (foreignKeys != null) {            
+        if (foreignKeys != null) {
             for (ForeignKeyData keyData : foreignKeys) {
                 if (keyData.getForeignColumns().size() > 1) {
                     addJavaUtilImport = true;
                 }
-            }                        
+            }
         }
-        if (inverseForeignKeys != null) {            
+        if (inverseForeignKeys != null) {
             for (InverseForeignKeyData keyData : inverseForeignKeys) {
                 if (keyData.getForeignColumns().size() > 1) {
                     addJavaUtilImport = true;
                 }
-            }                        
+            }
         }
+
         if (addJavaUtilImport) {
-            writer.imports(List.class.getPackage());    
-        }        
+            writer.imports(List.class.getPackage());
+        }
+
+        writer.imports(ColumnMetadata.class);
+    }
+
+    @Override
+    protected void outro(EntityType model, CodeWriter writer) throws IOException {
+        writer.beginPublicMethod(Types.VOID,"addMetadata");
+        for (Property property : model.getProperties()) {
+            String name = property.getName();
+            ColumnMetadata metadata = (ColumnMetadata) property.getData().get("COLUMN");
+            writer.line("addMetadata(", name, ", ColumnMetadata.named(\"", metadata.getName(), "\"));");
+        }
+        writer.end();
+
+        super.outro(model, writer);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void serializeProperties(EntityType model,  SerializerConfig config, 
+    protected void serializeProperties(EntityType model,  SerializerConfig config,
             CodeWriter writer) throws IOException {
         Collection<PrimaryKeyData> primaryKeys =
             (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);

@@ -51,9 +51,9 @@ import com.mysema.util.ResultSetAdapter;
 
 /**
  * SQLInsertClause defines an INSERT INTO clause
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implements
         InsertClause<SQLInsertClause> {
@@ -106,7 +106,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     /**
      * Add the given String literal at the given position as a query flag
-     * 
+     *
      * @param position
      * @param flag
      * @return
@@ -118,7 +118,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     /**
      * Add the given Expression at the given position as a query flag
-     * 
+     *
      * @param position
      * @param flag
      * @return
@@ -130,7 +130,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     /**
      * Add the current state of bindings as a batch item
-     * 
+     *
      * @return
      */
     public SQLInsertClause addBatch() {
@@ -155,7 +155,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * Execute the clause and return the generated key with the type of the
      * given path. If no rows were created, null is returned, otherwise the key
      * of the first row is returned.
-     * 
+     *
      * @param <T>
      * @param path
      * @return
@@ -170,7 +170,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * Execute the clause and return the generated key cast to the given type.
      * If no rows were created, null is returned, otherwise the key of the first
      * row is returned.
-     * 
+     *
      * @param <T>
      * @param type
      * @return
@@ -199,7 +199,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * given path. If no rows were created, or the referenced column is not a
      * generated key, null is returned. Otherwise, the key of the first row is
      * returned.
-     * 
+     *
      * @param <T>
      * @param path
      * @return
@@ -270,7 +270,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 String[] target = new String[entity.getPrimaryKey().getLocalColumns().size()];
                 for (int i = 0; i < target.length; i++) {
                     Path<?> path = entity.getPrimaryKey().getLocalColumns().get(i);
-                    String column = ColumnMetadata.getColumnMetadata(path).getName();
+                    String column = ColumnMetadata.getName(path);
                     target[i] = column;
                 }
                 stmt = connection.prepareStatement(queryString, target);
@@ -287,7 +287,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     /**
      * Execute the clause and return the generated keys as a ResultSet
-     * 
+     *
      * @return
      */
     public ResultSet executeWithKeys() {
@@ -399,7 +399,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     /**
      * Populate the INSERT clause with the properties of the given bean. The
      * properties need to match the fields of the clause's entity instance.
-     * 
+     *
      * @param bean
      * @return
      */
@@ -410,7 +410,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     /**
      * Populate the INSERT clause with the properties of the given bean using
      * the given Mapper.
-     * 
+     *
      * @param obj
      * @param mapper
      * @return
