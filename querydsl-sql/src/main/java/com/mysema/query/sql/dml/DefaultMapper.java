@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,40 +25,39 @@ import com.mysema.query.types.Path;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * Creates the mapping by inspecting the RelationalPath and Object via reflection. 
- * Given bean doesn't need to have @Column metadata, but the fields need to have the same 
- * name as in the given relational path. 
- * 
+ * Creates the mapping by inspecting the RelationalPath and Object via reflection.
+ * Given bean doesn't need to have @Column metadata, but the fields need to have the same
+ * name as in the given relational path.
+ *
  * @author tiwe
  *
  */
 public class DefaultMapper extends AbstractMapper<Object> {
 
     public static final DefaultMapper DEFAULT = new DefaultMapper(false);
-    
+
     public static final DefaultMapper WITH_NULL_BINDINGS = new DefaultMapper(true);
-    
+
     private final boolean withNullBindings;
-    
+
     public DefaultMapper() {
         this(false);
     }
-    
+
     public DefaultMapper(boolean withNullBindings) {
         this.withNullBindings = withNullBindings;
     }
-    
+
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
         try {
             Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
             Class<?> beanClass = bean.getClass();
-            Map<String, Field> fields = getPathFields(entity.getClass());
+            Map<String, Path<?>> columns = getColumns(entity);
             for (Field beanField : ReflectionUtils.getFields(beanClass)) {
-                if (!Modifier.isStatic(beanField.getModifiers()) && fields.containsKey(beanField.getName())) {
-                    Field field = fields.get(beanField.getName());
+                if (!Modifier.isStatic(beanField.getModifiers()) && columns.containsKey(beanField.getName())) {
                     @SuppressWarnings("rawtypes")
-                    Path path = (Path<?>) field.get(entity);
+                    Path path = columns.get(beanField.getName());
                     beanField.setAccessible(true);
                     Object propertyValue = beanField.get(bean);
                     if (propertyValue != null) {
@@ -68,12 +67,12 @@ public class DefaultMapper extends AbstractMapper<Object> {
                     }
                 }
             }
-            return values;    
+            return values;
         } catch (IllegalAccessException e) {
             throw new QueryException(e);
         }
     }
-    
+
 
 
 }
