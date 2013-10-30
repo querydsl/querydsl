@@ -151,7 +151,7 @@ public class MetaDataSerializer extends EntitySerializer {
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
         writer.beginPublicMethod(Types.VOID,"addMetadata");
         for (Property property : model.getProperties()) {
-            String name = property.getName();
+            String name = property.getEscapedName();
             ColumnMetadata metadata = (ColumnMetadata) property.getData().get("COLUMN");
             StringBuilder columnMeta = new StringBuilder();
             columnMeta.append("ColumnMetadata");

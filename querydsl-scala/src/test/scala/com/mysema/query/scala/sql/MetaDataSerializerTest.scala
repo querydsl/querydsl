@@ -35,9 +35,11 @@ class ScalaMetaDataSerializerTest {
     List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], 
          classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
       .foreach(cl => {
-        var classType = new ClassType(TypeCategory.get(cl.getName), cl)
-        entityType.addProperty(new Property(entityType, 
-            StringUtils.uncapitalize(cl.getSimpleName), classType))
+        val classType = new ClassType(TypeCategory.get(cl.getName), cl)
+        val propertyName = StringUtils.uncapitalize(cl.getSimpleName)
+        var property = new Property(entityType, propertyName, classType)
+        property.getData.put("COLUMN", ColumnMetadata.named(propertyName.toUpperCase).ofType(0))
+        entityType.addProperty(property)
       })
   }
 

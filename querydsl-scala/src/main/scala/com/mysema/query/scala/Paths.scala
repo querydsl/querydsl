@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,18 +25,18 @@ import com.mysema.scala.ManifestUtils._
 
 /**
  * Factory for path expressions
- * 
+ *
  * @author tiwe
  *
  */
 object Paths {
 
   type Metadata[X] = PathMetadata[X]
-    
+
   def array[T <: Array[_]](t: Class[T], md: Metadata[_]) = new ArrayPath[T](t, md)
 
   def dsl[T](t: Class[_ <: T], md: Metadata[_]) = new DslPath[T](t, md)
-  
+
   def simple[T](t: Class[_ <: T], md: Metadata[_]) = new SimplePath[T](t, md)
 
   def entity[T](t: Class[_ <: T], md: Metadata[_]) = new EntityPathImpl[T](t, md)
@@ -68,16 +68,16 @@ object Paths {
   def string(md: Metadata[_]) = new StringPath(md)
 
   def enum[T <: Enum[T]](t: Class[T], md: Metadata[_]) = new EnumPath[T](t, md)
-  
-  def any[T, Q <: Ex[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))      
-  
+
+  def any[T, Q <: Ex[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))
+
   def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: Metadata[_]): Q = q match {
     case _ if q == classOf[StringPath] | q == classOf[BooleanPath] => {
       q.getConstructor(classOf[PathMetadata[_]]).newInstance(md)
     }
     case _ => q.getConstructor(classOf[Class[_]], classOf[PathMetadata[_]]).newInstance(t, md)
   }
-  
+
 }
 
 class DslPath[T](t: Class[_ <: T], md: PathMetadata[_])
@@ -103,13 +103,13 @@ class ArrayPath[T <: Array[_]](t: Class[T], md: PathMetadata[_])
 
 class BeanPath[T](t: Class[_ <: T], md: PathMetadata[_])
   extends PathImpl[T](t, md) with SimpleExpression[T] {
-  
-  import Paths._  
-    
+
+  import Paths._
+
   type Mf[X] = Manifest[X]
-      
+
   def add[P <: Path[_]](path: P): P = path
-  
+
   def createArray[T <: Array[_]](property: String)(implicit mf: Mf[T]) = add(array(mf, forProperty(property)))
 
   def createSimple[T](property: String)(implicit mf: Mf[T]) = add(simple(mf, forProperty(property)))
@@ -139,16 +139,18 @@ class BeanPath[T](t: Class[_ <: T], md: PathMetadata[_])
   def createString(property: String) = add(string(forProperty(property)))
 
   def createEnum[T <: Enum[T]](property: String)(implicit mf: Mf[T]) = add(enum(mf, forProperty(property)))
-  
-  private def forProperty(property: String) = PathMetadataFactory.forProperty(this, property)    
-    
+
+  private def forProperty(property: String) = PathMetadataFactory.forProperty(this, property)
+
 }
 
 class EntityPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   extends BeanPath[T](t, md) with EntityPath[T] {
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable))
-  
+
+  def getMetadata(path: Path[_]): AnyRef = null
+
 }
 
 class CollectionPath[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_])
@@ -159,18 +161,18 @@ class CollectionPath[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetad
   def getParameter(i: Int) = t
 
   lazy val any: Q = Paths.any(this, t, q)
-  
+
 }
 
 class SetPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Set[T]](classOf[java.util.Set[T]], md) with SetExpression[T,Q] {
-    
+
   def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable))
 
   def getParameter(i: Int) = t
 
   lazy val any: Q = Paths.any(this, t, q)
-  
+
 }
 
 class ListPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
@@ -181,11 +183,11 @@ class ListPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_
   def getParameter(i: Int) = t
 
   lazy val any: Q = Paths.any(this, t, q)
-  
+
   def get(i: Int): Q = Paths.create(t, q, forListAccess(this, i))
-  
+
   def get(i: Ex[Integer]): Q = Paths.create(t, q, forListAccess(this, i))
-  
+
 }
 
 class MapPath[K, V, Q <: Ex[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_])
@@ -196,9 +198,9 @@ class MapPath[K, V, Q <: Ex[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: 
   def getParameter(i: Int): Class[_] = { if (i == 0) k else v }
 
   def get(key: K) = Paths.create(v, q, forMapAccess(this, key))
-  
+
   def get(key: Ex[K]) = Paths.create(v, q, forMapAccess(this, key))
-  
+
 }
 
 class ComparablePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])

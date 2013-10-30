@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,19 +29,19 @@ import javax.inject.Inject
 
 /**
  * MetaDataSerializer implementation for Scala
- * 
+ *
  * @author tiwe
  *
  */
-class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy) 
+class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy)
     extends ScalaEntitySerializer(typeMappings) {
-    
+
   override val classHeaderFormat = "%s(md: PathMetadata[_]) extends RelationalPathImpl[%s](md, %s, %s)"
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]])
     writer.imports(classOf[PrimaryKey[_]].getPackage)
-    
+
     val queryType = typeMappings.getPathType(model, model, true)
     val modelName = writer.getRawName(model)
     val queryTypeName = writer.getRawName(queryType)
@@ -51,18 +51,18 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     }
     val table = "\""+model.getData.get("table")+"\""
     val classHeader = String.format(classHeaderFormat, queryTypeName, modelName, schema, table)
-    
+
     writeCompanionObject(model, queryType, writer)
-    
+
     // header
     writer.beginClass(classHeader)
   }
-    
+
   override def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
     writer.line("def this(variable: String) = this(forVariable(variable))\n")
     writer.line("def this(parent: Path[_], property: String) = this(forProperty(parent, property))\n")
   }
-    
+
   override def writeAdditionalProperties(model: EntityType, writer: ScalaWriter) {
     // primary keys
     val primaryKeys: Collection[PrimaryKeyData] =
@@ -78,14 +78,28 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     val inverseForeignKeys: Collection[InverseForeignKeyData] =
       model.getData.get(classOf[InverseForeignKeyData]).asInstanceOf[Collection[InverseForeignKeyData]]
     if (inverseForeignKeys != null) serializeForeignKeys(model, writer, inverseForeignKeys, true)
+
+    // metadata
+    for (property <- model.getProperties) {
+      val name = property.getEscapedName
+      val metadata = property.getData.get("COLUMN").asInstanceOf[ColumnMetadata]
+      val columnMeta = new StringBuilder()
+      columnMeta.append("ColumnMetadata")
+      columnMeta.append(".named(\"" + metadata.getName + "\")")
+      columnMeta.append(".ofType(" + metadata.getJdbcType + ")")
+      if (!metadata.isNullable) {
+          columnMeta.append(".notNull()")
+      }
+      writer.line("addMetadata(", escape(name), ", ", columnMeta.toString, ")")
+    }
   }
-  
+
   override def writeAnnotations(model: EntityType, queryType: Type, writer: ScalaWriter) = {
     if (model == queryType) {
-      model.getAnnotations.foreach(writer.annotation(_))  
-    }    
+      model.getAnnotations.foreach(writer.annotation(_))
+    }
   }
-   
+
   def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
     primaryKeys.foreach { pk =>
       val fieldName = namingStrategy.getPropertyNameForPrimaryKey(pk.getName(), model)
@@ -95,7 +109,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     }
   }
 
-  def serializeForeignKeys(model: EntityType, writer: CodeWriter, 
+  def serializeForeignKeys(model: EntityType, writer: CodeWriter,
       foreignKeys: Collection[_ <: KeyData], inverse: Boolean) {
     for (fk <- foreignKeys) {
       val fieldName = if (inverse) {
@@ -108,8 +122,8 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
         value.append(namingStrategy.getPropertyName(fk.getForeignColumns.get(0), model))
         value.append(", \"" + fk.getParentColumns().get(0) + "\"")
       } else {
-        val local = fk.getForeignColumns.map(c => escape(namingStrategy.getPropertyName(c, model))).mkString(", ") 
-        val foreign = fk.getParentColumns.map("\"" + _ + "\"").mkString(", ")        
+        val local = fk.getForeignColumns.map(c => escape(namingStrategy.getPropertyName(c, model))).mkString(", ")
+        val foreign = fk.getParentColumns.map("\"" + _ + "\"").mkString(", ")
         value.append("List(" + local + "), List(" + foreign + ")")
       }
       value.append(")")

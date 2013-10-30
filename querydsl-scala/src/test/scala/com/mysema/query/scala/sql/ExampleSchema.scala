@@ -9,12 +9,16 @@ object QUser {
 }
 
 class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path, null, "USER") {
-  val id = createNumber("ID", classOf[Integer])
-  val department = createNumber("DEPARTMENT", classOf[Integer])
-  val superiorId = createNumber("SUPERIOR_ID", classOf[Integer])
+  val id = createNumber("id", classOf[Integer])
+  val department = createNumber("department", classOf[Integer])
+  val superiorId = createNumber("superiorId", classOf[Integer])
   val idKey = createPrimaryKey(id)
   val departmentKey: ForeignKey[QDepartment] = createForeignKey(department, "ID")
   val superiorIdKey: ForeignKey[QUser] = createForeignKey(superiorId, "ID")
+
+  addMetadata(id, ColumnMetadata.named("ID"))
+  addMetadata(department, ColumnMetadata.named("DEPARTMENT"))
+  addMetadata(superiorId, ColumnMetadata.named("SUPERIOR_ID"))
 }
 
 object QDepartment {
@@ -22,10 +26,13 @@ object QDepartment {
 }
 
 class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path, null, "DEPARTMENT") {
-  val id = createNumber("ID", classOf[Integer])
-  val company = createNumber("COMPANY", classOf[Integer])
+  val id = createNumber("id", classOf[Integer])
+  val company = createNumber("company", classOf[Integer])
   val idKey = createPrimaryKey(id)
   val companyKey: ForeignKey[QCompany] = createForeignKey(company, "ID")
+
+  addMetadata(id, ColumnMetadata.named("ID"))
+  addMetadata(company, ColumnMetadata.named("COMPANY"))
 }
 
 object QCompany {
@@ -33,8 +40,10 @@ object QCompany {
 }
 
 class QCompany(path: String) extends RelationalPathBase[QCompany](classOf[QCompany], path, null, "COMPANY") {
-  val id = createNumber("ID", classOf[Integer])
+  val id = createNumber("id", classOf[Integer])
   val idKey = createPrimaryKey(id)
+
+  addMetadata(id, ColumnMetadata.named("ID"))
 }
 
 //class Category extends Record[Category] {
@@ -49,10 +58,13 @@ object QCategory {
 
 //@Table("CATEGORY")
 class QCategory(path: String) extends RelationalPathBase[QCategory](classOf[QCategory], path, null, "CATEGORY") {
-  val id = createNumber("ID", classOf[Integer])
-  val name = createString("NAME")
+  val id = createNumber("id", classOf[Integer])
+  val name = createString("name")
   val idKey = createPrimaryKey(id)
   val _categoryKey: ForeignKey[QBook] = createInvForeignKey(id, "category")
+
+  addMetadata(id, ColumnMetadata.named("ID"))
+  addMetadata(name, ColumnMetadata.named("NAME"))
 }
 
 //class Book extends Record[Book] {
@@ -66,9 +78,13 @@ object QBook {
 }
 
 class QBook(path: String) extends RelationalPathBase[QBook](classOf[QBook], path, null, "BOOK") {
-  val id = createNumber("ID", classOf[Integer])
-  val title = createString("TITLE")
-  val category = createNumber("CATEGORY", classOf[Integer])
+  val id = createNumber("id", classOf[Integer])
+  val title = createString("title")
+  val category = createNumber("category", classOf[Integer])
   val idKey = createPrimaryKey(id)
   val categoryKey: ForeignKey[QCategory] = createForeignKey(category, "ID")
+
+  addMetadata(id, ColumnMetadata.named("ID"))
+  addMetadata(title, ColumnMetadata.named("TITLE"))
+  addMetadata(category, ColumnMetadata.named("CATEGORY"))
 }
