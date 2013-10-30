@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,19 @@ package com.mysema.query.types;
 
 /**
  * EntityPath is the common interface for entity path expressions
- * 
+ *
  * @author tiwe
  *
  * @param <T> entity type
  */
 public interface EntityPath<T> extends Path<T> {
+
+    /**
+     * Returns additional metadata for the given property path or null if none is available
+     *
+     * @param property
+     * @return
+     */
+    Object getMetadata(Path<?> property);
 
 }

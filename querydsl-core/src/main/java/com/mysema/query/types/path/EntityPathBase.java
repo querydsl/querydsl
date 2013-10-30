@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +16,7 @@ package com.mysema.query.types.path;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 
 /**
@@ -39,6 +40,11 @@ public class EntityPathBase<T> extends BeanPath<T> implements EntityPath<T> {
 
     public EntityPathBase(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(type, metadata, inits);
+    }
+
+    @Override
+    public Object getMetadata(Path<?> property) {
+        return null;
     }
 
 }

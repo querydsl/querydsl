@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import com.mysema.query.types.PathMetadata;
 
 /**
  * ComparableEntityPath extends the ComparablePath class to implement the EntityPath interface
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -39,6 +39,11 @@ public class ComparableEntityPath<T extends Comparable> extends ComparablePath<T
 
     public ComparableEntityPath(Class<? extends T> type, String var) {
         super(type, var);
+    }
+
+    @Override
+    public Object getMetadata(Path<?> property) {
+        return null;
     }
 
 }

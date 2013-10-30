@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,9 +13,10 @@
  */
 package com.mysema.query.types.path;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
@@ -23,7 +24,7 @@ import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * PathBuilder is an extension to EntityPathBase for dynamic path construction
- * 
+ *
  * <p>Usage example:</p>
  * <pre>
  * PathBuilder&lt;User&gt; user = new PathBuilder&lt;User&gt;(User.class, "user");
@@ -39,7 +40,9 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
 
     private static final long serialVersionUID = -1666357914232685088L;
 
-    private final Map<String, PathBuilder<?>> properties = new HashMap<String, PathBuilder<?>>();
+    private final Map<String, PathBuilder<?>> properties = Maps.newHashMap();
+
+    private final Map<Path<?>, Object> propertyMetadata = Maps.newHashMap();
 
     /**
      * Creates a new PathBuilder instance
@@ -60,14 +63,32 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
     public PathBuilder(Class<? extends T> type, String variable) {
         super(type, PathMetadataFactory.forVariable(variable));
     }
-    
+
+    /**
+     * @param newPath
+     * @param path
+     * @return
+     */
+    private <P extends Path<?>> P  addMetadataOf(P newPath, Path<?> path) {
+        if (path.getMetadata().getParent() instanceof EntityPath) {
+            EntityPath<?> parent = (EntityPath)path.getMetadata().getParent();
+            propertyMetadata.put(newPath, parent.getMetadata(path));
+        }
+        return newPath;
+    }
+
     /**
      * Override this method to do some validation of the properties created
-     * 
+     *
      * @param property
      */
     protected void validate(String property) {
         // do nothing
+    }
+
+    @Override
+    public Object getMetadata(Path<?> property) {
+        return propertyMetadata.get(property);
     }
 
     /**
@@ -125,7 +146,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public BooleanPath get(BooleanPath path) {
-        return getBoolean(toString(path));
+        BooleanPath newPath = getBoolean(toString(path));
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -174,7 +196,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> ComparablePath<A> get(ComparablePath<A> path) {
-        return getComparable(toString(path), (Class<A>)path.getType());
+        ComparablePath<A> newPath = getComparable(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -197,7 +220,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DatePath<A> get(DatePath<A> path) {
-        return getDate(toString(path), (Class<A>)path.getType());
+        DatePath<A> newPath = getDate(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -220,7 +244,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DateTimePath<A> get(DateTimePath<A> path) {
-        return getDateTime(toString(path), (Class<A>)path.getType());
+        DateTimePath<A> newPath = getDateTime(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -256,7 +281,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Enum<A>> EnumPath<A> get(EnumPath<A> path) {
-        return getEnum(toString(path), (Class<A>)path.getType());
+        EnumPath<A> newPath = getEnum(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -326,7 +352,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<?>> NumberPath<A> get(NumberPath<A> path) {
-        return getNumber(toString(path), (Class<A>)path.getType());
+        NumberPath<A> newPath = getNumber(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -377,7 +404,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A> SimplePath<A> get(Path<A> path) {
-        return getSimple(toString(path), (Class<A>)path.getType());
+        SimplePath<A> newPath = getSimple(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -398,7 +426,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public StringPath get(StringPath path) {
-        return getString(toString(path));
+        StringPath newPath = getString(toString(path));
+        return addMetadataOf(newPath, path);
     }
 
     /**
@@ -418,7 +447,8 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> TimePath<A> get(TimePath<A> path) {
-        return getTime(toString(path), (Class<A>)path.getType());
+        TimePath<A> newPath = getTime(toString(path), (Class<A>)path.getType());
+        return addMetadataOf(newPath, path);
     }
 
     /**

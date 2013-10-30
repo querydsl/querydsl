@@ -80,5 +80,5 @@ public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
      * alternative
      */
     @Nullable
-    ColumnMetadata getColumnMetadata(Path<?> column);
+    ColumnMetadata getMetadata(Path<?> column);
 }

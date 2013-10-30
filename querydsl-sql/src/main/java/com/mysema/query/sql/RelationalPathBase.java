@@ -153,7 +153,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     @Override
-    public ColumnMetadata getColumnMetadata(Path<?> column) {
+    public ColumnMetadata getMetadata(Path<?> column) {
         return columnMetadata.get(column);
     }
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,7 @@
 package com.mysema.query.domain;
 
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -33,6 +34,11 @@ public class QCommonPersistence extends BeanPath<CommonPersistence> implements E
 
     public QCommonPersistence(PathMetadata<?> metadata) {
         super(CommonPersistence.class, metadata);
+    }
+
+    @Override
+    public Object getMetadata(Path<?> property) {
+        return null;
     }
 
 }

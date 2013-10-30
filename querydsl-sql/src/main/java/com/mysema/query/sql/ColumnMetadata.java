@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import java.sql.Types;
 
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
 /**
@@ -28,10 +29,10 @@ public class ColumnMetadata {
      */
     public static ColumnMetadata getColumnMetadata(Path<?> path) {
         Path<?> parent = path.getMetadata().getParent();
-        if (parent != null && parent instanceof RelationalPath) {
-            ColumnMetadata columnMetadata = ((RelationalPath<?>) parent).getColumnMetadata(path);
-            if (columnMetadata != null) {
-                return columnMetadata;
+        if (parent instanceof EntityPath) {
+            Object columnMetadata = ((EntityPath<?>) parent).getMetadata(path);
+            if (columnMetadata instanceof ColumnMetadata) {
+                return (ColumnMetadata)columnMetadata;
             }
         }
         return ColumnMetadata.named(path.getMetadata().getName());
@@ -39,10 +40,10 @@ public class ColumnMetadata {
 
     public static String getName(Path<?> path) {
         Path<?> parent = path.getMetadata().getParent();
-        if (parent instanceof RelationalPath) {
-            ColumnMetadata columnMetadata = ((RelationalPath<?>) parent).getColumnMetadata(path);
-            if (columnMetadata != null) {
-                return columnMetadata.getName();
+        if (parent instanceof EntityPath) {
+            Object columnMetadata = ((EntityPath<?>) parent).getMetadata(path);
+            if (columnMetadata instanceof ColumnMetadata) {
+                return ((ColumnMetadata)columnMetadata).getName();
             }
         }
         return path.getMetadata().getName();
