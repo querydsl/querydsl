@@ -6,6 +6,7 @@ import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.Connections;
+import com.mysema.testutil.CustomSuite;
 
 @RunWith(CustomSuite.class)
 public abstract class AbstractSuite {

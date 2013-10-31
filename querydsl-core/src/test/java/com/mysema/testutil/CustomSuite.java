@@ -1,4 +1,4 @@
-package com.mysema.query.suites;
+package com.mysema.testutil;
 
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
