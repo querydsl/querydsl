@@ -157,6 +157,12 @@ public class MetaDataSerializer extends EntitySerializer {
             columnMeta.append("ColumnMetadata");
             columnMeta.append(".named(\"" + metadata.getName() + "\")");
             columnMeta.append(".ofType(" + metadata.getJdbcType() + ")");
+            if (metadata.hasSize()) {
+                columnMeta.append(".withSize(" + metadata.getSize() + ")");
+            }
+            if (metadata.getDigits() > 0) {
+                columnMeta.append(".withDigits(" + metadata.getDigits() + ")");
+            }
             if (!metadata.isNullable()) {
                 columnMeta.append(".notNull()");
             }

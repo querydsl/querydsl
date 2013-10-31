@@ -223,11 +223,18 @@ public class MetaDataExporter {
         String columnName = normalize(columns.getString("COLUMN_NAME"));
         String normalizedColumnName = namingStrategy.normalizeColumnName(columnName);
         int columnType = columns.getInt("DATA_TYPE");
-        int columnSize = columns.getInt("COLUMN_SIZE");
-        int columnDigits = columns.getInt("DECIMAL_DIGITS");
+        Number columnSize = (Number) columns.getObject("COLUMN_SIZE");
+        Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
+        Object charLength = columns.getObject("CHAR_OCTET_LENGTH");
+        if (charLength instanceof Number) {
+            columnSize = (Number)charLength;
+        }
         int nullable = columns.getInt("NULLABLE");
+
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
-        Class<?> clazz = configuration.getJavaType(columnType, columnSize, columnDigits,
+        Class<?> clazz = configuration.getJavaType(columnType,
+                columnSize != null ? columnSize.intValue() : 0,
+                columnDigits != null ? columnDigits.intValue() : 0,
                 tableName, columnName);
         if (clazz == null) {
             throw new IllegalStateException("Found no mapping for " + columnType + " (" + tableName + "." + columnName + ")");
@@ -243,6 +250,12 @@ public class MetaDataExporter {
         ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType);
         if (nullable == DatabaseMetaData.columnNoNulls) {
             column = column.notNull();
+        }
+        if (columnSize != null) {
+            column = column.withSize(columnSize.intValue());
+        }
+        if (columnDigits != null) {
+            column = column.withDigits(columnDigits.intValue());
         }
         property.getData().put("COLUMN", column);
 

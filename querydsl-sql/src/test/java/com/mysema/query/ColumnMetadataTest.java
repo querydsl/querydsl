@@ -14,40 +14,34 @@ import com.mysema.query.sql.domain.QEmployee;
 public class ColumnMetadataTest {
 
     @Test
-    public void defaultColumn() {
+    public void DefaultColumn() {
         ColumnMetadata column = ColumnMetadata.named("Person");
         assertEquals("Person", column.getName());
         assertFalse(column.hasJdbcType());
-        assertFalse(column.hasLength());
-        assertFalse(column.hasPrecisionAndScale());
-        assertTrue(column.isInsertable());
-        assertTrue(column.isUpdateable());
+        assertFalse(column.hasSize());
         assertTrue(column.isNullable());
     }
 
     @Test
-    public void testFullyConfigured() {
-        ColumnMetadata column = ColumnMetadata.named("Person").withLength(10).nonInsertable()
-                .nonUpdateable().notNull().ofType(Types.BIGINT);
+    public void FullyConfigured() {
+        ColumnMetadata column = ColumnMetadata.named("Person").withSize(10)
+                .notNull().ofType(Types.BIGINT);
         assertEquals("Person", column.getName());
         assertTrue(column.hasJdbcType());
         assertEquals(Types.BIGINT, column.getJdbcType());
-        assertTrue(column.hasLength());
-        assertEquals(10, column.getLength());
-        assertFalse(column.hasPrecisionAndScale());
-        assertFalse(column.isInsertable());
-        assertFalse(column.isUpdateable());
+        assertTrue(column.hasSize());
+        assertEquals(10, column.getSize());
         assertFalse(column.isNullable());
     }
 
     @Test
-    public void extractFromRelationalPath() {
+    public void ExtractFromRelationalPath() {
         ColumnMetadata column = ColumnMetadata.getColumnMetadata(QEmployee.employee.id);
         assertEquals("ID", column.getName());
     }
 
     @Test
-    public void fallBackToDefaultWhenMissing() {
+    public void FallBackToDefaultWhenMissing() {
         ColumnMetadata column = ColumnMetadata.getColumnMetadata(QEmployee.employee.salary);
         assertEquals("SALARY", column.getName());
     }

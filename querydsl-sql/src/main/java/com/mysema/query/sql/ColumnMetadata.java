@@ -13,8 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import java.sql.Types;
-
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
@@ -58,7 +56,7 @@ public class ColumnMetadata {
      *             if the name is null
      */
     public static ColumnMetadata named(String name) {
-        return new ColumnMetadata(name, null, true, UNDEFINED, UNDEFINED, UNDEFINED, true, true);
+        return new ColumnMetadata(name, null, true, UNDEFINED, UNDEFINED);
     }
 
     private static int UNDEFINED = -1;
@@ -69,141 +67,65 @@ public class ColumnMetadata {
 
     private final boolean nullable;
 
-    private final int length;
+    private final int size;
 
-    private final int precision;
+    private final int decimalDigits;
 
-    private final int scale;
-
-    private final boolean updateable;
-
-    private final boolean insertable;
-
-    private ColumnMetadata(String name, Integer jdbcType, boolean nullable, int length,
-            int precision, int scale, boolean updateable, boolean insertable) {
+    private ColumnMetadata(String name, Integer jdbcType, boolean nullable, int size,
+            int decimalDigits) {
         this.name = name;
         this.jdbcType = jdbcType;
         this.nullable = nullable;
-        this.length = length;
-        this.precision = precision;
-        this.scale = scale;
-        this.updateable = updateable;
-        this.insertable = insertable;
+        this.size = size;
+        this.decimalDigits = decimalDigits;
     }
 
     public String getName() {
         return name;
     }
 
-    public boolean hasJdbcType() {
-        return jdbcType != null;
-    }
-
-    /**
-     * The JDBC type of this column.
-     *
-     * @see Types
-     * @see ColumnMetadata#hasJdbcType()
-     */
     public int getJdbcType() {
         return jdbcType;
     }
 
-    /**
-     * Returns a new column with the given type information
-     *
-     * @see Types
-     */
+    public boolean hasJdbcType() {
+        return jdbcType != null;
+    }
+
     public ColumnMetadata ofType(int jdbcType) {
-        return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
-                insertable);
+        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
     }
 
     public boolean isNullable() {
         return nullable;
     }
 
-    /**
-     * Returns a new column with a not null constraint
-     */
     public ColumnMetadata notNull() {
-        return new ColumnMetadata(name, jdbcType, false, length, precision, scale, updateable,
-                insertable);
+        return new ColumnMetadata(name, jdbcType, false, size, decimalDigits);
     }
 
-    /**
-     * The length constraint of this column.
-     *
-     * @see ColumnMetadata#hasLength()
-     */
-    public int getLength() {
-        return length;
+    public int getSize() {
+        return size;
     }
 
-    public boolean hasLength() {
-        return length != UNDEFINED;
+    public boolean hasSize() {
+        return size != UNDEFINED;
     }
 
-    /**
-     * Returns a new column with the given length constraint. The length must be > 0.
-     */
-    public ColumnMetadata withLength(int length) {
-        return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
-                insertable);
+    public ColumnMetadata withSize(int size) {
+        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
     }
 
-    /**
-     * Returns the precision of this numeric column.
-     *
-     * @see ColumnMetadata#hasPrecisionAndScale()
-     */
-    public int getPrecision() {
-        return precision;
+    public int getDigits() {
+        return decimalDigits;
     }
 
-    /**
-     * Returns the scale of this numeric column
-     *
-     * @see ColumnMetadata#hasPrecisionAndScale()
-     */
-    public int getScale() {
-        return scale;
+    public boolean hasDigits() {
+        return decimalDigits != UNDEFINED;
     }
 
-    public boolean hasPrecisionAndScale() {
-        return scale != UNDEFINED && precision != UNDEFINED;
+    public ColumnMetadata withDigits(int decimalDigits) {
+        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
     }
 
-    /**
-     * Returns a new column with the given precision and scale constraint. Both
-     * must be > 0.
-     */
-    public ColumnMetadata withPrecisionAndScale(int precision, int scale) {
-        return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
-                insertable);
-    }
-
-    public boolean isUpdateable() {
-        return updateable;
-    }
-
-    /**
-     * Returns a new column with a no-update constraint.
-     */
-    public ColumnMetadata nonUpdateable() {
-        return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, false,
-                insertable);
-    }
-
-    public boolean isInsertable() {
-        return insertable;
-    }
-
-    /**
-     * Returns a new column with a no-insert constraint.
-     */
-    public ColumnMetadata nonInsertable() {
-        return new ColumnMetadata(name, jdbcType, nullable, length, precision, scale, updateable,
-                false);
-    }
 }
