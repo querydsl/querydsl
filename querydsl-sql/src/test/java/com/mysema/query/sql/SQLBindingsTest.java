@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.types.expr.Param;
 
 public class SQLBindingsTest {
 
@@ -33,6 +34,16 @@ public class SQLBindingsTest {
     @Test
     public void TwoArgs() {
         query.from(survey).where(survey.name.eq("Bob"), survey.name2.eq("A"));
+        SQLBindings bindings = query.getSQL(survey.id);
+        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSql());
+        assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
+    }
+
+    @Test
+    public void Params() {
+        Param<String> name = new Param<String>(String.class, "name");
+        query.from(survey).where(survey.name.eq(name), survey.name2.eq("A"));
+        query.set(name, "Bob");
         SQLBindings bindings = query.getSQL(survey.id);
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSql());
         assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());

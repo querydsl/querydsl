@@ -19,11 +19,15 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLListener;
 import com.mysema.query.sql.SQLListeners;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
@@ -54,6 +58,29 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     public void addListener(SQLListener listener) {
         listeners.add(listener);
     }
+
+    protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
+        String queryString = serializer.toString();
+        ImmutableList.Builder<Object> args = ImmutableList.builder();
+        Map<ParamExpression<?>, Object> params = metadata.getParams();
+        for (Object o : serializer.getConstants()) {
+            if (o instanceof ParamExpression) {
+                if (!params.containsKey(o)) {
+                    throw new ParamNotSetException((ParamExpression<?>) o);
+                }
+                o = metadata.getParams().get(o);
+            }
+            args.add(o);
+        }
+        return new SQLBindings(queryString, args.build());
+    }
+
+    /**
+     * Get the SQL string and bindings
+     *
+     * @return
+     */
+    public abstract List<SQLBindings> getSQL();
 
     /**
      * Set the parameters to the given PreparedStatement

@@ -375,6 +375,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 if (!params.containsKey(o)) {
                     throw new ParamNotSetException((ParamExpression<?>) o);
                 }
+                o = queryMixin.getMetadata().getParams().get(o);
             }
             args.add(o);
         }

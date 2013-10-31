@@ -22,6 +22,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -31,6 +32,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
@@ -159,6 +161,23 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             if (stmt != null) {
                 close(stmt);
             }
+        }
+    }
+
+    @Override
+    public List<SQLBindings> getSQL() {
+        if (batches.isEmpty()) {
+            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            serializer.serializeForDelete(metadata, entity);
+            return ImmutableList.of(createBindings(metadata, serializer));
+        } else {
+            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            for (QueryMetadata metadata : batches) {
+                SQLSerializer serializer = new SQLSerializer(configuration, true);
+                serializer.serializeForDelete(metadata, entity);
+                builder.add(createBindings(metadata, serializer));
+            }
+            return builder.build();
         }
     }
 

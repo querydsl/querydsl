@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -39,6 +40,7 @@ import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.types.Null;
@@ -336,6 +338,23 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             if (stmt != null) {
                 close(stmt);
             }
+        }
+    }
+
+    @Override
+    public List<SQLBindings> getSQL() {
+        if (batches.isEmpty()) {
+            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
+            return ImmutableList.of(createBindings(metadata, serializer));
+        } else {
+            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            for (SQLInsertBatch batch : batches) {
+                SQLSerializer serializer = new SQLSerializer(configuration, true);
+                serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
+                builder.add(createBindings(metadata, serializer));
+            }
+            return builder.build();
         }
     }
 

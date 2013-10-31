@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -36,6 +37,7 @@ import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
@@ -262,6 +264,23 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             return executeNativeMerge();
         } else {
             return executeCompositeMerge();
+        }
+    }
+
+    @Override
+    public List<SQLBindings> getSQL() {
+        if (batches.isEmpty()) {
+            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
+            return ImmutableList.of(createBindings(metadata, serializer));
+        } else {
+            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            for (SQLMergeBatch batch : batches) {
+                SQLSerializer serializer = new SQLSerializer(configuration, true);
+                serializer.serializeForMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
+                builder.add(createBindings(metadata, serializer));
+            }
+            return builder.build();
         }
     }
 
