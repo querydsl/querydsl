@@ -2,7 +2,6 @@ package com.mysema.query.suites;
 
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
-import org.junit.runners.Suite.SuiteClasses;
 
 import com.mysema.query.BeanPopulationBase;
 import com.mysema.query.Connections;
