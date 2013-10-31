@@ -115,8 +115,8 @@ public final class JDBCTypeMapping {
         Pair<Integer,Integer> key = Pair.of(size, digits);
         if (numericTypes.containsKey(key)) {
             return numericTypes.get(key);
-        } else if (digits == 0) {
-            if (size > 18) {
+        } else if (digits <= 0) {
+            if (size > 18 || size == 0) {
                 return Long.class;
             } else if (size > 5) {
                 return Integer.class;

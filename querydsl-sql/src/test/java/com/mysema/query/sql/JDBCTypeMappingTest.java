@@ -75,7 +75,7 @@ public class JDBCTypeMappingTest {
         assertEquals(typeMapping.get(Types.NUMERIC, 3, 0),  Short.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 2, 0),  Byte.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 1, 0),  Boolean.class);
-        assertEquals(typeMapping.get(Types.NUMERIC, 0, 0),  Boolean.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 0, 0),  Long.class);
 
         assertEquals(typeMapping.get(Types.NUMERIC, 17, 2), BigDecimal.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 5, 2),  Double.class);
