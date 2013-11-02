@@ -577,7 +577,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    public void getResultSet() throws IOException, SQLException{
+    public void GetResultSet() throws IOException, SQLException{
         ResultSet results = query().from(survey).getResults(survey.id, survey.name);
         while(results.next()) {
             System.out.println(results.getInt(1) +","+results.getString(2));
