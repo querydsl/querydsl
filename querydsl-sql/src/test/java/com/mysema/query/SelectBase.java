@@ -526,6 +526,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(CUBRID)
     public void DateTime_To_Date() {
         query().singleResult(SQLExpressions.date(DateTimeExpression.currentTimestamp()));
     }

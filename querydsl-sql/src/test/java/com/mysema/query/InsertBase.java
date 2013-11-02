@@ -224,7 +224,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, DERBY})
+    @ExcludeIn({HSQLDB, CUBRID, DERBY})
     public void Insert_With_SubQuery2() {
 //        insert into modules(name)
 //        select 'MyModule'
@@ -241,7 +241,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, DERBY})
+    @ExcludeIn({HSQLDB, CUBRID, DERBY})
     public void Insert_With_SubQuery3() {
 //        insert into modules(name)
 //        select 'MyModule'
