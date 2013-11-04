@@ -19,6 +19,7 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -244,9 +245,34 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
+    public Q withRecursive(Path<?> alias, Expression<?> query) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, query);
+    }
+
+    @Override
+    public WithBuilder<Q> withRecursive(Path<?> alias, Path<?>... columns) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, columns);
+    }
+
+    @Override
     public Q with(Path<?> alias, SubQueryExpression<?> target) {
         Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, target);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
+    }
+
+    @Override
+    public Q with(Path<?> alias, Expression<?> query) {
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
+        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
+    }
+
+    @Override
+    public WithBuilder<Q> with(Path<?> alias, Path<?>... columns) {
+        Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
+        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
+        return new WithBuilder<Q>(queryMixin, aliasCombined);
     }
 
     @Override

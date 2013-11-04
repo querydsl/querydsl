@@ -29,6 +29,8 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.sql.UnionUtils;
+import com.mysema.query.sql.WithBuilder;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
@@ -253,6 +255,31 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     public T withRecursive(Path<?> alias, SubQueryExpression<?> query) {
         queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
         return with(alias, query);
+    }
+
+    @Override
+    public T withRecursive(Path<?> alias, Expression<?> query) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, query);
+    }
+
+    @Override
+    public WithBuilder<T> withRecursive(Path<?> alias, Path<?>... columns) {
+        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
+        return with(alias, columns);
+    }
+
+    @Override
+    public T with(Path<?> alias, Expression<?> query) {
+        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
+        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
+    }
+
+    @Override
+    public WithBuilder<T> with(Path<?> alias, Path<?>... columns) {
+        Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
+        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
+        return new WithBuilder<T>(queryMixin, aliasCombined);
     }
 
     @Override

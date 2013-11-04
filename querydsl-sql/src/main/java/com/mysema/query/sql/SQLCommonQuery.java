@@ -271,9 +271,43 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     /**
      * Adds a common table expression
      *
+     * @param alias
+     * @param query
+     * @return
+     */
+    Q with(Path<?> alias, Expression<?> query);
+
+    /**
+     * Adds a common table expression
+     *
+     * @param alias
+     * @param columns
+     * @return
+     */
+    WithBuilder<Q> with(Path<?> alias, Path<?>... columns);
+
+    /**
+     * Adds a common table expression
+     *
      * @return
      */
     Q withRecursive(Path<?> alias, SubQueryExpression<?> o);
 
+    /**
+     * Adds a common table expression
+     *
+     * @param alias
+     * @param query
+     * @return
+     */
+    Q withRecursive(Path<?> alias, Expression<?> query);
 
+    /**
+     * Adds a common table expression
+     *
+     * @param alias
+     * @param columns
+     * @return
+     */
+    WithBuilder<Q> withRecursive(Path<?> alias, Path<?>... columns);
 }

@@ -743,11 +743,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         return with(alias, query);
     }
 
+    @Override
     public Q withRecursive(Path<?> alias, Expression<?> query) {
         queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
         return with(alias, query);
     }
 
+    @Override
     public WithBuilder<Q> withRecursive(Path<?> alias, Path<?>... columns) {
         queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
         return with(alias, columns);
@@ -759,11 +761,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
+    @Override
     public Q with(Path<?> alias, Expression<?> query) {
         Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
+    @Override
     public WithBuilder<Q> with(Path<?> alias, Path<?>... columns) {
         Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
         Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
