@@ -18,6 +18,7 @@
   <properties>
     <hibernate.version>4.2.0.Final</hibernate.version>
     <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
+    <eclipselink.version>2.5.1</eclipselink.version>
   </properties>
   
   <dependencies>   
@@ -97,7 +98,7 @@
     <dependency>
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>eclipselink</artifactId>
-      <version>2.4.0</version>
+      <version>${eclipselink.version}</version>
       <scope>provided</scope>
     </dependency>
     

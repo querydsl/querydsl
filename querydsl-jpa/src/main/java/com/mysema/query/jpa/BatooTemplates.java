@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,17 +13,27 @@
  */
 package com.mysema.query.jpa;
 
+import com.mysema.query.types.Ops;
+
 
 public class BatooTemplates extends JPQLTemplates {
-    
-    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
+
+    public static final JPQLTemplates DEFAULT = new BatooTemplates();
 
     public BatooTemplates() {
         this(DEFAULT_ESCAPE);
     }
-    
+
     public BatooTemplates(char escape) {
-        super(escape);        
+        super(escape);
+        add(JPQLOps.CAST, "cast({0} as {1s})");
+        add(Ops.STRING_CAST, "cast({0} as varchar)");
+        add(Ops.NUMCAST, "cast({0} as {1s})");
     }
-    
+
+    @Override
+    public boolean isPathInEntitiesSupported() {
+        return false;
+    }
+
 }

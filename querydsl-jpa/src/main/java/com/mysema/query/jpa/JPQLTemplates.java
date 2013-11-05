@@ -145,6 +145,10 @@ public class JPQLTemplates extends Templates {
         return false;
     }
 
+    public String getTypeForCast(Class<?> cl) {
+        return cl.getSimpleName().toLowerCase();
+    }
+
     public boolean isEnumInPathSupported() {
         return true;
     }

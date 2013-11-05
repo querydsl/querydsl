@@ -13,10 +13,14 @@
  */
 package com.mysema.query.jpa;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
@@ -49,7 +53,9 @@ public class HQLTemplates extends JPQLTemplates {
             Ops.QuantOps.AVG_IN_COL,
             Ops.EXISTS);
 
-    public static final HQLTemplates DEFAULT = new HQLTemplates();
+    public static final JPQLTemplates DEFAULT = new HQLTemplates();
+
+    private final Map<Class<?>, String> typeNames;
 
     public HQLTemplates() {
         this(DEFAULT_ESCAPE);
@@ -57,11 +63,23 @@ public class HQLTemplates extends JPQLTemplates {
 
     public HQLTemplates(char escape) {
         super(escape, QUERY_HANDLER);
-     // TODO : remove this when Hibernate supports type(alias)
+
+        ImmutableMap.Builder<Class<?>, String> builder = ImmutableMap.builder();
+        builder.put(Byte.class, "byte");
+        builder.put(Short.class, "short");
+        builder.put(Integer.class, "integer");
+        builder.put(Long.class, "long");
+        builder.put(BigInteger.class, "big_integer");
+        builder.put(Float.class, "float");
+        builder.put(Double.class, "double");
+        builder.put(BigDecimal.class, "big_decimal");
+        typeNames = builder.build();
+
+        // TODO : remove this when Hibernate supports type(alias)
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
-     // TODO : remove this when Hibernate supports type(alias)
+        // TODO : remove this when Hibernate supports type(alias)
         add(JPQLOps.TYPE, "{0}.class");
-     // TODO : remove this when Hibernate supports member of properly
+        // TODO : remove this when Hibernate supports member of properly
         add(JPQLOps.MEMBER_OF, "{0} in elements({1})");
         add(JPQLOps.NOT_MEMBER_OF, "{0} not in elements({1})");
 
@@ -87,6 +105,11 @@ public class HQLTemplates extends JPQLTemplates {
     @Override
     public boolean isTypeAsString() {
         return true;
+    }
+
+    @Override
+    public String getTypeForCast(Class<?> cl) {
+        return typeNames.get(cl);
     }
 
     @Override

@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1017,6 +1018,33 @@ public abstract class AbstractJPATest {
     public void Order() {
         NumberPath<Double> weight = new NumberPath<Double>(Double.class, "weight");
         query().from(cat).orderBy(weight.asc()).list(cat.bodyWeight.as(weight));
+    }
+
+    @Test
+    public void Order_StringValue() {
+        int count = (int)query().from(cat).count();
+        assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().asc()).list(cat).size());
+    }
+
+    @Test
+    @NoBatooJPA // can't be parsed
+    public void Order_StringValue_To_Integer() {
+        int count = (int)query().from(cat).count();
+        assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().castToNum(Integer.class).asc()).list(cat).size());
+    }
+
+    @Test
+    @NoBatooJPA // can't be parsed
+    public void Order_StringValue_ToLong() {
+        int count = (int)query().from(cat).count();
+        assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().castToNum(Long.class).asc()).list(cat).size());
+    }
+
+    @Test
+    @NoBatooJPA // can't be parsed
+    public void Order_StringValue_ToBigInteger() {
+        int count = (int)query().from(cat).count();
+        assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().castToNum(BigInteger.class).asc()).list(cat).size());
     }
 
     @Test

@@ -171,7 +171,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void Null_as_uniqueResult() {
+    public void Null_As_UniqueResult() {
         SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
                 .uniqueResult(cat.name));

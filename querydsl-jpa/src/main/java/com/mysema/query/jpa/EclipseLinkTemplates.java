@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,11 @@
  */
 package com.mysema.query.jpa;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 import com.mysema.query.types.Ops;
 
 /**
@@ -22,9 +27,9 @@ import com.mysema.query.types.Ops;
  *
  */
 public class EclipseLinkTemplates extends JPQLTemplates {
-    
+
     private static final QueryHandler QUERY_HANDLER;
-    
+
     static {
         QueryHandler instance;
         try {
@@ -40,33 +45,54 @@ public class EclipseLinkTemplates extends JPQLTemplates {
 
     public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
 
+    private final Map<Class<?>, String> typeNames;
+
     public EclipseLinkTemplates() {
         this(DEFAULT_ESCAPE);
     }
-    
-    public EclipseLinkTemplates(char escape) {
-        super(escape, QUERY_HANDLER);        
-        add(Ops.STRING_CAST, "cast({0} as varchar)");        
-        add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 
-		add(Ops.DateTimeOps.MILLISECOND, "extract(microsecond from {0})");
-		add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
-		add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
-		add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
-		add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
-		add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
-		add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
+    public EclipseLinkTemplates(char escape) {
+        super(escape, QUERY_HANDLER);
+
+        ImmutableMap.Builder<Class<?>, String> builder = ImmutableMap.builder();
+        builder.put(Short.class, "short");
+        builder.put(Integer.class, "integer");
+        builder.put(Long.class, "bigint");
+        builder.put(BigInteger.class, "bigint");
+        builder.put(Float.class, "float");
+        builder.put(Double.class, "double");
+        builder.put(BigDecimal.class, "double");
+        typeNames = builder.build();
+
+        add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
+        add(JPQLOps.CAST, "cast({0} {1s})");
+        add(Ops.STRING_CAST, "cast({0} varchar(255))");
+        add(Ops.NUMCAST, "cast({0} {1s})");
+
+        // datetime
+        add(Ops.DateTimeOps.MILLISECOND, "extract(microsecond from {0})");
+        add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
+        add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
+        add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
+        add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
+        add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
     }
-    
+
+    @Override
+    public String getTypeForCast(Class<?> cl) {
+        return typeNames.get(cl);
+    }
+
     @Override
     public boolean isPathInEntitiesSupported() {
         return false;
     }
-    
+
     @Override
     public boolean isSelect1Supported() {
         return true;
     }
-    
-    
+
+
 }

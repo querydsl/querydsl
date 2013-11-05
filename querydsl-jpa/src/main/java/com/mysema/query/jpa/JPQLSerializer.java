@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -403,7 +402,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private void visitNumCast(List<? extends Expression<?>> args) {
         final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
-        final String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
+        final String typeName = templates.getTypeForCast(targetType);
         visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
     }
 

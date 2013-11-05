@@ -21,8 +21,7 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="derby-eclipselink"
-        transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="derby-eclipselink" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -33,8 +32,7 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="derby-openjpa"
-        transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="derby-openjpa" transaction-type="RESOURCE_LOCAL">
         <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -60,8 +58,7 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="hsqldb-eclipselink"
-        transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="hsqldb-eclipselink" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -103,8 +100,7 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="h2-eclipselink"
-        transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="h2-eclipselink" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -215,13 +211,12 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="mysql-eclipselink"
-        transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="mysql-eclipselink" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/querydsl" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/querydsl2" />
             <property name="javax.persistence.jdbc.user" value="querydsl" />
             <property name="javax.persistence.jdbc.password" value="querydsl" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
@@ -243,6 +238,19 @@
             <!-- <property name="hibernate.show_sql" value="true"/> -->
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
+        </properties>
+    </persistence-unit>
+    
+    <persistence-unit name="postgres-eclipselink" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/querydsl2" />
+            <property name="javax.persistence.jdbc.user" value="querydsl" />
+            <property name="javax.persistence.jdbc.password" value="querydsl" />
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
         </properties>
     </persistence-unit>
 
