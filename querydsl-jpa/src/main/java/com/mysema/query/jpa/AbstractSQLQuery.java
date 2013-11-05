@@ -105,6 +105,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
+    public T fullJoin(Expression<?> o) {
+        return queryMixin.fullJoin(o);
+    }
+
+    @Override
     public T fullJoin(RelationalPath<?> o) {
         return queryMixin.fullJoin(o);
     }
@@ -129,6 +134,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
+    public T innerJoin(Expression<?> o) {
+        return queryMixin.innerJoin(o);
+    }
+
+    @Override
     public T innerJoin(RelationalPath<?> o) {
         return queryMixin.innerJoin(o);
     }
@@ -149,6 +159,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
+    public T join(Expression<?> target) {
+        return queryMixin.join(target);
+    }
+
+    @Override
     public T join(RelationalPath<?> o) {
         return queryMixin.join(o);
     }
@@ -166,6 +181,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     @Override
     public T join(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.join(o, alias);
+    }
+
+    @Override
+    public T leftJoin(Expression<?> o) {
+        return queryMixin.leftJoin(o);
     }
 
     @Override
@@ -195,6 +215,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     @Override
     public T on(Predicate... conditions) {
         return queryMixin.on(conditions);
+    }
+
+    @Override
+    public T rightJoin(Expression<?> o) {
+        return queryMixin.rightJoin(o);
     }
 
     @Override
