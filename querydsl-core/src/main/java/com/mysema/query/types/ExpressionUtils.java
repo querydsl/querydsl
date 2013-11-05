@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,15 +25,15 @@ import com.mysema.query.QueryException;
 
 
 /**
- * ExpressionUtils provides utilities for constructing common operation instances. This class is 
+ * ExpressionUtils provides utilities for constructing common operation instances. This class is
  * used internally in Querydsl and is not suitable to be used in cases where DSL methods are needed,
  * since the Expression implementations used in this class are minimal internal implementations.
- * 
+ *
  * @author tiwe
  *
  */
 public final class ExpressionUtils {
-        
+
     /**
      * @param col
      * @return
@@ -51,10 +51,10 @@ public final class ExpressionUtils {
     public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
         return OperationImpl.create((Class<T>)col.getParameter(0), Ops.QuantOps.ANY, col);
     }
-            
+
     /**
      * Create the intersection of the given arguments
-     * 
+     *
      * @param exprs
      * @return
      */
@@ -63,15 +63,15 @@ public final class ExpressionUtils {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
-                rv = rv == null ? b : ExpressionUtils.and(rv,b);    
-            }            
+                rv = rv == null ? b : ExpressionUtils.and(rv,b);
+            }
         }
         return rv;
     }
-    
+
     /**
      * Create the intersection of the given arguments
-     * 
+     *
      * @param exprs
      * @return
      */
@@ -80,15 +80,15 @@ public final class ExpressionUtils {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
-                rv = rv == null ? b : ExpressionUtils.and(rv,b);    
-            }            
+                rv = rv == null ? b : ExpressionUtils.and(rv,b);
+            }
         }
         return rv;
     }
 
     /**
      * Create the intersection of the given arguments
-     * 
+     *
      * @param left
      * @param right
      * @return
@@ -96,11 +96,11 @@ public final class ExpressionUtils {
     public static Predicate and(Predicate left, Predicate right) {
         return PredicateOperation.create(Ops.AND, left, right);
     }
-    
+
 
     /**
      * Create the union of the given arguments
-     * 
+     *
      * @param exprs
      * @return
      */
@@ -109,15 +109,15 @@ public final class ExpressionUtils {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
-                rv = rv == null ? b : ExpressionUtils.or(rv,b);    
-            }            
+                rv = rv == null ? b : ExpressionUtils.or(rv,b);
+            }
         }
         return rv;
     }
-    
+
     /**
      * Create the union of the given arguments
-     * 
+     *
      * @param exprs
      * @return
      */
@@ -126,15 +126,15 @@ public final class ExpressionUtils {
         Predicate rv = null;
         for (Predicate b : exprs) {
             if (b != null) {
-                rv = rv == null ? b : ExpressionUtils.or(rv,b);    
-            }            
+                rv = rv == null ? b : ExpressionUtils.or(rv,b);
+            }
         }
         return rv;
     }
-        
+
     /**
      * Create an alias expression (source as alias) with the given source and alias
-     * 
+     *
      * @param <D>
      * @param source
      * @param alias
@@ -143,10 +143,10 @@ public final class ExpressionUtils {
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
         return OperationImpl.create(alias.getType(), Ops.ALIAS, source, alias);
     }
-    
+
     /**
      * Create an alias expression (source as alias) with the given source and alias
-     * 
+     *
      * @param <D>
      * @param source
      * @param alias
@@ -163,10 +163,10 @@ public final class ExpressionUtils {
     public static Expression<Long> count(Expression<?> source) {
         return OperationImpl.create(Long.class, Ops.AggOps.COUNT_AGG, source);
     }
-    
+
     /**
      * Create an left equals constant expression
-     * 
+     *
      * @param <D>
      * @param left
      * @param constant
@@ -175,10 +175,10 @@ public final class ExpressionUtils {
     public static <D> Predicate eqConst(Expression<D> left, D constant) {
         return eq(left, new ConstantImpl<D>(constant));
     }
-    
+
     /**
      * Create an left equals right expression
-     * 
+     *
      * @param <D>
      * @param left
      * @param right
@@ -187,10 +187,10 @@ public final class ExpressionUtils {
     public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
         return PredicateOperation.create(Ops.EQ, left, right);
     }
-    
+
     /**
      * Create an left in right expression
-     * 
+     *
      * @param <D>
      * @param left
      * @param right
@@ -199,10 +199,10 @@ public final class ExpressionUtils {
     public static <D> Predicate in(Expression<D> left, CollectionExpression<?,? extends D> right) {
         return PredicateOperation.create(Ops.IN, left, right);
     }
-    
+
     /**
      * Create an left in right expression
-     * 
+     *
      * @param <D>
      * @param left
      * @param right
@@ -215,37 +215,37 @@ public final class ExpressionUtils {
             return PredicateOperation.create(Ops.IN, left, new ConstantImpl<Collection<?>>(right));
         }
     }
-    
+
     /**
      * Create a left is null expression
-     * 
+     *
      * @param left
      * @return
      */
     public static Predicate isNull(Expression<?> left) {
         return PredicateOperation.create(Ops.IS_NULL, left);
     }
-    
+
     /**
      * Create a left is not null expression
-     * 
+     *
      * @param left
      * @return
      */
     public static Predicate isNotNull(Expression<?> left) {
         return PredicateOperation.create(Ops.IS_NOT_NULL, left);
-    }   
-    
+    }
+
     /**
      * Convert the given like pattern to a regex pattern
-     * 
+     *
      * @param expr
      * @return
-     */    
+     */
     public static Expression<String> likeToRegex(Expression<String> expr) {
         return likeToRegex(expr, true);
     }
-    
+
 
     @SuppressWarnings("unchecked")
     public static Expression<String> likeToRegex(Expression<String> expr, boolean matchStartAndEnd) {
@@ -257,14 +257,14 @@ public final class ExpressionUtils {
                 rv.append('^');
             }
             for (int i = 0; i < like.length(); i++) {
-                char ch = like.charAt(i);                
+                char ch = like.charAt(i);
                 if (ch == '.' || ch == '*' || ch == '?') {
                     rv.append('\\');
                 } else if (ch == '%') {
-                    rv.append(".*"); 
+                    rv.append(".*");
                     continue;
                 } else if (ch == '_') {
-                    rv.append('.'); 
+                    rv.append('.');
                     continue;
                 }
                 rv.append(ch);
@@ -273,21 +273,21 @@ public final class ExpressionUtils {
                 rv.append('$');
             }
             if (!like.equals(rv.toString())) {
-                return ConstantImpl.create(rv.toString());    
-            }            
+                return ConstantImpl.create(rv.toString());
+            }
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0), false);
                 Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1), false);
                 if (lhs != o.getArg(0) || rhs != o.getArg(1)) {
-                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);    
-                }                
+                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
+                }
             }
         }
         return expr;
     }
-    
+
     /**
      * @param exprs
      * @return
@@ -295,23 +295,28 @@ public final class ExpressionUtils {
     public static <T> Expression<T> list(Class<T> clazz, Expression<?>... exprs) {
         return list(clazz, ImmutableList.copyOf(exprs));
     }
-    
+
 
     /**
      * @param exprs
      * @return
      */
-    public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {        
+    public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
         Expression<T> rv = (Expression<T>)exprs.get(0);
-        for (int i = 1; i < exprs.size(); i++) {
-            rv = OperationImpl.create(clazz, Ops.LIST, rv, exprs.get(i));
+        if (exprs.size() == 1) {
+            rv = OperationImpl.create(clazz, Ops.SINGLETON, rv, exprs.get(0));
+        } else {
+            for (int i = 1; i < exprs.size(); i++) {
+                rv = OperationImpl.create(clazz, Ops.LIST, rv, exprs.get(i));
+            }
         }
+
         return rv;
-    }    
-        
+    }
+
     @SuppressWarnings("unchecked")
     public static Expression<String> regexToLike(Expression<String> expr) {
-        if (expr instanceof Constant<?>) {           
+        if (expr instanceof Constant<?>) {
             final String str = expr.toString();
             final StringBuilder rv = new StringBuilder(str.length() + 2);
             boolean escape = false;
@@ -331,30 +336,30 @@ public final class ExpressionUtils {
                 } else if (!escape && (ch == '[' || ch == ']' || ch == '^' || ch == '.' || ch == '*')) {
                     throw new QueryException("'" + str + "' can't be converted to like form");
                 } else if (escape && (ch == 'd' || ch == 'D' || ch == 's' || ch == 'S' || ch == 'w' || ch == 'W')) {
-                    throw new QueryException("'" + str + "' can't be converted to like form");                    
+                    throw new QueryException("'" + str + "' can't be converted to like form");
                 }
                 rv.append(ch);
                 escape = false;
             }
             if (!rv.toString().equals(str)) {
                 return ConstantImpl.create(rv.toString());
-            }            
+            }
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
                 Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
                 if (lhs != o.getArg(0) || rhs != o.getArg(1)) {
-                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);    
-                }                
-            }            
+                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
+                }
+            }
         }
         return expr;
     }
-    
+
     /**
      * Create a left not equals constant expression
-     * 
+     *
      * @param <D>
      * @param left
      * @param constant
@@ -363,10 +368,10 @@ public final class ExpressionUtils {
     public static <D> Predicate neConst(Expression<D> left, D constant) {
         return ne(left, new ConstantImpl<D>(constant));
     }
-    
+
     /**
      * Create a left not equals right expression
-     * 
+     *
      * @param <D>
      * @param left
      * @param right
@@ -375,10 +380,10 @@ public final class ExpressionUtils {
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
         return PredicateOperation.create(Ops.NE, left, right);
     }
-    
+
     /**
      * Create a left or right expression
-     * 
+     *
      * @param left
      * @param right
      * @return
@@ -386,7 +391,7 @@ public final class ExpressionUtils {
     public static Predicate or(Predicate left, Predicate right) {
         return PredicateOperation.create(Ops.OR, left, right);
     }
-    
+
     /**
      * @param args
      * @return
@@ -401,7 +406,7 @@ public final class ExpressionUtils {
         }
         return builder.build();
     }
-    
+
     /**
      * @param args
      * @return
@@ -418,7 +423,7 @@ public final class ExpressionUtils {
         }
         return builder.build();
     }
-    
+
     /**
      * @param expr
      * @return
@@ -428,10 +433,10 @@ public final class ExpressionUtils {
         if (clazz == PathImpl.class || clazz == PredicateOperation.class || clazz == ConstantImpl.class) {
             return expr;
         } else {
-            return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);    
-        }        
+            return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);
+        }
     }
-    
+
     private ExpressionUtils() {}
-    
+
 }

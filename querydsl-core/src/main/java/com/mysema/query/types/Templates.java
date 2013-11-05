@@ -45,6 +45,7 @@ public class Templates {
         //CHECKSTYLE:OFF
 
         add(Ops.LIST, "{0}, {1}", 40);
+        add(Ops.SINGLETON, "{0}", 40);
         add(Ops.WRAPPED, "({0})");
 
         // boolean

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -105,9 +105,9 @@ public class CoverageTest {
             Ops.ARRAY_SIZE,
             Ops.MOD,
             Ops.STRING_CAST,
-//            Ops.DELEGATE,            
+//            Ops.DELEGATE,
             Ops.WRAPPED,
-            
+
             Ops.XOR,
             Ops.XNOR,
 
@@ -118,10 +118,11 @@ public class CoverageTest {
             Ops.CASE_EQ_ELSE,
 
             Ops.LIST,
+            Ops.SINGLETON,
             Ops.COALESCE,
             Ops.ORDINAL, // TODO: add support
             Ops.MATCHES_IC,
-            
+
             // aggregation
             Ops.AggOps.AVG_AGG,
             Ops.AggOps.MAX_AGG,

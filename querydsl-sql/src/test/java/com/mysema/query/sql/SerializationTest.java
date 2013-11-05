@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,43 +25,44 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.path.PathBuilder;
 
 public class SerializationTest {
-    
+
     private static final QSurvey survey = QSurvey.survey;
-    
+
     private final Connection connection = EasyMock.createMock(Connection.class);
 
     @Test
-    public void InnerJoin() {        
+    public void InnerJoin() {
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).innerJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\ninner join SURVEY s2", query.toString());
     }
-    
+
     @Test
-    public void LeftJoin() {        
+    public void LeftJoin() {
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).leftJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nleft join SURVEY s2", query.toString());
     }
-    
+
     @Test
-    public void RightJoin() {        
+    public void RightJoin() {
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).rightJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nright join SURVEY s2", query.toString());
     }
-    
+
     @Test
-    public void FullJoin() {        
+    public void FullJoin() {
         SQLQuery query = new SQLQuery(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).fullJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nfull join SURVEY s2", query.toString());
     }
-        
+
     @Test
     public void Update() {
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
@@ -69,7 +70,7 @@ public class SerializationTest {
         updateClause.set(survey.name, (String)null);
         assertEquals("update SURVEY\nset ID = ?, NAME = ?", updateClause.toString());
     }
-    
+
     @Test
     public void Update_Where() {
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
@@ -78,7 +79,7 @@ public class SerializationTest {
         updateClause.where(survey.name.eq("XXX"));
         assertEquals("update SURVEY\nset ID = ?, NAME = ?\nwhere SURVEY.NAME = ?", updateClause.toString());
     }
-    
+
     @Test
     public void Insert() {
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
@@ -86,7 +87,7 @@ public class SerializationTest {
         insertClause.set(survey.name, (String)null);
         assertEquals("insert into SURVEY (ID, NAME)\nvalues (?, ?)", insertClause.toString());
     }
-    
+
     @Test
     public void Delete_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
@@ -106,7 +107,7 @@ public class SerializationTest {
         serializer.serialize(sq.getMetadata(), false);
         assertEquals("select nextval('myseq')\nfrom SURVEY SURVEY", serializer.toString());
     }
-    
+
     @Test
     public void FunctionCall() {
         RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
@@ -115,7 +116,7 @@ public class SerializationTest {
         SubQueryExpression<?> expr = sq.from(survey)
             .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not())
             .list(survey.name);
-        
+
         SQLSerializer serializer = new SQLSerializer(new Configuration(new SQLServerTemplates()));
         serializer.serialize(expr.getMetadata(), false);
         assertEquals("select SURVEY.NAME\n" +
@@ -124,7 +125,7 @@ public class SerializationTest {
                 "on not SURVEY.NAME like tokFunc.prop escape '\\'", serializer.toString());
 
     }
-    
+
     @Test
     public void FunctionCall2() {
         RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
@@ -132,55 +133,79 @@ public class SerializationTest {
         SQLQuery q = new SQLQuery(new SQLServerTemplates());
         q.from(survey)
             .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
-        
+
         assertEquals("from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?) as tokFunc\n" +
                 "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
     }
-    
+
     @Test
     public void Union() {
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
         q.union(new SQLSubQuery().from(survey).list(survey.all()),
                 new SQLSubQuery().from(survey).list(survey.all()));
-        
+
         assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)\n" +
             "union\n" +
             "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)", q.toString());
-                
+
     }
-    
+
     @Test
     public void Union_GroupBy() {
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
         q.union(new SQLSubQuery().from(survey).list(survey.all()),
                 new SQLSubQuery().from(survey).list(survey.all()))
                 .groupBy(survey.id);
-        
+
         assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)\n" +
             "union\n" +
             "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)\n"+
             "group by SURVEY.ID", q.toString());
-                
+
     }
-    
+
     @Test
     public void Union2() {
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
-        q.union(survey, 
+        q.union(survey,
                 new SQLSubQuery().from(survey).list(survey.all()),
                 new SQLSubQuery().from(survey).list(survey.all()));
-        
+
         assertEquals("from ((select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n"+
             "from SURVEY SURVEY)\n" +
             "union\n" +
             "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)) as SURVEY", q.toString());
-                
+
     }
-    
+
+    @Test
+    public void With() {
+        QSurvey survey2 = new QSurvey("survey2");
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
+        q.with(survey, survey.id, survey.name).as(
+                new SQLSubQuery().from(survey2).list(survey2.id, survey2.name));
+
+        assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
+            "from SURVEY survey2)\n\n" +
+            "from dual", q.toString());
+    }
+
+    @Test
+    public void With_SingleColumn() {
+        QSurvey survey2 = new QSurvey("survey2");
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
+        q.with(survey, new Path[]{ survey.id }).as(
+                new SQLSubQuery().from(survey2).list(survey2.id));
+
+        assertEquals("with SURVEY (ID) as (select survey2.ID\n" +
+            "from SURVEY survey2)\n\n" +
+            "from dual", q.toString());
+    }
+
 }

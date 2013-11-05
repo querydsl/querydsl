@@ -45,6 +45,8 @@ public final class Ops {
 
     public static final Operator<Object>  LIST = new OperatorImpl<Object>(NS, "LIST");
 
+    public static final Operator<Object>  SINGLETON = new OperatorImpl<Object>(NS, "SINGLETON");
+
     public static final Operator<Integer> ORDINAL = new OperatorImpl<Integer>(NS, "ORDINAL");
 
     public static final Operator<Object>  WRAPPED = new OperatorImpl<Object>(NS, "WRAPPED");
