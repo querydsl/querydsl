@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql.types;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Common abstract superclass for Type implementations
  *
@@ -21,6 +24,12 @@ package com.mysema.query.sql.types;
  * @param <T>
  */
 public abstract class AbstractType<T> implements Type<T> {
+
+    private static final Calendar UTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+
+    protected static Calendar utc() {
+        return (Calendar) UTC.clone();
+    }
 
     private final int type;
 

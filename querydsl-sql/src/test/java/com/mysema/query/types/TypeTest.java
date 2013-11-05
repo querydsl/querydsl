@@ -83,11 +83,11 @@ public class TypeTest implements InvocationHandler{
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (args.length == 2) {
+        if (method.getName().startsWith("get")) {
+            return value;
+        } else {
             value = args[1];
             return null;
-        } else {
-            return value;
         }
     }
 
@@ -138,7 +138,7 @@ public class TypeTest implements InvocationHandler{
             Type type = (Type) pair.getSecond();
             assertNull(type.getValue(resultSet, 0));
             type.setValue(statement, 0, pair.getFirst());
-            assertEquals(pair.getFirst(), type.getValue(resultSet, 0));
+            assertEquals(type.toString(), pair.getFirst(), type.getValue(resultSet, 0));
         }
     }
 

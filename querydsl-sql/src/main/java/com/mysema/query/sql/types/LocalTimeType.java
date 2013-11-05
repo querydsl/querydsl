@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Types;
 
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
 
 /**
@@ -44,13 +45,13 @@ public class LocalTimeType extends AbstractType<LocalTime> {
 
     @Override
     public LocalTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Time time = rs.getTime(startIndex);
-        return time != null ? new LocalTime(time.getTime()) : null;
+        Time time = rs.getTime(startIndex, utc());
+        return time != null ? new LocalTime(time.getTime(), DateTimeZone.UTC) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalTime value) throws SQLException {
-        st.setTime(startIndex, new Time(value.toDateTimeToday().getMillis()));
+        st.setTime(startIndex, new Time(value.toDateTimeToday(DateTimeZone.UTC).getMillis()), utc());
     }
 
 }
