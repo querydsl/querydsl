@@ -557,6 +557,16 @@ query.from(employee)
 ]]></programlisting>
   
   </sect2>
+  
+  <sect2>
+  
+    <title>Other SQL expressions</title>
+    
+    <para>
+    Other SQL expressions are also available from the <code>SQLExpressions</code> class as static methods.
+    </para>
+  
+  </sect2>
 
   <sect2>
 

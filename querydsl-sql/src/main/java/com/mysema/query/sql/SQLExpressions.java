@@ -394,6 +394,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Start a window function expression
+     *
      * @param expr
      * @return
      */
@@ -402,6 +404,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Start a window function expression
+     *
      * @param expr
      * @return
      */
@@ -410,6 +414,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Start a window function expression
+     *
      * @param expr
      * @return
      */
@@ -418,6 +424,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Start a window function expression
+     *
      * @param expr
      * @return
      */
@@ -426,6 +434,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Start a window function expression
+     *
      * @param expr
      * @return
      */
@@ -501,6 +511,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Get the rhs leftmost characters of lhs
+     *
      * @param lhs
      * @param rhs
      * @return
@@ -510,6 +522,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Get the rhs rightmost characters of lhs
+     *
      * @param lhs
      * @param rhs
      * @return
@@ -519,6 +533,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Get the rhs leftmost characters of lhs
+     *
      * @param lhs
      * @param rhs
      * @return
@@ -528,6 +544,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * Get the rhs leftmost characters of lhs
+     *
      * @param lhs
      * @param rhs
      * @return
