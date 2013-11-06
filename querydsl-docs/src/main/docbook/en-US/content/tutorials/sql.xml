@@ -299,7 +299,7 @@ WHERE c.first_name = 'Bob'
         <para>MySQLTemplates (tested with MySQL 5.5)</para>
       </listitem>
       <listitem>
-        <para>OracleTemplates (test with Oracle XE 10.2.0.1.0)</para>
+        <para>OracleTemplates (test with Oracle 10 and 11)</para>
       </listitem>
       <listitem>
         <para>PostgresTemplates (tested with 9.1)</para>
@@ -308,7 +308,13 @@ WHERE c.first_name = 'Bob'
         <para>SQLiteTemplates (tested with xerial JDBC 3.7.2)</para>
       </listitem>
       <listitem>
-        <para>SQLServerTemplates (tested with SQL Server 2008)</para>
+        <para>SQLServerTemplates (tested with SQL Serve)</para>
+      </listitem>
+      <listitem>
+        <para>SQLServer2005Templates (for SQL Server 2005 and 2008)</para>
+      </listitem>
+      <listitem>
+        <para>SQLServer2012Templates (for SQL Server 2012 and later)</para>
       </listitem>
     </itemizedlist>
 
