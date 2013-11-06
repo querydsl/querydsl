@@ -308,7 +308,7 @@ WHERE c.first_name = 'Bob'
         <para>SQLiteTemplates (tested with xerial JDBC 3.7.2)</para>
       </listitem>
       <listitem>
-        <para>SQLServerTemplates (tested with SQL Serve)</para>
+        <para>SQLServerTemplates (tested with SQL Server)</para>
       </listitem>
       <listitem>
         <para>SQLServer2005Templates (for SQL Server 2005 and 2008)</para>

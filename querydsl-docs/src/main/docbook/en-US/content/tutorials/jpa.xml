@@ -646,6 +646,17 @@ JPASQLQuery query = new JPASQLQuery(entityManager, templates);
 List<String> names = query.from(cat).list(cat.name);
 ]]></programlisting>
 
+    <para>If you mix entity (e.g. QCat) and table (e.g. SAnimal) references in your query you need to make sure that they 
+    use the same variable names. SAnimal.animal has the variable name "animal", so a new instance
+    (new SAnimal("cat")) was used instead.</para>
+    
+    <para>An alternative pattern could be</para>
+    
+    <programlisting language="java"><![CDATA[
+QCat catEntity = QCat.cat;    
+SAnimal cat = new SAnimal(catEntity.getMetadata().getName());
+]]></programlisting>      
+
     <para>Query multiple columns:</para>
 
     <programlisting language="java"><![CDATA[
