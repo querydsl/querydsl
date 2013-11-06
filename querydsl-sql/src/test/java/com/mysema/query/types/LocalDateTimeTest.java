@@ -10,6 +10,7 @@ import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mysema.query.sql.types.LocalDateTimeType;
@@ -19,6 +20,11 @@ public class LocalDateTimeTest {
     private static final Calendar UTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
     private LocalDateTimeType type = new LocalDateTimeType();
+
+    @BeforeClass
+    public static void setUpClass() {
+        UTC.setTimeInMillis(0);
+    }
 
     @Test
     public void Set() throws SQLException {

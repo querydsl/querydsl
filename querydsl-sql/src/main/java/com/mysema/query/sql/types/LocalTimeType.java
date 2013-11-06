@@ -51,7 +51,7 @@ public class LocalTimeType extends AbstractType<LocalTime> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalTime value) throws SQLException {
-        st.setTime(startIndex, new Time(value.toDateTimeToday(DateTimeZone.UTC).getMillis()), utc());
+        st.setTime(startIndex, new Time(value.getMillisOfDay()), utc());
     }
 
 }
