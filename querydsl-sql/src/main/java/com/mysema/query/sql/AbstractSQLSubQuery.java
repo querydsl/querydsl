@@ -130,11 +130,6 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q fullJoin(Expression<?> target) {
-        return queryMixin.fullJoin(target);
-    }
-
-    @Override
     public Q fullJoin(RelationalPath<?> target) {
         return queryMixin.fullJoin(target);
     }
@@ -152,11 +147,6 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     @Override
     public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
-    }
-
-    @Override
-    public Q innerJoin(Expression<?> target) {
-        return queryMixin.innerJoin(target);
     }
 
     @Override
@@ -180,11 +170,6 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q join(Expression<?> target) {
-        return queryMixin.join(target);
-    }
-
-    @Override
     public Q join(RelationalPath<?> target) {
         return queryMixin.join(target);
     }
@@ -202,11 +187,6 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     @Override
     public Q join(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.join(target, alias);
-    }
-
-    @Override
-    public Q leftJoin(Expression<?> target) {
-        return queryMixin.leftJoin(target);
     }
 
     @Override
@@ -236,11 +216,6 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     @Override
     public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
-    }
-
-    @Override
-    public Q rightJoin(Expression<?> target) {
-        return queryMixin.rightJoin(target);
     }
 
     @Override
