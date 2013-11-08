@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,16 +43,6 @@ import com.mysema.query.Tuple;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.QTuple;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -243,11 +234,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     @Override
     @SuppressWarnings("unchecked")
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
-        return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
+        return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
     }
 
     @Override
-    public Q fullJoin(RelationalPath<?> target) {
+    public Q fullJoin(EntityPath<?> target) {
         return queryMixin.fullJoin(target);
     }
 
@@ -267,7 +258,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     @Override
-    public Q innerJoin(RelationalPath<?> target) {
+    public Q innerJoin(EntityPath<?> target) {
         return queryMixin.innerJoin(target);
     }
 
@@ -287,7 +278,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     @Override
-    public Q join(RelationalPath<?> target) {
+    public Q join(EntityPath<?> target) {
         return queryMixin.join(target);
     }
 
@@ -307,7 +298,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     @Override
-    public Q leftJoin(RelationalPath<?> target) {
+    public Q leftJoin(EntityPath<?> target) {
         return queryMixin.leftJoin(target);
     }
 
@@ -327,7 +318,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     @Override
-    public Q rightJoin(RelationalPath<?> target) {
+    public Q rightJoin(EntityPath<?> target) {
         return queryMixin.rightJoin(target);
     }
 

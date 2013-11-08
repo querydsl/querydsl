@@ -21,13 +21,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
+import com.mysema.query.types.*;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -130,7 +124,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q fullJoin(RelationalPath<?> target) {
+    public Q fullJoin(EntityPath<?> target) {
         return queryMixin.fullJoin(target);
     }
 
@@ -150,7 +144,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q innerJoin(RelationalPath<?> target) {
+    public Q innerJoin(EntityPath<?> target) {
         return queryMixin.innerJoin(target);
     }
 
@@ -170,7 +164,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q join(RelationalPath<?> target) {
+    public Q join(EntityPath<?> target) {
         return queryMixin.join(target);
     }
 
@@ -190,7 +184,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q leftJoin(RelationalPath<?> target) {
+    public Q leftJoin(EntityPath<?> target) {
         return queryMixin.leftJoin(target);
     }
 
@@ -219,7 +213,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public Q rightJoin(RelationalPath<?> target) {
+    public Q rightJoin(EntityPath<?> target) {
         return queryMixin.rightJoin(target);
     }
 
