@@ -33,12 +33,7 @@ import com.mysema.query.sql.WithBuilder;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
@@ -101,11 +96,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     @Override
     @SuppressWarnings("unchecked")
     public T from(SubQueryExpression<?> subQuery, Path<?> alias) {
-        return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
+        return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
     }
 
     @Override
-    public T fullJoin(RelationalPath<?> o) {
+    public T fullJoin(EntityPath<?> o) {
         return queryMixin.fullJoin(o);
     }
 
@@ -129,7 +124,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
-    public T innerJoin(RelationalPath<?> o) {
+    public T innerJoin(EntityPath<?> o) {
         return queryMixin.innerJoin(o);
     }
 
@@ -149,7 +144,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
-    public T join(RelationalPath<?> o) {
+    public T join(EntityPath<?> o) {
         return queryMixin.join(o);
     }
 
@@ -169,7 +164,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
-    public T leftJoin(RelationalPath<?> o) {
+    public T leftJoin(EntityPath<?> o) {
         return queryMixin.leftJoin(o);
     }
 
@@ -198,7 +193,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
     }
 
     @Override
-    public T rightJoin(RelationalPath<?> o) {
+    public T rightJoin(EntityPath<?> o) {
         return queryMixin.rightJoin(o);
     }
 

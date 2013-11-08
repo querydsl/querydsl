@@ -16,10 +16,7 @@ package com.mysema.query.sql;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.Query;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 
 /**
  * SQLCommonQuery is a common interface for SQLQuery and SQLSubQuery
@@ -99,7 +96,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q fullJoin(RelationalPath<?> o);
+    Q fullJoin(EntityPath<?> o);
 
     /**
      * Adds a full join to the given target
@@ -131,7 +128,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q innerJoin(RelationalPath<?> o);
+    Q innerJoin(EntityPath<?> o);
 
     /**
      * Adds a full join to the given target
@@ -163,7 +160,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q join(RelationalPath<?> o);
+    Q join(EntityPath<?> o);
 
     /**
      * Adds a full join to the given target
@@ -195,7 +192,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q leftJoin(RelationalPath<?> o);
+    Q leftJoin(EntityPath<?> o);
 
     /**
      * Adds a full join to the given target
@@ -235,7 +232,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q rightJoin(RelationalPath<?> o);
+    Q rightJoin(EntityPath<?> o);
 
     /**
      * Adds a full join to the given target
