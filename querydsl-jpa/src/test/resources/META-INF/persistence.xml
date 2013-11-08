@@ -14,7 +14,7 @@
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedDerbyDialect" />
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />
-            <property name="hibernate.connection.url" value="jdbc:derby:target/derbydb;create=true" />
+            <property name="hibernate.connection.url" value="jdbc:derby:target/derbydb-hibernate;create=true" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
@@ -26,7 +26,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb2;create=true" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb-eclipselink;create=true" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
         </properties>
@@ -37,7 +37,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb3;create=true" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb-openjpa;create=true" />
             <property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
         </properties>
     </persistence-unit>
@@ -50,7 +50,7 @@
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedHSQLDialect" />
             <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
-            <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb;shutdown=true" />
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb-hibernate;shutdown=true" />
             <property name="hibernate.connection.user" value="sa" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
@@ -63,7 +63,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb2;shutdown=true" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb-eclipselink;shutdown=true" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
@@ -78,7 +78,7 @@
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:h2:target/h2-1" />
+            <property name="hibernate.connection.url" value="jdbc:h2:target/h2-hibernate" />
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
@@ -92,7 +92,7 @@
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:h2:target/h2-perf" />
+            <property name="hibernate.connection.url" value="jdbc:h2:target/h2-hibernate-perf" />
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
@@ -105,7 +105,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-2" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-eclipselink" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
@@ -171,7 +171,7 @@
         <class>com.mysema.query.jpa.domain4.Library</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-3" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-batoo" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="org.batoo.jpa.sql_logging" value="STDOUT"/>
             <property name="org.batoo.jpa.ddl" value="DROP" />
@@ -182,7 +182,7 @@
         <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-3" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-openjpa" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
             <property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
