@@ -24,15 +24,15 @@ public final class JPQLOps {
 
     private static final String NS = JPQLOps.class.getName();
 
-    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>(NS, "JPA_INDEX");
+    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>(NS, "INDEX");
 
-    public static final Operator<String> TYPE = new OperatorImpl<String>(NS, "JPA_TYPE");
+    public static final Operator<String> TYPE = new OperatorImpl<String>(NS, "TYPE");
 
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "JPA_CAST");
+    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "CAST");
 
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(NS, "JPA_MEMBER_OF");
+    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(NS, "MEMBER_OF");
 
-    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>(NS, "JPA_NOT_MEMBER_OF");
+    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>(NS, "NOT_MEMBER_OF");
 
     private JPQLOps(){}
 }

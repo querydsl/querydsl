@@ -24,11 +24,11 @@ public final class LuceneOps {
 
     private static final String NS = LuceneOps.class.getName();
 
-    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>(NS, "LUCENE_QUERY");
+    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>(NS, "QUERY");
 
-    static final Operator<String> PHRASE = new OperatorImpl<String>(NS, "LUCENE_PHRASE");
+    static final Operator<String> PHRASE = new OperatorImpl<String>(NS, "PHRASE");
 
-    static final Operator<String> TERM = new OperatorImpl<String>(NS, "LUCENE_TERM");
+    static final Operator<String> TERM = new OperatorImpl<String>(NS, "TERM");
 
     private LuceneOps() {}
 

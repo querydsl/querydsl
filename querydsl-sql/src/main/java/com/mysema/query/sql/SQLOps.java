@@ -31,13 +31,13 @@ public final class SQLOps {
 
     private static final String NS = SQLOps.class.getName();
 
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "SQL_CAST");
+    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "CAST");
 
-    public static final Operator<Object> UNION = new OperatorImpl<Object>(NS, "SQL_UNION");
+    public static final Operator<Object> UNION = new OperatorImpl<Object>(NS, "UNION");
 
-    public static final Operator<Object> UNION_ALL = new OperatorImpl<Object>(NS, "SQL_UNION_ALL");
+    public static final Operator<Object> UNION_ALL = new OperatorImpl<Object>(NS, "UNION_ALL");
 
-    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>(NS, "SQL_NEXTVAL");
+    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>(NS, "NEXTVAL");
 
     public static final Operator<Long> ROWNUMBER = new OperatorImpl<Long>(NS, "ROWNUMBER");
 
