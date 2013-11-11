@@ -223,6 +223,20 @@ public class MetaDataExporterTest {
     }
 
     @Test
+    public void Minimal_Configuration_without_keys() throws SQLException{
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setNamePrefix("");
+        exporter.setNameSuffix("Type");
+        exporter.setTargetFolder(new File("target/10"));
+        exporter.setExportForeignKeys(false);
+        exporter.export(connection.getMetaData());
+
+        assertTrue(new File("target/10/test/DateTestType.java").exists());
+    }
+
+    @Test
     public void Minimal_Configuration_with_Bean_prefix() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");

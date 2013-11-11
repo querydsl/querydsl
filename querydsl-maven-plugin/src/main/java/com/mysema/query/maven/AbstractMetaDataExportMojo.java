@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,10 +23,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import com.mysema.query.codegen.*;
-import com.mysema.query.sql.codegen.*;
+import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.MetaDataExporter;
+import com.mysema.query.sql.codegen.NamingStrategy;
 import com.mysema.query.sql.types.Type;
 
 /**
@@ -137,12 +139,12 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter
      */
     private String beanSerializerClass;
-    
+
     /**
      * @parameter
      */
     private String serializerClass;
-    
+
     /**
      * serialize beans as well
      *
@@ -163,10 +165,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter default-value=false
      */
     private boolean validationAnnotations;
-    
+
     /**
      * export column annotations (default: false)
-     * 
+     *
      * @parameter default-value=false
      */
     private boolean columnAnnotations;
@@ -175,31 +177,41 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter
      */
     private String[] customTypes;
-    
+
     /**
      * @parameter default-value=false
      */
     private boolean createScalaSources;
-    
+
     /**
      * @parameter default-value=false
      */
     private boolean schemaToPackage;
-    
+
     /**
      * @parameter default-value=false
      */
     private boolean lowerCase;
-    
+
     /**
      * @parameter default-value=true
      */
     private boolean exportTables;
-    
+
     /**
      * @parameter default-value=true
      */
     private boolean exportViews;
+
+    /**
+     * @parameter default-value=true
+     */
+    private boolean exportPrimaryKeys;
+
+    /**
+     * @parameter default-value=true
+     */
+    private boolean exportForeignKeys;
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -228,7 +240,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         if (createScalaSources) {
             if (serializerClass == null) {
                 serializerClass = "com.mysema.query.scala.sql.ScalaMetaDataSerializer";
-            }  
+            }
             if (exportBeans && beanSerializerClass == null) {
                 beanSerializerClass = "com.mysema.query.scala.ScalaBeanSerializer";
             }
@@ -261,6 +273,8 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setLowerCase(lowerCase);
         exporter.setExportTables(exportTables);
         exporter.setExportViews(exportViews);
+        exporter.setExportPrimaryKeys(exportPrimaryKeys);
+        exporter.setExportForeignKeys(exportForeignKeys);
         if (serializerClass != null) {
             try {
                 exporter.setSerializerClass((Class)Class.forName(serializerClass));
@@ -280,13 +294,13 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             } else {
                 exporter.setBeanSerializer(new BeanSerializer());
             }
-            
+
         }
         String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
         if (sourceEncoding != null) {
             exporter.setSourceEncoding(sourceEncoding);
         }
-        
+
         try {
             if (customTypes != null) {
                 Configuration configuration = new Configuration(SQLTemplates.DEFAULT);
@@ -324,7 +338,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             throw new MojoExecutionException(e.getMessage(), e);
         }
     }
-    
+
     protected boolean isForTest() {
         return false;
     }
@@ -428,5 +442,5 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
     }
-    
+
 }

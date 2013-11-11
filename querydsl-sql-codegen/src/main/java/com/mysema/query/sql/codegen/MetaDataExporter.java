@@ -120,6 +120,10 @@ public class MetaDataExporter {
 
     private boolean exportViews = true;
 
+    private boolean exportPrimaryKeys = true;
+
+    private boolean exportForeignKeys = true;
+
     public MetaDataExporter() {}
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName,
@@ -283,25 +287,29 @@ public class MetaDataExporter {
         String className = namingStrategy.getClassName(normalizedTableName);
         EntityType classModel = createEntityType(schemaName, normalizedTableName, className);
 
-        // collect primary keys
-        Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory
-                .getPrimaryKeys(md, catalog, schema, tableName);
-        if (!primaryKeyData.isEmpty()) {
-            classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
+        if (exportPrimaryKeys) {
+            // collect primary keys
+            Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory
+                    .getPrimaryKeys(md, catalog, schema, tableName);
+            if (!primaryKeyData.isEmpty()) {
+                classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
+            }
         }
 
-        // collect foreign keys
-        Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
-                .getImportedKeys(md, catalog, schema, tableName);
-        if (!foreignKeyData.isEmpty()) {
-            classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
-        }
+        if (exportForeignKeys) {
+            // collect foreign keys
+            Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
+                    .getImportedKeys(md, catalog, schema, tableName);
+            if (!foreignKeyData.isEmpty()) {
+                classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+            }
 
-        // collect inverse foreign keys
-        Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
-                .getExportedKeys(md, catalog, schema, tableName);
-        if (!inverseForeignKeyData.isEmpty()) {
-            classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+            // collect inverse foreign keys
+            Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
+                    .getExportedKeys(md, catalog, schema, tableName);
+            if (!inverseForeignKeyData.isEmpty()) {
+                classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+            }
         }
 
         // collect columns
@@ -575,6 +583,20 @@ public class MetaDataExporter {
      */
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
+    }
+
+    /**
+     * @param exportPrimaryKeys
+     */
+    public void setExportPrimaryKeys(boolean exportPrimaryKeys) {
+        this.exportPrimaryKeys = exportPrimaryKeys;
+    }
+
+    /**
+     * @param exportForeignKeys
+     */
+    public void setExportForeignKeys(boolean exportForeignKeys) {
+        this.exportForeignKeys = exportForeignKeys;
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -117,36 +117,46 @@ public class AntMetaDataExporter extends Task {
      * export validation annotations (@NotNull, @Size etc)
      */
     private boolean validationAnnotations = false;
-    
+
     /**
      * charset encoding of the sources to be generated
      */
     private String sourceEncoding;
-    
+
     /**
-     * 
+     *
      */
     private boolean columnAnnotations = false;
-    
+
     /**
-     * 
+     *
      */
     private boolean schemaToPackage = false;
-    
+
     /**
-     * 
+     *
      */
     private boolean lowerCase = false;
-    
+
     /**
-     * 
+     *
      */
     private boolean exportTables = true;
-    
+
     /**
-     * 
+     *
      */
     private boolean exportViews = true;
+
+    /**
+     *
+     */
+    private boolean exportPrimaryKeys = true;
+
+    /**
+     *
+     */
+    private boolean exportForeignKeys = true;
 
     @Override
     public void execute() throws BuildException {
@@ -185,6 +195,8 @@ public class AntMetaDataExporter extends Task {
             exporter.setLowerCase(lowerCase);
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
+            exporter.setExportPrimaryKeys(exportPrimaryKeys);
+            exporter.setExportForeignKeys(exportForeignKeys);
             if (exportBeans) {
                 exporter.setBeanSerializer(new BeanSerializer());
             }
@@ -342,7 +354,7 @@ public class AntMetaDataExporter extends Task {
     public void setValidationAnnotations(boolean validationAnnotations) {
         this.validationAnnotations = validationAnnotations;
     }
-       
+
     public String getSourceEncoding() {
         return sourceEncoding;
     }
@@ -390,5 +402,21 @@ public class AntMetaDataExporter extends Task {
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
     }
-    
+
+    public boolean isExportPrimaryKeys() {
+        return exportPrimaryKeys;
+    }
+
+    public void setExportPrimaryKeys(boolean exportPrimaryKeys) {
+        this.exportPrimaryKeys = exportPrimaryKeys;
+    }
+
+    public boolean isExportForeignKeys() {
+        return exportForeignKeys;
+    }
+
+    public void setExportForeignKeys(boolean exportForeignKeys) {
+        this.exportForeignKeys = exportForeignKeys;
+    }
+
 }
