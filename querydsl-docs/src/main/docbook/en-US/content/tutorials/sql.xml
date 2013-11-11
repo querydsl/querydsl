@@ -200,6 +200,14 @@
             <entry>exportViews</entry>
             <entry>export views (default: true)</entry>
           </row>
+          <row>
+            <entry>exportPrimaryKeys</entry>
+            <entry>export primary keys (default: true)</entry>
+          </row>
+          <row>
+            <entry>exportForeignKeys</entry>
+            <entry>export foreign keys (default: true)</entry>
+          </row>          
         </tbody>
       </tgroup>
     </table>
