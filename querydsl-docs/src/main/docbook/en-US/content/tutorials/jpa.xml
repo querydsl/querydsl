@@ -577,7 +577,7 @@ query.from(employee)
   <sect2>
     <title>Exposing the original query</title>
 
-    <para>If you need to do tune the original Query before the execution of the query you
+    <para>If you need to tune the original Query before the execution of the query you
       can expose it like this:
     </para>
 
