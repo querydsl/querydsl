@@ -482,7 +482,7 @@ exporter.export(DomainClass.class.getPackage());
             <row>
               <entry>File</entry>
               <entry>targetFolder</entry>
-              <entry>target folder generated sources</entry>
+              <entry>target folder for generated sources</entry>
             </row>
             <row>    
               <entry>boolean</entry>       
@@ -492,7 +492,7 @@ exporter.export(DomainClass.class.getPackage());
             <row>
               <entry>String[]</entry>
               <entry>packages</entry>
-              <entry>packages to be intropsected for entity classes</entry>
+              <entry>packages to be introspected for entity classes</entry>
             </row>
             <row> 
               <entry>boolean</entry>
@@ -588,12 +588,12 @@ exporter.export(DomainClass.class.getPackage());
           <row>
             <entry>String</entry>
             <entry>source</entry>
-            <entry>-source option for compiler</entry>
+            <entry>-source option for the compiler</entry>
           </row>
           <row>
             <entry>String</entry>
             <entry>target</entry>
-            <entry>-target option for compiler</entry>
+            <entry>-target option for the compiler</entry>
           </row>
           <row>
             <entry>boolean</entry>
@@ -603,7 +603,7 @@ exporter.export(DomainClass.class.getPackage());
           <row>
             <entry>Map</entry>
             <entry>compilerOptions</entry>
-            <entry>options for compiler</entry>
+            <entry>options for the compiler</entry>
           </row>            
         </tbody>
       </tgroup>
