@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,7 +35,7 @@ import com.mysema.query.codegen.TypeMappings;
 /**
  * AbstractExporterMojo calls the {@link GenericExporter} tool using the
  * classpath of the module the plugin is invoked in.
- * 
+ *
  */
 public abstract class AbstractExporterMojo extends AbstractMojo {
 
@@ -53,7 +53,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
      * @parameter required=true
      */
     private String[] packages;
-    
+
     /**
      * @parameter default-value=true
      */
@@ -78,7 +78,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
      * @parameter default-value=false
      */
     private boolean testClasspath;
-    
+
     /**
      * @component
      */
@@ -87,7 +87,12 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     @SuppressWarnings("unchecked")
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (!hasSourceChanges()) {            
+        if (testClasspath) {
+            project.addTestCompileSourceRoot(targetFolder.getAbsolutePath());
+        } else {
+            project.addCompileSourceRoot(targetFolder.getAbsolutePath());
+        }
+        if (!hasSourceChanges()) {
             // Only run if something has changed on the source dirs. This will
             // avoid m2e entering on a infinite build.
             return;
@@ -118,8 +123,8 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
             }
         }
 
-        configure(exporter);                
-        exporter.export(packages);               
+        configure(exporter);
+        exporter.export(packages);
     }
 
     /**
@@ -151,7 +156,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
 
     @SuppressWarnings("rawtypes")
     private boolean hasSourceChanges() {
-        if (buildContext != null) {            
+        if (buildContext != null) {
             List sourceRoots = testClasspath ? project.getTestCompileSourceRoots() :
                                                project.getCompileSourceRoots();
             for (Object path : sourceRoots) {
@@ -162,7 +167,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
             return false;
         } else {
             return true;
-        }        
+        }
     }
 
     public void setTargetFolder(File targetFolder) {
@@ -192,11 +197,11 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     public void setBuildContext(BuildContext buildContext) {
         this.buildContext = buildContext;
     }
-    
+
     public void setHandleFields(boolean handleFields) {
         this.handleFields = handleFields;
     }
-    
+
     public void setHandleMethods(boolean handleMethods) {
         this.handleMethods = handleMethods;
     }
