@@ -8,7 +8,7 @@
   
   <para>Expressions are normally constructed by accessing fields and calling methods on the generated 
   expression types of your domain module. For cases where code generation is not applicable generic ways 
-  to construct expressions can be used instead</para>
+  to construct expressions can be used instead.</para>
   
   <sect2>
     <title>Complex predicates</title>

@@ -95,7 +95,7 @@
         <tbody>
           <row>
             <entry>jdbcDriver</entry>
-            <entry>class name for JDBC driver</entry>
+            <entry>class name of the JDBC driver</entry>
           </row>
           <row>
             <entry>jdbcUrl</entry>
@@ -150,16 +150,16 @@
           </row>
           <row>
             <entry>namingStrategyClass</entry>
-            <entry>class name for NamingStrategy class (default: DefaultNamingStrategy)
+            <entry>class name of the NamingStrategy class (default: DefaultNamingStrategy)
             </entry>
           </row>
           <row>
             <entry>beanSerializerClass</entry>
-            <entry>class name for BeanSerializer class (default: BeanSerializer)</entry>
+            <entry>class name of the BeanSerializer class (default: BeanSerializer)</entry>
           </row>
           <row>
             <entry>serializerClass</entry>
-            <entry>class name for Serializer class (default: MetaDataSerializer)</entry>
+            <entry>class name of the Serializer class (default: MetaDataSerializer)</entry>
           </row>
           <row>
             <entry>exportBeans</entry>
@@ -491,7 +491,7 @@ query.from(customer).where(
   
     <title>Selecting literals</title>
     
-    <para>To select literals you need to create constant instances for it like this.</para>
+    <para>To select literals you need to create constant instances for them like this:</para>
     
     <programlisting language="java"><![CDATA[
 query.list(Expressions.constant(1),

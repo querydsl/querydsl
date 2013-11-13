@@ -55,7 +55,7 @@ expr negate             -expr
  
 // numeric
 expr add 3              expr + 3
-expr subtract 3      	expr - 3
+expr subtract 3         expr - 3
 expr divide 3           expr / 3
 expr multiply 3         expr * 3
 expr mod 5              expr % 5
