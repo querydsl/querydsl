@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
@@ -93,5 +94,12 @@ public class GroupByBuilder<K> {
         };
     }
     
+    public <V, R extends FactoryExpression<V>> ResultTransformer<CloseableIterator<V>> iterate(R expression) {
+        return new GroupByResultTransformer<K, V>(key, expression);
+    }
+    
+    public <V, R extends Expression<V>> ResultTransformer<CloseableIterator<V>> iterate(R expression) {
+        return new GroupByResultTransformer<K, V>(key, expression);
+    }
     
 }

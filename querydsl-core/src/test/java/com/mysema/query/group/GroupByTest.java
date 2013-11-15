@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +38,15 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
 import com.mysema.query.Tuple;
+import com.mysema.query.group.MockTuple;
+import com.mysema.query.group.Post;
 import com.mysema.query.support.AbstractProjectable;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Projections;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.NumberPath;
@@ -138,6 +144,16 @@ public class GroupByTest {
 //            row("Jane", 2, "post 2", comment(5)),
 //            row("John", 1, "post 1", comment(3))
 //    );
+
+    private static final Projectable POST_WO_COMMENTS = projectable(
+            row(1, 1, "post 1", 1, "comment 1"),
+            row(1, 1, "post 1", 2, "comment 2"),
+            row(2, 2, "post 2", 3, "comment 5"),
+            row(3, 3, "post 3", 4, "comment 4"),
+            row(null, null, "null post", 7, "comment 7"),
+            row(null, null, "null post", 8, "comment 8"),
+            row(1, 1, "post 1", 3, "comment 3")
+    );
 
     @Test 
     public void Group_Order() {       
@@ -268,7 +284,28 @@ public class GroupByTest {
         assertEquals("post 1", post.getName());
         assertEquals(toSet(comment(1), comment(2), comment(3)), post.getComments());
     }
-        
+    
+    @Test
+    public void Iterate_As_Bean() {
+        CloseableIterator<Post> results = POST_WO_COMMENTS.transform(
+                groupBy(postId).iterate(Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
+        try {
+            Post post = results.next();
+            assertNotNull(post);
+            assertEquals(toInt(1), post.getId());
+            assertEquals("post 1", post.getName());
+            assertEquals(toSet(comment(1), comment(2)), post.getComments());
+            while (results.hasNext()) {
+                post = results.next();
+            }
+            assertNotNull(post);
+            assertEquals(toInt(1), post.getId());
+            assertEquals("post 1", post.getName());
+            assertEquals(toSet(comment(3)), post.getComments());
+        } finally {
+            results.close();
+        }
+    }
     
     @Test
     public void OneToOneToMany_Projection() {
@@ -330,7 +367,12 @@ public class GroupByTest {
     private static Projectable projectable(final Object[]... rows) {
         return new AbstractProjectable() {
             public <T> CloseableIterator<T> iterate(Expression<T> arg) {
-                return (CloseableIterator)iterator(rows);
+                List<Expression<?>> args = arg instanceof FactoryExpression<?> ? FactoryExpressionUtils.wrap((FactoryExpression<?>) arg).getArgs() : Collections.<Expression<?>>singletonList(arg);
+                return (CloseableIterator) iterator(rows, (Expression<?>[]) args.toArray(new Expression<?>[args.size()]));
+            }
+            
+            public CloseableIterator<Tuple> iterate(Expression<?>... arg) {
+                return iterator(rows);
             }
         };
     }
@@ -343,6 +385,17 @@ public class GroupByTest {
         List<Tuple> tuples = Lists.newArrayList();
         for (Object[] row : rows) {
             tuples.add(new MockTuple(row));
+        }
+        return new IteratorAdapter<Tuple>(tuples.iterator());
+    }
+    
+    private static <T> CloseableIterator<Tuple> iterator(Object[][] rows, Expression<?>... expressions) {
+        QTuple qTuple = Projections.tuple(expressions);
+        List<Tuple> tuples = Lists.newArrayList();
+        for (Object[] row : rows) {
+            Object[] args = new Object[expressions.length];
+            Tuple tuple = qTuple.newInstance(Arrays.copyOf(row, args.length));
+            tuples.add(tuple);
         }
         return new IteratorAdapter<Tuple>(tuples.iterator());
     }
