@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
@@ -34,9 +35,9 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 
 public class BeanSerializerTest {
-    
+
     private Type typeModel;
-    
+
     private EntityType type;
 
     private final Writer writer = new StringWriter();
@@ -44,61 +45,67 @@ public class BeanSerializerTest {
     @Before
     public void setUp() {
         typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
-        type = new EntityType(typeModel);                    
+        type = new EntityType(typeModel);
     }
-    
+
     @Test
     public void Annotations() throws IOException{
         type.addAnnotation(new QueryEntityImpl());
-        
+
         BeanSerializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String str = writer.toString();
-        
+
         assertTrue(str.contains("import com.mysema.query.annotations.QueryEntity;"));
         assertTrue(str.contains("@QueryEntity"));
     }
-    
+
     @Test
     public void Annotated_Property() throws IOException{
         Property property = new Property(type, "entityField", type);
         property.addAnnotation(new QueryEntityImpl());
         type.addProperty(property);
-        
+
         BeanSerializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String str = writer.toString();
-        
+
         assertTrue(str.contains("import com.mysema.query.annotations.QueryEntity;"));
         assertTrue(str.contains("@QueryEntity"));
     }
-    
+
     @Test
     public void Annotated_Property_Not_Serialized() throws IOException{
         Property property = new Property(type, "entityField", type);
         property.addAnnotation(new QueryEntityImpl());
         type.addProperty(property);
-        
+
         BeanSerializer serializer = new BeanSerializer(false);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String str = writer.toString();
-        
+
         assertFalse(str.contains("import com.mysema.query.annotations.QueryEntity;"));
         assertFalse(str.contains("@QueryEntity"));
     }
-    
-    
+
     @Test
     public void Capitalization() throws IOException{
         // property
         type.addProperty(new Property(type, "cId", type));
-        
+
         BeanSerializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("public DomainClass getcId() {"));
-        
     }
-    
+
+    @Test
+    public void Interfaces() throws IOException {
+        BeanSerializer serializer = new BeanSerializer();
+        serializer.addInterface(Serializable.class);
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        assertTrue(writer.toString().contains("public class DomainClass implements Serializable {"));
+    }
+
     @Test
     public void ToString() throws IOException{
         // property
@@ -108,15 +115,13 @@ public class BeanSerializerTest {
         type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel)));
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
         type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
-        
+
         BeanSerializer serializer = new BeanSerializer();
         serializer.setAddToString(true);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer.toString());
-        
     }
-    
-    
+
     @Test
     public void FullConstructor() throws IOException{
         // property
@@ -126,14 +131,13 @@ public class BeanSerializerTest {
         type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel)));
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
         type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
-        
+
         BeanSerializer serializer = new BeanSerializer();
         serializer.setAddFullConstructor(true);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer.toString());
-        
     }
-    
+
     @Test
     public void Properties() throws IOException{
         // property
@@ -168,5 +172,5 @@ public class BeanSerializerTest {
             assertTrue(prop + " was not contained", str.contains(prop));
         }
     }
-    
+
 }

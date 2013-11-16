@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,38 +25,43 @@ import java.util.Set;
 import javax.annotation.Generated;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.util.BeanUtils;
 
 /**
- * BeanSerializer is a {@link Serializer} implementation which serializes {@link EntityType} 
+ * BeanSerializer is a {@link Serializer} implementation which serializes {@link EntityType}
  * instances into JavaBean classes
  *
  * @author tiwe
  *
  */
 public class BeanSerializer implements Serializer{
-    
+
     private static final Function<Property, Parameter> propertyToParameter = new Function<Property, Parameter>() {
         @Override
         public Parameter apply(Property input) {
-            return new Parameter(input.getName(), input.getType()); 
-        }                
+            return new Parameter(input.getName(), input.getType());
+        }
     };
 
     private final boolean propertyAnnotations;
-    
+
+    private final List<Class<?>> interfaces = Lists.newArrayList();
+
     private final String javadocSuffix;
-    
+
     private boolean addToString, addFullConstructor;
-    
+
     private boolean printSupertype = false;
 
     /**
-     * Create a new BeanSerializer 
+     * Create a new BeanSerializer
      */
     public BeanSerializer() {
         this(true, " is a Querydsl bean type");
@@ -64,16 +69,16 @@ public class BeanSerializer implements Serializer{
 
     /**
      * Create a new BeanSerializer with the given javadoc suffix
-     * 
+     *
      * @param javadocSuffix
      */
     public BeanSerializer(String javadocSuffix) {
         this(true, javadocSuffix);
     }
-    
+
     /**
-     * Create a new BeanSerializer 
-     * 
+     * Create a new BeanSerializer
+     *
      * @param propertyAnnotations
      */
     public BeanSerializer(boolean propertyAnnotations) {
@@ -82,7 +87,7 @@ public class BeanSerializer implements Serializer{
 
     /**
      * Create a new BeanSerializer
-     * 
+     *
      * @param propertyAnnotations
      * @param javadocSuffix
      */
@@ -92,7 +97,7 @@ public class BeanSerializer implements Serializer{
     }
 
     @Override
-    public void serialize(EntityType model, SerializerConfig serializerConfig, 
+    public void serialize(EntityType model, SerializerConfig serializerConfig,
             CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
 
@@ -103,6 +108,9 @@ public class BeanSerializer implements Serializer{
 
         // imports
         Set<String> importedClasses = getAnnotationTypes(model);
+        for (Class<?> iface : interfaces) {
+            importedClasses.add(iface.getName());
+        }
         importedClasses.add(Generated.class.getName());
         if (model.hasLists()) {
             importedClasses.add(List.class.getName());
@@ -128,29 +136,39 @@ public class BeanSerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
-        
+
         writer.line("@Generated(\"", getClass().getName(), "\")");
-        
-        if (printSupertype && model.getSuperType() != null) {
+
+        if (!interfaces.isEmpty()) {
+            Type superType = null;
+            if (printSupertype && model.getSuperType() != null) {
+                superType = model.getSuperType().getType();
+            }
+            Type[] interfaceTypes = new Type[interfaces.size()];
+            for (int i = 0; i < interfaceTypes.length; i++) {
+                interfaceTypes[i] = new ClassType(interfaces.get(i));
+            }
+            writer.beginClass(model, superType, interfaceTypes);
+        } else if (printSupertype && model.getSuperType() != null) {
             writer.beginClass(model, model.getSuperType().getType());
         } else {
             writer.beginClass(model);
         }
-        
+
 
         bodyStart(model, writer);
-        
+
         if (addFullConstructor) {
             addFullConstructor(model, writer);
         }
-        
+
         // fields
         for (Property property : model.getProperties()) {
             if (propertyAnnotations) {
                 for (Annotation annotation : property.getAnnotations()) {
                     writer.annotation(annotation);
-                }    
-            }            
+                }
+            }
             writer.privateField(property.getType(), property.getEscapedName());
         }
 
@@ -167,13 +185,13 @@ public class BeanSerializer implements Serializer{
             writer.line("this.", propertyName, " = ", propertyName, ";");
             writer.end();
         }
-        
+
         if (addToString) {
             addToString(model, writer);
         }
 
         bodyEnd(model, writer);
-        
+
         writer.end();
     }
 
@@ -181,12 +199,12 @@ public class BeanSerializer implements Serializer{
         // public empty constructor
         writer.beginConstructor();
         writer.end();
-        
+
         // full constructor
         writer.beginConstructor(model.getProperties(), propertyToParameter);
         for (Property property : model.getProperties()) {
             writer.line("this.", property.getEscapedName(), " = ", property.getEscapedName(), ";");
-        }            
+        }
         writer.end();
     }
 
@@ -202,21 +220,21 @@ public class BeanSerializer implements Serializer{
             }
             builder.append(propertyName + " = \" + ");
             if (property.getType().getCategory() == TypeCategory.ARRAY) {
-                builder.append("Arrays.toString(" + propertyName + ")");   
+                builder.append("Arrays.toString(" + propertyName + ")");
             } else {
-                builder.append(propertyName);    
-            }             
+                builder.append(propertyName);
+            }
         }
         writer.line(" return ", builder.toString(), ";");
         writer.end();
     }
 
     protected void bodyStart(EntityType model, CodeWriter writer) throws IOException {
-        // template method        
+        // template method
     }
 
     protected void bodyEnd(EntityType model, CodeWriter writer) throws IOException {
-        // template method        
+        // template method
     }
 
     private Set<String> getAnnotationTypes(EntityType model) {
@@ -229,9 +247,13 @@ public class BeanSerializer implements Serializer{
                 for (Annotation annotation : property.getAnnotations()) {
                     imports.add(annotation.annotationType().getName());
                 }
-            }    
-        }        
+            }
+        }
         return imports;
+    }
+
+    public void addInterface(Class<?> iface) {
+        interfaces.add(iface);
     }
 
     public void setAddToString(boolean addToString) {
@@ -245,8 +267,5 @@ public class BeanSerializer implements Serializer{
     public void setPrintSupertype(boolean printSupertype) {
         this.printSupertype = printSupertype;
     }
-    
-    
 
-    
 }
