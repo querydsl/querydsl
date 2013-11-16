@@ -1,6 +1,7 @@
 package com.mysema.query.group;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -237,23 +238,24 @@ class GroupByResultTransformer<K, V> implements ResultTransformer<CloseableItera
         return expression;
     }
     
-    public GroupByResultTransformer(Expression<K> key, FactoryExpression<V> value) {
-        this.key = key;
-        this.value = value;
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        builder.add(expand(key)); 
-        value = FactoryExpressionUtils.wrap(value);
-        List<Expression<?>> arguments = value.getArgs();
-        for (Expression<?> argument : arguments) {
-            builder.add(expand(argument));
-        }
-        this.factoryExpression = FactoryExpressionUtils.wrap(new QTuple(builder.build()));
-    }
-    
     public GroupByResultTransformer(Expression<K> key, Expression<V> value) {
         this.key = key;
         this.value = value;
-        this.factoryExpression = FactoryExpressionUtils.wrap(new QTuple(expand(key), expand(value)));
+        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        for (Expression<?> expression : Arrays.<Expression<?>>asList(key, value)) {
+            expression = expand(expression);
+            if (expression instanceof FactoryExpression<?>) {
+                FactoryExpression<?> factoryExpression = ( FactoryExpression<?>) expression;
+                factoryExpression = FactoryExpressionUtils.wrap(factoryExpression);
+                List<Expression<?>> arguments = factoryExpression.getArgs();
+                for (Expression<?> argument : arguments) {
+                    builder.add(expand(argument));
+                }
+            } else {
+                builder.add(expression);
+            }
+        }
+        this.factoryExpression = FactoryExpressionUtils.wrap(new QTuple(builder.build()));
     }
 
     @Override
