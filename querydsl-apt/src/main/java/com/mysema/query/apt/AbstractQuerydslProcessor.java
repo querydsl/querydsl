@@ -134,11 +134,14 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
         // add properties
         boolean embeddableAnn = conf.getEmbeddableAnnotation() != null;
+        boolean altEntityAnn = conf.getAlternativeEntityAnnotation() != null;
         boolean superAnn = conf.getSuperTypeAnnotation() != null;
         for (TypeElement element : elements) {
             EntityType entityType = elementHandler.handleEntityType(element);
             registerTypeElement(entityType.getFullName(), element);
             if (element.getAnnotation(conf.getEntityAnnotation()) != null) {
+                context.entityTypes.put(entityType.getFullName(), entityType);
+            } else if (altEntityAnn && element.getAnnotation(conf.getAlternativeEntityAnnotation()) != null) {
                 context.entityTypes.put(entityType.getFullName(), entityType);
             } else if (embeddableAnn && element.getAnnotation(conf.getEmbeddableAnnotation()) != null ) {
                 context.embeddableTypes.put(entityType.getFullName(), entityType);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,22 +22,24 @@ import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
+import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.jpa.JPAConfiguration;
 
 /**
- * AnnotationProcessor for Spring Roo which takes {@link RooJpaEntity}, {@link MappedSuperclass}, 
- * {@link Embeddable} and {@link Transient} into account
- * 
+ * AnnotationProcessor for Spring Roo which takes {@link RooJpaEntity}, {@link RooJpaActiveRecord},
+ * {@link MappedSuperclass}, {@link Embeddable} and {@link Transient} into account
+ *
  * @author tiwe
  *
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*","org.springframework.roo.addon.jpa.entity.*"})
 public class RooAnnotationProcessor extends AbstractQuerydslProcessor {
-        
+
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
         Class<? extends Annotation> entity = RooJpaEntity.class;
@@ -45,8 +47,10 @@ public class RooAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = Embeddable.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, 
+        DefaultConfiguration conf = new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType,
                 embeddable, embedded, skip);
+        conf.setAlternativeEntityAnnotation(RooJpaActiveRecord.class);
+        return conf;
     }
 
 }

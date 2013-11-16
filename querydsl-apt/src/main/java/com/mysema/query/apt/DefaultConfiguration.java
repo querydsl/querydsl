@@ -93,6 +93,9 @@ public class DefaultConfiguration implements Configuration {
     @Nullable
     protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
 
+    @Nullable
+    protected Class<? extends Annotation> altEntityAnn;
+
     private final Set<Class<? extends Annotation>> entityAnnotations = new HashSet<Class<? extends Annotation>>();
 
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
@@ -261,6 +264,16 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public Class<? extends Annotation> getEntityAnnotation() {
         return entityAnn;
+    }
+
+    @Override
+    public Class<? extends Annotation> getAlternativeEntityAnnotation() {
+        return altEntityAnn;
+    }
+
+    public void setAlternativeEntityAnnotation(Class<? extends Annotation> ann) {
+        altEntityAnn = ann;
+        entityAnnotations.add(ann);
     }
 
     @Override

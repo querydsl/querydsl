@@ -153,10 +153,14 @@
       with
       <code>com.mysema.query.apt.roo.RooAnnotationProcessor</code>
       which will handle
-      <code>@RooJpaEntity</code>
+      <code>@RooJpaEntity</code> and <code>@RooJpaActiveRecord</code>
       annotated classes instead of
       <code>@Entity</code>
       annotated classes.
+    </para>
+    
+    <para>
+      APT based code generation doesn't work well with AspectJ IDTs.
     </para>
 
   </sect2>

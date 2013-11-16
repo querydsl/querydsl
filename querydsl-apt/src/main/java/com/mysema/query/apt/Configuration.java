@@ -93,6 +93,11 @@ public interface Configuration {
     /**
      * @return
      */
+    Class<? extends Annotation> getAlternativeEntityAnnotation();
+
+    /**
+     * @return
+     */
     Set<Class<? extends Annotation>> getEntityAnnotations();
 
     /**
