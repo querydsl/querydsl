@@ -198,7 +198,8 @@ class GroupByResultTransformer<K, V> implements ResultTransformer<CloseableItera
                             groupCollector.add(tuple);
                         }
                     }
-                } else if (groupCollector != null) {
+                }
+                if (args == null && groupCollector != null) {
                     groupCollector = null;
                     args = new Object[groupCollectors.size()];
                     for (int i = 0; i < args.length; i++) {
