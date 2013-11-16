@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,6 +27,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.ReadPreference;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
@@ -55,10 +56,10 @@ import com.mysema.query.types.path.CollectionPathBase;
  * @param <K>
  */
 public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
-    
+
     @SuppressWarnings("serial")
     private static class NoResults extends RuntimeException {}
-    
+
     private final MongodbSerializer serializer;
 
     private final QueryMixin<MongodbQuery<K>> queryMixin;
@@ -67,9 +68,11 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
     private final Function<DBObject, K> transformer;
 
+    private ReadPreference readPreference;
+
     /**
      * Create a new MongodbQuery instance
-     * 
+     *
      * @param collection
      * @param transformer
      * @param serializer
@@ -80,21 +83,21 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         this.collection = collection;
         this.serializer = serializer;
     }
-    
+
     /**
-     * Define a join 
-     * 
+     * Define a join
+     *
      * @param ref
      * @param target
      * @return
      */
-    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {        
+    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {
         return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
-    
+
     /**
-     * Define a join 
-     * 
+     * Define a join
+     *
      * @param ref
      * @param target
      * @return
@@ -102,10 +105,10 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public <T> JoinBuilder<K,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
         return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
-        
+
     /**
      * Define a constraint for an embedded object
-     * 
+     *
      * @param collection
      * @param target
      * @return
@@ -113,31 +116,31 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
         return new AnyEmbeddedBuilder<K>(queryMixin, collection);
     }
-    
+
     protected abstract DBCollection getCollection(Class<?> type);
-    
+
     @Override
-    public boolean exists() {        
+    public boolean exists() {
         try {
             QueryMetadata metadata = queryMixin.getMetadata();
             Predicate filter = createFilter(metadata);
             return collection.findOne(createQuery(filter)) != null;
         } catch (NoResults ex) {
             return false;
-        }        
+        }
     }
-    
+
     @Nullable
-    protected Predicate createFilter(QueryMetadata metadata) {        
+    protected Predicate createFilter(QueryMetadata metadata) {
         Predicate filter;
         if (!metadata.getJoins().isEmpty()) {
             filter = ExpressionUtils.allOf(metadata.getWhere(), createJoinFilter(metadata));
         } else {
             filter = metadata.getWhere();
-        }   
+        }
         return filter;
     }
-    
+
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
         Multimap<Expression<?>, Predicate> predicates = HashMultimap.<Expression<?>, Predicate>create();
@@ -158,15 +161,15 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         Path source = (Path)((Operation)joins.get(0).getTarget()).getArg(0);
         return allOf(predicates.get(source.getRoot()));
     }
-    
+
     private Predicate allOf(Collection<Predicate> predicates) {
         return predicates != null ? ExpressionUtils.allOf(predicates) : null;
     }
-    
+
     protected List<Object> getIds(Class<?> targetType, Predicate condition) {
         DBCollection collection = getCollection(targetType);
         // TODO : fetch only ids
-        DBCursor cursor = createCursor(collection, condition, Collections.<Expression<?>>emptyList(), 
+        DBCursor cursor = createCursor(collection, condition, Collections.<Expression<?>>emptyList(),
                 QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
         if (cursor.hasNext()) {
             List<Object> ids = new ArrayList<Object>(cursor.count());
@@ -178,7 +181,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
             return Collections.emptyList();
         }
     }
-    
+
     @Override
     public boolean notExists() {
         return !exists();
@@ -192,7 +195,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public MongodbQuery<K> where(Predicate e) {
         return queryMixin.where(e);
     }
-    
+
     @Override
     public MongodbQuery<K> where(Predicate... e) {
         return queryMixin.where(e);
@@ -216,7 +219,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public MongodbQuery<K> orderBy(OrderSpecifier<?> o) {
         return queryMixin.orderBy(o);
     }
-    
+
     @Override
     public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
@@ -226,9 +229,9 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
         return queryMixin.set(param, value);
     }
-    
+
     public CloseableIterator<K> iterate(Path<?>... paths) {
-        queryMixin.addProjection(paths);       
+        queryMixin.addProjection(paths);
         return iterate();
     }
 
@@ -260,7 +263,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         queryMixin.addProjection(paths);
         return list();
     }
-    
+
     @Override
     public List<K> list() {
         try {
@@ -269,16 +272,16 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
             for (DBObject dbObject : cursor) {
                 results.add(transformer.apply(dbObject));
             }
-            return results;    
+            return results;
         } catch (NoResults ex) {
             return Collections.emptyList();
-        }        
+        }
     }
-    
+
     protected DBCursor createCursor() {
         QueryMetadata metadata = queryMixin.getMetadata();
         Predicate filter = createFilter(metadata);
-        return createCursor(collection, filter, metadata.getProjection(), metadata.getModifiers(), metadata.getOrderBy());     
+        return createCursor(collection, filter, metadata.getProjection(), metadata.getModifiers(), metadata.getOrderBy());
     }
 
     protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, List<Expression<?>> projection,
@@ -295,6 +298,9 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         if (orderBy.size() > 0) {
             cursor.sort(serializer.toSort(orderBy));
         }
+        if (readPreference != null) {
+            cursor.setReadPreference(readPreference);
+        }
         return cursor;
     }
 
@@ -308,7 +314,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         }
         return null;
     }
-    
+
     public K singleResult(Path<?>...paths) {
         queryMixin.addProjection(paths);
         return singleResult();
@@ -322,12 +328,12 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
                 return transformer.apply(c.next());
             } else {
                 return null;
-            }    
+            }
         } catch (NoResults ex) {
             return null;
-        }        
+        }
     }
-    
+
     public K uniqueResult(Path<?>... paths) {
         queryMixin.addProjection(paths);
         return uniqueResult();
@@ -349,12 +355,12 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
                 return rv;
             } else {
                 return null;
-            }    
+            }
         } catch (NoResults ex) {
             return null;
-        }        
+        }
     }
-    
+
     public SearchResults<K> listResults(Path<?>... paths) {
         queryMixin.addProjection(paths);
         return listResults();
@@ -368,20 +374,20 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
                 return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
             } else {
                 return SearchResults.emptyResults();
-            }    
+            }
         } catch (NoResults ex) {
             return SearchResults.emptyResults();
-        }        
+        }
     }
 
     @Override
     public long count() {
         try {
-            Predicate filter = createFilter(queryMixin.getMetadata());            
-            return collection.count(createQuery(filter));    
+            Predicate filter = createFilter(queryMixin.getMetadata());
+            return collection.count(createQuery(filter));
         } catch (NoResults ex) {
             return 0l;
-        }        
+        }
     }
 
     private DBObject createQuery(@Nullable Predicate predicate) {
@@ -390,6 +396,10 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         } else {
             return new BasicDBObject();
         }
+    }
+
+    public void setReadPreference(ReadPreference readPreference) {
+        this.readPreference = readPreference;
     }
 
     @Override

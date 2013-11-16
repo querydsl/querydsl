@@ -37,6 +37,7 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.mongodb.ReadPreference;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.Address;
@@ -415,6 +416,14 @@ public class MongodbQueryTest {
     @Test
     public void Size() {
         assertQuery(user.addresses.size().eq(2), u1);
+    }
+
+    @Test
+    public void ReadPreference() {
+        MongodbQuery<User> query = query();
+        query.setReadPreference(ReadPreference.primary());
+        assertEquals(4, query.count());
+
     }
 
     //TODO
