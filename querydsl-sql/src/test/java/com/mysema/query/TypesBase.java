@@ -1,29 +1,31 @@
 package com.mysema.query;
 
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.POSTGRES;
+import static com.mysema.query.Target.TERADATA;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static com.mysema.query.Target.*;
 
 import org.junit.Test;
 
 import com.mysema.testutil.ExcludeIn;
 
 public class TypesBase extends AbstractBaseTest {
-        
+
     @Test
-    @ExcludeIn({CUBRID, POSTGRES})
+    @ExcludeIn({CUBRID, POSTGRES, TERADATA})
     public void DumpTypes() throws SQLException {
         Connection conn = Connections.getConnection();
         DatabaseMetaData md = conn.getMetaData();
-        
+
         // types
         ResultSet rs = md.getUDTs(null, null, null, null);
         try {
             while (rs.next()) {
-                // cat, schema, name, classname, datatype, remarks, base_type                
+                // cat, schema, name, classname, datatype, remarks, base_type
                 String cat = rs.getString(1);
                 String schema = rs.getString(2);
                 String name = rs.getString(3);
@@ -31,11 +33,11 @@ public class TypesBase extends AbstractBaseTest {
                 String datatype = rs.getString(5);
                 String remarks = rs.getString(6);
                 String base_type = rs.getString(7);
-                System.out.println(name + " " + classname + " " + datatype + " " + 
+                System.out.println(name + " " + classname + " " + datatype + " " +
                                    remarks + " " + base_type);
-                
+
                 // attributes
-                ResultSet rs2 = md.getAttributes(cat, schema, name, null);                
+                ResultSet rs2 = md.getAttributes(cat, schema, name, null);
                 try {
                     while (rs2.next()) {
                         // cat, schema, name, attr_name, data_type, attr_type_name, attr_size
@@ -48,7 +50,7 @@ public class TypesBase extends AbstractBaseTest {
                         String _data_type = rs2.getString(5);
                         String _attr_type_name = rs2.getString(6);
                         String _attr_size = rs2.getString(7);
-                        
+
                         System.out.println(" " + _attr_name + " " + _data_type + " " + _attr_type_name + " " + _attr_size);
                     }
                 } finally {

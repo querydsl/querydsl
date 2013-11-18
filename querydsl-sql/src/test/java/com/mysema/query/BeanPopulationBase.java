@@ -19,6 +19,7 @@ import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
+import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -30,7 +31,7 @@ import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.testutil.ExcludeIn;
 
-@ExcludeIn({CUBRID, DERBY, ORACLE, SQLSERVER, POSTGRES, SQLITE})
+@ExcludeIn({CUBRID, DERBY, ORACLE, SQLSERVER, POSTGRES, SQLITE, TERADATA})
 public class BeanPopulationBase extends AbstractBaseTest{
 
     private final QEmployee e = new QEmployee("e");

@@ -12,6 +12,7 @@ import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
+import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -113,7 +114,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({MYSQL, POSTGRES, DERBY, SQLSERVER})
+    @ExcludeIn({MYSQL, POSTGRES, DERBY, SQLSERVER, TERADATA})
     public void SubQuery_Params() {
         Param<String> aParam = new Param<String>(String.class, "param");
         SQLSubQuery subQuery = new SQLSubQuery().from(employee).where(employee.firstname.eq(aParam));

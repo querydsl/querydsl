@@ -28,6 +28,7 @@ import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
+import static com.mysema.query.Target.TERADATA;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
 import static com.mysema.query.sql.oracle.OracleGrammar.level;
@@ -194,13 +195,13 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE})
+    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE})
+    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
@@ -505,7 +506,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLSERVER, SQLITE})
+    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLSERVER, SQLITE, TERADATA})
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -703,7 +704,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Limit_And_Offset() throws SQLException {
+    public void Limit_and_Offset() throws SQLException {
         // limit and offset
         query().from(employee)
         .orderBy(employee.firstname.asc())
@@ -754,7 +755,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER, CUBRID})
+    @ExcludeIn({ORACLE, DERBY, SQLSERVER, CUBRID, TERADATA})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
@@ -1119,7 +1120,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE, POSTGRES, SQLITE})
+    @ExcludeIn({ORACLE, POSTGRES, SQLITE, TERADATA})
     public void Random2() {
         query().uniqueResult(MathExpressions.random(10));
     }
@@ -1182,13 +1183,13 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, CUBRID})
+    @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
     public void Select_For_Update() {
         query().from(survey).forUpdate().list(survey.id);
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, CUBRID})
+    @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
     public void Select_For_Update_UniqueResult() {
         query().from(survey).forUpdate().uniqueResult(survey.id);
     }

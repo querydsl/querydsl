@@ -303,43 +303,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!orderBy.isEmpty() && !forCountRow) {
             stage = Stage.ORDER_BY;
             append(templates.getOrderBy());
-            boolean first = true;
-            for (final OrderSpecifier<?> os : orderBy) {
-                if (!first) {
-                    append(COMMA);
-                }
-                String order = os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc();
-                if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {
-                    if (templates.getNullsFirst() != null) {
-                        handle(os.getTarget());
-                        append(order);
-                        append(templates.getNullsFirst());
-                    } else {
-                        append("(case when ");
-                        handle(os.getTarget());
-                        append(" is null then 0 else 1 end), ");
-                        handle(os.getTarget());
-                        append(order);
-                    }
-                } else if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsLast) {
-                    if (templates.getNullsLast() != null) {
-                        handle(os.getTarget());
-                        append(order);
-                        append(templates.getNullsLast());
-                    } else {
-                        append("(case when ");
-                        handle(os.getTarget());
-                        append(" is null then 1 else 0 end), ");
-                        handle(os.getTarget());
-                        append(order);
-                    }
-
-                } else {
-                    handle(os.getTarget());
-                    append(order);
-                }
-                first = false;
-            }
+            handleOrderBy(orderBy);
             if (hasFlags) {
                 serialize(Position.AFTER_ORDER, flags);
             }
@@ -354,6 +318,46 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         // reset stage
         stage = oldStage;
 
+    }
+
+    protected void handleOrderBy(List<OrderSpecifier<?>> orderBy) {
+        boolean first = true;
+        for (final OrderSpecifier<?> os : orderBy) {
+            if (!first) {
+                append(COMMA);
+            }
+            String order = os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc();
+            if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsFirst) {
+                if (templates.getNullsFirst() != null) {
+                    handle(os.getTarget());
+                    append(order);
+                    append(templates.getNullsFirst());
+                } else {
+                    append("(case when ");
+                    handle(os.getTarget());
+                    append(" is null then 0 else 1 end), ");
+                    handle(os.getTarget());
+                    append(order);
+                }
+            } else if (os.getNullHandling() == OrderSpecifier.NullHandling.NullsLast) {
+                if (templates.getNullsLast() != null) {
+                    handle(os.getTarget());
+                    append(order);
+                    append(templates.getNullsLast());
+                } else {
+                    append("(case when ");
+                    handle(os.getTarget());
+                    append(" is null then 1 else 0 end), ");
+                    handle(os.getTarget());
+                    append(order);
+                }
+
+            } else {
+                handle(os.getTarget());
+                append(order);
+            }
+            first = false;
+        }
     }
 
     public void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {

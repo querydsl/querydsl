@@ -43,8 +43,6 @@ public class SQLServer2005Templates extends SQLServerTemplates {
 
     private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
 
-    private String limitTemplate = "row_number <= {0}";
-
     private String offsetTemplate = "row_number > {0}";
 
     private String outerQueryStart = "with inner_query as \n(\n  ";
@@ -86,8 +84,6 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 context.append(outerQueryEnd);
                 if (mod.getLimit() == null) {
                     context.handle(offsetTemplate, mod.getOffset());
-                } else if (mod.getOffset() == null) {
-                    context.handle(limitTemplate, mod.getLimit());
                 } else {
                     context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
                 }
