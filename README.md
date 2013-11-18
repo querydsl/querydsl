@@ -39,12 +39,12 @@ For running tests, a Vagrant/Puppet setup is provided. It is based on Ubuntu 12.
 
 You will need to install [VirtualBox], [Puppet], [Vagrant], the [vagrant-vbguest] plugin and [librarian-puppet]. You will also need to 
 download the Oracle XE 11g installer file (```oracle-xe-11.2.0-1.0.x86_64.rpm.zip```) manually and 
-place it in the ```querydsl-devops``` directory.
+place it in the ```devops``` directory.
 
 To launch the virtual machine:
 
 ```
-$> cd querydsl-devops
+$> cd devops
 devops$> librarian-puppet install
 devops$> vagrant up
 ``` 
