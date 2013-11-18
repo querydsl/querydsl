@@ -75,7 +75,8 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.STRING_CAST, "cast({0} as varchar(255))");
         add(Ops.STRING_LENGTH, "character_length({0})");
         add(Ops.StringOps.LOCATE, "position({0} in {1})");
-        add(Ops.StringOps.LOCATE2, "(position({0} in substr({1}, {2})) + {2})");
+        // XXX simplify
+        add(Ops.StringOps.LOCATE2, "coalesce(nullif(position({0} in substr({1}, {2})), 0), -({2s}-1)) + ({2s}-1)");
         add(Ops.StringOps.LEFT, "substr({0}, 1, {1})");
         add(Ops.StringOps.RIGHT, "substr({0}, (character_length({0})-{1s}) + 1, {1})");
         add(Ops.MATCHES, "regex_instr({0}, {1}) = 1");
