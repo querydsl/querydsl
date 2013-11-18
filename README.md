@@ -28,8 +28,38 @@ Querydsl provides releases via public Maven repositories, but you can build the 
 
 For more information visit the project homepage at http://www.querydsl.com/.
 
+**Vagrant/Puppet setup**
+
+For running tests, a Vagrant/Puppet setup is provided. It is based on Ubuntu 12.04 and comes with the following databases:
+
+* Oracle Express Edition 11g
+* PostgreSQL 9.1.10
+* MySQL 5.5.34
+* Cubrid 9.2
+
+You will need to install [VirtualBox], [Puppet], [Vagrant], the [vagrant-vbguest] plugin and [librarian-puppet]. You will also need to 
+download the Oracle XE 11g installer file (```oracle-xe-11.2.0-1.0.x86_64.rpm.zip```) manually and 
+place it in the ```querydsl-devops``` directory.
+
+To launch the virtual machine:
+
+```
+$> cd querydsl-devops
+devops$> librarian-puppet install
+devops$> vagrant up
+``` 
+
+All of the databases' default ports are forwarded to the host machine. See the Vagrantfile for details.
+
+
 **How to contribute**
 
 GitHub pull requests are the way to contribute to Querydsl.
 
 If you are unsure about the details of a contribution, ask on the Querydsl Google Group or create a ticket on GitHub.
+
+[VirtualBox]: https://www.virtualbox.org/
+[Vagrant]: http://www.vagrantup.com/
+[Puppet]: http://puppetlabs.com/
+[vagrant-vbguest]: https://github.com/dotless-de/vagrant-vbguest
+[librarian-puppet]: http://librarian-puppet.com/
