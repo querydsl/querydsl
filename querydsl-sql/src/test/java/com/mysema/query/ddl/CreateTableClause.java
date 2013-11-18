@@ -20,30 +20,30 @@ import com.mysema.query.sql.SQLTemplates;
 
 /**
  * CreateTableClause defines a CREATE TABLE clause
- * 
+ *
  * @author tiwe
  *
  */
 public class CreateTableClause {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(CreateTableClause.class);
-    
-    private static final Joiner COMMA_JOINER = Joiner.on(", "); 
+
+    private static final Joiner COMMA_JOINER = Joiner.on(", ");
 
     private final Connection connection;
-    
+
     private final SQLTemplates templates;
-    
+
     private final String table;
-    
+
     private final List<ColumnData> columns = new ArrayList<ColumnData>();
 
     private final List<IndexData> indexes = new ArrayList<IndexData>();
-    
+
     private PrimaryKeyData primaryKey;
-    
+
     private final List<ForeignKeyData> foreignKeys = new ArrayList<ForeignKeyData>();
-    
+
     public CreateTableClause(Connection conn, SQLTemplates templates, String table) {
         this.connection = conn;
         this.templates = templates;
@@ -52,23 +52,23 @@ public class CreateTableClause {
 
     /**
      * Add a new column definition
-     * 
+     *
      * @param name
      * @param type
      * @return
      */
     public CreateTableClause column(String name, Class<?> type) {
-        columns.add(new ColumnData(templates.quoteIdentifier(name), templates.getTypeForClass(type))); 
+        columns.add(new ColumnData(templates.quoteIdentifier(name), templates.getTypeForClass(type)));
         return this;
     }
 
     private ColumnData lastColumn() {
         return columns.get(columns.size()-1);
     }
-    
+
     /**
      * Set the last added column to not null
-     * 
+     *
      * @return
      */
     public CreateTableClause notNull() {
@@ -78,7 +78,7 @@ public class CreateTableClause {
 
     /**
      * Set the size of the last column's type
-     * 
+     *
      * @param size
      * @return
      */
@@ -86,10 +86,10 @@ public class CreateTableClause {
         lastColumn().setSize(size);
         return this;
     }
-    
+
     /**
      * Set the last column to auto increment
-     * 
+     *
      * @return
      */
     public CreateTableClause autoIncrement() {
@@ -99,7 +99,7 @@ public class CreateTableClause {
 
     /**
      * Set the primary key
-     * 
+     *
      * @param name
      * @param columns
      * @return
@@ -107,14 +107,14 @@ public class CreateTableClause {
     public CreateTableClause primaryKey(String name, String... columns) {
         for (int i = 0; i < columns.length; i++) {
             columns[i] = templates.quoteIdentifier(columns[i]);
-        }        
+        }
         primaryKey = new PrimaryKeyData(templates.quoteIdentifier(name), columns);
         return this;
     }
-    
+
     /**
      * Add an index
-     * 
+     *
      * @param name
      * @param columns
      * @return
@@ -123,10 +123,10 @@ public class CreateTableClause {
         indexes.add(new IndexData(name, columns));
         return this;
     }
-    
+
     /**
      * Set the last added index to unique
-     * 
+     *
      * @return
      */
     public CreateTableClause unique() {
@@ -136,7 +136,7 @@ public class CreateTableClause {
 
     /**
      * Add a foreign key
-     * 
+     *
      * @param name
      * @param columns
      * @return
@@ -153,7 +153,7 @@ public class CreateTableClause {
         StringBuilder builder = new StringBuilder();
         builder.append(templates.getCreateTable() + table + " (\n");
         List<String> lines = new ArrayList<String>(columns.size() + foreignKeys.size() + 1);
-        // columns 
+        // columns
         for (ColumnData column : columns) {
             StringBuilder line = new StringBuilder();
             line.append(column.getName() + " " + column.getType().toUpperCase());
@@ -162,13 +162,13 @@ public class CreateTableClause {
             }
             if (!column.isNullAllowed()) {
                 line.append(templates.getNotNull().toUpperCase());
-            }            
+            }
             if (column.isAutoIncrement()) {
                 line.append(templates.getAutoIncrement().toUpperCase());
             }
             lines.add(line.toString());
         }
-        
+
         // primary key
         if (primaryKey != null) {
             StringBuilder line = new StringBuilder();
@@ -176,7 +176,7 @@ public class CreateTableClause {
             line.append("PRIMARY KEY(" + COMMA_JOINER.join(primaryKey.getColumns()) +")");
             lines.add(line.toString());
         }
-        
+
         // foreign keys
         for (ForeignKeyData foreignKey : foreignKeys) {
             StringBuilder line = new StringBuilder();
@@ -188,12 +188,12 @@ public class CreateTableClause {
         builder.append("  " + Joiner.on(",\n  ").join(lines));
         builder.append("\n)\n");
         logger.info(builder.toString());
-        
+
         Statement stmt = null;
         try{
             stmt = connection.createStatement();
             stmt.execute(builder.toString());
-            
+
             // indexes
             for (IndexData index : indexes) {
                 String indexColumns = COMMA_JOINER.join(index.getColumns());
@@ -206,6 +206,7 @@ public class CreateTableClause {
                 stmt.execute(sql);
             }
         } catch (SQLException e) {
+            System.err.println(builder.toString());
             throw new QueryException(e.getMessage(), e);
         }finally{
             if (stmt != null) {
@@ -214,8 +215,8 @@ public class CreateTableClause {
                 } catch (SQLException e) {
                     throw new QueryException(e);
                 }
-            }            
-        }        
+            }
+        }
     }
-    
+
 }

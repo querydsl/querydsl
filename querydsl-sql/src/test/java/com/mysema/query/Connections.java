@@ -32,6 +32,7 @@ import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.TeradataTemplates;
 
 /**
  * @author tiwe
@@ -69,7 +70,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited;
+    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null) {
@@ -129,13 +130,13 @@ public final class Connections {
     private static Connection getPostgres() throws ClassNotFoundException, SQLException{
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://localhost:5432/querydsl";
-        return DriverManager.getConnection(url, "querydsl","querydsl");
+        return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
     private static Connection getSQLServer() throws ClassNotFoundException, SQLException{
         Class.forName("net.sourceforge.jtds.jdbc.Driver");
         String url = "jdbc:jtds:sqlserver://localhost:1433/querydsl";
-        return DriverManager.getConnection(url, "querydsl","querydsl");
+        return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
     private static Connection getCubrid() throws ClassNotFoundException, SQLException {
@@ -148,6 +149,11 @@ public final class Connections {
         //System.setProperty("sqlite.purejava", "true");
         Class.forName("org.sqlite.JDBC");
         return DriverManager.getConnection("jdbc:sqlite:target/sample.db");
+    }
+
+    private static Connection getTeradata() throws SQLException, ClassNotFoundException {
+        Class.forName("com.teradata.jdbc.TeraDriver");
+        return DriverManager.getConnection("jdbc:teradata://teradata/dbc", "querydsl", "querydsl");
     }
 
     private static CreateTableClause createTable(SQLTemplates templates, String table) {
@@ -174,13 +180,13 @@ public final class Connections {
 
     private static void createEmployeeTable(SQLTemplates templates) {
         createTable(templates, "EMPLOYEE")
-        .column("ID", Integer.class)
+        .column("ID", Integer.class).notNull()
         .column("FIRSTNAME", String.class).size(50)
         .column("LASTNAME", String.class).size(50)
-        .column("SALARY",Double.class)
-        .column("DATEFIELD",Date.class)
-        .column("TIMEFIELD",Time.class)
-        .column("SUPERIOR_ID",Integer.class)
+        .column("SALARY", Double.class)
+        .column("DATEFIELD", Date.class)
+        .column("TIMEFIELD", Time.class)
+        .column("SUPERIOR_ID", Integer.class)
         .primaryKey("PK_EMPLOYEE", "ID")
         .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE","ID")
         .execute();
@@ -240,8 +246,6 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         derbyInited = true;
     }
-
-
 
     public static void initSQLServer() throws SQLException, ClassNotFoundException {
         targetHolder.set(Target.SQLSERVER);
@@ -712,6 +716,64 @@ public final class Connections {
         stmt.execute(quote(CREATE_TABLE_TIMETEST, "TIME_TEST"));
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
         postgresInited = true;
+    }
+
+    public static void initTeradata() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.TERADATA);
+        SQLTemplates templates = new TeradataTemplates();
+        Connection c = getTeradata();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
+
+        if (teradataInited) {
+            return;
+        }
+
+        String identity = "GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT BY 1)";
+
+        // qtest
+        dropTable(templates, "QTEST");
+        stmt.execute("create table QTEST (ID int " + identity + " NOT NULL,  C1 int NULL)");
+
+        // survey
+        dropTable(templates, "SURVEY");
+        stmt.execute("create table SURVEY(ID int " + identity + ", NAME varchar(30), NAME2 varchar(30))");
+        stmt.execute("insert into SURVEY values (1, 'Hello World', 'Hello');");
+
+        // test
+        dropTable(templates, "TEST");
+        stmt.execute(CREATE_TABLE_TEST);
+        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
+        try{
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        }finally{
+            pstmt.close();
+        }
+
+        // employee
+        dropTable(templates, "EMPLOYEE");
+        stmt.execute("create table EMPLOYEE (\n" +
+                "ID INTEGER NOT NULL " + identity + " PRIMARY KEY, \n" +
+                "FIRSTNAME VARCHAR(50),\n" +
+                "LASTNAME VARCHAR(50),\n" +
+                "SALARY DOUBLE PRECISION,\n" +
+                "DATEFIELD DATE,\n" +
+                "TIMEFIELD TIME,\n" +
+                "SUPERIOR_ID INTEGER,\n" +
+                "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID))");
+        addEmployees(INSERT_INTO_EMPLOYEE);
+
+        // date_test and time_test
+        dropTable(templates, "TIME_TEST");
+        dropTable(templates, "DATE_TEST");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+        teradataInited = true;
     }
 
     static void addEmployee(String sql, int id, String firstName, String lastName,
