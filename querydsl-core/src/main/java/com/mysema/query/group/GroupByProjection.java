@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,13 +20,13 @@ import com.mysema.query.types.Expression;
 
 /**
  * GroupByProjection provides projection of the Group results via the transform template method
- * 
+ *
  * @author tiwe
  *
  * @param <K>
  * @param <V>
  */
-public abstract class GroupByProjection<K,V> extends GroupBy<K,V> {
+public abstract class GroupByProjection<K,V> extends GroupByMap<K,V> {
 
     public GroupByProjection(Expression<K> key, Expression<?>... expressions) {
         super(key, expressions);
@@ -37,13 +37,13 @@ public abstract class GroupByProjection<K,V> extends GroupBy<K,V> {
         Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
         for (Map.Entry<K, Group> entry : groups.entrySet()) {
             results.put(entry.getKey(), transform(entry.getValue()));
-        }            
+        }
         return results;
     }
-    
+
     /**
      * Creates a result object from the given group
-     * 
+     *
      * @param group
      * @return
      */

@@ -13,25 +13,12 @@
  */
 package com.mysema.query.group;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.Projectable;
-import com.mysema.query.ResultTransformer;
-import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.FactoryExpressionUtils;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.QList;
-import com.mysema.query.types.QTuple;
-import com.mysema.query.types.Visitor;
 
 /**
  * Groups results by the first expression.
@@ -40,35 +27,7 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
-public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
-
-    private static final class FactoryExpressionAdapter<T> extends ExpressionBase<T> implements FactoryExpression<T> {
-        private final FactoryExpression<T> expr;
-
-        private final List<Expression<?>> args;
-
-        private FactoryExpressionAdapter(FactoryExpression<T> expr, List<Expression<?>> args) {
-            super(expr.getType());
-            this.expr = expr;
-            this.args = args;
-        }
-
-        @Override
-        public <R, C> R accept(Visitor<R, C> v, C context) {
-            return expr.accept(v, context);
-        }
-
-        @Override
-        public List<Expression<?>> getArgs() {
-            return args;
-        }
-
-        @Override
-        public T newInstance(Object... args) {
-            return expr.newInstance(args);
-        }
-    }
+public final class GroupBy {
 
     /**
      * Create a new GroupByBuilder for the given key expression
@@ -162,87 +121,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         return new GMap<K,V>(qPair);
     }
 
-    protected final List<GroupExpression<?, ?>> groupExpressions = new ArrayList<GroupExpression<?, ?>>();
-
-    protected final List<QPair<?,?>> maps = new ArrayList<QPair<?,?>>();
-
-    protected final Expression<?>[] expressions;
-
-    GroupBy(Expression<K> key, Expression<?>... expressions) {
-        List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);
-        groupExpressions.add(new GOne<K>(key));
-        projection.add(key);
-
-        for (Expression<?> expr : expressions) {
-            if (expr instanceof GroupExpression<?,?>) {
-                GroupExpression<?,?> groupExpr = (GroupExpression<?,?>)expr;
-                groupExpressions.add(groupExpr);
-                Expression<?> colExpression = groupExpr.getExpression();
-                if (colExpression instanceof Operation && ((Operation)colExpression).getOperator() == Ops.ALIAS) {
-                    projection.add(((Operation)colExpression).getArg(0));
-                } else {
-                    projection.add(colExpression);
-                }
-                if (groupExpr instanceof GMap) {
-                    maps.add((QPair<?, ?>) colExpression);
-                }
-            } else {
-                groupExpressions.add(new GOne(expr));
-                projection.add(expr);
-            }
-        }
-
-        this.expressions = projection.toArray(new Expression[projection.size()]);
-    }
-
-    @Override
-    public Map<K, V> transform(Projectable projectable) {
-        Map<K, Group> groups = new LinkedHashMap<K, Group>();
-
-        // create groups
-        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(new QTuple(expressions));
-        boolean hasGroups = false;
-        for (Expression<?> e : expr.getArgs()) {
-            hasGroups |= e instanceof GroupExpression;
-        }
-        if (hasGroups) {
-            expr = withoutGroupExpressions(expr);
-        }
-        CloseableIterator<Tuple> iter = projectable.iterate(expr);
-        try {
-            while (iter.hasNext()) {
-                Object[] row = iter.next().toArray();
-                K groupId = (K) row[0];
-                GroupImpl group = (GroupImpl)groups.get(groupId);
-                if (group == null) {
-                    group = new GroupImpl(groupExpressions, maps);
-                    groups.put(groupId, group);
-                }
-                group.add(row);
-            }
-        } finally {
-            iter.close();
-        }
-
-        // transform groups
-        return transform(groups);
-
-    }
-
-    private FactoryExpression<Tuple> withoutGroupExpressions(final FactoryExpression<Tuple> expr) {
-        List<Expression<?>> args = new ArrayList<Expression<?>>(expr.getArgs().size());
-        for (Expression<?> arg : expr.getArgs()) {
-            if (arg instanceof GroupExpression) {
-                args.add(((GroupExpression)arg).getExpression());
-            } else {
-                args.add(arg);
-            }
-        }
-        return new FactoryExpressionAdapter<Tuple>(expr, args);
-    }
-
-    protected Map<K, V> transform(Map<K, Group> groups) {
-        return (Map<K,V>)groups;
-    }
+    private GroupBy() {}
 
 }
