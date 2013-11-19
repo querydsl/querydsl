@@ -112,7 +112,7 @@ public final class ClassPathUtils {
 
     public static Class<?> safeClassForName(ClassLoader classLoader, String className) {
         try {
-            if (className.startsWith("com.sun")) {
+            if (className.startsWith("com.sun") || className.startsWith("com.apple")) {
                 return null;
             } else {
                 return Class.forName(className, true, classLoader);

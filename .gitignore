@@ -8,3 +8,11 @@ test-output
 /.metadata
 .cache
 derby.log
+/devops/.tmp
+/devops/.librarian
+/devops/.vagrant
+/devops/Puppetfile.lock
+/devops/modules
+/devops/*.rpm.zip
+/devops/**/*.semaphore
+/devops/test-connection/.lein-repl-history
