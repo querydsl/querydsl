@@ -1362,7 +1362,7 @@ public class SelectBase extends AbstractBaseTest{
             .list(e.lastname, e.salary,
                SQLExpressions.sum(e.salary).over().partitionBy(e.superiorId).orderBy(e.lastname, e.salary),
                SQLExpressions.sum(e.salary).over().orderBy(e.superiorId, e.salary),
-               SQLExpressions.sum(e.salary));
+               SQLExpressions.sum(e.salary).over());
     }
 
 
