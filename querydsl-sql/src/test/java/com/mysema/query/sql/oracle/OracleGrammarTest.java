@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,12 +13,9 @@
  */
 package com.mysema.query.sql.oracle;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-
-import com.mysema.query.types.path.NumberPath;
 
 public class OracleGrammarTest {
 
@@ -27,13 +24,6 @@ public class OracleGrammarTest {
         assertNotNull(OracleGrammar.level);
         assertNotNull(OracleGrammar.rownum);
         assertNotNull(OracleGrammar.sysdate);
-    }
-
-    @Test
-    public void SumOver() {
-        NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
-        SumOver<Integer> sumOver = OracleGrammar.sumOver(intPath).orderBy(intPath).partition(intPath);
-        assertEquals("sum(intPath) over (partition by intPath order by intPath)", sumOver.toString());
     }
 
 }

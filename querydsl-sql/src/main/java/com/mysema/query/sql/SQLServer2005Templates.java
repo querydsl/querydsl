@@ -17,7 +17,6 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.sql.mssql.SQLServerGrammar;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.OrderSpecifier;
@@ -76,7 +75,7 @@ public class SQLServer2005Templates extends SQLServerTemplates {
             } else {
                 context.append(outerQueryStart);
                 metadata = metadata.clone();
-                RowNumber rn = new RowNumber();
+                WindowFunction<Long> rn = SQLExpressions.rowNumber().over();
                 for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                     rn.orderBy(os);
                 }

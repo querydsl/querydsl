@@ -29,9 +29,7 @@ import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
-import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
 import static com.mysema.query.sql.oracle.OracleGrammar.level;
-import static com.mysema.query.sql.oracle.OracleGrammar.sumOver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -65,7 +63,6 @@ import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
-import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
@@ -799,7 +796,7 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     @IncludeIn(SQLSERVER)
     public void Manual_Paging() {
-        RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
+        Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as(rn);
         // TODO : create a short cut for wild card
         Expression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
 
@@ -1332,18 +1329,18 @@ public class SelectBase extends AbstractBaseTest{
             .list(
                employee.lastname,
                employee.salary,
-               sumOver(employee.salary).partition(employee.superiorId).orderBy(employee.lastname, employee.salary),
-               sumOver(employee.salary).orderBy(employee.superiorId, employee.salary),
-               sumOver(employee.salary));
+               SQLExpressions.sum(employee.salary).over().partitionBy(employee.superiorId).orderBy(employee.lastname, employee.salary),
+               SQLExpressions.sum(employee.salary).over().orderBy(employee.superiorId, employee.salary),
+               SQLExpressions.sum(employee.salary).over());
 
         // shorter version
         QEmployee e = employee;
         oracleQuery().from(e)
             .orderBy(e.salary.asc(), e.superiorId.asc())
             .list(e.lastname, e.salary,
-               sumOver(e.salary).partition(e.superiorId).orderBy(e.lastname, e.salary),
-               sumOver(e.salary).orderBy(e.superiorId, e.salary),
-               sumOver(e.salary));
+               SQLExpressions.sum(e.salary).over().partitionBy(e.superiorId).orderBy(e.lastname, e.salary),
+               SQLExpressions.sum(e.salary).over().orderBy(e.superiorId, e.salary),
+               SQLExpressions.sum(e.salary));
     }
 
 

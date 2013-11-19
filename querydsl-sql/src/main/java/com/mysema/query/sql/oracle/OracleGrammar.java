@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@ package com.mysema.query.sql.oracle;
 
 import java.util.Date;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.template.DateTemplate;
@@ -33,20 +32,9 @@ public final class OracleGrammar {
     public static final NumberExpression<Integer> level = NumberTemplate.create(Integer.class, "level");
 
     public static final NumberExpression<Integer> rownum = NumberTemplate.create(Integer.class, "rownum");
-    
+
     public static final NumberExpression<Integer> rowid = NumberTemplate.create(Integer.class, "rowid");
 
     public static final DateExpression<Date> sysdate = DateTemplate.create(Date.class, "sysdate");
-
-    /**
-     * Replace with SQLExpressions.sum(expr).over(...
-     * 
-     * @param expr
-     * @return
-     */
-    @Deprecated
-    public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expression<A> expr) {
-        return new SumOver<A>(expr);
-    }
 
 }

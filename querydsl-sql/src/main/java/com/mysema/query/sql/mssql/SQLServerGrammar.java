@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,13 +13,7 @@
  */
 package com.mysema.query.sql.mssql;
 
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.template.DateTemplate;
 import com.mysema.query.types.template.NumberTemplate;
 
 /**
@@ -31,13 +25,7 @@ import com.mysema.query.types.template.NumberTemplate;
 public final class SQLServerGrammar {
 
     private SQLServerGrammar() {}
-    
-    @Deprecated
-    private static final Template DATEDIFF = TemplateFactory.DEFAULT.create("datediff({0s},{1},{2})");
 
-    @Deprecated
-    private static final Template DATEADD = TemplateFactory.DEFAULT.create("dateadd({0s},{1},{2})");
-    
     public static final NumberExpression<Long> rowNumber = NumberTemplate.create(Long.class, "row_number");
 
     public static final NumberExpression<Long> rn = NumberTemplate.create(Long.class, "rn");
@@ -51,35 +39,7 @@ public final class SQLServerGrammar {
             hints.append(tableHints[i].name());
         }
         hints.append(")");
-        return hints.toString();        
+        return hints.toString();
     }
-    
-    /**
-     * Use SQLExpressions.rowNumber(...) instead
-     */
-    @Deprecated
-    public static RowNumber rowNumber() {
-        return new RowNumber();
-    }
-    
-    private static final <T> Constant<T> constant(T constant) {
-        return new ConstantImpl<T>(constant);
-    }
-    
-    /**
-     * Use SQLExpressions methods instead
-     */
-    @Deprecated
-    public static <D extends Comparable<D>> NumberExpression<Integer> datediff(DatePart datePart, D start, D end) {
-        return NumberTemplate.create(Integer.class, DATEDIFF, constant(datePart.name()), constant(start), constant(end));
-    }
-    
-    /**
-     * Use SQLExpressions methods instead
-     */
-    @Deprecated
-    public static <D extends Comparable<D>> DateExpression<D> dateadd(DatePart datePart, int num, D date) {
-        return DateTemplate.<D>create((Class<D>)date.getClass(), DATEADD, constant(datePart.name()), constant(num), constant(date));
-    }
-    
+
 }
