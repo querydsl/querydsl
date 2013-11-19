@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import org.joda.time.ReadableInstant;
+
 import com.mysema.query.types.Ops;
 
 /**
@@ -87,13 +89,14 @@ public class SQLiteTemplates extends SQLTemplates {
     }
 
     @Override
-    public String asLiteral(DateTimeType type, String literal) {
-        if (type == DateTimeType.DATE) {
-            return "date('" + literal + "')";
-        } else if (type == DateTimeType.TIME) {
-            return "time('" + literal + "')";
+    public String asLiteral(Object o) {
+        if (o instanceof java.util.Date) {
+            return String.valueOf(((java.util.Date)o).getTime());
+        } else if (o instanceof ReadableInstant) {
+            return String.valueOf(((ReadableInstant)o).getMillis());
+        // TODO ReadablePartial
         } else {
-            return "datetime('" + literal + "')";
+            return super.asLiteral(o);
         }
     }
 
