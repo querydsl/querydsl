@@ -421,7 +421,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, SQLITE, HSQLDB, MYSQL})
+    @ExcludeIn({CUBRID, SQLITE, HSQLDB, MYSQL, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
         TestQuery query = query().from(employee, employee2);

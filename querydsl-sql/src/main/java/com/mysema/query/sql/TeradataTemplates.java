@@ -72,8 +72,8 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
         add(Ops.StringOps.LEFT, "substr({0}, 1, {1})");
         add(Ops.StringOps.RIGHT, "substr({0}, (character_length({0})-{1s}) + 1, {1})");
-        add(Ops.MATCHES, "regex_instr({0}, {1}) = 1");
-        // add(Ops.MATCHES_IC, "regex_instr({0}, {1}) = 1"); TODO
+        add(Ops.MATCHES, "regexp_instr({0}, {1}) = 1");
+        add(Ops.MATCHES_IC, "regex_instr({0l}, {1}) = 1");
 
         // Number
         add(Ops.MOD, "{0} mod {1}");
@@ -101,7 +101,9 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MONTHS, "{0} + interval '{1s}' month");
         add(Ops.DateTimeOps.ADD_DAYS, "{0} + interval '{1s}' day");
 
-        // TODO datediff
+        add(Ops.DateTimeOps.DIFF_YEARS, "cast((({1} - {0}) year) as integer)");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "cast((({1} - {0}) month) as integer)"); // FIXME
+        add(Ops.DateTimeOps.DIFF_DAYS, "({1} - {0})");
 
         add(Ops.DateTimeOps.TRUNC_YEAR, "trunc({0}, 'year')");
         add(Ops.DateTimeOps.TRUNC_MONTH, "trunc({0}, 'month')");
@@ -110,7 +112,6 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_HOUR, "trunc({0}, 'hh')");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc({0}, 'mi')");
         add(Ops.DateTimeOps.TRUNC_SECOND, "{0}"); // not truncated
-
     }
 
     @Override
