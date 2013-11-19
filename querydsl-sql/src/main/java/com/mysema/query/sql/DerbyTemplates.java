@@ -93,6 +93,18 @@ public class DerbyTemplates extends SQLTemplates {
     }
 
     @Override
+    public String asLiteral(DateTimeType type, String literal) {
+        // JDBC escape syntax
+        String keyword = "ts";
+        if (type == DateTimeType.DATE) {
+            keyword = "d";
+        } else if (type == DateTimeType.TIME) {
+            keyword = "t";
+        }
+        return "{" + keyword + " '" + literal + "'}";
+    }
+
+    @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() == null) {

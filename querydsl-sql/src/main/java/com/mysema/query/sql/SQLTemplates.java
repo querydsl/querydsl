@@ -362,13 +362,14 @@ public class SQLTemplates extends Templates {
     }
 
     public String asLiteral(DateTimeType type, String literal) {
-        String keyword = "ts";
+        // SQL 92 standard
+        String keyword = "timestamp";
         if (type == DateTimeType.DATE) {
-            keyword = "d";
+            keyword = "date";
         } else if (type == DateTimeType.TIME) {
-            keyword = "t";
+            keyword = "time";
         }
-        return "{" + keyword + " '" + literal + "'}";
+        return "(" + keyword + " '" + literal + "')";
     }
 
     protected void addClass2TypeMappings(String type, Class<?>... classes) {
