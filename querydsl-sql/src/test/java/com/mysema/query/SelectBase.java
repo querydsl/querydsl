@@ -274,7 +274,7 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     @Ignore
-    public void ConnectBy() throws SQLException{
+    public void ConnectBy() throws SQLException {
         // TODO : come up with a legal case
         oracleQuery().from(employee)
             .where(level.eq(-1))
@@ -285,7 +285,7 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior() throws SQLException{
+    public void ConnectByPrior() throws SQLException {
         expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                         "from EMPLOYEE e " +
                         "connect by prior e.ID = e.SUPERIOR_ID";
@@ -297,7 +297,9 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior2() throws SQLException{
+    public void ConnectByPrior2() throws SQLException {
+        if (configuration.getUseLiterals()) return;
+
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                 "from EMPLOYEE e " +
@@ -312,7 +314,9 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior3() throws SQLException{
+    public void ConnectByPrior3() throws SQLException {
+        if (configuration.getUseLiterals()) return;
+
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                 "from EMPLOYEE e " +
@@ -329,7 +333,9 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior4() throws SQLException{
+    public void ConnectByPrior4() throws SQLException {
+        if (configuration.getUseLiterals()) return;
+
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                 "from EMPLOYEE e " +
@@ -741,6 +747,8 @@ public class SelectBase extends AbstractBaseTest{
     @IncludeIn(ORACLE)
     @SkipForQuoted
     public void Limit_and_Offset_In_Oracle() throws SQLException {
+        if (configuration.getUseLiterals()) return;
+
         // limit
         expectedQuery = "select * from (   select e.ID from EMPLOYEE e ) where rownum <= ?";
         query().from(employee).limit(4).list(employee.id);
@@ -1243,7 +1251,6 @@ public class SelectBase extends AbstractBaseTest{
         // int
         standardTest.runNumericCasts(employee.id, employee2.id, 1);
         standardTest.runNumericTests(employee.id, employee2.id, 1);
-
         // BigDecimal
         standardTest.runNumericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
 

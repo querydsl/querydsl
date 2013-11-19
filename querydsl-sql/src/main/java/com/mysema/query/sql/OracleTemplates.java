@@ -135,6 +135,16 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     @Override
+    public String asLiteral(DateTimeType type, String literal) {
+        if (type == DateTimeType.TIME) {
+            // Oracle doesn't support the time type
+            return "(timestamp '1970-01-01 " + literal + "')";
+        } else {
+            return super.asLiteral(type, literal);
+        }
+    }
+
+    @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
             QueryModifiers mod = metadata.getModifiers();
