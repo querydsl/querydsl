@@ -19,6 +19,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.ReadableInstant;
+import org.joda.time.ReadablePartial;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -307,33 +311,64 @@ public class SQLTemplates extends Templates {
 
     public String asLiteral(Object o) {
         if (o instanceof Character) {
-            return "'" + o + "'"; // TODO proper escaping
+            return "'" + escapeLiteral(o.toString()) + "'";
         } else if (o instanceof String) {
-            return "'" + o + "'"; // TODO proper escaping
+            return "'" + escapeLiteral(o.toString()) + "'";
+        // java.util.Date
         } else if (o instanceof java.util.Date) {
-            DateTimeFormatter formatter = dateTimeFormatter;
-            DateTimeType type = DateTimeType.DATETIME;
+            java.util.Date date = (java.util.Date)o;
             if (o instanceof java.sql.Date) {
-                formatter = dateFormatter;
-                type = DateTimeType.DATE;
+                return asLiteral(DateTimeType.DATE, dateFormatter.print(date.getTime()));
             } else if (o instanceof java.sql.Time) {
-                formatter = timeFormatter;
-                type = DateTimeType.TIME;
+                return asLiteral(DateTimeType.TIME, timeFormatter.print(date.getTime()));
+            } else {
+                return asLiteral(DateTimeType.DATETIME, dateTimeFormatter.print(date.getTime()));
             }
-            return asLiteral(o, type, formatter);
+        // Joda time
+        } else if (o instanceof ReadablePartial) {
+            ReadablePartial partial = (ReadablePartial)o;
+            if (o instanceof LocalDate) {
+                return asLiteral(DateTimeType.DATE, dateFormatter.print(partial));
+            } else if (o instanceof LocalTime) {
+                return asLiteral(DateTimeType.TIME, timeFormatter.print(partial));
+            } else {
+                return asLiteral(DateTimeType.DATETIME, dateTimeFormatter.print(partial));
+            }
+        } else if (o instanceof ReadableInstant) {
+            return asLiteral(DateTimeType.DATETIME, dateTimeFormatter.print((ReadableInstant)o));
         } else {
             return o.toString();
         }
     }
 
-    public String asLiteral(Object o, DateTimeType type, DateTimeFormatter formatter) {
+    public String escapeLiteral(String str) {
+        StringBuilder builder = new StringBuilder();
+        for (char ch : str.toCharArray()) {
+            if (ch == '\n') {
+                builder.append("\\n");
+                continue;
+            } else if (ch == '\r') {
+                builder.append("\\r");
+                continue;
+            } else if (ch == '\'') {
+                builder.append("''");
+                continue;
+            } else if (ch == '\\') {
+                builder.append("\\");
+            }
+            builder.append(ch);
+        }
+        return builder.toString();
+    }
+
+    public String asLiteral(DateTimeType type, String literal) {
         String keyword = "ts";
         if (type == DateTimeType.DATE) {
             keyword = "d";
         } else if (type == DateTimeType.TIME) {
             keyword = "t";
         }
-        return "{" + keyword + " '" + formatter.print(((java.util.Date)o).getTime()) + "'}";
+        return "{" + keyword + " '" + literal + "'}";
     }
 
     protected void addClass2TypeMappings(String type, Class<?>... classes) {

@@ -13,8 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import org.joda.time.format.DateTimeFormatter;
-
 import com.mysema.query.types.Ops;
 
 /**
@@ -89,14 +87,13 @@ public class SQLiteTemplates extends SQLTemplates {
     }
 
     @Override
-    public String asLiteral(Object o, DateTimeType type, DateTimeFormatter formatter) {
-        long millis = ((java.util.Date)o).getTime();
+    public String asLiteral(DateTimeType type, String literal) {
         if (type == DateTimeType.DATE) {
-            return "date(" + millis + ",'unixepoch')";
+            return "date('" + literal + "')";
         } else if (type == DateTimeType.TIME) {
-            return "time(" + millis + ",'unixepoch')";
+            return "time('" + literal + "')";
         } else {
-            return "datetime(" + millis + ",'unixepoch')";
+            return "datetime('" + literal + "')";
         }
     }
 

@@ -1220,7 +1220,6 @@ public class SelectBase extends AbstractBaseTest{
         for (String s : query().from(survey).list(survey.name)) {
             assertNotNull(s);
         }
-
     }
 
     @Test
@@ -1229,6 +1228,11 @@ public class SelectBase extends AbstractBaseTest{
                 .list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))) {
             assertEquals(String.class, s.getClass());
         }
+    }
+
+    @Test
+    public void SpecialChars() {
+        query().from(survey).where(survey.name.in("\n", "\r", "\\", "\'", "\"")).exists();
     }
 
     @Test

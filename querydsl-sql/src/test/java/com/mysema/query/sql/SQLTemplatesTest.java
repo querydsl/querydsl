@@ -21,7 +21,9 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
-import org.junit.Ignore;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
@@ -32,6 +34,14 @@ import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.template.SimpleTemplate;
 
 public class SQLTemplatesTest {
+
+    private static final String DATETIME = "\\{ts '\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}'\\}";
+    private static final String TIME = "\\{t '\\d{2}:\\d{2}:\\d{2}'\\}";
+    private static final String DATE = "\\{d '\\d{4}-\\d{2}-\\d{2}'\\}";
+
+    private static void assertMatches(String regex, String str) {
+        assertTrue(str.matches(regex));
+    }
 
     @Test
     public void test() {
@@ -44,12 +54,19 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    @Ignore
     public void AsLiteral() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
-        assertEquals("'1970-01-01'", templates.asLiteral(new Date(0)));
-        assertEquals("'03:00:00'", templates.asLiteral(new Time(0)));
-        assertEquals("'1970-01-01 03:00:00'", templates.asLiteral(new Timestamp(0)));
+        assertMatches(DATE, templates.asLiteral(new Date(0)));
+        assertMatches(TIME, templates.asLiteral(new Time(0)));
+        assertMatches(DATETIME, templates.asLiteral(new Timestamp(0)));
+    }
+
+    @Test
+    public void AsLiteral_JodaTime() {
+        SQLTemplates templates = SQLTemplates.DEFAULT;
+        assertMatches(DATE, templates.asLiteral(new LocalDate(0)));
+        assertMatches(TIME, templates.asLiteral(new LocalTime(0)));
+        assertMatches(DATETIME, templates.asLiteral(new DateTime(0)));
     }
 
     @Test
