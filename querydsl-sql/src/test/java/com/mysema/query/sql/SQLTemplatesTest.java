@@ -16,8 +16,12 @@ package com.mysema.query.sql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
@@ -37,6 +41,15 @@ public class SQLTemplatesTest {
         SQLSerializer serializer = new SQLSerializer(new Configuration(new DerbyTemplates()));
         serializer.handle(SimpleTemplate.create(Object.class, template, ConstantImpl.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
+    }
+
+    @Test
+    @Ignore
+    public void AsLiteral() {
+        SQLTemplates templates = SQLTemplates.DEFAULT;
+        assertEquals("'1970-01-01'", templates.asLiteral(new Date(0)));
+        assertEquals("'03:00:00'", templates.asLiteral(new Time(0)));
+        assertEquals("'1970-01-01 03:00:00'", templates.asLiteral(new Timestamp(0)));
     }
 
     @Test

@@ -57,6 +57,8 @@ public final class Configuration {
 
     private boolean hasTableColumnTypes = false;
 
+    private boolean useLiterals = false;
+
     /**
      * Create a new Configuration instance
      *
@@ -257,6 +259,20 @@ public final class Configuration {
      */
     public SQLListeners getListeners() {
         return listeners;
+    }
+
+    /**
+     * @return
+     */
+    public boolean getUseLiterals() {
+        return useLiterals;
+    }
+
+    /**
+     * @param useLiterals
+     */
+    public void setUseLiterals(boolean useLiterals) {
+        this.useLiterals = useLiterals;
     }
 
 }

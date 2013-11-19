@@ -81,6 +81,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private boolean inJoin = false;
 
+    private boolean useLiterals = false;
+
     public SQLSerializer(Configuration conf) {
         this(conf, false);
     }
@@ -409,9 +411,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append("\n");
             serialize(subQuery.getMetadata(), false);
         } else {
-            for (int i = 0; i < columns.size(); i++) {
-                if (values.get(i) instanceof Constant<?>) {
-                    constantPaths.add(columns.get(i));
+            if (!useLiterals) {
+                for (int i = 0; i < columns.size(); i++) {
+                    if (values.get(i) instanceof Constant<?>) {
+                        constantPaths.add(columns.get(i));
+                    }
                 }
             }
 
@@ -449,9 +453,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             serialize(subQuery.getMetadata(), false);
 
         } else {
-            for (int i = 0; i < columns.size(); i++) {
-                if (values.get(i) instanceof Constant<?>) {
-                    constantPaths.add(columns.get(i));
+            if (!useLiterals) {
+                for (int i = 0; i < columns.size(); i++) {
+                    if (values.get(i) instanceof Constant<?>) {
+                        constantPaths.add(columns.get(i));
+                    }
                 }
             }
 
@@ -488,7 +494,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             handle(update.getFirst());
             append(" = ");
-            if (update.getSecond() instanceof Constant<?>) {
+            if (!useLiterals && update.getSecond() instanceof Constant<?>) {
                 constantPaths.add(update.getFirst());
             }
             handle(update.getSecond());
@@ -608,7 +614,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public void visitConstant(Object constant) {
-        if (constant instanceof Collection) {
+        if (useLiterals) {
+            if (constant instanceof Collection) {
+                append("(");
+                boolean first = true;
+                for (Object o : ((Collection)constant)) {
+                    if (!first) {
+                        append(COMMA);
+                    }
+                    append(templates.asLiteral(o));
+                    first = false;
+                }
+                append(")");
+            } else {
+                append(templates.asLiteral(constant));
+            }
+        } else if (constant instanceof Collection) {
             append("(");
             boolean first = true;
             for (Object o : ((Collection)constant)) {
@@ -699,6 +720,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (args.size() == 2
+         && !useLiterals
          && args.get(0) instanceof Path<?>
          && args.get(1) instanceof Constant<?>
          && operator != Ops.NUMCAST) {
@@ -750,6 +772,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         } else {
             super.visitOperation(type, operator, args);
         }
+    }
+
+    public void setUseLiterals(boolean useLiterals) {
+        this.useLiterals = useLiterals;
     }
 
 }

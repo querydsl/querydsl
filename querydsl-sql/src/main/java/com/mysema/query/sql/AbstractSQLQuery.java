@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +42,17 @@ import com.mysema.query.Tuple;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.QTuple;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -82,6 +92,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     protected boolean unionAll;
 
+    private boolean useLiterals;
+
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata().noValidate());
     }
@@ -94,6 +106,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         this.conn = conn;
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
+        this.useLiterals = configuration.getUseLiterals();
     }
 
     /**
@@ -219,7 +232,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     protected SQLSerializer createSerializer() {
-        return new SQLSerializer(configuration);
+        SQLSerializer serializer = new SQLSerializer(configuration);
+        serializer.setUseLiterals(useLiterals);
+        return serializer;
     }
 
     public Q from(Expression<?> arg) {
@@ -793,6 +808,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 }
             }
         }
+    }
+
+    public void setUseLiterals(boolean useLiterals) {
+        this.useLiterals = useLiterals;
     }
 
 }

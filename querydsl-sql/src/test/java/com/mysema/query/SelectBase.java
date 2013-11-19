@@ -1262,7 +1262,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn(SQLITE)
+    @ExcludeIn({POSTGRES, SQLITE})
     public void String_IndexOf() {
         StringExpression str = Expressions.stringTemplate("'  abcd  '");
 

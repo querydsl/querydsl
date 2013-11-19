@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,7 +42,7 @@ import com.mysema.query.sql.oracle.OracleQuery;
 public abstract class AbstractBaseTest {
 
     protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
-        
+
         private TestQuery(Connection conn, Configuration configuration) {
             super(conn, configuration);
         }
@@ -50,7 +50,7 @@ public abstract class AbstractBaseTest {
         private TestQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
             super(conn, configuration, metadata);
         }
-        
+
         @Override
         protected String buildQueryString(boolean countRow) {
             String rv = super.buildQueryString(countRow);
@@ -71,20 +71,20 @@ public abstract class AbstractBaseTest {
     }
 
     private Connection connection = Connections.getConnection();
-    
+
     private SQLTemplates templates = Connections.getTemplates();
-    
-    private Configuration configuration = new Configuration(templates);
+
+    protected Configuration configuration = new Configuration(templates);
 
     @Nullable
     protected String expectedQuery;
-    
+
     @Rule
     public static MethodRule skipForQuotedRule = new SkipForQuotedRule();
-    
+
     @Rule
     public static MethodRule targetRule = new TargetRule();
-    
+
     protected SQLUpdateClause update(RelationalPath<?> e) {
         return new SQLUpdateClause(connection, configuration, e);
     }
@@ -96,7 +96,7 @@ public abstract class AbstractBaseTest {
     protected SQLInsertClause insert(RelationalPath<?> e, AbstractSQLSubQuery<?> sq) {
         return new SQLInsertClause(connection, configuration, e, sq);
     }
-    
+
     protected SQLDeleteClause delete(RelationalPath<?> e) {
         return new SQLDeleteClause(connection, configuration, e);
     }
@@ -104,7 +104,7 @@ public abstract class AbstractBaseTest {
     protected SQLMergeClause merge(RelationalPath<?> e) {
         return new SQLMergeClause(connection, configuration, e);
     }
-    
+
     protected ExtendedSQLQuery extQuery() {
         return new ExtendedSQLQuery(connection, configuration);
     }
@@ -112,20 +112,20 @@ public abstract class AbstractBaseTest {
     protected MySQLQuery mysqlQuery() {
         return new MySQLQuery(connection, configuration);
     }
-    
+
     protected SQLInsertClause mysqlReplace(RelationalPath<?> path) {
         return new MySQLReplaceClause(connection, configuration, path);
     }
-    
+
     protected TestQuery query() {
         return new TestQuery(connection, configuration);
     }
-    
+
     protected TestQuery testQuery() {
-        return new TestQuery(connection, configuration, 
+        return new TestQuery(connection, configuration,
                 new DefaultQueryMetadata().noValidate());
     }
-    
+
     protected OracleQuery oracleQuery() {
         return new OracleQuery(connection, configuration) {
             @Override

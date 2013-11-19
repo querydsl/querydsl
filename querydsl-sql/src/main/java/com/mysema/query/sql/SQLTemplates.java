@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -37,6 +40,8 @@ import com.mysema.query.types.Templates;
  * @author tiwe
  */
 public class SQLTemplates extends Templates {
+
+    enum DateTimeType {DATE, TIME, DATETIME};
 
     public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
@@ -80,6 +85,12 @@ public class SQLTemplates extends Templates {
         }
 
     }
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
@@ -294,6 +305,37 @@ public class SQLTemplates extends Templates {
         class2type.put(java.sql.Timestamp.class, "timestamp");
     }
 
+    public String asLiteral(Object o) {
+        if (o instanceof Character) {
+            return "'" + o + "'"; // TODO proper escaping
+        } else if (o instanceof String) {
+            return "'" + o + "'"; // TODO proper escaping
+        } else if (o instanceof java.util.Date) {
+            DateTimeFormatter formatter = dateTimeFormatter;
+            DateTimeType type = DateTimeType.DATETIME;
+            if (o instanceof java.sql.Date) {
+                formatter = dateFormatter;
+                type = DateTimeType.DATE;
+            } else if (o instanceof java.sql.Time) {
+                formatter = timeFormatter;
+                type = DateTimeType.TIME;
+            }
+            return asLiteral(o, type, formatter);
+        } else {
+            return o.toString();
+        }
+    }
+
+    public String asLiteral(Object o, DateTimeType type, DateTimeFormatter formatter) {
+        String keyword = "ts";
+        if (type == DateTimeType.DATE) {
+            keyword = "d";
+        } else if (type == DateTimeType.TIME) {
+            keyword = "t";
+        }
+        return "{" + keyword + " '" + formatter.print(((java.util.Date)o).getTime()) + "'}";
+    }
+
     protected void addClass2TypeMappings(String type, Class<?>... classes) {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
@@ -443,7 +485,6 @@ public class SQLTemplates extends Templates {
             throw new IllegalArgumentException("Got not type for " + clazz.getName());
         }
     }
-
 
     public final String getUpdate() {
         return update;
@@ -760,7 +801,5 @@ public class SQLTemplates extends Templates {
     protected void setNullsLast(String nullsLast) {
         this.nullsLast = nullsLast;
     }
-
-
 
 }
