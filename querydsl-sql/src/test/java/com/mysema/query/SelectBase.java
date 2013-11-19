@@ -1262,6 +1262,16 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(SQLITE)
+    public void String_IndexOf() {
+        StringExpression str = Expressions.stringTemplate("'  abcd  '");
+
+        assertEquals(Integer.valueOf(2), unique(str.indexOf("a")));
+        assertEquals(Integer.valueOf(-1), unique(str.indexOf("a", 4)));
+        assertEquals(Integer.valueOf(3), unique(str.indexOf("b", 2)));
+    }
+
+    @Test
     public void StringFunctions2() throws SQLException {
         for (BooleanExpression where : Arrays.<BooleanExpression> asList(
                 employee.firstname.startsWith("a"),

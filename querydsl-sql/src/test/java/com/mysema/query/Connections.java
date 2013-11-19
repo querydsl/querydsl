@@ -759,8 +759,8 @@ public final class Connections {
         dropTable(templates, "EMPLOYEE");
         stmt.execute("create table EMPLOYEE (\n" +
                 "ID INTEGER NOT NULL PRIMARY KEY, \n" +
-                "FIRSTNAME VARCHAR(50),\n" +
-                "LASTNAME VARCHAR(50),\n" +
+                "FIRSTNAME VARCHAR(100),\n" +
+                "LASTNAME VARCHAR(100),\n" +
                 "SALARY DOUBLE PRECISION,\n" +
                 "DATEFIELD DATE,\n" +
                 "TIMEFIELD TIME,\n" +
