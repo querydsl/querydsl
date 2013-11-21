@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -75,6 +75,12 @@ public abstract class QueryExecution {
         projections = p;
         filters = f;
         matchers = m;
+    }
+
+    public void reset() {
+        errors.clear();
+        failures.clear();
+        total = 0;
     }
 
     private void runProjectionQueries(Collection<? extends Expression<?>> projections) {
@@ -170,7 +176,7 @@ public abstract class QueryExecution {
         }
     }
 
-    private int runFilter(Predicate f) { 
+    private int runFilter(Predicate f) {
         Pair<Projectable, Expression<?>[]> p = createQuery(f);
         try{
             return p.getFirst().list(p.getSecond()).size();

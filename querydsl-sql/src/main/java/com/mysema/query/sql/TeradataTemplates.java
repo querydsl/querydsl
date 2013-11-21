@@ -65,15 +65,15 @@ public class TeradataTemplates extends SQLTemplates {
 
         // String
         add(Ops.STRING_LENGTH, "character_length({0})");
-        add(Ops.INDEX_OF, "instr({0},{1})-1");
-        add(Ops.INDEX_OF_2ARGS, "instr({0},{1},{2}+1)-1");
+        add(Ops.INDEX_OF, "(instr({0},{1})-1)");
+        add(Ops.INDEX_OF_2ARGS, "(instr({0},{1},{2}+1)-1)");
         add(Ops.STRING_CAST, "cast({0} as varchar(255))");
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
         add(Ops.StringOps.LEFT, "substr({0}, 1, {1})");
         add(Ops.StringOps.RIGHT, "substr({0}, (character_length({0})-{1s}) + 1, {1})");
-        add(Ops.MATCHES, "regexp_instr({0}, {1}) = 1");
-        add(Ops.MATCHES_IC, "regex_instr({0l}, {1}) = 1");
+        add(Ops.MATCHES, "(regexp_instr({0}, {1}) = 1)");
+        add(Ops.MATCHES_IC, "(regex_instr({0l}, {1}) = 1)");
 
         // Number
         add(Ops.MOD, "{0} mod {1}");
@@ -86,10 +86,10 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
-        add(Ops.DateTimeOps.WEEK, "td_week_of_year({0})");
+        add(Ops.DateTimeOps.WEEK, "(td_week_of_year({0}) + 1)"); // non-standard
         add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "extract(dow from {0}) + 1");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "extract(doy from {0})");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "td_day_of_week({0})"); // non-standard
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "td_day_of_year({0})"); // non-standard
         add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
