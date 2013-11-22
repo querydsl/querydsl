@@ -1584,7 +1584,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn({POSTGRES, ORACLE})
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
     public void WindowFunctions() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
@@ -1604,7 +1604,64 @@ public class SelectBase extends AbstractBaseTest{
         for (WindowOver<?> wo : exprs) {
             query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
         }
+    }
 
+    @Test
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    public void WindowFunctions_Over() {
+        //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
+        //FROM TestDB.Shipment
+        query().from(employee).list(
+                employee.id,
+                SQLExpressions.sum(employee.salary).over());
+    }
+
+    @Test
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    public void WindowFunctions_PartitionBy() {
+        //SELECT Shipment_id,Ship_date,Ship_Type,
+        //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
+        //FROM TestDB.Shipment
+        query().from(employee).list(
+                employee.id,
+                employee.superiorId,
+                SQLExpressions.sum(employee.salary).over()
+                    .partitionBy(employee.superiorId));
+    }
+
+    @Test
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    public void WindowFunctions_OrderBy() {
+        //SELECT Shipment_id,Ship_date,Ship_Type,
+        //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
+        //FROM TestDB.Shipment
+        query().from(employee).list(
+                employee.id,
+                SQLExpressions.sum(employee.salary).over()
+                    .partitionBy(employee.superiorId).orderBy(employee.datefield));
+    }
+
+    @Test
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    public void WindowFunctions_UnboundedRows() {
+        //SELECT Shipment_id,Ship_date,Ship_Type,
+        //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt
+        //ROWS BETWEEN UNBOUNDED PRECEDING
+        //AND CURRENT ROW) AS Total_Qty
+        //FROM TestDB.Shipment
+
+        // TODO
+    }
+
+    @Test
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    public void WindowFunctions_Qualify() {
+        //SELECT Shipment_id,Ship_date,Ship_Type,
+        //Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS rnk
+        //FROM TestDB.Shipment
+        //QUALIFY  (Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ))  =1
+
+        // TODO
     }
 
     @Test
