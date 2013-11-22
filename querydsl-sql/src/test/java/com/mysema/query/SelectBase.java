@@ -1638,7 +1638,8 @@ public class SelectBase extends AbstractBaseTest{
         query().from(employee).list(
                 employee.id,
                 SQLExpressions.sum(employee.salary).over()
-                    .partitionBy(employee.superiorId).orderBy(employee.datefield));
+                    .partitionBy(employee.superiorId)
+                    .orderBy(employee.datefield));
     }
 
     @Test
@@ -1649,8 +1650,12 @@ public class SelectBase extends AbstractBaseTest{
         //ROWS BETWEEN UNBOUNDED PRECEDING
         //AND CURRENT ROW) AS Total_Qty
         //FROM TestDB.Shipment
-
-        // TODO
+        query().from(employee).list(
+                employee.id,
+                SQLExpressions.sum(employee.salary).over()
+                    .partitionBy(employee.superiorId)
+                    .orderBy(employee.datefield)
+                    .rows().between().unboundedPreceding().currentRow());
     }
 
     @Test

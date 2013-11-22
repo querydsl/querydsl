@@ -28,28 +28,28 @@ import com.mysema.query.types.Expression;
  */
 public class WindowRows<A> {
 
-    private static final String UNBOUNDED = " unbounded";
+    private static final String AND = " and";
+
+    private static final String BETWEEN = " between";
 
     private static final String CURRENT_ROW = " current row";
 
-    private static final String PRECEDING = " preceding";
-
     private static final String FOLLOWING = " following";
 
-    private static final String AND = " and";
+    private static final String PRECEDING = " preceding";
+
+    private static final String UNBOUNDED = " unbounded";
 
     public class Between {
 
         public BetweenAnd unboundedPreceding() {
             str.append(UNBOUNDED);
             str.append(PRECEDING);
-            str.append(AND);
             return new BetweenAnd();
         }
 
         public BetweenAnd currentRow() {
             str.append(CURRENT_ROW);
-            str.append(AND);
             return new BetweenAnd();
         }
 
@@ -57,7 +57,6 @@ public class WindowRows<A> {
             args.add(expr);
             str.append(PRECEDING);
             str.append(" {" + (offset++) + "}");
-            str.append(AND);
             return new BetweenAnd();
         }
 
@@ -69,7 +68,6 @@ public class WindowRows<A> {
             args.add(expr);
             str.append(FOLLOWING);
             str.append(" {" + (offset++) + "}");
-            str.append(AND);
             return new BetweenAnd();
         }
 
@@ -79,6 +77,10 @@ public class WindowRows<A> {
     }
 
     public class BetweenAnd {
+
+        public BetweenAnd() {
+            str.append(AND);
+        }
 
         public WindowFunction<A> unboundedFollowing() {
             str.append(UNBOUNDED);
@@ -129,6 +131,7 @@ public class WindowRows<A> {
     }
 
     public Between between() {
+        str.append(BETWEEN);
         return new Between();
     }
 
