@@ -36,9 +36,8 @@ import com.mysema.query.types.Path;
  */
 public final class Configuration {
 
-    /**
-     * Default instance
-     */
+    private static final BigDecimalAsDoubleType BIGDECIMAL_AS_DOUBLE = new BigDecimalAsDoubleType();
+
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
@@ -65,7 +64,7 @@ public final class Configuration {
     public Configuration(SQLTemplates templates) {
         this.templates = templates;
         if (!templates.isBigDecimalSupported()) {
-            javaTypeMapping.register(new BigDecimalAsDoubleType());
+            javaTypeMapping.register(BIGDECIMAL_AS_DOUBLE);
         }
     }
 
