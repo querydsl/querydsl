@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -35,72 +36,10 @@ import org.junit.Test;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.Projectable;
 import com.mysema.query.Tuple;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Projections;
 
 public class GroupByIterateTest extends AbstractGroupByTest {
-
-    protected static final Projectable BASIC_RESULTS = projectable(
-            row(null, "null post", 7, "comment 7"),
-            row(null, "null post", 8, "comment 8"),
-            row(1, "post 1", 1, "comment 1"),
-            row(1, "post 1", 2, "comment 2"),
-            row(1, "post 1", 3, "comment 3"),
-            row(2, "post 2", 4, "comment 4"),
-            row(2, "post 2", 5, "comment 5"),
-            row(3, "post 3", 6, "comment 6")
-    );
-
-    protected static final Projectable MAP_RESULTS = projectable(
-            row(null, "null post", pair(7, "comment 7")),
-            row(null, "null post", pair(8, "comment 8")),
-            row(1, "post 1", pair(1, "comment 1")),
-            row(1, "post 1", pair(2, "comment 2")),
-            row(1, "post 1", pair(3, "comment 3")),
-            row(2, "post 2", pair(5, "comment 5")),
-            row(3, "post 3", pair(6, "comment 6"))
-    );
-
-    protected static final Projectable MAP2_RESULTS = projectable(
-            row(null, pair(7, "comment 7")),
-            row(null,  pair(8, "comment 8")),
-            row(1, pair(1, "comment 1")),
-            row(1, pair(2, "comment 2")),
-            row(1, pair(3, "comment 3")),
-            row(2, pair(5, "comment 5")),
-            row(3, pair(6, "comment 6"))
-    );
-
-    protected static final Projectable POST_W_COMMENTS = projectable(
-            row(null, null, "null post", comment(7)),
-            row(null, null, "null post", comment(8)),
-            row(1, 1, "post 1", comment(1)),
-            row(1, 1, "post 1", comment(2)),
-            row(1, 1, "post 1", comment(3)),
-            row(2, 2, "post 2", comment(5)),
-            row(3, 3, "post 3", comment(6))
-    );
-
-    protected static final Projectable POST_W_COMMENTS2 = projectable(
-            row(null, "null post", comment(7)),
-            row(null, "null post", comment(8)),
-            row(1, "post 1", comment(1)),
-            row(1, "post 1", comment(2)),
-            row(1, "post 1", comment(3)),
-            row(2, "post 2", comment(5)),
-            row(3, "post 3", comment(6))
-    );
-
-    // [ user.name, latestPost(post.id, post.name), latestPost.comments() ]
-    protected static final Projectable USERS_W_LATEST_POST_AND_COMMENTS = projectable(
-            row("Jane", "Jane", 2, "post 2", comment(4)),
-            row("Jane", "Jane", 2, "post 2", comment(5)),
-            row("John", "John", 1, "post 1", comment(1)),
-            row("John", "John", 1, "post 1", comment(2)),
-            row("John", "John", 1, "post 1", comment(3))
-    );
 
     @Test
     public void Group_Order() {
@@ -202,7 +141,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
         Object commentId = null;
         Map<Integer, String> comments = null;
         List<Map<Integer, String>> expected = new LinkedList<Map<Integer, String>>();
-        for (Iterator<Tuple> iterator = MAP2_RESULTS.iterate((Expression<Tuple>)null); iterator.hasNext();) {
+        for (Iterator<Tuple> iterator = MAP2_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
 
@@ -216,6 +155,65 @@ public class GroupByIterateTest extends AbstractGroupByTest {
 
             comments.put(pair.getFirst(), pair.getSecond());
         }
+        assertEquals(expected.toString(), actual.toString());
+    }
+
+    @Test
+    public void Map3() {        
+        CloseableIterator<Map<Integer, Map<Integer, String>>> results = MAP3_RESULTS.transform(
+            groupBy(postId).iterate(map(postId, map(commentId, commentText))));
+        List<Map<Integer, Map<Integer, String>>> actual = IteratorAdapter.asList(results);
+        
+        Object postId = null;
+        Map<Integer, Map<Integer, String>> posts = null;
+        List<Map<Integer, Map<Integer, String>>> expected = new LinkedList<Map<Integer, Map<Integer, String>>>();
+        for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
+            Tuple tuple = iterator.next();
+            Object[] array = tuple.toArray();
+            
+            if (posts == null || !(postId == array[0] || postId != null && postId.equals(array[0]))) {
+                posts = new LinkedHashMap<Integer, Map<Integer,String>>();
+                expected.add(posts);
+            }
+            postId = array[0];
+            @SuppressWarnings("unchecked")
+            Pair<Integer, Pair<Integer, String>> pair = (Pair<Integer, Pair<Integer, String>>) array[1];
+            Integer first = pair.getFirst();
+            Map<Integer, String> comments = posts.get(first);
+            if (comments == null) {
+                comments = new LinkedHashMap<Integer, String>();
+                posts.put(first, comments);
+            }
+            Pair<Integer, String> second = pair.getSecond();
+            comments.put(second.getFirst(), second.getSecond());
+        }      
+        assertEquals(expected.toString(), actual.toString());
+    }
+
+    @Test
+    public void Map4() {    
+        CloseableIterator<Map<Map<Integer, String>, String>> results = MAP4_RESULTS.transform(
+            groupBy(postId).iterate(map(map(postId, commentText), postName)));
+        List<Map<Map<Integer, String>, String>> actual = IteratorAdapter.asList(results);
+        
+        Object commentId = null;
+        Map<Map<Integer, String>, String> comments = null;
+        List<Map<Map<Integer, String>, String>> expected = new LinkedList<Map<Map<Integer, String>, String>>();
+        for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
+            Tuple tuple = iterator.next();
+            Object[] array = tuple.toArray();
+ 
+            if (comments == null || !(commentId == array[0] || commentId != null && commentId.equals(array[0]))) {
+                comments = new LinkedHashMap<Map<Integer, String>, String>();
+                expected.add(comments);
+            }
+            commentId = array[0];
+            @SuppressWarnings("unchecked")
+            Pair<Pair<Integer, String>, String> pair = (Pair<Pair<Integer, String>, String>) array[1];
+            Pair<Integer, String> first = pair.getFirst(); 
+            Map<Integer, String> posts = Collections.singletonMap(first.getFirst(), first.getSecond());
+            comments.put(posts, pair.getSecond());
+        }      
         assertEquals(expected.toString(), actual.toString());
     }
 
