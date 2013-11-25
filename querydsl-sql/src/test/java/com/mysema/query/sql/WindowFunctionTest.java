@@ -30,7 +30,7 @@ public class WindowFunctionTest {
         // TODO CORR *
         // TODO COVAR_POP *
         // TODO COVAR_SAMP *
-        // TODO CUME_DIST
+        assertEquals("cume_dist()", toString(SQLExpressions.cumeDist()));
         assertEquals("dense_rank()", toString(SQLExpressions.denseRank()));
         assertEquals("first_value(path)", toString(SQLExpressions.firstValue(path)));
         assertEquals("lag(path)", toString(SQLExpressions.lag(path)));
@@ -40,12 +40,12 @@ public class WindowFunctionTest {
         assertEquals("max(path)", toString(SQLExpressions.max(path)));
         assertEquals("min(path)", toString(SQLExpressions.min(path)));
         // TODO NTH_VALUE *
-        // TODO NTILE
-        // TODO PERCENT_RANK
+        assertEquals("ntile(?)", toString(SQLExpressions.ntile(4)));
+        assertEquals("percent_rank()", toString(SQLExpressions.percentRank()));
         // TODO PERCENTILE_CONT
         // TODO PERCENTILE_DISC
         assertEquals("rank()", toString(SQLExpressions.rank()));
-        // TODO RATIO_TO_REPORT
+        assertEquals("ratio_to_report(path)", toString(SQLExpressions.ratioToReport(path)));
         // TODO REGR_ (Linear Regression) Functions *
         assertEquals("row_number()", toString(SQLExpressions.rowNumber()));
         // TODO STDDEV *

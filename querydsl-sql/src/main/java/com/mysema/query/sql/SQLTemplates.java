@@ -284,12 +284,16 @@ public class SQLTemplates extends Templates {
         add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
         add(SQLOps.ROWNUMBER, "row_number()");
+        add(SQLOps.CUMEDIST, "cume_dist()");
         add(SQLOps.RANK, "rank()");
         add(SQLOps.DENSERANK, "dense_rank()");
+        add(SQLOps.PERCENTRANK, "percent_rank()");
         add(SQLOps.FIRSTVALUE, "first_value({0})");
         add(SQLOps.LASTVALUE, "last_value({0})");
         add(SQLOps.LEAD, "lead({0})");
         add(SQLOps.LAG, "lag({0})");
+        add(SQLOps.NTILE, "ntile({0})");
+        add(SQLOps.RATIOTOREPORT, "ratio_to_report({0})");
 
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");

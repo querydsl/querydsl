@@ -45,6 +45,10 @@ public final class SQLOps {
 
     public static final Operator<Long> DENSERANK = new OperatorImpl<Long>(NS, "DENSERANK");
 
+    public static final Operator<Double> PERCENTRANK = new OperatorImpl<Double>(NS, "PERCENTRANK");
+
+    public static final Operator<Double> CUMEDIST = new OperatorImpl<Double>(NS, "CUMEDIST");
+
     public static final Operator<Object> FIRSTVALUE = new OperatorImpl<Object>(NS, "FIRSTVALUE");
 
     public static final Operator<Object> LASTVALUE = new OperatorImpl<Object>(NS, "LASTVALUE");
@@ -52,6 +56,10 @@ public final class SQLOps {
     public static final Operator<Object> LEAD = new OperatorImpl<Object>(NS, "LEAD");
 
     public static final Operator<Object> LAG = new OperatorImpl<Object>(NS, "LAG");
+
+    public static final Operator<Object> NTILE = new OperatorImpl<Object>(NS, "NTILE");
+
+    public static final Operator<Object> RATIOTOREPORT = new OperatorImpl<Object>(NS, "RATIOTOREPORT");
 
     public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>(NS, "WITH_ALIAS");
 

@@ -78,9 +78,13 @@ public final class SQLExpressions {
 
     }
 
+    private static final WindowOver<Double> cumeDist = new WindowOver<Double>(Double.class, SQLOps.CUMEDIST);
+
     private static final WindowOver<Long> rank = new WindowOver<Long>(Long.class, SQLOps.RANK);
 
     private static final WindowOver<Long> denseRank = new WindowOver<Long>(Long.class, SQLOps.DENSERANK);
+
+    private static final WindowOver<Double> percentRank = new WindowOver<Double>(Double.class, SQLOps.PERCENTRANK);
 
     private static final WindowOver<Long> rowNumber = new WindowOver<Long>(Long.class, SQLOps.ROWNUMBER);
 
@@ -474,6 +478,14 @@ public final class SQLExpressions {
     }
 
     /**
+     * @param num
+     * @return
+     */
+    public static <T extends Number & Comparable> WindowOver<T> ntile(T num) {
+        return new WindowOver<T>((Class<T>)num.getClass(), SQLOps.NTILE, new ConstantImpl<T>(num));
+    }
+
+    /**
      * rank of the current row with gaps; same as row_number of its first peer
      *
      * @return
@@ -489,6 +501,30 @@ public final class SQLExpressions {
      */
     public static WindowOver<Long> denseRank() {
         return denseRank;
+    }
+
+    /**
+     * @return
+     */
+    public static WindowOver<Double> percentRank() {
+        return percentRank;
+    }
+
+    /**
+     * @return
+     */
+    public static WindowOver<Double> cumeDist() {
+        return cumeDist;
+    }
+
+    /**
+     * computes the ratio of a value to the sum of a set of values. If expr evaluates to null,
+     * then the ratio-to-report value also evaluates to null.
+     *
+     * @return
+     */
+    public static <T> WindowOver<T> ratioToReport(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.RATIOTOREPORT, expr);
     }
 
     /**
