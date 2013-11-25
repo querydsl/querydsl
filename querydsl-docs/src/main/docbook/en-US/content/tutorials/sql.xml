@@ -135,6 +135,22 @@
               packageName)</entry>
           </row>
           <row>
+            <entry>beanInterfaces</entry>
+            <entry>array of interface classnames to add to the bean classes (default: empty)</entry>
+          </row>
+          <row>
+            <entry>beanAddToString</entry>
+            <entry>set to true to create a default toString() implementation (default: false)</entry>
+          </row>
+          <row>
+            <entry>beanAddFullConstructor</entry>
+            <entry>set to true to create a full constructor in addition to public empty (default: false)</entry>
+          </row>
+          <row>
+            <entry>beanPrintSupertype</entry>
+            <entry>set to true to print the supertype as well (default: false)</entry>
+          </row>
+          <row>
             <entry>schemaPattern</entry>
             <entry>ant style pattern to restrict code generation to certain schemas
               (default: null)</entry>

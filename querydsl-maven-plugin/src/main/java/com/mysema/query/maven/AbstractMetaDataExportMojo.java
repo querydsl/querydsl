@@ -153,6 +153,26 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportBeans;
 
     /**
+     * @parameter
+     */
+    private String[] beanInterfaces;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean beanAddToString;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean beanAddFullConstructor;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean beanPrintSupertype;
+
+    /**
      * wrap key properties into inner classes (default: false)
      *
      * @parameter default-value=false
@@ -292,7 +312,20 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
             } else {
-                exporter.setBeanSerializer(new BeanSerializer());
+                BeanSerializer serializer = new BeanSerializer();
+                if (beanInterfaces != null) {
+                    for (String iface : beanInterfaces) {
+                        try {
+                            serializer.addInterface(Class.forName(iface));
+                        } catch (ClassNotFoundException e) {
+                            throw new MojoExecutionException(e.getMessage(), e);
+                        }
+                    }
+                }
+                serializer.setAddFullConstructor(beanAddFullConstructor);
+                serializer.setAddToString(beanAddToString);
+                serializer.setPrintSupertype(beanPrintSupertype);
+                exporter.setBeanSerializer(serializer);
             }
 
         }
