@@ -644,6 +644,8 @@ columns(...).select(...)
 ]]></programlisting>    
 
      <para>maps the result set of the given query to be inserted whereas</para>
+     
+     <para>To get the created keys out instead of modified rows count use one of the executeWithKey/s method.</para>
 
 <programlisting language="java"><![CDATA[
 set(...)
