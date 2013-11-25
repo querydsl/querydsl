@@ -1588,19 +1588,22 @@ public class SelectBase extends AbstractBaseTest{
     public void WindowFunctions() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
-        exprs.add(SQLExpressions.sum(path));
-        exprs.add(SQLExpressions.count(path));
         exprs.add(SQLExpressions.avg(path));
-        exprs.add(SQLExpressions.min(path));
+        exprs.add(SQLExpressions.count(path));
         exprs.add(SQLExpressions.max(path));
+        exprs.add(SQLExpressions.min(path));
         exprs.add(SQLExpressions.rank());
         exprs.add(SQLExpressions.rowNumber());
+        exprs.add(SQLExpressions.sum(path));
         if (Connections.getTarget() != TERADATA) {
-            exprs.add(SQLExpressions.lead(path));
-            exprs.add(SQLExpressions.lag(path));
             exprs.add(SQLExpressions.denseRank());
             exprs.add(SQLExpressions.firstValue(path));
             exprs.add(SQLExpressions.lastValue(path));
+            exprs.add(SQLExpressions.lag(path));
+            exprs.add(SQLExpressions.lead(path));
+            // TODO ntile
+            // TODO percent_rank
+            // TODO cume_dist
         }
 
         for (WindowOver<?> wo : exprs) {
@@ -1613,6 +1616,7 @@ public class SelectBase extends AbstractBaseTest{
     public void WindowFunctions_Over() {
         //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
         //FROM TestDB.Shipment
+
         query().from(employee).list(
                 employee.id,
                 SQLExpressions.sum(employee.salary).over());
@@ -1624,6 +1628,7 @@ public class SelectBase extends AbstractBaseTest{
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
         //FROM TestDB.Shipment
+
         query().from(employee).list(
                 employee.id,
                 employee.superiorId,
@@ -1637,6 +1642,7 @@ public class SelectBase extends AbstractBaseTest{
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
         //FROM TestDB.Shipment
+
         query().from(employee).list(
                 employee.id,
                 SQLExpressions.sum(employee.salary).over()
@@ -1652,6 +1658,7 @@ public class SelectBase extends AbstractBaseTest{
         //ROWS BETWEEN UNBOUNDED PRECEDING
         //AND CURRENT ROW) AS Total_Qty
         //FROM TestDB.Shipment
+
         query().from(employee).list(
                 employee.id,
                 SQLExpressions.sum(employee.salary).over()
@@ -1661,14 +1668,19 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    @IncludeIn({TERADATA})
     public void WindowFunctions_Qualify() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS rnk
         //FROM TestDB.Shipment
         //QUALIFY  (Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ))  =1
 
-        // TODO
+        teradataQuery().from(employee)
+               .qualify(SQLExpressions.rank().over()
+                       .partitionBy(employee.superiorId)
+                       .orderBy(employee.datefield).eq(1l))
+               .list(employee.id,SQLExpressions.sum(employee.salary).over());
+
     }
 
     @Test

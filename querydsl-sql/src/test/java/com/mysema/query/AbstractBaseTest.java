@@ -38,6 +38,7 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLQuery;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.oracle.OracleQuery;
+import com.mysema.query.sql.teradata.TeradataQuery;
 
 public abstract class AbstractBaseTest {
 
@@ -119,6 +120,10 @@ public abstract class AbstractBaseTest {
 
     protected TestQuery query() {
         return new TestQuery(connection, configuration);
+    }
+
+    protected TeradataQuery teradataQuery() {
+        return new TeradataQuery(connection, configuration);
     }
 
     protected TestQuery testQuery() {

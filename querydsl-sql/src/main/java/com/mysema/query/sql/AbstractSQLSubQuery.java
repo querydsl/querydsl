@@ -21,7 +21,14 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.*;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * Abstract superclass for SubQuery implementations

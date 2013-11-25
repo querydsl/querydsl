@@ -207,6 +207,7 @@ public class SQLTemplates extends Templates {
         add(SQLOps.FOR_UPDATE, "\nfor update");
         add(SQLOps.FOR_SHARE, "\nfor share");
         add(SQLOps.NO_WAIT, " nowait");
+        add(SQLOps.QUALIFY, "\nqualify {0}");
 
         // boolean
         add(Ops.AND, "{0} and {1}", 36);

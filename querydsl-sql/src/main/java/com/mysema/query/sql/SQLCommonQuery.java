@@ -16,7 +16,11 @@ package com.mysema.query.sql;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.Query;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.types.*;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.SubQueryExpression;
 
 /**
  * SQLCommonQuery is a common interface for SQLQuery and SQLSubQuery

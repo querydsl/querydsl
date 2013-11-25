@@ -63,6 +63,8 @@ public final class SQLOps {
 
     public static final Operator<Object> FOR_SHARE = new OperatorImpl<Object>(NS, "FOR_SHARE");
 
+    public static final Operator<Boolean> QUALIFY = new OperatorImpl<Boolean>(NS, "QUALIFY");
+
     public static final QueryFlag NO_WAIT_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
             Object.class, NO_WAIT, ImmutableList.<Expression<?>>of()));
 

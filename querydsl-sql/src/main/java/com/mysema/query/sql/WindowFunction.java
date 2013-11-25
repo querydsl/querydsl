@@ -24,6 +24,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
@@ -134,6 +135,22 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         } else {
             return false;
         }
+    }
+
+    public BooleanExpression eq(Expression<A> expr) {
+        return getValue().eq(expr);
+    }
+
+    public BooleanExpression eq(A arg) {
+        return getValue().eq(arg);
+    }
+
+    public BooleanExpression ne(Expression<A> expr) {
+        return getValue().ne(expr);
+    }
+
+    public BooleanExpression ne(A arg) {
+        return getValue().ne(arg);
     }
 
     public WindowFunction<A> orderBy(ComparableExpressionBase<?> orderBy) {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,18 +20,17 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
  * SQLServerQuery provides SQL Server related extensions to SQLQuery
- * 
+ *
  * @author tiwe
  *
  */
-public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> implements SQLCommonQuery<SQLServerQuery> {
-    
+public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> {
+
     public SQLServerQuery(Connection conn) {
         this(conn, new SQLServerTemplates(), new DefaultQueryMetadata());
     }
