@@ -1593,13 +1593,15 @@ public class SelectBase extends AbstractBaseTest{
         exprs.add(SQLExpressions.avg(path));
         exprs.add(SQLExpressions.min(path));
         exprs.add(SQLExpressions.max(path));
-        exprs.add(SQLExpressions.lead(path));
-        exprs.add(SQLExpressions.lag(path));
         exprs.add(SQLExpressions.rank());
-        exprs.add(SQLExpressions.denseRank());
         exprs.add(SQLExpressions.rowNumber());
-        exprs.add(SQLExpressions.firstValue(path));
-        exprs.add(SQLExpressions.lastValue(path));
+        if (Connections.getTarget() != TERADATA) {
+            exprs.add(SQLExpressions.lead(path));
+            exprs.add(SQLExpressions.lag(path));
+            exprs.add(SQLExpressions.denseRank());
+            exprs.add(SQLExpressions.firstValue(path));
+            exprs.add(SQLExpressions.lastValue(path));
+        }
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
