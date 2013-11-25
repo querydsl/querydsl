@@ -1612,6 +1612,12 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @IncludeIn(ORACLE)
+    public void WindowFunctions_CountDistinct() {
+        query().from(survey).list(SQLExpressions.countDistinct(survey.id).over().partitionBy(survey.name));
+    }
+
+    @Test
     @IncludeIn({POSTGRES, ORACLE, TERADATA})
     public void WindowFunctions_Over() {
         //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty

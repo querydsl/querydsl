@@ -419,6 +419,16 @@ public final class SQLExpressions {
      * @param expr
      * @return
      */
+    public static WindowOver<Long> countDistinct(Expression<?> expr) {
+        return new WindowOver<Long>(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, expr);
+    }
+
+    /**
+     * Start a window function expression
+     *
+     * @param expr
+     * @return
+     */
     public static <T extends Number> WindowOver<T> avg(Expression<T> expr) {
         return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.AVG_AGG, expr);
     }

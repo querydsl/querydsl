@@ -25,18 +25,36 @@ public class WindowFunctionTest {
     @Test
     public void All() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
-        assertEquals("sum(path)", toString(SQLExpressions.sum(path)));
-        assertEquals("count(path)", toString(SQLExpressions.count(path)));
         assertEquals("avg(path)", toString(SQLExpressions.avg(path)));
-        assertEquals("min(path)", toString(SQLExpressions.min(path)));
-        assertEquals("max(path)", toString(SQLExpressions.max(path)));
-        assertEquals("lead(path)", toString(SQLExpressions.lead(path)));
-        assertEquals("lag(path)", toString(SQLExpressions.lag(path)));
-        assertEquals("rank()", toString(SQLExpressions.rank()));
+        assertEquals("count(path)", toString(SQLExpressions.count(path)));
+        // TODO CORR *
+        // TODO COVAR_POP *
+        // TODO COVAR_SAMP *
+        // TODO CUME_DIST
         assertEquals("dense_rank()", toString(SQLExpressions.denseRank()));
-        assertEquals("row_number()", toString(SQLExpressions.rowNumber()));
         assertEquals("first_value(path)", toString(SQLExpressions.firstValue(path)));
+        assertEquals("lag(path)", toString(SQLExpressions.lag(path)));
         assertEquals("last_value(path)", toString(SQLExpressions.lastValue(path)));
+        assertEquals("lead(path)", toString(SQLExpressions.lead(path)));
+        // TODO LISTAGG
+        assertEquals("max(path)", toString(SQLExpressions.max(path)));
+        assertEquals("min(path)", toString(SQLExpressions.min(path)));
+        // TODO NTH_VALUE *
+        // TODO NTILE
+        // TODO PERCENT_RANK
+        // TODO PERCENTILE_CONT
+        // TODO PERCENTILE_DISC
+        assertEquals("rank()", toString(SQLExpressions.rank()));
+        // TODO RATIO_TO_REPORT
+        // TODO REGR_ (Linear Regression) Functions *
+        assertEquals("row_number()", toString(SQLExpressions.rowNumber()));
+        // TODO STDDEV *
+        // TODO STDDEV_POP *
+        // TODO STDDEV_SAMP *
+        assertEquals("sum(path)", toString(SQLExpressions.sum(path)));
+        // TODO VAR_POP *
+        // TODO VAR_SAMP *
+        // TODO VARIANCE *
     }
 
     @Test
