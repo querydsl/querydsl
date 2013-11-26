@@ -56,6 +56,7 @@ public class WindowFunctionTest {
 
         // TODO FIRST
         // TODO LAST
+        // TODO NTH_VALUE ... FROM (FIRST|LAST) (RESPECT|IGNORE) NULLS
     }
 
     @Test
@@ -116,5 +117,31 @@ public class WindowFunctionTest {
         assertEquals("sum(path) over (order by path rows preceding ?)",
                 toString(wf.rows().preceding(3)));
     }
+
+    @Test
+    public void Keep_First() {
+        //MIN(salary) KEEP (DENSE_RANK FIRST ORDER BY commission_pct) OVER (PARTITION BY department_id)
+        NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
+        NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
+        NumberPath<Long> path3 = Expressions.numberPath(Long.class, "path3");
+        assertEquals(
+                "min(path) keep (dense_rank first order by path2)",
+                toString(SQLExpressions.min(path).keepFirst().orderBy(path2)));
+        assertEquals(
+                "min(path) keep (dense_rank first order by path2) over (partition by path3)",
+                toString(SQLExpressions.min(path).keepFirst().orderBy(path2).over().partitionBy(path3)));
+    }
+
+    @Test
+    public void Keep_Last() {
+        //MIN(salary) KEEP (DENSE_RANK FIRST ORDER BY commission_pct) OVER (PARTITION BY department_id)
+        NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
+        NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
+        NumberPath<Long> path3 = Expressions.numberPath(Long.class, "path3");
+        assertEquals(
+                "min(path) keep (dense_rank last order by path2) over (partition by path3)",
+                toString(SQLExpressions.min(path).keepLast().orderBy(path2).over().partitionBy(path3)));
+    }
+
 
 }

@@ -1625,6 +1625,24 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @IncludeIn(ORACLE)
+    public void WindowFunctions_Keep() {
+        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
+        NumberPath<Integer> path = survey.id;
+
+        exprs.add(SQLExpressions.avg(path));
+        exprs.add(SQLExpressions.count(path));
+        exprs.add(SQLExpressions.max(path));
+        exprs.add(SQLExpressions.min(path));
+        exprs.add(SQLExpressions.stddev(path));
+        exprs.add(SQLExpressions.variance(path));
+
+        for (WindowOver<?> wo : exprs) {
+            query().from(survey).list(wo.keepFirst().orderBy(survey.id));
+        }
+    }
+
+    @Test
     @IncludeIn({POSTGRES, ORACLE, TERADATA})
     public void WindowFunctions_Regr() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
