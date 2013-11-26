@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,8 +37,14 @@ public final class Constants {
     static{
         Calendar cal = Calendar.getInstance();
         cal.set(2000, 1, 2, 3, 4);
+        cal.set(Calendar.SECOND, 30);
         cal.set(Calendar.MILLISECOND, 0);
         date = new java.sql.Date(cal.getTimeInMillis());
+
+        cal = Calendar.getInstance();
+        cal.set(1970, 0, 1, 3, 4);
+        cal.set(Calendar.SECOND, 30);
+        cal.set(Calendar.MILLISECOND, 0);
         time = new java.sql.Time(cal.getTimeInMillis());
     }
 }

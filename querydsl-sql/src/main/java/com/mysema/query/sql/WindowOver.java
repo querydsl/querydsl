@@ -41,6 +41,9 @@ public class WindowOver<T> extends SimpleOperation<T> {
         super(type, op, ImmutableList.<Expression<?>>of(arg1, arg2));
     }
 
+    /**
+     * @return
+     */
     public WindowFunction<T> over() {
         return new WindowFunction<T>(this);
     }
