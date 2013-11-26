@@ -39,6 +39,7 @@ public class WindowFunctionTest {
         assertEquals("lead(path)", toString(SQLExpressions.lead(path)));
         assertEquals("max(path)", toString(SQLExpressions.max(path)));
         assertEquals("min(path)", toString(SQLExpressions.min(path)));
+        assertEquals("nth_value(path, ?)", toString(SQLExpressions.nthValue(path, 3)));
         assertEquals("ntile(?)", toString(SQLExpressions.ntile(4)));
         assertEquals("percent_rank()", toString(SQLExpressions.percentRank()));
         assertEquals("rank()", toString(SQLExpressions.rank()));
@@ -55,7 +56,6 @@ public class WindowFunctionTest {
 
         // TODO FIRST
         // TODO LAST
-        // TODO NTH_VALUE *
     }
 
     @Test

@@ -1609,6 +1609,7 @@ public class SelectBase extends AbstractBaseTest{
             exprs.add(SQLExpressions.lag(path));
             exprs.add(SQLExpressions.lastValue(path));
             exprs.add(SQLExpressions.lead(path));
+            exprs.add(SQLExpressions.nthValue(path, 2));
             exprs.add(SQLExpressions.ntile(3));
             exprs.add(SQLExpressions.stddev(path));
             exprs.add(SQLExpressions.stddevPop(path));

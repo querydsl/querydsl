@@ -65,6 +65,8 @@ public final class SQLOps {
 
     public static final Operator<Object> NO_WAIT = new OperatorImpl<Object>(NS, "NO_WAIT");
 
+    public static final Operator<Object> NTHVALUE = new OperatorImpl<Object>(NS, "NTHVALUE");
+
     public static final Operator<Object> NTILE = new OperatorImpl<Object>(NS, "NTILE");
 
     public static final Operator<Double> PERCENTRANK = new OperatorImpl<Double>(NS, "PERCENTRANK");

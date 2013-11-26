@@ -296,6 +296,7 @@ public class SQLTemplates extends Templates {
         add(SQLOps.LASTVALUE, "last_value({0})");
         add(SQLOps.LEAD, "lead({0})");
         add(SQLOps.LISTAGG, "listagg({0},'{1s}')");
+        add(SQLOps.NTHVALUE, "nth_value({0}, {1})");
         add(SQLOps.NTILE, "ntile({0})");
         add(SQLOps.PERCENTILECONT, "percentile_cont({0})");
         add(SQLOps.PERCENTILEDISC, "percentile_disc({0})");

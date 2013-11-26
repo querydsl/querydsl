@@ -499,6 +499,24 @@ public final class SQLExpressions {
     }
 
     /**
+     * @param measureExpr
+     * @param n
+     * @return
+     */
+    public static <T> WindowOver<T> nthValue(Expression<T> measureExpr, Number n) {
+        return nthValue(measureExpr, new ConstantImpl<Number>(n));
+    }
+
+    /**
+     * @param measureExpr
+     * @param n
+     * @return
+     */
+    public static <T> WindowOver<T> nthValue(Expression<T> measureExpr, Expression<? extends Number> n) {
+        return new WindowOver<T>((Class<T>)measureExpr.getType(), SQLOps.NTHVALUE, measureExpr, n);
+    }
+
+    /**
      * divides an ordered data set into a number of buckets indicated by expr and assigns the
      * appropriate bucket number to each row
      *
@@ -750,7 +768,6 @@ public final class SQLExpressions {
     public static WindowOver<Double> covarSamp(Expression<? extends Number> expr1, Expression<? extends Number> expr2) {
         return new WindowOver<Double>(Double.class, SQLOps.COVARSAMP, expr1, expr2);
     }
-
 
     /**
      * computes the ratio of a value to the sum of a set of values. If expr evaluates to null,
