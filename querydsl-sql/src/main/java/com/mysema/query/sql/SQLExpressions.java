@@ -88,6 +88,18 @@ public final class SQLExpressions {
 
     private static final WindowOver<Long> rowNumber = new WindowOver<Long>(Long.class, SQLOps.ROWNUMBER);
 
+    private static Expression[] convertToExpressions(Object... args) {
+        Expression<?>[] exprs = new Expression<?>[args.length];
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof Expression) {
+                exprs[i] = (Expression)args[i];
+            } else {
+                exprs[i] = new ConstantImpl(args[i]);
+            }
+        }
+        return exprs;
+    }
+
     /**
      * Wildcard expression
      */
@@ -478,6 +490,15 @@ public final class SQLExpressions {
     }
 
     /**
+     * @param expr
+     * @param delimiter
+     * @return
+     */
+    public static WithinGroup<Object> listagg(Expression<?> expr, String delimiter) {
+        return new WithinGroup<Object>(Object.class, SQLOps.LISTAGG, expr, ConstantImpl.create(delimiter));
+    }
+
+    /**
      * divides an ordered data set into a number of buckets indicated by expr and assigns the
      * appropriate bucket number to each row
      *
@@ -498,12 +519,44 @@ public final class SQLExpressions {
     }
 
     /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Long> rank(Object... args) {
+        return rank(convertToExpressions(args));
+    }
+
+    /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Long> rank(Expression<?>... args) {
+        return new WithinGroup<Long>(Long.class, SQLOps.RANK2, args);
+    }
+
+    /**
      * rank of the current row without gaps; this function counts peer groups
      *
      * @return
      */
     public static WindowOver<Long> denseRank() {
         return denseRank;
+    }
+
+    /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Long> denseRank(Object... args) {
+        return denseRank(convertToExpressions(args));
+    }
+
+    /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Long> denseRank(Expression<?>... args) {
+        return new WithinGroup<Long>(Long.class, SQLOps.DENSERANK2, args);
     }
 
     /**
@@ -514,10 +567,161 @@ public final class SQLExpressions {
     }
 
     /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Double> percentRank(Object... args) {
+        return percentRank(convertToExpressions(args));
+    }
+
+    /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Double> percentRank(Expression<?>... args) {
+        return new WithinGroup<Double>(Double.class, SQLOps.PERCENTRANK2, args);
+    }
+
+    /**
+     * @param arg
+     * @return
+     */
+    public static <T extends Number> WithinGroup<T> percentileCont(T arg) {
+        if (arg.doubleValue() < 0.0 || arg.doubleValue() > 1.0) {
+            throw new IllegalArgumentException("The percentile value should be a number between 0 and 1");
+        }
+        return percentileCont(new ConstantImpl<T>(arg));
+    }
+
+    /**
+     * @param arg
+     * @return
+     */
+    public static <T extends Number> WithinGroup<T> percentileCont(Expression<T> arg) {
+        return new WithinGroup<T>((Class)arg.getType(), SQLOps.PERCENTILECONT, arg);
+    }
+
+    /**
+     * @param arg
+     * @return
+     */
+    public static <T extends Number> WithinGroup<T> percentileDisc(T arg) {
+        if (arg.doubleValue() < 0.0 || arg.doubleValue() > 1.0) {
+            throw new IllegalArgumentException("The percentile value should be a number between 0 and 1");
+        }
+        return percentileDisc(new ConstantImpl<T>(arg));
+    }
+
+    /**
+     * @param arg
+     * @return
+     */
+    public static <T extends Number> WithinGroup<T> percentileDisc(Expression<T> arg) {
+        return new WithinGroup<T>((Class)arg.getType(), SQLOps.PERCENTILEDISC, arg);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrSlope(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_SLOPE, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrIntercept(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_INTERCEPT, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrCount(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_COUNT, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrR2(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_R2, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrAvgx(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_AVGX, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrAvgy(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_AVGY, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrSxx(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_SXX, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrSyy(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_SYY, arg1, arg2);
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @return
+     */
+    public static WindowOver<Double> regrSxy(Expression<? extends Number> arg1, Expression<? extends Number> arg2) {
+        return new WindowOver<Double>(Double.class, SQLOps.REGR_SXY, arg1, arg2);
+    }
+
+    /**
      * @return
      */
     public static WindowOver<Double> cumeDist() {
         return cumeDist;
+    }
+
+    /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Double> cumeDist(Object... args) {
+        return cumeDist(convertToExpressions(args));
+    }
+
+    /**
+     * @param args
+     * @return
+     */
+    public static WithinGroup<Double> cumeDist(Expression<?>... args) {
+        return new WithinGroup<Double>(Double.class, SQLOps.CUMEDIST2, args);
     }
 
     /**

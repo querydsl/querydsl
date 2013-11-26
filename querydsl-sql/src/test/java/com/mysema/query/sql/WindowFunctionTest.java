@@ -37,17 +37,12 @@ public class WindowFunctionTest {
         assertEquals("lag(path)", toString(SQLExpressions.lag(path)));
         assertEquals("last_value(path)", toString(SQLExpressions.lastValue(path)));
         assertEquals("lead(path)", toString(SQLExpressions.lead(path)));
-        // TODO LISTAGG
         assertEquals("max(path)", toString(SQLExpressions.max(path)));
         assertEquals("min(path)", toString(SQLExpressions.min(path)));
-        // TODO NTH_VALUE *
         assertEquals("ntile(?)", toString(SQLExpressions.ntile(4)));
         assertEquals("percent_rank()", toString(SQLExpressions.percentRank()));
-        // TODO PERCENTILE_CONT
-        // TODO PERCENTILE_DISC
         assertEquals("rank()", toString(SQLExpressions.rank()));
         assertEquals("ratio_to_report(path)", toString(SQLExpressions.ratioToReport(path)));
-        // TODO REGR_ (Linear Regression) Functions *
         assertEquals("row_number()", toString(SQLExpressions.rowNumber()));
         assertEquals("stddev(path)", toString(SQLExpressions.stddev(path)));
         assertEquals("stddev(distinct path)", toString(SQLExpressions.stddevDistinct(path)));
@@ -57,6 +52,25 @@ public class WindowFunctionTest {
         assertEquals("variance(path)", toString(SQLExpressions.variance(path)));
         assertEquals("var_pop(path)", toString(SQLExpressions.varPop(path)));
         assertEquals("var_samp(path)", toString(SQLExpressions.varSamp(path)));
+
+        // TODO FIRST
+        // TODO LAST
+        // TODO NTH_VALUE *
+    }
+
+    @Test
+    public void Regr() {
+        NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
+        NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
+        assertEquals("regr_slope(path, path2)", toString(SQLExpressions.regrSlope(path, path2)));
+        assertEquals("regr_intercept(path, path2)", toString(SQLExpressions.regrIntercept(path, path2)));
+        assertEquals("regr_count(path, path2)", toString(SQLExpressions.regrCount(path, path2)));
+        assertEquals("regr_r2(path, path2)", toString(SQLExpressions.regrR2(path, path2)));
+        assertEquals("regr_avgx(path, path2)", toString(SQLExpressions.regrAvgx(path, path2)));
+        assertEquals("regr_avgy(path, path2)", toString(SQLExpressions.regrAvgy(path, path2)));
+        assertEquals("regr_sxx(path, path2)", toString(SQLExpressions.regrSxx(path, path2)));
+        assertEquals("regr_syy(path, path2)", toString(SQLExpressions.regrSyy(path, path2)));
+        assertEquals("regr_sxy(path, path2)", toString(SQLExpressions.regrSxy(path, path2)));
     }
 
     @Test

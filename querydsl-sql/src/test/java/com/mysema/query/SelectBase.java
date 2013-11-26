@@ -60,6 +60,7 @@ import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLExpressions;
 import com.mysema.query.sql.WindowOver;
+import com.mysema.query.sql.WithinGroup;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
@@ -1623,11 +1624,31 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @IncludeIn({POSTGRES, ORACLE, TERADATA})
+    public void WindowFunctions_Regr() {
+        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
+        NumberPath<Integer> path = survey.id;
+        NumberPath<?> path2 = survey.id;
+
+        exprs.add(SQLExpressions.regrSlope(path,  path2));
+        exprs.add(SQLExpressions.regrIntercept(path,  path2));
+        exprs.add(SQLExpressions.regrCount(path,  path2));
+        exprs.add(SQLExpressions.regrR2(path,  path2));
+        exprs.add(SQLExpressions.regrAvgx(path, path2));
+        exprs.add(SQLExpressions.regrSxx(path, path2));
+        exprs.add(SQLExpressions.regrSyy(path, path2));
+        exprs.add(SQLExpressions.regrSxy(path,  path2));
+
+        for (WindowOver<?> wo : exprs) {
+            query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
+        }
+    }
+
+    @Test
     @IncludeIn(ORACLE)
     public void WindowFunctions_Oracle() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
-//        NumberPath<?> path2 = survey.id;
         exprs.add(SQLExpressions.countDistinct(path));
         exprs.add(SQLExpressions.ratioToReport(path));
         exprs.add(SQLExpressions.stddevDistinct(path));
@@ -1707,6 +1728,34 @@ public class SelectBase extends AbstractBaseTest{
                        .orderBy(employee.datefield).eq(1l))
                .list(employee.id,SQLExpressions.sum(employee.salary).over());
 
+    }
+
+
+    @Test
+    @IncludeIn(ORACLE)
+    public void WithinGroup() {
+        List<WithinGroup<?>> exprs = new ArrayList<WithinGroup<?>>();
+        NumberPath<Integer> path = survey.id;
+
+        // two args
+        exprs.add(SQLExpressions.cumeDist(2, 3));
+        exprs.add(SQLExpressions.denseRank(4, 5));
+        exprs.add(SQLExpressions.listagg(path, ","));
+        exprs.add(SQLExpressions.percentRank(6, 7));
+        exprs.add(SQLExpressions.rank(8, 9));
+
+        for (WithinGroup<?> wg : exprs) {
+            query().from(survey).list(wg.withinGroup().orderBy(survey.id, survey.id));
+        }
+
+        // one arg
+        exprs.clear();
+        exprs.add(SQLExpressions.percentileCont(0.1));
+        exprs.add(SQLExpressions.percentileDisc(0.9));
+
+        for (WithinGroup<?> wg : exprs) {
+            query().from(survey).list(wg.withinGroup().orderBy(survey.id));
+        }
     }
 
     @Test

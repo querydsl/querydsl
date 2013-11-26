@@ -41,7 +41,11 @@ public final class SQLOps {
 
     public static final Operator<Double> CUMEDIST = new OperatorImpl<Double>(NS, "CUMEDIST");
 
+    public static final Operator<Double> CUMEDIST2 = new OperatorImpl<Double>(NS, "CUMEDIST2");
+
     public static final Operator<Long> DENSERANK = new OperatorImpl<Long>(NS, "DENSERANK");
+
+    public static final Operator<Long> DENSERANK2 = new OperatorImpl<Long>(NS, "DENSERANK2");
 
     public static final Operator<Object> FIRSTVALUE = new OperatorImpl<Object>(NS, "FIRSTVALUE");
 
@@ -55,6 +59,8 @@ public final class SQLOps {
 
     public static final Operator<Object> LEAD = new OperatorImpl<Object>(NS, "LEAD");
 
+    public static final Operator<Object> LISTAGG = new OperatorImpl<Object>(NS, "LISTAGG");
+
     public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>(NS, "NEXTVAL");
 
     public static final Operator<Object> NO_WAIT = new OperatorImpl<Object>(NS, "NO_WAIT");
@@ -63,9 +69,35 @@ public final class SQLOps {
 
     public static final Operator<Double> PERCENTRANK = new OperatorImpl<Double>(NS, "PERCENTRANK");
 
+    public static final Operator<Double> PERCENTRANK2 = new OperatorImpl<Double>(NS, "PERCENTRANK2");
+
+    public static final Operator<Object> PERCENTILECONT = new OperatorImpl<Object>(NS, "PERCENTILECONT");
+
+    public static final Operator<Object> PERCENTILEDISC = new OperatorImpl<Object>(NS, "PERCENTILEDISC");
+
     public static final Operator<Boolean> QUALIFY = new OperatorImpl<Boolean>(NS, "QUALIFY");
 
     public static final Operator<Long> RANK = new OperatorImpl<Long>(NS, "RANK");
+
+    public static final Operator<Long> RANK2 = new OperatorImpl<Long>(NS, "RANK2");
+
+    public static final Operator<Object> REGR_SLOPE = new OperatorImpl<Object>(NS, "REGR_SLOPE");
+
+    public static final Operator<Object> REGR_INTERCEPT = new OperatorImpl<Object>(NS, "REGR_INTERCEPT");
+
+    public static final Operator<Object> REGR_COUNT = new OperatorImpl<Object>(NS, "REGR_COUNT");
+
+    public static final Operator<Object> REGR_R2 = new OperatorImpl<Object>(NS, "REGR_R2");
+
+    public static final Operator<Object> REGR_AVGX = new OperatorImpl<Object>(NS, "REGR_AVGX");
+
+    public static final Operator<Object> REGR_AVGY = new OperatorImpl<Object>(NS, "REGR_AVGY");
+
+    public static final Operator<Object> REGR_SXX = new OperatorImpl<Object>(NS, "REGR_SXX");
+
+    public static final Operator<Object> REGR_SYY = new OperatorImpl<Object>(NS, "REGR_SYY");
+
+    public static final Operator<Object> REGR_SXY = new OperatorImpl<Object>(NS, "REGR_SXY");
 
     public static final Operator<Object> RATIOTOREPORT = new OperatorImpl<Object>(NS, "RATIOTOREPORT");
 
