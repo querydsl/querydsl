@@ -37,7 +37,7 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
-public class RelationalPathExtractor implements Visitor<Set<RelationalPath<?>>, Set<RelationalPath<?>>> {
+public final class RelationalPathExtractor implements Visitor<Set<RelationalPath<?>>, Set<RelationalPath<?>>> {
 
     public static final RelationalPathExtractor DEFAULT = new RelationalPathExtractor();
 

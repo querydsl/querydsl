@@ -1,3 +1,16 @@
+/*
+ * Copyright 2013, Mysema Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mysema.query.support;
 
 import java.math.BigDecimal;
@@ -6,37 +19,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Normalization {
-    
+
     private static final String WS = "\\s*";
-    
+
     private static final String START = "\\b";
-    
+
     private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
-    
+
     private static final Pattern OPERATOR = Pattern.compile(WS + "[+\\-/*]" + WS);
-    
+
     private static final Pattern OPERATION = Pattern.compile(START + NUMBER + OPERATOR.pattern() + NUMBER);
-    
+
     private static final Pattern ADDITION = Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER);
-    
+
     private static final Pattern SUBTRACTION = Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER);
-    
+
     private static final Pattern DIVISION = Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER);
-    
+
     private static final Pattern MULTIPLICATION = Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER);
-    
-    public static final String normalize(String queryString) {
+
+    public static String normalize(String queryString) {
         if (!hasOperators(queryString)) {
             return queryString;
         }
-        
+
         StringBuilder rv = null;
         Matcher m = OPERATION.matcher(queryString);
         int end = 0;
         while (m.find()) {
             if (rv == null) {
                 rv = new StringBuilder(queryString.length());
-            }            
+            }
             if (m.start() > end) {
                 rv.append(queryString.subSequence(end, m.start()));
             }
@@ -46,14 +59,14 @@ public final class Normalization {
             boolean divide = DIVISION.matcher(str).matches();
             boolean multiply = MULTIPLICATION.matcher(str).matches();
             Matcher matcher = OPERATION.matcher(str);
-            matcher.matches();            
+            matcher.matches();
             BigDecimal first = new BigDecimal(matcher.group(1));
             BigDecimal second = new BigDecimal(matcher.group(2));
             String result = null;
             if (multiply) {
                 result = first.multiply(second).toString();
             } else if (divide) {
-                result = first.divide(second, 10, RoundingMode.HALF_UP).toString();                    
+                result = first.divide(second, 10, RoundingMode.HALF_UP).toString();
             } else if (subtract) {
                 result = first.subtract(second).toString();
             } else if (add) {
@@ -64,7 +77,7 @@ public final class Normalization {
             while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
                 result = result.substring(0, result.length()-1);
             }
-            rv.append(result); 
+            rv.append(result);
             end = m.end();
         }
         if (end > 0) {
@@ -75,13 +88,13 @@ public final class Normalization {
                 return rv.toString();
             } else {
                 return normalize(rv.toString());
-            }    
+            }
         } else {
             return queryString;
-        }        
-    }    
-    
-    private static final boolean hasOperators(String queryString) {
+        }
+    }
+
+    private static boolean hasOperators(String queryString) {
         for (int i = 0; i < queryString.length(); i++) {
             char ch = queryString.charAt(i);
             if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
@@ -90,7 +103,7 @@ public final class Normalization {
         }
         return false;
     }
-    
+
     private Normalization() {}
 
 }

@@ -191,12 +191,12 @@ public interface Configuration {
     /**
      * @param packageName
      */
-    public void addExcludedPackage(String packageName);
+    void addExcludedPackage(String packageName);
 
     /**
      * @param className
      */
-    public void addExcludedClass(String className);
+    void addExcludedClass(String className);
 
     /**
      * @param method

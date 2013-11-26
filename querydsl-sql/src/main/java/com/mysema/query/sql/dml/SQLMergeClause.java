@@ -294,8 +294,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));
             }
         }
-        List<?> ids = query.list(keys.get(0));
-        return ids;
+        return query.list(keys.get(0));
     }
 
     @SuppressWarnings("unchecked")

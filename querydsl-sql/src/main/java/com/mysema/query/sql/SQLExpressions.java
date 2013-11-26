@@ -114,7 +114,7 @@ public final class SQLExpressions {
      * @param sequence
      * @return
      */
-    public static final SimpleExpression<Long> nextval(String sequence) {
+    public static SimpleExpression<Long> nextval(String sequence) {
         return nextval(Long.class, sequence);
     }
 
@@ -125,7 +125,7 @@ public final class SQLExpressions {
      * @param sequence
      * @return
      */
-    public static final <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
+    public static <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
         return SimpleOperation.create(type, SQLOps.NEXTVAL, ConstantImpl.create(sequence));
     }
 
