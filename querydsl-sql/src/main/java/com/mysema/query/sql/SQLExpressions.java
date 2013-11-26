@@ -478,6 +478,9 @@ public final class SQLExpressions {
     }
 
     /**
+     * divides an ordered data set into a number of buckets indicated by expr and assigns the
+     * appropriate bucket number to each row
+     *
      * @param num
      * @return
      */
@@ -565,6 +568,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * returns the sample standard deviation of expr, a set of numbers.
+     *
      * @param expr
      * @return
      */
@@ -581,6 +586,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * returns the population standard deviation and returns the square root of the population variance.
+     *
      * @param expr
      * @return
      */
@@ -589,6 +596,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * returns the cumulative sample standard deviation and returns the square root of the sample variance.
+     *
      * @param expr
      * @return
      */
@@ -597,6 +606,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * returns the variance of expr
+     *
      * @param expr
      * @return
      */
@@ -605,6 +616,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * returns the population variance of a set of numbers after discarding the nulls in this set.
+     *
      * @param expr
      * @return
      */
@@ -613,6 +626,8 @@ public final class SQLExpressions {
     }
 
     /**
+     * returns the sample variance of a set of numbers after discarding the nulls in this set.
+     *
      * @param expr
      * @return
      */
