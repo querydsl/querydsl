@@ -1588,22 +1588,33 @@ public class SelectBase extends AbstractBaseTest{
     public void WindowFunctions() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
+        NumberPath<?> path2 = survey.id;
         exprs.add(SQLExpressions.avg(path));
         exprs.add(SQLExpressions.count(path));
+        exprs.add(SQLExpressions.corr(path, path2));
+        exprs.add(SQLExpressions.covarPop(path, path2));
+        exprs.add(SQLExpressions.covarSamp(path, path2));
         exprs.add(SQLExpressions.max(path));
         exprs.add(SQLExpressions.min(path));
+        exprs.add(SQLExpressions.percentRank());
         exprs.add(SQLExpressions.rank());
         exprs.add(SQLExpressions.rowNumber());
         exprs.add(SQLExpressions.sum(path));
+
         if (Connections.getTarget() != TERADATA) {
+            exprs.add(SQLExpressions.cumeDist());
             exprs.add(SQLExpressions.denseRank());
             exprs.add(SQLExpressions.firstValue(path));
-            exprs.add(SQLExpressions.lastValue(path));
             exprs.add(SQLExpressions.lag(path));
+            exprs.add(SQLExpressions.lastValue(path));
             exprs.add(SQLExpressions.lead(path));
-            // TODO ntile
-            // TODO percent_rank
-            // TODO cume_dist
+            exprs.add(SQLExpressions.ntile(3));
+            exprs.add(SQLExpressions.stddev(path));
+            exprs.add(SQLExpressions.stddevPop(path));
+            exprs.add(SQLExpressions.stddevSamp(path));
+            exprs.add(SQLExpressions.variance(path));
+            exprs.add(SQLExpressions.varPop(path));
+            exprs.add(SQLExpressions.varSamp(path));
         }
 
         for (WindowOver<?> wo : exprs) {
@@ -1613,8 +1624,17 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     @IncludeIn(ORACLE)
-    public void WindowFunctions_CountDistinct() {
-        query().from(survey).list(SQLExpressions.countDistinct(survey.id).over().partitionBy(survey.name));
+    public void WindowFunctions_Oracle() {
+        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
+        NumberPath<Integer> path = survey.id;
+//        NumberPath<?> path2 = survey.id;
+        exprs.add(SQLExpressions.countDistinct(path));
+        exprs.add(SQLExpressions.ratioToReport(path));
+        exprs.add(SQLExpressions.stddevDistinct(path));
+
+        for (WindowOver<?> wo : exprs) {
+            query().from(survey).list(wo.over().partitionBy(survey.name));
+        }
     }
 
     @Test

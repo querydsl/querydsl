@@ -283,17 +283,28 @@ public class SQLTemplates extends Templates {
         add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", 1);
         add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
-        add(SQLOps.ROWNUMBER, "row_number()");
+        // analytic functions
+        add(SQLOps.CORR, "corr({0},{1})");
+        add(SQLOps.COVARPOP, "covar_pop({0},{1})");
+        add(SQLOps.COVARSAMP, "covar_samp({0},{1})");
         add(SQLOps.CUMEDIST, "cume_dist()");
-        add(SQLOps.RANK, "rank()");
         add(SQLOps.DENSERANK, "dense_rank()");
-        add(SQLOps.PERCENTRANK, "percent_rank()");
         add(SQLOps.FIRSTVALUE, "first_value({0})");
+        add(SQLOps.LAG, "lag({0})");
         add(SQLOps.LASTVALUE, "last_value({0})");
         add(SQLOps.LEAD, "lead({0})");
-        add(SQLOps.LAG, "lag({0})");
         add(SQLOps.NTILE, "ntile({0})");
+        add(SQLOps.PERCENTRANK, "percent_rank()");
+        add(SQLOps.RANK, "rank()");
         add(SQLOps.RATIOTOREPORT, "ratio_to_report({0})");
+        add(SQLOps.ROWNUMBER, "row_number()");
+        add(SQLOps.STDDEV, "stddev({0})");
+        add(SQLOps.STDDEVPOP, "stddev_pop({0})");
+        add(SQLOps.STDDEVSAMP, "stddev_samp({0})");
+        add(SQLOps.STDDEV_DISTINCT, "stddev(distinct {0})");
+        add(SQLOps.VARIANCE, "variance({0})");
+        add(SQLOps.VARPOP, "var_pop({0})");
+        add(SQLOps.VARSAMP, "var_samp({0})");
 
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");

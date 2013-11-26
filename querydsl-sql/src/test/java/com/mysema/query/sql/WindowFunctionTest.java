@@ -25,11 +25,12 @@ public class WindowFunctionTest {
     @Test
     public void All() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
+        NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         assertEquals("avg(path)", toString(SQLExpressions.avg(path)));
         assertEquals("count(path)", toString(SQLExpressions.count(path)));
-        // TODO CORR *
-        // TODO COVAR_POP *
-        // TODO COVAR_SAMP *
+        assertEquals("corr(path,path2)", toString(SQLExpressions.corr(path, path2)));
+        assertEquals("covar_pop(path,path2)", toString(SQLExpressions.covarPop(path, path2)));
+        assertEquals("covar_samp(path,path2)", toString(SQLExpressions.covarSamp(path, path2)));
         assertEquals("cume_dist()", toString(SQLExpressions.cumeDist()));
         assertEquals("dense_rank()", toString(SQLExpressions.denseRank()));
         assertEquals("first_value(path)", toString(SQLExpressions.firstValue(path)));
@@ -48,13 +49,14 @@ public class WindowFunctionTest {
         assertEquals("ratio_to_report(path)", toString(SQLExpressions.ratioToReport(path)));
         // TODO REGR_ (Linear Regression) Functions *
         assertEquals("row_number()", toString(SQLExpressions.rowNumber()));
-        // TODO STDDEV *
-        // TODO STDDEV_POP *
-        // TODO STDDEV_SAMP *
+        assertEquals("stddev(path)", toString(SQLExpressions.stddev(path)));
+        assertEquals("stddev(distinct path)", toString(SQLExpressions.stddevDistinct(path)));
+        assertEquals("stddev_pop(path)", toString(SQLExpressions.stddevPop(path)));
+        assertEquals("stddev_samp(path)", toString(SQLExpressions.stddevSamp(path)));
         assertEquals("sum(path)", toString(SQLExpressions.sum(path)));
-        // TODO VAR_POP *
-        // TODO VAR_SAMP *
-        // TODO VARIANCE *
+        assertEquals("variance(path)", toString(SQLExpressions.variance(path)));
+        assertEquals("var_pop(path)", toString(SQLExpressions.varPop(path)));
+        assertEquals("var_samp(path)", toString(SQLExpressions.varSamp(path)));
     }
 
     @Test

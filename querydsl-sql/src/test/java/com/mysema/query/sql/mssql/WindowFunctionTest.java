@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,10 +30,10 @@ public class WindowFunctionTest {
     private static String toString(Expression<?> e) {
         return new SQLSerializer(Configuration.DEFAULT).handle(e).toString();
     }
-    
+
 //    ROW_NUMBER() OVER (ORDER BY OrderDate) AS 'RowNumber'
 
-//    ROW_NUMBER() OVER( PARTITION BY PostalCode ORDER BY SalesYTD DESC)
+//    ROW_NUMBER() OVER (PARTITION BY PostalCode ORDER BY SalesYTD DESC)
 
     @Test
     public void Mutable() {
@@ -41,7 +41,7 @@ public class WindowFunctionTest {
         assertEquals("row_number() over (order by e.FIRSTNAME)", toString(rn));
         assertEquals("row_number() over (order by e.FIRSTNAME, e.LASTNAME)", toString(rn.orderBy(employee.lastname)));
     }
-    
+
     @Test
     public void OrderBy() {
         assertEquals("row_number() over (order by e.FIRSTNAME)",
@@ -56,15 +56,15 @@ public class WindowFunctionTest {
         assertEquals("row_number() over (order by e.FIRSTNAME desc)",
             toString(rowNumber().over().orderBy(employee.firstname.desc())));
     }
-        
+
     @Test
     public void PartitionBy() {
         assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME)",
             toString(rowNumber().over().partitionBy(employee.lastname).orderBy(employee.firstname.asc())));
 
         assertEquals("row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME)",
-            toString(rowNumber().over().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc())));        
+            toString(rowNumber().over().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc())));
     }
-    
+
 
 }

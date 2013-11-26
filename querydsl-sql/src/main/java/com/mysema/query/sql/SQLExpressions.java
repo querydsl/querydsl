@@ -518,6 +518,34 @@ public final class SQLExpressions {
     }
 
     /**
+     * @param expr1
+     * @param expr2
+     * @return
+     */
+    public static WindowOver<Double> corr(Expression<? extends Number> expr1, Expression<? extends Number> expr2) {
+        return new WindowOver<Double>(Double.class, SQLOps.CORR, expr1, expr2);
+    }
+
+    /**
+     * @param expr1
+     * @param expr2
+     * @return
+     */
+    public static WindowOver<Double> covarPop(Expression<? extends Number> expr1, Expression<? extends Number> expr2) {
+        return new WindowOver<Double>(Double.class, SQLOps.COVARPOP, expr1, expr2);
+    }
+
+    /**
+     * @param expr1
+     * @param expr2
+     * @return
+     */
+    public static WindowOver<Double> covarSamp(Expression<? extends Number> expr1, Expression<? extends Number> expr2) {
+        return new WindowOver<Double>(Double.class, SQLOps.COVARSAMP, expr1, expr2);
+    }
+
+
+    /**
      * computes the ratio of a value to the sum of a set of values. If expr evaluates to null,
      * then the ratio-to-report value also evaluates to null.
      *
@@ -534,6 +562,62 @@ public final class SQLExpressions {
      */
     public static WindowOver<Long> rowNumber() {
         return rowNumber;
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> stddev(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEV, expr);
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> stddevDistinct(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEV_DISTINCT, expr);
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> stddevPop(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEVPOP, expr);
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> stddevSamp(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEVSAMP, expr);
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> variance(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.VARIANCE, expr);
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> varPop(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.VARPOP, expr);
+    }
+
+    /**
+     * @param expr
+     * @return
+     */
+    public static <T extends Number> WindowOver<T> varSamp(Expression<T> expr) {
+        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.VARSAMP, expr);
     }
 
     /**

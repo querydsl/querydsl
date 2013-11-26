@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * WindowOver is the first part of a WindowFunction construction
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -32,11 +32,15 @@ public class WindowOver<T> extends SimpleOperation<T> {
     public WindowOver(Class<T> type, Operator<? super T> op) {
         super(type, op, ImmutableList.<Expression<?>>of());
     }
-    
+
     public WindowOver(Class<T> type, Operator<? super T> op, Expression<?> arg) {
         super(type, op, ImmutableList.<Expression<?>>of(arg));
     }
-    
+
+    public WindowOver(Class<T> type, Operator<? super T> op, Expression<?> arg1, Expression<?> arg2) {
+        super(type, op, ImmutableList.<Expression<?>>of(arg1, arg2));
+    }
+
     public WindowFunction<T> over() {
         return new WindowFunction<T>(this);
     }
