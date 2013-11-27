@@ -66,6 +66,23 @@ public class SQLSubQueryTest {
     }
 
     @Test
+    public void List_Entity() {
+        QEmployee employee2 = new QEmployee("employee2");
+        SQLSubQuery query = new SQLSubQuery();
+        Expression<?> expr = query.from(employee)
+             .innerJoin(employee.superiorIdKey, employee2)
+             .list(employee, employee2.id);
+
+        SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));
+        serializer.handle(expr);
+
+        assertEquals("(select EMPLOYEE.ID, EMPLOYEE.SUPERIOR_ID, EMPLOYEE.TIMEFIELD, EMPLOYEE.LASTNAME, EMPLOYEE.DATEFIELD, EMPLOYEE.SALARY, EMPLOYEE.FIRSTNAME, employee2.ID\n" +
+            "from EMPLOYEE EMPLOYEE\n" +
+            "inner join EMPLOYEE employee2\n" +
+            "on EMPLOYEE.SUPERIOR_ID = employee2.ID)", serializer.toString());
+    }
+
+    @Test
     public void Unique() {
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -82,21 +82,21 @@ public class DetachableMixin implements Detachable {
     public ListSubQuery<Tuple> list(Object arg) {
         return list((Expression)convert(arg));
     }
-    
+
     @Override
     public ListSubQuery<Tuple> list(Object... args) {
         return list(convert(args));
     }
-    
+
     @Override
     public SimpleSubQuery<Tuple> unique(Object... args) {
         return unique(convert(args));
     }
-    
+
     private Expression<?> convert(Object arg) {
         if (arg instanceof Expression<?>) {
             return (Expression<?>)arg;
-        } else if (arg instanceof ProjectionRole) {    
+        } else if (arg instanceof ProjectionRole) {
             return ((ProjectionRole<?>)arg).getProjection();
         } else if (arg != null) {
             return new ConstantImpl<Object>(arg);
@@ -121,11 +121,12 @@ public class DetachableMixin implements Detachable {
     private QueryMetadata projection(Expression<?>... projection) {
         QueryMetadata metadata = queryMixin.getMetadata().clone();
         for (Expression<?> expr : projection) {
-            metadata.addProjection(nullAsTemplate(expr));             
+            expr = queryMixin.convert(expr);
+            metadata.addProjection(nullAsTemplate(expr));
         }
-        return metadata;        
+        return metadata;
     }
-    
+
     private Expression<?> nullAsTemplate(@Nullable Expression<?> expr) {
         return expr != null ? expr : NullExpression.DEFAULT;
     }
@@ -165,27 +166,27 @@ public class DetachableMixin implements Detachable {
     public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
         return new NumberSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
-    
+
     @Override
     public BooleanSubQuery unique(Predicate projection) {
         return new BooleanSubQuery(uniqueProjection(projection));
     }
-    
+
     @Override
     public StringSubQuery unique(StringExpression projection) {
         return new StringSubQuery(uniqueProjection(projection));
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
         return new TimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
-    }    
+    }
 
     private QueryMetadata uniqueProjection(Expression<?>... projection) {
         QueryMetadata metadata = projection(projection);
         metadata.setUnique(true);
         return metadata;
     }
-    
+
 }
