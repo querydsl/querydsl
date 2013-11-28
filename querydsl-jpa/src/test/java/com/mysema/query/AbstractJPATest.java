@@ -997,9 +997,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoOpenJPA // FIXME
-    public void Offset() {
-        List<String> names2 = Arrays.asList("Felix123","Mary_123","Ruth123","Some");
+    @NoOpenJPA
+    public void Offset1() {
+        List<String> names2 = Arrays.asList("Bob123", "Felix123", "Mary_123", "Ruth123", "Some");
+        assertEquals(names2, query().from(cat).orderBy(cat.name.asc()).offset(1).list(cat.name));
+    }
+
+    @Test
+    @NoOpenJPA
+    public void Offset2() {
+        List<String> names2 = Arrays.asList("Felix123", "Mary_123", "Ruth123", "Some");
         assertEquals(names2, query().from(cat).orderBy(cat.name.asc()).offset(2).list(cat.name));
     }
 
