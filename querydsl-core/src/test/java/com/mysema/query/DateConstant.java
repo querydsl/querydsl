@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ final class DateConstant<D extends java.util.Date> extends DateExpression<D> imp
 
     @SuppressWarnings("unchecked")
     public DateConstant(D date) {
-        super(new ConstantImpl<D>(date));
+        super(ConstantImpl.create(date));
         this.date = (D) date.clone();
         this.calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -49,7 +49,7 @@ final class DateConstant<D extends java.util.Date> extends DateExpression<D> imp
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public NumberExpression<Integer> dayOfMonth() {
         return NumberConstant.create(calendar.get(Calendar.DAY_OF_MONTH));

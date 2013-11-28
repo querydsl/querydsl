@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,7 +47,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     private final D constant;
 
     public NumberConstant(Class<? extends D> type, D constant) {
-        super(new ConstantImpl<D>(constant));
+        super(ConstantImpl.create(constant));
         this.constant = constant;
     }
 
@@ -55,7 +55,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public BooleanExpression eq(D b) {
         return BooleanConstant.create(constant.equals(b));
@@ -99,22 +99,27 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
         }
     }
 
+    @Override
     public NumberExpression<Byte> byteValue() {
         return NumberConstant.create(constant.byteValue());
     }
 
+    @Override
     public NumberExpression<Double> doubleValue() {
         return NumberConstant.create(constant.doubleValue());
     }
 
+    @Override
     public NumberExpression<Float> floatValue() {
         return NumberConstant.create(constant.floatValue());
     }
 
+    @Override
     public NumberExpression<Long> longValue() {
         return NumberConstant.create(constant.longValue());
     }
 
+    @Override
     public NumberExpression<Short> shortValue() {
         return NumberConstant.create(constant.shortValue());
     }

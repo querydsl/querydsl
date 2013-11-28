@@ -99,7 +99,7 @@ public class DetachableMixin implements Detachable {
         } else if (arg instanceof ProjectionRole) {
             return ((ProjectionRole<?>)arg).getProjection();
         } else if (arg != null) {
-            return new ConstantImpl<Object>(arg);
+            return ConstantImpl.create(arg);
         } else {
             return NullExpression.DEFAULT;
         }

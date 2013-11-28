@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.NullExpression;
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 
 /**
@@ -84,34 +83,34 @@ public final class CaseForEqBuilder<D> {
         return new Cases<T,Expression<T>>() {
             @Override
             protected Expression<T> createResult(Class<T> type, Expression<T> last) {
-                return SimpleOperation.create((Class<T>)type, Ops.CASE_EQ, base, last);
+                return SimpleOperation.create(type, Ops.CASE_EQ, base, last);
             }
         }.when(other).then(then);
     }
 
     public <T> Cases<T,Expression<T>> then(T then) {
-        return then(new ConstantImpl<T>(then));
+        return then(ConstantImpl.create(then));
     }
-    
+
     public <T> Cases<T,Expression<T>> thenNull() {
         return then((Expression<T>)NullExpression.DEFAULT);
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then) {
-        return thenNumber(new ConstantImpl<T>(then));
+        return thenNumber(ConstantImpl.create(then));
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(NumberExpression<T> then) {
         return thenNumber(then);
     }
-    
+
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> thenNumber(Expression<T> then) {
         type = then.getType();
         return new Cases<T,NumberExpression<T>>() {
             @SuppressWarnings("unchecked")
             @Override
             protected NumberExpression<T> createResult(Class<T> type, Expression<T> last) {
-                return NumberOperation.create(type, (Operator)Ops.CASE_EQ, base, last);
+                return NumberOperation.create(type, Ops.CASE_EQ, base, last);
             }
 
         }.when(other).then(then);
@@ -124,14 +123,14 @@ public final class CaseForEqBuilder<D> {
     public Cases<String,StringExpression> then(String then) {
         return thenString(ConstantImpl.create(then));
     }
-    
+
     private Cases<String,StringExpression> thenString(Expression<String> then) {
         type = then.getType();
         return new Cases<String,StringExpression>() {
             @SuppressWarnings("unchecked")
             @Override
             protected StringExpression createResult(Class<String> type, Expression<String> last) {
-                return StringOperation.create((Operator)Ops.CASE_EQ, base, last);
+                return StringOperation.create(Ops.CASE_EQ, base, last);
             }
 
         }.when(other).then(then);
@@ -144,7 +143,7 @@ public final class CaseForEqBuilder<D> {
         }
 
         public CaseWhen<T,Q> when(D when) {
-            return when(new ConstantImpl<D>(when));
+            return when(ConstantImpl.create(when));
         }
 
         @SuppressWarnings("unchecked")
@@ -169,7 +168,7 @@ public final class CaseForEqBuilder<D> {
         protected abstract Q createResult(Class<T> type, Expression<T> last);
 
         public Q otherwise(T otherwise) {
-            return otherwise(new ConstantImpl<T>(otherwise));
+            return otherwise(ConstantImpl.create(otherwise));
         }
     }
 
@@ -190,7 +189,7 @@ public final class CaseForEqBuilder<D> {
         }
 
         public Cases<T, Q> then(T then) {
-            return then(new ConstantImpl<T>(then));
+            return then(ConstantImpl.create(then));
         }
 
     }

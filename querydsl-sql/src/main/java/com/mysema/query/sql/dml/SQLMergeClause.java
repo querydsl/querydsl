@@ -409,7 +409,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     public <T> SQLMergeClause set(Path<T> path, @Nullable T value) {
         columns.add(path);
         if (value != null) {
-            values.add(new ConstantImpl<T>(value));
+            values.add(ConstantImpl.create(value));
         } else {
             values.add(Null.CONSTANT);
         }
@@ -442,7 +442,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             if (value instanceof Expression<?>) {
                 values.add((Expression<?>) value);
             } else if (value != null) {
-                values.add(new ConstantImpl<Object>(value));
+                values.add(ConstantImpl.create(value));
             } else {
                 values.add(Null.CONSTANT);
             }

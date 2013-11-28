@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -68,7 +68,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         this.pathMixin = (PathImpl<T>)mixin;
         this.inits = inits;
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         // mixin is not used here, because subtype instances may have data that needs to be made available
@@ -92,7 +92,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
                 } else {
                     metadata = (PathMetadata)pathMixin.getMetadata();
                 }
-                U rv;                
+                U rv;
                 // the inits for the subtype will be wider, if it's a variable path
                 if (inits != null && pathMixin.getMetadata().getPathType() != PathType.VARIABLE) {
                     rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(metadata, inits);
@@ -328,9 +328,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @return
      */
     public <B extends T> BooleanExpression instanceOf(Class<B> type) {
-        return BooleanOperation.create(Ops.INSTANCE_OF, pathMixin, new ConstantImpl<Class<B>>(type));
+        return BooleanOperation.create(Ops.INSTANCE_OF, pathMixin, ConstantImpl.create(type));
     }
-    
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public BooleanExpression instanceOfAny(Class... types) {
         BooleanExpression[] exprs = new BooleanExpression[types.length];

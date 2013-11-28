@@ -60,14 +60,14 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public final BooleanExpression between(@Nullable T from, @Nullable T to) {
         if (from == null) {
             if (to != null) {
-                return BooleanOperation.create(Ops.LOE, mixin, new ConstantImpl<T>(to));
+                return BooleanOperation.create(Ops.LOE, mixin, ConstantImpl.create(to));
             } else {
                 throw new IllegalArgumentException("Either from or to needs to be non-null");
             }
         } else if (to == null) {
-            return BooleanOperation.create(Ops.GOE, mixin, new ConstantImpl<T>(from));
+            return BooleanOperation.create(Ops.GOE, mixin, ConstantImpl.create(from));
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, mixin, new ConstantImpl<T>(from), new ConstantImpl<T>(to));    
+            return BooleanOperation.create(Ops.BETWEEN, mixin, ConstantImpl.create(from), ConstantImpl.create(to));    
         }        
     }
 
@@ -123,7 +123,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression gt(T right) {
-        return gt(new ConstantImpl<T>(right));
+        return gt(ConstantImpl.create(right));
     }
 
     /**
@@ -162,7 +162,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression goe(T right) {
-        return goe(new ConstantImpl<T>(right));
+        return goe(ConstantImpl.create(right));
     }
 
     /**
@@ -200,7 +200,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression lt(T right) {
-        return lt(new ConstantImpl<T>(right));
+        return lt(ConstantImpl.create(right));
     }
 
     /**
@@ -239,7 +239,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(T right) {
-        return BooleanOperation.create(Ops.LOE, mixin, new ConstantImpl<T>(right));
+        return BooleanOperation.create(Ops.LOE, mixin, ConstantImpl.create(right));
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,7 +55,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
         }
         return asc;
     }
-    
+
     public final Coalesce<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression expr : exprs) {
@@ -63,7 +63,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
         }
         return coalesce;
     }
-    
+
     public final Coalesce<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
@@ -71,7 +71,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
         }
         return coalesce;
     }
-    
+
     /**
      * Create a cast expression to the given numeric type
      *
@@ -80,7 +80,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return
      */
     public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
-        return NumberOperation.create(type, Ops.NUMCAST, mixin, new ConstantImpl(type));
+        return NumberOperation.create(type, Ops.NUMCAST, mixin, ConstantImpl.create(type));
     }
 
     /**

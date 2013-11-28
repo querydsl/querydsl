@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ import javax.annotation.concurrent.Immutable;
 
 /**
  * ConstantImpl is the default implementation of the Constant interface
- * 
+ *
  * @author tiwe
  */
 @Immutable
@@ -25,19 +25,19 @@ import javax.annotation.concurrent.Immutable;
 public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final long serialVersionUID = -3898138057967814118L;
-    
+
     private static final int CACHE_SIZE = 256;
-    
+
     private static final Constant<Character>[] CHARACTERS = new Constant[CACHE_SIZE];
-    
+
     private static final Constant<Byte>[] BYTES = new Constant[CACHE_SIZE];
 
     private static final Constant<Integer>[] INTEGERS = new Constant[CACHE_SIZE];
-    
+
     private static final Constant<Long>[] LONGS = new Constant[CACHE_SIZE];
 
     private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
-    
+
     private static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
 
     private static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
@@ -96,28 +96,24 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         }
     }
 
-    public static Constant<String> create(String str) {
-        return new ConstantImpl<String>(str);
-    }
-
-    public static <T> Constant<Class<T>> create(Class<T> constant) {
-        return new ConstantImpl<Class<T>>(constant);
+    public static <T> Constant<T> create(T obj) {
+        return new ConstantImpl<T>(obj);
     }
 
     private final T constant;
-    
+
     /**
      * Create a new Constant for the given object
-     * 
+     *
      * @param constant
      */
     public ConstantImpl(T constant) {
         this((Class)constant.getClass(), constant);
     }
-    
+
     /**
      * Create a new Constant of the given type for the given object
-     * 
+     *
      * @param type
      * @param constant
      */
@@ -125,7 +121,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         super(type);
         this.constant = constant;
     }
-    
+
     @Override
     public <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
@@ -141,10 +137,10 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
             return false;
         }
     }
-    
+
     @Override
     public T getConstant() {
         return constant;
     }
-    
+
 }

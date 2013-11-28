@@ -89,7 +89,7 @@ public final class CaseBuilder {
         protected abstract Q createResult(Class<A> type, Expression<A> last);
 
         public Q otherwise(A constant) {
-            return otherwise(new ConstantImpl<A>(constant));
+            return otherwise(ConstantImpl.create(constant));
         }
 
         public Q otherwise(Expression<A> expr) {
@@ -134,7 +134,7 @@ public final class CaseBuilder {
         }
 
         public Cases<A,Q> then(A constant) {
-            return then(new ConstantImpl<A>(constant));
+            return then(ConstantImpl.create(constant));
         }
 
         public Cases<A,Q> then(Expression<A> expr) {
@@ -168,7 +168,7 @@ public final class CaseBuilder {
         }
 
         public <A> Cases<A,Expression<A>> then(A constant) {
-            return then(new ConstantImpl<A>(constant));
+            return then(ConstantImpl.create(constant));
         }
 
         // Boolean
@@ -209,7 +209,7 @@ public final class CaseBuilder {
         }
 
         public Cases<java.sql.Date, DateExpression<java.sql.Date>> thenDate(java.sql.Date date) {
-            return thenDate(new ConstantImpl<java.sql.Date>(date));
+            return thenDate(ConstantImpl.create(date));
         }
 
         // DateTime
@@ -229,11 +229,11 @@ public final class CaseBuilder {
         }
 
         public Cases<Timestamp, DateTimeExpression<Timestamp>> thenDateTime(Timestamp ts) {
-            return thenDateTime(new ConstantImpl<Timestamp>(ts));
+            return thenDateTime(ConstantImpl.create(ts));
         }
 
         public Cases<java.util.Date, DateTimeExpression<java.util.Date>> thenDateTime(java.util.Date date) {
-            return thenDateTime(new ConstantImpl<java.util.Date>(date));
+            return thenDateTime(ConstantImpl.create(date));
         }
 
         // Number
@@ -254,7 +254,7 @@ public final class CaseBuilder {
         }
 
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num) {
-            return thenNumber(new ConstantImpl<A>(num));
+            return thenNumber(ConstantImpl.create(num));
         }
 
         // String
@@ -295,7 +295,7 @@ public final class CaseBuilder {
         }
 
         public Cases<Time, TimeExpression<Time>> then(Time time) {
-            return thenTime(new ConstantImpl<Time>(time));
+            return thenTime(ConstantImpl.create(time));
         }
 
     }

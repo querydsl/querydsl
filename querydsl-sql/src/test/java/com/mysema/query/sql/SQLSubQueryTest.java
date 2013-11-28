@@ -61,7 +61,7 @@ public class SQLSubQueryTest {
         ListSubQuery<?> subQuery = query.list(employee.id, "XXX", employee.firstname);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
         assertEquals(employee.id, exprs.get(0));
-        assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
+        assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
 
@@ -89,7 +89,7 @@ public class SQLSubQueryTest {
         SubQueryExpression<?> subQuery = query.unique(employee.id, "XXX", employee.firstname);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
         assertEquals(employee.id, exprs.get(0));
-        assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
+        assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
 

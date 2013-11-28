@@ -173,7 +173,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate eqConst(Expression<D> left, D constant) {
-        return eq(left, new ConstantImpl<D>(constant));
+        return eq(left, ConstantImpl.create(constant));
     }
 
     /**
@@ -212,7 +212,7 @@ public final class ExpressionUtils {
         if (right.size() == 1) {
             return eqConst(left, right.iterator().next());
         } else {
-            return PredicateOperation.create(Ops.IN, left, new ConstantImpl<Collection<?>>(right));
+            return PredicateOperation.create(Ops.IN, left, ConstantImpl.create(right));
         }
     }
 
@@ -366,7 +366,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate neConst(Expression<D> left, D constant) {
-        return ne(left, new ConstantImpl<D>(constant));
+        return ne(left, ConstantImpl.create(constant));
     }
 
     /**

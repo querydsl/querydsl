@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,7 +45,7 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     }
 
     public final BooleanExpression contains(E child) {
-        return contains(new ConstantImpl<E>(child));
+        return contains(ConstantImpl.create(child));
     }
 
     public final BooleanExpression contains(Expression<E> child) {

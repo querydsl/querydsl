@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     public MapExpressionBase(Expression<Map<K, V>> mixin) {
         super(mixin);
     }
-    
+
     public final BooleanExpression contains(K key, V value) {
         return get(key).eq(value);
     }
@@ -58,7 +58,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     }
 
     public final BooleanExpression containsKey(K key) {
-        return BooleanOperation.create(Ops.CONTAINS_KEY, mixin, new ConstantImpl<K>(key));
+        return BooleanOperation.create(Ops.CONTAINS_KEY, mixin, ConstantImpl.create(key));
     }
 
     public final BooleanExpression containsValue(Expression<V> value) {
@@ -66,7 +66,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     }
 
     public final BooleanExpression containsValue(V value) {
-        return BooleanOperation.create(Ops.CONTAINS_VALUE, mixin, new ConstantImpl<V>(value));
+        return BooleanOperation.create(Ops.CONTAINS_VALUE, mixin, ConstantImpl.create(value));
     }
 
     public abstract Q get(Expression<K> key);

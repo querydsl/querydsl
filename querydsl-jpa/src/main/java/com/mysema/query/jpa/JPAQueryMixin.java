@@ -101,7 +101,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         Expression index = OperationImpl.create(Integer.class, JPQLOps.INDEX, alias);
         Object element = path.getMetadata().getElement();
         if (!(element instanceof Expression)) {
-            element = new ConstantImpl(element);
+            element = ConstantImpl.create(element);
         }
         Predicate condition = ExpressionUtils.eq(index, (Expression)element);
         if (where) {
