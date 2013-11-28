@@ -146,7 +146,7 @@ public final class Connections {
 
     private static Connection getSQLite() throws SQLException, ClassNotFoundException {
         //System.setProperty("sqlite.purejava", "true");
-//        Class.forName("org.sqlite.JDBC");
+        Class.forName("org.sqlite.JDBC");
         return DriverManager.getConnection("jdbc:sqlite:target/sample.db");
     }
 
