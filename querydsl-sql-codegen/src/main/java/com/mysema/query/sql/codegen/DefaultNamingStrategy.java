@@ -113,7 +113,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     }
 
     protected String toCamelCase(String str) {
-        boolean toLower = str.equalsIgnoreCase(str);
+        boolean toLower = str.toUpperCase().equals(str);
         StringBuilder builder = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
             if (i < str.length() - 1 && (str.charAt(i) == '_' || str.charAt(i) == ' ')) {
