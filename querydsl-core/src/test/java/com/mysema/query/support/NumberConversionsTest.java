@@ -7,10 +7,30 @@ import org.junit.Test;
 
 import com.mysema.query.Tuple;
 import com.mysema.query.types.QTuple;
+import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class NumberConversionsTest {
+
+
+    public enum Color {GREEN, BLUE, RED, YELLOW, BLACK, WHITE}
+
+    @Test
+    public void Name() {
+        EnumPath<Color> color = new EnumPath<Color>(Color.class, "path");
+        QTuple qTuple = new QTuple(color);
+        NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
+        assertEquals(Color.BLUE, conversions.newInstance("BLUE").get(color));
+    }
+
+    @Test
+    public void Ordinal() {
+        EnumPath<Color> color = new EnumPath<Color>(Color.class, "path");
+        QTuple qTuple = new QTuple(color);
+        NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
+        assertEquals(Color.RED, conversions.newInstance(2).get(color));
+    }
 
     @Test
     public void Safe_Number_Conversion() {

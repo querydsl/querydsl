@@ -14,7 +14,9 @@
 package com.mysema.query.support;
 
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.FactoryExpression;
@@ -35,6 +37,8 @@ public class NumberConversions<T> extends ExpressionBase<T> implements FactoryEx
 
     private final FactoryExpression<T> expr;
 
+    private final Map<Class<?>, Enum<?>[]> values = Maps.newHashMap();
+
     public NumberConversions(FactoryExpression<T> expr) {
         super(expr.getType());
         this.expr = expr;
@@ -50,11 +54,30 @@ public class NumberConversions<T> extends ExpressionBase<T> implements FactoryEx
         return expr.getArgs();
     }
 
+    private <E extends Enum<E>> Enum<E>[] getValues(Class<E> enumClass) {
+        Enum<E>[] values = (Enum<E>[]) this.values.get(enumClass);
+        if (values == null) {
+            try {
+                values = (Enum<E>[]) enumClass.getMethod("values").invoke(null);
+                this.values.put(enumClass, values);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+        return values;
+    }
+
     @Override
     public T newInstance(Object... args) {
         for (int i = 0; i < args.length; i++) {
             Class<?> type = expr.getArgs().get(i).getType();
-            if (args[i] instanceof Number && !args[i].getClass().equals(type)) {
+            if (Enum.class.isAssignableFrom(type) && !type.isInstance(args[i])) {
+                if (args[i] instanceof String) {
+                    args[i] = Enum.valueOf((Class)type, (String)args[i]);
+                } else if (args[i] instanceof Number) {
+                    args[i] = getValues((Class)type)[((Number)args[i]).intValue()];
+                }
+            } else if (args[i] instanceof Number && !type.isInstance(args[i])) {
                 if (type.equals(Boolean.class)) {
                     args[i] = ((Number)args[i]).intValue() > 0;
                 } else if (Number.class.isAssignableFrom(type)){

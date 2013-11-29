@@ -56,6 +56,7 @@ import com.mysema.query.jpa.domain.Animal;
 import com.mysema.query.jpa.domain.Author;
 import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.Company;
 import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain.DomesticCat;
@@ -188,6 +189,7 @@ public abstract class AbstractJPATest {
             cat.setBirthdate(birthDate);
             cat.setDateField(date);
             cat.setTimeField(time);
+            cat.setColor(Color.BLACK);
             save(cat);
             savedCats.add(cat);
             prev = cat;

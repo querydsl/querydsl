@@ -25,6 +25,7 @@ import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.jpa.sql.JPASQLQuery;
@@ -58,12 +59,12 @@ public class JPASQLBase extends AbstractSQLTest {
     @Before
     public void setUp() {
         if (query().from(cat).notExists()) {
-            entityManager.persist(new Cat("Beck", 1));
-            entityManager.persist(new Cat("Kate", 2));
-            entityManager.persist(new Cat("Kitty", 3));
-            entityManager.persist(new Cat("Bobby", 4));
-            entityManager.persist(new Cat("Harold", 5));
-            entityManager.persist(new Cat("Tim", 6));
+            entityManager.persist(new Cat("Beck", 1, Color.BLACK));
+            entityManager.persist(new Cat("Kate", 2, Color.BLACK));
+            entityManager.persist(new Cat("Kitty", 3, Color.BLACK));
+            entityManager.persist(new Cat("Bobby", 4, Color.BLACK));
+            entityManager.persist(new Cat("Harold", 5, Color.BLACK));
+            entityManager.persist(new Cat("Tim", 6, Color.BLACK));
             entityManager.flush();
         }
     }

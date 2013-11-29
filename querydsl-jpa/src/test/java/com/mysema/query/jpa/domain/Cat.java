@@ -65,6 +65,12 @@ public class Cat extends Animal {
         setName( name);
     }
 
+    public Cat(String name, int id, Color color) {
+        setId(id);
+        setName( name);
+        setColor(color);
+    }
+
     public Cat(String name, int id, List<Cat> k) {
         setId(id);
         setName( name);

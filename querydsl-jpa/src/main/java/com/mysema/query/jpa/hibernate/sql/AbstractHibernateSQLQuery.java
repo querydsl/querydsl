@@ -114,7 +114,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         // set entity paths
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-        if (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class)) {
+        if (!FactoryExpression.class.isAssignableFrom(projection.get(0).getClass()) &&
+            (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class))) {
             if (projection.size() == 1) {
                 Expression<?> expr = projection.get(0);
                 if (expr instanceof Operation) {
