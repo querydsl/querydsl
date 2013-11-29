@@ -45,6 +45,7 @@ public class SQLiteTemplates extends SQLTemplates {
         setDummyTable(null);
         setBigDecimalSupported(false);
         setUnionsWrapped(false);
+        setLimitRequired(true);
         setNullsFirst(null);
         setNullsLast(null);
         add(Ops.MOD, "{0} % {1}");
