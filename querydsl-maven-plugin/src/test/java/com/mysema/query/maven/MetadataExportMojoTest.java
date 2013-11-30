@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,9 +32,9 @@ public class MetadataExportMojoTest {
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
 
     private final MavenProject project = new MavenProject();
-    
+
     private final MetadataExportMojo mojo = new MetadataExportMojo();
-    
+
     @Test
     public void Execute() throws Exception {
         mojo.setProject(project);
@@ -68,7 +68,7 @@ public class MetadataExportMojoTest {
         assertEquals(Collections.singletonList("target/export2"), project.getCompileSourceRoots());
         assertTrue(new File("target/export2").exists());
     }
-    
+
     @Test
     public void Execute_With_JodaTypes() throws Exception{
         mojo.setProject(project);
