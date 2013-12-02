@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,16 +14,18 @@
 package com.mysema.query;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
-import com.mysema.query.Connections;
+import com.mysema.testutil.ExternalDB;
 
+@Category(ExternalDB.class)
 public class ExportOracleTest extends ExportBaseTest{
 
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initOracle();
     }
-    
+
     @Override
     public String getSchemaPattern() {
         return "QUERYDSL";

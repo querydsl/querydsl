@@ -1238,7 +1238,9 @@ public class SelectBase extends AbstractBaseTest {
         standardTest.runNumericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
 
         standardTest.runStringTests(employee.firstname, employee2.firstname, "Jennifer");
-        standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
+        if (Connections.getTarget() != SQLITE) {
+            standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
+        }
 
         standardTest.report();
     }
