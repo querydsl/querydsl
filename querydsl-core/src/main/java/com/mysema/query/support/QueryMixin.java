@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ import com.mysema.query.types.SubQueryExpression;
 public class QueryMixin<T> {
 
     private final QueryMetadata metadata;
-    
+
     private final boolean validateAnyPaths;
 
     private T self;
@@ -57,7 +57,7 @@ public class QueryMixin<T> {
         this.metadata = metadata;
         this.validateAnyPaths = true;
     }
-    
+
     public QueryMixin(QueryMetadata metadata, boolean validateAnyPaths) {
         this.metadata = metadata;
         this.validateAnyPaths = validateAnyPaths;
@@ -72,7 +72,7 @@ public class QueryMixin<T> {
         this.metadata = metadata;
         this.validateAnyPaths = true;
     }
-    
+
     public QueryMixin(T self, QueryMetadata metadata, boolean validateAnyPaths) {
         this.self = self;
         this.metadata = metadata;
@@ -83,12 +83,12 @@ public class QueryMixin<T> {
         metadata.addJoin(joinType, target);
         return self;
     }
-    
+
     public T addFlag(QueryFlag queryFlag) {
         metadata.addFlag(queryFlag);
         return self;
     }
-    
+
     public T addJoinFlag(JoinFlag flag) {
         metadata.addJoinFlag(flag);
         return self;
@@ -99,7 +99,7 @@ public class QueryMixin<T> {
         metadata.addProjection(e);
         return e;
     }
-    
+
     public T addProjection(Expression<?>... o) {
         for (Expression<?> e : o) {
             metadata.addProjection(convert(e));
@@ -117,7 +117,7 @@ public class QueryMixin<T> {
     @SuppressWarnings("rawtypes")
     public <RT> Expression<RT> convert(Expression<RT> expr) {
         if (validateAnyPaths && expr instanceof Path) {
-            Context context = new Context();            
+            Context context = new Context();
             Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
             if (!replaced.equals(expr)) {
                 for (int i = 0; i < context.paths.size(); i++) {
@@ -125,10 +125,9 @@ public class QueryMixin<T> {
                     Path replacement = context.replacements.get(i);
                     this.innerJoin(path, replacement);
                 }
-                return replaced;    
-            }            
-        } 
-        
+                return replaced;
+            }
+        }
         if (expr instanceof ProjectionRole<?>) {
             return convert(((ProjectionRole) expr).getProjection());
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
@@ -152,7 +151,7 @@ public class QueryMixin<T> {
         metadata.addJoin(JoinType.DEFAULT, arg);
         return self;
     }
-    
+
     public final T from(Expression<?>... args) {
         for (Expression<?> arg : args) {
             metadata.addJoin(JoinType.DEFAULT, arg);
@@ -197,14 +196,14 @@ public class QueryMixin<T> {
         metadata.addGroupBy(e);
         return self;
     }
-    
+
     public final T groupBy(Expression<?>... o) {
         for (Expression<?> e : o) {
-            metadata.addGroupBy(e);    
-        }        
+            metadata.addGroupBy(e);
+        }
         return self;
     }
-    
+
     public final T having(Predicate e) {
         metadata.addHaving(normalize(e, false));
         return self;
@@ -212,8 +211,8 @@ public class QueryMixin<T> {
 
     public final T having(Predicate... o) {
         for (Predicate e : o) {
-            metadata.addHaving(normalize(e, false));    
-        }        
+            metadata.addHaving(normalize(e, false));
+        }
         return self;
     }
 
@@ -312,7 +311,7 @@ public class QueryMixin<T> {
         metadata.setOffset(offset);
         return self;
     }
-    
+
     public final T on(Predicate condition) {
         metadata.addJoinCondition(normalize(condition, false));
         return self;
@@ -328,16 +327,16 @@ public class QueryMixin<T> {
     public final T orderBy(OrderSpecifier<?> spec) {
         Expression<?> e = convert(spec.getTarget());
         if (!spec.getTarget().equals(e)) {
-            metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));    
+            metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));
         } else {
             metadata.addOrderBy(spec);
         }
         return self;
     }
-    
+
     public final T orderBy(OrderSpecifier<?>... o) {
         for (OrderSpecifier<?> spec : o) {
-            orderBy(spec);            
+            orderBy(spec);
         }
         return self;
     }
@@ -385,7 +384,7 @@ public class QueryMixin<T> {
     public final void setSelf(T self) {
         this.self = self;
     }
-    
+
     public final void setUnique(boolean unique) {
         metadata.setUnique(unique);
     }
@@ -394,18 +393,18 @@ public class QueryMixin<T> {
         metadata.addWhere(normalize(e, true));
         return self;
     }
-    
-    public final T where(Predicate... o) {        
+
+    public final T where(Predicate... o) {
         for (Predicate e : o) {
-            metadata.addWhere(normalize(e, true));    
-        }        
+            metadata.addWhere(normalize(e, true));
+        }
         return self;
     }
 
     protected Predicate normalize(Predicate condition, boolean where) {
         return condition;
     }
-  
+
     @Override
     public final boolean equals(Object o) {
         if (o == this) {
@@ -417,12 +416,12 @@ public class QueryMixin<T> {
             return false;
         }
     }
-  
+
     @Override
     public int hashCode() {
         return metadata.hashCode();
     }
-        
+
     @Override
     public String toString() {
         return metadata.toString();

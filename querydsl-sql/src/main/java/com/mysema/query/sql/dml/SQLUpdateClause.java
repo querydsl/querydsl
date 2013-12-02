@@ -189,7 +189,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         if (value instanceof Expression<?>) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, (Expression<?>)value));
         } else if (value != null) {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, new ConstantImpl<Object>(value)));
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, ConstantImpl.create(value)));
         } else {
             setNull(path);
         }
@@ -218,7 +218,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             if (values.get(i) instanceof Expression) {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), (Expression<?>)values.get(i)));
             } else if (values.get(i) != null) {
-                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new ConstantImpl<Object>(values.get(i))));
+                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), ConstantImpl.create(values.get(i))));
             } else {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), Null.CONSTANT));
             }

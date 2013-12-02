@@ -16,11 +16,13 @@ import org.junit.Test;
 
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Projections;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.Wildcard;
@@ -53,11 +55,19 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
+    public void Enum_Binding() {
+        List<Cat> cats = query().from(cat)
+                .list(Projections.bean(Cat.class, QCat.cat.color));
+        assertFalse(cats.isEmpty());
+
+        for (Cat cat : cats) {
+            assertEquals(Color.BLACK, cat.getColor());
+        }
+    }
+
+    @Test
     @Ignore
     public void EntityProjections() {
-        // not yet supported
-        SAnimal cat = new SAnimal("cat");
-
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
                 .list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
         assertEquals(6, cats.size());
@@ -68,7 +78,6 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void EntityQueries() {
-        SAnimal cat = new SAnimal("cat");
         SAnimal mate = new SAnimal("mate");
         QCat catEntity = QCat.cat;
 
@@ -172,7 +181,6 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void Null_As_UniqueResult() {
-        SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
                 .uniqueResult(cat.name));
     }
@@ -196,7 +204,6 @@ public abstract class AbstractSQLTest {
     @Test
     @SuppressWarnings("unchecked")
     public void Union() throws SQLException {
-        SAnimal cat = new SAnimal("cat");
         SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
@@ -206,7 +213,6 @@ public abstract class AbstractSQLTest {
     @Test
     @SuppressWarnings("unchecked")
     public void Union_All() {
-        SAnimal cat = new SAnimal("cat");
         SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
         List<Integer> list = query().unionAll(sq1, sq2).list();
@@ -216,7 +222,6 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRES})
     public void Union2() {
-        SAnimal cat = new SAnimal("cat");
         List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id),
             new SQLSubQuery().from(cat).where(cat.name.eq("Kate")).distinct().list(cat.name, null))
@@ -231,7 +236,6 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn(Target.DERBY)
     public void Union3() {
-        SAnimal cat = new SAnimal("cat");
         SAnimal cat2 = new SAnimal("cat2");
         List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)).list(cat.id, cat2.id),
@@ -259,7 +263,6 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn({Target.DERBY, Target.ORACLE})
     public void Union5() {
-        SAnimal cat = new SAnimal("cat");
         SAnimal cat2 = new SAnimal("cat2");
         List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).list(cat.id, cat2.id),
@@ -287,8 +290,6 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn(Target.H2)
     public void Wildcard() {
-        SAnimal cat = new SAnimal("cat");
-
         List<Tuple> rows = query().from(cat).list(cat.all());
         assertEquals(6, rows.size());
         print(rows);

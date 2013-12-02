@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,6 @@ import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Ops.MathOps;
 import com.mysema.query.types.Path;
@@ -40,7 +39,7 @@ import com.mysema.util.MathUtils;
  * @see java.lang.Number
  */
 public abstract class NumberExpression<T extends Number & Comparable<?>> extends ComparableExpressionBase<T> {
-    
+
     private static final long serialVersionUID = -5485902768703364888L;
 
     @Nullable
@@ -124,7 +123,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this + right
      */
     public <N extends Number & Comparable<N>> NumberExpression<T> add(N right) {
-        return NumberOperation.create(getType(), Ops.ADD, mixin, new ConstantImpl<N>(right));
+        return NumberOperation.create(getType(), Ops.ADD, mixin, ConstantImpl.create(right));
     }
 
     /**
@@ -148,10 +147,10 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public NumberExpression<Byte> byteValue() {
         return castToNum(Byte.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     private T cast(Number number) {
-        Class<T> type = (Class<T>) getType();        
+        Class<T> type = (Class<T>) getType();
         if (type.equals(number.getClass())) {
             return (T) number;
         } else if (Byte.class.equals(type)) {
@@ -181,7 +180,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         if (type.equals(getType())) {
             return (NumberExpression<A>) this;
         } else {
-            return NumberOperation.create(type, Ops.NUMCAST, mixin, new ConstantImpl<Class<A>>(type));
+            return NumberOperation.create(type, Ops.NUMCAST, mixin, ConstantImpl.create(type));
         }
     }
 
@@ -207,7 +206,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
             return left;
         }
     }
-    
+
     /**
      * Get the result of the operation this / right
      *
@@ -218,7 +217,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         Class<?> type = getDivisionType(getType(), right.getType());
         return NumberOperation.create((Class<T>)type, Ops.DIV, mixin, right);
     }
-    
+
     /**
      * Get the result of the operation this / right
      *
@@ -227,7 +226,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      */
     public <N extends Number & Comparable<?>> NumberExpression<T> divide(N right) {
         Class<?> type = getDivisionType(getType(), right.getClass());
-        return NumberOperation.create((Class<T>)type, Ops.DIV, mixin, new ConstantImpl<N>(right));
+        return NumberOperation.create((Class<T>)type, Ops.DIV, mixin, ConstantImpl.create(right));
     }
 
     /**
@@ -274,7 +273,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression goe(A right) {
-        return goe(new ConstantImpl<T>(cast(right)));
+        return goe(ConstantImpl.create(cast(right)));
     }
 
     /**
@@ -296,7 +295,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.<T>all(right));
     }
-    
+
     /**
      * @param right
      * @return
@@ -304,7 +303,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.<T>any(right));
     }
-    
+
     /**
      * Create a <code>this &gt; right</code> expression
      *
@@ -314,9 +313,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression gt(A right) {
-        return gt(new ConstantImpl<T>(cast(right)));
+        return gt(ConstantImpl.create(cast(right)));
     }
-    
+
     /**
      * Create a <code>this &gt; right</code> expression
      *
@@ -328,7 +327,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression gt(Expression<A> right) {
         return BooleanOperation.create(Ops.GT, mixin, right);
     }
-    
+
     /**
      * @param right
      * @return
@@ -336,7 +335,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
         return gt(ExpressionUtils.<T>all(right));
     }
-    
+
     /**
      * @param right
      * @return
@@ -356,15 +355,15 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable A from, @Nullable A to) {
         if (from == null) {
             if (to != null) {
-                return BooleanOperation.create(Ops.LOE, mixin, new ConstantImpl<A>(to));
+                return BooleanOperation.create(Ops.LOE, mixin, ConstantImpl.create(to));
             } else {
                 throw new IllegalArgumentException("Either from or to needs to be non-null");
             }
         } else if (to == null) {
-            return BooleanOperation.create(Ops.GOE, mixin, new ConstantImpl<A>(from));
+            return BooleanOperation.create(Ops.GOE, mixin, ConstantImpl.create(from));
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, mixin, new ConstantImpl<A>(from), new ConstantImpl<A>(to));    
-        }      
+            return BooleanOperation.create(Ops.BETWEEN, mixin, ConstantImpl.create(from), ConstantImpl.create(to));
+        }
     }
 
     /**
@@ -385,7 +384,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         } else if (to == null) {
             return BooleanOperation.create(Ops.GOE, mixin, from);
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, mixin, from, to);    
+            return BooleanOperation.create(Ops.BETWEEN, mixin, from, to);
         }
     }
 
@@ -424,7 +423,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return
      */
     public BooleanExpression like(String str) {
-        return BooleanOperation.create(Ops.LIKE, stringValue(), new ConstantImpl<String>(str));
+        return BooleanOperation.create(Ops.LIKE, stringValue(), ConstantImpl.create(str));
     }
 
     /**
@@ -436,7 +435,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public BooleanExpression like(Expression<String> str) {
         return BooleanOperation.create(Ops.LIKE, stringValue(), str);
     }
-    
+
     /**
      * Create a <code>this &lt;= right</code> expression
      *
@@ -446,7 +445,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression loe(A right) {
-        return loe(new ConstantImpl<T>(cast(right)));
+        return loe(ConstantImpl.create(cast(right)));
     }
 
     /**
@@ -460,7 +459,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression loe(Expression<A> right) {
         return BooleanOperation.create(Ops.LOE, mixin, right);
     }
-    
+
     /**
      * @param right
      * @return
@@ -468,7 +467,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
         return loe(ExpressionUtils.<T>all(right));
     }
-    
+
     /**
      * @param right
      * @return
@@ -496,7 +495,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression lt(A right) {
-        return lt(new ConstantImpl<T>(cast(right)));
+        return lt(ConstantImpl.create(cast(right)));
     }
 
     /**
@@ -510,7 +509,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression lt(Expression<A> right) {
         return BooleanOperation.create(Ops.LT, this, right);
     }
-    
+
     /**
      * @param right
      * @return
@@ -518,7 +517,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
         return lt(ExpressionUtils.<T>all(right));
     }
-    
+
     /**
      * @param right
      * @return
@@ -535,7 +534,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @SuppressWarnings("unchecked")
     public NumberExpression<T> max() {
         if (max == null) {
-            max = NumberOperation.create(getType(), (Operator)Ops.AggOps.MAX_AGG, mixin);
+            max = NumberOperation.create(getType(), Ops.AggOps.MAX_AGG, mixin);
         }
         return max;
     }
@@ -548,7 +547,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @SuppressWarnings("unchecked")
     public NumberExpression<T> min() {
         if (min == null) {
-            min = NumberOperation.create(getType(), (Operator)Ops.AggOps.MIN_AGG, mixin);
+            min = NumberOperation.create(getType(), Ops.AggOps.MIN_AGG, mixin);
         }
         return min;
     }
@@ -566,7 +565,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return
      */
     public NumberExpression<T> mod(T num) {
-        return NumberOperation.create(getType(), Ops.MOD, mixin, new ConstantImpl<T>(num));
+        return NumberOperation.create(getType(), Ops.MOD, mixin, ConstantImpl.create(num));
     }
 
     /**
@@ -586,7 +585,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this * right
      */
     public <N extends Number & Comparable<N>> NumberExpression<T> multiply(N right) {
-        return NumberOperation.create(getType(), Ops.MULT, mixin, new ConstantImpl<N>(right));
+        return NumberOperation.create(getType(), Ops.MULT, mixin, ConstantImpl.create(right));
     }
 
     /**
@@ -654,7 +653,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this - right
      */
     public <N extends Number & Comparable<?>> NumberExpression<T> subtract(N right) {
-        return NumberOperation.create(getType(), Ops.SUB, mixin, new ConstantImpl<N>(right));
+        return NumberOperation.create(getType(), Ops.SUB, mixin, ConstantImpl.create(right));
     }
 
     /**

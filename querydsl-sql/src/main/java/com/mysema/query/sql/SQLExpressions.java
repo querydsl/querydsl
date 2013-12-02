@@ -130,7 +130,7 @@ public final class SQLExpressions {
      * @param sequence
      * @return
      */
-    public static final SimpleExpression<Long> nextval(String sequence) {
+    public static SimpleExpression<Long> nextval(String sequence) {
         return nextval(Long.class, sequence);
     }
 
@@ -141,7 +141,7 @@ public final class SQLExpressions {
      * @param sequence
      * @return
      */
-    public static final <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
+    public static <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
         return SimpleOperation.create(type, SQLOps.NEXTVAL, ConstantImpl.create(sequence));
     }
 
@@ -213,7 +213,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             D start, DateExpression<D> end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), new ConstantImpl<D>(start), end);
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
     }
 
     /**
@@ -226,7 +226,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             DateExpression<D> start, D end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, new ConstantImpl<D>(end));
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
     }
 
     /**
@@ -252,7 +252,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             D start, DateTimeExpression<D> end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), new ConstantImpl<D>(start), end);
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
     }
 
     /**
@@ -265,7 +265,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             DateTimeExpression<D> start, D end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, new ConstantImpl<D>(end));
+        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
     }
 
     /**

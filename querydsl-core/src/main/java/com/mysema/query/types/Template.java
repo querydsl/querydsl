@@ -33,7 +33,7 @@ public final class Template implements Serializable {
     private static final long serialVersionUID = -1697705745769542204L;
 
     @Immutable
-    public static abstract class Element implements Serializable {
+    public abstract static class Element implements Serializable {
 
         private static final long serialVersionUID = 3396877288101929387L;
 

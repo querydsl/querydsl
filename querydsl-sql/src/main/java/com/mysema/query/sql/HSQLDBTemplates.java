@@ -42,6 +42,7 @@ public class HSQLDBTemplates extends SQLTemplates {
 
     public HSQLDBTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
+        setLimitRequired(true);
         setAutoIncrement(" identity");
         add(Ops.TRIM, "trim(both from {0})");
         add(Ops.NEGATE, "{0} * -1", 7);

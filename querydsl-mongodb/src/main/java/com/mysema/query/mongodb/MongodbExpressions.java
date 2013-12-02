@@ -37,7 +37,7 @@ public final class MongodbExpressions {
      * @return
      */
     public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal) {
-        return BooleanOperation.create(MongodbOps.NEAR, expr, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
+        return BooleanOperation.create(MongodbOps.NEAR, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
     }
 
 }

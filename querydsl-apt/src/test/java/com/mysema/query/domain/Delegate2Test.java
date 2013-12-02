@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  */
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -28,17 +28,17 @@ public class Delegate2Test {
 
     @QueryEntity
     public static class Entity {
-        
+
         Point point;
     }
-    
+
     public static class Point {
 
     }
 
     @QueryDelegate(Point.class)
     public static NumberExpression<Integer> geoDistance(Path<Point> point, Point other) {
-        return NumberTemplate.create(Integer.class, "geo_distance({0},{1})", point, new ConstantImpl<Point>(other));
+        return NumberTemplate.create(Integer.class, "geo_distance({0},{1})", point, ConstantImpl.create(other));
     }
 
     @Test

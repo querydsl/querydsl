@@ -24,6 +24,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.mysema.query.annotations.QueryEntities;
+import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.DefaultConfiguration;
@@ -41,10 +42,12 @@ public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
         Class<? extends Annotation> entities = QueryEntities.class;
         Class<? extends Annotation> entity = Entity.class;
+        Class<? extends Annotation> superType = QuerySupertype.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        DefaultConfiguration conf = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(),
-                entities, entity, null, null, embedded, skip);
+        DefaultConfiguration conf = new DefaultConfiguration(roundEnv,
+                processingEnv.getOptions(), Collections.<String>emptySet(),
+                entities, entity, superType, null, embedded, skip);
         try {
             Class cl = Class.forName("com.mysema.query.mongodb.Point");
             conf.addCustomType(Double[].class, cl);

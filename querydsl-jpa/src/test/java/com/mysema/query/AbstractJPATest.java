@@ -56,6 +56,7 @@ import com.mysema.query.jpa.domain.Animal;
 import com.mysema.query.jpa.domain.Author;
 import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.Company;
 import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain.DomesticCat;
@@ -188,6 +189,7 @@ public abstract class AbstractJPATest {
             cat.setBirthdate(birthDate);
             cat.setDateField(date);
             cat.setTimeField(time);
+            cat.setColor(Color.BLACK);
             save(cat);
             savedCats.add(cat);
             prev = cat;
@@ -997,9 +999,18 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoOpenJPA // FIXME
-    public void Offset() {
-        List<String> names2 = Arrays.asList("Felix123","Mary_123","Ruth123","Some");
+    @NoOpenJPA
+    @NoBatooJPA // FIXME
+    public void Offset1() {
+        List<String> names2 = Arrays.asList("Bob123", "Felix123", "Mary_123", "Ruth123", "Some");
+        assertEquals(names2, query().from(cat).orderBy(cat.name.asc()).offset(1).list(cat.name));
+    }
+
+    @Test
+    @NoOpenJPA
+    @NoBatooJPA // FIXME
+    public void Offset2() {
+        List<String> names2 = Arrays.asList("Felix123", "Mary_123", "Ruth123", "Some");
         assertEquals(names2, query().from(cat).orderBy(cat.name.asc()).offset(2).list(cat.name));
     }
 

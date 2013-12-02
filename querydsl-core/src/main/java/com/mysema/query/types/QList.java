@@ -13,6 +13,8 @@
  */
 package com.mysema.query.types;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -91,7 +93,7 @@ public class QList extends ExpressionBase<List<?>> implements FactoryExpression<
     @Override
     @Nullable
     public List<?> newInstance(Object... args) {
-        return ImmutableList.copyOf(args);
+        return Collections.unmodifiableList(Arrays.asList(args));
     }
 
 }

@@ -15,6 +15,7 @@ package com.mysema.query.jpa;
 
 import javax.persistence.Entity;
 
+import com.mysema.query.support.EnumConversion;
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
 import com.mysema.query.types.Expression;
@@ -59,10 +60,14 @@ public final class Conversions {
             }
         } else if (Number.class.isAssignableFrom(expr.getType())) {
             return new NumberConversion<RT>(expr);
+        } else if (Enum.class.isAssignableFrom(expr.getType())) {
+            return new EnumConversion<RT>(expr);
         } else if (expr instanceof FactoryExpression) {
             FactoryExpression<RT> factorye = (FactoryExpression<RT>)expr;
             for (Expression<?> e : factorye.getArgs()) {
                 if (Number.class.isAssignableFrom(e.getType())) {
+                    return new NumberConversions<RT>(factorye);
+                } else if (Enum.class.isAssignableFrom(e.getType())) {
                     return new NumberConversions<RT>(factorye);
                 }
             }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,11 +32,11 @@ import com.mysema.query.sql.support.PrimaryKeyData;
  *
  */
 public class KeyDataFactory {
-    
+
     private static final int FK_FOREIGN_COLUMN_NAME = 8;
 
     private static final int FK_FOREIGN_TABLE_NAME = 7;
-    
+
     private static final int FK_FOREIGN_SCHEMA_NAME = 6;
 
     private static final int FK_NAME = 12;
@@ -44,20 +44,20 @@ public class KeyDataFactory {
     private static final int FK_PARENT_COLUMN_NAME = 4;
 
     private static final int FK_PARENT_TABLE_NAME = 3;
-    
+
     private static final int FK_PARENT_SCHEMA_NAME = 2;
-    
+
     private static final int PK_COLUMN_NAME = 4;
 
     private static final int PK_NAME = 6;
-    
+
     private final NamingStrategy namingStrategy;
-    
+
     private final String packageName, prefix, suffix;
-    
+
     private final boolean schemaToPackage;
-    
-    public KeyDataFactory(NamingStrategy namingStrategy, String packageName, 
+
+    public KeyDataFactory(NamingStrategy namingStrategy, String packageName,
             String prefix, String suffix, boolean schemaToPackage) {
         this.namingStrategy = namingStrategy;
         this.packageName = packageName;
@@ -65,8 +65,8 @@ public class KeyDataFactory {
         this.suffix = suffix;
         this.schemaToPackage = schemaToPackage;
     }
-    
-    public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md, 
+
+    public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException{
         ResultSet foreignKeys = md.getExportedKeys(catalog, schema, tableName);
         Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
@@ -77,9 +77,13 @@ public class KeyDataFactory {
                 String foreignSchemaName = foreignKeys.getString(FK_FOREIGN_SCHEMA_NAME);
                 String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
+                if (name == null) {
+                    name = tableName + "_" + foreignTableName + "_IFK";
+                }
+
                 InverseForeignKeyData data = inverseForeignKeyData.get(name);
-                if (data == null) {                    
-                    data = new InverseForeignKeyData(name, foreignSchemaName, 
+                if (data == null) {
+                    data = new InverseForeignKeyData(name, foreignSchemaName,
                             foreignTableName, createType(foreignSchemaName, foreignTableName));
                     inverseForeignKeyData.put(name, data);
                 }
@@ -88,7 +92,7 @@ public class KeyDataFactory {
             return inverseForeignKeyData;
         }finally{
             foreignKeys.close();
-        }    
+        }
     }
 
     public Map<String, ForeignKeyData> getImportedKeys(DatabaseMetaData md,
@@ -102,9 +106,13 @@ public class KeyDataFactory {
                 String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
                 String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
+                if (name == null) {
+                    name = tableName + "_" + parentTableName + "_FK";
+                }
+
                 ForeignKeyData data = foreignKeyData.get(name);
                 if (data == null) {
-                    data = new ForeignKeyData(name, parentSchemaName, parentTableName, 
+                    data = new ForeignKeyData(name, parentSchemaName, parentTableName,
                             createType(parentSchemaName, parentTableName));
                     foreignKeyData.put(name, data);
                 }
@@ -124,6 +132,9 @@ public class KeyDataFactory {
             while (primaryKeys.next()) {
                 String name = primaryKeys.getString(PK_NAME);
                 String columnName = primaryKeys.getString(PK_COLUMN_NAME);
+                if (name == null) {
+                    name = tableName + "_PK";
+                }
 
                 PrimaryKeyData data = primaryKeyData.get(name);
                 if (data == null) {
@@ -137,7 +148,7 @@ public class KeyDataFactory {
             primaryKeys.close();
         }
     }
-    
+
     private Type createType(@Nullable String schemaName, String table) {
         String packageName = this.packageName;
         if (schemaToPackage && schemaName != null) {

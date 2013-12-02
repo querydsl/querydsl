@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,15 +23,16 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.persistence.Embedded;
 
 import com.mysema.query.annotations.QueryEntities;
+import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.codegen.Keywords;
 
 /**
- * AnnotationProcessor for JDO which takes {@link PersistenceCapable}, {@link EmbeddedOnly} and 
+ * AnnotationProcessor for JDO which takes {@link PersistenceCapable}, {@link EmbeddedOnly} and
  * {@link NotPersistent} into account
- * 
+ *
  * @author tiwe
  *
  */
@@ -40,11 +41,13 @@ public class JDOAnnotationProcessor extends AbstractQuerydslProcessor {
 
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
+        Class<? extends Annotation> entities = QueryEntities.class;
         Class<? extends Annotation> entity = PersistenceCapable.class;
+        Class<? extends Annotation> superType = QuerySupertype.class;
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = NotPersistent.class;
-        return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Keywords.JDO, 
-                QueryEntities.class, entity, null, embeddable, embedded, skip);        
+        return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Keywords.JDO,
+                entities, entity, superType, embeddable, embedded, skip);
     }
 }

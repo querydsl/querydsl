@@ -94,19 +94,11 @@ public class GroupByListTest extends AbstractGroupByTest {
             row("John", "John", 1, "post 1", comment(3))
     );
 
-//    protected static final Projectable USERS_W_LATEST_POST_AND_COMMENTS2 = projectable(
-//            row("John", 1, "post 1", comment(1)),
-//            row("Jane", 2, "post 2", comment(4)),
-//            row("John", 1, "post 1", comment(2)),
-//            row("Jane", 2, "post 2", comment(5)),
-//            row("John", 1, "post 1", comment(3))
-//    );
-
-
     @Test
     public void Group_Order() {
         List<Group> results = BASIC_RESULTS
             .transform(groupBy(postId).list(postName, set(commentId)));
+
         assertEquals(4, results.size());
     }
 
@@ -114,6 +106,8 @@ public class GroupByListTest extends AbstractGroupByTest {
     public void First_Set_And_List() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
+
+        assertEquals(4, results.size());
 
         Group group = results.get(1);
         assertEquals(toInt(1), group.getOne(postId));
@@ -126,6 +120,8 @@ public class GroupByListTest extends AbstractGroupByTest {
     public void Group_By_Null() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
+
+        assertEquals(4, results.size());
 
         Group group = results.get(0);
         assertNull(group.getOne(postId));
@@ -140,6 +136,8 @@ public class GroupByListTest extends AbstractGroupByTest {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
 
+        assertEquals(4, results.size());
+
         Group group = results.get(1);
         group.getSet(qComment);
     }
@@ -148,6 +146,8 @@ public class GroupByListTest extends AbstractGroupByTest {
     public void ClassCastException() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
+
+        assertEquals(4, results.size());
 
         Group group = results.get(1);
         group.getList(commentId);
@@ -158,8 +158,9 @@ public class GroupByListTest extends AbstractGroupByTest {
         List<Group> results = MAP_RESULTS.transform(
             groupBy(postId).list(postName, map(commentId, commentText)));
 
-        Group group = results.get(1);
+        assertEquals(4, results.size());
 
+        Group group = results.get(1);
         Map<Integer, String> comments = group.getMap(commentId, commentText);
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
@@ -170,6 +171,8 @@ public class GroupByListTest extends AbstractGroupByTest {
         List<Map<Integer, String>> results = MAP2_RESULTS.transform(
             groupBy(postId).list(map(commentId, commentText)));
 
+        assertEquals(4, results.size());
+
         Map<Integer, String> comments = results.get(1);
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
@@ -179,6 +182,8 @@ public class GroupByListTest extends AbstractGroupByTest {
     public void Array_Access() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
+
+        assertEquals(4, results.size());
 
         Group group = results.get(1);
         Object[] array = group.toArray();
@@ -193,6 +198,8 @@ public class GroupByListTest extends AbstractGroupByTest {
         List<Post> results = POST_W_COMMENTS.transform(
                 groupBy(postId).list(Projections.constructor(Post.class, postId, postName, set(qComment))));
 
+        assertEquals(4, results.size());
+
         Post post = results.get(1);
         assertNotNull(post);
         assertEquals(toInt(1), post.getId());
@@ -204,6 +211,8 @@ public class GroupByListTest extends AbstractGroupByTest {
     public void Transform_As_Bean() {
         List<Post> results = POST_W_COMMENTS.transform(
                 groupBy(postId).list(Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
+
+        assertEquals(4, results.size());
 
         Post post = results.get(1);
         assertNotNull(post);

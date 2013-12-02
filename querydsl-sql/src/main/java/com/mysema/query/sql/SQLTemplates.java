@@ -196,6 +196,8 @@ public class SQLTemplates extends Templates {
 
     private boolean functionJoinsWrapped = false;
 
+    private boolean limitRequired = false;
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -623,6 +625,10 @@ public class SQLTemplates extends Templates {
         return functionJoinsWrapped;
     }
 
+    public final boolean isLimitRequired() {
+        return limitRequired;
+    }
+
     public final String getNullsFirst() {
         return nullsFirst;
     }
@@ -681,6 +687,8 @@ public class SQLTemplates extends Templates {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() != null) {
             context.handle(limitTemplate, mod.getLimit());
+        } else if (limitRequired) {
+            context.handle(limitTemplate, Integer.MAX_VALUE);
         }
         if (mod.getOffset() != null) {
             context.handle(offsetTemplate, mod.getOffset());
@@ -869,6 +877,10 @@ public class SQLTemplates extends Templates {
 
     protected void setNullsLast(String nullsLast) {
         this.nullsLast = nullsLast;
+    }
+
+    protected void setLimitRequired(boolean limitRequired) {
+        this.limitRequired = limitRequired;
     }
 
 }

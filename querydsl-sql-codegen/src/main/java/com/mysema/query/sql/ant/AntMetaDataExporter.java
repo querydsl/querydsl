@@ -158,6 +158,26 @@ public class AntMetaDataExporter extends Task {
      */
     private boolean exportForeignKeys = true;
 
+    /**
+     *
+     */
+    private String[] beanInterfaces;
+
+    /**
+     *
+     */
+    private boolean beanAddToString;
+
+    /**
+     *
+     */
+    private boolean beanAddFullConstructor;
+
+    /**
+     *
+     */
+    private boolean beanPrintSupertype;
+
     @Override
     public void execute() throws BuildException {
         Connection dbConn = null;
@@ -198,7 +218,20 @@ public class AntMetaDataExporter extends Task {
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
             if (exportBeans) {
-                exporter.setBeanSerializer(new BeanSerializer());
+                BeanSerializer serializer = new BeanSerializer();
+                if (beanInterfaces != null) {
+                    for (String iface : beanInterfaces) {
+                        try {
+                            serializer.addInterface(Class.forName(iface));
+                        } catch (ClassNotFoundException e) {
+                            throw new BuildException(e.getMessage(), e);
+                        }
+                    }
+                }
+                serializer.setAddFullConstructor(beanAddFullConstructor);
+                serializer.setAddToString(beanAddToString);
+                serializer.setPrintSupertype(beanPrintSupertype);
+                exporter.setBeanSerializer(serializer);
             }
             if (sourceEncoding != null) {
                 exporter.setSourceEncoding(sourceEncoding);

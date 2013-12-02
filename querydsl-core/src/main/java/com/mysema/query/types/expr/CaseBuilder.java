@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 package com.mysema.query.types.expr;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operator;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Ops;
 
 /**
@@ -88,10 +90,17 @@ public final class CaseBuilder {
         protected abstract Q createResult(Class<A> type, Expression<A> last);
 
         public Q otherwise(A constant) {
-            return otherwise(new ConstantImpl<A>(constant));
+            if (constant != null) {
+                return otherwise(ConstantImpl.create(constant));
+            } else {
+                return otherwise((Expression)NullExpression.DEFAULT);
+            }
         }
 
         public Q otherwise(Expression<A> expr) {
+            if (expr == null) {
+                expr = (Expression)NullExpression.DEFAULT;
+            }
             cases.add(0, new CaseElement<A>(null, expr));
             Expression<A> last = null;
             for (CaseElement<A> element : cases) {
@@ -133,7 +142,7 @@ public final class CaseBuilder {
         }
 
         public Cases<A,Q> then(A constant) {
-            return then(new ConstantImpl<A>(constant));
+            return then(ConstantImpl.create(constant));
         }
 
         public Cases<A,Q> then(Expression<A> expr) {
@@ -155,10 +164,23 @@ public final class CaseBuilder {
             this.when = b;
         }
 
-        public <A> Cases<A,Expression<A>> then(A constant) {
-            return then(new ConstantImpl<A>(constant));
+        @SuppressWarnings("unchecked")
+        public <A> Cases<A, SimpleExpression<A>> then(Expression<A> expr) {
+            return new Cases<A, SimpleExpression<A>>((Class)expr.getType()) {
+                @Override
+                protected SimpleExpression<A> createResult(Class<A> type, Expression<A> last) {
+                    return SimpleOperation.create(type, Ops.CASE, last);
+                }
+
+            }.addCase(when, expr);
         }
-        
+
+        public <A> Cases<A, SimpleExpression<A>> then(A constant) {
+            return then(ConstantImpl.create(constant));
+        }
+
+        // Boolean
+
         public Cases<Boolean,BooleanExpression> then(BooleanExpression expr) {
             return thenBoolean(expr);
         }
@@ -168,48 +190,93 @@ public final class CaseBuilder {
                 @SuppressWarnings("unchecked")
                 @Override
                 protected BooleanExpression createResult(Class<Boolean> type, Expression<Boolean> last) {
-                    return BooleanOperation.create((Operator)Ops.CASE, last);
+                    return BooleanOperation.create(Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
         }
 
-        public Cases<String,StringExpression> then(StringExpression expr) {
-            return thenString(expr);
+        public Cases<Boolean, BooleanExpression> then(boolean b) {
+            return thenBoolean(ConstantImpl.create(b));
         }
-        
-        private Cases<String,StringExpression> thenString(Expression<String> expr) {
-            return new Cases<String,StringExpression>(String.class) {
-                @SuppressWarnings("unchecked")
+
+        // Date
+
+        public <T extends Comparable> Cases<T, DateExpression<T>> then(DateExpression<T> expr) {
+            return thenDate(expr);
+        }
+
+        private <T extends Comparable> Cases<T, DateExpression<T>> thenDate(Expression<T> expr) {
+            return new Cases<T, DateExpression<T>>((Class)expr.getType()) {
                 @Override
-                protected StringExpression createResult(Class<String> type, Expression<String> last) {
-                    return StringOperation.create((Operator)Ops.CASE, last);
+                protected DateExpression<T> createResult(Class<T> type, Expression<T> last) {
+                    return DateOperation.create(type, Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
         }
 
-        @SuppressWarnings("unchecked")
-        public <A> Cases<A, Expression<A>> then(Expression<A> expr) {
-            return new Cases<A,Expression<A>>((Class)expr.getType()) {
+        public Cases<java.sql.Date, DateExpression<java.sql.Date>> thenDate(java.sql.Date date) {
+            return thenDate(ConstantImpl.create(date));
+        }
+
+        // DateTime
+
+        public <T extends Comparable> Cases<T, DateTimeExpression<T>> then(DateTimeExpression<T> expr) {
+            return thenDateTime(expr);
+        }
+
+        private <T extends Comparable> Cases<T, DateTimeExpression<T>> thenDateTime(Expression<T> expr) {
+            return new Cases<T, DateTimeExpression<T>>((Class)expr.getType()) {
                 @Override
-                protected Expression<A> createResult(Class<A> type, Expression<A> last) {
-                    return SimpleOperation.create(type, Ops.CASE, last);
+                protected DateTimeExpression<T> createResult(Class<T> type, Expression<T> last) {
+                    return DateTimeOperation.create(type, Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
         }
-        
+
+        public Cases<Timestamp, DateTimeExpression<Timestamp>> thenDateTime(Timestamp ts) {
+            return thenDateTime(ConstantImpl.create(ts));
+        }
+
+        public Cases<java.util.Date, DateTimeExpression<java.util.Date>> thenDateTime(java.util.Date date) {
+            return thenDateTime(ConstantImpl.create(date));
+        }
+
+        // Number
+
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(NumberExpression<A> expr) {
             return thenNumber(expr);
         }
-        
+
         @SuppressWarnings("unchecked")
         private <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> thenNumber(Expression<A> expr) {
             return new Cases<A, NumberExpression<A>>((Class)expr.getType()) {
                 @Override
                 protected NumberExpression<A> createResult(Class<A> type, Expression<A> last) {
-                    return NumberOperation.create(type, (Operator)Ops.CASE, last);
+                    return NumberOperation.create(type, Ops.CASE, last);
+                }
+
+            }.addCase(when, expr);
+        }
+
+        public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num) {
+            return thenNumber(ConstantImpl.create(num));
+        }
+
+        // String
+
+        public Cases<String,StringExpression> then(StringExpression expr) {
+            return thenString(expr);
+        }
+
+        private Cases<String,StringExpression> thenString(Expression<String> expr) {
+            return new Cases<String,StringExpression>(String.class) {
+                @SuppressWarnings("unchecked")
+                @Override
+                protected StringExpression createResult(Class<String> type, Expression<String> last) {
+                    return StringOperation.create(Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
@@ -219,13 +286,26 @@ public final class CaseBuilder {
             return thenString(ConstantImpl.create(str));
         }
 
-        public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num) {
-            return thenNumber(new ConstantImpl<A>(num));
+        // Time
+
+        public <T extends Comparable> Cases<T, TimeExpression<T>> then(TimeExpression<T> expr) {
+            return thenTime(expr);
         }
-        
-        public Cases<Boolean, BooleanExpression> then(boolean b) {
-            return thenBoolean(ConstantImpl.create(b));
+
+        private <T extends Comparable> Cases<T, TimeExpression<T>> thenTime(Expression<T> expr) {
+            return new Cases<T, TimeExpression<T>>((Class)expr.getType()) {
+                @Override
+                protected TimeExpression<T> createResult(Class<T> type, Expression<T> last) {
+                    return TimeOperation.create(type, Ops.CASE, last);
+                }
+
+            }.addCase(when, expr);
         }
+
+        public Cases<Time, TimeExpression<Time>> then(Time time) {
+            return thenTime(ConstantImpl.create(time));
+        }
+
     }
 
     public Initial when(BooleanExpression b) {

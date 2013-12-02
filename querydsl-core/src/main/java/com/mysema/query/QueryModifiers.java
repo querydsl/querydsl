@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,15 +31,15 @@ public final class QueryModifiers implements Serializable{
     private static final long serialVersionUID = 2934344588433680339L;
 
     public static final QueryModifiers EMPTY = new QueryModifiers();
-    
-    private static final int toInt(Long l) {
+
+    private static int toInt(Long l) {
         if (l.longValue() <= Integer.MAX_VALUE) {
             return l.intValue();
         } else {
             return Integer.MAX_VALUE;
         }
     }
-    
+
     public static QueryModifiers limit(@Nonnegative long limit) {
         return new QueryModifiers(Long.valueOf(limit), null);
     }
@@ -50,7 +50,7 @@ public final class QueryModifiers implements Serializable{
 
     @Nullable
     private final Long limit, offset;
-    
+
     private QueryModifiers() {
         limit = null;
         offset = null;
@@ -76,7 +76,7 @@ public final class QueryModifiers implements Serializable{
     public Long getLimit() {
         return limit;
     }
-    
+
     @Nullable
     public Integer getLimitAsInteger() {
         return limit != null ? toInt(limit) : null;
@@ -86,7 +86,7 @@ public final class QueryModifiers implements Serializable{
     public Long getOffset() {
         return offset;
     }
-    
+
     @Nullable
     public Integer getOffsetAsInteger() {
         return offset != null ? toInt(offset) : null;

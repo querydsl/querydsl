@@ -51,7 +51,7 @@ import com.mysema.query.Tuple;
 @Immutable
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
 
-    private static final ImmutableList<Expression<?>> createBindings(List<Expression<?>> exprs) {
+    private static ImmutableList<Expression<?>> createBindings(List<Expression<?>> exprs) {
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?> e : exprs) {
             if (e instanceof Operation && ((Operation<?>)e).getOperator() == Ops.ALIAS) {

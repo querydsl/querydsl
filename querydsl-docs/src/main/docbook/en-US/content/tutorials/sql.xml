@@ -135,6 +135,22 @@
               packageName)</entry>
           </row>
           <row>
+            <entry>beanInterfaces</entry>
+            <entry>array of interface classnames to add to the bean classes (default: empty)</entry>
+          </row>
+          <row>
+            <entry>beanAddToString</entry>
+            <entry>set to true to create a default toString() implementation (default: false)</entry>
+          </row>
+          <row>
+            <entry>beanAddFullConstructor</entry>
+            <entry>set to true to create a full constructor in addition to public empty (default: false)</entry>
+          </row>
+          <row>
+            <entry>beanPrintSupertype</entry>
+            <entry>set to true to print the supertype as well (default: false)</entry>
+          </row>
+          <row>
             <entry>schemaPattern</entry>
             <entry>ant style pattern to restrict code generation to certain schemas
               (default: null)</entry>
@@ -207,10 +223,55 @@
           <row>
             <entry>exportForeignKeys</entry>
             <entry>export foreign keys (default: true)</entry>
-          </row>          
+          </row>
+          <row>
+            <entry>customTypes</entry>
+            <entry>Custom user types (default: none)</entry>
+          </row>
+          <row>
+            <entry>typeMappings</entry>
+            <entry>Mappings of table.column to Java type (default: none)</entry>
+          </row>
+          <row>
+            <entry>numericMappings</entry>
+            <entry>Mappings of size/digits to Java type (default: none)</entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
+    
+    <para>Custom types can be used to register additional Type implementations:</para>
+    
+<programlisting language="xml"><![CDATA[       
+<customTypes>
+  <customType>com.mysema.query.sql.types.InputStreamType</customType>
+</customTypes>
+]]></programlisting>       
+
+    <para>Type mappings can be used to register table.column specific user types:</para>
+    
+<programlisting language="xml"><![CDATA[       
+<typeMappings>
+  <typeMapping>
+    <table>IMAGE</table>
+    <column>CONTENTS</column>
+    <type>com.mysema.query.sql.types.InputStreamType</type>
+  </typeMapping>
+</typeMappings>
+]]></programlisting>       
+
+    <para>Numeric mappings can be used to customize the mappings for the SQL numeric type:</para>
+    
+<programlisting language="xml"><![CDATA[    
+<numericMappings>
+  <numericMapping>
+    <size>1</size>
+    <digits>0</digits>
+    <javaType>java.lang.Byte</javaType>
+  </numericMapping>
+</numericMappings>   
+]]></programlisting>                     
+    
 
   </sect2>
 
@@ -644,6 +705,8 @@ columns(...).select(...)
 ]]></programlisting>    
 
      <para>maps the result set of the given query to be inserted whereas</para>
+     
+     <para>To get the created keys out instead of modified rows count use one of the executeWithKey/s method.</para>
 
 <programlisting language="java"><![CDATA[
 set(...)

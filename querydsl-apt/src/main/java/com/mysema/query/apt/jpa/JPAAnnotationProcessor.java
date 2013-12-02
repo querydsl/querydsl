@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,15 +27,15 @@ import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 
 /**
- * AnnotationProcessor for JPA which takes {@link Entity}, {@link MappedSuperclass}, {@link Embeddable} 
+ * AnnotationProcessor for JPA which takes {@link Entity}, {@link MappedSuperclass}, {@link Embeddable}
  * and {@link Transient} into account
- * 
+ *
  * @author tiwe
  *
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*"})
 public class JPAAnnotationProcessor extends AbstractQuerydslProcessor {
-    
+
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
         Class<? extends Annotation> entity = Entity.class;
@@ -43,8 +43,8 @@ public class JPAAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = Embeddable.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, 
-                embeddable, embedded, skip);
+        return new JPAConfiguration(roundEnv, processingEnv.getOptions(),
+                entity, superType, embeddable, embedded, skip);
     }
 
 }

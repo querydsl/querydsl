@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,8 @@ import java.util.Properties;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.junit.rules.MethodRule;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -38,15 +40,15 @@ import com.mysema.query.jpa.domain.Domain;
  *
  */
 public class HibernateTestRunner extends BlockJUnit4ClassRunner {
-    
+
     private SessionFactory sessionFactory;
-    
+
     private Session session;
-    
+
     private Method setter;
-    
+
     private boolean isDerby = false;
-    
+
     public HibernateTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }
@@ -63,16 +65,16 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
                         if (setter == null) {
                             setter = target.getClass().getMethod("setSession", Session.class);
                         }
-                        setter.invoke(target, session);                            
+                        setter.invoke(target, session);
                         base.evaluate();
-                    }                                        
+                    }
                 };
             }
-            
+
         });
         return rules;
     }
-    
+
     @Override
     public void run(final RunNotifier notifier) {
         try {
@@ -82,10 +84,10 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         } finally {
-            shutdown(); 
+            shutdown();
         }
     }
-    
+
     private void start() throws Exception {
         Configuration cfg = new Configuration();
         for (Class<?> cl : Domain.classes) {
@@ -102,37 +104,40 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             throw new IllegalArgumentException("No configuration available at classpath:" + mode);
         }
         props.load(is);
+        ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+            .applySettings(props)
+            .buildServiceRegistry();
         cfg.setProperties(props);
-        sessionFactory = cfg.buildSessionFactory();
+        sessionFactory = cfg.buildSessionFactory(serviceRegistry);
         session = sessionFactory.openSession();
-        session.beginTransaction();        
+        session.beginTransaction();
     }
-    
+
     private void shutdown() {
         if (session != null) {
             try {
                 if (session.getTransaction().isActive()) {
-                    session.getTransaction().rollback();    
-                }               
+                    session.getTransaction().rollback();
+                }
             } finally {
-                session.close();    
+                session.close();
                 session = null;
-            }    
-        }            
-        
-        if (sessionFactory != null) {
-            sessionFactory.getCache().evictEntityRegions();            
-            sessionFactory.close();
-            sessionFactory = null;                
+            }
         }
-        
+
+        if (sessionFactory != null) {
+            sessionFactory.getCache().evictEntityRegions();
+            sessionFactory.close();
+            sessionFactory = null;
+        }
+
         // clean shutdown of derby
         if (isDerby) {
             try {
                 DriverManager.getConnection("jdbc:derby:;shutdown=true");
             } catch (SQLException e) {
                 if (!e.getMessage().equals("Derby system shutdown.")) {
-                    throw new RuntimeException(e);    
+                    throw new RuntimeException(e);
                 }
             }
         }

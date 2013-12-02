@@ -512,6 +512,9 @@ new JPAeDeleteClause(entityManager, customer).where(customer.level.lt(3)).execut
     </para>
 
     <para>For Hibernate based Delete usage, use the HibernateDeleteClause instead.</para>
+    
+    <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide 
+    finegrained second level cache interaction.</para>
   </sect2>
 
   <sect2>
@@ -529,7 +532,7 @@ new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     .execute();  
 ]]></programlisting>
 
-    <para>The second parameter of the HibernateUpdateClause constructor is the entity to
+    <para>The second parameter of the JPAUpdateClause constructor is the entity to
       be updated.
       The set invocations define the property updates in SQL-Update-style and the execute call
       performs
@@ -537,6 +540,9 @@ new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     </para>
 
     <para>For Hibernate based Update usage, use the HibernateUpdateClause instead.</para>
+    
+    <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide 
+    finegrained second level cache interaction.</para>
 
   </sect2>
 

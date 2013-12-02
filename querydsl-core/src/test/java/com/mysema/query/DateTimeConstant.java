@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,7 +37,7 @@ final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpressio
 
     @SuppressWarnings("unchecked")
     public DateTimeConstant(D date) {
-        super(new ConstantImpl<D>(date));
+        super(ConstantImpl.create(date));
         this.date = new DateConstant<D>(date);
         this.time = new TimeConstant<D>(date);
     }
@@ -46,7 +46,7 @@ final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpressio
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public NumberExpression<Integer> dayOfMonth() {
         return date.dayOfMonth();

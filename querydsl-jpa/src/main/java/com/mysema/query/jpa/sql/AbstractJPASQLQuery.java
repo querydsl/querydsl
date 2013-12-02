@@ -111,7 +111,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         logQuery(queryString);
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
-        if (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class)) {
+        if (!FactoryExpression.class.isAssignableFrom(projection.get(0).getClass()) &&
+            (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class))) {
             if (projection.size() == 1) {
                 query = entityManager.createNativeQuery(queryString, projection.get(0).getType());
             } else {

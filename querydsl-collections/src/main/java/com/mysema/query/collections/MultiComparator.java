@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,13 +28,13 @@ import com.mysema.query.util.NullSafeComparableComparator;
 public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     @SuppressWarnings("unchecked")
-    private static final Comparator<Object> naturalOrder = (Comparator)new NullSafeComparableComparator();
+    private static final Comparator<Object> naturalOrder = new NullSafeComparableComparator();
 
     private static final long serialVersionUID = 1121416260773566299L;
 
     private final boolean[] asc;
 
-    private final Evaluator<Object[]> ev;
+    private transient final Evaluator<Object[]> ev;
 
     public MultiComparator(Evaluator<Object[]> ev, boolean[] directions) {
         this.ev = ev;
@@ -58,8 +58,8 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
             } else if (o2[i] == null) {
                 res = 1;
             } else {
-                res = naturalOrder.compare(o1[i], o2[i]);    
-            }            
+                res = naturalOrder.compare(o1[i], o2[i]);
+            }
             if (res != 0) {
                 return asc[i] ? res : -res;
             }

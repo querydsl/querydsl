@@ -442,7 +442,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 for (Object entity : (Collection<?>)rhs.getConstant()) {
                     ids.add(util.getIdentifier(entity));
                 }
-                rhs = new ConstantImpl(ids);
+                rhs = ConstantImpl.create(ids);
                 args = ImmutableList.of(lhs, rhs);
             }
         }
@@ -468,7 +468,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
                 args = ImmutableList.of(ConstantImpl.create(constant.ordinal()), args.get(1));
             } else {
-                args = ImmutableList.of(new ConstantImpl<String>(constant.name()), args.get(1));
+                args = ImmutableList.of(ConstantImpl.create(constant.name()), args.get(1));
             }
         }
         super.visitOperation(type,
@@ -495,7 +495,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
                         && !arg.getType().equals(numType)) {
                     final Number number = (Number) ((Constant)arg).getConstant();
-                    newArgs.add(new ConstantImpl(MathUtils.cast(number, (Class)numType)));
+                    newArgs.add(ConstantImpl.create(MathUtils.cast(number, (Class)numType)));
                 } else {
                     newArgs.add(arg);
                 }

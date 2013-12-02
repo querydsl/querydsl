@@ -14,7 +14,6 @@
 package com.mysema.query.types.expr;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -134,7 +133,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right == null) {
             throw new IllegalArgumentException("eq(null) is not allowed. Use isNull() instead");
         } else {
-            return eq(new ConstantImpl<T>(right));
+            return eq(ConstantImpl.create(right));
         }
     }
 
@@ -174,7 +173,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.size() == 1) {
             return eq(right.iterator().next());
         } else {
-            return BooleanOperation.create(Ops.IN, mixin, new ConstantImpl<Collection<? extends T>>(right));
+            return BooleanOperation.create(Ops.IN, mixin, ConstantImpl.create(right));
         }
     }
 
@@ -188,7 +187,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return eq(right[0]);
         } else {
-            return BooleanOperation.create(Ops.IN, mixin, new ConstantImpl<List<T>>(ImmutableList.copyOf(right)));
+            return BooleanOperation.create(Ops.IN, mixin, ConstantImpl.create(ImmutableList.copyOf(right)));
         }
     }
 
@@ -210,7 +209,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression ne(T right) {
-        return ne(new ConstantImpl<T>(right));
+        return ne(ConstantImpl.create(right));
     }
 
     /**
@@ -249,7 +248,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.size() == 1) {
             return ne(right.iterator().next());
         } else {
-            return BooleanOperation.create(Ops.NOT_IN, mixin, new ConstantImpl<Collection<? extends T>>(right));
+            return BooleanOperation.create(Ops.NOT_IN, mixin, ConstantImpl.create(right));
         }
     }
 
@@ -263,7 +262,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return ne(right[0]);
         } else {
-            return BooleanOperation.create(Ops.NOT_IN, mixin, new ConstantImpl<List<T>>(ImmutableList.copyOf(right)));
+            return BooleanOperation.create(Ops.NOT_IN, mixin, ConstantImpl.create(ImmutableList.copyOf(right)));
         }
     }
 
@@ -298,7 +297,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public SimpleExpression<T> nullif(T other) {
-        return nullif(new ConstantImpl<T>(other));
+        return nullif(ConstantImpl.create(other));
     }
 
     /**
@@ -308,7 +307,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public CaseForEqBuilder<T> when(T other) {
-        return new CaseForEqBuilder<T>(mixin, new ConstantImpl<T>(other));
+        return new CaseForEqBuilder<T>(mixin, ConstantImpl.create(other));
     }
 
     /**

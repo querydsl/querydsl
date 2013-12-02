@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,12 +39,12 @@ final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> imp
 
     @SuppressWarnings("unchecked")
     public TimeConstant(D time) {
-        super(new ConstantImpl<D>(time));
+        super(ConstantImpl.create(time));
         this.calendar = Calendar.getInstance();
         this.time = (D) time.clone();
         calendar.setTime(time);
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);

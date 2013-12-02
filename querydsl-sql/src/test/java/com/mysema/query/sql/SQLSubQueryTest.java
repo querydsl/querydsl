@@ -61,8 +61,25 @@ public class SQLSubQueryTest {
         ListSubQuery<?> subQuery = query.list(employee.id, "XXX", employee.firstname);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
         assertEquals(employee.id, exprs.get(0));
-        assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
+        assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
+    }
+
+    @Test
+    public void List_Entity() {
+        QEmployee employee2 = new QEmployee("employee2");
+        SQLSubQuery query = new SQLSubQuery();
+        Expression<?> expr = query.from(employee)
+             .innerJoin(employee.superiorIdKey, employee2)
+             .list(employee, employee2.id);
+
+        SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));
+        serializer.handle(expr);
+
+        assertEquals("(select EMPLOYEE.ID, EMPLOYEE.SUPERIOR_ID, EMPLOYEE.TIMEFIELD, EMPLOYEE.LASTNAME, EMPLOYEE.DATEFIELD, EMPLOYEE.SALARY, EMPLOYEE.FIRSTNAME, employee2.ID\n" +
+            "from EMPLOYEE EMPLOYEE\n" +
+            "inner join EMPLOYEE employee2\n" +
+            "on EMPLOYEE.SUPERIOR_ID = employee2.ID)", serializer.toString());
     }
 
     @Test
@@ -72,7 +89,7 @@ public class SQLSubQueryTest {
         SubQueryExpression<?> subQuery = query.unique(employee.id, "XXX", employee.firstname);
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
         assertEquals(employee.id, exprs.get(0));
-        assertEquals(new ConstantImpl<String>("XXX") , exprs.get(1));
+        assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
 

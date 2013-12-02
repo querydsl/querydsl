@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,13 +16,16 @@ package com.mysema.query.types;
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CaseBuilder;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.template.BooleanTemplate;
 
 public class CaseBuilderTest {
 
@@ -31,6 +34,14 @@ public class CaseBuilderTest {
         public long getAnnualSpending() {
             return annualSpending;
         }
+    }
+
+    @Test
+    public void General() {
+        SimpleExpression<Object> expr = new CaseBuilder()
+            .when(BooleanTemplate.TRUE).then(new Object())
+            .otherwise(null);
+        assertNotNull(expr);
     }
 
     @Test

@@ -153,6 +153,26 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportBeans;
 
     /**
+     * @parameter
+     */
+    private String[] beanInterfaces;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean beanAddToString;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean beanAddFullConstructor;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean beanPrintSupertype;
+
+    /**
      * wrap key properties into inner classes (default: false)
      *
      * @parameter default-value=false
@@ -177,6 +197,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter
      */
     private String[] customTypes;
+
+    /**
+     * @parameter
+     */
+    private TypeMapping[] typeMappings;
+
+    /**
+     * @parameter
+     */
+    private NumericMapping[] numericMappings;
 
     /**
      * @parameter default-value=false
@@ -221,106 +251,103 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         } else {
             project.addCompileSourceRoot(targetFolder);
         }
-        NamingStrategy namingStrategy;
-        if (namingStrategyClass != null) {
-            try {
+
+        try {
+            Configuration configuration = new Configuration(SQLTemplates.DEFAULT);
+            NamingStrategy namingStrategy;
+            if (namingStrategyClass != null) {
                 namingStrategy = (NamingStrategy) Class.forName(namingStrategyClass).newInstance();
-            } catch (InstantiationException e) {
-                throw new MojoExecutionException(e.getMessage(),e);
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException(e.getMessage(),e);
-            } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException(e.getMessage(),e);
+            } else {
+                namingStrategy = new DefaultNamingStrategy();
             }
-        } else {
-            namingStrategy = new DefaultNamingStrategy();
-        }
 
-        // defaults for Scala
-        if (createScalaSources) {
-            if (serializerClass == null) {
-                serializerClass = "com.mysema.query.scala.sql.ScalaMetaDataSerializer";
+            // defaults for Scala
+            if (createScalaSources) {
+                if (serializerClass == null) {
+                    serializerClass = "com.mysema.query.scala.sql.ScalaMetaDataSerializer";
+                }
+                if (exportBeans && beanSerializerClass == null) {
+                    beanSerializerClass = "com.mysema.query.scala.ScalaBeanSerializer";
+                }
             }
-            if (exportBeans && beanSerializerClass == null) {
-                beanSerializerClass = "com.mysema.query.scala.ScalaBeanSerializer";
-            }
-        }
 
-        MetaDataExporter exporter = new MetaDataExporter();
-        if (namePrefix != null) {
-            exporter.setNamePrefix(namePrefix);
-        }
-        if (nameSuffix != null) {
-            exporter.setNameSuffix(nameSuffix);
-        }
-        if (beanPrefix != null) {
-            exporter.setBeanPrefix(beanPrefix);
-        }
-        if (beanSuffix != null) {
-            exporter.setBeanSuffix(beanSuffix);
-        }
-        exporter.setCreateScalaSources(createScalaSources);
-        exporter.setPackageName(packageName);
-        exporter.setBeanPackageName(beanPackageName);
-        exporter.setInnerClassesForKeys(innerClassesForKeys);
-        exporter.setTargetFolder(new File(targetFolder));
-        exporter.setNamingStrategy(namingStrategy);
-        exporter.setSchemaPattern(schemaPattern);
-        exporter.setTableNamePattern(tableNamePattern);
-        exporter.setColumnAnnotations(columnAnnotations);
-        exporter.setValidationAnnotations(validationAnnotations);
-        exporter.setSchemaToPackage(schemaToPackage);
-        exporter.setLowerCase(lowerCase);
-        exporter.setExportTables(exportTables);
-        exporter.setExportViews(exportViews);
-        exporter.setExportPrimaryKeys(exportPrimaryKeys);
-        exporter.setExportForeignKeys(exportForeignKeys);
-        if (serializerClass != null) {
-            try {
-                exporter.setSerializerClass((Class)Class.forName(serializerClass));
-            } catch (ClassNotFoundException e) {
-                getLog().error(e);
-                throw new MojoExecutionException(e.getMessage(), e);
+            MetaDataExporter exporter = new MetaDataExporter();
+            if (namePrefix != null) {
+                exporter.setNamePrefix(namePrefix);
             }
-        }
-        if (exportBeans) {
-            if (beanSerializerClass != null) {
+            if (nameSuffix != null) {
+                exporter.setNameSuffix(nameSuffix);
+            }
+            if (beanPrefix != null) {
+                exporter.setBeanPrefix(beanPrefix);
+            }
+            if (beanSuffix != null) {
+                exporter.setBeanSuffix(beanSuffix);
+            }
+            exporter.setCreateScalaSources(createScalaSources);
+            exporter.setPackageName(packageName);
+            exporter.setBeanPackageName(beanPackageName);
+            exporter.setInnerClassesForKeys(innerClassesForKeys);
+            exporter.setTargetFolder(new File(targetFolder));
+            exporter.setNamingStrategy(namingStrategy);
+            exporter.setSchemaPattern(schemaPattern);
+            exporter.setTableNamePattern(tableNamePattern);
+            exporter.setColumnAnnotations(columnAnnotations);
+            exporter.setValidationAnnotations(validationAnnotations);
+            exporter.setSchemaToPackage(schemaToPackage);
+            exporter.setLowerCase(lowerCase);
+            exporter.setExportTables(exportTables);
+            exporter.setExportViews(exportViews);
+            exporter.setExportPrimaryKeys(exportPrimaryKeys);
+            exporter.setExportForeignKeys(exportForeignKeys);
+            if (serializerClass != null) {
                 try {
-                    exporter.setBeanSerializerClass((Class)Class.forName(beanSerializerClass));
+                    exporter.setSerializerClass((Class)Class.forName(serializerClass));
                 } catch (ClassNotFoundException e) {
                     getLog().error(e);
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
-            } else {
-                exporter.setBeanSerializer(new BeanSerializer());
             }
-
-        }
-        String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
-        if (sourceEncoding != null) {
-            exporter.setSourceEncoding(sourceEncoding);
-        }
-
-        try {
-            if (customTypes != null) {
-                Configuration configuration = new Configuration(SQLTemplates.DEFAULT);
-                for (String cl : customTypes) {
-                    configuration.register((Type<?>)Class.forName(cl).newInstance());
+            if (exportBeans) {
+                if (beanSerializerClass != null) {
+                    exporter.setBeanSerializerClass((Class)Class.forName(beanSerializerClass));
+                } else {
+                    BeanSerializer serializer = new BeanSerializer();
+                    if (beanInterfaces != null) {
+                        for (String iface : beanInterfaces) {
+                            serializer.addInterface(Class.forName(iface));
+                        }
+                    }
+                    serializer.setAddFullConstructor(beanAddFullConstructor);
+                    serializer.setAddToString(beanAddToString);
+                    serializer.setPrintSupertype(beanPrintSupertype);
+                    exporter.setBeanSerializer(serializer);
                 }
-                exporter.setConfiguration(configuration);
-            }
-        } catch (IllegalAccessException e) {
-            getLog().error(e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        } catch (InstantiationException e) {
-            getLog().error(e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        } catch (ClassNotFoundException e) {
-            getLog().error(e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
 
-        try {
+            }
+            String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
+            if (sourceEncoding != null) {
+                exporter.setSourceEncoding(sourceEncoding);
+            }
+
+            if (customTypes != null) {
+                for (String cl : customTypes) {
+                    configuration.register((Type<?>) Class.forName(cl).newInstance());
+                }
+            }
+            if (typeMappings != null) {
+                for (TypeMapping mapping : typeMappings) {
+                    configuration.register(mapping.table, mapping.column, (Type<?>) Class.forName(mapping.type).newInstance());
+                }
+            }
+            if (numericMappings != null) {
+                for (NumericMapping mapping : numericMappings) {
+                    configuration.registerNumeric(mapping.size, mapping.digits, Class.forName(mapping.javaType));
+                }
+            }
+
+            exporter.setConfiguration(configuration);
+
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
             try{
@@ -330,13 +357,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
                     conn.close();
                 }
             }
-        } catch (SQLException e) {
-            getLog().error(e);
-            throw new MojoExecutionException(e.getMessage(), e);
         } catch (ClassNotFoundException e) {
-            getLog().error(e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (InstantiationException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (IllegalAccessException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
+
     }
 
     protected boolean isForTest() {

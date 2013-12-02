@@ -922,12 +922,10 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({HSQLDB, H2, MYSQL, SQLITE})
     public void Offset_Only() {
-        // offset
         query().from(employee)
-        .orderBy(employee.firstname.asc())
-        .offset(3).list(employee.id);
+            .orderBy(employee.firstname.asc())
+            .offset(3).list(employee.id);
     }
 
     @Test
