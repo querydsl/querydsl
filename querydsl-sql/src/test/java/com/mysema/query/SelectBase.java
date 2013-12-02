@@ -170,7 +170,6 @@ public class SelectBase extends AbstractBaseTest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void Array_Projection() {
         List<String[]> results = query().from(employee).list(
@@ -205,7 +204,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY,MYSQL})
+    @ExcludeIn({DERBY, MYSQL})
     public void Casts() throws SQLException {
         NumberExpression<?> num = employee.id;
         Expression<?>[] expr = new Expression[] {
@@ -548,7 +547,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(MYSQL)
-    public void Extensions() {
+    public void MySQL_Extensions() {
         mysqlQuery().from(survey).bigResult().list(survey.id);
         mysqlQuery().from(survey).bufferResult().list(survey.id);
         mysqlQuery().from(survey).cache().list(survey.id);
@@ -1357,18 +1356,18 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Syntax_For_Employee() throws SQLException {
         query().from(employee).groupBy(employee.superiorId)
-        .orderBy(employee.superiorId.asc())
-        .list(employee.salary.avg(),employee.id.max());
+            .orderBy(employee.superiorId.asc())
+            .list(employee.salary.avg(),employee.id.max());
 
         query().from(employee).groupBy(employee.superiorId)
-        .having(employee.id.max().gt(5))
-        .orderBy(employee.superiorId.asc())
-        .list(employee.salary.avg(), employee.id.max());
+            .having(employee.id.max().gt(5))
+            .orderBy(employee.superiorId.asc())
+            .list(employee.salary.avg(), employee.id.max());
 
         query().from(employee).groupBy(employee.superiorId)
-        .having(employee.superiorId.isNotNull())
-        .orderBy(employee.superiorId.asc())
-        .list(employee.salary.avg(),employee.id.max());
+            .having(employee.superiorId.isNotNull())
+            .orderBy(employee.superiorId.asc())
+            .list(employee.salary.avg(),employee.id.max());
     }
 
     @Test
@@ -1429,14 +1428,12 @@ public class SelectBase extends AbstractBaseTest {
         assertNotNull(idAndName);
         assertNotNull(idAndName.getId());
         assertNotNull(idAndName.getName());
-
     }
 
     @Test
     public void Unique_Single() {
         String s = query().from(survey).limit(1).uniqueResult(survey.name);
         assertNotNull(s);
-
     }
 
     @Test
@@ -1447,7 +1444,6 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(3, row.size());
         assertNotNull(row.get(0, Object.class));
         assertNotNull(row.get(0, Object.class) +" is not null", row.get(1, Object.class));
-
     }
 
     @Test(expected=NonUniqueResultException.class)
@@ -1466,7 +1462,6 @@ public class SelectBase extends AbstractBaseTest {
         }
 
         System.out.println(query().from(survey).list(survey.id.sqrt()));
-
     }
 
     @Test
