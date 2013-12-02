@@ -248,14 +248,14 @@
 </customTypes>
 ]]></programlisting>       
 
-    <para>Type mappings can be used to register table.column specific user types:</para>
+    <para>Type mappings can be used to register table.column specific java types:</para>
     
 <programlisting language="xml"><![CDATA[       
 <typeMappings>
   <typeMapping>
     <table>IMAGE</table>
     <column>CONTENTS</column>
-    <type>com.mysema.query.sql.types.InputStreamType</type>
+    <type>java.io.InputStream</type>
   </typeMapping>
 </typeMappings>
 ]]></programlisting>       

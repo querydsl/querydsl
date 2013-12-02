@@ -337,7 +337,12 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             }
             if (typeMappings != null) {
                 for (TypeMapping mapping : typeMappings) {
-                    configuration.register(mapping.table, mapping.column, (Type<?>) Class.forName(mapping.type).newInstance());
+                    Class<?> typeClass = Class.forName(mapping.type);
+                    if (Type.class.isAssignableFrom(typeClass)) {
+                        configuration.register(mapping.table, mapping.column, (Type<?>)typeClass.newInstance());
+                    } else {
+                        configuration.register(mapping.table, mapping.column, typeClass);
+                    }
                 }
             }
             if (numericMappings != null) {
@@ -471,6 +476,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
+    }
+
+    public void setTypeMappings(TypeMapping[] typeMappings) {
+        this.typeMappings = typeMappings;
+    }
+
+    public void setNumericMappings(NumericMapping[] numericMappings) {
+        this.numericMappings = numericMappings;
     }
 
 }
