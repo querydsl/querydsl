@@ -228,7 +228,7 @@ public class SQLSerializerTest {
 
         Expression<?> expr = SQLExpressions.datediff(DatePart.year, employee.datefield, new java.sql.Date(0));
         serializer.handle(expr);
-        assertEquals("datediff('year',EMPLOYEE.DATEFIELD,'1968')", serializer.toString());
+        assertEquals("datediff('year',EMPLOYEE.DATEFIELD,(date '1970-01-01'))", serializer.toString());
     }
 
 }

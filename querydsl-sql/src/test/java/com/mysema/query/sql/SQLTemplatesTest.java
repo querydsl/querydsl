@@ -35,12 +35,12 @@ import com.mysema.query.types.template.SimpleTemplate;
 
 public class SQLTemplatesTest {
 
-    private static final String DATETIME = "\\{ts '\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}'\\}";
-    private static final String TIME = "\\{t '\\d{2}:\\d{2}:\\d{2}'\\}";
-    private static final String DATE = "\\{d '\\d{4}-\\d{2}-\\d{2}'\\}";
+    private static final String DATETIME = "\\(timestamp '\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}'\\)";
+    private static final String TIME = "\\(time '\\d{2}:\\d{2}:\\d{2}'\\)";
+    private static final String DATE = "\\(date '\\d{4}-\\d{2}-\\d{2}'\\)";
 
     private static void assertMatches(String regex, String str) {
-        assertTrue(str.matches(regex));
+        assertTrue(str, str.matches(regex));
     }
 
     @Test

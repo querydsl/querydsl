@@ -22,7 +22,7 @@ public class WithinGroupTest {
         assertEquals("cume_dist(path)", toString(SQLExpressions.cumeDist(path)));
         assertEquals("cume_dist(path, path2)", toString(SQLExpressions.cumeDist(path, path2)));
         assertEquals("dense_rank(path, path2)", toString(SQLExpressions.denseRank(path, path2)));
-        assertEquals("list_agg(path,',')", toString(SQLExpressions.listagg(path, ",")));
+        assertEquals("listagg(path,',')", toString(SQLExpressions.listagg(path, ",")));
         assertEquals("percent_rank(path, path2)", toString(SQLExpressions.percentRank(path, path2)));
         assertEquals("percentile_cont(path)", toString(SQLExpressions.percentileCont(path)));
         assertEquals("percentile_disc(path)", toString(SQLExpressions.percentileDisc(path)));
