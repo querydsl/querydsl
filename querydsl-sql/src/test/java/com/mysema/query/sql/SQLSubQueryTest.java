@@ -31,6 +31,7 @@ import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.NumberSubQuery;
 
 public class SQLSubQueryTest {
 
@@ -80,6 +81,26 @@ public class SQLSubQueryTest {
             "from EMPLOYEE EMPLOYEE\n" +
             "inner join EMPLOYEE employee2\n" +
             "on EMPLOYEE.SUPERIOR_ID = employee2.ID)", serializer.toString());
+    }
+
+    @Test
+    public void In() {
+        ListSubQuery<Integer> ints = new SQLSubQuery().from(employee).list(employee.id);
+        QEmployee.employee.id.in(ints);
+    }
+
+    @Test
+    public void In_Union() {
+        ListSubQuery<Integer> ints1 = new SQLSubQuery().from(employee).list(employee.id);
+        ListSubQuery<Integer> ints2 = new SQLSubQuery().from(employee).list(employee.id);
+//        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
+    }
+
+    @Test
+    public void In_Union2() {
+        NumberSubQuery<Integer> ints1 = new SQLSubQuery().from(employee).unique(employee.id);
+        NumberSubQuery<Integer> ints2 = new SQLSubQuery().from(employee).unique(employee.id);
+//        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
     }
 
     @Test
