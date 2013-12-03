@@ -796,6 +796,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-6686
     public void IsEmpty_ElementCollection() {
         QEmployee employee = QEmployee.employee;
         query().from(employee).where(employee.jobFunctions.isEmpty()).count();
