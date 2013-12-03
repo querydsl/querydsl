@@ -15,6 +15,13 @@ Use these tutorials to get started
 * [Querying Lucene](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html)
 * [Querying Collections](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html)
 
+**Examples**
+
+Querydsl example projects
+
+* [Querydsl JPA example](https://github.com/mysema/querydsl-jpa-example)
+* [Querydsl SQL example](https://github.com/mysema/querydsl-sql-example)
+
 **Support**
 
 Free support is provided in the Querydsl Google Group https://groups.google.com/forum/#!forum/querydsl
