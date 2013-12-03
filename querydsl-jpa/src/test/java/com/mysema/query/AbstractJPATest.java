@@ -796,6 +796,17 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void IsEmpty_ElementCollection() {
+        QEmployee employee = QEmployee.employee;
+        query().from(employee).where(employee.jobFunctions.isEmpty()).count();
+    }
+
+    @Test
+    public void IsEmpty_Relation() {
+        query().from(cat).where(cat.kittensSet.isEmpty()).count();
+    }
+
+    @Test
     @NoEclipseLink
     @ExcludeIn(ORACLE)
     public void JoinEmbeddable() {
