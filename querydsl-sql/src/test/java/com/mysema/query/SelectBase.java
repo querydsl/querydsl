@@ -424,7 +424,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, SQLITE, HSQLDB, MYSQL, TERADATA})
+    @ExcludeIn({CUBRID, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
         TestQuery query = query().from(employee, employee2);
@@ -452,18 +452,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(MYSQL)
-    public void Date_Diff_MySQL() {
-        QEmployee employee2 = new QEmployee("employee2");
-        TestQuery query = query().from(employee, employee2);
-
-        query.singleResult(
-                SQLExpressions.datediff(DatePart.day, employee.datefield, employee2.datefield));
-
-    }
-
-    @Test
-    @IncludeIn({DERBY, H2, ORACLE, POSTGRES})
+    @IncludeIn({DERBY, H2, MYSQL, ORACLE, POSTGRES})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).limit(1);
         Date date = new Date(0);
@@ -477,14 +466,9 @@ public class SelectBase extends AbstractBaseTest {
         int seconds = query.singleResult(SQLExpressions.datediff(DatePart.second, date, employee.datefield));
 
         assertEquals(30,        years);
-        if (Connections.getTarget() == ORACLE) {
-            assertEquals(366,       months); // XXX
-        } else {
-            assertEquals(361,       months);
-        }
+        assertEquals(361,       months);
         assertEquals(10989,     days);
         if (Connections.getTarget() == DERBY) {
-            // XXX one hour diff
             assertEquals(263737,    hours);
             assertEquals(15824220,  minutes);
             assertEquals(949453200, seconds);
@@ -493,6 +477,7 @@ public class SelectBase extends AbstractBaseTest {
             assertEquals(15824160,  minutes);
             assertEquals(949449600, seconds);
         }
+
     }
 
     @Test

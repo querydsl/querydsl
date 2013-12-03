@@ -96,7 +96,13 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "date_add({0}, interval {1s} minute)");
         add(Ops.DateTimeOps.ADD_SECONDS, "date_add({0}, interval {1s} second)");
 
-        add(Ops.DateTimeOps.DIFF_DAYS, "datediff({0}, {1})");
+        add(Ops.DateTimeOps.DIFF_YEARS, "timestampdiff(year,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "timestampdiff(month,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "timestampdiff(week,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_DAYS, "timestampdiff(day,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(hour,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(minute,{0},{1})");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(second,{0},{1})");
 
     }
 
