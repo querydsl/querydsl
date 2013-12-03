@@ -366,7 +366,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-4700
     @NoBatooJPA
     public void Case() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
@@ -428,7 +428,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate
+    @NoHibernate // https://github.com/mysema/querydsl/issues/290
     public void Constant() {
         //select cat.id, ?1 as const from Cat cat
         List<Cat> cats = query().from(cat).list(cat);
@@ -449,7 +449,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate
+    @NoHibernate // https://github.com/mysema/querydsl/issues/290
     public void Constant2() {
         assertFalse(query().from(cat).map(cat.id, Expressions.constant("name")).isEmpty());
     }
