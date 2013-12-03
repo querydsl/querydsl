@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@ import org.junit.Test;
 import com.mysema.query.jpa.domain.QCat;
 
 public class JPASubQueryTest {
-    
+
     @Test
     public void Multiple_Projections() {
         QCat cat = QCat.cat;
@@ -29,7 +29,8 @@ public class JPASubQueryTest {
         assertEquals(1, query.list(cat).getMetadata().getProjection().size());
         assertEquals(1, query.list(cat).getMetadata().getProjection().size());
     }
-    
+
+    @Test
     public void Via_Interface() {
         QCat cat = QCat.cat;
         JPQLSubQuery query = new JPASubQuery();
@@ -38,5 +39,4 @@ public class JPASubQueryTest {
         assertEquals(1, query.list(cat).getMetadata().getProjection().size());
     }
 
-    
 }
