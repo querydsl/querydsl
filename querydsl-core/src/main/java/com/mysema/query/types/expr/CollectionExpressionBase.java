@@ -72,6 +72,4 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
         return size;
     }
 
-
-
 }
