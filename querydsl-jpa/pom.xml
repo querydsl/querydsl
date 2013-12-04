@@ -116,7 +116,8 @@
       <scope>test</scope>
     </dependency>
     
-     <dependency>
+    <!-- 
+    <dependency>
       <groupId>org.apache.openjpa</groupId>
       <artifactId>openjpa-persistence</artifactId>
       <version>2.2.0</version>
@@ -127,7 +128,8 @@
       <artifactId>openjpa-persistence-jdbc</artifactId>
       <version>2.2.0</version>
       <scope>test</scope>
-     </dependency>   
+    </dependency>   
+    -->  
      
      <dependency>
        <groupId>org.batoo.jpa</groupId>
