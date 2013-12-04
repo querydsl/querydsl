@@ -270,5 +270,22 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
     </persistence-unit>
+    
+    <!-- teradata -->
+    
+    <persistence-unit name="teradata">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.TeradataDialect" />
+            <property name="hibernate.connection.driver_class" value="com.teradata.jdbc.TeraDriver" />
+            <property name="hibernate.connection.url" value="jdbc:teradata://teradata/dbc" />
+            <property name="hibernate.connection.username" value="querydsl" />
+            <property name="hibernate.connection.password" value="querydsl" />
+            <!-- <property name="hibernate.show_sql" value="true"/> -->
+            <property name="hibernate.flushMode" value="FLUSH_AUTO" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+        </properties>
+    </persistence-unit>    
 
 </persistence>

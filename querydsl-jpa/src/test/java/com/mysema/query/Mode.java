@@ -10,6 +10,7 @@ import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.SQLiteTemplates;
+import com.mysema.query.sql.TeradataTemplates;
 
 /**
  * @author tiwe
@@ -18,9 +19,9 @@ import com.mysema.query.sql.SQLiteTemplates;
 public final class Mode {
 
     public static final ThreadLocal<String> mode = new ThreadLocal<String>();
-    
+
     public static final ThreadLocal<Target> target = new ThreadLocal<Target>();
-    
+
     public static SQLTemplates getSQLTemplates() {
         switch (target.get()) {
         case CUBRID:return new CUBRIDTemplates();
@@ -32,10 +33,11 @@ public final class Mode {
         case ORACLE:return new OracleTemplates();
         case POSTGRES: return new PostgresTemplates();
         case SQLITE:return new SQLiteTemplates();
+        case TERADATA: return new TeradataTemplates();
         }
         throw new IllegalStateException("Unknown mode " + mode);
     }
-    
+
     private Mode() {}
-    
+
 }
