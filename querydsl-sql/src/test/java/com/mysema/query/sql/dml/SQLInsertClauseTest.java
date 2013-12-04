@@ -18,7 +18,7 @@ public class SQLInsertClauseTest {
         insert.set(emp1.id, 1);
 
         SQLBindings sql = insert.getSQL().get(0);
-        assertEquals("insert into EMPLOYEE (SUPERIOR_ID)\nvalues (?)", sql.getSql());
+        assertEquals("insert into EMPLOYEE (SUPERIOR_ID)\nvalues (?)", sql.getSQL());
         assertEquals(ImmutableList.of(1), sql.getBindings());
     }
 

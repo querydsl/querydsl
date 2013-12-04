@@ -26,7 +26,7 @@ public class SQLDeleteClauseTest {
         delete.where(emp1.id.eq(1));
 
         SQLBindings sql = delete.getSQL().get(0);
-        assertEquals("delete from EMPLOYEE\nwhere EMPLOYEE.SUPERIOR_ID = ?", sql.getSql());
+        assertEquals("delete from EMPLOYEE\nwhere EMPLOYEE.SUPERIOR_ID = ?", sql.getSQL());
         assertEquals(ImmutableList.of(1), sql.getBindings());
     }
 

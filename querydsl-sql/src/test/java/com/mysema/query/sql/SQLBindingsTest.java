@@ -19,7 +19,7 @@ public class SQLBindingsTest {
     @Test
     public void Empty() {
         SQLBindings bindings = query.getSQL();
-        assertEquals("\nfrom dual", bindings.getSql());
+        assertEquals("\nfrom dual", bindings.getSQL());
         assertTrue(bindings.getBindings().isEmpty());
     }
 
@@ -27,7 +27,7 @@ public class SQLBindingsTest {
     public void SingleArg() {
         query.from(survey).where(survey.name.eq("Bob"));
         SQLBindings bindings = query.getSQL(survey.id);
-        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ?", bindings.getSql());
+        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ?", bindings.getSQL());
         assertEquals(Arrays.asList("Bob"), bindings.getBindings());
     }
 
@@ -35,7 +35,7 @@ public class SQLBindingsTest {
     public void TwoArgs() {
         query.from(survey).where(survey.name.eq("Bob"), survey.name2.eq("A"));
         SQLBindings bindings = query.getSQL(survey.id);
-        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSql());
+        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSQL());
         assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
     }
 
@@ -45,7 +45,7 @@ public class SQLBindingsTest {
         query.from(survey).where(survey.name.eq(name), survey.name2.eq("A"));
         query.set(name, "Bob");
         SQLBindings bindings = query.getSQL(survey.id);
-        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSql());
+        assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSQL());
         assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
     }
 }

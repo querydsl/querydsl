@@ -18,7 +18,7 @@ public class SQLUpdateClauseTest {
         update.set(emp1.id, 1);
 
         SQLBindings sql = update.getSQL().get(0);
-        assertEquals("update EMPLOYEE\nset SUPERIOR_ID = ?", sql.getSql());
+        assertEquals("update EMPLOYEE\nset SUPERIOR_ID = ?", sql.getSQL());
         assertEquals(ImmutableList.of(1), sql.getBindings());
     }
 

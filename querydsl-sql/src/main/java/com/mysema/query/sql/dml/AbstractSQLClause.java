@@ -16,6 +16,7 @@ package com.mysema.query.sql.dml;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +126,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         }
     }
 
-    protected void close(PreparedStatement stmt) {
+    protected void close(Statement stmt) {
         try {
             stmt.close();
         } catch (SQLException e) {
