@@ -59,9 +59,9 @@ public class JDBCTypeMappingTest {
 
     @Test
     public void NumericTypes() {
-//        19-...,0   -> Long
-//        6-18,0     -> Integer
-//        3-5,0      -> Short
+//        10-...,0   -> Long
+//        5-9,0      -> Integer
+//        3-4,0      -> Short
 //        2,0        -> Byte
 //        0-1        -> Boolean
 
@@ -70,15 +70,25 @@ public class JDBCTypeMappingTest {
         assertEquals(typeMapping.get(Types.NUMERIC, 20, 0), Long.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 19, 0), Long.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 6, 0),  Integer.class);
-        assertEquals(typeMapping.get(Types.NUMERIC, 5, 0),  Short.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 5, 0),  Integer.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 4, 0),  Short.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 3, 0),  Short.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 2, 0),  Byte.class);
-        assertEquals(typeMapping.get(Types.NUMERIC, 1, 0),  Boolean.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 1, 0),  Byte.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 0, 0),  Long.class);
 
         assertEquals(typeMapping.get(Types.NUMERIC, 17, 2), BigDecimal.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 5, 2),  Double.class);
+    }
+
+
+    @Test
+    public void Max() {
+        System.err.println("Byte: " + String.valueOf(Byte.MAX_VALUE).length());
+        System.err.println("Short: " + String.valueOf(Short.MAX_VALUE).length());
+        System.err.println("Integer: " + String.valueOf(Integer.MAX_VALUE).length());
+        System.err.println("Long: " + String.valueOf(Integer.MAX_VALUE).length());
+
     }
 
     @Test

@@ -116,13 +116,13 @@ public final class JDBCTypeMapping {
         if (numericTypes.containsKey(key)) {
             return numericTypes.get(key);
         } else if (digits <= 0) {
-            if (size > 18 || size == 0) {
+            if (size > 9 || size == 0) {
                 return Long.class;
-            } else if (size > 5) {
+            } else if (size > 4) {
                 return Integer.class;
             } else if (size > 2) {
                 return Short.class;
-            } else if (size > 1) {
+            } else if (size > 0) {
                 return Byte.class;
             } else {
                 return Boolean.class;
