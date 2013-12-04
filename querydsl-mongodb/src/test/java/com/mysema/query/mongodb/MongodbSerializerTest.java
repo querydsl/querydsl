@@ -133,7 +133,6 @@ public class MongodbSerializerTest {
 
     @Test
     public void LessAndGreaterAndBetween() {
-
         assertQuery(title.lt("A"), dbo("title", dbo("$lt", "A")));
         assertQuery(year.gt(1), dbo("year", dbo("$gt", 1)));
 
