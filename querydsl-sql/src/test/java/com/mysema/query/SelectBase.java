@@ -1180,6 +1180,20 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn(TERADATA)
+    public void SetQueryBand_ForSession() {
+        setQueryBand().set("a", "bb").forSession().execute();
+        query().from(survey).list(survey.id);
+    }
+
+    @Test
+    @IncludeIn(TERADATA)
+    public void SetQueryBand_ForTransaction() {
+        setQueryBand().set("a", "bb").forTransaction().execute();
+        query().from(survey).list(survey.id);
+    }
+
+    @Test
     public void Single() {
         assertNotNull(query().from(survey).singleResult(survey.name));
     }

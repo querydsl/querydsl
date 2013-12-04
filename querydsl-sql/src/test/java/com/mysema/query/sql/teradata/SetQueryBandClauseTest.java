@@ -10,18 +10,29 @@ import com.mysema.query.sql.SQLTemplates;
 
 public class SetQueryBandClauseTest {
 
+    private Configuration conf;
+
     private SetQueryBandClause clause;
 
     @Before
     public void setUp() {
-        Configuration conf = new Configuration(SQLTemplates.DEFAULT);
+        conf = new Configuration(SQLTemplates.DEFAULT);
+        conf.setUseLiterals(true);
         clause = new SetQueryBandClause(null, conf);
     }
 
     @Test
     public void ToString() {
         clause.set("a", "b");
-        assertEquals("set query band = 'a=b;' for session", clause.toString());
+        assertEquals("set query_band='a=b;' for session", clause.toString());
+    }
+
+    @Test
+    public void ToString2() {
+        conf.setUseLiterals(false);
+        clause.set("a", "b");
+        clause.forTransaction();
+        assertEquals("set query_band=? for transaction", clause.toString());
     }
 
     @Test
@@ -29,7 +40,7 @@ public class SetQueryBandClauseTest {
         clause.forTransaction();
         clause.set("a", "b");
         clause.set("b", "c");
-        assertEquals("set query band = 'b=c;a=b;' for transaction", clause.toString());
+        assertEquals("set query_band='b=c;a=b;' for transaction", clause.toString());
     }
 
     @Test
@@ -37,7 +48,7 @@ public class SetQueryBandClauseTest {
         clause.forTransaction();
         clause.set("a", "b");
         clause.set("b", "c");
-        assertEquals("set query band = 'b=c;a=b;' for transaction", clause.getSQL().get(0).getSQL());
+        assertEquals("set query_band='b=c;a=b;' for transaction", clause.getSQL().get(0).getSQL());
     }
 
 }

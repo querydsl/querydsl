@@ -38,6 +38,7 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLQuery;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.oracle.OracleQuery;
+import com.mysema.query.sql.teradata.SetQueryBandClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
 
 public abstract class AbstractBaseTest {
@@ -104,6 +105,10 @@ public abstract class AbstractBaseTest {
 
     protected SQLMergeClause merge(RelationalPath<?> e) {
         return new SQLMergeClause(connection, configuration, e);
+    }
+
+    protected SetQueryBandClause setQueryBand() {
+        return new SetQueryBandClause(connection, configuration);
     }
 
     protected ExtendedSQLQuery extQuery() {
