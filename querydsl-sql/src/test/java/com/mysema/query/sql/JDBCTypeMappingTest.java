@@ -60,11 +60,11 @@ public class JDBCTypeMappingTest {
     @Test
     public void NumericTypes() {
 //        19,0       -> BigInteger
-//        10-18      -> Long
+//        10-18,0    -> Long
 //        5-9,0      -> Integer
 //        3-4,0      -> Short
 //        2,0        -> Byte
-//        0-1        -> Boolean
+//        0-1,0      -> Boolean
 
 //        17-...,?   -> BigDecimal
 //        0-16,?     -> Double
