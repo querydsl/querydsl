@@ -17,6 +17,7 @@ import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -797,7 +798,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink
-    @ExcludeIn(ORACLE)
+    @ExcludeIn({ORACLE, TERADATA})
     public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = QBookMark.bookMark;
@@ -1145,7 +1146,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn(MYSQL)
+    @ExcludeIn({MYSQL, TERADATA})
     @NoOpenJPA
     public void StringOperations() {
         // NOTE : locate in MYSQL is case-insensitive
