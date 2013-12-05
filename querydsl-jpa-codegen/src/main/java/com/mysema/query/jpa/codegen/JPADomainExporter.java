@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Temporal;
 import javax.persistence.metamodel.Attribute;
@@ -33,7 +32,6 @@ import javax.xml.stream.XMLStreamException;
 import org.hibernate.MappingException;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
@@ -41,7 +39,6 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.Supertype;
 
 /**
  * JPADomainExporter exports JPA 2 metamodels to Querydsl expression types
@@ -171,18 +168,6 @@ public class JPADomainExporter extends AbstractDomainExporter {
             }
         }
 
-        // go through supertypes
-        Set<Supertype> additions = Sets.newHashSet();
-        for (Map.Entry<String, EntityType> entry : allTypes.entrySet()) {
-            EntityType entityType = entry.getValue();
-            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getFullName())) {
-                additions.add(entityType.getSuperType());
-            }
-        }
-
-        for (Supertype type : additions) {
-            type.setEntityType(createEntityType(type.getType(), this.superTypes));
-        }
     }
 
     private void handleProperty(EntityType entityType, Class<?> cl, Attribute<?,?> p)

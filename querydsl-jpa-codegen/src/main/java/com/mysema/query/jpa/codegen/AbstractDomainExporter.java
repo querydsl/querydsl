@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Type;
@@ -72,15 +73,15 @@ public abstract class AbstractDomainExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
 
-    protected final File targetFolder;
+    private final File targetFolder;
 
-    protected final Map<String, EntityType> allTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> allTypes = Maps.newHashMap();
 
-    protected final Map<String, EntityType> entityTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> entityTypes = Maps.newHashMap();
 
-    protected final Map<String, EntityType> embeddableTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
 
-    protected final Map<String, EntityType> superTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
 
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
@@ -88,9 +89,9 @@ public abstract class AbstractDomainExporter {
     protected final TypeFactory typeFactory = new TypeFactory(Arrays.<Class<? extends Annotation>>asList(Entity.class,
             javax.persistence.MappedSuperclass.class, Embeddable.class));
 
-    protected final QueryTypeFactory queryTypeFactory;
+    private final QueryTypeFactory queryTypeFactory;
 
-    protected final TypeMappings typeMappings;
+    private final TypeMappings typeMappings;
 
     private final Serializer embeddableSerializer;
 
@@ -141,6 +142,19 @@ public abstract class AbstractDomainExporter {
             throw new QueryException(e);
         }
 
+        // go through supertypes
+        Set<Supertype> additions = Sets.newHashSet();
+        for (Map.Entry<Class<?>, EntityType> entry : allTypes.entrySet()) {
+            EntityType entityType = entry.getValue();
+            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getFullName())) {
+                additions.add(entityType.getSuperType());
+            }
+        }
+
+        for (Supertype type : additions) {
+            type.setEntityType(createEntityType(type.getType(), this.superTypes));
+        }
+
         // merge supertype fields into subtypes
         Set<EntityType> handled = new HashSet<EntityType>();
         for (EntityType type : superTypes.values()) {
@@ -159,11 +173,11 @@ public abstract class AbstractDomainExporter {
         serialize(entityTypes, entitySerializer);
     }
 
-    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes,
+    private void addSupertypeFields(EntityType model, Map<Class<?>, EntityType> superTypes,
             Set<EntityType> handled) {
         if (handled.add(model)) {
             for (Supertype supertype : model.getSuperTypes()) {
-                EntityType entityType = superTypes.get(supertype.getType().getFullName());
+                EntityType entityType = superTypes.get(supertype.getType().getJavaClass());
                 if (entityType != null) {
                     addSupertypeFields(entityType, superTypes, handled);
                     supertype.setEntityType(entityType);
@@ -187,17 +201,17 @@ public abstract class AbstractDomainExporter {
         return createEntityType(cl, entityTypes);
     }
 
-    private EntityType createEntityType(Class<?> cl,  Map<String,EntityType> types) {
-        if (allTypes.containsKey(cl.getName())) {
-            return allTypes.get(cl.getName());
+    private EntityType createEntityType(Class<?> cl,  Map<Class<?>, EntityType> types) {
+        if (allTypes.containsKey(cl)) {
+            return allTypes.get(cl);
         } else {
             EntityType type = typeFactory.getEntityType(cl);
             typeMappings.register(type, queryTypeFactory.create(type));
             if (!cl.getSuperclass().equals(Object.class)) {
                 type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
-            types.put(cl.getName(), type);
-            allTypes.put(cl.getName(), type);
+            types.put(cl, type);
+            allTypes.put(cl, type);
             return type;
         }
     }
@@ -206,20 +220,19 @@ public abstract class AbstractDomainExporter {
         return createEntityType(type, entityTypes);
     }
 
-    protected EntityType createEntityType(Type type,  Map<String,EntityType> types) {
-        String rawName = type.getFullName();
-        if (allTypes.containsKey(rawName)) {
-            return allTypes.get(rawName);
+    protected EntityType createEntityType(Type type,  Map<Class<?>, EntityType> types) {
+        Class<?> key = type.getJavaClass();
+        if (allTypes.containsKey(key)) {
+            return allTypes.get(key);
         } else {
             EntityType entityType = new EntityType(type);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
-            Class<?> superClass = type.getJavaClass().getSuperclass();
+            Class<?> superClass = key.getSuperclass();
             if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {
-                entityType.addSupertype(new Supertype(typeFactory.get(superClass,
-                        type.getJavaClass().getGenericSuperclass())));
+                entityType.addSupertype(new Supertype(typeFactory.get(superClass, key.getGenericSuperclass())));
             }
-            types.put(rawName, entityType);
-            allTypes.put(rawName, entityType);
+            types.put(key, entityType);
+            allTypes.put(key, entityType);
             return entityType;
         }
     }
@@ -285,7 +298,7 @@ public abstract class AbstractDomainExporter {
         }
     }
 
-    private void serialize(Map<String,EntityType> types, Serializer serializer) throws IOException {
+    private void serialize(Map<Class<?>, EntityType> types, Serializer serializer) throws IOException {
         for (EntityType entityType : types.values()) {
             if (serialized.add(entityType)) {
                 Type type = typeMappings.getPathType(entityType, entityType, true);
