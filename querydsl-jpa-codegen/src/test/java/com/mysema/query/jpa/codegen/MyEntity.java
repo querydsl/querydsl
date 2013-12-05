@@ -29,5 +29,5 @@ public class MyEntity {
         this.prop1 = prop1;
     }
 
-    
+
 }
