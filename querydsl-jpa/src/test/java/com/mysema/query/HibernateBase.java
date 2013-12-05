@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.hibernate.LockMode;
 import org.hibernate.Session;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
@@ -44,23 +45,31 @@ import com.mysema.testutil.HibernateTestRunner;
  */
 @RunWith(HibernateTestRunner.class)
 public class HibernateBase extends AbstractJPATest {
-    
+
     private static final QCat cat = QCat.cat;
-    
+
     @Rule
     public static MethodRule jpaProviderRule = new JPAProviderRule();
-    
+
     @Rule
     public static MethodRule targetRule = new TargetRule();
-    
+
     private Session session;
 
+    @After
+    public void tearDown() {
+        session.flush();
+        session.clear();
+    }
+
+    @Override
     protected HibernateQuery query() {
         return new HibernateQuery(session, getTemplates());
     }
-    
+
+    @Override
     protected HibernateQuery testQuery() {
-        return new HibernateQuery(new DefaultSessionHolder(session), 
+        return new HibernateQuery(new DefaultSessionHolder(session),
                 getTemplates(), new DefaultQueryMetadata().noValidate());
     }
 
@@ -84,7 +93,7 @@ public class HibernateBase extends AbstractJPATest {
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
-    
+
     @Test
     public void WithComment() {
         query().from(cat).setComment("my comment").list(cat);
@@ -94,7 +103,7 @@ public class HibernateBase extends AbstractJPATest {
     public void LockMode() {
         query().from(cat).setLockMode(cat, LockMode.PESSIMISTIC_WRITE).list(cat);
     }
-    
+
     @Test
     public void FlushMode() {
         query().from(cat).setFlushMode(org.hibernate.FlushMode.AUTO).list(cat);
@@ -125,6 +134,6 @@ public class HibernateBase extends AbstractJPATest {
         }
         rows.close();
     }
-    
+
 
 }

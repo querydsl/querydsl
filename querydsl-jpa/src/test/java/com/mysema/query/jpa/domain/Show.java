@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 
 /**
@@ -31,6 +32,7 @@ public class Show {
     long id;
 
     @ElementCollection
+    @MapKeyColumn(name="acts_key")
     public Map<String, String> acts;
 
     public Show() {}
