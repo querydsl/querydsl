@@ -123,7 +123,17 @@ public class MongodbQueryTest {
 
     @Test
     public void Contains() {
-        assertQuery(user.friends.contains(u1), u2, u3, u4);
+        assertQuery(user.friends.contains(u1), u3, u4, u2);
+    }
+
+    @Test
+    public void Contains2() {
+        assertQuery(user.friends.contains(u4));
+    }
+
+    @Test
+    public void NotContains() {
+        assertQuery(user.friends.contains(u1).not(), u1);
     }
 
     @Test
@@ -311,6 +321,11 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void isEmpty2() {
+        assertQuery(user.friends.isEmpty(), u1);
+    }
+
+    @Test
     public void Not() {
         assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
         assertQuery(user.firstName.ne("Jaakko").not(), u1);
@@ -352,7 +367,7 @@ public class MongodbQueryTest {
 
     @Test
     public void UniqueResultAndLimitAndOffset() {
-        MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
+        MorphiaQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
         assertEquals(4, q.list().size());
         assertEquals(u1, q.list().get(0));
     }
@@ -427,7 +442,7 @@ public class MongodbQueryTest {
 
     @Test
     public void ReadPreference() {
-        MongodbQuery<User> query = query();
+        MorphiaQuery<User> query = query();
         query.setReadPreference(ReadPreference.primary());
         assertEquals(4, query.count());
 
@@ -446,23 +461,23 @@ public class MongodbQueryTest {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
 
-    private <T> MongodbQuery<T> where(EntityPath<T> entity, Predicate... e) {
+    private <T> MorphiaQuery<T> where(EntityPath<T> entity, Predicate... e) {
         return new MorphiaQuery<T>(morphia, ds, entity).where(e);
     }
 
-    private MongodbQuery<User> where(Predicate ... e) {
+    private MorphiaQuery<User> where(Predicate ... e) {
         return query().where(e);
     }
 
-    private MongodbQuery<User> query() {
+    private MorphiaQuery<User> query() {
         return new MorphiaQuery<User>(morphia, ds, user);
     }
 
-    private <T> MongodbQuery<T> query(EntityPath<T> path) {
+    private <T> MorphiaQuery<T> query(EntityPath<T> path) {
         return new MorphiaQuery<T>(morphia, ds, path);
     }
 
-    private void assertQuery(MongodbQuery<User> query, User ... expected ) {
+    private void assertQuery(MorphiaQuery<User> query, User ... expected ) {
         //System.out.println(query.toString());
         List<User> results = query.list();
 

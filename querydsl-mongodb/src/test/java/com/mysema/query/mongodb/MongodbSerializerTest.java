@@ -54,7 +54,7 @@ public class MongodbSerializerTest {
     private DateTimePath<Timestamp> dateTime;
     private final Timestamp dateTimeVal = new Timestamp(System.currentTimeMillis());
 
-    private MongodbSerializer serializer;
+    private MongodbSerializer<?> serializer;
 
     @Before
     public void before() {
@@ -159,13 +159,13 @@ public class MongodbSerializerTest {
 
     @Test
     public void OrderBy() {
-        DBObject orderBy = serializer.toSort(sortList(year.asc()));
+        DBObject orderBy = serializer.toSort(sortList(year.asc()), null);
         assertEquals(dbo("year", 1), orderBy);
 
-        orderBy = serializer.toSort(sortList(year.desc()));
+        orderBy = serializer.toSort(sortList(year.desc()), null);
         assertEquals(dbo("year", -1), orderBy);
 
-        orderBy = serializer.toSort(sortList(year.desc(), title.asc()));
+        orderBy = serializer.toSort(sortList(year.desc(), title.asc()), null);
         assertEquals(dbo("year", -1).append("title", 1), orderBy);
     }
 
@@ -220,7 +220,7 @@ public class MongodbSerializerTest {
     }
 
     private void assertQuery(Expression<?> e, BasicDBObject expected) {
-        BasicDBObject result = (BasicDBObject) serializer.handle(e);
+        BasicDBObject result = (BasicDBObject) serializer.handle(e, null);
         assertEquals(expected.toString(), result.toString());
     }
 

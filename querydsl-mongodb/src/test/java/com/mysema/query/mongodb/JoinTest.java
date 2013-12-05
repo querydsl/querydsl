@@ -145,11 +145,11 @@ public class JoinTest {
                 .singleResult().getFirstName());
     }
 
-    private MongodbQuery<User> query() {
+    private MorphiaQuery<User> query() {
         return new MorphiaQuery<User>(morphia, ds, user);
     }
 
-    private MongodbQuery<User> where(Predicate ... e) {
+    private MorphiaQuery<User> where(Predicate ... e) {
         return query().where(e);
     }
 }

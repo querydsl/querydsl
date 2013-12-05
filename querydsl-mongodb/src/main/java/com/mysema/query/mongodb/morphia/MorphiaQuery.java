@@ -32,7 +32,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public final class MorphiaQuery<K> extends MongodbQuery<K> {
+public final class MorphiaQuery<K> extends MongodbQuery<K, Morphia, MorphiaQuery<K>> {
 
     private final EntityCache cache;
 
@@ -49,7 +49,7 @@ public final class MorphiaQuery<K> extends MongodbQuery<K> {
             public K apply(DBObject dbObject) {
                 return morphia.fromDBObject(entityPath.getType(), dbObject, cache);
             }
-        }, MorphiaSerializer.DEFAULT);
+        }, MorphiaSerializer.DEFAULT, morphia);
         this.datastore = datastore;
         this.cache = cache;
     }
