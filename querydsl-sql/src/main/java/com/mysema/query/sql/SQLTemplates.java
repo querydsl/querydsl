@@ -183,6 +183,8 @@ public class SQLTemplates extends Templates {
 
     private boolean limitRequired = false;
 
+    private boolean countDistinctMultipleColumns = false;
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -479,16 +481,20 @@ public class SQLTemplates extends Templates {
         return createTable;
     }
 
-    public final boolean isPrintSchema() {
-        return printSchema;
-    }
-
     public final String getWith() {
         return with;
     }
 
     public final String getWithRecursive() {
         return withRecursive;
+    }
+
+    public final boolean isCountDistinctMultipleColumns() {
+        return countDistinctMultipleColumns;
+    }
+
+    public final boolean isPrintSchema() {
+        return printSchema;
     }
 
     public final boolean isParameterMetadataAvailable() {
@@ -773,6 +779,8 @@ public class SQLTemplates extends Templates {
         this.limitRequired = limitRequired;
     }
 
-
+    protected void setCountDistinctMultipleColumns(boolean countDistinctMultipleColumns) {
+        this.countDistinctMultipleColumns = countDistinctMultipleColumns;
+    }
 
 }

@@ -62,6 +62,7 @@ import com.mysema.query.sql.WindowOver;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
@@ -372,6 +373,22 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    public void Count_With_PK() {
+        query().from(employee).count();
+    }
+
+    @Test
+    public void Count_Without_PK() {
+        query().from(QEmployeeNoPK.employee).count();
+    }
+
+    @Test
+    @Ignore // FIXME
+    public void Count2() {
+        query().from(employee).singleResult(employee.count());
+    }
+
+    @Test
     @SkipForQuoted
     @ExcludeIn(ORACLE)
     public void Count_All() {
@@ -387,6 +404,22 @@ public class SelectBase extends AbstractBaseTest{
         expectedQuery = "select count(*) rc from EMPLOYEE e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rc");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
+    }
+
+    @Test
+    public void Count_Distinct_With_PK() {
+        query().from(employee).distinct().count();
+    }
+
+    @Test
+    public void Count_Distinct_Without_PK() {
+        query().from(QEmployeeNoPK.employee).distinct().count();
+    }
+
+    @Test
+    @Ignore // FIXME
+    public void Count_Distinct2() {
+        query().from(employee).singleResult(employee.countDistinct());
     }
 
     @Test

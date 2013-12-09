@@ -166,6 +166,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
+        String suffix = null;
 
         List<Expression<?>> sqlSelect;
         if (select.size() == 1) {
@@ -231,13 +232,29 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (!metadata.isDistinct()) {
                 append(templates.getCountStar());
             } else {
-                append(templates.getDistinctCountStart());
+                List<? extends Expression<?>> columns;
                 if (sqlSelect.isEmpty()) {
-                    handle(COMMA, getIdentifierColumns(joins));
+                    columns = getIdentifierColumns(joins);
                 } else {
-                    handle(COMMA, sqlSelect);
+                    columns = sqlSelect;
                 }
-                append(templates.getDistinctCountEnd());
+                if (columns.size() == 1) {
+                    append(templates.getDistinctCountStart());
+                    handle(columns.get(0));
+                    append(templates.getDistinctCountEnd());
+                } else if (templates.isCountDistinctMultipleColumns()) {
+                    append(templates.getDistinctCountStart());
+                    append("(").handle(COMMA, columns).append(")");
+                    append(templates.getDistinctCountEnd());
+                } else {
+                    // select count(*) from (select distinct ...)
+                    append(templates.getCountStar());
+                    append(templates.getFrom());
+                    append("(");
+                    append(templates.getSelectDistinct());
+                    handle(COMMA, columns);
+                    suffix = ") internal";
+                }
             }
 
         } else if (!sqlSelect.isEmpty()) {
@@ -349,6 +366,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
             stage = Stage.MODIFIERS;
             templates.serializeModifiers(metadata, this);
+        }
+
+        if (suffix != null) {
+            append(suffix);
         }
 
         // reset stage

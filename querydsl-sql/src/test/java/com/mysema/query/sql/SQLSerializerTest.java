@@ -26,6 +26,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.Survey;
 import com.mysema.query.Tuple;
 import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
@@ -44,6 +45,33 @@ public class SQLSerializerTest {
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(employee.id.count().add(employee.id.countDistinct()));
         assertEquals("count(EMPLOYEE.ID) + count(distinct EMPLOYEE.ID)", serializer.toString());
+    }
+
+    @Test
+    public void CountDistinct() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        SQLSubQuery query = new SQLSubQuery();
+        query.from(QEmployeeNoPK.employee);
+        query.distinct();
+        serializer.serializeForQuery(query.queryMixin.getMetadata(), true);
+        assertEquals("select count(*)\n" +
+        "from (select distinct EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, " +
+            "EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID\n" +
+         "from EMPLOYEE EMPLOYEE) internal", serializer.toString());
+    }
+
+    @Test
+    public void CountDistinct_PostgreSQL() {
+        Configuration postgres = new Configuration(new PostgresTemplates());
+        SQLSerializer serializer = new SQLSerializer(postgres);
+        SQLSubQuery query = new SQLSubQuery();
+        query.from(QEmployeeNoPK.employee);
+        query.distinct();
+        serializer.serializeForQuery(query.queryMixin.getMetadata(), true);
+        assertEquals("select count(" +
+            "distinct (EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, " +
+            "EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID))\n" +
+            "from EMPLOYEE EMPLOYEE", serializer.toString());
     }
 
     @Test
