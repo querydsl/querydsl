@@ -53,7 +53,7 @@ public class HQLTemplates extends JPQLTemplates {
             Ops.QuantOps.AVG_IN_COL,
             Ops.EXISTS);
 
-    public static final JPQLTemplates DEFAULT = new HQLTemplates();
+    public static final HQLTemplates DEFAULT = new HQLTemplates();
 
     private final Map<Class<?>, String> typeNames;
 
