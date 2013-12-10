@@ -60,8 +60,8 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
         }
 
         @Override
-        public <RT> Expression<RT> convert(Expression<RT> expr) {
-            return super.convert(Conversions.convertForNativeQuery(expr));
+        public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
+            return super.convert(Conversions.convertForNativeQuery(expr), forOrder);
         }
     }
 
