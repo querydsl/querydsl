@@ -54,11 +54,11 @@ public class MongodbSerializerTest {
     private DateTimePath<Timestamp> dateTime;
     private final Timestamp dateTimeVal = new Timestamp(System.currentTimeMillis());
 
-    private MongodbSerializer<?> serializer;
+    private MongodbSerializer serializer;
 
     @Before
     public void before() {
-        serializer = new MorphiaSerializer();
+        serializer = new MorphiaSerializer(null);
         entityPath = new PathBuilder<Object>(Object.class, "obj");
         title = entityPath.getString("title");
         year = entityPath.getNumber("year", Integer.class);
@@ -159,13 +159,13 @@ public class MongodbSerializerTest {
 
     @Test
     public void OrderBy() {
-        DBObject orderBy = serializer.toSort(sortList(year.asc()), null);
+        DBObject orderBy = serializer.toSort(sortList(year.asc()));
         assertEquals(dbo("year", 1), orderBy);
 
-        orderBy = serializer.toSort(sortList(year.desc()), null);
+        orderBy = serializer.toSort(sortList(year.desc()));
         assertEquals(dbo("year", -1), orderBy);
 
-        orderBy = serializer.toSort(sortList(year.desc(), title.asc()), null);
+        orderBy = serializer.toSort(sortList(year.desc(), title.asc()));
         assertEquals(dbo("year", -1).append("title", 1), orderBy);
     }
 
@@ -220,7 +220,7 @@ public class MongodbSerializerTest {
     }
 
     private void assertQuery(Expression<?> e, BasicDBObject expected) {
-        BasicDBObject result = (BasicDBObject) serializer.handle(e, null);
+        BasicDBObject result = (BasicDBObject) serializer.handle(e);
         assertEquals(expected.toString(), result.toString());
     }
 

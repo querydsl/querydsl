@@ -30,28 +30,32 @@ import com.mysema.query.types.PathType;
  * @author tiwe
  *
  */
-public class MorphiaSerializer extends MongodbSerializer<Morphia> {
+public class MorphiaSerializer extends MongodbSerializer {
 
-    public static final MorphiaSerializer DEFAULT = new MorphiaSerializer();
+    private final Morphia morphia;
+
+    public MorphiaSerializer(Morphia morphia) {
+        this.morphia = morphia;
+    }
 
     @Override
-    protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata, Morphia context) {
+    protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
         if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
             return expr.getAnnotatedElement().getAnnotation(Property.class).value();
         } else {
-            return super.getKeyForPath(expr, metadata, context);
+            return super.getKeyForPath(expr, metadata);
         }
     }
 
     @Override
-    protected boolean isReference(Path<?> arg, Morphia context) {
+    protected boolean isReference(Path<?> arg) {
         return arg.getAnnotatedElement().getAnnotation(Reference.class) != null;
     }
 
     @Override
-    protected DBRef asReference(Object constant, Morphia context) {
-        Key<?> key = context.getMapper().getKey(constant);
-        return context.getMapper().keyToRef(key);
+    protected DBRef asReference(Object constant) {
+        Key<?> key = morphia.getMapper().getKey(constant);
+        return morphia.getMapper().keyToRef(key);
     }
 
 }

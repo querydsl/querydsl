@@ -49,23 +49,23 @@ import com.mysema.query.types.Visitor;
  * @author laimw
  *
  */
-public abstract class MongodbSerializer<Context> implements Visitor<Object, Context> {
+public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
-    public Object handle(Expression<?> expression, Context context) {
-        return expression.accept(this, context);
+    public Object handle(Expression<?> expression) {
+        return expression.accept(this, null);
     }
 
-    public DBObject toSort(List<OrderSpecifier<?>> orderBys, Context context) {
+    public DBObject toSort(List<OrderSpecifier<?>> orderBys) {
         BasicDBObject sort = new BasicDBObject();
         for (OrderSpecifier<?> orderBy : orderBys) {
-            Object key = orderBy.getTarget().accept(this, context);
+            Object key = orderBy.getTarget().accept(this, null);
             sort.append(key.toString(), orderBy.getOrder() == Order.ASC ? 1 : -1);
         }
         return sort;
     }
 
     @Override
-    public Object visit(Constant<?> expr, Context context) {
+    public Object visit(Constant<?> expr, Void context) {
         if (Enum.class.isAssignableFrom(expr.getType())) {
             return ((Enum<?>)expr.getConstant()).name();
         } else {
@@ -74,25 +74,25 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
     }
 
     @Override
-    public Object visit(TemplateExpression<?> expr, Context context) {
+    public Object visit(TemplateExpression<?> expr, Void context) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object visit(FactoryExpression<?> expr, Context context) {
+    public Object visit(FactoryExpression<?> expr, Void context) {
         throw new UnsupportedOperationException();
     }
 
-    private String asDBKey(Operation<?> expr, int index, Context context) {
-        return (String) asDBValue(expr, index, context);
+    private String asDBKey(Operation<?> expr, int index) {
+        return (String) asDBValue(expr, index);
     }
 
-    private Object asDBValue(Operation<?> expr, int index, Context context) {
-        return expr.getArg(index).accept(this, context);
+    private Object asDBValue(Operation<?> expr, int index) {
+        return expr.getArg(index).accept(this, null);
     }
 
-    private String regexValue(Operation<?> expr, int index, Context context) {
-        return Pattern.quote(expr.getArg(index).accept(this, context).toString());
+    private String regexValue(Operation<?> expr, int index) {
+        return Pattern.quote(expr.getArg(index).accept(this, null).toString());
     }
 
     protected DBObject asDBObject(String key, Object value) {
@@ -100,39 +100,39 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
     }
 
     @Override
-    public Object visit(Operation<?> expr, Context context) {
+    public Object visit(Operation<?> expr, Void context) {
         Operator<?> op = expr.getOperator();
         if (op == Ops.EQ) {
             if (expr.getArg(0) instanceof Operation) {
                 Operation<?> lhs = (Operation<?>)expr.getArg(0);
                 if (lhs.getOperator() == Ops.COL_SIZE || lhs.getOperator() == Ops.ARRAY_SIZE) {
-                    return asDBObject(asDBKey(lhs, 0, context), asDBObject("$size", asDBValue(expr, 1, context)));
+                    return asDBObject(asDBKey(lhs, 0), asDBObject("$size", asDBValue(expr, 1)));
                 } else {
                     throw new UnsupportedOperationException("Illegal operation " + expr);
                 }
             } else {
-                return asDBObject(asDBKey(expr, 0, context), asDBValue(expr, 1, context));
+                return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
             }
 
         } else if (op == Ops.STRING_IS_EMPTY) {
-            return asDBObject(asDBKey(expr, 0, context), "");
+            return asDBObject(asDBKey(expr, 0), "");
 
         } else if (op == Ops.AND) {
-            BSONObject lhs = (BSONObject) handle(expr.getArg(0), context);
-            BSONObject rhs = (BSONObject) handle(expr.getArg(1), context);
+            BSONObject lhs = (BSONObject) handle(expr.getArg(0));
+            BSONObject rhs = (BSONObject) handle(expr.getArg(1));
             if (Sets.intersection(lhs.keySet(), rhs.keySet()).isEmpty()) {
                 lhs.putAll(rhs);
                 return lhs;
             } else {
                 BasicDBList list = new BasicDBList();
-                list.add(handle(expr.getArg(0), context));
-                list.add(handle(expr.getArg(1), context));
+                list.add(handle(expr.getArg(0)));
+                list.add(handle(expr.getArg(1)));
                 return asDBObject("$and", list);
             }
 
         } else if (op == Ops.NOT) {
             //Handle the not's child
-            BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0), context);
+            BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
 
             //Only support the first key, let's see if there
             //is cases where this will get broken
@@ -150,53 +150,53 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
 
         } else if (op == Ops.OR) {
             BasicDBList list = new BasicDBList();
-            list.add(handle(expr.getArg(0), context));
-            list.add(handle(expr.getArg(1), context));
+            list.add(handle(expr.getArg(0)));
+            list.add(handle(expr.getArg(1)));
             return asDBObject("$or", list);
 
         } else if (op == Ops.NE) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$ne", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
 
         } else if (op == Ops.STARTS_WITH) {
-            return asDBObject(asDBKey(expr, 0, context),
-                    Pattern.compile("^" + regexValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0),
+                    Pattern.compile("^" + regexValue(expr, 1)));
 
         } else if (op == Ops.STARTS_WITH_IC) {
-            return asDBObject(asDBKey(expr, 0, context),
-                    Pattern.compile("^" + regexValue(expr, 1, context), Pattern.CASE_INSENSITIVE));
+            return asDBObject(asDBKey(expr, 0),
+                    Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.ENDS_WITH) {
-            return asDBObject(asDBKey(expr, 0, context), Pattern.compile(regexValue(expr, 1, context) + "$"));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
 
         } else if (op == Ops.ENDS_WITH_IC) {
-            return asDBObject(asDBKey(expr, 0, context),
-                    Pattern.compile(regexValue(expr, 1, context) + "$", Pattern.CASE_INSENSITIVE));
+            return asDBObject(asDBKey(expr, 0),
+                    Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.EQ_IGNORE_CASE) {
-            return asDBObject(asDBKey(expr, 0, context),
-                    Pattern.compile("^" + regexValue(expr, 1, context) + "$", Pattern.CASE_INSENSITIVE));
+            return asDBObject(asDBKey(expr, 0),
+                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.STRING_CONTAINS) {
-            return asDBObject(asDBKey(expr, 0, context), Pattern.compile(".*" + regexValue(expr, 1, context) + ".*"));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
 
         } else if (op == Ops.STRING_CONTAINS_IC) {
-            return asDBObject(asDBKey(expr, 0, context),
-                    Pattern.compile(".*" + regexValue(expr, 1, context) + ".*", Pattern.CASE_INSENSITIVE));
+            return asDBObject(asDBKey(expr, 0),
+                    Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.MATCHES) {
-            return asDBObject(asDBKey(expr, 0, context), Pattern.compile(asDBValue(expr, 1, context).toString()));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
 
         } else if (op == Ops.MATCHES_IC) {
-            return asDBObject(asDBKey(expr, 0, context), Pattern.compile(asDBValue(expr, 1, context).toString(), Pattern.CASE_INSENSITIVE));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.LIKE) {
             String regex = ExpressionUtils.likeToRegex((Expression)expr.getArg(1)).toString();
-            return asDBObject(asDBKey(expr, 0, context), Pattern.compile(regex));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(regex));
 
         } else if (op == Ops.BETWEEN) {
-            BasicDBObject value = new BasicDBObject("$gte", asDBValue(expr, 1, context));
-            value.append("$lte", asDBValue(expr, 2, context));
-            return asDBObject(asDBKey(expr, 0, context), value);
+            BasicDBObject value = new BasicDBObject("$gte", asDBValue(expr, 1));
+            value.append("$lte", asDBValue(expr, 2));
+            return asDBObject(asDBKey(expr, 0), value);
 
         } else if (op == Ops.IN) {
             int constIndex = 0;
@@ -207,12 +207,12 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
             }
             if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
                 Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
-                return asDBObject(asDBKey(expr, exprIndex, context), asDBObject("$in", values.toArray()));
+                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));
             } else {
-                if (isReference(expr, exprIndex, context)) {
-                    return asDBObject(asDBKey(expr, exprIndex, context), asReference(expr, constIndex, context));
+                if (isReference(expr, exprIndex)) {
+                    return asDBObject(asDBKey(expr, exprIndex), asReference(expr, constIndex));
                 } else {
-                    return asDBObject(asDBKey(expr, exprIndex, context), asDBValue(expr, constIndex, context));
+                    return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
                 }
             }
 
@@ -225,40 +225,40 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
             }
             if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
                 Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
-                return asDBObject(asDBKey(expr, exprIndex, context), asDBObject("$nin", values.toArray()));
+                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$nin", values.toArray()));
             } else {
-                if (isReference(expr, exprIndex, context)) {
-                    return asDBObject(asDBKey(expr, exprIndex, context),
-                            asDBObject("$ne", asReference(expr, constIndex, context)));
+                if (isReference(expr, exprIndex)) {
+                    return asDBObject(asDBKey(expr, exprIndex),
+                            asDBObject("$ne", asReference(expr, constIndex)));
                 } else {
-                    return asDBObject(asDBKey(expr, exprIndex, context),
-                            asDBObject("$ne", asDBValue(expr, constIndex, context)));
+                    return asDBObject(asDBKey(expr, exprIndex),
+                            asDBObject("$ne", asDBValue(expr, constIndex)));
                 }
             }
 
         } else if (op == Ops.COL_IS_EMPTY) {
             BasicDBList list = new BasicDBList();
-            list.add(asDBObject(asDBKey(expr, 0, context), new BasicDBList()));
-            list.add(asDBObject(asDBKey(expr, 0, context), asDBObject("$exists", false)));
+            list.add(asDBObject(asDBKey(expr, 0), new BasicDBList()));
+            list.add(asDBObject(asDBKey(expr, 0), asDBObject("$exists", false)));
             return asDBObject("$or", list);
 
         } else if (op == Ops.LT) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$lt", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
 
         } else if (op == Ops.GT) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$gt", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$gt", asDBValue(expr, 1)));
 
         } else if (op == Ops.LOE) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$lte", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$lte", asDBValue(expr, 1)));
 
         } else if (op == Ops.GOE) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$gte", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
 
         } else if (op == Ops.IS_NULL) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$exists", false));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
 
         } else if (op == Ops.IS_NOT_NULL) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$exists", true));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
 
         } else if (op == Ops.CONTAINS_KEY) {
             Path<?> path = (Path<?>) expr.getArg(0);
@@ -266,47 +266,54 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
             return asDBObject(visit(path, context) + "." + key.toString(), asDBObject("$exists", true));
 
         } else if (op == MongodbOps.NEAR) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$near", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
 
         } else if (op == MongodbOps.ELEM_MATCH) {
-            return asDBObject(asDBKey(expr, 0, context), asDBObject("$elemMatch", asDBValue(expr, 1, context)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
 
-    protected DBRef asReference(Operation<?> expr, int constIndex, Context context) {
-        return asReference(((Constant<?>)expr.getArg(constIndex)).getConstant(), context);
+    protected DBRef asReference(Operation<?> expr, int constIndex) {
+        return asReference(((Constant<?>)expr.getArg(constIndex)).getConstant());
     }
 
-    protected abstract DBRef asReference(Object constant, Context context);
+    protected DBRef asReference(Object constant) {
+        // override in subclass
+        throw new UnsupportedOperationException();
+    }
 
-    protected boolean isReference(Operation<?> expr, int exprIndex, Context context) {
+    protected boolean isReference(Operation<?> expr, int exprIndex) {
         Expression<?> arg = expr.getArg(exprIndex);
         if (arg instanceof Path) {
-            return isReference((Path<?>) arg, context);
+            return isReference((Path<?>) arg);
         } else {
             return false;
         }
     }
 
-    protected abstract boolean isReference(Path<?> arg, Context context);
+    protected boolean isReference(Path<?> arg) {
+        // override in subclass
+        return false;
+    }
+
 
     @Override
-    public String visit(Path<?> expr, Context context) {
+    public String visit(Path<?> expr, Void context) {
         PathMetadata<?> metadata = expr.getMetadata();
         if (metadata.getParent() != null) {
             if (metadata.getPathType() == PathType.COLLECTION_ANY) {
                 return visit(metadata.getParent(), context);
             } else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE) {
-                String rv = getKeyForPath(expr, metadata, context);
+                String rv = getKeyForPath(expr, metadata);
                 return visit(metadata.getParent(), context) + "." + rv;
             }
         }
-        return getKeyForPath(expr, metadata, context);
+        return getKeyForPath(expr, metadata);
     }
 
-    protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata, Context context) {
+    protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
         if (expr.getType().equals(ObjectId.class)) {
             return "_id";
         } else {
@@ -315,12 +322,12 @@ public abstract class MongodbSerializer<Context> implements Visitor<Object, Cont
     }
 
     @Override
-    public Object visit(SubQueryExpression<?> expr, Context context) {
+    public Object visit(SubQueryExpression<?> expr, Void context) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Object visit(ParamExpression<?> expr, Context context) {
+    public Object visit(ParamExpression<?> expr, Void context) {
         throw new UnsupportedOperationException();
     }
 

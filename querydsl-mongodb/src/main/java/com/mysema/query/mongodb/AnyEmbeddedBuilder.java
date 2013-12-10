@@ -27,21 +27,20 @@ import com.mysema.query.types.PredicateOperation;
  * @author tiwe
  *
  * @param <K>
- * @param <C>
  */
-public class AnyEmbeddedBuilder<Q extends MongodbQuery<?,?,?>> {
+public class AnyEmbeddedBuilder<K> {
 
-    private final QueryMixin<Q> queryMixin;
+    private final QueryMixin<MongodbQuery<K>> queryMixin;
 
     private final Path<? extends Collection<?>> collection;
 
-    public AnyEmbeddedBuilder(QueryMixin<Q> queryMixin,
+    public AnyEmbeddedBuilder(QueryMixin<MongodbQuery<K>> queryMixin,
             Path<? extends Collection<?>> collection) {
         this.queryMixin = queryMixin;
         this.collection = collection;
     }
 
-    public Q on(Predicate... conditions) {
+    public MongodbQuery<K> on(Predicate... conditions) {
         return queryMixin.where(PredicateOperation.create(
                 MongodbOps.ELEM_MATCH, collection, ExpressionUtils.allOf(conditions)));
     }

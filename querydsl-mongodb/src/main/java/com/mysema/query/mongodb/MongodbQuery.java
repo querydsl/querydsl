@@ -55,16 +55,14 @@ import com.mysema.query.types.path.CollectionPathBase;
  *
  * @param <K>
  */
-public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements SimpleQuery<Q>, SimpleProjectable<K> {
+public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
 
     @SuppressWarnings("serial")
     private static class NoResults extends RuntimeException {}
 
-    private final MongodbSerializer<C> serializer;
+    private final MongodbSerializer serializer;
 
-    private final C context;
-
-    private final QueryMixin<Q> queryMixin;
+    private final QueryMixin<MongodbQuery<K>> queryMixin;
 
     private final DBCollection collection;
 
@@ -79,12 +77,11 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
      * @param transformer
      * @param serializer
      */
-    public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer<C> serializer, C context) {
-        this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata().noValidate());
+    public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
+        this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate());
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;
-        this.context = context;
     }
 
     /**
@@ -94,8 +91,8 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
      * @param target
      * @return
      */
-    public <T> JoinBuilder<Q,T> join(Path<T> ref, Path<T> target) {
-        return new JoinBuilder<Q,T>(queryMixin, ref, target);
+    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {
+        return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
 
     /**
@@ -105,8 +102,8 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
      * @param target
      * @return
      */
-    public <T> JoinBuilder<Q,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
-        return new JoinBuilder<Q,T>(queryMixin, ref, target);
+    public <T> JoinBuilder<K,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
+        return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
 
     /**
@@ -116,8 +113,8 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
      * @param target
      * @return
      */
-    public <T> AnyEmbeddedBuilder<Q> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
-        return new AnyEmbeddedBuilder<Q>(queryMixin, collection);
+    public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
+        return new AnyEmbeddedBuilder<K>(queryMixin, collection);
     }
 
     protected abstract DBCollection getCollection(Class<?> type);
@@ -191,45 +188,45 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
     }
 
     @Override
-    public Q distinct() {
+    public MongodbQuery<K> distinct() {
         return queryMixin.distinct();
     }
 
-    public Q where(Predicate e) {
+    public MongodbQuery<K> where(Predicate e) {
         return queryMixin.where(e);
     }
 
     @Override
-    public Q where(Predicate... e) {
+    public MongodbQuery<K> where(Predicate... e) {
         return queryMixin.where(e);
     }
 
     @Override
-    public Q limit(long limit) {
+    public MongodbQuery<K> limit(long limit) {
         return queryMixin.limit(limit);
     }
 
     @Override
-    public Q offset(long offset) {
+    public MongodbQuery<K> offset(long offset) {
         return queryMixin.offset(offset);
     }
 
     @Override
-    public Q restrict(QueryModifiers modifiers) {
+    public MongodbQuery<K> restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
     }
 
-    public Q orderBy(OrderSpecifier<?> o) {
+    public MongodbQuery<K> orderBy(OrderSpecifier<?> o) {
         return queryMixin.orderBy(o);
     }
 
     @Override
-    public Q orderBy(OrderSpecifier<?>... o) {
+    public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
     }
 
     @Override
-    public <T> Q set(ParamExpression<T> param, T value) {
+    public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
         return queryMixin.set(param, value);
     }
 
@@ -299,7 +296,7 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
             cursor.skip(offset.intValue());
         }
         if (orderBy.size() > 0) {
-            cursor.sort(serializer.toSort(orderBy, context));
+            cursor.sort(serializer.toSort(orderBy));
         }
         if (readPreference != null) {
             cursor.setReadPreference(readPreference);
@@ -311,7 +308,7 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
         if (!projection.isEmpty()) {
             DBObject obj = new BasicDBObject();
             for (Expression<?> expr : projection) {
-                obj.put((String)serializer.handle(expr, context), 1);
+                obj.put((String)serializer.handle(expr), 1);
             }
             return obj;
         }
@@ -395,7 +392,7 @@ public abstract class MongodbQuery<K,C,Q extends MongodbQuery<K,C,Q>> implements
 
     private DBObject createQuery(@Nullable Predicate predicate) {
         if (predicate != null) {
-            return (DBObject) serializer.handle(predicate, context);
+            return (DBObject) serializer.handle(predicate);
         } else {
             return new BasicDBObject();
         }
