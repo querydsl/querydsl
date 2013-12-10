@@ -93,14 +93,14 @@ public class SQLSubQueryTest {
     public void In_Union() {
         ListSubQuery<Integer> ints1 = new SQLSubQuery().from(employee).list(employee.id);
         ListSubQuery<Integer> ints2 = new SQLSubQuery().from(employee).list(employee.id);
-//        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
+        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
     }
 
     @Test
     public void In_Union2() {
         NumberSubQuery<Integer> ints1 = new SQLSubQuery().from(employee).unique(employee.id);
         NumberSubQuery<Integer> ints2 = new SQLSubQuery().from(employee).unique(employee.id);
-//        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
+        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
     }
 
     @Test

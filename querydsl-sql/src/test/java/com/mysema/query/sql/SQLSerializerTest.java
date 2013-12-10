@@ -148,7 +148,7 @@ public class SQLSerializerTest {
     }
 
     private SQLQuery query() {
-        return new SQLQuery(SQLTemplates.DEFAULT);
+        return new SQLQuery(Configuration.DEFAULT);
     }
 
     private SQLSubQuery sq() {

@@ -35,6 +35,18 @@ public class CollectionOperation<E> extends CollectionExpressionBase<Collection<
 
     private final OperationImpl<Collection<E>> opMixin;
 
+    public static <E> CollectionOperation<E> create(Operator<?> op, Class<E> type, Expression<?> one) {
+        return new CollectionOperation<E>(op, type, ImmutableList.<Expression<?>>of(one));
+    }
+
+    public static <E> CollectionOperation<E> create(Operator<?> op, Class<E> type, Expression<?> one, Expression<?> two) {
+        return new CollectionOperation<E>(op, type, ImmutableList.of(one, two));
+    }
+
+    public static <E> CollectionOperation<E> create(Operator<?> op, Class<E> type, Expression<?>... args) {
+        return new CollectionOperation<E>(op, type, args);
+    }
+
     public CollectionOperation(Operator<?> op, Class<? super E> type, Expression<?>... args) {
         this(op, type, ImmutableList.copyOf(args));
     }

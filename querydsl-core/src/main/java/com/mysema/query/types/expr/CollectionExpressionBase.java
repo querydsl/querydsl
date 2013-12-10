@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
@@ -42,6 +43,10 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
 
     public CollectionExpressionBase(Expression<T> mixin) {
         super(mixin);
+    }
+
+    public DslExpression<E> as(EntityPath<E> alias) {
+        return DslOperation.create(getElementType(), Ops.ALIAS, mixin, alias);
     }
 
     public final BooleanExpression contains(E child) {
