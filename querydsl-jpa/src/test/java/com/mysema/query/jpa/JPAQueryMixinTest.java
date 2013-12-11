@@ -93,5 +93,19 @@ public class JPAQueryMixinTest {
                 md.getOrderBy());
     }
 
-    // TODO test path.any() behaviour
+    @Test
+    public void OrderBy_Any() {
+        QCat cat = QCat.cat;
+        QCat cat_kittens = new QCat("cat_kittens");
+        mixin.from(cat);
+        mixin.orderBy(cat.kittens.any().name.asc());
+
+        QueryMetadata md = mixin.getMetadata();
+        assertEquals(Arrays.asList(
+                new JoinExpression(JoinType.DEFAULT, cat),
+                new JoinExpression(JoinType.LEFTJOIN, cat.kittens.as(cat_kittens))),
+                md.getJoins());
+        assertEquals(Arrays.asList(cat_kittens.name.asc()),
+                md.getOrderBy());
+    }
 }
