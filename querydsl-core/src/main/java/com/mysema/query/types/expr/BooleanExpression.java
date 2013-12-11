@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -90,6 +90,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return this && right
      */
     public BooleanExpression and(@Nullable Predicate right) {
+        right = (Predicate) ExpressionUtils.extract(right);
         if (right != null) {
             return BooleanOperation.create(Ops.AND, mixin, right);
         } else {
@@ -112,6 +113,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      *
      * @return !this
      */
+    @Override
     public BooleanExpression not() {
         if (not == null) {
             // uses this, because it makes unwrapping easier
@@ -127,6 +129,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return this || right
      */
     public BooleanExpression or(@Nullable Predicate right) {
+        right = (Predicate) ExpressionUtils.extract(right);
         if (right != null) {
             return BooleanOperation.create(Ops.OR, mixin, right);
         } else {
