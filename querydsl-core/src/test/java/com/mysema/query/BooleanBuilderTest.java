@@ -33,6 +33,11 @@ public class BooleanBuilderTest {
     private final BooleanExpression second = BooleanConstant.FALSE;
 
     @Test
+    public void Null_In_Constructor() {
+        assertNull(new BooleanBuilder(null).getValue());
+    }
+
+    @Test
     public void And_Empty() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(new BooleanBuilder());
