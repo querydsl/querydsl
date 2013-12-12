@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +15,12 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -31,34 +33,41 @@ public class BooleanBuilderTest {
     private final BooleanExpression second = BooleanConstant.FALSE;
 
     @Test
+    public void And_Empty() {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(new BooleanBuilder());
+        assertNull(ExpressionUtils.extract(builder));
+    }
+
+    @Test
     public void AndAnyOf() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, null);
         assertEquals(first, builder.getValue());
     }
-    
+
     @Test
     public void AndAnyOf2() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(null, first);
         assertEquals(first, builder.getValue());
     }
-    
-    
+
+
     @Test
     public void OrAllOf() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.orAllOf(first, null);
         assertEquals(first, builder.getValue());
     }
-    
+
     @Test
     public void OrAllOf2() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.orAllOf(null, first);
         assertEquals(first, builder.getValue());
     }
-    
+
     @Test(expected=QueryException.class)
     @Ignore
     public void WrappedBooleanBuilder() {
@@ -168,5 +177,5 @@ public class BooleanBuilderTest {
         builder.or(new BooleanPath("condition"));
         assertEquals("true || condition", builder.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
     }
-    
+
 }
