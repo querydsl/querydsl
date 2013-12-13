@@ -3,6 +3,7 @@ package com.mysema.query;
 import static com.mysema.query.Constants.employee;
 import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -23,9 +24,20 @@ import com.mysema.query.types.Projections;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 
 public class UnionBase extends AbstractBaseTest {
+
+    @Test
+    @ExcludeIn(MYSQL)
+    public void In_Union() {
+        assertTrue(query().from(employee)
+            .where(employee.id.in(
+                sq().union(sq().unique(NumberTemplate.ONE),
+                           sq().unique(NumberTemplate.TWO))))
+            .exists());
+    }
 
     @Test
     @SuppressWarnings("unchecked")
@@ -35,7 +47,7 @@ public class UnionBase extends AbstractBaseTest {
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
     }
-    
+
     @Test
     @SuppressWarnings("unchecked")
     public void Union_All() {
@@ -44,7 +56,7 @@ public class UnionBase extends AbstractBaseTest {
         List<Integer> list = query().unionAll(sq1, sq2).list();
         assertFalse(list.isEmpty());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Multiple_Columns() throws SQLException {
@@ -57,7 +69,7 @@ public class UnionBase extends AbstractBaseTest {
             assertNotNull(row.get(1, Object.class));
         }
     }
-    
+
     @Test
     @SuppressWarnings("unchecked")
     public void Union_Empty_Result() throws SQLException {
@@ -66,7 +78,7 @@ public class UnionBase extends AbstractBaseTest {
         List<Integer> list = query().union(sq1, sq2).list();
         assertTrue(list.isEmpty());
     }
-    
+
     @Test
     @SuppressWarnings("unchecked")
     public void Union2() throws SQLException {
@@ -76,7 +88,7 @@ public class UnionBase extends AbstractBaseTest {
         assertFalse(list.isEmpty());
 
     }
-                                                                                                                          
+
     @Test
     @SuppressWarnings("unchecked")
     public void Union3() throws SQLException {
@@ -85,7 +97,7 @@ public class UnionBase extends AbstractBaseTest {
         List<Tuple> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
-    
+
     @Test
     @ExcludeIn({DERBY})
     public void Union4() {
@@ -93,15 +105,16 @@ public class UnionBase extends AbstractBaseTest {
         SimpleSubQuery<Tuple> sq2 = sq().from(employee).unique(employee.id, employee.firstname);
         query().union(employee, sq1, sq2).list(employee.id.count());
     }
-    
+
+
     // FIXME for CUBRID
     @Test
     @ExcludeIn({DERBY, CUBRID})
     public void Union5() {
-        /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name 
-         * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID) 
-         * union 
-         * (select e.ID, e.FIRSTNAME, null, null from EMPLOYEE e) 
+        /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name
+         * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID)
+         * union
+         * (select e.ID, e.FIRSTNAME, null, null from EMPLOYEE e)
          * order by ID asc
          */
         QEmployee superior = new QEmployee("superior");
@@ -114,9 +127,9 @@ public class UnionBase extends AbstractBaseTest {
         for (Tuple result : results) {
             System.err.println(Arrays.asList(result));
         }
- 
+
     }
-    
+
     @Test
     @SuppressWarnings("unchecked")
     public void Union_With_Order() throws SQLException {
@@ -137,7 +150,7 @@ public class UnionBase extends AbstractBaseTest {
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Multi_Column_Projection_Iterate() throws IOException{
@@ -154,7 +167,7 @@ public class UnionBase extends AbstractBaseTest {
             iterator.close();
         }
     }
-        
+
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Single_Column_Projections_List() throws IOException{
@@ -166,7 +179,7 @@ public class UnionBase extends AbstractBaseTest {
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Single_Column_Projections_Iterate() throws IOException{
@@ -190,12 +203,12 @@ public class UnionBase extends AbstractBaseTest {
         ListSubQuery<Employee> sq1 = sq().from(employee)
                 .list(Projections.constructor(Employee.class, employee.id));
         ListSubQuery<Employee> sq2 = sq().from(employee)
-                .list(Projections.constructor(Employee.class, employee.id));        
+                .list(Projections.constructor(Employee.class, employee.id));
         List<Employee> employees = query().union(sq1, sq2).list();
         for (Employee employee : employees) {
             assertNotNull(employee);
         }
     }
-    
-    
+
+
 }
