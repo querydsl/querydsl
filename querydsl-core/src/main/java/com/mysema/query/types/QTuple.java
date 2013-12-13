@@ -15,10 +15,13 @@ package com.mysema.query.types;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.mysema.query.Tuple;
 
 /**
@@ -51,16 +54,16 @@ import com.mysema.query.Tuple;
 @Immutable
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
 
-    private static ImmutableList<Expression<?>> createBindings(List<Expression<?>> exprs) {
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        for (Expression<?> e : exprs) {
+    private static ImmutableMap<Expression<?>, Integer> createBindings(List<Expression<?>> exprs) {
+        Map<Expression<?>, Integer> map = Maps.newHashMap();
+        for (int i = 0; i < exprs.size(); i++) {
+            Expression<?> e = exprs.get(i);
             if (e instanceof Operation && ((Operation<?>)e).getOperator() == Ops.ALIAS) {
-                builder.add(((Operation<?>)e).getArg(1));
-            } else {
-                builder.add(e);
+                map.put(((Operation<?>)e).getArg(1), i);
             }
+            map.put(e, i);
         }
-        return builder.build();
+        return ImmutableMap.copyOf(map);
     }
 
     private final class TupleImpl implements Tuple {
@@ -77,8 +80,12 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
         @Override
         public <T> T get(Expression<T> expr) {
-            int index = QTuple.this.bindings.indexOf(expr);
-            return index != -1 ? (T) a[index] : null;
+            Integer idx = QTuple.this.bindings.get(expr);
+            if (idx != null) {
+                return (T) a[idx.intValue()];
+            } else {
+                return null;
+            }
         }
 
         @Override
@@ -117,7 +124,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
     private final ImmutableList<Expression<?>> args;
 
-    private final ImmutableList<Expression<?>> bindings;
+    private final ImmutableMap<Expression<?>, Integer> bindings;
 
     /**
      * Create a new QTuple instance

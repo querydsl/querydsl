@@ -866,6 +866,15 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    public void Map() {
+        Map<Integer, String> idToName = query().from(employee).map(employee.id.as("id"), employee.firstname);
+        for (Map.Entry<Integer, String> entry : idToName.entrySet()) {
+            assertNotNull(entry.getKey());
+            assertNotNull(entry.getValue());
+        }
+    }
+
+    @Test
     @SuppressWarnings("serial")
     public void MappingProjection() {
         List<Pair<String, String>> pairs = query().from(employee)
