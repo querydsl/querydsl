@@ -657,7 +657,6 @@ public class SelectBase extends AbstractBaseTest{
                .list(employee.id.count());
     }
 
-
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {
@@ -1396,6 +1395,22 @@ public class SelectBase extends AbstractBaseTest{
     public void TemplateExpression() {
         NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "1");
         query().from(survey).list(one.as("col1"));
+    }
+
+    @Test
+    public void Transform_GroupBy() {
+        QEmployee employee = new QEmployee("employee");
+        QEmployee employee2 = new QEmployee("employee2");
+        Map<Integer, Map<Integer, Employee>> results = query().from(employee, employee2)
+            .transform(GroupBy.groupBy(employee.id).as(GroupBy.map(employee2.id, employee2)));
+
+        int count = (int) query().from(employee).count();
+        assertEquals(count, results.size());
+        for (Map.Entry<Integer, Map<Integer, Employee>> entry : results.entrySet()) {
+            Map<Integer, Employee> employees = entry.getValue();
+            assertEquals(count, employees.size());
+        }
+
     }
 
     @Test
