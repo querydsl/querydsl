@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.hibernate.LockMode;
 import org.hibernate.Session;
-import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
@@ -56,11 +55,12 @@ public class HibernateBase extends AbstractJPATest {
 
     private Session session;
 
-    @After
-    public void tearDown() {
-        session.flush();
-        session.clear();
-    }
+    // XXX fails for Batoo
+//    @After
+//    public void tearDown() {
+//        session.flush();
+//        session.clear();
+//    }
 
     @Override
     protected HibernateQuery query() {
