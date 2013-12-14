@@ -58,7 +58,7 @@ public class MongodbSerializerTest {
 
     @Before
     public void before() {
-        serializer = new MorphiaSerializer();
+        serializer = new MorphiaSerializer(null);
         entityPath = new PathBuilder<Object>(Object.class, "obj");
         title = entityPath.getString("title");
         year = entityPath.getNumber("year", Integer.class);
@@ -133,7 +133,6 @@ public class MongodbSerializerTest {
 
     @Test
     public void LessAndGreaterAndBetween() {
-
         assertQuery(title.lt("A"), dbo("title", dbo("$lt", "A")));
         assertQuery(year.gt(1), dbo("year", dbo("$gt", 1)));
 

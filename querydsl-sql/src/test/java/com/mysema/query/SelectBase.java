@@ -64,6 +64,7 @@ import com.mysema.query.sql.WithinGroup;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
@@ -379,6 +380,22 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Count_With_PK() {
+        query().from(employee).count();
+    }
+
+    @Test
+    public void Count_Without_PK() {
+        query().from(QEmployeeNoPK.employee).count();
+    }
+
+    @Test
+    @Ignore // FIXME
+    public void Count2() {
+        query().from(employee).singleResult(employee.count());
+    }
+
+    @Test
     @SkipForQuoted
     @ExcludeIn(ORACLE)
     public void Count_All() {
@@ -394,6 +411,22 @@ public class SelectBase extends AbstractBaseTest {
         expectedQuery = "select count(*) rc from EMPLOYEE e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rc");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
+    }
+
+    @Test
+    public void Count_Distinct_With_PK() {
+        query().from(employee).distinct().count();
+    }
+
+    @Test
+    public void Count_Distinct_Without_PK() {
+        query().from(QEmployeeNoPK.employee).distinct().count();
+    }
+
+    @Test
+    @Ignore // FIXME
+    public void Count_Distinct2() {
+        query().from(employee).singleResult(employee.countDistinct());
     }
 
     @Test
@@ -603,7 +636,6 @@ public class SelectBase extends AbstractBaseTest {
                .list(employee.id.count());
     }
 
-
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {
@@ -811,6 +843,15 @@ public class SelectBase extends AbstractBaseTest {
         ListSubQuery<Tuple> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
         for (Tuple row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)) {
             System.out.println(Arrays.asList(row));
+        }
+    }
+
+    @Test
+    public void Map() {
+        Map<Integer, String> idToName = query().from(employee).map(employee.id.as("id"), employee.firstname);
+        for (Map.Entry<Integer, String> entry : idToName.entrySet()) {
+            assertNotNull(entry.getKey());
+            assertNotNull(entry.getValue());
         }
     }
 
@@ -1373,6 +1414,22 @@ public class SelectBase extends AbstractBaseTest {
     public void TemplateExpression() {
         NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "1");
         query().from(survey).list(one.as("col1"));
+    }
+
+    @Test
+    public void Transform_GroupBy() {
+        QEmployee employee = new QEmployee("employee");
+        QEmployee employee2 = new QEmployee("employee2");
+        Map<Integer, Map<Integer, Employee>> results = query().from(employee, employee2)
+            .transform(GroupBy.groupBy(employee.id).as(GroupBy.map(employee2.id, employee2)));
+
+        int count = (int) query().from(employee).count();
+        assertEquals(count, results.size());
+        for (Map.Entry<Integer, Map<Integer, Employee>> entry : results.entrySet()) {
+            Map<Integer, Employee> employees = entry.getValue();
+            assertEquals(count, employees.size());
+        }
+
     }
 
     @Test

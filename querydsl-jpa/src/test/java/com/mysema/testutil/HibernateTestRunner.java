@@ -26,6 +26,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.junit.rules.MethodRule;
+import org.junit.runner.Description;
+import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -81,8 +83,9 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             start();
             super.run(notifier);
         } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            e.printStackTrace();
+            Failure failure = new Failure(Description.createSuiteDescription(getTestClass().getJavaClass()), e);
+            notifier.fireTestFailure(failure);
         } finally {
             shutdown();
         }

@@ -367,7 +367,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-4700
     @NoBatooJPA
     public void Case() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
@@ -429,7 +429,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate
+    @NoHibernate // https://github.com/mysema/querydsl/issues/290
     public void Constant() {
         //select cat.id, ?1 as const from Cat cat
         List<Cat> cats = query().from(cat).list(cat);
@@ -450,7 +450,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate
+    @NoHibernate // https://github.com/mysema/querydsl/issues/290
     public void Constant2() {
         assertFalse(query().from(cat).map(cat.id, Expressions.constant("name")).isEmpty());
     }
@@ -794,6 +794,18 @@ public abstract class AbstractJPATest {
     public void InstanceOf_Entity2() {
         QEntity1 entity1 = QEntity1.entity1;
         assertEquals(1l, query().from(entity1).where(entity1.instanceOf(Entity2.class)).count());
+    }
+
+    @Test
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-6686
+    public void IsEmpty_ElementCollection() {
+        QEmployee employee = QEmployee.employee;
+        query().from(employee).where(employee.jobFunctions.isEmpty()).count();
+    }
+
+    @Test
+    public void IsEmpty_Relation() {
+        query().from(cat).where(cat.kittensSet.isEmpty()).count();
     }
 
     @Test

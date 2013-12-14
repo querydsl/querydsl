@@ -17,12 +17,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.DslExpression;
-import com.mysema.query.types.expr.SimpleOperation;
+import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.CollectionOperation;
+import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 
 /**
@@ -42,28 +44,44 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private <T> DslExpression<T> union(Operator<Object> op, List<? extends SubQueryExpression<T>> sq) {
-        Expression<T> rv = sq.get(0);
-        for (int i = 1; i < sq.size(); i++) {
-            rv = SimpleOperation.create((Class)rv.getType(), op, rv, sq.get(i));
+    private <T> CollectionExpressionBase<?,T> union(Operator<Object> op, List<? extends SubQueryExpression<?>> sq) {
+        Expression<?> rv = sq.get(0);
+        if (sq.size() == 1 && !CollectionExpression.class.isInstance(rv)) {
+            return new ListSubQuery(rv.getType(), sq.get(0).getMetadata());
+        } else {
+            Class<?> elementType = sq.get(0).getType();
+            if (rv instanceof CollectionExpression) {
+                elementType = ((CollectionExpression)rv).getParameter(0);
+            }
+            for (int i = 1; i < sq.size(); i++) {
+                rv = CollectionOperation.create(op, (Class)elementType, rv, sq.get(i));
+            }
+            return (CollectionExpressionBase<?,T>)rv;
         }
-        return (DslExpression<T>)rv;
     }
 
-    public <T> DslExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
+    public <T> CollectionExpressionBase<?,T> union(List<? extends SubQueryExpression<T>> sq) {
         return union(SQLOps.UNION, sq);
     }
 
-    public <T> DslExpression<T> union(SubQueryExpression<T>... sq) {
-        return union(Arrays.asList(sq));
+    public <T> CollectionExpressionBase<?,T> union(ListSubQuery<T>... sq) {
+        return union(SQLOps.UNION, Arrays.asList(sq));
     }
 
-    public <T> DslExpression<T> unionAll(List<? extends SubQueryExpression<T>> sq) {
+    public <T> CollectionExpressionBase<?,T> union(SubQueryExpression<T>... sq) {
+        return union(SQLOps.UNION, Arrays.asList(sq));
+    }
+
+    public <T> CollectionExpressionBase<?,T> unionAll(List<? extends SubQueryExpression<T>> sq) {
         return union(SQLOps.UNION_ALL, sq);
     }
 
-    public <T> DslExpression<T> unionAll(SubQueryExpression<T>... sq) {
-        return unionAll(Arrays.asList(sq));
+    public <T> CollectionExpressionBase<?,T> unionAll(ListSubQuery<T>... sq) {
+        return union(SQLOps.UNION_ALL, Arrays.asList(sq));
+    }
+
+    public <T> CollectionExpressionBase<?,T> unionAll(SubQueryExpression<T>... sq) {
+        return union(SQLOps.UNION_ALL, Arrays.asList(sq));
     }
 
     @Override

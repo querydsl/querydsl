@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,27 +17,27 @@ import com.mysema.query.types.Ops;
 
 
 public class DataNucleusTemplates extends JPQLTemplates {
-    
-    public static final JPQLTemplates DEFAULT = new DataNucleusTemplates();
+
+    public static final DataNucleusTemplates DEFAULT = new DataNucleusTemplates();
 
     public DataNucleusTemplates() {
         this(DEFAULT_ESCAPE);
     }
-    
+
     public DataNucleusTemplates(char escape) {
-        super(escape);        
+        super(escape);
         add(Ops.LIKE, "{0} like {1}",1);
         add(Ops.MATCHES, "{0} like {1}", 27); // TODO : support real regexes
         add(Ops.MATCHES_IC, "{0} like {1}", 27); // TODO : support real regexes
-        
+
         add(Ops.STRING_CONTAINS, "{0} like {%1%}");
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");
         add(Ops.ENDS_WITH, "{0} like {%1}");
         add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");
         add(Ops.STARTS_WITH, "{0} like {1%}");
         add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");
-        
+
 
     }
-    
+
 }

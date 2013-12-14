@@ -198,6 +198,8 @@ public class SQLTemplates extends Templates {
 
     private boolean limitRequired = false;
 
+    private boolean countDistinctMultipleColumns = false;
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -281,8 +283,8 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
 
         add(SQLOps.CAST, "cast({0} as {1s})");
-        add(SQLOps.UNION, "{0}\nunion\n{1}", 1);
-        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", 1);
+        add(SQLOps.UNION, "{0}\nunion\n{1}", 50);
+        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", 50);
         add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
         // analytic functions
@@ -589,16 +591,20 @@ public class SQLTemplates extends Templates {
         return createTable;
     }
 
-    public final boolean isPrintSchema() {
-        return printSchema;
-    }
-
     public final String getWith() {
         return with;
     }
 
     public final String getWithRecursive() {
         return withRecursive;
+    }
+
+    public final boolean isCountDistinctMultipleColumns() {
+        return countDistinctMultipleColumns;
+    }
+
+    public final boolean isPrintSchema() {
+        return printSchema;
     }
 
     public final boolean isParameterMetadataAvailable() {
@@ -881,6 +887,10 @@ public class SQLTemplates extends Templates {
 
     protected void setLimitRequired(boolean limitRequired) {
         this.limitRequired = limitRequired;
+    }
+
+    protected void setCountDistinctMultipleColumns(boolean countDistinctMultipleColumns) {
+        this.countDistinctMultipleColumns = countDistinctMultipleColumns;
     }
 
 }

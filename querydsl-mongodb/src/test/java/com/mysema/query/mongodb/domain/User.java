@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,49 +25,49 @@ import org.mongodb.morphia.annotations.Reference;
 
 @Entity
 public class User {
-    
+
     public enum Gender { MALE, FEMALE }
-    
+
     private @Id ObjectId id;
-    
+
     private String firstName;
-    
+
     private String lastName;
-    
+
     private Date created;
-    
+
     private Gender gender;
-    
+
     @Embedded
     private final List<Address> addresses = new ArrayList<Address>();
-    
+
     @Embedded
     private Address mainAddress;
-    
+
     @Reference
     private final List<User> friends = new ArrayList<User>();
-    
+
     @Reference
     private User friend;
-    
+
     @Reference
     private User enemy;
-    
+
     private int age;
-    
+
     public User() {
     }
 
     public User(String firstName, String lastName, User friend) {
         this(firstName, lastName);
         this.friend = friend;
-    }        
-    
+    }
+
     public User(String firstName, String lastName) {
         this.firstName = firstName; this.lastName = lastName;
         this.created = new Date();
     }
-    
+
     public User(String firstName, String lastName, int age, Date created) {
         this.firstName = firstName; this.lastName = lastName; this.age = age; this.created = created;
     }
@@ -77,7 +77,7 @@ public class User {
         return "TestUser [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName
                 + "]";
     }
-    
+
     public ObjectId getId() {
         return id;
     }
@@ -117,7 +117,7 @@ public class User {
     public void setAge(int age) {
         this.age = age;
     }
-    
+
     public Address getMainAddress() {
         return mainAddress;
     }
@@ -125,7 +125,7 @@ public class User {
     public void setMainAddress(Address mainAddress) {
         this.mainAddress = mainAddress;
     }
-    
+
     public void setMainAddress(String street, String postCode, City city) {
         this.mainAddress = new Address(street, postCode, city);
     }
@@ -134,16 +134,16 @@ public class User {
         addresses.add(address);
         return this;
     }
-    
+
     public User addAddress(String street, String postalCode, City city) {
         addresses.add(new Address(street, postalCode, city));
         return this;
     }
-    
+
     public List<Address> getAddresses() {
         return addresses;
     }
-    
+
     public User addFriend(User friend) {
         friends.add(friend);
         return this;
@@ -152,7 +152,7 @@ public class User {
     public List<User> getFriends() {
         return friends;
     }
-    
+
     public Gender getGender() {
         return gender;
     }
@@ -160,19 +160,19 @@ public class User {
     public void setGender(Gender gender) {
         this.gender = gender;
     }
-    
+
     public User getFriend() {
         return friend;
     }
-    
+
     public void setFriend(User friend) {
         this.friend = friend;
     }
-    
+
     public User getEnemy() {
         return enemy;
     }
-    
+
     public void setEnemy(User enemy) {
         this.enemy = enemy;
     }
@@ -202,6 +202,6 @@ public class User {
         return true;
     }
 
-   
+
 
 }

@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Blob;
 import java.sql.Types;
 import java.util.HashMap;
@@ -117,12 +118,14 @@ public final class JDBCTypeMapping {
             return numericTypes.get(key);
         } else if (digits <= 0) {
             if (size > 18 || size == 0) {
+                return BigInteger.class;
+            } else if (size > 9 || size == 0) {
                 return Long.class;
-            } else if (size > 5) {
+            } else if (size > 4) {
                 return Integer.class;
             } else if (size > 2) {
                 return Short.class;
-            } else if (size > 1) {
+            } else if (size > 0) {
                 return Byte.class;
             } else {
                 return Boolean.class;

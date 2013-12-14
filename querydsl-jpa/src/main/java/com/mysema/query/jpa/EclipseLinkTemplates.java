@@ -43,7 +43,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
     }
 
 
-    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
+    public static final EclipseLinkTemplates DEFAULT = new EclipseLinkTemplates();
 
     private final Map<Class<?>, String> typeNames;
 

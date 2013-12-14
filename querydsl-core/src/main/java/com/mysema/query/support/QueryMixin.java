@@ -95,14 +95,14 @@ public class QueryMixin<T> {
     }
 
     public <E> Expression<E> addProjection(Expression<E> e) {
-        e = convert(e);
+        e = convert(e, false);
         metadata.addProjection(e);
         return e;
     }
 
     public T addProjection(Expression<?>... o) {
         for (Expression<?> e : o) {
-            metadata.addProjection(convert(e));
+            metadata.addProjection(convert(e, false));
         }
         return self;
     }
@@ -115,7 +115,7 @@ public class QueryMixin<T> {
     }
 
     @SuppressWarnings("rawtypes")
-    public <RT> Expression<RT> convert(Expression<RT> expr) {
+    public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
         if (validateAnyPaths && expr instanceof Path) {
             Context context = new Context();
             Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
@@ -129,7 +129,7 @@ public class QueryMixin<T> {
             }
         }
         if (expr instanceof ProjectionRole<?>) {
-            return convert(((ProjectionRole) expr).getProjection());
+            return convert(((ProjectionRole) expr).getProjection(), forOrder);
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
             return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
         } else {
@@ -137,9 +137,9 @@ public class QueryMixin<T> {
         }
     }
 
-    protected <D> Expression<D> createAlias(Expression expr, Path alias) {
+    protected <D> Expression<D> createAlias(Expression<?> expr, Path<?> alias) {
         assertRoot(alias);
-        return ExpressionUtils.as(expr, alias);
+        return ExpressionUtils.as((Expression)expr, alias);
     }
 
     public final T distinct() {
@@ -178,8 +178,7 @@ public class QueryMixin<T> {
         return self;
     }
 
-    @SuppressWarnings("unchecked")
-    public final <P> T fullJoin(SubQueryExpression<P> target, Path alias) {
+    public final <P> T fullJoin(SubQueryExpression<P> target, Path<?> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
@@ -236,8 +235,7 @@ public class QueryMixin<T> {
         return self;
     }
 
-    @SuppressWarnings("unchecked")
-    public final <P> T innerJoin(SubQueryExpression<P> target, Path alias) {
+    public final <P> T innerJoin(SubQueryExpression<P> target, Path<?> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
@@ -270,8 +268,7 @@ public class QueryMixin<T> {
         return getSelf();
     }
 
-    @SuppressWarnings("unchecked")
-    public final <P> T join(SubQueryExpression<P> target, Path alias) {
+    public final <P> T join(SubQueryExpression<P> target, Path<?> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return self;
     }
@@ -296,8 +293,7 @@ public class QueryMixin<T> {
         return getSelf();
     }
 
-    @SuppressWarnings("unchecked")
-    public final <P> T leftJoin(SubQueryExpression<P> target, Path alias) {
+    public final <P> T leftJoin(SubQueryExpression<P> target, Path<?> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return self;
     }
@@ -325,7 +321,7 @@ public class QueryMixin<T> {
     }
 
     public final T orderBy(OrderSpecifier<?> spec) {
-        Expression<?> e = convert(spec.getTarget());
+        Expression<?> e = convert(spec.getTarget(), true);
         if (!spec.getTarget().equals(e)) {
             metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));
         } else {
@@ -366,8 +362,7 @@ public class QueryMixin<T> {
         return getSelf();
     }
 
-    @SuppressWarnings("unchecked")
-    public final <P> T rightJoin(SubQueryExpression<P> target, Path alias) {
+    public final <P> T rightJoin(SubQueryExpression<P> target, Path<?> alias) {
         metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
         return self;
     }

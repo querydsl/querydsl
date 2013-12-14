@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.path.StringPath;
 
 public class QTupleTest {
@@ -33,6 +34,15 @@ public class QTupleTest {
     Expression<?>[] exprs2 = new Expression[]{str3, str4};
 
     Concatenation concat = new Concatenation(str1, str2);
+
+    @Test
+    public void Alias() {
+        Expression<?> expr = str1.as("s");
+        QTuple qTuple = new QTuple(expr);
+        Tuple tuple = qTuple.newInstance("arg");
+        assertEquals("arg", tuple.get(expr));
+        assertEquals("arg", tuple.get(new StringPath("s")));
+    }
 
     @Test
     public void TwoExpressions_getArgs() {
@@ -76,13 +86,13 @@ public class QTupleTest {
         QTuple expr = new QTuple(str1, str2);
         assertEquals(expr.newInstance("str1", "str2"), expr.newInstance("str1", "str2"));
     }
-    
+
     @Test
     public void Tuple_hashCode() {
         QTuple expr = new QTuple(str1, str2);
         assertEquals(expr.newInstance("str1", "str2").hashCode(), expr.newInstance("str1", "str2").hashCode());
     }
-    
+
     @Test
     @Ignore
     public void Duplicates() {
@@ -90,7 +100,7 @@ public class QTupleTest {
         assertEquals(1, expr.getArgs().size());
         assertEquals(str1, expr.getArgs().get(0));
     }
-    
+
     @Test
     @Ignore
     public void Duplicates2() {

@@ -16,6 +16,7 @@ package com.mysema.query.sql;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
@@ -33,6 +35,7 @@ import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -117,16 +120,50 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return constantPaths;
     }
 
+    /**
+     * Return a list of expressions that can be used to uniquely define the query sources
+     *
+     * @param joins
+     * @return
+     */
     @SuppressWarnings("unchecked")
-    private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins) {
-        final JoinExpression join = joins.get(0);
-        @SuppressWarnings("rawtypes")
-        final RelationalPath path = (RelationalPath)join.getTarget();
-        if (path.getPrimaryKey() != null) {
-            return path.getPrimaryKey().getLocalColumns();
+    private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins, boolean alias) {
+        if (joins.size() == 1) {
+            JoinExpression join = joins.get(0);
+            if (join.getTarget() instanceof RelationalPath) {
+                return ((RelationalPath)join.getTarget()).getColumns();
+            } else {
+                return Collections.emptyList();
+            }
+
         } else {
-            return path.getColumns();
+            List<Expression<?>> rv = Lists.newArrayList();
+            int counter = 0;
+            for (JoinExpression join : joins) {
+                if (join.getTarget() instanceof RelationalPath) {
+                    RelationalPath path = (RelationalPath)join.getTarget();
+                    List<Expression<?>> columns;
+                    if (path.getPrimaryKey() != null) {
+                        columns = path.getPrimaryKey().getLocalColumns();
+                    } else {
+                        columns = path.getColumns();
+                    }
+                    if (alias) {
+                        for (Expression<?> column : columns) {
+                            rv.add(ExpressionUtils.as(column, "col" + (++counter)));
+                        }
+                    } else {
+                        rv.addAll(columns);
+                    }
+
+                } else {
+                    // not able to provide a distinct list of columns
+                    return Collections.emptyList();
+                }
+            }
+            return rv;
         }
+
     }
 
     protected SQLTemplates getTemplates() {
@@ -168,6 +205,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
+        String suffix = null;
 
         List<Expression<?>> sqlSelect;
         if (select.size() == 1) {
@@ -233,13 +271,29 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (!metadata.isDistinct()) {
                 append(templates.getCountStar());
             } else {
-                append(templates.getDistinctCountStart());
+                List<? extends Expression<?>> columns;
                 if (sqlSelect.isEmpty()) {
-                    handle(COMMA, getIdentifierColumns(joins));
+                    columns = getIdentifierColumns(joins, !templates.isCountDistinctMultipleColumns());
                 } else {
-                    handle(COMMA, sqlSelect);
+                    columns = sqlSelect;
                 }
-                append(templates.getDistinctCountEnd());
+                if (columns.size() == 1) {
+                    append(templates.getDistinctCountStart());
+                    handle(columns.get(0));
+                    append(templates.getDistinctCountEnd());
+                } else if (templates.isCountDistinctMultipleColumns()) {
+                    append(templates.getDistinctCountStart());
+                    append("(").handle(COMMA, columns).append(")");
+                    append(templates.getDistinctCountEnd());
+                } else {
+                    // select count(*) from (select distinct ...)
+                    append(templates.getCountStar());
+                    append(templates.getFrom());
+                    append("(");
+                    append(templates.getSelectDistinct());
+                    handle(COMMA, columns);
+                    suffix = ") internal";
+                }
             }
 
         } else if (!sqlSelect.isEmpty()) {
@@ -315,6 +369,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
             stage = Stage.MODIFIERS;
             templates.serializeModifiers(metadata, this);
+        }
+
+        if (suffix != null) {
+            append(suffix);
         }
 
         // reset stage

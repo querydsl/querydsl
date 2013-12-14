@@ -94,7 +94,15 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate and(Predicate left, Predicate right) {
-        return PredicateOperation.create(Ops.AND, left, right);
+        left = (Predicate) extract(left);
+        right = (Predicate) extract(right);
+        if (left == null) {
+            return right;
+        } else if (right == null) {
+            return left;
+        } else {
+            return PredicateOperation.create(Ops.AND, left, right);
+        }
     }
 
 
@@ -389,10 +397,20 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate or(Predicate left, Predicate right) {
-        return PredicateOperation.create(Ops.OR, left, right);
+        left = (Predicate) extract(left);
+        right = (Predicate) extract(right);
+        if (left == null) {
+            return right;
+        } else if (right == null) {
+            return left;
+        } else {
+            return PredicateOperation.create(Ops.OR, left, right);
+        }
     }
 
     /**
+     * Get a distinct list of the given args
+     *
      * @param args
      * @return
      */
@@ -408,6 +426,8 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Get a distinct list of the concatenated array contents
+     *
      * @param args
      * @return
      */
@@ -425,15 +445,21 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Get the potentially wrapped expression
+     *
      * @param expr
      * @return
      */
     public static <T> Expression<T> extract(Expression<T> expr) {
-        final Class<?> clazz = expr.getClass();
-        if (clazz == PathImpl.class || clazz == PredicateOperation.class || clazz == ConstantImpl.class) {
-            return expr;
+        if (expr != null) {
+            final Class<?> clazz = expr.getClass();
+            if (clazz == PathImpl.class || clazz == PredicateOperation.class || clazz == ConstantImpl.class) {
+                return expr;
+            } else {
+                return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);
+            }
         } else {
-            return (Expression<T>) expr.accept(ExtractorVisitor.DEFAULT, null);
+            return null;
         }
     }
 

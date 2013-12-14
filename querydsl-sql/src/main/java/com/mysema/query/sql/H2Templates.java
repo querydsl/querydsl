@@ -44,6 +44,7 @@ public class H2Templates extends SQLTemplates {
         super("\"", escape, quote);
         setNativeMerge(true);
         setLimitRequired(true);
+        setCountDistinctMultipleColumns(true);
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
 

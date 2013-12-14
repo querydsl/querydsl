@@ -35,6 +35,7 @@ import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
+import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
@@ -70,6 +71,7 @@ public class MongodbQueryTest {
     private final QAddress address = QAddress.address;
     private final QMapEntity mapEntity = QMapEntity.mapEntity;
 
+    List<User> users = Lists.newArrayList();
     User u1, u2, u3, u4;
     City tampere, helsinki;
 
@@ -117,6 +119,21 @@ public class MongodbQueryTest {
         User u = where(user.firstName.eq("Jaakko")).uniqueResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
+    }
+
+    @Test
+    public void Contains() {
+        assertQuery(user.friends.contains(u1), u3, u4, u2);
+    }
+
+    @Test
+    public void Contains2() {
+        assertQuery(user.friends.contains(u4));
+    }
+
+    @Test
+    public void NotContains() {
+        assertQuery(user.friends.contains(u1).not(), u1);
     }
 
     @Test
@@ -304,6 +321,11 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void isEmpty2() {
+        assertQuery(user.friends.isEmpty(), u1);
+    }
+
+    @Test
     public void Not() {
         assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
         assertQuery(user.firstName.ne("Jaakko").not(), u1);
@@ -420,7 +442,7 @@ public class MongodbQueryTest {
 
     @Test
     public void ReadPreference() {
-        MongodbQuery<User> query = query();
+        MorphiaQuery<User> query = query();
         query.setReadPreference(ReadPreference.primary());
         assertEquals(4, query.count());
 
@@ -447,11 +469,11 @@ public class MongodbQueryTest {
         return query().where(e);
     }
 
-    private MongodbQuery<User> query() {
+    private MorphiaQuery<User> query() {
         return new MorphiaQuery<User>(morphia, ds, user);
     }
 
-    private <T> MongodbQuery<T> query(EntityPath<T> path) {
+    private <T> MorphiaQuery<T> query(EntityPath<T> path) {
         return new MorphiaQuery<T>(morphia, ds, path);
     }
 
@@ -484,7 +506,11 @@ public class MongodbQueryTest {
         for (Address address : addresses) {
             user.addAddress(address);
         }
+        for (User u : users) {
+            user.addFriend(u);
+        }
         ds.save(user);
+        users.add(user);
         return user;
     }
 

@@ -3,6 +3,7 @@ package com.mysema.query;
 import static com.mysema.query.Constants.employee;
 import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,9 +25,20 @@ import com.mysema.query.types.Projections;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 
 public class UnionBase extends AbstractBaseTest {
+
+    @Test
+    @ExcludeIn(MYSQL)
+    public void In_Union() {
+        assertTrue(query().from(employee)
+            .where(employee.id.in(
+                sq().union(sq().unique(NumberTemplate.ONE),
+                           sq().unique(NumberTemplate.TWO))))
+            .exists());
+    }
 
     @Test
     @SuppressWarnings("unchecked")

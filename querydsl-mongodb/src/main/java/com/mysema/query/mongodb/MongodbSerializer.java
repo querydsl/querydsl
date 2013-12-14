@@ -24,11 +24,13 @@ import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.DBRef;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
@@ -47,9 +49,7 @@ import com.mysema.query.types.Visitor;
  * @author laimw
  *
  */
-public class MongodbSerializer implements Visitor<Object, Void> {
-
-    public static final MongodbSerializer DEFAULT = new MongodbSerializer();
+public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
     public Object handle(Expression<?> expression) {
         return expression.accept(this, null);
@@ -137,9 +137,12 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             //Only support the first key, let's see if there
             //is cases where this will get broken
             String key = arg.keySet().iterator().next();
-
-            Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
-            if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY) {
+            Operation<?> subOperation = (Operation<?>) expr.getArg(0);
+            Operator<?> subOp = subOperation.getOperator();
+            if (subOp == Ops.IN) {
+                return visit(OperationImpl.create(Boolean.class, Ops.NOT_IN, subOperation.getArg(0),
+                        subOperation.getArg(1)), context);
+            } else if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY) {
                 return asDBObject(key, asDBObject("$not", arg.get(key)));
             } else {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
@@ -206,7 +209,11 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                 Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
                 return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));
             } else {
-                return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
+                if (isReference(expr, exprIndex)) {
+                    return asDBObject(asDBKey(expr, exprIndex), asReference(expr, constIndex));
+                } else {
+                    return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
+                }
             }
 
         } else if (op == Ops.NOT_IN) {
@@ -220,8 +227,20 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                 Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
                 return asDBObject(asDBKey(expr, exprIndex), asDBObject("$nin", values.toArray()));
             } else {
-                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
+                if (isReference(expr, exprIndex)) {
+                    return asDBObject(asDBKey(expr, exprIndex),
+                            asDBObject("$ne", asReference(expr, constIndex)));
+                } else {
+                    return asDBObject(asDBKey(expr, exprIndex),
+                            asDBObject("$ne", asDBValue(expr, constIndex)));
+                }
             }
+
+        } else if (op == Ops.COL_IS_EMPTY) {
+            BasicDBList list = new BasicDBList();
+            list.add(asDBObject(asDBKey(expr, 0), new BasicDBList()));
+            list.add(asDBObject(asDBKey(expr, 0), asDBObject("$exists", false)));
+            return asDBObject("$or", list);
 
         } else if (op == Ops.LT) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
@@ -255,6 +274,30 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
+
+    protected DBRef asReference(Operation<?> expr, int constIndex) {
+        return asReference(((Constant<?>)expr.getArg(constIndex)).getConstant());
+    }
+
+    protected DBRef asReference(Object constant) {
+        // override in subclass
+        throw new UnsupportedOperationException();
+    }
+
+    protected boolean isReference(Operation<?> expr, int exprIndex) {
+        Expression<?> arg = expr.getArg(exprIndex);
+        if (arg instanceof Path) {
+            return isReference((Path<?>) arg);
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean isReference(Path<?> arg) {
+        // override in subclass
+        return false;
+    }
+
 
     @Override
     public String visit(Path<?> expr, Void context) {

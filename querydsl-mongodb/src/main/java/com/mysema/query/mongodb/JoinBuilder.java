@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,18 +21,18 @@ import com.mysema.query.types.Predicate;
 
 /**
  * JoinBuilder is a builder for join constraints
- * 
+ *
  * @author tiwe
  *
  * @param <K>
  * @param <T>
  */
 public class JoinBuilder<K, T> {
-    
+
     private final QueryMixin<MongodbQuery<K>> queryMixin;
-    
+
     private final Path<?> ref;
-    
+
     private final Path<T> target;
 
     public JoinBuilder(QueryMixin<MongodbQuery<K>> queryMixin, Path<?> ref, Path<T> target) {
@@ -40,7 +40,7 @@ public class JoinBuilder<K, T> {
         this.ref = ref;
         this.target = target;
     }
-    
+
     public MongodbQuery<K> on(Predicate... conditions) {
         queryMixin.addJoin(JoinType.JOIN, ExpressionUtils.as((Path)ref, target));
         queryMixin.on(conditions);

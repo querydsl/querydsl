@@ -235,6 +235,17 @@ public final class Configuration {
     }
 
     /**
+     * Register the given javaType for the given table and column
+     *
+     * @param table
+     * @param column
+     * @param javaType
+     */
+    public void register(String table, String column, Class<?> javaType) {
+        register(table, column, javaTypeMapping.getType(javaType));
+    }
+
+    /**
      * Register the given Type for the given table and column
      *
      * @param table

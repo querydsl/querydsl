@@ -13,20 +13,26 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.ListAccessVisitor;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
 
 /**
@@ -38,7 +44,9 @@ import com.mysema.query.types.Predicate;
  */
 public class JPAQueryMixin<T> extends QueryMixin<T> {
 
-    private final Set<Path<?>> paths = new HashSet<Path<?>>();
+    private final Set<Path<?>> paths = Sets.newHashSet();
+
+    private final Map<Expression<?>, Path<?>> aliases = Maps.newHashMap();
 
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
 
@@ -65,8 +73,56 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     @Override
-    public <RT> Expression<RT> convert(Expression<RT> expr) {
-        return super.convert(Conversions.convert(expr));
+    protected <D> Expression<D> createAlias(Expression<?> expr, Path<?> alias) {
+        aliases.put(expr, alias);
+        return super.createAlias(expr, alias);
+    }
+
+    private <T> Class<T> getElementTypeOrType(Path<T> path) {
+        if (path instanceof CollectionExpression) {
+            return ((CollectionExpression)path).getParameter(0);
+        } else {
+            return (Class<T>) path.getType();
+        }
+    }
+
+    private <T> Path<T> shorten(Path<T> path) {
+        PathMetadata<?> metadata = path.getMetadata();
+        if (metadata.isRoot()) {
+            return path;
+        } else if (aliases.containsKey(path)) {
+            return (Path<T>) aliases.get(path);
+        } else if (metadata.getPathType() == PathType.COLLECTION_ANY) {
+            return (Path<T>) shorten(metadata.getParent());
+        } else if (metadata.getParent().getMetadata().isRoot()) {
+            Class<T> type = getElementTypeOrType(path);
+            Path<T> newPath = new PathImpl<T>(type, path.toString().replace('.', '_'));
+            leftJoin(path, newPath);
+            return newPath;
+        } else {
+            Class<T> type = getElementTypeOrType(path);
+            Path<?> parent = shorten(metadata.getParent());
+            Path<T> oldPath = new PathImpl<T>(path.getType(),
+                    new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
+            Path<T> newPath = new PathImpl<T>(type, oldPath.toString().replace('.', '_'));
+            leftJoin(oldPath, newPath);
+            return newPath;
+        }
+    }
+
+    @Override
+    public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
+        if (forOrder && expr instanceof Path) {
+            Path<?> path = (Path<?>)expr;
+            PathMetadata<?> metadata = path.getMetadata();
+            // at least three levels
+            if (metadata.getParent() != null && !metadata.getParent().getMetadata().isRoot()) {
+                Path<?> shortened = shorten(metadata.getParent());
+                expr = new PathImpl<RT>(expr.getType(),
+                    new PathMetadata(shortened, metadata.getElement(), metadata.getPathType()));
+            }
+        }
+        return super.convert(Conversions.convert(expr), forOrder);
     }
 
     @Override

@@ -45,6 +45,7 @@ public class PostgresTemplates extends SQLTemplates {
     public PostgresTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable(null);
+        setCountDistinctMultipleColumns(true);
         // type mappings
         addClass2TypeMappings("numeric(3,0)", Byte.class);
         addClass2TypeMappings("double precision", Double.class);

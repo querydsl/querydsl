@@ -65,7 +65,7 @@ public class GeoSpatialQueryTest {
         assertEquals(10.0, entities.get(2).getLocation()[0].doubleValue(), 0.1);
     }
 
-    private MongodbQuery<GeoEntity> query() {
+    private MorphiaQuery<GeoEntity> query() {
         return new MorphiaQuery<GeoEntity>(morphia, ds, geoEntity);
     }
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,20 +17,20 @@ import com.mysema.query.types.Ops;
 
 /**
  * OpenJPATemplates extends JPQLTemplates with OpenJPA specific extensions
- * 
+ *
  * @author tiwe
  *
  */
 public class OpenJPATemplates extends JPQLTemplates{
 
-    public static final JPQLTemplates DEFAULT = new OpenJPATemplates();
-    
+    public static final OpenJPATemplates DEFAULT = new OpenJPATemplates();
+
     public OpenJPATemplates() {
-        this(DEFAULT_ESCAPE);  
+        this(DEFAULT_ESCAPE);
         add(Ops.ALIAS, "{0} {1}");
         add(Ops.NEGATE, "-1 * {0}", 7);
     }
-    
+
     public OpenJPATemplates(char escape) {
         super(escape);
     }

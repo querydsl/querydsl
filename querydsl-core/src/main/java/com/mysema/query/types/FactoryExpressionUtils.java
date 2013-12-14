@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import java.util.List;
 import com.mysema.util.ArrayUtils;
 
 /**
- * Utility class to expand FactoryExpression constructor arguments and compress {@link FactoryExpression} 
+ * Utility class to expand FactoryExpression constructor arguments and compress {@link FactoryExpression}
  * invocation arguments
  *
  * @author tiwe
@@ -55,7 +55,7 @@ public final class FactoryExpressionUtils {
         public <R, C> R accept(Visitor<R, C> v, C context) {
             return v.visit(this, context);
         }
-        
+
         @Override
         public boolean equals(Object o) {
             if (o == this) {
@@ -69,7 +69,7 @@ public final class FactoryExpressionUtils {
         }
 
     }
-    
+
     /**
      * @param exprs
      * @return
@@ -81,17 +81,17 @@ public final class FactoryExpressionUtils {
         }
         if (usesFactoryExpressions) {
             return wrap(new ArrayConstructorExpression(
-                    projection.toArray(new Expression[projection.size()])));    
+                    projection.toArray(new Expression[projection.size()])));
         } else {
             return null;
-        }        
+        }
     }
 
     public static <T> FactoryExpression<T> wrap(FactoryExpression<T> expr) {
         for (Expression<?> arg : expr.getArgs()) {
             if (arg instanceof ProjectionRole) {
                 arg = ((ProjectionRole) arg).getProjection();
-            }            
+            }
             if (arg instanceof FactoryExpression<?>) {
                 return new FactoryExpressionAdapter<T>(expr);
             }
@@ -104,7 +104,7 @@ public final class FactoryExpressionUtils {
         for (Expression<?> expr : exprs) {
             if (expr instanceof ProjectionRole) {
                 expr = ((ProjectionRole) expr).getProjection();
-            }            
+            }
             if (expr instanceof FactoryExpression<?>) {
                 rv.addAll(expand(((FactoryExpression<?>)expr).getArgs()));
             } else {
@@ -117,6 +117,9 @@ public final class FactoryExpressionUtils {
     private static int countArguments(FactoryExpression<?> expr) {
         int counter = 0;
         for (Expression<?> arg : expr.getArgs()) {
+            if (arg instanceof ProjectionRole) {
+                arg = ((ProjectionRole)arg).getProjection();
+            }
             if (arg instanceof FactoryExpression<?>) {
                 counter += countArguments((FactoryExpression<?>)arg);
             } else {
@@ -125,7 +128,7 @@ public final class FactoryExpressionUtils {
         }
         return counter;
     }
-    
+
     private static Object[] compress(List<Expression<?>> exprs, Object[] args) {
         Object[] rv = new Object[exprs.size()];
         int offset = 0;
@@ -133,7 +136,7 @@ public final class FactoryExpressionUtils {
             Expression<?> expr = exprs.get(i);
             if (expr instanceof ProjectionRole) {
                 expr = ((ProjectionRole) expr).getProjection();
-            }                
+            }
             if (expr instanceof FactoryExpression<?>) {
                 FactoryExpression<?> fe = (FactoryExpression<?>)expr;
                 int fullArgsLength = countArguments(fe);

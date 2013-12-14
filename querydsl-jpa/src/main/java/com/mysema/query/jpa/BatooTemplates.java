@@ -18,7 +18,7 @@ import com.mysema.query.types.Ops;
 
 public class BatooTemplates extends JPQLTemplates {
 
-    public static final JPQLTemplates DEFAULT = new BatooTemplates();
+    public static final BatooTemplates DEFAULT = new BatooTemplates();
 
     public BatooTemplates() {
         this(DEFAULT_ESCAPE);

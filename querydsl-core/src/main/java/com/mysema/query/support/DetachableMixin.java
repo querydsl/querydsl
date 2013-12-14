@@ -121,7 +121,7 @@ public class DetachableMixin implements Detachable {
     private QueryMetadata projection(Expression<?>... projection) {
         QueryMetadata metadata = queryMixin.getMetadata().clone();
         for (Expression<?> expr : projection) {
-            expr = queryMixin.convert(expr);
+            expr = queryMixin.convert(expr, false);
             metadata.addProjection(nullAsTemplate(expr));
         }
         return metadata;

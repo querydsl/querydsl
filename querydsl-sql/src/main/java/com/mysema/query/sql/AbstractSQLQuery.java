@@ -59,8 +59,6 @@ import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
 
 /**
- *
-/**
  * AbstractSQLQuery is the base type for SQL query implementations
  *
  * @author tiwe

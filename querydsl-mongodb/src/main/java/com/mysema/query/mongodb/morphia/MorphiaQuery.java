@@ -49,7 +49,7 @@ public final class MorphiaQuery<K> extends MongodbQuery<K> {
             public K apply(DBObject dbObject) {
                 return morphia.fromDBObject(entityPath.getType(), dbObject, cache);
             }
-        }, MorphiaSerializer.DEFAULT);
+        }, new MorphiaSerializer(morphia));
         this.datastore = datastore;
         this.cache = cache;
     }
