@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@ import static com.mysema.query.jpa.domain.QCat.cat;
 import static org.junit.Assert.assertEquals;
 
 import org.hibernate.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,6 +25,7 @@ import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.testutil.HibernateTestRunner;
 
+@Ignore
 @RunWith(HibernateTestRunner.class)
 public class UniqueResultsTest {
 
