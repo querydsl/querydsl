@@ -146,7 +146,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     @Override
     public String toString() {
-        return "BeanMap<" + String.valueOf(bean) + ">";
+        return "BeanMap<" + bean + ">";
     }
 
     /**
