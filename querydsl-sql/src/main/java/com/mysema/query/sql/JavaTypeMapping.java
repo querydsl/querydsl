@@ -127,6 +127,8 @@ public class JavaTypeMapping {
             resolvedType = findType(clazz);
             if (resolvedType != null) {
                 resolvedTypesByClass.put(clazz, resolvedType);
+            } else {
+                throw new IllegalArgumentException("Found no type for " + clazz.getName());
             }
         }
         return (Type<T>) resolvedType;
