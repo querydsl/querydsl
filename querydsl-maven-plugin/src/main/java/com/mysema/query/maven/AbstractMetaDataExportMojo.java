@@ -406,6 +406,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         this.nameSuffix = nameSuffix;
     }
 
+    public void setBeanInterfaces(String[] beanInterfaces) {
+        this.beanInterfaces = beanInterfaces;
+    }
+
     public void setBeanPrefix(String beanPrefix) {
         this.beanPrefix = beanPrefix;
     }
