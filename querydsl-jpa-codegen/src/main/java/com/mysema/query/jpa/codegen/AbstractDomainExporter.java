@@ -146,7 +146,7 @@ public abstract class AbstractDomainExporter {
         Set<Supertype> additions = Sets.newHashSet();
         for (Map.Entry<Class<?>, EntityType> entry : allTypes.entrySet()) {
             EntityType entityType = entry.getValue();
-            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getFullName())) {
+            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType())) {
                 additions.add(entityType.getSuperType());
             }
         }
