@@ -148,7 +148,7 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
 
     @Override
     protected void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException,
-        SecurityException, NoSuchMethodException {
+        NoSuchMethodException {
         // super classes
         Iterator<?> superClassMappings = configuration.getMappedSuperclassMappings();
         while (superClassMappings.hasNext()) {
