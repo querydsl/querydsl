@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
     private static final long serialVersionUID = -64156984110154969L;
 
     private final SubQueryExpressionImpl<String> subQueryMixin;
-    
+
     @Nullable
     private volatile BooleanExpression exists;
 
@@ -41,9 +41,9 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
         super(new SubQueryExpressionImpl<String>(String.class, md));
         this.subQueryMixin = (SubQueryExpressionImpl<String>)mixin;
     }
-    
+
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(subQueryMixin, context);
     }
 

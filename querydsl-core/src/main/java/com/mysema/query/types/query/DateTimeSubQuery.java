@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,9 +43,9 @@ public final class DateTimeSubQuery<T extends Comparable<?>> extends DateTimeExp
         super(new SubQueryExpressionImpl<T>(type, md));
         subQueryMixin = (SubQueryExpressionImpl<T>)mixin;
     }
-    
+
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(subQueryMixin, context);
     }
 
