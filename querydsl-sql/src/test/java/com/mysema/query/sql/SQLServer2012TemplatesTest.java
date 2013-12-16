@@ -26,7 +26,7 @@ import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.NumberTemplate;
 
 
-public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest{
+public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     @Test

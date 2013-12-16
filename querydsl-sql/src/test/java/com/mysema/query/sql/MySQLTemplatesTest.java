@@ -19,7 +19,7 @@ import org.junit.Test;
 
 
 
-public class MySQLTemplatesTest extends AbstractSQLTemplatesTest{
+public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     protected SQLTemplates createTemplates() {

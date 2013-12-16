@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,31 +25,37 @@ import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.NumberTemplate;
 
 public abstract class AbstractSQLTemplatesTest {
-    
+
     protected static final QSurvey survey1 = new QSurvey("survey1");
-    
+
     protected static final QSurvey survey2 = new QSurvey("survey2");
-    
+
+    private SQLTemplates templates;
+
     protected SQLQuery query;
-    
+
     protected abstract SQLTemplates createTemplates();
 
     @Before
     public void setUp() {
-        SQLTemplates templates = createTemplates();
+        templates = createTemplates();
         templates.newLineToSingleSpace();
         query = new SQLQuery(templates);
     }
-    
+
     @Test
     public void NoFrom() {
         query.getMetadata().addProjection(NumberTemplate.ONE);
-        assertEquals("select 1 from dual", query.toString());
+        if (templates.getDummyTable() == null) {
+            assertEquals("select 1", query.toString());
+        } else {
+            assertEquals("select 1 from dual", query.toString());
+        }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {        
+    public void Union() {
         NumberExpression<Integer> one = NumberTemplate.ONE;
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;
@@ -58,22 +64,32 @@ public abstract class AbstractSQLTemplatesTest {
             sq().unique(one.as(col1)),
             sq().unique(two),
             sq().unique(three));
-        assertEquals(
-                "(select 1 as col1 from dual)\n" +
-        	"union\n" +
-        	"(select 2 from dual)\n" +
-        	"union\n" +
-        	"(select 3 from dual)", union.toString());
+
+        if (templates.getDummyTable() == null) {
+            assertEquals(
+                    "(select 1 as col1)\n" +
+                    "union\n" +
+                    "(select 2)\n" +
+                    "union\n" +
+                    "(select 3)", union.toString());
+        } else {
+            assertEquals(
+                    "(select 1 as col1 from dual)\n" +
+                    "union\n" +
+                    "(select 2 from dual)\n" +
+                    "union\n" +
+                    "(select 3 from dual)", union.toString());
+        }
     }
-    
+
     @Test
-    public void InnerJoin() {        
+    public void InnerJoin() {
         query.from(survey1).innerJoin(survey2);
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
-    
+
     protected SQLSubQuery sq() {
         return new SQLSubQuery();
     }
-    
+
 }
