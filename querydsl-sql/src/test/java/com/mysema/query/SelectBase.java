@@ -795,6 +795,22 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(10, results.getTotal());
     }
 
+    @Test
+    public void ListResults2() {
+        SearchResults<Integer> results = query().from(employee)
+                .limit(2).offset(10).orderBy(employee.id.asc())
+                .listResults(employee.id);
+        assertEquals(10, results.getTotal());
+    }
+
+    @Test
+    public void ListResults_FactoryExpression() {
+        SearchResults<Employee> results = query().from(employee)
+                .limit(10).offset(1).orderBy(employee.id.asc())
+                .listResults(employee);
+        assertEquals(10, results.getTotal());
+    }
+
     private double log(double x, int y) {
         return Math.log(x) / Math.log(y);
     }

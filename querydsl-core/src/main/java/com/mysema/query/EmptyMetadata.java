@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,9 +25,9 @@ import com.mysema.query.types.Predicate;
 
 /**
  * EmptyMetadata provides a immutable empty QueryMetadata instace
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public final class EmptyMetadata implements QueryMetadata {
 
@@ -198,6 +198,11 @@ public final class EmptyMetadata implements QueryMetadata {
     @Override
     public void addJoinFlag(JoinFlag flag) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void removeFlag(QueryFlag flag) {
+
     }
 
 }

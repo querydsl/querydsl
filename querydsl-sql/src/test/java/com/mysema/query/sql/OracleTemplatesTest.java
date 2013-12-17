@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.QueryFlag;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -58,10 +59,23 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().addProjection(survey1.id);
         assertEquals("select * from (  " +
-        		"select a.*, rownum rn from (   " +
-        		"select survey1.ID from SURVEY survey1  ) " +
-        		"a) " +
-        		"where rn > 3 and rownum <= 5", query.toString());
+                "select a.*, rownum rn from (   " +
+                "select survey1.ID from SURVEY survey1  ) " +
+                "a) " +
+                "where rn > 3 and rownum <= 5", query.toString());
+    }
+
+    @Test
+    public void Modifiers2() {
+        query.from(survey1).limit(5).offset(3);
+        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().addFlag(new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() "));
+
+        assertEquals("select * from (  " +
+        	"select a.*, rownum rn from (   " +
+        	"select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
+        	"a) " +
+        	"where rn > 3 and rownum <= 5", query.toString());
     }
 
     @Test

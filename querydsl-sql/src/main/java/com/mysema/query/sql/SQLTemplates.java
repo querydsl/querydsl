@@ -200,6 +200,8 @@ public class SQLTemplates extends Templates {
 
     private boolean countDistinctMultipleColumns = false;
 
+    private boolean countViaAnalytics = false;
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -643,6 +645,10 @@ public class SQLTemplates extends Templates {
         return nullsLast;
     }
 
+    public boolean isCountViaAnalytics() {
+        return countViaAnalytics;
+    }
+
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -891,6 +897,10 @@ public class SQLTemplates extends Templates {
 
     protected void setCountDistinctMultipleColumns(boolean countDistinctMultipleColumns) {
         this.countDistinctMultipleColumns = countDistinctMultipleColumns;
+    }
+
+    protected void setCountViaAnalytics(boolean countViaAnalytics) {
+        this.countViaAnalytics = countViaAnalytics;
     }
 
 }

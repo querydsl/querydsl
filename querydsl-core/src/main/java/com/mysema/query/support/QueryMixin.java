@@ -94,6 +94,11 @@ public class QueryMixin<T> {
         return self;
     }
 
+    public T removeFlag(QueryFlag queryFlag) {
+        metadata.removeFlag(queryFlag);
+        return self;
+    }
+
     public <E> Expression<E> addProjection(Expression<E> e) {
         e = convert(e, false);
         metadata.addProjection(e);

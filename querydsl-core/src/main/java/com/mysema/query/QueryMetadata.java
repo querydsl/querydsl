@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,11 +57,11 @@ public interface QueryMetadata extends Serializable {
 
     /**
      * Add the given join flag to the last given join
-     * 
+     *
      * @param flag
      */
     void addJoinFlag(JoinFlag flag);
-    
+
     /**
      * Add the given join condition to the last given join
      *
@@ -220,23 +220,28 @@ public interface QueryMetadata extends Serializable {
      * @param value
      */
     <T> void setParam(ParamExpression<T> param, T value);
-    
+
     /**
      * @param flag
      */
     void addFlag(QueryFlag flag);
-    
+
     /**
      * @param flag
      * @return
      */
-    boolean hasFlag(QueryFlag flag); 
-    
+    boolean hasFlag(QueryFlag flag);
+
+    /**
+     * @param flag
+     */
+    void removeFlag(QueryFlag flag);
+
     /**
      * @return
      */
     Set<QueryFlag> getFlags();
-    
+
     /**
      * @param v
      */

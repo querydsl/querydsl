@@ -422,6 +422,15 @@ public final class SQLExpressions {
     /**
      * Start a window function expression
      *
+     * @return
+     */
+    public static WindowOver<Long> count() {
+        return new WindowOver<Long>(Long.class, Ops.AggOps.COUNT_ALL_AGG);
+    }
+
+    /**
+     * Start a window function expression
+     *
      * @param expr
      * @return
      */

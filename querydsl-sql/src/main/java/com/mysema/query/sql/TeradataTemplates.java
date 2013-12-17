@@ -56,6 +56,7 @@ public class TeradataTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
         setDummyTable(null);
+        setCountViaAnalytics(true);
 
         addClass2TypeMappings("byteint", Byte.class);
         addClass2TypeMappings("double precision", Double.class);

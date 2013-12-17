@@ -18,6 +18,7 @@ import static com.mysema.query.util.CollectionUtils.addSorted;
 import static com.mysema.query.util.CollectionUtils.copyOf;
 import static com.mysema.query.util.CollectionUtils.copyOfSorted;
 import static com.mysema.query.util.CollectionUtils.put;
+import static com.mysema.query.util.CollectionUtils.removeSorted;
 
 import java.util.List;
 import java.util.Map;
@@ -346,6 +347,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public boolean hasFlag(QueryFlag flag) {
         return flags.contains(flag);
+    }
+
+    @Override
+    public void removeFlag(QueryFlag flag) {
+        flags = removeSorted(flags, flag);
     }
 
     private void validate(Expression<?> expr) {

@@ -63,6 +63,8 @@ public class OracleTemplates extends SQLTemplates {
         setParameterMetadataAvailable(false);
         setBatchCountViaGetUpdateCount(true);
         setWithRecursive("with ");
+        setCountViaAnalytics(true);
+
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);

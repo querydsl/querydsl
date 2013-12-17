@@ -31,7 +31,7 @@ import com.mysema.testutil.ExcludeIn;
 public class UnionBase extends AbstractBaseTest {
 
     @Test
-    @ExcludeIn(MYSQL)
+    @ExcludeIn({MYSQL, TERADATA})
     public void In_Union() {
         assertTrue(query().from(employee)
             .where(employee.id.in(

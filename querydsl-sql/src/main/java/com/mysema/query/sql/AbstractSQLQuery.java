@@ -70,6 +70,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
+    private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
+
     @Nullable
     private final Connection conn;
 
@@ -91,6 +93,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     protected boolean unionAll;
 
     private boolean useLiterals;
+
+    private boolean getLastCell;
+
+    private Object lastCell;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata().noValidate());
@@ -520,15 +526,24 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 setParameters(stmt, constants, constantPaths, queryMixin.getMetadata().getParams());
                 final ResultSet rs = stmt.executeQuery();
                 try {
+                    lastCell = null;
                     final List<RT> rv = new ArrayList<RT>();
                     if (expr instanceof FactoryExpression) {
                         FactoryExpression<RT> fe = (FactoryExpression<RT>)expr;
                         while (rs.next()) {
+                            if (getLastCell) {
+                                lastCell = rs.getObject(fe.getArgs().size() + 1);
+                                getLastCell = false;
+                            }
                             rv.add(newInstance(fe, rs, 0));
                         }
                     }  else if (expr.getType().isArray()) {
                         while (rs.next()) {
                             Object[] row = new Object[rs.getMetaData().getColumnCount()];
+                            if (getLastCell) {
+                                lastCell = rs.getObject(row.length);
+                                getLastCell = false;
+                            }
                             for (int i = 0; i < row.length; i++) {
                                 row[i] = rs.getObject(i+1);
                             }
@@ -536,6 +551,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                         }
                     } else {
                         while (rs.next()) {
+                            if (getLastCell) {
+                                lastCell = rs.getObject(2);
+                                getLastCell = false;
+                            }
                             rv.add(get(rs, expr, 1, expr.getType()));
                         }
                     }
@@ -570,18 +589,43 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
-        long total = count();
         try {
-            if (total > 0) {
-                queryMixin.getMetadata().clearProjection();
+            if (configuration.getTemplates().isCountViaAnalytics()) {
+                List<RT> results;
+                try {
+                    queryMixin.addFlag(rowCountFlag);
+                    getLastCell = true;
+                    results = list(expr);
+                } finally {
+                    queryMixin.removeFlag(rowCountFlag);
+                }
+                long total;
+                if (!results.isEmpty()) {
+                    if (lastCell instanceof Number) {
+                        total = ((Number)lastCell).longValue();
+                    } else {
+                        throw new IllegalStateException("Unsupported lastCell instance " + lastCell);
+                    }
+                } else {
+                    total = count();
+                }
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                return new SearchResults<RT>(list(expr), modifiers, total);
+                return new SearchResults<RT>(results, modifiers, total);
+
             } else {
-                return SearchResults.emptyResults();
+                queryMixin.addProjection(expr);
+                long total = count();
+                if (total > 0) {
+                    queryMixin.getMetadata().clearProjection();
+                    QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                    return new SearchResults<RT>(list(expr), modifiers, total);
+                } else {
+                    return SearchResults.emptyResults();
+                }
             }
 
         } finally {
+            getLastCell = false;
             reset();
         }
     }
