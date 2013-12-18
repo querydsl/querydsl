@@ -20,6 +20,7 @@ import java.sql.Connection;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.mysema.query.Survey;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
@@ -197,6 +198,19 @@ public class SerializationTest {
     }
 
     @Test
+    public void With_Tuple() {
+        PathBuilder<Survey> survey = new PathBuilder<Survey>(Survey.class, "SURVEY");
+        QSurvey survey2 = new QSurvey("survey2");
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
+        q.with(survey, survey.get(survey2.id), survey.get(survey2.name)).as(
+                new SQLSubQuery().from(survey2).list(survey2.id, survey2.name));
+
+        assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
+            "from SURVEY survey2)\n\n" +
+            "from dual", q.toString());
+    }
+
+    @Test
     public void With_SingleColumn() {
         QSurvey survey2 = new QSurvey("survey2");
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
@@ -207,5 +221,7 @@ public class SerializationTest {
             "from SURVEY survey2)\n\n" +
             "from dual", q.toString());
     }
+
+
 
 }
