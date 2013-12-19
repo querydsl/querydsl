@@ -243,7 +243,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &lt; right</code> expression
+     * Get a <code>this &lt;= right</code> expression
      *
      * @param right rhs of the comparison
      * @return
