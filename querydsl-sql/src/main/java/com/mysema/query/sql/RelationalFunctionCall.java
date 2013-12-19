@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * Represents a table valued function call
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -33,7 +33,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
 
     private static final long serialVersionUID = 256739044928186923L;
 
-    private static final Template createTemplate(String function, int argCount) {
+    private static Template createTemplate(String function, int argCount) {
         StringBuilder builder = new StringBuilder();
         builder.append(function);
         builder.append("(");
@@ -44,14 +44,14 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
             builder.append("{"+ i + "}");
         }
         builder.append(")");
-        return TemplateFactory.DEFAULT.create(builder.toString());               
+        return TemplateFactory.DEFAULT.create(builder.toString());
     }
-    
+
     private final TemplateExpression<T> templateMixin;
-    
+
     /**
      * Create a new RelationalFunctionCall for the given function and arguments
-     * 
+     *
      * @param type
      * @param function
      * @param args
@@ -59,18 +59,18 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
      */
     public static <T> RelationalFunctionCall<T> create(Class<? extends T> type, String function, Object... args) {
         return new RelationalFunctionCall<T>(type, function, args);
-    }    
-    
+    }
+
     public RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
         super(TemplateExpressionImpl.create((Class)type, createTemplate(function, args.length), args));
         templateMixin = (TemplateExpression<T>)mixin;
-    }    
+    }
 
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public Object getArg(int index) {
         return templateMixin.getArg(index);
@@ -85,5 +85,5 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
     public Template getTemplate() {
         return templateMixin.getTemplate();
     }
-    
+
 }

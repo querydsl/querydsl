@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.primitives.Primitives;
 import com.mysema.query.sql.types.BigDecimalType;
+import com.mysema.query.sql.types.BigIntegerType;
 import com.mysema.query.sql.types.BlobType;
 import com.mysema.query.sql.types.BooleanType;
 import com.mysema.query.sql.types.ByteType;
@@ -56,6 +57,7 @@ public class JavaTypeMapping {
     private static final Map<Class<?>,Type<?>> defaultTypes = new HashMap<Class<?>,Type<?>>();
 
     static{
+        registerDefault(new BigIntegerType());
         registerDefault(new BigDecimalType());
         registerDefault(new BlobType());
         registerDefault(new BooleanType());
@@ -127,6 +129,8 @@ public class JavaTypeMapping {
             resolvedType = findType(clazz);
             if (resolvedType != null) {
                 resolvedTypesByClass.put(clazz, resolvedType);
+            } else {
+                throw new IllegalArgumentException("Found no type for " + clazz.getName());
             }
         }
         return (Type<T>) resolvedType;

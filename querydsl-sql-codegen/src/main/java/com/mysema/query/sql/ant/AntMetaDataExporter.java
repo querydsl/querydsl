@@ -179,7 +179,7 @@ public class AntMetaDataExporter extends Task {
     private boolean beanPrintSupertype;
 
     @Override
-    public void execute() throws BuildException {
+    public void execute() {
         Connection dbConn = null;
         File targetPackagePath = new File(targetSourceFolder);
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,16 +37,16 @@ import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
  * CompilerMojo compiles the sources generated in the other tasks
- * 
+ *
  * @goal compile
  * @requiresDependencyResolution test
  *
  */
 public class CompileMojo extends AbstractMojo {
-    
+
     private static final String JAVA_FILE_FILTER = "/*.java";
     private static final String[] ALL_JAVA_FILES_FILTER = new String[] { "**" + JAVA_FILE_FILTER };
-    
+
     /**
      * @parameter expression="${project}" readonly=true required=true
      */
@@ -56,7 +56,7 @@ public class CompileMojo extends AbstractMojo {
      * @parameter required=true
      */
     private File sourceFolder;
-    
+
     /**
      * @parameter
      */
@@ -66,12 +66,12 @@ public class CompileMojo extends AbstractMojo {
      * @parameter
      */
     private String source;
-    
+
     /**
      * @parameter
      */
     private String target;
-    
+
     /**
      * @parameter default-value=false
      */
@@ -81,12 +81,12 @@ public class CompileMojo extends AbstractMojo {
      * @parameter
      */
     private Map<String, String> compilerOptions;
-    
+
     /**
      * @component
      */
     private BuildContext buildContext;
-    
+
     @SuppressWarnings("unchecked")
     private String buildCompileClasspath() {
         List<String> pathElements = null;
@@ -110,45 +110,45 @@ public class CompileMojo extends AbstractMojo {
             if (i > 0) {
                 result.append(File.pathSeparatorChar);
             }
-            result.append(pathElements.get(i));                
+            result.append(pathElements.get(i));
         }
         return result.toString();
     }
 
     private List<String> getCompilerOptions() {
         Map<String, String> compilerOpts = new LinkedHashMap<String, String>();
-        
+
         // classpath
         String cp = buildCompileClasspath();
         if (cp != null) {
-            compilerOpts.put("cp", cp);    
-        }        
-        
+            compilerOpts.put("cp", cp);
+        }
+
         // No APT processing
         compilerOpts.put("proc:none", null);
-        
+
         if (source != null) {
             compilerOpts.put("-source", source);
         }
-        
+
         if (target != null) {
             compilerOpts.put("-target", target);
         }
-        
+
         if (sourceEncoding != null) {
             compilerOpts.put("encoding", sourceEncoding);
         }
-        
+
         if (testClasspath) {
             compilerOpts.put("d", project.getBuild().getTestOutputDirectory());
         } else {
             compilerOpts.put("d", project.getBuild().getOutputDirectory());
-        } 
-        
-        if (compilerOptions != null) {
-            compilerOpts.putAll(compilerOptions);    
         }
-        
+
+        if (compilerOptions != null) {
+            compilerOpts.putAll(compilerOptions);
+        }
+
         List<String> opts = new ArrayList<String>(compilerOpts.size() * 2);
 
         for (Map.Entry<String, String> compilerOption : compilerOpts.entrySet()) {
@@ -160,16 +160,16 @@ public class CompileMojo extends AbstractMojo {
         }
         return opts;
     }
-    
+
     private Set<File> getJavaFiles(File directory) {
         String[] filters = ALL_JAVA_FILES_FILTER;
-        
+
         Set<File> files = new HashSet<File>();
         // support for incremental build in m2e context
         Scanner scanner = buildContext.newScanner(directory);
         scanner.setIncludes(filters);
         scanner.scan();
-        
+
         String[] includedFiles = scanner.getIncludedFiles();
         if (includedFiles != null) {
             for (String includedFile : includedFiles) {
@@ -186,15 +186,47 @@ public class CompileMojo extends AbstractMojo {
         try {
             Set<File> generatedFiles = getJavaFiles(sourceFolder);
             Iterable<? extends JavaFileObject> fileObjects = sjfm.getJavaFileObjectsFromFiles(generatedFiles);
-            List<String> opts = getCompilerOptions();                
-            jc.getTask(null, null, null, opts, null, fileObjects).call();    
+            List<String> opts = getCompilerOptions();
+            jc.getTask(null, null, null, opts, null, fileObjects).call();
         } finally {
             try {
                 sjfm.close();
             } catch (IOException e) {
                 throw new MojoFailureException(e.getMessage(), e);
-            }    
-        }  
+            }
+        }
+    }
+
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    public void setSourceFolder(File sourceFolder) {
+        this.sourceFolder = sourceFolder;
+    }
+
+    public void setSourceEncoding(String sourceEncoding) {
+        this.sourceEncoding = sourceEncoding;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public void setTestClasspath(boolean testClasspath) {
+        this.testClasspath = testClasspath;
+    }
+
+    public void setCompilerOptions(Map<String, String> compilerOptions) {
+        this.compilerOptions = compilerOptions;
+    }
+
+    public void setBuildContext(BuildContext buildContext) {
+        this.buildContext = buildContext;
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ public final class BooleanSubQuery extends BooleanExpression implements Extended
     private static final long serialVersionUID = -64156984110154969L;
 
     private final SubQueryExpressionImpl<Boolean> subQueryMixin;
-    
+
     @Nullable
     private volatile BooleanExpression exists;
 
@@ -40,9 +40,9 @@ public final class BooleanSubQuery extends BooleanExpression implements Extended
         super(new SubQueryExpressionImpl<Boolean>(Boolean.class, md));
         subQueryMixin = (SubQueryExpressionImpl<Boolean>)mixin;
     }
-    
+
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 

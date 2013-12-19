@@ -51,7 +51,7 @@ public class SQLTemplates extends Templates {
 
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
-    public static abstract class Builder {
+    public abstract static class Builder {
 
         protected boolean printSchema, quote, newLineToSingleSpace;
 

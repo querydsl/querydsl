@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,7 +50,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     @Nullable
     private volatile BooleanExpression exists;
-    
+
     @Nullable
     private volatile NumberExpression<Long> count;
 
@@ -63,46 +63,46 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         this.elementType = elementType;
         this.subQueryMixin = (SubQueryExpressionImpl<List<T>>)mixin;
     }
-    
+
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(subQueryMixin, context);
     }
 
     public NumberExpression<Long> count() {
         if (count == null) {
-            count = count(Ops.AggOps.COUNT_AGG);    
+            count = count(Ops.AggOps.COUNT_AGG);
         }
         return count;
     }
 
     public NumberExpression<Long> countDistinct() {
         if (countDistinct == null) {
-            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);    
+            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);
         }
         return countDistinct;
     }
-    
+
     private NumberExpression<Long> count(Operator<Long> operator) {
         QueryMetadata md = subQueryMixin.getMetadata().clone();
         Expression<?> e = null;
         if (md.getProjection().size() == 1) {
             e = md.getProjection().get(0);
-        } else if (!md.getProjection().isEmpty()) {    
+        } else if (!md.getProjection().isEmpty()) {
             e = ExpressionUtils.list(Object.class, md.getProjection());
         }
         md.clearProjection();
         if (e != null) {
-            md.addProjection(OperationImpl.create(Long.class, operator, e));    
-        } else if (operator == Ops.AggOps.COUNT_AGG) {    
+            md.addProjection(OperationImpl.create(Long.class, operator, e));
+        } else if (operator == Ops.AggOps.COUNT_AGG) {
             md.addProjection(Wildcard.count);
         } else {
             md.addProjection(Wildcard.countDistinct);
         }
-        
+
         return new NumberSubQuery<Long>(Long.class, md);
     }
-    
+
     @Override
     public BooleanExpression exists() {
         if (exists == null) {

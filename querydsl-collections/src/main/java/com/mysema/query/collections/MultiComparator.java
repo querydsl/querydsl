@@ -34,7 +34,7 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     private final boolean[] asc;
 
-    private transient final Evaluator<Object[]> ev;
+    private final transient Evaluator<Object[]> ev;
 
     public MultiComparator(Evaluator<Object[]> ev, boolean[] directions) {
         this.ev = ev;

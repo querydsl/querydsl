@@ -145,7 +145,7 @@ public class JPADomainExporter extends AbstractDomainExporter {
 
     @Override
     protected void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException,
-        SecurityException, NoSuchMethodException {
+        NoSuchMethodException {
 
         Map<ManagedType<?>, EntityType> types = Maps.newHashMap();
         for (ManagedType<?> managedType : configuration.getManagedTypes()) {

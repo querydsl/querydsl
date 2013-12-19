@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Blob;
@@ -43,6 +44,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.BigDecimalType;
+import com.mysema.query.sql.types.BigIntegerType;
 import com.mysema.query.sql.types.BlobType;
 import com.mysema.query.sql.types.ByteType;
 import com.mysema.query.sql.types.BytesType;
@@ -100,6 +102,7 @@ public class TypeTest implements InvocationHandler{
     public void test() throws MalformedURLException, SQLException{
         List<Pair<?,?>> valueAndType = new ArrayList<Pair<?,?>>();
         valueAndType.add(Pair.of(new BigDecimal("1"), new BigDecimalType()));
+        valueAndType.add(Pair.of(new BigInteger("2"), new BigIntegerType()));
         //valueAndType.add(Pair.of(Boolean.TRUE,         new BooleanType()));
         valueAndType.add(Pair.of(Byte.valueOf((byte)1),   new ByteType()));
         valueAndType.add(Pair.of(new byte[0],         new BytesType()));

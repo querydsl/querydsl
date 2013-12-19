@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,7 @@ public final class ProjectionSerializer implements Serializer{
 
     /**
      * Create a new ProjectionSerializer instance
-     * 
+     *
      * @param typeMappings
      */
     @Inject
@@ -66,12 +66,12 @@ public final class ProjectionSerializer implements Serializer{
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
         writer.line("@Generated(\"", getClass().getName(), "\")");
-        
+
         // class header
 //        writer.suppressWarnings("serial");
         Type superType = new ClassType(TypeCategory.SIMPLE, ConstructorExpression.class, model);
         writer.beginClass(queryType, superType);
-        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()) + "L");
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", model.hashCode() + "L");
     }
 
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
@@ -79,19 +79,19 @@ public final class ProjectionSerializer implements Serializer{
     }
 
     @Override
-    public void serialize(final EntityType model, SerializerConfig serializerConfig, 
+    public void serialize(final EntityType model, SerializerConfig serializerConfig,
             CodeWriter writer) throws IOException{
         // intro
         intro(model, writer);
 
         String localName = writer.getRawName(model);
-        
+
         for (Constructor c : model.getConstructors()) {
             // begin
             writer.beginConstructor(c.getParameters(), new Function<Parameter,Parameter>() {
                 @Override
                 public Parameter apply(Parameter p) {
-                    return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), 
+                    return new Parameter(p.getName(), typeMappings.getExprType(p.getType(),
                             model, false, false, true));
                 }
             });
@@ -101,7 +101,7 @@ public final class ProjectionSerializer implements Serializer{
             // TODO: Fix for Scala (Array[Class])
             writer.append(", new Class[]{");
             boolean first = true;
-            
+
             for (Parameter p : c.getParameters()) {
                 if (!first) {
                     writer.append(", ");

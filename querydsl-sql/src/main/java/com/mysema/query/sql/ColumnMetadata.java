@@ -19,7 +19,7 @@ import com.mysema.query.types.Path;
 /**
  * Provides metadata like the column name, JDBC type and constraints
  */
-public class ColumnMetadata {
+public final class ColumnMetadata {
 
     /**
      * Returns this path's column metadata if present. Otherwise returns default

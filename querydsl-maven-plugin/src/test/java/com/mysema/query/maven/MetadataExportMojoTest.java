@@ -17,12 +17,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Collections;
 
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.sql.codegen.ExtendedBeanSerializer;
+import com.mysema.query.sql.codegen.OriginalNamingStrategy;
 import com.mysema.query.sql.types.BytesType;
 import com.mysema.query.sql.types.DateTimeType;
 import com.mysema.query.sql.types.LocalDateType;
@@ -44,7 +48,6 @@ public class MetadataExportMojoTest {
         mojo.setJdbcUser("sa");
         mojo.setNamePrefix("Q"); // default value
         mojo.setPackageName("com.example");
-
     }
 
     @Test
@@ -54,7 +57,6 @@ public class MetadataExportMojoTest {
 
         assertEquals(Collections.singletonList("target/export"), project.getCompileSourceRoots());
         assertTrue(new File("target/export").exists());
-
     }
 
     @Test
@@ -107,5 +109,54 @@ public class MetadataExportMojoTest {
         assertEquals(Collections.singletonList("target/export5"), project.getCompileSourceRoots());
         assertTrue(new File("target/export5").exists());
     }
+
+    @Test
+    public void ExecuteWithBeans() throws Exception {
+        mojo.setTargetFolder("target/export6");
+        mojo.setExportBeans(true);
+        mojo.execute();
+
+        assertTrue(new File("target/export6").exists());
+    }
+
+    @Test
+    @Ignore
+    public void ExecuteWithScalaSources() throws Exception {
+        mojo.setTargetFolder("target/export7");
+        mojo.setCreateScalaSources(true);
+        mojo.execute();
+
+        assertTrue(new File("target/export7").exists());
+    }
+
+    @Test
+    public void ExecuteWithNamingStrategy() throws Exception {
+        mojo.setTargetFolder("target/export8");
+        mojo.setNamingStrategyClass(OriginalNamingStrategy.class.getName());
+        mojo.execute();
+
+        assertTrue(new File("target/export8").exists());
+    }
+
+    @Test
+    public void ExecuteWithBeans2() throws Exception {
+        mojo.setTargetFolder("target/export9");
+        mojo.setExportBeans(true);
+        mojo.setBeanSerializerClass(ExtendedBeanSerializer.class.getName());
+        mojo.execute();
+
+        assertTrue(new File("target/export9").exists());
+    }
+
+    @Test
+    public void ExecuteWithBeans3() throws Exception {
+        mojo.setTargetFolder("target/export10");
+        mojo.setExportBeans(true);
+        mojo.setBeanInterfaces(new String[]{Serializable.class.getName()});
+        mojo.execute();
+
+        assertTrue(new File("target/export10").exists());
+    }
+
 
 }

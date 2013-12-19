@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,10 +45,10 @@ import com.mysema.query.types.path.TimePath;
  *
  */
 public final class EmbeddableSerializer extends EntitySerializer {
-    
+
     /**
      * Create a new EmbeddableSerializer instance
-     * 
+     *
      * @param typeMappings
      * @param keywords
      */
@@ -83,7 +83,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
         for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
-        
+
         writer.line("@Generated(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
@@ -93,7 +93,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
         }
 
         // TODO : generate proper serialVersionUID here
-        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()) + "L");
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", model.hashCode() + "L");
     }
 
     @Override

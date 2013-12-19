@@ -146,7 +146,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     @Override
     public String toString() {
-        return "BeanMap<" + String.valueOf(bean) + ">";
+        return "BeanMap<" + bean + ">";
     }
 
     /**
@@ -312,13 +312,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @param name  the name of the property to set
      * @param value the value to set that property to
      * @return the previous value of that property
-     * @throws IllegalArgumentException if the given name is null;
-     *                                  if the given name is not a {@link String}; if the bean doesn't
-     *                                  define a property with that name; or if the bean property with
-     *                                  that name is read-only
      */
     @Override
-    public Object put(String name, Object value) throws IllegalArgumentException, ClassCastException {
+    public Object put(String name, Object value) throws ClassCastException {
         if (bean != null) {
             Object oldValue = get(name);
             Method method = getWriteMethod(name);
@@ -657,7 +653,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @throws IllegalArgumentException if any other exception is raised
      *                                  by {@link #convertType(Class,Object)}
      */
-    protected Object[] createWriteMethodArguments(Method method, Object value) throws IllegalAccessException, ClassCastException {
+    protected Object[] createWriteMethodArguments(Method method, Object value) throws IllegalAccessException {
         try {
             if (value != null) {
                 Class<?>[] types = method.getParameterTypes();
@@ -708,10 +704,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @throws InvocationTargetException if the constructor found with
      *                                   reflection raises it
      * @throws IllegalAccessException    never
-     * @throws IllegalArgumentException  never
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected Object convertType(Class<?> newType, Object value) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    protected Object convertType(Class<?> newType, Object value) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         // try call constructor
         Class<?>[] types = {value.getClass()};
         try {
