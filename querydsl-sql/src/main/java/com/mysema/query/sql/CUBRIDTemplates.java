@@ -70,6 +70,8 @@ public class CUBRIDTemplates extends SQLTemplates {
             } else {
                 context.handle(limitTemplate, mod.getLimit());
             }
+        } else if (mod.getOffset() != null) {
+            context.handle(offsetLimitTemplate, mod.getOffset(), Integer.MAX_VALUE);
         }
     }
 
