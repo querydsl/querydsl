@@ -55,13 +55,6 @@ public class HibernateBase extends AbstractJPATest {
 
     private Session session;
 
-    // XXX fails for Batoo
-//    @After
-//    public void tearDown() {
-//        session.flush();
-//        session.clear();
-//    }
-
     @Override
     protected HibernateQuery query() {
         return new HibernateQuery(session, getTemplates());

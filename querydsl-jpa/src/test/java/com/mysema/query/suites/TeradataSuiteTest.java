@@ -1,6 +1,7 @@
 package com.mysema.query.suites;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 
 import com.mysema.query.HibernateBase;
@@ -13,6 +14,7 @@ import com.mysema.query.jpa.JPAIntegrationBase;
 import com.mysema.query.jpa.SerializationBase;
 import com.mysema.testutil.ExternalDB;
 
+@Ignore
 @Category(ExternalDB.class)
 public class TeradataSuiteTest extends AbstractSuite {
 

@@ -64,13 +64,6 @@ public class JPABase extends AbstractJPATest {
 
     private EntityManager entityManager;
 
-    // XXX fails for Batoo
-//    @After
-//    public void tearDown() {
-//        entityManager.flush();
-//        entityManager.clear();
-//    }
-
     @Override
     protected JPAQuery query() {
         return new JPAQuery(entityManager);
