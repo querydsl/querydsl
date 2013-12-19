@@ -53,6 +53,10 @@ public class CUBRIDTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
 
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
+        add(Ops.DateTimeOps.YEAR_WEEK, "(year({0}) * 100 + week({0}))");
+
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
