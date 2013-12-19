@@ -139,8 +139,9 @@ public class Templates {
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time()");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp()");
         add(Ops.DateTimeOps.DATE, "date({0})");
-        add(Ops.DateTimeOps.SECOND, "second({0})");
+
         add(Ops.DateTimeOps.MILLISECOND, "millisecond({0})");
+        add(Ops.DateTimeOps.SECOND, "second({0})");
         add(Ops.DateTimeOps.MINUTE, "minute({0})");
         add(Ops.DateTimeOps.HOUR, "hour({0})");
         add(Ops.DateTimeOps.WEEK, "week({0})");

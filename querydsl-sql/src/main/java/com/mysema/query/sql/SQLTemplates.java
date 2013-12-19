@@ -233,10 +233,19 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
-        add(Ops.DateTimeOps.MILLISECOND, "0");
 
-        add(Ops.DateTimeOps.YEAR_MONTH, "(year({0}) * 100 + month({0}))");
-        add(Ops.DateTimeOps.YEAR_WEEK, "(year({0}) * 100 + week({0}))");
+        add(Ops.DateTimeOps.MILLISECOND, "0");
+        add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
+        add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
+        add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
+        add(Ops.DateTimeOps.WEEK, "extract(week from {0})");
+        add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
+        add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "(extract(year from {0}) * 100 + extract(month from {0}))");
+        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(year from {0}) * 100 + extract(week from {0}))");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "extract(day_of_week from {0})");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "extract(day_of_year from {0})");
 
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('year',{1},{0})");
         add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('month',{1},{0})");

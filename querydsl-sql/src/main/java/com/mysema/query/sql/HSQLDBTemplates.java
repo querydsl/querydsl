@@ -57,6 +57,9 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 
+        add(Ops.DateTimeOps.WEEK, "extract(week_of_year from {0})");
+        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(year from {0}) * 100 + extract(week_of_year from {0}))");
+
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('yy', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('mm', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_WEEKS, "dateadd('week', {1s}, {0})");

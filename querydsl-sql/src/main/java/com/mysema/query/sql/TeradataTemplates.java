@@ -85,17 +85,10 @@ public class TeradataTemplates extends SQLTemplates {
 
         // Date / time
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
-        add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
-        add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
+
         add(Ops.DateTimeOps.WEEK, "(td_week_of_year({0}) + 1)"); // non-standard
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "td_day_of_week({0})"); // non-standard
         add(Ops.DateTimeOps.DAY_OF_YEAR, "td_day_of_year({0})"); // non-standard
-        add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
-        add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
-        add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
-
-        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "(extract (year from {0}) * 100 + td_week_of_year({0}))");
 
         add(Ops.DateTimeOps.ADD_YEARS, "{0} + interval '{1s}' year");

@@ -98,17 +98,10 @@ public class OracleTemplates extends SQLTemplates {
 
         // Date / time
         add(Ops.DateTimeOps.DATE, "trunc({0})");
-        add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
-        add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
+
         add(Ops.DateTimeOps.WEEK, "to_number(to_char({0},'WW'))");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "to_number(to_char({0},'DD'))");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "to_number(to_char({0},'D')) + 1");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "to_number(to_char({0},'DDD'))");
-        add(Ops.DateTimeOps.HOUR, "to_number(to_char({0},'HH24'))");
-        add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
-        add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
-
-        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "to_number(to_char({0},'IYYY') || to_char({0},'IW'))");
 
         add(Ops.DateTimeOps.ADD_YEARS, "{0} + interval '{1s}' year");

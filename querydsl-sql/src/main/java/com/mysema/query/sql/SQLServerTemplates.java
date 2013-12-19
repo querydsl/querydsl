@@ -108,7 +108,6 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
 
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
-
     }
 
     @Override
