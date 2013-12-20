@@ -317,34 +317,17 @@ exporter.export(conn.getMetaData());
     </para>
 
   </sect2>
-
+  
   <sect2>
-
-    <title>Querying</title>
-
-    <para>Querying with Querydsl SQL is as simple as this:</para>
-
+  
+    <title>Configuration</title>
+    
+    <para>The configuration is done via the com.mysema.query.sql.Configuration class which takes the
+    Querydsl SQL dialect as an argument. For H2 you would create it like this</para>
+    
     <programlisting language="java"><![CDATA[ 
-QCustomer customer = new QCustomer("c");
-
-SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
-SQLQuery query = new SQLQuery(connection, dialect); 
-List<String> lastNames = query.from(customer)
-    .where(customer.firstName.eq("Bob"))
-    .list(customer.lastName);
-]]></programlisting>
-
-    <para>
-      which is transformed into the following sql query, assuming that the related table
-      name is <emphasis>customer</emphasis>
-      and the columns <emphasis>first_name</emphasis>
-      and <emphasis>last_name</emphasis>:
-    </para>
-
-    <programlisting><![CDATA[     
-SELECT c.last_name 
-FROM customer c 
-WHERE c.first_name = 'Bob'
+SQLTemplates templates = new H2Templates();
+Configuration configuration = new Configuration(templates);     
 ]]></programlisting>
 
     <para>Querydsl uses SQL dialects to customize the SQL serialization needed for
@@ -385,7 +368,48 @@ WHERE c.first_name = 'Bob'
       <listitem>
         <para>SQLServer2012Templates (for SQL Server 2012 and later)</para>
       </listitem>
-    </itemizedlist>
+    </itemizedlist>    
+    
+    <para>For customized SQLTemplates instances you can use the builder pattern like this</para>    
+  
+  <programlisting language="java"><![CDATA[
+  H2Templates.builder()
+     .printSchema() // to include the schema in the output
+     .quote()       // to quote names
+     .newLineToSingleSpace() // to replace new lines with single space in the output
+     .escape(ch)    // to set the escape char
+     .build();      // to get the customized SQLTemplates instance
+]]></programlisting>  
+  
+  </sect2>
+
+  <sect2>
+
+    <title>Querying</title>
+
+    <para>Querying with Querydsl SQL is as simple as this:</para>
+
+    <programlisting language="java"><![CDATA[ 
+QCustomer customer = new QCustomer("c");
+
+SQLQuery query = new SQLQuery(connection, configuration); 
+List<String> lastNames = query.from(customer)
+    .where(customer.firstName.eq("Bob"))
+    .list(customer.lastName);
+]]></programlisting>
+
+    <para>
+      which is transformed into the following sql query, assuming that the related table
+      name is <emphasis>customer</emphasis>
+      and the columns <emphasis>first_name</emphasis>
+      and <emphasis>last_name</emphasis>:
+    </para>
+
+    <programlisting><![CDATA[     
+SELECT c.last_name 
+FROM customer c 
+WHERE c.first_name = 'Bob'
+]]></programlisting>  
 
   </sect2>
 
@@ -655,7 +679,7 @@ query.from(employee)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
   
-new SQLInsertClause(conn, dialect, survey)
+new SQLInsertClause(conn, configuration, survey)
     .columns(survey.id, survey.name)
     .values(3, "Hello").execute();
 ]]></programlisting>
@@ -663,14 +687,14 @@ new SQLInsertClause(conn, dialect, survey)
       <para>Without columns</para>
 
       <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, dialect, survey)
+new SQLInsertClause(conn, configuration, survey)
     .values(4, "Hello").execute();
 ]]></programlisting>
 
       <para>With subquery</para>
 
       <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, dialect, survey)
+new SQLInsertClause(conn, configuration, survey)
     .columns(survey.id, survey.name)
     .select(new SQLSubQuery().from(survey2).list(survey2.id.add(1), survey2.name))
     .execute();
@@ -679,7 +703,7 @@ new SQLInsertClause(conn, dialect, survey)
       <para>With subquery, without columns</para>
 
       <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, dialect, survey)
+new SQLInsertClause(conn, configuration, survey)
     .select(new SQLSubQuery().from(survey2).list(survey2.id.add(10), survey2.name))
     .execute();
 ]]></programlisting>
@@ -690,7 +714,7 @@ new SQLInsertClause(conn, dialect, survey)
     <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
   
-new SQLInsertClause(conn, dialect, survey)
+new SQLInsertClause(conn, configuration, survey)
     .set(survey.id, 3)
     .set(survey.name, "Hello").execute();
 ]]></programlisting>    
@@ -725,7 +749,7 @@ set(...)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLUpdateClause(conn, dialect, survey)
+new SQLUpdateClause(conn, configuration, survey)
     .where(survey.name.eq("XXX"))
     .set(survey.name, "S")
     .execute();
@@ -734,7 +758,7 @@ new SQLUpdateClause(conn, dialect, survey)
       <para>Without where</para>
 
       <programlisting language="java"><![CDATA[  
-new SQLUpdateClause(conn, dialect, survey)
+new SQLUpdateClause(conn, configuration, survey)
     .set(survey.name, "S")
     .execute()  
 ]]></programlisting>
@@ -750,7 +774,7 @@ new SQLUpdateClause(conn, dialect, survey)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLDelecteClause(conn, dialect, survey)
+new SQLDelecteClause(conn, configuration, survey)
     .where(survey.name.eq("XXX"))
     .execute();
     
@@ -759,7 +783,7 @@ new SQLDelecteClause(conn, dialect, survey)
       <para>Without where</para>
 
       <programlisting language="java"><![CDATA[  
-new SQLDelecteClause(conn, dialect, survey)
+new SQLDelecteClause(conn, configuration, survey)
     .execute()  
 ]]></programlisting>
 
