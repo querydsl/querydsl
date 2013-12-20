@@ -368,6 +368,10 @@ Configuration configuration = new Configuration(templates);
       <listitem>
         <para>SQLServer2012Templates (for SQL Server 2012 and later)</para>
       </listitem>
+      <listitem>
+        <para>TeradataTemplates (tested with Teradata 14)</para>
+      </listitem>
+      
     </itemizedlist>    
     
     <para>For customized SQLTemplates instances you can use the builder pattern like this</para>    
