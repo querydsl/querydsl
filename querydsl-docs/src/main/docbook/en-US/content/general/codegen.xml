@@ -11,7 +11,7 @@
     <title>Path initialization</title>
 
     <para>
-      By default Querydsl initializes only direct reference properties. In cases where
+      By default Querydsl initializes only reference properties of the first two levels. In cases where
       longer initialization paths are required, these have to be annotated in the domain
       types via 
        <code>com.mysema.query.annotations.QueryInit</code>
@@ -22,7 +22,7 @@
     <programlisting language="java"><![CDATA[
 @Entity      
 class Event {
-    @QueryInit("customer")
+    @QueryInit("customer.address")
     Account account;
 }      
 
@@ -34,6 +34,7 @@ class Account{
 @Entity
 class Customer{
     String name;
+    Address address;
     // ...
 }
 ]]></programlisting>
