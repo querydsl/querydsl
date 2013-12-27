@@ -1,0 +1,14 @@
+Bundle-SymbolicName: com.mysema.querydsl.dynamodb
+Bundle-Name: Querydsl Dynamodb
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2
+Import-Template:
+  com.amazonaws.*;version="${aws.version}",
+  com.mysema.commons.lang.*;version="${mysema.lang.version}",
+  com.mysema.query.apt;version="${project.version}";resolution:=optional,
+  com.mysema.query.*;version="${project.version}",
+  javax.annotation.*;version="0";resolution:=optional,
+  javax.lang.model.*;version="0",
+  javax.tools.*;version="0",
+  com.google.common.*;version="${guava.version}",
+  org.bson.*;version="0"
