@@ -29,7 +29,6 @@ import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.Target.TERADATA;
-import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static com.mysema.query.sql.oracle.OracleGrammar.level;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -98,7 +97,6 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
-import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
 
@@ -825,9 +823,8 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn(SQLSERVER)
     public void Manual_Paging() {
-        Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as(rn);
-        // TODO : create a short cut for wild card
-        Expression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
+        Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
+        Expression<Object[]> all = Wildcard.all;
 
         // simple
         System.out.println("#1");

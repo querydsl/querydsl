@@ -15,7 +15,6 @@ package com.mysema.query.sql.mssql;
 
 import static com.mysema.query.Constants.employee;
 import static com.mysema.query.sql.SQLExpressions.rowNumber;
-import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -51,7 +50,7 @@ public class WindowFunctionTest {
             toString(rowNumber().over().orderBy(employee.firstname)));
 
         assertEquals("row_number() over (order by e.FIRSTNAME) as rn",
-            toString(rowNumber().over().orderBy(employee.firstname.asc()).as(rn)));
+            toString(rowNumber().over().orderBy(employee.firstname.asc()).as("rn")));
 
         assertEquals("row_number() over (order by e.FIRSTNAME desc)",
             toString(rowNumber().over().orderBy(employee.firstname.desc())));

@@ -17,7 +17,6 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.sql.mssql.SQLServerGrammar;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.OrderSpecifier;
 
@@ -40,13 +39,15 @@ public class SQLServer2005Templates extends SQLServerTemplates {
 
     private String topTemplate = "top ({0}) ";
 
-    private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
+    private String outerQueryStart = "select * from (\n  ";
 
-    private String offsetTemplate = "row_number > {0}";
+    private String outerQueryEnd = ") a where ";
 
-    private String outerQueryStart = "with inner_query as \n(\n  ";
+    private String limitOffsetTemplate = "rn > {0} and rn <= {1}";
 
-    private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
+    private String offsetTemplate = "rn > {0}";
+
+    private String outerQuerySuffix = " order by rn";
 
     public SQLServer2005Templates() {
         this('\\',false);
@@ -77,7 +78,7 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                     rn.orderBy(os);
                 }
-                metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
+                metadata.addProjection(rn.as("rn"));
                 metadata.clearOrderBy();
                 context.serializeForQuery(metadata, forCountRow);
                 context.append(outerQueryEnd);
@@ -86,6 +87,7 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 } else {
                     context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
                 }
+                context.append(outerQuerySuffix);
             }
 
         } else {

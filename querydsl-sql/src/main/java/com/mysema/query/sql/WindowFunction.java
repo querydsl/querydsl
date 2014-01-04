@@ -22,6 +22,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.MutableExpressionBase;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -116,6 +117,10 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
     @SuppressWarnings("unchecked")
     public SimpleExpression<A> as(Expression<A> alias) {
         return SimpleOperation.create((Class<A>)getType(),Ops.ALIAS, this, alias);
+    }
+
+    public SimpleExpression<A> as(String alias) {
+        return SimpleOperation.create((Class<A>)getType(),Ops.ALIAS, this, new PathImpl<A>(getType(), alias));
     }
 
     @Override
