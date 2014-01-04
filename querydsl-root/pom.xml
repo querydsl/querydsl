@@ -486,6 +486,11 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
               <excludedGroups>com.mysema.testutil.DummyInterface</excludedGroups>
+              <excludes>
+                <exclude>**/*$*</exclude>
+                <exclude>**/MSSQLSuiteTest.java</exclude>
+                <exclude>**/TeradataSuiteTest.java</exclude>
+              </excludes>
             </configuration>
           </plugin>
         </plugins>
