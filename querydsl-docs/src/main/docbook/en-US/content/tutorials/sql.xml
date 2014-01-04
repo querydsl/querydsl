@@ -363,7 +363,10 @@ Configuration configuration = new Configuration(templates);
         <para>SQLServerTemplates (tested with SQL Server)</para>
       </listitem>
       <listitem>
-        <para>SQLServer2005Templates (for SQL Server 2005 and 2008)</para>
+        <para>SQLServer2005Templates (for SQL Server 2005)</para>
+      </listitem>
+      <listitem>
+        <para>SQLServer2008Templates (for SQL Server 2008)</para>
       </listitem>
       <listitem>
         <para>SQLServer2012Templates (for SQL Server 2012 and later)</para>
