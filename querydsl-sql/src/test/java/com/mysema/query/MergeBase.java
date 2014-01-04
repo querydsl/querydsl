@@ -19,6 +19,7 @@ import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.POSTGRES;
+import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -56,7 +57,7 @@ public class MergeBase extends AbstractBaseTest{
 
 
     @Test
-    @ExcludeIn({H2, CUBRID})
+    @ExcludeIn({H2, CUBRID, SQLSERVER})
     public void Merge_With_Keys() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
                 .set(survey.id, 7)
@@ -102,7 +103,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, POSTGRES})
+    @ExcludeIn({CUBRID, DERBY, POSTGRES, SQLSERVER})
     public void Merge_With_Keys_Null_Id() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
                 .setNull(survey.id)
@@ -113,7 +114,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({H2, CUBRID})
+    @ExcludeIn({H2, CUBRID, SQLSERVER})
     public void Merge_With_Keys_Projected() throws SQLException{
         assertNotNull(merge(survey).keys(survey.id)
                 .set(survey.id, 8)
@@ -121,7 +122,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({H2, CUBRID})
+    @ExcludeIn({H2, CUBRID, SQLSERVER})
     public void Merge_With_Keys_Projected2() throws SQLException{
         Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
         Object id = merge(survey).keys(survey.id)

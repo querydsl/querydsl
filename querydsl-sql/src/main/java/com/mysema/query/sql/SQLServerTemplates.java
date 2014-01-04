@@ -64,7 +64,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.STRING_IS_EMPTY, "len({0}) = 0");
         add(Ops.STRING_LENGTH, "len({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2})");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})", 1);
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
@@ -72,6 +72,7 @@ public class SQLServerTemplates extends SQLTemplates {
 
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
+        add(Ops.MOD, "{0} % {1}", 10);
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
@@ -89,6 +90,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
 
+        add(Ops.DateTimeOps.YEAR_MONTH, "(datepart(year, {0}) * 100 + datepart(month, {0}))");
         add(Ops.DateTimeOps.YEAR_WEEK, "(datepart(year, {0}) * 100 + datepart(isowk, {0}))");
 
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd(year, {1s}, {0})");
@@ -108,6 +110,19 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
 
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
+        add(Ops.DateTimeOps.CURRENT_DATE, "cast(getdate() as date)");
+    }
+
+    @Override
+    public String asLiteral(DateTimeType type, String literal) {
+        // JDBC escape syntax
+        String keyword = "ts";
+        if (type == DateTimeType.DATE) {
+            keyword = "d";
+        } else if (type == DateTimeType.TIME) {
+            keyword = "t";
+        }
+        return "{" + keyword + " '" + literal + "'}";
     }
 
     @Override
@@ -137,6 +152,5 @@ public class SQLServerTemplates extends SQLTemplates {
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         // do nothing
     }
-
 
 }

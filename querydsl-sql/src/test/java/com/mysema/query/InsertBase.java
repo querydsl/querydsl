@@ -20,6 +20,7 @@ import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -168,7 +169,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
+    @ExcludeIn({CUBRID, SQLSERVER})
     public void Insert_With_Keys() throws SQLException{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
@@ -177,13 +178,13 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
+    @ExcludeIn({CUBRID, SQLSERVER})
     public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
 
     @Test
-    @ExcludeIn(CUBRID)
+    @ExcludeIn({CUBRID, SQLSERVER})
     public void Insert_With_Keys_Projected2() throws SQLException{
         Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);

@@ -1284,16 +1284,19 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void StandardTest() {
         standardTest.runBooleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
+        // datetime
         standardTest.runDateTests(employee.datefield, employee2.datefield, date);
 
-        // int
+        // numeric
         standardTest.runNumericCasts(employee.id, employee2.id, 1);
         standardTest.runNumericTests(employee.id, employee2.id, 1);
         // BigDecimal
         standardTest.runNumericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
 
         standardTest.runStringTests(employee.firstname, employee2.firstname, "Jennifer");
-        if (Connections.getTarget() != SQLITE) {
+        Target target = Connections.getTarget();
+        if (target != SQLITE && target != SQLSERVER) {
+            // jTDS driver does not support TIME SQL data type
             standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
         }
 

@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
@@ -135,8 +136,13 @@ public final class Connections {
 
     private static Connection getSQLServer() throws ClassNotFoundException, SQLException{
         Class.forName("net.sourceforge.jtds.jdbc.Driver");
+        Properties props = new Properties();
+        props.put("user", "querydsl");
+        props.put("password", "querydsl");
+        props.put("sendTimeAsDatetime", "false");
         String url = "jdbc:jtds:sqlserver://localhost:1433/querydsl";
-        return DriverManager.getConnection(url, "querydsl", "querydsl");
+//        return DriverManager.getConnection(url, "querydsl", "querydsl");
+        return DriverManager.getConnection(url, props);
     }
 
     private static Connection getCubrid() throws ClassNotFoundException, SQLException {
@@ -685,7 +691,7 @@ public final class Connections {
         stmt.execute("create table \"SURVEY\"(" +
         		"\"ID\" int DEFAULT NEXTVAL('SURVEY_SEQ'), " +
         		"\"NAME\" varchar(30), \"NAME2\" varchar(30))");
-        stmt.execute("insert into \"SURVEY\" values (1, 'Hello World')");
+        stmt.execute("insert into \"SURVEY\" values (1, 'Hello World', 'Hello')");
 
         // test
         dropTable(templates, "TEST");

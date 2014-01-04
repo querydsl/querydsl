@@ -24,6 +24,8 @@ public final class Constants {
 
     public static final java.sql.Date date;
 
+    public static final java.sql.Time time;
+
     public static final QEmployee employee = new QEmployee("e");
 
     public static final QEmployee employee2 = new QEmployee("e2");
@@ -31,8 +33,6 @@ public final class Constants {
     public static final QSurvey survey = new QSurvey("s");
 
     public static final QSurvey survey2 = new QSurvey("s2");
-
-    public static final java.sql.Time time;
 
     static{
         Calendar cal = Calendar.getInstance();
