@@ -23,7 +23,7 @@ import com.mysema.query.types.OrderSpecifier;
 
 
 /**
- * SQLServer2005Templates is an SQL dialect for Microsoft SQL Server 2005 and 2008
+ * SQLServer2005Templates is an SQL dialect for Microsoft SQL Server 2005
  *
  * @author tiwe
  */
