@@ -711,9 +711,11 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Limit_and_Offset() throws SQLException {
         // limit and offset
-        query().from(employee)
-        .orderBy(employee.firstname.asc())
-        .limit(4).offset(3).list(employee.id);
+        assertEquals(Arrays.asList(20, 13, 10, 2),
+            query().from(employee)
+                   .orderBy(employee.firstname.asc())
+                   .limit(4).offset(3)
+                   .list(employee.id));
     }
 
     @Test
