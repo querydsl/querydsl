@@ -13,7 +13,9 @@
  */
 package com.mysema.query.sql.codegen;
 
+import static com.mysema.codegen.Symbols.COMMA;
 import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.SUPER;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -26,6 +28,7 @@ import javax.inject.Named;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
@@ -72,6 +75,25 @@ public class MetaDataSerializer extends EntitySerializer {
         super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
+    }
+
+    @Override
+    protected void constructorsForVariables(CodeWriter writer, EntityType model) throws IOException {
+        super.constructorsForVariables(writer, model);
+
+        String localName = writer.getRawName(model);
+        String genericName = writer.getGenericName(true, model);
+
+        if (!localName.equals(genericName)) {
+            writer.suppressWarnings("all");
+        }
+        writer.beginConstructor(new Parameter("variable", Types.STRING),
+                                new Parameter("schema", Types.STRING),
+                                new Parameter("table", Types.STRING));
+        writer.line(SUPER,"(", writer.getClassConstant(localName) + COMMA
+                + "forVariable(variable), schema, table);");
+        constructorContent(writer, model);
+        writer.end();
     }
 
     @Override
@@ -241,9 +263,7 @@ public class MetaDataSerializer extends EntitySerializer {
             if (inverseForeignKeys != null) {
                 serializeForeignKeys(model, writer, inverseForeignKeys, true);
             }
-
         }
-
     }
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,

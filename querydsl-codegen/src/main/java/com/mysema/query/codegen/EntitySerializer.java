@@ -81,7 +81,7 @@ import com.mysema.query.types.path.TimePath;
  * @author tiwe
  *
  */
-public class EntitySerializer implements Serializer{
+public class EntitySerializer implements Serializer {
 
     private static final Joiner JOINER = Joiner.on("\", \"");
 
@@ -159,7 +159,7 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(metadata);");
             } else {
-                writer.line("super(", classCast, writer.getClassConstant(localName) + COMMA + " metadata" + additionalParams + ");");
+                writer.line("super(", classCast, writer.getClassConstant(localName) + COMMA + "metadata" + additionalParams + ");");
             }
             constructorContent(writer, model);
             writer.end();
@@ -171,7 +171,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("all");
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
-            writer.line(thisOrSuper, "(", classCast, writer.getClassConstant(localName) + COMMA + " metadata, inits" + additionalParams+ ");");
+            writer.line(thisOrSuper, "(", classCast, writer.getClassConstant(localName) + COMMA + "metadata, inits" + additionalParams+ ");");
             if (!hasEntityFields) {
                 constructorContent(writer, model);
             }
@@ -216,7 +216,7 @@ public class EntitySerializer implements Serializer{
             writer.line(thisOrSuper,"(forVariable(variable)",additionalParams,");");
         } else {
             writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
-            writer.getClassConstant(localName) + COMMA + " forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
+            writer.getClassConstant(localName) + COMMA + "forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
                             additionalParams,");");
         }
         if (!hasEntityFields) {
