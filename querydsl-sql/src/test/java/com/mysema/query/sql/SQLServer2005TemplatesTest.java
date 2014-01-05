@@ -71,9 +71,9 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().addProjection(survey1.id);
-        assertEquals("with inner_query as  (   " +
-        		"select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
-        		"select *  from inner_query where row_number > ? and row_number <= ?", query.toString());
+        assertEquals("select * from (" +
+      		"   select survey1.ID, row_number() over () as rn from SURVEY survey1) a " +
+      		"where rn > ? and rn <= ? order by rn", query.toString());
     }
 
     @Test
