@@ -1,6 +1,6 @@
 /*
  * Copyright 2012, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,18 +39,17 @@ public class GAvg<T extends Number & Comparable<T>> extends AbstractGroupExpress
             private BigDecimal sum = BigDecimal.ZERO;
 
             @Override
-            public void add(T t) {                
+            public void add(T t) {
                 count++;
                 if (t != null) {
-                    sum = sum.add(new BigDecimal(t.toString()));    
+                    sum = sum.add(new BigDecimal(t.toString()));
                 }
-                
             }
 
             @Override
             public T get() {
                 BigDecimal avg = sum.divide(BigDecimal.valueOf(count));
-                return (T) MathUtils.cast(avg, (Class<T>) getType());
+                return MathUtils.cast(avg, (Class<T>) getType());
             }
 
         };
