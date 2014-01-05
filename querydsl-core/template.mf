@@ -2,6 +2,7 @@ Bundle-SymbolicName: com.mysema.querydsl.core
 Bundle-Name: Querydsl Core
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
+Excluded-Imports: com.infradna.tool.bridge_method_injector
 Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   javax.annotation.*;version="0",  

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.QList;
 
@@ -55,7 +57,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Comparable<E>> AbstractGroupExpression<?,E> min(Expression<E> expression) {
+    public static <E extends Comparable<E>> AbstractGroupExpression<E, E> min(Expression<E> expression) {
         return new GMin<E>(expression);
     }
 
@@ -65,7 +67,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Number & Comparable<E>> AbstractGroupExpression<?,E> sum(Expression<E> expression) {
+    public static <E extends Number & Comparable<E>> AbstractGroupExpression<E, E> sum(Expression<E> expression) {
         return new GSum<E>(expression);
     }
 
@@ -75,7 +77,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Number & Comparable<E>> AbstractGroupExpression<?,E> avg(Expression<E> expression) {
+    public static <E extends Number & Comparable<E>> AbstractGroupExpression<E, E> avg(Expression<E> expression) {
         return new GAvg<E>(expression);
     }
 
@@ -85,7 +87,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Comparable<E>> AbstractGroupExpression<?,E> max(Expression<E> expression) {
+    public static <E extends Comparable<E>> AbstractGroupExpression<E, E> max(Expression<E> expression) {
         return new GMax<E>(expression);
     }
 
@@ -95,8 +97,12 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E> AbstractGroupExpression<?,List<E>> list(Expression<E> expression) {
+    public static <E> AbstractGroupExpression<E, List<E>> list(Expression<E> expression) {
         return new GList<E>(expression);
+    }
+
+    public static <E, F> AbstractGroupExpression<E, List<F>> list(GroupExpression<E, F> groupExpression) {
+        return new MixinGroupExpression<E, F, List<F>>(groupExpression, new GList<F>(groupExpression));
     }
 
     /**
@@ -105,8 +111,12 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E> AbstractGroupExpression<?,Set<E>> set(Expression<E> expression) {
+    public static <E> AbstractGroupExpression<E, Set<E>> set(Expression<E> expression) {
         return new GSet<E>(expression);
+    }
+
+    public static <E, F> GroupExpression<E, Set<F>> set(GroupExpression<E, F> groupExpression) {
+        return new MixinGroupExpression<E, F, Set<F>>(groupExpression, new GSet<F>(groupExpression));
     }
 
     /**
@@ -116,9 +126,21 @@ public final class GroupBy {
      * @param value
      * @return
      */
-    public static <K, V> Expression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
-        QPair<K,V> qPair = new QPair<K,V>(key, value);
-        return new GMap<K,V>(qPair);
+    @WithBridgeMethods(value=Expression.class,castRequired=true)
+    public static <K, V> AbstractGroupExpression<Pair<K, V>,Map<K, V>> map(Expression<K> key, Expression<V> value) {
+        return new GMap<K, V>(QPair.create(key, value));
+    }
+
+    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, Map<T, V>> map(GroupExpression<K, T> key, Expression<V> value) {
+        return map(key, new GOne<V>(value));
+    }
+
+    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, Map<K, U>> map(Expression<K> key, GroupExpression<V, U> value) {
+        return map(new GOne<K>(key), value);
+    }
+
+    public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, Map<T, U>> map(GroupExpression<K, T> key, GroupExpression<V, U> value) {
+        return new GMap.Mixin<K, V, T, U, Map<T, U>>(key, value, new GMap<T, U>(QPair.create(key, value)));
     }
 
     private GroupBy() {}
