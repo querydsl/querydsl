@@ -28,6 +28,8 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.AbstractSQLClause;
 
 /**
+ * SetQueryBandClause provides support for Teradata specific set query_band executions.
+ *
  * @author tiwe
  *
  */
