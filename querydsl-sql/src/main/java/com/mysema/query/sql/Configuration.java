@@ -308,4 +308,8 @@ public final class Configuration {
         this.useLiterals = useLiterals;
     }
 
+    public void setExceptionTranslator(SQLExceptionTranslator exceptionTranslator) {
+        this.exceptionTranslator = exceptionTranslator;
+    }
+
 }
