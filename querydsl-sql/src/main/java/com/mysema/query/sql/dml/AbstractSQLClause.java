@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.Configuration;
@@ -108,7 +107,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
                 }
                 configuration.set(stmt, constantPaths.get(i), i+1, o);
             } catch (SQLException e) {
-                throw new IllegalArgumentException(e);
+                throw configuration.translate(e);
             }
         }
     }
@@ -130,7 +129,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         try {
             stmt.close();
         } catch (SQLException e) {
-            throw new QueryException(e);
+            throw configuration.translate(e);
         }
     }
 
@@ -138,7 +137,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         try {
             rs.close();
         } catch (SQLException e) {
-            throw new QueryException(e);
+            throw configuration.translate(e);
         }
     }
 

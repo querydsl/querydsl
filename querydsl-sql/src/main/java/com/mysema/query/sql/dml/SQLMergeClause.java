@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
-import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
@@ -172,7 +171,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 return null;
             }
         } catch (SQLException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw configuration.translate(e);
         }finally{
             close(rs);
         }
@@ -205,7 +204,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             }
             return rv;
         } catch (SQLException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw configuration.translate(e);
         }finally{
             close(rs);
         }
@@ -254,7 +253,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 }
             }
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw configuration.translate(queryString, e);
         }
     }
 
@@ -379,7 +378,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw configuration.translate(queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

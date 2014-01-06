@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,11 +35,14 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
     @Nullable
     private Boolean next = null;
 
+    private final Configuration configuration;
+
     private final ResultSet rs;
 
     private final Statement stmt;
 
-    public SQLResultIterator(Statement stmt, ResultSet rs) {
+    public SQLResultIterator(Configuration conf, Statement stmt, ResultSet rs) {
+        this.configuration = conf;
         this.stmt = stmt;
         this.rs = rs;
     }
@@ -57,7 +60,7 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
                 }
             }
         }catch(SQLException e) {
-            throw new QueryException(e);
+            throw configuration.translate(e);
         }
     }
 
@@ -68,7 +71,7 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
                 next = rs.next();
             } catch (SQLException e) {
                 close();
-                throw new QueryException(e);
+                throw configuration.translate(e);
             }
         }
         return next;
@@ -80,6 +83,9 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
             next = null;
             try {
                 return produceNext(rs);
+            } catch (SQLException e) {
+                close();
+                throw configuration.translate(e);
             } catch (Exception e) {
                 close();
                 throw new QueryException(e);
@@ -97,7 +103,7 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
             rs.deleteRow();
         } catch (SQLException e) {
             close();
-            throw new QueryException(e);
+            throw configuration.translate(e);
         }
     }
 

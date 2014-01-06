@@ -52,6 +52,8 @@ public final class Configuration {
 
     private final SQLTemplates templates;
 
+    private SQLExceptionTranslator exceptionTranslator = DefaultSQLExceptionTranslator.DEFAULT;
+
     private final SQLListeners listeners = new SQLListeners();
 
     private boolean hasTableColumnTypes = false;
@@ -255,6 +257,27 @@ public final class Configuration {
     public void register(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
         hasTableColumnTypes = true;
+    }
+
+    /**
+     * Translate the given SQLException
+     *
+     * @param ex
+     * @return
+     */
+    public RuntimeException translate(SQLException ex) {
+        return exceptionTranslator.translate(null, ex);
+    }
+
+    /**
+     * Translate the given SQLException
+     *
+     * @param sql
+     * @param ex
+     * @return
+     */
+    public RuntimeException translate(String sql, SQLException ex) {
+        return exceptionTranslator.translate(sql, ex);
     }
 
     /**

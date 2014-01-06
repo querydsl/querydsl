@@ -21,7 +21,6 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.mysema.query.QueryException;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLTemplates;
@@ -88,8 +87,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
             }
             return 1;
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for "
-                    + queryString, e);
+            throw configuration.translate(queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

@@ -214,7 +214,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new QueryException(e.getMessage(), e);
+            throw configuration.translate(e);
         }
     }
 
@@ -422,7 +422,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 }
             };
         } catch (SQLException e) {
-            throw new QueryException(e);
+            throw configuration.translate(e);
 
         } finally {
             reset();
@@ -466,21 +466,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
             final ResultSet rs = stmt.executeQuery();
 
             if (expr == null) {
-                return new SQLResultIterator<RT>(stmt, rs) {
+                return new SQLResultIterator<RT>(configuration, stmt, rs) {
                     @Override
                     public RT produceNext(ResultSet rs) throws Exception {
                         return (RT) rs.getObject(1);
                     }
                 };
             } else if (expr instanceof FactoryExpression) {
-                return new SQLResultIterator<RT>(stmt, rs) {
+                return new SQLResultIterator<RT>(configuration, stmt, rs) {
                     @Override
                     public RT produceNext(ResultSet rs) throws Exception {
                         return newInstance((FactoryExpression<RT>) expr, rs, 0);
                     }
                 };
             } else if (expr.getType().isArray()) {
-                return new SQLResultIterator<RT>(stmt, rs) {
+                return new SQLResultIterator<RT>(configuration, stmt, rs) {
                     @Override
                     public RT produceNext(ResultSet rs) throws Exception {
                         Object[] rv = new Object[rs.getMetaData().getColumnCount()];
@@ -491,7 +491,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                     }
                 };
             } else {
-                return new SQLResultIterator<RT>(stmt, rs) {
+                return new SQLResultIterator<RT>(configuration, stmt, rs) {
                     @Override
                     public RT produceNext(ResultSet rs) throws Exception {
                         return get(rs, expr, 1, expr.getType());
@@ -500,7 +500,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
             }
 
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw configuration.translate(queryString, e);
 
         } finally {
             reset();
@@ -566,7 +566,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 } catch (InstantiationException e) {
                     throw new QueryException(e);
                 } catch (SQLException e) {
-                    throw new QueryException(e);
+                    throw configuration.translate(e);
                 } finally {
                     rs.close();
                 }
@@ -575,7 +575,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 stmt.close();
             }
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw configuration.translate(queryString, e);
 
         } finally {
             reset();
@@ -670,7 +670,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 }
                 set(stmt, constantPaths.get(i), i+1, o);
             } catch (SQLException e) {
-                throw new IllegalArgumentException(e);
+                throw configuration.translate(e);
             }
         }
     }
@@ -837,7 +837,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
             return rs.getLong(1);
 
         } catch (SQLException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw configuration.translate(e);
 
         } finally {
             try {
