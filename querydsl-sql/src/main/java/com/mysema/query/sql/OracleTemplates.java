@@ -14,11 +14,15 @@
 package com.mysema.query.sql;
 
 import java.math.BigInteger;
+import java.util.List;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 
 /**
  * OracleTemplates is an SQL dialect for Oracle
@@ -167,6 +171,45 @@ public class OracleTemplates extends SQLTemplates {
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());
         }
+    }
+
+    @Override
+    public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity, SQLSerializer context) {
+        context.serializeForDelete(metadata, entity);
+
+        // limit
+        if (metadata.getModifiers().isRestricting()) {
+            serializeModifiersForDML(metadata, context);
+        }
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    @Override
+    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
+        context.serializeForUpdate(metadata, entity, updates);
+
+        // limit
+        if (metadata.getModifiers().isRestricting()) {
+            serializeModifiersForDML(metadata, context);
+        }
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    private void serializeModifiersForDML(QueryMetadata metadata, SQLSerializer context) {
+        if (metadata.getWhere() != null) {
+            context.append(" and ");
+        } else {
+            context.append(getWhere());
+        }
+        context.append("rownum <= ");
+        context.visitConstant(metadata.getModifiers().getLimit());
     }
 
     @Override

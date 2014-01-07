@@ -427,9 +427,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
         this.entity = entity;
         serialize(Position.START, metadata.getFlags());
+
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
-            append(templates.getDeleteFrom());
+            append(templates.getDelete());
         }
+        serialize(Position.AFTER_SELECT, metadata.getFlags());
+        append(templates.getFrom());
+
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
@@ -453,6 +457,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
             append(templates.getMergeInto());
         }
+        serialize(Position.AFTER_SELECT, metadata.getFlags());
+
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
@@ -499,6 +505,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
             append(templates.getInsertInto());
         }
+        serialize(Position.AFTER_SELECT, metadata.getFlags());
+
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;
@@ -549,6 +557,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
             append(templates.getUpdate());
         }
+        serialize(Position.AFTER_SELECT, metadata.getFlags());
+
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = false;

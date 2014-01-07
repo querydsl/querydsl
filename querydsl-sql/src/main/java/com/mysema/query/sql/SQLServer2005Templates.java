@@ -13,12 +13,17 @@
  */
 package com.mysema.query.sql;
 
+import java.util.List;
+
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
 
 
 /**
@@ -93,6 +98,41 @@ public class SQLServer2005Templates extends SQLServerTemplates {
         } else {
             context.serializeForQuery(metadata, forCountRow);
         }
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    @Override
+    public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity, SQLSerializer context) {
+        // limit
+        QueryModifiers mod = metadata.getModifiers();
+        if (mod.isRestricting()) {
+            metadata = metadata.clone();
+            metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
+                    Expressions.template(Integer.class, topTemplate, mod.getLimit())));
+        }
+
+        context.serializeForDelete(metadata, entity);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    @Override
+    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
+        // limit
+        QueryModifiers mod = metadata.getModifiers();
+        if (mod.isRestricting()) {
+            metadata = metadata.clone();
+            metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
+                    Expressions.template(Integer.class, topTemplate, mod.getLimit())));
+        }
+
+        context.serializeForUpdate(metadata, entity, updates);
 
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());

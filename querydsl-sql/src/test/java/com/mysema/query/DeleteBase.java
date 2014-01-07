@@ -17,6 +17,8 @@ import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
@@ -70,7 +72,7 @@ public class DeleteBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn({CUBRID, H2, MYSQL}) // TODO oracle sql server
+    @IncludeIn({CUBRID, H2, MYSQL, ORACLE, SQLSERVER})
     public void Delete_Limit() {
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();

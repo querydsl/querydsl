@@ -120,7 +120,7 @@ public class SQLTemplates extends Templates {
 
     private String countStar = "count(*)";
 
-    private String deleteFrom = "delete from ";
+    private String delete = "delete ";
 
     private String desc = " desc";
 
@@ -450,8 +450,8 @@ public class SQLTemplates extends Templates {
         return countStar;
     }
 
-    public final String getDeleteFrom() {
-        return deleteFrom;
+    public final String getDelete() {
+        return delete;
     }
 
     public final String getDesc() {
@@ -777,8 +777,8 @@ public class SQLTemplates extends Templates {
         this.countStar = countStar;
     }
 
-    protected void setDeleteFrom(String deleteFrom) {
-        this.deleteFrom = deleteFrom;
+    protected void setDelete(String delete) {
+        this.delete = delete;
     }
 
     protected void setDesc(String desc) {

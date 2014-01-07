@@ -30,7 +30,7 @@ public final class DefaultSQLExceptionTranslator implements SQLExceptionTranslat
     @Override
     public RuntimeException translate(String sql, SQLException e) {
         if (sql != null) {
-            return new QueryException("Caught " + e.getClass().getSimpleName() + " for " + sql);
+            return new QueryException("Caught " + e.getClass().getSimpleName() + " for " + sql, e);
         } else {
             return new QueryException(e);
         }
