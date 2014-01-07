@@ -700,6 +700,13 @@ public class SQLTemplates extends Templates {
         return false;
     }
 
+    /**
+     * template method for SELECT serialization
+     *
+     * @param metadata
+     * @param forCountRow
+     * @param context
+     */
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         context.serializeForQuery(metadata, forCountRow);
 
@@ -708,6 +715,13 @@ public class SQLTemplates extends Templates {
         }
     }
 
+    /**
+     * template method for DELETE serialization
+     *
+     * @param metadata
+     * @param entity
+     * @param context
+     */
     public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity, SQLSerializer context) {
         context.serializeForDelete(metadata, entity);
 
@@ -721,6 +735,55 @@ public class SQLTemplates extends Templates {
         }
     }
 
+    /**
+     * template method for INSERT serialization
+     *
+     * @param metadata
+     * @param entity
+     * @param columns
+     * @param values
+     * @param subQuery
+     * @param context
+     */
+    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery,
+            SQLSerializer context) {
+        context.serializeForInsert(metadata, entity, columns, values, subQuery);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    /**
+     * template method for MERGE serialization
+     *
+     * @param metadata
+     * @param entity
+     * @param keys
+     * @param columns
+     * @param values
+     * @param subQuery
+     * @param context
+     */
+    public void serializeMerge(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Path<?>> keys, List<Path<?>> columns, List<Expression<?>> values,
+            SubQueryExpression<?> subQuery, SQLSerializer context) {
+        context.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    /**
+     * template method for UPDATE serialization
+     *
+     * @param metadata
+     * @param entity
+     * @param updates
+     * @param context
+     */
     public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
             List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
         context.serializeForUpdate(metadata, entity, updates);
@@ -735,16 +798,12 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    public void serializeMerge(QueryMetadata metadata, RelationalPath<?> entity,
-            List<Path<?>> keys, List<Path<?>> columns, List<Expression<?>> values,
-            SubQueryExpression<?> subQuery, SQLSerializer context) {
-        context.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
-
-        if (!metadata.getFlags().isEmpty()) {
-            context.serialize(Position.END, metadata.getFlags());
-        }
-    }
-
+    /**
+     * template method for LIMIT and OFFSET serialization
+     *
+     * @param metadata
+     * @param context
+     */
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.getLimit() != null) {

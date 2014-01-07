@@ -496,7 +496,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    public void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
+    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
+            List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+        templates.serializeInsert(metadata, entity, columns, values, subQuery, this);
+    }
+
+    void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
 
@@ -538,8 +543,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             handle(COMMA, values);
             append(")");
         }
-
-        serialize(Position.END, metadata.getFlags());
 
     }
 
