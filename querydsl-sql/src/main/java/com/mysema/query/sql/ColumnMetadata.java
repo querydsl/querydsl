@@ -104,6 +104,11 @@ public final class ColumnMetadata {
         return new ColumnMetadata(name, jdbcType, false, size, decimalDigits);
     }
 
+    /**
+     * For char or date types this is the maximum number of characters, for numeric or decimal types this is precision.
+     *
+     * @return
+     */
     public int getSize() {
         return size;
     }
@@ -116,6 +121,11 @@ public final class ColumnMetadata {
         return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
     }
 
+    /**
+     * the number of fractional digits
+     *
+     * @return
+     */
     public int getDigits() {
         return decimalDigits;
     }
