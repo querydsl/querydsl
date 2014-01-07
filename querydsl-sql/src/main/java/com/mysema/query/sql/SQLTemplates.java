@@ -16,6 +16,7 @@ package com.mysema.query.sql;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.primitives.Primitives;
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag.Position;
@@ -34,6 +36,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.Templates;
 
@@ -698,6 +702,43 @@ public class SQLTemplates extends Templates {
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         context.serializeForQuery(metadata, forCountRow);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity, SQLSerializer context) {
+        context.serializeForDelete(metadata, entity);
+
+        // limit
+        if (metadata.getModifiers().isRestricting()) {
+            serializeModifiers(metadata, context);
+        }
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
+        context.serializeForUpdate(metadata, entity, updates);
+
+        // limit
+        if (metadata.getModifiers().isRestricting()) {
+            serializeModifiers(metadata, context);
+        }
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    public void serializeMerge(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Path<?>> keys, List<Path<?>> columns, List<Expression<?>> values,
+            SubQueryExpression<?> subQuery, SQLSerializer context) {
+        context.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
 
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());

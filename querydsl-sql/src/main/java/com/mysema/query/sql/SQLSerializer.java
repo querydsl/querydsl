@@ -420,7 +420,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    public void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
+    public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity) {
+        templates.serializeDelete(metadata, entity, this);
+    }
+
+    void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
         this.entity = entity;
         serialize(Position.START, metadata.getFlags());
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -433,16 +437,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
         }
-
-        // XXX
-        if (metadata.getModifiers().isRestricting()) {
-            templates.serializeModifiers(metadata, this);
-        }
-
-        serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
+    public void serializeMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
+            List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+        templates.serializeMerge(metadata, entity, keys, columns, values, subQuery, this);
+    }
+
+    void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
 
@@ -486,8 +488,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getValues());
             append("(").handle(COMMA, values).append(") ");
         }
-
-        serialize(Position.END, metadata.getFlags());
     }
 
     public void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
@@ -535,7 +535,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     }
 
-    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+            List<Pair<Path<?>, Expression<?>>> updates) {
+        templates.serializeUpdate(metadata, entity, updates, this);
+    }
+
+    void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity,
             List<Pair<Path<?>, Expression<?>>> updates) {
         this.entity = entity;
 
@@ -568,13 +573,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
         }
-
-        // XXX
-        if (metadata.getModifiers().isRestricting()) {
-            templates.serializeModifiers(metadata, this);
-        }
-
-        serialize(Position.END, metadata.getFlags());
     }
 
     private void serializeSources(List<JoinExpression> joins) {

@@ -118,14 +118,14 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         PreparedStatement stmt;
         if (batches.isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(configuration, true);
-            serializer.serializeForDelete(metadata, entity);
+            serializer.serializeDelete(metadata, entity);
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
             SQLSerializer serializer = new SQLSerializer(configuration, true);
-            serializer.serializeForDelete(batches.get(0), entity);
+            serializer.serializeDelete(batches.get(0), entity);
             queryString = serializer.toString();
             logger.debug(queryString);
 
@@ -137,7 +137,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 serializer = new SQLSerializer(configuration, true);
-                serializer.serializeForDelete(batches.get(i), entity);
+                serializer.serializeDelete(batches.get(i), entity);
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
             }
@@ -170,13 +170,13 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     public List<SQLBindings> getSQL() {
         if (batches.isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(configuration, true);
-            serializer.serializeForDelete(metadata, entity);
+            serializer.serializeDelete(metadata, entity);
             return ImmutableList.of(createBindings(metadata, serializer));
         } else {
             ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
             for (QueryMetadata metadata : batches) {
                 SQLSerializer serializer = new SQLSerializer(configuration, true);
-                serializer.serializeForDelete(metadata, entity);
+                serializer.serializeDelete(metadata, entity);
                 builder.add(createBindings(metadata, serializer));
             }
             return builder.build();
@@ -204,7 +204,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     @Override
     public String toString() {
         SQLSerializer serializer = new SQLSerializer(configuration, true);
-        serializer.serializeForDelete(metadata, entity);
+        serializer.serializeDelete(metadata, entity);
         return serializer.toString();
     }
 
