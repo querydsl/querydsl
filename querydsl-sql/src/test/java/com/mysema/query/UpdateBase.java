@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,9 @@
 package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.H2;
+import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
@@ -30,6 +33,7 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.Param;
+import com.mysema.testutil.IncludeIn;
 
 public class UpdateBase extends AbstractBaseTest {
 
@@ -66,6 +70,15 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn({CUBRID, H2, MYSQL}) // TODO oracle sql server
+    public void Update_Limit() {
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
+
+        assertEquals(2, update(survey).set(survey.name, "S").limit(2).execute());
+    }
+
+    @Test
     public void Update2() throws SQLException{
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList("S");
@@ -83,7 +96,7 @@ public class UpdateBase extends AbstractBaseTest {
         assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
 
     }
-    
+
     @Test
     public void Update3() {
         update(survey).set(survey.name, survey.name.append("X")).execute();
@@ -102,18 +115,18 @@ public class UpdateBase extends AbstractBaseTest {
         long count = query().from(survey).count();
         assertEquals(count, update(survey).set(survey.name, (String)null).execute());
     }
-    
+
     @Test
     public void Batch() throws SQLException{
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
-        
+
         SQLUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
         update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
-        assertEquals(2, update.execute());        
+        assertEquals(2, update.execute());
     }
-    
+
     @Test
     public void Update_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
@@ -123,22 +136,22 @@ public class UpdateBase extends AbstractBaseTest {
         update.where(new SQLSubQuery().from(employee).where(survey1.id.eq(employee.id)).exists());
         update.execute();
     }
-    
+
     @Test
     public void Update_with_SubQuery_exists_Params() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
-        
+
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
         SQLSubQuery sq = sq().from(employee).where(employee.id.eq(param));
         sq.set(param, -12478923);
-        
+
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(sq.exists());
         update.execute();
     }
-    
+
     @Test
     public void Update_with_SubQuery_exists2() {
         QSurvey survey1 = new QSurvey("s1");
@@ -148,7 +161,7 @@ public class UpdateBase extends AbstractBaseTest {
         update.where(new SQLSubQuery().from(employee).where(survey1.name.eq(employee.lastname)).exists());
         update.execute();
     }
-    
+
     @Test
     public void Update_with_SubQuery_notExists() {
         QSurvey survey1 = new QSurvey("s1");

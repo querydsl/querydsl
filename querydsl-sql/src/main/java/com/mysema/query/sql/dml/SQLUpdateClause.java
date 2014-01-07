@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,7 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
@@ -235,6 +238,11 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         for (Predicate p : o) {
             metadata.addWhere(p);
         }
+        return this;
+    }
+
+    public SQLUpdateClause limit(@Nonnegative long limit) {
+        metadata.setModifiers(QueryModifiers.limit(limit));
         return this;
     }
 

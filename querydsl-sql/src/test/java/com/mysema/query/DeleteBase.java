@@ -14,6 +14,8 @@
 package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
 
@@ -29,6 +31,7 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
+import com.mysema.testutil.IncludeIn;
 
 public class DeleteBase extends AbstractBaseTest{
 
@@ -64,6 +67,16 @@ public class DeleteBase extends AbstractBaseTest{
         long count = query().from(survey).count();
         assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
         assertEquals(count, delete(survey).execute());
+    }
+
+    @Test
+    @IncludeIn({CUBRID, H2, MYSQL}) // TODO oracle sql server
+    public void Delete_Limit() {
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
+        insert(survey).values(4, "D","E").execute();
+
+        assertEquals(2, delete(survey).limit(2).execute());
     }
 
     @Test

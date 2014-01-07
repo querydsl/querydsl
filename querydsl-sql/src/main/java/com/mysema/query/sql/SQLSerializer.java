@@ -433,8 +433,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
         }
-        serialize(Position.END, metadata.getFlags());
 
+        // XXX
+        if (metadata.getModifiers().isRestricting()) {
+            templates.serializeModifiers(metadata, this);
+        }
+
+        serialize(Position.END, metadata.getFlags());
     }
 
     public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
@@ -562,6 +567,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
+        }
+
+        // XXX
+        if (metadata.getModifiers().isRestricting()) {
+            templates.serializeModifiers(metadata, this);
         }
 
         serialize(Position.END, metadata.getFlags());
