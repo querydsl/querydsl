@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,6 @@ import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.QTuple;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -78,7 +77,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     @Nullable
     protected Integer maxFetchDepth;
-    
+
     @Nullable
     private FactoryExpression<?> projection;
 
@@ -100,10 +99,11 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     /**
      * Add the fetch group to the set of active fetch groups.
-     * 
+     *
      * @param string
      * @return
      */
+    @Override
     public Q addFetchGroup(String fetchGroupName) {
         fetchGroups.add(fetchGroupName);
         return (Q)this;
@@ -112,6 +112,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     /**
      * Close the query and related resources
      */
+    @Override
     public void close() {
         for (Query query : queries) {
             query.closeAll();
@@ -141,7 +142,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     private Expression<?> getSource() {
         return queryMixin.getMetadata().getJoins().get(0).getTarget();
     }
-    
+
     private Query createQuery(boolean forCount) {
         Expression<?> source = getSource();
 
@@ -219,10 +220,11 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
                 rv = project(projection, rv);
             }
         }
-        
+
         return rv;
     }
 
+    @Override
     public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }
@@ -239,17 +241,19 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return detach;
     }
 
+    @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return new IteratorAdapter<Tuple>(list(args).iterator(), closeable);
     }
 
+    @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
     @Override
     public List<Tuple> list(Expression<?>... args) {
-        return list(new QTuple(args));
+        return list(queryMixin.createProjection(args));
     }
 
     @Override
@@ -263,9 +267,10 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(new QTuple(args));
+        return listResults(queryMixin.createProjection(args));
     }
-    
+
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
@@ -289,15 +294,16 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     }
 
     /**
-     * Set the maximum fetch depth when fetching. 
+     * Set the maximum fetch depth when fetching.
      * A value of 0 has no meaning and will throw a JDOUserException.
      * A value of -1 means that no limit is placed on fetching.
      * A positive integer will result in that number of references from the
      * initial object to be fetched.
-     * 
+     *
      * @param maxFetchDepth
      * @return
      */
+    @Override
     public Q setMaxFetchDepth(int depth) {
         maxFetchDepth = depth;
         return (Q)this;
@@ -318,9 +324,9 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     @Override
     @Nullable
     public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(new QTuple(args));        
+        return uniqueResult(queryMixin.createProjection(args));
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     @Nullable

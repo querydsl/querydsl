@@ -42,7 +42,6 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.QTuple;
 
 /**
  * JDOSQLQuery is an SQLQuery implementation that uses JDO's SQL query functionality
@@ -194,7 +193,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
 
     @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(new QTuple(args));
+        return iterate(queryMixin.createProjection(args));
     }
 
     @Override
@@ -204,7 +203,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
 
     @Override
     public List<Tuple> list(Expression<?>... args) {
-        return list(new QTuple(args));
+        return list(queryMixin.createProjection(args));
     }
 
     @Override
@@ -218,7 +217,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
 
     @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(new QTuple(args));
+        return listResults(queryMixin.createProjection(args));
     }
 
     @Override
@@ -258,7 +257,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
     @Override
     @Nullable
     public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(new QTuple(args));
+        return uniqueResult(queryMixin.createProjection(args));
     }
 
     @Override

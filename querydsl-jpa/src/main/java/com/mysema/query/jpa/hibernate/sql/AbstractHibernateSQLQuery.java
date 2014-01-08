@@ -47,7 +47,6 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.QTuple;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -148,7 +147,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @Override
     public List<Tuple> list(Expression<?>... projection) {
-        return list(new QTuple(projection));
+        return list(queryMixin.createProjection(projection));
     }
 
     @SuppressWarnings("unchecked")
@@ -161,7 +160,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(new QTuple(args));
+        return iterate(queryMixin.createProjection(args));
     }
 
     @Override
@@ -174,7 +173,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(new QTuple(args));
+        return listResults(queryMixin.createProjection(args));
     }
 
     @Override
@@ -218,7 +217,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @Override
     public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(new QTuple(args));
+        return uniqueResult(queryMixin.createProjection(args));
     }
 
     @SuppressWarnings("unchecked")

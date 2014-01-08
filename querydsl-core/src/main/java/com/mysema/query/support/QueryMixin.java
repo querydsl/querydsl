@@ -13,12 +13,16 @@
  */
 package com.mysema.query.support;
 
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -31,6 +35,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.ProjectionRole;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
@@ -140,6 +145,19 @@ public class QueryMixin<T> {
         } else {
             return expr;
         }
+    }
+
+    public Expression<Tuple> createProjection(Expression<?>[] args) {
+        Map<Expression<?>, Integer> bindings = Maps.newHashMap();
+        for (int i = 0; i < args.length; i++) {
+            bindings.put(args[i], i);
+            Expression<?> converted = convert(args[i], false);
+            if (converted != args[i]) {
+                args[i] = converted;
+                bindings.put(converted, i);
+            }
+        }
+        return new QTuple(args, bindings);
     }
 
     protected <D> Expression<D> createAlias(Expression<?> expr, Path<?> alias) {

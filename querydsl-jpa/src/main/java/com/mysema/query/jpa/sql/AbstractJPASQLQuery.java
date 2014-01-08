@@ -46,7 +46,6 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
-import com.mysema.query.types.QTuple;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -157,7 +156,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     @Override
     public List<Tuple> list(Expression<?>... args) {
-        return list(new QTuple(args));
+        return list(queryMixin.createProjection(args));
     }
 
     /**
@@ -227,7 +226,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(new QTuple(args));
+        return iterate(queryMixin.createProjection(args));
     }
 
     @Override
@@ -238,7 +237,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(new QTuple(args));
+        return listResults(queryMixin.createProjection(args));
     }
 
     @Override
@@ -282,7 +281,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
     @Override
     public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(new QTuple(args));
+        return uniqueResult(queryMixin.createProjection(args));
     }
 
     @Override

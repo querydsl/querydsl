@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,7 +45,6 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.QTuple;
 
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface
@@ -67,7 +66,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     protected int fetchSize = 0;
 
     protected final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
-    
+
     @Nullable
     protected FlushMode flushMode;
 
@@ -190,8 +189,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         } else if (!forCount) {
             FactoryExpression<?> proj = FactoryExpressionUtils.wrap(projection);
             if (proj != null) {
-                query.setResultTransformer(new FactoryExpressionTransformer(proj));    
-            }            
+                query.setResultTransformer(new FactoryExpressionTransformer(proj));
+            }
         }
         return query;
     }
@@ -202,9 +201,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * Entities returned as results are initialized on demand. The first
      * SQL query returns identifiers only.<br>
      */
+    @Override
     @SuppressWarnings("unchecked")
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(new QTuple(args));
+        return iterate(queryMixin.createProjection(args));
     }
 
     /**
@@ -215,6 +215,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * Entities returned as results are initialized on demand. The first
      * SQL query returns identifiers only.<br>
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         Query query = createQuery(projection);
@@ -223,22 +224,26 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return new ScrollableResultsIterator<RT>(results);
     }
 
+    @Override
     public List<Tuple> list(Expression<?>... args) {
-        return list(new QTuple(args));
+        return list(queryMixin.createProjection(args));
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         Query query = createQuery(expr);
         reset();
         return query.list();
     }
-    
+
+    @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(new QTuple(args));
+        return listResults(queryMixin.createProjection(args));
     }
-    
-    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {        
+
+    @Override
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
         Query countQuery = createQuery(toCountRowsString(), null, true);
         long total = (Long) countQuery.uniqueResult();
@@ -315,9 +320,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         this.cacheRegion = cacheRegion;
         return (Q)this;
     }
-    
+
     /**
-     * Add a comment to the generated SQL.      
+     * Add a comment to the generated SQL.
      * @param comment
      * @return
      */
@@ -345,7 +350,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         lockModes.put(path, lockMode);
         return (Q)this;
     }
-    
+
     /**
      * Override the current session flush mode, just for this query.
      */
@@ -377,28 +382,30 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return (Q)this;
     }
 
+    @Override
     public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(new QTuple(args));
+        return uniqueResult(queryMixin.createProjection(args));
     }
-    
+
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addProjection(expr);
         return (RT)uniqueResult();
     }
-    
-    
+
+
     private Object uniqueResult() {
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, modifiers, false);
-        reset();        
+        reset();
         try{
-            return query.uniqueResult();    
+            return query.uniqueResult();
         } catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
-        }  
+        }
     }
 
 }

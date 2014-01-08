@@ -78,28 +78,38 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void EntityQueries() {
-        SAnimal mate = new SAnimal("mate");
         QCat catEntity = QCat.cat;
 
-        // 1
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).list(catEntity);
         assertEquals(6, cats.size());
         for (Cat c : cats) {
             System.out.println(c.getName());
         }
-
-        // 2
-        cats = query().from(cat)
-            .innerJoin(mate).on(cat.mateId.eq(mate.id))
-            .where(cat.dtype.eq("C"), mate.dtype.eq("C"))
-            .list(catEntity);
-        assertTrue(cats.isEmpty());
     }
 
     @Test
     public void EntityQueries2() {
+        SAnimal mate = new SAnimal("mate");
+        QCat catEntity = QCat.cat;
+
+        List<Cat> cats = query().from(cat)
+                .innerJoin(mate).on(cat.mateId.eq(mate.id))
+                .where(cat.dtype.eq("C"), mate.dtype.eq("C"))
+                .list(catEntity);
+        assertTrue(cats.isEmpty());
+    }
+
+    @Test
+    public void EntityQueries3() {
         QCat catEntity = new QCat("animal_");
         query().from(catEntity).list(catEntity.toes.max());
+    }
+
+    @Test
+    public void EntityQueries4() {
+        QCat catEntity = QCat.cat;
+        List<Tuple> cats = query().from(cat).list(catEntity, cat.id);
+        assertEquals(6, cats.size());
     }
 
     @Test

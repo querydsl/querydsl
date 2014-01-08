@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,6 @@ import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.QTuple;
 
 /**
  * AbstractCollQuery provides a base class for Collection query implementations.
@@ -104,7 +103,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
         getMetadata().addJoin(JoinType.DEFAULT, entity);
         return (Q)this;
     }
-    
+
     /**
      * Bind the given collection to an already existing query source
      *
@@ -149,7 +148,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
-    
+
     /**
      * Define a left join from the Collection typed path to the alias
      *
@@ -178,7 +177,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
 
     @Override
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(new QTuple(args));
+        return iterate(queryMixin.createProjection(args));
     }
 
     @Override
@@ -193,7 +192,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
 
     @Override
     public List<Tuple> list(Expression<?>... args) {
-        return list(new QTuple(args));
+        return list(queryMixin.createProjection(args));
     }
 
     @Override
@@ -205,10 +204,10 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
             reset();
         }
     }
-    
+
     @Override
     public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(new QTuple(args));
+        return listResults(queryMixin.createProjection(args));
     }
 
     @Override
@@ -225,10 +224,10 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
         }
 
     }
-    
+
     @Override
     public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(new QTuple(args));
+        return uniqueResult(queryMixin.createProjection(args));
     }
 
     @Override
