@@ -110,6 +110,11 @@ public abstract class AbstractSQLTest {
         QCat catEntity = QCat.cat;
         List<Tuple> cats = query().from(cat).list(catEntity, cat.id);
         assertEquals(6, cats.size());
+
+        for (Tuple tuple : cats) {
+            assertNotNull(tuple.get(catEntity));
+            assertNotNull(tuple.get(cat.id));
+        }
     }
 
     @Test
