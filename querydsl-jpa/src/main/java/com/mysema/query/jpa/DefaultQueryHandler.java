@@ -1,6 +1,6 @@
 /*
  * Copyright 2013, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@ import javax.persistence.Query;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
 /**
@@ -31,21 +32,25 @@ public final class DefaultQueryHandler implements QueryHandler {
     public static final QueryHandler DEFAULT = new DefaultQueryHandler();
 
     @Override
+    public void addEntity(Query query, Expression<?> expression) {
+        // do nothing
+    }
+
+    @Override
     public <T> CloseableIterator<T> iterate(Query query, @Nullable final FactoryExpression<?> projection) {
         Iterator<T> iterator = query.getResultList().iterator();
         if (projection != null) {
-            return new TransformingIterator<T>(iterator, projection);                
+            return new TransformingIterator<T>(iterator, projection);
         } else {
             return new IteratorAdapter<T>(iterator);
-        }        
+        }
     }
-    
+
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
         return false;
     }
-    
-    private DefaultQueryHandler() {}
 
+    private DefaultQueryHandler() {}
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2013, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,15 +26,20 @@ import org.eclipse.persistence.queries.Cursor;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
 /**
- * 
+ *
  * @author tiwe
  *
  */
 public class EclipseLinkHandler implements QueryHandler {
 
+    @Override
+    public void addEntity(Query query, Expression<?> expression) {
+        // do nothing
+    }
 
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
@@ -49,19 +54,19 @@ public class EclipseLinkHandler implements QueryHandler {
                 @Override
                 public void close() throws IOException {
                     cursor.close();
-                }                
+                }
             };
             iterator = cursor;
         } else {
-            iterator = query.getResultList().iterator();        
+            iterator = query.getResultList().iterator();
         }
         if (projection != null) {
-            return new TransformingIterator<T>(iterator, closeable, projection);                
+            return new TransformingIterator<T>(iterator, closeable, projection);
         } else {
             return new IteratorAdapter<T>(iterator, closeable);
-        }        
+        }
     }
-    
+
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
         return false;

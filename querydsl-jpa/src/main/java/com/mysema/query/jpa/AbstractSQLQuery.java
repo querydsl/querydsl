@@ -14,6 +14,7 @@
 package com.mysema.query.jpa;
 
 import javax.annotation.Nullable;
+import javax.persistence.Entity;
 
 import com.mysema.query.JoinFlag;
 import com.mysema.query.Query;
@@ -77,6 +78,10 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
         super(new NativeQueryMixin<T>(metadata));
         this.queryMixin = super.queryMixin;
         this.queryMixin.setSelf((T)this);
+    }
+
+    protected boolean isEntityExpression(Expression<?> expr) {
+        return expr instanceof EntityPath || expr.getType().isAnnotationPresent(Entity.class);
     }
 
     @Override

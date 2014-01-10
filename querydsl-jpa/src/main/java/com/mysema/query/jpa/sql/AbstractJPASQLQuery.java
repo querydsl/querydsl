@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
@@ -42,7 +41,6 @@ import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
@@ -110,16 +108,25 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         logQuery(queryString);
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
-        if (!FactoryExpression.class.isAssignableFrom(projection.get(0).getClass()) &&
-            (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class))) {
+        Expression<?> proj = projection.get(0);
+        if (!FactoryExpression.class.isAssignableFrom(proj.getClass()) && isEntityExpression(proj)) {
             if (projection.size() == 1) {
-                query = entityManager.createNativeQuery(queryString, projection.get(0).getType());
+                query = entityManager.createNativeQuery(queryString, proj.getType());
             } else {
                 throw new IllegalArgumentException("Only single element entity projections are supported");
             }
 
         } else {
             query = entityManager.createNativeQuery(queryString);
+            if (proj instanceof FactoryExpression) {
+                for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+                    if (isEntityExpression(expr)) {
+                        queryHandler.addEntity(query, expr);
+                    }
+                }
+            } else if (isEntityExpression(proj)) {
+                queryHandler.addEntity(query, proj);
+            }
         }
 
         if (lockMode != null) {

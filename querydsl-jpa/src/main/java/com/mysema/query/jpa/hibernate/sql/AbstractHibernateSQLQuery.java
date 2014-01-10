@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.persistence.Entity;
 
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
@@ -43,10 +42,10 @@ import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.TemplateExpression;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -106,27 +105,40 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return createQuery(toQueryString());
     }
 
+    private void addEntity(org.hibernate.SQLQuery query, Expression<?> expr) {
+        if (expr instanceof Operation) {
+            expr = ((Operation)expr).getArg(0);
+        } else if (expr instanceof TemplateExpression) {
+            expr = (Expression<?>) ((TemplateExpression)expr).getArg(0);
+        }
+        System.err.println(expr);
+        query.addEntity(expr.toString(), expr.getType());
+    }
+
     private Query createQuery(String queryString) {
         logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
         HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
+
         // set entity paths
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-        if (!FactoryExpression.class.isAssignableFrom(projection.get(0).getClass()) &&
-            (projection.get(0) instanceof EntityPath || projection.get(0).getType().isAnnotationPresent(Entity.class))) {
-            if (projection.size() == 1) {
-                Expression<?> expr = projection.get(0);
-                if (expr instanceof Operation) {
-                    expr = ((Operation)expr).getArg(0);
+        Expression<?> proj = projection.get(0);
+        if (proj instanceof FactoryExpression) {
+            for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+                if (isEntityExpression(expr)) {
+                    addEntity(query, expr);
                 }
-                query.addEntity(expr.toString(), expr.getType());
             }
+        } else if (isEntityExpression(proj)) {
+            addEntity(query, proj);
         }
-        // set result transformer, if projection is an EConstructor instance
-        if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression) {
-            query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
+
+        // set result transformer, if projection is a FactoryExpression instance
+        if (projection.size() == 1 && proj instanceof FactoryExpression) {
+            query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) proj));
         }
+
         if (fetchSize > 0) {
             query.setFetchSize(fetchSize);
         }

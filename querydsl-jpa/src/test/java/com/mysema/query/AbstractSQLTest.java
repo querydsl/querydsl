@@ -106,14 +106,33 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
+    @Ignore
     public void EntityQueries4() {
         QCat catEntity = QCat.cat;
-        List<Tuple> cats = query().from(cat).list(catEntity, cat.id);
+        // XXX combination of entity and scalar projection not allowed
+        List<Tuple> cats = query().from(cat).list(catEntity, cat.name, cat.id);
         assertEquals(6, cats.size());
 
         for (Tuple tuple : cats) {
-            assertNotNull(tuple.get(catEntity));
-            assertNotNull(tuple.get(cat.id));
+            assertTrue(tuple.get(catEntity) instanceof Cat);
+            assertTrue(tuple.get(cat.name) instanceof String);
+            assertTrue(tuple.get(cat.id) instanceof Integer);
+        }
+    }
+
+    @Test
+    @NoBatooJPA
+    @NoEclipseLink
+    public void EntityQueries5() {
+        QCat catEntity = QCat.cat;
+        SAnimal otherCat = new SAnimal("otherCat");
+        QCat otherCatEntity = new QCat("otherCat");
+        List<Tuple> cats = query().from(cat, otherCat).list(catEntity, otherCatEntity);
+        assertEquals(36, cats.size());
+
+        for (Tuple tuple : cats) {
+            assertTrue(tuple.get(catEntity) instanceof Cat);
+            assertTrue(tuple.get(otherCatEntity) instanceof Cat);
         }
     }
 
