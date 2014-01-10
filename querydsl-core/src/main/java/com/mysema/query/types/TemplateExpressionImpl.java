@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Default implementation of the {@link TemplateExpression} interface
- * 
+ *
  * @author tiwe
  *
  * @param <T> expression type
@@ -38,15 +38,15 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     public static <C> Expression<C> create(Class<C> cl, String template) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
     }
-    
+
     public static <C> Expression<C> create(Class<C> cl, String template, Object one) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }
-    
+
     public static <C> Expression<C> create(Class<C> cl, String template, Object one, Object two) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
     }
-    
+
     public static <C> Expression<C> create(Class<C> cl, String template, Object... args) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), args);
     }
@@ -57,8 +57,8 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     protected TemplateExpressionImpl(Class<? extends T> type, Template template, Object... args) {
         this(type, template, ImmutableList.copyOf(args));
-    }    
-    
+    }
+
     public TemplateExpressionImpl(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(type);
         this.args = args;
@@ -87,12 +87,14 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
        } else if (o instanceof TemplateExpression) {
            TemplateExpression<?> c = (TemplateExpression<?>)o;
            return c.getTemplate().equals(template)
-               && c.getType().equals(getType());
+               && c.getType().equals(getType())
+               && c.getArgs().equals(args);
+
        } else {
            return false;
        }
     }
-    
+
     @Override
     public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
