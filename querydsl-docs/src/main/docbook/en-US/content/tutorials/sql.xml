@@ -236,6 +236,11 @@
             <entry>numericMappings</entry>
             <entry>Mappings of size/digits to Java type (default: none)</entry>
           </row>
+          <row>
+            <entry>imports</entry>
+            <entry>Array of java imports added to generated query classes: <emphasis>com.bar</emphasis> for package (without .* notation), <emphasis>com.bar.Foo</emphasis> for class (default: empty)
+            </entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
@@ -272,6 +277,7 @@
 </numericMappings>   
 ]]></programlisting>                     
     
+    <para>Imports can be used to add cross-schema foreign keys support.</para>
 
   </sect2>
 

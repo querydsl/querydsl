@@ -326,6 +326,10 @@
           <packageName>com.mysema.query.jpa.domain.sql</packageName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
+            <imports>
+                <import>java.io</import>
+                <import>java.io.File</import>
+            </imports>
         </configuration>
         <dependencies>
           <dependency>

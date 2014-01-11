@@ -18,6 +18,8 @@ import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.Configuration;
 
+import java.util.Set;
+
 /**
  * SQLCodegenModule is a dependency injection module with codegen configuration
  * 
@@ -35,7 +37,7 @@ public class SQLCodegenModule extends CodegenModule{
     public static final String BEAN_PACKAGE_NAME = "beanPackageName";
     
     public static final String PACKAGE_NAME = "packageName";
-    
+
     public static final String INNER_CLASSES_FOR_KEYS = "innerClassesForKeys";
     
     public static final String SCHEMA_TO_PACKAGE = "schemaToPackage";
@@ -77,4 +79,7 @@ public class SQLCodegenModule extends CodegenModule{
         return get(String.class, PACKAGE_NAME);
     }
 
+	public Set<String> getImports() {
+		return get(Set.class, IMPORTS);
+	}
 }

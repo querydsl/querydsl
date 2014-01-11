@@ -21,6 +21,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,9 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
@@ -56,6 +54,8 @@ import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
 import com.mysema.query.sql.support.SizeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -144,6 +144,7 @@ public class MetaDataExporter {
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
+
             Type mappedType = queryTypeFactory.create(classModel);
             entityToWrapped.put(classModel, mappedType);
             typeMappings.register(classModel, mappedType);
@@ -594,5 +595,14 @@ public class MetaDataExporter {
     public void setExportForeignKeys(boolean exportForeignKeys) {
         this.exportForeignKeys = exportForeignKeys;
     }
+
+	/**
+	 * Set the java imports
+	 *
+	 * @param imports java imports array
+	 */
+	public void setImports(String[] imports) {
+		module.bind(CodegenModule.IMPORTS, new HashSet<String>(Arrays.asList(imports)));
+	}
 
 }

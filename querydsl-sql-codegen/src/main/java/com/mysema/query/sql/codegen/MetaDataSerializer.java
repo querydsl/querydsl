@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,6 +35,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
+import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -60,21 +63,25 @@ public class MetaDataSerializer extends EntitySerializer {
 
     private final boolean innerClassesForKeys;
 
+    private final Set<String> imports;
+
     /**
      * Create a new MetaDataSerializer instance
      *
      * @param namingStrategy naming strategy for table to class and column to property conversion
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)
-     * @param schemaToPackage if schema name is appended to package or not
+     * @param imports java user imports
      */
     @Inject
     public MetaDataSerializer(
             TypeMappings typeMappings,
             NamingStrategy namingStrategy,
-            @Named(SQLCodegenModule.INNER_CLASSES_FOR_KEYS) boolean innerClassesForKeys) {
+            @Named(SQLCodegenModule.INNER_CLASSES_FOR_KEYS) boolean innerClassesForKeys,
+            @Named(SQLCodegenModule.IMPORTS) Set<String> imports) {
         super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
+        this.imports = new HashSet<String>(imports);
     }
 
     @Override
@@ -167,7 +174,31 @@ public class MetaDataSerializer extends EntitySerializer {
         }
 
         writer.imports(ColumnMetadata.class);
+
+        writeUserImports(writer);
     }
+
+
+    protected void writeUserImports(CodeWriter writer) throws IOException {
+        Set<String> packages = new HashSet<String>();
+        Set<String> classes = new HashSet<String>();
+
+        for (String javaImport : imports){
+            //true if the character next to the dot is an upper case or if no dot is found (-1+1=0) the first character
+            boolean isClass = Character.isUpperCase(javaImport.charAt(javaImport.lastIndexOf(".") + 1));
+            if (isClass){
+                classes.add(javaImport);
+            }else{
+                packages.add(javaImport);
+            }
+        }
+
+        String[] marker = new String[]{};
+        writer.importPackages(packages.toArray(marker));
+        writer.importClasses(classes.toArray(marker));
+    }
+
+
 
     @Override
     protected void outro(EntityType model, CodeWriter writer) throws IOException {

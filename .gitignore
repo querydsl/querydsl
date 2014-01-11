@@ -5,6 +5,8 @@ test-output
 .classpath
 .project
 .settings
+*.iml
+.idea
 /.metadata
 .cache
 derby.log

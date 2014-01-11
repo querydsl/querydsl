@@ -31,6 +31,8 @@ public class CodegenModule  extends AbstractModule {
 
     public static final String PACKAGE_SUFFIX = "packageSuffix";
 
+	public static final String IMPORTS = "imports";
+
     @Override
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
@@ -45,6 +47,7 @@ public class CodegenModule  extends AbstractModule {
         bind(SUFFIX, "");
         bind(PACKAGE_SUFFIX, "");
         bind(KEYWORDS, Collections.<String>emptySet());
+		bind(IMPORTS, Collections.<String>emptySet());
     }
 
 }
