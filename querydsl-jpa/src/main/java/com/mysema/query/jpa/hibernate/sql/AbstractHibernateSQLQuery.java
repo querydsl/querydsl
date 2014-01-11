@@ -44,8 +44,6 @@ import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.TemplateExpression;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -65,6 +63,9 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     @Nullable
     private Map<Object,String> constants;
+
+    @Nullable
+    private Map<Expression<?>, String> aliases;
 
     protected int fetchSize = 0;
 
@@ -96,47 +97,44 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
         constants = serializer.getConstantToLabel();
+        aliases = serializer.getAliases();
         return serializer.toString();
     }
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addProjection(args);
-        return createQuery(toQueryString());
+        return createQuery(toQueryString(), false);
     }
 
-    private void addEntity(org.hibernate.SQLQuery query, Expression<?> expr) {
-        if (expr instanceof Operation) {
-            expr = ((Operation)expr).getArg(0);
-        } else if (expr instanceof TemplateExpression) {
-            expr = (Expression<?>) ((TemplateExpression)expr).getArg(0);
-        }
-        System.err.println(expr);
-        query.addEntity(expr.toString(), expr.getType());
-    }
-
-    private Query createQuery(String queryString) {
+    private Query createQuery(String queryString, boolean forCount) {
         logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
         HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
 
-        // set entity paths
-        List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-        Expression<?> proj = projection.get(0);
-        if (proj instanceof FactoryExpression) {
-            for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
-                if (isEntityExpression(expr)) {
-                    addEntity(query, expr);
+        if (!forCount) {
+            // set entity paths
+            List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
+            Expression<?> proj = projection.get(0);
+            if (proj instanceof FactoryExpression) {
+                for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+                    if (isEntityExpression(expr)) {
+                        query.addEntity(extractEntityExpression(expr).toString(), expr.getType());
+                    } else if (aliases.containsKey(expr)) {
+                        query.addScalar(aliases.get(expr));
+                    }
                 }
+            } else if (isEntityExpression(proj)) {
+                query.addEntity(extractEntityExpression(proj).toString(), proj.getType());
+            } else if (aliases.containsKey(proj)) {
+                query.addScalar(aliases.get(proj));
             }
-        } else if (isEntityExpression(proj)) {
-            addEntity(query, proj);
-        }
 
-        // set result transformer, if projection is a FactoryExpression instance
-        if (projection.size() == 1 && proj instanceof FactoryExpression) {
-            query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) proj));
+            // set result transformer, if projection is a FactoryExpression instance
+            if (projection.size() == 1 && proj instanceof FactoryExpression) {
+                query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) proj));
+            }
         }
 
         if (fetchSize > 0) {
@@ -192,12 +190,12 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         queryMixin.addProjection(projection);
-        Query query = createQuery(toCountRowsString());
+        Query query = createQuery(toCountRowsString(), true);
         long total = ((Number)query.uniqueResult()).longValue();
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             String queryString = toQueryString();
-            query = createQuery(queryString);
+            query = createQuery(queryString, false);
             @SuppressWarnings("unchecked")
             List<RT> list = query.list();
             reset();

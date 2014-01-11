@@ -20,7 +20,6 @@ import javax.persistence.Query;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
 /**
@@ -32,7 +31,12 @@ public final class DefaultQueryHandler implements QueryHandler {
     public static final QueryHandler DEFAULT = new DefaultQueryHandler();
 
     @Override
-    public void addEntity(Query query, Expression<?> expression) {
+    public void addEntity(Query query, String alias, Class<?> type) {
+        // do nothing
+    }
+
+    @Override
+    public void addScalar(Query query, String alias, Class<?> type) {
         // do nothing
     }
 

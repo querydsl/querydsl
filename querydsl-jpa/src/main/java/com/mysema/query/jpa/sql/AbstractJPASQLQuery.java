@@ -59,6 +59,9 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     @Nullable
     private Map<Object,String> constants;
 
+    @Nullable
+    private Map<Expression<?>, String> aliases;
+
     private final EntityManager entityManager;
 
     protected final Configuration configuration;
@@ -95,19 +98,21 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
         constants = serializer.getConstantToLabel();
+        aliases = serializer.getAliases();
         return serializer.toString();
     }
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addProjection(args);
-        return createQuery(toQueryString());
+        return createQuery(toQueryString(), false);
     }
 
-    private Query createQuery(String queryString) {
+    private Query createQuery(String queryString, boolean forCount) {
         logQuery(queryString);
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
+
         Expression<?> proj = projection.get(0);
         if (!FactoryExpression.class.isAssignableFrom(proj.getClass()) && isEntityExpression(proj)) {
             if (projection.size() == 1) {
@@ -118,14 +123,20 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
 
         } else {
             query = entityManager.createNativeQuery(queryString);
-            if (proj instanceof FactoryExpression) {
-                for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
-                    if (isEntityExpression(expr)) {
-                        queryHandler.addEntity(query, expr);
+            if (!forCount) {
+                if (proj instanceof FactoryExpression) {
+                    for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+                        if (isEntityExpression(expr)) {
+                            queryHandler.addEntity(query, extractEntityExpression(expr).toString(), expr.getType());
+                        } else if (aliases.containsKey(expr)) {
+                            queryHandler.addScalar(query, aliases.get(expr), expr.getType());
+                        }
                     }
+                } else if (isEntityExpression(proj)) {
+                    queryHandler.addEntity(query, extractEntityExpression(proj).toString(), proj.getType());
+                } else if (aliases.containsKey(proj)) {
+                    queryHandler.addScalar(query, aliases.get(proj), proj.getType());
                 }
-            } else if (isEntityExpression(proj)) {
-                queryHandler.addEntity(query, proj);
             }
         }
 
@@ -251,12 +262,12 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         queryMixin.addProjection(projection);
-        Query query = createQuery(toCountRowsString());
+        Query query = createQuery(toCountRowsString(), true);
         long total = ((Number)query.getSingleResult()).longValue();
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             String queryString = toQueryString();
-            query = createQuery(queryString);
+            query = createQuery(queryString, false);
             @SuppressWarnings("unchecked")
             List<RT> list = (List<RT>) getResultList(query);
             reset();

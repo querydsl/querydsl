@@ -106,10 +106,10 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    @Ignore
+    @NoBatooJPA
+    @NoEclipseLink
     public void EntityQueries4() {
         QCat catEntity = QCat.cat;
-        // XXX combination of entity and scalar projection not allowed
         List<Tuple> cats = query().from(cat).list(catEntity, cat.name, cat.id);
         assertEquals(6, cats.size());
 

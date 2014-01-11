@@ -26,7 +26,6 @@ import org.eclipse.persistence.queries.Cursor;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
 /**
@@ -37,7 +36,12 @@ import com.mysema.query.types.FactoryExpression;
 public class EclipseLinkHandler implements QueryHandler {
 
     @Override
-    public void addEntity(Query query, Expression<?> expression) {
+    public void addEntity(Query query, String alias, Class<?> type) {
+        // do nothing
+    }
+
+    @Override
+    public void addScalar(Query query, String alias, Class<?> type) {
         // do nothing
     }
 

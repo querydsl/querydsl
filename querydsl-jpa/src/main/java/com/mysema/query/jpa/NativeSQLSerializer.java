@@ -16,10 +16,12 @@ package com.mysema.query.jpa;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
@@ -40,8 +42,18 @@ import com.mysema.query.types.QTuple;
  */
 public final class NativeSQLSerializer extends SQLSerializer {
 
+    private final Map<Expression<?>, String> aliases = Maps.newHashMap();
+
     public NativeSQLSerializer(Configuration configuration) {
         super(configuration);
+    }
+
+    private boolean isAlias(Expression<?> expr) {
+        return expr instanceof Operation && ((Operation<?>)expr).getOperator() == Ops.ALIAS;
+    }
+
+    public Map<Expression<?>, String> getAliases() {
+        return aliases;
     }
 
     @Override
@@ -55,15 +67,24 @@ public final class NativeSQLSerializer extends SQLSerializer {
             if (args[i] instanceof Path) {
                 Path<?> path = (Path<?>)args[i];
                 if (!used.add(path.getMetadata().getName())) {
-                    args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
+                    String alias = "col__"+(i+1);
+                    aliases.put(args[i], alias);
+                    args[i] = ExpressionUtils.as(args[i], alias);
                     modified = true;
+                } else {
+                    aliases.put(args[i], path.getMetadata().getName());
                 }
             } else if (args[i] instanceof FactoryExpression) {
                 FactoryExpression<?> factoryExpr = (FactoryExpression<?>)args[i];
                 List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
                 for (int j = 0; j < fargs.size(); j++) {
-                    if (!isAlias(fargs.get(j)) && !fargs.get(j).toString().contains("*")) {
-                        fargs.set(j, ExpressionUtils.as(fargs.get(j), "col__"+(i+1)+"_"+(j+1)));
+                    if (isAlias(fargs.get(j))) {
+                        Operation<?> operation = (Operation<?>)fargs.get(j);
+                        aliases.put(operation, operation.getArg(1).toString());
+                    } else if (!fargs.get(j).toString().contains("*")) {
+                        String alias = "col__"+(i+1)+"_"+(j+1);
+                        aliases.put(fargs.get(j), alias);
+                        fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                     }
                 }
                 args[i] = new QTuple(ImmutableList.copyOf(fargs));
@@ -72,9 +93,14 @@ public final class NativeSQLSerializer extends SQLSerializer {
             } else if (!isAlias(args[i])) {
                 // https://github.com/mysema/querydsl/issues/80
                 if (!args[i].toString().contains("*")) {
-                    args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
+                    String alias = "col__"+(i+1);
+                    aliases.put(args[i], alias);
+                    args[i] = ExpressionUtils.as(args[i], alias);
                     modified = true;
                 }
+            } else {
+                Operation<?> operation = (Operation<?>)args[i];
+                aliases.put(operation, operation.getArg(1).toString());
             }
         }
         if (modified) {
@@ -85,10 +111,6 @@ public final class NativeSQLSerializer extends SQLSerializer {
             }
         }
         super.serialize(metadata, forCountRow);
-    }
-
-    private boolean isAlias(Expression<?> expr) {
-        return expr instanceof Operation && ((Operation<?>)expr).getOperator() == Ops.ALIAS;
     }
 
     @Override

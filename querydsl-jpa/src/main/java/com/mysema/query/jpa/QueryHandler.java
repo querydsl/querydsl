@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 import javax.persistence.Query;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
 /**
@@ -37,12 +36,22 @@ public interface QueryHandler {
     <T> CloseableIterator<T> iterate(Query query, @Nullable FactoryExpression<?> projection);
 
     /**
+     * Add the given scalar to the given native query
+     *
+     * @param query
+     * @param alias
+     * @param type
+     */
+    void addScalar(Query query, String alias, Class<?> type);
+
+    /**
      * Add the given entity to the given native query
      *
      * @param query
-     * @param expression
+     * @param alias
+     * @param type
      */
-    void addEntity(Query query, Expression<?> expression);
+    void addEntity(Query query, String alias, Class<?> type);
 
     /**
      * Transform the results of the given query using the given factory expression
@@ -52,5 +61,6 @@ public interface QueryHandler {
      * @return
      */
     boolean transform(Query query, FactoryExpression<?> projection);
+
 
 }

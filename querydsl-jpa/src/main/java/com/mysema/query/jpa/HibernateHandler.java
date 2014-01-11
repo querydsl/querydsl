@@ -25,7 +25,6 @@ import org.hibernate.transform.ResultTransformer;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
 /**
@@ -35,11 +34,21 @@ import com.mysema.query.types.FactoryExpression;
 public class HibernateHandler implements QueryHandler {
 
     @Override
-    public void addEntity(Query query, Expression<?> expr) {
+    public void addEntity(Query query, String alias, Class<?> type) {
         if (query instanceof HibernateQuery) {
             org.hibernate.Query hibernateQuery = ((HibernateQuery)query).getHibernateQuery();
             if (hibernateQuery instanceof SQLQuery) {
-                ((SQLQuery)hibernateQuery).addEntity(expr.toString(), expr.getType());
+                ((SQLQuery)hibernateQuery).addEntity(alias, type);
+            }
+        }
+    }
+
+    @Override
+    public void addScalar(Query query, String alias, Class<?> type) {
+        if (query instanceof HibernateQuery) {
+            org.hibernate.Query hibernateQuery = ((HibernateQuery)query).getHibernateQuery();
+            if (hibernateQuery instanceof SQLQuery) {
+                ((SQLQuery)hibernateQuery).addScalar(alias);
             }
         }
     }

@@ -37,10 +37,12 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
@@ -82,6 +84,16 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & Query<T>>
 
     protected boolean isEntityExpression(Expression<?> expr) {
         return expr instanceof EntityPath || expr.getType().isAnnotationPresent(Entity.class);
+    }
+
+    protected Expression<?> extractEntityExpression(Expression<?> expr) {
+        if (expr instanceof Operation) {
+            return ((Operation)expr).getArg(0);
+        } else if (expr instanceof TemplateExpression) {
+            return (Expression<?>) ((TemplateExpression)expr).getArg(0);
+        } else {
+            return expr;
+        }
     }
 
     @Override
