@@ -110,6 +110,20 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Insert_Batch2() {
+        SQLInsertClause insert = insert(survey)
+                .set(survey.id, 5)
+                .set(survey.name, "55")
+                .addBatch();
+
+        insert.set(survey.id, 6)
+                .setNull(survey.name)
+                .addBatch();
+
+        assertEquals(2, insert.execute());
+    }
+
+    @Test
     public void Insert_Null_With_Columns() {
         assertEquals(1, insert(survey)
                 .columns(survey.id, survey.name)
