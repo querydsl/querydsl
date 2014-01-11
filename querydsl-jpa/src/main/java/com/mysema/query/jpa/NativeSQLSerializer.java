@@ -72,13 +72,22 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     args[i] = ExpressionUtils.as(args[i], alias);
                     modified = true;
                 } else {
-                    aliases.put(args[i], path.getMetadata().getName());
+                    aliases.put(path, path.getMetadata().getName());
                 }
             } else if (args[i] instanceof FactoryExpression) {
                 FactoryExpression<?> factoryExpr = (FactoryExpression<?>)args[i];
                 List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
                 for (int j = 0; j < fargs.size(); j++) {
-                    if (isAlias(fargs.get(j))) {
+                    if (fargs.get(j) instanceof Path) {
+                        Path<?> path = (Path<?>) fargs.get(j);
+                        if (!used.add(path.getMetadata().getName())) {
+                            String alias = "col__"+(i+1)+"_"+(j+1);
+                            aliases.put(path, alias);
+                            fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
+                        } else {
+                            aliases.put(path, path.getMetadata().getName());
+                        }
+                    } else if (isAlias(fargs.get(j))) {
                         Operation<?> operation = (Operation<?>)fargs.get(j);
                         aliases.put(operation, operation.getArg(1).toString());
                     } else if (!fargs.get(j).toString().contains("*")) {
@@ -89,8 +98,10 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 }
                 args[i] = new QTuple(ImmutableList.copyOf(fargs));
                 modified = true;
-
-            } else if (!isAlias(args[i])) {
+            } else if (isAlias(args[i])) {
+                Operation<?> operation = (Operation<?>)args[i];
+                aliases.put(operation, operation.getArg(1).toString());
+            } else {
                 // https://github.com/mysema/querydsl/issues/80
                 if (!args[i].toString().contains("*")) {
                     String alias = "col__"+(i+1);
@@ -98,9 +109,6 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     args[i] = ExpressionUtils.as(args[i], alias);
                     modified = true;
                 }
-            } else {
-                Operation<?> operation = (Operation<?>)args[i];
-                aliases.put(operation, operation.getArg(1).toString());
             }
         }
         if (modified) {
