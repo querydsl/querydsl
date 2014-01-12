@@ -744,6 +744,20 @@ set(...)
 ]]></programlisting>    
 
      <para>maps single columns and nulls are used for empty subquery results.</para>
+     
+     <para>To populate a clause instance based on the contents of a bean you can use</para>
+
+    <programlisting language="java"><![CDATA[
+new SQLInsertClause(conn, configuration, survey)
+    .populate(surveyBean).execute();
+]]></programlisting>
+
+    <para>This will exclude null bindings, if you need also null bindings use</para>
+    
+    <programlisting language="java"><![CDATA[
+new SQLInsertClause(conn, configuration, survey)
+    .populate(surveyBean, DefaultMapper.WITH_NULL_BINDINGS).execute();
+]]></programlisting>    
 
     </sect3>
 
@@ -767,8 +781,16 @@ new SQLUpdateClause(conn, configuration, survey)
       <programlisting language="java"><![CDATA[  
 new SQLUpdateClause(conn, configuration, survey)
     .set(survey.name, "S")
-    .execute()  
+    .execute(); 
 ]]></programlisting>
+
+    <para>Using bean population</para>
+    
+<programlisting language="java"><![CDATA[
+new SQLUpdateClause(conn, configuration, survey)
+    .populate(surveyBean)
+    .execute();
+]]></programlisting>        
 
     </sect3>
 
