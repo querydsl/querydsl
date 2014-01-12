@@ -75,4 +75,23 @@ public class AntMetaDataExporterTest {
         assertTrue(new File("target/AntMetaDataExporterTest2").exists());
     }
 
+
+    @Test
+    public void Execute_With_Import() {
+        AntMetaDataExporter exporter = new AntMetaDataExporter();
+        exporter.setJdbcDriverClass("org.h2.Driver");
+        exporter.setDbUserName("sa");
+        exporter.setDbUrl(url);
+        exporter.setTargetPackage("test");
+        exporter.setTargetSourceFolder("target/AntMetaDataExporterTest3");
+        exporter.setExportBeans(true);
+        exporter.setNamePrefix("");
+        exporter.setNameSuffix("Q");
+        exporter.setBeanPrefix("");
+        exporter.setBeanSuffix("Bean");
+        exporter.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
+        exporter.execute();
+
+        assertTrue(new File("target/AntMetaDataExporterTest3").exists());
+    }
 }

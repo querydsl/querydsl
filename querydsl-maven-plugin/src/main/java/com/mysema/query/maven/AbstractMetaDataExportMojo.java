@@ -243,6 +243,15 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private boolean exportForeignKeys;
 
+    /**
+     * java import added to generated query classes:
+     * com.bar for package (without .* notation)
+     * com.bar.Foo for class
+     *
+     * @parameter
+     */
+    private String[] imports;
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -300,6 +309,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             exporter.setExportViews(exportViews);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+
+            if (imports != null && imports.length > 0) {
+                exporter.setImports(imports);
+            }
+
             if (serializerClass != null) {
                 try {
                     exporter.setSerializerClass((Class)Class.forName(serializerClass));
@@ -490,4 +504,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         this.numericMappings = numericMappings;
     }
 
+    public void setImports(String[] imports) {
+        this.imports = imports;
+    }
 }

@@ -158,5 +158,22 @@ public class MetadataExportMojoTest {
         assertTrue(new File("target/export10").exists());
     }
 
+    @Test
+    public void ExecuteWithImport1() throws Exception {
+        mojo.setTargetFolder("target/export11");
+        mojo.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
+        mojo.execute();
 
+        assertTrue(new File("target/export11").exists());
+    }
+
+    @Test
+    public void ExecuteWithImportAndBeans1() throws Exception {
+        mojo.setTargetFolder("target/export12");
+        mojo.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
+        mojo.setExportBeans(true);
+        mojo.execute();
+
+        assertTrue(new File("target/export12").exists());
+    }
 }

@@ -178,7 +178,16 @@ public class AntMetaDataExporter extends Task {
      */
     private boolean beanPrintSupertype;
 
-    @Override
+    /**
+     * java import added to generated query classes:
+     * com.bar for package (without .* notation)
+     * com.bar.Foo for class
+     *
+     */
+	private String[] imports;
+
+
+	@Override
     public void execute() {
         Connection dbConn = null;
         File targetPackagePath = new File(targetSourceFolder);
@@ -217,6 +226,11 @@ public class AntMetaDataExporter extends Task {
             exporter.setExportViews(exportViews);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+
+            if (imports != null && imports.length > 0) {
+                exporter.setImports(imports);
+            }
+
             if (exportBeans) {
                 BeanSerializer serializer = new BeanSerializer();
                 if (beanInterfaces != null) {
@@ -452,4 +466,11 @@ public class AntMetaDataExporter extends Task {
         this.exportForeignKeys = exportForeignKeys;
     }
 
+    public String[] getImports() {
+        return imports;
+    }
+
+    public void setImports(String[] imports) {
+        this.imports = imports;
+    }
 }
