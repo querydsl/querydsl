@@ -157,7 +157,7 @@
           </row>
           <row>
             <entry>tableNamePattern</entry>
-            <entry>ant style pattern to restrict code generation to certain tables
+            <entry>ant style pattern to restrict code generation to certain tables or comma separated list of tables
               (default: null)</entry>
           </row>
           <row>

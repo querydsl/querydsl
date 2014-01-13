@@ -14,6 +14,7 @@
 package com.mysema.query.sql.codegen;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -207,6 +208,21 @@ public class MetaDataExporterTest {
         exporter.export(connection.getMetaData());
 
         assertTrue(new File("target/8/test/QDateTest.java").exists());
+    }
+
+    @Test
+    public void Minimal_Configuration_with_tables() throws SQLException{
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(new File("target/82"));
+        exporter.export(connection.getMetaData());
+
+        assertTrue(new File("target/82/test/QBeangen1.java").exists());
+        assertTrue(new File("target/82/test/QReserved.java").exists());
+        assertTrue(new File("target/82/test/QUnderscore.java").exists());
+        assertFalse(new File("target/82/test/QDefinstance.java").exists());
     }
 
     @Test

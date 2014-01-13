@@ -210,14 +210,28 @@ public class MetaDataExporter {
             types.add("VIEW");
         }
 
-        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[types.size()]));
-        try{
-            while (tables.next()) {
-                handleTable(md, tables);
+        if (tableNamePattern != null && tableNamePattern.contains(",")) {
+            for (String table : tableNamePattern.split(",")) {
+                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), types.toArray(new String[types.size()]));
+                try{
+                    while (tables.next()) {
+                        handleTable(md, tables);
+                    }
+                }finally{
+                    tables.close();
+                }
             }
-        }finally{
-            tables.close();
+        } else {
+            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[types.size()]));
+            try{
+                while (tables.next()) {
+                    handleTable(md, tables);
+                }
+            }finally{
+                tables.close();
+            }
         }
+
     }
 
     Set<String> getClasses() {
