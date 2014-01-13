@@ -148,6 +148,11 @@ public class QueryMixin<T> {
     }
 
     public Expression<Tuple> createProjection(Expression<?>[] args) {
+        if (!args.getClass().getComponentType().equals(Expression.class)) {
+            Expression<?>[] args2 = new Expression[args.length];
+            System.arraycopy(args, 0, args2, 0, args.length);
+            args = args2;
+        }
         Map<Expression<?>, Integer> bindings = Maps.newHashMap();
         for (int i = 0; i < args.length; i++) {
             bindings.put(args[i], i);

@@ -36,7 +36,7 @@ import com.mysema.query.types.TemplateFactory;
  */
 public final class Conversions {
 
-    private static final Template ALL = TemplateFactory.DEFAULT.create("{{0}.*}");
+    private static final Template ALL = TemplateFactory.DEFAULT.create("{0}.*");
 
     public static <RT> Expression<RT> convert(Expression<RT> expr) {
         if (isAggSumWithConversion(expr) || isCountAggConversion(expr)) {

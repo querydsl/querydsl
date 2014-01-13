@@ -34,6 +34,14 @@ public abstract class AbstractSQLTest {
 
     protected abstract AbstractSQLQuery<?> query();
 
+    public static class CatDTO {
+
+        public CatDTO(Cat cat) {
+
+        }
+
+    }
+
     protected SQLSubQuery sq() {
         return new SQLSubQuery();
     }
@@ -134,6 +142,13 @@ public abstract class AbstractSQLTest {
             assertTrue(tuple.get(catEntity) instanceof Cat);
             assertTrue(tuple.get(otherCatEntity) instanceof Cat);
         }
+    }
+
+    @Test
+    @Ignore // FIXME
+    public void EntityQueries6() {
+        QCat catEntity = QCat.cat;
+        assertEquals(6, query().from(cat).list(Projections.constructor(CatDTO.class, catEntity)).size());
     }
 
     @Test
