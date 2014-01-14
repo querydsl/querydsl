@@ -55,11 +55,7 @@ import com.mysema.query.Tuple;
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple> {
 
     private static ImmutableMap<Expression<?>, Integer> createBindings(List<Expression<?>> exprs) {
-        return createBindings(Maps.<Expression<?>, Integer>newHashMap(), exprs);
-    }
-
-    private static ImmutableMap<Expression<?>, Integer> createBindings(Map<Expression<?>, Integer> map,
-            List<Expression<?>> exprs) {
+        Map<Expression<?>, Integer> map = Maps.newHashMap();
         for (int i = 0; i < exprs.size(); i++) {
             Expression<?> e = exprs.get(i);
             if (e instanceof Operation && ((Operation<?>)e).getOperator() == Ops.ALIAS) {
@@ -139,18 +135,6 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
         super(Tuple.class);
         this.args = ImmutableList.copyOf(args);
         this.bindings = createBindings(this.args);
-    }
-
-    /**
-     * Create a new QTuple instance
-     *
-     * @param args
-     * @param bindings
-     */
-    public QTuple(Expression<?>[] args, Map<Expression<?>, Integer> bindings) {
-        super(Tuple.class);
-        this.args = ImmutableList.copyOf(args);
-        this.bindings = createBindings(bindings, this.args);
     }
 
     /**

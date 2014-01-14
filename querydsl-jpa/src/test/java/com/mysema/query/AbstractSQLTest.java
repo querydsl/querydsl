@@ -36,8 +36,10 @@ public abstract class AbstractSQLTest {
 
     public static class CatDTO {
 
-        public CatDTO(Cat cat) {
+        Cat cat;
 
+        public CatDTO(Cat cat) {
+            this.cat = cat;
         }
 
     }
@@ -145,10 +147,16 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    @Ignore // FIXME
+    @NoBatooJPA
+    @NoEclipseLink
     public void EntityQueries6() {
         QCat catEntity = QCat.cat;
-        assertEquals(6, query().from(cat).list(Projections.constructor(CatDTO.class, catEntity)).size());
+        List<CatDTO> results = query().from(cat).list(Projections.constructor(CatDTO.class, catEntity));
+        assertEquals(6, results.size());
+
+        for (CatDTO cat : results) {
+            assertTrue(cat.cat instanceof Cat);
+        }
     }
 
     @Test

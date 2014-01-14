@@ -41,6 +41,13 @@ public final class FactoryExpressionUtils {
             this.args = expand(inner.getArgs());
         }
 
+
+        FactoryExpressionAdapter(FactoryExpression<T> inner, List<Expression<?>> args) {
+            super(inner.getType());
+            this.inner = inner;
+            this.args = args;
+        }
+
         @Override
         public List<Expression<?>> getArgs() {
             return args;
@@ -85,6 +92,10 @@ public final class FactoryExpressionUtils {
         } else {
             return null;
         }
+    }
+
+    public static <T> FactoryExpression<T> wrap(FactoryExpression<T> expr, List<Expression<?>> conversions) {
+        return new FactoryExpressionAdapter<T>(expr, conversions);
     }
 
     public static <T> FactoryExpression<T> wrap(FactoryExpression<T> expr) {

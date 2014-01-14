@@ -13,14 +13,18 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 
+import com.google.common.collect.Lists;
 import com.mysema.query.support.EnumConversion;
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -52,25 +56,55 @@ public final class Conversions {
         return expr;
     }
 
-    public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {
+    private static boolean isEntityPathAndNeedsWrapping(Expression<?> expr) {
         if (expr instanceof Path && expr.getType().isAnnotationPresent(Entity.class)) {
             Path<?> path = (Path<?>)expr;
             if (path.getMetadata().getParent() == null) {
-                return (Expression)TemplateExpressionImpl.create(expr.getType(), ALL, expr);
+                return true;
             }
+        }
+        return false;
+    }
+
+    private static <RT> FactoryExpression<RT> createEntityPathConversions(FactoryExpression<RT> factorye) {
+        List<Expression<?>> conversions = Lists.newArrayList();
+        for (Expression<?> e : factorye.getArgs()) {
+            if (isEntityPathAndNeedsWrapping(e)) {
+                conversions.add(TemplateExpressionImpl.create(e.getType(), ALL, e));
+            } else {
+                conversions.add(e);
+            }
+        }
+        return FactoryExpressionUtils.wrap(factorye, conversions);
+    }
+
+    public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {
+        if (isEntityPathAndNeedsWrapping(expr)) {
+            return (Expression)TemplateExpressionImpl.create(expr.getType(), ALL, expr);
         } else if (Number.class.isAssignableFrom(expr.getType())) {
             return new NumberConversion<RT>(expr);
         } else if (Enum.class.isAssignableFrom(expr.getType())) {
             return new EnumConversion<RT>(expr);
         } else if (expr instanceof FactoryExpression) {
             FactoryExpression<RT> factorye = (FactoryExpression<RT>)expr;
+            boolean numberConversions = false;
+            boolean hasEntityPath = false;
             for (Expression<?> e : factorye.getArgs()) {
-                if (Number.class.isAssignableFrom(e.getType())) {
-                    return new NumberConversions<RT>(factorye);
+                if (isEntityPathAndNeedsWrapping(e)) {
+                    hasEntityPath = true;
+                } else if (Number.class.isAssignableFrom(e.getType())) {
+                    numberConversions = true;
                 } else if (Enum.class.isAssignableFrom(e.getType())) {
-                    return new NumberConversions<RT>(factorye);
+                    numberConversions = true;
                 }
             }
+            if (hasEntityPath) {
+                factorye = createEntityPathConversions(factorye);
+            }
+            if (numberConversions) {
+                factorye = new NumberConversions<RT>(factorye);
+            }
+            return factorye;
         }
         return expr;
     }

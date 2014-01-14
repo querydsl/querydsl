@@ -1045,6 +1045,15 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Order_By_Count() {
+        NumberPath<Long> count = Expressions.numberPath(Long.class, "c");
+        query().from(cat)
+            .groupBy(cat.id)
+            .orderBy(count.asc())
+            .list(cat.id, cat.id.count().as(count));
+    }
+
+    @Test
     public void Order_StringValue() {
         int count = (int)query().from(cat).count();
         assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().asc()).list(cat).size());

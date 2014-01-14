@@ -13,9 +13,6 @@
  */
 package com.mysema.query.support;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.JoinType;
@@ -148,21 +145,7 @@ public class QueryMixin<T> {
     }
 
     public Expression<Tuple> createProjection(Expression<?>[] args) {
-        if (!args.getClass().getComponentType().equals(Expression.class)) {
-            Expression<?>[] args2 = new Expression[args.length];
-            System.arraycopy(args, 0, args2, 0, args.length);
-            args = args2;
-        }
-        Map<Expression<?>, Integer> bindings = Maps.newHashMap();
-        for (int i = 0; i < args.length; i++) {
-            bindings.put(args[i], i);
-            Expression<?> converted = convert(args[i], false);
-            if (converted != args[i]) {
-                args[i] = converted;
-                bindings.put(converted, i);
-            }
-        }
-        return new QTuple(args, bindings);
+        return new QTuple(args);
     }
 
     protected <D> Expression<D> createAlias(Expression<?> expr, Path<?> alias) {

@@ -122,7 +122,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
                     new PathMetadata(shortened, metadata.getElement(), metadata.getPathType()));
             }
         }
-        return super.convert(Conversions.convert(expr), forOrder);
+        return Conversions.convert(super.convert(expr, forOrder));
     }
 
     @Override
