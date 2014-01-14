@@ -152,12 +152,13 @@
           </row>
           <row>
             <entry>schemaPattern</entry>
-            <entry>ant style pattern to restrict code generation to certain schemas
+            <entry>a schema name pattern; must match the schema name as it is stored in the database;
               (default: null)</entry>
           </row>
           <row>
             <entry>tableNamePattern</entry>
-            <entry>ant style pattern to restrict code generation to certain tables or comma separated list of tables
+            <entry>a table name pattern; must match the table name as it is stored in the database, 
+              multiple can be separated by comma
               (default: null)</entry>
           </row>
           <row>
