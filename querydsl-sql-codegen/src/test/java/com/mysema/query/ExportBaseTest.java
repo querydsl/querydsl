@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import com.mysema.testutil.FilteringTestRunner;
 
 @RunWith(FilteringTestRunner.class)
 public abstract class ExportBaseTest {
-    
+
     @Test
     public void Export() throws SQLException{
         File folder = new File("target", getClass().getSimpleName());
@@ -40,11 +40,11 @@ public abstract class ExportBaseTest {
         exporter.setNamingStrategy(namingStrategy);
         exporter.export(Connections.getConnection().getMetaData());
     }
-    
+
     protected String getSchemaPattern() {
         return null;
     }
-    
+
     @AfterClass
     public static void tearDownAfterClass() throws SQLException {
         Connections.close();
