@@ -432,7 +432,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getDelete());
         }
         serialize(Position.AFTER_SELECT, metadata.getFlags());
-        append(templates.getFrom());
+        append("from ");
 
         dmlWithSchema = true;
         handle(entity);
