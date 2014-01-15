@@ -7,5 +7,5 @@ Import-Template:
   com.mysema.query.*;version="${project.version}",
   javax.annotation.*;version="0",
   com.google.common.*;version="${guava.version}",
-  org.apache.lucene.*;version="[3.0.0,3.1.0)",
+  org.apache.lucene.*;version="[4.0.0,5.0.0)",
   org.slf4j.*;version="${slf4j.version}"
