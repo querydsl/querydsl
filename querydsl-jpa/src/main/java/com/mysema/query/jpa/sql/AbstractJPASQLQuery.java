@@ -83,11 +83,19 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         this(em, configuration, new DefaultQueryMetadata().noValidate());
     }
 
+    public AbstractJPASQLQuery(EntityManager em, Configuration configuration, QueryHandler queryHandler) {
+        this(em, configuration, new DefaultQueryMetadata().noValidate());
+    }
+
     public AbstractJPASQLQuery(EntityManager em, Configuration configuration, QueryMetadata metadata) {
+        this(em, configuration, JPAProvider.getTemplates(em).getQueryHandler(), metadata);
+    }
+
+    public AbstractJPASQLQuery(EntityManager em, Configuration configuration, QueryHandler queryHandler, QueryMetadata metadata) {
         super(metadata);
         this.entityManager = em;
         this.configuration = configuration;
-        this.queryHandler = JPAProvider.getTemplates(em).getQueryHandler();
+        this.queryHandler = queryHandler;
     }
 
     private String buildQueryString(boolean forCountRow) {

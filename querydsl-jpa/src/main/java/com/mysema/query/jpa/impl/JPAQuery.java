@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> {
     public JPAQuery(EntityManager em) {
         super(em, JPAProvider.getTemplates(em), new DefaultQueryMetadata());
     }
-    
+
     /**
      * Creates a new EntityManager bound query
      *
@@ -57,15 +57,15 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> {
      * Creates a new query
      *
      * @param em
-     * @param patterns
+     * @param templates
      */
-    public JPAQuery(EntityManager em, JPQLTemplates patterns) {
-        super(em, patterns, new DefaultQueryMetadata());
+    public JPAQuery(EntityManager em, JPQLTemplates templates) {
+        super(em, templates, new DefaultQueryMetadata());
     }
 
     /**
      * Creates a new query
-     * 
+     *
      * @param em
      * @param templates
      * @param metadata
