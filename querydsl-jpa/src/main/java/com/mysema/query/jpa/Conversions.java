@@ -18,9 +18,11 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import com.google.common.collect.Lists;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.support.EnumConversion;
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
@@ -57,7 +59,8 @@ public final class Conversions {
     }
 
     private static boolean isEntityPathAndNeedsWrapping(Expression<?> expr) {
-        if (expr instanceof Path && expr.getType().isAnnotationPresent(Entity.class)) {
+        if ((expr instanceof Path && expr.getType().isAnnotationPresent(Entity.class)) ||
+            (expr instanceof EntityPath && !RelationalPath.class.isInstance(expr))) {
             Path<?> path = (Path<?>)expr;
             if (path.getMetadata().getParent() == null) {
                 return true;
