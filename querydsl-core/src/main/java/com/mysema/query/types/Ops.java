@@ -426,6 +426,79 @@ public final class Ops {
         private StringOps() {}
     }
 
+    public static final class SpatialOps {
+
+        private static final String NS = SpatialOps.class.getName();
+
+        // Geometry
+        public static final Operator<Object> Dimension = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> GeometryType = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> AsText = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> AsBinary = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> SRID = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> STRID2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> IsEmpty = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> IsSimple = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Boundary = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Envelope = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> WKTToSQL = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> WKBTOSQL = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Equals = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Disjoint = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Intersects = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Touches = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Crosses = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Within = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Contains = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Overlaps = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Relate = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Distance = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Distance2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Intersection = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Difference = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Union = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> SymDifference = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Buffer = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Buffer2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> ConvexHull = new OperatorImpl<Object>(NS, "");
+
+        // Point
+        public static final Operator<Object> X = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> X2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Y = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Y2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Z = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Z2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> M = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> M2 = new OperatorImpl<Object>(NS, "");
+
+        // Curve
+        public static final Operator<Object> StartPoint = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> EndPoint = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> IsRing = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Length = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Length2 = new OperatorImpl<Object>(NS, "");
+
+        //LineString
+        public static final Operator<Object> NumPoints = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> PointN = new OperatorImpl<Object>(NS, "");
+
+        // Surface
+        public static final Operator<Object> Area = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Area2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> Centroid = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> PointOnSurface = new OperatorImpl<Object>(NS, "");
+
+        // Polygon
+        public static final Operator<Object> ExteriorRing = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> ExteriorRing2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> InteriorRings = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> InteriorRings2 = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> NumInteriorRing = new OperatorImpl<Object>(NS, "");
+        public static final Operator<Object> InteriorRingN = new OperatorImpl<Object>(NS, "");
+
+    }
+
 
     private Ops() {}
 }
