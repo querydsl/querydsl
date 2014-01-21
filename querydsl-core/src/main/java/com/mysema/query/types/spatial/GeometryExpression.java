@@ -212,7 +212,8 @@ public abstract class GeometryExpression<T> extends SimpleExpression<T> {
     }
 
     public BooleanExpression relate(T geometry, String matrix) {
-        return null;
+        return BooleanOperation.create(Ops.SpatialOps.RELATE, mixin,
+                ConstantImpl.create(geometry), ConstantImpl.create(matrix));
     }
 
     public GeometryExpression<T> locateAlong(double value) {
