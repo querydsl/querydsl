@@ -244,6 +244,26 @@ public final class CaseBuilder {
             return thenDateTime(ConstantImpl.create(date));
         }
 
+        // Enum
+
+        public <T extends Enum<T>> Cases<T,EnumExpression<T>> then(EnumExpression<T> expr) {
+            return thenEnum(expr);
+        }
+
+        @SuppressWarnings("unchecked")
+        private <T extends Enum<T>> Cases<T,EnumExpression<T>> thenEnum(Expression<T> expr) {
+            return new Cases<T,EnumExpression<T>>((Class)expr.getType()) {
+                @Override
+                protected EnumExpression<T> createResult(Class<T> type, Expression<T> last) {
+                    return EnumOperation.create(type, Ops.CASE, last);
+                }
+            }.addCase(when, expr);
+        }
+
+        public <T extends Enum<T>> Cases<T, EnumExpression<T>> then(T arg) {
+            return thenEnum(ConstantImpl.create(arg));
+        }
+
         // Number
 
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(NumberExpression<A> expr) {
