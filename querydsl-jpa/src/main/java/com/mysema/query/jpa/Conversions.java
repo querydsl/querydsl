@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLOps;
 import com.mysema.query.support.EnumConversion;
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
@@ -28,11 +29,9 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateExpressionImpl;
-import com.mysema.query.types.TemplateFactory;
 
 /**
  * Conversions provides module specific projection conversion functionality
@@ -41,8 +40,6 @@ import com.mysema.query.types.TemplateFactory;
  *
  */
 public final class Conversions {
-
-    private static final Template ALL = TemplateFactory.DEFAULT.create("{0}.*");
 
     public static <RT> Expression<RT> convert(Expression<RT> expr) {
         if (isAggSumWithConversion(expr) || isCountAggConversion(expr)) {
@@ -73,7 +70,7 @@ public final class Conversions {
         List<Expression<?>> conversions = Lists.newArrayList();
         for (Expression<?> e : factorye.getArgs()) {
             if (isEntityPathAndNeedsWrapping(e)) {
-                conversions.add(TemplateExpressionImpl.create(e.getType(), ALL, e));
+                conversions.add(OperationImpl.create(e.getType(), SQLOps.ALL, e));
             } else {
                 conversions.add(e);
             }
@@ -83,7 +80,7 @@ public final class Conversions {
 
     public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {
         if (isEntityPathAndNeedsWrapping(expr)) {
-            return (Expression)TemplateExpressionImpl.create(expr.getType(), ALL, expr);
+            return OperationImpl.create(expr.getType(), SQLOps.ALL, expr);
         } else if (Number.class.isAssignableFrom(expr.getType())) {
             return new NumberConversion<RT>(expr);
         } else if (Enum.class.isAssignableFrom(expr.getType())) {

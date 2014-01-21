@@ -46,6 +46,11 @@ public class EclipseLinkHandler implements QueryHandler {
     }
 
     @Override
+    public boolean createNativeQueryTyped() {
+        return true;
+    }
+
+    @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
         Iterator<T> iterator = null;
         Closeable closeable = null;
@@ -73,6 +78,11 @@ public class EclipseLinkHandler implements QueryHandler {
 
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
+        return false;
+    }
+
+    @Override
+    public boolean wrapEntityProjections() {
         return false;
     }
 

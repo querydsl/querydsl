@@ -90,7 +90,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     private String buildQueryString(boolean forCountRow) {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration, true);
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {

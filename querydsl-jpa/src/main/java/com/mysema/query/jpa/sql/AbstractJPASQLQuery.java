@@ -99,7 +99,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
 
     private String buildQueryString(boolean forCountRow) {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration, queryHandler.wrapEntityProjections());
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
@@ -124,27 +124,31 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         Expression<?> proj = projection.get(0);
         if (!FactoryExpression.class.isAssignableFrom(proj.getClass()) && isEntityExpression(proj)) {
             if (projection.size() == 1) {
-                query = entityManager.createNativeQuery(queryString, proj.getType());
+                if (queryHandler.createNativeQueryTyped()) {
+                    query = entityManager.createNativeQuery(queryString, proj.getType());
+                } else {
+                    query = entityManager.createNativeQuery(queryString);
+                }
             } else {
                 throw new IllegalArgumentException("Only single element entity projections are supported");
             }
 
         } else {
             query = entityManager.createNativeQuery(queryString);
-            if (!forCount) {
-                if (proj instanceof FactoryExpression) {
-                    for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
-                        if (isEntityExpression(expr)) {
-                            queryHandler.addEntity(query, extractEntityExpression(expr).toString(), expr.getType());
-                        } else if (aliases.containsKey(expr)) {
-                            queryHandler.addScalar(query, aliases.get(expr), expr.getType());
-                        }
+        }
+        if (!forCount) {
+            if (proj instanceof FactoryExpression) {
+                for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+                    if (isEntityExpression(expr)) {
+                        queryHandler.addEntity(query, extractEntityExpression(expr).toString(), expr.getType());
+                    } else if (aliases.containsKey(expr)) {
+                        queryHandler.addScalar(query, aliases.get(expr), expr.getType());
                     }
-                } else if (isEntityExpression(proj)) {
-                    queryHandler.addEntity(query, extractEntityExpression(proj).toString(), proj.getType());
-                } else if (aliases.containsKey(proj)) {
-                    queryHandler.addScalar(query, aliases.get(proj), proj.getType());
                 }
+            } else if (isEntityExpression(proj)) {
+                queryHandler.addEntity(query, extractEntityExpression(proj).toString(), proj.getType());
+            } else if (aliases.containsKey(proj)) {
+                queryHandler.addScalar(query, aliases.get(proj), proj.getType());
             }
         }
 

@@ -24,14 +24,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLOps;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.QTuple;
+import com.mysema.query.types.TemplateExpression;
 
 /**
  * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change
@@ -44,8 +48,15 @@ public final class NativeSQLSerializer extends SQLSerializer {
 
     private final Map<Expression<?>, String> aliases = Maps.newHashMap();
 
+    private final boolean wrapEntityProjections;
+
     public NativeSQLSerializer(Configuration configuration) {
+        this(configuration, false);
+    }
+
+    public NativeSQLSerializer(Configuration configuration, boolean wrapEntityProjections) {
         super(configuration);
+        this.wrapEntityProjections = wrapEntityProjections;
     }
 
     private boolean isAlias(Expression<?> expr) {
@@ -54,6 +65,16 @@ public final class NativeSQLSerializer extends SQLSerializer {
 
     public Map<Expression<?>, String> getAliases() {
         return aliases;
+    }
+
+    private boolean isAllExpression(Expression<?> expr) {
+        if (expr instanceof Operation) {
+            return ((Operation<?>)expr).getOperator() == SQLOps.ALL;
+        } else if (expr instanceof TemplateExpression) {
+            return ((TemplateExpression<?>)expr).getTemplate().toString().equals("*");
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -90,7 +111,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     } else if (isAlias(fargs.get(j))) {
                         Operation<?> operation = (Operation<?>)fargs.get(j);
                         aliases.put(operation, operation.getArg(1).toString());
-                    } else if (!fargs.get(j).toString().contains("*")) {
+                    } else if (!isAllExpression(fargs.get(j))) {
                         String alias = "col__"+(i+1)+"_"+(j+1);
                         aliases.put(fargs.get(j), alias);
                         fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
@@ -103,7 +124,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 aliases.put(operation, operation.getArg(1).toString());
             } else {
                 // https://github.com/mysema/querydsl/issues/80
-                if (!args[i].toString().contains("*")) {
+                if (!isAllExpression(args[i])) {
                     String alias = "col__"+(i+1);
                     aliases.put(args[i], alias);
                     args[i] = ExpressionUtils.as(args[i], alias);
@@ -140,6 +161,19 @@ public final class NativeSQLSerializer extends SQLSerializer {
             append("?"+constLabel);
         } else {
             append("?"+getConstantToLabel().get(constant));
+        }
+    }
+
+    @Override
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+        if (operator == SQLOps.ALL
+                && !RelationalPath.class.isInstance(args.get(0))
+                && wrapEntityProjections) {
+            append("{");
+            super.visitOperation(type, operator, args);
+            append("}");
+        } else {
+            super.visitOperation(type, operator, args);
         }
     }
 

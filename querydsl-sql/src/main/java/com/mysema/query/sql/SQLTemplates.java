@@ -211,6 +211,8 @@ public class SQLTemplates extends Templates {
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
 
+        add(SQLOps.ALL, "{0}.*");
+
         // flags
         add(SQLOps.WITH_ALIAS, "{0} as {1}", 0);
         add(SQLOps.WITH_COLUMNS, "{0} {1}", 0);

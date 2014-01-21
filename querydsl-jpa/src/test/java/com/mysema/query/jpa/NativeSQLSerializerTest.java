@@ -29,7 +29,7 @@ public class NativeSQLSerializerTest {
     @Test
     public void In() {
         Configuration conf = new Configuration(new MySQLTemplates());
-        NativeSQLSerializer serializer = new NativeSQLSerializer(conf);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);
         DefaultQueryMetadata md = new DefaultQueryMetadata();
         SAnimal cat = SAnimal.animal;
         md.addJoin(JoinType.DEFAULT, cat);
