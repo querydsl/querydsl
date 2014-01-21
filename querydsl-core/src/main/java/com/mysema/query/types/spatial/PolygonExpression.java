@@ -16,7 +16,9 @@ package com.mysema.query.types.spatial;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
 
@@ -41,12 +43,13 @@ public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
 
     public NumberExpression<Integer> numInteriorRing() {
         if (numInteriorRing == null) {
-            // TODO
+            numInteriorRing = NumberOperation.create(Integer.class, Ops.SpatialOps.NUM_INTERIOR_RING, mixin);
         }
         return numInteriorRing;
     }
 
     public LineStringExpression<?> interiorRingN(int idx) {
+        // TODO
         return null;
     }
 }

@@ -16,8 +16,11 @@ package com.mysema.query.types.spatial;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class CurveExpression<T> extends GeometryExpression<T> {
 
@@ -38,35 +41,35 @@ public abstract class CurveExpression<T> extends GeometryExpression<T> {
 
     public NumberExpression<Double> length() {
         if (length == null) {
-            // TODO
+            length = NumberOperation.create(null, Ops.SpatialOps.LENGTH, mixin);
         }
         return length;
     }
 
     public PointExpression<?> startPoint() {
         if (startPoint == null) {
-            // TODO
+            startPoint = PointOperation.create(null, Ops.SpatialOps.START_POINT, mixin);
         }
         return startPoint;
     }
 
     public PointExpression<?> endPoint() {
         if (endPoint == null) {
-            // TODO
+            endPoint = PointOperation.create(null, Ops.SpatialOps.END_POINT, mixin);
         }
         return endPoint;
     }
 
     public BooleanExpression isClosed() {
         if (closed == null) {
-            // TODO
+            closed = BooleanOperation.create(Ops.SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }
 
     public BooleanExpression isRing() {
         if (ring == null) {
-            // TODO
+            ring = BooleanOperation.create(Ops.SpatialOps.IS_RING, mixin);
         }
         return ring;
     }

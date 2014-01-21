@@ -15,8 +15,11 @@ package com.mysema.query.types.spatial;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class LineStringExpression<T> extends CurveExpression<T> {
 
@@ -31,13 +34,13 @@ public abstract class LineStringExpression<T> extends CurveExpression<T> {
 
     public NumberExpression<Integer> numPoints() {
         if (numPoints == null) {
-            // TODO
+            numPoints = NumberOperation.create(Integer.class, Ops.SpatialOps.NUM_POINTS, mixin);
         }
         return numPoints;
     }
 
     public PointExpression<Integer> pointN(int idx) {
-        return null;
+        return PointOperation.create(null, Ops.SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
     }
 
 }

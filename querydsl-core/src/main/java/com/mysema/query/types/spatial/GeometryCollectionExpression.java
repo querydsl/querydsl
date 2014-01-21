@@ -16,7 +16,9 @@ package com.mysema.query.types.spatial;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class GeometryCollectionExpression<T> extends GeometryExpression<T> {
 
@@ -31,7 +33,7 @@ public abstract class GeometryCollectionExpression<T> extends GeometryExpression
 
     public NumberExpression<Integer> numGeometries() {
         if (numGeometries == null) {
-            // TODO
+            numGeometries = NumberOperation.create(Integer.class, Ops.SpatialOps.NUM_GEOMETRIES, mixin);
         }
         return numGeometries;
     }

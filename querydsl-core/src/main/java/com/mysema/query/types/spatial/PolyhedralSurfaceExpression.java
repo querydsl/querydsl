@@ -16,8 +16,11 @@ package com.mysema.query.types.spatial;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class PolyhedralSurfaceExpression<T> extends SurfaceExpression<T> {
 
@@ -35,22 +38,24 @@ public abstract class PolyhedralSurfaceExpression<T> extends SurfaceExpression<T
 
     public NumberExpression<Integer> numPatches() {
         if (numPatches == null) {
-            // TODO
+            numPatches = NumberOperation.create(Integer.class, Ops.SpatialOps.NUM_SURFACES, mixin);
         }
         return numPatches;
     }
 
     public PolygonExpression<?> patchN(int n) {
+        // TODO
         return null;
     }
 
     public MultiPolygonExpression<?> boundingPolygons(Object polygon) {
+        // TODO
         return null;
     }
 
     public BooleanExpression isClosed() {
         if (closed == null) {
-            // TODO
+            closed = BooleanOperation.create(Ops.SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }

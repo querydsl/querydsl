@@ -16,6 +16,9 @@ package com.mysema.query.types.spatial;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class SurfaceExpression<T> extends GeometryExpression<T> {
 
@@ -24,30 +27,37 @@ public abstract class SurfaceExpression<T> extends GeometryExpression<T> {
     @Nullable
     private volatile PointExpression<?> centroid, pointOnSurface;
 
+    @Nullable
+    private volatile NumberExpression<Double> area;
+
     public SurfaceExpression(Expression<T> mixin) {
         super(mixin);
     }
 
-    public Object area() { // TODO Area type
-        return null;
+    public NumberExpression<Double> area() {
+        if (area == null) {
+            area = NumberOperation.create(Double.class, Ops.SpatialOps.AREA, mixin);
+        }
+        return area;
     }
 
     public PointExpression<?> centroid() {
         if (centroid == null) {
-            // TODO
+            centroid = PointOperation.create(null, Ops.SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
 
     public PointExpression<?> pointOnSurface() {
         if (pointOnSurface == null) {
-            // TODO
+            pointOnSurface = PointOperation.create(null, Ops.SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }
 
-//    @Override
-//    public MultiCurveExpression<?> boundary() {
-//        return null;
-//    }
+    @Override
+    public MultiCurveExpression<T> boundary() {
+        // TODO
+        return null;
+    }
 }

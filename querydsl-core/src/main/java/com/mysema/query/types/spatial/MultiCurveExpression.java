@@ -16,7 +16,11 @@ package com.mysema.query.types.spatial;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 public abstract class MultiCurveExpression<T> extends GeometryCollectionExpression<T> {
 
@@ -25,19 +29,25 @@ public abstract class MultiCurveExpression<T> extends GeometryCollectionExpressi
     @Nullable
     private volatile BooleanExpression closed;
 
+    @Nullable
+    private volatile NumberExpression<Double> length;
+
     public MultiCurveExpression(Expression<T> mixin) {
         super(mixin);
     }
 
     public BooleanExpression isClosed() {
         if (closed == null) {
-            // TODO
+            closed = BooleanOperation.create(Ops.SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }
 
-    public Object distance() { // TODO distance type
-        return null;
+    public NumberExpression<Double> length() {
+        if (length == null) {
+            length = NumberOperation.create(Double.class, Ops.SpatialOps.LENGTH, mixin);
+        }
+        return length;
     }
 
 }
