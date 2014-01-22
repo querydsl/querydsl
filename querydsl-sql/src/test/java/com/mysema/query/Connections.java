@@ -665,6 +665,15 @@ public final class Connections {
             return;
         }
 
+        // shapes
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key, \"GEOMETRY\" geography(POINT,4326))");
+        stmt.execute("insert into \"SHAPES\" values (1, 'Point(2 2)')");
+        stmt.execute("insert into \"SHAPES\" values (2, 'Point(8 7)')");
+        stmt.execute("insert into \"SHAPES\" values (3, 'Point(1 9)')");
+        stmt.execute("insert into \"SHAPES\" values (4, 'Point(9 2)')");
+        stmt.execute("insert into \"SHAPES\" values (5, 'Point(4 4)')");
+
         // types
         dropType(stmt, "u_country");
         stmt.execute("create type u_country as enum ('Brazil', 'England', 'Germany')");
@@ -737,6 +746,15 @@ public final class Connections {
         }
 
         String identity = "GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT BY 1)";
+
+        // shapes
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY ST_GEOMETRY)");
+        stmt.execute("insert into SHAPES values (1, 'Point(2 2)')");
+        stmt.execute("insert into SHAPES values (2, 'Point(8 7)')");
+        stmt.execute("insert into SHAPES values (3, 'Point(1 9)')");
+        stmt.execute("insert into SHAPES values (4, 'Point(9 2)')");
+        stmt.execute("insert into SHAPES values (5, 'Point(4 4)')");
 
         // qtest
         dropTable(templates, "QTEST");
