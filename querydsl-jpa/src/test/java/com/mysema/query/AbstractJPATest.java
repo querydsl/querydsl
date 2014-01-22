@@ -1299,7 +1299,15 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Sum_4() {
-        query().from(cat).uniqueResult(cat.bodyWeight.sum().negate());
+        Double dbl = query().from(cat).uniqueResult(cat.bodyWeight.sum().negate());
+        assertNotNull(dbl);
+    }
+
+    @Test
+    public void Sum_5() {
+        QShow show = QShow.show;
+        Long lng = query().from(show).uniqueResult(show.id.sum());
+        assertNotNull(lng);
     }
 
     @Test
