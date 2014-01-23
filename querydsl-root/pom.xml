@@ -209,6 +209,10 @@
               <packages>com.mysema.query.apt*</packages>
             </group>
             <group>
+              <title>Spatial</title>
+              <packages>com.mysema.query.spatial*</packages>
+            </group>
+            <group>
               <title>Collections</title>
               <packages>com.mysema.query.collections*</packages>
             </group>
@@ -352,6 +356,10 @@
       <id>spring roo repository</id>
       <url>http://spring-roo-repository.springsource.org/release</url>
     </repository>
+    <repository>
+      <id>geoapi</id>
+      <url>http://maven.geotoolkit.org</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -376,6 +384,7 @@
       <modules>
         <module>../querydsl-core</module>
         <module>../querydsl-codegen</module>
+        <module>../querydsl-spatial</module>
         <module>../querydsl-apt</module> 
         <module>../querydsl-collections</module>           
         <module>../querydsl-sql</module>
@@ -413,6 +422,7 @@
       <modules>
         <module>../querydsl-core</module>
         <module>../querydsl-codegen</module>
+        <module>../querydsl-spatial</module>
         <module>../querydsl-apt</module> 
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
@@ -427,6 +437,7 @@
       <modules>
         <module>../querydsl-core</module>
         <module>../querydsl-codegen</module>
+        <module>../querydsl-spatial</module>
         <module>../querydsl-apt</module> 
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
@@ -461,6 +472,7 @@
       <modules>
         <module>../querydsl-core</module>
         <module>../querydsl-codegen</module>
+        <module>../querydsl-spatial</module>
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
         <module>../querydsl-maven-plugin</module>        

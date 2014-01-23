@@ -1,0 +1,9 @@
+Bundle-SymbolicName: com.mysema.querydsl.core
+Bundle-Name: Querydsl Spatial
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2
+Import-Template:
+  javax.annotation.*;version="0",
+  org.opengis.*;version="3.1-M04",
+  com.mysema.query.*;version="${project.version}",
+  com.google.common.*;version="${guava.version}"

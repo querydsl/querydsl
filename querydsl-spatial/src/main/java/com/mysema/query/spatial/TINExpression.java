@@ -11,15 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import com.mysema.query.types.Expression;
 
-public abstract class MultiSurfaceExpression<T> extends GeometryCollectionExpression<T> {
+public abstract class TINExpression<T> extends SurfaceExpression<T> {
 
-    private static final long serialVersionUID = 4133386816772862010L;
+    private static final long serialVersionUID = 5872495447965387326L;
 
-    public MultiSurfaceExpression(Expression<T> mixin) {
+    public TINExpression(Expression<T> mixin) {
         super(mixin);
     }
 

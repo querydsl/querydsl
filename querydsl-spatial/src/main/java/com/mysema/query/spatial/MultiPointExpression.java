@@ -11,15 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import com.mysema.query.types.Expression;
 
-public abstract class LinearRingExpression<T> extends LineStringExpression<T> {
+public abstract class MultiPointExpression<T> extends GeometryCollectionExpression<T> {
 
-    private static final long serialVersionUID = -759466658721392938L;
+    private static final long serialVersionUID = 7221702165705045865L;
 
-    public LinearRingExpression(Expression<T> mixin) {
+    public MultiPointExpression(Expression<T> mixin) {
         super(mixin);
     }
 

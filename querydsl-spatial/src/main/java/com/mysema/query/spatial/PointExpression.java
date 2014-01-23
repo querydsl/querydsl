@@ -11,12 +11,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
@@ -33,28 +32,28 @@ public abstract class PointExpression<T> extends GeometryExpression<T> {
 
     public NumberExpression<Double> x() {
         if (x == null) {
-            x = NumberOperation.create(Double.class, Ops.SpatialOps.X, mixin);
+            x = NumberOperation.create(Double.class, SpatialOps.X, mixin);
         }
         return x;
     }
 
     public NumberExpression<Double> y() {
         if (y == null) {
-            y = NumberOperation.create(Double.class, Ops.SpatialOps.Y, mixin);
+            y = NumberOperation.create(Double.class, SpatialOps.Y, mixin);
         }
         return null;
     }
 
     public NumberExpression<Double> z() {
         if (z == null) {
-            z = NumberOperation.create(Double.class, Ops.SpatialOps.Z, mixin);
+            z = NumberOperation.create(Double.class, SpatialOps.Z, mixin);
         }
         return null;
     }
 
     public NumberExpression<Double> m() {
         if (m == null) {
-            m = NumberOperation.create(Double.class, Ops.SpatialOps.M, mixin);
+            m = NumberOperation.create(Double.class, SpatialOps.M, mixin);
         }
         return null;
     }

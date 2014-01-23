@@ -11,12 +11,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
@@ -38,7 +37,7 @@ public abstract class PolyhedralSurfaceExpression<T> extends SurfaceExpression<T
 
     public NumberExpression<Integer> numPatches() {
         if (numPatches == null) {
-            numPatches = NumberOperation.create(Integer.class, Ops.SpatialOps.NUM_SURFACES, mixin);
+            numPatches = NumberOperation.create(Integer.class, SpatialOps.NUM_SURFACES, mixin);
         }
         return numPatches;
     }
@@ -55,7 +54,7 @@ public abstract class PolyhedralSurfaceExpression<T> extends SurfaceExpression<T
 
     public BooleanExpression isClosed() {
         if (closed == null) {
-            closed = BooleanOperation.create(Ops.SpatialOps.IS_CLOSED, mixin);
+            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }

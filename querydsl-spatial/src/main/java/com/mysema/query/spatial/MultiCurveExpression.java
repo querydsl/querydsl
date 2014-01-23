@@ -11,36 +11,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class LineStringExpression<T> extends CurveExpression<T> {
+public abstract class MultiCurveExpression<T> extends GeometryCollectionExpression<T> {
 
-    private static final long serialVersionUID = -6572984614863252657L;
+    private static final long serialVersionUID = 6983316799469849656L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numPoints;
+    private volatile BooleanExpression closed;
 
-    public LineStringExpression(Expression<T> mixin) {
+    @Nullable
+    private volatile NumberExpression<Double> length;
+
+    public MultiCurveExpression(Expression<T> mixin) {
         super(mixin);
     }
 
-    public NumberExpression<Integer> numPoints() {
-        if (numPoints == null) {
-            numPoints = NumberOperation.create(Integer.class, Ops.SpatialOps.NUM_POINTS, mixin);
+    public BooleanExpression isClosed() {
+        if (closed == null) {
+            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
         }
-        return numPoints;
+        return closed;
     }
 
-    public PointExpression<Integer> pointN(int idx) {
-        return PointOperation.create(null, Ops.SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
+    public NumberExpression<Double> length() {
+        if (length == null) {
+            length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);
+        }
+        return length;
     }
 
 }

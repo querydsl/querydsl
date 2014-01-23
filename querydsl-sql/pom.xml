@@ -20,7 +20,12 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-spatial</artifactId>
+      <version>${project.version}</version>
+    </dependency>            
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>

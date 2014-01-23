@@ -11,15 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import com.mysema.query.types.Expression;
 
-public abstract class LineExpression<T> extends LineStringExpression<T> {
+public abstract class MultiLineStringExpression<T> extends MultiCurveExpression<T> {
 
-    private static final long serialVersionUID = -4849454664355502296L;
+    private static final long serialVersionUID = -3103756880812584473L;
 
-    public LineExpression(Expression<T> mixin) {
+    public MultiLineStringExpression(Expression<T> mixin) {
         super(mixin);
     }
 

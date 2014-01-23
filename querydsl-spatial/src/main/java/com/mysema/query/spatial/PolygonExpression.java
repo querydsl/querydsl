@@ -11,43 +11,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.types.spatial;
+package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class MultiCurveExpression<T> extends GeometryCollectionExpression<T> {
+public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
 
-    private static final long serialVersionUID = 6983316799469849656L;
-
-    @Nullable
-    private volatile BooleanExpression closed;
+    private static final long serialVersionUID = 7544382956232485312L;
 
     @Nullable
-    private volatile NumberExpression<Double> length;
+    private volatile NumberExpression<Integer> numInteriorRing;
 
-    public MultiCurveExpression(Expression<T> mixin) {
+    @Nullable
+    private volatile LineStringExpression<?> exterorRing;
+
+    public PolygonExpression(Expression<T> mixin) {
         super(mixin);
     }
 
-    public BooleanExpression isClosed() {
-        if (closed == null) {
-            closed = BooleanOperation.create(Ops.SpatialOps.IS_CLOSED, mixin);
+    public LineStringExpression<?> exterorRing() {
+        if (exterorRing == null) {
+            // TODO
         }
-        return closed;
+        return exterorRing;
     }
 
-    public NumberExpression<Double> length() {
-        if (length == null) {
-            length = NumberOperation.create(Double.class, Ops.SpatialOps.LENGTH, mixin);
+    public NumberExpression<Integer> numInteriorRing() {
+        if (numInteriorRing == null) {
+            numInteriorRing = NumberOperation.create(Integer.class, SpatialOps.NUM_INTERIOR_RING, mixin);
         }
-        return length;
+        return numInteriorRing;
     }
 
+    public LineStringExpression<?> interiorRingN(int idx) {
+        // TODO
+        return null;
+    }
 }
