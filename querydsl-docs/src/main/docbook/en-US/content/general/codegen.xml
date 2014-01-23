@@ -528,6 +528,7 @@ exporter.export(DomainClass.class.getPackage());
   <version>${querydsl.version}</version>  
   <executions>
     <execution>    
+      <phase>process-classes</phase>
       <goals>
         <goal>jpa-export</goal>
       </goals>
