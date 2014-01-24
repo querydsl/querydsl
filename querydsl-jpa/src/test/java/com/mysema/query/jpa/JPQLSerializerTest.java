@@ -28,11 +28,23 @@ import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class JPQLSerializerTest {
+
+    @Test
+    public void And_Or() {
+        //A.a.id.eq(theId).and(B.b.on.eq(false).or(B.b.id.eq(otherId)));
+        QCat cat = QCat.cat;
+        Predicate pred = cat.id.eq(1).and(cat.name.eq("Kitty").or(cat.name.eq("Boris")));
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.handle(pred);
+        assertEquals("cat.id = ?1 and (cat.name = ?2 or cat.name = ?3)", serializer.toString());
+        assertEquals("cat.id = 1 && cat.name = Kitty || cat.name = Boris", pred.toString());
+    }
 
     @Test
     public void Case() {
