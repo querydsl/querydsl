@@ -314,7 +314,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @return the previous value of that property
      */
     @Override
-    public Object put(String name, Object value) throws ClassCastException {
+    public Object put(String name, Object value) {
         if (bean != null) {
             Object oldValue = get(name);
             Method method = getWriteMethod(name);
