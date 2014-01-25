@@ -122,7 +122,7 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
             known = md.getHaving().accept(this, known);
         }
         if (md.getWhere() != null) {
-            known = md.getWhere().accept(this, known);
+            md.getWhere().accept(this, known);
         }
         return old;
     }
