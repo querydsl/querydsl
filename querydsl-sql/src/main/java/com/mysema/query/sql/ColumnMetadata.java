@@ -59,7 +59,7 @@ public final class ColumnMetadata {
         return new ColumnMetadata(name, null, true, UNDEFINED, UNDEFINED);
     }
 
-    private static int UNDEFINED = -1;
+    private static final int UNDEFINED = -1;
 
     private final String name;
 
