@@ -30,7 +30,7 @@ public interface QueryHandler {
     /**
      * @return
      */
-    public boolean createNativeQueryTyped();
+    boolean createNativeQueryTyped();
 
     /**
      * Iterate the results with the optional projection
