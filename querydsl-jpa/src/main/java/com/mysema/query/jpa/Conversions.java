@@ -114,7 +114,7 @@ public final class Conversions {
         if (expr instanceof Operation) {
             Operation<?> operation = (Operation<?>)expr;
             Class<?> type = operation.getType();
-            if (type.equals(Float.class) || type.equals(Integer.class)
+            if (type.equals(Float.class) || type.equals(Integer.class) || type.equals(Long.class)
                     || type.equals(Short.class) || type.equals(Byte.class)) {
                 if (operation.getOperator() == Ops.AggOps.SUM_AGG) {
                     return true;
