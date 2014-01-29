@@ -15,11 +15,13 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.Point;
+
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class PointExpression<T> extends GeometryExpression<T> {
+public abstract class PointExpression<T extends Point> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = -3549448861390349654L;
 
@@ -41,20 +43,20 @@ public abstract class PointExpression<T> extends GeometryExpression<T> {
         if (y == null) {
             y = NumberOperation.create(Double.class, SpatialOps.Y, mixin);
         }
-        return null;
+        return y;
     }
 
     public NumberExpression<Double> z() {
         if (z == null) {
             z = NumberOperation.create(Double.class, SpatialOps.Z, mixin);
         }
-        return null;
+        return z;
     }
 
     public NumberExpression<Double> m() {
         if (m == null) {
             m = NumberOperation.create(Double.class, SpatialOps.M, mixin);
         }
-        return null;
+        return m;
     }
 }

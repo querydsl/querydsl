@@ -15,13 +15,15 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.GeometryCollection;
+
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class MultiCurveExpression<T> extends GeometryCollectionExpression<T> {
+public abstract class MultiCurveExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 6983316799469849656L;
 

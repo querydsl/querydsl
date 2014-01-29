@@ -13,9 +13,11 @@
  */
 package com.mysema.query.spatial;
 
+import org.geolatte.geom.MultiLineString;
+
 import com.mysema.query.types.Expression;
 
-public abstract class MultiLineStringExpression<T> extends MultiCurveExpression<T> {
+public abstract class MultiLineStringExpression<T extends MultiLineString> extends MultiCurveExpression<T> {
 
     private static final long serialVersionUID = -3103756880812584473L;
 

@@ -13,8 +13,11 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.sql.spatial.GeometryWktType;
 import com.mysema.query.types.Ops;
 
 
@@ -58,9 +61,11 @@ public class TeradataTemplates extends SQLTemplates {
         setDummyTable(null);
         setCountViaAnalytics(true);
 
+        addCustomType(new GeometryWktType(Types.CLOB));
         addClass2TypeMappings("byteint", Byte.class);
         addClass2TypeMappings("double precision", Double.class);
         addClass2TypeMappings("varchar(4000)", String.class);
+        addSpatialOps(false);
 
         add(Ops.NE, "{0} <> {1}");
 

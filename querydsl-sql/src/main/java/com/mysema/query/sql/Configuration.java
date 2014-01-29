@@ -70,6 +70,9 @@ public final class Configuration {
         if (!templates.isBigDecimalSupported()) {
             javaTypeMapping.register(BIGDECIMAL_AS_DOUBLE);
         }
+        for (Type<?> customType : templates.getCustomTypes()) {
+            javaTypeMapping.register(customType);
+        }
     }
 
     public SQLTemplates getTemplates() {

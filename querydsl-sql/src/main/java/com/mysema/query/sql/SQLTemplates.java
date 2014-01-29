@@ -27,6 +27,7 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinType;
@@ -35,6 +36,7 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.spatial.SpatialOps;
+import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -102,6 +104,8 @@ public class SQLTemplates extends Templates {
     private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
+
+    private final List<Type<?>> customTypes = Lists.newArrayList();
 
     private final String quoteStr;
 
@@ -343,70 +347,6 @@ public class SQLTemplates extends Templates {
         add(SQLOps.VARPOP, "var_pop({0})");
         add(SQLOps.VARSAMP, "var_samp({0})");
 
-        // spatial
-        add(SpatialOps.AREA, "ST_Area({0})");
-        add(SpatialOps.AREA2, "ST_Area({0}, {1})");
-        add(SpatialOps.AS_BINARY, "ST_AsBinary({0})");
-        add(SpatialOps.AS_TEXT, "ST_AsText({0})");
-        add(SpatialOps.BOUNDARY, "ST_Boundary({0})");
-        add(SpatialOps.BUFFER, "ST_Buffer({0}, {1})");
-        add(SpatialOps.BUFFER2, "ST_Buffer({0}, {1}, {2})");
-        add(SpatialOps.CENTROID, "ST_Centroid({0})");
-        add(SpatialOps.CONTAINS, "ST_Contains({0}, {1})");
-        add(SpatialOps.CONVEXHULL, "ST_ConvexHull({0})");
-        add(SpatialOps.CROSSES, "ST_Crosses({0}, {1})");
-        add(SpatialOps.DIFFERENCE, "ST_Difference({0}, {1})");
-        add(SpatialOps.DIMENSION, "ST_Dimension({0})");
-        add(SpatialOps.DISJOINT, "ST_Disjoint({0}, {1})");
-        add(SpatialOps.DISTANCE, "ST_Distance({0}, {1})");
-        add(SpatialOps.DISTANCE2, "ST_Distance({0}, {1}, {2})");
-        add(SpatialOps.END_POINT, "ST_EndPoint({0})");
-        add(SpatialOps.ENVELOPE, "ST_Envelope({0})");
-        add(SpatialOps.EQUALS, "ST_Equals({0}, {1})");
-        add(SpatialOps.EXTERIOR_RING, "ST_ExteriorRing({0})");
-        add(SpatialOps.EXTERIOR_RING2, "ST_ExteriorRing({0}, {1})");
-        add(SpatialOps.GEOMETRIES, "ST_Geometries({0})");
-        add(SpatialOps.GEOMETRY_TYPE, "ST_GeometryType({0})");
-        add(SpatialOps.GEOMETRYN, "ST_GeometryN({0}, {1})");
-        add(SpatialOps.INTERIOR_RINGN, "ST_InteriorRingN({0}, {1})");
-        add(SpatialOps.INTERIOR_RINGS, "ST_InteriorRings({0})");
-        add(SpatialOps.INTERIOR_RINGS2, "ST_InteriorRings({0}, {1})");
-        add(SpatialOps.INTERSECTION, "ST_Intersection({0}, {1})");
-        add(SpatialOps.INTERSECTS, "ST_Intersects({0}, {1})");
-        add(SpatialOps.IS_CLOSED, "ST_IsClosed({0})");
-        add(SpatialOps.IS_EMPTY, "ST_IsEmpty({0})");
-        add(SpatialOps.IS_RING, "ST_IsRing({0})");
-        add(SpatialOps.IS_SIMPLE, "ST_IsSimple({0})");
-        add(SpatialOps.LENGTH, "ST_Length({0})");
-        add(SpatialOps.LENGTH2, "ST_Length({0}, {1})");
-        add(SpatialOps.M, "ST_M({0})");
-        add(SpatialOps.M2, "ST_M({0}, {1})");
-        add(SpatialOps.NUM_GEOMETRIES, "ST_NumGeometries({0})");
-        add(SpatialOps.NUM_INTERIOR_RING, "ST_NumInteriorRing({0})");
-        add(SpatialOps.NUM_POINTS, "ST_NumPoints({0})");
-        add(SpatialOps.NUM_SURFACES, "ST_NumSurfaces({0})");
-        add(SpatialOps.OVERLAPS, "ST_Overlaps({0}, {1})");
-        add(SpatialOps.POINT_ON_SURFACE, "ST_PointOnSurface({0})");
-        add(SpatialOps.POINTN, "ST_PointN({0}, {1})");
-        add(SpatialOps.RELATE, "ST_Relate({0}, {1}, {2})");
-        add(SpatialOps.SRID, "ST_SRID({0})");
-        add(SpatialOps.SRID2, "ST_SRID({0}, {1})");
-        add(SpatialOps.START_POINT, "ST_StartPoint({0})");
-        add(SpatialOps.SURFACE, "ST_Surface()"); // XXX
-        add(SpatialOps.SYMDIFFERENCE, "ST_SymDifference({0}, {1})");
-        add(SpatialOps.TOUCHES, "ST_Touches({0}, {1})");
-        add(SpatialOps.UNION, "ST_Union({0}, {1})");
-        add(SpatialOps.WITHIN, "ST_Within({0}, {1})");
-        add(SpatialOps.WKBTOSQL, "ST_WKBToSQL({0}, {1})");
-        add(SpatialOps.WKTTOSQL, "ST_WKTToSQL({0}, {1})");
-        add(SpatialOps.X, "ST_X({0})");
-        add(SpatialOps.X2, "ST_X({0}, {1})");
-        add(SpatialOps.Y, "ST_Y({0})");
-        add(SpatialOps.Y2, "ST_Y({0}, {1})");
-        add(SpatialOps.Z, "ST_Z({0}, {1})");
-        add(SpatialOps.Z2, "ST_Z({0}, {1})");
-
-
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
 
@@ -424,6 +364,88 @@ public class SQLTemplates extends Templates {
         class2type.put(java.sql.Date.class, "date");
         class2type.put(java.sql.Time.class, "time");
         class2type.put(java.sql.Timestamp.class, "timestamp");
+    }
+
+    private String createTemplate(String name, int args, boolean asFunction) {
+        StringBuilder result = new StringBuilder();
+        if (!asFunction) {
+            result.append("{0}.");
+        }
+        result.append(name);
+        result.append("(");
+        int start = asFunction ? 0 : 1;
+        for (int i = start; i < args; i++) {
+            if (i > start) {
+                result.append(", ");
+            }
+            result.append("{" + i + "}");
+        }
+        result.append(")");
+        return result.toString();
+    }
+
+    protected void addSpatialOps(boolean asFunction) {
+        add(SpatialOps.AREA, createTemplate("ST_Area", 1, asFunction));
+        add(SpatialOps.AREA2, createTemplate("ST_Area", 2, asFunction));
+        add(SpatialOps.AS_BINARY, createTemplate("ST_AsBinary", 1, asFunction));
+        add(SpatialOps.AS_TEXT, createTemplate("ST_AsText", 1, asFunction));
+        add(SpatialOps.BOUNDARY, createTemplate("ST_Boundary", 1, asFunction));
+        add(SpatialOps.BUFFER, createTemplate("ST_Buffer", 2, asFunction));
+        add(SpatialOps.BUFFER2, createTemplate("ST_Buffer", 3, asFunction));
+        add(SpatialOps.CENTROID, createTemplate("ST_Centroid", 1, asFunction));
+        add(SpatialOps.CONTAINS, createTemplate("ST_Contains", 2, asFunction));
+        add(SpatialOps.CONVEXHULL, createTemplate("ST_ConvexHull", 1, asFunction));
+        add(SpatialOps.CROSSES, createTemplate("ST_Crosses", 2, asFunction));
+        add(SpatialOps.DIFFERENCE, createTemplate("ST_Difference", 2, asFunction));
+        add(SpatialOps.DIMENSION, createTemplate("ST_Dimension", 1, asFunction));
+        add(SpatialOps.DISJOINT, createTemplate("ST_Disjoint", 2, asFunction));
+        add(SpatialOps.DISTANCE, createTemplate("ST_Distance", 2, asFunction));
+        add(SpatialOps.DISTANCE2, createTemplate("ST_Distance", 3, asFunction));
+        add(SpatialOps.END_POINT, createTemplate("ST_EndPoint", 1, asFunction));
+        add(SpatialOps.ENVELOPE, createTemplate("ST_Envelope", 1, asFunction));
+        add(SpatialOps.EQUALS, createTemplate("ST_Equals", 2, asFunction));
+        add(SpatialOps.EXTERIOR_RING, createTemplate("ST_ExteriorRing", 1, asFunction));
+        add(SpatialOps.EXTERIOR_RING2, createTemplate("ST_ExteriorRing", 2, asFunction));
+        add(SpatialOps.GEOMETRIES, createTemplate("ST_Geometries", 1, asFunction));
+        add(SpatialOps.GEOMETRY_TYPE, createTemplate("ST_GeometryType", 1, asFunction));
+        add(SpatialOps.GEOMETRYN, createTemplate("ST_GeometryN", 2, asFunction));
+        add(SpatialOps.INTERIOR_RINGN, createTemplate("ST_InteriorRingN", 2, asFunction));
+        add(SpatialOps.INTERIOR_RINGS, createTemplate("ST_InteriorRings", 1, asFunction));
+        add(SpatialOps.INTERIOR_RINGS2, createTemplate("ST_InteriorRings", 2, asFunction));
+        add(SpatialOps.INTERSECTION, createTemplate("ST_Intersection", 2, asFunction));
+        add(SpatialOps.INTERSECTS, createTemplate("ST_Intersects", 2, asFunction));
+        add(SpatialOps.IS_CLOSED, createTemplate("ST_IsClosed", 1, asFunction));
+        add(SpatialOps.IS_EMPTY, createTemplate("ST_IsEmpty", 1, asFunction));
+        add(SpatialOps.IS_RING, createTemplate("ST_IsRing", 1, asFunction));
+        add(SpatialOps.IS_SIMPLE, createTemplate("ST_IsSimple", 1, asFunction));
+        add(SpatialOps.LENGTH, createTemplate("ST_Length", 1, asFunction));
+        add(SpatialOps.LENGTH2, createTemplate("ST_Length", 2, asFunction));
+        add(SpatialOps.M, createTemplate("ST_M", 1, asFunction));
+        add(SpatialOps.M2, createTemplate("ST_M", 2, asFunction));
+        add(SpatialOps.NUM_GEOMETRIES, createTemplate("ST_NumGeometries", 1, asFunction));
+        add(SpatialOps.NUM_INTERIOR_RING, createTemplate("ST_NumInteriorRing", 1, asFunction));
+        add(SpatialOps.NUM_POINTS, createTemplate("ST_NumPoints", 1, asFunction));
+        add(SpatialOps.NUM_SURFACES, createTemplate("ST_NumSurfaces", 1, asFunction));
+        add(SpatialOps.OVERLAPS, createTemplate("ST_Overlaps", 2, asFunction));
+        add(SpatialOps.POINT_ON_SURFACE, createTemplate("ST_PointOnSurface", 1, asFunction));
+        add(SpatialOps.POINTN, createTemplate("ST_PointN", 2, asFunction));
+        add(SpatialOps.RELATE, createTemplate("ST_Relate", 3, asFunction));
+        add(SpatialOps.SRID, createTemplate("ST_SRID", 1, asFunction));
+        add(SpatialOps.SRID2, createTemplate("ST_SRID", 2, asFunction));
+        add(SpatialOps.START_POINT, createTemplate("ST_StartPoint", 1, asFunction));
+        add(SpatialOps.SURFACE, createTemplate("ST_Surface", 1, asFunction)); // XXX
+        add(SpatialOps.SYMDIFFERENCE, createTemplate("ST_SymDifference", 2, asFunction));
+        add(SpatialOps.TOUCHES, createTemplate("ST_Touches", 2, asFunction));
+        add(SpatialOps.UNION, createTemplate("ST_Union", 2, asFunction));
+        add(SpatialOps.WITHIN, createTemplate("ST_Within", 2, asFunction));
+        add(SpatialOps.WKBTOSQL, createTemplate("ST_WKBToSQL", 2, asFunction));
+        add(SpatialOps.WKTTOSQL, createTemplate("ST_WKTToSQL", 2, asFunction));
+        add(SpatialOps.X, createTemplate("ST_X", 1, asFunction));
+        add(SpatialOps.X2, createTemplate("ST_X", 2, asFunction));
+        add(SpatialOps.Y, createTemplate("ST_Y", 1, asFunction));
+        add(SpatialOps.Y2, createTemplate("ST_Y", 2, asFunction));
+        add(SpatialOps.Z, createTemplate("ST_Z", 1, asFunction));
+        add(SpatialOps.Z2, createTemplate("ST_Z", 2, asFunction));
     }
 
     public String asLiteral(Object o) {
@@ -493,6 +515,10 @@ public class SQLTemplates extends Templates {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
         }
+    }
+
+    public final List<Type<?>> getCustomTypes() {
+        return customTypes;
     }
 
     public final String getAsc() {
@@ -879,6 +905,10 @@ public class SQLTemplates extends Templates {
         if (mod.getOffset() != null) {
             context.handle(offsetTemplate, mod.getOffset());
         }
+    }
+
+    protected void addCustomType(Type<?> type) {
+        customTypes.add(type);
     }
 
     protected void setAsc(String asc) {

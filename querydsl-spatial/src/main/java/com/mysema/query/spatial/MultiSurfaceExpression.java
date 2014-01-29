@@ -13,9 +13,11 @@
  */
 package com.mysema.query.spatial;
 
+import org.geolatte.geom.GeometryCollection;
+
 import com.mysema.query.types.Expression;
 
-public abstract class MultiSurfaceExpression<T> extends GeometryCollectionExpression<T> {
+public abstract class MultiSurfaceExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 4133386816772862010L;
 

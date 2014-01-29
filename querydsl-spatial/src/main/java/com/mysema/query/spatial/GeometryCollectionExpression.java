@@ -15,11 +15,15 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.GeometryCollection;
+
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class GeometryCollectionExpression<T> extends GeometryExpression<T> {
+public abstract class GeometryCollectionExpression<T extends GeometryCollection> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = 8874174644259834690L;
 
@@ -37,8 +41,8 @@ public abstract class GeometryCollectionExpression<T> extends GeometryExpression
         return numGeometries;
     }
 
-    public GeometryExpression<T> geometryN(Integer n) {
-        return null;
+    public GeometryExpression<Geometry> geometryN(Integer n) {
+        return GeometryOperation.create(Geometry.class, SpatialOps.GEOMETRYN, this, ConstantImpl.create(n));
     }
 
 }

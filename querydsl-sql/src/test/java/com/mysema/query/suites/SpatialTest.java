@@ -16,6 +16,8 @@ public class SpatialTest {
     public void setUp() throws ClassNotFoundException, SQLException {
         //Connections.initTeradata();
         Connections.initPostgres();
+//        Connection conn = Connections.getConnection();
+//        ((org.postgresql.Connection)conn).addDataType("geometry","org.postgis.PGgeometry");
     }
 
     @After
@@ -30,6 +32,7 @@ public class SpatialTest {
         try {
             while (rs.next()) {
                 System.err.println(rs.getObject(1).getClass().getName());
+                System.err.println(rs.getString(1));
 //                Clob clob = rs.getClob(1);
 //                System.err.println(clob.getSubString(1, (int) clob.length()));
             }

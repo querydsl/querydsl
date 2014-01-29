@@ -22,10 +22,10 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.opengis</groupId>
-      <artifactId>geoapi-pending</artifactId>
-      <version>3.1-M04</version>
-    </dependency>    
+      <groupId>org.geolatte</groupId>
+      <artifactId>geolatte-geom</artifactId>
+      <version>0.11</version>
+    </dependency>
   </dependencies>
   
   <build>

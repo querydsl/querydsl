@@ -15,11 +15,15 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.LineString;
+import org.geolatte.geom.Polygon;
+
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
+public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpression<T> {
 
     private static final long serialVersionUID = 7544382956232485312L;
 
@@ -27,7 +31,7 @@ public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
     private volatile NumberExpression<Integer> numInteriorRing;
 
     @Nullable
-    private volatile LineStringExpression<?> exterorRing;
+    private volatile LineStringExpression<LineString> exterorRing;
 
     public PolygonExpression(Expression<T> mixin) {
         super(mixin);
@@ -35,7 +39,7 @@ public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
 
     public LineStringExpression<?> exterorRing() {
         if (exterorRing == null) {
-            // TODO
+            exterorRing = LineStringOperation.create(LineString.class, SpatialOps.EXTERIOR_RING, mixin);
         }
         return exterorRing;
     }
@@ -47,8 +51,7 @@ public abstract class PolygonExpression<T> extends SurfaceExpression<T> {
         return numInteriorRing;
     }
 
-    public LineStringExpression<?> interiorRingN(int idx) {
-        // TODO
-        return null;
+    public LineStringExpression<LineString> interiorRingN(int idx) {
+        return LineStringOperation.create(LineString.class, SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));
     }
 }

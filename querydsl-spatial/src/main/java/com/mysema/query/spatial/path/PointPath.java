@@ -11,17 +11,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.spatial;
+package com.mysema.query.spatial.path;
 
 import java.lang.reflect.AnnotatedElement;
 
+import org.geolatte.geom.Point;
+
+import com.mysema.query.spatial.PointExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Visitor;
 
-public class PointPath<T> extends PointExpression<T> implements Path<T> {
+public class PointPath<T extends Point> extends PointExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 312776751843333543L;
 

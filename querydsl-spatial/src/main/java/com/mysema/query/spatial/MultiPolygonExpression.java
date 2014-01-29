@@ -13,9 +13,11 @@
  */
 package com.mysema.query.spatial;
 
+import org.geolatte.geom.MultiPolygon;
+
 import com.mysema.query.types.Expression;
 
-public abstract class MultiPolygonExpression<T> extends MultiSurfaceExpression<T> {
+public abstract class MultiPolygonExpression<T extends MultiPolygon> extends MultiSurfaceExpression<T> {
 
     private static final long serialVersionUID = -2285946852207189655L;
 

@@ -11,27 +11,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.spatial;
+package com.mysema.query.spatial.path;
 
 import java.lang.reflect.AnnotatedElement;
 
+import org.geolatte.geom.LinearRing;
+
+import com.mysema.query.spatial.LinearRingExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Visitor;
 
-public class GeometryPath<T> extends GeometryExpression<T> implements Path<T> {
+public class LinearRingPath<T extends LinearRing> extends LinearRingExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 312776751843333543L;
 
     private final PathImpl<T> pathMixin;
 
-    public GeometryPath(Class<? extends T> type, Path<?> parent, String property) {
+    public LinearRingPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public GeometryPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public LinearRingPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -41,7 +44,7 @@ public class GeometryPath<T> extends GeometryExpression<T> implements Path<T> {
         return v.visit(pathMixin, context);
     }
 
-    public GeometryPath(Class<? extends T> type, String var) {
+    public LinearRingPath(Class<? extends T> type, String var) {
         this(type, PathMetadataFactory.forVariable(var));
     }
 

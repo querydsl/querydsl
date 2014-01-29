@@ -13,9 +13,11 @@
  */
 package com.mysema.query.spatial;
 
+import org.geolatte.geom.MultiPoint;
+
 import com.mysema.query.types.Expression;
 
-public abstract class MultiPointExpression<T> extends GeometryCollectionExpression<T> {
+public abstract class MultiPointExpression<T extends MultiPoint> extends GeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 7221702165705045865L;
 

@@ -15,7 +15,7 @@ package com.mysema.query.spatial;
 
 import java.util.List;
 
-import org.geolatte.geom.Geometry;
+import org.geolatte.geom.LineString;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
@@ -24,29 +24,29 @@ import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
-public class GeometryOperation<T extends Geometry> extends GeometryExpression<T> implements Operation<T> {
+public class LineStringOperation<T extends LineString> extends LineStringExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    public static <D extends Geometry> GeometryOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
-        return new GeometryOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
+    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+        return new LineStringOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
     }
 
-    public static <D extends Geometry> GeometryOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
-        return new GeometryOperation<D>(type, op, ImmutableList.of(one, two));
+    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+        return new LineStringOperation<D>(type, op, ImmutableList.of(one, two));
     }
 
-    public static <D extends Geometry> GeometryOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
-        return new GeometryOperation<D>(type, op, args);
+    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+        return new LineStringOperation<D>(type, op, args);
     }
 
     private final OperationImpl< T> opMixin;
 
-    protected GeometryOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected LineStringOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected GeometryOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
+    protected LineStringOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }

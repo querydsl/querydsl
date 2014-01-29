@@ -15,6 +15,8 @@ package com.mysema.query.spatial;
 
 import java.util.List;
 
+import org.geolatte.geom.Point;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
@@ -22,19 +24,19 @@ import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
-public class PointOperation<T> extends PointExpression<T> implements Operation<T> {
+public class PointOperation<T extends Point> extends PointExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    public static <D> PointOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+    public static <D extends Point> PointOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
         return new PointOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
     }
 
-    public static <D> PointOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+    public static <D extends Point> PointOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
         return new PointOperation<D>(type, op, ImmutableList.of(one, two));
     }
 
-    public static <D> PointOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    public static <D extends Point> PointOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
         return new PointOperation<D>(type, op, args);
     }
 

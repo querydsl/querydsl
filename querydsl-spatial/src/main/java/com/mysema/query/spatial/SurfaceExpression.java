@@ -15,16 +15,19 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.Point;
+
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class SurfaceExpression<T> extends GeometryExpression<T> {
+public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = 3534197011234723698L;
 
     @Nullable
-    private volatile PointExpression<?> centroid, pointOnSurface;
+    private volatile PointExpression<Point> centroid, pointOnSurface;
 
     @Nullable
     private volatile NumberExpression<Double> area;
@@ -40,23 +43,23 @@ public abstract class SurfaceExpression<T> extends GeometryExpression<T> {
         return area;
     }
 
-    public PointExpression<?> centroid() {
+    public PointExpression<Point> centroid() {
         if (centroid == null) {
-            centroid = PointOperation.create(null, SpatialOps.CENTROID, mixin);
+            centroid = PointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
 
-    public PointExpression<?> pointOnSurface() {
+    public PointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
-            pointOnSurface = PointOperation.create(null, SpatialOps.POINT_ON_SURFACE, mixin);
+            pointOnSurface = PointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }
 
-    @Override
-    public MultiCurveExpression<T> boundary() {
-        // TODO
-        return null;
-    }
+//    @Override
+//    public MultiCurveExpression<?> boundary() {
+//        // TODO
+//        return null;
+//    }
 }

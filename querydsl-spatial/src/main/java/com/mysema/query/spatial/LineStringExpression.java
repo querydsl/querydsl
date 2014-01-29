@@ -15,12 +15,15 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.LineString;
+import org.geolatte.geom.Point;
+
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class LineStringExpression<T> extends CurveExpression<T> {
+public abstract class LineStringExpression<T extends LineString> extends CurveExpression<T> {
 
     private static final long serialVersionUID = -6572984614863252657L;
 
@@ -38,8 +41,8 @@ public abstract class LineStringExpression<T> extends CurveExpression<T> {
         return numPoints;
     }
 
-    public PointExpression<Integer> pointN(int idx) {
-        return PointOperation.create(null, SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
+    public PointExpression<Point> pointN(int idx) {
+        return PointOperation.create(Point.class, SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
     }
 
 }

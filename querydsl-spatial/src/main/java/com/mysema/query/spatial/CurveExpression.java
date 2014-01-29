@@ -15,13 +15,16 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.Point;
+
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class CurveExpression<T> extends GeometryExpression<T> {
+public abstract class CurveExpression<T extends Geometry> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = 6139188586728676033L;
 
@@ -29,7 +32,7 @@ public abstract class CurveExpression<T> extends GeometryExpression<T> {
     private volatile NumberExpression<Double> length;
 
     @Nullable
-    private volatile PointExpression<?> startPoint, endPoint;
+    private volatile PointExpression<Point> startPoint, endPoint;
 
     @Nullable
     private volatile BooleanExpression closed, ring;
@@ -45,16 +48,16 @@ public abstract class CurveExpression<T> extends GeometryExpression<T> {
         return length;
     }
 
-    public PointExpression<?> startPoint() {
+    public PointExpression<Point> startPoint() {
         if (startPoint == null) {
-            startPoint = PointOperation.create(null, SpatialOps.START_POINT, mixin);
+            startPoint = PointOperation.create(Point.class, SpatialOps.START_POINT, mixin);
         }
         return startPoint;
     }
 
-    public PointExpression<?> endPoint() {
+    public PointExpression<Point> endPoint() {
         if (endPoint == null) {
-            endPoint = PointOperation.create(null, SpatialOps.END_POINT, mixin);
+            endPoint = PointOperation.create(Point.class, SpatialOps.END_POINT, mixin);
         }
         return endPoint;
     }

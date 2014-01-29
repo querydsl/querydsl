@@ -13,9 +13,11 @@
  */
 package com.mysema.query.spatial;
 
+import org.geolatte.geom.LineString;
+
 import com.mysema.query.types.Expression;
 
-public abstract class LinearRingExpression<T> extends LineStringExpression<T> {
+public abstract class LinearRingExpression<T extends LineString> extends LineStringExpression<T> {
 
     private static final long serialVersionUID = -759466658721392938L;
 

@@ -15,13 +15,15 @@ package com.mysema.query.spatial;
 
 import javax.annotation.Nullable;
 
+import org.geolatte.geom.PolyHedralSurface;
+
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
-public abstract class PolyhedralSurfaceExpression<T> extends SurfaceExpression<T> {
+public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> extends SurfaceExpression<T> {
 
     private static final long serialVersionUID = -6732418858467327780L;
 
