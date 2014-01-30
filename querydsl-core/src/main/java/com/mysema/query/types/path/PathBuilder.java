@@ -36,7 +36,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <T> expression type
  */
-public final class PathBuilder<T> extends EntityPathBase<T> {
+public class PathBuilder<T> extends EntityPathBase<T> {
 
     private static final long serialVersionUID = -1666357914232685088L;
 
