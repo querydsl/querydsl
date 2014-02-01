@@ -13,13 +13,17 @@
  */
 package com.mysema.query.sql;
 
+import java.io.Serializable;
+
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
 /**
  * Provides metadata like the column name, JDBC type and constraints
  */
-public final class ColumnMetadata {
+public final class ColumnMetadata implements Serializable {
+
+    private static final long serialVersionUID = -5678865742525938470L;
 
     /**
      * Returns this path's column metadata if present. Otherwise returns default

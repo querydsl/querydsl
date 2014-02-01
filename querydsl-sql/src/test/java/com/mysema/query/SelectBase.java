@@ -35,7 +35,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -1233,6 +1235,20 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals("from SURVEY s", query.toString());
         query.from(survey2);
         assertEquals("from SURVEY s, SURVEY s2", query.toString());
+    }
+
+    @Test
+    public void Serialization2() throws Exception {
+        List<Tuple> rows = query().from(survey).list(survey.id, survey.name);
+        serialize(rows);
+    }
+
+    private void serialize(Object obj) throws IOException{
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bytesOut);
+        out.writeObject(obj);
+        out.close();
+        bytesOut.close();
     }
 
     @Test
