@@ -15,14 +15,15 @@ package com.mysema.query.sql.postgres;
 
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.GeometryFactory;
 import org.geolatte.geom.LineString;
 import org.geolatte.geom.MultiLineString;
 import org.geolatte.geom.MultiPoint;
 import org.geolatte.geom.MultiPolygon;
 import org.geolatte.geom.Point;
+import org.geolatte.geom.Points;
 import org.geolatte.geom.PolyHedralSurface;
 import org.geolatte.geom.Polygon;
+import org.geolatte.geom.crs.CrsId;
 import org.postgis.LinearRing;
 import org.postgis.PGgeometry;
 
@@ -32,8 +33,6 @@ import org.postgis.PGgeometry;
  *
  */
 public class PGGeometryConverter {
-
-    private GeometryFactory geometryFactory;
 
     public static PGgeometry convert(Geometry geometry) {
         if (geometry instanceof Point) {
@@ -58,8 +57,22 @@ public class PGGeometryConverter {
     }
 
     private static PGgeometry convert(Point point) {
-        point.get
-        return null; // TODO
+        org.postgis.Point pgPoint = new org.postgis.Point();
+        pgPoint.srid = point.getSRID();
+        pgPoint.dimension = point.getDimension();
+        pgPoint.haveMeasure = false;
+        pgPoint.x = point.getX();
+        if (pgPoint.dimension > 1) {
+            pgPoint.y = point.getY();
+        }
+        if (pgPoint.dimension > 2) {
+            pgPoint.z = point.getZ();
+        }
+        if (point.isMeasured()) {
+            pgPoint.m = point.getM();
+            pgPoint.haveMeasure = true;
+        }
+        return new PGgeometry(pgPoint);
     }
 
     private static PGgeometry convert(LineString lineString) {
@@ -148,8 +161,24 @@ public class PGGeometryConverter {
     }
 
     private static Geometry convert(org.postgis.Point geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        int d = geometry.dimension;
+        CrsId srid = CrsId.valueOf(geometry.srid);
+        if (!geometry.haveMeasure) {
+            switch (d) {
+            case 2:
+                return Points.create(geometry.x, geometry.y, srid);
+            case 3:
+                return Points.create3D(geometry.x,  geometry.y, geometry.z, srid);
+            }
+        } else {
+            switch (d) {
+            case 2:
+                return Points.createMeasured(geometry.x, geometry.y, geometry.m, srid);
+            case 3:
+                return Points.create(geometry.x,  geometry.y, geometry.z, geometry.m, srid);
+            }
+        }
+        throw new IllegalArgumentException(geometry.toString());
     }
 
 }

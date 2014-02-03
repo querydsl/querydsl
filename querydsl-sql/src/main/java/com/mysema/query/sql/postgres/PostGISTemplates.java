@@ -42,6 +42,7 @@ public class PostGISTemplates extends PostgresTemplates {
     public PostGISTemplates(char escape, boolean quote) {
         super(escape, quote);
         addSpatialOps(true);
+        addCustomType(PGGeometryType.DEFAULT);
     }
 
 }
