@@ -11,20 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql.spatial;
+package com.mysema.query.sql.postgres;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.annotation.Nullable;
 
-import org.geolatte.geom.ByteBuffer;
-import org.geolatte.geom.ByteOrder;
 import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkb;
-import org.geolatte.geom.codec.WkbDecoder;
-import org.geolatte.geom.codec.WkbEncoder;
+import org.geolatte.geom.codec.Wkt;
 
 import com.mysema.query.sql.types.AbstractType;
 
@@ -32,13 +29,12 @@ import com.mysema.query.sql.types.AbstractType;
  * @author tiwe
  *
  */
-public class GeometryWkbType extends AbstractType<Geometry> {
+public class PGGeometryType extends AbstractType<Geometry> {
 
-    private final ByteOrder byteOrder;
+    public static final PGGeometryType DEFAULT = new PGGeometryType();
 
-    public GeometryWkbType(int type, ByteOrder byteOrder) {
-        super(type);
-        this.byteOrder = byteOrder;
+    public PGGeometryType() {
+        super(Types.STRUCT);
     }
 
     @Override
@@ -49,10 +45,9 @@ public class GeometryWkbType extends AbstractType<Geometry> {
     @Override
     @Nullable
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
-        byte[] bytes = rs.getBytes(startIndex);
-        if (bytes != null) {
-            WkbDecoder decoder = Wkb.newWkbDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
-            return decoder.decode(ByteBuffer.from(bytes));
+        String str = rs.getString(startIndex);
+        if (str != null) {
+            return Wkt.newWktDecoder(Wkt.Dialect.POSTGIS_EWKT_1).decode(str);
         } else {
             return null;
         }
@@ -60,9 +55,8 @@ public class GeometryWkbType extends AbstractType<Geometry> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        WkbEncoder encoder = Wkb.newWkbEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
-        ByteBuffer buffer = encoder.encode(value, byteOrder);
-        st.setBytes(startIndex, buffer.toByteArray());
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(value);
+        st.setString(startIndex, str);
     }
 
 }

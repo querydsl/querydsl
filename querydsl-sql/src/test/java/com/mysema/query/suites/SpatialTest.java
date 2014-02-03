@@ -28,7 +28,7 @@ public class SpatialTest {
     @Test
     public void test() throws SQLException {
         Statement stmt = Connections.getStatement();
-        ResultSet rs = stmt.executeQuery("select geometry from SHAPES");
+        ResultSet rs = stmt.executeQuery("select \"GEOMETRY\" from \"SHAPES\"");
         try {
             while (rs.next()) {
                 System.err.println(rs.getObject(1).getClass().getName());

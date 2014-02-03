@@ -667,7 +667,9 @@ public final class Connections {
 
         // shapes
         dropTable(templates, "SHAPES");
-        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key, \"GEOMETRY\" geography(POINT,4326))");
+//        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key, \"GEOMETRY\" geography(POINT,4326))");
+        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key)");
+        stmt.execute("select AddGeometryColumn('SHAPES', 'GEOMETRY', -1, 'POINT', 2)");
         stmt.execute("insert into \"SHAPES\" values (1, 'Point(2 2)')");
         stmt.execute("insert into \"SHAPES\" values (2, 'Point(8 7)')");
         stmt.execute("insert into \"SHAPES\" values (3, 'Point(1 9)')");

@@ -21,7 +21,7 @@ public class QShapes extends com.mysema.query.sql.RelationalPathBase<Shapes> {
 
     private static final long serialVersionUID = 563213127;
 
-    public static final QShapes shapes = new QShapes("shapes");
+    public static final QShapes shapes = new QShapes("SHAPES");
 
     public final GeometryPath<Geometry> geometry = add(new GeometryPath<Geometry>(Geometry.class,
             PathMetadataFactory.forProperty(this, "geometry")));
@@ -31,7 +31,7 @@ public class QShapes extends com.mysema.query.sql.RelationalPathBase<Shapes> {
     public final com.mysema.query.sql.PrimaryKey<Shapes> shapesPkey = createPrimaryKey(id);
 
     public QShapes(String variable) {
-        super(Shapes.class, forVariable(variable), "public", "shapes");
+        super(Shapes.class, forVariable(variable), "PUBLIC", "SHAPES");
         addMetadata();
     }
 
@@ -41,18 +41,18 @@ public class QShapes extends com.mysema.query.sql.RelationalPathBase<Shapes> {
     }
 
     public QShapes(Path<? extends Shapes> path) {
-        super(path.getType(), path.getMetadata(), "public", "shapes");
+        super(path.getType(), path.getMetadata(), "PUBLIC", "SHAPES");
         addMetadata();
     }
 
     public QShapes(PathMetadata<?> metadata) {
-        super(Shapes.class, metadata, "public", "shapes");
+        super(Shapes.class, metadata, "PUBLIC", "SHAPES");
         addMetadata();
     }
 
     public void addMetadata() {
-        addMetadata(geometry, ColumnMetadata.named("geometry").ofType(1111).withSize(2147483647));
-        addMetadata(id, ColumnMetadata.named("id").ofType(4).withSize(10).notNull());
+        addMetadata(geometry, ColumnMetadata.named("GEOMETRY").ofType(1111).withSize(2147483647));
+        addMetadata(id, ColumnMetadata.named("ID").ofType(4).withSize(10).notNull());
     }
 
 }

@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql.spatial;
 
-import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,8 +22,6 @@ import javax.annotation.Nullable;
 
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
-import org.geolatte.geom.codec.WktDecoder;
-import org.geolatte.geom.codec.WktEncoder;
 
 import com.mysema.query.sql.types.AbstractType;
 
@@ -34,27 +31,10 @@ import com.mysema.query.sql.types.AbstractType;
  */
 public class GeometryWktType extends AbstractType<Geometry> {
 
-    private static final WktEncoder<Geometry> ENCODER = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1);
+    public static final GeometryWktType DEFAULT = new GeometryWktType();
 
-    private static final WktDecoder<Geometry> DECODER = Wkt.newWktDecoder(Wkt.Dialect.POSTGIS_EWKT_1);
-
-    public static final GeometryWktType DEFAULT = new GeometryWktType(Types.VARCHAR, ENCODER, DECODER);
-
-    private final int type;
-
-    private final WktEncoder<Geometry> encoder;
-
-    private final WktDecoder<Geometry> decoder;
-
-    public GeometryWktType(int type) {
-        this(type, ENCODER, DECODER);
-    }
-
-    public GeometryWktType(int type, WktEncoder<Geometry> encoder, WktDecoder<Geometry> decoder) {
-        super(type);
-        this.type = type;
-        this.encoder = encoder;
-        this.decoder = decoder;
+    public GeometryWktType() {
+        super(Types.VARCHAR);
     }
 
     @Override
@@ -65,29 +45,18 @@ public class GeometryWktType extends AbstractType<Geometry> {
     @Override
     @Nullable
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
-        String str;
-        if (type == Types.VARCHAR) {
-            str = rs.getString(startIndex);
-        } else if (type == Types.CLOB) {
-            Clob clob = rs.getClob(startIndex);
-            str = clob != null ? clob.getSubString(1, (int) clob.length()) : null;
+        String str = rs.getString(startIndex);
+        if (str != null) {
+            return Wkt.newWktDecoder(Wkt.Dialect.POSTGIS_EWKT_1).decode(str);
         } else {
-            throw new IllegalStateException("Unsupported type " + type);
+            return null;
         }
-        return str != null ? decoder.decode(str) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        String str = encoder.encode(value);
-        if (type == Types.VARCHAR) {
-            st.setString(startIndex, str);
-        } else if (type == Types.CLOB) {
-            st.setString(startIndex, str);
-//            throw new UnsupportedOperationException();
-        } else {
-            throw new IllegalStateException("Unsupported type " + type);
-        }
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(value);
+        st.setString(startIndex, str);
     }
 
 }
