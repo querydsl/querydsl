@@ -217,7 +217,11 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
             // ignore
         }
         Type propertyType = getType(cl, clazz, p.getName());
-        propertyType = getPropertyType(p, propertyType);
+        try {
+            propertyType = getPropertyType(p, propertyType);
+        } catch (MappingException e) {
+            // ignore
+        }
 
         if (p.isComposite()) {
             EntityType embeddedType = createEmbeddableType(propertyType);
