@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql.postgres;
 
+import org.geolatte.geom.DimensionalFlag;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.GeometryCollection;
 import org.geolatte.geom.LineString;
@@ -21,6 +22,9 @@ import org.geolatte.geom.MultiLineString;
 import org.geolatte.geom.MultiPoint;
 import org.geolatte.geom.MultiPolygon;
 import org.geolatte.geom.Point;
+import org.geolatte.geom.PointSequence;
+import org.geolatte.geom.PointSequenceBuilder;
+import org.geolatte.geom.PointSequenceBuilders;
 import org.geolatte.geom.Points;
 import org.geolatte.geom.PolyHedralSurface;
 import org.geolatte.geom.Polygon;
@@ -201,40 +205,72 @@ public class PGgeometryConverter {
         throw new IllegalArgumentException(geometry.toString());
     }
 
-    private static GeometryCollection convert(org.postgis.GeometryCollection geometry) {
+    private static PointSequence convertPoints(org.postgis.Point[] points) {
+        org.postgis.Point first = points[0];
+        DimensionalFlag flag = DimensionalFlag.XY;
+        if (first.dimension == 2 && first.haveMeasure) {
+            flag = DimensionalFlag.XYM;
+        } else if (first.dimension == 3 && first.haveMeasure) {
+            flag = DimensionalFlag.XYZM;
+        } else if (first.dimension == 3) {
+            flag = DimensionalFlag.XYZ;
+        }
+        PointSequenceBuilder pointSequence = PointSequenceBuilders.variableSized(flag);
+        for (int i = 0; i < points.length; i++) {
+            pointSequence.add(convert(points[i]));
+        }
+        return pointSequence.toPointSequence();
+    }
 
-        // TODO Auto-generated method stub
-        return null;
+    private static GeometryCollection convert(org.postgis.GeometryCollection geometry) {
+        Geometry[] geometries = new Geometry[geometry.numGeoms()];
+        for (int i = 0; i < geometries.length; i++) {
+            geometries[i] = convert(geometry.getSubGeometry(i));
+        }
+        return new GeometryCollection(geometries);
     }
 
     private static MultiPolygon convert(org.postgis.MultiPolygon geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        Polygon[] polygons = new Polygon[geometry.numPolygons()];
+        for (int i = 0; i < polygons.length; i++) {
+            polygons[i] = convert(geometry.getPolygon(i));
+        }
+        return new MultiPolygon(polygons);
     }
 
     private static MultiPoint convert(org.postgis.MultiPoint geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        Point[] points = new Point[geometry.numPoints()];
+        for (int i = 0; i < points.length; i++) {
+            points[i] = convert(geometry.getPoint(i));
+        }
+        return new MultiPoint(points);
     }
 
     private static MultiLineString convert(org.postgis.MultiLineString geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        LineString[] lineStrings = new LineString[geometry.numLines()];
+        for (int i = 0; i < lineStrings.length; i++) {
+            lineStrings[i] = convert(geometry.getLine(i));
+        }
+        return new MultiLineString(lineStrings);
     }
 
     private static Polygon convert(org.postgis.Polygon geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        LinearRing[] rings = new LinearRing[geometry.numRings()];
+        for (int i = 0; i < rings.length; i++) {
+            rings[i] = convert(geometry.getRing(i));
+        }
+        return new Polygon(rings);
     }
 
     private static LinearRing convert(org.postgis.LinearRing geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        PointSequence points = convertPoints(geometry.getPoints());
+        return new LinearRing(points, CrsId.valueOf(geometry.getSrid()));
     }
 
+
     private static LineString convert(org.postgis.LineString geometry) {
-        // TODO Auto-generated method stub
-        return null;
+        PointSequence points = convertPoints(geometry.getPoints());
+        return new LineString(points, CrsId.valueOf(geometry.getSrid()));
     }
 
 }

@@ -46,7 +46,7 @@ public class PGgeometryType extends AbstractType<Geometry> {
     @Nullable
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
         Object obj = rs.getObject(startIndex);
-        return obj != null ? PGgeometryConverter.convert((PGgeometry) obj) : null;
+        return obj != null ? PGgeometryConverter.convert(((PGgeometry) obj).getGeometry()) : null;
     }
 
     @Override
