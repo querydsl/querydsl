@@ -15,7 +15,7 @@ import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.SQLServer2005Templates;
+import com.mysema.query.sql.SQLServer2008Templates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -36,7 +36,7 @@ public class MSSQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initSQLServer();
-        Connections.setTemplates(SQLServer2005Templates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(SQLServer2008Templates.builder().newLineToSingleSpace().build());
     }
 
 }

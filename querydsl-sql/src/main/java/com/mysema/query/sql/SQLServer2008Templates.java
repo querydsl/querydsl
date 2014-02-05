@@ -32,15 +32,21 @@ public class SQLServer2008Templates extends SQLServer2005Templates {
     }
 
     public SQLServer2008Templates() {
-        super('\\',false);
+        this('\\',false);
     }
 
     public SQLServer2008Templates(boolean quote) {
-        super('\\',quote);
+        this('\\',quote);
     }
 
     public SQLServer2008Templates(char escape, boolean quote) {
         super(escape, quote);
+        addSpatialOps(false);
+    }
+
+    @Override
+    protected String createSpatial(String name, int args, boolean asFunction) {
+        return super.createSpatial(name.replace("_", ""), args, asFunction);
     }
 
 }

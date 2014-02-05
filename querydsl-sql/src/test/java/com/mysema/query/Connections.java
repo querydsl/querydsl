@@ -265,6 +265,14 @@ public final class Connections {
             return;
         }
 
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
+        stmt.execute("insert into SHAPES values (1, geometry::STGeomFromText('Point(2 2)', 0))");
+        stmt.execute("insert into SHAPES values (2, geometry::STGeomFromText('Point(8 7)', 0))");
+        stmt.execute("insert into SHAPES values (3, geometry::STGeomFromText('Point(1 9)', 0))");
+        stmt.execute("insert into SHAPES values (4, geometry::STGeomFromText('Point(9 2)', 0))");
+        stmt.execute("insert into SHAPES values (5, geometry::STGeomFromText('Point(4 4)', 0))");
+
         // survey
         dropTable(templates, "SURVEY");
         stmt.execute("create table SURVEY(ID int, NAME varchar(30), NAME2 varchar(30))");
