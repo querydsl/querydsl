@@ -26,11 +26,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinFlag;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
@@ -715,8 +712,20 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (!first) {
                     append(COMMA);
                 }
-                append("?");
-                constants.add(o);
+                if(o instanceof Tuple){
+                    append("(");
+                    for (int i = 0; i < ((Tuple) o).size(); i++) {
+                        if(i > 0) {
+                            append(COMMA);
+                        }
+                        append("?");
+                        constants.add(((Tuple) o).toArray()[i]);
+                    }
+                    append(")");
+                }else{
+                    append("?");
+                    constants.add(o);
+                }
                 if (first && (constantPaths.size() < constants.size())) {
                     constantPaths.add(null);
                 }
@@ -724,7 +733,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             append(")");
 
-            int size = ((Collection)constant).size() - 1;
+            int size = getRealConstantSize((Collection) constant) - 1;
             Path<?> lastPath = constantPaths.get(constantPaths.size()-1);
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
@@ -737,6 +746,19 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
     }
+
+    private int getRealConstantSize(Collection constant) {
+        int realSize = 0;
+        for (Object o : constant) {
+            if(o instanceof Tuple){
+                realSize += ((Tuple) o).size();
+            }else{
+                realSize ++;
+            }
+        }
+        return realSize;
+    }
+
 
     @Override
     public Void visit(ParamExpression<?> param, Void context) {
