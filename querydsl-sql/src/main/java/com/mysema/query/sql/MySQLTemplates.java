@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import java.math.BigDecimal;
 
+import com.mysema.query.sql.mysql.MySQLWkbType;
 import com.mysema.query.types.Ops;
 
 /**
@@ -50,7 +51,9 @@ public class MySQLTemplates extends SQLTemplates {
         setLimitRequired(true);
         setNullsFirst(null);
         setNullsLast(null);
+        addSpatialOps(true);
 
+        addCustomType(MySQLWkbType.DEFAULT);
         addClass2TypeMappings("bool", Boolean.class);
         addClass2TypeMappings("int", Integer.class);
 
@@ -105,7 +108,11 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(hour,{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(second,{0},{1})");
+    }
 
+    @Override
+    protected String createSpatial(String name, int args, boolean asFunction) {
+        return super.createSpatial(name.substring(3), args, asFunction);
     }
 
 }

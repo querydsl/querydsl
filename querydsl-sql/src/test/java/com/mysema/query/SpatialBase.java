@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.mysema.query.spatial.PointExpression;
 import com.mysema.query.spatial.path.PointPath;
-import com.mysema.query.sql.SQLServer2008Templates;
+import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
@@ -31,8 +31,10 @@ public class SpatialBase extends AbstractBaseTest {
 //        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
 //        Connections.initPostgres();
 //        Connections.setTemplates(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
-        Connections.initSQLServer();
-        Connections.setTemplates(SQLServer2008Templates.builder().newLineToSingleSpace().build());
+//        Connections.initSQLServer();
+//        Connections.setTemplates(SQLServer2008Templates.builder().newLineToSingleSpace().build());
+        Connections.initMySQL();
+        Connections.setTemplates(MySQLTemplates.builder().newLineToSingleSpace().build());
     }
 
     // TEMPORARY

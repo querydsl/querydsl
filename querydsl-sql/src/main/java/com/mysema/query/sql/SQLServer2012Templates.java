@@ -52,6 +52,11 @@ public class SQLServer2012Templates extends SQLServerTemplates {
     }
 
     @Override
+    protected String createSpatial(String name, int args, boolean asFunction) {
+        return super.createSpatial(name.replace("_", ""), args, asFunction);
+    }
+
+    @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         context.serializeForQuery(metadata, forCountRow);
 

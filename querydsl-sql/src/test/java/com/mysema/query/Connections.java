@@ -542,6 +542,15 @@ public final class Connections {
             return;
         }
 
+        // shapes
+        stmt.execute("drop table if exists SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
+        stmt.execute("insert into SHAPES values (1, Point(2, 2))");
+        stmt.execute("insert into SHAPES values (2, Point(8, 7))");
+        stmt.execute("insert into SHAPES values (3, Point(1, 9))");
+        stmt.execute("insert into SHAPES values (4, Point(9, 2))");
+        stmt.execute("insert into SHAPES values (5, Point(4, 4))");
+
         // survey
         stmt.execute("drop table if exists SURVEY");
         stmt.execute("create table SURVEY(ID int primary key auto_increment, " +
