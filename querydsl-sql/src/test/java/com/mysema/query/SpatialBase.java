@@ -1,5 +1,7 @@
 package com.mysema.query;
 
+import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -16,7 +18,7 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.mysema.query.spatial.PointExpression;
 import com.mysema.query.spatial.path.PointPath;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.TeradataTemplates;
 import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
@@ -27,14 +29,17 @@ public class SpatialBase extends AbstractBaseTest {
     // TEMPORARY
     @BeforeClass
     public static void setUp() throws Exception {
-//        Connections.initTeradata();
-//        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
+        Connections.initTeradata();
+        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
+
 //        Connections.initPostgres();
 //        Connections.setTemplates(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
+
 //        Connections.initSQLServer();
 //        Connections.setTemplates(SQLServer2008Templates.builder().newLineToSingleSpace().build());
-        Connections.initMySQL();
-        Connections.setTemplates(MySQLTemplates.builder().newLineToSingleSpace().build());
+
+//        Connections.initMySQL();
+//        Connections.setTemplates(MySQLTemplates.builder().newLineToSingleSpace().build());
     }
 
     // TEMPORARY
@@ -61,20 +66,20 @@ public class SpatialBase extends AbstractBaseTest {
         PointPath<Point> point = new PointPath<Point>(Point.class, shapes, "geometry");
 
         List<Expression<?>> expressions = Lists.newArrayList();
-        expressions.add(point.asBinary());
-        expressions.add(point.asText());
-        expressions.add(point.boundary());
-        expressions.add(point.convexHull());
-        expressions.add(point.dimension());
-        expressions.add(point.envelope());
-        expressions.add(point.geometryType());
-        expressions.add(point.isEmpty());
-        expressions.add(point.isSimple());
-        expressions.add(point.m());
-        expressions.add(point.srid());
-        expressions.add(point.x());
-        expressions.add(point.y());
-        expressions.add(point.z());
+        add(expressions, point.asBinary());
+        add(expressions, point.asText());
+        add(expressions, point.boundary(), MYSQL);
+        add(expressions, point.convexHull(), MYSQL);
+        add(expressions, point.dimension());
+        add(expressions, point.envelope());
+        add(expressions, point.geometryType());
+        add(expressions, point.isEmpty());
+        add(expressions, point.isSimple());
+        add(expressions, point.m(), MYSQL, TERADATA);
+        add(expressions, point.srid());
+        add(expressions, point.x());
+        add(expressions, point.y());
+        add(expressions, point.z(), MYSQL, TERADATA);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
@@ -89,19 +94,19 @@ public class SpatialBase extends AbstractBaseTest {
 
     private List<Expression<?>> createExpressions(PointExpression<Point> point1, Expression<Point> point2) {
         List<Expression<?>> expressions = Lists.newArrayList();
-        expressions.add(point1.contains(point2));
-        expressions.add(point1.crosses(point2));
-        expressions.add(point1.difference(point2));
-        expressions.add(point1.disjoint(point2));
-        expressions.add(point1.distance(point2));
-        expressions.add(point1.eq(point2));
-        expressions.add(point1.intersection(point2));
-        expressions.add(point1.intersects(point2));
-        expressions.add(point1.overlaps(point2));
-        expressions.add(point1.symDifference(point2));
-        expressions.add(point1.touches(point2));
-        expressions.add(point1.union(point2));
-        expressions.add(point1.within(point2));
+        add(expressions, point1.contains(point2));
+        add(expressions, point1.crosses(point2));
+        add(expressions, point1.difference(point2), MYSQL);
+        add(expressions, point1.disjoint(point2));
+        add(expressions, point1.distance(point2), MYSQL);
+        add(expressions, point1.eq(point2));
+        add(expressions, point1.intersection(point2), MYSQL);
+        add(expressions, point1.intersects(point2));
+        add(expressions, point1.overlaps(point2));
+        add(expressions, point1.symDifference(point2), MYSQL);
+        add(expressions, point1.touches(point2));
+        add(expressions, point1.union(point2), MYSQL);
+        add(expressions, point1.within(point2));
         return expressions;
     }
 
