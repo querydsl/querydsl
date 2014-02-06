@@ -15,16 +15,16 @@ package com.mysema.query.spatial.path;
 
 import java.lang.reflect.AnnotatedElement;
 
-import org.geolatte.geom.MultiPolygon;
+import org.geolatte.geom.MultiPoint;
 
-import com.mysema.query.spatial.MultiPolygonExpression;
+import com.mysema.query.spatial.MultiPointExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Visitor;
 
-public class MultiPointPath<T extends MultiPolygon> extends MultiPolygonExpression<T> implements Path<T> {
+public class MultiPointPath<T extends MultiPoint> extends MultiPointExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 312776751843333543L;
 
