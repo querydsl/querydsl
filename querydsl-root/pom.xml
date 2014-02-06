@@ -360,6 +360,10 @@
       <id>geoapi</id>
       <url>http://maven.geotoolkit.org</url>
     </repository>
+    <repository>
+      <id>opengeo</id>
+      <url>http://repo.opengeo.org</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>

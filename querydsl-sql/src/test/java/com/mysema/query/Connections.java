@@ -317,6 +317,19 @@ public final class Connections {
             return;
         }
 
+        stmt.execute("DROP ALIAS IF EXISTS InitGeoDB");
+        stmt.execute("CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"");
+        stmt.execute("CALL InitGeoDB()");
+
+        // shapes
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY blob)");
+        stmt.execute("insert into SHAPES values (1, ST_GeomFromText('POINT(2 2)', 4326))");
+        stmt.execute("insert into SHAPES values (2, ST_GeomFromText('POINT(8 7)', 4326))");
+        stmt.execute("insert into SHAPES values (3, ST_GeomFromText('POINT(1 9)', 4326))");
+        stmt.execute("insert into SHAPES values (4, ST_GeomFromText('POINT(9 2)', 4326))");
+        stmt.execute("insert into SHAPES values (5, ST_GeomFromText('POINT(4 4)', 4326))");
+
         // qtest
         stmt.execute("drop table QTEST if exists");
         stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");

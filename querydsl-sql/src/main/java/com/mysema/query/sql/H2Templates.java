@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.sql.spatial.GeoDBWkbType;
 import com.mysema.query.types.Ops;
 
 /**
@@ -45,6 +46,10 @@ public class H2Templates extends SQLTemplates {
         setNativeMerge(true);
         setLimitRequired(true);
         setCountDistinctMultipleColumns(true);
+
+        addCustomType(GeoDBWkbType.DEFAULT);
+        addSpatialOps(true);
+
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
 

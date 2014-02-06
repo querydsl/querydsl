@@ -1,5 +1,6 @@
 package com.mysema.query;
 
+import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
@@ -18,7 +19,7 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.mysema.query.spatial.PointExpression;
 import com.mysema.query.spatial.path.PointPath;
-import com.mysema.query.sql.TeradataTemplates;
+import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
@@ -26,11 +27,18 @@ import com.mysema.query.types.Expression;
 
 public class SpatialBase extends AbstractBaseTest {
 
+    // H2 - OK
+    // MySQL - OK
+    // Oracle Spatial - TODO
+    // Postgres - OK
+    // SQL Server - TODO
+    // Teradata - OK
+
     // TEMPORARY
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initTeradata();
-        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
+//        Connections.initTeradata();
+//        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
 
 //        Connections.initPostgres();
 //        Connections.setTemplates(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
@@ -40,6 +48,9 @@ public class SpatialBase extends AbstractBaseTest {
 
 //        Connections.initMySQL();
 //        Connections.setTemplates(MySQLTemplates.builder().newLineToSingleSpace().build());
+
+        Connections.initH2();
+        Connections.setTemplates(H2Templates.builder().newLineToSingleSpace().build());
     }
 
     // TEMPORARY
@@ -66,20 +77,20 @@ public class SpatialBase extends AbstractBaseTest {
         PointPath<Point> point = new PointPath<Point>(Point.class, shapes, "geometry");
 
         List<Expression<?>> expressions = Lists.newArrayList();
-        add(expressions, point.asBinary());
+        add(expressions, point.asBinary(), H2);
         add(expressions, point.asText());
         add(expressions, point.boundary(), MYSQL);
         add(expressions, point.convexHull(), MYSQL);
         add(expressions, point.dimension());
-        add(expressions, point.envelope());
-        add(expressions, point.geometryType());
+        add(expressions, point.envelope(), H2);
+        add(expressions, point.geometryType(), H2);
         add(expressions, point.isEmpty());
         add(expressions, point.isSimple());
-        add(expressions, point.m(), MYSQL, TERADATA);
+        add(expressions, point.m(), MYSQL, TERADATA, H2);
         add(expressions, point.srid());
-        add(expressions, point.x());
-        add(expressions, point.y());
-        add(expressions, point.z(), MYSQL, TERADATA);
+        add(expressions, point.x(), H2);
+        add(expressions, point.y(), H2);
+        add(expressions, point.z(), MYSQL, TERADATA, H2);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;

@@ -15,7 +15,7 @@ package com.mysema.query.sql;
 
 import java.math.BigDecimal;
 
-import com.mysema.query.sql.mysql.MySQLWkbType;
+import com.mysema.query.sql.spatial.MySQLWkbType;
 import com.mysema.query.types.Ops;
 
 /**

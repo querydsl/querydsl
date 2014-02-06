@@ -33,17 +33,14 @@ import com.mysema.query.sql.types.AbstractType;
  * @author tiwe
  *
  */
-public class GeometryWkbType extends AbstractType<Geometry> {
+public class GeoDBWkbType extends AbstractType<Geometry> {
 
-    public static final GeometryWkbType NDR = new GeometryWkbType(ByteOrder.NDR);
+    public static final GeoDBWkbType DEFAULT = new GeoDBWkbType();
 
-    public static final GeometryWkbType XDR = new GeometryWkbType(ByteOrder.XDR);
+    private final ByteOrder byteOrder = ByteOrder.NDR;
 
-    private final ByteOrder byteOrder;
-
-    public GeometryWkbType(ByteOrder byteOrder) {
-        super(Types.OTHER);
-        this.byteOrder = byteOrder;
+    public GeoDBWkbType() {
+        super(Types.BLOB);
     }
 
     @Override
@@ -56,8 +53,15 @@ public class GeometryWkbType extends AbstractType<Geometry> {
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
         byte[] bytes = rs.getBytes(startIndex);
         if (bytes != null) {
+            byte[] wkb;
+            if (bytes[0] != 0 && bytes[0] != 1) { // decodes EWKB
+                wkb = new byte[bytes.length - 32];
+                System.arraycopy(bytes, 32, wkb, 0, wkb.length);
+            } else {
+                wkb = bytes;
+            }
             WkbDecoder decoder = Wkb.newWkbDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
-            return decoder.decode(ByteBuffer.from(bytes));
+            return decoder.decode(ByteBuffer.from(wkb));
         } else {
             return null;
         }

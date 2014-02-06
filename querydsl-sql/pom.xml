@@ -109,6 +109,12 @@
       <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.opengeo</groupId>
+      <artifactId>geodb</artifactId>
+      <version>0.7</version>
+      <scope>test</scope>
+    </dependency>
     
     <dependency>
       <groupId>cubrid</groupId>
