@@ -30,9 +30,12 @@ import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Wildcard;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.StringPath;
 
 public class SQLSerializerTest {
 
@@ -72,6 +75,38 @@ public class SQLSerializerTest {
             "distinct (EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, " +
             "EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID))\n" +
             "from EMPLOYEE EMPLOYEE", serializer.toString());
+    }
+
+    @Test
+    public void DynamicQuery() {
+        Path<Object> userPath = Expressions.path(Object.class, "user");
+        NumberPath<Long> idPath = Expressions.numberPath(Long.class, userPath, "id");
+        StringPath usernamePath = Expressions.stringPath(userPath, "username");
+        Expression<?> sq = new SQLSubQuery()
+            .from(userPath).where(idPath.eq(1l))
+            .list(idPath, usernamePath);
+
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(sq);
+        assertEquals("(select user.id, user.username\n" +
+        	"from user\n" +
+        	"where user.id = ?)", serializer.toString());
+    }
+
+    @Test
+    public void DynamicQuery2() {
+        PathBuilder<Object> userPath = new PathBuilder<Object>(Object.class, "user");
+        NumberPath<Long> idPath = userPath.getNumber("id", Long.class);
+        StringPath usernamePath = userPath.getString("username");
+        Expression<?> sq = new SQLSubQuery()
+            .from(userPath).where(idPath.eq(1l))
+            .list(idPath, usernamePath);
+
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(sq);
+        assertEquals("(select user.id, user.username\n" +
+                "from user\n" +
+                "where user.id = ?)", serializer.toString());
     }
 
     @Test
