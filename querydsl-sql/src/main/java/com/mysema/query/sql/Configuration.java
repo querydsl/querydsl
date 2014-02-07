@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -266,7 +267,7 @@ public final class Configuration {
      * @return
      */
     public RuntimeException translate(SQLException ex) {
-        return exceptionTranslator.translate(null, ex);
+        return exceptionTranslator.translate(ex);
     }
 
     /**
@@ -276,8 +277,8 @@ public final class Configuration {
      * @param ex
      * @return
      */
-    public RuntimeException translate(String sql, SQLException ex) {
-        return exceptionTranslator.translate(sql, ex);
+    public RuntimeException translate(String sql, List<Object> bindings, SQLException ex) {
+        return exceptionTranslator.translate(sql, bindings, ex);
     }
 
     /**

@@ -78,6 +78,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private transient String queryString;
 
+    private transient List<Object> constants;
+
     public SQLMergeClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -253,7 +255,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 }
             }
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
         }
     }
 
@@ -351,6 +353,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
             boolean withKeys) throws SQLException {
         queryString = serializer.toString();
+        constants = serializer.getConstants();
         logger.debug(queryString);
         PreparedStatement stmt;
         if (withKeys) {
@@ -378,7 +381,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

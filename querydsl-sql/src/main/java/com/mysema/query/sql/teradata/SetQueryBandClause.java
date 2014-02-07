@@ -87,7 +87,8 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
             }
             return 1;
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            List<Object> bindings = parameter != null ? ImmutableList.<Object>of(parameter) : ImmutableList.of();
+            throw configuration.translate(queryString, bindings, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

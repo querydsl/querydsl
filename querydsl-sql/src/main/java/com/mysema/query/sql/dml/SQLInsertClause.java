@@ -81,6 +81,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     private transient String queryString;
 
+    private transient List<Object> constants;
+
     public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -264,6 +266,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
             boolean withKeys) throws SQLException {
         queryString = serializer.toString();
+        constants = serializer.getConstants();
         logger.debug(queryString);
         PreparedStatement stmt;
         if (withKeys) {
@@ -313,7 +316,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 }
             };
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
         }
     }
 
@@ -330,7 +333,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

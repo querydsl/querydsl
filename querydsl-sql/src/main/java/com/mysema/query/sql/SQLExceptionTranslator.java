@@ -14,8 +14,7 @@
 package com.mysema.query.sql;
 
 import java.sql.SQLException;
-
-import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * SQLExceptionTranslator translate SQLExceptions to runtime exceptions
@@ -30,5 +29,11 @@ public interface SQLExceptionTranslator {
      * @param e
      * @return
      */
-    RuntimeException translate(@Nullable String sql, SQLException e);
+    RuntimeException translate(String sql, List<Object> bindings, SQLException e);
+
+    /**
+     * @param e
+     * @return
+     */
+    RuntimeException translate(SQLException e);
 }

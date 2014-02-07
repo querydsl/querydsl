@@ -499,7 +499,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
             }
 
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
 
         } finally {
             reset();
@@ -574,7 +574,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 stmt.close();
             }
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
 
         } finally {
             reset();

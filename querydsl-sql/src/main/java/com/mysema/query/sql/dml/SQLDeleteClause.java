@@ -65,6 +65,8 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
 
     private transient String queryString;
 
+    private transient List<Object> constants;
+
     public SQLDeleteClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -120,6 +122,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             SQLSerializer serializer = new SQLSerializer(configuration, true);
             serializer.serializeDelete(metadata, entity);
             queryString = serializer.toString();
+            constants = serializer.getConstants();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
@@ -127,6 +130,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             SQLSerializer serializer = new SQLSerializer(configuration, true);
             serializer.serializeDelete(batches.get(0), entity);
             queryString = serializer.toString();
+            constants = serializer.getConstants();
             logger.debug(queryString);
 
             // add first batch
@@ -158,7 +162,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
