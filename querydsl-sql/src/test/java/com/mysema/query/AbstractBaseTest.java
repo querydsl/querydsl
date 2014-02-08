@@ -16,6 +16,7 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -40,6 +41,7 @@ import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.oracle.OracleQuery;
 import com.mysema.query.sql.teradata.SetQueryBandClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
+import com.mysema.query.types.Expression;
 
 public abstract class AbstractBaseTest {
 
@@ -76,6 +78,8 @@ public abstract class AbstractBaseTest {
 
     private SQLTemplates templates = Connections.getTemplates();
 
+    private Target target = Connections.getTarget();
+
     protected Configuration configuration = new Configuration(templates);
 
     @Nullable
@@ -86,6 +90,18 @@ public abstract class AbstractBaseTest {
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
+
+    protected Expression<?> add(List<Expression<?>> list, Expression<?> expr, Target... exclusions) {
+        if (exclusions.length > 0) {
+            for (Target t : exclusions) {
+                if (t.equals(target)) {
+                    return expr;
+                }
+            }
+        }
+        list.add(expr);
+        return expr;
+    }
 
     protected SQLUpdateClause update(RelationalPath<?> e) {
         return new SQLUpdateClause(connection, configuration, e);

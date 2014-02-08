@@ -51,6 +51,7 @@ import java.util.Map;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.Group;
@@ -205,21 +206,21 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, MYSQL})
     public void Casts() throws SQLException {
         NumberExpression<?> num = employee.id;
-        Expression<?>[] expr = new Expression[] {
-                num.byteValue(),
-                num.doubleValue(),
-                num.floatValue(),
-                num.intValue(),
-                num.longValue(),
-                num.shortValue(),
-                num.stringValue() };
+        List<Expression<?>> exprs = Lists.newArrayList();
 
-        for (Expression<?> e : expr) {
-            for (Object o : query().from(employee).list(e)) {
-                assertEquals(e.getType(), o.getClass());
+        add(exprs, num.byteValue(), MYSQL);
+        add(exprs, num.doubleValue());
+        add(exprs, num.floatValue());
+        add(exprs, num.intValue());
+        add(exprs, num.longValue(), MYSQL);
+        add(exprs, num.shortValue(), MYSQL);
+        add(exprs, num.stringValue(), DERBY);
+
+        for (Expression<?> expr : exprs) {
+            for (Object o : query().from(employee).list(expr)) {
+                assertEquals(expr.getType(), o.getClass());
             }
         }
     }
