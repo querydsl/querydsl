@@ -24,9 +24,12 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.path.BeanPath;
 
 /**
@@ -55,6 +58,8 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     private final String schema, table;
 
     private transient FactoryExpression<T> projection;
+
+    private transient NumberExpression<Long> count;
 
     public RelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
@@ -100,6 +105,18 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     protected <P extends Path<?>> P addMetadata(P path, ColumnMetadata metadata) {
         columnMetadata.put(path, metadata);
         return path;
+    }
+
+    @Override
+    public NumberExpression<Long> count() {
+        if (count == null) {
+            if (primaryKey != null) {
+                count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, primaryKey.getLocalColumns().get(0));
+            } else {
+                throw new IllegalStateException("No count expression can be created");
+            }
+        }
+        return count;
     }
 
     @Override

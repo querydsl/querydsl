@@ -391,7 +391,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @Ignore // FIXME
     public void Count2() {
         query().from(employee).singleResult(employee.count());
     }
