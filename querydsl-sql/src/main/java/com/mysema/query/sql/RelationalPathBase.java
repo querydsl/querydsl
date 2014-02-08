@@ -59,7 +59,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     private transient FactoryExpression<T> projection;
 
-    private transient NumberExpression<Long> count;
+    private transient NumberExpression<Long> count, countDistinct;
 
     public RelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
@@ -111,12 +111,27 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     public NumberExpression<Long> count() {
         if (count == null) {
             if (primaryKey != null) {
-                count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, primaryKey.getLocalColumns().get(0));
+                count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG,
+                        primaryKey.getLocalColumns().get(0));
             } else {
                 throw new IllegalStateException("No count expression can be created");
             }
         }
         return count;
+    }
+
+    @Override
+    public NumberExpression<Long> countDistinct() {
+        if (countDistinct == null) {
+            if (primaryKey != null) {
+                // TODO handle multiple column primary keys properly
+                countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG,
+                        primaryKey.getLocalColumns().get(0));
+            } else {
+                throw new IllegalStateException("No count distinct expression can be created");
+            }
+        }
+        return countDistinct;
     }
 
     @Override

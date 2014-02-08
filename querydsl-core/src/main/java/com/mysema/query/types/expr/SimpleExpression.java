@@ -116,7 +116,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public NumberExpression<Long> countDistinct() {
         if (countDistinct == null) {
-          countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, mixin);
+            countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, mixin);
         }
         return countDistinct;
     }
