@@ -57,6 +57,14 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "(year({0}) * 100 + week({0}))");
 
+        add(Ops.DateTimeOps.ADD_YEARS, "date_add({0}, interval {1s} year)");
+        add(Ops.DateTimeOps.ADD_MONTHS, "date_add({0}, interval {1s} month)");
+        add(Ops.DateTimeOps.ADD_WEEKS, "date_add({0}, interval {1s} week)");
+        add(Ops.DateTimeOps.ADD_DAYS, "date_add({0}, interval {1s} day)");
+        add(Ops.DateTimeOps.ADD_HOURS, "date_add({0}, interval {1s} hour)");
+        add(Ops.DateTimeOps.ADD_MINUTES, "date_add({0}, interval {1s} minute)");
+        add(Ops.DateTimeOps.ADD_SECONDS, "date_add({0}, interval {1s} second)");
+
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");

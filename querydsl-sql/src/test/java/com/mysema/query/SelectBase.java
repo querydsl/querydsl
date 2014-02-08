@@ -443,7 +443,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, SQLITE})
+    @ExcludeIn({SQLITE})
     public void Date_Add() {
         TestQuery query = query().from(employee);
         Date date1 = query.singleResult(employee.datefield);
