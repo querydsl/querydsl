@@ -33,7 +33,8 @@
 	  <includes>
 	  	<include>com.mysema.querydsl:*</include>
 	  	<include>com.mysema.codegen:*</include>
-	  	<include>org.hibernate:hibernate-core</include>					
+	  	<include>org.hibernate:hibernate-core</include>
+        <include>org.hibernate.javax.persistence:*</include>
 	  </includes>
     </dependencySet>	
   </dependencySets>
