@@ -456,10 +456,30 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({SQLITE})
+    public void Date_Add_Timestamp() {
+        List<Expression<?>> exprs = Lists.newArrayList();
+        DateTimeExpression<java.util.Date> dt = Expressions.currentTimestamp();
+
+        add(exprs, SQLExpressions.addYears(dt, 1));
+        add(exprs, SQLExpressions.addMonths(dt, 1));
+        add(exprs, SQLExpressions.addDays(dt, 1));
+        add(exprs, SQLExpressions.addHours(dt, 1));
+        add(exprs, SQLExpressions.addMinutes(dt, 1));
+        add(exprs, SQLExpressions.addSeconds(dt, 1));
+
+        for (Expression<?> expr : exprs) {
+            assertNotNull(query().singleResult(expr));
+        }
+    }
+
+    @Test
     @ExcludeIn({CUBRID, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
         TestQuery query = query().from(employee, employee2);
+
+        List<Expression<?>> exprs = Lists.newArrayList();
 
         Date date = new Date(0);
         for (DatePart dp : DatePart.values()) {
