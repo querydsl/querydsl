@@ -61,7 +61,6 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
-
         }
     }
 
@@ -102,7 +101,6 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
             System.out.println(Arrays.asList(row));
         }
     }
-
 
     @Test
     @IncludeIn(ORACLE)
