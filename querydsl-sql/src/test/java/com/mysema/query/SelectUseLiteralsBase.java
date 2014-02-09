@@ -13,9 +13,9 @@
  */
 package com.mysema.query;
 
-public class SelectBaseUseLiterals extends SelectBase {
+public class SelectUseLiteralsBase extends SelectBase {
 
-    public SelectBaseUseLiterals() {
+    public SelectUseLiteralsBase() {
         configuration.setUseLiterals(true);
     }
 

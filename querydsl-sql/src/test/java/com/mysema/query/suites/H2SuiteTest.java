@@ -9,7 +9,7 @@ import com.mysema.query.InsertBase;
 import com.mysema.query.LikeEscapeBase;
 import com.mysema.query.MergeBase;
 import com.mysema.query.SelectBase;
-import com.mysema.query.SelectBaseUseLiterals;
+import com.mysema.query.SelectUseLiteralsBase;
 import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
@@ -24,7 +24,7 @@ public class H2SuiteTest extends AbstractSuite {
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
-    public static class SelectUseLiterals extends SelectBaseUseLiterals {}
+    public static class SelectUseLiterals extends SelectUseLiteralsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}

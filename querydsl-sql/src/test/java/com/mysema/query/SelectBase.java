@@ -29,7 +29,6 @@ import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.Target.TERADATA;
-import static com.mysema.query.sql.oracle.OracleGrammar.level;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -61,7 +60,6 @@ import com.mysema.query.sql.DatePart;
 import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLExpressions;
-import com.mysema.query.sql.WindowOver;
 import com.mysema.query.sql.WithinGroup;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
@@ -94,11 +92,8 @@ import com.mysema.query.types.expr.StringExpressions;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
-import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
@@ -121,6 +116,10 @@ public class SelectBase extends AbstractBaseTest {
                     new Expression<?>[]{employee.firstname});
         }
     };
+
+    private <T> T singleResult(Expression<T> expr) {
+        return query().singleResult(expr);
+    }
 
     @Test
     public void Aggregate_List() {
@@ -246,7 +245,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Complex_boolean() {
+    public void Complex_Boolean() {
         BooleanExpression first = employee.firstname.eq("Mike").and(employee.lastname.eq("Smith"));
         BooleanExpression second = employee.firstname.eq("Joe").and(employee.lastname.eq("Divis"));
         assertEquals(2, query().from(employee).where(first.or(second)).count());
@@ -259,7 +258,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void ComplexSubQuery() {
+    public void Complex_SubQuery() {
         // alias for the salary
         NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         // alias for the subquery
@@ -269,79 +268,6 @@ public class SelectBase extends AbstractBaseTest {
                 sq().from(employee)
                 .list(employee.salary.add(employee.salary).add(employee.salary).as(sal)).as(sq)
         ).list(sq.get(sal).avg(), sq.get(sal).min(), sq.get(sal).max());
-    }
-
-    @Test
-    @Ignore
-    public void ConnectBy() throws SQLException {
-        // TODO : come up with a legal case
-        oracleQuery().from(employee)
-            .where(level.eq(-1))
-            .connectBy(level.lt(1000))
-            .list(employee.id);
-    }
-
-    @Test
-    @IncludeIn(ORACLE)
-    @SkipForQuoted
-    public void ConnectByPrior() throws SQLException {
-        expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                        "from EMPLOYEE e " +
-                        "connect by prior e.ID = e.SUPERIOR_ID";
-        oracleQuery().from(employee)
-            .connectByPrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @IncludeIn(ORACLE)
-    @SkipForQuoted
-    public void ConnectByPrior2() throws SQLException {
-        if (configuration.getUseLiterals()) return;
-
-        expectedQuery =
-                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE e " +
-                "start with e.ID = ? " +
-                "connect by prior e.ID = e.SUPERIOR_ID";
-        oracleQuery().from(employee)
-            .startWith(employee.id.eq(1))
-            .connectByPrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @IncludeIn(ORACLE)
-    @SkipForQuoted
-    public void ConnectByPrior3() throws SQLException {
-        if (configuration.getUseLiterals()) return;
-
-        expectedQuery =
-                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE e " +
-                "start with e.ID = ? " +
-                "connect by prior e.ID = e.SUPERIOR_ID " +
-                "order siblings by e.LASTNAME";
-        oracleQuery().from(employee)
-            .startWith(employee.id.eq(1))
-            .connectByPrior(employee.id.eq(employee.superiorId))
-            .orderSiblingsBy(employee.lastname)
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @IncludeIn(ORACLE)
-    @SkipForQuoted
-    public void ConnectByPrior4() throws SQLException {
-        if (configuration.getUseLiterals()) return;
-
-        expectedQuery =
-                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE e " +
-                "connect by nocycle prior e.ID = e.SUPERIOR_ID";
-        oracleQuery().from(employee)
-            .connectByNocyclePrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
     }
 
     @Test
@@ -474,37 +400,30 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, HSQLDB, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
         TestQuery query = query().from(employee, employee2);
 
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<DatePart> dps = Lists.newArrayList();
+        add(dps, DatePart.year);
+        add(dps, DatePart.month);
+        add(dps, DatePart.week);
+        add(dps, DatePart.day);
+        add(dps, DatePart.hour, HSQLDB);
+        add(dps, DatePart.minute, HSQLDB);
+        add(dps, DatePart.second, HSQLDB);
 
         Date date = new Date(0);
-        for (DatePart dp : DatePart.values()) {
-            if (dp != DatePart.millisecond) {
-                query.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
-                query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
-                query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
-            }
+        for (DatePart dp : dps) {
+            query.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+            query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
+            query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
         }
     }
 
     @Test
-    @IncludeIn(HSQLDB)
-    public void Date_Diff_HSQLDB() {
-        QEmployee employee2 = new QEmployee("employee2");
-        TestQuery query = query().from(employee, employee2);
-
-        for (DatePart dp : new DatePart[]{DatePart.year, DatePart.month, DatePart.day}) {
-            query.singleResult(
-                    SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
-        }
-    }
-
-    @Test
-    @IncludeIn({DERBY, H2, MYSQL, ORACLE, POSTGRES})
+    @ExcludeIn({CUBRID, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).limit(1);
         Date date = new Date(0);
@@ -533,14 +452,21 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
-        for (DatePart dp : DatePart.values()) {
-            if (dp != DatePart.millisecond) {
-                query().singleResult(SQLExpressions.datetrunc(dp, expr));
-            }
+        List<DatePart> dps = Lists.newArrayList();
+        add(dps, DatePart.year);
+        add(dps, DatePart.month);
+        add(dps, DatePart.week);
+        add(dps, DatePart.day);
+        add(dps, DatePart.hour);
+        add(dps, DatePart.minute);
+        add(dps, DatePart.second);
+
+        for (DatePart dp : dps) {
+            query().singleResult(SQLExpressions.datetrunc(dp, expr));
         }
     }
 
@@ -580,21 +506,6 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Exists() {
         assertTrue(query().from(employee).where(employee.firstname.eq("Barbara")).exists());
-    }
-
-    @Test
-    @IncludeIn(MYSQL)
-    public void MySQL_Extensions() {
-        mysqlQuery().from(survey).bigResult().list(survey.id);
-        mysqlQuery().from(survey).bufferResult().list(survey.id);
-        mysqlQuery().from(survey).cache().list(survey.id);
-        mysqlQuery().from(survey).calcFoundRows().list(survey.id);
-        mysqlQuery().from(survey).noCache().list(survey.id);
-
-        mysqlQuery().from(survey).highPriority().list(survey.id);
-        mysqlQuery().from(survey).lockInShareMode().list(survey.id);
-        mysqlQuery().from(survey).smallResult().list(survey.id);
-        mysqlQuery().from(survey).straightJoin().list(survey.id);
     }
 
     @Test
@@ -723,15 +634,13 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Limit() throws SQLException {
-        // limit
         query().from(employee)
-        .orderBy(employee.firstname.asc())
-        .limit(4).list(employee.id);
+            .orderBy(employee.firstname.asc())
+            .limit(4).list(employee.id);
     }
 
     @Test
     public void Limit_and_Offset() throws SQLException {
-        // limit and offset
         assertEquals(Arrays.asList(20, 13, 10, 2),
             query().from(employee)
                    .orderBy(employee.firstname.asc())
@@ -741,7 +650,6 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Limit_and_Offset_and_Order() {
-        // limit + offset
         List<String> names2 = Arrays.asList("Helen","Jennifer","Jim","Joe");
         assertEquals(names2, query().from(employee)
                 .orderBy(employee.firstname.asc())
@@ -800,7 +708,6 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Limit_and_Order() {
-        // limit
         List<String> names1 = Arrays.asList("Barbara","Daisy","Helen","Jennifer");
         assertEquals(names1, query().from(employee)
                 .orderBy(employee.firstname.asc())
@@ -839,48 +746,10 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({SQLITE, SQLSERVER, DERBY})
     public void LPad() {
-        assertEquals("  ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
-        assertEquals("!!ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
+        assertEquals("  ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
+        assertEquals("!!ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
     }
 
-    @Test
-    @IncludeIn(SQLSERVER)
-    public void Manual_Paging() {
-        Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
-        Expression<Object[]> all = Wildcard.all;
-
-        // simple
-        System.out.println("#1");
-        for (Tuple row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)) {
-            System.out.println(row);
-        }
-        System.out.println();
-
-        // with subquery, generic alias
-        System.out.println("#2");
-        ListSubQuery<Tuple> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        SimplePath<Tuple> subAlias = new SimplePath<Tuple>(Tuple.class, "s");
-        for (Object[] row : query().from(sub.as(subAlias)).list(all)) {
-            System.out.println(Arrays.asList(row));
-        }
-        System.out.println();
-
-        // with subquery, only row number
-        System.out.println("#3");
-        SimpleSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
-        SimplePath<Long> subAlias2 = new SimplePath<Long>(Long.class, "s");
-        for (Object[] row : query().from(sub2.as(subAlias2)).list(all)) {
-            System.out.println(Arrays.asList(row));
-        }
-        System.out.println();
-
-        // with subquery, specific alias
-        System.out.println("#4");
-        ListSubQuery<Tuple> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        for (Tuple row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)) {
-            System.out.println(Arrays.asList(row));
-        }
-    }
 
     @Test
     public void Map() {
@@ -914,25 +783,25 @@ public class SelectBase extends AbstractBaseTest {
     public void Math() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
 
-        assertEquals(Math.acos(0.5), unique(MathExpressions.acos(expr)), 0.001);
-        assertEquals(Math.asin(0.5), unique(MathExpressions.asin(expr)), 0.001);
-        assertEquals(Math.atan(0.5), unique(MathExpressions.atan(expr)), 0.001);
-        assertEquals(Math.cos(0.5),  unique(MathExpressions.cos(expr)), 0.001);
-        assertEquals(Math.cosh(0.5), unique(MathExpressions.cosh(expr)), 0.001);
-        assertEquals(cot(0.5),       unique(MathExpressions.cot(expr)), 0.001);
-        assertEquals(coth(0.5),      unique(MathExpressions.coth(expr)), 0.001);
-        assertEquals(degrees(0.5),   unique(MathExpressions.degrees(expr)), 0.001);
-        assertEquals(Math.exp(0.5),  unique(MathExpressions.exp(expr)), 0.001);
-        assertEquals(Math.log(0.5),  unique(MathExpressions.ln(expr)), 0.001);
-        assertEquals(log(0.5, 10),   unique(MathExpressions.log(expr, 10)), 0.001);
-        assertEquals(0.25,           unique(MathExpressions.power(expr, 2)), 0.001);
-        assertEquals(radians(0.5),   unique(MathExpressions.radians(expr)), 0.001);
+        assertEquals(Math.acos(0.5), singleResult(MathExpressions.acos(expr)), 0.001);
+        assertEquals(Math.asin(0.5), singleResult(MathExpressions.asin(expr)), 0.001);
+        assertEquals(Math.atan(0.5), singleResult(MathExpressions.atan(expr)), 0.001);
+        assertEquals(Math.cos(0.5),  singleResult(MathExpressions.cos(expr)), 0.001);
+        assertEquals(Math.cosh(0.5), singleResult(MathExpressions.cosh(expr)), 0.001);
+        assertEquals(cot(0.5),       singleResult(MathExpressions.cot(expr)), 0.001);
+        assertEquals(coth(0.5),      singleResult(MathExpressions.coth(expr)), 0.001);
+        assertEquals(degrees(0.5),   singleResult(MathExpressions.degrees(expr)), 0.001);
+        assertEquals(Math.exp(0.5),  singleResult(MathExpressions.exp(expr)), 0.001);
+        assertEquals(Math.log(0.5),  singleResult(MathExpressions.ln(expr)), 0.001);
+        assertEquals(log(0.5, 10),   singleResult(MathExpressions.log(expr, 10)), 0.001);
+        assertEquals(0.25,           singleResult(MathExpressions.power(expr, 2)), 0.001);
+        assertEquals(radians(0.5),   singleResult(MathExpressions.radians(expr)), 0.001);
         assertEquals(Integer.valueOf(1),
-                                     unique(MathExpressions.sign(expr)));
-        assertEquals(Math.sin(0.5),  unique(MathExpressions.sin(expr)), 0.001);
-        assertEquals(Math.sinh(0.5), unique(MathExpressions.sinh(expr)), 0.001);
-        assertEquals(Math.tan(0.5),  unique(MathExpressions.tan(expr)), 0.001);
-        assertEquals(Math.tanh(0.5), unique(MathExpressions.tanh(expr)), 0.001);
+                singleResult(MathExpressions.sign(expr)));
+        assertEquals(Math.sin(0.5),  singleResult(MathExpressions.sin(expr)), 0.001);
+        assertEquals(Math.sinh(0.5), singleResult(MathExpressions.sinh(expr)), 0.001);
+        assertEquals(Math.tan(0.5),  singleResult(MathExpressions.tan(expr)), 0.001);
+        assertEquals(Math.tanh(0.5), singleResult(MathExpressions.tanh(expr)), 0.001);
     }
 
     @Test
@@ -1035,9 +904,9 @@ public class SelectBase extends AbstractBaseTest {
 
         NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
         query().from(employee)
-        .groupBy(employee.lastname)
-        .having(salarySum.gt(10000))
-        .list(employee.lastname, salarySum);
+            .groupBy(employee.lastname)
+            .having(salarySum.gt(10000))
+            .list(employee.lastname, salarySum);
     }
 
     @Test
@@ -1133,28 +1002,6 @@ public class SelectBase extends AbstractBaseTest {
         }
     }
 
-//    @Test
-//    public void Date_Add() {
-//        Date date = new Date();
-//        Expression<Date> expr = new ConstantImpl<Date>(date);
-//
-//        Date date3 = unique(DateExpressions.dateadd(expr, 1, DatePart.day));
-//        assertTrue(date3.after(date));
-//    }
-//
-//    @Test
-//    public void Date_Diff() {
-//        long ts = System.currentTimeMillis();
-//        Date date = new Date(ts);
-//        Date date2 = new Date(ts + 60 * 60 * 1000);
-//        Expression<Date> expr = new ConstantImpl<Date>(date);
-//
-//        assertEquals(1,       unique(DateExpressions.datediff(expr, date2, DatePart.hour)).intValue());
-//        assertEquals(60,      unique(DateExpressions.datediff(expr, date2, DatePart.minute)).intValue());
-//        assertEquals(3600,    unique(DateExpressions.datediff(expr, date2, DatePart.second)).intValue());
-//        //assertEquals(3600000, unique(DateExpressions.datediff(expr, date2, DatePart.millisecond)).intValue());
-//    }
-
     @Test
     public void Query2() throws Exception {
         for (Tuple row : query().from(survey).list(survey.id, survey.name)) {
@@ -1202,15 +1049,15 @@ public class SelectBase extends AbstractBaseTest {
     public void Round() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "1.32");
 
-        assertEquals(Double.valueOf(1.0), unique(MathExpressions.round(expr)));
-        assertEquals(Double.valueOf(1.3), unique(MathExpressions.round(expr, 1)));
+        assertEquals(Double.valueOf(1.0), singleResult(MathExpressions.round(expr)));
+        assertEquals(Double.valueOf(1.3), singleResult(MathExpressions.round(expr, 1)));
     }
 
     @Test
     @ExcludeIn({SQLITE, SQLSERVER, DERBY})
     public void Rpad() {
-        assertEquals("ab  ", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
-        assertEquals("ab!!", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
+        assertEquals("ab  ", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
+        assertEquals("ab!!", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
     }
 
     @Test
@@ -1271,20 +1118,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(TERADATA)
-    public void SetQueryBand_ForSession() {
-        setQueryBand().set("a", "bb").forSession().execute();
-        query().from(survey).list(survey.id);
-    }
-
-    @Test
-    @IncludeIn(TERADATA)
-    public void SetQueryBand_ForTransaction() {
-        setQueryBand().set("a", "bb").forTransaction().execute();
-        query().from(survey).list(survey.id);
-    }
-
-    @Test
     public void Single() {
         assertNotNull(query().from(survey).singleResult(survey.name));
     }
@@ -1342,11 +1175,11 @@ public class SelectBase extends AbstractBaseTest {
     public void String() {
         StringExpression str = Expressions.stringTemplate("'  abcd  '");
 
-        assertEquals("abcd  ", unique(StringExpressions.ltrim(str)));
-        assertEquals(Integer.valueOf(3), unique(str.locate("a")));
-        assertEquals(Integer.valueOf(0), unique(str.locate("a", 4)));
-        assertEquals(Integer.valueOf(4), unique(str.locate("b", 2)));
-        assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
+        assertEquals("abcd  ",           singleResult(StringExpressions.ltrim(str)));
+        assertEquals(Integer.valueOf(3), singleResult(str.locate("a")));
+        assertEquals(Integer.valueOf(0), singleResult(str.locate("a", 4)));
+        assertEquals(Integer.valueOf(4), singleResult(str.locate("b", 2)));
+        assertEquals("  abcd",           singleResult(StringExpressions.rtrim(str)));
     }
 
     @Test
@@ -1354,9 +1187,9 @@ public class SelectBase extends AbstractBaseTest {
     public void String_IndexOf() {
         StringExpression str = Expressions.stringTemplate("'  abcd  '");
 
-        assertEquals(Integer.valueOf(2), unique(str.indexOf("a")));
-        assertEquals(Integer.valueOf(-1), unique(str.indexOf("a", 4)));
-        assertEquals(Integer.valueOf(3), unique(str.indexOf("b", 2)));
+        assertEquals(Integer.valueOf(2),  singleResult(str.indexOf("a")));
+        assertEquals(Integer.valueOf(-1), singleResult(str.indexOf("a", 4)));
+        assertEquals(Integer.valueOf(3),  singleResult(str.indexOf("b", 2)));
     }
 
     @Test
@@ -1406,45 +1239,6 @@ public class SelectBase extends AbstractBaseTest {
                .where(employee.firstname.substring(-3, 1).eq(employee.firstname.substring(-2, 1)))
                .list(employee.id);
     }
-
-    @Test
-    @IncludeIn(ORACLE)
-    @SkipForQuoted
-    public void SumOver() throws SQLException{
-//        SQL> select deptno,
-//        2  ename,
-//        3  sal,
-//        4  sum(sal) over (partition by deptno
-//        5  order by sal,ename) CumDeptTot,
-//        6  sum(sal) over (partition by deptno) SalByDept,
-//        7  sum(sal) over (order by deptno, sal) CumTot,
-//        8  sum(sal) over () TotSal
-//        9  from emp
-//       10  order by deptno, sal;
-        expectedQuery = "select e.LASTNAME, e.SALARY, " +
-            "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME, e.SALARY), " +
-            "sum(e.SALARY) over (order by e.SUPERIOR_ID, e.SALARY), " +
-            "sum(e.SALARY) over () from EMPLOYEE e order by e.SALARY asc, e.SUPERIOR_ID asc";
-
-        oracleQuery().from(employee)
-            .orderBy(employee.salary.asc(), employee.superiorId.asc())
-            .list(
-               employee.lastname,
-               employee.salary,
-               SQLExpressions.sum(employee.salary).over().partitionBy(employee.superiorId).orderBy(employee.lastname, employee.salary),
-               SQLExpressions.sum(employee.salary).over().orderBy(employee.superiorId, employee.salary),
-               SQLExpressions.sum(employee.salary).over());
-
-        // shorter version
-        QEmployee e = employee;
-        oracleQuery().from(e)
-            .orderBy(e.salary.asc(), e.superiorId.asc())
-            .list(e.lastname, e.salary,
-               SQLExpressions.sum(e.salary).over().partitionBy(e.superiorId).orderBy(e.lastname, e.salary),
-               SQLExpressions.sum(e.salary).over().orderBy(e.superiorId, e.salary),
-               SQLExpressions.sum(e.salary).over());
-    }
-
 
     @Test
     public void Syntax_For_Employee() throws SQLException {
@@ -1525,11 +1319,6 @@ public class SelectBase extends AbstractBaseTest {
             assertEquals(IdName.class, row.get(2, Object.class).getClass());
         }
     }
-
-    private <T> T unique(Expression<T> expr) {
-        return query().uniqueResult(expr);
-    }
-
 
     @Test
     public void Unique_Constructor_Projection() {
@@ -1676,183 +1465,17 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
-    public void WindowFunctions() {
-        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
-        NumberPath<Integer> path = survey.id;
-        NumberPath<?> path2 = survey.id;
-        exprs.add(SQLExpressions.avg(path));
-        exprs.add(SQLExpressions.count(path));
-        exprs.add(SQLExpressions.corr(path, path2));
-        exprs.add(SQLExpressions.covarPop(path, path2));
-        exprs.add(SQLExpressions.covarSamp(path, path2));
-        exprs.add(SQLExpressions.max(path));
-        exprs.add(SQLExpressions.min(path));
-        exprs.add(SQLExpressions.percentRank());
-        exprs.add(SQLExpressions.rank());
-        exprs.add(SQLExpressions.rowNumber());
-        exprs.add(SQLExpressions.sum(path));
-
-        if (Connections.getTarget() != TERADATA) {
-            exprs.add(SQLExpressions.cumeDist());
-            exprs.add(SQLExpressions.denseRank());
-            exprs.add(SQLExpressions.firstValue(path));
-            exprs.add(SQLExpressions.lag(path));
-            exprs.add(SQLExpressions.lastValue(path));
-            exprs.add(SQLExpressions.lead(path));
-            exprs.add(SQLExpressions.nthValue(path, 2));
-            exprs.add(SQLExpressions.ntile(3));
-            exprs.add(SQLExpressions.stddev(path));
-            exprs.add(SQLExpressions.stddevPop(path));
-            exprs.add(SQLExpressions.stddevSamp(path));
-            exprs.add(SQLExpressions.variance(path));
-            exprs.add(SQLExpressions.varPop(path));
-            exprs.add(SQLExpressions.varSamp(path));
-        }
-
-        for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
-        }
-    }
-
-    @Test
-    @IncludeIn(ORACLE)
-    public void WindowFunctions_Keep() {
-        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
-        NumberPath<Integer> path = survey.id;
-
-        exprs.add(SQLExpressions.avg(path));
-        exprs.add(SQLExpressions.count(path));
-        exprs.add(SQLExpressions.max(path));
-        exprs.add(SQLExpressions.min(path));
-        exprs.add(SQLExpressions.stddev(path));
-        exprs.add(SQLExpressions.variance(path));
-
-        for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.keepFirst().orderBy(survey.id));
-        }
-    }
-
-    @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
-    public void WindowFunctions_Regr() {
-        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
-        NumberPath<Integer> path = survey.id;
-        NumberPath<?> path2 = survey.id;
-
-        exprs.add(SQLExpressions.regrSlope(path,  path2));
-        exprs.add(SQLExpressions.regrIntercept(path,  path2));
-        exprs.add(SQLExpressions.regrCount(path,  path2));
-        exprs.add(SQLExpressions.regrR2(path,  path2));
-        exprs.add(SQLExpressions.regrAvgx(path, path2));
-        exprs.add(SQLExpressions.regrSxx(path, path2));
-        exprs.add(SQLExpressions.regrSyy(path, path2));
-        exprs.add(SQLExpressions.regrSxy(path,  path2));
-
-        for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
-        }
-    }
-
-    @Test
-    @IncludeIn(ORACLE)
-    public void WindowFunctions_Oracle() {
-        List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
-        NumberPath<Integer> path = survey.id;
-        exprs.add(SQLExpressions.countDistinct(path));
-        exprs.add(SQLExpressions.ratioToReport(path));
-        exprs.add(SQLExpressions.stddevDistinct(path));
-
-        for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partitionBy(survey.name));
-        }
-    }
-
-    @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
-    public void WindowFunctions_Over() {
-        //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
-        //FROM TestDB.Shipment
-
-        query().from(employee).list(
-                employee.id,
-                SQLExpressions.sum(employee.salary).over());
-    }
-
-    @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
-    public void WindowFunctions_PartitionBy() {
-        //SELECT Shipment_id,Ship_date,Ship_Type,
-        //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
-        //FROM TestDB.Shipment
-
-        query().from(employee).list(
-                employee.id,
-                employee.superiorId,
-                SQLExpressions.sum(employee.salary).over()
-                    .partitionBy(employee.superiorId));
-    }
-
-    @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
-    public void WindowFunctions_OrderBy() {
-        //SELECT Shipment_id,Ship_date,Ship_Type,
-        //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
-        //FROM TestDB.Shipment
-
-        query().from(employee).list(
-                employee.id,
-                SQLExpressions.sum(employee.salary).over()
-                    .partitionBy(employee.superiorId)
-                    .orderBy(employee.datefield));
-    }
-
-    @Test
-    @IncludeIn({POSTGRES, ORACLE, TERADATA})
-    public void WindowFunctions_UnboundedRows() {
-        //SELECT Shipment_id,Ship_date,Ship_Type,
-        //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt
-        //ROWS BETWEEN UNBOUNDED PRECEDING
-        //AND CURRENT ROW) AS Total_Qty
-        //FROM TestDB.Shipment
-
-        query().from(employee).list(
-                employee.id,
-                SQLExpressions.sum(employee.salary).over()
-                    .partitionBy(employee.superiorId)
-                    .orderBy(employee.datefield)
-                    .rows().between().unboundedPreceding().currentRow());
-    }
-
-    @Test
-    @IncludeIn({TERADATA})
-    public void WindowFunctions_Qualify() {
-        //SELECT Shipment_id,Ship_date,Ship_Type,
-        //Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS rnk
-        //FROM TestDB.Shipment
-        //QUALIFY  (Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ))  =1
-
-        teradataQuery().from(employee)
-               .qualify(SQLExpressions.rank().over()
-                       .partitionBy(employee.superiorId)
-                       .orderBy(employee.datefield).eq(1l))
-               .list(employee.id,SQLExpressions.sum(employee.salary).over());
-
-    }
-
-
-    @Test
     @IncludeIn(ORACLE)
     public void WithinGroup() {
         List<WithinGroup<?>> exprs = new ArrayList<WithinGroup<?>>();
         NumberPath<Integer> path = survey.id;
 
         // two args
-        exprs.add(SQLExpressions.cumeDist(2, 3));
-        exprs.add(SQLExpressions.denseRank(4, 5));
-        exprs.add(SQLExpressions.listagg(path, ","));
-        exprs.add(SQLExpressions.percentRank(6, 7));
-        exprs.add(SQLExpressions.rank(8, 9));
+        add(exprs, SQLExpressions.cumeDist(2, 3));
+        add(exprs, SQLExpressions.denseRank(4, 5));
+        add(exprs, SQLExpressions.listagg(path, ","));
+        add(exprs, SQLExpressions.percentRank(6, 7));
+        add(exprs, SQLExpressions.rank(8, 9));
 
         for (WithinGroup<?> wg : exprs) {
             query().from(survey).list(wg.withinGroup().orderBy(survey.id, survey.id));
@@ -1860,8 +1483,8 @@ public class SelectBase extends AbstractBaseTest {
 
         // one arg
         exprs.clear();
-        exprs.add(SQLExpressions.percentileCont(0.1));
-        exprs.add(SQLExpressions.percentileDisc(0.9));
+        add(exprs, SQLExpressions.percentileCont(0.1));
+        add(exprs, SQLExpressions.percentileDisc(0.9));
 
         for (WithinGroup<?> wg : exprs) {
             query().from(survey).list(wg.withinGroup().orderBy(survey.id));
