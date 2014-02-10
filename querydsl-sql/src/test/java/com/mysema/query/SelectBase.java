@@ -43,6 +43,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -425,8 +426,11 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({CUBRID, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
-        TestQuery query = query().from(employee).limit(1);
-        Date date = new Date(0);
+        TestQuery query = query().from(employee).orderBy(employee.id.asc());
+//        Date date = new Date(0);
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        Date date = new java.sql.Date(cal.getTimeInMillis());
 
         int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
         int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));
@@ -439,15 +443,9 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(30,        years);
         assertEquals(361,       months);
         assertEquals(10989,     days);
-        if (Connections.getTarget() == DERBY) {
-            assertEquals(263737,    hours);
-            assertEquals(15824220,  minutes);
-            assertEquals(949453200, seconds);
-        } else {
-            assertEquals(263736,    hours);
-            assertEquals(15824160,  minutes);
-            assertEquals(949449600, seconds);
-        }
+        assertEquals(263737,    hours);
+        assertEquals(15824220,  minutes);
+        assertEquals(949453200, seconds);
 
     }
 
