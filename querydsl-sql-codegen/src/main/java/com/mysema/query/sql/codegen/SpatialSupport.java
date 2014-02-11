@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Type;
 import com.mysema.query.codegen.AbstractModule;
 import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.Point;
@@ -80,8 +81,8 @@ public final class SpatialSupport {
         mappings.put(Polygon.class, PolygonPath.class);
         mappings.put(PolyHedralSurface.class, PolyhedralSurfacePath.class);
         for (Map.Entry<Class<?>, Class<?>> entry : mappings.entrySet()) {
-            typeMappings.register(new ClassType(entry.getKey()),
-                    new ClassType(entry.getValue()));
+            Type type = new ClassType(entry.getKey());
+            typeMappings.register(type, new ClassType(entry.getValue(), type));
         }
     }
 

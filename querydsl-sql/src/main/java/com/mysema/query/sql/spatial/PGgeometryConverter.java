@@ -273,4 +273,6 @@ public class PGgeometryConverter {
         return new LineString(points, CrsId.valueOf(geometry.getSrid()));
     }
 
+    private PGgeometryConverter() {}
+
 }
