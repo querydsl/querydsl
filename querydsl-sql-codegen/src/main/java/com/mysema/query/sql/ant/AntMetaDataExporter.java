@@ -179,6 +179,11 @@ public class AntMetaDataExporter extends Task {
     private boolean beanPrintSupertype;
 
     /**
+     *
+     */
+    private boolean spatial;
+
+    /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
      * com.bar.Foo for class
@@ -226,6 +231,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setExportViews(exportViews);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+            exporter.setSpatial(spatial);
 
             if (imports != null && imports.length > 0) {
                 exporter.setImports(imports);
@@ -473,4 +479,13 @@ public class AntMetaDataExporter extends Task {
     public void setImports(String[] imports) {
         this.imports = imports;
     }
+
+    public boolean isSpatial() {
+        return spatial;
+    }
+
+    public void setSpatial(boolean spatial) {
+        this.spatial = spatial;
+    }
+
 }
