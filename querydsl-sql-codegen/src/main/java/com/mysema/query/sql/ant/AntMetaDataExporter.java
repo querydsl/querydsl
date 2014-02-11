@@ -184,10 +184,10 @@ public class AntMetaDataExporter extends Task {
      * com.bar.Foo for class
      *
      */
-	private String[] imports;
+    private String[] imports;
 
 
-	@Override
+    @Override
     public void execute() {
         Connection dbConn = null;
         File targetPackagePath = new File(targetSourceFolder);

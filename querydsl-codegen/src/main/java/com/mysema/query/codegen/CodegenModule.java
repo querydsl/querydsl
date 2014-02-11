@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ import java.util.Collections;
 
 /**
  * CodegenModule provides a module general serialization
- * 
+ *
  * @author tiwe
  *
  */
@@ -31,7 +31,7 @@ public class CodegenModule  extends AbstractModule {
 
     public static final String PACKAGE_SUFFIX = "packageSuffix";
 
-	public static final String IMPORTS = "imports";
+    public static final String IMPORTS = "imports";
 
     @Override
     protected void configure() {
@@ -47,7 +47,7 @@ public class CodegenModule  extends AbstractModule {
         bind(SUFFIX, "");
         bind(PACKAGE_SUFFIX, "");
         bind(KEYWORDS, Collections.<String>emptySet());
-		bind(IMPORTS, Collections.<String>emptySet());
+        bind(IMPORTS, Collections.<String>emptySet());
     }
 
 }

@@ -14,6 +14,7 @@
 package com.mysema.query.sql.spatial;
 
 import org.geolatte.geom.Geometry;
+import org.geolatte.geom.GeometryCollection;
 import org.geolatte.geom.LineString;
 import org.geolatte.geom.LinearRing;
 import org.geolatte.geom.MultiLineString;
@@ -43,20 +44,20 @@ import com.mysema.query.types.PathMetadataFactory;
  *
  * @param <T>
  */
-public class ExtendedRelationalPathBase<T> extends RelationalPathBase<T> implements GeometryPaths {
+public class RelationalPathSpatial<T> extends RelationalPathBase<T> implements GeometryPaths {
 
     private static final long serialVersionUID = -7176236689794620277L;
 
-    public ExtendedRelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
+    public RelationalPathSpatial(Class<? extends T> type, String variable, String schema, String table) {
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
     }
 
-    public ExtendedRelationalPathBase(Class<? extends T> type, PathMetadata<?> metadata, String schema, String table) {
+    public RelationalPathSpatial(Class<? extends T> type, PathMetadata<?> metadata, String schema, String table) {
         super(type, metadata, schema, table);
     }
 
     @Override
-    public <A extends org.geolatte.geom.GeometryCollection> GeometryCollectionPath<A> GeometryCollection(
+    public <A extends GeometryCollection> GeometryCollectionPath<A> createGeometryCollection(
             String property, Class<? extends A> type) {
         return add(new GeometryCollectionPath<A>(type, forProperty(property)));
     }

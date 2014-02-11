@@ -7,19 +7,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.geolatte.geom.Point;
 import org.geolatte.geom.codec.Wkt;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.spatial.PointExpression;
 import com.mysema.query.spatial.path.PointPath;
-import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
@@ -27,37 +23,18 @@ import com.mysema.query.types.Expression;
 
 public class SpatialBase extends AbstractBaseTest {
 
-    // H2 - OK
-    // MySQL - OK
-    // Oracle Spatial - TODO
-    // Postgres - OK
-    // SQL Server - TODO
-    // Teradata - OK
-
-    // TEMPORARY
-    @BeforeClass
-    public static void setUp() throws Exception {
-//        Connections.initTeradata();
-//        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
-
-//        Connections.initPostgres();
-//        Connections.setTemplates(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
-
-//        Connections.initSQLServer();
-//        Connections.setTemplates(SQLServer2008Templates.builder().newLineToSingleSpace().build());
-
-//        Connections.initMySQL();
-//        Connections.setTemplates(MySQLTemplates.builder().newLineToSingleSpace().build());
-
-        Connections.initH2();
-        Connections.setTemplates(H2Templates.builder().newLineToSingleSpace().build());
-    }
-
-    // TEMPORARY
-    @AfterClass
-    public static void tearDown() throws SQLException {
-        Connections.close();
-    }
+//    // TEMPORARY
+//    @BeforeClass
+//    public static void setUp() throws Exception {
+//        Connections.initH2();
+//        Connections.setTemplates(H2Templates.builder().newLineToSingleSpace().build());
+//    }
+//
+//    // TEMPORARY
+//    @AfterClass
+//    public static void tearDown() throws SQLException {
+//        Connections.close();
+//    }
 
     @Test
     public void Point_Instances() {

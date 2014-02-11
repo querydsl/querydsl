@@ -31,6 +31,9 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -54,8 +57,6 @@ import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
 import com.mysema.query.sql.support.SizeImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -124,6 +125,8 @@ public class MetaDataExporter {
 
     private boolean exportForeignKeys = true;
 
+    private boolean spatial = false;
+
     public MetaDataExporter() {}
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName,
@@ -187,6 +190,10 @@ public class MetaDataExporter {
         }
         module.bind(SQLCodegenModule.BEAN_PACKAGE_NAME, beanPackageName);
 
+        if (spatial) {
+            SpatialSupport.addSupport(module);
+        }
+
         typeMappings = module.get(TypeMappings.class);
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
@@ -242,12 +249,14 @@ public class MetaDataExporter {
         String columnName = normalize(columns.getString("COLUMN_NAME"));
         String normalizedColumnName = namingStrategy.normalizeColumnName(columnName);
         int columnType = columns.getInt("DATA_TYPE");
+        String typeName = columns.getString("TYPE_NAME");
         Number columnSize = (Number) columns.getObject("COLUMN_SIZE");
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
         int nullable = columns.getInt("NULLABLE");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType,
+                typeName,
                 columnSize != null ? columnSize.intValue() : 0,
                 columnDigits != null ? columnDigits.intValue() : 0,
                 tableName, columnName);
@@ -610,13 +619,21 @@ public class MetaDataExporter {
         this.exportForeignKeys = exportForeignKeys;
     }
 
-	/**
-	 * Set the java imports
-	 *
-	 * @param imports java imports array
-	 */
-	public void setImports(String[] imports) {
-		module.bind(CodegenModule.IMPORTS, new HashSet<String>(Arrays.asList(imports)));
-	}
+    /**
+     * Set the java imports
+     *
+     * @param imports
+     *            java imports array
+     */
+    public void setImports(String[] imports) {
+        module.bind(CodegenModule.IMPORTS, new HashSet<String>(Arrays.asList(imports)));
+    }
+
+    /**
+     * @param spatial
+     */
+    public void setSpatial(boolean spatial) {
+        this.spatial = spatial;
+    }
 
 }

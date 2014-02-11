@@ -35,7 +35,6 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
-import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -44,7 +43,6 @@ import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyData;
@@ -65,6 +63,8 @@ public class MetaDataSerializer extends EntitySerializer {
 
     private final Set<String> imports;
 
+    private final Class<?> entityPathType;
+
     /**
      * Create a new MetaDataSerializer instance
      *
@@ -77,11 +77,13 @@ public class MetaDataSerializer extends EntitySerializer {
             TypeMappings typeMappings,
             NamingStrategy namingStrategy,
             @Named(SQLCodegenModule.INNER_CLASSES_FOR_KEYS) boolean innerClassesForKeys,
-            @Named(SQLCodegenModule.IMPORTS) Set<String> imports) {
+            @Named(SQLCodegenModule.IMPORTS) Set<String> imports,
+            @Named(SQLCodegenModule.ENTITYPATH_TYPE) Class<?> entityPathType) {
         super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
         this.imports = new HashSet<String>(imports);
+        this.entityPathType = entityPathType;
     }
 
     @Override
@@ -121,7 +123,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 writer.annotation(annotation);
             }
         }
-        writer.beginClass(queryType, new ClassType(category, RelationalPathBase.class, model));
+        writer.beginClass(queryType, new ClassType(category, entityPathType, model));
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }
 
@@ -175,9 +177,12 @@ public class MetaDataSerializer extends EntitySerializer {
 
         writer.imports(ColumnMetadata.class);
 
+        if (!entityPathType.getPackage().equals(ColumnMetadata.class.getPackage())) {
+            writer.imports(entityPathType);
+        }
+
         writeUserImports(writer);
     }
-
 
     protected void writeUserImports(CodeWriter writer) throws IOException {
         Set<String> packages = new HashSet<String>();
@@ -197,8 +202,6 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.importPackages(packages.toArray(marker));
         writer.importClasses(classes.toArray(marker));
     }
-
-
 
     @Override
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
@@ -295,6 +298,15 @@ public class MetaDataSerializer extends EntitySerializer {
                 serializeForeignKeys(model, writer, inverseForeignKeys, true);
             }
         }
+    }
+
+    @Override
+    protected void customField(EntityType model, Property field, SerializerConfig config,
+            CodeWriter writer) throws IOException {
+        Type queryType = typeMappings.getPathType(field.getType(), model, false);
+        String localRawName = writer.getRawName(field.getType());
+        serialize(model, field, queryType, writer, "create" + field.getType().getSimpleName(),
+                writer.getClassConstant(localRawName));
     }
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,

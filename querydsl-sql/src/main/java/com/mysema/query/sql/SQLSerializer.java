@@ -98,7 +98,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void appendAsColumnName(Path<?> path) {
-    	String column = ColumnMetadata.getName(path);
+        String column = ColumnMetadata.getName(path);
         append(templates.quoteIdentifier(column));
     }
 

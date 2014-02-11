@@ -50,6 +50,8 @@ public final class Configuration {
 
     private final Map<String, String> tables = Maps.newHashMap();
 
+    private final Map<String, Class<?>> typeToName = Maps.newHashMap();
+
     private final SQLTemplates templates;
 
     private SQLExceptionTranslator exceptionTranslator = DefaultSQLExceptionTranslator.DEFAULT;
@@ -83,19 +85,27 @@ public final class Configuration {
      * Get the java type for the given jdbc type, table name and column name
      *
      * @param sqlType
+     * @param typeName
      * @param size
      * @param digits
      * @param tableName
      * @param columnName
      * @return
      */
-    public Class<?> getJavaType(int sqlType, int size, int digits, String tableName, String columnName) {
+    public Class<?> getJavaType(int sqlType, String typeName, int size, int digits, String tableName, String columnName) {
+        // table.column mapped class
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null) {
             return type.getReturnedClass();
-        } else {
-            return jdbcTypeMapping.get(sqlType, size, digits);
+        } else if (!typeToName.isEmpty()) {
+            // typename mapped class
+            Class<?> clazz = typeToName.get(typeName.toLowerCase());
+            if (clazz != null) {
+                return clazz;
+            }
         }
+        // sql type mapped class
+        return jdbcTypeMapping.get(sqlType, size, digits);
     }
 
     /**
@@ -229,6 +239,16 @@ public final class Configuration {
     }
 
     /**
+     * Register a typeName to Class mapping
+     *
+     * @param typeName
+     * @param clazz
+     */
+    public void registerType(String typeName, Class<?> clazz) {
+        typeToName.put(typeName.toLowerCase(), clazz);
+    }
+
+    /**
      * Override the binding for the given NUMERIC type
      *
      * @param size
@@ -311,6 +331,9 @@ public final class Configuration {
         this.useLiterals = useLiterals;
     }
 
+    /**
+     * @param exceptionTranslator
+     */
     public void setExceptionTranslator(SQLExceptionTranslator exceptionTranslator) {
         this.exceptionTranslator = exceptionTranslator;
     }

@@ -30,7 +30,7 @@ import org.geolatte.geom.Polygon;
  */
 public interface GeometryPaths {
 
-    <A extends GeometryCollection> GeometryCollectionPath<A> GeometryCollection(String property, Class<? extends A> type);
+    <A extends GeometryCollection> GeometryCollectionPath<A> createGeometryCollection(String property, Class<? extends A> type);
 
     <A extends Geometry> GeometryPath<A> createGeometry(String property, Class<? extends A> type);
 

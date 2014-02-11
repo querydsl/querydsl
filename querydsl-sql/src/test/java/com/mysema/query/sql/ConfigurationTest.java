@@ -41,7 +41,7 @@ public class ConfigurationTest {
         configuration.register("person", "secureId", new EncryptedString());
         configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
         configuration.register(new StringType());
-        assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, 0,0,"person", "gender"));
+        assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, null, 0,0,"person", "gender"));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ConfigurationTest {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.setJavaType(Types.BLOB, InputStream.class);
         configuration.register(new InputStreamType());
-        assertEquals(InputStream.class, configuration.getJavaType(Types.BLOB, 0,0,"", ""));
+        assertEquals(InputStream.class, configuration.getJavaType(Types.BLOB, null, 0,0,"", ""));
     }
 
     @Test

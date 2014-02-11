@@ -1,5 +1,7 @@
 package com.mysema.query.suites;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,10 +16,10 @@ public class SpatialTest {
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        //Connections.initTeradata();
-        Connections.initPostgres();
-//        Connection conn = Connections.getConnection();
-//        ((org.postgresql.Connection)conn).addDataType("geometry","org.postgis.PGgeometry");
+        Connections.initH2();
+//      Connections.initMySQL();
+//      Connections.initPostgres();
+//      Connections.initTeradata();
     }
 
     @After
@@ -36,6 +38,21 @@ public class SpatialTest {
 //                Clob clob = rs.getClob(1);
 //                System.err.println(clob.getSubString(1, (int) clob.length()));
             }
+        } finally {
+            rs.close();
+        }
+    }
+
+    @Test
+    public void Metadata() throws SQLException {
+        Connection conn = Connections.getConnection();
+        DatabaseMetaData md = conn.getMetaData();
+        ResultSet rs = md.getColumns(null, null, "SHAPES", "GEOMETRY");
+        try {
+            rs.next();
+            int type = rs.getInt("DATA_TYPE");
+            String typeName = rs.getString("TYPE_NAME");
+            System.err.println(type + " " + typeName);
         } finally {
             rs.close();
         }

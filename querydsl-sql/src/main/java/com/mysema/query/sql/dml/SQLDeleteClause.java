@@ -52,8 +52,8 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 
     private static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
-    		"A delete operation can only reference a single table. " +
-    		"Consider this alternative: DELETE ... WHERE EXISTS (subquery)");
+            "A delete operation can only reference a single table. " +
+            "Consider this alternative: DELETE ... WHERE EXISTS (subquery)");
 
     private final Connection connection;
 
