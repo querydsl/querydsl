@@ -17,6 +17,8 @@ import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
+ * PostGISTemplates is a spatial enabled SQL dialect for PostGIS
+ *
  * @author tiwe
  *
  */

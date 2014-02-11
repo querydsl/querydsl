@@ -17,9 +17,7 @@ import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
- * MySQLTemplates is an SQL dialect for MySQL
- *
- * <p>tested with MySQL CE 5.1 and 5.5</p>
+ * MySQLSpatialTemplates is a spatial enabled SQL dialect for MySQL
  *
  * @author tiwe
  *

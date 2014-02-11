@@ -17,6 +17,8 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.TeradataTemplates;
 
 /**
+ * TeradataSpatialTemplates is a spatial enabled SQL dialect for Teradata
+ *
  * @author tiwe
  *
  */

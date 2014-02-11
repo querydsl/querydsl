@@ -17,6 +17,8 @@ import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
+ * GeoDBTemplates is a spatial enabled SQL dialect for GeoDB
+ *
  * @author tiwe
  *
  */
