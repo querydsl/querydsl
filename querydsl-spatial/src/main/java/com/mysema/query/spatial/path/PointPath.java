@@ -24,6 +24,11 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Visitor;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public class PointPath<T extends Point> extends PointExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 312776751843333543L;

@@ -16,6 +16,10 @@ package com.mysema.query.spatial;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class SpatialOps {
 
         private static final String NS = SpatialOps.class.getName();

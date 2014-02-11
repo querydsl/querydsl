@@ -24,6 +24,11 @@ import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public class LineStringOperation<T extends LineString> extends LineStringExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = 3433471874808633698L;

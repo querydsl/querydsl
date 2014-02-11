@@ -16,7 +16,7 @@ import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.TeradataTemplates;
+import com.mysema.query.sql.spatial.TeradataSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -38,7 +38,7 @@ public class TeradataSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initTeradata();
-        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(TeradataSpatialTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

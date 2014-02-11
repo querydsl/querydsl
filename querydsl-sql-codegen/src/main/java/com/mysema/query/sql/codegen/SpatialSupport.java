@@ -51,7 +51,7 @@ import com.mysema.query.sql.spatial.RelationalPathSpatial;
  * @author tiwe
  *
  */
-public class SpatialSupport {
+public final class SpatialSupport {
 
     private static void registerTypes(Configuration configuration) {
         // mysql & postgres
@@ -106,5 +106,6 @@ public class SpatialSupport {
         addImports(module);
     }
 
+    private SpatialSupport() {}
 
 }

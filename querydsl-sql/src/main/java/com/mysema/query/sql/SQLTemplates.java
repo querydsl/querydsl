@@ -35,9 +35,9 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
@@ -366,88 +366,6 @@ public class SQLTemplates extends Templates {
         class2type.put(java.sql.Timestamp.class, "timestamp");
     }
 
-    protected String createSpatial(String name, int args, boolean asFunction) {
-        StringBuilder result = new StringBuilder();
-        if (!asFunction) {
-            result.append("{0}.");
-        }
-        result.append(name);
-        result.append("(");
-        int start = asFunction ? 0 : 1;
-        for (int i = start; i < args; i++) {
-            if (i > start) {
-                result.append(", ");
-            }
-            result.append("{" + i + "}");
-        }
-        result.append(")");
-        return result.toString();
-    }
-
-    protected void addSpatialOps(boolean asFunction) {
-        add(SpatialOps.AREA, createSpatial("ST_Area", 1, asFunction));
-        add(SpatialOps.AREA2, createSpatial("ST_Area", 2, asFunction));
-        add(SpatialOps.AS_BINARY, createSpatial("ST_AsBinary", 1, asFunction));
-        add(SpatialOps.AS_TEXT, createSpatial("ST_AsText", 1, asFunction));
-        add(SpatialOps.BOUNDARY, createSpatial("ST_Boundary", 1, asFunction));
-        add(SpatialOps.BUFFER, createSpatial("ST_Buffer", 2, asFunction));
-        add(SpatialOps.BUFFER2, createSpatial("ST_Buffer", 3, asFunction));
-        add(SpatialOps.CENTROID, createSpatial("ST_Centroid", 1, asFunction));
-        add(SpatialOps.CONTAINS, createSpatial("ST_Contains", 2, asFunction));
-        add(SpatialOps.CONVEXHULL, createSpatial("ST_ConvexHull", 1, asFunction));
-        add(SpatialOps.CROSSES, createSpatial("ST_Crosses", 2, asFunction));
-        add(SpatialOps.DIFFERENCE, createSpatial("ST_Difference", 2, asFunction));
-        add(SpatialOps.DIMENSION, createSpatial("ST_Dimension", 1, asFunction));
-        add(SpatialOps.DISJOINT, createSpatial("ST_Disjoint", 2, asFunction));
-        add(SpatialOps.DISTANCE, createSpatial("ST_Distance", 2, asFunction));
-        add(SpatialOps.DISTANCE2, createSpatial("ST_Distance", 3, asFunction));
-        add(SpatialOps.END_POINT, createSpatial("ST_EndPoint", 1, asFunction));
-        add(SpatialOps.ENVELOPE, createSpatial("ST_Envelope", 1, asFunction));
-        add(SpatialOps.EQUALS, createSpatial("ST_Equals", 2, asFunction));
-        add(SpatialOps.EXTERIOR_RING, createSpatial("ST_ExteriorRing", 1, asFunction));
-        add(SpatialOps.EXTERIOR_RING2, createSpatial("ST_ExteriorRing", 2, asFunction));
-        add(SpatialOps.GEOMETRIES, createSpatial("ST_Geometries", 1, asFunction));
-        add(SpatialOps.GEOMETRY_TYPE, createSpatial("ST_GeometryType", 1, asFunction));
-        add(SpatialOps.GEOMETRYN, createSpatial("ST_GeometryN", 2, asFunction));
-        add(SpatialOps.INTERIOR_RINGN, createSpatial("ST_InteriorRingN", 2, asFunction));
-        add(SpatialOps.INTERIOR_RINGS, createSpatial("ST_InteriorRings", 1, asFunction));
-        add(SpatialOps.INTERIOR_RINGS2, createSpatial("ST_InteriorRings", 2, asFunction));
-        add(SpatialOps.INTERSECTION, createSpatial("ST_Intersection", 2, asFunction));
-        add(SpatialOps.INTERSECTS, createSpatial("ST_Intersects", 2, asFunction));
-        add(SpatialOps.IS_CLOSED, createSpatial("ST_IsClosed", 1, asFunction));
-        add(SpatialOps.IS_EMPTY, createSpatial("ST_IsEmpty", 1, asFunction));
-        add(SpatialOps.IS_RING, createSpatial("ST_IsRing", 1, asFunction));
-        add(SpatialOps.IS_SIMPLE, createSpatial("ST_IsSimple", 1, asFunction));
-        add(SpatialOps.LENGTH, createSpatial("ST_Length", 1, asFunction));
-        add(SpatialOps.LENGTH2, createSpatial("ST_Length", 2, asFunction));
-        add(SpatialOps.M, createSpatial("ST_M", 1, asFunction));
-        add(SpatialOps.M2, createSpatial("ST_M", 2, asFunction));
-        add(SpatialOps.NUM_GEOMETRIES, createSpatial("ST_NumGeometries", 1, asFunction));
-        add(SpatialOps.NUM_INTERIOR_RING, createSpatial("ST_NumInteriorRing", 1, asFunction));
-        add(SpatialOps.NUM_POINTS, createSpatial("ST_NumPoints", 1, asFunction));
-        add(SpatialOps.NUM_SURFACES, createSpatial("ST_NumSurfaces", 1, asFunction));
-        add(SpatialOps.OVERLAPS, createSpatial("ST_Overlaps", 2, asFunction));
-        add(SpatialOps.POINT_ON_SURFACE, createSpatial("ST_PointOnSurface", 1, asFunction));
-        add(SpatialOps.POINTN, createSpatial("ST_PointN", 2, asFunction));
-        add(SpatialOps.RELATE, createSpatial("ST_Relate", 3, asFunction));
-        add(SpatialOps.SRID, createSpatial("ST_SRID", 1, asFunction));
-        add(SpatialOps.SRID2, createSpatial("ST_SRID", 2, asFunction));
-        add(SpatialOps.START_POINT, createSpatial("ST_StartPoint", 1, asFunction));
-        add(SpatialOps.SURFACE, createSpatial("ST_Surface", 1, asFunction)); // XXX
-        add(SpatialOps.SYMDIFFERENCE, createSpatial("ST_SymDifference", 2, asFunction));
-        add(SpatialOps.TOUCHES, createSpatial("ST_Touches", 2, asFunction));
-        add(SpatialOps.UNION, createSpatial("ST_Union", 2, asFunction));
-        add(SpatialOps.WITHIN, createSpatial("ST_Within", 2, asFunction));
-        add(SpatialOps.WKBTOSQL, createSpatial("ST_WKBToSQL", 2, asFunction));
-        add(SpatialOps.WKTTOSQL, createSpatial("ST_WKTToSQL", 2, asFunction));
-        add(SpatialOps.X, createSpatial("ST_X", 1, asFunction));
-        add(SpatialOps.X2, createSpatial("ST_X", 2, asFunction));
-        add(SpatialOps.Y, createSpatial("ST_Y", 1, asFunction));
-        add(SpatialOps.Y2, createSpatial("ST_Y", 2, asFunction));
-        add(SpatialOps.Z, createSpatial("ST_Z", 1, asFunction));
-        add(SpatialOps.Z2, createSpatial("ST_Z", 2, asFunction));
-    }
-
     public String asLiteral(Object o) {
         if (o instanceof Character) {
             return "'" + escapeLiteral(o.toString()) + "'";
@@ -514,6 +432,12 @@ public class SQLTemplates extends Templates {
     protected void addClass2TypeMappings(String type, Class<?>... classes) {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
+        }
+    }
+
+    protected void add(Map<Operator<?>, String> ops) {
+        for (Map.Entry<Operator<?>, String> entry : ops.entrySet()) {
+            add(entry.getKey(), entry.getValue());
         }
     }
 

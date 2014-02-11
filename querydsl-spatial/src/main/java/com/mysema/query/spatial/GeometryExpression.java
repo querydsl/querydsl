@@ -28,6 +28,11 @@ import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class GeometryExpression<T extends Geometry> extends SimpleExpression<T> {
 
     private static final long serialVersionUID = -1183228394472681995L;

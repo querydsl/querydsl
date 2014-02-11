@@ -25,12 +25,8 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-spatial</artifactId>
       <version>${project.version}</version>
+      <scope>provided</scope>
     </dependency>            
-    <dependency>
-      <groupId>org.geolatte</groupId>
-      <artifactId>geolatte-geom</artifactId>
-      <version>0.11</version>
-    </dependency>
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>

@@ -21,6 +21,11 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class PointExpression<T extends Point> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = -3549448861390349654L;

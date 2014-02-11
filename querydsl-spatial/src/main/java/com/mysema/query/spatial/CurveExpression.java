@@ -24,6 +24,11 @@ import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class CurveExpression<T extends Geometry> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = 6139188586728676033L;

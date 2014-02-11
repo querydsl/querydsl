@@ -23,6 +23,11 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpression<T> {
 
     private static final long serialVersionUID = 7544382956232485312L;

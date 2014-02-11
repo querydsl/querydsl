@@ -23,6 +23,11 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class LineStringExpression<T extends LineString> extends CurveExpression<T> {
 
     private static final long serialVersionUID = -6572984614863252657L;

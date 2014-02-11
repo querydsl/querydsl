@@ -23,6 +23,11 @@ import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> extends SurfaceExpression<T> {
 
     private static final long serialVersionUID = -6732418858467327780L;

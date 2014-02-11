@@ -16,7 +16,7 @@ import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.spatial.PostGISTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -38,7 +38,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initPostgres();
-        Connections.setTemplates(PostgresTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.setTemplates(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
     }
 
 }

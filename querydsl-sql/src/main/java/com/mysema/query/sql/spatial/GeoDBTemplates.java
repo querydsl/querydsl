@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2014, Mysema Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,36 +13,36 @@
  */
 package com.mysema.query.sql.spatial;
 
-import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
  * @author tiwe
  *
  */
-public class PostGISTemplates extends PostgresTemplates {
+public class GeoDBTemplates extends H2Templates {
 
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
-                return new PostGISTemplates(escape, quote);
+                return new GeoDBTemplates(escape, quote);
             }
         };
     }
 
-    public PostGISTemplates() {
+    public GeoDBTemplates() {
         this('\\', false);
     }
 
-    public PostGISTemplates(boolean quote) {
+    public GeoDBTemplates(boolean quote) {
         this('\\', quote);
     }
 
-    public PostGISTemplates(char escape, boolean quote) {
+    public GeoDBTemplates(char escape, boolean quote) {
         super(escape, quote);
+        addCustomType(GeoDBWkbType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps(true));
-        addCustomType(PGgeometryType.DEFAULT);
     }
 
 }

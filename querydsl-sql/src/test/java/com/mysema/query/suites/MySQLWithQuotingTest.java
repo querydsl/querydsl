@@ -15,7 +15,7 @@ import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.spatial.MySQLSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -36,7 +36,7 @@ public class MySQLWithQuotingTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.setTemplates(MySQLTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.setTemplates(MySQLSpatialTemplates.builder().quote().newLineToSingleSpace().build());
     }
 
 }

@@ -23,6 +23,11 @@ import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public abstract class MultiCurveExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 6983316799469849656L;

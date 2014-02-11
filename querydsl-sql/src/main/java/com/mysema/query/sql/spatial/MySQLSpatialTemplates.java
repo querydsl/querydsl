@@ -13,36 +13,40 @@
  */
 package com.mysema.query.sql.spatial;
 
-import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
+ * MySQLTemplates is an SQL dialect for MySQL
+ *
+ * <p>tested with MySQL CE 5.1 and 5.5</p>
+ *
  * @author tiwe
  *
  */
-public class PostGISTemplates extends PostgresTemplates {
+public class MySQLSpatialTemplates extends MySQLTemplates {
 
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
-                return new PostGISTemplates(escape, quote);
+                return new MySQLSpatialTemplates(escape, quote);
             }
         };
     }
 
-    public PostGISTemplates() {
+    public MySQLSpatialTemplates() {
         this('\\', false);
     }
 
-    public PostGISTemplates(boolean quote) {
+    public MySQLSpatialTemplates(boolean quote) {
         this('\\', quote);
     }
 
-    public PostGISTemplates(char escape, boolean quote) {
+    public MySQLSpatialTemplates(char escape, boolean quote) {
         super(escape, quote);
-        add(SpatialTemplatesSupport.getSpatialOps(true));
-        addCustomType(PGgeometryType.DEFAULT);
+        addCustomType(MySQLWkbType.DEFAULT);
+        add(SpatialTemplatesSupport.getSpatialOps("", true));
     }
 
 }

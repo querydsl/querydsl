@@ -14,7 +14,7 @@ import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.H2Templates;
+import com.mysema.query.sql.spatial.GeoDBTemplates;
 
 public class H2SuiteTest extends AbstractSuite {
 
@@ -33,7 +33,7 @@ public class H2SuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(H2Templates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(GeoDBTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

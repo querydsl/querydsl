@@ -48,12 +48,6 @@ public class SQLServer2012Templates extends SQLServerTemplates {
 
     public SQLServer2012Templates(char escape, boolean quote) {
         super(escape, quote);
-        addSpatialOps(false);
-    }
-
-    @Override
-    protected String createSpatial(String name, int args, boolean asFunction) {
-        return super.createSpatial(name.replace("_", ""), args, asFunction);
     }
 
     @Override
