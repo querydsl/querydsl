@@ -26,6 +26,7 @@ public class DomainExporterTest {
         assertTrue(new File(gen, "com/mysema/query/jpa/domain16/QEntity.java").exists());
         assertFalse(new File(gen, "com/mysema/query/jpa/domain16/QCustom.java").exists());
         assertTrue(new File(gen, "com/mysema/query/jpa/domain16/QCustom2.java").exists());
+        assertFalse(new File(gen, "com/mysema/query/jpa/domain16/QCustom3.java").exists());
 
     }
 

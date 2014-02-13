@@ -127,7 +127,6 @@ public abstract class AbstractDomainExporter {
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);
         this.entitySerializer = module.get(EntitySerializer.class);
         this.supertypeSerializer = module.get(SupertypeSerializer.class);
-        typeFactory.setUnknownAsEntity(true);
     }
 
     /**
@@ -338,6 +337,10 @@ public abstract class AbstractDomainExporter {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
+
+    public void setUnknownAsEntity(boolean unknownAsEntity) {
+        typeFactory.setUnknownAsEntity(unknownAsEntity);
     }
 
 }
