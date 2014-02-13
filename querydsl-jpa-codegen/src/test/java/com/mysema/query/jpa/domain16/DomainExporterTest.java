@@ -1,5 +1,6 @@
 package com.mysema.query.jpa.domain16;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -23,6 +24,8 @@ public class DomainExporterTest {
         exporter.execute();
 
         assertTrue(new File(gen, "com/mysema/query/jpa/domain16/QEntity.java").exists());
+        assertFalse(new File(gen, "com/mysema/query/jpa/domain16/QCustom.java").exists());
+        assertTrue(new File(gen, "com/mysema/query/jpa/domain16/QCustom2.java").exists());
 
     }
 

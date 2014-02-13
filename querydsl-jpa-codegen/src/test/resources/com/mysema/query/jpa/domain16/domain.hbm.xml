@@ -10,6 +10,8 @@
       <generator class="native"/>
     </id>
     <property name="custom"/>
+    <property name="custom2"/>
+    <property name="custom3"/>
   </class>
   
 </hibernate-mapping>

@@ -239,18 +239,23 @@ public abstract class AbstractDomainExporter {
     }
 
     @Nullable
-    protected Property createProperty(EntityType entityType, String propertyName, Type propertyType,
-            AnnotatedElement annotated) {
-        List<String> inits = Collections.<String>emptyList();
-        if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
-        }
+    protected Type getTypeOverride(Type propertyType, AnnotatedElement annotated) {
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);
             if (queryType.value().equals(PropertyType.NONE)) {
                 return null;
             }
-            propertyType = propertyType.as(TypeCategory.valueOf(queryType.value().name()));
+            return propertyType.as(TypeCategory.valueOf(queryType.value().name()));
+        } else {
+            return propertyType;
+        }
+    }
+
+    protected Property createProperty(EntityType entityType, String propertyName, Type propertyType,
+            AnnotatedElement annotated) {
+        List<String> inits = Collections.<String>emptyList();
+        if (annotated.isAnnotationPresent(QueryInit.class)) {
+            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
         }
         return new Property(entityType, propertyName, propertyType, inits);
     }

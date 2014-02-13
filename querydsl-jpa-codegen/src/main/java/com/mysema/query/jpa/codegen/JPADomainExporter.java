@@ -180,6 +180,12 @@ public class JPADomainExporter extends AbstractDomainExporter {
         }
         Type propertyType = getType(cl, clazz, p.getName());
 
+        AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
+        propertyType = getTypeOverride(propertyType, annotated);
+        if (propertyType == null) {
+            return;
+        }
+
         if (p.isCollection()) {
             if (p instanceof MapAttribute) {
                 MapAttribute<?,?,?> map = (MapAttribute<?,?,?>)p;
@@ -196,7 +202,6 @@ public class JPADomainExporter extends AbstractDomainExporter {
             propertyType = getPropertyType(p, propertyType);
         }
 
-        AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
         Property property = createProperty(entityType, p.getName(), propertyType, annotated);
         entityType.addProperty(property);
     }
