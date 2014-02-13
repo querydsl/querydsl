@@ -61,6 +61,7 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.Annotations;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -260,15 +261,17 @@ public abstract class AbstractDomainExporter {
 
     protected AnnotatedElement getAnnotatedElement(Class<?> cl, String propertyName) throws NoSuchMethodException {
         Field field = ReflectionUtils.getFieldOrNull(cl, propertyName);
+        Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
         if (field != null) {
-            return field;
-        } else {
-            Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
             if (method != null) {
-                return method;
+                return new Annotations(field, method);
             } else {
-                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
+                return field;
             }
+        } else if (method != null) {
+            return method;
+        } else {
+            throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
         }
     }
 
