@@ -9,7 +9,6 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.domain.p9.QArticle;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
