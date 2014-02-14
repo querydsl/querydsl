@@ -151,6 +151,11 @@ public class AntMetaDataExporter extends Task {
     /**
      *
      */
+    private boolean exportAll = false;
+
+    /**
+     *
+     */
     private boolean exportPrimaryKeys = true;
 
     /**
@@ -224,6 +229,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setLowerCase(lowerCase);
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
+            exporter.setExportAll(exportAll);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
 
@@ -448,6 +454,14 @@ public class AntMetaDataExporter extends Task {
 
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
+    }
+
+    public boolean isExportAll() {
+        return exportAll;
+    }
+
+    public void setExportAll(boolean exportAll) {
+        this.exportAll = exportAll;
     }
 
     public boolean isExportPrimaryKeys() {

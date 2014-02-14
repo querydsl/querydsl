@@ -31,6 +31,9 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -54,8 +57,6 @@ import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
 import com.mysema.query.sql.support.SizeImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -119,6 +120,8 @@ public class MetaDataExporter {
     private boolean exportTables = true;
 
     private boolean exportViews = true;
+
+    private boolean exportAll = false;
 
     private boolean exportPrimaryKeys = true;
 
@@ -202,17 +205,21 @@ public class MetaDataExporter {
                     module.getBeanPrefix(), module.getBeanSuffix(), schemaToPackage);
         }
 
-        List<String> types = new ArrayList<String>(2);
-        if (exportTables) {
-            types.add("TABLE");
-        }
-        if (exportViews) {
-            types.add("VIEW");
+        String[] typesArray = null;
+        if (!exportAll) {
+            List<String> types = new ArrayList<String>(2);
+            if (exportTables) {
+                types.add("TABLE");
+            }
+            if (exportViews) {
+                types.add("VIEW");
+            }
+            typesArray = types.toArray(new String[types.size()]);
         }
 
         if (tableNamePattern != null && tableNamePattern.contains(",")) {
             for (String table : tableNamePattern.split(",")) {
-                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), types.toArray(new String[types.size()]));
+                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), typesArray);
                 try{
                     while (tables.next()) {
                         handleTable(md, tables);
@@ -222,7 +229,7 @@ public class MetaDataExporter {
                 }
             }
         } else {
-            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[types.size()]));
+            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, typesArray);
             try{
                 while (tables.next()) {
                     handleTable(md, tables);
@@ -594,6 +601,13 @@ public class MetaDataExporter {
      */
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
+    }
+
+    /**
+     * @param exportAll
+     */
+    public void setExportAll(boolean exportAll) {
+        this.exportAll = exportAll;
     }
 
     /**

@@ -234,6 +234,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportViews;
 
     /**
+     * @parameter default-value=false
+     */
+    private boolean exportAll;
+
+    /**
      * @parameter default-value=true
      */
     private boolean exportPrimaryKeys;
@@ -307,6 +312,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             exporter.setLowerCase(lowerCase);
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
+            exporter.setExportAll(exportAll);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
 
