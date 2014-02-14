@@ -16,6 +16,8 @@ package com.mysema.query.jpa;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Entity;
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.query.JoinFlag;
@@ -34,6 +36,7 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.path.CollectionPathBase;
 
 /**
  * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction
@@ -78,6 +81,15 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         return super.createAlias(expr, alias);
     }
 
+    private boolean isEntityPath(Path<?> path) {
+        if (path instanceof CollectionPathBase) {
+            return isEntityPath((Path<?>) ((CollectionPathBase)path).any());
+        } else {
+            return path instanceof EntityPath
+                || path.getType().isAnnotationPresent(Entity.class);
+        }
+    }
+
     private <T> Class<T> getElementTypeOrType(Path<T> path) {
         if (path instanceof CollectionExpression) {
             return ((CollectionExpression)path).getParameter(0);
@@ -94,6 +106,14 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             return (Path<T>) aliases.get(path);
         } else if (metadata.getPathType() == PathType.COLLECTION_ANY) {
             return (Path<T>) shorten(metadata.getParent());
+        } else if (!isEntityPath(path)) {
+            Path<?> parent = shorten(metadata.getParent());
+            if (parent.equals(metadata.getParent())) {
+                return path;
+            } else {
+                return new PathImpl<T>(path.getType(),
+                        new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
+            }
         } else if (metadata.getParent().getMetadata().isRoot()) {
             Class<T> type = getElementTypeOrType(path);
             Path<T> newPath = new PathImpl<T>(type, path.toString().replace('.', '_'));
