@@ -62,9 +62,4 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
         return pointOnSurface;
     }
 
-//    @Override
-//    public MultiCurveExpression<?> boundary() {
-//        // TODO
-//        return null;
-//    }
 }

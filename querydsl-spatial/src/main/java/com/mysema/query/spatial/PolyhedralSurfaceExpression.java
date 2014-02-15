@@ -16,7 +16,9 @@ package com.mysema.query.spatial;
 import javax.annotation.Nullable;
 
 import org.geolatte.geom.PolyHedralSurface;
+import org.geolatte.geom.Polygon;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
@@ -50,13 +52,7 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
     }
 
     public PolygonExpression<?> patchN(int n) {
-        // TODO
-        return null;
-    }
-
-    public MultiPolygonExpression<?> boundingPolygons(Object polygon) {
-        // TODO
-        return null;
+        return PolygonOperation.create(Polygon.class, SpatialOps.SURFACE, mixin, ConstantImpl.create(n));
     }
 
     public BooleanExpression isClosed() {

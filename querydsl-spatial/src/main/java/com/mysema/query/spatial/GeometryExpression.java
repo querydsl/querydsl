@@ -65,20 +65,6 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
         return dimension;
     }
 
-//    public NumberExpression<Integer> coordinateDimension() {
-//        if (coordinateDimension == null) {
-//            // TODO
-//        }
-//        return coordinateDimension;
-//    }
-//
-//    public NumberExpression<Integer> spatialDimension() {
-//        if (spatialDimension == null) {
-//            // TODO
-//        }
-//        return spatialDimension;
-//    }
-
     public StringExpression geometryType() {
         if (geometryType == null) {
             geometryType = StringOperation.create(SpatialOps.GEOMETRY_TYPE, mixin);
@@ -127,20 +113,6 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
         }
         return simple;
     }
-
-//    public BooleanExpression is3D() {
-//        if (threed == null) {
-//            // TODO
-//        }
-//        return threed;
-//    }
-//
-//    public BooleanExpression isMeasured() {
-//        if (measured == null) {
-//            // TODO
-//        }
-//        return measured;
-//    }
 
     public GeometryExpression<Geometry> boundary() {
         if (boundary == null) {
@@ -223,18 +195,6 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
 
     public BooleanExpression relate(Expression<? extends Geometry> geometry, String matrix) {
         return BooleanOperation.create(SpatialOps.RELATE, mixin, geometry, ConstantImpl.create(matrix));
-    }
-
-    public GeometryExpression<T> locateAlong(double value) {
-        return locateAlong(ConstantImpl.create(value));
-    }
-
-    public GeometryExpression<T> locateAlong(Expression<Double> value) {
-        return null;
-    }
-
-    public GeometryExpression<T> locateBetween(double start, double end) {
-        return null;
     }
 
     // analysis
