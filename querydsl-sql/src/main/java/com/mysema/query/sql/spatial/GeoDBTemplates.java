@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql.spatial;
 
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.Wkt;
+
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -45,6 +48,21 @@ public class GeoDBTemplates extends H2Templates {
         super(escape, quote);
         addCustomType(GeoDBWkbType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps(true));
+    }
+
+    @Override
+    public String asLiteral(Object o) {
+        if (o instanceof Geometry) {
+            Geometry geometry = (Geometry)o;
+            String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+            if (geometry.getSRID() > -1) {
+                return "ST_GeomFromText('" + str + "', " + geometry.getSRID() + ")";
+            } else {
+                return "ST_GeomFromText('" + str + "')";
+            }
+        } else {
+            return super.asLiteral(o);
+        }
     }
 
 }

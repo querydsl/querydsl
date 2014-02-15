@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql.spatial;
 
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.Wkt;
+
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -46,5 +49,16 @@ public class PostGISTemplates extends PostgresTemplates {
         add(SpatialTemplatesSupport.getSpatialOps(true));
         addCustomType(PGgeometryType.DEFAULT);
     }
+
+    @Override
+    public String asLiteral(Object o) {
+        if (o instanceof Geometry) {
+            String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode((Geometry)o);
+            return "'" + str + "'";
+        } else {
+            return super.asLiteral(o);
+        }
+    }
+
 
 }
