@@ -230,7 +230,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     private PreparedStatement createStatement(boolean withKeys) throws SQLException {
-        SQLSerializer serializer = new SQLSerializer(configuration, true);
+        SQLSerializer serializer = createSerializer();
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
             values.clear();
@@ -250,7 +250,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
                 SQLInsertBatch batch = batches.get(i);
-                serializer = new SQLSerializer(configuration, true);
+                serializer = createSerializer();
                 serializer.serializeInsert(metadata, entity, batch.getColumns(),
                         batch.getValues(), batch.getSubQuery());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
@@ -341,13 +341,13 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     @Override
     public List<SQLBindings> getSQL() {
         if (batches.isEmpty()) {
-            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            SQLSerializer serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, columns, values, subQuery);
             return ImmutableList.of(createBindings(metadata, serializer));
         } else {
             ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
             for (SQLInsertBatch batch : batches) {
-                SQLSerializer serializer = new SQLSerializer(configuration, true);
+                SQLSerializer serializer = createSerializer();
                 serializer.serializeInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 builder.add(createBindings(metadata, serializer));
             }
@@ -407,7 +407,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     @Override
     public String toString() {
-        SQLSerializer serializer = new SQLSerializer(configuration, true);
+        SQLSerializer serializer = createSerializer();
         serializer.serializeInsert(metadata, entity, columns, values, subQuery);
         return serializer.toString();
     }

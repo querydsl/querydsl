@@ -44,12 +44,15 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected final SQLListeners listeners;
 
+    protected boolean useLiterals;
+
     /**
      * @param configuration
      */
     public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
+        this.useLiterals = configuration.getUseLiterals();
     }
 
     /**
@@ -73,6 +76,12 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
             args.add(o);
         }
         return new SQLBindings(queryString, args.build());
+    }
+
+    protected SQLSerializer createSerializer() {
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
+        serializer.setUseLiterals(useLiterals);
+        return serializer;
     }
 
     /**
@@ -139,6 +148,10 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         } catch (SQLException e) {
             throw configuration.translate(e);
         }
+    }
+
+    public void setUseLiterals(boolean useLiterals) {
+        this.useLiterals = useLiterals;
     }
 
 }
