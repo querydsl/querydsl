@@ -32,6 +32,7 @@ import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.testutil.ExcludeIn;
 
 public class SpatialBase extends AbstractBaseTest {
 
@@ -66,6 +67,43 @@ public class SpatialBase extends AbstractBaseTest {
 
     private TestQuery withMultiPolygons() {
         return query().from(shapes).where(shapes.id.between(14, 15));
+    }
+
+    @Test // FIXME, maybe use enum as the type ?!?
+    @ExcludeIn(H2)
+    public void GeometryType() {
+        List<Tuple> results = query().from(shapes).list(shapes.geometry, shapes.geometry.geometryType());
+        assertFalse(results.isEmpty());
+        for (Tuple row : results) {
+            assertEquals(
+                    row.get(shapes.geometry).getGeometryType().name(),
+                    row.get(shapes.geometry.geometryType()));
+        }
+    }
+
+    @Test
+    public void AsText() {
+        List<Tuple> results = query().from(shapes).list(shapes.geometry, shapes.geometry.asText());
+        assertFalse(results.isEmpty());
+        for (Tuple row : results) {
+            if (!(row.get(shapes.geometry) instanceof MultiPoint)) {
+                assertEquals(
+                        row.get(shapes.geometry).asText().replace(" ", ""),
+                        row.get(shapes.geometry.asText()).replace(" ", ""));
+            }
+        }
+    }
+
+    @Test
+    @ExcludeIn(H2)
+    public void Point_X_Y() {
+        PointPath<Point> point = new PointPath<Point>(Point.class, shapes, "geometry");
+        List<Tuple> results = withPoints().list(point, point.x(), point.y());
+        assertFalse(results.isEmpty());
+        for (Tuple row : results) {
+            assertEquals(Double.valueOf(row.get(point).getX()), row.get(point.x()));
+            assertEquals(Double.valueOf(row.get(point).getY()), row.get(point.y()));
+        }
     }
 
     @Test
@@ -260,7 +298,7 @@ public class SpatialBase extends AbstractBaseTest {
         // polygon specific
         add(expressions, polygon.exterorRing(), H2);
         add(expressions, polygon.numInteriorRing(), H2);
-        add(expressions, polygon.interiorRingN(0), H2);
+        add(expressions, polygon.interiorRingN(1), H2);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
@@ -289,7 +327,7 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, multipoint.isSimple());
         // multipoint specific
         add(expressions, multipoint.numGeometries(), H2);
-        add(expressions, multipoint.geometryN(0), H2);
+        add(expressions, multipoint.geometryN(1), H2);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
@@ -316,9 +354,12 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, multilinestring.geometryType(), H2);
         add(expressions, multilinestring.isEmpty());
         add(expressions, multilinestring.isSimple());
-        // multipoint specific
+        // multicurve specific
+        add(expressions, multilinestring.isClosed(), H2);
+        add(expressions, multilinestring.length(), H2);
+        // multilinestring specific
         add(expressions, multilinestring.numGeometries(), H2);
-        add(expressions, multilinestring.geometryN(0), H2);
+        add(expressions, multilinestring.geometryN(1), H2);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
@@ -345,9 +386,9 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, multipolygon.geometryType(), H2);
         add(expressions, multipolygon.isEmpty());
         add(expressions, multipolygon.isSimple());
-        // multipoint specific
+        // multipolygon specific
         add(expressions, multipolygon.numGeometries(), H2);
-        add(expressions, multipolygon.geometryN(0), H2);
+        add(expressions, multipolygon.geometryN(1), H2);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;

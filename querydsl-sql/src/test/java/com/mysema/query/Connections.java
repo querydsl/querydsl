@@ -200,7 +200,7 @@ public final class Connections {
         .execute();
     }
 
-    private static Map<Integer, String> getSpatialData() {
+    public static Map<Integer, String> getSpatialData() {
         Map<Integer, String> m = Maps.newHashMap();
         // point
         m.put(1, "POINT (2 2)");
@@ -226,25 +226,16 @@ public final class Connections {
         	"((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), " +
         	"(30 20, 20 15, 20 25, 30 20)))");
 
+        // XXX POLYHEDRALSURFACE not supported
+
         /* GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))
-           POINT ZM (1 1 5 60)
-           POINT M (1 1 80)
-           POINT EMPTY
-           MULTIPOLYGON EMPTY
            CIRCULARSTRING(1 5, 6 2, 7 3)
            COMPOUNDCURVE(CIRCULARSTRING(0 0,1 1,1 0),(1 0,0 1))
            CURVEPOLYGON(CIRCULARSTRING(-2 0,-1 -1,0 0,1 -1,2 0,0 2,-2 0),(-1 0,0 0.5,1 0,0 1,-1 0))
            MULTICURVE((5 5,3 5,3 3,0 3),CIRCULARSTRING(0 0,2 1,2 2))
            TRIANGLE((0 0 0,0 1 0,1 1 0,0 0 0))
            TIN (((0 0 0, 0 0 1, 0 1 0, 0 0 0)), ((0 0 0, 0 1 0, 1 1 0, 0 0 0)))
-           POLYHEDRALSURFACE Z (
-             ((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)),
-             ((0 0 0, 0 1 0, 0 1 1, 0 0 1, 0 0 0)),
-             ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
-             ((1 1 1, 1 0 1, 0 0 1, 0 1 1, 1 1 1)),
-             ((1 1 1, 1 0 1, 1 0 0, 1 1 0, 1 1 1)),
-             ((1 1 1, 1 1 0, 0 1 0, 0 1 1, 1 1 1))
-            )*/
+        */
         return m;
     }
 
