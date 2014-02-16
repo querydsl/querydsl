@@ -48,7 +48,7 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
 
     public NumberExpression<Double> length() {
         if (length == null) {
-            length = NumberOperation.create(null, SpatialOps.LENGTH, mixin);
+            length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);
         }
         return length;
     }

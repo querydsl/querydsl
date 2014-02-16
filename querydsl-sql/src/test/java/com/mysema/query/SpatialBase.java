@@ -218,6 +218,12 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, lineString.geometryType(), H2);
         add(expressions, lineString.isEmpty());
         add(expressions, lineString.isSimple());
+        // curve specific
+        add(expressions, lineString.length(), H2);
+        add(expressions, lineString.startPoint(), H2);
+        add(expressions, lineString.endPoint(), H2);
+        add(expressions, lineString.isClosed(), H2);
+        add(expressions, lineString.isRing(), H2, MYSQL);
         // linestring specific
         add(expressions, lineString.numPoints(), H2);
         add(expressions, lineString.pointN(1), H2);
@@ -247,6 +253,10 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, polygon.geometryType(), H2);
         add(expressions, polygon.isEmpty());
         add(expressions, polygon.isSimple());
+        // surface specific
+        add(expressions, polygon.area());
+        add(expressions, polygon.centroid());
+        add(expressions, polygon.pointOnSurface(), H2, MYSQL);
         // polygon specific
         add(expressions, polygon.exterorRing(), H2);
         add(expressions, polygon.numInteriorRing(), H2);
