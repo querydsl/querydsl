@@ -16,6 +16,7 @@ package com.mysema.query.sql.spatial;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
 
+import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -48,6 +49,7 @@ public class MySQLSpatialTemplates extends MySQLTemplates {
         super(escape, quote);
         addCustomType(MySQLWkbType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps("", true));
+        add(SpatialOps.NUM_INTERIOR_RING, "NumInteriorRings({0})");
     }
 
     @Override

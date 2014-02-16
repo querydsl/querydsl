@@ -10,21 +10,19 @@ import com.mysema.query.spatial.path.GeometryPath;
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.NumberPath;
 
 /**
  * QShapes is a Querydsl query type for QShapes
  */
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
-public class QShapes extends com.mysema.query.sql.RelationalPathBase<Shapes> {
+public class QShapes extends RelationalPathSpatial<Shapes> {
 
     private static final long serialVersionUID = 563213127;
 
     public static final QShapes shapes = new QShapes("SHAPES");
 
-    public final GeometryPath<Geometry> geometry = add(new GeometryPath<Geometry>(Geometry.class,
-            PathMetadataFactory.forProperty(this, "geometry")));
+    public final GeometryPath<Geometry> geometry = createGeometry("geometry", Geometry.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 

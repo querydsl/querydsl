@@ -4,18 +4,30 @@ import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.LineString;
+import org.geolatte.geom.MultiLineString;
+import org.geolatte.geom.MultiPoint;
+import org.geolatte.geom.MultiPolygon;
 import org.geolatte.geom.Point;
+import org.geolatte.geom.Polygon;
 import org.geolatte.geom.codec.Wkt;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.spatial.PointExpression;
+import com.mysema.query.spatial.path.LineStringPath;
+import com.mysema.query.spatial.path.MultiLineStringPath;
+import com.mysema.query.spatial.path.MultiPointPath;
+import com.mysema.query.spatial.path.MultiPolygonPath;
 import com.mysema.query.spatial.path.PointPath;
+import com.mysema.query.spatial.path.PolygonPath;
 import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
@@ -23,23 +35,42 @@ import com.mysema.query.types.Expression;
 
 public class SpatialBase extends AbstractBaseTest {
 
-//    // TEMPORARY
-//    @BeforeClass
-//    public static void setUp() throws Exception {
-//        Connections.initH2();
-//        Connections.setTemplates(H2Templates.builder().newLineToSingleSpace().build());
-//    }
-//
-//    // TEMPORARY
-//    @AfterClass
-//    public static void tearDown() throws SQLException {
-//        Connections.close();
-//    }
+    private static final QShapes shapes = QShapes.shapes;
+
+    // point 1-5
+    // linestring 6-7
+    // polygon 8-9
+    // multipoint 10-11
+    // multilinestring 12-13
+    // multipolygon 14-15
+
+    private TestQuery withPoints() {
+        return query().from(shapes).where(shapes.id.between(1, 5));
+    }
+
+    private TestQuery withLineStrings() {
+        return query().from(shapes).where(shapes.id.between(6, 7));
+    }
+
+    private TestQuery withPolygons() {
+        return query().from(shapes).where(shapes.id.between(8, 9));
+    }
+
+    private TestQuery withMultipoints() {
+        return query().from(shapes).where(shapes.id.between(10, 11));
+    }
+
+    private TestQuery withMultiLineStrings() {
+        return query().from(shapes).where(shapes.id.between(12, 13));
+    }
+
+    private TestQuery withMultiPolygons() {
+        return query().from(shapes).where(shapes.id.between(14, 15));
+    }
 
     @Test
     public void Point_Instances() {
-        QShapes shapes = QShapes.shapes;
-        List<Shapes> results = query().from(shapes).list(shapes);
+        List<Shapes> results = withPoints().list(shapes);
         assertEquals(5, results.size());
         for (Shapes row : results) {
             assertNotNull(row.getId());
@@ -49,8 +80,57 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
+    public void LineString_Instances() {
+        List<Geometry> results = withLineStrings().list(shapes.geometry);
+        assertFalse(results.isEmpty());
+        for (Geometry row : results) {
+            assertNotNull(row);
+            assertTrue(row instanceof LineString);
+        }
+    }
+
+    @Test
+    public void Polygon_Instances() {
+        List<Geometry> results = withPolygons().list(shapes.geometry);
+        assertFalse(results.isEmpty());
+        for (Geometry row : results) {
+            assertNotNull(row);
+            assertTrue(row instanceof Polygon);
+        }
+    }
+
+    @Test
+    public void MultiPoint_Instances() {
+        List<Geometry> results = withMultipoints().list(shapes.geometry);
+        assertFalse(results.isEmpty());
+        for (Geometry row : results) {
+            assertNotNull(row);
+            assertTrue(row instanceof MultiPoint);
+        }
+    }
+
+    @Test
+    public void MultiLineString_Instances() {
+        List<Geometry> results = withMultiLineStrings().list(shapes.geometry);
+        assertFalse(results.isEmpty());
+        for (Geometry row : results) {
+            assertNotNull(row);
+            assertTrue(row instanceof MultiLineString);
+        }
+    }
+
+    @Test
+    public void MultiPolygon_Instances() {
+        List<Geometry> results = withMultiPolygons().list(shapes.geometry);
+        assertFalse(results.isEmpty());
+        for (Geometry row : results) {
+            assertNotNull(row);
+            assertTrue(row instanceof MultiPolygon);
+        }
+    }
+
+    @Test
     public void Point_Methods() {
-        QShapes shapes = QShapes.shapes;
         PointPath<Point> point = new PointPath<Point>(Point.class, shapes, "geometry");
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -65,13 +145,14 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, point.isSimple());
         add(expressions, point.m(), MYSQL, TERADATA, H2);
         add(expressions, point.srid());
+        // point specific
         add(expressions, point.x(), H2);
         add(expressions, point.y(), H2);
         add(expressions, point.z(), MYSQL, TERADATA, H2);
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : query().from(shapes).list(expr)) {
+            for (Object row : withPoints().list(expr)) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -79,6 +160,7 @@ public class SpatialBase extends AbstractBaseTest {
             }
         }
     }
+
 
     private List<Expression<?>> createExpressions(PointExpression<Point> point1, Expression<Point> point2) {
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -112,7 +194,8 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : query().from(shapes1, shapes2).list(expr)) {
+            for (Object row : query().from(shapes1, shapes2)
+                    .where(shapes1.id.loe(5), shapes2.id.loe(5)).list(expr)) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -120,5 +203,152 @@ public class SpatialBase extends AbstractBaseTest {
             }
         }
     }
+
+    @Test
+    public void LineString_Methods() {
+        LineStringPath<LineString> lineString = new LineStringPath<LineString>(LineString.class, shapes, "geometry");
+
+        List<Expression<?>> expressions = Lists.newArrayList();
+        add(expressions, lineString.asBinary(), H2);
+        add(expressions, lineString.asText());
+        add(expressions, lineString.boundary(), MYSQL);
+        add(expressions, lineString.convexHull(), MYSQL);
+        add(expressions, lineString.dimension());
+        add(expressions, lineString.envelope(), H2);
+        add(expressions, lineString.geometryType(), H2);
+        add(expressions, lineString.isEmpty());
+        add(expressions, lineString.isSimple());
+        // linestring specific
+        add(expressions, lineString.numPoints(), H2);
+        add(expressions, lineString.pointN(1), H2);
+
+        for (Expression<?> expr : expressions) {
+            boolean logged = false;
+            for (Object row : withLineStrings().list(expr)) {
+                if (row == null && !logged) {
+                    System.err.println(expr.toString());
+                    logged = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void Polygon_Methods() {
+        PolygonPath<Polygon> polygon = new PolygonPath<Polygon>(Polygon.class, shapes, "geometry");
+
+        List<Expression<?>> expressions = Lists.newArrayList();
+        add(expressions, polygon.asBinary(), H2);
+        add(expressions, polygon.asText());
+        add(expressions, polygon.boundary(), MYSQL);
+        add(expressions, polygon.convexHull(), MYSQL);
+        add(expressions, polygon.dimension());
+        add(expressions, polygon.envelope(), H2);
+        add(expressions, polygon.geometryType(), H2);
+        add(expressions, polygon.isEmpty());
+        add(expressions, polygon.isSimple());
+        // polygon specific
+        add(expressions, polygon.exterorRing(), H2);
+        add(expressions, polygon.numInteriorRing(), H2);
+        add(expressions, polygon.interiorRingN(0), H2);
+
+        for (Expression<?> expr : expressions) {
+            boolean logged = false;
+            for (Object row : withPolygons().list(expr)) {
+                if (row == null && !logged) {
+                    System.err.println(expr.toString());
+                    logged = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void MultiPoint_Methods() {
+        MultiPointPath<MultiPoint> multipoint = new MultiPointPath<MultiPoint>(MultiPoint.class, shapes, "geometry");
+
+        List<Expression<?>> expressions = Lists.newArrayList();
+        add(expressions, multipoint.asBinary(), H2);
+        add(expressions, multipoint.asText());
+        add(expressions, multipoint.boundary(), MYSQL);
+        add(expressions, multipoint.convexHull(), MYSQL);
+        add(expressions, multipoint.dimension());
+        add(expressions, multipoint.envelope(), H2);
+        add(expressions, multipoint.geometryType(), H2);
+        add(expressions, multipoint.isEmpty());
+        add(expressions, multipoint.isSimple());
+        // multipoint specific
+        add(expressions, multipoint.numGeometries(), H2);
+        add(expressions, multipoint.geometryN(0), H2);
+
+        for (Expression<?> expr : expressions) {
+            boolean logged = false;
+            for (Object row : withMultipoints().list(expr)) {
+                if (row == null && !logged) {
+                    System.err.println(expr.toString());
+                    logged = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void MultiLineString_Methods() {
+        MultiLineStringPath<MultiLineString> multilinestring = new MultiLineStringPath<MultiLineString>(MultiLineString.class, shapes, "geometry");
+
+        List<Expression<?>> expressions = Lists.newArrayList();
+        add(expressions, multilinestring.asBinary(), H2);
+        add(expressions, multilinestring.asText());
+        add(expressions, multilinestring.boundary(), MYSQL);
+        add(expressions, multilinestring.convexHull(), MYSQL);
+        add(expressions, multilinestring.dimension());
+        add(expressions, multilinestring.envelope(), H2);
+        add(expressions, multilinestring.geometryType(), H2);
+        add(expressions, multilinestring.isEmpty());
+        add(expressions, multilinestring.isSimple());
+        // multipoint specific
+        add(expressions, multilinestring.numGeometries(), H2);
+        add(expressions, multilinestring.geometryN(0), H2);
+
+        for (Expression<?> expr : expressions) {
+            boolean logged = false;
+            for (Object row : withMultiLineStrings().list(expr)) {
+                if (row == null && !logged) {
+                    System.err.println(expr.toString());
+                    logged = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    public void MultiPolygon_Methods() {
+        MultiPolygonPath<MultiPolygon> multipolygon = new MultiPolygonPath<MultiPolygon>(MultiPolygon.class, shapes, "geometry");
+
+        List<Expression<?>> expressions = Lists.newArrayList();
+        add(expressions, multipolygon.asBinary(), H2);
+        add(expressions, multipolygon.asText());
+        add(expressions, multipolygon.boundary(), MYSQL);
+        add(expressions, multipolygon.convexHull(), MYSQL);
+        add(expressions, multipolygon.dimension());
+        add(expressions, multipolygon.envelope(), H2);
+        add(expressions, multipolygon.geometryType(), H2);
+        add(expressions, multipolygon.isEmpty());
+        add(expressions, multipolygon.isSimple());
+        // multipoint specific
+        add(expressions, multipolygon.numGeometries(), H2);
+        add(expressions, multipolygon.geometryN(0), H2);
+
+        for (Expression<?> expr : expressions) {
+            boolean logged = false;
+            for (Object row : withMultiPolygons().list(expr)) {
+                if (row == null && !logged) {
+                    System.err.println(expr.toString());
+                    logged = true;
+                }
+            }
+        }
+    }
+
 
 }

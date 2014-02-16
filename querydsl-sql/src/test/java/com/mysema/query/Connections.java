@@ -20,10 +20,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
+import com.google.common.collect.Maps;
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
 import com.mysema.query.sql.DerbyTemplates;
@@ -198,6 +200,54 @@ public final class Connections {
         .execute();
     }
 
+    private static Map<Integer, String> getSpatialData() {
+        Map<Integer, String> m = Maps.newHashMap();
+        // point
+        m.put(1, "POINT (2 2)");
+        m.put(2, "POINT (8 7)");
+        m.put(3, "POINT (1 9)");
+        m.put(4, "POINT (9 2)");
+        m.put(5, "POINT (4 4)");
+        // linestring
+        m.put(6, "LINESTRING (30 10, 10 30)");
+        m.put(7, "LINESTRING (30 10, 10 30, 40 40)");
+        // polygon
+        m.put(8, "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))");
+        m.put(9, "POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
+        // multipoint
+        m.put(11, "MULTIPOINT (10 40, 40 30)");
+        m.put(11, "MULTIPOINT (10 40, 40 30, 20 20, 30 10)");
+        // multilinestring
+        m.put(12, "MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))");
+        m.put(13, "MULTILINESTRING ((10 10, 20 20, 10 40))");
+        // multipolygon
+        m.put(14, "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))");
+        m.put(15, "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), " +
+        	"((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), " +
+        	"(30 20, 20 15, 20 25, 30 20)))");
+
+        /* GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))
+           POINT ZM (1 1 5 60)
+           POINT M (1 1 80)
+           POINT EMPTY
+           MULTIPOLYGON EMPTY
+           CIRCULARSTRING(1 5, 6 2, 7 3)
+           COMPOUNDCURVE(CIRCULARSTRING(0 0,1 1,1 0),(1 0,0 1))
+           CURVEPOLYGON(CIRCULARSTRING(-2 0,-1 -1,0 0,1 -1,2 0,0 2,-2 0),(-1 0,0 0.5,1 0,0 1,-1 0))
+           MULTICURVE((5 5,3 5,3 3,0 3),CIRCULARSTRING(0 0,2 1,2 2))
+           TRIANGLE((0 0 0,0 1 0,1 1 0,0 0 0))
+           TIN (((0 0 0, 0 0 1, 0 1 0, 0 0 0)), ((0 0 0, 0 1 0, 1 1 0, 0 0 0)))
+           POLYHEDRALSURFACE Z (
+             ((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)),
+             ((0 0 0, 0 1 0, 0 1 1, 0 0 1, 0 0 0)),
+             ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
+             ((1 1 1, 1 0 1, 0 0 1, 0 1 1, 1 1 1)),
+             ((1 1 1, 1 0 1, 1 0 0, 1 1 0, 1 1 1)),
+             ((1 1 1, 1 1 0, 0 1 0, 0 1 1, 1 1 1))
+            )*/
+        return m;
+    }
+
     public static void initDerby() throws SQLException, ClassNotFoundException {
         targetHolder.set(Target.DERBY);
         SQLTemplates templates = new DerbyTemplates();
@@ -267,11 +317,10 @@ public final class Connections {
 
         dropTable(templates, "SHAPES");
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
-        stmt.execute("insert into SHAPES values (1, geometry::STGeomFromText('Point(2 2)', 0))");
-        stmt.execute("insert into SHAPES values (2, geometry::STGeomFromText('Point(8 7)', 0))");
-        stmt.execute("insert into SHAPES values (3, geometry::STGeomFromText('Point(1 9)', 0))");
-        stmt.execute("insert into SHAPES values (4, geometry::STGeomFromText('Point(9 2)', 0))");
-        stmt.execute("insert into SHAPES values (5, geometry::STGeomFromText('Point(4 4)', 0))");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", geometry::STGeomFromText('" + entry.getValue() + "', 0))");
+        }
 
         // survey
         dropTable(templates, "SURVEY");
@@ -324,11 +373,10 @@ public final class Connections {
         // shapes
         dropTable(templates, "SHAPES");
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY blob)");
-        stmt.execute("insert into SHAPES values (1, ST_GeomFromText('POINT(2 2)', 4326))");
-        stmt.execute("insert into SHAPES values (2, ST_GeomFromText('POINT(8 7)', 4326))");
-        stmt.execute("insert into SHAPES values (3, ST_GeomFromText('POINT(1 9)', 4326))");
-        stmt.execute("insert into SHAPES values (4, ST_GeomFromText('POINT(9 2)', 4326))");
-        stmt.execute("insert into SHAPES values (5, ST_GeomFromText('POINT(4 4)', 4326))");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", ST_GeomFromText('" + entry.getValue() + "', 4326))");
+        }
 
         // qtest
         stmt.execute("drop table QTEST if exists");
@@ -558,11 +606,10 @@ public final class Connections {
         // shapes
         stmt.execute("drop table if exists SHAPES");
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
-        stmt.execute("insert into SHAPES values (1, Point(2, 2))");
-        stmt.execute("insert into SHAPES values (2, Point(8, 7))");
-        stmt.execute("insert into SHAPES values (3, Point(1, 9))");
-        stmt.execute("insert into SHAPES values (4, Point(9, 2))");
-        stmt.execute("insert into SHAPES values (5, Point(4, 4))");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", GeomFromText('" + entry.getValue() + "'))");
+        }
 
         // survey
         stmt.execute("drop table if exists SURVEY");
@@ -699,12 +746,11 @@ public final class Connections {
         dropTable(templates, "SHAPES");
 //        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key, \"GEOMETRY\" geography(POINT,4326))");
         stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key)");
-        stmt.execute("select AddGeometryColumn('SHAPES', 'GEOMETRY', -1, 'POINT', 2)");
-        stmt.execute("insert into \"SHAPES\" values (1, 'Point(2 2)')");
-        stmt.execute("insert into \"SHAPES\" values (2, 'Point(8 7)')");
-        stmt.execute("insert into \"SHAPES\" values (3, 'Point(1 9)')");
-        stmt.execute("insert into \"SHAPES\" values (4, 'Point(9 2)')");
-        stmt.execute("insert into \"SHAPES\" values (5, 'Point(4 4)')");
+        stmt.execute("select AddGeometryColumn('SHAPES', 'GEOMETRY', -1, 'GEOMETRY', 2)");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into \"SHAPES\" values(" + entry.getKey()
+                    +", '" + entry.getValue() + "')");
+        }
 
         // types
         dropType(stmt, "u_country");
@@ -782,11 +828,10 @@ public final class Connections {
         // shapes
         dropTable(templates, "SHAPES");
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY ST_GEOMETRY)");
-        stmt.execute("insert into SHAPES values (1, 'Point(2 2)')");
-        stmt.execute("insert into SHAPES values (2, 'Point(8 7)')");
-        stmt.execute("insert into SHAPES values (3, 'Point(1 9)')");
-        stmt.execute("insert into SHAPES values (4, 'Point(9 2)')");
-        stmt.execute("insert into SHAPES values (5, 'Point(4 4)')");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", '" + entry.getValue() + "')");
+        }
 
         // qtest
         dropTable(templates, "QTEST");
