@@ -199,8 +199,6 @@ public class SQLTemplates extends Templates {
 
     private boolean batchCountViaGetUpdateCount = false;
 
-    private boolean bigDecimalSupported = true;
-
     private boolean unionsWrapped = true;
 
     private boolean functionJoinsWrapped = false;
@@ -645,10 +643,6 @@ public class SQLTemplates extends Templates {
         return batchCountViaGetUpdateCount;
     }
 
-    public final boolean isBigDecimalSupported() {
-        return bigDecimalSupported;
-    }
-
     public final boolean isUseQuotes() {
         return useQuotes;
     }
@@ -997,10 +991,6 @@ public class SQLTemplates extends Templates {
 
     protected void setBatchCountViaGetUpdateCount(boolean batchCountViaGetUpdateCount) {
         this.batchCountViaGetUpdateCount = batchCountViaGetUpdateCount;
-    }
-
-    protected void setBigDecimalSupported(boolean bigDecimalSupported) {
-        this.bigDecimalSupported = bigDecimalSupported;
     }
 
     protected void setUnionsWrapped(boolean unionsWrapped) {

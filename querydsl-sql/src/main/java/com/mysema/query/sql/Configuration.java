@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
@@ -35,8 +34,6 @@ import com.mysema.query.types.Path;
  *
  */
 public final class Configuration {
-
-    private static final BigDecimalAsDoubleType BIGDECIMAL_AS_DOUBLE = new BigDecimalAsDoubleType();
 
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
@@ -69,10 +66,6 @@ public final class Configuration {
      */
     public Configuration(SQLTemplates templates) {
         this.templates = templates;
-        // TODO Move this to templates.customTypes
-        if (!templates.isBigDecimalSupported()) {
-            javaTypeMapping.register(BIGDECIMAL_AS_DOUBLE);
-        }
         for (Type<?> customType : templates.getCustomTypes()) {
             javaTypeMapping.register(customType);
         }

@@ -18,6 +18,7 @@ import org.geolatte.geom.codec.Wkt;
 
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.TeradataTemplates;
+import com.mysema.query.sql.types.StringAsObjectType;
 
 /**
  * TeradataSpatialTemplates is a spatial enabled SQL dialect for Teradata
@@ -47,6 +48,7 @@ public class TeradataSpatialTemplates extends TeradataTemplates {
     public TeradataSpatialTemplates(char escape, boolean quote) {
         super(escape, quote);
         addCustomType(GeometryWktClobType.DEFAULT);
+        addCustomType(StringAsObjectType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps(false));
     }
 

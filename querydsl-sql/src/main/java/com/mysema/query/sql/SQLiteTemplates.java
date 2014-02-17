@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import org.joda.time.ReadableInstant;
 
+import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.types.Ops;
 
 /**
@@ -45,7 +46,7 @@ public class SQLiteTemplates extends SQLTemplates {
     public SQLiteTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable(null);
-        setBigDecimalSupported(false);
+        addCustomType(BigDecimalAsDoubleType.DEFAULT);
         setUnionsWrapped(false);
         setLimitRequired(true);
         setNullsFirst(null);

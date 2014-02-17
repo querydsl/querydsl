@@ -212,7 +212,7 @@ public final class Connections {
         m.put(6, "LINESTRING (30 10, 10 30)");
         m.put(7, "LINESTRING (30 10, 10 30, 40 40)");
         // polygon
-        m.put(8, "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))");
+        m.put(8, "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))");
         m.put(9, "POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
         // multipoint
         m.put(11, "MULTIPOINT (10 40, 40 30)");

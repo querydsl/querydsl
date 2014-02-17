@@ -27,6 +27,8 @@ import java.sql.Types;
  */
 public class BigDecimalAsDoubleType extends AbstractType<BigDecimal> {
 
+    public static final BigDecimalAsDoubleType DEFAULT = new BigDecimalAsDoubleType();
+
     public BigDecimalAsDoubleType() {
         super(Types.DOUBLE);
     }
