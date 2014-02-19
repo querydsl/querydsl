@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql.spatial;
 
+import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.SQLServer2008Templates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -43,8 +44,13 @@ public class SQLServer2008SpatialTemplates extends SQLServer2008Templates {
 
     public SQLServer2008SpatialTemplates(char escape, boolean quote) {
         super(escape, quote);
-        // TODO type for geometries
+        addCustomType(SQLServerGeometryType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps("ST", false));
+        add(SpatialOps.X, "{0}.STX");
+        add(SpatialOps.Y, "{0}.STY");
+        add(SpatialOps.M, "{0}.M");
+        add(SpatialOps.Z, "{0}.Z");
+        add(SpatialOps.SRID, "{0}.STSrid");
     }
 
 
