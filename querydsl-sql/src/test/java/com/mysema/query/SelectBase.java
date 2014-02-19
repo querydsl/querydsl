@@ -443,9 +443,9 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(30,        years);
         assertEquals(361,       months);
         assertEquals(10989,     days);
-        assertEquals(263737,    hours);
-        assertEquals(15824220,  minutes);
-        assertEquals(949453200, seconds);
+        assertEquals(263736,    hours);
+        assertEquals(15824160,  minutes);
+        assertEquals(949449600, seconds);
 
     }
 

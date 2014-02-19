@@ -101,7 +101,7 @@ public class PostgresTemplates extends SQLTemplates {
         String daysDiff = "(cast({1} as date) - cast({0} as date))";
         String hoursDiff = "("+ daysDiff + " * 24 + date_part('hour', age({1}, {0})))";
         String minutesDiff = "(" + hoursDiff + " * 60 + date_part('minute', age({1}, {0})))";
-        String secondsDiff =  "(" +  minutesDiff + " * 60 + date_part('minute', age({1}, {0})))";
+        String secondsDiff =  "(" +  minutesDiff + " * 60 + date_part('second', age({1}, {0})))";
 
         add(Ops.DateTimeOps.DIFF_YEARS,   yearsDiff);
         add(Ops.DateTimeOps.DIFF_MONTHS,  monthsDiff);
