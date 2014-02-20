@@ -56,7 +56,6 @@ public class SQLServer2008SpatialTemplates extends SQLServer2008Templates {
         add(SpatialOps.SRID, "{0}.STSrid");
     }
 
-
     @Override
     public String asLiteral(Object o) {
         if (o instanceof Geometry) {

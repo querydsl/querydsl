@@ -34,14 +34,11 @@ import org.geolatte.geom.Polygon;
 import org.geolatte.geom.crs.CrsId;
 
 import com.google.common.collect.Lists;
+import com.vividsolutions.jts.io.ByteArrayInStream;
 import com.vividsolutions.jts.io.ByteOrderDataInStream;
 import com.vividsolutions.jts.io.ByteOrderValues;
 import com.vividsolutions.jts.io.InStream;
 
-/**
- * @author tiwe
- *
- */
 public class SQLServerGeometryReader {
 
     private static class Figure {
@@ -84,6 +81,10 @@ public class SQLServerGeometryReader {
     private Shape[] shapes;
 
     private CrsId crsId;
+
+    public Geometry read(byte[] bytes) throws IOException {
+        return read(new ByteArrayInStream(bytes));
+    }
 
     public Geometry read(InStream is) throws IOException {
         ByteOrderDataInStream dis = new ByteOrderDataInStream(is);
@@ -202,7 +203,9 @@ public class SQLServerGeometryReader {
     private MultiPoint decodeMultiPoint(int shapeIdx) {
         List<Point> points = Lists.newArrayList();
         for (int i = shapeIdx; i < shapes.length; i++) {
-            points.add(decodePoint(i));
+            if (shapes[i].parentOffset == shapeIdx) {
+                points.add(decodePoint(i));
+            }
         }
         return new MultiPoint(points.toArray(new Point[0]));
     }

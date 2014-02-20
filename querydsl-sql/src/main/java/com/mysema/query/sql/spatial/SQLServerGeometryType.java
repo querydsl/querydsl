@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import org.geolatte.geom.Geometry;
 
 import com.mysema.query.sql.types.AbstractType;
-import com.vividsolutions.jts.io.ByteArrayInStream;
 
 /**
  * @author tiwe
@@ -48,7 +47,11 @@ public class SQLServerGeometryType extends AbstractType<Geometry> {
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
         try {
             byte[] bytes = rs.getBytes(startIndex);
-            return new SQLServerGeometryReader().read(new ByteArrayInStream(bytes));
+            if (bytes != null) {
+                return new SQLServerGeometryReader().read(bytes);
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             throw new SQLException(e);
         }
@@ -56,7 +59,12 @@ public class SQLServerGeometryType extends AbstractType<Geometry> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        throw new UnsupportedOperationException();
+        try {
+            byte[] bytes = new SQLServerGeometryWriter().write(value);
+            st.setBytes(startIndex, bytes);
+        } catch (IOException e) {
+            throw new SQLException(e);
+        }
     }
 
 }
