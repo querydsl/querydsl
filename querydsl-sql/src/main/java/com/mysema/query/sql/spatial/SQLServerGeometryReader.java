@@ -39,6 +39,10 @@ import com.vividsolutions.jts.io.ByteOrderDataInStream;
 import com.vividsolutions.jts.io.ByteOrderValues;
 import com.vividsolutions.jts.io.InStream;
 
+/**
+ * @author tiwe
+ *
+ */
 public class SQLServerGeometryReader {
 
     private static class Figure {
@@ -66,7 +70,7 @@ public class SQLServerGeometryReader {
         // TODO FullGlobe
     };
 
-    private int serializationProps, numberOfPoints;
+    private int srid, version, serializationProps, numberOfPoints;
 
     private boolean hasZ, hasM, singlePoint, singleLine;
 
@@ -90,19 +94,9 @@ public class SQLServerGeometryReader {
         ByteOrderDataInStream dis = new ByteOrderDataInStream(is);
         dis.setOrder(ByteOrderValues.LITTLE_ENDIAN);
 
-        int srid = dis.readInt();
-        int version = dis.readByte();
-        if (version == 1) {
-            return readV1(dis, srid);
-        } else if (version == 2) {
-            return readV2(dis, srid);
-        } else {
-            throw new IllegalStateException("Illegal version " + version);
-        }
-    }
-
-    private Geometry readV1(ByteOrderDataInStream is, int srid) throws IOException {
-        serializationProps = is.readByte();
+        srid = dis.readInt();
+        version = dis.readByte();
+        serializationProps = dis.readByte();
         hasZ = (serializationProps & 1) == 1;
         hasM = (serializationProps & 2) == 2;
         singlePoint = (serializationProps & 8) == 8;
@@ -111,7 +105,7 @@ public class SQLServerGeometryReader {
         if (singleLine) {
             numberOfPoints = 2;
         } else if (!singlePoint) {
-            numberOfPoints = is.readInt();
+            numberOfPoints = dis.readInt();
         }
         dimensionalFlag = DimensionalFlag.XY;
         if (hasM) {
@@ -125,12 +119,12 @@ public class SQLServerGeometryReader {
         }
 
         // points
-        points = readPoints(is, numberOfPoints);
+        points = readPoints(dis, numberOfPoints);
         if (hasZ) {
-            zValues = readDoubles(is, numberOfPoints);
+            zValues = readDoubles(dis, numberOfPoints);
         }
         if (hasM) {
-            mValues = readDoubles(is, numberOfPoints);
+            mValues = readDoubles(dis, numberOfPoints);
         }
 
         crsId = CrsId.valueOf(srid);
@@ -143,11 +137,11 @@ public class SQLServerGeometryReader {
 
         } else {
             // figures
-            int numberOfFigures = is.readInt();
-            figures = readFiguresV1(is, numberOfFigures);
+            int numberOfFigures = dis.readInt();
+            figures = readFigures(dis, numberOfFigures);
             // shapes
-            int numberOfShapes = is.readInt();
-            shapes = readShapes(is, numberOfShapes);
+            int numberOfShapes = dis.readInt();
+            shapes = readShapes(dis, numberOfShapes);
             return decode(0);
         }
     }
@@ -163,11 +157,6 @@ public class SQLServerGeometryReader {
         case GEOMETRY_COLLECTION: return decodeGeometryCollection(shapeIdx);
         default: throw new IllegalArgumentException(String.valueOf(shapeIdx));
         }
-    }
-
-    private Geometry readV2(ByteOrderDataInStream is, int srid) throws IOException {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 
     private GeometryCollection decodeGeometryCollection(int shapeIdx) {
@@ -278,7 +267,7 @@ public class SQLServerGeometryReader {
         return doubles;
     }
 
-    private Figure[] readFiguresV1(ByteOrderDataInStream is, int num) throws IOException {
+    private Figure[] readFigures(ByteOrderDataInStream is, int num) throws IOException {
         Figure[] figures = new Figure[num];
         for (int i = 0; i < num; i++) {
             Figure figure = new Figure();
