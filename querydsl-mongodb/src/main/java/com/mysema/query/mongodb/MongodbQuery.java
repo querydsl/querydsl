@@ -78,7 +78,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      * @param serializer
      */
     public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
-        this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate());
+        this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate(), false);
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;

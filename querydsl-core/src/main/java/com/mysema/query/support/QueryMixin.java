@@ -46,23 +46,23 @@ public class QueryMixin<T> {
 
     private final QueryMetadata metadata;
 
-    private final boolean validateAnyPaths;
+    private final boolean expandAnyPaths;
 
     private T self;
 
     public QueryMixin() {
         this.metadata = new DefaultQueryMetadata();
-        this.validateAnyPaths = true;
+        this.expandAnyPaths = true;
     }
 
     public QueryMixin(QueryMetadata metadata) {
         this.metadata = metadata;
-        this.validateAnyPaths = true;
+        this.expandAnyPaths = true;
     }
 
-    public QueryMixin(QueryMetadata metadata, boolean validateAnyPaths) {
+    public QueryMixin(QueryMetadata metadata, boolean expandAnyPaths) {
         this.metadata = metadata;
-        this.validateAnyPaths = validateAnyPaths;
+        this.expandAnyPaths = expandAnyPaths;
     }
 
     public QueryMixin(T self) {
@@ -72,13 +72,13 @@ public class QueryMixin<T> {
     public QueryMixin(T self, QueryMetadata metadata) {
         this.self = self;
         this.metadata = metadata;
-        this.validateAnyPaths = true;
+        this.expandAnyPaths = true;
     }
 
-    public QueryMixin(T self, QueryMetadata metadata, boolean validateAnyPaths) {
+    public QueryMixin(T self, QueryMetadata metadata, boolean expandAnyPaths) {
         this.self = self;
         this.metadata = metadata;
-        this.validateAnyPaths = validateAnyPaths;
+        this.expandAnyPaths = expandAnyPaths;
     }
 
     public T addJoin(JoinType joinType, Expression<?> target) {
@@ -123,7 +123,7 @@ public class QueryMixin<T> {
 
     @SuppressWarnings("rawtypes")
     public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
-        if (validateAnyPaths && expr instanceof Path) {
+        if (expandAnyPaths && expr instanceof Path) {
             Context context = new Context();
             Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
             if (!replaced.equals(expr)) {

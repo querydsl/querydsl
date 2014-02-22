@@ -122,6 +122,15 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void List_Deep_Keys() {
+        User u = where(user.firstName.eq("Jaakko")).singleResult(user.addresses.any().street);
+        for (Address a : u.getAddresses()) {
+            assertNotNull(a.street);
+            assertNull(a.city);
+        }
+    }
+
+    @Test
     public void Contains() {
         assertQuery(user.friends.contains(u1), u3, u4, u2);
     }
