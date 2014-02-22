@@ -21,6 +21,7 @@ import java.sql.Types;
 import javax.annotation.Nullable;
 
 import oracle.spatial.geometry.JGeometry;
+import oracle.sql.STRUCT;
 
 import org.geolatte.geom.Geometry;
 
@@ -63,8 +64,8 @@ public class JGeometryType extends AbstractType<Geometry> {
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
         try {
             JGeometry geo = JGeometryConverter.convert(value);
-            byte[] bytes = JGeometry.store(geo);
-            st.setBytes(startIndex, bytes);
+            STRUCT struct = JGeometry.store(st.getConnection(), geo);
+            st.setObject(startIndex, struct);
         } catch (Exception e) {
             throw new SQLException(e);
         }
