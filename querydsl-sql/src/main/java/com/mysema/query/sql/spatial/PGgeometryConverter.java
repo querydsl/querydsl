@@ -22,6 +22,7 @@ import org.geolatte.geom.MultiLineString;
 import org.geolatte.geom.MultiPoint;
 import org.geolatte.geom.MultiPolygon;
 import org.geolatte.geom.Point;
+import org.geolatte.geom.PointCollectionFactory;
 import org.geolatte.geom.PointSequence;
 import org.geolatte.geom.PointSequenceBuilder;
 import org.geolatte.geom.PointSequenceBuilders;
@@ -66,13 +67,11 @@ public class PGgeometryConverter {
     private static org.postgis.Point convert(Point point) {
         org.postgis.Point pgPoint = new org.postgis.Point();
         pgPoint.srid = point.getSRID();
-        pgPoint.dimension = point.getDimension();
+        pgPoint.dimension = point.is3D() ? 3 : 2;
         pgPoint.haveMeasure = false;
         pgPoint.x = point.getX();
-        if (pgPoint.dimension > 1) {
-            pgPoint.y = point.getY();
-        }
-        if (pgPoint.dimension > 2) {
+        pgPoint.y = point.getY();
+        if (point.is3D()) {
             pgPoint.z = point.getZ();
         }
         if (point.isMeasured()) {
@@ -207,6 +206,9 @@ public class PGgeometryConverter {
     }
 
     private static PointSequence convertPoints(org.postgis.Point[] points) {
+        if (points.length == 0) {
+            return PointCollectionFactory.createEmpty();
+        }
         org.postgis.Point first = points[0];
         DimensionalFlag flag = DimensionalFlag.XY;
         if (first.dimension == 2 && first.haveMeasure) {

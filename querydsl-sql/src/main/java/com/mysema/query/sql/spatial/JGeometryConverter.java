@@ -161,7 +161,7 @@ public class JGeometryConverter {
         }
     }
 
-    // to geoaltte
+    // to geolatte
 
     public static Geometry convert(JGeometry geometry) {
         switch (geometry.getType()) {
