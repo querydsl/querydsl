@@ -14,51 +14,47 @@
 package com.mysema.query.sql.spatial;
 
 import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkt;
 
-import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
- * PostGISTemplates is a spatial enabled SQL dialect for PostGIS
- *
  * @author tiwe
  *
  */
-public class PostGISTemplates extends PostgresTemplates {
+public class OracleSpatialTemplates extends OracleTemplates {
 
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
-                return new PostGISTemplates(escape, quote);
+                return new OracleSpatialTemplates(escape, quote);
             }
         };
     }
 
-    public PostGISTemplates() {
+    public OracleSpatialTemplates() {
         this('\\', false);
     }
 
-    public PostGISTemplates(boolean quote) {
+    public OracleSpatialTemplates(boolean quote) {
         this('\\', quote);
     }
 
-    public PostGISTemplates(char escape, boolean quote) {
+    public OracleSpatialTemplates(char escape, boolean quote) {
         super(escape, quote);
-        add(SpatialTemplatesSupport.getSpatialOps(true));
-        addCustomType(PGgeometryType.DEFAULT);
+        addCustomType(JGeometryType.DEFAULT);
+        // TODO
     }
 
     @Override
     public String asLiteral(Object o) {
         if (o instanceof Geometry) {
-            String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode((Geometry)o);
-            return "'" + str + "'";
+            // TODO
+            return null;
         } else {
             return super.asLiteral(o);
         }
     }
-
 
 }
