@@ -120,6 +120,7 @@ public class PGgeometryConverter {
     private static org.postgis.Polygon convert(Polygon polygon) {
         int numRings = polygon.getNumInteriorRing();
         org.postgis.LinearRing[] rings = new org.postgis.LinearRing[numRings + 1];
+        // TODO For Oracle Spatial, outer ring must be counter clockwise
         rings[0] = convert(polygon.getExteriorRing());
         for (int i = 0; i < numRings; i++) {
             rings[i+1] = convert(polygon.getInteriorRingN(i));

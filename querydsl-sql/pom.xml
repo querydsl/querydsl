@@ -94,6 +94,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>oracle</groupId>
+      <artifactId>sdoapi</artifactId>
+      <version>11.2.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>
       <version>${jtds.version}</version>
