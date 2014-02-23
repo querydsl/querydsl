@@ -13,8 +13,16 @@
  */
 package com.mysema.query.sql.spatial;
 
+import static oracle.spatial.geometry.JGeometry.GTYPE_COLLECTION;
+import static oracle.spatial.geometry.JGeometry.GTYPE_CURVE;
+import static oracle.spatial.geometry.JGeometry.GTYPE_MULTICURVE;
+import static oracle.spatial.geometry.JGeometry.GTYPE_MULTIPOINT;
+import static oracle.spatial.geometry.JGeometry.GTYPE_MULTIPOLYGON;
+import static oracle.spatial.geometry.JGeometry.GTYPE_POINT;
+import static oracle.spatial.geometry.JGeometry.GTYPE_POLYGON;
 import oracle.spatial.geometry.JGeometry;
 
+import org.geolatte.geom.DimensionalFlag;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.GeometryCollection;
 import org.geolatte.geom.LineString;
@@ -24,8 +32,11 @@ import org.geolatte.geom.MultiPoint;
 import org.geolatte.geom.MultiPolygon;
 import org.geolatte.geom.Point;
 import org.geolatte.geom.PointCollection;
+import org.geolatte.geom.PointCollectionFactory;
+import org.geolatte.geom.PointSequence;
 import org.geolatte.geom.PolyHedralSurface;
 import org.geolatte.geom.Polygon;
+import org.geolatte.geom.crs.CrsId;
 
 /**
  * @author tiwe
@@ -88,16 +99,22 @@ public class JGeometryConverter {
     private static JGeometry convert(Polygon geometry) {
         int srid = geometry.getSRID();
         int dim = geometry.getCoordinateDimension();
-        Object[] objects = new Object[geometry.getNumInteriorRing() + 1];
-        objects[0] = getPoints(geometry.getExteriorRing().getPoints());
+        double[] points = getPoints(geometry.getPoints());
+        int[] elemInfo = new int[3 + geometry.getNumInteriorRing() * 3];
+        int offset = 0;
+        int pointOffset = 1;
+        elemInfo[offset++] = pointOffset;
+        elemInfo[offset++] = 1003; // exterior
+        elemInfo[offset++] = 1;
+        pointOffset += geometry.getExteriorRing().getNumPoints() * dim;
         for (int i = 0; i < geometry.getNumInteriorRing(); i++) {
-            objects[i + 1] = getPoints(geometry.getInteriorRingN(i).getPoints());
+            elemInfo[offset++] = pointOffset;
+            elemInfo[offset++] = 2003;
+            elemInfo[offset++] = 1;
+            pointOffset += geometry.getInteriorRingN(i).getNumPoints() * dim;
         }
-        if (geometry.isMeasured()) {
-            return JGeometry.createLRSLinearPolygon(objects, dim - 1, srid);
-        } else {
-            return JGeometry.createLinearPolygon(objects, dim, srid);
-        }
+        int gtype = dim * 1000 + (geometry.isMeasured() ? dim : 0) * 100 + GTYPE_POLYGON;
+        return new JGeometry(gtype, srid, elemInfo, points);
     }
 
     private static JGeometry convert(PolyHedralSurface geometry) {
@@ -108,47 +125,45 @@ public class JGeometryConverter {
         int srid = geometry.getSRID();
         int dim = geometry.getCoordinateDimension();
         double[] points = getPoints(geometry.getPoints());
-        if (geometry.isMeasured()) {
-            return JGeometry.createLRSLinearLineString(points, dim - 1, srid);
-        } else {
-            return JGeometry.createLinearLineString(points, dim, srid);
-        }
+        int[] elemInfo = new int[]{1, 2, 1};
+        int gtype = dim * 1000 + (geometry.isMeasured() ? dim : 0) * 100 + GTYPE_CURVE;
+        return new JGeometry(gtype, srid, elemInfo, points);
     }
 
     private static JGeometry convert(GeometryCollection geometry) {
+        // TODO
         throw new UnsupportedOperationException();
     }
 
     private static JGeometry convert(MultiPoint geometry) {
         int srid = geometry.getSRID();
         int dim = geometry.getCoordinateDimension();
-        Object[] objects = new Object[geometry.getNumPoints()];
-        for (int i = 0; i < geometry.getNumPoints(); i++) {
-            objects[i] = getCoordinates(geometry.getPointN(i));
-        }
-        if (geometry.isMeasured()) {
-            throw new IllegalStateException("MultiPoint with measure not supported");
-        } else {
-            return JGeometry.createMultiPoint(objects, dim, srid);
-        }
+        double[] points = getPoints(geometry.getPoints());
+        int[] elemInfo = new int[]{1, 1, geometry.getNumPoints()};
+        int gtype = dim * 1000 + (geometry.isMeasured() ? dim : 0) * 100 + GTYPE_MULTIPOINT;
+        return new JGeometry(gtype, srid, elemInfo, points);
     }
 
     private static JGeometry convert(MultiPolygon geometry) {
+        // TODO
         throw new UnsupportedOperationException();
     }
 
     private static JGeometry convert(MultiLineString geometry) {
         int srid = geometry.getSRID();
         int dim = geometry.getCoordinateDimension();
-        Object[] objects = new Object[geometry.getNumGeometries()];
+        double[] points = getPoints(geometry.getPoints());
+        int[] elemInfo = new int[geometry.getNumGeometries() * 3];
+        int offset = 0;
+        int pointOffset = 1;
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
-            objects[i] = getPoints(geometry.getGeometryN(i).getPoints());
+            elemInfo[offset++] = pointOffset;
+            elemInfo[offset++] = 2;
+            elemInfo[offset++] = 1;
+            pointOffset += geometry.getGeometryN(i).getNumPoints() * dim;
         }
-        if (geometry.isMeasured()) {
-            return JGeometry.createLRSLinearMultiLineString(objects, dim - 1, srid);
-        } else {
-            return JGeometry.createLinearMultiLineString(objects, dim, srid);
-        }
+        int gtype = dim * 1000 + (geometry.isMeasured() ? dim : 0) * 100 + GTYPE_MULTICURVE;
+        return new JGeometry(gtype, srid, elemInfo, points);
     }
 
     private static JGeometry convert(Point geometry) {
@@ -165,50 +180,114 @@ public class JGeometryConverter {
 
     public static Geometry convert(JGeometry geometry) {
         switch (geometry.getType()) {
-        case JGeometry.GTYPE_COLLECTION: return convertCollection(geometry);
-        case JGeometry.GTYPE_CURVE: return convertCurve(geometry);
-        case JGeometry.GTYPE_MULTICURVE: return convertMultiCurve(geometry);
-        case JGeometry.GTYPE_MULTIPOINT: return convertMultiPoint(geometry);
-        case JGeometry.GTYPE_MULTIPOLYGON: return convertMultiPolygon(geometry);
-        case JGeometry.GTYPE_POINT: return convertPoint(geometry);
-        case JGeometry.GTYPE_POLYGON: return convertPolygon(geometry);
+        case GTYPE_COLLECTION: return convertCollection(geometry);
+        case GTYPE_CURVE: return convertCurve(geometry);
+        case GTYPE_MULTICURVE: return convertMultiCurve(geometry);
+        case GTYPE_MULTIPOINT: return convertMultiPoint(geometry);
+        case GTYPE_MULTIPOLYGON: return convertMultiPolygon(geometry);
+        case GTYPE_POINT: return convertPoint(geometry);
+        case GTYPE_POLYGON: return convertPolygon(geometry);
         default: throw new IllegalArgumentException(geometry.toString());
         }
     }
 
-    private static Geometry convertPolygon(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    private static PointSequence getPoints(JGeometry geometry) {
+        int dimensions = geometry.getDimensions();
+        boolean measured = geometry.isLRSGeometry();
+        DimensionalFlag flag = DimensionalFlag.valueOf(dimensions > (measured ? 3 : 2), measured);
+        double[] ordinates = geometry.getOrdinatesArray();
+        return PointCollectionFactory.create(ordinates, flag);
     }
 
-    private static Geometry convertPoint(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    private static Polygon convertPolygon(JGeometry geometry) {
+        CrsId crs = CrsId.valueOf(geometry.getSRID());
+        int dimensions = geometry.getDimensions();
+        boolean measured = geometry.isLRSGeometry();
+        DimensionalFlag flag = DimensionalFlag.valueOf(dimensions > (measured ? 3 : 2), measured);
+        Object[] elements = geometry.getOrdinatesOfElements();
+        LinearRing[] rings = new LinearRing[elements.length];
+        for (int i = 0; i < elements.length; i++) {
+            PointSequence points = PointCollectionFactory.create((double[]) elements[i], flag);
+            rings[i] = new LinearRing(points, crs);
+        }
+        return new Polygon(rings);
     }
 
-    private static Geometry convertMultiPoint(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    private static Point convertPoint(JGeometry geometry) {
+        CrsId crs = CrsId.valueOf(geometry.getSRID());
+        double[] point = geometry.getPoint();
+        int dimensions = geometry.getDimensions();
+        boolean measured = geometry.isLRSGeometry();
+        DimensionalFlag flag = DimensionalFlag.valueOf(dimensions > (measured ? 3 : 2), measured);
+        return new Point(PointCollectionFactory.create(point, flag), crs);
     }
 
-    private static Geometry convertMultiPolygon(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    private static LineString convertCurve(JGeometry geometry) {
+        CrsId crs = CrsId.valueOf(geometry.getSRID());
+        PointSequence points = getPoints(geometry);
+        return new LineString(points, crs);
     }
 
-    private static Geometry convertMultiCurve(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    private static MultiPoint convertMultiPoint(JGeometry geometry) {
+        CrsId crs = CrsId.valueOf(geometry.getSRID());
+        JGeometry[] elements = geometry.getElements();
+        if (elements == null || elements.length == 0) {
+            return MultiPoint.createEmpty();
+        }
+        Point[] points = new Point[elements.length];
+        int dimensions = geometry.getDimensions();
+        double[] ordinates = geometry.getOrdinatesArray();
+        boolean measured = geometry.isLRSGeometry();
+        DimensionalFlag flag = DimensionalFlag.valueOf(dimensions > (measured ? 3 : 2), measured);
+        int offset = 0;
+        for (int i = 0; i < points.length; i++) {
+            double[] coords = new double[dimensions];
+            System.arraycopy(ordinates, offset, coords, 0, coords.length);
+            points[i] = new Point(PointCollectionFactory.create(coords, flag), crs);
+            offset += dimensions;
+        }
+        return new MultiPoint(points);
     }
 
-    private static Geometry convertCurve(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    // FIXME
+    private static MultiPolygon convertMultiPolygon(JGeometry geometry) {
+        JGeometry[] elements = geometry.getElements();
+        if (elements == null || elements.length == 0) {
+            return MultiPolygon.createEmpty();
+        }
+        Polygon[] polygons = new Polygon[elements.length];
+        for (int i = 0; i < elements.length; i++) {
+            polygons[i] = convertPolygon(elements[i]);
+        }
+        return new MultiPolygon(polygons);
     }
 
-    private static Geometry convertCollection(JGeometry geometry) {
-        // TODO Auto-generated method stub
-        return null;
+    // FIXME
+    private static MultiLineString convertMultiCurve(JGeometry geometry) {
+        JGeometry[] elements = geometry.getElements();
+        if (elements == null || elements.length == 0) {
+            return MultiLineString.createEmpty();
+        }
+        CrsId crs = CrsId.valueOf(geometry.getSRID());
+        LineString[] lineStrings = new LineString[elements.length];
+        for (int i = 0; i < elements.length; i++) {
+            PointSequence points = getPoints(elements[i]);
+            lineStrings[i] = new LineString(points, crs);
+        }
+        return new MultiLineString(lineStrings);
+    }
+
+    // FIXME
+    private static GeometryCollection convertCollection(JGeometry geometry) {
+        JGeometry[] elements = geometry.getElements();
+        if (elements == null || elements.length == 0) {
+            return GeometryCollection.createEmpty();
+        }
+        Geometry[] geometries = new Geometry[elements.length];
+        for (int i = 0; i < elements.length; i++) {
+            geometries[i] = convert(elements[i]);
+        }
+        return new GeometryCollection(geometries);
     }
 
     private JGeometryConverter() {}

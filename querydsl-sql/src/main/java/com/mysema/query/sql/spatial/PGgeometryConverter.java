@@ -26,7 +26,6 @@ import org.geolatte.geom.PointCollectionFactory;
 import org.geolatte.geom.PointSequence;
 import org.geolatte.geom.PointSequenceBuilder;
 import org.geolatte.geom.PointSequenceBuilders;
-import org.geolatte.geom.Points;
 import org.geolatte.geom.PolyHedralSurface;
 import org.geolatte.geom.Polygon;
 import org.geolatte.geom.crs.CrsId;
@@ -119,7 +118,6 @@ public class PGgeometryConverter {
     private static org.postgis.Polygon convert(Polygon polygon) {
         int numRings = polygon.getNumInteriorRing();
         org.postgis.LinearRing[] rings = new org.postgis.LinearRing[numRings + 1];
-        // TODO For Oracle Spatial, outer ring must be counter clockwise
         rings[0] = convert(polygon.getExteriorRing());
         for (int i = 0; i < numRings; i++) {
             rings[i+1] = convert(polygon.getInteriorRingN(i));
@@ -186,23 +184,19 @@ public class PGgeometryConverter {
 
     private static Point convert(org.postgis.Point geometry) {
         int d = geometry.dimension;
-        CrsId srid = CrsId.valueOf(geometry.srid);
-        if (!geometry.haveMeasure) {
-            switch (d) {
-            case 2:
-                return Points.create(geometry.x, geometry.y, srid);
-            case 3:
-                return Points.create3D(geometry.x,  geometry.y, geometry.z, srid);
-            }
-        } else {
-            switch (d) {
-            case 2:
-                return Points.createMeasured(geometry.x, geometry.y, geometry.m, srid);
-            case 3:
-                return Points.create(geometry.x,  geometry.y, geometry.z, geometry.m, srid);
-            }
+        CrsId crs = CrsId.valueOf(geometry.srid);
+        double[] point = new double[d + (geometry.haveMeasure ? 1 : 0)];
+        int offset = 0;
+        point[offset++] = geometry.x;
+        point[offset++] = geometry.y;
+        if (d == 3) {
+             point[offset++] = geometry.z;
         }
-        throw new IllegalArgumentException(geometry.toString());
+        if (geometry.haveMeasure) {
+            point[offset++] = geometry.m;
+        }
+        DimensionalFlag flag = DimensionalFlag.valueOf(d == 3, geometry.haveMeasure);
+        return new Point(PointCollectionFactory.create(point, flag), crs);
     }
 
     private static PointSequence convertPoints(org.postgis.Point[] points) {
@@ -210,14 +204,7 @@ public class PGgeometryConverter {
             return PointCollectionFactory.createEmpty();
         }
         org.postgis.Point first = points[0];
-        DimensionalFlag flag = DimensionalFlag.XY;
-        if (first.dimension == 2 && first.haveMeasure) {
-            flag = DimensionalFlag.XYM;
-        } else if (first.dimension == 3 && first.haveMeasure) {
-            flag = DimensionalFlag.XYZM;
-        } else if (first.dimension == 3) {
-            flag = DimensionalFlag.XYZ;
-        }
+        DimensionalFlag flag = DimensionalFlag.valueOf(first.dimension == 3, first.haveMeasure);
         PointSequenceBuilder pointSequence = PointSequenceBuilders.variableSized(flag);
         for (int i = 0; i < points.length; i++) {
             pointSequence.add(convert(points[i]));
