@@ -78,7 +78,7 @@
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.postgis</groupId>
@@ -91,7 +91,7 @@
       <groupId>com.oracle</groupId>
       <artifactId>ojdbc6</artifactId>
       <version>${oracle.version}</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>oracle</groupId>

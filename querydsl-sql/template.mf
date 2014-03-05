@@ -2,6 +2,7 @@ Bundle-SymbolicName: com.mysema.querydsl.sql
 Bundle-Name: Querydsl SQL
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
+Excluded-Imports: org.postgis, org.geolatte.*, oracle.*, com.vividsolutions.jts.*
 Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.*;version="${project.version}",   

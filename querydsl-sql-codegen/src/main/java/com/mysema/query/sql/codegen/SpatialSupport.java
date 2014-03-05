@@ -24,6 +24,7 @@ import org.geolatte.geom.LinearRing;
 import org.geolatte.geom.MultiLineString;
 import org.geolatte.geom.MultiPoint;
 import org.geolatte.geom.MultiPolygon;
+import org.geolatte.geom.Point;
 import org.geolatte.geom.PolyHedralSurface;
 
 import com.google.common.collect.ImmutableSet;
@@ -33,7 +34,6 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.query.codegen.AbstractModule;
 import com.mysema.query.codegen.CodegenModule;
-import com.mysema.query.codegen.Point;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.spatial.path.GeometryCollectionPath;
 import com.mysema.query.spatial.path.GeometryPath;
