@@ -1,0 +1,144 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="spatial" revision="1">
+
+  <title>Querydsl Spatial</title>
+  
+  <para>Support for Spatial queries is available via the Querydsl Spatial module, which is an extension 
+  module to the SQL module. The Spatial module supports the object model of Simple Feature Access in queries
+  and object binding.</para>
+  
+  <para>The <ulink url="http://www.geolatte.org/">geolatte</ulink> project is used for the object model.</para>
+  
+  <sect2>
+    <title>Maven integration</title>
+    
+    <para>
+      Add the following dependency to your Maven project:
+    </para>
+    
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-spatial</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>    
+]]></programlisting>
+
+    <para>Additionally the following database specific extra dependencies:</para>
+    
+<programlisting language="xml"><![CDATA[    
+<!-- for PostgreSQL usage -->
+<dependency>
+  <groupId>org.postgis</groupId>
+  <artifactId>postgis-jdbc</artifactId>
+  <version>1.3.3</version>
+  <scope>provided</scope>
+</dependency>
+
+<!-- for Oracle usage -->
+<dependency>
+  <groupId>oracle</groupId>
+  <artifactId>sdoapi</artifactId>
+  <version>11.2.0</version>
+  <scope>provided</scope>
+</dependency>
+]]></programlisting>
+    
+  </sect2>
+  
+  <sect2>
+
+    <title>Code generation via Maven</title>
+    
+    <para>The code generation for Querydsl SQL can be set to detect the usage of spatial types in
+    database schemas and use geolatte types in these case via the spatial property:</para>
+    
+    <programlisting language="xml"><![CDATA[   
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${querydsl.version}</version>
+  ...
+  <configuration>
+    ...
+    <spatial>true</spatial>
+  </configuration>
+</plugin>  
+]]></programlisting>  
+    
+  </sect2>  
+  
+  <sect2>
+  
+    <title>Runtime configuration</title>
+    
+    <para>The runtime configuration aspect of the spatial module is that instead of the normal
+    SQLTemplates instances, spatial enabled instances are used. Below is a list of spatial enabled
+    SQLTemplates classes.</para>
+    
+    <itemizedlist>
+      <listitem>
+        <para>GeoDBTemplates (for H2)</para>
+      </listitem>
+      <listitem>
+        <para>MySQLSpatialTemplates</para>
+      </listitem>
+      <listitem>
+        <para>OracleSpatialTemplates (alpha stage)</para>
+      </listitem>
+      <listitem>
+        <para>PostGISTemplates</para>
+      </listitem>
+      <listitem>
+        <para>SQLServer2008SpatialTemplates</para>
+      </listitem>
+      <listitem>
+        <para>TeradataSpatialTemplates</para>
+      </listitem>
+    </itemizedlist>    
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Querying</title>
+    
+    <para>With code generation and runtime configuration set for spatial types we can now try 
+    queries with it.</para>
+    
+    <sect3>
+    
+      <title>Filter by Distance</title>
+      
+      <programlisting language="java"><![CDATA[
+Geometry point = Wkt.fromWkt("Point(2 2)");  
+query.where(table.geo.distance(point).lt(5.0));      
+]]></programlisting>      
+    
+    </sect3>
+    
+    <sect3>
+    
+      <title>Contains</title>
+      
+      <programlisting language="java"><![CDATA[
+Geometry point = Wkt.fromWkt("Point(2 2)");  
+query.where(table.geo.contains(point));      
+]]></programlisting>        
+    
+    </sect3>
+    
+    <sect3>
+    
+      <title>Intersection</title>
+      
+      <programlisting language="java"><![CDATA[
+Geometry geo = query.uniqueResult(table.geo1.intersection(table.geo2));      
+]]></programlisting>    
+    
+    </sect3>
+  
+  </sect2>
+  
+</sect1>  
