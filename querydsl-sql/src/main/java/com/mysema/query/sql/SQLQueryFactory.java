@@ -13,109 +13,54 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.QueryFactory;
-import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.sql.dml.SQLMergeClause;
-import com.mysema.query.sql.dml.SQLUpdateClause;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.inject.Provider;
+import javax.sql.DataSource;
 
 /**
- * Factory interface for query and clause creation.
- *
- * <p>The default implementation is {@link SQLQueryFactoryImpl} and should be used for general
- * query creation. Type specific variants are available if database specific queries need to be created.</p>
+ * Factory class for query and DML clause creation
  *
  * @author tiwe
  *
- * @param <Q> query type
- * @param <SQ> subquery type
- * @param <D> delete clause type
- * @param <U> update clause type
- * @param <I> insert clause type
- * @param <M> merge clause type
  */
-public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends AbstractSQLQuery<?>
-    SQ extends AbstractSQLSubQuery<?>,
-    D extends SQLDeleteClause,
-    U extends SQLUpdateClause,
-    I extends SQLInsertClause,
-    M extends SQLMergeClause> extends QueryFactory<Q,SQ> {
+public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery> {
 
-    /**
-     * Create a new DELETE clause
-     *
-     * @param path
-     * @return
-     */
-    D delete(RelationalPath<?> path);
+    static class DataSourceProvider implements Provider<Connection> {
 
-    /**
-     * Create a new SELECT query
-     *
-     * @param from
-     * @return
-     */
-    Q from(Expression<?> from);
+        private final DataSource ds;
 
-    /**
-     * Create a new SELECT query
-     *
-     * @param from
-     * @return
-     */
-    Q from(Expression<?>... from);
+        public DataSourceProvider(DataSource ds) {
+            this.ds = ds;
+        }
 
-    /**
-     * Create a new SELECT query
-     *
-     * @param from
-     * @return
-     */
-    Q from(SubQueryExpression<?> subQuery, Path<?> alias);
+        @Override
+        public Connection get() {
+            try {
+                return ds.getConnection();
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
 
-    /**
-     * Create a new INSERT INTO clause
-     *
-     * @param path
-     * @return
-     */
-    I insert(RelationalPath<?> path);
+    }
 
-    /**
-     * Create a new MERGE clause
-     *
-     * @param path
-     * @return
-     */
-    M merge(RelationalPath<?> path);
+    public SQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+        this(new Configuration(templates), connection);
+    }
 
-    /**
-     * Create a new UPDATE clause
-     *
-     * @param path
-     * @return
-     */
-    U update(RelationalPath<?> path);
+    public SQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
+        super(configuration, connection);
+    }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.QueryFactory#query()
-     */
+    public SQLQueryFactory(Configuration configuration, DataSource dataSource) {
+        super(configuration, new DataSourceProvider(dataSource));
+    }
+
     @Override
-    Q query();
-
-    /* (non-Javadoc)
-     * @see com.mysema.query.QueryFactory#subQuery()
-     */
-    @Override
-    SQ subQuery();
-
-    /**
-     * @param from
-     * @return
-     */
-    SQ subQuery(Expression<?> from);
+    public SQLQuery query() {
+        return new SQLQuery(connection.get(), configuration);
+    }
 
 }

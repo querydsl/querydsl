@@ -26,12 +26,12 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
- * AbstractSQLQueryFactory is the base class for {@link SQLQueryFactory} implementations
+ * AbstractSQLQueryFactory is the base class for {@link SQLCommonQueryFactory} implementations
  *
  * @author tiwe
  *
  */
-public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLQueryFactory<Q, SQLSubQuery,
+public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLCommonQueryFactory<Q, SQLSubQuery,
     SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     protected final Configuration configuration;
