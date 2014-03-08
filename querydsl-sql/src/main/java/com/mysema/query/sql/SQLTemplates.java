@@ -15,7 +15,6 @@ package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,6 +27,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinType;
@@ -103,7 +103,9 @@ public class SQLTemplates extends Templates {
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
-    private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
+    private final Map<Class<?>, String> class2type = Maps.newHashMap();
+
+    private final Map<Pair<String, String>, Pair<String, String>> tableOverrides = Maps.newHashMap();
 
     private final List<Type<?>> customTypes = Lists.newArrayList();
 
@@ -439,6 +441,10 @@ public class SQLTemplates extends Templates {
         }
     }
 
+    protected void addTableOverride(Pair<String, String> from, Pair<String, String> to) {
+        tableOverrides.put(from, to);
+    }
+
     public final List<Type<?>> getCustomTypes() {
         return customTypes;
     }
@@ -572,6 +578,10 @@ public class SQLTemplates extends Templates {
 
     public final String getTableAlias() {
         return tableAlias;
+    }
+
+    public final Map<Pair<String, String>, Pair<String, String>> getTableOverrides() {
+        return tableOverrides;
     }
 
     public String getTypeForCast(Class<?> cl) {

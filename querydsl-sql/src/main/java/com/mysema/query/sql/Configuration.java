@@ -43,7 +43,7 @@ public final class Configuration {
 
     private final Map<String, String> schemas = Maps.newHashMap();
 
-    private final Map<Pair<String, String>, String> schemaTables = Maps.newHashMap();
+    private final Map<Pair<String, String>, Pair<String, String>> schemaTables = Maps.newHashMap();
 
     private final Map<String, String> tables = Maps.newHashMap();
 
@@ -68,6 +68,9 @@ public final class Configuration {
         this.templates = templates;
         for (Type<?> customType : templates.getCustomTypes()) {
             javaTypeMapping.register(customType);
+        }
+        for (Map.Entry<Pair<String, String>, Pair<String, String>> entry : templates.getTableOverrides().entrySet()) {
+            schemaTables.put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -117,38 +120,31 @@ public final class Configuration {
     }
 
     /**
-     * Get schema override or schema
-     *
-     * @param schema
-     * @return
-     */
-    public String getSchema(String schema) {
-        if (schemas.containsKey(schema)) {
-            return schemas.get(schema);
-        } else {
-            return schema;
-        }
-    }
-
-    /**
-     * Get table override or table
+     * Get the schema/table override
      *
      * @param schema
      * @param table
      * @return
      */
-    public String getTable(String schema, String table) {
-        if (!schemaTables.isEmpty() && schema != null) {
-            Pair<String, String> key = Pair.of(schema, table);
+    @Nullable
+    public Pair<String, String> getOverride(Pair<String, String> key) {
+        if (!schemaTables.isEmpty() && key.getFirst() != null) {
             if (schemaTables.containsKey(key)) {
                 return schemaTables.get(key);
             }
         }
-        if (tables.containsKey(table)) {
-            return tables.get(table);
-        } else {
-            return table;
+        String schema = key.getFirst(), table = key.getSecond();
+        boolean changed = false;
+        if (schemas.containsKey(key.getFirst())) {
+            schema = schemas.get(key.getFirst());
+            changed = true;
         }
+
+        if (tables.containsKey(key.getSecond())) {
+            table = tables.get(key.getSecond());
+            changed = true;
+        }
+        return changed ? Pair.of(schema, table) : key;
     }
 
     /**
@@ -218,8 +214,32 @@ public final class Configuration {
      * @param newTable
      * @return
      */
-    public String registerTableOverride(String schema, String oldTable, String newTable) {
-        return schemaTables.put(Pair.of(schema, oldTable), newTable);
+    public Pair<String, String> registerTableOverride(String schema, String oldTable, String newTable) {
+        return registerTableOverride(schema, oldTable, schema, newTable);
+    }
+
+    /**
+     * Register a schema specific table override
+     *
+     * @param schema
+     * @param oldTable
+     * @param newSchema
+     * @param newTable
+     * @return
+     */
+    public Pair<String, String> registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
+        return registerTableOverride(Pair.of(schema, oldTable), Pair.of(newSchema, newTable));
+    }
+
+    /**
+     * Register a schema specific table override
+     *
+     * @param from
+     * @param to
+     * @return
+     */
+    public Pair<String, String> registerTableOverride(Pair<String, String> from, Pair<String, String> to) {
+        return schemaTables.put(from, to);
     }
 
     /**

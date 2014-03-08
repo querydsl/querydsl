@@ -2,6 +2,8 @@ package com.mysema.query;
 
 import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.POSTGRES;
+import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.Target.TERADATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,10 +31,12 @@ import com.mysema.query.spatial.path.MultiPolygonPath;
 import com.mysema.query.spatial.path.PointPath;
 import com.mysema.query.spatial.path.PolygonPath;
 import com.mysema.query.sql.spatial.QShapes;
+import com.mysema.query.sql.spatial.QSpatialRefSys;
 import com.mysema.query.sql.spatial.Shapes;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.testutil.ExcludeIn;
+import com.mysema.testutil.IncludeIn;
 
 public class SpatialBase extends AbstractBaseTest {
 
@@ -67,6 +71,13 @@ public class SpatialBase extends AbstractBaseTest {
 
     private TestQuery withMultiPolygons() {
         return query().from(shapes).where(shapes.id.between(14, 15));
+    }
+
+    @Test
+    @IncludeIn(POSTGRES)
+    public void SpatialRefSys() {
+        QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
+        query().from(spatialRefSys).list(spatialRefSys);
     }
 
     @Test // FIXME, maybe use enum as the type ?!?
@@ -206,8 +217,8 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, point1.difference(point2), MYSQL);
         add(expressions, point1.disjoint(point2));
         add(expressions, point1.distance(point2), MYSQL);
-        add(expressions, point1.distanceSphere(point2), H2, MYSQL);
-        add(expressions, point1.distanceSpheroid(point2), H2, MYSQL);
+        add(expressions, point1.distanceSphere(point2), H2, MYSQL, SQLSERVER);
+        add(expressions, point1.distanceSpheroid(point2), H2, MYSQL, SQLSERVER);
         add(expressions, point1.eq(point2));
         add(expressions, point1.intersection(point2), MYSQL);
         add(expressions, point1.intersects(point2));

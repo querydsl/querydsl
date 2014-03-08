@@ -23,6 +23,7 @@ import java.sql.Types;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.alias.Gender;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.sql.types.EnumByNameType;
@@ -68,9 +69,12 @@ public class ConfigurationTest {
         configuration.registerTableOverride("employee", "emp");
         configuration.registerTableOverride("public", "employee", "employees");
 
-        assertEquals("pub", configuration.getSchema("public"));
-        assertEquals("emp", configuration.getTable("", "employee"));
-        assertEquals("employees", configuration.getTable("public", "employee"));
+        assertEquals("pub", configuration.getOverride(Pair.of("public", "")).getFirst());
+        assertEquals("emp", configuration.getOverride(Pair.of("", "employee")).getSecond());
+        assertEquals("employees", configuration.getOverride(Pair.of("public", "employee")).getSecond());
+//        assertEquals("pub", configuration.getSchema("public"));
+//        assertEquals("emp", configuration.getTable("", "employee"));
+//        assertEquals("employees", configuration.getTable("public", "employee"));
     }
 
 }

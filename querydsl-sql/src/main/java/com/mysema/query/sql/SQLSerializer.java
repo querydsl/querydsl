@@ -102,13 +102,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteIdentifier(column));
     }
 
-    private void appendAsSchemaName(RelationalPath<?> path) {
-        final String schema = configuration.getSchema(path.getSchemaName());
+    private Pair<String, String> getSchemaAndTable(RelationalPath<?> path) {
+        return configuration.getOverride(Pair.of(path.getSchemaName(), path.getTableName()));
+    }
+
+    private void appendSchemaName(String schema) {
         append(templates.quoteIdentifier(schema));
     }
 
-    private void appendAsTableName(RelationalPath<?> path) {
-        final String table = configuration.getTable(path.getSchemaName(), path.getTableName());
+    private void appendTableName(String table) {
         append(templates.quoteIdentifier(table));
     }
 
@@ -179,11 +181,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
+                Pair<String, String> schemaAndTable = getSchemaAndTable(pe);
                 if (templates.isPrintSchema()) {
-                    appendAsSchemaName(pe);
+                    appendSchemaName(schemaAndTable.getFirst());
                     append(".");
                 }
-                appendAsTableName(pe);
+                appendTableName(schemaAndTable.getSecond());
                 append(templates.getTableAlias());
             }
         }
@@ -752,11 +755,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml) {
             if (path.equals(entity) && path instanceof RelationalPath<?>) {
+                Pair<String, String> schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
                 if (dmlWithSchema && templates.isPrintSchema()) {
-                    appendAsSchemaName((RelationalPath<?>)path);
+                    appendSchemaName(schemaAndTable.getFirst());
                     append(".");
                 }
-                appendAsTableName((RelationalPath<?>)path);
+                appendTableName(schemaAndTable.getSecond());
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
                 appendAsColumnName(path);
