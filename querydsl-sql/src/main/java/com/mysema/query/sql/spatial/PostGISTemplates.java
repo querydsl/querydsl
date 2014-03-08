@@ -16,6 +16,7 @@ package com.mysema.query.sql.spatial;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
 
+import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -46,8 +47,10 @@ public class PostGISTemplates extends PostgresTemplates {
 
     public PostGISTemplates(char escape, boolean quote) {
         super(escape, quote);
-        add(SpatialTemplatesSupport.getSpatialOps(true));
         addCustomType(PGgeometryType.DEFAULT);
+        add(SpatialTemplatesSupport.getSpatialOps(true));
+        add(SpatialOps.DISTANCE_SPHERE, "ST_Distance_Sphere({0}, {1})");
+        add(SpatialOps.DISTANCE_SPHEROID, "ST_Distance_Spheroid({0}, {1})");
     }
 
     @Override

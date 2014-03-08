@@ -207,6 +207,16 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
         return NumberOperation.create(Double.class, SpatialOps.DISTANCE, mixin, geometry);
     }
 
+    // TODO maybe move out
+    public NumberExpression<Double> distanceSphere(Expression<? extends Geometry> geometry) {
+        return NumberOperation.create(Double.class, SpatialOps.DISTANCE_SPHERE, mixin, geometry);
+    }
+
+    // TODO maybe move out
+    public NumberExpression<Double> distanceSpheroid(Expression<? extends Geometry> geometry) {
+        return NumberOperation.create(Double.class, SpatialOps.DISTANCE_SPHEROID, mixin, geometry);
+    }
+
     public GeometryExpression<Geometry> buffer(double distance) {
         return GeometryOperation.create(Geometry.class, SpatialOps.BUFFER, mixin, ConstantImpl.create(distance));
     }

@@ -199,7 +199,6 @@ public class SpatialBase extends AbstractBaseTest {
         }
     }
 
-
     private List<Expression<?>> createExpressions(PointExpression<Point> point1, Expression<Point> point2) {
         List<Expression<?>> expressions = Lists.newArrayList();
         add(expressions, point1.contains(point2));
@@ -207,6 +206,8 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, point1.difference(point2), MYSQL);
         add(expressions, point1.disjoint(point2));
         add(expressions, point1.distance(point2), MYSQL);
+        add(expressions, point1.distanceSphere(point2), H2, MYSQL);
+        add(expressions, point1.distanceSpheroid(point2), H2, MYSQL);
         add(expressions, point1.eq(point2));
         add(expressions, point1.intersection(point2), MYSQL);
         add(expressions, point1.intersects(point2));

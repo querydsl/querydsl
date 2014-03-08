@@ -48,6 +48,8 @@ public final class SpatialOps {
         public static final Operator<Object> RELATE = new OperatorImpl<Object>(NS, "RELATE");
         public static final Operator<Object> DISTANCE = new OperatorImpl<Object>(NS, "DISTANCE");
         public static final Operator<Object> DISTANCE2 = new OperatorImpl<Object>(NS, "DISTANCE2");
+        public static final Operator<Object> DISTANCE_SPHERE = new OperatorImpl<Object>(NS, "DISTANCE_SPHERE");
+        public static final Operator<Object> DISTANCE_SPHEROID = new OperatorImpl<Object>(NS, "DISTANCE_SPHEROID");
         public static final Operator<Object> INTERSECTION = new OperatorImpl<Object>(NS, "INTERSECTION");
         public static final Operator<Object> DIFFERENCE = new OperatorImpl<Object>(NS, "DIFFERENCE");
         public static final Operator<Object> UNION = new OperatorImpl<Object>(NS, "UNION");

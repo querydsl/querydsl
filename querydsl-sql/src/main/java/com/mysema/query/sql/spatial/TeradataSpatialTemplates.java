@@ -16,6 +16,7 @@ package com.mysema.query.sql.spatial;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
 
+import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.TeradataTemplates;
 import com.mysema.query.sql.types.StringAsObjectType;
@@ -50,6 +51,8 @@ public class TeradataSpatialTemplates extends TeradataTemplates {
         addCustomType(GeometryWktClobType.DEFAULT);
         addCustomType(StringAsObjectType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps(false));
+        add(SpatialOps.DISTANCE_SPHERE, "{0}.ST_SPHERICALDISTANCE({1})");
+        add(SpatialOps.DISTANCE_SPHEROID, "{0}.ST_SPHEROIDALDISTANCE({1})");
     }
 
     @Override
