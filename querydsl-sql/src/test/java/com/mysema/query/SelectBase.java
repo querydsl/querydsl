@@ -34,8 +34,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -1107,12 +1109,19 @@ public class SelectBase extends AbstractBaseTest {
         serialize(rows);
     }
 
-    private void serialize(Object obj) throws IOException{
+    private void serialize(Object obj) throws IOException, ClassNotFoundException{
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bytesOut);
         out.writeObject(obj);
         out.close();
         bytesOut.close();
+
+        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
+        ObjectInputStream in = new ObjectInputStream(bytesIn);
+        List<Tuple> rows = (List<Tuple>) in.readObject();
+        for (Tuple row : rows) {
+            row.hashCode();
+        }
     }
 
     @Test

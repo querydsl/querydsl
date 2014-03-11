@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
@@ -141,5 +142,27 @@ public final class ColumnMetadata implements Serializable {
     public ColumnMetadata withDigits(int decimalDigits) {
         return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof ColumnMetadata) {
+            ColumnMetadata md = (ColumnMetadata)o;
+            return name.equals(md.name)
+                && Objects.equal(jdbcType, md.jdbcType)
+                && nullable == md.nullable
+                && size == md.size
+                && decimalDigits == md.decimalDigits;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
 
 }
