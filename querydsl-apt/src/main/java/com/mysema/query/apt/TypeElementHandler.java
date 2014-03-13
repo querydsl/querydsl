@@ -67,7 +67,6 @@ public final class TypeElementHandler {
         this.queryTypeFactory = queryTypeFactory;
     }
 
-
     public EntityType handleEntityType(TypeElement element) {
         EntityType entityType = typeFactory.getEntityType(element.asType(), true);
         List<? extends Element> elements = element.getEnclosedElements();

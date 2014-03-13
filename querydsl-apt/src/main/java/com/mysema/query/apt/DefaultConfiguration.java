@@ -463,7 +463,6 @@ public class DefaultConfiguration implements Configuration {
         }
     }
 
-
     @Override
     public TypeMirror getRealType(ExecutableElement method) {
         return null;
