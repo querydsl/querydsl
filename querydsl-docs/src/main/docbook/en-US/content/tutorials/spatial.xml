@@ -160,4 +160,19 @@ List<SpatialRefSys> referenceSystems = query.from(spatialRefSys).list(spatialRef
   
   </sect2>
   
+  <sect2>
+  
+    <title>Inheritance</title>
+    
+    <para>In case you use only generic geometry types in your database schema you can use conversion methods
+    in the object model to convert to more specific types.</para>
+    
+    <programlisting language="java"><![CDATA[
+GeometryPath<Geometry> geometry = shapes.geometry;
+PointPath<Point> point = geometry.asPoint();
+NumberExpression<Double> pointX = point.x(); // x() is not available on GeometryExpression/GeometryPath
+]]></programlisting>
+  
+  </sect2>
+  
 </sect1>  
