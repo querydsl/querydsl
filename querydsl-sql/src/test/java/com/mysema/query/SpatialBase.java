@@ -118,6 +118,11 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Point_Distance() {
+
+    }
+
+    @Test
     public void Point_Instances() {
         List<Shapes> results = withPoints().list(shapes);
         assertEquals(5, results.size());

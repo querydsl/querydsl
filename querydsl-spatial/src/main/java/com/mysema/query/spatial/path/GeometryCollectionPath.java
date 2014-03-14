@@ -35,13 +35,25 @@ public class GeometryCollectionPath<T extends GeometryCollection> extends Geomet
 
     private final PathImpl<T> pathMixin;
 
+    public GeometryCollectionPath(Path<?> parent, String property) {
+        this((Class<? extends T>) GeometryCollection.class, parent, property);
+    }
+
     public GeometryCollectionPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    public GeometryCollectionPath(PathMetadata<?> metadata) {
+        this((Class<? extends T>) GeometryCollection.class, metadata);
     }
 
     public GeometryCollectionPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
+    }
+
+    public GeometryCollectionPath(String var) {
+        this((Class<? extends T>) GeometryCollection.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override

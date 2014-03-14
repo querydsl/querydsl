@@ -35,13 +35,25 @@ public class LinearRingPath<T extends LinearRing> extends LinearRingExpression<T
 
     private final PathImpl<T> pathMixin;
 
+    public LinearRingPath(Path<?> parent, String property) {
+        this((Class<? extends T>) LinearRing.class, parent, property);
+    }
+
     public LinearRingPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    public LinearRingPath(PathMetadata<?> metadata) {
+        this((Class<? extends T>) LinearRing.class, metadata);
     }
 
     public LinearRingPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
+    }
+
+    public LinearRingPath(String var) {
+        this((Class<? extends T>) LinearRing.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override

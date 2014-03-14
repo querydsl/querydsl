@@ -35,13 +35,25 @@ public class PolygonPath<T extends Polygon> extends PolygonExpression<T> impleme
 
     private final PathImpl<T> pathMixin;
 
+    public PolygonPath(Path<?> parent, String property) {
+        this((Class<? extends T>) Polygon.class, parent, property);
+    }
+
     public PolygonPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    public PolygonPath(PathMetadata<?> metadata) {
+        this((Class<? extends T>) Polygon.class, metadata);
     }
 
     public PolygonPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
+    }
+
+    public PolygonPath(String var) {
+        this((Class<? extends T>) Polygon.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override

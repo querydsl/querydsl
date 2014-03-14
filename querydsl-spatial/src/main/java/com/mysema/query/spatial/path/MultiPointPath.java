@@ -35,13 +35,25 @@ public class MultiPointPath<T extends MultiPoint> extends MultiPointExpression<T
 
     private final PathImpl<T> pathMixin;
 
+    public MultiPointPath(Path<?> parent, String property) {
+        this((Class<? extends T>) MultiPoint.class, parent, property);
+    }
+
     public MultiPointPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    public MultiPointPath(PathMetadata<?> metadata) {
+        this((Class<? extends T>) MultiPoint.class, metadata);
     }
 
     public MultiPointPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
+    }
+
+    public MultiPointPath(String var) {
+        this((Class<? extends T>) MultiPoint.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override

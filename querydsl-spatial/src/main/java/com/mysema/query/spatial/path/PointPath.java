@@ -35,13 +35,25 @@ public class PointPath<T extends Point> extends PointExpression<T> implements Pa
 
     private final PathImpl<T> pathMixin;
 
+    public PointPath(Path<?> parent, String property) {
+        this((Class<? extends T>) Point.class, parent, property);
+    }
+
     public PointPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    public PointPath(PathMetadata<?> metadata) {
+        this((Class<? extends T>) Point.class, metadata);
     }
 
     public PointPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
+    }
+
+    public PointPath(String var) {
+        this((Class<? extends T>) Point.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override

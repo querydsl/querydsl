@@ -35,13 +35,25 @@ public class LineStringPath<T extends LineString> extends LineStringExpression<T
 
     private final PathImpl<T> pathMixin;
 
+    public LineStringPath(Path<?> parent, String property) {
+        this((Class<? extends T>) LineString.class, parent, property);
+    }
+
     public LineStringPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    public LineStringPath(PathMetadata<?> metadata) {
+        this((Class<? extends T>) LineString.class, metadata);
     }
 
     public LineStringPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
+    }
+
+    public LineStringPath(String var) {
+        this((Class<? extends T>) LineString.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override
