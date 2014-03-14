@@ -15,7 +15,6 @@ package com.mysema.query.spatial.path;
 
 import java.lang.reflect.AnnotatedElement;
 
-import org.geolatte.geom.LineString;
 import org.geolatte.geom.MultiLineString;
 
 import com.mysema.query.spatial.MultiLineStringExpression;
@@ -54,7 +53,7 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
     }
 
     public MultiLineStringPath(String var) {
-        this((Class<? extends T>) LineString.class, PathMetadataFactory.forVariable(var));
+        this((Class<? extends T>) MultiLineString.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override
