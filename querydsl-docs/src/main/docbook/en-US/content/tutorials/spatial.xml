@@ -10,6 +10,8 @@
   
   <para>The <ulink url="http://www.geolatte.org/">geolatte</ulink> project is used for the object model.</para>
   
+  <imagedata fileref="media/spatial.svg" scalefit="1" width="90%"/>
+  
   <sect2>
     <title>Maven integration</title>
     
@@ -115,6 +117,9 @@
 Geometry point = Wkt.fromWkt("Point(2 2)");  
 query.where(table.geo.distance(point).lt(5.0));      
 ]]></programlisting>      
+
+      <para>In addition to straight distance between geometries spherical and spherodial distance are provided via
+      distanceSphere and distanceSpheroid.</para>
     
     </sect3>
     
@@ -135,7 +140,21 @@ query.where(table.geo.contains(point));
       
       <programlisting language="java"><![CDATA[
 Geometry geo = query.uniqueResult(table.geo1.intersection(table.geo2));      
-]]></programlisting>    
+]]></programlisting>
+    
+    </sect3>
+    
+    <sect3>
+     
+      <title>Access to the SPATIAL_REF_SYS table</title>   
+    
+      <para>Unified access to the SPATIAL_REF_SYS standard table is provided via the QSpatialRefSys 
+      and SpatialRefSys classes. SPATIAL_REF_SYS contains data about the supported spatial reference systems.</para>
+      
+      <programlisting language="java"><![CDATA[
+QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
+List<SpatialRefSys> referenceSystems = query.from(spatialRefSys).list(spatialRefSys);
+]]></programlisting>      
     
     </sect3>
   
