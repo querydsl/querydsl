@@ -103,7 +103,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private Pair<String, String> getSchemaAndTable(RelationalPath<?> path) {
-        return configuration.getOverride(Pair.of(path.getSchemaName(), path.getTableName()));
+        return configuration.getOverride(path.getSchemaAndTable());
     }
 
     private void appendSchemaName(String schema) {

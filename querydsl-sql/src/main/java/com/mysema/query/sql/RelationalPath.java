@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.ProjectionRole;
@@ -25,36 +26,43 @@ import com.mysema.query.types.ProjectionRole;
 /**
  * RelationalPath extends {@link EntityPath} to provide access to relational
  * metadata
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
 
     /**
+     * Get the schema and table name
+     *
+     * @return
+     */
+    Pair<String, String> getSchemaAndTable();
+
+    /**
      * Get the schema name
-     * 
+     *
      * @return
      */
     String getSchemaName();
 
     /**
      * Get the table name
-     * 
+     *
      * @return
      */
     String getTableName();
 
     /**
      * Get all columns
-     * 
+     *
      * @return
      */
     List<Path<?>> getColumns();
 
     /**
      * Get the primary key for this relation or null if none exists
-     * 
+     *
      * @return
      */
     @Nullable
@@ -62,14 +70,14 @@ public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
 
     /**
      * Get the foreign keys for this relation
-     * 
+     *
      * @return
      */
     Collection<ForeignKey<?>> getForeignKeys();
 
     /**
      * Get the inverse foreign keys for this relation
-     * 
+     *
      * @return
      */
     Collection<ForeignKey<?>> getInverseForeignKeys();
@@ -79,6 +87,7 @@ public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
      * {@link ColumnMetadata#getColumnMetadata(Path)} for a null safe
      * alternative
      */
+    @Override
     @Nullable
     ColumnMetadata getMetadata(Path<?> column);
 }

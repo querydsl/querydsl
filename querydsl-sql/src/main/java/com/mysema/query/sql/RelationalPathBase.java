@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
@@ -54,6 +55,8 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     private final String schema, table;
 
+    private final Pair<String, String> schemaAndTable;
+
     private transient FactoryExpression<T> projection;
 
     public RelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
@@ -65,6 +68,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         super(type, metadata);
         this.schema = schema;
         this.table = table;
+        this.schemaAndTable = Pair.of(schema, table);
     }
 
     protected PrimaryKey<T> createPrimaryKey(Path<?>... columns) {
@@ -140,6 +144,11 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Override
     public PrimaryKey<T> getPrimaryKey() {
         return primaryKey;
+    }
+
+    @Override
+    public Pair<String, String> getSchemaAndTable() {
+        return schemaAndTable;
     }
 
     @Override
