@@ -22,6 +22,9 @@ import javax.annotation.Nullable;
 /**
  * Defines the de/serialization of a typed Java object from a ResultSet or to a PreparedStatement
  *
+ * <p>getValue(ResultSet, int) is used for extraction and setValue(PreparedStatement, int, T) is
+ * used for population</p>
+ *
  * @author tiwe
  *
  * @param <T>
