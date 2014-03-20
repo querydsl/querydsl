@@ -1034,6 +1034,22 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
  -->  
 
   <sect2>
+  
+    <title>Extracting the SQL query and bindings</title>
+    
+    <para>The SQL query and bindings can be extracted via the getSQL method:</para>
+    
+    <programlisting language="java"><![CDATA[
+SQLBindings bindings = query.getSQL(customer.id, customer.firstname, customer.lastname);
+System.out.println(bindings.getSQL()); 
+]]></programlisting>    
+    
+   <para>If you need also all literals in the SQL string you can enable literal serialization on the 
+   query or configuration level via setUseLiterals(true).</para>
+
+  </sect2>
+
+  <sect2>
 
     <title>Custom types</title>
 
