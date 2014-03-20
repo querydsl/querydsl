@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 /**
  * Defines the de/serialization of a typed Java object from a ResultSet or to a PreparedStatement
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -29,13 +29,39 @@ import javax.annotation.Nullable;
 // TODO : rename this since it clashes with com.mysema.codegen.model.Type
 public interface Type<T> {
 
+    /**
+     * Get the SQL supported SQL types
+     *
+     * @return
+     */
     int[] getSQLTypes();
 
+    /**
+     * Get the returned type
+     *
+     * @return
+     */
     Class<T> getReturnedClass();
 
+    /**
+     * Get the object from the result set
+     *
+     * @param rs result set
+     * @param startIndex column index in result set
+     * @return
+     * @throws SQLException
+     */
     @Nullable
     T getValue(ResultSet rs, int startIndex) throws SQLException;
 
+    /**
+     * Set the object to the statement
+     *
+     * @param st statement
+     * @param startIndex column index in statement
+     * @param value value to be set
+     * @throws SQLException
+     */
     void setValue(PreparedStatement st, int startIndex, T value) throws SQLException;
 
 }

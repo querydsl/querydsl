@@ -217,7 +217,7 @@ public final class Configuration {
     }
 
     /**
-     * Register the given Type to be used
+     * Register the given {@link Type} converter
      *
      * @param type
      */
@@ -249,7 +249,7 @@ public final class Configuration {
     }
 
     /**
-     * Register the given Type for the given table and column
+     * Register the given {@link Type} converter for the given table and column
      *
      * @param table
      * @param column
@@ -309,6 +309,9 @@ public final class Configuration {
         this.useLiterals = useLiterals;
     }
 
+    /**
+     * @param exceptionTranslator
+     */
     public void setExceptionTranslator(SQLExceptionTranslator exceptionTranslator) {
         this.exceptionTranslator = exceptionTranslator;
     }
