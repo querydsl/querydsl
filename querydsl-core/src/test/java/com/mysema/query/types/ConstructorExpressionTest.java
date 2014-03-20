@@ -63,6 +63,27 @@ public class ConstructorExpressionTest {
     }
 
     @Test
+    public void CreateNullPrimitive() {
+        Expression<Boolean> booleanVal = ConstantImpl.create(false);
+        Expression<Byte> byteVal = ConstantImpl.create((byte) 0);
+        Expression<Character> charVal = ConstantImpl.create('\0');
+        Expression<Short> shortVal = ConstantImpl.create((short) 0);
+        Expression<Integer> intVal = ConstantImpl.create(0);
+        Expression<Long> longVal = ConstantImpl.create(0L);
+        Expression<Float> floatVal = ConstantImpl.create(0.0F);
+        Expression<Double> doubleVal = ConstantImpl.create(0.0);
+        assertNotNull(ConstructorExpression.create(ProjectionExample.class, 
+                booleanVal, byteVal,
+                charVal, shortVal,
+                intVal, longVal,
+                floatVal, doubleVal)
+                .newInstance(null, null,
+                        null, null,
+                        null, null,
+                        null, null));
+    }
+
+    @Test
     public void FactoryExpression_has_right_args() {
         FactoryExpression<ProjectionExample> constructor = ConstructorExpression.create(ProjectionExample.class, concat);
         constructor = FactoryExpressionUtils.wrap(constructor);

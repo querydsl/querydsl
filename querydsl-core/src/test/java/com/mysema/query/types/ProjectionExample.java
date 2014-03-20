@@ -35,4 +35,12 @@ public class ProjectionExample{
     public ProjectionExample(CharSequence text) {
         this.text = text.toString();
     }
+
+    public ProjectionExample(boolean booleanArg, byte byteArg,
+            char charArg, short shortArg,
+            int intArg, long longArg,
+            float floatArg, double doubleArg) {
+
+    }
+
 }

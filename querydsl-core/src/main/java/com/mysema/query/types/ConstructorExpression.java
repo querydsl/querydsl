@@ -24,6 +24,8 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ConstructorExpression represents a constructor invocation
@@ -50,6 +52,19 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     private static Class<?> normalize(Class<?> clazz) {
         return Primitives.wrap(clazz);
+    }
+
+    private static  final  Map<Class<?>, Object> defaultPrimitives = new HashMap<Class<?>, Object>();
+    
+    static {
+        defaultPrimitives.put(Boolean.TYPE, false);
+        defaultPrimitives.put(Byte.TYPE, (byte) 0);
+        defaultPrimitives.put(Character.TYPE, (char) 0);
+        defaultPrimitives.put(Short.TYPE, (short) 0);
+        defaultPrimitives.put(Integer.TYPE, 0);
+        defaultPrimitives.put(Long.TYPE, 0L);
+        defaultPrimitives.put(Float.TYPE, 0.0F);
+        defaultPrimitives.put(Double.TYPE, 0.0);
     }
 
     private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {
@@ -151,7 +166,6 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public T newInstance(Object... args) {
         try {
             if (constructor == null) {
@@ -168,9 +182,9 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
                         paramTypes[paramTypes.length - 1].getComponentType(), size);
                 cargs[cargs.length - 1] = array;
                 System.arraycopy(args, cargs.length - 1, array, 0, size);
-                return (T) constructor.newInstance(cargs);
+                return doNewInstance(cargs);
             } else {
-                return (T) constructor.newInstance(args);
+                return doNewInstance(args);
             }
 
         } catch (SecurityException e) {
@@ -185,5 +199,19 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             throw new ExpressionException(e.getMessage(), e);
         }
     }
+    @SuppressWarnings("unchecked")
+    private T doNewInstance(Object... cargs) throws InvocationTargetException, InstantiationException, IllegalArgumentException, IllegalAccessException {
+        Object[] safeArgs = new Object[cargs.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Object actualArg = cargs[i];
+            if (parameterTypes[i].isPrimitive() && actualArg == null) {
+                safeArgs[i] = defaultPrimitives.get(parameterTypes[i]);
+            } else {
+                safeArgs[i] = actualArg;
+            }
+        }
+        return (T) constructor.newInstance(safeArgs);
+    }
+
 
 }
