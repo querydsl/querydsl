@@ -449,6 +449,10 @@ Configuration configuration = new Configuration(templates);
      .escape(ch)    // to set the escape char
      .build();      // to get the customized SQLTemplates instance
 ]]></programlisting>  
+
+    <para>The methods of the Configuration class can be used to enable direct serialization of literals
+    via setUseLiterals(true), override schema and tables and register custom types. For full details look
+    at the javadocs of Configuration.</para>
   
   </sect2>
 
