@@ -201,16 +201,13 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     }
     @SuppressWarnings("unchecked")
     private T doNewInstance(Object... cargs) throws InvocationTargetException, InstantiationException, IllegalArgumentException, IllegalAccessException {
-        Object[] safeArgs = new Object[cargs.length];
         for (int i = 0; i < parameterTypes.length; i++) {
             Object actualArg = cargs[i];
             if (parameterTypes[i].isPrimitive() && actualArg == null) {
-                safeArgs[i] = defaultPrimitives.get(parameterTypes[i]);
-            } else {
-                safeArgs[i] = actualArg;
+                cargs[i] = defaultPrimitives.get(parameterTypes[i]);
             }
         }
-        return (T) constructor.newInstance(safeArgs);
+        return (T) constructor.newInstance(cargs);
     }
 
 
