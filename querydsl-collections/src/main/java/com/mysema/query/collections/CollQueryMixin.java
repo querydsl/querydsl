@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,13 +24,13 @@ import com.mysema.query.types.template.BooleanTemplate;
 
 /**
  * CollQueryMixin extends {@link QueryMixin} to provide normalization logic specific to this module
- * 
+ *
  * @author tiwe
  *
  * @param <T>
  */
 public class CollQueryMixin<T> extends QueryMixin<T> {
-    
+
     private static final Predicate ANY = BooleanTemplate.create("any");
 
     public CollQueryMixin() {}
@@ -42,22 +42,22 @@ public class CollQueryMixin<T> extends QueryMixin<T> {
     public CollQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
-    
+
     @Override
     protected Predicate normalize(Predicate predicate, boolean where) {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
-        if (predicate != null) {            
+        if (predicate != null) {
             Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.paths.size(); i++) {
-                innerJoin(
-                    (Path)context.paths.get(i).getMetadata().getParent(), 
+                leftJoin(
+                    (Path)context.paths.get(i).getMetadata().getParent(),
                     (Path)context.replacements.get(i));
                 on(ANY);
             }
-            return transformed;    
+            return transformed;
         } else {
             return predicate;
         }
     }
-} 
+}

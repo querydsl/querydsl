@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Objects;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -79,8 +80,22 @@ public final class CollQueryFunctions {
 
     private static final List<Object> nullList = Arrays.<Object>asList((Object)null);
 
+    public static boolean equals(Object o1, Object o2) {
+        return Objects.equal(o1, o2);
+    }
+
+    public static <T extends Comparable<? super T>> int compareTo(T c1, T c2) {
+        if (c1 == null) {
+            return c2 == null ? 0 : -1;
+        } else if (c2 == null) {
+            return 1;
+        } else {
+            return c1.compareTo(c2);
+        }
+    }
+
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
-        return a.compareTo(b) >= 0 && a.compareTo(c) <= 0;
+        return compareTo(a, b) >= 0 && compareTo(a, c) <= 0;
     }
 
     public static double cot(double x) {
