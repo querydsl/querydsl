@@ -73,10 +73,10 @@ public class KeyDataFactory {
         try{
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
-                String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
-                String foreignSchemaName = foreignKeys.getString(FK_FOREIGN_SCHEMA_NAME);
-                String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
-                String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
+                String parentColumnName = namingStrategy.normalizeColumnName(foreignKeys.getString(FK_PARENT_COLUMN_NAME));
+                String foreignSchemaName = namingStrategy.normalizeSchemaName(foreignKeys.getString(FK_FOREIGN_SCHEMA_NAME));
+                String foreignTableName = namingStrategy.normalizeTableName(foreignKeys.getString(FK_FOREIGN_TABLE_NAME));
+                String foreignColumn = namingStrategy.normalizeColumnName(foreignKeys.getString(FK_FOREIGN_COLUMN_NAME));
                 if (name == null || name.isEmpty()) {
                     name = tableName + "_" + foreignTableName + "_IFK";
                 }
@@ -102,10 +102,10 @@ public class KeyDataFactory {
         try{
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
-                String parentSchemaName = foreignKeys.getString(FK_PARENT_SCHEMA_NAME);
-                String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
-                String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
-                String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
+                String parentSchemaName = namingStrategy.normalizeSchemaName(foreignKeys.getString(FK_PARENT_SCHEMA_NAME));
+                String parentTableName = namingStrategy.normalizeTableName(foreignKeys.getString(FK_PARENT_TABLE_NAME));
+                String parentColumnName = namingStrategy.normalizeColumnName(foreignKeys.getString(FK_PARENT_COLUMN_NAME));
+                String foreignColumn = namingStrategy.normalizeColumnName(foreignKeys.getString(FK_FOREIGN_COLUMN_NAME));
                 if (name == null || name.isEmpty()) {
                     name = tableName + "_" + parentTableName + "_FK";
                 }
