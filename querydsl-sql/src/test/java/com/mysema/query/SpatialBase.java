@@ -211,6 +211,8 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, point.isSimple());
         add(expressions, point.m(), MYSQL, TERADATA, H2);
         add(expressions, point.srid());
+        // TODO add emulations
+        add(expressions, point.transform(26986), MYSQL, POSTGRES, SQLSERVER, TERADATA, H2);
         // point specific
         add(expressions, point.x(), H2);
         add(expressions, point.y(), H2);

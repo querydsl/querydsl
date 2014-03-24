@@ -260,4 +260,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
         return GeometryOperation.create(Geometry.class, SpatialOps.SYMDIFFERENCE, mixin, geometry);
     }
 
+    public GeometryExpression<Geometry> transform(int srid) {
+        return GeometryOperation.create(Geometry.class, SpatialOps.TRANSFORM, mixin, ConstantImpl.create(srid));
+    }
+
 }

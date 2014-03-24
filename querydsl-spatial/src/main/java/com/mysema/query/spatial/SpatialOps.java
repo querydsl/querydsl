@@ -57,6 +57,7 @@ public final class SpatialOps {
         public static final Operator<Object> BUFFER = new OperatorImpl<Object>(NS, "BUFFER");
         public static final Operator<Object> BUFFER2 = new OperatorImpl<Object>(NS, "BUFFER2");
         public static final Operator<Object> CONVEXHULL = new OperatorImpl<Object>(NS, "CONVEXHULL");
+        public static final Operator<Object> TRANSFORM = new OperatorImpl<Object>(NS, "TRANSFORM");
 
         // Point
         public static final Operator<Object> X = new OperatorImpl<Object>(NS, "X");

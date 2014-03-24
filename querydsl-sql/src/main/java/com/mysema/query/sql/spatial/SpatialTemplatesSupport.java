@@ -102,6 +102,7 @@ public final class SpatialTemplatesSupport {
         ops.put(SpatialOps.SURFACE, createSpatial(prefix + "Surface", 1, asFunction)); // XXX
         ops.put(SpatialOps.SYMDIFFERENCE, createSpatial(prefix + "SymDifference", 2, asFunction));
         ops.put(SpatialOps.TOUCHES, createSpatial(prefix + "Touches", 2, asFunction));
+        ops.put(SpatialOps.TRANSFORM, createSpatial(prefix + "Transform", 2, asFunction));
         ops.put(SpatialOps.UNION, createSpatial(prefix + "Union", 2, asFunction));
         ops.put(SpatialOps.WITHIN, createSpatial(prefix + "Within", 2, asFunction));
         ops.put(SpatialOps.WKBTOSQL, createSpatial(prefix + "WKBToSQL", 2, asFunction));
