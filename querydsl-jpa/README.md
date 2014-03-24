@@ -1,4 +1,4 @@
-# Querydsl JPA #
+## Querydsl JPA
 
 The JPA module provides integration with the JPA 2 persistence API.
 

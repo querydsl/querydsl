@@ -1,6 +1,6 @@
-# Querydsl Lucene #
+## Querydsl Lucene
 
-The Lucene module provides integration with the Lucene indexing library.
+The Lucene module provides integration with the Lucene 3 indexing library.
 
 **Maven integration**
 
@@ -8,7 +8,7 @@ The Lucene module provides integration with the Lucene indexing library.
         
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-lucene</artifactId>
+      <artifactId>querydsl-lucene3</artifactId>
       <version>${querydsl.version}</version>
     </dependency>
     
@@ -16,7 +16,7 @@ The Lucene module provides integration with the Lucene indexing library.
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.6.1</version>
-    </dependency>   
+    </dependency>
 
 
 **Creating the query types**
