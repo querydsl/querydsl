@@ -1,4 +1,4 @@
-## Querydsl Lucene
+## Querydsl Lucene 3
 
 The Lucene module provides integration with the Lucene 3 indexing library.
 
