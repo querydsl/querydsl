@@ -15,6 +15,7 @@
 package com.mysema.query.scala.sql
 
 import com.google.common.collect.ImmutableList._
+import com.mysema.commons.lang.Pair
 import com.mysema.scala.ReflectionUtils._
 import com.mysema.query.scala._
 import com.mysema.query.sql._
@@ -36,6 +37,8 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   import scala.collection.JavaConversions._
 
   private var primaryKey: PrimaryKey[T] = _
+
+  private lazy val schemaAndTable = Pair.of(schema, table)
 
   @BeanProperty
   val columns: JavaList[Path[_]] = new ArrayList[Path[_]]
@@ -101,6 +104,6 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
 
   def getTableName = table
 
-
+  def getSchemaAndTable = schemaAndTable
 
 }
