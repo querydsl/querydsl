@@ -22,6 +22,10 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A Point is a 0-dimensional geometric object and represents a single location in coordinate space. A Point has an
+ * x-coordinate value, a y-coordinate value. If called for by the associated Spatial Reference System, it may also
+ * have coordinate values for z and m.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -37,6 +41,11 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
         super(mixin);
     }
 
+    /**
+     * The x-coordinate value for this Point.
+     *
+     * @return
+     */
     public NumberExpression<Double> x() {
         if (x == null) {
             x = NumberOperation.create(Double.class, SpatialOps.X, mixin);
@@ -44,6 +53,11 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
         return x;
     }
 
+    /**
+     * The y-coordinate value for this Point.
+     *
+     * @return
+     */
     public NumberExpression<Double> y() {
         if (y == null) {
             y = NumberOperation.create(Double.class, SpatialOps.Y, mixin);
@@ -51,6 +65,11 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
         return y;
     }
 
+    /**
+     * The z-coordinate value for this Point, if it has one. Returns NIL otherwise.
+     *
+     * @return
+     */
     public NumberExpression<Double> z() {
         if (z == null) {
             z = NumberOperation.create(Double.class, SpatialOps.Z, mixin);
@@ -58,6 +77,11 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
         return z;
     }
 
+    /**
+     * The m-coordinate value for this Point, if it has one. Returns NIL otherwise.
+     *
+     * @return
+     */
     public NumberExpression<Double> m() {
         if (m == null) {
             m = NumberOperation.create(Double.class, SpatialOps.M, mixin);

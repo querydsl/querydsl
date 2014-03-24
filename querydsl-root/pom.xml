@@ -229,6 +229,10 @@
               <packages>com.mysema.query.sql*</packages>
             </group>
             <group>
+              <title>Spatial</title>
+              <packages>com.mysema.query.spatial*</packages>
+            </group>
+            <group>
               <title>Lucene</title>
               <packages>com.mysema.query.lucene</packages>
             </group>

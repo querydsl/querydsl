@@ -24,6 +24,9 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A LineString is a Curve with linear interpolation between Points. Each consecutive pair of Points defines a Line
+ * segment.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -39,6 +42,11 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
         super(mixin);
     }
 
+    /**
+     * The number of Points in this LineString.
+     *
+     * @return
+     */
     public NumberExpression<Integer> numPoints() {
         if (numPoints == null) {
             numPoints = NumberOperation.create(Integer.class, SpatialOps.NUM_POINTS, mixin);
@@ -46,6 +54,12 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
         return numPoints;
     }
 
+    /**
+     * Returns the specified Point N in this LineString.
+     *
+     * @param idx
+     * @return
+     */
     public PointExpression<Point> pointN(int idx) {
         return PointOperation.create(Point.class, SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
     }

@@ -24,6 +24,10 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A Polygon is a planar Surface defined by 1 exterior boundary and 0 or more interior boundaries. Each interior
+ * boundary defines a hole in the Polygon. A Triangle is a polygon with 3 distinct, non-collinear vertices and no
+ * interior boundary.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -42,13 +46,23 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
         super(mixin);
     }
 
-    public LineStringExpression<?> exterorRing() {
+    /**
+     * Returns the exterior ring of this Polygon.
+     *
+     * @return
+     */
+    public LineStringExpression<?> exteriorRing() {
         if (exterorRing == null) {
             exterorRing = LineStringOperation.create(LineString.class, SpatialOps.EXTERIOR_RING, mixin);
         }
         return exterorRing;
     }
 
+    /**
+     * Returns the number of interior rings in this Polygon.
+     *
+     * @return
+     */
     public NumberExpression<Integer> numInteriorRing() {
         if (numInteriorRing == null) {
             numInteriorRing = NumberOperation.create(Integer.class, SpatialOps.NUM_INTERIOR_RING, mixin);
@@ -56,6 +70,12 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
         return numInteriorRing;
     }
 
+    /**
+     * Returns the N th interior ring for this Polygon as a LineString.
+     *
+     * @param idx
+     * @return
+     */
     public LineStringExpression<LineString> interiorRingN(int idx) {
         return LineStringOperation.create(LineString.class, SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));
     }

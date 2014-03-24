@@ -18,6 +18,8 @@ import org.geolatte.geom.MultiLineString;
 import com.mysema.query.types.Expression;
 
 /**
+ * A MultiLineString is a MultiCurve whose elements are LineStrings.
+ *
  * @author tiwe
  *
  * @param <T>

@@ -24,6 +24,8 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A MultiCurve is a 1-dimensional GeometryCollection whose elements are Curves.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -42,6 +44,12 @@ public abstract class MultiCurveExpression<T extends GeometryCollection> extends
         super(mixin);
     }
 
+    /**
+     * Returns 1 (TRUE) if this MultiCurve is closed [StartPoint ( ) = EndPoint ( ) for each
+     * Curve in this MultiCurve].
+     *
+     * @return
+     */
     public BooleanExpression isClosed() {
         if (closed == null) {
             closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
@@ -49,6 +57,12 @@ public abstract class MultiCurveExpression<T extends GeometryCollection> extends
         return closed;
     }
 
+    /**
+     * The Length of this MultiCurve which is equal to the sum of the lengths of the element
+     * Curves.
+     *
+     * @return
+     */
     public NumberExpression<Double> length() {
         if (length == null) {
             length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);

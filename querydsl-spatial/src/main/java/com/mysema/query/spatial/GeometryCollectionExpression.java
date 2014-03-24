@@ -24,6 +24,8 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A GeometryCollection is a geometric object that is a collection of some number of geometric objects.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -39,6 +41,11 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
         super(mixin);
     }
 
+    /**
+     * Returns the number of geometries in this GeometryCollection.
+     *
+     * @return
+     */
     public NumberExpression<Integer> numGeometries() {
         if (numGeometries == null) {
             numGeometries = NumberOperation.create(Integer.class, SpatialOps.NUM_GEOMETRIES, mixin);
@@ -46,6 +53,12 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
         return numGeometries;
     }
 
+    /**
+     * Returns the Nth geometry in this GeometryCollection.
+     *
+     * @param n
+     * @return
+     */
     public GeometryExpression<Geometry> geometryN(Integer n) {
         return GeometryOperation.create(Geometry.class, SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));
     }

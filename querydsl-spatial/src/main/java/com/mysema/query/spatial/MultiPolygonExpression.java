@@ -18,6 +18,8 @@ import org.geolatte.geom.MultiPolygon;
 import com.mysema.query.types.Expression;
 
 /**
+ * A MultiPolygon is a MultiSurface whose elements are Polygons.
+ *
  * @author tiwe
  *
  * @param <T>

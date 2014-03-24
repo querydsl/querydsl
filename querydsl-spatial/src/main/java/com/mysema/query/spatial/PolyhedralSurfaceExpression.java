@@ -26,6 +26,11 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A PolyhedralSurface is a contiguous collection of polygons, which share common boundary segments.
+ * For each pair of polygons that “touch”, the common boundary shall be expressible as a finite
+ * collection of LineStrings. Each such LineString shall be part of the boundary of at most 2 Polygon
+ * patches.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -44,6 +49,11 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
         super(mixin);
     }
 
+    /**
+     * Returns the number of including polygons
+     *
+     * @return
+     */
     public NumberExpression<Integer> numPatches() {
         if (numPatches == null) {
             numPatches = NumberOperation.create(Integer.class, SpatialOps.NUM_SURFACES, mixin);
@@ -51,10 +61,22 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
         return numPatches;
     }
 
+    /**
+     * Returns a polygon in this surface, the order is arbitrary.
+     *
+     * @param n
+     * @return
+     */
     public PolygonExpression<?> patchN(int n) {
         return PolygonOperation.create(Polygon.class, SpatialOps.SURFACE, mixin, ConstantImpl.create(n));
     }
 
+    /**
+     * Returns 1 (True) if the polygon closes on itself, and thus has no boundary and
+     * encloses a solid
+     *
+     * @return
+     */
     public BooleanExpression isClosed() {
         if (closed == null) {
             closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);

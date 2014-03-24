@@ -23,6 +23,8 @@ import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
 /**
+ * A Surface is a 2-dimensional geometric object.
+ *
  * @author tiwe
  *
  * @param <T>
@@ -41,6 +43,11 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
         super(mixin);
     }
 
+    /**
+     * The area of this Surface, as measured in the spatial reference system of this Surface.
+     *
+     * @return
+     */
     public NumberExpression<Double> area() {
         if (area == null) {
             area = NumberOperation.create(Double.class, SpatialOps.AREA, mixin);
@@ -48,6 +55,12 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
         return area;
     }
 
+    /**
+     * The mathematical centroid for this Surface as a Point. The result is not guaranteed to
+     * be on this Surface.
+     *
+     * @return
+     */
     public PointExpression<Point> centroid() {
         if (centroid == null) {
             centroid = PointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
@@ -55,6 +68,11 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
         return centroid;
     }
 
+    /**
+     * A Point guaranteed to be on this Surface.
+     *
+     * @return
+     */
     public PointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
             pointOnSurface = PointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);

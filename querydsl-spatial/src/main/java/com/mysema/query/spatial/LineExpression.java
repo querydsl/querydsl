@@ -18,6 +18,8 @@ import org.geolatte.geom.LineString;
 import com.mysema.query.types.Expression;
 
 /**
+ * A Line is a LineString with exactly 2 Points.
+ *
  * @author tiwe
  *
  * @param <T>

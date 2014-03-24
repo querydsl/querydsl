@@ -324,7 +324,7 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, polygon.centroid());
         add(expressions, polygon.pointOnSurface(), H2, MYSQL);
         // polygon specific
-        add(expressions, polygon.exterorRing(), H2);
+        add(expressions, polygon.exteriorRing(), H2);
         add(expressions, polygon.numInteriorRing(), H2);
         add(expressions, polygon.interiorRingN(1), H2);
 

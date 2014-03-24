@@ -18,6 +18,8 @@ import org.geolatte.geom.LineString;
 import com.mysema.query.types.Expression;
 
 /**
+ * A LinearRing is a LineString that is both closed and simple.
+ *
  * @author tiwe
  *
  * @param <T>

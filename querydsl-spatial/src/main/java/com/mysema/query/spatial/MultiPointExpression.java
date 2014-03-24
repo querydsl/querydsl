@@ -18,6 +18,10 @@ import org.geolatte.geom.MultiPoint;
 import com.mysema.query.types.Expression;
 
 /**
+ * A MultiPoint is a 0-dimensional GeometryCollection. The elements of a MultiPoint are restricted to Points. The
+ * Points are not connected or ordered in any semantically important way (see the discussion at
+ * GeometryCollection).
+ *
  * @author tiwe
  *
  * @param <T>
