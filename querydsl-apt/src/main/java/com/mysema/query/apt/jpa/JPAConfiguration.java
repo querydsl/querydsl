@@ -134,6 +134,9 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
 
         mirror = TypeUtils.getAnnotationMirrorOfType(element, OneToMany.class);
+        if (mirror == null) {
+            mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToMany.class);
+        }
         if (mirror != null) {
             TypeMirror typeArg = TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
             TypeMirror erasure = types.erasure(element.asType());
