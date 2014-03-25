@@ -13,7 +13,6 @@
  */
 package com.mysema.query.types;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -24,6 +23,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,8 +54,8 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         return Primitives.wrap(clazz);
     }
 
-    private static  final  Map<Class<?>, Object> defaultPrimitives = new HashMap<Class<?>, Object>();
-    
+    private static final Map<Class<?>, Object> defaultPrimitives = new HashMap<Class<?>, Object>();
+
     static {
         defaultPrimitives.put(Boolean.TYPE, false);
         defaultPrimitives.put(Byte.TYPE, (byte) 0);
@@ -107,10 +107,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     private final ImmutableList<Expression<?>> args;
 
-    private final Class<?>[] parameterTypes;
-
-    @Nullable
-    private transient Constructor<?> constructor;
+    private transient final ConstructorProvider constructorProvider;
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));
@@ -118,7 +115,8 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
         super(type);
-        this.parameterTypes = getRealParameters(type, paramTypes).clone();
+        this.constructorProvider = new ConstructorProvider(
+                getRealParameters(type, paramTypes).clone());
         this.args = args;
     }
 
@@ -135,7 +133,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     /**
      * Create an alias for the expression
      *
-     * @retu rn
+     * @return
      */
     public Expression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
@@ -152,7 +150,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             return true;
         } else if (obj instanceof ConstructorExpression<?>) {
             ConstructorExpression<?> c = (ConstructorExpression<?>)obj;
-            return Arrays.equals(parameterTypes, c.parameterTypes)
+            return constructorProvider.equals(c.constructorProvider)
                 && args.equals(c.args)
                 && getType().equals(c.getType());
         } else {
@@ -168,24 +166,25 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     @Override
     public T newInstance(Object... args) {
         try {
-            if (constructor == null) {
-                constructor = getType().getConstructor(parameterTypes);
-            }
-            if (constructor.isVarArgs()) {
-                Class<?>[] paramTypes = constructor.getParameterTypes();
-                // constructor args
-                Object[] cargs = new Object[paramTypes.length];
-                System.arraycopy(args, 0, cargs, 0, cargs.length - 1);
-                // array with vargs
-                int size = args.length - cargs.length + 1;
-                Object array = Array.newInstance(
-                        paramTypes[paramTypes.length - 1].getComponentType(), size);
-                cargs[cargs.length - 1] = array;
-                System.arraycopy(args, cargs.length - 1, array, 0, size);
-                return doNewInstance(cargs);
-            } else {
-                return doNewInstance(args);
-            }
+            return constructorProvider.provide().newInstance(args);
+//            if (ConstructorProvider.getConstructor() == null) {
+//                ConstructorProvider.setConstructor(getType().getConstructor(parameterTypes));
+//            }
+//            if (constructorProvider.getConstructor().isVarArgs()) {
+//                Class<?>[] paramTypes = constructorProvider.getConstructor().getParameterTypes();
+//                // constructor args
+//                Object[] cargs = new Object[paramTypes.length];
+//                System.arraycopy(args, 0, cargs, 0, cargs.length - 1);
+//                // array with vargs
+//                int size = args.length - cargs.length + 1;
+//                Object[] array = (Object[]) Array.newInstance(
+//                        paramTypes[paramTypes.length - 1].getComponentType(), size);
+//                cargs[cargs.length - 1] = array;
+//                System.arraycopy(args, cargs.length - 1, array, 0, size);
+//                return doNewInstance(cargs);
+//            } else {
+//                return doNewInstance(args);
+//            }
 
         } catch (SecurityException e) {
            throw new ExpressionException(e.getMessage(), e);
@@ -199,16 +198,132 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             throw new ExpressionException(e.getMessage(), e);
         }
     }
-    @SuppressWarnings("unchecked")
-    private T doNewInstance(Object... cargs) throws InvocationTargetException, InstantiationException, IllegalArgumentException, IllegalAccessException {
-        for (int i = 0; i < parameterTypes.length; i++) {
-            Object actualArg = cargs[i];
-            if (parameterTypes[i].isPrimitive() && actualArg == null) {
-                cargs[i] = defaultPrimitives.get(parameterTypes[i]);
-            }
+
+    /**
+     * A provider for the Constructor.
+     *
+     * A provider {@link #provide() provides} a provider, with its provider
+     * chain.
+     *
+     * @see VarArgsConstructorProvider
+     * @see NullSafePrimitiveConstructorProvider
+     */
+    private class ConstructorProvider {
+
+        @Nullable
+        protected Constructor<?> constructor;
+        protected Class<?>[] parameterTypes;
+        protected ConstructorProvider providerChain;
+        private boolean provided = false;
+
+        public ConstructorProvider(Class<?>[] paramTypes) {
+            parameterTypes = paramTypes;
         }
-        return (T) constructor.newInstance(cargs);
+
+        private ConstructorProvider(ConstructorProvider provider) {
+            providerChain = provider;
+        }
+
+        /**
+         * The provide method fetches the constructor and initializes the
+         * provider chain.
+         *
+         * @return
+         * @throws NoSuchMethodException
+         */
+        public ConstructorProvider provide() throws NoSuchMethodException {
+            if (!provided) {
+                //initially, only the root constructorprovider is necessary.
+                providerChain = this;
+                constructor = getType().getConstructor(parameterTypes);
+                // check for a primitive parameter.
+                for (Class<?> class1 : constructor.getParameterTypes()) {
+                    if (class1.isPrimitive()) {
+                        providerChain = new NullSafePrimitiveConstructorProvider(providerChain);
+                        break;
+                    }
+                }
+                // if there is a varargs constructor.
+                if (constructor.isVarArgs()) {
+                    providerChain = new VarArgsConstructorProvider(providerChain);
+                }
+                provided = true;
+            }
+            return providerChain;
+
+        }
+
+        /**
+         * Call the          {@link Constructor constructor's}
+         * {@link Constructor#newInstance(java.lang.Object...) newInstance()}
+         * method with the arguments provided.
+         *
+         * @param args the arguments to
+         * @return the returned instance from the constructor.
+         * @throws InstantiationException
+         * @throws IllegalAccessException
+         * @throws IllegalArgumentException
+         * @throws InvocationTargetException
+         */
+        @SuppressWarnings("unchecked")
+        protected T newInstance(Object[] args) throws
+                InstantiationException, IllegalAccessException,
+                IllegalArgumentException, InvocationTargetException {
+
+            return (T) constructor.newInstance(args);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) {
+                return true;
+            } else if (obj instanceof ConstructorExpression.ConstructorProvider) {
+                ConstructorProvider constructorProvider = (ConstructorProvider) obj;
+                return Arrays.equals(parameterTypes, constructorProvider.parameterTypes);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 13 * hash + Arrays.deepHashCode(this.parameterTypes);
+            return hash;
+        }
+
     }
 
+    private class NullSafePrimitiveConstructorProvider extends ConstructorProvider {
+
+        List<Integer> primitiveLocations = new ArrayList<Integer>();
+
+        public NullSafePrimitiveConstructorProvider(ConstructorProvider parent) {
+            super(parent);
+            parameterTypes = parent.parameterTypes;
+            for (int i = 0; i < parameterTypes.length; i++) {
+                Class<?> clazz = parameterTypes[i];
+                if (clazz.isPrimitive()) {
+                    primitiveLocations.add(i);
+                }
+            }
+        }
+
+        @Override
+        protected T newInstance(Object[] args) throws
+                InstantiationException, IllegalAccessException,
+                IllegalArgumentException, InvocationTargetException {
+
+            for (Integer position : primitiveLocations) {
+
+                // if the parameter at the position of 
+                // a primitive type is null, then provide the default value.
+                if (args[position] == null) {
+                    args[position] = defaultPrimitives.get(parameterTypes[position]);
+                }
+            }
+            return providerChain.newInstance(args);
+        }
+
+    }
 
 }
