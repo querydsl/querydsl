@@ -116,8 +116,10 @@ public class MetaDataExporterTest {
             stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT, CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
 
             //  M_PRODUCT_BOM_ID
-            stmt.execute("create table product(id int, m_product_bom_id int, "
-                    + "constraint product_bom foreign key (m_product_bom_id) references product(id))");
+            stmt.execute("create table product(id int, "
+                    + "m_product_bom_id int, "
+                    + "m_productbom_id int, "
+                    + "constraint product_bom foreign key (m_productbom_id) references product(id))");
 
         }finally{
             stmt.close();
