@@ -243,10 +243,10 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
                         break;
                     }
                 }
-                // if there is a varargs constructor.
-                if (constructor.isVarArgs()) {
-                    providerChain = new VarArgsConstructorProvider(providerChain);
-                }
+//                // if there is a varargs constructor.
+//                if (constructor.isVarArgs()) {
+//                    providerChain = new VarArgsConstructorProvider(providerChain);
+//                }
                 provided = true;
             }
             return providerChain;
