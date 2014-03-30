@@ -332,18 +332,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @Override
-    public Void visit(FactoryExpression<?> expr, Void context) {
-        if (!inProjection) {
-            append("(");
-            super.visit(expr, context);
-            append(")");
-        } else {
-            super.visit(expr, context);
-        }
-        return null;
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         boolean old = wrapElements;
