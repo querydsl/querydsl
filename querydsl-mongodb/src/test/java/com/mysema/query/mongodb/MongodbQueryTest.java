@@ -216,6 +216,7 @@ public class MongodbQueryTest {
         Date end = new Date();
 
         assertEquals(d, query(dates).where(dates.date.between(start, end)).singleResult());
+        assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).count());
     }
 
     @Test
