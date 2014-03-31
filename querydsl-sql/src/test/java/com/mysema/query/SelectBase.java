@@ -50,6 +50,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.mysema.query.sql.types.Type;
+import junit.framework.Assert;
+import org.joda.time.LocalDate;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -367,6 +371,49 @@ public class SelectBase extends AbstractBaseTest {
             assertNotNull(tuple.get(employee.lastname));
             assertNotNull(tuple.getExpr(employee.firstname));
             assertNotNull(tuple.getExpr(employee.lastname));
+        }
+    }
+
+    @Test
+    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, SQLITE, TERADATA}) // TODO fix postgres
+    public void Dates() {
+        long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
+        long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
+        long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
+
+        List<Object> data = Lists.newArrayList();
+        data.add(new java.util.Date(ts));
+        data.add(new java.sql.Timestamp(ts));
+        data.add(new java.sql.Date(110, 0, 1));
+        data.add(new java.sql.Date(tsDate));
+        data.add(new java.sql.Time(0, 0, 0));
+        data.add(new java.sql.Time(12, 30, 0));
+        data.add(new java.sql.Time(23, 59, 59));
+        //data.add(new java.sql.Time(tsTime));
+        data.add(new org.joda.time.DateTime(ts));
+        data.add(new org.joda.time.LocalDateTime(ts));
+        data.add(new org.joda.time.LocalDate(2010, 1, 1));
+        data.add(new org.joda.time.LocalDate(ts));
+        data.add(new org.joda.time.LocalTime(0, 0, 0));
+        data.add(new org.joda.time.LocalTime(12, 30, 0));
+        data.add(new org.joda.time.LocalTime(23, 59, 59));
+        data.add(new org.joda.time.LocalTime(ts));
+        data.add(new org.joda.time.LocalDate(tsDate));
+        data.add(new org.joda.time.LocalTime(tsTime));
+
+        Map<Object, Object> failures = Maps.newIdentityHashMap();
+        for (Object dt : data) {
+            Object dt2 = query().singleResult(new ConstantImpl(dt));
+            if (!dt.equals(dt2)) {
+                failures.put(dt, dt2);
+            }
+        }
+        if (!failures.isEmpty()) {
+            for (Map.Entry<Object, Object> entry : failures.entrySet()) {
+                System.out.println(entry.getKey().getClass().getName()
+                        + ": " + entry.getKey() + " != " + entry.getValue());
+            }
+            Assert.fail("Failed with " + failures);
         }
     }
 
