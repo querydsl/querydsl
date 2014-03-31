@@ -380,10 +380,14 @@ public class SelectBase extends AbstractBaseTest {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
+        long hoursInMs = 60 * 60 * 1000;
 
         List<Object> data = Lists.newArrayList();
         data.add(new java.util.Date(ts));
+        data.add(new java.util.Date(tsDate));
+        data.add(new java.util.Date(tsTime));
         data.add(new java.sql.Timestamp(ts));
+        data.add(new java.sql.Timestamp(tsDate));
         data.add(new java.sql.Date(110, 0, 1));
         data.add(new java.sql.Date(tsDate));
         data.add(new java.sql.Time(0, 0, 0));
@@ -391,14 +395,18 @@ public class SelectBase extends AbstractBaseTest {
         data.add(new java.sql.Time(23, 59, 59));
         //data.add(new java.sql.Time(tsTime));
         data.add(new org.joda.time.DateTime(ts));
+        data.add(new org.joda.time.DateTime(tsDate));
+        data.add(new org.joda.time.DateTime(tsTime));
         data.add(new org.joda.time.LocalDateTime(ts));
+        data.add(new org.joda.time.LocalDateTime(tsDate));
+        data.add(new org.joda.time.LocalDateTime(2014, 3, 30, 2, 0));
         data.add(new org.joda.time.LocalDate(2010, 1, 1));
         data.add(new org.joda.time.LocalDate(ts));
+        data.add(new org.joda.time.LocalDate(tsDate));
         data.add(new org.joda.time.LocalTime(0, 0, 0));
         data.add(new org.joda.time.LocalTime(12, 30, 0));
         data.add(new org.joda.time.LocalTime(23, 59, 59));
         data.add(new org.joda.time.LocalTime(ts));
-        data.add(new org.joda.time.LocalDate(tsDate));
         data.add(new org.joda.time.LocalTime(tsTime));
 
         Map<Object, Object> failures = Maps.newIdentityHashMap();
