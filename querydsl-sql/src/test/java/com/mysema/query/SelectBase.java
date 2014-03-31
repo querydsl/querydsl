@@ -53,7 +53,10 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mysema.query.sql.types.Type;
 import junit.framework.Assert;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -394,20 +397,20 @@ public class SelectBase extends AbstractBaseTest {
         data.add(new java.sql.Time(12, 30, 0));
         data.add(new java.sql.Time(23, 59, 59));
         //data.add(new java.sql.Time(tsTime));
-        data.add(new org.joda.time.DateTime(ts));
-        data.add(new org.joda.time.DateTime(tsDate));
-        data.add(new org.joda.time.DateTime(tsTime));
-        data.add(new org.joda.time.LocalDateTime(ts));
-        data.add(new org.joda.time.LocalDateTime(tsDate));
-        data.add(new org.joda.time.LocalDateTime(2014, 3, 30, 2, 0));
-        data.add(new org.joda.time.LocalDate(2010, 1, 1));
-        data.add(new org.joda.time.LocalDate(ts));
-        data.add(new org.joda.time.LocalDate(tsDate));
-        data.add(new org.joda.time.LocalTime(0, 0, 0));
-        data.add(new org.joda.time.LocalTime(12, 30, 0));
-        data.add(new org.joda.time.LocalTime(23, 59, 59));
-        data.add(new org.joda.time.LocalTime(ts));
-        data.add(new org.joda.time.LocalTime(tsTime));
+        data.add(new DateTime(ts));
+        data.add(new DateTime(tsDate));
+        data.add(new DateTime(tsTime));
+        data.add(new LocalDateTime(ts));
+        data.add(new LocalDateTime(tsDate));
+        data.add(new LocalDateTime(2014, 3, 30, 2, 0));
+        data.add(new LocalDate(2010, 1, 1));
+        data.add(new LocalDate(ts));
+        data.add(new LocalDate(tsDate));
+        data.add(new LocalTime(0, 0, 0));
+        data.add(new LocalTime(12, 30, 0));
+        data.add(new LocalTime(23, 59, 59));
+        data.add(new LocalTime(ts));
+        data.add(new LocalTime(tsTime));
 
         Map<Object, Object> failures = Maps.newIdentityHashMap();
         for (Object dt : data) {
