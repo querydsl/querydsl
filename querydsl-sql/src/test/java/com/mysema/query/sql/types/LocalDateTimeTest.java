@@ -1,4 +1,4 @@
-package com.mysema.query.types;
+package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
