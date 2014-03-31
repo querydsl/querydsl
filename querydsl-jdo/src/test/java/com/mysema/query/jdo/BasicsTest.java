@@ -14,12 +14,14 @@
 package com.mysema.query.jdo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
+import com.mysema.query.types.Projections;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -98,6 +100,11 @@ public class BasicsTest extends AbstractJDOTest {
         query().from(product).singleResult(new Expression<?>[]{product});
     }
 
+    @Test
+    public void FactoryExpression_In_GroupBy() {
+        Expression<Product> productBean = Projections.bean(Product.class, product.name, product.description);
+        assertFalse(query().from(product).groupBy(productBean).list(productBean).isEmpty());
+    }
 
     @Test(expected=NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results() {
