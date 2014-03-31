@@ -383,7 +383,6 @@ public class SelectBase extends AbstractBaseTest {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
-        long hoursInMs = 60 * 60 * 1000;
 
         List<Object> data = Lists.newArrayList();
         data.add(new java.util.Date(ts));
