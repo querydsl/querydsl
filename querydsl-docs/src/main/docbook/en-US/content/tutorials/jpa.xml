@@ -501,7 +501,7 @@ QCustomer customer = QCustomer.customer;
 // delete all customers
 new JPADeleteClause(entityManager, customer).execute();
 // delete all customers with a level less than 3
-new JPAeDeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();  
+new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();  
 ]]></programlisting>
 
     <para>The second parameter of the JPADeleteClause constructor is the entity to
