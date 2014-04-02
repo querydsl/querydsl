@@ -33,4 +33,15 @@ public class TypeCategoryTest {
         assertEquals(TypeCategory.TIME, TypeCategory.get(Time.class.getName()));
     }
 
+    @Test
+    public void Java8() {
+        assertEquals(TypeCategory.DATETIME, TypeCategory.get("java.time.Instant"));
+        assertEquals(TypeCategory.DATE, TypeCategory.get("java.time.LocalDate"));
+        assertEquals(TypeCategory.DATETIME, TypeCategory.get("java.time.LocalDateTime"));
+        assertEquals(TypeCategory.TIME, TypeCategory.get("java.time.LocalTime"));
+        assertEquals(TypeCategory.DATETIME, TypeCategory.get("java.time.OffsetDateTime"));
+        assertEquals(TypeCategory.TIME, TypeCategory.get("java.time.OffsetTime"));
+        assertEquals(TypeCategory.DATETIME, TypeCategory.get("java.time.ZonedDateTime"));
+    }
+
 }

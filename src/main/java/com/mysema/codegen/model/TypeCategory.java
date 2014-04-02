@@ -58,13 +58,15 @@ public enum TypeCategory {
     /**
      *
      */
-    DATE(COMPARABLE, java.sql.Date.class.getName(), "org.joda.time.LocalDate"),
+    DATE(COMPARABLE, java.sql.Date.class.getName(), "org.joda.time.LocalDate",
+            "java.time.LocalDate"),
     /**
      *
      */
     DATETIME(COMPARABLE, java.util.Calendar.class.getName(), java.util.Date.class.getName(),
             java.sql.Timestamp.class.getName(), "org.joda.time.LocalDateTime",
-            "org.joda.time.Instant", "org.joda.time.DateTime", "org.joda.time.DateMidnight"),
+            "org.joda.time.Instant", "org.joda.time.DateTime", "org.joda.time.DateMidnight",
+            "java.time.Instant", "java.time.LocalDateTime", "java.time.OffsetDateTime", "java.time.ZonedDateTime"),
     /**
      * 
      */
@@ -90,7 +92,8 @@ public enum TypeCategory {
     /**
      *
      */
-    TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime");
+    TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime",
+            "java.time.LocalTime", "java.time.OffsetTime");
 
     private final TypeCategory superType;
 

@@ -1,3 +1,5 @@
+*.iml
+.idea
 .DS_Store
 target
 bin
