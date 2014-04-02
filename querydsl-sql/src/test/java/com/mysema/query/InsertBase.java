@@ -28,6 +28,9 @@ import static org.junit.Assert.assertTrue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.mysema.query.sql.domain.QDateTest;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -53,6 +56,8 @@ public class InsertBase extends AbstractBaseTest {
     private void reset() throws SQLException{
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
+
+        delete(QDateTest.qDateTest).execute();
     }
 
     @Before
@@ -63,6 +68,30 @@ public class InsertBase extends AbstractBaseTest {
     @After
     public void tearDown() throws SQLException{
         reset();
+    }
+
+    @Test
+    public void Insert_Dates() {
+        QDateTest dateTest = QDateTest.qDateTest;
+        LocalDate localDate = new LocalDate(1978, 1, 2);
+
+        Path<LocalDate> localDateProperty = new PathImpl<LocalDate>(LocalDate.class, "DATE_TEST");
+        Path<DateTime> dateTimeProperty = new PathImpl<DateTime>(DateTime.class, "DATE_TEST");
+        SQLInsertClause insert = insert(dateTest);
+        insert.set(localDateProperty, localDate);
+        insert.execute();
+
+        Tuple result = query().from(dateTest).singleResult(
+                dateTest.dateTest.year(),
+                dateTest.dateTest.month(),
+                dateTest.dateTest.dayOfMonth(),
+                dateTimeProperty);
+        assertEquals(Integer.valueOf(1978), result.get(0, Integer.class));
+        assertEquals(Integer.valueOf(1), result.get(1, Integer.class));
+        assertEquals(Integer.valueOf(2), result.get(2, Integer.class));
+
+        DateTime dateTime = result.get(dateTimeProperty);
+        assertEquals(dateTime, localDate.toDateTimeAtStartOfDay());
     }
 
     @Test
