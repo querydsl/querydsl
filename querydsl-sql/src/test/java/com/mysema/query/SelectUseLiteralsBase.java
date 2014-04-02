@@ -20,11 +20,6 @@ public class SelectUseLiteralsBase extends SelectBase {
     }
 
     @Override
-    public void Dates() {
-        // not supported
-    }
-
-    @Override
     public void Limit_and_Offset2() {
         // not supported
     }
