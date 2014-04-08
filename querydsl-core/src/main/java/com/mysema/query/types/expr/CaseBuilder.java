@@ -13,17 +13,16 @@
  */
 package com.mysema.query.types.expr;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Ops;
+
+import javax.annotation.Nullable;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CaseBuilder enables the construction of typesafe case-when-then-else
@@ -198,6 +197,26 @@ public final class CaseBuilder {
 
         public Cases<Boolean, BooleanExpression> then(boolean b) {
             return thenBoolean(ConstantImpl.create(b));
+        }
+
+        // Comparable
+
+        public <T extends Comparable> Cases<T, ComparableExpression<T>> then(ComparableExpression<T> expr) {
+            return thenComparable(expr);
+        }
+
+        public <T extends Comparable> Cases<T, ComparableExpression<T>> thenComparable(Expression<T> expr) {
+            return new Cases<T, ComparableExpression<T>>((Class)expr.getType()) {
+                @Override
+                protected ComparableExpression<T> createResult(Class<T> type, Expression<T> last) {
+                    return ComparableOperation.create(type, Ops.CASE, last);
+                }
+
+            }.addCase(when, expr);
+        }
+
+        public <A extends Comparable> Cases<A, ComparableExpression<A>> then(A arg) {
+            return thenComparable(ConstantImpl.create(arg));
         }
 
         // Date
