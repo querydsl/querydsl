@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -251,6 +252,7 @@ public class MetaDataExporter {
         int columnType = columns.getInt("DATA_TYPE");
         Number columnSize = (Number) columns.getObject("COLUMN_SIZE");
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
+        int columnIndex = columns.getInt("ORDINAL_POSITION");
         int nullable = columns.getInt("NULLABLE");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
@@ -269,7 +271,7 @@ public class MetaDataExporter {
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, normalizedColumnName, propertyName, typeModel);
-        ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType);
+        ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType).withIndex(columnIndex);
         if (nullable == DatabaseMetaData.columnNoNulls) {
             column = column.notNull();
         }
@@ -537,6 +539,13 @@ public class MetaDataExporter {
      */
     public void setInnerClassesForKeys(boolean innerClassesForKeys) {
         module.bind(SQLCodegenModule.INNER_CLASSES_FOR_KEYS, innerClassesForKeys);
+    }
+
+    /**
+     * @param columnComparator
+     */
+    public void setColumnComparatorClass(Class<? extends Comparator<Property>> columnComparatorClass) {
+        module.bind(SQLCodegenModule.COLUMN_COMPARATOR, columnComparatorClass);
     }
 
     /**

@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import static com.google.common.collect.ImmutableList.copyOf;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +48,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Nullable
     private PrimaryKey<T> primaryKey;
 
-    private final List<Path<?>> columns = Lists.newArrayList();
-
-    private final Map<Path<?>, ColumnMetadata> columnMetadata = Maps.newHashMap();
+    private final Map<Path<?>, ColumnMetadata> columnMetadata = Maps.newLinkedHashMap();
 
     private final List<ForeignKey<?>> foreignKeys = Lists.newArrayList();
 
@@ -143,20 +142,19 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     public Path<?>[] all() {
-        Path<?>[] all = new Path[columns.size()];
-        columns.toArray(all);
+        Path<?>[] all = new Path[columnMetadata.size()];
+        columnMetadata.keySet().toArray(all);
         return all;
     }
 
     @Override
     protected <P extends Path<?>> P add(P path) {
-        columns.add(path);
         return path;
     }
 
     @Override
     public List<Path<?>> getColumns() {
-        return columns;
+        return Arrays.asList(all());
     }
 
     @Override
