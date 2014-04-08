@@ -176,6 +176,8 @@ public class SQLTemplates extends Templates {
 
     private String values = "\nvalues ";
 
+    private String defaultValues = "\ndefault values";
+
     private String where = "\nwhere ";
 
     private String with = "with ";
@@ -584,6 +586,10 @@ public class SQLTemplates extends Templates {
         return values;
     }
 
+    public final String getDefaultValues() {
+        return defaultValues;
+    }
+
     public final String getWhere() {
         return where;
     }
@@ -944,6 +950,10 @@ public class SQLTemplates extends Templates {
 
     protected void setValues(String values) {
         this.values = values;
+    }
+
+    protected void setDefaultValues(String defaultValues) {
+        this.defaultValues = defaultValues;
     }
 
     protected void setWhere(String where) {

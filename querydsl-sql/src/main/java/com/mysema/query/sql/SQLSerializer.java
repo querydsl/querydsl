@@ -491,8 +491,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
 
             // values
-            append(templates.getValues());
-            append("(").handle(COMMA, values).append(") ");
+            if (!values.isEmpty()) {
+                append(templates.getValues());
+                append("(").handle(COMMA, values).append(") ");
+            } else {
+                append(templates.getDefaultValues());
+            }
         }
     }
 
@@ -537,11 +541,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 }
             }
 
-            // values
-            append(templates.getValues());
-            append("(");
-            handle(COMMA, values);
-            append(")");
+            if (!values.isEmpty()) {
+                // values
+                append(templates.getValues());
+                append("(");
+                handle(COMMA, values);
+                append(")");
+            } else {
+                append(templates.getDefaultValues());
+            }
         }
 
     }
