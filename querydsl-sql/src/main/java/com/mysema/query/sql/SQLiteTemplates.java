@@ -50,6 +50,7 @@ public class SQLiteTemplates extends SQLTemplates {
         setLimitRequired(true);
         setNullsFirst(null);
         setNullsLast(null);
+        setDefaultValues("\ndefault values");
         add(Ops.MOD, "{0} % {1}");
 
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");

@@ -176,7 +176,7 @@ public class SQLTemplates extends Templates {
 
     private String values = "\nvalues ";
 
-    private String defaultValues = "\ndefault values";
+    private String defaultValues = "\nvalues ()";
 
     private String where = "\nwhere ";
 
