@@ -1417,7 +1417,6 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoBatooJPA
-    @NoEclipseLink
     public void Treat() {
         QDomesticCat domesticCat = QDomesticCat.domesticCat;
         query().from(cat)
