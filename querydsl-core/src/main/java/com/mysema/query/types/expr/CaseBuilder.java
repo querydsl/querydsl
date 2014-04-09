@@ -163,8 +163,28 @@ public final class CaseBuilder {
             this.when = b;
         }
 
-        @SuppressWarnings("unchecked")
         public <A> Cases<A, SimpleExpression<A>> then(Expression<A> expr) {
+            if (expr instanceof BooleanExpression) {
+                return (Cases) then((BooleanExpression) expr);
+            } else if (expr instanceof StringExpression) {
+                return (Cases) then((StringExpression) expr);
+            } else if (expr instanceof NumberExpression) {
+                return then((NumberExpression) expr);
+            } else if (expr instanceof DateExpression) {
+                return then((DateExpression) expr);
+            } else if (expr instanceof DateTimeExpression) {
+                return then((DateTimeExpression) expr);
+            } else if (expr instanceof TimeExpression) {
+                return then((TimeExpression) expr);
+            } else if (expr instanceof ComparableExpression) {
+                return then((ComparableExpression) expr);
+            } else {
+                return thenSimple(expr);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private <A> Cases<A, SimpleExpression<A>> thenSimple(Expression<A> expr) {
             return new Cases<A, SimpleExpression<A>>((Class)expr.getType()) {
                 @Override
                 protected SimpleExpression<A> createResult(Class<A> type, Expression<A> last) {
@@ -175,12 +195,12 @@ public final class CaseBuilder {
         }
 
         public <A> Cases<A, SimpleExpression<A>> then(A constant) {
-            return then(ConstantImpl.create(constant));
+            return thenSimple(ConstantImpl.create(constant));
         }
 
         // Boolean
 
-        public Cases<Boolean,BooleanExpression> then(BooleanExpression expr) {
+        public Cases<Boolean, BooleanExpression> then(BooleanExpression expr) {
             return thenBoolean(expr);
         }
 
@@ -205,7 +225,7 @@ public final class CaseBuilder {
             return thenComparable(expr);
         }
 
-        public <T extends Comparable> Cases<T, ComparableExpression<T>> thenComparable(Expression<T> expr) {
+        private <T extends Comparable> Cases<T, ComparableExpression<T>> thenComparable(Expression<T> expr) {
             return new Cases<T, ComparableExpression<T>>((Class)expr.getType()) {
                 @Override
                 protected ComparableExpression<T> createResult(Class<T> type, Expression<T> last) {
@@ -235,7 +255,7 @@ public final class CaseBuilder {
             }.addCase(when, expr);
         }
 
-        public Cases<java.sql.Date, DateExpression<java.sql.Date>> thenDate(java.sql.Date date) {
+        public Cases<java.sql.Date, DateExpression<java.sql.Date>> then(java.sql.Date date) {
             return thenDate(ConstantImpl.create(date));
         }
 
@@ -255,11 +275,11 @@ public final class CaseBuilder {
             }.addCase(when, expr);
         }
 
-        public Cases<Timestamp, DateTimeExpression<Timestamp>> thenDateTime(Timestamp ts) {
+        public Cases<Timestamp, DateTimeExpression<Timestamp>> then(Timestamp ts) {
             return thenDateTime(ConstantImpl.create(ts));
         }
 
-        public Cases<java.util.Date, DateTimeExpression<java.util.Date>> thenDateTime(java.util.Date date) {
+        public Cases<java.util.Date, DateTimeExpression<java.util.Date>> then(java.util.Date date) {
             return thenDateTime(ConstantImpl.create(date));
         }
 
