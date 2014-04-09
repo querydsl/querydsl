@@ -13,11 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.Entity;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.query.JoinFlag;
@@ -25,18 +20,13 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.ListAccessVisitor;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.CollectionExpression;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Predicate;
+import com.mysema.query.support.ReplaceVisitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.path.CollectionPathBase;
+
+import javax.persistence.Entity;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction
@@ -50,6 +40,8 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     private final Set<Path<?>> paths = Sets.newHashSet();
 
     private final Map<Expression<?>, Path<?>> aliases = Maps.newHashMap();
+
+    private ReplaceVisitor replaceVisitor;
 
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
 
@@ -130,16 +122,32 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
     }
 
+    private <T> Path<T> convertPathForOrder(Path<T> path) {
+        PathMetadata<?> metadata = path.getMetadata();
+        // at least three levels
+        if (metadata.getParent() != null && !metadata.getParent().getMetadata().isRoot()) {
+            Path<?> shortened = shorten(metadata.getParent());
+            return new PathImpl<T>(path.getType(),
+                    new PathMetadata(shortened, metadata.getElement(), metadata.getPathType()));
+        } else {
+            return path;
+        }
+    }
+
     @Override
     public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
-        if (forOrder && expr instanceof Path) {
-            Path<?> path = (Path<?>)expr;
-            PathMetadata<?> metadata = path.getMetadata();
-            // at least three levels
-            if (metadata.getParent() != null && !metadata.getParent().getMetadata().isRoot()) {
-                Path<?> shortened = shorten(metadata.getParent());
-                expr = new PathImpl<RT>(expr.getType(),
-                    new PathMetadata(shortened, metadata.getElement(), metadata.getPathType()));
+        if (forOrder) {
+            if (expr instanceof Path) {
+                expr = convertPathForOrder((Path)expr);
+            } else {
+                if (replaceVisitor == null) {
+                    replaceVisitor = new ReplaceVisitor() {
+                        public Expression<?> visit(Path<?> expr, Void context) {
+                            return convertPathForOrder(expr);
+                        }
+                    };
+                }
+                expr = (Expression<RT>)expr.accept(replaceVisitor, null);
             }
         }
         return Conversions.convert(super.convert(expr, forOrder));
