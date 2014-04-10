@@ -14,6 +14,7 @@
 package com.mysema.query.util;
 
 import static org.junit.Assert.*;
+import static com.mysema.query.util.ConstructorUtils.*;
 import com.mysema.query.types.ProjectionExample;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -58,9 +59,4 @@ public class ConstructorUtilsTest {
         return rv;
     }
 
-    private Class<?>[] getConstructorParameters(Class<?> type, Class<?>[] giventypes) {
-        Class<?>[] constructorParameters = ConstructorUtils
-                .getConstructorParameters(type, giventypes);
-        return constructorParameters;
-    }
 }
