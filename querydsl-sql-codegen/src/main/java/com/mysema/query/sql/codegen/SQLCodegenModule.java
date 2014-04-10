@@ -42,6 +42,8 @@ public class SQLCodegenModule extends CodegenModule{
     
     public static final String SCHEMA_TO_PACKAGE = "schemaToPackage";
     
+    public static final String COLUMN_COMPARATOR = "columnComparator";
+    
     @Override
     protected void configure() {
         super.configure();
@@ -57,6 +59,7 @@ public class SQLCodegenModule extends CodegenModule{
         bind(PACKAGE_NAME, "com.example");
         bind(BEAN_SERIALIZER, (Class<?>)null);
         bind(SCHEMA_TO_PACKAGE, false);
+        bind(COLUMN_COMPARATOR, null);
     }
     
     public String getPrefix() {

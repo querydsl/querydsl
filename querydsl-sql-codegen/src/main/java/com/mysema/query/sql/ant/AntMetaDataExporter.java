@@ -17,6 +17,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Comparator;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -182,6 +183,11 @@ public class AntMetaDataExporter extends Task {
      *
      */
     private boolean beanPrintSupertype;
+    
+    /**
+     * override default column order (default: alphabetical)
+     */
+    private String columnComparatorClass;
 
     /**
      * java import added to generated query classes:
@@ -192,7 +198,8 @@ public class AntMetaDataExporter extends Task {
 	private String[] imports;
 
 
-	@Override
+    @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void execute() {
         Connection dbConn = null;
         File targetPackagePath = new File(targetSourceFolder);
@@ -255,6 +262,9 @@ public class AntMetaDataExporter extends Task {
             }
             if (sourceEncoding != null) {
                 exporter.setSourceEncoding(sourceEncoding);
+            }
+            if (columnComparatorClass != null) {
+                exporter.setColumnComparatorClass((Class) Class.forName(this.columnComparatorClass).asSubclass(Comparator.class));
             }
 
             exporter.export(dbConn.getMetaData());
