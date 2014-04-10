@@ -167,6 +167,12 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({HSQLDB, DERBY})
+    public void Insert_Without_Values() {
+        assertEquals(1, insert(survey).execute());
+    }
+
+    @Test
     @ExcludeIn(ORACLE)
     public void Insert_Nulls_In_Batch() {
 //        QFoo f= QFoo.foo;

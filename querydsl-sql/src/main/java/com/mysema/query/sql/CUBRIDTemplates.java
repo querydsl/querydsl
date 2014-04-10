@@ -52,6 +52,7 @@ public class CUBRIDTemplates extends SQLTemplates {
         setParameterMetadataAvailable(false);
         setNullsFirst(null);
         setNullsLast(null);
+        setDefaultValues("\ndefault values");
 
         add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");

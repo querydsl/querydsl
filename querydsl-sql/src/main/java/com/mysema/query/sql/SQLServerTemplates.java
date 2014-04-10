@@ -53,6 +53,7 @@ public class SQLServerTemplates extends SQLTemplates {
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);
+        setDefaultValues("\ndefault values");
 
         // String
         add(Ops.CONCAT, "{0} + {1}", 13);
