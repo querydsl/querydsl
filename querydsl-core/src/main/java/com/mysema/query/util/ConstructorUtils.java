@@ -134,7 +134,7 @@ public class ConstructorUtils {
 
     private static Class<?> normalize(Class<?> clazz) {
         if (clazz.isArray()) {
-            return clazz.getComponentType();
+            clazz = clazz.getComponentType();
         }
         return Primitives.wrap(clazz);
     }
