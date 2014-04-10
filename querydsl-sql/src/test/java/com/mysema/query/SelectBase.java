@@ -50,6 +50,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.mysema.query.types.*;
+import com.google.common.collect.Maps;
+import junit.framework.Assert;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -70,19 +77,6 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.support.Expressions;
-import com.mysema.query.types.ArrayConstructorExpression;
-import com.mysema.query.types.Concatenation;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.MappingProjection;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.QBean;
-import com.mysema.query.types.QTuple;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.DateExpression;
@@ -371,6 +365,56 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, SQLITE, TERADATA}) // TODO fix postgres
+    public void Dates() {
+        long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
+        long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
+        long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
+
+        List<Object> data = Lists.newArrayList();
+        data.add(new java.util.Date(ts));
+        data.add(new java.util.Date(tsDate));
+        data.add(new java.util.Date(tsTime));
+        data.add(new java.sql.Timestamp(ts));
+        data.add(new java.sql.Timestamp(tsDate));
+        data.add(new java.sql.Date(110, 0, 1));
+        data.add(new java.sql.Date(tsDate));
+        data.add(new java.sql.Time(0, 0, 0));
+        data.add(new java.sql.Time(12, 30, 0));
+        data.add(new java.sql.Time(23, 59, 59));
+        //data.add(new java.sql.Time(tsTime));
+        data.add(new DateTime(ts));
+        data.add(new DateTime(tsDate));
+        data.add(new DateTime(tsTime));
+        data.add(new LocalDateTime(ts));
+        data.add(new LocalDateTime(tsDate));
+        data.add(new LocalDateTime(2014, 3, 30, 2, 0));
+        data.add(new LocalDate(2010, 1, 1));
+        data.add(new LocalDate(ts));
+        data.add(new LocalDate(tsDate));
+        data.add(new LocalTime(0, 0, 0));
+        data.add(new LocalTime(12, 30, 0));
+        data.add(new LocalTime(23, 59, 59));
+        data.add(new LocalTime(ts));
+        data.add(new LocalTime(tsTime));
+
+        Map<Object, Object> failures = Maps.newIdentityHashMap();
+        for (Object dt : data) {
+            Object dt2 = query().singleResult(new ConstantImpl(dt));
+            if (!dt.equals(dt2)) {
+                failures.put(dt, dt2);
+            }
+        }
+        if (!failures.isEmpty()) {
+            for (Map.Entry<Object, Object> entry : failures.entrySet()) {
+                System.out.println(entry.getKey().getClass().getName()
+                        + ": " + entry.getKey() + " != " + entry.getValue());
+            }
+            Assert.fail("Failed with " + failures);
+        }
+    }
+
+    @Test
     @ExcludeIn({SQLITE})
     public void Date_Add() {
         TestQuery query = query().from(employee);
@@ -506,6 +550,12 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Exists() {
         assertTrue(query().from(employee).where(employee.firstname.eq("Barbara")).exists());
+    }
+
+    @Test
+    public void FactoryExpression_In_GroupBy() {
+        Expression<Employee> empBean = Projections.bean(Employee.class, employee.id, employee.superiorId);
+        assertFalse(query().from(employee).groupBy(empBean).list(empBean).isEmpty());
     }
 
     @Test

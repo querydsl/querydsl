@@ -1,4 +1,4 @@
-# Querydsl SQL #
+## Querydsl SQL
 
 The SQL module provides integration with the JDBC API.
 

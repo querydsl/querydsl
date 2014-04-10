@@ -1,4 +1,4 @@
-# Querydsl Collections #
+## Querydsl Collections
 
 The Collections module provides integration with Java Collections and Beans.
 

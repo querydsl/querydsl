@@ -1140,6 +1140,12 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void FactoryExpression_In_GroupBy() {
+        Expression<Cat> catBean = Projections.bean(Cat.class, cat.id, cat.name);
+        assertFalse(query().from(cat).groupBy(catBean).list(catBean).isEmpty());
+    }
+
+    @Test
     @Ignore
     public void Size() {
         // NOT SUPPORTED

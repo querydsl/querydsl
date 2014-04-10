@@ -21,6 +21,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.path.NumberPath;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -102,5 +104,13 @@ public class SQLTemplatesTest {
 
     }
 
+    @Test
+    public void Numeric_Operations() {
+        NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
+        NumberPath<Integer> intPath2 = Expressions.numberPath(Integer.class, "intPath2");
+        SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));
+        serializer.handle(intPath.subtract(intPath2.add(2)));
+        assertEquals("intPath - (intPath2 + ?)", serializer.toString());
+    }
 
 }

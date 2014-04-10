@@ -1,11 +1,5 @@
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -15,6 +9,11 @@ import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 public class JPAQueryMixinTest {
 
@@ -38,6 +37,22 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate))),
                 md.getJoins());
         assertEquals(Arrays.asList(cat_mate.name.asc()),
+                md.getOrderBy());
+    }
+
+    @Test
+    public void OrderBy_Operation() {
+        QCat cat = QCat.cat;
+        QCat cat_mate = new QCat("cat_mate");
+        mixin.from(cat);
+        mixin.orderBy(cat.mate.name.lower().asc());
+
+        QueryMetadata md = mixin.getMetadata();
+        assertEquals(Arrays.asList(
+                        new JoinExpression(JoinType.DEFAULT, cat),
+                        new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate))),
+                md.getJoins());
+        assertEquals(Arrays.asList(cat_mate.name.lower().asc()),
                 md.getOrderBy());
     }
 

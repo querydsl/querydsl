@@ -1,6 +1,6 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 
 public class Generic12Test {
-    
+
     @Entity
     @Inheritance
     @DiscriminatorColumn(name = "CONTEXT")
@@ -58,10 +58,10 @@ public class Generic12Test {
     public static class SubjectRole extends Role { // missing type param, should be Role<SubjectPermission>
         // some constructors
     }
-    
+
     @Test
     public void test() {
-        assertEquals(QGeneric12Test_ChannelPermission.class,
+        assertEquals(QGeneric12Test_Permission.class,
                 QGeneric12Test_ChannelRole.channelRole.permissions.get(0).getClass());
         assertEquals(QGeneric12Test_Permission.class,
                 QGeneric12Test_SubjectRole.subjectRole.permissions.get(0).getClass());

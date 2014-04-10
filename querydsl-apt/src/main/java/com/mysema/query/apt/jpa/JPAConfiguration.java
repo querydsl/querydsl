@@ -24,6 +24,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.persistence.Access;
@@ -133,12 +134,22 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
 
         mirror = TypeUtils.getAnnotationMirrorOfType(element, OneToMany.class);
+        if (mirror == null) {
+            mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToMany.class);
+        }
         if (mirror != null) {
             TypeMirror typeArg = TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
             TypeMirror erasure = types.erasure(element.asType());
             TypeElement typeElement = (TypeElement) types.asElement(erasure);
             if (typeElement != null && typeArg != null) {
-                return types.getDeclaredType(typeElement, typeArg);
+                if (typeElement.getTypeParameters().size() == 1) {
+                    return types.getDeclaredType(typeElement, typeArg);
+                } else if (typeElement.getTypeParameters().size() == 2) {
+                    if (element.asType() instanceof DeclaredType) {
+                        TypeMirror first = ((DeclaredType)element.asType()).getTypeArguments().get(0);
+                        return types.getDeclaredType(typeElement, first, typeArg);
+                    }
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-# Querydsl Mongodb #
+## Querydsl Mongodb
 
 The Mongodb module provides integration with the Mongodb API.
 

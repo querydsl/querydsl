@@ -75,7 +75,12 @@ public final class Property implements Comparable<Property> {
 
     @Override
     public int compareTo(Property o) {
-        return name.compareToIgnoreCase(o.getName());
+        int rv = name.compareToIgnoreCase(o.getName());
+        if (rv == 0) {
+            return name.compareTo(o.getName());
+        } else {
+            return rv;
+        }
     }
 
     public Property createCopy(EntityType targetModel) {

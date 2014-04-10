@@ -61,12 +61,14 @@ public final class ColumnMetadata implements Serializable {
      *             if the name is null
      */
     public static ColumnMetadata named(String name) {
-        return new ColumnMetadata(name, null, true, UNDEFINED, UNDEFINED);
+        return new ColumnMetadata(null, name, null, true, UNDEFINED, UNDEFINED);
     }
 
     private static final int UNDEFINED = -1;
 
     private final String name;
+    
+    private final Integer index;
 
     private final Integer jdbcType;
 
@@ -76,8 +78,9 @@ public final class ColumnMetadata implements Serializable {
 
     private final int decimalDigits;
 
-    private ColumnMetadata(String name, Integer jdbcType, boolean nullable, int size,
+    private ColumnMetadata(Integer index, String name, Integer jdbcType, boolean nullable, int size,
             int decimalDigits) {
+        this.index = index;
         this.name = name;
         this.jdbcType = jdbcType;
         this.nullable = nullable;
@@ -87,6 +90,14 @@ public final class ColumnMetadata implements Serializable {
 
     public String getName() {
         return name;
+    }
+    
+    public int getIndex() {
+        return index;
+    }
+    
+    public ColumnMetadata withIndex(int index) {
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     public int getJdbcType() {
@@ -98,7 +109,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata ofType(int jdbcType) {
-        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     public boolean isNullable() {
@@ -106,7 +117,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata notNull() {
-        return new ColumnMetadata(name, jdbcType, false, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, false, size, decimalDigits);
     }
 
     /**
@@ -123,7 +134,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata withSize(int size) {
-        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     /**
@@ -140,7 +151,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata withDigits(int decimalDigits) {
-        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     @Override

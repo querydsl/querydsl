@@ -115,6 +115,12 @@ public class MetaDataExporterTest {
             // multi key
             stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT, CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
 
+            //  M_PRODUCT_BOM_ID
+            stmt.execute("create table product(id int, "
+                    + "m_product_bom_id int, "
+                    + "m_productbom_id int, "
+                    + "constraint product_bom foreign key (m_productbom_id) references product(id))");
+
         }finally{
             stmt.close();
         }
@@ -146,14 +152,14 @@ public class MetaDataExporterTest {
 
     @Test
     public void NormalSettings_Repetition() throws SQLException {
-        test("Q", "", "", "", defaultNaming, "target/1", false, false);
+        test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
 
         File file = new File("target/1/test/QEmployee.java");
         long lastModified = file.lastModified();
         assertTrue(file.exists());
 
         clean = false;
-        test("Q", "", "", "", defaultNaming, "target/1", false, false);
+        test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
         assertEquals(lastModified, file.lastModified());
     }
 
@@ -173,14 +179,15 @@ public class MetaDataExporterTest {
         for (boolean exportColumns : trueAndFalse) {
         for (String beanPackage : Arrays.asList("test2", null)) {
         for (Serializer beanSerializer : BEAN_SERIALIZERS) {
+        for (boolean withOriginalPositioning : trueAndFalse) {
             counter++;
             this.beanPackageName = beanPackage;
             this.schemaToPackage = schemaToPackage;
             this.exportColumns = exportColumns;
             this.beanSerializer = beanSerializer;
             test(namePrefix, nameSuffix, beanPrefix, beanSuffix,
-                 ns, "target/multiple_"+counter, withBeans, withInnerClasses);
-        }}}}}}}}}}}
+                 ns, "target/multiple_"+counter, withBeans, withInnerClasses, withOriginalPositioning);
+        }}}}}}}}}}}}
     }
 
     @Test
@@ -284,7 +291,7 @@ public class MetaDataExporterTest {
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, String target, boolean withBeans,
-            boolean withInnerClasses) throws SQLException{
+            boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException{
         File targetDir = new File(target);
         if (clean) {
             try {
@@ -311,6 +318,9 @@ public class MetaDataExporterTest {
         exporter.setSchemaToPackage(schemaToPackage);
         if (withBeans) {
             exporter.setBeanSerializer(beanSerializer);
+        }
+        if (withOrdinalPositioning) {
+            exporter.setColumnComparatorClass(OrdinalPositionComparator.class);
         }
         exporter.export(connection.getMetaData());
 

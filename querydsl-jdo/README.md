@@ -1,4 +1,4 @@
-# Querydsl JDO #
+## Querydsl JDO
 
 The JDO module provides integration with the JDO API.
 

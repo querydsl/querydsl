@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
@@ -35,7 +37,6 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
-import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -64,6 +65,8 @@ public class MetaDataSerializer extends EntitySerializer {
     private final boolean innerClassesForKeys;
 
     private final Set<String> imports;
+    
+    private final Comparator<Property> columnComparator;
 
     /**
      * Create a new MetaDataSerializer instance
@@ -77,11 +80,13 @@ public class MetaDataSerializer extends EntitySerializer {
             TypeMappings typeMappings,
             NamingStrategy namingStrategy,
             @Named(SQLCodegenModule.INNER_CLASSES_FOR_KEYS) boolean innerClassesForKeys,
-            @Named(SQLCodegenModule.IMPORTS) Set<String> imports) {
+            @Named(SQLCodegenModule.IMPORTS) Set<String> imports,
+            @Named(SQLCodegenModule.COLUMN_COMPARATOR) Comparator<Property> columnComparator) {
         super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
         this.imports = new HashSet<String>(imports);
+        this.columnComparator = columnComparator;
     }
 
     @Override
@@ -203,12 +208,17 @@ public class MetaDataSerializer extends EntitySerializer {
     @Override
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
         writer.beginPublicMethod(Types.VOID,"addMetadata");
-        for (Property property : model.getProperties()) {
+        List<Property> properties = Lists.newArrayList(model.getProperties());
+        if (columnComparator != null) {
+            Collections.sort(properties, columnComparator);
+        }
+        for (Property property : properties) {
             String name = property.getEscapedName();
             ColumnMetadata metadata = (ColumnMetadata) property.getData().get("COLUMN");
             StringBuilder columnMeta = new StringBuilder();
             columnMeta.append("ColumnMetadata");
             columnMeta.append(".named(\"" + metadata.getName() + "\")");
+            columnMeta.append(".withIndex(" + metadata.getIndex() + ")");
             columnMeta.append(".ofType(" + metadata.getJdbcType() + ")");
             if (metadata.hasSize()) {
                 columnMeta.append(".withSize(" + metadata.getSize() + ")");

@@ -132,6 +132,12 @@ public class MongodbSerializerTest {
     }
 
     @Test
+    public void Between() {
+        System.err.println(dbo("year", dbo("$gte", 1).append("$lte", 10)));
+        assertQuery(year.between(1, 10), dbo("year", dbo("$gte", 1).append("$lte", 10)));
+    }
+
+    @Test
     public void LessAndGreaterAndBetween() {
         assertQuery(title.lt("A"), dbo("title", dbo("$lt", "A")));
         assertQuery(year.gt(1), dbo("year", dbo("$gt", 1)));
