@@ -491,12 +491,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
 
             // values
-            if (!values.isEmpty()) {
-                append(templates.getValues());
-                append("(").handle(COMMA, values).append(") ");
-            } else {
-                append(templates.getDefaultValues());
-            }
+            append(templates.getValues());
+            append("(").handle(COMMA, values).append(") ");
         }
     }
 
