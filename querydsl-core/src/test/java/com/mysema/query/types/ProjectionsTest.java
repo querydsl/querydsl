@@ -78,7 +78,7 @@ public class ProjectionsTest {
     @Test
     public void Constructor_VarArgs2() {
         Expression<String> stringVal = ConstantImpl.create("");
-        VarArgs2 instance = Projections.constructor(VarArgs2.class, stringVal).newInstance("X", "Y", "Z");
+        VarArgs2 instance = Projections.constructor(VarArgs2.class, stringVal, stringVal).newInstance("X", "Y", "Z");
         assertEquals("X", instance.arg);
         assertArrayEquals(new String[]{"Y", "Z"}, instance.args);        
     }
