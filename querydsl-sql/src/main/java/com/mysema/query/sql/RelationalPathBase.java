@@ -15,7 +15,6 @@ package com.mysema.query.sql;
 
 import static com.google.common.collect.ImmutableList.copyOf;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +153,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     @Override
     public List<Path<?>> getColumns() {
-        return Arrays.asList(all());
+        return Lists.newArrayList(this.columnMetadata.keySet());
     }
 
     @Override
