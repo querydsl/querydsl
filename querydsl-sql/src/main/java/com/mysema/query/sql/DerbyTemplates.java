@@ -54,6 +54,7 @@ public class DerbyTemplates extends SQLTemplates {
         addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
         setFunctionJoinsWrapped(true);
+        setDefaultValues("\nvalues (default)");
 
         add(Ops.CONCAT, "varchar({0} || {1})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");

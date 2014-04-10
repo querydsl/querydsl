@@ -17,6 +17,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Comparator;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -249,6 +250,13 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportForeignKeys;
 
     /**
+     * override default column order (default: alphabetical)
+     * 
+     * @parameter 
+     */
+    private String columnComparatorClass;
+
+    /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
      * com.bar.Foo for class
@@ -368,6 +376,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             if (numericMappings != null) {
                 for (NumericMapping mapping : numericMappings) {
                     configuration.registerNumeric(mapping.size, mapping.digits, Class.forName(mapping.javaType));
+                }
+            }
+            if (columnComparatorClass != null) {
+                try {
+                    exporter.setColumnComparatorClass( (Class) Class.forName(this.columnComparatorClass).asSubclass(Comparator.class));
+                } catch (ClassNotFoundException e) {
+                    getLog().error(e);
+                    throw new MojoExecutionException(e.getMessage(), e);
                 }
             }
 
