@@ -23,41 +23,41 @@ import com.mysema.query.types.path.PathBuilder;
 public class ProjectionsTest {
 
     public static class VarArgs {
-        
+
         String[] args;
-        
+
         public VarArgs(String... strs) {
             args = strs;
         }
     }
-    
+
     public static class VarArgs2 {
-        
+
         String arg;
         String[] args;
-        
+
         public VarArgs2(String s, String... strs) {
             arg = s;
             args = strs;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Array() {
-        FactoryExpression<String[]> expr = Projections.array(String[].class, 
+        FactoryExpression<String[]> expr = Projections.array(String[].class,
                 new PathImpl(String.class, "p1"), new PathImpl(String.class, "p2"));
-        assertEquals(String[].class, expr.newInstance("1","2").getClass());
+        assertEquals(String[].class, expr.newInstance("1", "2").getClass());
     }
 
     @Test
     public void BeanClassOfTExpressionOfQArray() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class, "entity");
         QBean<Entity> beanProjection = Projections.bean(Entity.class,
-                entity.getNumber("cId",Integer.class),
+                entity.getNumber("cId", Integer.class),
                 entity.getNumber("eId", Integer.class));
 
-        assertEquals(Entity.class, beanProjection.newInstance(1,2).getClass());
+        assertEquals(Entity.class, beanProjection.newInstance(1, 2).getClass());
     }
 
     @Test
@@ -65,33 +65,43 @@ public class ProjectionsTest {
         Expression<Long> longVal = ConstantImpl.create(1l);
         Expression<String> stringVal = ConstantImpl.create("");
         assertEquals(ProjectionExample.class, Projections.constructor(ProjectionExample.class, longVal, stringVal)
-                .newInstance(0l,"").getClass());
+                .newInstance(0l, "").getClass());
     }
-    
+
     @Test
     public void Constructor_VarArgs() {
         Expression<String> stringVal = ConstantImpl.create("");
-        VarArgs instance = Projections.constructor(VarArgs.class, stringVal).newInstance("X", "Y");
-        assertArrayEquals(new String[]{"X", "Y"}, instance.args);        
+        VarArgs instance = Projections.constructor(VarArgs.class, stringVal, stringVal).newInstance("X", "Y");
+        assertArrayEquals(new String[]{"X", "Y"}, instance.args);
     }
-    
+
     @Test
     public void Constructor_VarArgs2() {
         Expression<String> stringVal = ConstantImpl.create("");
         VarArgs2 instance = Projections.constructor(VarArgs2.class, stringVal, stringVal, stringVal).newInstance("X", "Y", "Z");
         assertEquals("X", instance.arg);
-        assertArrayEquals(new String[]{"Y", "Z"}, instance.args);        
+        assertArrayEquals(new String[]{"Y", "Z"}, instance.args);
+    }
+
+    @Test
+    public void Constructor_VarArgs3() {
+        Constant<Long> longVal = ConstantImpl.create(1L);
+        Constant<Character> charVal = ConstantImpl.create('\0');
+        ProjectionExample instance = Projections
+                .constructor(ProjectionExample.class, longVal, charVal, charVal, charVal, charVal, charVal, charVal)
+                .newInstance(1L, 'm', 'y', 's', 'e', 'm', 'a');
+        assertEquals(1L, (long) instance.id);
+        assertEquals("mysema", instance.text);
     }
 
     @Test
     public void FieldsClassOfTExpressionOfQArray() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class, "entity");
         QBean<Entity> beanProjection = Projections.fields(Entity.class,
-                entity.getNumber("cId",Integer.class),
+                entity.getNumber("cId", Integer.class),
                 entity.getNumber("eId", Integer.class));
 
-        assertEquals(Entity.class, beanProjection.newInstance(1,2).getClass());
+        assertEquals(Entity.class, beanProjection.newInstance(1, 2).getClass());
     }
-
 
 }

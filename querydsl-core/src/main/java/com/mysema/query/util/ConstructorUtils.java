@@ -166,13 +166,19 @@ public class ConstructorUtils {
 
     private static class VarArgsTransformer extends ConstructorArgumentTransformer {
 
-        private Class<?>[] paramtypes;
+        private final Class<?>[] paramTypes;
+        private final Class<?> componentType;
 
         private VarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
 
-            paramtypes = constructor.getParameterTypes();
+            paramTypes = constructor.getParameterTypes();
+            if (paramTypes.length > 0) {
+                componentType = paramTypes[paramTypes.length - 1].getComponentType();
 
+            } else {
+                componentType = null;
+            }
         }
 
         @Override
@@ -182,16 +188,23 @@ public class ConstructorUtils {
 
         @Override
         public Object[] apply(Object[] args) {
-            Class<?>[] paramTypes = constructor.getParameterTypes();
+            Iterator<Object> iterator = Arrays
+                    .asList(args)
+                    .iterator();
+
             // constructor args
             Object[] cargs = new Object[paramTypes.length];
-            System.arraycopy(args, 0, cargs, 0, cargs.length - 1);
+            for (int i = 0; i < cargs.length - 1; i++) {
+                Array.set(cargs, i, iterator.next());
+            }
             // array with vargs
             int size = args.length - cargs.length + 1;
-            Object[] array = (Object[]) Array.newInstance(
-                    paramTypes[paramTypes.length - 1].getComponentType(), size);
-            cargs[cargs.length - 1] = array;
-            System.arraycopy(args, cargs.length - 1, array, 0, size);
+            Object vargs = Array.newInstance(
+                    componentType, size);
+            cargs[cargs.length - 1] = vargs;
+            for (int i = 0; i < Array.getLength(vargs); i++) {
+                Array.set(vargs, i, iterator.next());
+            }
             return cargs;
         }
 
