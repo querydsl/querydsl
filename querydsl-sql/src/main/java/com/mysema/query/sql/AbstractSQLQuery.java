@@ -27,34 +27,19 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinFlag;
-import com.mysema.query.Query;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
-import com.mysema.query.support.Expressions;
-import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.template.NumberTemplate;
-import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
 
 /**
@@ -64,8 +49,7 @@ import com.mysema.util.ResultSetAdapter;
  *
  * @param <Q> concrete subtype
  */
-public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>> extends
-        ProjectableQuery<Q> implements SQLCommonQuery<Q> {
+public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends ProjectableSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
@@ -74,24 +58,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     @Nullable
     private final Connection conn;
 
-    @Nullable
-    private List<Object> constants;
+    protected SQLListeners listeners;
 
-    @Nullable
-    private List<Path<?>> constantPaths;
-
-    @Nullable
-    protected Expression<?> union;
-
-    private final Configuration configuration;
-
-    private final SQLListeners listeners;
-
-    protected final QueryMixin<Q> queryMixin;
-
-    protected boolean unionAll;
-
-    private boolean useLiterals;
+    protected boolean useLiterals;
 
     private boolean getLastCell;
 
@@ -100,14 +69,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata().noValidate());
     }
-
-    @SuppressWarnings("unchecked")
+ 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
-        super(new QueryMixin<Q>(metadata, false));
-        this.queryMixin = super.queryMixin;
-        this.queryMixin.setSelf((Q) this);
+        super(new QueryMixin<Q>(metadata, false), configuration);
         this.conn = conn;
-        this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
         this.useLiterals = configuration.getUseLiterals();
     }
@@ -119,93 +84,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         listeners.add(listener);
     }
 
-    /**
-     * Add the given String literal as a join flag to the last added join with the position
-     * BEFORE_TARGET
-     *
-     * @param flag
-     * @return
-     */
-    @Override
-    public Q addJoinFlag(String flag) {
-        return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
-    }
-
-    /**
-     * Add the given String literal as a join flag to the last added join
-     *
-     * @param flag
-     * @param position
-     * @return
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public Q addJoinFlag(String flag, JoinFlag.Position position) {
-        queryMixin.addJoinFlag(new JoinFlag(flag, position));
-        return (Q)this;
-    }
-
-    /**
-     * Add the given prefix and expression as a general query flag
-     *
-     * @param position position of the flag
-     * @param prefix prefix for the flag
-     * @param expr expression of the flag
-     * @return
-     */
-    @Override
-    public Q addFlag(Position position, String prefix, Expression<?> expr) {
-        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
-        return queryMixin.addFlag(new QueryFlag(position, flag));
-    }
-
-    /**
-     * Add the given query flag
-     *
-     * @param flag
-     * @return
-     */
-    public Q addFlag(QueryFlag flag) {
-        return queryMixin.addFlag(flag);
-    }
-
-    /**
-     * Add the given String literal as query flag
-     *
-     * @param position
-     * @param flag
-     * @return
-     */
-    @Override
-    public Q addFlag(Position position, String flag) {
-        return queryMixin.addFlag(new QueryFlag(position, flag));
-    }
-
-    /**
-     * Add the given Expression as a query flag
-     *
-     * @param position
-     * @param flag
-     * @return
-     */
-    @Override
-    public Q addFlag(Position position, Expression<?> flag) {
-        return queryMixin.addFlag(new QueryFlag(position, flag));
-    }
-
-    protected String buildQueryString(boolean forCountRow) {
-        SQLSerializer serializer = createSerializer();
-        if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
-        } else {
-            serializer.serialize(queryMixin.getMetadata(), forCountRow);
-        }
-        constants = serializer.getConstants();
-        constantPaths = serializer.getConstantPaths();
-        return serializer.toString();
-    }
-
-
     @Override
     public long count() {
         try {
@@ -215,11 +93,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
             logger.error(error, e);
             throw configuration.translate(e);
         }
-    }
-
-    @Override
-    public boolean exists() {
-        return limit(1).singleResult(NumberTemplate.ONE) != null;
     }
 
     /**
@@ -240,155 +113,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         return serializer;
     }
 
-    public Q from(Expression<?> arg) {
-        return queryMixin.from(arg);
-    }
-
-    @Override
-    public Q from(Expression<?>... args) {
-        return queryMixin.from(args);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
-        return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
-    }
-
-    @Override
-    public Q fullJoin(EntityPath<?> target) {
-        return queryMixin.fullJoin(target);
-    }
-
-    @Override
-    public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.fullJoin(target, alias);
-    }
-
-    @Override
-    public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
-        return queryMixin.fullJoin(target, alias);
-    }
-
-    @Override
-    public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.fullJoin(entity).on(key.on(entity));
-    }
-
-    @Override
-    public Q innerJoin(EntityPath<?> target) {
-        return queryMixin.innerJoin(target);
-    }
-
-    @Override
-    public <E> Q innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.innerJoin(target, alias);
-    }
-
-    @Override
-    public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
-        return queryMixin.innerJoin(target, alias);
-    }
-
-    @Override
-    public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.innerJoin(entity).on(key.on(entity));
-    }
-
-    @Override
-    public Q join(EntityPath<?> target) {
-        return queryMixin.join(target);
-    }
-
-    @Override
-    public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.join(target, alias);
-    }
-
-    @Override
-    public Q join(SubQueryExpression<?> target, Path<?> alias) {
-        return queryMixin.join(target, alias);
-    }
-
-    @Override
-    public <E> Q join(ForeignKey<E> key, RelationalPath<E>  entity) {
-        return queryMixin.join(entity).on(key.on(entity));
-    }
-
-    @Override
-    public Q leftJoin(EntityPath<?> target) {
-        return queryMixin.leftJoin(target);
-    }
-
-    @Override
-    public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.leftJoin(target, alias);
-    }
-
-    @Override
-    public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
-        return queryMixin.leftJoin(target, alias);
-    }
-
-    @Override
-    public <E> Q leftJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
-        return queryMixin.leftJoin(entity).on(key.on(entity));
-    }
-
-    @Override
-    public Q rightJoin(EntityPath<?> target) {
-        return queryMixin.rightJoin(target);
-    }
-
-    @Override
-    public <E> Q rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.rightJoin(target, alias);
-    }
-
-    @Override
-    public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {
-        return queryMixin.rightJoin(target, alias);
-    }
-
-    @Override
-    public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
-        return queryMixin.rightJoin(entity).on(key.on(entity));
-    }
-
     @Nullable
     private <T> T get(ResultSet rs, Expression<?> expr, int i, Class<T> type) throws SQLException {
-        return configuration.get(rs, expr instanceof Path ? (Path)expr : null, i, type);
+        return configuration.get(rs, expr instanceof Path ? (Path<?>)expr : null, i, type);
     }
 
     private void set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException{
         configuration.set(stmt, path, i, value);
-    }
-
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
-    }
-
-    /**
-     * Get the query as an SQL query string and bindings
-     *
-     * @param exprs
-     * @return
-     */
-    public SQLBindings getSQL(Expression<?>... exprs) {
-        queryMixin.addProjection(exprs);
-        String queryString = buildQueryString(false);
-        ImmutableList.Builder<Object> args = ImmutableList.builder();
-        Map<ParamExpression<?>, Object> params = getMetadata().getParams();
-        for (Object o : constants) {
-            if (o instanceof ParamExpression) {
-                if (!params.containsKey(o)) {
-                    throw new ParamNotSetException((ParamExpression<?>) o);
-                }
-                o = queryMixin.getMetadata().getParams().get(o);
-            }
-            args.add(o);
-        }
-        return new SQLBindings(queryString, args.build());
     }
 
     /**
@@ -399,15 +130,17 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
      */
     public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.addProjection(exprs);
-        String queryString = buildQueryString(false);
+        SQLSerializer serializer = serialize(false);
+        String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
         listeners.notifyQuery(queryMixin.getMetadata());
 
+        List<Object> constants = serializer.getConstants();
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
+            setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
             final ResultSet rs = stmt.executeQuery();
 
             return new ResultSetAdapter(rs) {
@@ -421,47 +154,34 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 }
             };
         } catch (SQLException e) {
-            throw configuration.translate(e);
-
+            throw configuration.translate(queryString, constants, e);
         } finally {
             reset();
         }
     }
 
-    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        queryMixin.getMetadata().setValidate(false);
-        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("Don't mix union and from");
-        }
-        this.union = UnionUtils.union(sq, unionAll);
-        return new UnionImpl<Q ,RT>((Q)this, sq[0].getMetadata().getProjection());
-    }
-
     protected Configuration getConfiguration() {
         return configuration;
     }
-
+    
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
+    public final <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
         return iterateSingle(queryMixin.getMetadata(), expr);
     }
 
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
-        final String queryString = buildQueryString(false);
+        SQLSerializer serializer = serialize(false);
+        final String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
         listeners.notifyQuery(queryMixin.getMetadata());
+        List<Object> constants = serializer.getConstants();
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, constantPaths, metadata.getParams());
+            setParameters(stmt, constants, serializer.getConstantPaths(), metadata.getParams());
             final ResultSet rs = stmt.executeQuery();
 
             if (expr == null) {
@@ -500,29 +220,26 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
 
         } catch (SQLException e) {
             throw configuration.translate(queryString, constants, e);
-
         } finally {
             reset();
         }
     }
 
-    @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
-    }
-
+    @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
-        final String queryString = buildQueryString(false);
+        SQLSerializer serializer = serialize(false);
+        final String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
         listeners.notifyQuery(queryMixin.getMetadata());
+        List<Object> constants = serializer.getConstants();
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
-                setParameters(stmt, constants, constantPaths, queryMixin.getMetadata().getParams());
+                setParameters(stmt, constants, serializer.getConstantPaths(), queryMixin.getMetadata().getParams());
                 final ResultSet rs = stmt.executeQuery();
                 try {
                     lastCell = null;
@@ -565,25 +282,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
                 } catch (InstantiationException e) {
                     throw new QueryException(e);
                 } catch (SQLException e) {
-                    throw configuration.translate(e);
+                    throw configuration.translate(queryString, constants, e);
                 } finally {
                     rs.close();
                 }
-
             } finally {
                 stmt.close();
             }
         } catch (SQLException e) {
             throw configuration.translate(queryString, constants, e);
-
         } finally {
             reset();
         }
-    }
-
-    @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
     }
 
     @Override
@@ -638,18 +348,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         return c.newInstance(args);
     }
 
-    public Q on(Predicate condition) {
-        return queryMixin.on(condition);
-    }
-
-    @Override
-    public Q on(Predicate... conditions) {
-        return queryMixin.on(conditions);
-    }
-
     private void reset() {
         queryMixin.getMetadata().reset();
-        constants = null;
     }
 
     protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths,
@@ -675,106 +375,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     }
 
     @Override
-    public String toString() {
-        return buildQueryString(false).trim();
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
-
-    @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
         if (getMetadata().getModifiers().getLimit() == null
            && !expr.toString().contains("count(")) {
@@ -784,60 +384,23 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
         return uniqueResult(iterator);
     }
 
-    @Override
-    public Q withRecursive(Path<?> alias, SubQueryExpression<?> query) {
-        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
-        return with(alias, query);
-    }
-
-    @Override
-    public Q withRecursive(Path<?> alias, Expression<?> query) {
-        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
-        return with(alias, query);
-    }
-
-    @Override
-    public WithBuilder<Q> withRecursive(Path<?> alias, Path<?>... columns) {
-        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
-        return with(alias, columns);
-    }
-
-    @Override
-    public Q with(Path<?> alias, SubQueryExpression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
-        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
-    }
-
-    @Override
-    public Q with(Path<?> alias, Expression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
-        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
-    }
-
-    @Override
-    public WithBuilder<Q> with(Path<?> alias, Path<?>... columns) {
-        Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
-        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
-        return new WithBuilder<Q>(queryMixin, aliasCombined);
-    }
-
     private long unsafeCount() throws SQLException {
-        final String queryString = buildQueryString(true);
+        SQLSerializer serializer = serialize(true);
+        final String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
             logger.debug("query : {}", queryString);
         }
+        List<Object> constants = serializer.getConstants();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
+            setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);
-
         } catch (SQLException e) {
-            throw configuration.translate(e);
-
+            throw configuration.translate(queryString, constants, e);
         } finally {
             try {
                 if (rs != null) {
@@ -854,5 +417,19 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query<Q>>
     public void setUseLiterals(boolean useLiterals) {
         this.useLiterals = useLiterals;
     }
+    
+    @Override
+    protected void clone(Q query) {
+        super.clone(query);
+        this.useLiterals = query.useLiterals;
+        this.listeners = new SQLListeners(query.listeners);
+    }
+    
+    @Override
+    public Q clone() {
+        return this.clone(this.conn);
+    }
+    
+    public abstract Q clone(Connection connection);
 
 }

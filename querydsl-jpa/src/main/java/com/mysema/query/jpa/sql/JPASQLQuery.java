@@ -54,11 +54,10 @@ public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> {
         super(entityManager, conf, queryHandler, metadata);
     }
 
+    @Override
     public JPASQLQuery clone(EntityManager entityManager) {
         JPASQLQuery q = new JPASQLQuery(entityManager, configuration, queryHandler, getMetadata().clone());
-        q.flushMode = flushMode;
-        q.hints.putAll(hints);
-        q.lockMode = lockMode;
+        q.clone(this);
         return q;
     }
 

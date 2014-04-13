@@ -56,7 +56,7 @@ public class SQLSerializerTest {
         SQLSubQuery query = new SQLSubQuery();
         query.from(QEmployeeNoPK.employee);
         query.distinct();
-        serializer.serializeForQuery(query.queryMixin.getMetadata(), true);
+        serializer.serializeForQuery(query.getMetadata(), true);
         assertEquals("select count(*)\n" +
         "from (select distinct EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, " +
             "EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID\n" +
@@ -70,7 +70,7 @@ public class SQLSerializerTest {
         SQLSubQuery query = new SQLSubQuery();
         query.from(QEmployeeNoPK.employee);
         query.distinct();
-        serializer.serializeForQuery(query.queryMixin.getMetadata(), true);
+        serializer.serializeForQuery(query.getMetadata(), true);
         assertEquals("select count(" +
             "distinct (EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, " +
             "EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID))\n" +

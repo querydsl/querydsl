@@ -26,7 +26,7 @@ import javax.sql.DataSource;
  *
  */
 @Deprecated
-public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery> {
+public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery, SQLSubQuery> {
 
     static class DataSourceProvider implements Provider<Connection> {
 

@@ -28,6 +28,7 @@ import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLCommonQuery;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -50,14 +51,15 @@ public abstract class AbstractBaseTest {
         }
 
         @Override
-        protected String buildQueryString(boolean countRow) {
-            String rv = super.buildQueryString(countRow);
+        protected SQLSerializer serialize(boolean countRow) {
+            SQLSerializer serializer = super.serialize(countRow);
+            String rv = serializer.toString();
             if (expectedQuery != null) {
                 assertEquals(expectedQuery, rv.replace('\n', ' '));
                 expectedQuery = null;
             }
             System.out.println(rv);
-            return rv;
+            return serializer;
         }
 
         public TestQuery clone(Connection conn) {

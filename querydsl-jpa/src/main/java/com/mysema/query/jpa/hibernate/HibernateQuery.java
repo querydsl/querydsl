@@ -95,22 +95,11 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
         super(session, templates, metadata);
     }
 
-    /**
-     * Clone the state of this query to a new HibernateQuery instance with the given Session
-     *
-     * @param session
-     * @return
-     */
-    public HibernateQuery clone(Session session) {
-        HibernateQuery q = new HibernateQuery(new DefaultSessionHolder(session), 
+    @Override
+    protected HibernateQuery clone(SessionHolder sessionHolder) {
+        HibernateQuery q = new HibernateQuery(sessionHolder, 
                 getTemplates(), getMetadata().clone());
-        q.cacheable = cacheable;
-        q.cacheRegion = cacheRegion;
-        q.fetchSize = fetchSize;
-        q.flushMode = flushMode;
-        q.lockModes.putAll(lockModes);
-        q.readOnly = readOnly;
-        q.timeout = timeout;
+        q.clone(this);
         return q;
     }
 
