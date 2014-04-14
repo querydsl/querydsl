@@ -43,9 +43,9 @@ public class ProjectionExample {
 
     }
 
-    public ProjectionExample(Long id, char... characters) {
+    public ProjectionExample(long id, char... characters) {
         this.id = id;
-        this.text = String.copyValueOf(characters);
+        this.text = String.valueOf(characters);
     }
 
 }

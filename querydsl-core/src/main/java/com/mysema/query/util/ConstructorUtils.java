@@ -13,22 +13,26 @@
  */
 package com.mysema.query.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.ImmutableList.copyOf;
+import static com.google.common.collect.Collections2.filter;
+import static com.mysema.util.ArrayUtils.isEmpty;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableClassToInstanceMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.types.ExpressionException;
-import com.mysema.util.ArrayUtils;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,8 +90,8 @@ public class ConstructorUtils {
             Iterator<Class<?>> parameterIterator = Arrays
                     .asList(parameters)
                     .iterator();
-            if (!ArrayUtils.isEmpty(givenTypes)
-                    && !ArrayUtils.isEmpty(parameters)) {
+            if (!isEmpty(givenTypes)
+                    && !isEmpty(parameters)) {
                 Class<?> parameter = null;
                 for (Class<?> argument : givenTypes) {
 
@@ -108,8 +112,8 @@ public class ConstructorUtils {
                 if (matches == parameters.length) {
                     return parameters;
                 }
-            } else if (ArrayUtils.isEmpty(givenTypes)
-                    && ArrayUtils.isEmpty(parameters)) {
+            } else if (isEmpty(givenTypes)
+                    && isEmpty(parameters)) {
                 return NO_ARGS;
             }
         }
@@ -128,8 +132,7 @@ public class ConstructorUtils {
                 new VarArgsTransformer(constructor),
                 new NullSafePrimitiveTransformer(constructor));
 
-        return Collections2
-                .filter(transformers, applicableFilter);
+        return copyOf(filter(transformers, applicableFilter));
     }
 
     private static Class<?> normalize(Class<?> clazz) {
@@ -189,13 +192,13 @@ public class ConstructorUtils {
         @Override
         public Object[] apply(Object[] args) {
             Iterator<Object> iterator = Arrays
-                    .asList(args)
+                    .asList(checkNotNull(args))
                     .iterator();
 
             // constructor args
             Object[] cargs = new Object[paramTypes.length];
             for (int i = 0; i < cargs.length - 1; i++) {
-                Array.set(cargs, i, iterator.next());
+                set(cargs, i, iterator.next());
             }
             // array with vargs
             int size = args.length - cargs.length + 1;
@@ -203,9 +206,19 @@ public class ConstructorUtils {
                     componentType, size);
             cargs[cargs.length - 1] = vargs;
             for (int i = 0; i < Array.getLength(vargs); i++) {
-                Array.set(vargs, i, iterator.next());
+                set(vargs, i, iterator.next());
             }
             return cargs;
+        }
+
+        private void set(Object array, int index, Object value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+            try {
+                Array.set(array, index, value);
+            } catch (IllegalArgumentException primitiveArrayCantHoldNull) {
+                // retry with default value
+                Object defaultValue = defaultPrimitives.getInstance(componentType);
+                Array.set(array, index, defaultValue);
+            }
         }
 
     }
@@ -234,14 +247,17 @@ public class ConstructorUtils {
 
         @Override
         public Object[] apply(Object[] args) {
+            List<Object> argList = Arrays
+                    .asList(checkNotNull(args));
+
             for (Map.Entry<Integer, Class<?>> primitiveEntry : primitiveLocations.entrySet()) {
                 Integer location = primitiveEntry.getKey();
-                if (args[location] == null) {
+                if (argList.get(location) == null) {
                     Class<?> primitiveClass = primitiveEntry.getValue();
-                    args[location] = defaultPrimitives.getInstance(primitiveClass);
+                    argList.set(location, defaultPrimitives.getInstance(primitiveClass));
                 }
             }
-            return args;
+            return argList.toArray();
         }
 
     }

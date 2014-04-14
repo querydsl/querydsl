@@ -88,10 +88,24 @@ public class ProjectionsTest {
         Constant<Long> longVal = ConstantImpl.create(1L);
         Constant<Character> charVal = ConstantImpl.create('\0');
         ProjectionExample instance = Projections
-                .constructor(ProjectionExample.class, longVal, charVal, charVal, charVal, charVal, charVal, charVal)
-                .newInstance(1L, 'm', 'y', 's', 'e', 'm', 'a');
-        assertEquals(1L, (long) instance.id);
-        assertEquals("mysema", instance.text);
+                .constructor(ProjectionExample.class,
+                        longVal, charVal,
+                        charVal, charVal,
+                        charVal, charVal,
+                        charVal, charVal,
+                        charVal, charVal,
+                        charVal)
+                .newInstance(null, 'm',
+                        'y', 's',
+                        'e', 'm',
+                        'a', null,
+                        'l', 't',
+                        'd');
+        assertEquals(0L, (long) instance.id);
+        // null character cannot be inserted, so a literal String can't be used.
+        String expectedText = String.valueOf(new char[]{'m', 'y', 's', 'e', 'm', 'a',
+            '\0', 'l', 't', 'd'});
+        assertEquals(expectedText, instance.text);
     }
 
     @Test
