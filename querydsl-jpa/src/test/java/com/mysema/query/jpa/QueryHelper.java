@@ -28,6 +28,7 @@ import antlr.collections.AST;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
@@ -35,7 +36,16 @@ import com.mysema.query.types.Expression;
 class QueryHelper extends JPAQueryBase<QueryHelper> {
 
     public QueryHelper(JPQLTemplates templates) {
-        super(new DefaultQueryMetadata(), templates, null);
+        this(new DefaultQueryMetadata(), templates);
+    }
+    
+    public QueryHelper(QueryMetadata metadata, JPQLTemplates templates) {
+        super(metadata, templates);
+    }
+
+    @Override
+    protected JPQLSerializer createSerializer() {
+        return new JPQLSerializer(getTemplates());
     }
 
     public long count() {
@@ -86,12 +96,13 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>... args) {
+    public <RT> RT uniqueResult(Expression<RT> projection) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <RT> RT uniqueResult(Expression<RT> projection) {
-        throw new UnsupportedOperationException();
+    public QueryHelper clone() {
+        return new QueryHelper(getMetadata().clone(), getTemplates());
     }
+    
 }

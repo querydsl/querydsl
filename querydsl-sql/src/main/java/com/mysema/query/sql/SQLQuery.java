@@ -87,16 +87,10 @@ public final class SQLQuery extends AbstractSQLQuery<SQLQuery> {
         super(conn, configuration, metadata);
     }
 
-    /**
-     * Clone the state of this query to a new SQLQuery instance with the given Connection
-     *
-     * @param conn
-     * @return
-     */
+    @Override
     public SQLQuery clone(Connection conn) {
         SQLQuery q = new SQLQuery(conn, getConfiguration(), getMetadata().clone());
-        q.union = union;
-        q.unionAll = unionAll;
+        q.clone(this);
         return q;
     }
 

@@ -101,6 +101,13 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     public OracleQuery orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }
+    
+    @Override
+    public OracleQuery clone(Connection conn) {
+        OracleQuery q = new OracleQuery(conn, getConfiguration(), getMetadata().clone());
+        q.clone(this);
+        return q;
+    }
 
     // TODO : connect by root
 
@@ -110,3 +117,5 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
 
     // TODO : sys connect path
 }
+
+

@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.SQLExpressions;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.oracle.OracleQuery;
 import com.mysema.testutil.IncludeIn;
@@ -21,14 +22,15 @@ public class SelectOracleBase extends AbstractBaseTest {
     protected OracleQuery oracleQuery() {
         return new OracleQuery(connection, configuration) {
             @Override
-            protected String buildQueryString(boolean forCountRow) {
-                String rv = super.buildQueryString(forCountRow);
+            protected SQLSerializer serialize(boolean forCountRow) {
+                SQLSerializer serializer = super.serialize(forCountRow);
+                String rv = serializer.toString();
                 if (expectedQuery != null) {
                    Assert.assertEquals(expectedQuery, rv.replace('\n', ' '));
                    expectedQuery = null;
                 }
                 System.out.println(rv);
-                return rv;
+                return serializer;
             }
         };
     }

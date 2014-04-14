@@ -19,6 +19,7 @@ import javax.inject.Provider;
 
 import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.TeradataTemplates;
 
@@ -28,7 +29,7 @@ import com.mysema.query.sql.TeradataTemplates;
  * @author tiwe
  *
  */
-public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery> {
+public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery, SQLSubQuery> {
 
     public TeradataQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

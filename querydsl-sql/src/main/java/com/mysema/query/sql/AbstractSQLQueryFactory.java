@@ -31,7 +31,7 @@ import com.mysema.query.types.SubQueryExpression;
  * @author tiwe
  *
  */
-public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLCommonQueryFactory<Q, SQLSubQuery,
+public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>, SQ extends AbstractSQLSubQuery<SQ>> implements SQLCommonQueryFactory<Q, SQ,
     SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     protected final Configuration configuration;
@@ -76,13 +76,14 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
         return new SQLUpdateClause(connection.get(), configuration, path);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public final SQLSubQuery subQuery() {
-        return new SQLSubQuery();
+    public SQ subQuery() {
+        return (SQ) new SQLSubQuery();
     }
 
     @Override
-    public final SQLSubQuery subQuery(Expression<?> from) {
+    public final SQ subQuery(Expression<?> from) {
         return subQuery().from(from);
     }
 
