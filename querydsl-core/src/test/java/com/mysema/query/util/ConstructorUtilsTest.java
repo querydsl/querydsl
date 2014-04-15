@@ -13,8 +13,10 @@
  */
 package com.mysema.query.util;
 
-import static org.junit.Assert.*;
 import static com.mysema.query.util.ConstructorUtils.*;
+import static com.mysema.util.ArrayUtils.isEmpty;
+import static org.junit.Assert.*;
+
 import com.mysema.query.types.ProjectionExample;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -33,14 +35,19 @@ public class ConstructorUtilsTest {
         Constructor<?> nullDefaultConstructor = getConstructor(ProjectionExample.class, null);
         assertNotNull(emptyDefaultConstructor);
         assertNotNull(nullDefaultConstructor);
+        assertTrue(isEmpty(emptyDefaultConstructor.getParameterTypes())
+                && isEmpty(nullDefaultConstructor.getParameterTypes()));
     }
 
+    @Test
     public void GetSimpleConstructor() {
         Class<?>[] args = {Long.class};
         Constructor<?> constructor = getConstructor(ProjectionExample.class, args);
         assertNotNull(constructor);
+        assertArrayEquals(args, constructor.getParameterTypes());
     }
 
+    @Test
     public void GetDefaultConstructorParameters() {
         Class<?>[] args = {Long.class, String.class};
         Class<?>[] expected = {Long.TYPE, String.class};
