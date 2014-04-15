@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -191,14 +190,14 @@ public class ConstructorUtils {
 
         @Override
         public Object[] apply(Object[] args) {
-            Iterator<Object> iterator = Arrays
-                    .asList(checkNotNull(args))
-                    .iterator();
+            checkNotNull(args);
+
+            int current = 0;
 
             // constructor args
             Object[] cargs = new Object[paramTypes.length];
             for (int i = 0; i < cargs.length - 1; i++) {
-                set(cargs, i, iterator.next());
+                set(cargs, i, args[current++]);
             }
             // array with vargs
             int size = args.length - cargs.length + 1;
@@ -206,7 +205,7 @@ public class ConstructorUtils {
                     componentType, size);
             cargs[cargs.length - 1] = vargs;
             for (int i = 0; i < Array.getLength(vargs); i++) {
-                set(vargs, i, iterator.next());
+                set(vargs, i, args[current++]);
             }
             return cargs;
         }
@@ -247,17 +246,16 @@ public class ConstructorUtils {
 
         @Override
         public Object[] apply(Object[] args) {
-            List<Object> argList = Arrays
-                    .asList(checkNotNull(args));
+            checkNotNull(args);
 
             for (Map.Entry<Integer, Class<?>> primitiveEntry : primitiveLocations.entrySet()) {
                 Integer location = primitiveEntry.getKey();
-                if (argList.get(location) == null) {
+                if (args[location] == null) {
                     Class<?> primitiveClass = primitiveEntry.getValue();
-                    argList.set(location, defaultPrimitives.getInstance(primitiveClass));
+                    args[location] = defaultPrimitives.getInstance(primitiveClass);
                 }
             }
-            return argList.toArray();
+            return args;
         }
 
     }
