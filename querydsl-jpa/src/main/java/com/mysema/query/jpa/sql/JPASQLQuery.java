@@ -13,13 +13,12 @@
  */
 package com.mysema.query.jpa.sql;
 
-import javax.persistence.EntityManager;
-
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
+
+import javax.persistence.EntityManager;
 
 /**
  * JPASQLQuery is an SQLQuery implementation that uses JPA Native SQL functionality
@@ -39,7 +38,7 @@ public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> {
     }
 
     public JPASQLQuery(EntityManager entityManager, Configuration conf, QueryHandler queryHandler) {
-        super(entityManager, conf, new DefaultQueryMetadata().noValidate());
+        super(entityManager, conf, queryHandler);
     }
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates, QueryMetadata metadata) {

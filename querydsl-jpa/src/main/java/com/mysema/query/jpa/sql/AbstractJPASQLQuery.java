@@ -13,27 +13,10 @@
  */
 package com.mysema.query.jpa.sql;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-import javax.persistence.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.NonUniqueResultException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
+import com.mysema.query.*;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.NativeSQLSerializer;
 import com.mysema.query.jpa.QueryHandler;
@@ -43,6 +26,17 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -70,12 +64,13 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     @Nullable
 
     protected FactoryExpression<?> projection;
+
     public AbstractJPASQLQuery(EntityManager em, Configuration configuration) {
         this(em, configuration, new DefaultQueryMetadata().noValidate());
     }
 
     public AbstractJPASQLQuery(EntityManager em, Configuration configuration, QueryHandler queryHandler) {
-        this(em, configuration, new DefaultQueryMetadata().noValidate());
+        this(em, configuration, queryHandler, new DefaultQueryMetadata().noValidate());
     }
 
     public AbstractJPASQLQuery(EntityManager em, Configuration configuration, QueryMetadata metadata) {
