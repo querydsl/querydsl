@@ -13,17 +13,16 @@
  */
 package com.mysema.query.jpa;
 
-import javax.persistence.Entity;
-
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.ProjectableSQLQuery;
-import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.TemplateExpression;
+
+import javax.persistence.Entity;
 
 /**
  * Abstract super class for SQLQuery implementation for JPA and Hibernate
@@ -63,11 +62,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         } else {
             return expr;
         }
-    }
-
-    @Override
-    protected SQLSerializer createSerializer() {
-        return new NativeSQLSerializer(configuration, true);
     }
 
 }

@@ -23,6 +23,7 @@ import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
@@ -158,6 +159,11 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         }
 
         return query;
+    }
+
+    @Override
+    protected SQLSerializer createSerializer() {
+        return new NativeSQLSerializer(configuration, queryHandler.wrapEntityProjections());
     }
 
     /**
