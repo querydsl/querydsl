@@ -13,15 +13,14 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class NativeSQLSerializerTest {
@@ -31,7 +30,7 @@ public class NativeSQLSerializerTest {
         Configuration conf = new Configuration(new MySQLTemplates());
         NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);
         DefaultQueryMetadata md = new DefaultQueryMetadata();
-        SAnimal cat = SAnimal.animal;
+        SAnimal cat = SAnimal.animal_;
         md.addJoin(JoinType.DEFAULT, cat);
         md.addWhere(cat.name.in("X", "Y"));
         md.addProjection(cat.id);

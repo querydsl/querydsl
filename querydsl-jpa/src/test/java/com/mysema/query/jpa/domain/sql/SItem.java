@@ -2,10 +2,13 @@ package com.mysema.query.jpa.domain.sql;
 
 import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.*;
 import com.mysema.query.types.path.*;
 
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
+import com.mysema.query.types.Path;
+
+import com.mysema.query.sql.ColumnMetadata;
 
 
 /**
@@ -14,54 +17,72 @@ import javax.annotation.Generated;
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SItem extends com.mysema.query.sql.RelationalPathBase<SItem> {
 
-    private static final long serialVersionUID = -1389350012;
+    private static final long serialVersionUID = -120177317;
 
-    public static final SItem item = new SItem("item_");
+    public static final SItem item_ = new SItem("item_");
 
-    public final NumberPath<Long> currentstatusId = createNumber("CURRENTSTATUS_ID", Long.class);
+    public final NumberPath<Long> currentStatusId = createNumber("currentStatusId", Long.class);
 
-    public final StringPath dtype = createString("DTYPE");
+    public final StringPath dtype = createString("dtype");
 
-    public final NumberPath<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> name = createNumber("NAME", Integer.class);
+    public final StringPath name = createString("name");
 
-    public final NumberPath<Long> productId = createNumber("PRODUCT_ID", Long.class);
+    public final NumberPath<Integer> paymentStatus = createNumber("paymentStatus", Integer.class);
 
-    public final NumberPath<Long> statusId = createNumber("STATUS_ID", Long.class);
+    public final NumberPath<Long> productId = createNumber("productId", Long.class);
+
+    public final NumberPath<Long> statusId = createNumber("statusId", Long.class);
 
     public final com.mysema.query.sql.PrimaryKey<SItem> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SStatus> item_CURRENTSTATUSIDFK = createForeignKey(currentstatusId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SStatus> fk5fde7acd23307bc = createForeignKey(statusId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SItem> item_PRODUCTIDFK = createForeignKey(productId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SStatus> fk5fde7ac9ea26263 = createForeignKey(currentStatusId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SStatus> item_STATUSIDFK = createForeignKey(statusId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SItem> fk5fde7ac2c7f0c58 = createForeignKey(productId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SItem> _item_PRODUCTIDFK = createInvForeignKey(id, "PRODUCT_ID");
+    public final com.mysema.query.sql.ForeignKey<SAuditlog> _fkb88fbf6ae26109c = createInvForeignKey(id, "item_id");
 
-    public final com.mysema.query.sql.ForeignKey<SOrder_item> _order_item_lineItemsIDFK = createInvForeignKey(id, "lineItems_ID");
+    public final com.mysema.query.sql.ForeignKey<SItem> _fk5fde7ac2c7f0c58 = createInvForeignKey(id, "product_id");
 
-    public final com.mysema.query.sql.ForeignKey<SItem_statuschange> _item_statuschange_PaymentIDFK = createInvForeignKey(id, "Payment_ID");
+    public final com.mysema.query.sql.ForeignKey<SOrder_item> _fk1b5e8cbe7640c8cf = createInvForeignKey(id, "items_id");
 
-    public final com.mysema.query.sql.ForeignKey<SAuditlog> _auditlog_ITEMIDFK = createInvForeignKey(id, "ITEM_ID");
-
-    public final com.mysema.query.sql.ForeignKey<SOrder_item> _order_item_itemsIDFK = createInvForeignKey(id, "items_ID");
-
-    public final com.mysema.query.sql.ForeignKey<SPrice> _price_PRODUCTIDFK = createInvForeignKey(id, "PRODUCT_ID");
+    public final com.mysema.query.sql.ForeignKey<SPrice> _fkc59678362c7f0c58 = createInvForeignKey(id, "product_id");
 
     public final com.mysema.query.sql.ForeignKey<SItem_statuschange> _fkcb99fb2aedc50192 = createInvForeignKey(id, "item__id");
 
+    public final com.mysema.query.sql.ForeignKey<SLineItems> _fkb2e400c3d8e44c3 = createInvForeignKey(id, "lineItems_id");
+
     public SItem(String variable) {
         super(SItem.class, forVariable(variable), "null", "item_");
+        addMetadata();
+    }
+
+    public SItem(String variable, String schema, String table) {
+        super(SItem.class, forVariable(variable), schema, table);
+        addMetadata();
     }
 
     public SItem(Path<? extends SItem> path) {
         super(path.getType(), path.getMetadata(), "null", "item_");
+        addMetadata();
     }
 
     public SItem(PathMetadata<?> metadata) {
         super(SItem.class, metadata, "null", "item_");
+        addMetadata();
+    }
+
+    public void addMetadata() {
+        addMetadata(currentStatusId, ColumnMetadata.named("currentStatus_id").withIndex(6).ofType(-5).withSize(19));
+        addMetadata(dtype, ColumnMetadata.named("DTYPE").withIndex(1).ofType(12).withSize(31).notNull());
+        addMetadata(id, ColumnMetadata.named("id").withIndex(2).ofType(-5).withSize(19).notNull());
+        addMetadata(name, ColumnMetadata.named("name").withIndex(4).ofType(12).withSize(255));
+        addMetadata(paymentStatus, ColumnMetadata.named("paymentStatus").withIndex(3).ofType(4).withSize(10));
+        addMetadata(productId, ColumnMetadata.named("product_id").withIndex(5).ofType(-5).withSize(19));
+        addMetadata(statusId, ColumnMetadata.named("status_id").withIndex(7).ofType(-5).withSize(19));
     }
 
 }
