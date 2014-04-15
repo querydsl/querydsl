@@ -200,6 +200,9 @@
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                 </requireBackwardCompatibility>
+                <requireSemanticVersioningConformance implementation="org.semver.enforcer.RequireSemanticVersioningConformance">
+                  <dumpDetails>true</dumpDetails>
+                </requireSemanticVersioningConformance>
               </rules>
             </configuration>
           </execution>
