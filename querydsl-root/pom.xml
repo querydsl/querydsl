@@ -211,7 +211,7 @@
           <dependency>
             <groupId>org.semver</groupId>
             <artifactId>enforcer-rule</artifactId>
-            <version>0.9.22</version>
+            <version>0.9.23-SNAPSHOT</version>
           </dependency>
         </dependencies>
       </plugin>
