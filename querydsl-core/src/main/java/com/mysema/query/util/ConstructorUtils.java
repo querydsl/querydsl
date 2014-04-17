@@ -128,8 +128,8 @@ public class ConstructorUtils {
      */
     public static Collection<? extends Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
         ArrayList<ConstructorArgumentTransformer> transformers = Lists.newArrayList(
-                new VarArgsTransformer(constructor),
-                new NullSafePrimitiveTransformer(constructor));
+                new NullSafePrimitiveTransformer(constructor),
+                new VarArgsTransformer(constructor));
 
         return copyOf(filter(transformers, applicableFilter));
     }
@@ -177,7 +177,6 @@ public class ConstructorUtils {
             paramTypes = constructor.getParameterTypes();
             if (paramTypes.length > 0) {
                 componentType = paramTypes[paramTypes.length - 1].getComponentType();
-
             } else {
                 componentType = null;
             }
@@ -211,13 +210,7 @@ public class ConstructorUtils {
         }
 
         private void set(Object array, int index, Object value) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-            try {
-                Array.set(array, index, value);
-            } catch (IllegalArgumentException primitiveArrayCantHoldNull) {
-                // retry with default value
-                Object defaultValue = defaultPrimitives.getInstance(componentType);
-                Array.set(array, index, defaultValue);
-            }
+            Array.set(array, index, value);
         }
 
     }
@@ -225,6 +218,7 @@ public class ConstructorUtils {
     private static class NullSafePrimitiveTransformer extends ConstructorArgumentTransformer {
 
         private final Map<Integer, Class<?>> primitiveLocations = Maps.newLinkedHashMap();
+        private final boolean hasPrimitiveVarArgComponentType;
 
         private NullSafePrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
@@ -237,6 +231,18 @@ public class ConstructorUtils {
                     primitiveLocations.put(location, parameterType);
                 }
             }
+            if (constructor.isVarArgs()) {
+                int lastPosition = parameterTypes.length - 1;
+                Class<?> varArgComponentType = parameterTypes[lastPosition]
+                        .getComponentType();
+                hasPrimitiveVarArgComponentType = varArgComponentType
+                        .isPrimitive();
+                if (hasPrimitiveVarArgComponentType) {
+                    primitiveLocations.put(lastPosition, varArgComponentType);
+                }
+            } else {
+                hasPrimitiveVarArgComponentType = false;
+            }
         }
 
         @Override
@@ -247,12 +253,23 @@ public class ConstructorUtils {
         @Override
         public Object[] apply(Object[] args) {
             checkNotNull(args);
-
-            for (Map.Entry<Integer, Class<?>> primitiveEntry : primitiveLocations.entrySet()) {
-                Integer location = primitiveEntry.getKey();
+            Iterator<Map.Entry<Integer, Class<?>>> entryIterator = primitiveLocations.entrySet().iterator();
+            Map.Entry<Integer, Class<?>> lastEntry = null;
+            while (entryIterator.hasNext()) {
+                lastEntry = entryIterator.next();
+                Integer location = lastEntry.getKey();
                 if (args[location] == null) {
-                    Class<?> primitiveClass = primitiveEntry.getValue();
+                    Class<?> primitiveClass = lastEntry.getValue();
                     args[location] = defaultPrimitives.getInstance(primitiveClass);
+                }
+            }
+            if (hasPrimitiveVarArgComponentType
+                    && lastEntry != null) {// just an assertion
+                for (int location = lastEntry.getKey(); location < args.length; location++) {
+                    if (args[location] == null) {
+                        Class<?> primitiveClass = lastEntry.getValue();
+                        args[location] = defaultPrimitives.getInstance(primitiveClass);
+                    }
                 }
             }
             return args;
