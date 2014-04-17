@@ -13,11 +13,7 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Types;
+import java.sql.*;
 
 /**
  * TimeType maps Time to Time on the JDBC level
@@ -25,7 +21,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class TimeType extends AbstractType<Time> {
+public class TimeType extends AbstractDateTimeType<Time> {
 
     public TimeType() {
         super(Types.TIME);
@@ -33,6 +29,11 @@ public class TimeType extends AbstractType<Time> {
 
     public TimeType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(Time value) {
+        return timeFormatter.print(value.getTime());
     }
 
     @Override

@@ -320,7 +320,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, SQLITE, TERADATA}) // TODO fix postgres
+    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, TERADATA}) // TODO fix postgres
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();

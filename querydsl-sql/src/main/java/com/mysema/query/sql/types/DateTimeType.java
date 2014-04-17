@@ -13,13 +13,9 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
-
 import org.joda.time.DateTime;
+
+import java.sql.*;
 
 /**
  * DateTimeType maps DateTime to Timestamp on the JDBC level
@@ -27,7 +23,7 @@ import org.joda.time.DateTime;
  * @author tiwe
  *
  */
-public class DateTimeType extends AbstractType<DateTime> {
+public class DateTimeType extends AbstractDateTimeType<DateTime> {
 
     public DateTimeType() {
         super(Types.TIMESTAMP);
@@ -35,6 +31,11 @@ public class DateTimeType extends AbstractType<DateTime> {
 
     public DateTimeType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(DateTime value) {
+        return dateTimeFormatter.print(value);
     }
 
     @Override

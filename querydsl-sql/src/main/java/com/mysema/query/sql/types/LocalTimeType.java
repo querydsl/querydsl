@@ -13,14 +13,10 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Types;
-
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
+
+import java.sql.*;
 
 /**
  * LocalTimeType maps LocalTime to Time on the JDBC level
@@ -28,7 +24,7 @@ import org.joda.time.LocalTime;
  * @author tiwe
  *
  */
-public class LocalTimeType extends AbstractType<LocalTime> {
+public class LocalTimeType extends AbstractDateTimeType<LocalTime> {
 
     public LocalTimeType() {
         super(Types.TIME);
@@ -36,6 +32,11 @@ public class LocalTimeType extends AbstractType<LocalTime> {
 
     public LocalTimeType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(LocalTime value) {
+        return timeFormatter.print(value);
     }
 
     @Override

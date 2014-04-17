@@ -17,6 +17,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
 
+import java.sql.Types;
+
 /**
  * DerbyTemplates is an SQL dialect for Derby
  *
@@ -107,15 +109,16 @@ public class DerbyTemplates extends SQLTemplates {
     }
 
     @Override
-    public String asLiteral(DateTimeType type, String literal) {
-        // JDBC escape syntax
-        String keyword = "ts";
-        if (type == DateTimeType.DATE) {
-            keyword = "d";
-        } else if (type == DateTimeType.TIME) {
-            keyword = "t";
+    public String serialize(String literal, int jdbcType) {
+        if (jdbcType == Types.TIMESTAMP) {
+            return "{ts '" + literal + "'}";
+        } else if (jdbcType == Types.DATE) {
+            return "{d '" + literal + "'}";
+        } else if (jdbcType == Types.TIME) {
+            return "{t '" + literal + "'}";
+        } else {
+            return super.serialize(literal, jdbcType);
         }
-        return "{" + keyword + " '" + literal + "'}";
     }
 
     @Override
