@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
 
+import com.mysema.codegen.model.SimpleType;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -248,11 +249,10 @@ public class AntMetaDataExporter extends Task {
                 BeanSerializer serializer = new BeanSerializer();
                 if (beanInterfaces != null) {
                     for (String iface : beanInterfaces) {
-                        try {
-                            serializer.addInterface(Class.forName(iface));
-                        } catch (ClassNotFoundException e) {
-                            throw new BuildException(e.getMessage(), e);
-                        }
+                        int sepIndex = iface.lastIndexOf('.');
+                        String packageName = iface.substring(0, sepIndex);
+                        String simpleName = iface.substring(sepIndex + 1);
+                        serializer.addInterface(new SimpleType(iface, packageName, simpleName));
                     }
                 }
                 serializer.setAddFullConstructor(beanAddFullConstructor);
