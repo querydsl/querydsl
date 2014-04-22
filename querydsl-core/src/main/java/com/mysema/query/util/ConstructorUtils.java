@@ -13,7 +13,6 @@
  */
 package com.mysema.query.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.copyOf;
 import static com.google.common.collect.Collections2.filter;
 import static com.mysema.util.ArrayUtils.isEmpty;
@@ -33,6 +32,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import javax.annotation.Nullable;
 
 /**
  *
@@ -127,7 +127,7 @@ public class ConstructorUtils {
      * @return
      */
     public static Collection<? extends Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
-        ArrayList<ConstructorArgumentTransformer> transformers = Lists.newArrayList(
+        ArrayList<ArgumentTransformer> transformers = Lists.newArrayList(
                 new NullSafePrimitiveTransformer(constructor),
                 new VarArgsTransformer(constructor));
 
@@ -146,35 +146,40 @@ public class ConstructorUtils {
                 .isAssignableFrom(normalize(argument));
     }
 
-    private static final Predicate<ConstructorArgumentTransformer> applicableFilter
-            = new Predicate<ConstructorArgumentTransformer>() {
+    private static final Predicate<ArgumentTransformer> applicableFilter
+            = new Predicate<ArgumentTransformer>() {
 
                 @Override
-                public boolean apply(ConstructorArgumentTransformer transformer) {
+                public boolean apply(ArgumentTransformer transformer) {
                     return transformer != null ? transformer.isApplicable() : false;
                 }
             };
 
-    protected static abstract class ConstructorArgumentTransformer implements Function<Object[], Object[]> {
+    protected static abstract class ArgumentTransformer implements Function<Object[], Object[]> {
 
-        protected final Constructor<?> constructor;
+        @Nullable
+        protected Constructor<?> constructor;
+        protected final Class<?>[] paramTypes;
 
-        public ConstructorArgumentTransformer(Constructor<?> constructor) {
+        public ArgumentTransformer(Constructor<?> constructor) {
+            this(constructor.getParameterTypes());
             this.constructor = constructor;
+        }
+
+        public ArgumentTransformer(Class<?>[] paramTypes) {
+            this.paramTypes = paramTypes;
         }
 
         public abstract boolean isApplicable();
     }
 
-    private static class VarArgsTransformer extends ConstructorArgumentTransformer {
+    private static class VarArgsTransformer extends ArgumentTransformer {
 
-        private final Class<?>[] paramTypes;
         private final Class<?> componentType;
 
         private VarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
 
-            paramTypes = constructor.getParameterTypes();
             if (paramTypes.length > 0) {
                 componentType = paramTypes[paramTypes.length - 1].getComponentType();
             } else {
@@ -184,13 +189,14 @@ public class ConstructorUtils {
 
         @Override
         public boolean isApplicable() {
-            return constructor.isVarArgs();
+            return constructor != null ? constructor.isVarArgs() : false;
         }
 
         @Override
         public Object[] apply(Object[] args) {
-            checkNotNull(args);
-
+            if (isEmpty(args)) {
+                return args;
+            }
             int current = 0;
 
             // constructor args
@@ -215,7 +221,7 @@ public class ConstructorUtils {
 
     }
 
-    private static class NullSafePrimitiveTransformer extends ConstructorArgumentTransformer {
+    private static class NullSafePrimitiveTransformer extends ArgumentTransformer {
 
         private final Map<Integer, Class<?>> primitiveLocations = Maps.newLinkedHashMap();
         private final boolean hasPrimitiveVarArgComponentType;
@@ -252,7 +258,9 @@ public class ConstructorUtils {
 
         @Override
         public Object[] apply(Object[] args) {
-            checkNotNull(args);
+            if (isEmpty(args)) {
+                return args;
+            }
             Iterator<Map.Entry<Integer, Class<?>>> entryIterator = primitiveLocations.entrySet().iterator();
             Map.Entry<Integer, Class<?>> lastEntry = null;
             while (entryIterator.hasNext()) {
