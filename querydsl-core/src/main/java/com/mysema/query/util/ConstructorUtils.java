@@ -128,6 +128,7 @@ public class ConstructorUtils {
      */
     public static Collection<? extends Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
         ArrayList<ArgumentTransformer> transformers = Lists.newArrayList(
+                new PrimitiveAwareVarArgsTransformer(constructor),
                 new NullSafePrimitiveTransformer(constructor),
                 new VarArgsTransformer(constructor));
 
@@ -175,7 +176,7 @@ public class ConstructorUtils {
 
     private static class VarArgsTransformer extends ArgumentTransformer {
 
-        private final Class<?> componentType;
+        protected final Class<?> componentType;
 
         private VarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
@@ -224,7 +225,6 @@ public class ConstructorUtils {
     private static class NullSafePrimitiveTransformer extends ArgumentTransformer {
 
         private final Map<Integer, Class<?>> primitiveLocations = Maps.newLinkedHashMap();
-        private final boolean hasPrimitiveVarArgComponentType;
 
         private NullSafePrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
@@ -236,18 +236,6 @@ public class ConstructorUtils {
                 if (parameterType.isPrimitive()) {
                     primitiveLocations.put(location, parameterType);
                 }
-            }
-            if (constructor.isVarArgs()) {
-                int lastPosition = parameterTypes.length - 1;
-                Class<?> varArgComponentType = parameterTypes[lastPosition]
-                        .getComponentType();
-                hasPrimitiveVarArgComponentType = varArgComponentType
-                        .isPrimitive();
-                if (hasPrimitiveVarArgComponentType) {
-                    primitiveLocations.put(lastPosition, varArgComponentType);
-                }
-            } else {
-                hasPrimitiveVarArgComponentType = false;
             }
         }
 
@@ -261,23 +249,41 @@ public class ConstructorUtils {
             if (isEmpty(args)) {
                 return args;
             }
-            Iterator<Map.Entry<Integer, Class<?>>> entryIterator = primitiveLocations.entrySet().iterator();
-            Map.Entry<Integer, Class<?>> lastEntry = null;
-            while (entryIterator.hasNext()) {
-                lastEntry = entryIterator.next();
-                Integer location = lastEntry.getKey();
+            for (Map.Entry<Integer, Class<?>> primitiveEntry : primitiveLocations.entrySet()) {
+                Integer location = primitiveEntry.getKey();
                 if (args[location] == null) {
-                    Class<?> primitiveClass = lastEntry.getValue();
+                    Class<?> primitiveClass = primitiveEntry.getValue();
                     args[location] = defaultPrimitives.getInstance(primitiveClass);
                 }
             }
-            if (hasPrimitiveVarArgComponentType
-                    && lastEntry != null) {// just an assertion
-                for (int location = lastEntry.getKey(); location < args.length; location++) {
-                    if (args[location] == null) {
-                        Class<?> primitiveClass = lastEntry.getValue();
-                        args[location] = defaultPrimitives.getInstance(primitiveClass);
-                    }
+            return args;
+        }
+
+    }
+
+    private static class PrimitiveAwareVarArgsTransformer extends VarArgsTransformer {
+
+        private final Object defaultInstance;
+
+        public PrimitiveAwareVarArgsTransformer(Constructor<?> constructor) {
+            super(constructor);
+            defaultInstance = defaultPrimitives.getInstance(componentType);
+        }
+
+        @Override
+        public boolean isApplicable() {
+            return super.isApplicable()
+                    && (componentType != null ? componentType.isPrimitive() : false);
+        }
+
+        @Override
+        public Object[] apply(Object[] args) {
+            if (isEmpty(args)) {
+                return args;
+            }
+            for (int i = paramTypes.length - 1; i < args.length; i++) {
+                if (args[i] == null) {
+                    args[i] = defaultInstance;
                 }
             }
             return args;
