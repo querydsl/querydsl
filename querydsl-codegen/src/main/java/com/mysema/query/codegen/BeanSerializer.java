@@ -13,25 +13,15 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Generated;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Generated;
+import java.util.*;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.mysema.util.BeanUtils;
 
 /**
@@ -52,7 +42,7 @@ public class BeanSerializer implements Serializer{
 
     private final boolean propertyAnnotations;
 
-    private final List<Class<?>> interfaces = Lists.newArrayList();
+    private final List<Type> interfaces = Lists.newArrayList();
 
     private final String javadocSuffix;
 
@@ -108,8 +98,8 @@ public class BeanSerializer implements Serializer{
 
         // imports
         Set<String> importedClasses = getAnnotationTypes(model);
-        for (Class<?> iface : interfaces) {
-            importedClasses.add(iface.getName());
+        for (Type iface : interfaces) {
+            importedClasses.add(iface.getFullName());
         }
         importedClasses.add(Generated.class.getName());
         if (model.hasLists()) {
@@ -144,11 +134,8 @@ public class BeanSerializer implements Serializer{
             if (printSupertype && model.getSuperType() != null) {
                 superType = model.getSuperType().getType();
             }
-            Type[] interfaceTypes = new Type[interfaces.size()];
-            for (int i = 0; i < interfaceTypes.length; i++) {
-                interfaceTypes[i] = new ClassType(interfaces.get(i));
-            }
-            writer.beginClass(model, superType, interfaceTypes);
+            Type[] ifaces = interfaces.toArray(new Type[interfaces.size()]);
+            writer.beginClass(model, superType, ifaces);
         } else if (printSupertype && model.getSuperType() != null) {
             writer.beginClass(model, model.getSuperType().getType());
         } else {
@@ -253,7 +240,11 @@ public class BeanSerializer implements Serializer{
     }
 
     public void addInterface(Class<?> iface) {
-        interfaces.add(iface);
+        interfaces.add(new ClassType(iface));
+    }
+
+    public void addInterface(Type type) {
+        interfaces.add(type);
     }
 
     public void setAddToString(boolean addToString) {
