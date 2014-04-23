@@ -21,8 +21,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.types.ExpressionException;
 import java.lang.reflect.Array;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 /**
@@ -224,19 +224,20 @@ public class ConstructorUtils {
 
     private static class NullSafePrimitiveTransformer extends ArgumentTransformer {
 
-        private final Map<Integer, Class<?>> primitiveLocations = Maps.newLinkedHashMap();
+        private final Set<Integer> primitiveLocations;
 
         private NullSafePrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
-
+            ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
             Class<?>[] parameterTypes = constructor.getParameterTypes();
             for (int location = 0; location < parameterTypes.length; location++) {
                 Class<?> parameterType = parameterTypes[location];
 
                 if (parameterType.isPrimitive()) {
-                    primitiveLocations.put(location, parameterType);
+                    builder.add(location);
                 }
             }
+            primitiveLocations = builder.build();
         }
 
         @Override
@@ -249,10 +250,9 @@ public class ConstructorUtils {
             if (isEmpty(args)) {
                 return args;
             }
-            for (Map.Entry<Integer, Class<?>> primitiveEntry : primitiveLocations.entrySet()) {
-                Integer location = primitiveEntry.getKey();
+            for (Integer location : primitiveLocations) {
                 if (args[location] == null) {
-                    Class<?> primitiveClass = primitiveEntry.getValue();
+                    Class<?> primitiveClass = paramTypes[location];
                     args[location] = defaultPrimitives.getInstance(primitiveClass);
                 }
             }
