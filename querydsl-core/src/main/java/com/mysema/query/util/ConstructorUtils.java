@@ -117,7 +117,7 @@ public class ConstructorUtils {
             }
         }
         throw new ExpressionException("No constructor found for " + type.toString()
-                + " with parameters: " + Arrays.toString(givenTypes));
+                + " with parameters: " + Arrays.deepToString(givenTypes));
     }
 
     /**
