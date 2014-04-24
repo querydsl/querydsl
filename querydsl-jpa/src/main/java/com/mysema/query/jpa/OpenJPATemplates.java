@@ -14,6 +14,7 @@
 package com.mysema.query.jpa;
 
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.PathType;
 
 /**
  * OpenJPATemplates extends JPQLTemplates with OpenJPA specific extensions
@@ -27,6 +28,7 @@ public class OpenJPATemplates extends JPQLTemplates{
 
     public OpenJPATemplates() {
         this(DEFAULT_ESCAPE);
+        add(PathType.VARIABLE, "{0s}_");
         add(Ops.ALIAS, "{0} {1}");
         add(Ops.NEGATE, "-1 * {0}", 7);
     }
