@@ -310,10 +310,6 @@
       <id>com.springsource.repository.bundles.release</id>
       <url>http://repository.springsource.com/maven/bundles/release</url>
     </repository>
-    <repository>
-      <id>spring roo repository</id>
-      <url>http://spring-roo-repository.springsource.org/release</url>
-    </repository>
   </repositories>
 
   <pluginRepositories>
