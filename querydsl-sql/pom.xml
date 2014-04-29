@@ -74,13 +74,7 @@
       <version>${postgresql.version}</version>
       <scope>test</scope>
     </dependency>
-    
-    <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc6</artifactId>
-      <version>${oracle.version}</version>
-      <scope>test</scope>
-    </dependency>
+
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>
@@ -107,20 +101,7 @@
       <version>${sqlite.version}</version>
       <scope>test</scope>
     </dependency>
-   
-    <dependency>
-      <groupId>com.teradata</groupId>
-      <artifactId>teradata-jdbc</artifactId>
-      <version>${teradata.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.teradata</groupId>
-      <artifactId>teradata-config</artifactId>
-      <version>${teradata.version}</version>
-      <scope>test</scope>
-    </dependency>
-            
+
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -210,5 +191,37 @@
        -->
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>oracle</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc6</artifactId>
+          <version>${oracle.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>teradata</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.teradata</groupId>
+          <artifactId>teradata-jdbc</artifactId>
+          <version>${teradata.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.teradata</groupId>
+          <artifactId>teradata-config</artifactId>
+          <version>${teradata.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
   
 </project>
