@@ -80,7 +80,7 @@
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url" value="jdbc:h2:target/h2-hibernate" />
             <property name="hibernate.connection.user" value="sa" />
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
@@ -173,7 +173,7 @@
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-batoo" />
             <property name="javax.persistence.jdbc.user" value="sa" />
-            <property name="org.batoo.jpa.sql_logging" value="STDOUT"/>
+            <property name="org.batoo.jpa.sql_logging" value="NONE"/>
             <property name="org.batoo.jpa.ddl" value="DROP" />
         </properties>
     </persistence-unit>    
