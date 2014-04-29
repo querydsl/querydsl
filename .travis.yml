@@ -1,0 +1,5 @@
+language: java
+install:
+    - sh -c 'cd querydsl-root && mvn install -Dskiptests=true'
+script:
+    - sh -c 'cd querydsl-root && mvn test'
