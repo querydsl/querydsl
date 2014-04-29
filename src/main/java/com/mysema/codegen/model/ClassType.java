@@ -23,8 +23,7 @@ import com.mysema.codegen.support.ClassUtils;
 
 /**
  * @author tiwe
- * 
- * @param <T>
+ *
  */
 public class ClassType implements Type {
 
