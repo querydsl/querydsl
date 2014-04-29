@@ -303,42 +303,8 @@
 
   <repositories>
     <repository>
-      <id>jboss</id>
-      <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
-    </repository>
-    <repository>
-      <id>jboss2</id>
-      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>      
-    </repository>
-    <repository>
-      <id>EclipseLink Repo</id>
-      <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
-    </repository>
-    <repository>
       <id>jahia</id>
       <url>http://maven.jahia.org/maven2</url>
-    </repository>
-    <repository>
-      <id>datanucleus</id>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
-    </repository>
-    <repository>
-      <id>morphia_repo</id>
-      <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
-    </repository>
-    <repository>
-      <id>CUBRID</id>
-      <url>http://maven.cubrid.org</url>
-    </repository>
-    <repository>
-      <id>Sonatype snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
     </repository>
     <repository>
       <id>com.springsource.repository.bundles.release</id>
@@ -351,10 +317,6 @@
   </repositories>
 
   <pluginRepositories>
-    <pluginRepository>
-      <id>datanucleus</id>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
-    </pluginRepository>
     <pluginRepository>
       <id>com.springsource.repository.bundles.release</id>
       <url>http://repository.springsource.com/maven/bundles/release</url>
