@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractBaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
 
     protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
 
