@@ -13,32 +13,26 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import org.junit.Rule;
-import org.junit.rules.MethodRule;
-
-import com.mysema.query.sql.AbstractSQLQuery;
-import com.mysema.query.sql.AbstractSQLSubQuery;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLCommonQuery;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
+import org.junit.Rule;
+import org.junit.rules.MethodRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractBaseTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
 
     protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
 
@@ -58,7 +52,7 @@ public abstract class AbstractBaseTest {
                 assertEquals(expectedQuery, rv.replace('\n', ' '));
                 expectedQuery = null;
             }
-            System.out.println(rv);
+            logger.debug(rv);
             return serializer;
         }
 
