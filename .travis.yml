@@ -3,6 +3,6 @@ jdk:
   - oraclejdk8
   - oraclejdk7
 install:
-  - sh -c 'cd querydsl-root && mvn -B install -Dmaven.javadoc.skip=true -Dskiptests=true'
+  - sh -c 'cd querydsl-root && mvn -B -q install -Dmaven.javadoc.skip=true -Dskiptests=true'
 script:
   - sh -c 'cd querydsl-root && mvn -B test'
