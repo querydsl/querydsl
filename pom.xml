@@ -35,7 +35,7 @@
     <commons.collections.version>4.01</commons.collections.version>
     <commons.lang.version>3.0.1</commons.lang.version>
     <guava.version>11.0.2</guava.version>
-    <ecj.version>3.7.2</ecj.version>
+    <ecj.version>4.3.1</ecj.version>
   </properties>
   
   <dependencies>
