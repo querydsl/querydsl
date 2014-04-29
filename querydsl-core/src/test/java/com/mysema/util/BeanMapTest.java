@@ -1,14 +1,11 @@
 package com.mysema.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class BeanMapTest {
 
@@ -89,6 +86,7 @@ public class BeanMapTest {
     }
 
     @Test
+    @Ignore
     public void Values() {
         beanMap.put("firstName", "John");
         assertEquals(Lists.newArrayList(0, null, Entity.class, "John"), beanMap.values());
