@@ -182,7 +182,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <showWarnings>true</showWarnings>
+              <logOnlyOnError>true</logOnlyOnError>
               <processors>
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
                 <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 

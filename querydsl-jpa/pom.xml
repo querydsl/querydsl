@@ -295,7 +295,8 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>              
+              <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+              <logOnlyOnError>true</logOnlyOnError>
             </configuration>            
           </execution>
         </executions>

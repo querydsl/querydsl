@@ -238,6 +238,7 @@
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <logOnlyOnError>true</logOnlyOnError>
             </configuration>
           </execution>
         </executions>    

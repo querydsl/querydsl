@@ -303,10 +303,6 @@
 
   <repositories>
     <repository>
-      <id>source</id>
-      <url>http://source.mysema.com/maven2/releases</url>
-    </repository>
-    <repository>
       <id>jboss</id>
       <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
     </repository>
