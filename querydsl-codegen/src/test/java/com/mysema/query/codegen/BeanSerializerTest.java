@@ -121,7 +121,7 @@ public class BeanSerializerTest {
         BeanSerializer serializer = new BeanSerializer();
         serializer.setAddToString(true);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        System.out.println(writer.toString());
+        //System.out.println(writer.toString());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class BeanSerializerTest {
         BeanSerializer serializer = new BeanSerializer();
         serializer.setAddFullConstructor(true);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        System.out.println(writer.toString());
+        //System.out.println(writer.toString());
     }
 
     @Test
@@ -158,7 +158,7 @@ public class BeanSerializerTest {
         BeanSerializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String str = writer.toString();
-        System.err.println(str);
+        //System.err.println(str);
         for (String prop : Arrays.asList(
                 "String[] arrayField;",
                 "Boolean boolean$;",

@@ -13,6 +13,9 @@
  */
 package com.mysema.query.jpa;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import com.mysema.query.JPAProviderRule;
@@ -23,9 +26,6 @@ import com.mysema.testutil.JPATestRunner;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 @RunWith(JPATestRunner.class)
 public class JPAIntegrationBase extends ParsingTest {
@@ -46,7 +46,7 @@ public class JPAIntegrationBase extends ParsingTest {
             @Override
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
-                    System.out.println("query : " + toString().replace('\n', ' '));
+                    //System.out.println("query : " + toString().replace('\n', ' '));
 
                     // create Query and execute it
                     JPQLSerializer serializer = new JPQLSerializer(templates);
@@ -60,7 +60,7 @@ public class JPAIntegrationBase extends ParsingTest {
                         throw new RuntimeException(e);
                     }
                 } finally {
-                    System.out.println();
+                    //System.out.println();
                 }
             }
         };

@@ -13,14 +13,13 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import com.mysema.query.support.QueryBase;
 import com.mysema.query.types.Expression;
+import static org.junit.Assert.assertTrue;
 
 public final class QueryMutability<T extends QueryBase<T> & Projectable> {
 
@@ -97,7 +96,6 @@ public final class QueryMutability<T extends QueryBase<T> & Projectable> {
         if (query instanceof Closeable) {
             ((Closeable)query).close();
         }
-        System.err.println();
     }
 
 }

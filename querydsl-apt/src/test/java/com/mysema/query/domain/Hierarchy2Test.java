@@ -33,7 +33,7 @@ public class Hierarchy2Test {
     }
 
     @Entity
-    static class A {
+    public static class A {
 
         @OneToOne
         SomeEntity entry;
@@ -43,7 +43,7 @@ public class Hierarchy2Test {
     }
 
     @Entity
-    static class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
+    public static class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
     }
 
     @Embeddable

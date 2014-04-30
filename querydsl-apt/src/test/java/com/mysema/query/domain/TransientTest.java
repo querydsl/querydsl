@@ -13,20 +13,18 @@
  */
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
-
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import org.junit.Test;
-
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryType;
+import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class TransientTest {
     
     @Entity
-    static class ExampleEntity {
+    public static class ExampleEntity {
         
         @QueryType(PropertyType.SIMPLE)
         @Transient

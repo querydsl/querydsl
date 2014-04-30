@@ -1,25 +1,23 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import com.mysema.query.annotations.QueryEntity;
+import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class InterfaceType3Test {
     
     @QueryEntity
-    interface A {
+    public interface A {
       String getA();
     }
 
     @QueryEntity
-    interface B {
+    public interface B {
       String getB();
     }
 
     @QueryEntity
-    interface C extends A, B {
+    public interface C extends A, B {
       String getC();
     }
     
