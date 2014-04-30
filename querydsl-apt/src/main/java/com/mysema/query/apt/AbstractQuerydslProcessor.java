@@ -558,7 +558,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
+        return SourceVersion.latestSupported();
     }
 
     private void serialize(Serializer serializer, Collection<EntityType> models) {
