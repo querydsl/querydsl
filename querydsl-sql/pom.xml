@@ -15,6 +15,10 @@
   <description>SQL support for Querydsl</description>
   <packaging>jar</packaging>
 
+  <properties>
+    <bridge-method.version>1.11</bridge-method.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
@@ -115,12 +119,63 @@
       <artifactId>jdepend</artifactId>
       <version>2.9.1</version>
       <scope>test</scope>
-    </dependency>    
-    
+    </dependency>
+
+    <!-- backwards compatibility -->
+    <dependency>
+      <groupId>com.infradna.tool</groupId>
+      <artifactId>bridge-method-annotation</artifactId>
+      <version>${bridge-method.version}</version>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jenkins-ci</groupId>
+          <artifactId>annotation-indexer</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.hudson</groupId>
+      <artifactId>annotation-indexer</artifactId>
+      <version>1.2</version>
+      <optional>true</optional>
+    </dependency>
+
   </dependencies>
   
   <build>
     <plugins>
+      <plugin>
+        <groupId>com.infradna.tool</groupId>
+        <artifactId>bridge-method-injector</artifactId>
+        <version>${bridge-method.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>process</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.infradna.tool</groupId>
+            <artifactId>bridge-method-annotation</artifactId>
+            <version>${bridge-method.version}</version>
+            <optional>true</optional>
+            <exclusions>
+              <exclusion>
+                <groupId>org.jenkins-ci</groupId>
+                <artifactId>annotation-indexer</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.jvnet.hudson</groupId>
+            <artifactId>annotation-indexer</artifactId>
+            <version>1.2</version>
+          </dependency>
+        </dependencies>
+      </plugin>
       <plugin>
         <groupId>com.springsource.bundlor</groupId>
         <artifactId>com.springsource.bundlor.maven</artifactId>

@@ -259,6 +259,11 @@ public final class CaseBuilder {
             return thenDate(ConstantImpl.create(date));
         }
 
+        @Deprecated
+        public Cases<java.sql.Date, DateExpression<java.sql.Date>> thenDate(java.sql.Date date) {
+            return then(date);
+        }
+
         // DateTime
 
         public <T extends Comparable> Cases<T, DateTimeExpression<T>> then(DateTimeExpression<T> expr) {
@@ -279,8 +284,18 @@ public final class CaseBuilder {
             return thenDateTime(ConstantImpl.create(ts));
         }
 
+        @Deprecated
+        public Cases<Timestamp, DateTimeExpression<Timestamp>> thenDateTime(Timestamp ts) {
+            return then(ts);
+        }
+
         public Cases<java.util.Date, DateTimeExpression<java.util.Date>> then(java.util.Date date) {
             return thenDateTime(ConstantImpl.create(date));
+        }
+
+        @Deprecated
+        public Cases<java.util.Date, DateTimeExpression<java.util.Date>> thenDateTime(java.util.Date date) {
+            return then(date);
         }
 
         // Enum
