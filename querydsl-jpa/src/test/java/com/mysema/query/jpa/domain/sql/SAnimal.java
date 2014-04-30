@@ -2,10 +2,13 @@ package com.mysema.query.jpa.domain.sql;
 
 import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.*;
 import com.mysema.query.types.path.*;
 
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
+import com.mysema.query.types.Path;
+
+import com.mysema.query.sql.ColumnMetadata;
 
 
 /**
@@ -14,9 +17,9 @@ import javax.annotation.Generated;
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
 
-    private static final long serialVersionUID = 335015469;
+    private static final long serialVersionUID = 1795545042;
 
-    public static final SAnimal animal = new SAnimal("animal_");
+    public static final SAnimal animal_ = new SAnimal("animal_");
 
     public final BooleanPath alive = createBoolean("alive");
 
@@ -30,7 +33,7 @@ public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
 
     public final DatePath<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
 
-    public final StringPath dtype = createString("DTYPE");
+    public final StringPath dtype = createString("dtype");
 
     public final NumberPath<Integer> eyecolor = createNumber("eyecolor", Integer.class);
 
@@ -38,7 +41,7 @@ public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final NumberPath<Integer> mateId = createNumber("mate_id", Integer.class);
+    public final NumberPath<Integer> mateId = createNumber("mateId", Integer.class);
 
     public final StringPath name = createString("name");
 
@@ -52,26 +55,52 @@ public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
 
     public final com.mysema.query.sql.ForeignKey<SAnimal> fkccec31e312a37469 = createForeignKey(mateId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6f913d64b8 = createInvForeignKey(id, "kittensSet_id");
+    public final com.mysema.query.sql.ForeignKey<SKittens> _fkd60087cc3881aaa7 = createInvForeignKey(id, "kitten_id");
 
     public final com.mysema.query.sql.ForeignKey<SAnimal> _fkccec31e312a37469 = createInvForeignKey(id, "mate_id");
 
-    public final com.mysema.query.sql.ForeignKey<SKittens> _fkd60087ccf2c6f4cb = createInvForeignKey(id, "animal__id");
+    public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6f8f00fdf8 = createInvForeignKey(id, "cat_id");
 
-    public final com.mysema.query.sql.ForeignKey<SKittens> _fkd60087cc88406a42 = createInvForeignKey(id, "kittens_id");
+    public final com.mysema.query.sql.ForeignKey<SKittens> _fkd60087cc8f00fdf8 = createInvForeignKey(id, "cat_id");
 
-    public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6ff2c6f4cb = createInvForeignKey(id, "animal__id");
+    public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6f3881aaa7 = createInvForeignKey(id, "kitten_id");
 
     public SAnimal(String variable) {
         super(SAnimal.class, forVariable(variable), "null", "animal_");
+        addMetadata();
+    }
+
+    public SAnimal(String variable, String schema, String table) {
+        super(SAnimal.class, forVariable(variable), schema, table);
+        addMetadata();
     }
 
     public SAnimal(Path<? extends SAnimal> path) {
         super(path.getType(), path.getMetadata(), "null", "animal_");
+        addMetadata();
     }
 
     public SAnimal(PathMetadata<?> metadata) {
         super(SAnimal.class, metadata, "null", "animal_");
+        addMetadata();
+    }
+
+    public void addMetadata() {
+        addMetadata(alive, ColumnMetadata.named("alive").withIndex(3).ofType(-7).notNull());
+        addMetadata(birthdate, ColumnMetadata.named("birthdate").withIndex(4).ofType(93).withSize(19));
+        addMetadata(bodyWeight, ColumnMetadata.named("bodyWeight").withIndex(5).ofType(8).withSize(22).notNull());
+        addMetadata(breed, ColumnMetadata.named("breed").withIndex(13).ofType(4).withSize(10));
+        addMetadata(color, ColumnMetadata.named("color").withIndex(6).ofType(4).withSize(10));
+        addMetadata(dateField, ColumnMetadata.named("dateField").withIndex(7).ofType(91).withSize(10));
+        addMetadata(dtype, ColumnMetadata.named("DTYPE").withIndex(1).ofType(12).withSize(31).notNull());
+        addMetadata(eyecolor, ColumnMetadata.named("eyecolor").withIndex(14).ofType(4).withSize(10));
+        addMetadata(floatProperty, ColumnMetadata.named("floatProperty").withIndex(8).ofType(7).withSize(12).notNull());
+        addMetadata(id, ColumnMetadata.named("id").withIndex(2).ofType(4).withSize(10).notNull());
+        addMetadata(mateId, ColumnMetadata.named("mate_id").withIndex(15).ofType(4).withSize(10));
+        addMetadata(name, ColumnMetadata.named("name").withIndex(9).ofType(12).withSize(255));
+        addMetadata(timeField, ColumnMetadata.named("timeField").withIndex(10).ofType(92).withSize(8));
+        addMetadata(toes, ColumnMetadata.named("toes").withIndex(11).ofType(4).withSize(10).notNull());
+        addMetadata(weight, ColumnMetadata.named("weight").withIndex(12).ofType(4).withSize(10).notNull());
     }
 
 }

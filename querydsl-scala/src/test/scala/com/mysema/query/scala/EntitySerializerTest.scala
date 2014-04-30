@@ -52,14 +52,13 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
-    System.err.println(str)
+    //System.err.println(str)
     assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) " +
     		"extends EntityPathImpl[Person](cl, md) {"))
     assertTrue(str.contains("def this(variable: String) = " +
     		"this(classOf[Person], forVariable(variable))"))
     assertTrue(str.contains("def this(parent: Path[_], variable: String) = " +
     		"this(classOf[Person], forProperty(parent, variable))"))
-    System.err.println(str)
   }
 
   @Test
@@ -69,7 +68,7 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
-    System.err.println(str);
+    //System.err.println(str);
     assertCompileSuccess(str)
   }
 }

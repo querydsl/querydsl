@@ -25,7 +25,7 @@ class CaseClassSerializerTest extends CompileTestUtils {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     
-    println(writer.toString)
+    //println(writer.toString)
   }
   
   @Test

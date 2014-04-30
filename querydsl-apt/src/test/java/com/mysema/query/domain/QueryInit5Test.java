@@ -1,26 +1,24 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryInit;
+import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class QueryInit5Test {
     
-    @QueryEntity 
-    static class OtherClass {        
+    @QueryEntity
+    public static class OtherClass {
         OtherClass entity;
     }
     
-    @QueryEntity 
-    static class OtherClassTwo {        
+    @QueryEntity
+    public static class OtherClassTwo {
         OtherClassTwo entity;        
     }
     
     @QueryEntity
-    static class Parent {
+    public static class Parent {
         int x;
         
         @QueryInit("*")
@@ -28,7 +26,7 @@ public class QueryInit5Test {
     }
     
     @QueryEntity
-    static class Child extends Parent {
+    public static class Child extends Parent {
         @QueryInit("*")
         OtherClassTwo y;
     }

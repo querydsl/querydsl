@@ -1,0 +1,10 @@
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+services:
+  - mongodb
+install:
+  - sh -c 'cd querydsl-root && mvn -B -q install -Dmaven.javadoc.skip=true -DskipTests=true'
+script:
+  - sh -c 'cd querydsl-root && mvn -B test'

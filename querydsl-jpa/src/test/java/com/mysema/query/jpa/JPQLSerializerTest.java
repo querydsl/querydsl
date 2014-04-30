@@ -13,12 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -32,6 +26,11 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 public class JPQLSerializerTest {
 
@@ -195,5 +194,18 @@ public class JPQLSerializerTest {
         assertEquals("select cat\n" +
                      "from Cat cat\n" +
                      "order by cat.name asc nulls last", serializer.toString());
+    }
+
+    @Test
+    public void OpenJPA_Variables() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(OpenJPATemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addJoin(JoinType.INNERJOIN, cat.mate);
+        md.addJoinCondition(cat.mate.alive);
+        serializer.serialize(md, false, null);
+        assertEquals("select cat_\nfrom Cat cat_\n  inner join cat_.mate on cat_.mate.alive",
+                serializer.toString());
     }
 }

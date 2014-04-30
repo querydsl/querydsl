@@ -13,25 +13,9 @@
  */
 package com.mysema.query.jpa.hibernate.sql;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.*;
 import com.mysema.query.NonUniqueResultException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.FactoryExpressionTransformer;
 import com.mysema.query.jpa.NativeSQLSerializer;
@@ -41,8 +25,17 @@ import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
+import org.hibernate.Query;
+import org.hibernate.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -133,6 +126,11 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
             query.setReadOnly(readOnly);
         }
         return query;
+    }
+
+    @Override
+    protected SQLSerializer createSerializer() {
+        return new NativeSQLSerializer(configuration, true);
     }
 
     @SuppressWarnings("unchecked")

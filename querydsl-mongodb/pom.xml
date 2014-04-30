@@ -90,6 +90,7 @@
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.morphia.MorphiaAnnotationProcessor</processor>
+              <logOnlyOnError>true</logOnlyOnError>
               <options>
                 <defaultOverwrite>true</defaultOverwrite>
               </options>

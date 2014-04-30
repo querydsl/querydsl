@@ -16,18 +16,16 @@ package com.mysema.query.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.junit.Rule;
-import org.junit.rules.MethodRule;
-import org.junit.runner.RunWith;
-
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
-
 import com.mysema.query.JPAProviderRule;
 import com.mysema.query.TargetRule;
 import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.testutil.JPATestRunner;
+import org.junit.Rule;
+import org.junit.rules.MethodRule;
+import org.junit.runner.RunWith;
 
 @RunWith(JPATestRunner.class)
 public class JPAIntegrationBase extends ParsingTest {
@@ -48,11 +46,13 @@ public class JPAIntegrationBase extends ParsingTest {
             @Override
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
-                    System.out.println("query : " + toString().replace('\n', ' '));
+                    //System.out.println("query : " + toString().replace('\n', ' '));
 
                     // create Query and execute it
-                    Query query = em.createQuery(toString());
-                    JPAUtil.setConstants(query, getConstants(),getMetadata().getParams());
+                    JPQLSerializer serializer = new JPQLSerializer(templates);
+                    serializer.serialize(getMetadata(), false, null);
+                    Query query = em.createQuery(serializer.toString());
+                    JPAUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
                     try {
                         query.getResultList();
                     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class JPAIntegrationBase extends ParsingTest {
                         throw new RuntimeException(e);
                     }
                 } finally {
-                    System.out.println();
+                    //System.out.println();
                 }
             }
         };
