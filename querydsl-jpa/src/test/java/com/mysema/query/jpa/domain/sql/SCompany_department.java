@@ -2,10 +2,13 @@ package com.mysema.query.jpa.domain.sql;
 
 import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.*;
 import com.mysema.query.types.path.*;
 
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
+import com.mysema.query.types.Path;
+
+import com.mysema.query.sql.ColumnMetadata;
 
 
 /**
@@ -14,36 +17,41 @@ import javax.annotation.Generated;
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SCompany_department extends com.mysema.query.sql.RelationalPathBase<SCompany_department> {
 
-    private static final long serialVersionUID = -140756219;
+    private static final long serialVersionUID = -68475398;
 
-    public static final SCompany_department company_department = new SCompany_department("company__department_");
+    public static final SCompany_department company_department_ = new SCompany_department("company__department_");
 
-    public final NumberPath<Integer> _index = createNumber("_index", Integer.class);
+    public final NumberPath<Integer> company_id = createNumber("company_id", Integer.class);
 
-    public final NumberPath<Integer> company_id = createNumber("company__id", Integer.class);
+    public final NumberPath<Integer> departmentsId = createNumber("departmentsId", Integer.class);
 
-    public final NumberPath<Integer> companyID = createNumber("Company_ID", Integer.class);
-
-    public final NumberPath<Integer> departmentsID = createNumber("departments_ID", Integer.class);
-
-    public final com.mysema.query.sql.PrimaryKey<SCompany_department> primary = createPrimaryKey(companyID, departmentsID);
-
-    public final com.mysema.query.sql.ForeignKey<SCompany> company_department_CompanyIDFK = createForeignKey(companyID, "id");
-
-    public final com.mysema.query.sql.ForeignKey<SDepartment> company_department_departmentsIDFK = createForeignKey(departmentsID, "ID");
+    public final com.mysema.query.sql.ForeignKey<SDepartment> fk100ba6107d36c84d = createForeignKey(departmentsId, "id");
 
     public final com.mysema.query.sql.ForeignKey<SCompany> fk100ba610f0d30873 = createForeignKey(company_id, "id");
 
     public SCompany_department(String variable) {
         super(SCompany_department.class, forVariable(variable), "null", "company__department_");
+        addMetadata();
+    }
+
+    public SCompany_department(String variable, String schema, String table) {
+        super(SCompany_department.class, forVariable(variable), schema, table);
+        addMetadata();
     }
 
     public SCompany_department(Path<? extends SCompany_department> path) {
         super(path.getType(), path.getMetadata(), "null", "company__department_");
+        addMetadata();
     }
 
     public SCompany_department(PathMetadata<?> metadata) {
         super(SCompany_department.class, metadata, "null", "company__department_");
+        addMetadata();
+    }
+
+    public void addMetadata() {
+        addMetadata(company_id, ColumnMetadata.named("company__id").withIndex(1).ofType(4).withSize(10).notNull());
+        addMetadata(departmentsId, ColumnMetadata.named("departments_id").withIndex(2).ofType(4).withSize(10).notNull());
     }
 
 }

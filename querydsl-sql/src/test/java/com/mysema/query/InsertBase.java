@@ -13,35 +13,13 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.SQLSERVER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.mysema.query.sql.domain.QDateTest;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.DefaultMapper;
 import com.mysema.query.sql.dml.Mapper;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.Employee;
+import com.mysema.query.sql.domain.QDateTest;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
@@ -50,6 +28,20 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class InsertBase extends AbstractBaseTest {
 
@@ -71,6 +63,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(SQLITE) // https://bitbucket.org/xerial/sqlite-jdbc/issue/133/prepstmtsetdate-int-date-calendar-seems
     public void Insert_Dates() {
         QDateTest dateTest = QDateTest.qDateTest;
         LocalDate localDate = new LocalDate(1978, 1, 2);
@@ -91,7 +84,7 @@ public class InsertBase extends AbstractBaseTest {
         assertEquals(Integer.valueOf(2), result.get(2, Integer.class));
 
         DateTime dateTime = result.get(dateTimeProperty);
-        assertEquals(dateTime, localDate.toDateTimeAtStartOfDay());
+        assertEquals(localDate.toDateTimeAtStartOfDay(), dateTime);
     }
 
     @Test

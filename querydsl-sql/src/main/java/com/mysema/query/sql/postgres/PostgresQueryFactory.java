@@ -20,6 +20,7 @@ import javax.inject.Provider;
 import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -28,7 +29,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class PostgresQueryFactory extends AbstractSQLQueryFactory<PostgresQuery> {
+public class PostgresQueryFactory extends AbstractSQLQueryFactory<PostgresQuery, SQLSubQuery> {
 
     public PostgresQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

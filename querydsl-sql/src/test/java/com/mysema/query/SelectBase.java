@@ -13,45 +13,24 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Constants.date;
-import static com.mysema.query.Constants.employee;
-import static com.mysema.query.Constants.employee2;
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Constants.time;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.POSTGRES;
-import static com.mysema.query.Target.SQLITE;
-import static com.mysema.query.Target.SQLSERVER;
-import static com.mysema.query.Target.TERADATA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import com.mysema.query.types.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.Pair;
+import com.mysema.query.group.Group;
+import com.mysema.query.group.GroupBy;
+import com.mysema.query.sql.*;
+import com.mysema.query.sql.domain.*;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.*;
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.query.NumberSubQuery;
+import com.mysema.query.types.template.NumberTemplate;
+import com.mysema.testutil.ExcludeIn;
+import com.mysema.testutil.IncludeIn;
 import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -60,40 +39,16 @@ import org.joda.time.LocalTime;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.Pair;
-import com.mysema.query.group.Group;
-import com.mysema.query.group.GroupBy;
-import com.mysema.query.sql.Beans;
-import com.mysema.query.sql.DatePart;
-import com.mysema.query.sql.QBeans;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.SQLExpressions;
-import com.mysema.query.sql.WithinGroup;
-import com.mysema.query.sql.domain.Employee;
-import com.mysema.query.sql.domain.IdName;
-import com.mysema.query.sql.domain.QEmployee;
-import com.mysema.query.sql.domain.QEmployeeNoPK;
-import com.mysema.query.sql.domain.QIdName;
-import com.mysema.query.support.Expressions;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.Coalesce;
-import com.mysema.query.types.expr.DateExpression;
-import com.mysema.query.types.expr.DateTimeExpression;
-import com.mysema.query.types.expr.MathExpressions;
-import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.Param;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringExpressions;
-import com.mysema.query.types.expr.Wildcard;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.query.NumberSubQuery;
-import com.mysema.query.types.template.NumberTemplate;
-import com.mysema.testutil.ExcludeIn;
-import com.mysema.testutil.IncludeIn;
+import java.io.*;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+import static com.mysema.query.Constants.*;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class SelectBase extends AbstractBaseTest {
 
@@ -470,10 +425,9 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, HSQLDB, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, DERBY, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
-//        Date date = new Date(0);
         Calendar cal = Calendar.getInstance();
         cal.clear();
         Date date = new java.sql.Date(cal.getTimeInMillis());

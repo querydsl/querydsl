@@ -13,15 +13,12 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Map;
-
-import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
-
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
@@ -34,36 +31,31 @@ import com.mysema.query.types.template.NumberTemplate;
  */
 public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends ProjectableQuery<Q> implements JPQLQuery {
 
-    private Map<Object,String> constants;
-
     protected final JPAQueryMixin<Q> queryMixin;
 
     private final JPQLTemplates templates;
-    
-    @Nullable
-    protected final EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
-    public JPAQueryBase(QueryMetadata md, JPQLTemplates templates, @Nullable EntityManager entityManager) {
+    public JPAQueryBase(QueryMetadata md, JPQLTemplates templates) {
         super(new JPAQueryMixin<Q>(md));
         super.queryMixin.setSelf((Q) this);
-        this.queryMixin = (JPAQueryMixin) super.queryMixin;
+        this.queryMixin = (JPAQueryMixin<Q>) super.queryMixin;
         this.templates = templates;
-        this.entityManager = entityManager;
     }
 
     protected JPQLTemplates getTemplates() {
         return templates;
     }
     
-    protected String buildQueryString(boolean forCountRow) {
+    protected abstract JPQLSerializer createSerializer();
+    
+    protected JPQLSerializer serialize(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
-        JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
+        JPQLSerializer serializer = createSerializer();
         serializer.serialize(queryMixin.getMetadata(), forCountRow, null);
-        constants = serializer.getConstantToLabel();
-        return serializer.toString();
+        return serializer;
     }
 
     protected void reset() {
@@ -118,10 +110,6 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
 
     public <P> Q fullJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
-    }
-
-    protected Map<Object,String> getConstants() {
-        return constants;
     }
 
     public <P> Q innerJoin(CollectionExpression<?,P> target) {
@@ -228,25 +216,21 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.on(conditions);
     }
 
-    protected void setConstants(Map<Object, String> constants) {
-        this.constants = constants;
-    }
-
-    protected String toCountRowsString() {
-        return buildQueryString(true);
-    }
-
-    protected String toQueryString() {
-        return buildQueryString(false);
+    @Override
+    public Tuple uniqueResult(Expression<?>... args) {
+        return uniqueResult(queryMixin.createProjection(args));
     }
 
     @Override
     public String toString() {
-        return buildQueryString(false).trim();
+        JPQLSerializer serializer = serialize(false);
+        return serializer.toString().trim();
     }
 
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
+    
+    public abstract Q clone();
 
 }

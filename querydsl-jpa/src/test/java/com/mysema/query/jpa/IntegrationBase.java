@@ -13,21 +13,8 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.List;
-
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
-
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
@@ -36,6 +23,17 @@ import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.HibernateTestRunner;
+import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(HibernateTestRunner.class)
 public class IntegrationBase extends ParsingTest {
@@ -49,8 +47,10 @@ public class IntegrationBase extends ParsingTest {
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));
-                    Query query = session.createQuery(toString());
-                    HibernateUtil.setConstants(query, getConstants(),getMetadata().getParams());
+                    JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+                    serializer.serialize(getMetadata(), false, null);
+                    Query query = session.createQuery(serializer.toString());
+                    HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
                     query.list();
                 } catch (Exception e) {
                     e.printStackTrace();

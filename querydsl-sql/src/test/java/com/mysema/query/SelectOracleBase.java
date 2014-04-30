@@ -1,34 +1,33 @@
 package com.mysema.query;
 
-import static com.mysema.query.Constants.employee;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.sql.oracle.OracleGrammar.level;
-
 import java.sql.SQLException;
 
-import junit.framework.Assert;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.mysema.query.sql.SQLExpressions;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.oracle.OracleQuery;
 import com.mysema.testutil.IncludeIn;
+import junit.framework.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import static com.mysema.query.Constants.employee;
+import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.sql.oracle.OracleGrammar.level;
 
 public class SelectOracleBase extends AbstractBaseTest {
 
     protected OracleQuery oracleQuery() {
         return new OracleQuery(connection, configuration) {
             @Override
-            protected String buildQueryString(boolean forCountRow) {
-                String rv = super.buildQueryString(forCountRow);
+            protected SQLSerializer serialize(boolean forCountRow) {
+                SQLSerializer serializer = super.serialize(forCountRow);
+                String rv = serializer.toString();
                 if (expectedQuery != null) {
                    Assert.assertEquals(expectedQuery, rv.replace('\n', ' '));
                    expectedQuery = null;
                 }
-                System.out.println(rv);
-                return rv;
+                logger.debug(rv);
+                return serializer;
             }
         };
     }

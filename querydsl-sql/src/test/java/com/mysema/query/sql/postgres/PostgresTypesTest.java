@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.testutil.ExternalDB;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,9 @@ import com.mysema.query.Connections;
 import com.mysema.query.sql.JDBCTypeMapping;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLTemplates;
+import org.junit.experimental.categories.Category;
 
+@Category(ExternalDB.class)
 public class PostgresTypesTest {
     
     @Before

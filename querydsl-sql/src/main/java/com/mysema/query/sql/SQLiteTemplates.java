@@ -13,9 +13,8 @@
  */
 package com.mysema.query.sql;
 
-import org.joda.time.ReadableInstant;
-
 import com.mysema.query.types.Ops;
+import org.joda.time.*;
 
 /**
  * SQLiteTemplates is a SQL dialect for SQLite
@@ -92,8 +91,13 @@ public class SQLiteTemplates extends SQLTemplates {
         if (o instanceof java.util.Date) {
             return String.valueOf(((java.util.Date)o).getTime());
         } else if (o instanceof ReadableInstant) {
-            return String.valueOf(((ReadableInstant)o).getMillis());
-        // TODO ReadablePartial
+            return String.valueOf(((ReadableInstant) o).getMillis());
+        } else if (o instanceof LocalDate) {
+            return String.valueOf(((LocalDate) o).toDateTimeAtStartOfDay(DateTimeZone.UTC).getMillis());
+        } else if (o instanceof LocalDateTime) {
+            return String.valueOf(((LocalDateTime) o).toDateTime(DateTimeZone.UTC).getMillis());
+        } else if (o instanceof LocalTime) {
+            return String.valueOf(((LocalTime) o).getMillisOfDay());
         } else {
             return super.asLiteral(o);
         }

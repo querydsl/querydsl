@@ -16,6 +16,7 @@ package com.mysema.query.sql.mssql;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLSubQuery;
+import com.mysema.query.sql.Configuration;
 
 /**
  * @author tiwe
@@ -31,6 +32,10 @@ public class SQLServerSubQuery extends AbstractSQLSubQuery<SQLServerSubQuery> {
         super(metadata);
     }
     
+    public SQLServerSubQuery(Configuration configuration, QueryMetadata metadata){
+        super(configuration, metadata);
+    }
+
     /**
      * @param tableHints
      * @return
@@ -41,6 +46,12 @@ public class SQLServerSubQuery extends AbstractSQLSubQuery<SQLServerSubQuery> {
             addJoinFlag(hints, JoinFlag.Position.END);
         }
         return this;
+    }
+
+    @Override
+    public SQLServerSubQuery clone() {
+        SQLServerSubQuery subQuery = new SQLServerSubQuery(this.configuration, this.getMetadata().clone());
+        return subQuery;
     }
 
 }

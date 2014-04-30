@@ -1,9 +1,8 @@
 package com.mysema.query.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 
 import org.junit.Test;
 
@@ -34,7 +33,7 @@ public class Enum3Test {
     }
     
     @Entity
-    static class Entity1 {
+    public static class Entity1 {
         
         @Enumerated(javax.persistence.EnumType.STRING)
         private EnumImplementation value;
@@ -46,7 +45,7 @@ public class Enum3Test {
     }
     
     @Entity
-    static class Entity2 {
+    public static class Entity2 {
         
         private EnumImplementation value;
         
@@ -58,7 +57,7 @@ public class Enum3Test {
     }
     
     @Entity
-    static class Entity3 {
+    public static class Entity3 {
         
         private EnumImplementation value;
         
