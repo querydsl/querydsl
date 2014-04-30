@@ -13,27 +13,27 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-
+import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-import javax.annotation.Nullable;
-
-import org.hibernate.hql.internal.ast.HqlParser;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
-
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
+import org.hibernate.hql.internal.ast.HqlParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
 
 class QueryHelper extends JPAQueryBase<QueryHelper> {
+
+    private static final Logger logger = LoggerFactory.getLogger(QueryHelper.class);
 
     public QueryHelper(JPQLTemplates templates) {
         this(new DefaultQueryMetadata(), templates);
@@ -75,7 +75,7 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
     public void parse() throws RecognitionException, TokenStreamException {
         try {
             String input = toString();
-            System.out.println("input: " + input.replace('\n', ' '));
+            logger.debug("input: " + input.replace('\n', ' '));
             HqlParser parser = HqlParser.getInstance(input);
             parser.setFilter(false);
             parser.statement();
@@ -86,7 +86,6 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
                     0, parser.getParseErrorHandler().getErrorCount());
         } finally {
             // clear();
-            System.out.println();
         }
     }
 

@@ -13,24 +13,18 @@
  */
 package com.mysema.query.codegen;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.StringUtils;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 public class GroovyBeanSerializerTest {
     
@@ -65,7 +59,7 @@ public class GroovyBeanSerializerTest {
         GroovyBeanSerializer serializer = new GroovyBeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String str = writer.toString();
-        System.err.println(str);
+        //System.err.println(str);
         for (String prop : Arrays.asList(
                 "String[] arrayField;",
                 "Boolean boolean$;",

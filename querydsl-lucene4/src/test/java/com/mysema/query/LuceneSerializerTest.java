@@ -13,21 +13,21 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.io.StringReader;
 import java.util.Arrays;
 
+import com.mysema.query.lucene.LuceneExpressions;
+import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.lucene.QueryElement;
+import com.mysema.query.types.*;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.StringPath;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.DoubleField;
-import org.apache.lucene.document.Field;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.FloatField;
-import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.LongField;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -40,19 +40,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import com.mysema.query.lucene.LuceneExpressions;
-import com.mysema.query.lucene.LuceneSerializer;
-import com.mysema.query.lucene.QueryElement;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for LuceneSerializer
@@ -661,7 +650,6 @@ public class LuceneSerializerTest {
             if (unsupportedOperation(filter)) {
                 continue;
             }
-            System.out.println(filter);
             testQuery(filter, 1);
         }
 
@@ -669,7 +657,6 @@ public class LuceneSerializerTest {
             if (unsupportedOperation(filter)) {
                 continue;
             }
-            System.out.println(filter);
             testQuery(filter, 1);
         }
 
@@ -677,7 +664,6 @@ public class LuceneSerializerTest {
             if (unsupportedOperation(filter)) {
                 continue;
             }
-            System.out.println(filter);
             testQuery(filter, 0);
         }
     }

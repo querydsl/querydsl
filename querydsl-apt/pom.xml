@@ -182,7 +182,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <showWarnings>true</showWarnings>
+              <logOnlyOnError>true</logOnlyOnError>
               <processors>
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
                 <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 
@@ -216,5 +216,13 @@
        -->
     </plugins>
   </build>
+
+  <repositories>
+    <!--for org.springframework.roo:org.springframework.roo.annotations -->
+    <repository>
+      <id>spring roo repository</id>
+      <url>http://spring-roo-repository.springsource.org/release</url>
+    </repository>
+  </repositories>
   
 </project>

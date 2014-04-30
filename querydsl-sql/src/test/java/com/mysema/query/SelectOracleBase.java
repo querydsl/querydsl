@@ -1,21 +1,18 @@
 package com.mysema.query;
 
-import static com.mysema.query.Constants.employee;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.sql.oracle.OracleGrammar.level;
-
 import java.sql.SQLException;
-
-import junit.framework.Assert;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.mysema.query.sql.SQLExpressions;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.oracle.OracleQuery;
 import com.mysema.testutil.IncludeIn;
+import junit.framework.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import static com.mysema.query.Constants.employee;
+import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.sql.oracle.OracleGrammar.level;
 
 public class SelectOracleBase extends AbstractBaseTest {
 
@@ -29,7 +26,7 @@ public class SelectOracleBase extends AbstractBaseTest {
                    Assert.assertEquals(expectedQuery, rv.replace('\n', ' '));
                    expectedQuery = null;
                 }
-                System.out.println(rv);
+                logger.debug(rv);
                 return serializer;
             }
         };
