@@ -13,15 +13,11 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
+
+import java.sql.*;
 
 /**
  * LocalDateTimeType maps LocalDateTime to Timestamp on the JDBC level
@@ -29,7 +25,7 @@ import org.joda.time.LocalDateTime;
  * @author tiwe
  *
  */
-public class LocalDateTimeType extends AbstractType<LocalDateTime> {
+public class LocalDateTimeType extends AbstractDateTimeType<LocalDateTime> {
 
     public LocalDateTimeType() {
         super(Types.TIMESTAMP);
@@ -37,6 +33,11 @@ public class LocalDateTimeType extends AbstractType<LocalDateTime> {
 
     public LocalDateTimeType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(LocalDateTime value) {
+        return dateTimeFormatter.print(value);
     }
 
     @Override

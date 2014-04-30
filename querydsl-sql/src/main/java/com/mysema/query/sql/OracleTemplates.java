@@ -13,9 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import java.math.BigInteger;
-import java.util.List;
-
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
@@ -23,6 +20,10 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+
+import java.math.BigInteger;
+import java.sql.Types;
+import java.util.List;
 
 /**
  * OracleTemplates is an SQL dialect for Oracle
@@ -134,12 +135,11 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     @Override
-    public String asLiteral(DateTimeType type, String literal) {
-        if (type == DateTimeType.TIME) {
-            // Oracle doesn't support the time type
-            return "(timestamp '1970-01-01 " + literal + "')";
+    public String serialize(String literal, int jdbcType) {
+        if (jdbcType == Types.TIME) {
+            return "(timestamp '1970-01-01 " + literal + "'}";
         } else {
-            return super.asLiteral(type, literal);
+            return super.serialize(literal, jdbcType);
         }
     }
 

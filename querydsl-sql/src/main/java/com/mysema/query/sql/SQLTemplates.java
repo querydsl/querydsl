@@ -13,20 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.ReadableInstant;
-import org.joda.time.ReadablePartial;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinType;
@@ -34,12 +20,11 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
-import com.mysema.query.types.Templates;
+import com.mysema.query.types.*;
+
+import java.lang.reflect.Field;
+import java.sql.Types;
+import java.util.*;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -48,8 +33,6 @@ import com.mysema.query.types.Templates;
  * @author tiwe
  */
 public class SQLTemplates extends Templates {
-
-    enum DateTimeType {DATE, TIME, DATETIME};
 
     public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
@@ -93,12 +76,6 @@ public class SQLTemplates extends Templates {
         }
 
     }
-
-    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-
-    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
@@ -365,35 +342,25 @@ public class SQLTemplates extends Templates {
         class2type.put(java.sql.Timestamp.class, "timestamp");
     }
 
-    public String asLiteral(Object o) {
-        if (o instanceof Character) {
-            return "'" + escapeLiteral(o.toString()) + "'";
-        } else if (o instanceof String) {
-            return "'" + escapeLiteral(o.toString()) + "'";
-        // java.util.Date
-        } else if (o instanceof java.util.Date) {
-            java.util.Date date = (java.util.Date)o;
-            if (o instanceof java.sql.Date) {
-                return asLiteral(DateTimeType.DATE, dateFormatter.print(date.getTime()));
-            } else if (o instanceof java.sql.Time) {
-                return asLiteral(DateTimeType.TIME, timeFormatter.print(date.getTime()));
-            } else {
-                return asLiteral(DateTimeType.DATETIME, dateTimeFormatter.print(date.getTime()));
-            }
-        // Joda time
-        } else if (o instanceof ReadablePartial) {
-            ReadablePartial partial = (ReadablePartial)o;
-            if (o instanceof LocalDate) {
-                return asLiteral(DateTimeType.DATE, dateFormatter.print(partial));
-            } else if (o instanceof LocalTime) {
-                return asLiteral(DateTimeType.TIME, timeFormatter.print(partial));
-            } else {
-                return asLiteral(DateTimeType.DATETIME, dateTimeFormatter.print(partial));
-            }
-        } else if (o instanceof ReadableInstant) {
-            return asLiteral(DateTimeType.DATETIME, dateTimeFormatter.print((ReadableInstant)o));
-        } else {
-            return o.toString();
+    public String serialize(String literal, int jdbcType) {
+        switch (jdbcType) {
+            case Types.TIMESTAMP:
+                return "(timestamp '" + literal + "')";
+            case Types.DATE:
+                return "(date '" + literal + "')";
+            case Types.TIME:
+                return "(time '" + literal + "')";
+            case Types.CHAR:
+            case Types.CLOB:
+            case Types.LONGNVARCHAR:
+            case Types.LONGVARCHAR:
+            case Types.NCHAR:
+            case Types.NCLOB:
+            case Types.NVARCHAR:
+            case Types.VARCHAR:
+                return "'" + escapeLiteral(literal) + "'";
+            default:
+                return literal;
         }
     }
 
@@ -415,17 +382,6 @@ public class SQLTemplates extends Templates {
             builder.append(ch);
         }
         return builder.toString();
-    }
-
-    public String asLiteral(DateTimeType type, String literal) {
-        // SQL 92 standard
-        String keyword = "timestamp";
-        if (type == DateTimeType.DATE) {
-            keyword = "date";
-        } else if (type == DateTimeType.TIME) {
-            keyword = "time";
-        }
-        return "(" + keyword + " '" + literal + "')";
     }
 
     protected void addClass2TypeMappings(String type, Class<?>... classes) {
