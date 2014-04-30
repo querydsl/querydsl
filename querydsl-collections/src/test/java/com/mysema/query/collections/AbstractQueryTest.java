@@ -91,10 +91,10 @@ public abstract class AbstractQueryTest {
             boolean array = projection.getType().isArray();
             List<RT> rv = super.list(projection);
             for (Object o : rv) {
-                System.out.println(array ? Arrays.toString((Object[])o) : o);
+                //System.out.println(array ? Arrays.toString((Object[])o) : o);
                 res.add(o);
             }
-            System.out.println();
+            //System.out.println();
             return rv;
         }
 
