@@ -194,4 +194,11 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
         return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);
     }
 
+    @Override
+    public MySQLQuery clone(Connection conn) {
+        MySQLQuery q = new MySQLQuery(conn, getConfiguration(), getMetadata().clone());
+        q.clone(this);
+        return q;
+    }
+    
 }

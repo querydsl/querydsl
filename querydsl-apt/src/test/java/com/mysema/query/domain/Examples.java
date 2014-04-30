@@ -50,10 +50,8 @@ public class Examples {
         
         @QueryEmbedded
         Map<?, Complex<String>> map3;
-                
-                
+
     }
-    
     
     public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 

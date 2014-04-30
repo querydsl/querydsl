@@ -66,5 +66,12 @@ public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> impleme
     private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, exprs);
     }
+
+    @Override
+    public ExtendedSQLQuery clone(Connection connection) {
+        ExtendedSQLQuery query = new ExtendedSQLQuery(connection, getConfiguration(), getMetadata().clone());
+        query.clone(this);
+        return query;
+    }
     
 }

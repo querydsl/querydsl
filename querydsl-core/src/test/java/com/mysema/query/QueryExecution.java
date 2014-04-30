@@ -88,15 +88,11 @@ public abstract class QueryExecution {
             for (Expression<?> pr : projections) {
                 total++;
                 try{
-                    System.err.println(pr);
                     // projection
                     runProjection(pr);
-                    System.err.println();
 
                     // projection distinct
                     runProjectionDistinct(pr);
-                    System.err.println();
-
                 } catch(Throwable t) {
                     t.printStackTrace();
                     t = addError(pr, t);
@@ -122,23 +118,18 @@ public abstract class QueryExecution {
             for (Predicate f : filters) {
                 total++;
                 try{
-                    System.err.println(f);
                     // filter
                     int results = runFilter(f);
-                    System.err.println();
 
                     // filter distinct
                     runFilterDistinct(f);
-                    System.err.println();
 
                     if (counts) {
                         // count
                         runCount(f);
-                        System.err.println();
 
                         // count distinct
                         runCountDistinct(f);
-                        System.err.println();
                     }
 
                     if (matching && results == 0) {

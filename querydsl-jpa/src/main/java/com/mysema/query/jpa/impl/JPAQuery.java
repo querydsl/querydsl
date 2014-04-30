@@ -74,18 +74,9 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> {
         super(em, templates, metadata);
     }
 
-    /**
-     * Clone the state of this query to a new JPAQuery instance with the given EntityManager
-     *
-     * @param entityManager
-     * @return
-     */
     public JPAQuery clone(EntityManager entityManager) {
         JPAQuery q = new JPAQuery(entityManager, JPAProvider.getTemplates(entityManager), getMetadata().clone());
-        q.projection = projection;
-        q.flushMode = flushMode;
-        q.hints.putAll(hints);
-        q.lockMode = lockMode;
+        q.clone(this);
         return q;
     }
 

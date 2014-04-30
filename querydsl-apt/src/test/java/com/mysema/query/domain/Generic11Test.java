@@ -26,8 +26,7 @@ public class Generic11Test {
 
     @Entity
     public static class B2 extends A2 { } // note the missing type parameter
-    
-    
+
     @Test
     public void test() {
         

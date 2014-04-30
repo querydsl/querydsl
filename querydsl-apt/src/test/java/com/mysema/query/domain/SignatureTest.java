@@ -28,8 +28,7 @@ public class SignatureTest {
     public static abstract class APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
         
     }
-   
-   
+
     @QuerySupertype
     public static abstract class AValueObject extends APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
         

@@ -13,29 +13,14 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLOps;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.QTuple;
-import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.sql.*;
+import com.mysema.query.types.*;
+
+import java.util.*;
 
 /**
  * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change
@@ -93,7 +78,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     args[i] = ExpressionUtils.as(args[i], alias);
                     modified = true;
                 } else {
-                    aliases.put(path, path.getMetadata().getName());
+                    aliases.put(path, ColumnMetadata.getName(path));
                 }
             } else if (args[i] instanceof FactoryExpression) {
                 FactoryExpression<?> factoryExpr = (FactoryExpression<?>)args[i];
@@ -101,12 +86,13 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 for (int j = 0; j < fargs.size(); j++) {
                     if (fargs.get(j) instanceof Path) {
                         Path<?> path = (Path<?>) fargs.get(j);
-                        if (!used.add(path.getMetadata().getName())) {
+                        String columnName = ColumnMetadata.getName(path);
+                        if (!used.add(columnName)) {
                             String alias = "col__"+(i+1)+"_"+(j+1);
                             aliases.put(path, alias);
                             fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                         } else {
-                            aliases.put(path, path.getMetadata().getName());
+                            aliases.put(path, columnName);
                         }
                     } else if (isAlias(fargs.get(j))) {
                         Operation<?> operation = (Operation<?>)fargs.get(j);

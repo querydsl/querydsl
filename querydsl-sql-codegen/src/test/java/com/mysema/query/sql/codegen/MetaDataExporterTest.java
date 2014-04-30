@@ -13,10 +13,7 @@
  */
 package com.mysema.query.sql.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import javax.tools.JavaCompiler;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,20 +24,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import javax.tools.JavaCompiler;
-
-import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.util.FileUtils;
+import junit.framework.Assert;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 public class MetaDataExporterTest {
 
@@ -328,9 +318,7 @@ public class MetaDataExporterTest {
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err,
                 classes.toArray(new String[classes.size()]));
-        if(compilationResult == 0) {
-            System.out.println("Compilation is successful");
-        } else {
+        if (compilationResult != 0) {
             Assert.fail("Compilation Failed for " + target);
         }
     }

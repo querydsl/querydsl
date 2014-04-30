@@ -20,6 +20,7 @@ import javax.inject.Provider;
 import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.OracleTemplates;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -28,7 +29,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery> {
+public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery, SQLSubQuery> {
 
     public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

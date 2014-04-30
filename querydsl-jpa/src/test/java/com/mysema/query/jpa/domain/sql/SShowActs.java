@@ -2,10 +2,13 @@ package com.mysema.query.jpa.domain.sql;
 
 import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.*;
 import com.mysema.query.types.path.*;
 
+import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
+import com.mysema.query.types.Path;
+
+import com.mysema.query.sql.ColumnMetadata;
 
 
 /**
@@ -20,9 +23,9 @@ public class SShowActs extends com.mysema.query.sql.RelationalPathBase<SShowActs
 
     public final StringPath acts = createString("acts");
 
-    public final StringPath actsKEY = createString("acts_KEY");
+    public final StringPath actsKEY = createString("actsKEY");
 
-    public final NumberPath<Long> showId = createNumber("Show_id", Long.class);
+    public final NumberPath<Long> showId = createNumber("showId", Long.class);
 
     public final com.mysema.query.sql.PrimaryKey<SShowActs> primary = createPrimaryKey(showId, actsKEY);
 
@@ -30,14 +33,28 @@ public class SShowActs extends com.mysema.query.sql.RelationalPathBase<SShowActs
 
     public SShowActs(String variable) {
         super(SShowActs.class, forVariable(variable), "null", "Show_acts");
+        addMetadata();
+    }
+
+    public SShowActs(String variable, String schema, String table) {
+        super(SShowActs.class, forVariable(variable), schema, table);
+        addMetadata();
     }
 
     public SShowActs(Path<? extends SShowActs> path) {
         super(path.getType(), path.getMetadata(), "null", "Show_acts");
+        addMetadata();
     }
 
     public SShowActs(PathMetadata<?> metadata) {
         super(SShowActs.class, metadata, "null", "Show_acts");
+        addMetadata();
+    }
+
+    public void addMetadata() {
+        addMetadata(acts, ColumnMetadata.named("acts").withIndex(2).ofType(12).withSize(255));
+        addMetadata(actsKEY, ColumnMetadata.named("acts_KEY").withIndex(3).ofType(12).withSize(255).notNull());
+        addMetadata(showId, ColumnMetadata.named("Show_id").withIndex(1).ofType(-5).withSize(19).notNull());
     }
 
 }

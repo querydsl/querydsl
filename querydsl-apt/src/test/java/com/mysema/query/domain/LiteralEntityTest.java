@@ -13,18 +13,16 @@
  */
 package com.mysema.query.domain;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.types.path.EnumPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class LiteralEntityTest {
 
     @QueryEntity
-    enum EnumEntity {
+    public enum EnumEntity {
 
     }
 

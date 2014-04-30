@@ -62,5 +62,12 @@ public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> {
         }
         return this;
     }
+    
+    @Override
+    public SQLServerQuery clone(Connection conn) {
+        SQLServerQuery q = new SQLServerQuery(conn, getConfiguration(), getMetadata().clone());
+        q.clone(this);
+        return q;
+    }
 
 }

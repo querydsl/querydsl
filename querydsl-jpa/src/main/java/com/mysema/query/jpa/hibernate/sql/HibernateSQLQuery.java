@@ -17,7 +17,6 @@ import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLCommonQuery;
@@ -55,14 +54,11 @@ public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<Hibernate
     public HibernateSQLQuery(SessionHolder session, Configuration conf, QueryMetadata metadata) {
         super(session, conf, metadata);
     }
-    
-    public HibernateSQLQuery clone(Session session) {
-        HibernateSQLQuery q = new HibernateSQLQuery(new DefaultSessionHolder(session), configuration, getMetadata().clone());
-        q.cacheable = cacheable;
-        q.cacheRegion = cacheRegion;
-        q.fetchSize = fetchSize;
-        q.readOnly = readOnly;
-        q.timeout = timeout;
+
+    @Override
+    protected HibernateSQLQuery clone(SessionHolder sessionHolder) {
+        HibernateSQLQuery q = new HibernateSQLQuery(sessionHolder, configuration, getMetadata().clone());
+        q.clone(this);
         return q;
     }
 

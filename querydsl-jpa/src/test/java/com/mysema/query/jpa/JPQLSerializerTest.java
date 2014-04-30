@@ -204,11 +204,24 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
-        md.addJoin(JoinType.JOIN, cat.mate.as((Path)QDomesticCat.domesticCat));
+        md.addJoin(JoinType.JOIN, cat.mate.as((Path) QDomesticCat.domesticCat));
         md.addProjection(QDomesticCat.domesticCat);
         serializer.serialize(md, false, null);
         assertEquals("select domesticCat\n" +
-                     "from Cat cat\n" +
-                     "  inner join treat(cat.mate as DomesticCat) as domesticCat", serializer.toString());
+                "from Cat cat\n" +
+                "  inner join treat(cat.mate as DomesticCat) as domesticCat", serializer.toString());
+    }
+
+    @Test
+    public void OpenJPA_Variables() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(OpenJPATemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addJoin(JoinType.INNERJOIN, cat.mate);
+        md.addJoinCondition(cat.mate.alive);
+        serializer.serialize(md, false, null);
+        assertEquals("select cat_\nfrom Cat cat_\n  inner join cat_.mate on cat_.mate.alive",
+                serializer.toString());
     }
 }

@@ -19,13 +19,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
-
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.sql.codegen.DefaultNamingStrategy;
 import com.mysema.query.sql.codegen.MetaDataExporter;
 import com.mysema.query.sql.codegen.NamingStrategy;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
 
 /**
  * AntMetaDataExporter exports JDBC metadata to Querydsl query types
@@ -248,10 +248,13 @@ public class AntMetaDataExporter extends Task {
                 BeanSerializer serializer = new BeanSerializer();
                 if (beanInterfaces != null) {
                     for (String iface : beanInterfaces) {
-                        try {
-                            serializer.addInterface(Class.forName(iface));
-                        } catch (ClassNotFoundException e) {
-                            throw new BuildException(e.getMessage(), e);
+                        int sepIndex = iface.lastIndexOf('.');
+                        if (sepIndex < 0) {
+                            serializer.addInterface(new SimpleType(iface));
+                        } else {
+                            String packageName = iface.substring(0, sepIndex);
+                            String simpleName = iface.substring(sepIndex + 1);
+                            serializer.addInterface(new SimpleType(iface, packageName, simpleName));
                         }
                     }
                 }
