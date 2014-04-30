@@ -14,36 +14,27 @@
 package com.mysema.query.jdo.sql;
 
 import javax.annotation.Nullable;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import com.mysema.query.JoinFlag;
-import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
+import com.google.common.collect.Lists;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.*;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.RelationalFunctionCall;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLCommonQuery;
-import com.mysema.query.sql.SQLOps;
-import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.Union;
-import com.mysema.query.sql.UnionImpl;
-import com.mysema.query.sql.UnionUtils;
-import com.mysema.query.sql.WithBuilder;
-import com.mysema.query.support.Expressions;
-import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.sql.ProjectableSQLQuery;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.Wildcard;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.template.NumberTemplate;
-import com.mysema.query.types.template.SimpleTemplate;
+import com.mysema.query.types.FactoryExpression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for JDO based SQLQuery implementations
@@ -53,7 +44,29 @@ import com.mysema.query.types.template.SimpleTemplate;
  * @param <T>
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysema.query.Query<T>> extends ProjectableQuery<T> implements SQLCommonQuery<T> {
+public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableSQLQuery<T> {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
+
+    private final Closeable closeable = new Closeable() {
+        @Override
+        public void close() throws IOException {
+            AbstractSQLQuery.this.close();
+        }
+    };
+
+    protected final boolean detach;
+
+    private List<Object> orderedConstants = new ArrayList<Object>();
+
+    @Nullable
+    protected final PersistenceManager persistenceManager;
+
+    protected List<Query> queries = new ArrayList<Query>(2);
+
+    @Nullable
+    protected FactoryExpression<?> projection;
 
     protected final QueryMixin<T> queryMixin;
 
@@ -62,261 +75,213 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
 
     protected boolean unionAll;
 
-    protected final Configuration configuration;
-
     @SuppressWarnings("unchecked")
-    public AbstractSQLQuery(QueryMetadata metadata, Configuration conf) {
-        super(new QueryMixin<T>(metadata, false));
-        this.configuration = conf;
+    public AbstractSQLQuery(QueryMetadata metadata, Configuration conf, PersistenceManager persistenceManager,
+                            boolean detach) {
+        super(new QueryMixin<T>(metadata, false), conf);
         this.queryMixin = super.queryMixin;
         this.queryMixin.setSelf((T)this);
+        this.persistenceManager = persistenceManager;
+        this.detach = detach;
+    }
+
+    public void close() {
+        for (Query query : queries) {
+            query.closeAll();
+        }
     }
 
     @Override
     public long count() {
-        return uniqueResult(Wildcard.countAsInt);
+        Query query = createQuery(true);
+        query.setUnique(true);
+        reset();
+        Long rv = (Long) execute(query, true);
+        if (rv != null) {
+            return rv.longValue();
+        } else {
+            throw new QueryException("Query returned null");
+        }
     }
 
-    @Override
-    public boolean exists() {
-        return limit(1).uniqueResult(NumberTemplate.ONE) != null;
+    private Query createQuery(boolean forCount) {
+        SQLSerializer serializer = new SQLSerializer(configuration);
+        if (union != null) {
+            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
+        } else {
+            serializer.serialize(queryMixin.getMetadata(), forCount);
+        }
+
+
+        // create Query
+        if (logger.isDebugEnabled()) {
+            logger.debug(serializer.toString());
+        }
+        Query query = persistenceManager.newQuery("javax.jdo.query.SQL",serializer.toString());
+        orderedConstants = serializer.getConstants();
+        queries.add(query);
+
+        if (!forCount) {
+            List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
+            if (projection.get(0) instanceof FactoryExpression) {
+                this.projection = (FactoryExpression<?>)projection.get(0);
+            }
+        } else {
+            query.setResultClass(Long.class);
+        }
+
+        return query;
     }
 
-    public T from(Expression<?> arg) {
-        return queryMixin.from(arg);
-    }
-
-    @Override
-    public T from(Expression<?>... args) {
-        return queryMixin.from(args);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
-    public T from(SubQueryExpression<?> subQuery, Path<?> alias) {
-        return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
+    private <T> T detach(T results) {
+        if (results instanceof Collection) {
+            return (T) persistenceManager.detachCopyAll(results);
+        } else {
+            return persistenceManager.detachCopy(results);
+        }
+    }
+
+    private Object project(FactoryExpression<?> expr, Object row) {
+        if (row == null) {
+            return null;
+        } else if (row.getClass().isArray()) {
+            return expr.newInstance((Object[])row);
+        } else {
+            return expr.newInstance(new Object[]{row});
+        }
+    }
+
+    private Object execute(Query query, boolean forCount) {
+        Object rv;
+        if (!orderedConstants.isEmpty()) {
+            rv = query.executeWithArray(orderedConstants.toArray());
+        } else {
+            rv = query.execute();
+        }
+        if (isDetach()) {
+            rv = detach(rv);
+        }
+        if (projection != null && !forCount) {
+            if (rv instanceof List) {
+                List<?> original = (List<?>)rv;
+                rv = Lists.newArrayList();
+                for (Object o : original) {
+                    ((List)rv).add(project(projection, o));
+                }
+            } else {
+                rv = project(projection, rv);
+            }
+        }
+        return rv;
     }
 
     @Override
-    public T fullJoin(EntityPath<?> o) {
-        return queryMixin.fullJoin(o);
-    }
-
-    @Override
-    public <E> T fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.fullJoin(target, alias);
-    }
-
-    @Override
-    public <E> T fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.fullJoin(entity).on(key.on(entity));
-    }
-
-    @Override
-    public T fullJoin(SubQueryExpression<?> o, Path<?> alias) {
-        return queryMixin.fullJoin(o, alias);
-    }
-
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
 
-    @Override
-    public T innerJoin(EntityPath<?> o) {
-        return queryMixin.innerJoin(o);
+    public boolean isDetach() {
+        return detach;
     }
 
     @Override
-    public <E> T innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.innerJoin(target, alias);
+    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
+        return iterate(queryMixin.createProjection(args));
     }
 
     @Override
-    public <E> T innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.innerJoin(entity).on(key.on(entity));
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
+        return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
     @Override
-    public T innerJoin(SubQueryExpression<?> o, Path<?> alias) {
-        return queryMixin.innerJoin(o, alias);
-    }
-
-    @Override
-    public T join(EntityPath<?> o) {
-        return queryMixin.join(o);
-    }
-
-    @Override
-    public <E> T join(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.join(target, alias);
-    }
-
-    @Override
-    public <E> T join(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.join(entity).on(key.on(entity));
-    }
-
-    @Override
-    public T join(SubQueryExpression<?> o, Path<?> alias) {
-        return queryMixin.join(o, alias);
-    }
-
-    @Override
-    public T leftJoin(EntityPath<?> o) {
-        return queryMixin.leftJoin(o);
-    }
-
-    @Override
-    public <E> T leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.leftJoin(target, alias);
-    }
-
-    @Override
-    public <E> T leftJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.leftJoin(entity).on(key.on(entity));
-    }
-
-    @Override
-    public T leftJoin(SubQueryExpression<?> o, Path<?> alias) {
-        return queryMixin.leftJoin(o, alias);
-    }
-
-    public T on(Predicate condition) {
-        return queryMixin.on(condition);
-    }
-
-    @Override
-    public T on(Predicate... conditions) {
-        return queryMixin.on(conditions);
-    }
-
-    @Override
-    public T rightJoin(EntityPath<?> o) {
-        return queryMixin.rightJoin(o);
-    }
-
-    @Override
-    public <E> T rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
-        return queryMixin.rightJoin(target, alias);
-    }
-
-    @Override
-    public <E> T rightJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.rightJoin(entity).on(key.on(entity));
-    }
-
-    @Override
-    public T rightJoin(SubQueryExpression<?> o, Path<?> alias) {
-        return queryMixin.rightJoin(o, alias);
-    }
-
-    @Override
-    public T addJoinFlag(String flag) {
-        return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
+    public List<Tuple> list(Expression<?>... args) {
+        return list(queryMixin.createProjection(args));
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T addJoinFlag(String flag, JoinFlag.Position position) {
-        queryMixin.addJoinFlag(new JoinFlag(flag, position));
-        return (T)this;
+    public <RT> List<RT> list(Expression<RT> expr) {
+        queryMixin.addProjection(expr);
+        Object rv = execute(createQuery(false), false);
+        reset();
+        return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT) rv);
     }
 
     @Override
-    public T addFlag(Position position, String prefix, Expression<?> expr) {
-        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
-        return queryMixin.addFlag(new QueryFlag(position, flag));
+    public SearchResults<Tuple> listResults(Expression<?>... args) {
+        return listResults(queryMixin.createProjection(args));
     }
 
     @Override
-    public T addFlag(Position position, String flag) {
-        return queryMixin.addFlag(new QueryFlag(position, flag));
-    }
-
-    @Override
-    public T addFlag(Position position, Expression<?> flag) {
-        return queryMixin.addFlag(new QueryFlag(position, flag));
-    }
-
-    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
-        unionAll = true;
-        return innerUnion(sq);
-    }
-
-    public <RT> T union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    public <RT> T union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    public <RT> T unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    public <RT> T unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
-    }
-
-    @Override
-    public T withRecursive(Path<?> alias, SubQueryExpression<?> query) {
-        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
-        return with(alias, query);
-    }
-
-    @Override
-    public T withRecursive(Path<?> alias, Expression<?> query) {
-        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
-        return with(alias, query);
-    }
-
-    @Override
-    public WithBuilder<T> withRecursive(Path<?> alias, Path<?>... columns) {
-        queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
-        return with(alias, columns);
-    }
-
-    @Override
-    public T with(Path<?> alias, SubQueryExpression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
-        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
-    }
-
-    @Override
-    public T with(Path<?> alias, Expression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
-        return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
-    }
-
-    @Override
-    public WithBuilder<T> with(Path<?> alias, Path<?>... columns) {
-        Expression<?> columnsCombined = ExpressionUtils.list(Object.class, columns);
-        Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
-        return new WithBuilder<T>(queryMixin, aliasCombined);
-    }
-
     @SuppressWarnings("unchecked")
-    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        queryMixin.getMetadata().setValidate(false);
-        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("Don't mix union and from");
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
+        queryMixin.addProjection(expr);
+        Query countQuery = createQuery(true);
+        countQuery.setUnique(true);
+        long total = (Long) execute(countQuery, true);
+        if (total > 0) {
+            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+            Query query = createQuery(false);
+            reset();
+            return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
+        } else {
+            reset();
+            return SearchResults.emptyResults();
         }
-        this.union = UnionUtils.union(sq, unionAll);
-        return new UnionImpl<T, RT>((T)this, sq[0].getMetadata().getProjection());
     }
 
+    private void reset() {
+        queryMixin.getMetadata().reset();
+    }
+
+    @Override
+    public String toString() {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
+            SQLSerializer serializer = new SQLSerializer(configuration);
+            serializer.serialize(queryMixin.getMetadata(), false);
+            return serializer.toString().trim();
+        } else {
+            return super.toString();
+        }
+    }
+
+
+    @Override
+    @Nullable
+    public Tuple uniqueResult(Expression<?>... args) {
+        return uniqueResult(queryMixin.createProjection(args));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <RT> RT uniqueResult(Expression<RT> expr) {
+        queryMixin.addProjection(expr);
+        return (RT)uniqueResult();
+    }
+
+    @Nullable
+    private Object uniqueResult() {
+        if (getMetadata().getModifiers().getLimit() == null) {
+            limit(2);
+        }
+        Query query = createQuery(false);
+        reset();
+        Object rv = execute(query, false);
+        if (rv instanceof List) {
+            List<?> list = (List<?>)rv;
+            if (!list.isEmpty()) {
+                if (list.size() > 1) {
+                    throw new NonUniqueResultException();
+                }
+                return list.get(0);
+            } else {
+                return null;
+            }
+        } else {
+            return rv;
+        }
+    }
 }
