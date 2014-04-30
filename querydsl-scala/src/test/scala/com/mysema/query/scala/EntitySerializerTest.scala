@@ -59,7 +59,6 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     		"this(classOf[Person], forVariable(variable))"))
     assertTrue(str.contains("def this(parent: Path[_], variable: String) = " +
     		"this(classOf[Person], forProperty(parent, variable))"))
-    System.err.println(str)
   }
 
   @Test
