@@ -1,6 +1,6 @@
 /*
  * Copyright 2014, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,7 +62,7 @@ public class ConstructorUtils {
      * givenTypes argument.
      *
      * It is advisable to first call
-     * {@link #getConstructorParameters(java.lang.Class, java.lang.Class<?>[])}
+     * {@link #getConstructorParameters(java.lang.Class, java.lang.Class[])}
      * to get the parameters.
      *
      * @param type
