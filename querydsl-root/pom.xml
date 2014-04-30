@@ -450,7 +450,7 @@
         </plugins>
       </build>
     </profile>
-
+<!--
     <profile>
       <id>jdk8</id>
       <activation>
@@ -460,7 +460,7 @@
         <additionalparam>-Xdoclint:none</additionalparam>
       </properties>  
     </profile>
-  
+ --> 
   </profiles>
   
   <reporting>
