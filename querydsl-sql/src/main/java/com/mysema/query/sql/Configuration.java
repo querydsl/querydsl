@@ -73,6 +73,21 @@ public final class Configuration {
         }
     }
 
+    /**
+     * Get the literal representation of the given constant
+     *
+     * @param o
+     * @return
+     */
+    public String asLiteral(Object o) {
+        Type type = javaTypeMapping.getType(o.getClass());
+        if (type != null) {
+            return templates.serialize(type.getLiteral(o), type.getSQLTypes()[0]);
+        } else {
+            throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
+        }
+    }
+
     public SQLTemplates getTemplates() {
         return templates;
     }

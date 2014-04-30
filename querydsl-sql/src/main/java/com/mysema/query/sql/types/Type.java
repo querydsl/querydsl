@@ -13,11 +13,10 @@
  */
 package com.mysema.query.sql.types;
 
+import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.annotation.Nullable;
 
 /**
  * Defines the de/serialization of a typed Java object from a ResultSet or to a PreparedStatement
@@ -45,6 +44,14 @@ public interface Type<T> {
      * @return
      */
     Class<T> getReturnedClass();
+
+    /**
+     * Get the literal representation
+     *
+     * @param value
+     * @return
+     */
+    String getLiteral(T value);
 
     /**
      * Get the object from the result set
