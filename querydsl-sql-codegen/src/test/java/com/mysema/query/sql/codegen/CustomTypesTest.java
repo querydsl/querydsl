@@ -13,30 +13,24 @@
  */
 package com.mysema.query.sql.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.alias.Gender;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.EncryptedString;
-import com.mysema.query.sql.HSQLDBTemplates;
-import com.mysema.query.sql.QPerson;
-import com.mysema.query.sql.SQLQuery;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;
 import com.mysema.query.sql.types.StringType;
 import com.mysema.query.sql.types.UtilDateType;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CustomTypesTest extends AbstractJDBCTest{
 
@@ -81,7 +75,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
         // export
         exporter.export(connection.getMetaData());
         String person = Files.toString(new File("target/customExport/test/QPerson.java"), Charsets.UTF_8);
-        System.err.println(person);
+        //System.err.println(person);
         assertTrue(person.contains("createEnum(\"gender\""));
     }
 

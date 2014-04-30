@@ -24,13 +24,13 @@ public class GenericTest {
     @Test
     public void HidaBez() {
         Type type = typeFactory.getEntityType(HidaBez.class);
-        System.out.println(type.getGenericName(true));
+        //System.out.println(type.getGenericName(true));
     }
     
     @Test
     public void HidaBezGruppe() {
         Type type = typeFactory.getEntityType(HidaBezGruppe.class);
-        System.out.println(type.getGenericName(true));
+        //System.out.println(type.getGenericName(true));
     }
 
 }

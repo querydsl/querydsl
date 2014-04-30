@@ -13,18 +13,13 @@
  */
 package com.mysema.query.jdo.test.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
+import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -63,14 +58,28 @@ public class SProduct extends RelationalPathBase<SProduct> {
 
     public SProduct(String variable) {
         super(SProduct.class, forVariable(variable), null, "PRODUCT");
+        addMetadata();
     }
 
     public SProduct(BeanPath<? extends SProduct> entity) {
         super(entity.getType(),entity.getMetadata(), null, "PRODUCT");
+        addMetadata();
     }
 
     public SProduct(PathMetadata<?> metadata) {
         super(SProduct.class, metadata, null, "PRODUCT");
+        addMetadata();
+    }
+
+    public void addMetadata() {
+        addMetadata(amount, ColumnMetadata.named("AMOUNT"));
+        addMetadata(datefield, ColumnMetadata.named("DATEFIELD"));
+        addMetadata(description, ColumnMetadata.named("DESCRIPTION"));
+        addMetadata(name, ColumnMetadata.named("NAME"));
+        addMetadata(price, ColumnMetadata.named("PRICE"));
+        addMetadata(productId, ColumnMetadata.named("PRODUCT_ID"));
+        addMetadata(publicationdate, ColumnMetadata.named("PUBLICATIONDATE"));
+        addMetadata(timefield, ColumnMetadata.named("TIMEFIELD"));
     }
     
 }

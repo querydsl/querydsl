@@ -13,28 +13,19 @@
  */
 package com.mysema.query.sql.mysql;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.sql.*;
 
 import com.mysema.query.QGeneratedKeysEntity;
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.testutil.FilteringTestRunner;
+import com.mysema.testutil.ExternalDB;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import static org.junit.Assert.*;
 
-@RunWith(FilteringTestRunner.class)
+@Category(ExternalDB.class)
 public class GeneratedKeysMySQLTest {
 
     private Connection conn;
