@@ -26,7 +26,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     
-    println(writer.toString)
+    //println(writer.toString)
     
     var toMatch = """package com.mysema.query
     import scala.reflect.BeanProperty
@@ -48,7 +48,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     @BeanProperty var time: java.sql.Time = _"""
     
     val str = writer.toString().replaceAll("\\s+", " ")
-    println(str)
+    //println(str)
  
     toMatch.split("\\n").map(_.trim).foreach { line =>
       assertTrue(line, str.contains(line));
