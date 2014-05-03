@@ -481,7 +481,28 @@
         </plugins>
       </build>
     </profile>
-  
+
+    <profile>
+      <id>travis</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludedGroups>com.mysema.testutil.DummyInterface</excludedGroups>
+              <excludes>
+                <exclude>**/*$*</exclude>
+                <exclude>**/MSSQLSuiteTest.java</exclude>
+                <exclude>**/TeradataSuiteTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
   </profiles>
   
   <reporting>

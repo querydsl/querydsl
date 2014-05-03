@@ -16,4 +16,4 @@ before_script:
   - psql -c 'grant all privileges on database querydsl to querydsl;' -U postgres
   - psql -c 'create extension postgis;' -U postgres
 script:
-  - sh -c 'cd querydsl-root && mvn -B test'
+  - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'
