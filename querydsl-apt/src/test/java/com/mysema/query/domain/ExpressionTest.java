@@ -13,6 +13,8 @@
  */
 package com.mysema.query.domain;
 
+import static com.google.common.base.Objects.equal;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -113,7 +115,7 @@ public class ExpressionTest {
                         continue;
                     }
                     Object rv = method.invoke(expr, args);
-                    if (method.invoke(expr, args) != rv) {
+                    if (!equal(method.invoke(expr, args), rv)) {
                         failures.add(expr.getClass().getSimpleName()+"."+method.getName()+" is unstable");
                     }
                 }
