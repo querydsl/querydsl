@@ -13,27 +13,22 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.template.SimpleTemplate;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.junit.Test;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
-import com.mysema.query.support.Expressions;
-import com.mysema.query.types.path.NumberPath;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.junit.Test;
-
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.template.SimpleTemplate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SQLTemplatesTest {
 
@@ -58,17 +53,19 @@ public class SQLTemplatesTest {
     @Test
     public void AsLiteral() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
-        assertMatches(DATE, templates.asLiteral(new Date(0)));
-        assertMatches(TIME, templates.asLiteral(new Time(0)));
-        assertMatches(DATETIME, templates.asLiteral(new Timestamp(0)));
+        Configuration conf = new Configuration(templates);
+        assertMatches(DATE, conf.asLiteral(new Date(0)));
+        assertMatches(TIME, conf.asLiteral(new Time(0)));
+        assertMatches(DATETIME, conf.asLiteral(new Timestamp(0)));
     }
 
     @Test
     public void AsLiteral_JodaTime() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
-        assertMatches(DATE, templates.asLiteral(new LocalDate(0)));
-        assertMatches(TIME, templates.asLiteral(new LocalTime(0)));
-        assertMatches(DATETIME, templates.asLiteral(new DateTime(0)));
+        Configuration conf = new Configuration(templates);
+        assertMatches(DATE, conf.asLiteral(new LocalDate(0)));
+        assertMatches(TIME, conf.asLiteral(new LocalTime(0)));
+        assertMatches(DATETIME, conf.asLiteral(new DateTime(0)));
     }
 
     @Test

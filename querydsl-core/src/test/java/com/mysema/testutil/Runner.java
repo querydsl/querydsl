@@ -13,24 +13,28 @@
  */
 package com.mysema.testutil;
 
+import com.google.common.base.Stopwatch;
+
 public final class Runner {
-    
+
+    private static final int WARMUP = 50000;
+    private static final int BENCHMARK = 1000000;
+
     public static void run(String label, Benchmark benchmark) throws Exception {
         // warmup
-        benchmark.run(50000);
+        benchmark.run(WARMUP);
         System.err.print("- ");
 
         // run garbage collection
         System.gc();
         System.err.print("- ");
-        
+
         // perform timing
-        long start = System.nanoTime();
-        benchmark.run(1000000);
-        long end = System.nanoTime();
-        System.err.println(label + " " + ((end-start) / 1000000));
+        Stopwatch stopwatch = new Stopwatch().start();
+        benchmark.run(BENCHMARK);
+        System.err.println(label + " " + stopwatch.stop().toString());
     }
-    
+
     private Runner() {}
 
 }

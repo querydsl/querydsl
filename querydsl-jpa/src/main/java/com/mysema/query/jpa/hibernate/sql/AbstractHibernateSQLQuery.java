@@ -13,6 +13,10 @@
  */
 package com.mysema.query.jpa.hibernate.sql;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
 import com.mysema.query.NonUniqueResultException;
@@ -33,10 +37,6 @@ import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
-
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
  *
@@ -44,7 +44,7 @@ import java.util.Map;
  *
  * @param <Q>
  */
-public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q> & com.mysema.query.Query<Q>> extends AbstractSQLQuery<Q> {
+public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q>> extends AbstractSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
 

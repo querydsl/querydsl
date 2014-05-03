@@ -165,7 +165,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     }
     
     @Override
-    public final <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
         return iterateSingle(queryMixin.getMetadata(), expr);
     }

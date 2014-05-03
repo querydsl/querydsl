@@ -13,32 +13,19 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
+import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.JoinFlag;
-import com.mysema.query.Query;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
@@ -73,6 +60,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @return
      */
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q addJoinFlag(String flag) {
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
@@ -85,6 +73,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @return
      */
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     @SuppressWarnings("unchecked")
     public Q addJoinFlag(String flag, JoinFlag.Position position) {
         queryMixin.addJoinFlag(new JoinFlag(flag, position));
@@ -100,6 +89,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @return
      */
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q addFlag(Position position, String prefix, Expression<?> expr) {
         Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
@@ -111,6 +101,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param flag
      * @return
      */
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q addFlag(QueryFlag flag) {
         return queryMixin.addFlag(flag);
     }
@@ -123,6 +114,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @return
      */
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q addFlag(Position position, String flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -135,6 +127,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @return
      */
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q addFlag(Position position, Expression<?> flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -150,117 +143,140 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         return limit(1).singleResult(NumberTemplate.ONE) != null;
     }
 
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q from(Expression<?> arg) {
         return queryMixin.from(arg);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q fullJoin(EntityPath<?> target) {
         return queryMixin.fullJoin(target);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q innerJoin(EntityPath<?> target) {
         return queryMixin.innerJoin(target);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q join(EntityPath<?> target) {
         return queryMixin.join(target);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.join(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q join(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.join(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q join(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.join(entity).on(key.on(entity));
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q leftJoin(EntityPath<?> target) {
         return queryMixin.leftJoin(target);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q leftJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.leftJoin(entity).on(key.on(entity));
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q rightJoin(EntityPath<?> target) {
         return queryMixin.rightJoin(target);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
@@ -294,11 +310,13 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         return listResults(queryMixin.createProjection(args));
     }
 
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q on(Predicate condition) {
         return queryMixin.on(condition);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }
@@ -321,6 +339,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
@@ -343,6 +362,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, false));
     }
@@ -366,6 +386,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
     }
@@ -389,6 +410,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(sq, alias, true));
     }
@@ -409,12 +431,14 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q withRecursive(Path<?> alias, SubQueryExpression<?> query) {
         queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
         return with(alias, query);
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q withRecursive(Path<?> alias, Expression<?> query) {
         queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, SQLTemplates.RECURSIVE));
         return with(alias, query);
@@ -427,12 +451,14 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q with(Path<?> alias, SubQueryExpression<?> query) {
         Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
     @Override
+    @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
     public Q with(Path<?> alias, Expression<?> query) {
         Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
