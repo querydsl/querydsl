@@ -14,6 +14,7 @@
 package com.mysema.query.codegen;
 
 import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -38,11 +39,14 @@ public abstract class TypeMappings {
 
     private final Map<String, Type> queryTypes = new HashMap<String, Type>();
 
-    private final Map<TypeCategory, Type> exprTypes = new HashMap<TypeCategory, Type>();
+    private final Map<TypeCategory, Type> exprTypes
+            = new EnumMap<TypeCategory, Type>(TypeCategory.class);
 
-    private final Map<TypeCategory, Type> pathTypes = new HashMap<TypeCategory, Type>();
+    private final Map<TypeCategory, Type> pathTypes
+            = new EnumMap<TypeCategory, Type>(TypeCategory.class);
 
-    private final Map<TypeCategory, Type> templateTypes = new HashMap<TypeCategory, Type>();
+    private final Map<TypeCategory, Type> templateTypes
+            = new EnumMap<TypeCategory, Type>(TypeCategory.class);
     
     public Type getTemplateType(Type type, EntityType model, boolean raw) {
         return getTemplateType(type, model, raw, false, false);
