@@ -493,6 +493,9 @@
               <excludedGroups>com.mysema.testutil.DummyInterface</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
+                <exclude>**/CUBRIDSuiteTest.java</exclude>
+                <exclude>**/OracleSuiteTest.java</exclude>
+                <exclude>**/OracleWithQuotingTest.java</exclude> 
                 <exclude>**/MSSQLSuiteTest.java</exclude>
                 <exclude>**/TeradataSuiteTest.java</exclude>
               </excludes>
