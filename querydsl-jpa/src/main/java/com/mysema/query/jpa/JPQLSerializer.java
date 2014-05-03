@@ -15,7 +15,7 @@ package com.mysema.query.jpa;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +98,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String ON = " on ";
 
-    private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
+    private static final Map<JoinType, String> joinTypes = new EnumMap<JoinType, String>(JoinType.class);
 
     private final JPQLTemplates templates;
 
