@@ -3,7 +3,17 @@ jdk:
   - oraclejdk7
 services:
   - mongodb
+addons:
+  - postgresql: "9.3"
 install:
   - sh -c 'cd querydsl-root && mvn -B -q install -Dmaven.javadoc.skip=true -DskipTests=true'
+before_script:
+  - mysql -e "create database querydsl;"
+  - mysql -e "create user 'querydsl'@'localhost' identified by 'querydsl';"
+  - mysql -e "grant all privileges on querydsl.* to 'querydsl'@'localhost';"
+  - psql -c 'create database querydsl;' -U postgres
+  - psql -c "create user querydsl with password 'querydsl'" -U postgres
+  - psql -c 'grant all privileges on database querydsl to querydsl;' -U postgres
+  - psql -c 'create extension postgis;' -U postgres
 script:
   - sh -c 'cd querydsl-root && mvn -B test'
