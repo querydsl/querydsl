@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -157,20 +158,21 @@ public class MetaDataExporterTest {
     @Test
     public void Multiple() throws SQLException {
         // TODO : refactor this to use new JUnit constructs
+        List<String> emptyString = Collections.singletonList("");
         boolean[] trueAndFalse = new boolean[]{true, false};
         int counter = 0;
-        for (String namePrefix : Arrays.asList("", "Q", "Query")) {
-        for (String nameSuffix : Arrays.asList("", "Type")) {
-        for (String beanPrefix : Arrays.asList("", "Bean")) {
-        for (String beanSuffix : Arrays.asList("", "Bean")) {
-        for (NamingStrategy ns : Arrays.asList(defaultNaming, originalNaming)) {
         for (boolean withBeans : trueAndFalse) {
         for (boolean withInnerClasses : trueAndFalse) {
         for (boolean schemaToPackage : trueAndFalse) {
         for (boolean exportColumns : trueAndFalse) {
-        for (String beanPackage : Arrays.asList("test2", null)) {
-        for (Serializer beanSerializer : BEAN_SERIALIZERS) {
         for (boolean withOriginalPositioning : trueAndFalse) {
+        for (NamingStrategy ns : Arrays.asList(defaultNaming, originalNaming)) {
+        for (String namePrefix : Arrays.asList("", "Q", "Query")) {
+        for (String nameSuffix : Arrays.asList("", "Type")) {
+        for (String beanPrefix : withBeans ? Arrays.asList("", "Bean") : emptyString) {
+        for (String beanSuffix : withBeans ? Arrays.asList("", "Bean") : emptyString) {
+        for (String beanPackage : withBeans ? Arrays.asList("test2", null) : emptyString) {
+        for (Serializer beanSerializer : BEAN_SERIALIZERS) {
             counter++;
             this.beanPackageName = beanPackage;
             this.schemaToPackage = schemaToPackage;
