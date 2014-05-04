@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.3.3.BUILD-SNAPSHOT</version>
+  <version>3.3.4.BUILD-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>http://www.querydsl.com</url>
@@ -183,6 +183,37 @@
     </pluginManagement>
     
     <plugins>
+<!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.3.1</version>
+        <executions>
+          <execution>
+            <id>check</id>
+            <phase>verify</phase> 
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
+                  <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
+                  <dumpDetails>true</dumpDetails>
+                </requireBackwardCompatibility>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.semver</groupId>
+            <artifactId>enforcer-rule</artifactId>
+            <version>0.9.23</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+-->
       <plugin>       
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -450,7 +481,31 @@
         </plugins>
       </build>
     </profile>
-  
+
+    <profile>
+      <id>travis</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludedGroups>com.mysema.testutil.DummyInterface</excludedGroups>
+              <excludes>
+                <exclude>**/*$*</exclude>
+                <exclude>**/ExportOracleTest.java</exclude>
+                <exclude>**/OracleSuiteTest.java</exclude>
+                <exclude>**/OracleWithQuotingTest.java</exclude> 
+                <exclude>**/MSSQLSuiteTest.java</exclude>
+                <exclude>**/TeradataSuiteTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
   </profiles>
   
   <reporting>

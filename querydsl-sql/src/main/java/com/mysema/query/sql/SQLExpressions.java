@@ -13,7 +13,7 @@
  */
 package com.mysema.query.sql;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import com.mysema.query.types.ConstantImpl;
@@ -43,11 +43,14 @@ import com.mysema.query.types.expr.Wildcard;
 @SuppressWarnings("rawtypes")
 public final class SQLExpressions {
 
-    private static final Map<DatePart, Operator> DATE_ADD_OPS = new HashMap<DatePart, Operator>();
+    private static final Map<DatePart, Operator> DATE_ADD_OPS
+            = new EnumMap<DatePart, Operator>(DatePart.class);
 
-    private static final Map<DatePart, Operator> DATE_DIFF_OPS = new HashMap<DatePart, Operator>();
+    private static final Map<DatePart, Operator> DATE_DIFF_OPS
+            = new EnumMap<DatePart, Operator>(DatePart.class);
 
-    private static final Map<DatePart, Operator> DATE_TRUNC_OPS = new HashMap<DatePart, Operator>();
+    private static final Map<DatePart, Operator> DATE_TRUNC_OPS
+            = new EnumMap<DatePart, Operator>(DatePart.class);
 
     static {
         DATE_ADD_OPS.put(DatePart.year, Ops.DateTimeOps.ADD_YEARS);

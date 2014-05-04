@@ -26,7 +26,7 @@ import java.util.Calendar;
  * @author tiwe
  *
  */
-public class CalendarType extends AbstractType<Calendar> {
+public class CalendarType extends AbstractDateTimeType<Calendar> {
 
     public CalendarType() {
         super(Types.TIMESTAMP);
@@ -34,6 +34,11 @@ public class CalendarType extends AbstractType<Calendar> {
 
     public CalendarType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(Calendar value) {
+        return dateTimeFormatter.print(value.getTimeInMillis());
     }
 
     @Override

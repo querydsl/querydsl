@@ -50,11 +50,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         this.queryMixin.setSelf((Q) this);
     }
 
-    protected static boolean isEntityExpression(Expression<?> expr) {
+    protected boolean isEntityExpression(Expression<?> expr) {
         return expr instanceof EntityPath || expr.getType().isAnnotationPresent(Entity.class);
     }
 
-    protected static Expression<?> extractEntityExpression(Expression<?> expr) {
+    protected Expression<?> extractEntityExpression(Expression<?> expr) {
         if (expr instanceof Operation) {
             return ((Operation<?>)expr).getArg(0);
         } else if (expr instanceof TemplateExpression) {

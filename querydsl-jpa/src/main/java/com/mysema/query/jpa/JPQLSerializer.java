@@ -13,6 +13,25 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mysema.query.JoinExpression;
@@ -21,13 +40,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.util.MathUtils;
-
-import javax.annotation.Nullable;
-import javax.persistence.*;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
-import java.util.*;
 
 /**
  * JPQLSerializer serializes Querydsl expressions into JPQL syntax.
@@ -70,7 +82,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String ON = " on ";
 
-    private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
+    private static final Map<JoinType, String> joinTypes = new EnumMap<JoinType, String>(JoinType.class);
 
     private final JPQLTemplates templates;
 

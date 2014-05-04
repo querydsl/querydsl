@@ -13,11 +13,7 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 
 /**
  * TimestampType maps Timestamp to Timestamp on the JDBC level
@@ -25,7 +21,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class TimestampType extends AbstractType<Timestamp> {
+public class TimestampType extends AbstractDateTimeType<Timestamp> {
 
     public TimestampType() {
         super(Types.TIMESTAMP);
@@ -33,6 +29,11 @@ public class TimestampType extends AbstractType<Timestamp> {
 
     public TimestampType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(Timestamp value) {
+        return dateTimeFormatter.print(value.getTime());
     }
 
     @Override

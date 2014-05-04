@@ -1,25 +1,13 @@
 package com.mysema.query.mongodb.domain;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-
 import java.util.Date;
 
-@Entity
-public class Dates {
+import org.mongodb.morphia.annotations.Entity;
 
-    private @Id ObjectId id;
+@Entity
+public class Dates extends AbstractEntity {
 
     private Date date;
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
 
     public Date getDate() {
         return date;
@@ -28,4 +16,5 @@ public class Dates {
     public void setDate(Date date) {
         this.date = date;
     }
+
 }

@@ -25,7 +25,7 @@ import java.util.Date;
  * @author tiwe
  *
  */
-public class UtilDateType extends AbstractType<Date> {
+public class UtilDateType extends AbstractDateTimeType<Date> {
 
     public UtilDateType() {
         super(Types.TIMESTAMP);
@@ -33,6 +33,11 @@ public class UtilDateType extends AbstractType<Date> {
 
     public UtilDateType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(Date value) {
+        return dateTimeFormatter.print(value.getTime());
     }
 
     @Override
