@@ -9,11 +9,15 @@ install:
   - sh -c 'cd querydsl-root && mvn -B -q install -Dmaven.javadoc.skip=true -DskipTests=true'
 before_script:
   - mysql -e "create database querydsl;" -u root
+  - mysql -e "create database querydsl2;" -u root
   - mysql -e "create user 'querydsl'@'localhost' identified by 'querydsl';" -u root
   - mysql -e "grant all privileges on querydsl.* to 'querydsl'@'localhost';" -u root
+  - mysql -e "grant all privileges on querydsl2.* to 'querydsl'@'localhost';" -u root
   - psql -c 'create database querydsl;' -U postgres
+  - psql -c 'create database querydsl2;' -U postgres
   - psql -c "create user querydsl with password 'querydsl';" -U postgres
   - psql -c 'grant all privileges on database querydsl to querydsl;' -U postgres
+  - psql -c 'grant all privileges on database querydsl2 to querydsl;' -U postgres
   - psql -c 'create extension postgis;' -U postgres
 script:
   - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'
