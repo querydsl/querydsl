@@ -19,5 +19,11 @@ before_script:
   - psql -c 'grant all privileges on database querydsl to querydsl;' -U postgres
   - psql -c 'grant all privileges on database querydsl2 to querydsl;' -U postgres
   - psql -c 'create extension postgis;' -U postgres
+  - echo 'yes' | sudo add-apt-repository ppa:cubrid/cubrid
+  - sudo apt-get update
+  - sudo apt-get install cubrid
+  - sudo apt-get install cubrid-demodb
+  - /etc/profile.d/cubrid.sh
+  - hostname | sed 's/^/127.0.0.1 /g' | cat - /etc/hosts > /tmp/etchoststemp && sudo mv /tmp/etchoststemp /etc/hosts --force
 script:
   - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'
