@@ -13,6 +13,9 @@
  */
 package com.mysema.query;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.DefaultMapper;
@@ -34,10 +37,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Target.*;
@@ -84,6 +83,10 @@ public class InsertBase extends AbstractBaseTest {
         assertEquals(Integer.valueOf(2), result.get(2, Integer.class));
 
         DateTime dateTime = result.get(dateTimeProperty);
+        if (target == CUBRID) {
+            // XXX Cubrid adds random milliseconds for some reason
+            dateTime = dateTime.withMillisOfSecond(0);
+        }
         assertEquals(localDate.toDateTimeAtStartOfDay(), dateTime);
     }
 
