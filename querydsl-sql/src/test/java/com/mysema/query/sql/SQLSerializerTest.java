@@ -13,13 +13,10 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Test;
+import java.util.TimeZone;
 
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
@@ -36,6 +33,8 @@ import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class SQLSerializerTest {
 
@@ -289,7 +288,8 @@ public class SQLSerializerTest {
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.setUseLiterals(true);
 
-        Expression<?> expr = SQLExpressions.datediff(DatePart.year, employee.datefield, new java.sql.Date(0));
+        int offset = TimeZone.getDefault().getRawOffset();
+        Expression<?> expr = SQLExpressions.datediff(DatePart.year, employee.datefield, new java.sql.Date(-offset));
         serializer.handle(expr);
         assertEquals("datediff('year',EMPLOYEE.DATEFIELD,(date '1970-01-01'))", serializer.toString());
     }
