@@ -18,10 +18,12 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.domain.QCat;
 import com.mysema.query.jpa.domain.Location;
+import com.mysema.query.jpa.domain.QDomesticCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
@@ -194,6 +196,20 @@ public class JPQLSerializerTest {
         assertEquals("select cat\n" +
                      "from Cat cat\n" +
                      "order by cat.name asc nulls last", serializer.toString());
+    }
+
+    @Test
+    public void Treat() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addJoin(JoinType.JOIN, cat.mate.as((Path) QDomesticCat.domesticCat));
+        md.addProjection(QDomesticCat.domesticCat);
+        serializer.serialize(md, false, null);
+        assertEquals("select domesticCat\n" +
+                "from Cat cat\n" +
+                "  inner join treat(cat.mate as DomesticCat) as domesticCat", serializer.toString());
     }
 
     @Test
