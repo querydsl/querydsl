@@ -71,7 +71,7 @@ public abstract class AbstractProcessorTest {
 //        Processor.elementCache.clear();
         if (compilationResult != 0) {
             System.err.println(compiler.getClass().getName());
-            Assert.fail("Compilation Failed");
+            Assert.fail("Compilation Failed:\n " + new String(err.toByteArray(), "UTF-8"));
         }
     }
     

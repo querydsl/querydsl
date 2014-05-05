@@ -1,19 +1,10 @@
 package com.mysema.query.apt;
 
-import static org.junit.Assert.fail;
-
+import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
-import org.junit.Test;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ForwardingSet;
@@ -24,6 +15,8 @@ import com.mysema.query.codegen.Keywords;
 import com.mysema.query.domain.AbstractEntityTest;
 import com.mysema.query.domain.CustomCollection;
 import com.mysema.query.domain.Generic2Test;
+import org.junit.Test;
+import static org.junit.Assert.fail;
 
 public class GenericExporterTest extends AbstractProcessorTest {
 
@@ -50,6 +43,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QExampleEntity.java");
 
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
 
         // FIXME
         expected.add("QExternalEntityTest_MyEntity.java");
@@ -87,6 +81,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
 
         expected.add("QTemporal2Test_Cheque.java");
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
 
         // FIXME
         expected.add("QGeneric4Test_HidaBez.java");
