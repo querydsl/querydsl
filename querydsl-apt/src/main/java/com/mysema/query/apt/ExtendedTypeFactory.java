@@ -19,7 +19,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.*;
-import javax.lang.model.util.SimpleTypeVisitor6;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
@@ -53,7 +52,7 @@ public final class ExtendedTypeFactory {
 
     private boolean doubleIndexEntities = true;
 
-    private final TypeVisitor<Type, Boolean> visitor = new SimpleTypeVisitor6<Type, Boolean>() {
+    private final TypeVisitor<Type, Boolean> visitor = new SimpleTypeVisitorAdapter<Type, Boolean>() {
 
         @Override
         public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
@@ -158,16 +157,11 @@ public final class ExtendedTypeFactory {
             return defaultType;
         }
 
-        @Override
-        public Type visitUnknown(TypeMirror t, Boolean p) {
-            return defaultType;
-        }
-
     };
 
     // TODO : return TypeMirror instead ?!?
 
-    private final TypeVisitor<List<String>, Boolean> keyBuilder = new SimpleTypeVisitor6<List<String>, Boolean>() {
+    private final TypeVisitor<List<String>, Boolean> keyBuilder = new SimpleTypeVisitorAdapter<List<String>, Boolean>() {
 
         private final List<String> defaultValue = Collections.singletonList("Object");
 
@@ -248,10 +242,6 @@ public final class ExtendedTypeFactory {
         @Override
         public List<String> visitNoType(NoType t, Boolean p) {
             return defaultValue;
-        }
-
-        public List<String> visitUnknown(TypeMirror t, Boolean p) {
-            return visitBase(t);
         }
 
     };
