@@ -29,6 +29,8 @@ import junit.framework.Assert;
 
 public abstract class AbstractProcessorTest {
 
+    private final JavaCompiler compiler = new SimpleCompiler();
+
     protected static List<String> getFiles(String path) {
         List<String> classes = new ArrayList<String>();
         for (File file : new File(path).listFiles()) {
@@ -51,7 +53,6 @@ public abstract class AbstractProcessorTest {
     } 
     
     protected void compile(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException {
-        JavaCompiler compiler = new SimpleCompiler();
         List<String> options = new ArrayList<String>(classes.size() + 3);
         options.add("-s");
         options.add("target/" + target);

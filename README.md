@@ -4,6 +4,8 @@ Querydsl is a framework which enables the construction of type-safe SQL-like que
 
 Instead of writing queries as inline strings or externalizing them into XML files they are constructed via a fluent API.
 
+[![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
+
 **Getting started**
 
 Use these tutorials to get started
