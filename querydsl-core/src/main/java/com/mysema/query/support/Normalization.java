@@ -26,17 +26,54 @@ public final class Normalization {
 
     private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
 
-    private static final Pattern OPERATOR = Pattern.compile(WS + "[+\\-/*]" + WS);
+    private static final Pattern FULL_OPERATION = Pattern.compile(
+            "(\\A|[^\\d\\*/\\+\\-\"' ])" + WS +
+            "(" + NUMBER + WS + "[+\\-/*]" + WS + ")+" + NUMBER + WS +
+            "(\\Z|[^\\d\\*/\\+\\-\"' ])");
 
-    private static final Pattern OPERATION = Pattern.compile(START + NUMBER + OPERATOR.pattern() + NUMBER);
+    private static final Pattern[] OPERATIONS = {
+            Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER),
+            Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER),
+            Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER),
+            Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER)
+    };
 
-    private static final Pattern ADDITION = Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER);
+    private static String normalizeResult(String result) {
+        while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
+            result = result.substring(0, result.length()-1);
+        }
+        return result;
+    }
 
-    private static final Pattern SUBTRACTION = Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER);
-
-    private static final Pattern DIVISION = Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER);
-
-    private static final Pattern MULTIPLICATION = Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER);
+    private static String normalizeOperation(String queryString) {
+        for (int i = 0; i < OPERATIONS.length; i++) {
+            Pattern operation = OPERATIONS[i];
+            Matcher matcher;
+            while ((matcher = operation.matcher(queryString)).find()) {
+                BigDecimal first = new BigDecimal(matcher.group(1));
+                BigDecimal second = new BigDecimal(matcher.group(2));
+                String result;
+                switch (i) {
+                    case 0: result = first.multiply(second).toString(); break;
+                    case 1: result = first.divide(second, 10, RoundingMode.HALF_UP).toString(); break;
+                    case 2: result = first.add(second).toString(); break;
+                    case 3: result = first.subtract(second).toString(); break;
+                    default: throw new IllegalStateException();
+                }
+                result = normalizeResult(result);
+                StringBuilder builder = new StringBuilder();
+                if (matcher.start() > 0) {
+                    builder.append(queryString.substring(0, matcher.start()));
+                }
+                builder.append(result);
+                if (matcher.end() < queryString.length()) {
+                    builder.append(queryString.substring(matcher.end()));
+                }
+                queryString = builder.toString();
+            }
+        }
+        return queryString;
+    }
 
     public static String normalize(String queryString) {
         if (!hasOperators(queryString)) {
@@ -44,45 +81,16 @@ public final class Normalization {
         }
 
         StringBuilder rv = null;
-        Matcher m = OPERATION.matcher(queryString);
+        Matcher m = FULL_OPERATION.matcher(queryString);
         int end = 0;
         while (m.find()) {
             if (rv == null) {
                 rv = new StringBuilder(queryString.length());
             }
-            if (m.start() > 0 && queryString.charAt(m.start() - 1) == '\'') {
-                continue;
-            } else if (m.end() < queryString.length() && queryString.charAt(m.end()) == '\'') {
-                continue;
-            }
-
             if (m.start() > end) {
                 rv.append(queryString.subSequence(end, m.start()));
             }
-            String str = queryString.substring(m.start(), m.end());
-            boolean add = ADDITION.matcher(str).matches();
-            boolean subtract = SUBTRACTION.matcher(str).matches();
-            boolean divide = DIVISION.matcher(str).matches();
-            boolean multiply = MULTIPLICATION.matcher(str).matches();
-            Matcher matcher = OPERATION.matcher(str);
-            matcher.matches();
-            BigDecimal first = new BigDecimal(matcher.group(1));
-            BigDecimal second = new BigDecimal(matcher.group(2));
-            String result = null;
-            if (multiply) {
-                result = first.multiply(second).toString();
-            } else if (divide) {
-                result = first.divide(second, 10, RoundingMode.HALF_UP).toString();
-            } else if (subtract) {
-                result = first.subtract(second).toString();
-            } else if (add) {
-                result = first.add(second).toString();
-            } else {
-                throw new IllegalStateException("Unsupported expression " + str);
-            }
-            while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
-                result = result.substring(0, result.length()-1);
-            }
+            String result = normalizeOperation(queryString.substring(m.start(), m.end()));
             rv.append(result);
             end = m.end();
         }

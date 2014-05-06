@@ -1,8 +1,7 @@
 package com.mysema.query.support;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class NormalizationTest {
 
@@ -43,6 +42,7 @@ public class NormalizationTest {
         assertEquals("where 10 = 10", Normalization.normalize("where 5*2 = 10"));
         assertEquals("where 11 = 11", Normalization.normalize("where 5.5*2 = 11"));
         assertEquals("where 10.8 = 10.8", Normalization.normalize("where 5.4 * 2 = 10.8"));
+        assertEquals("where 9 = 0 and 13 = 13", Normalization.normalize("where 2 * 3 + 3 = 9 and 5 + 4 * 2 = 13"));
     }
 
     @Test
@@ -56,7 +56,10 @@ public class NormalizationTest {
     @Test
     public void Mixed() {
         assertEquals("13", Normalization.normalize("2 * 5 + 3"));
+        assertEquals("17", Normalization.normalize("2 + 5 * 3"));
         assertEquals("-2.5", Normalization.normalize("2.5 * -1"));
+        assertEquals("hours * 2 + 3", Normalization.normalize("hours * 2 + 3"));
+        assertEquals("2 + 3 * hours", Normalization.normalize("2 + 3 * hours"));
     }
 
     @Test
@@ -67,6 +70,11 @@ public class NormalizationTest {
     @Test
     public void DateTimeLiterals() {
         assertEquals("'1980-10-10'", Normalization.normalize("'1980-10-10'"));
+    }
+
+    @Test
+    public void DateTimeLiterals2() {
+        assertEquals("\"1980-10-10\"", Normalization.normalize("\"1980-10-10\""));
     }
 
 }
