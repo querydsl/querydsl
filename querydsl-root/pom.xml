@@ -183,7 +183,6 @@
     </pluginManagement>
     
     <plugins>
-<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -200,6 +199,7 @@
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
+                  <publicOnly>true</publicOnly>
                 </requireBackwardCompatibility>
               </rules>
             </configuration>
@@ -209,11 +209,10 @@
           <dependency>
             <groupId>org.semver</groupId>
             <artifactId>enforcer-rule</artifactId>
-            <version>0.9.23</version>
+            <version>0.9.24</version>
           </dependency>
         </dependencies>
       </plugin>
--->
       <plugin>       
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
