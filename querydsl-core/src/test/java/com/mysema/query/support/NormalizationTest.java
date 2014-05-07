@@ -1,18 +1,24 @@
 package com.mysema.query.support;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import com.mysema.testutil.Benchmark;
+import com.mysema.testutil.Runner;
+import org.junit.Test;
 
 public class NormalizationTest {
 
     @Test
-    public void Performance() {
-        int iterations = 1000000;
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < iterations; i++) {
-            Normalization.normalize("select name from companies where id = ?");
-        }
-        System.err.println(System.currentTimeMillis() - start);
+    public void Performance() throws Exception {
+        Runner.run("NormalizationTest Performance", new Benchmark() {
+
+            @Override
+            public void run(int times) throws Exception {
+                for (int i = 0; i < times; i++) {
+                    Normalization.normalize("select name from companies where id = ?");
+                }
+            }
+        });
     }
 
     @Test
