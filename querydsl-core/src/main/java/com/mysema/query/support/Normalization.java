@@ -67,32 +67,14 @@ public final class Normalization {
             return queryString;
         }
 
-        StringBuilder rv = null;
+        StringBuffer buffer = new StringBuffer();
         Matcher m = FULL_OPERATION.matcher(queryString);
-        int end = 0;
         while (m.find()) {
-            if (rv == null) {
-                rv = new StringBuilder(queryString.length());
-            }
-            if (m.start() > end) {
-                rv.append(queryString.subSequence(end, m.start()));
-            }
             String result = normalizeOperation(queryString.substring(m.start(), m.end()));
-            rv.append(result);
-            end = m.end();
+            m.appendReplacement(buffer, result);
         }
-        if (end > 0) {
-            if (end < queryString.length()) {
-                rv.append(queryString.substring(end));
-            }
-            if (rv.toString().equals(queryString)) {
-                return rv.toString();
-            } else {
-                return normalize(rv.toString());
-            }
-        } else {
-            return queryString;
-        }
+        m.appendTail(buffer);
+        return buffer.toString();
     }
 
     private static boolean hasOperators(String queryString) {
