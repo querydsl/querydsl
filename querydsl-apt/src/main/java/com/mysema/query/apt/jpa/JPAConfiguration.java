@@ -13,51 +13,22 @@
  */
 package com.mysema.query.apt.jpa;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
-import javax.persistence.Version;
+import javax.persistence.*;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.apt.AbstractQuerydslProcessor;
-import com.mysema.query.apt.DefaultConfiguration;
-import com.mysema.query.apt.QueryTypeImpl;
-import com.mysema.query.apt.TypeUtils;
-import com.mysema.query.apt.VisitorConfig;
+import com.mysema.query.apt.*;
 import com.mysema.query.codegen.Keywords;
 import com.mysema.util.Annotations;
 
@@ -129,6 +100,9 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     private TypeMirror getRealElementType(Element element) {
         AnnotationMirror mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToOne.class);
+        if (mirror == null) {
+            mirror = TypeUtils.getAnnotationMirrorOfType(element, OneToOne.class);
+        }
         if (mirror != null) {
             return TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
         }
