@@ -38,13 +38,6 @@ public final class Normalization {
             Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER)
     };
 
-    private static String normalizeResult(String result) {
-        while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
-            result = result.substring(0, result.length()-1);
-        }
-        return result;
-    }
-
     private static String normalizeOperation(String queryString) {
         for (int i = 0; i < OPERATIONS.length; i++) {
             Pattern operation = OPERATIONS[i];
@@ -52,24 +45,18 @@ public final class Normalization {
             while ((matcher = operation.matcher(queryString)).find()) {
                 BigDecimal first = new BigDecimal(matcher.group(1));
                 BigDecimal second = new BigDecimal(matcher.group(2));
-                String result;
+                BigDecimal result;
                 switch (i) {
-                    case 0: result = first.multiply(second).toString(); break;
-                    case 1: result = first.divide(second, 10, RoundingMode.HALF_UP).toString(); break;
-                    case 2: result = first.add(second).toString(); break;
-                    case 3: result = first.subtract(second).toString(); break;
+                    case 0: result = first.multiply(second); break;
+                    case 1: result = first.divide(second, 10, RoundingMode.HALF_UP); break;
+                    case 2: result = first.add(second); break;
+                    case 3: result = first.subtract(second); break;
                     default: throw new IllegalStateException();
                 }
-                result = normalizeResult(result);
-                StringBuilder builder = new StringBuilder();
-                if (matcher.start() > 0) {
-                    builder.append(queryString.substring(0, matcher.start()));
-                }
-                builder.append(result);
-                if (matcher.end() < queryString.length()) {
-                    builder.append(queryString.substring(matcher.end()));
-                }
-                queryString = builder.toString();
+                StringBuffer buffer = new StringBuffer();
+                matcher.appendReplacement(buffer, result.stripTrailingZeros().toPlainString())
+                        .appendTail(buffer);
+                queryString = buffer.toString();
             }
         }
         return queryString;
