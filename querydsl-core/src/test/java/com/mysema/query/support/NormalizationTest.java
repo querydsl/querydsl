@@ -87,4 +87,10 @@ public class NormalizationTest {
         assertEquals("fn(1)", Normalization.normalize("fn(-1+2)"));
         assertEquals("fn(3)", Normalization.normalize("fn(1--2)"));
     }
+
+    @Test
+    public void Substring() {
+        assertEquals("substring(cat.name,1,locate(?1,cat.name)-1)",
+                Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-0)"));
+    }
 }
