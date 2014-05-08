@@ -1,10 +1,9 @@
 package com.mysema.query.support;
 
-import static org.junit.Assert.assertEquals;
-
 import com.mysema.testutil.Benchmark;
 import com.mysema.testutil.Runner;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class NormalizationTest {
 
@@ -83,4 +82,9 @@ public class NormalizationTest {
         assertEquals("\"1980-10-10\"", Normalization.normalize("\"1980-10-10\""));
     }
 
+    @Test
+    public void Math1() {
+        assertEquals("fn(1)", Normalization.normalize("fn(-1+2)"));
+        assertEquals("fn(3)", Normalization.normalize("fn(1--2)"));
+    }
 }

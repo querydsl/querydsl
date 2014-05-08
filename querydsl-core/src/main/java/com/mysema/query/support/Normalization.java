@@ -22,20 +22,19 @@ public final class Normalization {
 
     private static final String WS = "\\s*";
 
-    private static final String START = "\\b";
+    private static final String NUMBER = "([\\+\\-]?\\d+\\.?\\d*)";
 
-    private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
-
+    // TODO simplify
     private static final Pattern FULL_OPERATION = Pattern.compile(
-            "(\\A|[^\\d\\*/\\+\\-\"' ])" + WS +
+            "(?<![\\d\\*/\\+\\-\"' ])" + "(\\b|\\(|\\s+)"  +
             "(" + NUMBER + WS + "[+\\-/*]" + WS + ")+" + NUMBER + WS +
-            "(\\Z|[^\\d\\*/\\+\\-\"' ])");
+            "(?![\\d\\*/\\+\\-\"' ])");
 
     private static final Pattern[] OPERATIONS = {
-            Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER),
-            Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER),
-            Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER),
-            Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER)
+            Pattern.compile(NUMBER + WS + "\\*" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "/" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "\\+" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER)
     };
 
     private static String normalizeOperation(String queryString) {
