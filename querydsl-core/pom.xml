@@ -44,7 +44,6 @@
       <groupId>com.infradna.tool</groupId>
       <artifactId>bridge-method-annotation</artifactId>
       <version>${bridge-method.version}</version>
-      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>org.jenkins-ci</groupId>
