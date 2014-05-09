@@ -1,27 +1,21 @@
 package com.mysema.query.domain;
 
-import javax.naming.NamingException;
-import javax.naming.Reference;
-import javax.naming.Referenceable;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class Generic14Test {
 
     @Entity
     public static class UserAccount extends BaseReferencablePersistable<Long> {
 
-        @Override
-        public Reference getReference() throws NamingException {
-            return null;
-        }
     }
 
     @MappedSuperclass
-    public static abstract class BaseReferencablePersistable<PK extends Serializable> extends BasePersistable<PK> implements Referenceable {
+    public static abstract class BaseReferencablePersistable<PK extends Serializable> extends BasePersistable<PK> {
 
     }
 
@@ -45,6 +39,9 @@ public class Generic14Test {
 
     @Test
     public void test() {
-
+        assertNotNull(QGeneric14Test_UserAccount.userAccount);
+        assertNotNull(QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
+        assertNotNull(QGeneric14Test_BasePersistable.basePersistable);
+        assertNotNull(QGeneric14Test_AbstractPersistable.abstractPersistable);
     }
 }
