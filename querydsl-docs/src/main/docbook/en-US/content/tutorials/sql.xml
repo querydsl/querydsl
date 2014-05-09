@@ -335,6 +335,8 @@
     
     <para>Imports can be used to add cross-schema foreign keys support.</para>
 
+    <para>Compared to APT based code generation certain functionality is not available such as QueryDelegate annotation handling.</para>
+
   </sect2>
 
   <sect2>
