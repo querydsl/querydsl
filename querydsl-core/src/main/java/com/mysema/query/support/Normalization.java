@@ -22,82 +22,58 @@ public final class Normalization {
 
     private static final String WS = "\\s*";
 
-    private static final String START = "\\b";
+    private static final String NUMBER = "([\\+\\-]?\\d+\\.?\\d*)";
 
-    private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
+    // TODO simplify
+    private static final Pattern FULL_OPERATION = Pattern.compile(
+            "(?<![\\d\\*/\"' ])" + "(\\b|\\(|\\s+)"  +
+            "(" + NUMBER + WS + "[+\\-/*]" + WS + ")+" + NUMBER + WS +
+            "(?![\\d\\*/\"' ])");
 
-    private static final Pattern OPERATOR = Pattern.compile(WS + "[+\\-/*]" + WS);
+    private static final Pattern[] OPERATIONS = {
+            Pattern.compile(NUMBER + WS + "\\*" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "/" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "\\+" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER)
+    };
 
-    private static final Pattern OPERATION = Pattern.compile(START + NUMBER + OPERATOR.pattern() + NUMBER);
-
-    private static final Pattern ADDITION = Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER);
-
-    private static final Pattern SUBTRACTION = Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER);
-
-    private static final Pattern DIVISION = Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER);
-
-    private static final Pattern MULTIPLICATION = Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER);
+    private static String normalizeOperation(String queryString) {
+        for (int i = 0; i < OPERATIONS.length; i++) {
+            Pattern operation = OPERATIONS[i];
+            Matcher matcher;
+            while ((matcher = operation.matcher(queryString)).find()) {
+                BigDecimal first = new BigDecimal(matcher.group(1));
+                BigDecimal second = new BigDecimal(matcher.group(2));
+                BigDecimal result;
+                switch (i) {
+                    case 0: result = first.multiply(second); break;
+                    case 1: result = first.divide(second, 10, RoundingMode.HALF_UP); break;
+                    case 2: result = first.add(second); break;
+                    case 3: result = first.subtract(second); break;
+                    default: throw new IllegalStateException();
+                }
+                StringBuffer buffer = new StringBuffer();
+                matcher.appendReplacement(buffer, result.stripTrailingZeros().toPlainString())
+                        .appendTail(buffer);
+                queryString = buffer.toString();
+            }
+        }
+        return queryString;
+    }
 
     public static String normalize(String queryString) {
         if (!hasOperators(queryString)) {
             return queryString;
         }
 
-        StringBuilder rv = null;
-        Matcher m = OPERATION.matcher(queryString);
-        int end = 0;
+        StringBuffer buffer = new StringBuffer();
+        Matcher m = FULL_OPERATION.matcher(queryString);
         while (m.find()) {
-            if (rv == null) {
-                rv = new StringBuilder(queryString.length());
-            }
-            if (m.start() > 0 && queryString.charAt(m.start() - 1) == '\'') {
-                continue;
-            } else if (m.end() < queryString.length() && queryString.charAt(m.end()) == '\'') {
-                continue;
-            }
-
-            if (m.start() > end) {
-                rv.append(queryString.subSequence(end, m.start()));
-            }
-            String str = queryString.substring(m.start(), m.end());
-            boolean add = ADDITION.matcher(str).matches();
-            boolean subtract = SUBTRACTION.matcher(str).matches();
-            boolean divide = DIVISION.matcher(str).matches();
-            boolean multiply = MULTIPLICATION.matcher(str).matches();
-            Matcher matcher = OPERATION.matcher(str);
-            matcher.matches();
-            BigDecimal first = new BigDecimal(matcher.group(1));
-            BigDecimal second = new BigDecimal(matcher.group(2));
-            String result = null;
-            if (multiply) {
-                result = first.multiply(second).toString();
-            } else if (divide) {
-                result = first.divide(second, 10, RoundingMode.HALF_UP).toString();
-            } else if (subtract) {
-                result = first.subtract(second).toString();
-            } else if (add) {
-                result = first.add(second).toString();
-            } else {
-                throw new IllegalStateException("Unsupported expression " + str);
-            }
-            while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
-                result = result.substring(0, result.length()-1);
-            }
-            rv.append(result);
-            end = m.end();
+            String result = normalizeOperation(queryString.substring(m.start(), m.end()));
+            m.appendReplacement(buffer, result);
         }
-        if (end > 0) {
-            if (end < queryString.length()) {
-                rv.append(queryString.substring(end));
-            }
-            if (rv.toString().equals(queryString)) {
-                return rv.toString();
-            } else {
-                return normalize(rv.toString());
-            }
-        } else {
-            return queryString;
-        }
+        m.appendTail(buffer);
+        return buffer.toString();
     }
 
     private static boolean hasOperators(String queryString) {
