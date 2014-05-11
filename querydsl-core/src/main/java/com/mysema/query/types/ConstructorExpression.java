@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -65,7 +64,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     @Nullable
     private transient Constructor<?> constructor;
 
-    private transient Collection<? extends Function<Object[], Object[]>> transformers;
+    private transient Iterable<Function<Object[], Object[]>> transformers;
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));
