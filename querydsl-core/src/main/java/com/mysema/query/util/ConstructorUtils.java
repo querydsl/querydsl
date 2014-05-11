@@ -13,23 +13,21 @@
  */
 package com.mysema.query.util;
 
-import static com.google.common.collect.ImmutableList.copyOf;
-import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Iterables.filter;
 import static com.mysema.util.ArrayUtils.isEmpty;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.types.ExpressionException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -126,13 +124,14 @@ public class ConstructorUtils {
      * @param constructor
      * @return
      */
-    public static Collection<? extends Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
-        ArrayList<ArgumentTransformer> transformers = Lists.newArrayList(
+    public static Iterable<Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
+        Iterable<ArgumentTransformer> transformers = Lists.newArrayList(
                 new PrimitiveAwareVarArgsTransformer(constructor),
-                new NullSafePrimitiveTransformer(constructor),
+                new PrimitiveTransformer(constructor),
                 new VarArgsTransformer(constructor));
 
-        return copyOf(filter(transformers, applicableFilter));
+        return ImmutableList
+                .<Function<Object[], Object[]>>copyOf(filter(transformers, applicableFilter));
     }
 
     private static Class<?> normalize(Class<?> clazz) {
@@ -222,11 +221,11 @@ public class ConstructorUtils {
 
     }
 
-    private static class NullSafePrimitiveTransformer extends ArgumentTransformer {
+    private static class PrimitiveTransformer extends ArgumentTransformer {
 
         private final Set<Integer> primitiveLocations;
 
-        private NullSafePrimitiveTransformer(Constructor<?> constructor) {
+        private PrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
             ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
             Class<?>[] parameterTypes = constructor.getParameterTypes();
