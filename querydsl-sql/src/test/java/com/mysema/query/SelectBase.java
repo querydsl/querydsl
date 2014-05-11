@@ -427,10 +427,8 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({CUBRID, DERBY, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        int offset = cal.getTimeZone().getOffset(cal.getTimeInMillis());
-        Date date = new java.sql.Date(cal.getTimeInMillis() + offset);
+        int offset = TimeZone.getDefault().getOffset(0);
+        Date date = new java.sql.Date(-offset);
 
         int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
         int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));
