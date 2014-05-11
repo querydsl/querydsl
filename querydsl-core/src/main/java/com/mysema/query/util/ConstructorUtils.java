@@ -129,7 +129,7 @@ public class ConstructorUtils {
     public static Collection<? extends Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
         ArrayList<ArgumentTransformer> transformers = Lists.newArrayList(
                 new PrimitiveAwareVarArgsTransformer(constructor),
-                new NullSafePrimitiveTransformer(constructor),
+                new PrimitiveTransformer(constructor),
                 new VarArgsTransformer(constructor));
 
         return copyOf(filter(transformers, applicableFilter));
@@ -222,11 +222,11 @@ public class ConstructorUtils {
 
     }
 
-    private static class NullSafePrimitiveTransformer extends ArgumentTransformer {
+    private static class PrimitiveTransformer extends ArgumentTransformer {
 
         private final Set<Integer> primitiveLocations;
 
-        private NullSafePrimitiveTransformer(Constructor<?> constructor) {
+        private PrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
             ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
             Class<?>[] parameterTypes = constructor.getParameterTypes();
