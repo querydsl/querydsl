@@ -67,8 +67,8 @@ public class SpatialBase extends AbstractBaseTest {
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
             assertEquals(
-                    row.get(shapes.geometry).getGeometryType().name(),
-                    row.get(shapes.geometry.geometryType()));
+                    row.get(shapes.geometry).getGeometryType().name().replace(" ", ""),
+                    row.get(shapes.geometry.geometryType()).replace(" ", ""));
         }
     }
 
