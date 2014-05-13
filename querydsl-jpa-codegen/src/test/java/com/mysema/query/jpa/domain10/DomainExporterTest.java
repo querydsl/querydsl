@@ -1,5 +1,6 @@
 package com.mysema.query.jpa.domain10;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -21,10 +22,10 @@ public class DomainExporterTest {
         config.addFile(new File("src/test/resources/com/mysema/query/jpa/domain10/domain.hbm.xml"));
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", gen, config);
         exporter.execute();
-        
+
         assertTrue(new File(gen, "com/mysema/query/jpa/domain10/QEntity.java").exists());
-        assertTrue(new File(gen, "com/mysema/query/jpa/domain10/QCustomType.java").exists());
-        
+        assertFalse(new File(gen, "com/mysema/query/jpa/domain10/QCustomType.java").exists());
+
     }
-    
+
 }

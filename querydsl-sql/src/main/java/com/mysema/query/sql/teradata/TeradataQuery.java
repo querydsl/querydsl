@@ -61,4 +61,11 @@ public class TeradataQuery extends AbstractSQLQuery<TeradataQuery> {
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.BEFORE_ORDER, predicate));
     }
 
+    @Override
+    public TeradataQuery clone(Connection conn) {
+        TeradataQuery q = new TeradataQuery(conn, getConfiguration(), getMetadata().clone());
+        q.clone(this);
+        return q;
+    }
+
 }

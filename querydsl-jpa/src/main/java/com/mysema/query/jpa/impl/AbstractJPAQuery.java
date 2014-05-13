@@ -36,6 +36,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.JPAQueryBase;
+import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.types.Expression;
@@ -54,7 +55,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
     protected final Multimap<String,Object> hints = HashMultimap.create();
-
+      
+    protected final EntityManager entityManager;
+    
     protected final QueryHandler queryHandler;
 
     @Nullable
@@ -71,15 +74,14 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     public AbstractJPAQuery(EntityManager em, JPQLTemplates templates, QueryMetadata metadata) {
-        super(metadata, templates, em);
+        super(metadata, templates);
         this.queryHandler = templates.getQueryHandler();
+        this.entityManager = em;
     }
 
     @Override
     public long count() {
-        String queryString = toCountRowsString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, null, true);
+        Query query = createQuery(null, true);
         reset();
         return (Long) query.getSingleResult();
     }
@@ -92,9 +94,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      */
     public Query createQuery(Expression<?> expr) {
         queryMixin.addProjection(expr);
-        String queryString = toString();
-        logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers(), false);
+        return createQuery(getMetadata().getModifiers(), false);
     }
 
     /**
@@ -107,9 +107,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         queryMixin.addProjection(expr1);
         queryMixin.addProjection(expr2);
         queryMixin.addProjection(rest);
-        String queryString = toString();
-        logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers(), false);
+        return createQuery(getMetadata().getModifiers(), false);
     }
 
     /**
@@ -120,14 +118,15 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      */
     public Query createQuery(Expression<?>[] args) {
         queryMixin.addProjection(args);
-        String queryString = toString();
-        logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers(), false);
+        return createQuery(getMetadata().getModifiers(), false);
     }
 
-    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers, boolean forCount) {
+    private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
+        JPQLSerializer serializer = serialize(forCount);
+        String queryString = serializer.toString();
+        logQuery(queryString);
         Query query = entityManager.createQuery(queryString);
-        JPAUtil.setConstants(query, getConstants(), getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();
@@ -255,13 +254,11 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
-        Query countQuery = createQuery(toCountRowsString(), null, true);
+        Query countQuery = createQuery(null, true);
         long total = (Long) countQuery.getSingleResult();
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
-            String queryString = toString();
-            logQuery(queryString);
-            Query query = createQuery(queryString, modifiers, false);
+            Query query = createQuery(modifiers, false);
             @SuppressWarnings("unchecked")
             List<RT> list = (List<RT>) getResultList(query);
             reset();
@@ -279,24 +276,17 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addProjection(expr);
-        return (RT)uniqueResult();
-    }
-
-    @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
+        return uniqueResult();
     }
 
     @Nullable
-    private Object uniqueResult() {
-        String queryString = toQueryString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers(), false);
+    @SuppressWarnings("unchecked")
+    private <RT> RT  uniqueResult() {
+        Query query = createQuery(getMetadata().getModifiers(), false);
         try{
-            return getSingleResult(query);
+            return (RT) getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);
             return null;
@@ -324,6 +314,34 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         hints.put(name, value);
         return (Q)this;
     }
+    
+    @Override
+    protected JPQLSerializer createSerializer() {
+        return new JPQLSerializer(getTemplates(), entityManager);
+    }
 
+    protected void clone(Q query) {
+        projection = query.projection;
+        flushMode = query.flushMode;
+        hints.putAll(query.hints);
+        lockMode = query.lockMode;
+    }
+    
+    /**
+     * Clone the state of this query to a new instance with the given EntityManager
+     *
+     * @param entityManager
+     * @return
+     */
+    public abstract Q clone(EntityManager entityManager);
+
+    /**
+     * Clone the state of this query to a new instance
+     *
+     * @return
+     */
+    public Q clone() {
+        return this.clone(this.entityManager);
+    }
 
 }

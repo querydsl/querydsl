@@ -69,6 +69,8 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     private transient String queryString;
 
+    private transient List<Object> constants;
+
     public SQLUpdateClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -123,6 +125,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(metadata, entity, updates);
             queryString = serializer.toString();
+            constants = serializer.getConstants();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
@@ -130,6 +133,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
             queryString = serializer.toString();
+            constants = serializer.getConstants();
             logger.debug(queryString);
 
             // add first batch
@@ -161,7 +165,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
                 return executeBatch(stmt);
             }
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

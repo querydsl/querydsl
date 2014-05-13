@@ -20,7 +20,7 @@ import java.io.StringWriter;
 import java.sql.Time;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -69,7 +69,6 @@ public class EntitySerializerTest {
         		"extends EntityPathBase<EntitySerializerTest.Entity>"));
     }
     
-
     @Test
     public void No_Package() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
@@ -82,7 +81,8 @@ public class EntitySerializerTest {
 
     @Test
     public void OriginalCategory() throws IOException{
-        Map<TypeCategory, String> categoryToSuperClass = new HashMap<TypeCategory, String>();
+        Map<TypeCategory, String> categoryToSuperClass
+                = new EnumMap<TypeCategory, String>(TypeCategory.class);
         categoryToSuperClass.put(TypeCategory.COMPARABLE, "ComparablePath<Entity>");
         categoryToSuperClass.put(TypeCategory.ENUM, "EnumPath<Entity>");
         categoryToSuperClass.put(TypeCategory.DATE, "DatePath<Entity>");

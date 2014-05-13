@@ -20,12 +20,13 @@ import javax.inject.Provider;
 import javax.sql.DataSource;
 
 /**
- * Factory class for query and DML clause creation
+ * Use SQLQueryFactory instead
  *
  * @author tiwe
  *
  */
-public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery> {
+@Deprecated
+public class SQLQueryFactoryImpl extends AbstractSQLQueryFactory<SQLQuery, SQLSubQuery> {
 
     static class DataSourceProvider implements Provider<Connection> {
 

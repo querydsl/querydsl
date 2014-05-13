@@ -17,12 +17,9 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Comparator;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
-
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
@@ -30,6 +27,10 @@ import com.mysema.query.sql.codegen.DefaultNamingStrategy;
 import com.mysema.query.sql.codegen.MetaDataExporter;
 import com.mysema.query.sql.codegen.NamingStrategy;
 import com.mysema.query.sql.types.Type;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 
 /**
  * MetaDataExportMojo is a goal for MetaDataExporter usage
@@ -234,6 +235,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportViews;
 
     /**
+     * @parameter default-value=false
+     */
+    private boolean exportAll;
+
+    /**
      * @parameter default-value=true
      */
     private boolean exportPrimaryKeys;
@@ -244,10 +250,17 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportForeignKeys;
 
     /**
+     * override default column order (default: alphabetical)
+     * 
+     * @parameter 
+     */
+    private String columnComparatorClass;
+
+    /**
      * @parameter default-value=false
      */
     private boolean spatial;
-
+    
     /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
@@ -312,6 +325,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             exporter.setLowerCase(lowerCase);
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
+            exporter.setExportAll(exportAll);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
             exporter.setSpatial(spatial);
@@ -335,7 +349,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
                     BeanSerializer serializer = new BeanSerializer();
                     if (beanInterfaces != null) {
                         for (String iface : beanInterfaces) {
-                            serializer.addInterface(Class.forName(iface));
+                            int sepIndex = iface.lastIndexOf('.');
+                            if (sepIndex < 0) {
+                                serializer.addInterface(new SimpleType(iface));
+                            } else {
+                                String packageName = iface.substring(0, sepIndex);
+                                String simpleName = iface.substring(sepIndex + 1);
+                                serializer.addInterface(new SimpleType(iface, packageName, simpleName));
+                            }
                         }
                     }
                     serializer.setAddFullConstructor(beanAddFullConstructor);
@@ -368,6 +389,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             if (numericMappings != null) {
                 for (NumericMapping mapping : numericMappings) {
                     configuration.registerNumeric(mapping.size, mapping.digits, Class.forName(mapping.javaType));
+                }
+            }
+            if (columnComparatorClass != null) {
+                try {
+                    exporter.setColumnComparatorClass( (Class) Class.forName(this.columnComparatorClass).asSubclass(Comparator.class));
+                } catch (ClassNotFoundException e) {
+                    getLog().error(e);
+                    throw new MojoExecutionException(e.getMessage(), e);
                 }
             }
 

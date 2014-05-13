@@ -263,15 +263,15 @@ public final class Connections {
         stmt.execute("drop table if exists EMPLOYEE");
         //createEmployeeTable(templates);
         stmt.execute("create table EMPLOYEE ( " +
-                "ID INT PRIMARY KEY AUTO_INCREMENT, " +
-                "FIRSTNAME VARCHAR(50), " +
-                "LASTNAME VARCHAR(50), " +
-                "SALARY DECIMAL, "  +
-                "DATEFIELD DATE, " +
-                "TIMEFIELD TIME, " +
-                "SUPERIOR_ID INT, " +
-                "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
-                ")");
+          "ID INT PRIMARY KEY AUTO_INCREMENT, " +
+          "FIRSTNAME VARCHAR(50), " +
+          "LASTNAME VARCHAR(50), " +
+          "SALARY DECIMAL, "  +
+          "DATEFIELD DATE, " +
+          "TIMEFIELD TIME, " +
+          "SUPERIOR_ID INT, " +
+          "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
+        ")");
 
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -337,6 +337,8 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         derbyInited = true;
     }
+
+
 
     public static void initH2() throws SQLException, ClassNotFoundException{
         targetHolder.set(Target.H2);
@@ -725,7 +727,7 @@ public final class Connections {
                 "SUPERIOR_ID INT, " +
                 "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID),"+
                 "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
-                ")");
+              ")");
         addEmployees(INSERT_INTO_EMPLOYEE);
 
 

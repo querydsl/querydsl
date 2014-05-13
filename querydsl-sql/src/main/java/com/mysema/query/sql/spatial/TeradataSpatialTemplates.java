@@ -13,12 +13,9 @@
  */
 package com.mysema.query.sql.spatial;
 
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkt;
-
-import com.mysema.commons.lang.Pair;
 import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.SchemaAndTable;
 import com.mysema.query.sql.TeradataTemplates;
 import com.mysema.query.sql.types.StringAsObjectType;
 
@@ -51,22 +48,13 @@ public class TeradataSpatialTemplates extends TeradataTemplates {
         super(escape, quote);
         addCustomType(GeometryWktClobType.DEFAULT);
         addCustomType(StringAsObjectType.DEFAULT);
-        addTableOverride(Pair.of("public", "geometry_columns"), Pair.of("sysspatial", "geometry_columns"));
-        addTableOverride(Pair.of("public", "spatial_ref_sys"), Pair.of("sysspatial", "spatial_ref_sys"));
+        addTableOverride(new SchemaAndTable("public", "geometry_columns"),
+                new SchemaAndTable("sysspatial", "geometry_columns"));
+        addTableOverride(new SchemaAndTable("public", "spatial_ref_sys"),
+                new SchemaAndTable("sysspatial", "spatial_ref_sys"));
         add(SpatialTemplatesSupport.getSpatialOps(false));
         add(SpatialOps.DISTANCE_SPHERE, "{0}.ST_SPHERICALDISTANCE({1})");
         add(SpatialOps.DISTANCE_SPHEROID, "{0}.ST_SPHEROIDALDISTANCE({1})");
     }
-
-    @Override
-    public String asLiteral(Object o) {
-        if (o instanceof Geometry) {
-            String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode((Geometry)o);
-            return "'" + str + "'";
-        } else {
-            return super.asLiteral(o);
-        }
-    }
-
 
 }

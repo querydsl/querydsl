@@ -17,14 +17,15 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Comparator;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
-
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.sql.codegen.DefaultNamingStrategy;
 import com.mysema.query.sql.codegen.MetaDataExporter;
 import com.mysema.query.sql.codegen.NamingStrategy;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
 
 /**
  * AntMetaDataExporter exports JDBC metadata to Querydsl query types
@@ -151,6 +152,11 @@ public class AntMetaDataExporter extends Task {
     /**
      *
      */
+    private boolean exportAll = false;
+
+    /**
+     *
+     */
     private boolean exportPrimaryKeys = true;
 
     /**
@@ -177,12 +183,17 @@ public class AntMetaDataExporter extends Task {
      *
      */
     private boolean beanPrintSupertype;
+    
+    /**
+     * override default column order (default: alphabetical)
+     */
+    private String columnComparatorClass;
 
     /**
      *
      */
     private boolean spatial;
-
+    
     /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
@@ -193,6 +204,7 @@ public class AntMetaDataExporter extends Task {
 
 
     @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void execute() {
         Connection dbConn = null;
         File targetPackagePath = new File(targetSourceFolder);
@@ -229,6 +241,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setLowerCase(lowerCase);
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
+            exporter.setExportAll(exportAll);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
             exporter.setSpatial(spatial);
@@ -241,10 +254,13 @@ public class AntMetaDataExporter extends Task {
                 BeanSerializer serializer = new BeanSerializer();
                 if (beanInterfaces != null) {
                     for (String iface : beanInterfaces) {
-                        try {
-                            serializer.addInterface(Class.forName(iface));
-                        } catch (ClassNotFoundException e) {
-                            throw new BuildException(e.getMessage(), e);
+                        int sepIndex = iface.lastIndexOf('.');
+                        if (sepIndex < 0) {
+                            serializer.addInterface(new SimpleType(iface));
+                        } else {
+                            String packageName = iface.substring(0, sepIndex);
+                            String simpleName = iface.substring(sepIndex + 1);
+                            serializer.addInterface(new SimpleType(iface, packageName, simpleName));
                         }
                     }
                 }
@@ -255,6 +271,9 @@ public class AntMetaDataExporter extends Task {
             }
             if (sourceEncoding != null) {
                 exporter.setSourceEncoding(sourceEncoding);
+            }
+            if (columnComparatorClass != null) {
+                exporter.setColumnComparatorClass((Class) Class.forName(this.columnComparatorClass).asSubclass(Comparator.class));
             }
 
             exporter.export(dbConn.getMetaData());
@@ -454,6 +473,14 @@ public class AntMetaDataExporter extends Task {
 
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
+    }
+
+    public boolean isExportAll() {
+        return exportAll;
+    }
+
+    public void setExportAll(boolean exportAll) {
+        this.exportAll = exportAll;
     }
 
     public boolean isExportPrimaryKeys() {

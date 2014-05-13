@@ -25,6 +25,7 @@ import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ import com.mysema.query.Tuple;
 import com.mysema.query.jpa.FactoryExpressionTransformer;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPAQueryBase;
+import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.ScrollableResultsIterator;
 import com.mysema.query.types.Expression;
@@ -79,16 +81,14 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     public AbstractHibernateQuery(SessionHolder session, JPQLTemplates patterns, QueryMetadata metadata) {
-        super(metadata, patterns, null);
+        super(metadata, patterns);
         this.session = session;
     }
 
     @Override
     public long count() {
         QueryModifiers modifiers = getMetadata().getModifiers();
-        String queryString = toCountRowsString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, modifiers, true);
+        Query query = createQuery(modifiers, true);
         reset();
         Long rv = (Long)query.uniqueResult();
         if (rv != null) {
@@ -106,8 +106,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      */
     public Query createQuery(Expression<?> expr) {
         queryMixin.addProjection(expr);
-        String queryString = toQueryString();
-        return createQuery(queryString, getMetadata().getModifiers(), false);
+        return createQuery(getMetadata().getModifiers(), false);
     }
 
     /**
@@ -122,9 +121,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         queryMixin.addProjection(expr1);
         queryMixin.addProjection(expr2);
         queryMixin.addProjection(rest);
-        String queryString = toQueryString();
-        logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers(), false);
+        return createQuery(getMetadata().getModifiers(), false);
     }
 
     /**
@@ -135,14 +132,15 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      */
     public Query createQuery(Expression<?>[] args) {
         queryMixin.addProjection(args);
-        String queryString = toQueryString();
-        logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers(), false);
+        return createQuery(getMetadata().getModifiers(), false);
     }
 
-    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers, boolean forCount) {
+    private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
+        JPQLSerializer serializer = serialize(forCount);
+        String queryString = serializer.toString();
+        logQuery(queryString);
         Query query = session.createQuery(queryString);
-        HibernateUtil.setConstants(query, getConstants(), getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
         if (fetchSize > 0) {
             query.setFetchSize(fetchSize);
         }
@@ -202,7 +200,6 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @Override
-    @SuppressWarnings("unchecked")
     public CloseableIterator<Tuple> iterate(Expression<?>... args) {
         return iterate(queryMixin.createProjection(args));
     }
@@ -216,7 +213,6 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @Override
-    @SuppressWarnings("unchecked")
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         Query query = createQuery(projection);
         reset();
@@ -245,14 +241,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addProjection(expr);
-        Query countQuery = createQuery(toCountRowsString(), null, true);
+        Query countQuery = createQuery(null, true);
         long total = (Long) countQuery.uniqueResult();
         try{
             if (total > 0) {
                 QueryModifiers modifiers = getMetadata().getModifiers();
-                String queryString = toQueryString();
-                logQuery(queryString);
-                Query query = createQuery(queryString, modifiers, false);
+                Query query = createQuery(modifiers, false);
                 @SuppressWarnings("unchecked")
                 List<RT> list = query.list();
                 return new SearchResults<RT>(list, modifiers, total);
@@ -394,18 +388,60 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return (RT)uniqueResult();
     }
 
-
     private Object uniqueResult() {
         QueryModifiers modifiers = getMetadata().getModifiers();
-        String queryString = toQueryString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, modifiers, false);
+        Query query = createQuery(modifiers, false);
         reset();
         try{
             return query.uniqueResult();
         } catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }
+    }
+    
+    protected JPQLSerializer createSerializer() {
+        return new JPQLSerializer(getTemplates());
+    }
+    
+    protected void clone(Q query) {
+        cacheable = query.cacheable;
+        cacheRegion = query.cacheRegion;
+        fetchSize = query.fetchSize;
+        flushMode = query.flushMode;
+        lockModes.putAll(query.lockModes);
+        readOnly = query.readOnly;
+        timeout = query.timeout;
+    }
+    
+    protected abstract Q clone(SessionHolder sessionHolder);
+
+    /**
+     * Clone the state of this query to a new instance with the given Session
+     *
+     * @param session
+     * @return
+     */
+    public Q clone(Session session) {
+        return this.clone(new DefaultSessionHolder(session));
+    }
+
+    /**
+     * Clone the state of this query to a new instance with the given StatelessSession
+     *
+     * @param session
+     * @return
+     */
+    public Q clone(StatelessSession session) {
+        return this.clone(new StatelessSessionHolder(session));
+    }
+    
+    /**
+     * Clone the state of this query to a new instance
+     *
+     * @return
+     */
+    public Q clone() {
+        return this.clone(this.session);
     }
 
 }

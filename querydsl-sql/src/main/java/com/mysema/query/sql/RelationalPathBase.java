@@ -13,22 +13,18 @@
  */
 package com.mysema.query.sql;
 
-import static com.google.common.collect.ImmutableList.copyOf;
-
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.*;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.path.BeanPath;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 /**
  * RelationalPathBase is a base class for {@link RelationalPath} implementations
@@ -45,19 +41,19 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Nullable
     private PrimaryKey<T> primaryKey;
 
-    private final List<Path<?>> columns = new ArrayList<Path<?>>();
+    private final Map<Path<?>, ColumnMetadata> columnMetadata = Maps.newLinkedHashMap();
 
-    private final Map<Path<?>, ColumnMetadata> columnMetadata = Maps.newHashMap();
+    private final List<ForeignKey<?>> foreignKeys = Lists.newArrayList();
 
-    private final List<ForeignKey<?>> foreignKeys = new ArrayList<ForeignKey<?>>();
-
-    private final List<ForeignKey<?>> inverseForeignKeys = new ArrayList<ForeignKey<?>>();
+    private final List<ForeignKey<?>> inverseForeignKeys = Lists.newArrayList();
 
     private final String schema, table;
 
-    private final Pair<String, String> schemaAndTable;
+    private final SchemaAndTable schemaAndTable;
 
     private transient FactoryExpression<T> projection;
+
+    private transient NumberExpression<Long> count, countDistinct;
 
     public RelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
@@ -68,7 +64,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         super(type, metadata);
         this.schema = schema;
         this.table = table;
-        this.schemaAndTable = Pair.of(schema, table);
+        this.schemaAndTable = new SchemaAndTable(schema, table);
     }
 
     protected PrimaryKey<T> createPrimaryKey(Path<?>... columns) {
@@ -107,6 +103,33 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     @Override
+    public NumberExpression<Long> count() {
+        if (count == null) {
+            if (primaryKey != null) {
+                count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG,
+                        primaryKey.getLocalColumns().get(0));
+            } else {
+                throw new IllegalStateException("No count expression can be created");
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public NumberExpression<Long> countDistinct() {
+        if (countDistinct == null) {
+            if (primaryKey != null) {
+                // TODO handle multiple column primary keys properly
+                countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG,
+                        primaryKey.getLocalColumns().get(0));
+            } else {
+                throw new IllegalStateException("No count distinct expression can be created");
+            }
+        }
+        return countDistinct;
+    }
+
+    @Override
     public FactoryExpression<T> getProjection() {
         if (projection == null) {
             projection = RelationalPathUtils.createProjection(this);
@@ -115,20 +138,19 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     public Path<?>[] all() {
-        Path<?>[] all = new Path[columns.size()];
-        columns.toArray(all);
+        Path<?>[] all = new Path[columnMetadata.size()];
+        columnMetadata.keySet().toArray(all);
         return all;
     }
 
     @Override
     protected <P extends Path<?>> P add(P path) {
-        columns.add(path);
         return path;
     }
 
     @Override
     public List<Path<?>> getColumns() {
-        return columns;
+        return Lists.newArrayList(this.columnMetadata.keySet());
     }
 
     @Override
@@ -147,7 +169,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     @Override
-    public Pair<String, String> getSchemaAndTable() {
+    public SchemaAndTable getSchemaAndTable() {
         return schemaAndTable;
     }
 

@@ -13,13 +13,8 @@
  */
 package com.mysema.testutil;
 
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
-
+import com.mysema.query.Mode;
+import com.mysema.query.jpa.domain.Domain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -34,8 +29,12 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
-import com.mysema.query.Mode;
-import com.mysema.query.jpa.domain.Domain;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * @author tiwe
@@ -109,7 +108,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
         props.load(is);
         ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
             .applySettings(props)
-            .buildServiceRegistry();
+            .build();
         cfg.setProperties(props);
         sessionFactory = cfg.buildSessionFactory(serviceRegistry);
         session = sessionFactory.openSession();

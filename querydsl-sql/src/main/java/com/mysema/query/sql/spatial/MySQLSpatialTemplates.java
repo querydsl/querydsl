@@ -13,9 +13,6 @@
  */
 package com.mysema.query.sql.spatial;
 
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkt;
-
 import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.SQLTemplates;
@@ -50,21 +47,6 @@ public class MySQLSpatialTemplates extends MySQLTemplates {
         addCustomType(MySQLWkbType.DEFAULT);
         add(SpatialTemplatesSupport.getSpatialOps("", true));
         add(SpatialOps.NUM_INTERIOR_RING, "NumInteriorRings({0})");
-    }
-
-    @Override
-    public String asLiteral(Object o) {
-        if (o instanceof Geometry) {
-            Geometry geometry = (Geometry)o;
-            String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
-            if (geometry.getSRID() > -1) {
-                return "GeomFromText('" + str + "', " + geometry.getSRID() + ")";
-            } else {
-                return "GeomFromText('" + str + "')";
-            }
-        } else {
-            return super.asLiteral(o);
-        }
     }
 
 }

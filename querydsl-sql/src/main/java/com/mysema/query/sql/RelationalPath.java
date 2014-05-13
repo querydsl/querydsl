@@ -13,12 +13,10 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.ProjectionRole;
@@ -37,7 +35,7 @@ public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
      *
      * @return
      */
-    Pair<String, String> getSchemaAndTable();
+    SchemaAndTable getSchemaAndTable();
 
     /**
      * Get the schema name

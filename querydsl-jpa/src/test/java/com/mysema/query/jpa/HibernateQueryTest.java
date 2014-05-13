@@ -13,16 +13,15 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class HibernateQueryTest {
 
@@ -32,7 +31,7 @@ public class HibernateQueryTest {
         BooleanBuilder emptyBooleanBuilder = new BooleanBuilder();
         HibernateQuery hq = new HibernateQuery().from(cat).where(cat.name.isNull().and(emptyBooleanBuilder));
 
-        HibernateQuery hq2 = hq.clone(null);
+        HibernateQuery hq2 = hq.clone();
         assertNotNull(hq2);
     }
 

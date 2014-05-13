@@ -13,27 +13,8 @@
  */
 package com.mysema.query.mongodb;
 
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
@@ -41,15 +22,7 @@ import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
-import com.mysema.query.mongodb.domain.Address;
-import com.mysema.query.mongodb.domain.City;
-import com.mysema.query.mongodb.domain.Item;
-import com.mysema.query.mongodb.domain.MapEntity;
-import com.mysema.query.mongodb.domain.QAddress;
-import com.mysema.query.mongodb.domain.QItem;
-import com.mysema.query.mongodb.domain.QMapEntity;
-import com.mysema.query.mongodb.domain.QUser;
-import com.mysema.query.mongodb.domain.User;
+import com.mysema.query.mongodb.domain.*;
 import com.mysema.query.mongodb.domain.User.Gender;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
 import com.mysema.query.types.EntityPath;
@@ -57,6 +30,16 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.testutil.ExternalDB;
+import org.bson.types.ObjectId;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @Category(ExternalDB.class)
 public class MongodbQueryTest {
@@ -70,6 +53,7 @@ public class MongodbQueryTest {
     private final QItem item = QItem.item;
     private final QAddress address = QAddress.address;
     private final QMapEntity mapEntity = QMapEntity.mapEntity;
+    private final QDates dates = QDates.dates;
 
     List<User> users = Lists.newArrayList();
     User u1, u2, u3, u4;
@@ -77,7 +61,7 @@ public class MongodbQueryTest {
 
     public MongodbQueryTest() throws UnknownHostException, MongoException {
         mongo = new Mongo();
-        morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class);
+        morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class).map(Dates.class);
         ds = morphia.createDatastore(mongo, dbname);
     }
 
@@ -119,6 +103,15 @@ public class MongodbQueryTest {
         User u = where(user.firstName.eq("Jaakko")).uniqueResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
+    }
+
+    @Test
+    public void List_Deep_Keys() {
+        User u = where(user.firstName.eq("Jaakko")).singleResult(user.addresses.any().street);
+        for (Address a : u.getAddresses()) {
+            assertNotNull(a.street);
+            assertNull(a.city);
+        }
     }
 
     @Test
@@ -198,6 +191,21 @@ public class MongodbQueryTest {
     public void CollectionPath() {
         assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
+    }
+
+    @Test
+    public void Dates() {
+        long current = System.currentTimeMillis();
+        int dayInMillis = 24 * 60 * 60 * 1000;
+        Date start = new Date(current);
+        ds.delete(ds.createQuery(Dates.class));
+        Dates d = new Dates();
+        d.setDate(new Date(current + dayInMillis));
+        ds.save(d);
+        Date end = new Date(current + 2 * dayInMillis);
+
+        assertEquals(d, query(dates).where(dates.date.between(start, end)).singleResult());
+        assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).count());
     }
 
     @Test

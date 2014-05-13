@@ -13,21 +13,19 @@
  */
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import org.junit.Test;
-
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryType;
+import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 
 public class HierarchyTest {
 
     @Entity
-    static class A {
+    public static class A {
 
         B b;
 
@@ -41,7 +39,7 @@ public class HierarchyTest {
     }
 
     @Entity
-    static class A2 extends A {
+    public static class A2 extends A {
 
         // XXX: uncomment @Comment to break generation - QA2.a2.b() will then
         // return B instead of B2
@@ -60,11 +58,11 @@ public class HierarchyTest {
     }
 
     @Entity
-    static class B {
+    public static class B {
     }
 
     @Entity
-    static class B2 extends B {
+    public static class B2 extends B {
     }
 
     @Test

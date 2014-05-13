@@ -17,6 +17,7 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
+import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
@@ -26,12 +27,12 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
- * AbstractSQLQueryFactory is the base class for {@link SQLQueryFactory} implementations
+ * AbstractSQLQueryFactory is the base class for {@link SQLCommonQueryFactory} implementations
  *
  * @author tiwe
  *
  */
-public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLQueryFactory<Q, SQLSubQuery,
+public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>, SQ extends AbstractSQLSubQuery<SQ>> implements SQLCommonQueryFactory<Q, SQ,
     SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     protected final Configuration configuration;
@@ -76,13 +77,16 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
         return new SQLUpdateClause(connection.get(), configuration, path);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public final SQLSubQuery subQuery() {
-        return new SQLSubQuery();
+    @WithBridgeMethods(value=SQLSubQuery.class, castRequired=true)
+    public SQ subQuery() {
+        return (SQ) new SQLSubQuery();
     }
 
     @Override
-    public final SQLSubQuery subQuery(Expression<?> from) {
+    @WithBridgeMethods(value=SQLSubQuery.class, castRequired=true)
+    public final SQ subQuery(Expression<?> from) {
         return subQuery().from(from);
     }
 

@@ -54,6 +54,11 @@ public class HibernateHandler implements QueryHandler {
     }
 
     @Override
+    public boolean createNativeQueryTyped() {
+        return false;
+    }
+
+    @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
         if (query instanceof HibernateQuery) {
             HibernateQuery hQuery = (HibernateQuery)query;
@@ -82,6 +87,11 @@ public class HibernateHandler implements QueryHandler {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean wrapEntityProjections() {
+        return true;
     }
 
 }

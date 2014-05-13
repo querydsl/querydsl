@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -121,6 +122,8 @@ public class MetaDataExporter {
 
     private boolean exportViews = true;
 
+    private boolean exportAll = false;
+
     private boolean exportPrimaryKeys = true;
 
     private boolean exportForeignKeys = true;
@@ -209,17 +212,21 @@ public class MetaDataExporter {
                     module.getBeanPrefix(), module.getBeanSuffix(), schemaToPackage);
         }
 
-        List<String> types = new ArrayList<String>(2);
-        if (exportTables) {
-            types.add("TABLE");
-        }
-        if (exportViews) {
-            types.add("VIEW");
+        String[] typesArray = null;
+        if (!exportAll) {
+            List<String> types = new ArrayList<String>(2);
+            if (exportTables) {
+                types.add("TABLE");
+            }
+            if (exportViews) {
+                types.add("VIEW");
+            }
+            typesArray = types.toArray(new String[types.size()]);
         }
 
         if (tableNamePattern != null && tableNamePattern.contains(",")) {
             for (String table : tableNamePattern.split(",")) {
-                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), types.toArray(new String[types.size()]));
+                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), typesArray);
                 try{
                     while (tables.next()) {
                         handleTable(md, tables);
@@ -229,7 +236,7 @@ public class MetaDataExporter {
                 }
             }
         } else {
-            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, types.toArray(new String[types.size()]));
+            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, typesArray);
             try{
                 while (tables.next()) {
                     handleTable(md, tables);
@@ -252,6 +259,7 @@ public class MetaDataExporter {
         String typeName = columns.getString("TYPE_NAME");
         Number columnSize = (Number) columns.getObject("COLUMN_SIZE");
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
+        int columnIndex = columns.getInt("ORDINAL_POSITION");
         int nullable = columns.getInt("NULLABLE");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
@@ -271,7 +279,7 @@ public class MetaDataExporter {
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, normalizedColumnName, propertyName, typeModel);
-        ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType);
+        ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType).withIndex(columnIndex);
         if (nullable == DatabaseMetaData.columnNoNulls) {
             column = column.notNull();
         }
@@ -542,6 +550,13 @@ public class MetaDataExporter {
     }
 
     /**
+     * @param columnComparator
+     */
+    public void setColumnComparatorClass(Class<? extends Comparator<Property>> columnComparatorClass) {
+        module.bind(SQLCodegenModule.COLUMN_COMPARATOR, columnComparatorClass);
+    }
+
+    /**
      * @param serializerClass
      */
     public void setSerializerClass(Class<? extends Serializer> serializerClass) {
@@ -603,6 +618,13 @@ public class MetaDataExporter {
      */
     public void setExportViews(boolean exportViews) {
         this.exportViews = exportViews;
+    }
+
+    /**
+     * @param exportAll
+     */
+    public void setExportAll(boolean exportAll) {
+        this.exportAll = exportAll;
     }
 
     /**

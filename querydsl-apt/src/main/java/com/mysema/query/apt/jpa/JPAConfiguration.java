@@ -13,48 +13,22 @@
  */
 package com.mysema.query.apt.jpa;
 
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
+import javax.persistence.*;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
-import javax.persistence.Version;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.apt.DefaultConfiguration;
-import com.mysema.query.apt.QueryTypeImpl;
-import com.mysema.query.apt.TypeUtils;
-import com.mysema.query.apt.VisitorConfig;
+import com.mysema.query.apt.*;
 import com.mysema.query.codegen.Keywords;
 import com.mysema.util.Annotations;
 
@@ -68,7 +42,10 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     private final List<Class<? extends Annotation>> annotations;
 
-    public JPAConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
+    private final Types types;
+
+    public JPAConfiguration(RoundEnvironment roundEnv,
+            Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
@@ -77,6 +54,8 @@ public class JPAConfiguration extends DefaultConfiguration {
         super(roundEnv, options, Keywords.JPA, QueryEntities.class, entityAnn, superTypeAnn,
             embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
+        // TODO replace with proper injection in Querydsl 4.0.0
+        this.types = AbstractQuerydslProcessor.TYPES;
     }
 
     @SuppressWarnings("unchecked")
@@ -88,7 +67,6 @@ public class JPAConfiguration extends DefaultConfiguration {
             OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class,
             QueryTransient.class, Temporal.class, Transient.class, Version.class);
     }
-
 
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements) {
@@ -112,21 +90,44 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     @Override
     public TypeMirror getRealType(ExecutableElement method) {
-        return getManyToOneType(method);
+        return getRealElementType(method);
     }
 
     @Override
     public TypeMirror getRealType(VariableElement field) {
-        return getManyToOneType(field);
+        return getRealElementType(field);
     }
 
-    private TypeMirror getManyToOneType(Element element) {
+    private TypeMirror getRealElementType(Element element) {
         AnnotationMirror mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToOne.class);
+        if (mirror == null) {
+            mirror = TypeUtils.getAnnotationMirrorOfType(element, OneToOne.class);
+        }
         if (mirror != null) {
             return TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
-        } else {
-            return null;
         }
+
+        mirror = TypeUtils.getAnnotationMirrorOfType(element, OneToMany.class);
+        if (mirror == null) {
+            mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToMany.class);
+        }
+        if (mirror != null) {
+            TypeMirror typeArg = TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
+            TypeMirror erasure = types.erasure(element.asType());
+            TypeElement typeElement = (TypeElement) types.asElement(erasure);
+            if (typeElement != null && typeArg != null) {
+                if (typeElement.getTypeParameters().size() == 1) {
+                    return types.getDeclaredType(typeElement, typeArg);
+                } else if (typeElement.getTypeParameters().size() == 2) {
+                    if (element.asType() instanceof DeclaredType) {
+                        TypeMirror first = ((DeclaredType)element.asType()).getTypeArguments().get(0);
+                        return types.getDeclaredType(typeElement, first, typeArg);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override

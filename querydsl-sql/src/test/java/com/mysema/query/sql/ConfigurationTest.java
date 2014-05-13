@@ -13,24 +13,17 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.easymock.EasyMock;
-import org.junit.Test;
-
-import com.mysema.commons.lang.Pair;
 import com.mysema.query.alias.Gender;
 import com.mysema.query.sql.domain.QSurvey;
-import com.mysema.query.sql.types.EnumByNameType;
-import com.mysema.query.sql.types.InputStreamType;
-import com.mysema.query.sql.types.Null;
-import com.mysema.query.sql.types.StringType;
-import com.mysema.query.sql.types.UtilDateType;
+import com.mysema.query.sql.types.*;
+import org.easymock.EasyMock;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class ConfigurationTest {
 
@@ -69,9 +62,9 @@ public class ConfigurationTest {
         configuration.registerTableOverride("employee", "emp");
         configuration.registerTableOverride("public", "employee", "employees");
 
-        assertEquals("pub", configuration.getOverride(Pair.of("public", "")).getFirst());
-        assertEquals("emp", configuration.getOverride(Pair.of("", "employee")).getSecond());
-        assertEquals("employees", configuration.getOverride(Pair.of("public", "employee")).getSecond());
+        assertEquals("pub", configuration.getOverride(new SchemaAndTable("public", "")).getSchema());
+        assertEquals("emp", configuration.getOverride(new SchemaAndTable("", "employee")).getTable());
+        assertEquals("employees", configuration.getOverride(new SchemaAndTable("public", "employee")).getTable());
 //        assertEquals("pub", configuration.getSchema("public"));
 //        assertEquals("emp", configuration.getTable("", "employee"));
 //        assertEquals("employees", configuration.getTable("public", "employee"));

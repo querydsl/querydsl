@@ -13,9 +13,6 @@
  */
 package com.mysema.query.sql.spatial;
 
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkt;
-
 import com.mysema.query.spatial.SpatialOps;
 import com.mysema.query.sql.SQLServer2008Templates;
 import com.mysema.query.sql.SQLTemplates;
@@ -55,21 +52,5 @@ public class SQLServer2008SpatialTemplates extends SQLServer2008Templates {
         add(SpatialOps.Z, "{0}.Z");
         add(SpatialOps.SRID, "{0}.STSrid");
     }
-
-    @Override
-    public String asLiteral(Object o) {
-        if (o instanceof Geometry) {
-            Geometry geometry = (Geometry)o;
-            String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
-            if (geometry.getSRID() > -1) {
-                return "geometry::STGeomFromText('" + str + "', " + geometry.getSRID() + ")";
-            } else {
-                return "geometry::STGeomFromText('" + str + "')";
-            }
-        } else {
-            return super.asLiteral(o);
-        }
-    }
-
 
 }

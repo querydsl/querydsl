@@ -61,6 +61,7 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.Annotations;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -126,7 +127,6 @@ public abstract class AbstractDomainExporter {
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);
         this.entitySerializer = module.get(EntitySerializer.class);
         this.supertypeSerializer = module.get(SupertypeSerializer.class);
-        typeFactory.setUnknownAsEntity(true);
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class AbstractDomainExporter {
         Set<Supertype> additions = Sets.newHashSet();
         for (Map.Entry<Class<?>, EntityType> entry : allTypes.entrySet()) {
             EntityType entityType = entry.getValue();
-            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType())) {
+            if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getJavaClass())) {
                 additions.add(entityType.getSuperType());
             }
         }
@@ -238,18 +238,23 @@ public abstract class AbstractDomainExporter {
     }
 
     @Nullable
-    protected Property createProperty(EntityType entityType, String propertyName, Type propertyType,
-            AnnotatedElement annotated) {
-        List<String> inits = Collections.<String>emptyList();
-        if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
-        }
+    protected Type getTypeOverride(Type propertyType, AnnotatedElement annotated) {
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);
             if (queryType.value().equals(PropertyType.NONE)) {
                 return null;
             }
-            propertyType = propertyType.as(TypeCategory.valueOf(queryType.value().name()));
+            return propertyType.as(TypeCategory.valueOf(queryType.value().name()));
+        } else {
+            return propertyType;
+        }
+    }
+
+    protected Property createProperty(EntityType entityType, String propertyName, Type propertyType,
+            AnnotatedElement annotated) {
+        List<String> inits = Collections.<String>emptyList();
+        if (annotated.isAnnotationPresent(QueryInit.class)) {
+            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
         }
         return new Property(entityType, propertyName, propertyType, inits);
     }
@@ -260,15 +265,17 @@ public abstract class AbstractDomainExporter {
 
     protected AnnotatedElement getAnnotatedElement(Class<?> cl, String propertyName) throws NoSuchMethodException {
         Field field = ReflectionUtils.getFieldOrNull(cl, propertyName);
+        Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
         if (field != null) {
-            return field;
-        } else {
-            Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
             if (method != null) {
-                return method;
+                return new Annotations(field, method);
             } else {
-                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
+                return field;
             }
+        } else if (method != null) {
+            return method;
+        } else {
+            throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
         }
     }
 
@@ -330,6 +337,10 @@ public abstract class AbstractDomainExporter {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
+
+    public void setUnknownAsEntity(boolean unknownAsEntity) {
+        typeFactory.setUnknownAsEntity(unknownAsEntity);
     }
 
 }

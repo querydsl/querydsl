@@ -20,18 +20,13 @@ import java.io.StringWriter;
 import java.sql.Time;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
-import org.junit.Test;
-
 import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.mysema.query.annotations.PropertyType;
+import org.junit.Test;
 
 public class EmbeddableSerializerTest {
 
@@ -63,7 +58,8 @@ public class EmbeddableSerializerTest {
 
     @Test
     public void OriginalCategory() throws IOException{
-        Map<TypeCategory, String> categoryToSuperClass = new HashMap<TypeCategory, String>();
+        Map<TypeCategory, String> categoryToSuperClass
+                = new EnumMap<TypeCategory, String>(TypeCategory.class);
         categoryToSuperClass.put(TypeCategory.COMPARABLE, "ComparablePath<Entity>");
         categoryToSuperClass.put(TypeCategory.ENUM, "EnumPath<Entity>");
         categoryToSuperClass.put(TypeCategory.DATE, "DatePath<Entity>");
@@ -108,7 +104,7 @@ public class EmbeddableSerializerTest {
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        System.out.println(writer);
+        //System.out.println(writer);
         assertTrue(writer.toString().contains("public class QLocale extends BeanPath<Locale> {"));
     }
 

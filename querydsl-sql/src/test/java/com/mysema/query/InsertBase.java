@@ -13,25 +13,8 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.SQLSERVER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.SQLSubQuery;
@@ -39,6 +22,7 @@ import com.mysema.query.sql.dml.DefaultMapper;
 import com.mysema.query.sql.dml.Mapper;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.Employee;
+import com.mysema.query.sql.domain.QDateTest;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
@@ -47,12 +31,24 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class InsertBase extends AbstractBaseTest {
 
     private void reset() throws SQLException{
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
+
+        delete(QDateTest.qDateTest).execute();
     }
 
     @Before
@@ -63,6 +59,35 @@ public class InsertBase extends AbstractBaseTest {
     @After
     public void tearDown() throws SQLException{
         reset();
+    }
+
+    @Test
+    @ExcludeIn(SQLITE) // https://bitbucket.org/xerial/sqlite-jdbc/issue/133/prepstmtsetdate-int-date-calendar-seems
+    public void Insert_Dates() {
+        QDateTest dateTest = QDateTest.qDateTest;
+        LocalDate localDate = new LocalDate(1978, 1, 2);
+
+        Path<LocalDate> localDateProperty = new PathImpl<LocalDate>(LocalDate.class, "DATE_TEST");
+        Path<DateTime> dateTimeProperty = new PathImpl<DateTime>(DateTime.class, "DATE_TEST");
+        SQLInsertClause insert = insert(dateTest);
+        insert.set(localDateProperty, localDate);
+        insert.execute();
+
+        Tuple result = query().from(dateTest).singleResult(
+                dateTest.dateTest.year(),
+                dateTest.dateTest.month(),
+                dateTest.dateTest.dayOfMonth(),
+                dateTimeProperty);
+        assertEquals(Integer.valueOf(1978), result.get(0, Integer.class));
+        assertEquals(Integer.valueOf(1), result.get(1, Integer.class));
+        assertEquals(Integer.valueOf(2), result.get(2, Integer.class));
+
+        DateTime dateTime = result.get(dateTimeProperty);
+        if (target == CUBRID) {
+            // XXX Cubrid adds random milliseconds for some reason
+            dateTime = dateTime.withMillisOfSecond(0);
+        }
+        assertEquals(localDate.toDateTimeAtStartOfDay(), dateTime);
     }
 
     @Test
@@ -135,6 +160,12 @@ public class InsertBase extends AbstractBaseTest {
     public void Insert_Null_Without_Columns() {
         assertEquals(1, insert(survey)
                 .values(4, null, null).execute());
+    }
+
+    @Test
+    @ExcludeIn({HSQLDB, DERBY})
+    public void Insert_Without_Values() {
+        assertEquals(1, insert(survey).execute());
     }
 
     @Test

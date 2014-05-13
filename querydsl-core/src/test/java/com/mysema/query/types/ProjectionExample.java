@@ -13,12 +13,12 @@
  */
 package com.mysema.query.types;
 
-public class ProjectionExample{
+public class ProjectionExample {
 
     public Long id;
-    
+
     public String text;
-    
+
     public ProjectionExample() {
 
     }
@@ -35,4 +35,17 @@ public class ProjectionExample{
     public ProjectionExample(CharSequence text) {
         this.text = text.toString();
     }
+
+    public ProjectionExample(boolean booleanArg, byte byteArg,
+            char charArg, short shortArg,
+            int intArg, long longArg,
+            float floatArg, double doubleArg) {
+
+    }
+
+    public ProjectionExample(long id, char... characters) {
+        this.id = id;
+        this.text = String.valueOf(characters);
+    }
+
 }

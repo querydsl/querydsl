@@ -8,34 +8,35 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>src/apt-hibernate</directory>	
-	  <outputDirectory>/</outputDirectory>
-	</fileSet>
+      <directory>src/apt-hibernate</directory>    
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
     <fileSet>
-      <directory>src/license</directory>	
-	  <outputDirectory>/license</outputDirectory>
-	</fileSet>			
-  </fileSets>	
+      <directory>src/license</directory>    
+      <outputDirectory>/license</outputDirectory>
+    </fileSet>            
+  </fileSets>    
   <dependencySets>
     <dependencySet>
       <unpack>true</unpack>
-	  <excludes>
-	  	<exclude>cglib:cglib</exclude>
-		<exclude>com.mysema.querydsl:querydsl-sql</exclude>
-	    <exclude>com.mysema.querydsl:querydsl-jpa</exclude>
-		<exclude>org.slf4j:slf4j-api</exclude>
-		<exclude>org.slf4j:slf4j-log4j12</exclude>					
-	  </excludes>
+      <excludes>
+        <exclude>cglib:cglib</exclude>
+        <exclude>com.mysema.querydsl:querydsl-sql</exclude>
+        <exclude>com.mysema.querydsl:querydsl-jpa</exclude>
+        <exclude>org.slf4j:slf4j-api</exclude>
+        <exclude>org.slf4j:slf4j-log4j12</exclude>                    
+      </excludes>
     </dependencySet>
     <dependencySet>
       <unpack>true</unpack>
-	  <scope>provided</scope>
-	  <includes>
-	  	<include>com.mysema.querydsl:*</include>
-	  	<include>com.mysema.codegen:*</include>
-	  	<include>org.hibernate:hibernate-core</include>					
-	  </includes>
-    </dependencySet>	
+      <scope>provided</scope>
+      <includes>
+        <include>com.mysema.querydsl:*</include>
+        <include>com.mysema.codegen:*</include>
+        <include>org.hibernate:hibernate-core</include>
+        <include>org.hibernate.javax.persistence:*</include>
+      </includes>
+    </dependencySet>    
   </dependencySets>
 </assembly>
 

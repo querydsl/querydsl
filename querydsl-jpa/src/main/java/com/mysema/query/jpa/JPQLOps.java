@@ -24,6 +24,8 @@ public final class JPQLOps {
 
     private static final String NS = JPQLOps.class.getName();
 
+    public static final Operator<Object> TREAT = new OperatorImpl<Object>(NS, "TREAT");
+
     public static final Operator<Integer> INDEX = new OperatorImpl<Integer>(NS, "INDEX");
 
     public static final Operator<String> TYPE = new OperatorImpl<String>(NS, "TYPE");

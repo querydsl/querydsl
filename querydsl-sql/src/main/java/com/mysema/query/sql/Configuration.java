@@ -17,12 +17,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
@@ -43,7 +43,7 @@ public final class Configuration {
 
     private final Map<String, String> schemas = Maps.newHashMap();
 
-    private final Map<Pair<String, String>, Pair<String, String>> schemaTables = Maps.newHashMap();
+    private final Map<SchemaAndTable, SchemaAndTable> schemaTables = Maps.newHashMap();
 
     private final Map<String, String> tables = Maps.newHashMap();
 
@@ -69,8 +69,23 @@ public final class Configuration {
         for (Type<?> customType : templates.getCustomTypes()) {
             javaTypeMapping.register(customType);
         }
-        for (Map.Entry<Pair<String, String>, Pair<String, String>> entry : templates.getTableOverrides().entrySet()) {
+        for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
             schemaTables.put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * Get the literal representation of the given constant
+     *
+     * @param o
+     * @return
+     */
+    public String asLiteral(Object o) {
+        Type type = javaTypeMapping.getType(o.getClass());
+        if (type != null) {
+            return templates.serialize(type.getLiteral(o), type.getSQLTypes()[0]);
+        } else {
+            throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
         }
     }
 
@@ -127,24 +142,24 @@ public final class Configuration {
      * @return
      */
     @Nullable
-    public Pair<String, String> getOverride(Pair<String, String> key) {
-        if (!schemaTables.isEmpty() && key.getFirst() != null) {
+    public SchemaAndTable getOverride(SchemaAndTable key) {
+        if (!schemaTables.isEmpty() && key.getSchema() != null) {
             if (schemaTables.containsKey(key)) {
                 return schemaTables.get(key);
             }
         }
-        String schema = key.getFirst(), table = key.getSecond();
+        String schema = key.getSchema(), table = key.getTable();
         boolean changed = false;
-        if (schemas.containsKey(key.getFirst())) {
-            schema = schemas.get(key.getFirst());
+        if (schemas.containsKey(key.getSchema())) {
+            schema = schemas.get(key.getSchema());
             changed = true;
         }
 
-        if (tables.containsKey(key.getSecond())) {
-            table = tables.get(key.getSecond());
+        if (tables.containsKey(key.getTable())) {
+            table = tables.get(key.getTable());
             changed = true;
         }
-        return changed ? Pair.of(schema, table) : key;
+        return changed ? new SchemaAndTable(schema, table) : key;
     }
 
     /**
@@ -214,7 +229,7 @@ public final class Configuration {
      * @param newTable
      * @return
      */
-    public Pair<String, String> registerTableOverride(String schema, String oldTable, String newTable) {
+    public SchemaAndTable registerTableOverride(String schema, String oldTable, String newTable) {
         return registerTableOverride(schema, oldTable, schema, newTable);
     }
 
@@ -227,8 +242,8 @@ public final class Configuration {
      * @param newTable
      * @return
      */
-    public Pair<String, String> registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
-        return registerTableOverride(Pair.of(schema, oldTable), Pair.of(newSchema, newTable));
+    public SchemaAndTable registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
+        return registerTableOverride(new SchemaAndTable(schema, oldTable), new SchemaAndTable(newSchema, newTable));
     }
 
     /**
@@ -238,12 +253,12 @@ public final class Configuration {
      * @param to
      * @return
      */
-    public Pair<String, String> registerTableOverride(Pair<String, String> from, Pair<String, String> to) {
+    public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
         return schemaTables.put(from, to);
     }
 
     /**
-     * Register the given Type to be used
+     * Register the given {@link Type} converter
      *
      * @param type
      */
@@ -285,7 +300,7 @@ public final class Configuration {
     }
 
     /**
-     * Register the given Type for the given table and column
+     * Register the given {@link Type} converter for the given table and column
      *
      * @param table
      * @param column
@@ -303,7 +318,7 @@ public final class Configuration {
      * @return
      */
     public RuntimeException translate(SQLException ex) {
-        return exceptionTranslator.translate(null, ex);
+        return exceptionTranslator.translate(ex);
     }
 
     /**
@@ -313,8 +328,8 @@ public final class Configuration {
      * @param ex
      * @return
      */
-    public RuntimeException translate(String sql, SQLException ex) {
-        return exceptionTranslator.translate(sql, ex);
+    public RuntimeException translate(String sql, List<Object> bindings, SQLException ex) {
+        return exceptionTranslator.translate(sql, bindings, ex);
     }
 
     /**

@@ -20,6 +20,8 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Ops;
 
+import java.sql.Types;
+
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
  *
@@ -53,6 +55,7 @@ public class SQLServerTemplates extends SQLTemplates {
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);
+        setDefaultValues("\ndefault values");
 
         // String
         add(Ops.CONCAT, "{0} + {1}", 13);
@@ -114,15 +117,16 @@ public class SQLServerTemplates extends SQLTemplates {
     }
 
     @Override
-    public String asLiteral(DateTimeType type, String literal) {
-        // JDBC escape syntax
-        String keyword = "ts";
-        if (type == DateTimeType.DATE) {
-            keyword = "d";
-        } else if (type == DateTimeType.TIME) {
-            keyword = "t";
+    public String serialize(String literal, int jdbcType) {
+        if (jdbcType == Types.TIMESTAMP) {
+            return "{ts '" + literal + "'}";
+        } else if (jdbcType == Types.DATE) {
+            return "{d '" + literal + "'}";
+        } else if (jdbcType == Types.TIME) {
+            return "{t '" + literal + "'}";
+        } else {
+            return super.serialize(literal, jdbcType);
         }
-        return "{" + keyword + " '" + literal + "'}";
     }
 
     @Override

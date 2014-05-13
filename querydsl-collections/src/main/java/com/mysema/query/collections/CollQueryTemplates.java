@@ -29,16 +29,16 @@ public class CollQueryTemplates extends JavaTemplates {
 
     protected CollQueryTemplates() {
         String functions = CollQueryFunctions.class.getName();
-        add(Ops.EQ, "{0}.equals({1})");
-        add(Ops.NE, "!{0}.equals({1})");
+        add(Ops.EQ, functions + ".equals({0}, {1})");
+        add(Ops.NE, "!" + functions + ".equals({0}, {1})");
         add(Ops.INSTANCE_OF, "{1}.isInstance({0})");
 
         // Comparable
-        add(Ops.GT, "{0}.compareTo({1}) > 0");
-        add(Ops.LT, "{0}.compareTo({1}) < 0");
-        add(Ops.GOE, "{0}.compareTo({1}) >= 0");
-        add(Ops.LOE, "{0}.compareTo({1}) <= 0");
-        add(Ops.BETWEEN, functions + ".between({0},{1},{2})");
+        add(Ops.GT, functions + ".compareTo({0}, {1}) > 0");
+        add(Ops.LT, functions + ".compareTo({0}, {1}) < 0");
+        add(Ops.GOE, functions + ".compareTo({0}, {1}) >= 0");
+        add(Ops.LOE, functions + ".compareTo({0}, {1}) <= 0");
+        add(Ops.BETWEEN, functions + ".between({0}, {1}, {2})");
         add(Ops.STRING_CAST, "String.valueOf({0})");
 
         // Number

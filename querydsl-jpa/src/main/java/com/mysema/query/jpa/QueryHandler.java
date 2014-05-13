@@ -28,6 +28,11 @@ import com.mysema.query.types.FactoryExpression;
 public interface QueryHandler {
 
     /**
+     * @return
+     */
+    boolean createNativeQueryTyped();
+
+    /**
      * Iterate the results with the optional projection
      *
      * @param query
@@ -62,5 +67,9 @@ public interface QueryHandler {
      */
     boolean transform(Query query, FactoryExpression<?> projection);
 
+    /**
+     * @return
+     */
+    boolean wrapEntityProjections();
 
 }

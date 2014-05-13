@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,10 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
         return ImmutableMap.copyOf(map);
     }
 
-    private final class TupleImpl implements Tuple {
+    private final class TupleImpl implements Tuple, Serializable {
+
+        private static final long serialVersionUID = 6635924689293325950L;
+
         private final Object[] a;
 
         private TupleImpl(Object[] a) {

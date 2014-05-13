@@ -1,47 +1,58 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
 
 import javax.annotation.Generated;
 
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+
 
 /**
- * SCategory_category is a Querydsl query type for SCategory_category
+ * SCategory_category_ is a Querydsl query type for SCategory_category_
  */
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SCategory_category extends com.mysema.query.sql.RelationalPathBase<SCategory_category> {
 
-    private static final long serialVersionUID = -1826015666;
+    private static final long serialVersionUID = -771910703;
 
-    public static final SCategory_category category_category = new SCategory_category("category__category_");
+    public static final SCategory_category category_category_ = new SCategory_category("category__category_");
 
-    public final NumberPath<Long> category_id = createNumber("category__id", Long.class);
+    public final NumberPath<Long> childId = createNumber("childId", Long.class);
 
-    public final NumberPath<Long> categoryID = createNumber("Category_ID", Long.class);
+    public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
 
-    public final NumberPath<Long> childCategoriesID = createNumber("childCategories_ID", Long.class);
+    public final com.mysema.query.sql.PrimaryKey<SCategory_category> primary = createPrimaryKey(childId, parentId);
 
-    public final com.mysema.query.sql.PrimaryKey<SCategory_category> primary = createPrimaryKey(categoryID, childCategoriesID);
+    public final com.mysema.query.sql.ForeignKey<SCategory> fkc4e60b83561378ab = createForeignKey(parentId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SCategory> fkc4e60b832974945f = createForeignKey(category_id, "ID");
-
-    public final com.mysema.query.sql.ForeignKey<SCategory> category_category_CategoryIDFK = createForeignKey(categoryID, "ID");
-
-    public final com.mysema.query.sql.ForeignKey<SCategory> category_category_childCategoriesIDFK = createForeignKey(childCategoriesID, "ID");
+    public final com.mysema.query.sql.ForeignKey<SCategory> fkc4e60b833c83109d = createForeignKey(childId, "id");
 
     public SCategory_category(String variable) {
         super(SCategory_category.class, forVariable(variable), "null", "category__category_");
+        addMetadata();
+    }
+
+    public SCategory_category(String variable, String schema, String table) {
+        super(SCategory_category.class, forVariable(variable), schema, table);
+        addMetadata();
     }
 
     public SCategory_category(Path<? extends SCategory_category> path) {
         super(path.getType(), path.getMetadata(), "null", "category__category_");
+        addMetadata();
     }
 
     public SCategory_category(PathMetadata<?> metadata) {
         super(SCategory_category.class, metadata, "null", "category__category_");
+        addMetadata();
+    }
+
+    public void addMetadata() {
+        addMetadata(childId, ColumnMetadata.named("childId").withIndex(2).ofType(-5).withSize(19).notNull());
+        addMetadata(parentId, ColumnMetadata.named("parentId").withIndex(1).ofType(-5).withSize(19).notNull());
     }
 
 }

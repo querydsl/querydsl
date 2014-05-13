@@ -5,13 +5,13 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.3.3.BUILD-SNAPSHOT</version>
+    <version>3.3.4.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-lucene4</artifactId>
-  <name>Querydsl - Lucene support</name>
+  <name>Querydsl - Lucene 4 support</name>
   <description>Lucene support for Querydsl</description>
   <packaging>jar</packaging>
   

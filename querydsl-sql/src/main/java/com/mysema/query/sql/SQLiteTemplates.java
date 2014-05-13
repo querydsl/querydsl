@@ -13,10 +13,12 @@
  */
 package com.mysema.query.sql;
 
-import org.joda.time.ReadableInstant;
-
 import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.types.Ops;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.sql.Types;
 
 /**
  * SQLiteTemplates is a SQL dialect for SQLite
@@ -25,6 +27,12 @@ import com.mysema.query.types.Ops;
  *
  */
 public class SQLiteTemplates extends SQLTemplates {
+
+    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
     public static Builder builder() {
         return new Builder() {
@@ -51,6 +59,7 @@ public class SQLiteTemplates extends SQLTemplates {
         setLimitRequired(true);
         setNullsFirst(null);
         setNullsLast(null);
+        setDefaultValues("\ndefault values");
         add(Ops.MOD, "{0} % {1}");
 
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");
@@ -88,14 +97,16 @@ public class SQLiteTemplates extends SQLTemplates {
     }
 
     @Override
-    public String asLiteral(Object o) {
-        if (o instanceof java.util.Date) {
-            return String.valueOf(((java.util.Date)o).getTime());
-        } else if (o instanceof ReadableInstant) {
-            return String.valueOf(((ReadableInstant)o).getMillis());
-        // TODO ReadablePartial
+    public String serialize(String literal, int jdbcType) {
+        // XXX doesn't work with LocalDate, LocalDateTime and LocalTime
+        if (jdbcType == Types.TIMESTAMP) {
+            return String.valueOf(dateTimeFormatter.parseDateTime(literal).getMillis());
+        } else if (jdbcType == Types.DATE) {
+            return String.valueOf(dateFormatter.parseDateTime(literal).getMillis());
+        } else if (jdbcType == Types.TIME) {
+            return String.valueOf(timeFormatter.parseDateTime(literal).getMillis());
         } else {
-            return super.asLiteral(o);
+            return super.serialize(literal, jdbcType);
         }
     }
 

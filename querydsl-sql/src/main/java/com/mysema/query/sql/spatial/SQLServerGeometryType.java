@@ -13,17 +13,16 @@
  */
 package com.mysema.query.sql.spatial;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.annotation.Nullable;
-
-import org.geolatte.geom.Geometry;
-
 import com.mysema.query.sql.types.AbstractType;
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.Wkt;
 
 /**
  * @author tiwe
@@ -64,6 +63,16 @@ public class SQLServerGeometryType extends AbstractType<Geometry> {
             st.setBytes(startIndex, bytes);
         } catch (IOException e) {
             throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public String getLiteral(Geometry geometry) {
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        if (geometry.getSRID() > -1) {
+            return "geometry::STGeomFromText('" + str + "', " + geometry.getSRID() + ")";
+        } else {
+            return "geometry::STGeomFromText('" + str + "')";
         }
     }
 

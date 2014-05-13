@@ -13,26 +13,39 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.domain.QCat;
 import com.mysema.query.jpa.domain.Location;
+import com.mysema.query.jpa.domain.QDomesticCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 public class JPQLSerializerTest {
+
+    @Test
+    public void And_Or() {
+        //A.a.id.eq(theId).and(B.b.on.eq(false).or(B.b.id.eq(otherId)));
+        QCat cat = QCat.cat;
+        Predicate pred = cat.id.eq(1).and(cat.name.eq("Kitty").or(cat.name.eq("Boris")));
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.handle(pred);
+        assertEquals("cat.id = ?1 and (cat.name = ?2 or cat.name = ?3)", serializer.toString());
+        assertEquals("cat.id = 1 && cat.name = Kitty || cat.name = Boris", pred.toString());
+    }
 
     @Test
     public void Case() {
@@ -183,5 +196,32 @@ public class JPQLSerializerTest {
         assertEquals("select cat\n" +
                      "from Cat cat\n" +
                      "order by cat.name asc nulls last", serializer.toString());
+    }
+
+    @Test
+    public void Treat() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addJoin(JoinType.JOIN, cat.mate.as((Path) QDomesticCat.domesticCat));
+        md.addProjection(QDomesticCat.domesticCat);
+        serializer.serialize(md, false, null);
+        assertEquals("select domesticCat\n" +
+                "from Cat cat\n" +
+                "  inner join treat(cat.mate as DomesticCat) as domesticCat", serializer.toString());
+    }
+
+    @Test
+    public void OpenJPA_Variables() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(OpenJPATemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.addJoin(JoinType.INNERJOIN, cat.mate);
+        md.addJoinCondition(cat.mate.alive);
+        serializer.serialize(md, false, null);
+        assertEquals("select cat_\nfrom Cat cat_\n  inner join cat_.mate on cat_.mate.alive",
+                serializer.toString());
     }
 }

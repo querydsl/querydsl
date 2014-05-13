@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.3.3.BUILD-SNAPSHOT</version>
+    <version>3.3.4.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -16,8 +16,8 @@
   <packaging>jar</packaging>
   
   <properties>
-    <hibernate.version>4.2.0.Final</hibernate.version>
-    <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
+    <hibernate.version>4.3.5.Final</hibernate.version>
+    <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
     <eclipselink.version>2.5.1</eclipselink.version>
   </properties>
   
@@ -59,9 +59,9 @@
  
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
       <version>1.0.0.Final</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -108,14 +108,7 @@
       <version>${postgresql.version}</version>
       <scope>test</scope>
     </dependency>    
-    
-    <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc6</artifactId>
-      <version>${oracle.version}</version>
-      <scope>test</scope>
-    </dependency>
-    
+
     <!-- 
     <dependency>
       <groupId>org.apache.openjpa</groupId>
@@ -175,7 +168,14 @@
       <artifactId>jtds</artifactId>
       <version>${jtds.version}</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>${oracle.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -302,7 +302,8 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>              
+              <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+              <logOnlyOnError>true</logOnlyOnError>
             </configuration>            
           </execution>
         </executions>

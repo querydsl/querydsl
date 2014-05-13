@@ -13,17 +13,16 @@
  */
 package com.mysema.query.sql.spatial;
 
+import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.annotation.Nullable;
-
-import org.geolatte.geom.Geometry;
-import org.postgis.PGgeometry;
-
 import com.mysema.query.sql.types.AbstractType;
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.Wkt;
+import org.postgis.PGgeometry;
 
 /**
  * @author tiwe
@@ -53,6 +52,12 @@ public class PGgeometryType extends AbstractType<Geometry> {
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
         PGgeometry geometry = new PGgeometry(PGgeometryConverter.convert(value));
         st.setObject(startIndex, geometry);
+    }
+
+    @Override
+    public String getLiteral(Geometry geometry) {
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        return "'" + str + "'";
     }
 
 }

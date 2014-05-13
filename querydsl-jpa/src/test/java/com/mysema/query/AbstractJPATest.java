@@ -13,38 +13,8 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.TERADATA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
-
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.Group;
@@ -53,67 +23,29 @@ import com.mysema.query.group.QPair;
 import com.mysema.query.jpa.JPAExpressions;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.domain.Animal;
-import com.mysema.query.jpa.domain.Author;
-import com.mysema.query.jpa.domain.Book;
-import com.mysema.query.jpa.domain.Cat;
-import com.mysema.query.jpa.domain.Color;
-import com.mysema.query.jpa.domain.Company;
+import com.mysema.query.jpa.domain.*;
 import com.mysema.query.jpa.domain.Company.Rating;
-import com.mysema.query.jpa.domain.DomesticCat;
-import com.mysema.query.jpa.domain.DoubleProjection;
-import com.mysema.query.jpa.domain.Employee;
-import com.mysema.query.jpa.domain.Entity1;
-import com.mysema.query.jpa.domain.Entity2;
-import com.mysema.query.jpa.domain.FloatProjection;
-import com.mysema.query.jpa.domain.Foo;
-import com.mysema.query.jpa.domain.JobFunction;
-import com.mysema.query.jpa.domain.Numeric;
-import com.mysema.query.jpa.domain.QAnimal;
-import com.mysema.query.jpa.domain.QAuthor;
-import com.mysema.query.jpa.domain.QBook;
-import com.mysema.query.jpa.domain.QCat;
-import com.mysema.query.jpa.domain.QCompany;
-import com.mysema.query.jpa.domain.QDoubleProjection;
-import com.mysema.query.jpa.domain.QEmployee;
-import com.mysema.query.jpa.domain.QEntity1;
-import com.mysema.query.jpa.domain.QFloatProjection;
-import com.mysema.query.jpa.domain.QFoo;
-import com.mysema.query.jpa.domain.QHuman;
-import com.mysema.query.jpa.domain.QMammal;
-import com.mysema.query.jpa.domain.QNumeric;
-import com.mysema.query.jpa.domain.QShow;
-import com.mysema.query.jpa.domain.QSimpleTypes;
-import com.mysema.query.jpa.domain.QUser;
-import com.mysema.query.jpa.domain.QWorld;
-import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
 import com.mysema.query.support.Expressions;
-import com.mysema.query.types.ArrayConstructorExpression;
-import com.mysema.query.types.Concatenation;
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.Projections;
-import com.mysema.query.types.QTuple;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.ListExpression;
-import com.mysema.query.types.expr.Param;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.path.*;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.Calendar;
+import java.util.Map.Entry;
+
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 /**
  * @author tiwe
@@ -441,7 +373,7 @@ public abstract class AbstractJPATest {
         }
     }
 
-    @Test(expected=NullPointerException.class)
+    @Test(expected=ClassCastException.class)
     @NoEclipseLink
     @NoBatooJPA
     public void Constant_Hibernate() {
@@ -1140,6 +1072,12 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void FactoryExpression_In_GroupBy() {
+        Expression<Cat> catBean = Projections.bean(Cat.class, cat.id, cat.name);
+        assertFalse(query().from(cat).groupBy(catBean).list(catBean).isEmpty());
+    }
+
+    @Test
     @Ignore
     public void Size() {
         // NOT SUPPORTED
@@ -1299,7 +1237,15 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Sum_4() {
-        query().from(cat).uniqueResult(cat.bodyWeight.sum().negate());
+        Double dbl = query().from(cat).uniqueResult(cat.bodyWeight.sum().negate());
+        assertNotNull(dbl);
+    }
+
+    @Test
+    public void Sum_5() {
+        QShow show = QShow.show;
+        Long lng = query().from(show).uniqueResult(show.id.sum());
+        assertNotNull(lng);
     }
 
     @Test
@@ -1470,12 +1416,21 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoBatooJPA
+    public void Treat() {
+        QDomesticCat domesticCat = QDomesticCat.domesticCat;
+        query().from(cat)
+               .innerJoin(cat.mate, domesticCat._super)
+               .where(domesticCat.name.eq("Bobby"))
+               .count();
+    }
+
+    @Test
     @Ignore
     public void Type() {
         assertEquals(Arrays.asList("C","C","C","C","C","C","A"),
                 query().from(animal).orderBy(animal.id.asc()).list(JPAExpressions.type(animal)));
     }
-
 
     @Test
     @NoOpenJPA

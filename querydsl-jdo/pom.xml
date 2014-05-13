@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.3.3.BUILD-SNAPSHOT</version>
+    <version>3.3.4.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -238,6 +238,7 @@
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <logOnlyOnError>true</logOnlyOnError>
             </configuration>
           </execution>
         </executions>    
@@ -265,5 +266,20 @@
       </plugin>    
     </plugins>      
   </build>
+
+  <!--TODO upgrade dependencies and get rid of repositories and pluginRepositories -->
+  <repositories>
+    <repository>
+      <id>datanucleus</id>
+      <url>http://www.datanucleus.org/downloads/maven2</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>datanucleus</id>
+      <url>http://www.datanucleus.org/downloads/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

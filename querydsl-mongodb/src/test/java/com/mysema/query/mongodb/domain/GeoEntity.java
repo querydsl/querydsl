@@ -13,14 +13,10 @@
  */
 package com.mysema.query.mongodb.domain;
 
-import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
 
 @Entity
-public class GeoEntity {
-
-    private @Id ObjectId id;
+public class GeoEntity extends AbstractEntity {
 
     private Double[] location;
 
@@ -29,14 +25,6 @@ public class GeoEntity {
     }
 
     public GeoEntity() {}
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
 
     public Double[] getLocation() {
         return location;

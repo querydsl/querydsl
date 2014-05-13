@@ -13,14 +13,8 @@
  */
 package com.mysema.query.sql;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import javax.annotation.Nullable;
+import java.util.*;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -32,24 +26,8 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Order;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.Template;
+import com.mysema.query.types.*;
 import com.mysema.query.types.Template.Element;
-import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.TemplateFactory;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -102,7 +80,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteIdentifier(column));
     }
 
-    private Pair<String, String> getSchemaAndTable(RelationalPath<?> path) {
+    private SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
         return configuration.getOverride(path.getSchemaAndTable());
     }
 
@@ -181,12 +159,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                Pair<String, String> schemaAndTable = getSchemaAndTable(pe);
+                SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
                 if (templates.isPrintSchema()) {
-                    appendSchemaName(schemaAndTable.getFirst());
+                    appendSchemaName(schemaAndTable.getSchema());
                     append(".");
                 }
-                appendTableName(schemaAndTable.getSecond());
+                appendTableName(schemaAndTable.getTable());
                 append(templates.getTableAlias());
             }
         }
@@ -540,11 +518,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 }
             }
 
-            // values
-            append(templates.getValues());
-            append("(");
-            handle(COMMA, values);
-            append(")");
+            if (!values.isEmpty()) {
+                // values
+                append(templates.getValues());
+                append("(");
+                handle(COMMA, values);
+                append(")");
+            } else {
+                append(templates.getDefaultValues());
+            }
         }
 
     }
@@ -704,12 +686,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     if (!first) {
                         append(COMMA);
                     }
-                    append(templates.asLiteral(o));
+                    append(configuration.asLiteral(o));
                     first = false;
                 }
                 append(")");
             } else {
-                append(templates.asLiteral(constant));
+                append(configuration.asLiteral(constant));
             }
         } else if (constant instanceof Collection) {
             append("(");
@@ -755,12 +737,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml) {
             if (path.equals(entity) && path instanceof RelationalPath<?>) {
-                Pair<String, String> schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
+                SchemaAndTable schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
                 if (dmlWithSchema && templates.isPrintSchema()) {
-                    appendSchemaName(schemaAndTable.getFirst());
+                    appendSchemaName(schemaAndTable.getSchema());
                     append(".");
                 }
-                appendTableName(schemaAndTable.getSecond());
+                appendTableName(schemaAndTable.getTable());
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
                 appendAsColumnName(path);

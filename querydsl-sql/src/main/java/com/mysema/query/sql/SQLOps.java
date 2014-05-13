@@ -31,6 +31,8 @@ public final class SQLOps {
 
     private static final String NS = SQLOps.class.getName();
 
+    public static final Operator<Object> ALL = new OperatorImpl<Object>(NS, "ALL");
+
     public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "CAST");
 
     public static final Operator<Double> CORR = new OperatorImpl<Double>(NS, "CORR");

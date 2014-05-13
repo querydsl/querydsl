@@ -13,21 +13,20 @@
  */
 package com.mysema.query.sql.spatial;
 
+import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.annotation.Nullable;
-
+import com.mysema.query.sql.types.AbstractType;
 import org.geolatte.geom.ByteBuffer;
 import org.geolatte.geom.ByteOrder;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkb;
 import org.geolatte.geom.codec.WkbDecoder;
 import org.geolatte.geom.codec.WkbEncoder;
-
-import com.mysema.query.sql.types.AbstractType;
+import org.geolatte.geom.codec.Wkt;
 
 /**
  * @author tiwe
@@ -68,6 +67,12 @@ public class GeometryWkbType extends AbstractType<Geometry> {
         WkbEncoder encoder = Wkb.newWkbEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
         ByteBuffer buffer = encoder.encode(value, byteOrder);
         st.setBytes(startIndex, buffer.toByteArray());
+    }
+
+    @Override
+    public String getLiteral(Geometry geometry) {
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        return "'" + str + "'";
     }
 
 }

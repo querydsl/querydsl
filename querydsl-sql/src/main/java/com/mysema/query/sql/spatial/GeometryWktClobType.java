@@ -13,18 +13,12 @@
  */
 package com.mysema.query.sql.spatial;
 
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-
 import javax.annotation.Nullable;
-
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkt;
+import java.sql.*;
 
 import com.mysema.query.sql.types.AbstractType;
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.Wkt;
 
 /**
  * @author tiwe
@@ -59,6 +53,12 @@ public class GeometryWktClobType extends AbstractType<Geometry> {
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
         String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(value);
         st.setString(startIndex, str);
+    }
+
+    @Override
+    public String getLiteral(Geometry geometry) {
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        return "'" + str + "'";
     }
 
 }

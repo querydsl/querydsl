@@ -13,6 +13,9 @@
  */
 package com.mysema.query.apt;
 
+import javax.annotation.processing.AbstractProcessor;
+import javax.tools.JavaCompiler;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,15 +23,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.tools.JavaCompiler;
-
-import junit.framework.Assert;
-
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.util.FileUtils;
+import junit.framework.Assert;
 
 public abstract class AbstractProcessorTest {
+
+    private final JavaCompiler compiler = new SimpleCompiler();
 
     protected static List<String> getFiles(String path) {
         List<String> classes = new ArrayList<String>();
@@ -52,8 +53,6 @@ public abstract class AbstractProcessorTest {
     } 
     
     protected void compile(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException {
-        JavaCompiler compiler = new SimpleCompiler();
-        System.out.println(compiler.getClass().getName());
         List<String> options = new ArrayList<String>(classes.size() + 3);
         options.add("-s");
         options.add("target/" + target);
@@ -65,16 +64,15 @@ public abstract class AbstractProcessorTest {
         options.addAll(getAPTOptions());
         options.addAll(classes);
         
-        System.out.println();
-        int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayOutputStream err = new ByteArrayOutputStream();
+        int compilationResult = compiler.run(null, out, err, options.toArray(new String[options.size()]));
 
 //        Processor.elementCache.clear();
-        if (compilationResult == 0) { 
-            System.out.println("Compilation is successful");
-        } else {
+        if (compilationResult != 0) {
+            System.err.println(compiler.getClass().getName());
             Assert.fail("Compilation Failed");
         }
-        
     }
     
     protected Collection<String> getAPTOptions() {

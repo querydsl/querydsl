@@ -13,11 +13,7 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 /**
  * DateType maps Date to Date on the JDBC level
@@ -25,7 +21,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class DateType extends AbstractType<Date> {
+public class DateType extends AbstractDateTimeType<Date> {
 
     public DateType() {
         super(Types.DATE);
@@ -33,6 +29,11 @@ public class DateType extends AbstractType<Date> {
 
     public DateType(int type) {
         super(type);
+    }
+
+    @Override
+    public String getLiteral(Date value) {
+        return dateFormatter.print(value.getTime());
     }
 
     @Override

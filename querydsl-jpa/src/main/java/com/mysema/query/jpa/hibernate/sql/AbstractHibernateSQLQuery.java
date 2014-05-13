@@ -13,26 +13,13 @@
  */
 package com.mysema.query.jpa.hibernate.sql;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.*;
 import com.mysema.query.NonUniqueResultException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.FactoryExpressionTransformer;
 import com.mysema.query.jpa.NativeSQLSerializer;
@@ -42,8 +29,13 @@ import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
+import org.hibernate.Query;
+import org.hibernate.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -52,8 +44,7 @@ import com.mysema.query.types.FactoryExpression;
  *
  * @param <Q>
  */
-@SuppressWarnings("rawtypes")
-public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q> & com.mysema.query.Query<Q>> extends AbstractSQLQuery<Q> {
+public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q>> extends AbstractSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
 
@@ -61,17 +52,9 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     protected String cacheRegion;
 
-    @Nullable
-    private Map<Object,String> constants;
-
-    @Nullable
-    private Map<Expression<?>, String> aliases;
-
     protected int fetchSize = 0;
 
     private final SessionHolder session;
-
-    protected final Configuration configuration;
 
     protected int timeout = 0;
 
@@ -84,36 +67,26 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     public AbstractHibernateSQLQuery(SessionHolder session, Configuration conf, QueryMetadata metadata) {
-        super(metadata);
+        super(metadata, conf);
         this.session = session;
-        this.configuration = conf;
-    }
-
-    private String buildQueryString(boolean forCountRow) {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(configuration);
-        if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
-        } else {
-            serializer.serialize(queryMixin.getMetadata(), forCountRow);
-        }
-        constants = serializer.getConstantToLabel();
-        aliases = serializer.getAliases();
-        return serializer.toString();
     }
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addProjection(args);
-        return createQuery(toQueryString(), false);
+        return createQuery(false);
     }
 
-    private Query createQuery(String queryString, boolean forCount) {
+    private Query createQuery(boolean forCount) {
+        NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
+        String queryString = serializer.toString();
         logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
-        HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
 
         if (!forCount) {
+            Map<Expression<?>, String> aliases = serializer.getAliases();
             // set entity paths
             List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
             Expression<?> proj = projection.get(0);
@@ -156,8 +129,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public List<Tuple> list(Expression<?>... projection) {
-        return list(queryMixin.createProjection(projection));
+    protected SQLSerializer createSerializer() {
+        return new NativeSQLSerializer(configuration, true);
     }
 
     @SuppressWarnings("unchecked")
@@ -169,11 +142,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
-
-    @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         Query query = createQuery(projection);
         reset();
@@ -182,20 +150,14 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
-    }
-
-    @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         queryMixin.addProjection(projection);
-        Query query = createQuery(toCountRowsString(), true);
+        Query query = createQuery(true);
         long total = ((Number)query.uniqueResult()).longValue();
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            String queryString = toQueryString();
-            query = createQuery(queryString, false);
+            query = createQuery(false);
             @SuppressWarnings("unchecked")
             List<RT> list = query.list();
             reset();
@@ -214,20 +176,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     protected void reset() {
         queryMixin.getMetadata().reset();
-        constants = null;
-    }
-
-    protected String toCountRowsString() {
-        return buildQueryString(true);
-    }
-
-    protected String toQueryString() {
-        return buildQueryString(false);
-    }
-
-    @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
     }
 
     @SuppressWarnings("unchecked")
@@ -298,6 +246,30 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public Q setTimeout(int timeout) {
         this.timeout = timeout;
         return (Q)this;
+    }
+    
+    protected void clone(Q query) {
+        super.clone(query);
+        cacheable = query.cacheable;
+        cacheRegion = query.cacheRegion;
+        fetchSize = query.fetchSize;
+        readOnly = query.readOnly;
+        timeout = query.timeout;
+    }
+    
+    protected abstract Q clone(SessionHolder session);
+
+    public Q clone(Session session) {
+        return this.clone(new DefaultSessionHolder(session));
+    }   
+    
+    public Q clone(StatelessSession statelessSession) {
+        return this.clone(new StatelessSessionHolder(statelessSession));
+    }
+
+    @Override
+    public Q clone() {
+        return this.clone(this.session);
     }
 
 }

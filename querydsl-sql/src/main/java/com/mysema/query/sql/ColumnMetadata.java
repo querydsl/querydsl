@@ -13,13 +13,18 @@
  */
 package com.mysema.query.sql;
 
+import java.io.Serializable;
+
+import com.google.common.base.Objects;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
 /**
  * Provides metadata like the column name, JDBC type and constraints
  */
-public final class ColumnMetadata {
+public final class ColumnMetadata implements Serializable {
+
+    private static final long serialVersionUID = -5678865742525938470L;
 
     /**
      * Returns this path's column metadata if present. Otherwise returns default
@@ -56,12 +61,14 @@ public final class ColumnMetadata {
      *             if the name is null
      */
     public static ColumnMetadata named(String name) {
-        return new ColumnMetadata(name, null, true, UNDEFINED, UNDEFINED);
+        return new ColumnMetadata(null, name, null, true, UNDEFINED, UNDEFINED);
     }
 
-    private static int UNDEFINED = -1;
+    private static final int UNDEFINED = -1;
 
     private final String name;
+    
+    private final Integer index;
 
     private final Integer jdbcType;
 
@@ -71,8 +78,9 @@ public final class ColumnMetadata {
 
     private final int decimalDigits;
 
-    private ColumnMetadata(String name, Integer jdbcType, boolean nullable, int size,
+    private ColumnMetadata(Integer index, String name, Integer jdbcType, boolean nullable, int size,
             int decimalDigits) {
+        this.index = index;
         this.name = name;
         this.jdbcType = jdbcType;
         this.nullable = nullable;
@@ -82,6 +90,14 @@ public final class ColumnMetadata {
 
     public String getName() {
         return name;
+    }
+    
+    public int getIndex() {
+        return index;
+    }
+    
+    public ColumnMetadata withIndex(int index) {
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     public int getJdbcType() {
@@ -93,7 +109,7 @@ public final class ColumnMetadata {
     }
 
     public ColumnMetadata ofType(int jdbcType) {
-        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     public boolean isNullable() {
@@ -101,7 +117,7 @@ public final class ColumnMetadata {
     }
 
     public ColumnMetadata notNull() {
-        return new ColumnMetadata(name, jdbcType, false, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, false, size, decimalDigits);
     }
 
     /**
@@ -118,7 +134,7 @@ public final class ColumnMetadata {
     }
 
     public ColumnMetadata withSize(int size) {
-        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
 
     /**
@@ -135,7 +151,29 @@ public final class ColumnMetadata {
     }
 
     public ColumnMetadata withDigits(int decimalDigits) {
-        return new ColumnMetadata(name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof ColumnMetadata) {
+            ColumnMetadata md = (ColumnMetadata)o;
+            return name.equals(md.name)
+                && Objects.equal(jdbcType, md.jdbcType)
+                && nullable == md.nullable
+                && size == md.size
+                && decimalDigits == md.decimalDigits;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
 
 }

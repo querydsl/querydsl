@@ -13,19 +13,10 @@
  */
 package com.mysema.query.jdo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
-import java.sql.SQLException;
-import java.util.List;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
-
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import java.sql.SQLException;
+import java.util.List;
 
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
@@ -40,6 +31,10 @@ import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
     

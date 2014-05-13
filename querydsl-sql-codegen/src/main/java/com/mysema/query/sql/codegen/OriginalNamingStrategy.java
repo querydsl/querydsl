@@ -58,21 +58,6 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
         return getPropertyName(primaryKeyName);
     }
 
-    @Override
-    public String normalizeColumnName(String columnName) {
-        return columnName.replaceAll("\r", "").replaceAll("\n", " ");
-    }
-
-    @Override
-    public String normalizeTableName(String tableName) {
-        return tableName.replaceAll("\r", "").replaceAll("\n", " ");
-    }
-
-    @Override
-    public String normalizeSchemaName(String schemaName) {
-        return schemaName.replaceAll("\r", "").replaceAll("\n", " ");
-    }
-
     private String getPropertyName(String name) {
         return Naming.normalize(name, reservedSuffix);
     }

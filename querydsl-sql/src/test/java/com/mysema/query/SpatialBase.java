@@ -1,35 +1,10 @@
 package com.mysema.query;
 
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.POSTGRES;
-import static com.mysema.query.Target.SQLSERVER;
-import static com.mysema.query.Target.TERADATA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.LineString;
-import org.geolatte.geom.MultiLineString;
-import org.geolatte.geom.MultiPoint;
-import org.geolatte.geom.MultiPolygon;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.Polygon;
-import org.geolatte.geom.codec.Wkt;
-import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.spatial.PointExpression;
-import com.mysema.query.spatial.path.LineStringPath;
-import com.mysema.query.spatial.path.MultiLineStringPath;
-import com.mysema.query.spatial.path.MultiPointPath;
-import com.mysema.query.spatial.path.MultiPolygonPath;
-import com.mysema.query.spatial.path.PointPath;
-import com.mysema.query.spatial.path.PolygonPath;
+import com.mysema.query.spatial.path.*;
 import com.mysema.query.sql.spatial.QShapes;
 import com.mysema.query.sql.spatial.QSpatialRefSys;
 import com.mysema.query.sql.spatial.Shapes;
@@ -37,6 +12,11 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.geolatte.geom.*;
+import org.geolatte.geom.codec.Wkt;
+import org.junit.Test;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class SpatialBase extends AbstractBaseTest {
 

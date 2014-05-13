@@ -13,18 +13,18 @@
  */
 package com.mysema.query.sql.teradata;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.AbstractSQLClause;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * SetQueryBandClause provides support for Teradata specific set query_band executions.
@@ -87,7 +87,8 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
             }
             return 1;
         } catch (SQLException e) {
-            throw configuration.translate(queryString, e);
+            List<Object> bindings = parameter != null ? ImmutableList.<Object>of(parameter) : ImmutableList.of();
+            throw configuration.translate(queryString, bindings, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
@@ -115,9 +116,9 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
                 builder.append(";");
             }
             if (configuration.getUseLiterals() || forSession) {
-                queryString = "set query_band="
-                        + configuration.getTemplates().asLiteral(builder.toString())
-                        + (forSession ? " for session" : " for transaction");
+                queryString = "set query_band='"
+                        + configuration.getTemplates().escapeLiteral(builder.toString())
+                        + (forSession ? "' for session" : "' for transaction");
                 parameter = null;
             } else {
                 queryString = "set query_band=?" + (forSession ? " for session" : " for transaction");

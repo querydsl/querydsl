@@ -217,7 +217,17 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
             // ignore
         }
         Type propertyType = getType(cl, clazz, p.getName());
-        propertyType = getPropertyType(p, propertyType);
+        try {
+            propertyType = getPropertyType(p, propertyType);
+        } catch (MappingException e) {
+            // ignore
+        }
+
+        AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
+        propertyType = getTypeOverride(propertyType, annotated);
+        if (propertyType == null) {
+            return;
+        }
 
         if (p.isComposite()) {
             EntityType embeddedType = createEmbeddableType(propertyType);
@@ -254,7 +264,7 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
                 }
             }
         }
-        AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
+
         Property property = createProperty(entityType, p.getName(), propertyType, annotated);
         entityType.addProperty(property);
     }

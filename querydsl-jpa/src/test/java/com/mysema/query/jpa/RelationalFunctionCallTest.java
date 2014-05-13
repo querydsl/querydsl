@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,21 +29,21 @@ import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
 
 public class RelationalFunctionCallTest {
-    
+
 //    @Schema("PUBLIC")
 //    @Table("SURVEY")
     public class QSurvey extends RelationalPathBase<QSurvey>{
 
         private static final long serialVersionUID = -7427577079709192842L;
-     
+
         public final StringPath name = createString("NAME");
 
         public QSurvey(String path) {
             super(QSurvey.class, PathMetadataFactory.forVariable(path), "PUBLIC", "SURVEY");
         }
-        
+
     }
-    
+
     @Test
     public void FunctionCall() {
         //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
@@ -54,9 +54,9 @@ public class RelationalFunctionCallTest {
         SQLSubQuery sq = new SQLSubQuery();
         SubQueryExpression<?> expr = sq.from(table)
             .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).list(table.name);
-        
+
         Configuration conf = new Configuration(new SQLServerTemplates());
-        SQLSerializer serializer = new NativeSQLSerializer(conf);
+        SQLSerializer serializer = new NativeSQLSerializer(conf, true);
         serializer.serialize(expr.getMetadata(), false);
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +

@@ -13,37 +13,23 @@
  */
 package com.mysema.query.apt;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.annotation.Annotation;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
@@ -52,14 +38,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.annotations.QueryProjection;
-import com.mysema.query.codegen.Delegate;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 
 /**
  * Base class for Querydsl annotation processors, contains the main processing logic. The subclasses
@@ -69,6 +48,11 @@ import com.mysema.query.codegen.TypeMappings;
  *
  */
 public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
+
+    // TODO replace with proper injections in Querydsl 4.0.0
+    public static Types TYPES;
+
+    public static Elements ELEMENTS;
 
     private static final Set<Element> DELEGATE_METHODS = new HashSet<Element>();
 
@@ -88,6 +72,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        TYPES = processingEnv.getTypeUtils();
+        ELEMENTS = processingEnv.getElementUtils();
+
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
 
         if (roundEnv.processingOver() || annotations.size() == 0) {
@@ -614,7 +601,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
                 processingEnv.getMessager().printMessage(Kind.ERROR, e.getMessage());
             }
         }

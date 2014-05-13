@@ -41,6 +41,11 @@ public final class DefaultQueryHandler implements QueryHandler {
     }
 
     @Override
+    public boolean createNativeQueryTyped() {
+        return true;
+    }
+
+    @Override
     public <T> CloseableIterator<T> iterate(Query query, @Nullable final FactoryExpression<?> projection) {
         Iterator<T> iterator = query.getResultList().iterator();
         if (projection != null) {
@@ -55,6 +60,12 @@ public final class DefaultQueryHandler implements QueryHandler {
         return false;
     }
 
+    @Override
+    public boolean wrapEntityProjections() {
+        return false;
+    }
+
     private DefaultQueryHandler() {}
+
 
 }

@@ -22,12 +22,17 @@ import org.junit.Test;
 
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CaseBuilder;
+import com.mysema.query.types.expr.EnumExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.template.BooleanTemplate;
 
 public class CaseBuilderTest {
+
+    public enum Gender {
+        MALE, FEMALE
+    }
 
     public static class Customer{
         private long annualSpending;
@@ -55,6 +60,20 @@ public class CaseBuilderTest {
                 "case " +
                 "when customer.annualSpending > 10000 then true " +
                 "else false " +
+                "end", cases.toString());
+    }
+
+    @Test
+    public void EnumTyped() {
+        Customer c = alias(Customer.class, "customer");
+        EnumExpression<Gender> cases = new CaseBuilder()
+            .when($(c.getAnnualSpending()).gt(10000)).then(Gender.MALE)
+            .otherwise(Gender.FEMALE);
+
+        assertEquals(
+                "case " +
+                "when customer.annualSpending > 10000 then MALE " +
+                "else FEMALE " +
                 "end", cases.toString());
     }
 

@@ -13,34 +13,22 @@
  */
 package com.mysema.query.sql.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import javax.tools.JavaCompiler;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import javax.tools.JavaCompiler;
-
-import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.util.FileUtils;
+import junit.framework.Assert;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 public class MetaDataExporterTest {
 
@@ -58,6 +46,10 @@ public class MetaDataExporterTest {
     private boolean exportColumns = false;
 
     private boolean schemaToPackage = false;
+
+    private DatabaseMetaData metadata;
+
+    private JavaCompiler compiler = new SimpleCompiler();
 
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException{
@@ -115,6 +107,12 @@ public class MetaDataExporterTest {
             // multi key
             stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT, CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
 
+            //  M_PRODUCT_BOM_ID
+            stmt.execute("create table product(id int, "
+                    + "m_product_bom_id int, "
+                    + "m_productbom_id int, "
+                    + "constraint product_bom foreign key (m_productbom_id) references product(id))");
+
         }finally{
             stmt.close();
         }
@@ -130,6 +128,7 @@ public class MetaDataExporterTest {
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
         statement = connection.createStatement();
+        metadata = connection.getMetaData();
     }
 
     @After
@@ -143,35 +142,36 @@ public class MetaDataExporterTest {
 
     private String beanPackageName = null;
 
-
     @Test
     public void NormalSettings_Repetition() throws SQLException {
-        test("Q", "", "", "", defaultNaming, "target/1", false, false);
+        test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
 
         File file = new File("target/1/test/QEmployee.java");
         long lastModified = file.lastModified();
         assertTrue(file.exists());
 
         clean = false;
-        test("Q", "", "", "", defaultNaming, "target/1", false, false);
+        test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
         assertEquals(lastModified, file.lastModified());
     }
 
     @Test
     public void Multiple() throws SQLException {
         // TODO : refactor this to use new JUnit constructs
+        List<String> emptyString = Collections.singletonList("");
         boolean[] trueAndFalse = new boolean[]{true, false};
         int counter = 0;
-        for (String namePrefix : Arrays.asList("", "Q", "Query")) {
-        for (String nameSuffix : Arrays.asList("", "Type")) {
-        for (String beanPrefix : Arrays.asList("", "Bean")) {
-        for (String beanSuffix : Arrays.asList("", "Bean")) {
-        for (NamingStrategy ns : Arrays.asList(defaultNaming, originalNaming)) {
         for (boolean withBeans : trueAndFalse) {
         for (boolean withInnerClasses : trueAndFalse) {
         for (boolean schemaToPackage : trueAndFalse) {
         for (boolean exportColumns : trueAndFalse) {
-        for (String beanPackage : Arrays.asList("test2", null)) {
+        for (boolean withOriginalPositioning : trueAndFalse) {
+        for (NamingStrategy ns : Arrays.asList(defaultNaming, originalNaming)) {
+        for (String namePrefix : Arrays.asList("", "Q", "Query")) {
+        for (String nameSuffix : Arrays.asList("", "Type")) {
+        for (String beanPrefix : withBeans ? Arrays.asList("", "Bean") : emptyString) {
+        for (String beanSuffix : withBeans ? Arrays.asList("", "Bean") : emptyString) {
+        for (String beanPackage : withBeans ? Arrays.asList("test2", null) : emptyString) {
         for (Serializer beanSerializer : BEAN_SERIALIZERS) {
             counter++;
             this.beanPackageName = beanPackage;
@@ -179,8 +179,8 @@ public class MetaDataExporterTest {
             this.exportColumns = exportColumns;
             this.beanSerializer = beanSerializer;
             test(namePrefix, nameSuffix, beanPrefix, beanSuffix,
-                 ns, "target/multiple_"+counter, withBeans, withInnerClasses);
-        }}}}}}}}}}}
+                 ns, "target/multiple_"+counter, withBeans, withInnerClasses, withOriginalPositioning);
+        }}}}}}}}}}}}
     }
 
     @Test
@@ -193,7 +193,7 @@ public class MetaDataExporterTest {
         exporter.setNamingStrategy(new DefaultNamingStrategy());
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setBeanPackageName("test2");
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/7/test/QDateTest.java").exists());
         assertTrue(new File("target/7/test2/DateTest.java").exists());
@@ -205,7 +205,7 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/8"));
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/8/test/QDateTest.java").exists());
     }
@@ -217,7 +217,7 @@ public class MetaDataExporterTest {
         exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/82"));
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/82/test/QBeangen1.java").exists());
         assertTrue(new File("target/82/test/QReserved.java").exists());
@@ -233,7 +233,7 @@ public class MetaDataExporterTest {
         exporter.setNamePrefix("");
         exporter.setNameSuffix("Type");
         exporter.setTargetFolder(new File("target/9"));
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/9/test/DateTestType.java").exists());
     }
@@ -247,7 +247,7 @@ public class MetaDataExporterTest {
         exporter.setNameSuffix("Type");
         exporter.setTargetFolder(new File("target/10"));
         exporter.setExportForeignKeys(false);
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/10/test/DateTestType.java").exists());
     }
@@ -261,7 +261,7 @@ public class MetaDataExporterTest {
         exporter.setBeanPrefix("Bean");
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setTargetFolder(new File("target/a"));
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/a/test/DateTest.java").exists());
         assertTrue(new File("target/a/test/BeanDateTest.java").exists());
@@ -276,7 +276,7 @@ public class MetaDataExporterTest {
         exporter.setBeanSuffix("Bean");
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setTargetFolder(new File("target/b"));
-        exporter.export(connection.getMetaData());
+        exporter.export(metadata);
 
         assertTrue(new File("target/b/test/DateTest.java").exists());
         assertTrue(new File("target/b/test/DateTestBean.java").exists());
@@ -284,7 +284,7 @@ public class MetaDataExporterTest {
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, String target, boolean withBeans,
-            boolean withInnerClasses) throws SQLException{
+            boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException{
         File targetDir = new File(target);
         if (clean) {
             try {
@@ -312,15 +312,15 @@ public class MetaDataExporterTest {
         if (withBeans) {
             exporter.setBeanSerializer(beanSerializer);
         }
-        exporter.export(connection.getMetaData());
+        if (withOrdinalPositioning) {
+            exporter.setColumnComparatorClass(OrdinalPositionComparator.class);
+        }
+        exporter.export(metadata);
 
-        JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err,
                 classes.toArray(new String[classes.size()]));
-        if(compilationResult == 0) {
-            System.out.println("Compilation is successful");
-        } else {
+        if (compilationResult != 0) {
             Assert.fail("Compilation Failed for " + target);
         }
     }

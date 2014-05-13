@@ -265,8 +265,63 @@
   </typeMapping>
 </typeMappings>
 ]]></programlisting>       
+   
 
-    <para>Numeric mappings can be used to customize the mappings for the SQL numeric type:</para>
+    <para>The defaults for the numeric mappings are </para>
+    
+    <table>
+      <title>Numeric mappings</title>
+      <tgroup cols='3' align='left' colsep='1' rowsep='1'>
+        <colspec colname='Name' colwidth="1*" />
+        <colspec colname='Descriptions' colwidth="1*" />
+        <thead>
+          <row>
+            <entry>Size</entry>
+            <entry>Digits</entry>
+            <entry>Type</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>&gt; 18</entry>
+            <entry>0</entry>
+            <entry>BigInteger</entry>
+          </row>
+          <row>
+            <entry>&gt; 9</entry>
+            <entry>0</entry>
+            <entry>Long</entry>
+          </row>
+          <row>
+            <entry>&gt; 4</entry>
+            <entry>0</entry>
+            <entry>Integer</entry>
+          </row>
+          <row>
+            <entry>&gt; 2</entry>
+            <entry>0</entry>
+            <entry>Short</entry>
+          </row>
+          <row>
+            <entry>&gt; 0</entry>
+            <entry>0</entry>
+            <entry>Byte</entry>
+          </row>
+          <row>
+            <entry>&gt; 16</entry>
+            <entry>&gt; 0</entry>
+            <entry>BigDecimal</entry>
+          </row>
+          <row>
+            <entry>&gt; 0</entry>
+            <entry>&gt; 0</entry>
+            <entry>Double</entry>
+          </row>      
+        </tbody>
+      </tgroup>
+    </table>          
+    
+    <para>They can be customized for specific size/digits combinations like this:</para>
     
 <programlisting language="xml"><![CDATA[    
 <numericMappings>
@@ -276,9 +331,11 @@
     <javaType>java.lang.Byte</javaType>
   </numericMapping>
 </numericMappings>   
-]]></programlisting>                     
+]]></programlisting>          
     
     <para>Imports can be used to add cross-schema foreign keys support.</para>
+
+    <para>Compared to APT based code generation certain functionality is not available such as QueryDelegate annotation handling.</para>
 
   </sect2>
 
@@ -394,6 +451,10 @@ Configuration configuration = new Configuration(templates);
      .escape(ch)    // to set the escape char
      .build();      // to get the customized SQLTemplates instance
 ]]></programlisting>  
+
+    <para>The methods of the Configuration class can be used to enable direct serialization of literals
+    via setUseLiterals(true), override schema and tables and register custom types. For full details look
+    at the javadocs of Configuration.</para>
   
   </sect2>
 
@@ -973,6 +1034,22 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
 
   </sect2>
  -->  
+
+  <sect2>
+  
+    <title>Extracting the SQL query and bindings</title>
+    
+    <para>The SQL query and bindings can be extracted via the getSQL method:</para>
+    
+    <programlisting language="java"><![CDATA[
+SQLBindings bindings = query.getSQL(customer.id, customer.firstname, customer.lastname);
+System.out.println(bindings.getSQL()); 
+]]></programlisting>    
+    
+   <para>If you need also all literals in the SQL string you can enable literal serialization on the 
+   query or configuration level via setUseLiterals(true).</para>
+
+  </sect2>
 
   <sect2>
 

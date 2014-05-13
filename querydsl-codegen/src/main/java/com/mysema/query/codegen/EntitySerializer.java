@@ -13,67 +13,25 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.ASSIGN;
-import static com.mysema.codegen.Symbols.COMMA;
-import static com.mysema.codegen.Symbols.DOT;
-import static com.mysema.codegen.Symbols.EMPTY;
-import static com.mysema.codegen.Symbols.NEW;
-import static com.mysema.codegen.Symbols.QUOTE;
-import static com.mysema.codegen.Symbols.RETURN;
-import static com.mysema.codegen.Symbols.SEMICOLON;
-import static com.mysema.codegen.Symbols.STAR;
-import static com.mysema.codegen.Symbols.SUPER;
-import static com.mysema.codegen.Symbols.THIS;
-import static com.mysema.codegen.Symbols.UNCHECKED;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Generated;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Constructor;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.Types;
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.codegen.model.*;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.path.ArrayPath;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.CollectionPath;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.MapPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathInits;
-import com.mysema.query.types.path.SetPath;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.*;
+
+import static com.mysema.codegen.Symbols.*;
 
 /**
  * EntitySerializer is a {@link Serializer} implementation for entity types
@@ -371,6 +329,7 @@ public class EntitySerializer implements Serializer {
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
+        Set<Integer> sizes = Sets.newHashSet();
 
         for (Constructor c : model.getConstructors()) {
             // begin
@@ -378,12 +337,21 @@ public class EntitySerializer implements Serializer {
                 writer.suppressWarnings(UNCHECKED);
             }
             Type returnType = new ClassType(ConstructorExpression.class, model);
+            final boolean asExpr = sizes.add(c.getParameters().size());
             writer.beginStaticMethod(returnType, "create", c.getParameters(),
                     new Function<Parameter, Parameter>() {
                 @Override
                 public Parameter apply(Parameter p) {
-                    return new Parameter(p.getName(), typeMappings.getExprType(
-                            p.getType(), model, false, false, true));
+                    Type type;
+                    if (!asExpr) {
+                        type = typeMappings.getExprType(
+                                p.getType(), model, false, false, true);
+                    } else if (p.getType().isFinal()) {
+                        type = new ClassType(Expression.class, p.getType());
+                    } else {
+                        type = new ClassType(Expression.class, new TypeExtends(p.getType()));
+                    }
+                    return new Parameter(p.getName(), type);
                 }
             });
 

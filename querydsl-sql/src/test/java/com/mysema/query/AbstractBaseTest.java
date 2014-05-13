@@ -13,37 +13,27 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-
+import java.util.List;
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import junit.framework.Assert;
-
-import org.junit.Rule;
-import org.junit.rules.MethodRule;
-
-import com.mysema.query.sql.AbstractSQLQuery;
-import com.mysema.query.sql.AbstractSQLSubQuery;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLCommonQuery;
-import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
-import com.mysema.query.sql.mysql.MySQLQuery;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
-import com.mysema.query.sql.oracle.OracleQuery;
-import com.mysema.query.sql.teradata.SetQueryBandClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
-import com.mysema.query.types.Expression;
+import org.junit.Rule;
+import org.junit.rules.MethodRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractBaseTest {
+
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
 
     protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
 
@@ -56,14 +46,15 @@ public abstract class AbstractBaseTest {
         }
 
         @Override
-        protected String buildQueryString(boolean countRow) {
-            String rv = super.buildQueryString(countRow);
+        protected SQLSerializer serialize(boolean countRow) {
+            SQLSerializer serializer = super.serialize(countRow);
+            String rv = serializer.toString();
             if (expectedQuery != null) {
                 assertEquals(expectedQuery, rv.replace('\n', ' '));
                 expectedQuery = null;
             }
-            System.out.println(rv);
-            return rv;
+            logger.debug(rv);
+            return serializer;
         }
 
         public TestQuery clone(Connection conn) {
@@ -74,11 +65,11 @@ public abstract class AbstractBaseTest {
         }
     }
 
-    private Connection connection = Connections.getConnection();
+    protected Connection connection = Connections.getConnection();
 
-    private SQLTemplates templates = Connections.getTemplates();
+    protected SQLTemplates templates = Connections.getTemplates();
 
-    private Target target = Connections.getTarget();
+    protected Target target = Connections.getTarget();
 
     protected Configuration configuration = new Configuration(templates);
 
@@ -91,16 +82,15 @@ public abstract class AbstractBaseTest {
     @Rule
     public static MethodRule targetRule = new TargetRule();
 
-    protected Expression<?> add(List<Expression<?>> list, Expression<?> expr, Target... exclusions) {
+    protected <T> void add(List<T> list, T arg, Target... exclusions) {
         if (exclusions.length > 0) {
             for (Target t : exclusions) {
                 if (t.equals(target)) {
-                    return expr;
+                    return;
                 }
             }
         }
-        list.add(expr);
-        return expr;
+        list.add(arg);
     }
 
     protected SQLUpdateClause update(RelationalPath<?> e) {
@@ -123,16 +113,8 @@ public abstract class AbstractBaseTest {
         return new SQLMergeClause(connection, configuration, e);
     }
 
-    protected SetQueryBandClause setQueryBand() {
-        return new SetQueryBandClause(connection, configuration);
-    }
-
     protected ExtendedSQLQuery extQuery() {
         return new ExtendedSQLQuery(connection, configuration);
-    }
-
-    protected MySQLQuery mysqlQuery() {
-        return new MySQLQuery(connection, configuration);
     }
 
     protected SQLInsertClause mysqlReplace(RelationalPath<?> path) {
@@ -150,21 +132,6 @@ public abstract class AbstractBaseTest {
     protected TestQuery testQuery() {
         return new TestQuery(connection, configuration,
                 new DefaultQueryMetadata().noValidate());
-    }
-
-    protected OracleQuery oracleQuery() {
-        return new OracleQuery(connection, configuration) {
-            @Override
-            protected String buildQueryString(boolean forCountRow) {
-                String rv = super.buildQueryString(forCountRow);
-                if (expectedQuery != null) {
-                   Assert.assertEquals(expectedQuery, rv.replace('\n', ' '));
-                   expectedQuery = null;
-                }
-                System.out.println(rv);
-                return rv;
-            }
-        };
     }
 
     protected SQLSubQuery sq() {

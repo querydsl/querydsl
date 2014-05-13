@@ -36,9 +36,10 @@ public final class Constants {
 
     static{
         Calendar cal = Calendar.getInstance();
-        cal.set(2000, 1, 2, 3, 4);
-        cal.set(Calendar.SECOND, 30);
-        cal.set(Calendar.MILLISECOND, 0);
+        cal.clear();
+        cal.set(Calendar.YEAR, 2000);
+        cal.set(Calendar.MONTH, 1);
+        cal.set(Calendar.DAY_OF_MONTH, 2);
         date = new java.sql.Date(cal.getTimeInMillis());
 
         cal = Calendar.getInstance();

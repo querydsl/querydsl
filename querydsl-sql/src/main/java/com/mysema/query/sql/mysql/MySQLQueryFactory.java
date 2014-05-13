@@ -22,6 +22,7 @@ import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.types.Expression;
@@ -33,7 +34,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * @author tiwe
  *
  */
-public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery> {
+public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery, SQLSubQuery> {
 
     public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);

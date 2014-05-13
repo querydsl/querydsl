@@ -13,17 +13,15 @@
  */
 package com.mysema.query.sql.spatial;
 
+import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.annotation.Nullable;
-
+import com.mysema.query.sql.types.AbstractType;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
-
-import com.mysema.query.sql.types.AbstractType;
 
 /**
  * @author tiwe
@@ -59,4 +57,9 @@ public class GeometryWktType extends AbstractType<Geometry> {
         st.setString(startIndex, str);
     }
 
+    @Override
+    public String getLiteral(Geometry geometry) {
+        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        return "'" + str + "'";
+    }
 }

@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.3.3.BUILD-SNAPSHOT</version>
+    <version>3.3.4.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
@@ -90,6 +90,7 @@
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.morphia.MorphiaAnnotationProcessor</processor>
+              <logOnlyOnError>true</logOnlyOnError>
               <options>
                 <defaultOverwrite>true</defaultOverwrite>
               </options>

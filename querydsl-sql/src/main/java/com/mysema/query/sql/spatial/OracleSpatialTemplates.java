@@ -13,8 +13,6 @@
  */
 package com.mysema.query.sql.spatial;
 
-import org.geolatte.geom.Geometry;
-
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -45,16 +43,6 @@ public class OracleSpatialTemplates extends OracleTemplates {
         super(escape, quote);
         addCustomType(JGeometryType.DEFAULT);
         // TODO
-    }
-
-    @Override
-    public String asLiteral(Object o) {
-        if (o instanceof Geometry) {
-            // TODO
-            return null;
-        } else {
-            return super.asLiteral(o);
-        }
     }
 
 }
