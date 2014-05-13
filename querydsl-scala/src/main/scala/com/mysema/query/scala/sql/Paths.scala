@@ -38,7 +38,7 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
 
   private var primaryKey: PrimaryKey[T] = _
 
-  private lazy val schemaAndTable = Pair.of(schema, table)
+  private lazy val schemaAndTable = new SchemaAndTable(schema, table)
 
   @BeanProperty
   val columns: JavaList[Path[_]] = new ArrayList[Path[_]]
