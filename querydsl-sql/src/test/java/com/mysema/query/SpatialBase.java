@@ -62,7 +62,8 @@ public class SpatialBase extends AbstractBaseTest {
 
     private String normalize(String s) {
         String normalized = s.replace(" ", "").replace("ST_", "").replace("_", "");
-        return normalized.substring(normalized.indexOf(';') + 1);
+        normalized = normalized.substring(normalized.indexOf(';') + 1);
+        return normalized.toUpperCase();
     }
 
     @Test // FIXME, maybe use enum as the type ?!?
