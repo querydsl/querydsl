@@ -60,6 +60,11 @@ public class SpatialBase extends AbstractBaseTest {
         query().from(spatialRefSys).list(spatialRefSys);
     }
 
+    private String normalize(String s) {
+        String normalized = s.replace(" ", "").replace("ST_", "").replace("_", "");
+        return normalized.substring(normalized.indexOf(';') + 1);
+    }
+
     @Test // FIXME, maybe use enum as the type ?!?
     @ExcludeIn(H2)
     public void GeometryType() {
@@ -67,8 +72,8 @@ public class SpatialBase extends AbstractBaseTest {
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
             assertEquals(
-                    row.get(shapes.geometry).getGeometryType().name().replace(" ", ""),
-                    row.get(shapes.geometry.geometryType()).replace(" ", ""));
+                    normalize(row.get(shapes.geometry).getGeometryType().name()),
+                    normalize(row.get(shapes.geometry.geometryType())));
         }
     }
 
@@ -79,8 +84,8 @@ public class SpatialBase extends AbstractBaseTest {
         for (Tuple row : results) {
             if (!(row.get(shapes.geometry) instanceof MultiPoint)) {
                 assertEquals(
-                        row.get(shapes.geometry).asText().replace(" ", ""),
-                        row.get(shapes.geometry.asText()).replace(" ", ""));
+                        normalize(row.get(shapes.geometry).asText()),
+                        normalize(row.get(shapes.geometry.asText())));
             }
         }
     }
