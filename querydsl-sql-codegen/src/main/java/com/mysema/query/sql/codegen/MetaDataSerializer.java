@@ -26,6 +26,7 @@ import com.mysema.query.codegen.*;
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyData;
@@ -72,6 +73,17 @@ public class MetaDataSerializer extends EntitySerializer {
         this.imports = new HashSet<String>(imports);
         this.columnComparator = columnComparator;
         this.entityPathType = entityPathType;
+    }
+
+    @Deprecated
+    public MetaDataSerializer(
+            TypeMappings typeMappings,
+            NamingStrategy namingStrategy,
+            boolean innerClassesForKeys,
+            Set<String> imports,
+            Comparator<Property> columnComparator) {
+        this(typeMappings, namingStrategy, innerClassesForKeys,
+                imports, columnComparator, RelationalPathBase.class);
     }
 
     @Override

@@ -408,6 +408,14 @@ public class SQLTemplates extends Templates {
         tableOverrides.put(from, to);
     }
 
+    /**
+     * Use customTypes instead
+     */
+    @Deprecated
+    public final boolean isBigDecimalSupported() {
+        return false;
+    }
+
     public final List<Type<?>> getCustomTypes() {
         return customTypes;
     }
