@@ -268,7 +268,8 @@ public final class Configuration {
      * @return
      */
     public String registerTableOverride(String schema, String oldTable, String newTable) {
-        return registerTableOverride(schema, oldTable, schema, newTable).getTable();
+        SchemaAndTable st = registerTableOverride(schema, oldTable, schema, newTable);
+        return st != null ? st.getTable() : null;
     }
 
     /**
