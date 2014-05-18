@@ -13,14 +13,20 @@
  */
 package com.mysema.query.types;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
-import com.mysema.util.BeanMap;
+import com.google.common.primitives.Primitives;
 
 /**
  * QBean is a JavaBean populating projection type
@@ -45,7 +51,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
     private static final long serialVersionUID = -8210214512730989778L;
 
     private static ImmutableMap<String,Expression<?>> createBindings(Expression<?>... args) {
-        Builder<String, Expression<?>> rv = ImmutableMap.builder();
+        ImmutableMap.Builder<String, Expression<?>> rv = ImmutableMap.builder();
         for (Expression<?> expr : args) {
             if (expr instanceof Path<?>) {
                 Path<?> path = (Path<?>)expr;
@@ -66,9 +72,15 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
         return rv.build();
     }
 
+    private static Class<?> normalize(Class<?> cl) {
+        return cl.isPrimitive() ? Primitives.wrap(cl) : cl;
+    }
+
     private final ImmutableMap<String, Expression<?>> bindings;
 
-    private final transient Map<String, Field> fields = new HashMap<String, Field>();
+    private final List<Field> fields;
+
+    private final List<Method> setters;
 
     private final boolean fieldAccess;
 
@@ -161,18 +173,28 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
         this.bindings = ImmutableMap.copyOf(bindings);
         this.fieldAccess = fieldAccess;
         if (fieldAccess) {
-            initFields();
+            this.fields = initFields(bindings);
+            this.setters = ImmutableList.of();
+        } else {
+            this.fields = ImmutableList.of();
+            this.setters = initMethods(bindings);
         }
     }
 
-    private void initFields() {
-        for (String property : bindings.keySet()) {
+    private List<Field> initFields(Map<String, ? extends Expression<?>> args) {
+        List<Field> fields = new ArrayList<Field>(args.size());
+        for (Map.Entry<String,? extends Expression<?>> entry : args.entrySet()) {
+            String property = entry.getKey();
+            Expression<?> expr = entry.getValue();
             Class<?> beanType = getType();
+            Field field = null;
             while (!beanType.equals(Object.class)) {
                 try {
-                    Field field = beanType.getDeclaredField(property);
+                    field = beanType.getDeclaredField(property);
                     field.setAccessible(true);
-                    fields.put(property, field);
+                    if (!normalize(field.getType()).isAssignableFrom(expr.getType())) {
+                        typeMismatch(field.getType(), expr);
+                    }
                     beanType = Object.class;
                 } catch (SecurityException e) {
                     // do nothing
@@ -180,29 +202,70 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                     beanType = beanType.getSuperclass();
                 }
             }
+            if (field == null) {
+                propertyNotFound(expr, property);
+            }
+            fields.add(field);
+        }
+        return fields;
+    }
+
+    private List<Method> initMethods(Map<String, ? extends Expression<?>> args) {
+        try {
+            List<Method> methods = new ArrayList<Method>(args.size());
+            BeanInfo beanInfo = Introspector.getBeanInfo(getType());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (Map.Entry<String, ? extends Expression<?>> entry : args.entrySet()) {
+                String property = entry.getKey();
+                Expression<?> expr = entry.getValue();
+                Method setter = null;
+                for (PropertyDescriptor prop : propertyDescriptors) {
+                    if (prop.getName().equals(property)) {
+                        setter = prop.getWriteMethod();
+                        if (!normalize(prop.getPropertyType()).isAssignableFrom(expr.getType())) {
+                            typeMismatch(prop.getPropertyType(), expr);
+                        }
+                        break;
+                    }
+                }
+                if (setter == null) {
+                    propertyNotFound(expr, property);
+                }
+                methods.add(setter);
+            }
+            return methods;
+        } catch (IntrospectionException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
+    protected void propertyNotFound(Expression<?> expr, String property) {
+        // do nothing
+    }
+
+    protected void typeMismatch(Class<?> type, Expression<?> expr) {
+        final String msg = expr.getType().getName() + " is not compatible with " + type.getName();
+        throw new IllegalArgumentException(msg);
+    }
 
     @Override
     public T newInstance(Object... a) {
         try {
-            T rv = getType().newInstance();
+            T rv = create(getType());
             if (fieldAccess) {
-                List<String> keys = bindings.keySet().asList();
-                for (int i = 0; i < keys.size(); i++) {
+                for (int i = 0; i < a.length; i++) {
                     Object value = a[i];
                     if (value != null) {
-                        fields.get(keys.get(i)).set(rv, value);
+                        Field field = fields.get(i);
+                        if (field != null) field.set(rv, value);
                     }
                 }
             } else {
-                Map<String, Object> beanMap = new BeanMap(rv);
-                List<String> keys = bindings.keySet().asList();
-                for (int i = 0; i < keys.size(); i++) {
+                for (int i = 0; i < a.length; i++) {
                     Object value = a[i];
                     if (value != null) {
-                        beanMap.put(keys.get(i), value);
+                        Method setter = setters.get(i);
+                        if (setter != null) setter.invoke(rv, value);
                     }
                 }
             }
@@ -211,7 +274,13 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
             throw new ExpressionException(e.getMessage(), e);
         } catch (IllegalAccessException e) {
             throw new ExpressionException(e.getMessage(), e);
+        } catch (InvocationTargetException e) {
+            throw new ExpressionException(e.getMessage(), e);
         }
+    }
+
+    protected <T> T create(Class<T> type) throws IllegalAccessException, InstantiationException {
+        return type.newInstance();
     }
 
     /**
