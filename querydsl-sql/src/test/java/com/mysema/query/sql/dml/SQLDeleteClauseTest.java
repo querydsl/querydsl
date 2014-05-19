@@ -1,13 +1,11 @@
 package com.mysema.query.sql.dml;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.sql.KeyAccessorsTest.QEmployee;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLTemplates;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class SQLDeleteClauseTest {
 
@@ -26,7 +24,7 @@ public class SQLDeleteClauseTest {
         delete.where(emp1.id.eq(1));
 
         SQLBindings sql = delete.getSQL().get(0);
-        assertEquals("delete from EMPLOYEE\nwhere EMPLOYEE.SUPERIOR_ID = ?", sql.getSQL());
+        assertEquals("delete from EMPLOYEE\nwhere EMPLOYEE.ID = ?", sql.getSQL());
         assertEquals(ImmutableList.of(1), sql.getBindings());
     }
 

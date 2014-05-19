@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
+import java.util.*;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -25,9 +28,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.Template.Element;
-
-import javax.annotation.Nullable;
-import java.util.*;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -746,7 +746,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
         final PathMetadata<?> metadata = path.getMetadata();
-        if (metadata.getParent() != null && !skipParent) {
+        if (metadata.getParent() != null && (!skipParent || dml)) {
             visit(metadata.getParent(), context);
             append(".");
         }
