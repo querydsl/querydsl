@@ -13,14 +13,12 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.Serializable;
 
-import org.junit.Test;
-
 import com.mysema.query.types.path.NumberPath;
+import org.junit.Test;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static org.junit.Assert.assertNotNull;
 
 public class KeyAccessorsTest {
 
@@ -64,7 +62,7 @@ public class KeyAccessorsTest {
 
         protected void addMetadata() {
             addMetadata(id, ColumnMetadata.named("ID"));
-            addMetadata(id, ColumnMetadata.named("SUPERIOR_ID"));
+            addMetadata(superiorId, ColumnMetadata.named("SUPERIOR_ID"));
         }
 
     }
