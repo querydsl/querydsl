@@ -13,6 +13,13 @@
  */
 package com.mysema.query;
 
+import java.io.*;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
@@ -38,14 +45,6 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.*;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-
 import static com.mysema.query.Constants.*;
 import static com.mysema.query.Target.*;
 import static org.junit.Assert.*;
@@ -428,9 +427,8 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({CUBRID, DERBY, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        Date date = new java.sql.Date(cal.getTimeInMillis());
+        int offset = TimeZone.getDefault().getOffset(0);
+        Date date = new java.sql.Date(-offset);
 
         int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
         int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));

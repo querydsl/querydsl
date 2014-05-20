@@ -45,6 +45,10 @@ public final class ArrayUtils {
         System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
         return subarray;
     }
+    
+    public static boolean isEmpty(Object[] array) {
+        return array == null || array.length == 0;
+    }
 
     private ArrayUtils() {}
 

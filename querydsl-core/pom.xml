@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.3.4.BUILD-SNAPSHOT</version>
+    <version>3.4.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -44,7 +44,6 @@
       <groupId>com.infradna.tool</groupId>
       <artifactId>bridge-method-annotation</artifactId>
       <version>${bridge-method.version}</version>
-      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>org.jenkins-ci</groupId>

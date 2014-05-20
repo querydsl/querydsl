@@ -13,39 +13,30 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.MethodRule;
-import org.junit.runner.RunWith;
-
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.domain.Cat;
-import com.mysema.query.jpa.domain.QCat;
-import com.mysema.query.jpa.domain.QCatSummary;
-import com.mysema.query.jpa.domain.QChild;
-import com.mysema.query.jpa.domain.QParent;
+import com.mysema.query.jpa.domain.*;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.JPATestRunner;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.runner.RunWith;
+
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * @author tiwe
@@ -88,7 +79,9 @@ public class JPABase extends AbstractJPATest {
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA
+    @NoEclipseLink
+    @NoOpenJPA
+    @NoHibernate
     public void Connection_Access() {
         assertNotNull(query().from(cat).createQuery(cat).unwrap(Connection.class));
     }

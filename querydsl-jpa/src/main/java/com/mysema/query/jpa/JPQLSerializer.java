@@ -38,23 +38,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Order;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.util.MathUtils;
 
 /**
@@ -127,25 +111,54 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         this.entityManager = em;
     }
 
+    private String getEntityName(Class<?> clazz) {
+        final Entity entityAnnotation = clazz.getAnnotation(Entity.class);
+        if (entityAnnotation != null && entityAnnotation.name().length() > 0) {
+            return entityAnnotation.name();
+        } else if (clazz.getPackage() != null) {
+            String pn = clazz.getPackage().getName();
+            return clazz.getName().substring(pn.length() + 1);
+        } else {
+            return clazz.getName();
+        }
+    }
+
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof EntityPath<?>) {
             final EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().isRoot()) {
-                final Entity entityAnnotation = pe.getAnnotatedElement().getAnnotation(Entity.class);
-                if (entityAnnotation != null && entityAnnotation.name().length() > 0) {
-                    append(entityAnnotation.name());
-                } else if (pe.getType().getPackage() != null) {
-                    final String pn = pe.getType().getPackage().getName();
-                    final String typeName = pe.getType().getName().substring(pn.length() + 1);
-                    append(typeName);
-                } else {
-                    append(pe.getType().getName());
-                }
+                append(getEntityName(pe.getType()));
                 append(" ");
             }
+            handle(je.getTarget());
+        } else if (je.getTarget() instanceof Operation) {
+            Operation<?> op = (Operation)je.getTarget();
+            if (op.getOperator() == Ops.ALIAS) {
+                boolean treat = false;
+                if (Collection.class.isAssignableFrom(op.getArg(0).getType())) {
+                    if (op.getArg(0) instanceof CollectionExpression) {
+                        Class<?> par = ((CollectionExpression)op.getArg(0)).getParameter(0);
+                        treat = !par.equals(op.getArg(1).getType());
+                    }
+                } else if (Map.class.isAssignableFrom(op.getArg(0).getType())) {
+                    if (op.getArg(0) instanceof MapExpression) {
+                        Class<?> par = ((MapExpression)op.getArg(0)).getParameter(1);
+                        treat = !par.equals(op.getArg(1).getType());
+                    }
+                } else {
+                    treat = !op.getArg(0).getType().equals(op.getArg(1).getType());
+                }
+                if (treat) {
+                    Expression<?> entityName = ConstantImpl.create(getEntityName(op.getArg(1).getType()));
+                    Expression<?> t = OperationImpl.create(op.getType(), JPQLOps.TREAT, op.getArg(0), entityName);
+                    op = OperationImpl.create(op.getType(), Ops.ALIAS, t, op.getArg(1));
+                }
+            }
+            handle(op);
+        } else {
+            handle(je.getTarget());
         }
-        handle(je.getTarget());
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {

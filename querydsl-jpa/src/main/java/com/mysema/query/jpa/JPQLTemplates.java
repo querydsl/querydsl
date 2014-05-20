@@ -13,12 +13,12 @@
  */
 package com.mysema.query.jpa;
 
-import javax.annotation.Nullable;
-
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
+
+import javax.annotation.Nullable;
 
 /**
  * JPQLTemplates extends {@link Templates} to provide operator patterns for JPQL
@@ -130,8 +130,8 @@ public class JPQLTemplates extends Templates {
 
         add(Ops.INSTANCE_OF, "type({0}) = {1}");
         add(JPQLOps.TYPE, "type({0})");
-
         add(JPQLOps.INDEX, "index({0})");
+        add(JPQLOps.TREAT, "treat({0} as {1s})");
 
         //CHECKSTYLE:ON
     }

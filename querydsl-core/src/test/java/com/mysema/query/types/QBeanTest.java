@@ -13,20 +13,15 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.path.*;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.PathBuilderFactory;
-import com.mysema.query.types.path.StringPath;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 public class QBeanTest {
@@ -112,6 +107,14 @@ public class QBeanTest {
         assertEquals("Fritz", bean.getName());
         assertEquals(30, bean.getAge());
         assertEquals(true, bean.isMarried());
+    }
+
+    @Test
+    public void with_unknown_properties() {
+        QBean<Entity> beanProjection = new QBean<Entity>(entity, name, age, Expressions.booleanPath("unknown"));
+        Entity bean = beanProjection.newInstance("Fritz", 30, true);
+        assertEquals("Fritz", bean.getName());
+        assertEquals(30, bean.getAge());
     }
 
     @Test
