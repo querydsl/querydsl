@@ -750,7 +750,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
         final PathMetadata<?> metadata = path.getMetadata();
-        if (metadata.getParent() != null && !skipParent) {
+        if (metadata.getParent() != null && (!skipParent || dml)) {
             visit(metadata.getParent(), context);
             append(".");
         }
