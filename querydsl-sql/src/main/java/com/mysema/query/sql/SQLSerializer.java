@@ -178,6 +178,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
+        boolean oldSkipParent = skipParent;
+        skipParent = false;
         final List<? extends Expression<?>> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
         final Predicate where = metadata.getWhere();
@@ -358,7 +360,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         // reset stage
         stage = oldStage;
-
+        skipParent = oldSkipParent;
     }
 
     protected void handleOrderBy(List<OrderSpecifier<?>> orderBy) {
