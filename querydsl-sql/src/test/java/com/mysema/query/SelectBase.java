@@ -444,7 +444,6 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(263736,    hours);
         assertEquals(15824160,  minutes);
         assertEquals(949449600, seconds);
-
     }
 
     @Test

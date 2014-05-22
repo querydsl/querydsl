@@ -17,7 +17,7 @@ import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.OracleTemplates;
+import com.mysema.query.sql.spatial.OracleSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -40,7 +40,7 @@ public class OracleSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initOracle();
-        Connections.setTemplates(OracleTemplates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(OracleSpatialTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

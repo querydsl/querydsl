@@ -13,27 +13,15 @@
  */
 package com.mysema.query;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
+import java.sql.*;
+import java.util.Map;
 import java.util.Properties;
 
-import org.hsqldb.types.Types;
-
+import com.google.common.collect.Maps;
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
-import com.mysema.query.sql.DerbyTemplates;
-import com.mysema.query.sql.H2Templates;
-import com.mysema.query.sql.HSQLDBTemplates;
-import com.mysema.query.sql.OracleTemplates;
-import com.mysema.query.sql.PostgresTemplates;
-import com.mysema.query.sql.SQLServerTemplates;
-import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.TeradataTemplates;
+import com.mysema.query.sql.*;
+import org.hsqldb.types.Types;
 
 /**
  * @author tiwe
@@ -198,6 +186,45 @@ public final class Connections {
         .execute();
     }
 
+    public static Map<Integer, String> getSpatialData() {
+        Map<Integer, String> m = Maps.newHashMap();
+        // point
+        m.put(1, "POINT (2 2)");
+        m.put(2, "POINT (8 7)");
+        m.put(3, "POINT (1 9)");
+        m.put(4, "POINT (9 2)");
+        m.put(5, "POINT (4 4)");
+        // linestring
+        m.put(6, "LINESTRING (30 10, 10 30)");
+        m.put(7, "LINESTRING (30 10, 10 30, 40 40)");
+        // polygon
+        m.put(8, "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))");
+        m.put(9, "POLYGON ((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))");
+        // multipoint
+        m.put(11, "MULTIPOINT (10 40, 40 30)");
+        m.put(11, "MULTIPOINT (10 40, 40 30, 20 20, 30 10)");
+        // multilinestring
+        m.put(12, "MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))");
+        m.put(13, "MULTILINESTRING ((10 10, 20 20, 10 40))");
+        // multipolygon
+        m.put(14, "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))");
+        m.put(15, "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), " +
+        	"((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), " +
+        	"(30 20, 20 15, 20 25, 30 20)))");
+
+        // XXX POLYHEDRALSURFACE not supported
+
+        /* GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))
+           CIRCULARSTRING(1 5, 6 2, 7 3)
+           COMPOUNDCURVE(CIRCULARSTRING(0 0,1 1,1 0),(1 0,0 1))
+           CURVEPOLYGON(CIRCULARSTRING(-2 0,-1 -1,0 0,1 -1,2 0,0 2,-2 0),(-1 0,0 0.5,1 0,0 1,-1 0))
+           MULTICURVE((5 5,3 5,3 3,0 3),CIRCULARSTRING(0 0,2 1,2 2))
+           TRIANGLE((0 0 0,0 1 0,1 1 0,0 0 0))
+           TIN (((0 0 0, 0 0 1, 0 1 0, 0 0 0)), ((0 0 0, 0 1 0, 1 1 0, 0 0 0)))
+        */
+        return m;
+    }
+
     public static void initCubrid() throws SQLException, ClassNotFoundException{
         targetHolder.set(Target.CUBRID);
         //SQLTemplates templates = new MySQLTemplates();
@@ -213,9 +240,9 @@ public final class Connections {
         // survey
         stmt.execute("drop table if exists SURVEY");
         stmt.execute("create table SURVEY(ID int auto_increment(16693,2), " +
-                        "NAME varchar(30)," +
-                        "NAME2 varchar(30)," +
-                        "constraint suryey_pk primary key(ID))");
+                "NAME varchar(30)," +
+                "NAME2 varchar(30)," +
+                "constraint suryey_pk primary key(ID))");
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
 
         // test
@@ -325,6 +352,18 @@ public final class Connections {
             return;
         }
 
+        stmt.execute("DROP ALIAS IF EXISTS InitGeoDB");
+        stmt.execute("CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"");
+        stmt.execute("CALL InitGeoDB()");
+
+        // shapes
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY blob)");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", ST_GeomFromText('" + entry.getValue() + "', 4326))");
+        }
+
         // qtest
         stmt.execute("drop table QTEST if exists");
         stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");
@@ -363,7 +402,6 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         h2Inited = true;
     }
-
 
     public static void initHSQL() throws SQLException, ClassNotFoundException{
         targetHolder.set(Target.HSQLDB);
@@ -431,11 +469,19 @@ public final class Connections {
             return;
         }
 
+        // shapes
+        stmt.execute("drop table if exists SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", GeomFromText('" + entry.getValue() + "'))");
+        }
+
         // survey
         stmt.execute("drop table if exists SURVEY");
         stmt.execute("create table SURVEY(ID int primary key auto_increment, " +
-        		"NAME varchar(30)," +
-        		"NAME2 varchar(30))");
+                "NAME varchar(30)," +
+                "NAME2 varchar(30))");
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
 
         // test
@@ -456,15 +502,15 @@ public final class Connections {
         stmt.execute("drop table if exists EMPLOYEE");
         //createEmployeeTable(templates);
         stmt.execute("create table EMPLOYEE ( " +
-          "ID INT PRIMARY KEY AUTO_INCREMENT, " +
-          "FIRSTNAME VARCHAR(50), " +
-          "LASTNAME VARCHAR(50), " +
-          "SALARY DECIMAL, "  +
-          "DATEFIELD DATE, " +
-          "TIMEFIELD TIME, " +
-          "SUPERIOR_ID INT, " +
-          "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
-        ")");
+                "ID INT PRIMARY KEY AUTO_INCREMENT, " +
+                "FIRSTNAME VARCHAR(50), " +
+                "LASTNAME VARCHAR(50), " +
+                "SALARY DECIMAL, "  +
+                "DATEFIELD DATE, " +
+                "TIMEFIELD TIME, " +
+                "SUPERIOR_ID INT, " +
+                "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
+                ")");
 
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -494,8 +540,8 @@ public final class Connections {
         // survey
         dropTable(templates, "SURVEY");
         stmt.execute("create table SURVEY (ID number(10,0), " +
-        		"NAME varchar(30 char)," +
-        		"NAME2 varchar(30 char))");
+                "NAME varchar(30 char)," +
+                "NAME2 varchar(30 char))");
 
         try {
             stmt.execute("drop sequence survey_seq");
@@ -507,12 +553,12 @@ public final class Connections {
 
         stmt.execute("create sequence survey_seq");
         stmt.execute("create or replace trigger survey_trigger\n"+
-          "before insert on survey\n"+
-          "for each row\n" +
-          "when (new.id is null)\n"+
-          "begin\n"+
-          "  select survey_seq.nextval into :new.id from dual;\n"+
-          "end;\n");
+                "before insert on survey\n"+
+                "for each row\n" +
+                "when (new.id is null)\n"+
+                "begin\n"+
+                "  select survey_seq.nextval into :new.id from dual;\n"+
+                "end;\n");
 
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello')");
 
@@ -530,16 +576,16 @@ public final class Connections {
         // employee
         dropTable(templates, "EMPLOYEE");
         stmt.execute("create table EMPLOYEE ( " +
-            "ID NUMBER(10,0), " +
-            "FIRSTNAME VARCHAR2(50 CHAR), " +
-            "LASTNAME VARCHAR2(50 CHAR), " +
-            "SALARY DOUBLE PRECISION, " +
-            "DATEFIELD DATE, " +
-            "TIMEFIELD TIMESTAMP, " +
-            "SUPERIOR_ID NUMBER(10,0), " +
-            "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID), " +
-            "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID)" +
-         ")");
+                "ID NUMBER(10,0), " +
+                "FIRSTNAME VARCHAR2(50 CHAR), " +
+                "LASTNAME VARCHAR2(50 CHAR), " +
+                "SALARY DOUBLE PRECISION, " +
+                "DATEFIELD DATE, " +
+                "TIMEFIELD TIMESTAMP, " +
+                "SUPERIOR_ID NUMBER(10,0), " +
+                "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID), " +
+                "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID)" +
+                ")");
 
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -562,6 +608,16 @@ public final class Connections {
             return;
         }
 
+        // shapes
+        dropTable(templates, "SHAPES");
+//        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key, \"GEOMETRY\" geography(POINT,4326))");
+        stmt.execute("create table \"SHAPES\" (\"ID\" int not null primary key)");
+        stmt.execute("select AddGeometryColumn('SHAPES', 'GEOMETRY', -1, 'GEOMETRY', 2)");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into \"SHAPES\" values(" + entry.getKey()
+                    +", '" + entry.getValue() + "')");
+        }
+
         // types
         dropType(stmt, "u_country");
         stmt.execute("create type u_country as enum ('Brazil', 'England', 'Germany')");
@@ -572,8 +628,8 @@ public final class Connections {
         // arrays
         dropTable(templates, "ARRAYTEST");
         stmt.execute("create table \"ARRAYTEST\" (\n" +
-            "\"ID\" bigint primary key,\n" +
-            "\"MYARRAY\" varchar(8)[])");
+                "\"ID\" bigint primary key,\n" +
+                "\"MYARRAY\" varchar(8)[])");
 
         // survey
         dropTable(templates, "SURVEY");
@@ -586,8 +642,8 @@ public final class Connections {
         }
         stmt.execute("create sequence SURVEY_SEQ");
         stmt.execute("create table \"SURVEY\"(" +
-        		"\"ID\" int DEFAULT NEXTVAL('SURVEY_SEQ'), " +
-        		"\"NAME\" varchar(30), \"NAME2\" varchar(30))");
+                "\"ID\" int DEFAULT NEXTVAL('SURVEY_SEQ'), " +
+                "\"NAME\" varchar(30), \"NAME2\" varchar(30))");
         stmt.execute("insert into \"SURVEY\" values (1, 'Hello World', 'Hello')");
 
         // test
@@ -610,8 +666,8 @@ public final class Connections {
         dropTable(templates, "EMPLOYEE");
         createEmployeeTable(templates);
         addEmployees("insert into \"EMPLOYEE\" " +
-            "(\"ID\", \"FIRSTNAME\", \"LASTNAME\", \"SALARY\", \"DATEFIELD\", \"TIMEFIELD\", \"SUPERIOR_ID\") " +
-            "values (?,?,?,?,?,?,?)");
+                "(\"ID\", \"FIRSTNAME\", \"LASTNAME\", \"SALARY\", \"DATEFIELD\", \"TIMEFIELD\", \"SUPERIOR_ID\") " +
+                "values (?,?,?,?,?,?,?)");
 
         // date_test and time_test
         dropTable(templates, "TIME_TEST");
@@ -695,6 +751,13 @@ public final class Connections {
             return;
         }
 
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", geometry::STGeomFromText('" + entry.getValue() + "', 0))");
+        }
+
         // survey
         dropTable(templates, "SURVEY");
         stmt.execute("create table SURVEY(ID int, NAME varchar(30), NAME2 varchar(30))");
@@ -740,6 +803,14 @@ public final class Connections {
         }
 
         String identity = "GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT BY 1)";
+
+        // shapes
+        dropTable(templates, "SHAPES");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY ST_GEOMETRY)");
+        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+            stmt.execute("insert into SHAPES values(" + entry.getKey()
+                    +", '" + entry.getValue() + "')");
+        }
 
         // qtest
         dropTable(templates, "QTEST");

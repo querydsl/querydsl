@@ -272,7 +272,7 @@ public final class Expressions {
      * @return
      */
     public static BooleanExpression predicate(Operator<Boolean> operation, Expression<?>... args) {
-	return BooleanOperation.create(operation, args);
+        return BooleanOperation.create(operation, args);
     }
 
     /**

@@ -49,7 +49,6 @@ public class PostgresTemplates extends SQLTemplates {
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
 
-        // type mappings
         addClass2TypeMappings("numeric(3,0)", Byte.class);
         addClass2TypeMappings("double precision", Double.class);
 

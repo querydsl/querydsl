@@ -257,6 +257,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String columnComparatorClass;
 
     /**
+     * @parameter default-value=false
+     */
+    private boolean spatial;
+    
+    /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
      * com.bar.Foo for class
@@ -323,6 +328,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             exporter.setExportAll(exportAll);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+            exporter.setSpatial(spatial);
 
             if (imports != null && imports.length > 0) {
                 exporter.setImports(imports);

@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.types.Ops;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -53,7 +54,7 @@ public class SQLiteTemplates extends SQLTemplates {
     public SQLiteTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable(null);
-        setBigDecimalSupported(false);
+        addCustomType(BigDecimalAsDoubleType.DEFAULT);
         setUnionsWrapped(false);
         setLimitRequired(true);
         setNullsFirst(null);

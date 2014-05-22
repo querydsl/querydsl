@@ -13,9 +13,9 @@
  */
 package com.mysema.query.sql.mssql;
 
+
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.template.NumberTemplate;
-
 
 /**
  * Convenience functions and constants for SQL Server usage

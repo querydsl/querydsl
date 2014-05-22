@@ -29,7 +29,12 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-spatial</artifactId>
+      <version>${project.version}</version>
+    </dependency>        
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -101,6 +106,13 @@
       <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.opengeo</groupId>
+      <artifactId>geodb</artifactId>
+      <version>0.7</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>

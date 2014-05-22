@@ -76,17 +76,19 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void appendAsColumnName(Path<?> path) {
-    	String column = ColumnMetadata.getName(path);
+        String column = ColumnMetadata.getName(path);
         append(templates.quoteIdentifier(column));
     }
 
-    private void appendAsSchemaName(RelationalPath<?> path) {
-        final String schema = configuration.getSchema(path.getSchemaName());
+    private SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
+        return configuration.getOverride(path.getSchemaAndTable());
+    }
+
+    private void appendSchemaName(String schema) {
         append(templates.quoteIdentifier(schema));
     }
 
-    private void appendAsTableName(RelationalPath<?> path) {
-        final String table = configuration.getTable(path.getSchemaName(), path.getTableName());
+    private void appendTableName(String table) {
         append(templates.quoteIdentifier(table));
     }
 
@@ -157,11 +159,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
+                SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
                 if (templates.isPrintSchema()) {
-                    appendAsSchemaName(pe);
+                    appendSchemaName(schemaAndTable.getSchema());
                     append(".");
                 }
-                appendAsTableName(pe);
+                appendTableName(schemaAndTable.getTable());
                 append(templates.getTableAlias());
             }
         }
@@ -734,11 +737,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml) {
             if (path.equals(entity) && path instanceof RelationalPath<?>) {
+                SchemaAndTable schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
                 if (dmlWithSchema && templates.isPrintSchema()) {
-                    appendAsSchemaName((RelationalPath<?>)path);
+                    appendSchemaName(schemaAndTable.getSchema());
                     append(".");
                 }
-                appendAsTableName((RelationalPath<?>)path);
+                appendTableName(schemaAndTable.getTable());
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
                 appendAsColumnName(path);

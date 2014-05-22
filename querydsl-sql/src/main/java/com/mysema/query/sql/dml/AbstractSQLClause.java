@@ -44,12 +44,15 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected final SQLListeners listeners;
 
+    protected boolean useLiterals;
+
     /**
      * @param configuration
      */
     public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
+        this.useLiterals = configuration.getUseLiterals();
     }
 
     /**
@@ -75,6 +78,12 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         return new SQLBindings(queryString, args.build());
     }
 
+    protected SQLSerializer createSerializer() {
+        SQLSerializer serializer = new SQLSerializer(configuration, true);
+        serializer.setUseLiterals(useLiterals);
+        return serializer;
+    }
+
     /**
      * Get the SQL string and bindings
      *
@@ -94,7 +103,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
             List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, " +
-            		"but got " + constantPaths.size());
+                    "but got " + constantPaths.size());
         }
         for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
@@ -139,6 +148,10 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         } catch (SQLException e) {
             throw configuration.translate(e);
         }
+    }
+
+    public void setUseLiterals(boolean useLiterals) {
+        this.useLiterals = useLiterals;
     }
 
 }

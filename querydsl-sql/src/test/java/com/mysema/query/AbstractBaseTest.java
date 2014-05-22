@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import java.util.List;
 import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.util.List;

@@ -11,12 +11,13 @@ import com.mysema.query.LikeEscapeBase;
 import com.mysema.query.MergeBase;
 import com.mysema.query.SelectBase;
 import com.mysema.query.SelectUseLiteralsBase;
+import com.mysema.query.SpatialBase;
 import com.mysema.query.SelectMySQLBase;
 import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.spatial.MySQLSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -29,6 +30,7 @@ public class MySQLSuiteTest extends AbstractSuite {
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
     public static class SelectMySQL extends SelectMySQLBase {}
+    public static class Spatial extends SpatialBase {}
     public static class SelectUseLiterals extends SelectUseLiteralsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
@@ -38,7 +40,7 @@ public class MySQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.setTemplates(MySQLTemplates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(MySQLSpatialTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

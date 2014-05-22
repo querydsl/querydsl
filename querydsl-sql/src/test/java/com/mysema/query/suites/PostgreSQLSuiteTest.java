@@ -11,12 +11,13 @@ import com.mysema.query.LikeEscapeBase;
 import com.mysema.query.MergeBase;
 import com.mysema.query.SelectBase;
 import com.mysema.query.SelectUseLiteralsBase;
+import com.mysema.query.SpatialBase;
 import com.mysema.query.SelectWindowFunctionsBase;
 import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.spatial.PostGISTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -29,6 +30,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
     public static class SelectUseLiterals extends SelectUseLiteralsBase {}
+    public static class Spatial extends SpatialBase {}
     public static class SelectWindowFunctions extends SelectWindowFunctionsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
@@ -38,7 +40,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initPostgres();
-        Connections.setTemplates(PostgresTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.setTemplates(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
     }
 
 }

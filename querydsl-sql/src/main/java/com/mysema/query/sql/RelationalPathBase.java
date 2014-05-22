@@ -13,24 +13,18 @@
  */
 package com.mysema.query.sql;
 
-import static com.google.common.collect.ImmutableList.copyOf;
-
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.path.BeanPath;
+import static com.google.common.collect.ImmutableList.copyOf;
 
 /**
  * RelationalPathBase is a base class for {@link RelationalPath} implementations
@@ -55,6 +49,8 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     private final String schema, table;
 
+    private final SchemaAndTable schemaAndTable;
+
     private transient FactoryExpression<T> projection;
 
     private transient NumberExpression<Long> count, countDistinct;
@@ -68,6 +64,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         super(type, metadata);
         this.schema = schema;
         this.table = table;
+        this.schemaAndTable = new SchemaAndTable(schema, table);
     }
 
     protected PrimaryKey<T> createPrimaryKey(Path<?>... columns) {
@@ -169,6 +166,11 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Override
     public PrimaryKey<T> getPrimaryKey() {
         return primaryKey;
+    }
+
+    @Override
+    public SchemaAndTable getSchemaAndTable() {
+        return schemaAndTable;
     }
 
     @Override

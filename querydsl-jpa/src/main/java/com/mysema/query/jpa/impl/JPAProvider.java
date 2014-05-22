@@ -44,7 +44,7 @@ public final class JPAProvider {
     }
 
     static {
-    	addMapping("org.batoo.jpa.core.impl.manager.EntityManagerImpl", BatooTemplates.DEFAULT);
+        addMapping("org.batoo.jpa.core.impl.manager.EntityManagerImpl", BatooTemplates.DEFAULT);
         addMapping("org.hibernate.Session", HQLTemplates.DEFAULT);
         addMapping("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT);
         addMapping("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT);

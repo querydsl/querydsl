@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import javax.inject.Named;
 
 /**
  * AbstractModule provides a base class for annotation based dependency injection
- * 
+ *
  * @author tiwe
  *
  */
@@ -56,6 +56,11 @@ public abstract class AbstractModule {
     }
 
     public final <T> AbstractModule bind(String name, T implementation) {
+        namedInstances.put(name, implementation);
+        return this;
+    }
+
+    public final <T> AbstractModule bindInstance(String name, Class<? extends T> implementation) {
         namedInstances.put(name, implementation);
         return this;
     }
@@ -95,10 +100,10 @@ public abstract class AbstractModule {
             if (implementation != null) {
                 T instance = (T)createInstance(implementation);
                 namedInstances.put(name, instance);
-                return instance;    
+                return instance;
             } else {
                 return null;
-            }            
+            }
         } else {
             throw new IllegalArgumentException(iface.getName() + " " + name + " is not registered");
         }
