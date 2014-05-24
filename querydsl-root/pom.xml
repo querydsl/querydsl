@@ -35,7 +35,7 @@
     <sqlite.version>3.7.2</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
     
-    <guava.version>13.0.1</guava.version>
+    <guava.version>15.0</guava.version>
     <codegen.version>0.6.2</codegen.version>
     <mysema.lang.version>0.2.4</mysema.lang.version>
     <cglib.version>2.2.2</cglib.version>    
