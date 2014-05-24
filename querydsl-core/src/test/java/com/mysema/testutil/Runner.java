@@ -30,7 +30,7 @@ public final class Runner {
         System.err.print("- ");
 
         // perform timing
-        Stopwatch stopwatch = new Stopwatch().start();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         benchmark.run(BENCHMARK);
         System.err.println(label + " " + stopwatch.stop().toString());
     }
