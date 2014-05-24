@@ -130,6 +130,13 @@
       <version>2.0.1.2</version>
       <scope>test</scope>
      </dependency>
+     <!-- override Querydsl Core's guava version for Batoo JPA -->
+     <dependency>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+         <version>14.0</version>
+         <scope>compile</scope>
+     </dependency>
      <dependency>
       <groupId>com.jolbox</groupId>
       <artifactId>bonecp</artifactId>
