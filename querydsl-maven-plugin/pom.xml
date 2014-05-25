@@ -13,7 +13,14 @@
   <artifactId>querydsl-maven-plugin</artifactId>
   <name>Querydsl - Maven plugin</name>
   <description>Querydsl Maven plugin</description>
+  <url>${project.homepage}</url>
   <packaging>maven-plugin</packaging>
+  
+  <scm>
+    <connection>${project.checkout}</connection>
+    <developerConnection>${project.checkout}</developerConnection>
+    <url>${project.githubpage}</url>
+  </scm>
   
   <properties>
     <mvn.version>2.2.1</mvn.version>

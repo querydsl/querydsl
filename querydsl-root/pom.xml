@@ -7,7 +7,7 @@
   <version>3.4.0.BUILD-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
-  <url>http://www.querydsl.com</url>
+  <url>${project.homepage}</url>
   
   <parent>
     <groupId>com.mysema.home</groupId>
@@ -22,6 +22,9 @@
   <properties>    
     <failIfNoTests>false</failIfNoTests>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.homepage>http://www.querydsl.com</project.homepage>
+    <project.githubpage>http://github.com/querydsl/querydsl</project.githubpage>
+    <project.checkout>scm:git:git@github.com:querydsl/querydsl.git</project.checkout>
     
     <!-- deps -->
     <derby.version>10.10.1.1</derby.version>
@@ -92,10 +95,10 @@
     <url>http://www.mysema.com</url>
   </organization>
   
-  <scm>                  
-    <connection>scm:git:git@github.com:querydsl/querydsl.git</connection>
-    <developerConnection>scm:git:git@github.com:querydsl/querydsl.git</developerConnection>
-    <url>git@github.com:querydsl/querydsl.git</url>
+  <scm>
+    <connection>${project.checkout}</connection>
+    <developerConnection>${project.checkout}</developerConnection>
+    <url>${project.githubpage}</url>
   </scm>
   
   <developers>

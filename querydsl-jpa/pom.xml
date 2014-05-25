@@ -13,7 +13,14 @@
   <artifactId>querydsl-jpa</artifactId>
   <name>Querydsl - JPA support</name>
   <description>JPA support for Querydsl</description>
+  <url>${project.homepage}</url>
   <packaging>jar</packaging>
+  
+  <scm>
+    <connection>${project.checkout}</connection>
+    <developerConnection>${project.checkout}</developerConnection>
+    <url>${project.githubpage}</url>
+  </scm>
   
   <properties>
     <hibernate.version>4.3.5.Final</hibernate.version>

@@ -13,7 +13,14 @@
   <artifactId>querydsl-lucene3</artifactId>
   <name>Querydsl - Lucene 3 support</name>
   <description>Lucene support for Querydsl</description>
+  <url>${project.homepage}</url>
   <packaging>jar</packaging>
+  
+  <scm>
+    <connection>${project.checkout}</connection>
+    <developerConnection>${project.checkout}</developerConnection>
+    <url>${project.githubpage}</url>
+  </scm>
   
   <properties>
     <lucene.version>3.6.2</lucene.version>
