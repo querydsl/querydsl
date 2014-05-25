@@ -93,9 +93,9 @@
   </organization>
   
   <scm>                  
-    <connection>scm:git:git@github.com:mysema/querydsl.git</connection>
-    <developerConnection>scm:git:git@github.com:mysema/querydsl.git</developerConnection>
-    <url>git@github.com:mysema/querydsl.git</url>
+    <connection>scm:git:git@github.com:querydsl/querydsl.git</connection>
+    <developerConnection>scm:git:git@github.com:querydsl/querydsl.git</developerConnection>
+    <url>git@github.com:querydsl/querydsl.git</url>
   </scm>
   
   <developers>
