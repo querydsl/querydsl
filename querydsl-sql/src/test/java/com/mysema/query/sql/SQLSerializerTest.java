@@ -160,6 +160,28 @@ public class SQLSerializerTest {
     }
 
     @Test
+    public void ColumnOverrides() {
+        Configuration conf = new Configuration(new DerbyTemplates());
+        conf.registerColumnOverride("SURVEY", "NAME", "LABEL");
+
+        SQLQuery query = new SQLQuery(conf);
+        query.from(survey).where(survey.name.isNull());
+        assertEquals("from SURVEY SURVEY\n" +
+                "where SURVEY.LABEL is null", query.toString());
+    }
+
+    @Test
+    public void ColumnOverrides2() {
+        Configuration conf = new Configuration(new DerbyTemplates());
+        conf.registerColumnOverride("PUBLIC", "SURVEY", "NAME", "LABEL");
+
+        SQLQuery query = new SQLQuery(conf);
+        query.from(survey).where(survey.name.isNull());
+        assertEquals("from SURVEY SURVEY\n" +
+                "where SURVEY.LABEL is null", query.toString());
+    }
+
+    @Test
     public void Complex_SubQuery() {
         // create sub queries
         List<SubQueryExpression<Tuple>> sq = new ArrayList<SubQueryExpression<Tuple>>();
