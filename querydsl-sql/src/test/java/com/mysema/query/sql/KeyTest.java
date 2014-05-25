@@ -37,7 +37,7 @@ public class KeyTest {
         public final ForeignKey<QUser> superiorIdKey = createForeignKey(superiorId, "ID");
 
         public QUser(String path) {
-            super(QUser.class, PathMetadataFactory.forVariable(path), null, "USER");
+            super(QUser.class, PathMetadataFactory.forVariable(path), "", "USER");
             addMetadata();
         }
 
@@ -61,7 +61,7 @@ public class KeyTest {
         public final ForeignKey<QCompany> companyKey = createForeignKey(company, "ID");
 
         public QDepartment(String path) {
-            super(QDepartment.class, PathMetadataFactory.forVariable(path), null, "DEPARTMENT");
+            super(QDepartment.class, PathMetadataFactory.forVariable(path), "", "DEPARTMENT");
             addMetadata();
         }
 
@@ -80,7 +80,7 @@ public class KeyTest {
         public final PrimaryKey<QCompany> idKey = createPrimaryKey(id);
 
         public QCompany(String path) {
-            super(QCompany.class, PathMetadataFactory.forVariable(path), null, "COMPANY");
+            super(QCompany.class, PathMetadataFactory.forVariable(path), "", "COMPANY");
             addMetadata();
         }
 

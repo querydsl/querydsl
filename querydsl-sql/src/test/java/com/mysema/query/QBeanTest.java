@@ -13,10 +13,6 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.PathMetadata;
@@ -25,6 +21,8 @@ import com.mysema.query.types.QBean;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class QBeanTest {
 
@@ -37,17 +35,17 @@ public class QBeanTest {
         public final StringPath lastName = createString("lastName");
 
         public QPerson(String variable) {
-           super(QPerson.class, PathMetadataFactory.forVariable(variable), null, "PERSON");
+           super(QPerson.class, PathMetadataFactory.forVariable(variable), "", "PERSON");
            addMetadata();
         }
 
         public QPerson(BeanPath<? extends QPerson> entity) {
-            super(entity.getType(), entity.getMetadata(), null, "PERSON");
+            super(entity.getType(), entity.getMetadata(), "", "PERSON");
             addMetadata();
         }
 
         public QPerson(PathMetadata<?> metadata) {
-            super(QPerson.class, metadata, null, "PERSON");
+            super(QPerson.class, metadata, "", "PERSON");
             addMetadata();
         }
 
