@@ -2,24 +2,21 @@
 
 <sect1 id="collections_integration" revision="1">
 
-  <title>Querying Collections</title>
+  <title>콜렉션 쿼리</title>
 
-  <para>The querydsl-collections module can be used with generated query types and
-    without.
-    The first section describes the usage without generated query types:
+  <para>생성된 쿼리 타입을 이용하거나 또는 쿼리 타입 없이 querydsl-collections 모듈을 사용할 수 있다.
+    첫 번째 절에서는 생성된 쿼리 타입 없이 사용하는 방법을 설명한다.
   </para>
 
   <sect2>
-    <title>Usage without generated query types</title>
+    <title>생성된 쿼리 타입 없이 사용하기</title>
 
     <para>
-      To use querydsl-collections without generated query types you need to
-      use the
-      Querydsl alias feature. Here are some examples.
+      생성된 쿼리 타입 없이 querydsl-collections 모듈을 사용하려면, Querydsl 별칭 기능을 사용해야 한다. 다음은 몇 가지 예다.
     </para>
 
     <para>
-      To get started, add the following static imports:
+      먼저 다음의 정적 임포트를 추가한다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -30,18 +27,14 @@ import static com.mysema.query.alias.Alias.*;
 ]]></programlisting>
 
     <para>
-      And now create an alias instance for the Cat class. Alias instances can only be
-      created for non-final classes with an empty constructor. Make sure your class has one.
+      이제 Cat 클래스에 대한 별칭 인스턴스를 만들어보자.
+      기본 생성자를 가진 non-final 클래스에 대해서만 Alias 인스턴스를 만들수 있다.
     </para>
 
     <para>
-      The alias instance of type Cat and its getter invocations are
-      transformed into paths by wrapping them into dollar method invocations.
-      The call
-      <code>c.getKittens()</code>
-      for example is internally
-      transformed into the property path <code>c.kittens</code> inside the
-      dollar method.
+      $ 메서드로 감싸는 방법으로 Cat 타입의 별칭 인스턴스 및 그것의 getter 메서드 호출을 
+      경로로 바꾼다. 예를 들어, <code>c.getKittens()</code>에 대한 호출은 
+      $ 메서드를 통해 c.kittends 경로로 바뀐다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -54,9 +47,7 @@ for (String name : from($(c),cats)
 ]]></programlisting>
 
     <para>
-      The following example is a variation of the previous, where the access
-      to the
-      list size happens inside the dollar-method invocation.
+      다음은 앞 예제를 다르게 작성해본 것이다. 아래 코드는 List의 size() 메서드를 $ 메서드로 감쌌다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -69,13 +60,13 @@ for (String name : from($(c),cats)
 ]]></programlisting>
 
     <para>
-      All non-primitive and non-final typed properties of aliases are aliases
-      themselves. So you may cascade method calls until you hit a
-      primitive or non-final type (e.g. java.lang.String) in the dollar-method scope.
+      별칭의 모든 비-기본타입과 non-final 타입 프로퍼티는 별칭 그 자체이다. 
+      따라서, $ 메서드 범위안에서 기본 타입이나 non-final 타입 (예, java.lang.String)을 만날 때 까지
+      연속된 메서드 호출이 가능하다.
     </para>
 
     <para>
-      e.g.
+      예를 들어,
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -83,9 +74,8 @@ $(c.getMate().getName())
 ]]></programlisting>
 
     <para>
-      is transformed into
-      <emphasis>c.mate.name</emphasis>
-      internally, but
+      이 코드는 <emphasis>c.mate.name</emphasis>으로 바뀐다.
+      하지만, 아래 코드는 올바르게 바뀌지 않는다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -93,21 +83,21 @@ $(c.getMate().getName().toLowerCase())
 ]]></programlisting>
 
     <para>
-      is not transformed properly, since the toLowerCase() invocation is not tracked.
+      그 이유는 toLowerCase() 호출은 추적되지 않기 때문이다.
     </para>
     <para>
-      Note also that you may only invoke getters, size(), contains(Object) and
-      get(int) on alias types. All other invocations throw exceptions.
+      별칭 타입에 대해 getter, size(), contains(Object), get(int) 만 호출할 수 있다.
+      나머지 다른 메서드에 대한 호출은 익셉션을 발생시킨다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Usage with generated query types</title>
+    <title>생성된 쿼리 타입을 갖고 사용하기</title>
 
     <para>
-      The example above can be expressed like this with generated expression types
+      앞서 예제를 생성된 쿼리 타입을 이용하면 다음과 같이 표현할 수 있다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -119,19 +109,18 @@ for (String name : from(cat,cats)
 }
 ]]></programlisting>
 
-    <para>When you use generated query types, you instantiate expressions instead of alias
-      instances
-      and use the property paths directly without any dollar-method wrapping.
+    <para>생성된 쿼리 타입을 사용하면, 별칭 인스턴스 대신 표현식을 생성할 수 있고
+      $ 메서드를 사용할 필요 없이 프로퍼티 경로를 바로 사용할 수 있다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Maven integration</title>
+    <title>메이븐 통합</title>
 
     <para>
-      Add the following dependencies to your Maven project:
+      다음 의존을 메이븐 프로젝트에 추가한다.
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -157,12 +146,9 @@ for (String name : from(cat,cats)
 
 
     <para>
-      If you are not using JPA or JDO you can generate expression types for your
-      domain types by
-      annotating them with the
-      <code>com.mysema.query.annotations.QueryEntity</code>
-      annotation and adding the
-      following plugin configuration into your Maven configuration (pom.xml):
+      JPA나 JDO를 사용하지 않는다면, 도메인 타입에 <code>com.mysema.query.annotations.QueryEntity</code>
+      애노테이션을 적용하고 메이븐 설정(pom.xml)에 다음 플러그인 설정을 추가함으로써
+      표현식 타입을 생성할 수 있다.
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -196,10 +182,9 @@ for (String name : from(cat,cats)
 
   <sect2>
 
-    <title>Ant integration</title>
+    <title>Ant 통합</title>
 
-    <para>Place the jar files from the full-deps bundle on your classpath and use the
-      following tasks for Querydsl code generation:
+    <para>클래스패스에 full-deps에 포함된 jar 파일들을 위치시키고, 다음 태스크를 이용해서 Querydsl 코드를 생성한다.
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -220,13 +205,9 @@ for (String name : from(cat,cats)
 ]]></programlisting>
 
     <para>
-      Replace
-      <emphasis>src</emphasis>
-      with your main source folder,
-      <emphasis>generated</emphasis>
-      with your folder for generated sources and
-      <emphasis>build</emphasis>
-      with your target folder.
+      <emphasis>src</emphasis>를 메인 소스 폴더로 변경하고,
+      <emphasis>generated</emphasis>를 생성된 소스를 위한 폴더로 변경하고,
+      <emphasis>build</emphasis>를 클래스 생성 폴더로 변경한다.
     </para>
 
   </sect2>
@@ -235,7 +216,7 @@ for (String name : from(cat,cats)
 
     <title>Hamcrest matchers</title>
 
-    <para>Querydsl Collections provides Hamcrest matchers. With these imports</para>
+    <para>Querydsl Collections 모듈은 Hamcrest matchers를 제공한다. 다음의 import를 통해 사용하면 된다.</para>
 
     <programlisting language="java"><![CDATA[    
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -244,7 +225,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 ]]></programlisting>
 
-    <para>they can be used like this:</para>
+    <para>다음과 같이 사용할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[  
 Car car = new Car();
@@ -255,9 +236,7 @@ assertThat(car, hasValue($.horsePower, equalTo(123)));
 ]]></programlisting>
 
     <para>
-      The Hamcrest matchers have been contributed by
-      <ulink url="https://github.com/jeroenvs">Jeroen van Schagen</ulink>
-      .
+      <ulink url="https://github.com/jeroenvs">Jeroen van Schagen</ulink>가 Hamcrest matchers를 기여했다.
     </para>
 
   </sect2>

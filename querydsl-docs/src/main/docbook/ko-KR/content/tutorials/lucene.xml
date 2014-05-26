@@ -2,19 +2,18 @@
 
 <sect1 id="lucene_integration" revision="1">
 
-  <title>Querying Lucene</title>
+  <title>루신 쿼리</title>
 
-  <para>This chapter describes the querying functionality of the Lucene module.</para>
+  <para>이 절에서는 루신 모듈의 쿼리 기능을 설명한다.</para>
   
   <sect2>
     <title>Maven integration</title>
 
     <para>
-      Querydsl Lucene can be used via the querydsl-lucene3 module for Lucene 3 and querydsl-lucene4
-      for Lucene 4
+      Querydsl 루신을 사용하려면 루신 3은 querydsl-lucene3 모듈을 그리고 루신 4는 querydsl-lucene4 모듈을 사용한다.
     </para>
     
-    <para>Lucene 3:</para>
+    <para>루신 3:</para>
 
     <programlisting language="xml"><![CDATA[
 <dependency>
@@ -30,7 +29,7 @@
 </dependency>    
 ]]></programlisting>
 
-  <para>Lucene 4:</para>
+  <para>루신 4:</para>
   
     <programlisting language="xml"><![CDATA[
 <dependency>
@@ -50,10 +49,9 @@
 
   <sect2>
 
-    <title>Creating the query types</title>
+    <title>쿼리 타입 생성</title>
 
-    <para>With fields year and title a manually created query type could look something
-      like this:</para>
+    <para>다음과 같은 방식으로 year와 title 필드를 가진 쿼리 타입을 직접 작성할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[ 
 public class QDocument extends EntityPathBase<Document>{
@@ -69,17 +67,17 @@ public class QDocument extends EntityPathBase<Document>{
 }
 ]]></programlisting>
 
-    <para>QDocument represents a Lucene document with the fields year and title.</para>
+    <para>QDocument는 year와 title 필드를 가진 루신 Document를 표현한다.</para>
 
-    <para>Code generation is not available for Lucene, since no schema data is available.
+    <para>루신의 경우 스키마 데이터를 사용할 수 없기 때문에 코드 생성 기능을 사용할 수 없다.
     </para>
 
   </sect2>
 
   <sect2>
-    <title>Querying</title>
+    <title>쿼리</title>
 
-    <para>Querying with Querydsl Lucene is as simple as this:</para>
+    <para>Querydsl 루신으로 쿼리하는 것은 간단하다.</para>
 
     <programlisting language="java"><![CDATA[ 
 QDocument doc = new QDocument("doc");
@@ -91,7 +89,7 @@ List<Document> documents = query
     .list();
 ]]></programlisting>
 
-    <para>which is transformed into the following Lucene query:</para>
+    <para>위 코드는 다음의 루신 쿼리로 바뀐다.</para>
 
     <programlisting><![CDATA[     
 +year:[1800 TO 2000] +title:huckle*
@@ -101,47 +99,37 @@ List<Document> documents = query
 
   <sect2>
 
-    <title>General usage</title>
+    <title>일반 용법</title>
 
-    <para>Use the the cascading methods of the LuceneQuery class like this</para>
+    <para>LuceneQuery 클래스의 cascading 메서드는 다음과 같다.</para>
 
     <para>
       <emphasis>where:</emphasis>
-      Add the query filters, either in varargs form separated via commas or
-      cascaded via the and-operator. Supported operations are operations performed on PStrings except
-      <emphasis>
-        matches
-      </emphasis>
-      ,
-      <emphasis>indexOf</emphasis>
-      ,
-      <emphasis>charAt</emphasis>
-      . Currently
-      <emphasis>in</emphasis>
-      is
-      not supported, but will be in the future.
+      쿼리 필터를 추가한다. 가변인자나 and/or 메서드를 이용해서 필터를 추가한다.
+      PStrings에 수행되는 오퍼레이션을 지원한다.
+      (<emphasis>matches</emphasis>, <emphasis>indexOf</emphasis>, <emphasis>charAt</emphasis>은 제외).
+      현재 <emphasis>in</emphasis>은 지원되지 않으며, 향후 지원할 예정이다.
     </para>
 
     <para>
       <emphasis>orderBy:</emphasis>
-      Add ordering of the result as an varargs array of order expressions.
-      Use asc() and desc() on numeric, string and other comparable expression to access the
-      OrderSpecifier instances.
+      정렬 표현식을 이용해서 정렬 순서를 지정한다. 숫자나 문자열에 대해서는 asc()나 desc()를
+      사용하고, OrderSpecifier에 접근하기 위해 다른 비교 표현식을 사용한다.
     </para>
 
     <para>
       <emphasis>limit, offset, restrict:</emphasis>
-      Set the paging of the result. Limit for max results,
-      offset for skipping rows and restrict for defining both in one call.
+      결과의 페이징을 설정한다. limit은 최대 결과 개수, offset은 결과의 시작 행,
+      restrict는 limit과 offset을 함께 정의한다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Ordering</title>
+    <title>정렬</title>
 
-    <para>The syntax for declaring ordering is </para>
+    <para>정렬 구문은 다음과 같다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -150,16 +138,15 @@ query
     .list();
 ]]></programlisting>
 
-    <para>which is equivalent to the following Lucene query</para>
+    <para>위 코드는 다음 루신 쿼리와 동일하다.</para>
 
     <programlisting>  
 title:*
 </programlisting>
 
-    <para>The results are sorted ascending based on title and year.</para>
+    <para>title과 year의 오름차순으로 결과를 정렬한다.</para>
 
-    <para>Alternatively a sort method call can be used to declare the sort logic as a Sort
-      instance instead
+    <para>sort 메서드와 Sort 인스턴스를 사용해서 정렬을 지정할 수 있다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -173,9 +160,9 @@ query
   </sect2>
 
   <sect2>
-    <title>Limit</title>
+    <title>결과 개수 제한</title>
 
-    <para>The syntax for declaring a limit is </para>
+    <para>결과 개수 제한은 다음과 같이 한다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -187,9 +174,9 @@ query
   </sect2>
 
   <sect2>
-    <title>Offset</title>
+    <title>오프셋</title>
 
-    <para>The syntax for declaring an offset is </para>
+    <para>오프셋은 다음과 같이 지정한다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -202,10 +189,10 @@ query
 
   <sect2>
 
-    <title>Fuzzy searches</title>
+    <title>퍼지(fuzzy) 검색</title>
 
-    <para>Fuzzy searches can be expressed via fuzzyLike methods in the
-      <code>com.mysema.query.lucene.LuceneExpressions</code> class:
+    <para><code>com.mysema.query.lucene.LuceneExpressions</code> 클래스에서 정의된
+    fuzzyLike 메서드를 이용해서 퍼지 검색을 할 수 있다.
     </para>
 
     <programlisting language="java"><![CDATA[ 
@@ -218,9 +205,9 @@ query
 
   <sect2>
 
-    <title>Applying Lucene filters to queries</title>
+    <title>루신 필터를 쿼리에 적용하기</title>
 
-    <para>It is possible to apply a single Lucene filter to the query like this:</para>
+    <para>단일 루신 필터를 쿼리에 적용할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -229,7 +216,7 @@ query
     .list();
 ]]></programlisting>
 
-    <para>A shortcut for distinct filtering is provided via the distinct(Path) method:
+    <para>distinct 필터링을 위한 distinct(Path) 메서드를 제공한다.
     </para>
 
     <programlisting language="java"><![CDATA[ 

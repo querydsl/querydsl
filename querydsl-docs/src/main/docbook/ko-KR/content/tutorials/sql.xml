@@ -2,16 +2,15 @@
 
 <sect1 id="sql_integration" revision="1">
 
-  <title>Querying SQL</title>
+  <title>SQL 쿼리</title>
 
-  <para>This chapter describes the query type generation and querying functionality of the
-    SQL module.</para>
+  <para>본 절에서는 SQL 모듈의 쿼라 타입 생성과 쿼리 기능을 설명한다.</para>
 
   <sect2>
-    <title>Maven integration</title>
+    <title>메이븐 통합</title>
 
     <para>
-      Add the following dependencies to your Maven project:
+      메이븐 프로젝트에 다음의 의존을 추가한다.
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -35,17 +34,15 @@
 </dependency>   
 ]]></programlisting>
 
-    <para>The querydsl-sql-codegen dependency can be skipped, if code generation happens
-      via Maven or Ant.</para>
+    <para>코드 생성을 메이븐이나 Ant에서 할 경우 querydsl-sql-codegen 의존은 생략할 수 있다.</para>
 
   </sect2>
 
   <sect2>
 
-    <title>Code generation via Maven</title>
+    <title>메이븐을 통한 코드 생성</title>
 
-    <para>This functionality should be primarily used via the Maven plugin. Here is an example:
-    </para>
+    <para>코드 생성은 주로 메이븐 플러그인을 통해서 수행한다. 다음은 설정 예다.</para>
 
     <programlisting language="xml"><![CDATA[   
 <plugin>
@@ -76,177 +73,170 @@
 ]]></programlisting>
 
     <para>
-      Use the goal <emphasis>test-export</emphasis>
-      to add the targetFolder as a test compile source root
-      instead of a compile source root.
+      컴파일 소스 루트 대신에 테스트 컴파일 소스 루트로 targetFolder를 추가하려면
+      <emphasis>test-export</emphasis> 골을 사용하면 된다.
     </para>
 
     <table>
-      <title>Parameters</title>
+      <title>파라미터</title>
       <tgroup cols='2' align='left' colsep='1' rowsep='1'>
         <colspec colname='Name' colwidth="1*" />
         <colspec colname='Descriptions' colwidth="1*" />
         <thead>
           <row>
-            <entry>Name</entry>
-            <entry>Description</entry>
+            <entry>이름</entry>
+            <entry>설명</entry>
           </row>
         </thead>
         <tbody>
           <row>
             <entry>jdbcDriver</entry>
-            <entry>class name of the JDBC driver</entry>
+            <entry>JDBC 드라이버 클래스 이름</entry>
           </row>
           <row>
             <entry>jdbcUrl</entry>
-            <entry>JDBC url</entry>
+            <entry>JDBC URL</entry>
           </row>
           <row>
             <entry>jdbcUser</entry>
-            <entry>JDBC user</entry>
+            <entry>JDBC 사용자</entry>
           </row>
           <row>
             <entry>jdbcPassword</entry>
-            <entry>JDBC password</entry>
+            <entry>JDBC 암호</entry>
           </row>
           <row>
             <entry>namePrefix</entry>
-            <entry>name prefix for generated query classes (default: Q)</entry>
+            <entry>생성될 쿼리 클래스의 접두어 (기본: Q)</entry>
           </row>
           <row>
             <entry>nameSuffix</entry>
-            <entry>name suffix for generated query classes (default: )</entry>
+            <entry>생성될 쿼리 클래스의 접미사 (기본: )</entry>
           </row>
           <row>
             <entry>beanPrefix</entry>
-            <entry>name prefix for generated bean classes</entry>
+            <entry>생성될 빈Bean 클래스의 접두어</entry>
           </row>
           <row>
             <entry>beanSuffix</entry>
-            <entry>name suffix for generated bean classes</entry>
+            <entry>생성될 빈 클래스의 접미사 </entry>
           </row>
           <row>
             <entry>packageName</entry>
-            <entry>package name where source files should be generated</entry>
+            <entry>생성될 소스 파일이 위치할 패키지</entry>
           </row>
           <row>
             <entry>beanPackageName</entry>
-            <entry>package name where bean files should be generated, (default:
-              packageName)</entry>
+            <entry>빈 파일이 생성될 패키지 이름 (기본: packageName)</entry>
           </row>
           <row>
             <entry>beanInterfaces</entry>
-            <entry>array of interface classnames to add to the bean classes (default: empty)</entry>
+            <entry>빈 클래스에 추가할 인터페이스 목록 (기본: 없음)</entry>
           </row>
           <row>
             <entry>beanAddToString</entry>
-            <entry>set to true to create a default toString() implementation (default: false)</entry>
+            <entry>true로 지정하면 기본 toString() 구현을 생성 (기본: false)</entry>
           </row>
           <row>
             <entry>beanAddFullConstructor</entry>
-            <entry>set to true to create a full constructor in addition to public empty (default: false)</entry>
+            <entry>true로 지정하면 기본 생성자 외에 완전한 생성자를 생성 (기본: false)</entry>
           </row>
           <row>
             <entry>beanPrintSupertype</entry>
-            <entry>set to true to print the supertype as well (default: false)</entry>
+            <entry>true로 지정하면 상위 타입을 출력 (기본: false)</entry>
           </row>
           <row>
             <entry>schemaPattern</entry>
-            <entry>a schema name pattern; must match the schema name as it is stored in the database;
-              (default: null)</entry>
+            <entry>스키마 이름 패턴. 반드시 데이터베이스에 존재하는 스키마 이름과 일치해야 한다. (기본: null)</entry>
           </row>
           <row>
             <entry>tableNamePattern</entry>
-            <entry>a table name pattern; must match the table name as it is stored in the database, 
-              multiple can be separated by comma
-              (default: null)</entry>
+            <entry>테이블 이름 패턴. 반드시 데이터베이스에 존재하는 테이블 이름과 일치해야 하며,
+            콤마로 구분해서 두 개 이상 지정할 수 있다. (기본: null)</entry>
           </row>
           <row>
             <entry>targetFolder</entry>
-            <entry>target folder where source filder should be generated</entry>
+            <entry>소스 파일을 생성할 폴더를 지정</entry>
           </row>
           <row>
             <entry>namingStrategyClass</entry>
-            <entry>class name of the NamingStrategy class (default: DefaultNamingStrategy)
+            <entry>NamingStrategy로 사용할 클래스 이름을 입력 (기본: DefaultNamingStrategy)
             </entry>
           </row>
           <row>
             <entry>beanSerializerClass</entry>
-            <entry>class name of the BeanSerializer class (default: BeanSerializer)</entry>
+            <entry>BeanSerializer로 사용할 클래스 이름 (기본: BeanSerializer)</entry>
           </row>
           <row>
             <entry>serializerClass</entry>
-            <entry>class name of the Serializer class (default: MetaDataSerializer)</entry>
+            <entry>Serializer로 사용할 클래스 이름 (기본: MetaDataSerializer)</entry>
           </row>
           <row>
             <entry>exportBeans</entry>
-            <entry>set to true to generate beans as well, see section 2.14.13 (default:
-              false)</entry>
+            <entry>true로 지정하면 빈을 함께 생성. 2.14.13 참고. (기본: false)</entry>
           </row>
           <row>
             <entry>innerClassesForKeys</entry>
-            <entry>set to true to generate inner classes for keys (default: false)</entry>
+            <entry>true로 지정하면 키를 내부 클래스로 생성 (기본: false)</entry>
           </row>
           <row>
             <entry>validationAnnotations</entry>
-            <entry>set to true to enable serialization of validation annotations
-              (default: false)</entry>
+            <entry>true로 지정하면 Validation 어노테이션의 직렬화를 가능하게 함 (기본: false) </entry>
           </row>
           <row>
             <entry>columnAnnotations</entry>
-            <entry>export column annotations (default: false)</entry>
+            <entry>true로 지정하면 컬럼 어노테이션을 추출함 (기본: false)</entry>
           </row>
           <row>
             <entry>createScalaSources</entry>
-            <entry>whether to export Scala sources instead of Java sources, (default:
-              false)</entry>
+            <entry>true로 지정하면 자바 소스 대신 Scala 소스로 추찰함 (기본: false)</entry>
           </row>
           <row>
             <entry>schemaToPackage</entry>
-            <entry>append schema name to package (default: false)</entry>
+            <entry>true로 지정하면 스키마 이름을 패키지에 붙임 (기본: false)</entry>
           </row>
           <row>
             <entry>lowerCase</entry>
-            <entry>lower case transformation of names (default: false)</entry>
+            <entry>true로 지정하면 이름을 소문자로 변환 (기본: false)</entry>
           </row>
           <row>
             <entry>exportTables</entry>
-            <entry>export tables (default: true)</entry>
+            <entry>true로 지정하면 테이블을 추출 (기본: true)</entry>
           </row>
           <row>
             <entry>exportViews</entry>
-            <entry>export views (default: true)</entry>
+            <entry>true로 지정한 뷰를 추출 (기본: true)</entry>
           </row>
           <row>
             <entry>exportPrimaryKeys</entry>
-            <entry>export primary keys (default: true)</entry>
+            <entry>true로 지정하면 PK를 추출 (기본: true)</entry>
           </row>
           <row>
             <entry>exportForeignKeys</entry>
-            <entry>export foreign keys (default: true)</entry>
+            <entry>true로 지정하면 외부키를 추출 (기본: true)</entry>
           </row>
           <row>
             <entry>customTypes</entry>
-            <entry>Custom user types (default: none)</entry>
+            <entry>커스텀 사용자 타입 (기본: 없음)</entry>
           </row>
           <row>
             <entry>typeMappings</entry>
-            <entry>Mappings of table.column to Java type (default: none)</entry>
+            <entry>테이블.컬럼에서 자바 타입으로 매핑 (기본: 없음)</entry>
           </row>
           <row>
             <entry>numericMappings</entry>
-            <entry>Mappings of size/digits to Java type (default: none)</entry>
+            <entry>크기/숫자에서 자바 타입으로 매핑 (기본: 없음)</entry>
           </row>
           <row>
             <entry>imports</entry>
-            <entry>Array of java imports added to generated query classes: <emphasis>com.bar</emphasis> for package (without .* notation), <emphasis>com.bar.Foo</emphasis> for class (default: empty)
+            <entry>생성된 쿼리 클래스에 추가할 자바 import 목록: 패키지의 경우 (.* 없이) 패키지 이름만(예, <emphasis>com.bar</emphasis>), 클래스의 경우 완전한 클래스 이름 (예, <emphasis>com.bar.Foo</emphasis>) 사용. (기본: 없음)
             </entry>
           </row>
         </tbody>
       </tgroup>
     </table>
     
-    <para>Custom types can be used to register additional Type implementations:</para>
+    <para>추가로 타입 구현을 등록하고 싶을 때 customTypes을 사용한다.</para>
     
 <programlisting language="xml"><![CDATA[       
 <customTypes>
@@ -254,7 +244,7 @@
 </customTypes>
 ]]></programlisting>       
 
-    <para>Type mappings can be used to register table.column specific java types:</para>
+    <para>테이블.컬럼을 위한 자바 타입을 등록하고 싶을 때 typeMappings를 사용한다.</para>
     
 <programlisting language="xml"><![CDATA[       
 <typeMappings>
@@ -267,18 +257,18 @@
 ]]></programlisting>       
    
 
-    <para>The defaults for the numeric mappings are </para>
+    <para>숫자 매핑을 위한 기본 타입은 다음과 같다.</para>
     
     <table>
-      <title>Numeric mappings</title>
+      <title>숫자 매핑</title>
       <tgroup cols='3' align='left' colsep='1' rowsep='1'>
         <colspec colname='Name' colwidth="1*" />
         <colspec colname='Descriptions' colwidth="1*" />
         <thead>
           <row>
-            <entry>Size</entry>
-            <entry>Digits</entry>
-            <entry>Type</entry>
+            <entry>크기</entry>
+            <entry>자리(Digits)</entry>
+            <entry>타입</entry>
           </row>
         </thead>
         <tbody>
@@ -321,7 +311,7 @@
       </tgroup>
     </table>          
     
-    <para>They can be customized for specific size/digits combinations like this:</para>
+    <para>특정 크기/자리에 대한 커스텀 타입은 다음과 같이 설정한다.</para>
     
 <programlisting language="xml"><![CDATA[    
 <numericMappings>
@@ -333,29 +323,30 @@
 </numericMappings>   
 ]]></programlisting>          
     
-    <para>Imports can be used to add cross-schema foreign keys support.</para>
+    <para>Import를 사용하면 크로스 스키마 외래키 지원을 추가할 수 있다.</para>
 
-    <para>Compared to APT based code generation certain functionality is not available such as QueryDelegate annotation handling.</para>
+    <para>APT 기반 코드 생성과 비교할 때 특정 기능은 사용할 수 없다. (예, QueryDelegate 애노테이션 처리)</para>
 
   </sect2>
 
   <sect2>
 
-    <title>Code generation via ANT</title>
+    <title>ANT를 통한 코드 생성</title>
 
     <para>
-      The ANT task <code>com.mysema.query.sql.ant.AntMetaDataExporter</code>
-      of the querydsl-sql module provides the same functionality as an ANT task.
-      The configuration parameters of the task are the same as for the Maven plugin.
+      Querydsl-sql 모듈이 제공하는 <code>com.mysema.query.sql.ant.AntMetaDataExporter</code>
+      ANT 태스크는 ANT 태스크(어떤 ANT 태스크?)와 같은 기능을 제공한다.
+      태스크의 설정 파라미터느는
+      메이븐 플러그인과 동일하다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Creating the query types</title>
+    <title>쿼리 타입 만들기</title>
 
-    <para>To get started export your schema into Querydsl query types like this:</para>
+    <para>DB 스키마를 Querydsl의 쿼리 타입으로 만들려면 다음과 같이 하면 된다.</para>
 
     <programlisting language="java"><![CDATA[  
 java.sql.Connection conn = ...;
@@ -365,37 +356,37 @@ exporter.setTargetFolder(new File("target/generated-sources/java"));
 exporter.export(conn.getMetaData());  
 ]]></programlisting>
 
-    <para>This declares that the database schema is to be mirrored into the
-      com.myproject.domain package in the target/generated-sources/java folder.
+    <para>위 코드를 실행하면 데이터베이스 스키마로부터
+      생성한 쿼리 타입 소스 코드(com.myproject.mydomain 패키지에 속함)를
+      target/generated-sources/java 디렉토리에 만든다.
     </para>
 
     <para>
-      The generated types have the table name transformed to mixed case as the class name and a
-      similar mixed case transformation applied to the columns which are available as property 
-      paths in the query type.
+      생성된 타입의 클래스 이름은 변형된 테이블 이름이 되며,
+      쿼리 티입 프로퍼티 경로의 이름을 변형된 컬럼 이름이 된다.
     </para>
 
     <para>
-      In addition to this primary key and foreign key constraints are provided as fields 
-      which can be used for compact join declarations.
+      추가로, 간략한 조인 설정을 위해 PK와 FK를 위한 필드가 추가된다.
     </para>
 
   </sect2>
   
   <sect2>
   
-    <title>Configuration</title>
+    <title>설정</title>
     
-    <para>The configuration is done via the com.mysema.query.sql.Configuration class which takes the
-    Querydsl SQL dialect as an argument. For H2 you would create it like this</para>
+    <para>com.mysema.query.sql.Configuration 클래스를 이용해서 설정하며,
+      Configuration 클래스는 생성자 인자로 Querydsl SQL Dialect를 취한다.
+      예를 들어, H2 DB 사용시 다음과 같이 생성한다.</para>
     
     <programlisting language="java"><![CDATA[ 
 SQLTemplates templates = new H2Templates();
 Configuration configuration = new Configuration(templates);     
 ]]></programlisting>
 
-    <para>Querydsl uses SQL dialects to customize the SQL serialization needed for
-      different relational databases. The available dialects are:
+    <para>Querydsl은 서로 다른 RDBMS를 위한 SQL 직렬화를 커스터마이징하기 위해
+      SQL Dialect를 사용한다. 사용가능한 Dialect는 다음과 같다.
     </para>
 
     <itemizedlist>
@@ -441,7 +432,7 @@ Configuration configuration = new Configuration(templates);
       
     </itemizedlist>    
     
-    <para>For customized SQLTemplates instances you can use the builder pattern like this</para>    
+    <para>SQLTemplate 객체의 설정을 변경하려면 다음과 같이 빌더 패턴을 사용할 수 있다.</para>    
   
   <programlisting language="java"><![CDATA[
   H2Templates.builder()
@@ -452,17 +443,17 @@ Configuration configuration = new Configuration(templates);
      .build();      // to get the customized SQLTemplates instance
 ]]></programlisting>  
 
-    <para>The methods of the Configuration class can be used to enable direct serialization of literals
-    via setUseLiterals(true), override schema and tables and register custom types. For full details look
-    at the javadocs of Configuration.</para>
+    <para>Configuration 클래스를 이용하면 setUseLiterals(true)를 통한 리터럴의 직접 직렬화 활성,
+      스키마와 테이블 재정의, 커스텀 타입을 등록할 수 있다. 완전한 내용은 javadoc의
+      Configuration를 참고한다.</para>
   
   </sect2>
 
   <sect2>
 
-    <title>Querying</title>
+    <title>쿼리</title>
 
-    <para>Querying with Querydsl SQL is as simple as this:</para>
+    <para>Querydsl SQL을 이용해서 쿼리하는 방법은 다음처럼 간단하다.</para>
 
     <programlisting language="java"><![CDATA[ 
 QCustomer customer = new QCustomer("c");
@@ -474,10 +465,9 @@ List<String> lastNames = query.from(customer)
 ]]></programlisting>
 
     <para>
-      which is transformed into the following sql query, assuming that the related table
-      name is <emphasis>customer</emphasis>
-      and the columns <emphasis>first_name</emphasis>
-      and <emphasis>last_name</emphasis>:
+      위 코드는 다음의 SQL로 변환되어 실행된다.
+      (테이블 이름은 <emphasis>customer</emphasis>, 컬럼 이름은 <emphasis>first_name</emphasis>,
+      <emphasis>last_name</emphasis>이라고 가정)
     </para>
 
     <programlisting><![CDATA[     
@@ -490,59 +480,56 @@ WHERE c.first_name = 'Bob'
 
   <sect2>
 
-    <title>General usage</title>
+    <title>일반 용법</title>
 
-    <para>Use the the cascading methods of the SQLQuery class like this</para>
+    <para>SQLQuery 클래스의 cascading 메서드는 다음과 같다.</para>
 
     <para>
       <emphasis>from:</emphasis>
-      Add the query sources here.
+      쿼리 소스를 추가한다.
     </para>
 
     <para>
       <emphasis>innerJoin, join, leftJoin, fullJoin, on:</emphasis>
-      Add join elements using these constructs.
-      For the join methods the first argument is the join source and the second the target
-      (alias).
+      조인 부분을 추가한다. 조인 메서드에서 첫 번째 인자는 조인 소스이고,
+      두 번재 인자는 대상(별칭)이다.
     </para>
 
     <para>
       <emphasis>where:</emphasis>
-      Add query filters, either in varargs form separated via commas or
-      cascaded via the and-operator.
+      쿼리 필터를 추가한다. 가변인자나 and/or 메서드를 이용해서 필터를 추가한다.
     </para>
 
     <para>
       <emphasis>groupBy:</emphasis>
-      Add group by arguments in varargs form.
+      가변인자 형식의 인자를 기준으로 그룹을 추가한다.
     </para>
 
     <para>
       <emphasis>having:</emphasis>
-      Add having filter of the "group by" grouping as an varags array of
-      Predicate expressions.
+      Predicate 표현식을 이용해서 "group by" 그룹핑의 필터를 추가한다.
     </para>
 
     <para>
       <emphasis>orderBy:</emphasis>
-      Add ordering of the result as an varargs array of order expressions.
-      Use asc() and desc() on numeric, string and other comparable expression to access the
-      OrderSpecifier instances.
+      정렬 표현식을 이용해서 정렬 순서를 지정한다.
+      숫자나 문자열에 대해서는 asc()나 desc()를 사용하고,
+      OrderSpecifier에 접근하기 위해 다른 비교 표현식을 사용한다.
     </para>
 
     <para>
       <emphasis>limit, offset, restrict:</emphasis>
-      Set the paging of the result. Limit for max results,
-      offset for skipping rows and restrict for defining both in one call.
+      결과의 페이징을 설정한다. limit은 최대 결과 개수, offset은 결과의 시작 행,
+      restrict는 limit과 offset을 함께 정의한다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Joins</title>
+    <title>조인</title>
 
-    <para>Joins are constructed using the following syntax:</para>
+    <para>다음 구문을 이용해서 조인을 한다.</para>
 
     <programlisting language="java"><![CDATA[ 
 QCustomer customer = QCustomer.customer;
@@ -552,7 +539,7 @@ query.from(customer)
     .list(customer.firstName, customer.lastName, company.name);
 ]]></programlisting>
 
-    <para>and for a left join:</para>
+    <para>레프트 조인은 다음과 같다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query.from(customer)
@@ -560,7 +547,7 @@ query.from(customer)
     .list(customer.firstName, customer.lastName, company.name);
 ]]></programlisting>
 
-    <para>Alternatively the join condition can also be written out:</para>
+    <para>조인 조건을 쓸 수도 있다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query.from(customer)
@@ -573,9 +560,9 @@ query.from(customer)
 
   <sect2>
 
-    <title>Ordering</title>
+    <title>정렬</title>
 
-    <para>The syntax for declaring ordering is </para>
+    <para>다음은 정렬 구문이다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query.from(customer)
@@ -583,7 +570,7 @@ query.from(customer)
     .list(customer.firstName, customer.lastName);
 ]]></programlisting>
 
-    <para>which is equivalent to the following native SQL</para>
+    <para>위 코드는 아래 SQL 쿼리와 동등하다.</para>
 
     <programlisting>  
 SELECT c.first_name, c.last_name
@@ -595,9 +582,9 @@ ORDER BY c.last_name ASC, c.first_name ASC
 
   <sect2>
 
-    <title>Grouping</title>
+    <title그룹핑</title>
 
-    <para>Grouping can be done in the following form</para>
+    <para>다음 형식을 이용해서 그룹핑을 한다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query.from(customer)
@@ -605,7 +592,7 @@ query.from(customer)
     .list(customer.lastName);
 ]]></programlisting>
 
-    <para>which is equivalent to the following native SQL</para>
+    <para>다음은 위 코드에 해당하는 SQL 쿼리다.</para>
 
     <programlisting>  
 SELECT c.last_name 
@@ -619,13 +606,13 @@ GROUP BY c.last_name
 
   <sect2>
 
-    <title>Using Subqueries</title>
+    <title>서브쿼리</title>
 
     <para>
-      To create a subquery you create a SQLSubQuery instance, define the query parameters via
-      from, where etc and use unique or list to create a subquery, which is just a type-safe Querydsl
-      expression for the query. unique is used for a unique (single) result and list for a
-      list result.
+      서브쿼리를 만들려면 SQLSubQuery를 사용하면 된다.
+      서브쿼리를 만들기 위해 from 메서드로 쿼리 파라미터를 정의하고, unique나 list를 이용한다.
+      unique는 단일 결과를 위해 사용하고 list는 리스트 결과를 위해 사용한다.
+      서브쿼리도 쿼리처럼 타입에 안전한 Querydsl 표현식이다.
     </para>
 
     <programlisting language="java"><![CDATA[ 
@@ -636,7 +623,7 @@ query.from(customer).where(
   .list(customer.all())  
 ]]></programlisting>
 
-    <para>Another example</para>
+    <para>다른 예제</para>
 
     <programlisting language="java"><![CDATA[ 
 QStatus status = QStatus.status;
@@ -649,27 +636,27 @@ query.from(customer).where(
 
   <sect2>
   
-    <title>Selecting literals</title>
+    <title>리터럴 조회</title>
     
-    <para>To select literals you need to create constant instances for them like this:</para>
+    <para>리터럴을 조회하려면, 다음과 같이 constant 인스턴스를 생성해주면 된다.</para>
     
     <programlisting language="java"><![CDATA[
 query.list(Expressions.constant(1),
            Expressions.constant("abc"));    
 ]]></programlisting>     
 
-    <para>The class  <code>com.mysema.query.support.Expressions</code> offers also other useful static methods for
-    projections, operation and template creation.</para>
+    <para><code>com.mysema.query.support.Expressions</code> 클래스는
+    프로젝션, 오퍼레이션, 템플릿 생성을 위한 유용한 정적 메서드도 제공한다.</para>
   
   </sect2>
 
   <sect2>
 
-    <title>Query extension support</title>
+    <title>쿼리 확장 지원</title>
 
-    <para>Custom query extensions to support engine specific syntax can be created by
-      subclassing AbstractSQLQuery and adding flagging methods like
-      in the given MySQLQuery example:
+    <para>엔진에 특화된 구문을 사용하려면 커스텀 쿼리 확장을 사용한다.
+      커스텀 쿼리 확장은 AbstractSQLQuery를 상속받아 구현할 수 있다.
+      다음은 MySQLQuery 클래스에서 플래그를 추가하는 예를 보여주고 있다.
     </para>
 
     <programlisting language="java"><![CDATA[          
@@ -701,20 +688,19 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
 ]]></programlisting>
 
     <para>
-      The flags are custom SQL snippets that can be inserted at specific points in the
-      serialization. The supported positions are the enums of the
-      <code>com.mysema.query.QueryFlag.Position</code> enum class.
+      플래그는 직렬화 과정에서 특정 위치에 삽입될 수 있는 커스텀 SQL 부분 코드다.
+      <code>com.mysema.query.QueryFlag.Position</code> 열거 타입에 지원되는 위치가 정의되어 있다.
     </para>
 
   </sect2>
   
   <sect2>
   
-    <title>Window functions</title>
+    <title>윈도우 함수</title>
     
-    <para>Window functions are supported in Querydsl via the methods in the <code>SQLExpressions</code> class.</para>
+    <para>Querydsl은 <code>SQLExpressions</code> 클래스를 통해서 윈도우 함수를 지원한다.</para>
     
-    <para>Usage example:</para>
+    <para>다음은 사용 예다.</para>
     
     <programlisting language="java"><![CDATA[
 query.from(employee)
@@ -728,28 +714,27 @@ query.from(employee)
   
   <sect2>
   
-    <title>Other SQL expressions</title>
+    <title>다른 SQL 표현식</title>
     
     <para>
-    Other SQL expressions are also available from the <code>SQLExpressions</code> class as static methods.
+    <code>SQLExpressions</code> 클래스의 정적 메서드를 이용해서 다른 SQL 표현식을 사용할 수 있다.
     </para>
   
   </sect2>
 
   <sect2>
 
-    <title>Using Data manipulation commands</title>
+    <title>DML 명령 사용하기</title>
 
-    <para>All the DMLClause implementation in the Querydsl SQL module take three
-      parameters, the Connection, the SQLTemplates instance
-      used in the queries and the main entity the DMLClause is bound to.
+    <para>Querydsl SQL 모듈의 모든 DMLClause 구현체는 Connection, 쿼리에 사용될 SQLTemplate,
+    DMLClause와 엮일 메인 엔티티의 세 개 파라미터를 필요로 한다.
     </para>
 
     <sect3>
 
-      <title>Insert</title>
+      <title>삽입</title>
 
-      <para>With columns</para>
+      <para>컬럼 지정</para>
 
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
@@ -759,14 +744,14 @@ new SQLInsertClause(conn, configuration, survey)
     .values(3, "Hello").execute();
 ]]></programlisting>
 
-      <para>Without columns</para>
+      <para>컬럼 없이</para>
 
       <programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, configuration, survey)
     .values(4, "Hello").execute();
 ]]></programlisting>
 
-      <para>With subquery</para>
+      <para>서브쿼리 이용</para>
 
       <programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, configuration, survey)
@@ -775,7 +760,7 @@ new SQLInsertClause(conn, configuration, survey)
     .execute();
 ]]></programlisting>
 
-      <para>With subquery, without columns</para>
+      <para>서브쿼리 이용, 컬럼 없이</para>
 
       <programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, configuration, survey)
@@ -783,8 +768,7 @@ new SQLInsertClause(conn, configuration, survey)
     .execute();
 ]]></programlisting>
 
-    <para>As an alternative to the columns/values usage, Querydsl provides also a set
-     method which can be used like this</para>
+    <para>columns/values를 사용하는 대신, set 메서드를 이용</para>
     
     <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
@@ -794,33 +778,32 @@ new SQLInsertClause(conn, configuration, survey)
     .set(survey.name, "Hello").execute();
 ]]></programlisting>    
 
-     <para>which is equivalent to the first example. Usage of the set method always 
-     expands internally to columns and values.</para>
+     <para>위 코드는 첫 번째 예제와 동일하다.
+      set 메서드를 사용하면 내부적으로 columns/values가 사용된다.</para>
      
-     <para>Beware that</para>
+     <para>아래 형식의 코드에서는 컬럼과 쿼리 결과 집합을 매핑하는 것에 주의하자.</para>
      
      <programlisting language="java"><![CDATA[
 columns(...).select(...)
 ]]></programlisting>    
-
-     <para>maps the result set of the given query to be inserted whereas</para>
      
-     <para>To get the created keys out instead of modified rows count use one of the executeWithKey/s method.</para>
+     <para>변경된 행 개수 대신 생성된 키를 구하고 싶다면 executeWithKey/s 메서드를 사용한다.</para>
 
 <programlisting language="java"><![CDATA[
 set(...)
 ]]></programlisting>    
 
-     <para>maps single columns and nulls are used for empty subquery results.</para>
+     <para>위 코드는 한 개 컬럼을 매핑한다. 서브 쿼리 결과가 없으면 null을 사용한다.</para>
      
-     <para>To populate a clause instance based on the contents of a bean you can use</para>
+     <para>빈의 데이터에 기반해서 clause 인스턴스를 생성하려면 다음의 코드를 사용한다.</para>
 
     <programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, configuration, survey)
     .populate(surveyBean).execute();
 ]]></programlisting>
 
-    <para>This will exclude null bindings, if you need also null bindings use</para>
+    <para>위 코드는 빈의 데이터 중 null은 제외한다. null도 포함시키고 싶다면 아래 코드를 사용한다.
+</para>
     
     <programlisting language="java"><![CDATA[
 new SQLInsertClause(conn, configuration, survey)
@@ -831,9 +814,9 @@ new SQLInsertClause(conn, configuration, survey)
 
     <sect3>
 
-      <title>Update</title>
+      <title>수정</title>
 
-      <para>With where</para>
+      <para>where 절 포함</para>
 
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
@@ -844,7 +827,7 @@ new SQLUpdateClause(conn, configuration, survey)
     .execute();
 ]]></programlisting>
 
-      <para>Without where</para>
+      <para>where 절 없이</para>
 
       <programlisting language="java"><![CDATA[  
 new SQLUpdateClause(conn, configuration, survey)
@@ -852,7 +835,7 @@ new SQLUpdateClause(conn, configuration, survey)
     .execute(); 
 ]]></programlisting>
 
-    <para>Using bean population</para>
+    <para>빈을 이용</para>
     
 <programlisting language="java"><![CDATA[
 new SQLUpdateClause(conn, configuration, survey)
@@ -864,9 +847,9 @@ new SQLUpdateClause(conn, configuration, survey)
 
     <sect3>
 
-      <title>Delete</title>
+      <title>삭제</title>
 
-      <para>With where</para>
+      <para>where 절 포함</para>
 
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
@@ -877,7 +860,7 @@ new SQLDelecteClause(conn, configuration, survey)
     
 ]]></programlisting>
 
-      <para>Without where</para>
+      <para>where 없이</para>
 
       <programlisting language="java"><![CDATA[  
 new SQLDelecteClause(conn, configuration, survey)
@@ -890,15 +873,15 @@ new SQLDelecteClause(conn, configuration, survey)
 
   <sect2>
 
-    <title>Batch support in DML clauses</title>
+    <title>DMLClause의 배치 지원</title>
 
-    <para>Querydsl SQL supports usage of JDBC batch updates through the DML APIs. If you
-      have consecutive DML calls with a similar structure,
-      you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how
-      it works for UPDATE, DELETE and INSERT.
+    <para>Querydsl SQL은 DML API를 통해서 JDBC 배치 업데이터를 지원한다.
+      같은 구조를 갖는 DML을 연속해서 실행할 경우, addBatch() 메서드를 이용해서
+      한 DMLClause로 묶을 수 있다.
+      UPDATE, DELETE, INSERT에 대해 어떻게 동작하는지 예제를 살펴보자.
     </para>
 
-    <para>Update:</para>
+    <para>수정:</para>
 
     <programlisting language="java"><![CDATA[   	
 QSurvey survey = QSurvey.survey;
@@ -911,7 +894,7 @@ update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
 update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
 ]]></programlisting>
 
-    <para>Delete:</para>
+    <para>삭제:</para>
 
     <programlisting language="java"><![CDATA[
 insert(survey).values(2, "A").execute();
@@ -923,7 +906,7 @@ delete.where(survey.name.eq("B")).addBatch();
 assertEquals(2, delete.execute());
 ]]></programlisting>
 
-    <para>Insert:</para>
+    <para>삽입:</para>
 
     <programlisting language="java"><![CDATA[
 SQLInsertClause insert = insert(survey);
@@ -937,10 +920,9 @@ assertEquals(2, insert.execute());
 
   <sect2>
 
-    <title>Bean class generation</title>
+    <title>빈 클래스 생성</title>
 
-    <para>To create JavaBean DTO types for the tables of your schema use the
-      MetaDataExporter like this:</para>
+    <para>MetaDataExporter를 이용해서 테이블에 대한 자바빈 DTO 타입을 생성한다.</para>
 
     <programlisting language="java"><![CDATA[  
 java.sql.Connection conn = ...;
@@ -951,9 +933,8 @@ exporter.setBeanSerializer(new BeanSerializer());
 exporter.export(conn.getMetaData());  
 ]]></programlisting>
 
-    <para>Now you can use the bean types as arguments to the populate method in DML
-      clauses and you can project directly
-      to bean types in queries. Here is a simple example in JUnit form:
+    <para>DMLClause의 populate 메서드의 인자로 빈 타입을 사용할 수 있으며,
+      쿼리에서 빈 타입을 직접 선택할 수 있다. 다음은 JUnit으로 작성한 간단한 예이다.
     </para>
 
     <programlisting language="java"><![CDATA[    	
@@ -977,7 +958,7 @@ assertEquals("John", smith.getFirstname());
 assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
 ]]></programlisting>
 
-    <para>The factory methods used in the previous example are here:</para>
+    <para>앞서 예제에서 사용한 팩토리 메서드는 다음과 같다.</para>
 
     <programlisting language="java"><![CDATA[      	
 protected SQLUpdateClause update(RelationalPath<?> e){
@@ -1037,28 +1018,27 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
 
   <sect2>
   
-    <title>Extracting the SQL query and bindings</title>
+    <title>SQL 쿼리와 바인딩 추출하기</title>
     
-    <para>The SQL query and bindings can be extracted via the getSQL method:</para>
+    <para>getSQL 메서드를 통해서 SQL 쿼리와 바인딩 값을 구할 수 있다.</para>
     
     <programlisting language="java"><![CDATA[
 SQLBindings bindings = query.getSQL(customer.id, customer.firstname, customer.lastname);
 System.out.println(bindings.getSQL()); 
 ]]></programlisting>    
     
-   <para>If you need also all literals in the SQL string you can enable literal serialization on the 
-   query or configuration level via setUseLiterals(true).</para>
+   <para>SQL 문자열에 포함된 모든 리터럴이 필요하다면, setUseLiterals(true)를 이용해서
+    쿼리의 리터럴 직렬화를 활성화하면 된다.</para>
 
   </sect2>
 
   <sect2>
 
-    <title>Custom types</title>
+    <title>커스텀 타입</title>
 
-    <para>Querydsl SQL provides the possibility to declare custom type mappings for
-      ResultSet/Statement interaction. The custom type mappings can be
-      declared in com.mysema.query.sql.Configuration instances, which are supplied as constructor
-      arguments to the actual queries:
+    <para>Querydsl SQL은 ResultSet/Statement에서 커스텀 타입 매핑을 지원한다.
+      com.mysema.query.sql.Configuration 객체를 이용해서 커스텀 카입 매핑을 등록한다.
+      Configuration 객체는 실제 쿼리의 생성자 인자로 제공된다.
     </para>
 
     <programlisting language="java"><![CDATA[    
@@ -1067,7 +1047,7 @@ Configuration configuration = new Configuration(new H2Templates());
 configuration.register(new UtilDateType());		
 ]]></programlisting>
 
-    <para>And for a table column</para>
+    <para>특정 테이블 컬럼을 위한 커스텀 타입 매핑 등록</para>
 
     <programlisting language="java"><![CDATA[    
 Configuration configuration = new Configuration(new H2Templates());
@@ -1075,25 +1055,25 @@ Configuration configuration = new Configuration(new H2Templates());
 configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
 ]]></programlisting>
 
-    <para>To customize a numeric mapping you can use the registerNumeric method like this
+    <para>숫자에 대한 커스텀 타입 매핑을 등록하려면 registerNumeric 메서드를 사용한다.
     </para>
 
     <programlisting language="java"><![CDATA[    
 configuration.registerNumeric(5,2,Float.class);
 ]]></programlisting>
 
-    <para>This will map the Float type to the NUMERIC(5,2) type.</para>
+    <para>이는 Float 타입을 NUMERIC(5,2) 타입으로 매핑한다.</para>
 
   </sect2>
   
   <sect2>
   
-    <title>Listening to queries and clauses</title>
+    <title>Query와 Clause 리스닝</title>
     
-    <para>SQLListener is a listener interface that can be used to listen to queries and DML clause. SQLListener
-    instances can be registered either on the configuration and on the query/clause level via the addListener method.</para>
+    <para>SQLListener는 쿼리와 DMLClause를 리스닝 할 때 사용되는 리스너 인터페이스이다.
+    Configuration이나 Query, Clause의 addListener 메서드를 통해서 SQLListener 객체를 등록할 수 있다.</para>
   
-    <para>Use cases for listeners are data synchronization, logging, cacheing and validation.</para>
+    <para>리스너의 적용 예로는 데이터 동기화, 로깅, 캐싱, 검증이 있다.</para>
   
   </sect2>
 

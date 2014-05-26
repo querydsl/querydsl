@@ -2,15 +2,15 @@
 
 <sect1 id="mongodb_integration" revision="1">
 
-  <title>Querying Mongodb</title>
+  <title>Mongodb 쿼리</title>
 
-  <para>This chapter describes the querying functionality of the Mongodb module.</para>
+  <para>Mongodb 모듈의 조회 기능을 설명한다.</para>
 
   <sect2>
-    <title>Maven integration</title>
+    <title>메이븐 통합</title>
 
     <para>
-      Add the following dependencies to your Maven project:
+      메이븐 프로젝트에 다음 의존을 추가한다.
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -35,8 +35,7 @@
 ]]></programlisting>
 
     <para>
-      And now, configure the Maven APT plugin which generates the query types
-      used by Querydsl:
+      Querydsl을 이용해서 쿼리 타입을 생성하기 위해 메이븐 APT 플러그인을 설정한다.
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -67,33 +66,30 @@
 ]]></programlisting>
 
     <para>
-      The MorphiaAnnotationProcessor finds domain types annotated with the
-      <code>com.google.code.morphia.annotations.Entity</code>
-      annotation and generates Querydsl query types for them.
+      MorphiaAnnotationProcessor는 <code>com.google.code.morphia.annotations.Entity</code>
+      애노테이션이 적용된 도메인 타입을 위한 Querydsl 쿼리 타입을 생성한다.
     </para>
 
     <para>
-      Run clean install and you will get your Query types generated into
-      target/generated-sources/java.
+      mvn clean install 을 실행하면 target/generated-sources/java 폴더에 쿼라 타입 코드가 생성된다.
     </para>
 
     <para>
-      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to
-      include target/generated-sources/java as a source folder.
+      이클립스를 사용중이면, mvn eclipse:eclipse 을 실행해서
+      target/generated-sources/java을 이클립스 프로젝트의 소스 폴더에 포함시킨다.
     </para>
 
     <para>
-      Now you are able to construct Mongodb queries and instances of the
-      query domain model.
+      이제 쿼리 도메인 모델을 이용해서 Mongodb를 조회할 수 있다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Querying</title>
+    <title>쿼리</title>
 
-    <para>Querying with Querydsl Mongodb with Morphia is as simple as this:
+    <para>Querydsl Mongodb를 이용하면 다음과 같이 간단하게 쿼리할 수 있다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -111,47 +107,37 @@ List<User> list = query
 
   <sect2>
 
-    <title>General usage</title>
+    <title>일반 용법</title>
 
-    <para>Use the the cascading methods of the MongodbQuery class like this</para>
+    <para>MongodbQuery 클래스의 cascading 메서드는 다음과 같다.</para>
 
     <para>
       <emphasis>where:</emphasis>
-      Add the query filters, either in varargs form separated via commas or
-      cascaded via the and-operator. Supported operations are operations performed on PStrings except
-      <emphasis>
-        matches
-      </emphasis>
-      ,
-      <emphasis>indexOf</emphasis>
-      ,
-      <emphasis>charAt</emphasis>
-      . Currently
-      <emphasis>in</emphasis>
-      is
-      not supported, but will be in the future.
+      쿼리 필터를 추가한다. 가변인자나 and/or 메서드를 이용해서 필터를 추가한다.
+      PStrings에 수행되는 오퍼레이션을 지원한다.
+      (<emphasis>matches</emphasis>, <emphasis>indexOf</emphasis>, <emphasis>charAt</emphasis>은 제외).
+      현재 <emphasis>in</emphasis>은 지원되지 않으며, 향후 지원할 예정이다.
     </para>
 
     <para>
       <emphasis>orderBy:</emphasis>
-      Add ordering of the result as an varargs array of order expressions.
-      Use asc() and desc() on numeric, string and other comparable expression to access the
-      OrderSpecifier instances.
+      정렬 표현식을 이용해서 정렬 순서를 지정한다. 숫자나 문자열에 대해서는
+      asc()나 desc()를 사용하고, OrderSpecifier에 접근하기 위해 다른 비교 표현식을 사용한다.
     </para>
 
     <para>
       <emphasis>limit, offset, restrict:</emphasis>
-      Set the paging of the result. Limit for max results,
-      offset for skipping rows and restrict for defining both in one call.
+      결과의 페이징을 설정한다. limit은 최대 결과 개수, offset은 결과의 시작 행,
+      restrict는 limit과 offset을 함께 정의한다.
     </para>
 
   </sect2>
 
   <sect2>
 
-    <title>Ordering</title>
+    <title>정렬</title>
 
-    <para>The syntax for declaring ordering is </para>
+    <para>정렬 구문은 다음과 같다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -160,14 +146,14 @@ query
     .list();
 ]]></programlisting>
 
-    <para>The results are sorted ascending based on title and year.</para>
+    <para>title과 year의 오름차순으로 결과를 정렬한다.</para>
 
   </sect2>
 
   <sect2>
-    <title>Limit</title>
+    <title>결과 개수 제한</title>
 
-    <para>The syntax for declaring a limit is </para>
+    <para>다음과 같이 결과 개수를 제한한다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -179,9 +165,9 @@ query
   </sect2>
 
   <sect2>
-    <title>Offset</title>
+    <title>오프셋</title>
 
-    <para>The syntax for declaring an offset is </para>
+    <para>다음과 같이 오프셋을 지정한다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -194,11 +180,9 @@ query
 
   <sect2>
 
-    <title>Geospatial queries</title>
+    <title>공간(Geospatial) 쿼리</title>
 
-    <para>Support for geospatial queries is available for Double typed arrays (Double[])
-      via the near-method:
-    </para>
+    <para>near(Douyble[]) 메서드를 이용해서 공간 검색을 할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[ 
 query
@@ -210,10 +194,10 @@ query
 
   <sect2>
 
-    <title>Select only relevant fields</title>
+    <title>관련 필드만 선택하기</title>
 
-    <para>To select only relevant fields you can use the overloaded projection methods
-      list, iterate, uniqueResult and singleResult methods like this
+    <para>관련 필드만 선택하고 싶다면, 선택 대상 목록을 갖는 list, iterate, uniqueResult,
+    singleResult 메서드를 사용하면 된다.
     </para>
 
     <programlisting language="java"><![CDATA[ 
@@ -222,7 +206,7 @@ query
     .list(doc.title, doc.path);
 ]]></programlisting>
 
-    <para>This query will load only the title and path fields of the documents.</para>
+    <para>이 쿼리는 문서의 title과 path 필드만 조회한다.</para>
 
   </sect2>
 
