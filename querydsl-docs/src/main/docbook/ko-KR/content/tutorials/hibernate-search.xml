@@ -1,0 +1,52 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<sect1 id="hibernate_search_integration" revision="1">
+  <title>Querying Hibernate Search</title>
+
+  <para>This chapter describes the querying functionality of
+    the Hibernate Search module.
+  </para>
+
+  <sect2>
+
+    <title>Creating the Querydsl query types</title>
+    <para>
+      See <link linkend="jpa_integration">Querying JPA/Hibernate sources</link>
+      for instructions on how to create query types.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title>Querying</title>
+
+    <para>Querying with Querydsl Hibernate Search is as simple as this:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+QUser user = QUser.user;
+SearchQuery<User> query = new SearchQuery<User>(session, user);
+List<User> list = query
+	.where(user.firstName.eq("Bob"))
+	.list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>General usage</title>
+
+    <para>
+      For general usage instructions see
+      <link linkend="lucene_integration">Querying Lucene sources</link>
+      .
+    </para>
+
+    <para>
+      In the query serialization the only difference to the Querydsl Lucene module is that
+      paths are treated differently.
+      For <code>org.hibernate.search.annotations.Field</code>
+      annotated properties the
+      name attribute is used with the property name as fallback for the field name.
+    </para>
+
+  </sect2>
+</sect1>

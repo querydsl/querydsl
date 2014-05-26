@@ -1,0 +1,339 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="scala" revision="1">
+
+  <title>Querying in Scala</title>
+
+  <para>Generic support for Querydsl usage in Scala is available via querydsl-scala
+    module. To add it to your Maven build, use the following snippet :
+  </para>
+
+  <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-scala</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+]]></programlisting>
+
+  <sect2>
+
+    <title>DSL expressions for Scala</title>
+
+    <para>Querydsl for Scala provides an alternative DSL for expression construction. The
+      Scala DSL utilizes language features such as operator overloading,
+      function pointers and implicit imports for enhanced readability and conciseness.
+    </para>
+
+    <para>Here is an overview of the main alternatives :</para>
+
+<!-- TODO use a table for this -->
+
+    <programlisting><![CDATA[
+//Standard              Alternative
+
+expr isNotNull          expr is not(null)
+expr isNull             expr is null
+expr eq "Ben"           expr === "Ben"
+expr ne "Ben"           expr !== "Ben"
+expr append "X"         expr + "X"
+expr isEmpty            expr is empty
+expr isNotEmpoty        expr not empty
+
+// boolean
+left and right          left && right
+left or right           left || right
+expr not                !expr
+
+// comparison
+expr lt 5               expr < 5
+expr loe 5              expr <= 5
+expr gt 5               expr > 5
+expr goe 5              expr >= 5
+expr notBetween(2,6)    expr not between (2,6)
+expr negate             -expr
+ 
+// numeric
+expr add 3              expr + 3
+expr subtract 3         expr - 3
+expr divide 3           expr / 3
+expr multiply 3         expr * 3
+expr mod 5              expr % 5
+
+// collection
+list.get(0)             list(0)
+map.get("X")            map("X")
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>Improved projections</title>
+
+    <para>The Querydsl Scala module offers a few implicit conversion to make Querydsl
+      query projections more Scala compatible.
+    </para>
+
+    <para>
+      The <code>RichProjectable</code> and <code>RichSimpleProjectable</code> wrappers should be used to enable
+      Scala projections for Querydsl queries.
+      By importing the contents of <code>com.mysema.query.scala.Helpers</code>
+      the needed implicit conversions become available.
+    </para>
+
+    <para>
+      For example the following query with the standard API would return a <code>java.util.List</code> of
+      type <code>Object[]</code>.
+    </para>
+
+    <programlisting language="java"><![CDATA[  
+query.from(person).list(person.firstName, person.lastName, person.age)
+]]></programlisting>
+
+    <para>With the added conversions you can use select instead of list for Scala list
+      typed results, unique instead of uniqueResult for
+      Option typed results and single instead of singleResult for Option typed results.
+    </para>
+
+    <para>The previous query could be expressed like this with the implicit conversions:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+import com.mysema.query.scala.Helpers._
+  
+query.from(person).select(person.firstName, person.lastName, person.age)
+]]></programlisting>
+
+    <para>In this case the result type would be List[(String,String,Integer)] or in other
+      words List of Tuple3[String,String,Integer].
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Querying with SQL</title>
+
+    <para>
+      Like with Querydsl SQL for Java you need to generate Query types to be able to construct
+      your queries. The following code examples show how this is done :
+    </para>
+
+    <para>Generation without Bean types :</para>
+
+    <programlisting language="java"><![CDATA[  
+val directory = new java.io.File("target/jdbcgen1")
+val namingStrategy = new DefaultNamingStrategy()
+val exporter = new MetaDataExporter()
+exporter.setNamePrefix("Q")
+exporter.setPackageName("com.mysema")
+exporter.setSchemaPattern("PUBLIC")
+exporter.setTargetFolder(directory)
+exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
+exporter.setCreateScalaSources(true)
+exporter.setTypeMappings(ScalaTypeMappings.create)
+exporter.export(connection.getMetaData)
+]]></programlisting>
+
+    <para>Generation with Bean types :</para>
+
+    <programlisting language="java"><![CDATA[    
+val directory = new java.io.File("target/jdbcgen2")
+val namingStrategy = new DefaultNamingStrategy()
+val exporter = new MetaDataExporter()
+exporter.setNamePrefix("Q")
+exporter.setPackageName("com.mysema")
+exporter.setSchemaPattern("PUBLIC")
+exporter.setTargetFolder(directory)
+exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
+exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer])
+exporter.setCreateScalaSources(true)
+exporter.setTypeMappings(ScalaTypeMappings.create)
+exporter.export(connection.getMetaData)        
+]]></programlisting>
+
+    <sect3>
+
+      <title>Compact queries</title>
+
+      <para>Querydsl Scala provides a compact query syntax for Querydsl SQL. The syntax is
+        inspired by domain oriented query syntaxes like that from the Rogue framework.
+      </para>
+
+      <para>
+        The domain oriented queries are implemented as implicit conversions from
+        <code>RelationalPath</code> instances into queries. This functionality
+        can be made available by implementing the
+        <code>com.mysema.query.scala.sql.SQLHelpers</code>
+        trait in your service or DAO classes.
+      </para>
+
+      <para>Using this compact syntax you can use your meta model classes as a starting
+        point for queries.
+      </para>
+
+      <para>Instead of the following normal syntax</para>
+
+      <programlisting language="java"><![CDATA[    
+query().from(employee).select(employee.firstName, employee.lastName)        
+]]></programlisting>
+
+      <para>you could use the companion object of Employee or QEmployee and write it like
+        this </para>
+
+      <programlisting language="java"><![CDATA[    
+Employee.select(_.firstName, _.lastName)        
+]]></programlisting>
+
+      <para>Instead of giving expressions to orderBy, where, select, single and unique you
+        can give functions which take the root expression of
+        the query and return another expression. The expanded form of the previous example would be
+      </para>
+
+      <programlisting language="java"><![CDATA[    
+Employee.select({ e => e.firstName }, { e => e.lastName })        
+]]></programlisting>
+
+      <para>
+        See the signature of the <code>com.mysema.query.scala.sql.RichSimpleQuery</code>
+        class for details.
+      </para>
+
+    </sect3>
+
+    <sect3>
+
+      <title>Code generation</title>
+
+      <para>Scala sources for SQL metatypes and projections can be generated with
+        querydsl-maven-plugin. Here is an example configuration
+      </para>
+
+      <programlisting language="xml"><![CDATA[      
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${querydsl.version}</version>
+  <configuration>
+    <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+    <jdbcUrl>jdbc:mysql://localhost:3306/test</jdbcUrl>
+    <jdbcUser>matko</jdbcUser>
+    <jdbcPassword>matko</jdbcPassword>			
+    <packageName>com.example.schema</packageName>
+    <targetFolder>${project.basedir}/src/main/scala</targetFolder>
+    <exportBeans>true</exportBeans>
+    <createScalaSources>true</createScalaSources>    		    
+  </configuration>
+  <dependencies>
+    <dependency>
+      <groupId>mysql</groupId>
+	  <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.16</version>
+	</dependency>
+	  <dependency>
+    	<groupId>com.mysema.querydsl</groupId>
+    	<artifactId>querydsl-scala</artifactId>
+    	<version>${querydsl.version}</version>
+  	  </dependency>
+  	  <dependency>
+    	<groupId>org.scala-lang</groupId>
+    	<artifactId>scala-library</artifactId>
+    	<version>${scala.version}</version>
+  	  </dependency>
+  </dependencies>
+</plugin>     
+]]></programlisting>
+
+      <para>The maven goal to execute is querydsl:export.</para>
+
+    </sect3>
+
+  </sect2>
+
+  <sect2>
+    <title>Querying with other backends</title>
+
+    <para>When querying with other backends the Expression model has to be created
+      manually or alternatively the alias functionality can be used.
+    </para>
+
+    <para>Here is a minimal example with JPA :</para>
+
+    <programlisting language="java"><![CDATA[  
+@Entity
+class User {
+  @BeanProperty
+  @Id
+  var id: Integer = _;
+  @BeanProperty
+  var userName: String = _;
+  @BeanProperty
+  @ManyToOne
+  var department: Department = _;
+}
+
+@Entity
+class Department {
+  @BeanProperty
+  @Id
+  var id: Integer = _;
+  @BeanProperty
+  var name: String = _;
+}
+]]></programlisting>
+
+    <para>And here are some query examples</para>
+
+    <para>List</para>
+
+    <programlisting language="java"><![CDATA[
+val person = Person as "person"
+
+query.from(person).where(person.firstName like "Rob%").list(person)
+]]></programlisting>
+
+    <para>Unique result</para>
+
+    <programlisting language="java"><![CDATA[
+query.from(person).where(person.firstName like "Rob%").unique(person)
+]]></programlisting>
+
+    <para>Long where</para>
+
+    <programlisting language="java"><![CDATA[
+query.from(person) 
+  .where(person.firstName like "Rob%", person.lastName like "An%") 
+  .list(person)
+]]></programlisting>
+
+    <para>Order</para>
+
+    <programlisting language="java"><![CDATA[
+query.from(person).orderBy(person.firstName asc).list(person)
+]]></programlisting>
+
+    <para>Not null</para>
+
+    <programlisting language="java"><![CDATA[
+query.from(person) 
+  .where(person.firstName isEmpty, person.lastName isNotNull) 
+  .list(person)
+]]></programlisting>
+
+    <para>The factory method for query creation is</para>
+
+    <programlisting language="java"><![CDATA[
+def query() = new JPAQuery(entityManager)
+]]></programlisting>
+
+    <para>In addition to queries you need variables which can be created like this</para>
+
+    <programlisting language="java"><![CDATA[
+val person = Person as "person"
+]]></programlisting>
+
+    <para>Note: the Scala support is not yet available if you use Hibernate with an XML based configuration. HibernateDomainExporter currently only outputs Java source files.</para>
+
+  </sect2>
+
+</sect1>  

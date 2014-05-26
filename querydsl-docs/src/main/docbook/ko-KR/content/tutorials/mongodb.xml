@@ -1,0 +1,229 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="mongodb_integration" revision="1">
+
+  <title>Querying Mongodb</title>
+
+  <para>This chapter describes the querying functionality of the Mongodb module.</para>
+
+  <sect2>
+    <title>Maven integration</title>
+
+    <para>
+      Add the following dependencies to your Maven project:
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-apt</artifactId>
+  <version>${querydsl.version}</version>
+  <scope>provided</scope>
+</dependency>    
+        
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-mongodb</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>    
+]]></programlisting>
+
+    <para>
+      And now, configure the Maven APT plugin which generates the query types
+      used by Querydsl:
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>apt-maven-plugin</artifactId>
+        <version>1.0.9</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
+              <processor>com.mysema.query.apt.morphia.MorphiaAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    ...
+    </plugins>
+  </build>
+</project>
+]]></programlisting>
+
+    <para>
+      The MorphiaAnnotationProcessor finds domain types annotated with the
+      <code>com.google.code.morphia.annotations.Entity</code>
+      annotation and generates Querydsl query types for them.
+    </para>
+
+    <para>
+      Run clean install and you will get your Query types generated into
+      target/generated-sources/java.
+    </para>
+
+    <para>
+      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to
+      include target/generated-sources/java as a source folder.
+    </para>
+
+    <para>
+      Now you are able to construct Mongodb queries and instances of the
+      query domain model.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Querying</title>
+
+    <para>Querying with Querydsl Mongodb with Morphia is as simple as this:
+    </para>
+
+    <programlisting language="java"><![CDATA[
+Morphia morphia;
+Datastore datastore;
+// ...	
+QUser user = new QUser("user");
+MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
+List<User> list = query
+	.where(user.firstName.eq("Bob"))
+	.list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>General usage</title>
+
+    <para>Use the the cascading methods of the MongodbQuery class like this</para>
+
+    <para>
+      <emphasis>where:</emphasis>
+      Add the query filters, either in varargs form separated via commas or
+      cascaded via the and-operator. Supported operations are operations performed on PStrings except
+      <emphasis>
+        matches
+      </emphasis>
+      ,
+      <emphasis>indexOf</emphasis>
+      ,
+      <emphasis>charAt</emphasis>
+      . Currently
+      <emphasis>in</emphasis>
+      is
+      not supported, but will be in the future.
+    </para>
+
+    <para>
+      <emphasis>orderBy:</emphasis>
+      Add ordering of the result as an varargs array of order expressions.
+      Use asc() and desc() on numeric, string and other comparable expression to access the
+      OrderSpecifier instances.
+    </para>
+
+    <para>
+      <emphasis>limit, offset, restrict:</emphasis>
+      Set the paging of the result. Limit for max results,
+      offset for skipping rows and restrict for defining both in one call.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Ordering</title>
+
+    <para>The syntax for declaring ordering is </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .orderBy(doc.title.asc(), doc.year.desc())
+    .list();
+]]></programlisting>
+
+    <para>The results are sorted ascending based on title and year.</para>
+
+  </sect2>
+
+  <sect2>
+    <title>Limit</title>
+
+    <para>The syntax for declaring a limit is </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .limit(10)
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>Offset</title>
+
+    <para>The syntax for declaring an offset is </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .offset(3)
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Geospatial queries</title>
+
+    <para>Support for geospatial queries is available for Double typed arrays (Double[])
+      via the near-method:
+    </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(geoEntity.location.near(50.0, 50.0))
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Select only relevant fields</title>
+
+    <para>To select only relevant fields you can use the overloaded projection methods
+      list, iterate, uniqueResult and singleResult methods like this
+    </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .list(doc.title, doc.path);
+]]></programlisting>
+
+    <para>This query will load only the title and path fields of the documents.</para>
+
+  </sect2>
+
+</sect1>

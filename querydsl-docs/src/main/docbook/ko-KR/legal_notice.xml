@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!DOCTYPE legalnotice PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<legalnotice id="Legal_Notice">
+    <title>Legal Notice</title>
+    <para>
+		저작권 <trademark class="copyright"/> Mysema Ltd, 2007-2013.
+		이 저작물은 <ulink url="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</ulink>에 따라
+		누구나 사용, 편집, 복사, 재배포 가능합니다. 
+    </para>
+</legalnotice>

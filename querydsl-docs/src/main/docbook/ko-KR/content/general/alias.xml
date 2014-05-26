@@ -1,0 +1,91 @@
+<sect1 id="alias">
+
+  <title>별칭 사용법</title>
+
+  <para>
+    코드 생성을 할 수 없는 경우, 표현식 생성을 위한 경로 참조 목적으로 별칭 객체를 사용할 수 있다.
+    자바빈 객체의 프록시를 생성하고 프록시 객체의 getter 메서드를 경로로 사용할 수 있다.
+  </para>
+
+  <para>
+    다음 예제는 생성된 타입을 이용한 표현식 생성을 대신해서 어떻게 별칭 객체를 사용할 수 있는 보여준다.
+  </para>
+
+  <para>
+    먼저 다음 예제는 APT가 생성된 도메인 타입을 이용해서 쿼리를 실행하는 코드를 보자.
+  </para>
+
+  <programlisting language="java"><![CDATA[
+QCat cat = new QCat("cat");
+for (String name : query.from(cat,cats)
+    .where(cat.kittens.size().gt(0))
+    .list(cat.name)){
+    System.out.println(name);
+}
+]]></programlisting>
+
+  <para>
+    그리고, 다음은 Cal 클래스를 이용해서 별칭 인스턴스를 사용하는 예이다.
+    $ 메서드 파라미터인 <code>c.getKittens()</code>는 내부적으로 프로퍼티 경로 <code>c.kittens</code>로 변환된다.
+  </para>
+
+  <programlisting language="java"><![CDATA[
+Cat c = alias(Cat.class, "cat");
+for (String name : query.from($(c),cats)
+    .where($(c.getKittens()).size().gt(0))
+    .list($(c.getName()))){
+    System.out.println(name);
+}
+]]></programlisting>
+
+  <para>
+    별칭 기능을 사용하려면 다음의 두 import를 추가해야 한다.
+  </para>
+
+  <programlisting language="java"><![CDATA[
+import static com.mysema.query.alias.Alias.$;
+import static com.mysema.query.alias.Alias.alias;
+]]></programlisting>
+
+  <para>
+    다음 예는 앞 예제의 변형이다. $ 메서드 안에서 리스트의 size()에 접근하고 있다.
+  </para>
+
+  <programlisting language="java"><![CDATA[
+Cat c = alias(Cat.class, "cat");
+for (String name : query.from($(c),cats)
+    .where($(c.getKittens().size()).gt(0))
+    .list($(c.getName()))){
+    System.out.println(name);
+}
+]]></programlisting>
+
+  <para>
+    기본 데이터 타입이 아니고 final이 아닌 모든 별칭 프로퍼티는 별칭 자체이다.
+    따라서, $ 메서드 내에서 기본 데이터 타입이나 final 타입이 나오기 전까지 메서드를 
+    이어서 호출할 수 있다. 다음은 예이다.
+  </para>
+
+  <programlisting language="java"><![CDATA[
+$(c.getMate().getName())
+]]></programlisting>
+
+  <para>
+    is transformed into *c.mate.name* internally, but
+  </para>
+
+  <programlisting language="java"><![CDATA[
+$(c.getMate().getName().toLowerCase())
+]]></programlisting>
+
+  <para>
+    이 코드는 내부적으로 <code>toLowerCase()</code>으로 변환된다.
+  </para>
+
+  <para>
+    별칭 타입에서는 getters, size(), contains(Object), get(int)만 호출할 수 있음에 유의하자.
+    모든 다른 메서드 호출은 익셉션을 발생시킨다.
+  </para>
+
+</sect1>
+  

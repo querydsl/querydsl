@@ -1,0 +1,244 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="lucene_integration" revision="1">
+
+  <title>Querying Lucene</title>
+
+  <para>This chapter describes the querying functionality of the Lucene module.</para>
+  
+  <sect2>
+    <title>Maven integration</title>
+
+    <para>
+      Querydsl Lucene can be used via the querydsl-lucene3 module for Lucene 3 and querydsl-lucene4
+      for Lucene 4
+    </para>
+    
+    <para>Lucene 3:</para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-lucene3</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>    
+]]></programlisting>
+
+  <para>Lucene 4:</para>
+  
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-lucene4</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>    
+]]></programlisting>  
+
+  </sect2>
+
+  <sect2>
+
+    <title>Creating the query types</title>
+
+    <para>With fields year and title a manually created query type could look something
+      like this:</para>
+
+    <programlisting language="java"><![CDATA[ 
+public class QDocument extends EntityPathBase<Document>{
+    private static final long serialVersionUID = -4872833626508344081L;
+        
+    public QDocument(String var) {
+        super(Document.class, PathMetadataFactory.forVariable(var));
+    }
+
+    public final StringPath year = createString("year");
+        
+    public final StringPath title = createString("title");
+}
+]]></programlisting>
+
+    <para>QDocument represents a Lucene document with the fields year and title.</para>
+
+    <para>Code generation is not available for Lucene, since no schema data is available.
+    </para>
+
+  </sect2>
+
+  <sect2>
+    <title>Querying</title>
+
+    <para>Querying with Querydsl Lucene is as simple as this:</para>
+
+    <programlisting language="java"><![CDATA[ 
+QDocument doc = new QDocument("doc");
+
+IndexSearcher searcher = new IndexSearcher(index);
+LuceneQuery query = new LuceneQuery(true, searcher); 
+List<Document> documents = query
+    .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
+    .list();
+]]></programlisting>
+
+    <para>which is transformed into the following Lucene query:</para>
+
+    <programlisting><![CDATA[     
++year:[1800 TO 2000] +title:huckle*
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>General usage</title>
+
+    <para>Use the the cascading methods of the LuceneQuery class like this</para>
+
+    <para>
+      <emphasis>where:</emphasis>
+      Add the query filters, either in varargs form separated via commas or
+      cascaded via the and-operator. Supported operations are operations performed on PStrings except
+      <emphasis>
+        matches
+      </emphasis>
+      ,
+      <emphasis>indexOf</emphasis>
+      ,
+      <emphasis>charAt</emphasis>
+      . Currently
+      <emphasis>in</emphasis>
+      is
+      not supported, but will be in the future.
+    </para>
+
+    <para>
+      <emphasis>orderBy:</emphasis>
+      Add ordering of the result as an varargs array of order expressions.
+      Use asc() and desc() on numeric, string and other comparable expression to access the
+      OrderSpecifier instances.
+    </para>
+
+    <para>
+      <emphasis>limit, offset, restrict:</emphasis>
+      Set the paging of the result. Limit for max results,
+      offset for skipping rows and restrict for defining both in one call.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Ordering</title>
+
+    <para>The syntax for declaring ordering is </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .orderBy(doc.title.asc(), doc.year.desc())
+    .list();
+]]></programlisting>
+
+    <para>which is equivalent to the following Lucene query</para>
+
+    <programlisting>  
+title:*
+</programlisting>
+
+    <para>The results are sorted ascending based on title and year.</para>
+
+    <para>Alternatively a sort method call can be used to declare the sort logic as a Sort
+      instance instead
+    </para>
+
+    <programlisting language="java"><![CDATA[
+Sort sort = ...; 
+query
+    .where(doc.title.like("*"))
+    .sort(sort)
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>Limit</title>
+
+    <para>The syntax for declaring a limit is </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .limit(10)
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>Offset</title>
+
+    <para>The syntax for declaring an offset is </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .offset(3)
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Fuzzy searches</title>
+
+    <para>Fuzzy searches can be expressed via fuzzyLike methods in the
+      <code>com.mysema.query.lucene.LuceneExpressions</code> class:
+    </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(LuceneExpressions.fuzzyLike(doc.title, "Hello"))
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Applying Lucene filters to queries</title>
+
+    <para>It is possible to apply a single Lucene filter to the query like this:</para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .filter(filter)
+    .list();
+]]></programlisting>
+
+    <para>A shortcut for distinct filtering is provided via the distinct(Path) method:
+    </para>
+
+    <programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .distinct(doc.title)
+    .list();
+]]></programlisting>
+
+  </sect2>
+
+</sect1>
