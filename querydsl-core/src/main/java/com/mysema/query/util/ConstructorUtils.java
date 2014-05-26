@@ -266,7 +266,7 @@ public class ConstructorUtils {
 
         public PrimitiveAwareVarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
-            defaultInstance = defaultPrimitives.getInstance(componentType);
+            defaultInstance = (componentType != null) ? defaultPrimitives.getInstance(componentType) : null;
         }
 
         @Override
