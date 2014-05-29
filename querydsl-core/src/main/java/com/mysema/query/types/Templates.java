@@ -13,10 +13,9 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.Nullable;
 import java.util.IdentityHashMap;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 /**
  * Templates provides operator patterns for query expression serialization
@@ -226,14 +225,14 @@ public class Templates {
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
 
         // case
-        add(Ops.CASE, "case {0} end", 0);
-        add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 0);
-        add(Ops.CASE_ELSE,  "else {0}");
+        add(Ops.CASE, "case {0} end", 30);
+        add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 30);
+        add(Ops.CASE_ELSE,  "else {0}", 30);
 
         // case for
-        add(Ops.CASE_EQ, "case {0} {1} end");
-        add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}");
-        add(Ops.CASE_EQ_ELSE,  "else {0}");
+        add(Ops.CASE_EQ, "case {0} {1} end", 30);
+        add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}", 30);
+        add(Ops.CASE_EQ_ELSE,  "else {0}", 30);
 
         // coalesce
         add(Ops.COALESCE, "coalesce({0})");

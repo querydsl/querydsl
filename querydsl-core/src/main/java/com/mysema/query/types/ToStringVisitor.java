@@ -52,10 +52,19 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
     public String visit(Operation<?> o, Templates templates) {
         final Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
+            final int precedence = templates.getPrecedence(o.getOperator());
             final StringBuilder builder = new StringBuilder();
             for (Template.Element element : template.getElements()) {
                 final Object rv = element.convert(o.getArgs());
                 if (rv instanceof Expression) {
+                    if (precedence > -1 && rv instanceof Operation) {
+                        if (precedence < templates.getPrecedence(((Operation<?>)rv).getOperator())) {
+                            builder.append("(");
+                            builder.append(((Expression)rv).accept(this, templates));
+                            builder.append(")");
+                            continue;
+                        }
+                    }
                     builder.append(((Expression)rv).accept(this, templates));
                 } else {
                     builder.append(rv.toString());
