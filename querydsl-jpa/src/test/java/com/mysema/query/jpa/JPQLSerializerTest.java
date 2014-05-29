@@ -54,7 +54,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(3)
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when cat.toes = ?1 then ?1 when cat.toes = ?2 then ?2 else ?3 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else ?3 end", serializer.toString());
     }
 
 
@@ -66,7 +66,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when cat.toes = ?1 then cat.id * ?1 when cat.toes = ?2 then cat.id * ?2 else ?3 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
     }
 
     @Test
