@@ -13,13 +13,12 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Arrays;
 
-import org.junit.Test;
-
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class QMapTest {
 
@@ -79,6 +78,12 @@ public class QMapTest {
     public void Tuple_hashCode() {
         QMap expr = new QMap(str1, str2);
         assertEquals(expr.newInstance("str1", "str2").hashCode(), expr.newInstance("str1", "str2").hashCode());
+    }
+
+    @Test
+    public void Null_Value() {
+        QMap expr = new QMap(str1, str2);
+        assertNotNull(expr.newInstance("str1", null));
     }
 
 }
