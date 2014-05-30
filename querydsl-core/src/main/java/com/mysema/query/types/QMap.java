@@ -13,13 +13,12 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 /**
  * QMap represents a projection of type Map
@@ -104,11 +103,11 @@ public class QMap extends ExpressionBase<Map<Expression<?>,?>> implements Factor
     @Override
     @Nullable
     public Map<Expression<?>, ?> newInstance(Object... args) {
-        ImmutableMap.Builder<Expression<?>,Object> builder = ImmutableMap.builder();
+        Map<Expression<?>, Object> map = Maps.newHashMap();
         for (int i = 0; i < args.length; i++) {
-            builder.put(this.args.get(i), args[i]);
+            map.put(this.args.get(i), args[i]);
         }
-        return builder.build();
+        return map;
     }
 
 }
