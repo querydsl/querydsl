@@ -121,12 +121,12 @@ class ExpressionTest {
   
   @Test
   def String_Not {
-    assertEquals("!person.firstName like An%", (person.firstName like "An%") not)
+    assertEquals("!(person.firstName like An%)", (person.firstName like "An%") not)
   }
 
   @Test
   def String_Not_With_Operators {
-    assertEquals("!person.firstName like An%", !(person.firstName like "An%"))
+    assertEquals("!(person.firstName like An%)", !(person.firstName like "An%"))
   }
     
   @Test
@@ -186,8 +186,8 @@ class ExpressionTest {
   
   @Test
   def Number_Not_Between {
-    assertEquals("!person.scalaInt between 2 and 3", person.scalaInt not between (2, 3))
-    assertEquals("!person.javaInt between 2 and 3", person.javaInt not between (2, 3))
+    assertEquals("!(person.scalaInt between 2 and 3)", person.scalaInt not between (2, 3))
+    assertEquals("!(person.javaInt between 2 and 3)", person.javaInt not between (2, 3))
   }
 
   @Test
@@ -363,7 +363,7 @@ class ExpressionTest {
   
   @Test
   def String_Negations {
-    assertEquals("!person.firstName like XXX", person.firstName not like("XXX")) 
+    assertEquals("!(person.firstName like XXX)", person.firstName not like("XXX"))
     assertEquals("!matches(person.firstName,XXX)", person.firstName not matches("XXX"))
     assertEquals("!startsWith(person.firstName,XXX)", person.firstName not startsWith("XXX"))   
     assertEquals("!endsWith(person.firstName,XXX)", person.firstName not endsWith("XXX")) 
@@ -372,7 +372,7 @@ class ExpressionTest {
   
   @Test
   def String_Negations2 {
-    assertEquals("!person.firstName like XXX", !(person.firstName like "XXX")) 
+    assertEquals("!(person.firstName like XXX)", !(person.firstName like "XXX"))
     assertEquals("!matches(person.firstName,XXX)", !(person.firstName matches "XXX")) 
     assertEquals("!startsWith(person.firstName,XXX)", !(person.firstName startsWith "XXX"))   
     assertEquals("!endsWith(person.firstName,XXX)", !(person.firstName endsWith "XXX")) 

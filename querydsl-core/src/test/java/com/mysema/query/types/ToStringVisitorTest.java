@@ -13,11 +13,11 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.mysema.query.domain.QCat;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.path.BooleanPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 
 public class ToStringVisitorTest {
@@ -45,6 +45,18 @@ public class ToStringVisitorTest {
     public void Path() {
         assertEquals("cat_kittens_kittens_name", 
                 QCat.cat.kittens.any().kittens.any().name.accept(ToStringVisitor.DEFAULT, templates));
+    }
+
+    @Test
+    public void Complex() {
+        BooleanPath a = Expressions.booleanPath("a");
+        BooleanPath b = Expressions.booleanPath("d");
+        BooleanPath c = Expressions.booleanPath("c");
+        BooleanPath d = Expressions.booleanPath("d");
+        Predicate complex = a.or(b).and(c.or(d));
+        assertEquals("(a || d) && (c || d)", complex.accept(ToStringVisitor.DEFAULT, templates));
+
+
     }
 
 }
