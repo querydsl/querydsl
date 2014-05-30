@@ -13,17 +13,10 @@
  */
 package com.mysema.query.collections;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.*;
 
 import com.google.common.base.Objects;
 import com.mysema.query.types.Expression;
@@ -48,21 +41,19 @@ public final class CollQueryFunctions {
     private static final BinaryFunction SUM = new BinaryFunction() {
         @Override
         public Number apply(Number num1, Number num2) {
-            if (num1 instanceof Double || num1 instanceof Float) {
-                return num1.doubleValue() + num2.doubleValue();
-            } else {
-                return num1.longValue() + num2.longValue();
-            }
+            return MathUtils.sum(num1, num2);
         }
     };
 
     private static final BinaryFunction MAX = new BinaryFunction() {
         @Override
         public Number apply(Number num1, Number num2) {
-            if (num1 instanceof Double || num1 instanceof Float) {
-                return Math.max(num1.doubleValue(), num2.doubleValue());
+            if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
+                return ((Comparable)num1).compareTo((Comparable)num2) < 0 ? num2 : num1;
             } else {
-                return Math.max(num1.longValue(), num2.longValue());
+                BigDecimal n1 = new BigDecimal(num1.toString());
+                BigDecimal n2 = new BigDecimal(num2.toString());
+                return n1.compareTo(n2) < 0 ? num2 : num1;
             }
         }
     };
@@ -70,15 +61,17 @@ public final class CollQueryFunctions {
     private static final BinaryFunction MIN = new BinaryFunction() {
         @Override
         public Number apply(Number num1, Number num2) {
-            if (num1 instanceof Double || num1 instanceof Float) {
-                return Math.min(num1.doubleValue(), num2.doubleValue());
+            if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
+                return ((Comparable)num1).compareTo((Comparable)num2) < 0 ? num1 : num2;
             } else {
-                return Math.min(num1.longValue(), num2.longValue());
+                BigDecimal n1 = new BigDecimal(num1.toString());
+                BigDecimal n2 = new BigDecimal(num2.toString());
+                return n1.compareTo(n2) < 0 ? num1 : num2;
             }
         }
     };
 
-    private static final List<Object> nullList = Arrays.<Object>asList((Object)null);
+    private static final List<Object> nullList = Arrays.<Object>asList((Object) null);
 
     public static boolean equals(Object o1, Object o2) {
         return Objects.equal(o1, o2);
@@ -223,7 +216,7 @@ public final class CollQueryFunctions {
             }
             return Long.valueOf(source.size());
         } else if (aggregator == Ops.AggOps.MAX_AGG) {
-            return MathUtils.cast(reduce(source, MAX), (Class)expr.getType());
+            return MathUtils.cast(reduce(source, MAX), (Class) expr.getType());
         } else if (aggregator == Ops.AggOps.MIN_AGG) {
             return MathUtils.cast(reduce(source, MIN), (Class)expr.getType());
         } else if (aggregator == Ops.AggOps.SUM_AGG) {
