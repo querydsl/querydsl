@@ -404,6 +404,7 @@ WHERE this.weeklyhours >
 
     <para><code>JDOSQLQuery</code> 클래스를 사용하면 JDO의
     네이티브 SQL을 Querydsl에서 사용할 수 있다.
+    </para>
 
     <para>이걸 사용하려면 SQL 스키마를 위한 Querydsl 쿼라 티입을 생성해야 한다.
       다음은 이를 위한 Maven 설정 예를 보여주고 있다.

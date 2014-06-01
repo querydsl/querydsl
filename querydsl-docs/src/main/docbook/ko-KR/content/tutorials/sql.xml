@@ -582,7 +582,7 @@ ORDER BY c.last_name ASC, c.first_name ASC
 
   <sect2>
 
-    <title그룹핑</title>
+    <title>그룹핑</title>
 
     <para>다음 형식을 이용해서 그룹핑을 한다.</para>
 

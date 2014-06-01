@@ -31,6 +31,8 @@ public List<Customer> getCustomer(String... names){
 
     <para><code>BooleanBuilder</code>는 상태변경이 되며(mutable) 초기에는 null을,
     각 <code>and</code> 또는 <code>or</code> 호출 뒤에는 오퍼레이션의 결과를 표현한다.
+    </para>
+
   </sect2>  
 
   <sect2>
