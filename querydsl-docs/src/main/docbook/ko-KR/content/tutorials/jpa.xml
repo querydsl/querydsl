@@ -165,6 +165,7 @@
 
     <para>
       <code>com.mysema.query.jpa.codegen.HibernateDomainExporter</code>가 이 기능을 제공한다.
+    </para>
 
     <programlisting language="java"><![CDATA[
 HibernateDomainExporter exporter = new HibernateDomainExporter(

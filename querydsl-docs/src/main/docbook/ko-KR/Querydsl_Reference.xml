@@ -2,7 +2,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
         <!ENTITY versionNumber "3.3.3">
         <!ENTITY copyrightYear "2007-2014">
-        <!ENTITY copyrightHolder "Mysema Ltd.">
+        <!ENTITY copyrightHolder "Original authors">
 ]>
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
     <bookinfo>
