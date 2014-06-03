@@ -326,6 +326,8 @@ public class SelectBase extends AbstractBaseTest {
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
 
         List<Object> data = Lists.newArrayList();
+        data.add(Constants.date);
+        data.add(Constants.time);
         data.add(new java.util.Date(ts));
         data.add(new java.util.Date(tsDate));
         data.add(new java.util.Date(tsTime));
