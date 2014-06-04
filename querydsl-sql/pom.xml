@@ -30,7 +30,13 @@
       <artifactId>querydsl-spatial</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
-    </dependency>            
+    </dependency>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <version>1.10</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
@@ -79,7 +85,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>postgresql</groupId>
+      <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
       <scope>provided</scope>
