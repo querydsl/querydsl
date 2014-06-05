@@ -13,25 +13,16 @@
  */
 package com.mysema.query.sql.h2;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Collections;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.mysema.query.QGeneratedKeysEntity;
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class GeneratedKeysH2Test {
 
@@ -42,7 +33,7 @@ public class GeneratedKeysH2Test {
     @Before
     public void setUp() throws ClassNotFoundException, SQLException{
         Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:target/h2";
+        String url = "jdbc:h2:~/dbs/h2-gen";
         conn = DriverManager.getConnection(url, "sa", "");
         stmt = conn.createStatement();
     }
