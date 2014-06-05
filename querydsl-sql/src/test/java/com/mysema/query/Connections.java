@@ -100,7 +100,7 @@ public final class Connections {
 
     private static Connection getH2() throws SQLException, ClassNotFoundException{
         Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:target/h2;LOCK_MODE=0";
+        String url = "jdbc:h2:~/dbs/h2-test;LOCK_MODE=0";
         return DriverManager.getConnection(url, "sa", "");
     }
 
