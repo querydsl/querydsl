@@ -13,8 +13,6 @@
  */
 package com.mysema.query.sql.ant;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,11 +21,12 @@ import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 public class AntMetaDataExporterTest {
 
 //    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
-    private final String url = "jdbc:h2:target/h2" + System.currentTimeMillis();
+    private final String url = "jdbc:h2:~/dbs/h2" + System.currentTimeMillis();
 
     @Before
     public void setUp() throws SQLException {
