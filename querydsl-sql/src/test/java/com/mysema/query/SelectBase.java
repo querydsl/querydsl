@@ -440,12 +440,12 @@ public class SelectBase extends AbstractBaseTest {
         int minutes = query.singleResult(SQLExpressions.datediff(DatePart.minute, date, employee.datefield));
         int seconds = query.singleResult(SQLExpressions.datediff(DatePart.second, date, employee.datefield));
 
-        assertEquals(30,        years);
-        assertEquals(361,       months);
-        assertEquals(10989,     days);
-        assertEquals(263736,    hours);
-        assertEquals(15824160,  minutes);
         assertEquals(949449600, seconds);
+        assertEquals(15824160,  minutes);
+        assertEquals(263736,    hours);
+        assertEquals(10989,     days);
+        assertEquals(361,       months);
+        assertEquals(30,        years);
     }
 
     @Test
