@@ -14,7 +14,6 @@ public class NumberTest {
         final NumberPath<BigDecimal> num = new NumberPath<BigDecimal>(BigDecimal.class, "num");
         final CollQuery query = CollQueryFactory.from(num, Arrays.asList(new BigDecimal("1.6"), new BigDecimal("1.3")));
 
-        // fail because sum use longValue
         assertEquals(new BigDecimal("2.9"), query.uniqueResult(num.sum()));
     }
 }
