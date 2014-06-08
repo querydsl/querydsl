@@ -276,8 +276,8 @@
         <colspec colname='Descriptions' colwidth="1*" />
         <thead>
           <row>
-            <entry>Size</entry>
-            <entry>Digits</entry>
+            <entry>Total digits</entry>
+            <entry>Decimal digits</entry>
             <entry>Type</entry>
           </row>
         </thead>
@@ -321,18 +321,18 @@
       </tgroup>
     </table>          
     
-    <para>They can be customized for specific size/digits combinations like this:</para>
+    <para>They can be customized for specific total/decimal digits combinations like this:</para>
     
 <programlisting language="xml"><![CDATA[    
 <numericMappings>
   <numericMapping>
-    <size>1</size>
-    <digits>0</digits>
+    <total>1</total>
+    <decimal>0</decimal>
     <javaType>java.lang.Byte</javaType>
   </numericMapping>
 </numericMappings>   
-]]></programlisting>          
-    
+]]></programlisting>
+
     <para>Imports can be used to add cross-schema foreign keys support.</para>
 
     <para>Compared to APT based code generation certain functionality is not available such as QueryDelegate annotation handling.</para>

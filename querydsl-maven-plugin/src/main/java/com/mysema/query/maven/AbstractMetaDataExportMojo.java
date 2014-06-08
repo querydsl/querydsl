@@ -388,7 +388,9 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             }
             if (numericMappings != null) {
                 for (NumericMapping mapping : numericMappings) {
-                    configuration.registerNumeric(mapping.size, mapping.digits, Class.forName(mapping.javaType));
+                    int total = Math.max(mapping.size, mapping.total);
+                    int decimal = Math.max(mapping.digits, mapping.decimal);
+                    configuration.registerNumeric(total, decimal, Class.forName(mapping.javaType));
                 }
             }
             if (columnComparatorClass != null) {
