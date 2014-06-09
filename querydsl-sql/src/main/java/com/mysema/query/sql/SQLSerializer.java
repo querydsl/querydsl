@@ -408,11 +408,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity) {
+        this.entity = entity;
         templates.serializeDelete(metadata, entity, this);
     }
 
     void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
-        this.entity = entity;
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -432,13 +432,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void serializeMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+        this.entity = entity;
         templates.serializeMerge(metadata, entity, keys, columns, values, subQuery, this);
     }
 
     void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
-        this.entity = entity;
-
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -485,13 +484,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+        this.entity = entity;
         templates.serializeInsert(metadata, entity, columns, values, subQuery, this);
     }
 
     void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
-        this.entity = entity;
-
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -847,6 +845,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void setUseLiterals(boolean useLiterals) {
         this.useLiterals = useLiterals;
+    }
+
+
+    protected void setSkipParent(boolean b) {
+        skipParent = b;
+    }
+
+    protected void setDmlWithSchema(boolean b) {
+        dmlWithSchema = b;
     }
 
 }
