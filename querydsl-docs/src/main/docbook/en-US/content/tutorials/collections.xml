@@ -262,4 +262,21 @@ assertThat(car, hasValue($.horsePower, equalTo(123)));
 
   </sect2>
 
+  <sect2>
+
+    <title>Usage with the Eclipse Compiler for Java</title>
+
+    <para>If Querydsl Collections is used with a JRE where the system compiler is not available,
+    CollQuery instances can also be configured to use the Eclipse Compiler for Java (ECJ) instead:</para>
+
+    <programlisting language="java"><![CDATA[
+DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(
+    CollQueryTemplates.DEFAULT,
+    new ECJEvaluatorFactory(getClass().getClassLoader()));
+QueryEngine queryEngine = new DefaultQueryEngine(evaluatorFactory);
+CollQuery query = new CollQuery(queryEngine);
+]]></programlisting>
+
+  </sect2>
+
 </sect1>
