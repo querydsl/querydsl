@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.4.0.BUILD-SNAPSHOT</version>
+  <version>3.4.0</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -90,11 +90,6 @@
     </dependencies>
   </dependencyManagement>
 
-  <organization>
-    <name>Mysema Ltd</name>
-    <url>http://www.mysema.com</url>
-  </organization>
-  
   <scm>
     <connection>${project.checkout}</connection>
     <developerConnection>${project.checkout}</developerConnection>
@@ -105,7 +100,7 @@
     <developer>
       <id>tiwe</id>
       <name>Timo Westkämper</name>
-      <email>timo.westkamper@mysema.com</email>
+      <email>timo.westkamper@gmail.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
         <role>Project Manager</role>
