@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +42,15 @@ public final class Configuration {
 
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
 
-    private final Map<String, String> schemas = Maps.newHashMap();
-
     private final Map<SchemaAndTable, SchemaAndTable> schemaTables = Maps.newHashMap();
 
+    private final Map<String, String> schemas = Maps.newHashMap();
+
     private final Map<String, String> tables = Maps.newHashMap();
+
+    private final Map<SchemaAndTable, Map<String, String>> schemaTableColumns = Maps.newHashMap();
+
+    private final Map<String, Map<String, String>> tableColumns = Maps.newHashMap();
 
     private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
@@ -201,6 +206,28 @@ public final class Configuration {
     }
 
     /**
+     * Get the column override
+     *
+     * @param key
+     * @param column
+     * @return
+     */
+    public String getColumnOverride(SchemaAndTable key, String column) {
+        Map<String, String> columnOverrides;
+        String newColumn = null;
+        columnOverrides = schemaTableColumns.get(key);
+        if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
+            return newColumn;
+        }
+        columnOverrides = tableColumns.get(key.getTable());
+        if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
+            return newColumn;
+        }
+        return column;
+
+    }
+
+    /**
      * @param <T>
      * @param stmt
      * @param path
@@ -294,6 +321,42 @@ public final class Configuration {
      */
     public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
         return schemaTables.put(from, to);
+    }
+
+    /**
+     * Register a column override
+     *
+     * @param schema
+     * @param table
+     * @param oldColumn
+     * @param newColumn
+     * @return
+     */
+    public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
+        SchemaAndTable key = new SchemaAndTable(schema, table);
+        Map<String, String> columnOverrides = schemaTableColumns.get(key);
+        if (columnOverrides == null) {
+            columnOverrides = new HashMap<String, String>();
+            schemaTableColumns.put(key, columnOverrides);
+        }
+        return columnOverrides.put(oldColumn, newColumn);
+    }
+
+    /**
+     * Register a column override
+     *
+     * @param table
+     * @param oldColumn
+     * @param newColumn
+     * @return
+     */
+    public String registerColumnOverride(String table, String oldColumn, String newColumn) {
+        Map<String, String> columnOverrides = tableColumns.get(table);
+        if (columnOverrides == null) {
+            columnOverrides = new HashMap<String, String>();
+            tableColumns.put(table, columnOverrides);
+        }
+        return columnOverrides.put(oldColumn, newColumn);
     }
 
     /**

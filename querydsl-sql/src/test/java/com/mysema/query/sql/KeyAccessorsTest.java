@@ -56,7 +56,7 @@ public class KeyAccessorsTest {
         public final ForeignKeys fk = new ForeignKeys();
 
         public QEmployee(String variable) {
-            super(QEmployee.class, forVariable(variable), null, "EMPLOYEE");
+            super(QEmployee.class, forVariable(variable), "", "EMPLOYEE");
             addMetadata();
         }
 

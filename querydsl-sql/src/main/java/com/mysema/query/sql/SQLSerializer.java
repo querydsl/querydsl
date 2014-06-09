@@ -77,6 +77,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private void appendAsColumnName(Path<?> path) {
         String column = ColumnMetadata.getName(path);
+        if (path.getMetadata().getParent() instanceof RelationalPath) {
+            RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
+            column = configuration.getColumnOverride(parent.getSchemaAndTable(), column);
+        }
         append(templates.quoteIdentifier(column));
     }
 

@@ -29,7 +29,7 @@ public class QGeneratedKeysEntity extends RelationalPathBase<QGeneratedKeysEntit
     public final StringPath name = createString("name");
 
     public QGeneratedKeysEntity(String name) {
-        super(QGeneratedKeysEntity.class, PathMetadataFactory.forVariable(name), null, "GENERATED_KEYS");
+        super(QGeneratedKeysEntity.class, PathMetadataFactory.forVariable(name), "", "GENERATED_KEYS");
     }
 
     protected void addMetadata() {
