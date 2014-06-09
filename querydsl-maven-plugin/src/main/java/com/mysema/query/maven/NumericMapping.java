@@ -19,9 +19,10 @@ package com.mysema.query.maven;
  */
 public class NumericMapping {
 
-    public int size;
+    @Deprecated
+    public int size, digits;
 
-    public int digits;
+    public int total, decimal;
 
     public String javaType;
 

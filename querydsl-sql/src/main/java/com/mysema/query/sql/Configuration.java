@@ -319,12 +319,12 @@ public final class Configuration {
     /**
      * Override the binding for the given NUMERIC type
      *
-     * @param size
-     * @param digits
+     * @param total total amount of digits
+     * @param decimal amount of fractional digits
      * @param javaType
      */
-    public void registerNumeric(int size, int digits, Class<?> javaType) {
-        jdbcTypeMapping.registerNumeric(size, digits, javaType);
+    public void registerNumeric(int total, int decimal, Class<?> javaType) {
+        jdbcTypeMapping.registerNumeric(total, decimal, javaType);
     }
 
     /**
