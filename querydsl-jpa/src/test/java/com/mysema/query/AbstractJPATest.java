@@ -1254,6 +1254,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Sum_of_Integer2() {
+        QCat cat2 = new QCat("cat2");
+        query().from(cat)
+                .where(new JPASubQuery()
+                       .from(cat2).where(cat2.eq(cat.mate))
+                       .unique(cat2.breed.sum()).gt(0))
+                .list(cat);
+    }
+
+    @Test
     @NoBatooJPA @NoEclipseLink
     public void Sum_of_Float_in_where() {
         query().from(cat).where(cat.mate.floatProperty.sum().gt(0.0f)).count();
