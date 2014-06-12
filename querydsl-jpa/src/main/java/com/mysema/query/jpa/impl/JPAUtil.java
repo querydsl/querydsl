@@ -33,6 +33,7 @@ public final class JPAUtil {
     private JPAUtil() {}
 
     public static void setConstants(Query query, Map<Object,String> constants, Map<ParamExpression<?>, Object> params) {
+        boolean hasParameters = !query.getParameters().isEmpty();
         for (Map.Entry<Object,String> entry : constants.entrySet()) {
             String key = entry.getValue();
             Object val = entry.getKey();
@@ -42,11 +43,13 @@ public final class JPAUtil {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
                 }
             }
-            Parameter parameter = query.getParameter(Integer.valueOf(key));
-            Class parameterType = parameter != null ? parameter.getParameterType() : null;
-            if (parameterType != null && !parameterType.isInstance(val)) {
-                if (val instanceof Number && Number.class.isAssignableFrom(parameterType)) {
-                    val = MathUtils.cast((Number) val, parameterType);
+            if (hasParameters) {
+                Parameter parameter = query.getParameter(Integer.valueOf(key));
+                Class parameterType = parameter != null ? parameter.getParameterType() : null;
+                if (parameterType != null && !parameterType.isInstance(val)) {
+                    if (val instanceof Number && Number.class.isAssignableFrom(parameterType)) {
+                        val = MathUtils.cast((Number) val, parameterType);
+                    }
                 }
             }
             query.setParameter(Integer.valueOf(key), val);

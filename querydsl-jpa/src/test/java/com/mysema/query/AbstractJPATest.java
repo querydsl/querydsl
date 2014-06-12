@@ -1248,16 +1248,19 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoBatooJPA @NoEclipseLink
     public void Sum_of_Integer_in_where() {
         query().from(cat).where(cat.mate.breed.sum().gt(1)).count();
     }
 
     @Test
+    @NoBatooJPA @NoEclipseLink
     public void Sum_of_Float_in_where() {
         query().from(cat).where(cat.mate.floatProperty.sum().gt(0.0f)).count();
     }
 
     @Test
+    @NoBatooJPA @NoEclipseLink
     public void Sum_of_Double_in_where() {
         query().from(cat).where(cat.mate.bodyWeight.sum().gt(0.0)).count();
     }
