@@ -13,6 +13,12 @@
  */
 package com.mysema.query;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.Calendar;
+import java.util.Map.Entry;
+
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import com.google.common.collect.Lists;
@@ -37,13 +43,6 @@ import com.mysema.testutil.IncludeIn;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-import java.util.Calendar;
-import java.util.Map.Entry;
-
 import static com.mysema.query.Target.*;
 import static org.junit.Assert.*;
 
@@ -1246,6 +1245,21 @@ public abstract class AbstractJPATest {
         QShow show = QShow.show;
         Long lng = query().from(show).uniqueResult(show.id.sum());
         assertNotNull(lng);
+    }
+
+    @Test
+    public void Sum_of_Integer_in_where() {
+        query().from(cat).where(cat.mate.breed.sum().gt(1)).count();
+    }
+
+    @Test
+    public void Sum_of_Float_in_where() {
+        query().from(cat).where(cat.mate.floatProperty.sum().gt(0.0f)).count();
+    }
+
+    @Test
+    public void Sum_of_Double_in_where() {
+        query().from(cat).where(cat.mate.bodyWeight.sum().gt(0.0)).count();
     }
 
     @Test
