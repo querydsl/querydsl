@@ -1248,31 +1248,33 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoBatooJPA @NoEclipseLink
-    public void Sum_of_Integer_in_where() {
-        query().from(cat).where(cat.mate.breed.sum().gt(1)).count();
-    }
-
-    @Test
-    public void Sum_of_Integer2() {
+    public void Sum_of_Integer() {
         QCat cat2 = new QCat("cat2");
         query().from(cat)
                 .where(new JPASubQuery()
-                       .from(cat2).where(cat2.eq(cat.mate))
-                       .unique(cat2.breed.sum()).gt(0))
+                        .from(cat2).where(cat2.eq(cat.mate))
+                        .unique(cat2.breed.sum()).gt(0))
                 .list(cat);
     }
 
     @Test
-    @NoBatooJPA @NoEclipseLink
-    public void Sum_of_Float_in_where() {
-        query().from(cat).where(cat.mate.floatProperty.sum().gt(0.0f)).count();
+    public void Sum_of_Float() {
+        QCat cat2 = new QCat("cat2");
+        query().from(cat)
+                .where(new JPASubQuery()
+                        .from(cat2).where(cat2.eq(cat.mate))
+                        .unique(cat2.floatProperty.sum()).gt(0.0))
+                .list(cat);
     }
 
     @Test
-    @NoBatooJPA @NoEclipseLink
-    public void Sum_of_Double_in_where() {
-        query().from(cat).where(cat.mate.bodyWeight.sum().gt(0.0)).count();
+    public void Sum_of_Double() {
+        QCat cat2 = new QCat("cat2");
+        query().from(cat)
+                .where(new JPASubQuery()
+                        .from(cat2).where(cat2.eq(cat.mate))
+                        .unique(cat2.bodyWeight.sum()).gt(0.0))
+                .list(cat);
     }
 
     @Test
