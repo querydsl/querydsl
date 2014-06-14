@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
@@ -626,6 +627,17 @@ public class SelectBase extends AbstractBaseTest {
     public void Like() {
         query().from(employee).where(employee.firstname.like("\\")).count();
         query().from(employee).where(employee.firstname.like("\\\\")).count();
+    }
+
+    @Test
+    public void Like_Escape() {
+        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen");
+
+        for (String str : strs) {
+            assertTrue(str, query()
+                .from(employee)
+                .where(Expressions.stringTemplate("'" + str + "'").contains(str)).count() > 0);
+        }
     }
 
     @Test
