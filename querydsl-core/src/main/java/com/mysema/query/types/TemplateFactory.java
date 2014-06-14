@@ -41,7 +41,7 @@ public class TemplateFactory {
 
     private final char escape;
 
-    public final Function<Object,Object> toLowerCase =
+    private final Function<Object,Object> toLowerCase =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -55,7 +55,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toUpperCase =
+    private final Function<Object,Object> toUpperCase =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -69,7 +69,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toStartsWithViaLike =
+    private final Function<Object,Object> toStartsWithViaLike =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -83,7 +83,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toStartsWithViaLikeLower =
+    private final Function<Object,Object> toStartsWithViaLikeLower =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -98,7 +98,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toEndsWithViaLike =
+    private final Function<Object,Object> toEndsWithViaLike =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -112,7 +112,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toEndsWithViaLikeLower =
+    private final Function<Object,Object> toEndsWithViaLikeLower =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -127,7 +127,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toContainsViaLike =
+    private final Function<Object,Object> toContainsViaLike =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
@@ -142,7 +142,7 @@ public class TemplateFactory {
                 }
             };
 
-    public final Function<Object,Object> toContainsViaLikeLower =
+    private final Function<Object,Object> toContainsViaLikeLower =
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
