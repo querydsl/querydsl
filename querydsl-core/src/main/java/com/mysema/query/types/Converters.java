@@ -23,6 +23,7 @@ import com.google.common.base.Function;
  * @author tiwe
  *
  */
+@Deprecated
 public final class Converters {
 
     private static final Constant<String> PERCENT = ConstantImpl.create("%");
