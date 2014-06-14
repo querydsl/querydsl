@@ -104,12 +104,14 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         Operator<?> op = expr.getOperator();
         if (op == Ops.EQ) {
             if (expr.getArg(0) instanceof Operation) {
-                Operation<?> lhs = (Operation<?>)expr.getArg(0);
+                Operation<?> lhs = (Operation<?>) expr.getArg(0);
                 if (lhs.getOperator() == Ops.COL_SIZE || lhs.getOperator() == Ops.ARRAY_SIZE) {
                     return asDBObject(asDBKey(lhs, 0), asDBObject("$size", asDBValue(expr, 1)));
                 } else {
                     throw new UnsupportedOperationException("Illegal operation " + expr);
                 }
+            } else if (isReference(expr, 0)) {
+                return asDBObject(asDBKey(expr, 0), asReference(expr, 1));
             } else {
                 return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
             }
@@ -155,7 +157,11 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject("$or", list);
 
         } else if (op == Ops.NE) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
+            if (isReference(expr, 0)) {
+                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asReference(expr, 1)));
+            } else {
+                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
+            }
 
         } else if (op == Ops.STARTS_WITH) {
             return asDBObject(asDBKey(expr, 0),
