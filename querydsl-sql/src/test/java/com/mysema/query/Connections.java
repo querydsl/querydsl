@@ -59,7 +59,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited;
+    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited, firebirdInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null) {
@@ -90,6 +90,12 @@ public final class Connections {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         String url = "jdbc:derby:target/demoDB;create=true";
         return DriverManager.getConnection(url, "", "");
+    }
+
+    private static Connection getFirebird() throws SQLException, ClassNotFoundException {
+        Class.forName("org.firebirdsql.jdbc.FBDriver");
+        String url = "jdbc:firebirdsql:localhost/3050:/var/lib/firebird/2.5/data/querydsl.fdb";
+        return DriverManager.getConnection(url, "SYSDBA", "adfcb39e");
     }
 
     private static Connection getHSQL() throws SQLException, ClassNotFoundException {
@@ -338,7 +344,62 @@ public final class Connections {
         derbyInited = true;
     }
 
+    public static void initFirebird() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.FIREBIRD);
+        SQLTemplates templates = new FirebirdTemplates();
+        Connection c = getFirebird();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
 
+        if (firebirdInited) {
+            return;
+        }
+
+        // survey
+        dropTable(templates, "SURVEY");
+        stmt.execute("create table SURVEY(ID int primary key, " +
+                "NAME varchar(30)," +
+                "NAME2 varchar(30))");
+        stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
+
+        // test
+        dropTable(templates, "TEST");
+        stmt.execute(CREATE_TABLE_TEST);
+        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
+        try{
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        }finally{
+            pstmt.close();
+        }
+
+        // employee
+        dropTable(templates, "EMPLOYEE");
+        //createEmployeeTable(templates);
+        stmt.execute("create table EMPLOYEE ( " +
+                "ID INT PRIMARY KEY, " +
+                "FIRSTNAME VARCHAR(50), " +
+                "LASTNAME VARCHAR(50), " +
+                "SALARY DECIMAL, "  +
+                "DATEFIELD DATE, " +
+                "TIMEFIELD TIME, " +
+                "SUPERIOR_ID INT, " +
+                "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
+                ")");
+
+        addEmployees(INSERT_INTO_EMPLOYEE);
+
+        // date_test and time_test
+        dropTable(templates, "TIME_TEST");
+        dropTable(templates, "DATE_TEST");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+        firebirdInited = true;
+    }
 
     public static void initH2() throws SQLException, ClassNotFoundException{
         targetHolder.set(Target.H2);

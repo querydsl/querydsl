@@ -132,7 +132,13 @@
       <artifactId>cubrid-jdbc</artifactId>
       <version>${cubrid.version}</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>org.firebirdsql.jdbc</groupId>
+      <artifactId>jaybird-jdk16</artifactId>
+      <version>${firebird.version}</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.xerial</groupId>
