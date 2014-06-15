@@ -50,7 +50,7 @@ public class TemplateFactory {
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.LOWER, (Expression)arg);
                     } else {
-                        return arg.toString().toLowerCase(Locale.ENGLISH);
+                        return String.valueOf(arg).toLowerCase(Locale.ENGLISH);
                     }
                 }
             };
@@ -64,7 +64,7 @@ public class TemplateFactory {
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.UPPER, (Expression)arg);
                     } else {
-                        return arg.toString().toUpperCase(Locale.ENGLISH);
+                        return String.valueOf(arg).toUpperCase(Locale.ENGLISH);
                     }
                 }
             };
@@ -78,7 +78,7 @@ public class TemplateFactory {
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
                     } else {
-                        return escapeForLike(arg.toString()) + "%";
+                        return escapeForLike(String.valueOf(arg)) + "%";
                     }
                 }
             };
@@ -93,7 +93,7 @@ public class TemplateFactory {
                         Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
                         return OperationImpl.create(String.class, Ops.LOWER, concated);
                     } else {
-                        return escapeForLike(arg.toString().toLowerCase(Locale.ENGLISH)) + "%";
+                        return escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
                     }
                 }
             };
@@ -107,7 +107,7 @@ public class TemplateFactory {
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
                     } else {
-                        return "%" + escapeForLike(arg.toString());
+                        return "%" + escapeForLike(String.valueOf(arg));
                     }
                 }
             };
@@ -122,7 +122,7 @@ public class TemplateFactory {
                         Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
                         return OperationImpl.create(String.class, Ops.LOWER, concated);
                     } else {
-                        return "%" + escapeForLike(arg.toString().toLowerCase(Locale.ENGLISH));
+                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH));
                     }
                 }
             };
@@ -137,7 +137,7 @@ public class TemplateFactory {
                         Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
                         return OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
                     } else {
-                        return "%" + escapeForLike(arg.toString()) + "%";
+                        return "%" + escapeForLike(String.valueOf(arg)) + "%";
                     }
                 }
             };
@@ -153,7 +153,7 @@ public class TemplateFactory {
                         concated = OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
                         return OperationImpl.create(String.class, Ops.LOWER, concated);
                     } else {
-                        return "%" + escapeForLike(arg.toString().toLowerCase(Locale.ENGLISH)) + "%";
+                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
                     }
                 }
             };
