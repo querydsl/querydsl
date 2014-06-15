@@ -144,13 +144,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
