@@ -449,7 +449,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -696,7 +696,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({ORACLE, DERBY, FIREBIRD, SQLSERVER, CUBRID, TERADATA})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
@@ -898,7 +898,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, HSQLDB, ORACLE, SQLSERVER})
+    @ExcludeIn({DERBY, FIREBIRD, HSQLDB, ORACLE, SQLSERVER})
     @SkipForQuoted
     public void Path_Alias() {
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
@@ -1022,7 +1022,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, POSTGRES, SQLITE, TERADATA})
+    @ExcludeIn({FIREBIRD, ORACLE, POSTGRES, SQLITE, TERADATA})
     public void Random2() {
         query().uniqueResult(MathExpressions.random(10));
     }
@@ -1242,7 +1242,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(DERBY)
+    @ExcludeIn({DERBY, FIREBIRD})
     public void Substring() {
         //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
         query().from(employee)
