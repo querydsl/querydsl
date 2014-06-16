@@ -25,7 +25,7 @@ before_script:
   - sudo apt-get install cubrid-demodb
   - /etc/profile.d/cubrid.sh
   - hostname | sed 's/^/127.0.0.1 /g' | cat - /etc/hosts > /tmp/etchoststemp && sudo mv /tmp/etchoststemp /etc/hosts --force
-  - sudo apt-get install firebird2.5-superclassic
+  - sudo apt-get install firebird2.5-superclassic firebird2.5-examples
   - sudo isql-fb -r sysdba -pas masterkey -input firebird.sql
 script:
   - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'
