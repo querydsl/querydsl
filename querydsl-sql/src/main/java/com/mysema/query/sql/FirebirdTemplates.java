@@ -30,7 +30,7 @@ public class FirebirdTemplates extends SQLTemplates {
     }
 
     public FirebirdTemplates(char escape, boolean quote) {
-        super("`", escape, quote);
+        super("\"", escape, quote);
         setDummyTable("RDB$DATABASE");
         addClass2TypeMappings("smallint", Boolean.class, Byte.class);
 
