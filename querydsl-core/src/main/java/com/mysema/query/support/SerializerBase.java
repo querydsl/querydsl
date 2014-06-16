@@ -55,13 +55,16 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     private final S self = (S) this;
 
     private final Templates templates;
-    
+
+    private final char escape;
+
     private boolean normalize = true;
     
     private boolean strict = true;
     
     public SerializerBase(Templates templates) {
         this.templates = templates;
+        this.escape = templates.getEscapeChar();
     }
     
     public final S prepend(final String str) {
@@ -269,7 +272,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             for (final Template.Element element : template.getElements()) {
                 final Object rv = element.convert(args);
                 if (rv instanceof Expression) {
-                    final Expression<?> expr = (Expression<?>)rv;                
+                    final Expression<?> expr = (Expression<?>) rv;
                     if (precedence > -1 && expr instanceof Operation) {
                         if (precedence < templates.getPrecedence(((Operation<?>) expr).getOperator())) {
                             append("(").handle(expr).append(")");
@@ -278,10 +281,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                         }
                     } else {
                         handle(expr);
-                    }                  
-                } else {
+                    }
+                } else if (element.isString()) {
                     append(rv.toString());
-                }            
+                } else {
+                    visitConstant(rv);
+                }
             }    
         } else if (strict) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
@@ -292,6 +297,5 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             append(")");
         }        
     }
-
 
 }

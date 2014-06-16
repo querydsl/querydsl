@@ -150,6 +150,14 @@ public class SQLSerializerTest {
     }
 
     @Test
+    public void Like() {
+        Expression<?> expr = Expressions.stringTemplate("'%a%'").contains("%a%");
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(expr);
+        assertEquals("'%a%' like ? escape '\\'", serializer.toString());
+    }
+
+    @Test
     public void Override() {
         Configuration conf = new Configuration(new DerbyTemplates());
         conf.registerTableOverride("SURVEY", "surveys");

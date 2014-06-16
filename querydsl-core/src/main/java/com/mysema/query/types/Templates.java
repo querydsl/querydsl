@@ -40,7 +40,11 @@ public class Templates {
 
     protected Templates(char escape) {
         this.escape = escape;
-        templateFactory = new TemplateFactory(escape);
+        templateFactory = new TemplateFactory(escape) {
+            public String escapeForLike(String str) {
+                return Templates.this.escapeForLike(str);
+            }
+        };
         //CHECKSTYLE:OFF
 
         add(Ops.LIST, "{0}, {1}", 40);
@@ -278,6 +282,17 @@ public class Templates {
 
     public final char getEscapeChar() {
         return escape;
+    }
+
+    protected String escapeForLike(String str) {
+        final StringBuilder rv = new StringBuilder(str.length() + 3);
+        for (char ch : str.toCharArray()) {
+            if (ch == escape || ch == '%' || ch == '_') {
+                rv.append(escape);
+            }
+            rv.append(ch);
+        }
+        return rv.toString();
     }
 
     @Nullable

@@ -384,8 +384,6 @@ public class SQLTemplates extends Templates {
             } else if (ch == '\'') {
                 builder.append("''");
                 continue;
-            } else if (ch == '\\') {
-                builder.append("\\");
             }
             builder.append(ch);
         }

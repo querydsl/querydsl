@@ -874,7 +874,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         this.useLiterals = useLiterals;
     }
 
-
     protected void setSkipParent(boolean b) {
         skipParent = b;
     }
