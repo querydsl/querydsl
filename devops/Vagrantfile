@@ -10,10 +10,10 @@ Vagrant.configure("2") do |config|
   # Boot with a GUI so you can see the screen. Good for debugging startup issues. 
   # config.vm.boot_mode = :gui
 
-  config.vm.network :forwarded_port, guest: 5432, host: 5432
-  config.vm.network :forwarded_port, guest: 3306, host: 3306
-  config.vm.network :forwarded_port, guest: 1521, host: 1521
-  config.vm.network :forwarded_port, guest: 30000, host: 30000
+  config.vm.network :forwarded_port, guest: 5432, host: 5432, auto_correct: true
+  config.vm.network :forwarded_port, guest: 3306, host: 3306, auto_correct: true
+  config.vm.network :forwarded_port, guest: 1521, host: 1521, auto_correct: true
+  config.vm.network :forwarded_port, guest: 30000, host: 30000, auto_correct: true
 
   config.vm.synced_folder ".", "/opt/querydsl"
 
