@@ -33,6 +33,8 @@ public class FirebirdTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setDummyTable("RDB$DATABASE");
         addClass2TypeMappings("smallint", Boolean.class, Byte.class);
+        addClass2TypeMappings("varchar(256)", String.class);
+        addClass2TypeMappings("double precision", Double.class);
 
         // string
         add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");
@@ -43,6 +45,7 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE, "position({0},{1})");
         add(Ops.StringOps.LOCATE2, "position({0},{1},{2})");
         add(Ops.STRING_LENGTH, "char_length({0})");
+        add(Ops.STRING_IS_EMPTY, "char_length({0}) = 0");
 
         add(Ops.AggOps.BOOLEAN_ANY, "any({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "all({0})");
@@ -53,6 +56,8 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        add(Ops.MathOps.DEG, "({0} / pi() * 180.0)");
+        add(Ops.MathOps.RAD, "({0} / 180.0 * pi())");
 
         //
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
