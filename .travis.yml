@@ -26,9 +26,6 @@ before_script:
   - /etc/profile.d/cubrid.sh
   - hostname | sed 's/^/127.0.0.1 /g' | cat - /etc/hosts > /tmp/etchoststemp && sudo mv /tmp/etchoststemp /etc/hosts --force
   - sudo apt-get install firebird2.5-superclassic
-  - cd /usr/share/doc/firebird2.5-examples/examples/empbuild/
-  - gunzip employee.fdb.gz
-  - sudo chown firebird.firebird employee.fdb
-  - mv employee.fdb /var/lib/firebird/2.5/data/
+  - sudo isql-fb -r sysdba -pas masterkey -input firebird.sql
 script:
   - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'

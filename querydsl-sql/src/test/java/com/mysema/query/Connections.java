@@ -95,7 +95,7 @@ public final class Connections {
     private static Connection getFirebird() throws SQLException, ClassNotFoundException {
         Class.forName("org.firebirdsql.jdbc.FBDriver");
         String url = "jdbc:firebirdsql:localhost/3050:/var/lib/firebird/2.5/data/querydsl.fdb";
-        return DriverManager.getConnection(url, "SYSDBA", "adfcb39e");
+        return DriverManager.getConnection(url, "SYSDBA", "masterkey");
     }
 
     private static Connection getHSQL() throws SQLException, ClassNotFoundException {
