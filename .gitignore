@@ -2,6 +2,7 @@
 target
 bin
 test-output
+nb-configuration.xml
 .classpath
 .project
 .settings
