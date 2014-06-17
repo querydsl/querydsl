@@ -35,7 +35,11 @@ public class TemplateFactory {
 
     private static final Constant<String> PERCENT = ConstantImpl.create("%");
 
-    private static final Pattern elementPattern = Pattern.compile("\\{%?%?\\d+[slu%]?%?\\}");
+    private static final Pattern elementPattern = Pattern.compile("\\{"
+            + "(?<premod>%?%?)"
+            + "(?<index>\\d+)"
+            + "(?<postmod>[slu%]?%?)"
+            + "\\}");
 
     private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
 
@@ -173,57 +177,48 @@ public class TemplateFactory {
                 if (m.start() > end) {
                     elements.add(new Template.StaticText(template.substring(end, m.start())));
                 }
-                String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
+                String premodifiers = m.group("premod").toLowerCase(Locale.ENGLISH);
+                int index = Integer.parseInt(m.group("index"));
+                String postmodifiers = m.group("postmod").toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
                 Function<Object, Object> transformer = null;
-                if (str.charAt(0) == '%') {
-                    if (str.charAt(1) == '%') {
-                        transformer = toEndsWithViaLikeLower;
-                        str = str.substring(2);
-                    } else {
+                switch (premodifiers.length()) {
+                    case 1:
                         transformer = toEndsWithViaLike;
-                        str = str.substring(1);
-                    }
-
+                        break;
+                    case 2:
+                        transformer = toEndsWithViaLikeLower;
+                        break;
                 }
-                int strip = 0;
-                switch (str.charAt(str.length()-1)) {
-                case 'l' :
-                    transformer = toLowerCase;
-                    strip = 1;
-                    break;
-                case 'u' :
-                    transformer = toUpperCase;
-                    strip = 1;
-                    break;
-                case '%' :
-                    if (transformer == null) {
-                        if (str.charAt(str.length()-2) == '%') {
+                switch (postmodifiers.length()) {
+                    case 1:
+                        switch (postmodifiers.charAt(0)) {
+                            case '%':
+                                if (transformer == null) {
+                                    transformer = toStartsWithViaLike;
+                                } else {
+                                    transformer = toContainsViaLike;
+                                }
+                                break;
+                            case 'l':
+                                transformer = toLowerCase;
+                                break;
+                            case 'u':
+                                transformer = toUpperCase;
+                                break;
+                            case 's':
+                                asString = true;
+                                break;
+                        }
+                        break;
+                    case 2:
+                        if (transformer == null) {
                             transformer = toStartsWithViaLikeLower;
-                            strip = 2;
                         } else {
-                            transformer = toStartsWithViaLike;
-                            strip = 1;
-                        }
-                    } else {
-                        if (str.charAt(str.length()-2) == '%') {
                             transformer = toContainsViaLikeLower;
-                            strip = 2;
-                        } else {
-                            transformer = toContainsViaLike;
-                            strip = 1;
                         }
-                    }
-                    break;
-                case 's' :
-                    asString = true;
-                    strip = 1;
-                    break;
+                        break;
                 }
-                if (strip > 0) {
-                    str = str.substring(0, str.length()-strip);
-                }
-                int index = Integer.parseInt(str);
                 if (asString) {
                     elements.add(new Template.AsString(index));
                 } else if (transformer != null) {
