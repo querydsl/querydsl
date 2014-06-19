@@ -29,13 +29,7 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-spatial</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.vividsolutions</groupId>
-      <artifactId>jts</artifactId>
-      <version>1.10</version>
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>
@@ -45,7 +39,7 @@
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
-      <version>1.0.0.GA</version>
+      <version>1.1.0.Final</version>
     </dependency>
        
     <dependency>
@@ -55,13 +49,14 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-        <scope>provided</scope>      
+      <scope>provided</scope>      
     </dependency>    
     
     <dependency>  
-      <groupId>javax.inject</groupId>  
-      <artifactId>javax.inject</artifactId>  
-      <version>1</version>  
+      <groupId>org.apache.servicemix.bundles</groupId>  
+      <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>  
+      <version>1_2</version>
+      <optional>true</optional>
     </dependency>    
 
     <!-- test -->
@@ -88,25 +83,25 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
-      <scope>provided</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.postgis</groupId>
       <artifactId>postgis-jdbc</artifactId>
       <version>1.3.3</version>
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>ojdbc6</artifactId>
       <version>${oracle.version}</version>
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>oracle</groupId>
       <artifactId>sdoapi</artifactId>
       <version>11.2.0</version>
-      <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
