@@ -33,6 +33,13 @@
       <artifactId>querydsl-apt</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- alias dependencies -->
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>${cglib.version}</version>
+      <optional>true</optional>
+    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
