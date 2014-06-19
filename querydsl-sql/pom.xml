@@ -59,9 +59,9 @@
     </dependency>    
     
     <dependency>  
-      <groupId>javax.inject</groupId>  
-      <artifactId>javax.inject</artifactId>  
-      <version>1</version> 
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+      <version>1_2</version>
     </dependency>    
 
     <!-- test -->
