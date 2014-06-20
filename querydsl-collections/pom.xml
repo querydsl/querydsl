@@ -34,12 +34,6 @@
       <version>${project.version}</version>
     </dependency>
     <!-- alias dependencies -->
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-      <version>${cglib.version}</version>
-      <optional>true</optional>
-    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -65,6 +59,13 @@
       <version>${project.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>${cglib.version}</version>
+      <scope>test</scope>
     </dependency>
     
     <dependency>
