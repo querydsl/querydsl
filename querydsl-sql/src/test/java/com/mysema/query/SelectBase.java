@@ -842,6 +842,24 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Num_Cast() {
+        query().from(employee).list(employee.id.castToNum(Long.class));
+        query().from(employee).list(employee.id.castToNum(Float.class));
+        query().from(employee).list(employee.id.castToNum(Double.class));
+    }
+
+    @Test
+    public void Num_Cast2() {
+        NumberExpression<Integer> num = Expressions.numberTemplate(Integer.class, "0");
+        query().uniqueResult(num.castToNum(Byte.class));
+        query().uniqueResult(num.castToNum(Short.class));
+        query().uniqueResult(num.castToNum(Integer.class));
+        query().uniqueResult(num.castToNum(Long.class));
+        query().uniqueResult(num.castToNum(Float.class));
+        query().uniqueResult(num.castToNum(Double.class));
+    }
+
+    @Test
     public void Offset_Only() {
         query().from(employee)
             .orderBy(employee.firstname.asc())
