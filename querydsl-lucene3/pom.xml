@@ -56,6 +56,12 @@
     
     <!-- test -->
     <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>${cglib.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
