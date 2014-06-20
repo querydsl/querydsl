@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class Generic15Test {
 
@@ -30,6 +31,6 @@ public class Generic15Test {
     @Test
     public void test() {
         // QMyContainable
-        QGeneric15Test_MyContainable.myContainable.compound
+        assertEquals(MyCompound.class, QGeneric15Test_MyContainable.myContainable.compound.getType());
     }
 }
