@@ -363,6 +363,19 @@ public final class Connections {
                 "NAME2 varchar(30))");
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
 
+        try {
+            stmt.execute("CREATE GENERATOR survey_gen_id;");
+            stmt.execute("CREATE TRIGGER survey_auto_id FOR survey\n" +
+                    "ACTIVE BEFORE INSERT POSITION 0\n" +
+                    "AS\n" +
+                    "BEGIN\n" +
+                    "IF (NEW.id IS NULL) THEN\n" +
+                    "NEW.id = GEN_ID(survey_gen_id,1);\n" +
+                    "END ");
+        } catch (SQLException e) {
+            // do nothing
+        }
+
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
