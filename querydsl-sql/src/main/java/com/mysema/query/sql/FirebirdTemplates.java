@@ -32,12 +32,10 @@ public class FirebirdTemplates extends SQLTemplates {
     public FirebirdTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable("RDB$DATABASE");
+        setUnionsWrapped(false);
         addClass2TypeMappings("smallint", Boolean.class, Byte.class);
         addClass2TypeMappings("varchar(256)", String.class);
         addClass2TypeMappings("double precision", Double.class);
-
-        add(SQLOps.UNION, "{0}\nunion\n{1}", 1);
-        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", 1);
 
         // string
         add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");

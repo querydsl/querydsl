@@ -18,7 +18,7 @@ public class FirebirdSuiteTest extends AbstractSuite {
     public static class SelectUseLiterals extends SelectUseLiteralsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
-    //public static class Union extends UnionBase {}
+    public static class Union extends UnionBase {}
     public static class Update extends UpdateBase {}
 
     @BeforeClass
