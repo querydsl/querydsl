@@ -319,6 +319,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Via_Constructor() {
         int count = (int)query().from(survey).count();
         SQLInsertClause insert = insert(survey, sq().from(survey2));
