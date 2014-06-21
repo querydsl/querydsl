@@ -361,20 +361,25 @@ public final class Connections {
         stmt.execute("create table SURVEY(ID int primary key, " +
                 "NAME varchar(30)," +
                 "NAME2 varchar(30))");
+
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
 
         try {
-            stmt.execute("CREATE GENERATOR survey_gen_id;");
-            stmt.execute("CREATE TRIGGER survey_auto_id FOR survey\n" +
-                    "ACTIVE BEFORE INSERT POSITION 0\n" +
-                    "AS\n" +
-                    "BEGIN\n" +
-                    "IF (NEW.id IS NULL) THEN\n" +
-                    "NEW.id = GEN_ID(survey_gen_id,1);\n" +
-                    "END ");
+            //stmt.execute("DROP TRIGGER survey_auto_id;");
+            stmt.execute("DROP GENERATOR survey_gen_id;");
         } catch (SQLException e) {
             // do nothing
         }
+
+        stmt.execute("CREATE GENERATOR survey_gen_id;");
+        stmt.execute("SET GENERATOR survey_gen_id TO 30;");
+        stmt.execute("CREATE TRIGGER survey_auto_id FOR survey\n" +
+                "ACTIVE BEFORE INSERT POSITION 0\n" +
+                "AS\n" +
+                "BEGIN\n" +
+                "IF (NEW.id IS NULL) THEN\n" +
+                "NEW.id = GEN_ID(survey_gen_id,1);\n" +
+                "END ");
 
         // test
         dropTable(templates, "TEST");
@@ -405,17 +410,21 @@ public final class Connections {
                 ")");
 
         try {
-            stmt.execute("CREATE GENERATOR employee_gen_id;");
-            stmt.execute("CREATE TRIGGER employee_auto_id FOR employee\n" +
-                    "ACTIVE BEFORE INSERT POSITION 0\n" +
-                    "AS\n" +
-                    "BEGIN\n" +
-                    "IF (NEW.id IS NULL) THEN\n" +
-                    "NEW.id = GEN_ID(employee_gen_id,1);\n" +
-                    "END ");
+            //stmt.execute("DROP TRIGGER employee_auto_id;");
+            stmt.execute("DROP GENERATOR employee_gen_id;");
         } catch (SQLException e) {
             // do nothing
         }
+
+        stmt.execute("CREATE GENERATOR employee_gen_id;");
+        stmt.execute("SET GENERATOR employee_gen_id TO 30;");
+        stmt.execute("CREATE TRIGGER employee_auto_id FOR employee\n" +
+                "ACTIVE BEFORE INSERT POSITION 0\n" +
+                "AS\n" +
+                "BEGIN\n" +
+                "IF (NEW.id IS NULL) THEN\n" +
+                "NEW.id = GEN_ID(employee_gen_id,1);\n" +
+                "END ");
 
         addEmployees(INSERT_INTO_EMPLOYEE);
 

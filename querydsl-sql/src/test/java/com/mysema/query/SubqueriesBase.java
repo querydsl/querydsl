@@ -1,26 +1,8 @@
 package com.mysema.query;
 
-import static com.mysema.query.Constants.employee;
-import static com.mysema.query.Constants.employee2;
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.POSTGRES;
-import static com.mysema.query.Target.SQLITE;
-import static com.mysema.query.Target.SQLSERVER;
-import static com.mysema.query.Target.TERADATA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
-
-import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.sql.Configuration;
@@ -36,11 +18,16 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.testutil.ExcludeIn;
+import org.junit.Test;
+import static com.mysema.query.Constants.*;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE, SQLSERVER})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})
     public void Keys() {
         QEmployee employee2 = new QEmployee("employee2");
         ForeignKey<Employee> nameKey1 = new ForeignKey<Employee>(employee,
@@ -56,7 +43,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, SQLITE, SQLSERVER})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})
     public void List_In_Query() {
         QEmployee employee2 = new QEmployee("employee2");
         query().from(employee)
