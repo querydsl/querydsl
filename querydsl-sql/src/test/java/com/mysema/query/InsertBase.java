@@ -261,6 +261,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery() {
         int count = (int)query().from(survey).count();
         assertEquals(count, insert(survey)
@@ -304,6 +305,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Params() {
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
         SQLSubQuery sq = sq().from(survey2);
