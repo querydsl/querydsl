@@ -404,6 +404,19 @@ public final class Connections {
                 "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
                 ")");
 
+        try {
+            stmt.execute("CREATE GENERATOR employee_gen_id;");
+            stmt.execute("CREATE TRIGGER employee_auto_id FOR employee\n" +
+                    "ACTIVE BEFORE INSERT POSITION 0\n" +
+                    "AS\n" +
+                    "BEGIN\n" +
+                    "IF (NEW.id IS NULL) THEN\n" +
+                    "NEW.id = GEN_ID(employee_gen_id,1);\n" +
+                    "END ");
+        } catch (SQLException e) {
+            // do nothing
+        }
+
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
