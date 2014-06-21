@@ -1,0 +1,46 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<sect1 id="hibernate_search_integration" revision="1">
+  <title>Hibernate Search 쿼리</title>
+
+  <para>Hibernate Search 모듈의 쿼리 기능을 설명한다.
+  </para>
+
+  <sect2>
+
+    <title>Querydsl 쿼리 타입 생성</title>
+    <para>
+      쿼리 타입을 생성하는 방법은 본 문서의 <link linkend="jpa_integration">JPA 쿼리</link> 부분을 참고한다.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title>쿼리</title>
+
+    <para>Querydsl Hibernate Search를 이용한 쿼리는 다음과 같이 간단하다.
+    </para>
+
+    <programlisting language="java"><![CDATA[
+QUser user = QUser.user;
+SearchQuery<User> query = new SearchQuery<User>(session, user);
+List<User> list = query
+	.where(user.firstName.eq("Bob"))
+	.list();
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+    <title>일반 용법</title>
+
+    <para>
+      일반 용법은 <link linkend="lucene_integration">Querying Lucene의 일반 용법</link>을 참고한다.
+    </para>
+
+    <para>
+      쿼리 직렬화 과정에서 Querydsl Lucene module과의 유일한 차이점은 경로를 다르게
+      처리한다는 것이다. <code>org.hibernate.search.annotations.Field</code> 애노테이션이
+      적용된 프로퍼티인 경우, 필드 이름에 대한 대체 방법으로 name 속성의 값을 사용한다.
+    </para>
+
+  </sect2>
+</sect1>

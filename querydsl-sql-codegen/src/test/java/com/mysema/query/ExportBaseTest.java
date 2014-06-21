@@ -34,6 +34,7 @@ public abstract class ExportBaseTest {
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSpatial(true);
         exporter.setSchemaPattern(getSchemaPattern());
         exporter.setPackageName("test");
         exporter.setTargetFolder(folder);

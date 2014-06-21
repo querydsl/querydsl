@@ -105,7 +105,18 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(hour,{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(second,{0},{1})");
+    }
 
+    @Override
+    public String escapeLiteral(String str) {
+        StringBuilder builder = new StringBuilder();
+        for (char ch : super.escapeLiteral(str).toCharArray()) {
+            if (ch == '\\') {
+                builder.append("\\");
+            }
+            builder.append(ch);
+        }
+        return builder.toString();
     }
 
 }

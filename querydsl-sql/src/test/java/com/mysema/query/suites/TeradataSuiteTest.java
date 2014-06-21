@@ -11,13 +11,14 @@ import com.mysema.query.LikeEscapeBase;
 import com.mysema.query.MergeBase;
 import com.mysema.query.SelectBase;
 import com.mysema.query.SelectTeradataBase;
+import com.mysema.query.SpatialBase;
 import com.mysema.query.SelectUseLiteralsBase;
 import com.mysema.query.SelectWindowFunctionsBase;
 import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
 import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
-import com.mysema.query.sql.TeradataTemplates;
+import com.mysema.query.sql.spatial.TeradataSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
@@ -30,6 +31,7 @@ public class TeradataSuiteTest extends AbstractSuite {
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
     public static class SelectTeradata extends SelectTeradataBase {}
+    public static class Spatial extends SpatialBase {}
     public static class SelectUseLiterals extends SelectUseLiteralsBase {}
     public static class SelectWindowFunctions extends SelectWindowFunctionsBase {}
     public static class Subqueries extends SubqueriesBase {}
@@ -40,7 +42,7 @@ public class TeradataSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initTeradata();
-        Connections.setTemplates(TeradataTemplates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(TeradataSpatialTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

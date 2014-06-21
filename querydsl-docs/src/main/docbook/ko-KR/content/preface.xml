@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<preface id="preface">
+  <title>서문</title>
+
+  <para>
+    Querydsl 정적 타입을 이용해서 SQL과 같은 쿼리를 생성할 수 있도록 해 주는 프레임워크다.
+    문자열로 작성하거나 XML 파일에 쿼리를 작성하는 대신, 
+    Querydsl이 제공하는 플루언트(Fluent) API를 이용해서 쿼리를 생성할 수 있다.
+  </para>
+
+  <para>
+    단순 문자열과 비교해서 Fluent API를 사용할 때의 장점은 다음과 같다.
+  </para>
+
+  <orderedlist>
+    <listitem>
+      <para>IDE의 코드 자동 완성 기능 사용</para>
+    </listitem>
+    <listitem>
+      <para>문법적으로 잘못된 쿼리를 허용하지 않음</para>
+    </listitem>
+    <listitem>
+      <para>도메인 타입과 프로퍼티를 안전하게 참조할 수 있음</para>
+    </listitem>
+    <listitem>
+      <para>도메인 타입의 리팩토링을 더 잘 할 수 있음</para>
+    </listitem>
+  </orderedlist>
+
+  <!-- more -->
+
+</preface>

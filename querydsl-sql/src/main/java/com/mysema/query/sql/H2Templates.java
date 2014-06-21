@@ -45,6 +45,7 @@ public class H2Templates extends SQLTemplates {
         setNativeMerge(true);
         setLimitRequired(true);
         setCountDistinctMultipleColumns(true);
+
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
 

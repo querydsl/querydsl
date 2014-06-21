@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,11 +22,11 @@ import java.util.List;
  * @author tiwe
  */
 public final class ToStringVisitor implements Visitor<String,Templates> {
-    
+
     public static final ToStringVisitor DEFAULT = new ToStringVisitor();
 
     private ToStringVisitor() {}
-    
+
     @Override
     public String visit(Constant<?> e, Templates templates) {
         return e.getConstant().toString();
@@ -52,19 +52,28 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
     public String visit(Operation<?> o, Templates templates) {
         final Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
+            final int precedence = templates.getPrecedence(o.getOperator());
             final StringBuilder builder = new StringBuilder();
             for (Template.Element element : template.getElements()) {
                 final Object rv = element.convert(o.getArgs());
-                if (rv instanceof Expression) {                    
+                if (rv instanceof Expression) {
+                    if (precedence > -1 && rv instanceof Operation) {
+                        if (precedence < templates.getPrecedence(((Operation<?>)rv).getOperator())) {
+                            builder.append("(");
+                            builder.append(((Expression)rv).accept(this, templates));
+                            builder.append(")");
+                            continue;
+                        }
+                    }
                     builder.append(((Expression)rv).accept(this, templates));
-                } else {                    
+                } else {
                     builder.append(rv.toString());
                 }
             }
             return builder.toString();
         } else {
-            return "unknown operation with args " + o.getArgs();
-        }                  
+            return "unknown operation with operator " + o.getOperator().getId() + " and args " + o.getArgs();
+        }
     }
 
     @Override
@@ -83,12 +92,12 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
                 final StringBuilder builder = new StringBuilder();
                 for (Template.Element element : pattern.getElements()) {
                     Object rv = element.convert(args);
-                    if (rv instanceof Expression) {                    
+                    if (rv instanceof Expression) {
                         builder.append(((Expression)rv).accept(this, templates));
                     } else {
                         builder.append(rv.toString());
                     }
-                }                
+                }
                 return builder.toString();
             } else {
                 throw new IllegalArgumentException("No pattern for " + p.getMetadata().getPathType());
@@ -108,7 +117,7 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
         final StringBuilder builder = new StringBuilder();
         for (Template.Element element : expr.getTemplate().getElements()) {
             Object rv = element.convert(expr.getArgs());
-            if (rv instanceof Expression) {                    
+            if (rv instanceof Expression) {
                 builder.append(((Expression)rv).accept(this, templates));
             } else {
                 builder.append(rv.toString());

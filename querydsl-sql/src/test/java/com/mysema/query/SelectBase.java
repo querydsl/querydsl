@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
@@ -326,6 +327,8 @@ public class SelectBase extends AbstractBaseTest {
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
 
         List<Object> data = Lists.newArrayList();
+        data.add(Constants.date);
+        data.add(Constants.time);
         data.add(new java.util.Date(ts));
         data.add(new java.util.Date(tsDate));
         data.add(new java.util.Date(tsTime));
@@ -438,13 +441,12 @@ public class SelectBase extends AbstractBaseTest {
         int minutes = query.singleResult(SQLExpressions.datediff(DatePart.minute, date, employee.datefield));
         int seconds = query.singleResult(SQLExpressions.datediff(DatePart.second, date, employee.datefield));
 
-        assertEquals(30,        years);
-        assertEquals(361,       months);
-        assertEquals(10989,     days);
-        assertEquals(263736,    hours);
-        assertEquals(15824160,  minutes);
         assertEquals(949449600, seconds);
-
+        assertEquals(15824160,  minutes);
+        assertEquals(263736,    hours);
+        assertEquals(10989,     days);
+        assertEquals(361,       months);
+        assertEquals(30,        years);
     }
 
     @Test
@@ -625,6 +627,17 @@ public class SelectBase extends AbstractBaseTest {
     public void Like() {
         query().from(employee).where(employee.firstname.like("\\")).count();
         query().from(employee).where(employee.firstname.like("\\\\")).count();
+    }
+
+    @Test
+    public void Like_Escape() {
+        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen");
+
+        for (String str : strs) {
+            assertTrue(str, query()
+                .from(employee)
+                .where(Expressions.stringTemplate("'" + str + "'").contains(str)).count() > 0);
+        }
     }
 
     @Test

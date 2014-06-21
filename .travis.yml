@@ -19,7 +19,7 @@ before_script:
   - psql -c "create user querydsl with password 'querydsl';" -U postgres
   - psql -c 'grant all privileges on database querydsl to querydsl;' -U postgres
   - psql -c 'grant all privileges on database querydsl2 to querydsl;' -U postgres
-  - psql -c 'create extension postgis;' -U postgres
+  - psql -c 'create extension postgis;' -d querydsl -U postgres
   - echo 'yes' | sudo add-apt-repository ppa:cubrid/cubrid
   - sudo apt-get update
   - sudo apt-get install cubrid

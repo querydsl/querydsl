@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+        <!ENTITY versionNumber "3.4.0">
+        <!ENTITY copyrightYear "2007-2014">
+        <!ENTITY copyrightHolder "Original authors">
+]>
+<book xmlns:xi="http://www.w3.org/2001/XInclude">
+    <bookinfo>
+        <title>Querydsl - 레퍼런스 문서</title>
+        <!-- Type-safe queries for Java -->
+        <productname>Querydsl</productname>    
+        <releaseinfo>&versionNumber;</releaseinfo>
+        <authorgroup>
+          <author>
+            <firstname>Timo</firstname>
+            <surname>Westkämper</surname>
+          </author>
+          <author>
+            <firstname>Samppa</firstname>
+            <surname>Saarela</surname>
+          </author>
+          <author>
+            <firstname>Vesa</firstname>
+            <surname>Marttila</surname>
+          </author>
+          <author>
+            <firstname>Lassi</firstname>
+            <surname>Immonen</surname>
+          </author>		  
+        </authorgroup>
+        <mediaobject>        
+            <imageobject role="fo">
+                <imagedata fileref="media/global.logo.png" align="center" />
+            </imageobject>
+            <imageobject role="html">
+                <imagedata fileref="media/global.logo.png" depth="3cm" />
+            </imageobject>
+        </mediaobject>
+                
+        <copyright>
+            <year>&copyrightYear;</year>
+            <holder>&copyrightHolder;</holder>
+        </copyright>
+        <xi:include href="legal_notice.xml"/>
+
+    </bookinfo>
+
+    <toc/>
+
+    <xi:include href="content/preface.xml"/>       
+    <xi:include href="content/intro.xml" />
+    <xi:include href="content/tutorials.xml"/>    
+    <xi:include href="content/general.xml"/>                
+    <xi:include href="content/troubleshooting.xml"/>
+    
+</book>
+

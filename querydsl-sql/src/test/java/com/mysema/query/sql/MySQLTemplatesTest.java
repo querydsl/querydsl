@@ -27,6 +27,15 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
+    public void test() {
+        SQLTemplates templates = MySQLTemplates.builder()
+                .printSchema()
+                .build();
+        Configuration conf = new Configuration(templates);
+        System.out.println(new SQLQuery(conf).from(survey1).toString());
+    }
+
+    @Test
     public void Order_NullsFirst() {
         query.from(survey1).orderBy(survey1.name.asc().nullsFirst());
         assertEquals("from SURVEY survey1 order by (case when survey1.NAME is null then 0 else 1 end), survey1.NAME asc", query.toString());

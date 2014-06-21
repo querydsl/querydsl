@@ -31,19 +31,139 @@ import com.mysema.query.types.Template.Element;
  */
 public class TemplateFactory {
 
-    private static final Pattern elementPattern = Pattern.compile("\\{%?%?\\d+[slu%]?%?\\}");
-
-    /**
-     * Default instance 
-     */
     public static final TemplateFactory DEFAULT = new TemplateFactory('\\');
+
+    private static final Constant<String> PERCENT = ConstantImpl.create("%");
+
+    private static final Pattern elementPattern = Pattern.compile("\\{"
+            + "(?<premod>%?%?)"
+            + "(?<index>\\d+)"
+            + "(?<postmod>[slu%]?%?)"
+            + "\\}");
 
     private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
 
-    private final Converters converters;
-    
+    private final char escape;
+
+    private final Function<Object,Object> toLowerCase =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        return OperationImpl.create(String.class, Ops.LOWER, (Expression)arg);
+                    } else {
+                        return String.valueOf(arg).toLowerCase(Locale.ENGLISH);
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toUpperCase =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        return OperationImpl.create(String.class, Ops.UPPER, (Expression)arg);
+                    } else {
+                        return String.valueOf(arg).toUpperCase(Locale.ENGLISH);
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toStartsWithViaLike =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        return OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
+                    } else {
+                        return escapeForLike(String.valueOf(arg)) + "%";
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toStartsWithViaLikeLower =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
+                        return OperationImpl.create(String.class, Ops.LOWER, concated);
+                    } else {
+                        return escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toEndsWithViaLike =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        return OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                    } else {
+                        return "%" + escapeForLike(String.valueOf(arg));
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toEndsWithViaLikeLower =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                        return OperationImpl.create(String.class, Ops.LOWER, concated);
+                    } else {
+                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH));
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toContainsViaLike =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                        return OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
+                    } else {
+                        return "%" + escapeForLike(String.valueOf(arg)) + "%";
+                    }
+                }
+            };
+
+    private final Function<Object,Object> toContainsViaLikeLower =
+            new Function<Object,Object>() {
+                @Override
+                public Object apply(Object arg) {
+                    if (arg instanceof Constant) {
+                        return ConstantImpl.create(apply(arg.toString()).toString());
+                    } else if (arg instanceof Expression) {
+                        Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                        concated = OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
+                        return OperationImpl.create(String.class, Ops.LOWER, concated);
+                    } else {
+                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
+                    }
+                }
+            };
+
     public TemplateFactory(char escape) {
-        converters = new Converters(escape);
+        this.escape = escape;
     }
     
     public Template create(String template) {
@@ -57,57 +177,48 @@ public class TemplateFactory {
                 if (m.start() > end) {
                     elements.add(new Template.StaticText(template.substring(end, m.start())));
                 }
-                String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
+                String premodifiers = m.group("premod").toLowerCase(Locale.ENGLISH);
+                int index = Integer.parseInt(m.group("index"));
+                String postmodifiers = m.group("postmod").toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
                 Function<Object, Object> transformer = null;
-                if (str.charAt(0) == '%') {
-                    if (str.charAt(1) == '%') {
-                        transformer = converters.toEndsWithViaLikeLower;
-                        str = str.substring(2);
-                    } else {
-                        transformer = converters.toEndsWithViaLike;
-                        str = str.substring(1);
-                    }
-
+                switch (premodifiers.length()) {
+                    case 1:
+                        transformer = toEndsWithViaLike;
+                        break;
+                    case 2:
+                        transformer = toEndsWithViaLikeLower;
+                        break;
                 }
-                int strip = 0;
-                switch (str.charAt(str.length()-1)) {
-                case 'l' :
-                    transformer = converters.toLowerCase;
-                    strip = 1;
-                    break;
-                case 'u' :
-                    transformer = converters.toUpperCase;
-                    strip = 1;
-                    break;
-                case '%' :
-                    if (transformer == null) {
-                        if (str.charAt(str.length()-2) == '%') {
-                            transformer = converters.toStartsWithViaLikeLower;
-                            strip = 2;
-                        } else {
-                            transformer = converters.toStartsWithViaLike;
-                            strip = 1;
+                switch (postmodifiers.length()) {
+                    case 1:
+                        switch (postmodifiers.charAt(0)) {
+                            case '%':
+                                if (transformer == null) {
+                                    transformer = toStartsWithViaLike;
+                                } else {
+                                    transformer = toContainsViaLike;
+                                }
+                                break;
+                            case 'l':
+                                transformer = toLowerCase;
+                                break;
+                            case 'u':
+                                transformer = toUpperCase;
+                                break;
+                            case 's':
+                                asString = true;
+                                break;
                         }
-                    } else {
-                        if (str.charAt(str.length()-2) == '%') {
-                            transformer = converters.toContainsViaLikeLower;
-                            strip = 2;
+                        break;
+                    case 2:
+                        if (transformer == null) {
+                            transformer = toStartsWithViaLikeLower;
                         } else {
-                            transformer = converters.toContainsViaLike;
-                            strip = 1;
+                            transformer = toContainsViaLikeLower;
                         }
-                    }
-                    break;
-                case 's' :
-                    asString = true;
-                    strip = 1;
-                    break;
+                        break;
                 }
-                if (strip > 0) {
-                    str = str.substring(0, str.length()-strip);
-                }
-                int index = Integer.parseInt(str);
                 if (asString) {
                     elements.add(new Template.AsString(index));
                 } else if (transformer != null) {
@@ -125,5 +236,18 @@ public class TemplateFactory {
             return rv;
         }
     }
+
+    public String escapeForLike(String str) {
+        final StringBuilder rv = new StringBuilder(str.length() + 3);
+        for (int i = 0; i < str.length(); i++) {
+            final char ch = str.charAt(i);
+            if (ch == escape || ch == '%' || ch == '_') {
+                rv.append(escape);
+            }
+            rv.append(ch);
+        }
+        return rv.toString();
+    }
+
 
 }

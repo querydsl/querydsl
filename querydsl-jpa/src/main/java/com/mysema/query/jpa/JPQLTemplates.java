@@ -13,12 +13,12 @@
  */
 package com.mysema.query.jpa;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
-
-import javax.annotation.Nullable;
 
 /**
  * JPQLTemplates extends {@link Templates} to provide operator patterns for JPQL
@@ -47,6 +47,10 @@ public class JPQLTemplates extends Templates {
     protected JPQLTemplates(char escape, QueryHandler queryHandler) {
         super(escape);
         this.queryHandler = queryHandler;
+
+        add(Ops.CASE, "case {0} end");
+        add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 0);
+        add(Ops.CASE_ELSE,  "else {0}", 0);
 
         //CHECKSTYLE:OFF
         // boolean

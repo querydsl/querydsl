@@ -13,6 +13,12 @@
  */
 package com.mysema.query;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.Calendar;
+import java.util.Map.Entry;
+
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import com.google.common.collect.Lists;
@@ -37,13 +43,6 @@ import com.mysema.testutil.IncludeIn;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-import java.util.Calendar;
-import java.util.Map.Entry;
-
 import static com.mysema.query.Target.*;
 import static org.junit.Assert.*;
 
@@ -1246,6 +1245,36 @@ public abstract class AbstractJPATest {
         QShow show = QShow.show;
         Long lng = query().from(show).uniqueResult(show.id.sum());
         assertNotNull(lng);
+    }
+
+    @Test
+    public void Sum_of_Integer() {
+        QCat cat2 = new QCat("cat2");
+        query().from(cat)
+                .where(new JPASubQuery()
+                        .from(cat2).where(cat2.eq(cat.mate))
+                        .unique(cat2.breed.sum()).gt(0))
+                .list(cat);
+    }
+
+    @Test
+    public void Sum_of_Float() {
+        QCat cat2 = new QCat("cat2");
+        query().from(cat)
+                .where(new JPASubQuery()
+                        .from(cat2).where(cat2.eq(cat.mate))
+                        .unique(cat2.floatProperty.sum()).gt(0.0))
+                .list(cat);
+    }
+
+    @Test
+    public void Sum_of_Double() {
+        QCat cat2 = new QCat("cat2");
+        query().from(cat)
+                .where(new JPASubQuery()
+                        .from(cat2).where(cat2.eq(cat.mate))
+                        .unique(cat2.bodyWeight.sum()).gt(0.0))
+                .list(cat);
     }
 
     @Test

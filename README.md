@@ -12,17 +12,19 @@ Use these tutorials to get started
 
 * [Querying JPA](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration)
 * [Querying SQL](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html)
-* [Querying JDO](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html)
 * [Querying Mongodb](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s06.html)
 * [Querying Lucene](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html)
 * [Querying Collections](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html)
+* [Querydsl Spatial](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html)
+* [Querying JDO](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html)
 
 **Examples**
 
 Querydsl example projects
 
-* [Querydsl JPA example](https://github.com/mysema/querydsl-jpa-example)
-* [Querydsl SQL example](https://github.com/mysema/querydsl-sql-example)
+* [Querydsl JPA example](https://github.com/querydsl/querydsl-jpa-example)
+* [Querydsl SQL example](https://github.com/querydsl/querydsl-sql-example)
+* [Querydsl Customer DAO](https://github.com/querydsl/querydsl-customer-dao)
 
 **Support**
 

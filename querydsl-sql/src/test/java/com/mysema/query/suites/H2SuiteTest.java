@@ -1,7 +1,8 @@
 package com.mysema.query.suites;
 
 import com.mysema.query.*;
-import com.mysema.query.sql.H2Templates;
+import com.mysema.query.SpatialBase;
+import com.mysema.query.sql.spatial.GeoDBTemplates;
 import org.junit.BeforeClass;
 
 public class H2SuiteTest extends AbstractSuite {
@@ -13,6 +14,7 @@ public class H2SuiteTest extends AbstractSuite {
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
     public static class SelectUseLiterals extends SelectUseLiteralsBase {}
+    public static class Spatial extends SpatialBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
@@ -21,7 +23,7 @@ public class H2SuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(H2Templates.builder().newLineToSingleSpace().build());
+        Connections.setTemplates(GeoDBTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

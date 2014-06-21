@@ -15,6 +15,7 @@
   <packaging>jdocbook</packaging>
   
   <properties>
+    <translation>en-US</translation>
     <xslthl.config>http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml</xslthl.config>
   </properties>
 
@@ -26,6 +27,7 @@
         <version>2.3.5</version>
         <extensions>true</extensions>
         <configuration>
+          <masterTranslation>${translation}</masterTranslation>
           <sourceDocumentName>Querydsl_Reference.xml</sourceDocumentName>
           <imageResource>
             <directory>${basedir}/src/main/docbook</directory>

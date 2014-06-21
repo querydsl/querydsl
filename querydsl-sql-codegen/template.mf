@@ -13,5 +13,6 @@ Import-Template:
   com.google.common.*;version="${guava.version}",
   org.apache.tools.ant.*;version="${ant.version}",
   org.joda.time.*;version="1.6",
+  org.geolatte.*;version="0.11",
   org.slf4j.*;version="${slf4j.version}"
   

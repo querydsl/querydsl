@@ -13,14 +13,13 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Blob;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.Null;
@@ -39,6 +38,7 @@ public final class JDBCTypeMapping {
 
     static{
         registerDefault(-101, Object.class);
+        registerDefault(-102, java.sql.Timestamp.class); // Oracle: TIMESTAMP(6) WITH LOCAL TIME ZONE
 
         // BOOLEAN
         registerDefault(Types.BIT, Boolean.class);
@@ -89,7 +89,6 @@ public final class JDBCTypeMapping {
         registerDefault(Types.REF, Object.class);
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
-
     }
 
     private static void registerDefault(int sqlType, Class<?> javaType) {
@@ -108,30 +107,30 @@ public final class JDBCTypeMapping {
         sqlTypes.put(javaType, sqlType);
     }
 
-    public void registerNumeric(int size, int digits, Class<?> javaType) {
-        numericTypes.put(Pair.of(size, digits), javaType);
+    public void registerNumeric(int total, int decimal, Class<?> javaType) {
+        numericTypes.put(Pair.of(total, decimal), javaType);
     }
 
-    private Class<?> getNumericClass(int size, int digits) {
-        Pair<Integer,Integer> key = Pair.of(size, digits);
+    private Class<?> getNumericClass(int total, int decimal) {
+        Pair<Integer,Integer> key = Pair.of(total, decimal);
         if (numericTypes.containsKey(key)) {
             return numericTypes.get(key);
-        } else if (digits <= 0) {
-            if (size > 18 || size == 0) {
+        } else if (decimal <= 0) {
+            if (total > 18 || total == 0) {
                 return BigInteger.class;
-            } else if (size > 9 || size == 0) {
+            } else if (total > 9 || total == 0) {
                 return Long.class;
-            } else if (size > 4) {
+            } else if (total > 4) {
                 return Integer.class;
-            } else if (size > 2) {
+            } else if (total > 2) {
                 return Short.class;
-            } else if (size > 0) {
+            } else if (total > 0) {
                 return Byte.class;
             } else {
                 return Boolean.class;
             }
         } else {
-            if (size > 16) {
+            if (total > 16) {
                 return BigDecimal.class;
             } else {
                 return Double.class;
@@ -140,9 +139,9 @@ public final class JDBCTypeMapping {
     }
 
     @Nullable
-    public Class<?> get(int sqlType, int size, int digits) {
+    public Class<?> get(int sqlType, int total, int decimal) {
         if (sqlType == Types.NUMERIC || sqlType == Types.DECIMAL) {
-            return getNumericClass(size, digits);
+            return getNumericClass(total, decimal);
         } else if (types.containsKey(sqlType)) {
             return types.get(sqlType);
         } else {

@@ -122,7 +122,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
         if (batches.isEmpty()) {
-            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(metadata, entity, updates);
             queryString = serializer.toString();
             constants = serializer.getConstants();
@@ -130,7 +130,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
-            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
             queryString = serializer.toString();
             constants = serializer.getConstants();
@@ -143,7 +143,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
-                serializer = new SQLSerializer(configuration, true);
+                serializer = createSerializer();
                 serializer.serializeUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
                 stmt.addBatch();
@@ -176,13 +176,13 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     @Override
     public List<SQLBindings> getSQL() {
         if (batches.isEmpty()) {
-            SQLSerializer serializer = new SQLSerializer(configuration, true);
+            SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(metadata, entity, updates);
             return ImmutableList.of(createBindings(metadata, serializer));
         } else {
             ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
             for (SQLUpdateBatch batch : batches) {
-                SQLSerializer serializer = new SQLSerializer(configuration, true);
+                SQLSerializer serializer = createSerializer();
                 serializer.serializeUpdate(batch.getMetadata(), entity, batch.getUpdates());
                 builder.add(createBindings(metadata, serializer));
             }
@@ -252,7 +252,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     @Override
     public String toString() {
-        SQLSerializer serializer = new SQLSerializer(configuration, true);
+        SQLSerializer serializer = createSerializer();
         serializer.serializeUpdate(metadata, entity, updates);
         return serializer.toString();
     }

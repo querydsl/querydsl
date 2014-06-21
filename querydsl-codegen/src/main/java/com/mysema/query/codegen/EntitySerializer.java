@@ -645,7 +645,7 @@ public class EntitySerializer implements Serializer {
         }
     }
 
-    private void customField(EntityType model, Property field, SerializerConfig config,
+    protected void customField(EntityType model, Property field, SerializerConfig config,
             CodeWriter writer) throws IOException {
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
         writer.line("// custom");

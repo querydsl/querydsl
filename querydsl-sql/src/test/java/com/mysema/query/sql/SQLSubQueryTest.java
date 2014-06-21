@@ -13,25 +13,19 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
-
-import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class SQLSubQueryTest {
 
@@ -159,6 +153,28 @@ public class SQLSubQueryTest {
         ListSubQuery<Object> q2 = new ListSubQuery<Object>(Object.class, new DefaultQueryMetadata());
         new SQLSubQuery().union(q1, q2);
         new SQLSubQuery().union(q1);
+    }
+
+    @Test
+    public void Union_With() {
+        QSurvey survey1 = new QSurvey("survey1");
+        QSurvey survey2 = new QSurvey("survey2");
+        QSurvey survey3 = new QSurvey("survey3");
+
+        SQLQuery query = new SQLQuery(SQLTemplates.DEFAULT);
+        query.with(survey1, new SQLSubQuery().from(survey1).list(survey1.all()));
+        query.union(
+              new SQLSubQuery().from(survey2).list(survey2.all()),
+              new SQLSubQuery().from(survey3).list(survey3.all()));
+
+        assertEquals("with survey1 as (select survey1.NAME, survey1.NAME2, survey1.ID\n" +
+                "from SURVEY survey1)\n" +
+                "(select survey2.NAME, survey2.NAME2, survey2.ID\n" +
+                "from SURVEY survey2)\n" +
+                "union\n" +
+                "(select survey3.NAME, survey3.NAME2, survey3.ID\n" +
+                "from SURVEY survey3)", query.toString());
+
     }
 
 }

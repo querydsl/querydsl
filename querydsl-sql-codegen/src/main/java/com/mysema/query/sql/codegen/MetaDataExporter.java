@@ -128,6 +128,8 @@ public class MetaDataExporter {
 
     private boolean exportForeignKeys = true;
 
+    private boolean spatial = false;
+
     public MetaDataExporter() {}
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName,
@@ -191,6 +193,10 @@ public class MetaDataExporter {
         }
         module.bind(SQLCodegenModule.BEAN_PACKAGE_NAME, beanPackageName);
 
+        if (spatial) {
+            SpatialSupport.addSupport(module);
+        }
+
         typeMappings = module.get(TypeMappings.class);
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
@@ -250,6 +256,7 @@ public class MetaDataExporter {
         String columnName = normalize(columns.getString("COLUMN_NAME"));
         String normalizedColumnName = namingStrategy.normalizeColumnName(columnName);
         int columnType = columns.getInt("DATA_TYPE");
+        String typeName = columns.getString("TYPE_NAME");
         Number columnSize = (Number) columns.getObject("COLUMN_SIZE");
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
         int columnIndex = columns.getInt("ORDINAL_POSITION");
@@ -257,11 +264,12 @@ public class MetaDataExporter {
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType,
+                typeName,
                 columnSize != null ? columnSize.intValue() : 0,
                 columnDigits != null ? columnDigits.intValue() : 0,
                 tableName, columnName);
         if (clazz == null) {
-            throw new IllegalStateException("Found no mapping for " + columnType + " (" + tableName + "." + columnName + ")");
+            throw new IllegalStateException("Found no mapping for " + columnType + " (" + tableName + "." + columnName + " " + typeName + ")");
         }
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)) {
@@ -633,13 +641,21 @@ public class MetaDataExporter {
         this.exportForeignKeys = exportForeignKeys;
     }
 
-	/**
-	 * Set the java imports
-	 *
-	 * @param imports java imports array
-	 */
-	public void setImports(String[] imports) {
-		module.bind(CodegenModule.IMPORTS, new HashSet<String>(Arrays.asList(imports)));
-	}
+    /**
+     * Set the java imports
+     *
+     * @param imports
+     *            java imports array
+     */
+    public void setImports(String[] imports) {
+        module.bind(CodegenModule.IMPORTS, new HashSet<String>(Arrays.asList(imports)));
+    }
+
+    /**
+     * @param spatial
+     */
+    public void setSpatial(boolean spatial) {
+        this.spatial = spatial;
+    }
 
 }

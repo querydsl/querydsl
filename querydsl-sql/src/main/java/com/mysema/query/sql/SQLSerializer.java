@@ -76,17 +76,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void appendAsColumnName(Path<?> path) {
-    	String column = ColumnMetadata.getName(path);
+        String column = ColumnMetadata.getName(path);
+        if (path.getMetadata().getParent() instanceof RelationalPath) {
+            RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
+            column = configuration.getColumnOverride(parent.getSchemaAndTable(), column);
+        }
         append(templates.quoteIdentifier(column));
     }
 
-    private void appendAsSchemaName(RelationalPath<?> path) {
-        final String schema = configuration.getSchema(path.getSchemaName());
+    private SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
+        return configuration.getOverride(path.getSchemaAndTable());
+    }
+
+    private void appendSchemaName(String schema) {
         append(templates.quoteIdentifier(schema));
     }
 
-    private void appendAsTableName(RelationalPath<?> path) {
-        final String table = configuration.getTable(path.getSchemaName(), path.getTableName());
+    private void appendTableName(String table) {
         append(templates.quoteIdentifier(table));
     }
 
@@ -157,11 +163,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
+                SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
                 if (templates.isPrintSchema()) {
-                    appendAsSchemaName(pe);
+                    appendSchemaName(schemaAndTable.getSchema());
                     append(".");
                 }
-                appendAsTableName(pe);
+                appendTableName(schemaAndTable.getTable());
                 append(templates.getTableAlias());
             }
         }
@@ -175,6 +182,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
+        boolean oldSkipParent = skipParent;
+        skipParent = false;
         final List<? extends Expression<?>> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
         final Predicate where = metadata.getWhere();
@@ -355,7 +364,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         // reset stage
         stage = oldStage;
-
+        skipParent = oldSkipParent;
     }
 
     protected void handleOrderBy(List<OrderSpecifier<?>> orderBy) {
@@ -399,11 +408,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity) {
+        this.entity = entity;
         templates.serializeDelete(metadata, entity, this);
     }
 
     void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
-        this.entity = entity;
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -423,13 +432,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void serializeMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+        this.entity = entity;
         templates.serializeMerge(metadata, entity, keys, columns, values, subQuery, this);
     }
 
     void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
-        this.entity = entity;
-
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -476,13 +484,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+        this.entity = entity;
         templates.serializeInsert(metadata, entity, columns, values, subQuery, this);
     }
 
     void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
-        this.entity = entity;
-
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -613,6 +620,33 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final Set<QueryFlag> flags = metadata.getFlags();
         final boolean hasFlags = !flags.isEmpty();
 
+        // with
+        if (hasFlags){
+            boolean handled = false;
+            boolean recursive = false;
+            for (QueryFlag flag : flags) {
+                if (flag.getPosition() == Position.WITH) {
+                    if (flag.getFlag() == SQLTemplates.RECURSIVE) {
+                        recursive = true;
+                        continue;
+                    }
+                    if (handled) {
+                        append(", ");
+                    }
+                    handle(flag.getFlag());
+                    handled = true;
+                }
+            }
+            if (handled) {
+                if (recursive) {
+                    prepend(templates.getWithRecursive());
+                } else {
+                    prepend(templates.getWith());
+                }
+                append("\n");
+            }
+        }
+
         // union
         Stage oldStage = stage;
         handle(union);
@@ -734,11 +768,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml) {
             if (path.equals(entity) && path instanceof RelationalPath<?>) {
+                SchemaAndTable schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
                 if (dmlWithSchema && templates.isPrintSchema()) {
-                    appendAsSchemaName((RelationalPath<?>)path);
+                    appendSchemaName(schemaAndTable.getSchema());
                     append(".");
                 }
-                appendAsTableName((RelationalPath<?>)path);
+                appendTableName(schemaAndTable.getTable());
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
                 appendAsColumnName(path);
@@ -837,6 +872,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void setUseLiterals(boolean useLiterals) {
         this.useLiterals = useLiterals;
+    }
+
+    protected void setSkipParent(boolean b) {
+        skipParent = b;
+    }
+
+    protected void setDmlWithSchema(boolean b) {
+        dmlWithSchema = b;
     }
 
 }

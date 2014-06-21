@@ -1,0 +1,244 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="collections_integration" revision="1">
+
+  <title>콜렉션 쿼리</title>
+
+  <para>생성된 쿼리 타입을 이용하거나 또는 쿼리 타입 없이 querydsl-collections 모듈을 사용할 수 있다.
+    첫 번째 절에서는 생성된 쿼리 타입 없이 사용하는 방법을 설명한다.
+  </para>
+
+  <sect2>
+    <title>생성된 쿼리 타입 없이 사용하기</title>
+
+    <para>
+      생성된 쿼리 타입 없이 querydsl-collections 모듈을 사용하려면, Querydsl 별칭 기능을 사용해야 한다. 다음은 몇 가지 예다.
+    </para>
+
+    <para>
+      먼저 다음의 정적 임포트를 추가한다.
+    </para>
+
+    <programlisting language="java"><![CDATA[
+// needed for access of the Querydsl Collections API    
+import static com.mysema.query.collections.CollQueryFactory.*;
+// needed, if you use the $-invocations    
+import static com.mysema.query.alias.Alias.*;
+]]></programlisting>
+
+    <para>
+      이제 Cat 클래스에 대한 별칭 인스턴스를 만들어보자.
+      기본 생성자를 가진 non-final 클래스에 대해서만 Alias 인스턴스를 만들수 있다.
+    </para>
+
+    <para>
+      $ 메서드로 감싸는 방법으로 Cat 타입의 별칭 인스턴스 및 그것의 getter 메서드 호출을 
+      경로로 바꾼다. 예를 들어, <code>c.getKittens()</code>에 대한 호출은 
+      $ 메서드를 통해 c.kittends 경로로 바뀐다.
+    </para>
+
+    <programlisting language="java"><![CDATA[
+Cat c = alias(Cat.class, "cat");
+for (String name : from($(c),cats)
+  .where($(c.getKittens()).size().gt(0))
+  .list($(c.getName()))){
+    System.out.println(name);
+}
+]]></programlisting>
+
+    <para>
+      다음은 앞 예제를 다르게 작성해본 것이다. 아래 코드는 List의 size() 메서드를 $ 메서드로 감쌌다.
+    </para>
+
+    <programlisting language="java"><![CDATA[
+Cat c = alias(Cat.class, "cat");
+for (String name : from($(c),cats)
+  .where($(c.getKittens().size()).gt(0))
+  .list($(c.getName()))){
+    System.out.println(name);
+}
+]]></programlisting>
+
+    <para>
+      별칭의 모든 비-기본타입과 non-final 타입 프로퍼티는 별칭 그 자체이다. 
+      따라서, $ 메서드 범위안에서 기본 타입이나 non-final 타입 (예, java.lang.String)을 만날 때 까지
+      연속된 메서드 호출이 가능하다.
+    </para>
+
+    <para>
+      예를 들어,
+    </para>
+
+    <programlisting language="java"><![CDATA[
+$(c.getMate().getName())
+]]></programlisting>
+
+    <para>
+      이 코드는 <emphasis>c.mate.name</emphasis>으로 바뀐다.
+      하지만, 아래 코드는 올바르게 바뀌지 않는다.
+    </para>
+
+    <programlisting language="java"><![CDATA[
+$(c.getMate().getName().toLowerCase())
+]]></programlisting>
+
+    <para>
+      그 이유는 toLowerCase() 호출은 추적되지 않기 때문이다.
+    </para>
+    <para>
+      별칭 타입에 대해 getter, size(), contains(Object), get(int) 만 호출할 수 있다.
+      나머지 다른 메서드에 대한 호출은 익셉션을 발생시킨다.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>생성된 쿼리 타입을 갖고 사용하기</title>
+
+    <para>
+      앞서 예제를 생성된 쿼리 타입을 이용하면 다음과 같이 표현할 수 있다.
+    </para>
+
+    <programlisting language="java"><![CDATA[
+QCat cat = new QCat("cat");
+for (String name : from(cat,cats)
+  .where(cat.kittens.size().gt(0))
+  .list(cat.name)){
+    System.out.println(name);
+}
+]]></programlisting>
+
+    <para>생성된 쿼리 타입을 사용하면, 별칭 인스턴스 대신 표현식을 생성할 수 있고
+      $ 메서드를 사용할 필요 없이 프로퍼티 경로를 바로 사용할 수 있다.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>메이븐 통합</title>
+
+    <para>
+      다음 의존을 메이븐 프로젝트에 추가한다.
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-apt</artifactId>
+  <version>${querydsl.version}</version>
+  <scope>provided</scope>
+</dependency>    
+    
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-collections</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>   
+]]></programlisting>
+
+
+    <para>
+      JPA나 JDO를 사용하지 않는다면, 도메인 타입에 <code>com.mysema.query.annotations.QueryEntity</code>
+      애노테이션을 적용하고 메이븐 설정(pom.xml)에 다음 플러그인 설정을 추가함으로써
+      표현식 타입을 생성할 수 있다.
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>com.mysema.maven</groupId>
+      <artifactId>apt-maven-plugin</artifactId>
+      <version>1.0.9</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>process</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>target/generated-sources/java</outputDirectory>
+            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+  </build>
+</project>
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Ant 통합</title>
+
+    <para>클래스패스에 full-deps에 포함된 jar 파일들을 위치시키고, 다음 태스크를 이용해서 Querydsl 코드를 생성한다.
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+    <!-- APT based code generation -->
+    <javac srcdir="${src}" classpathref="cp">
+      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-processor"/>
+      <compilerarg value="com.mysema.query.apt.QuerydslAnnotationProcessor"/>
+      <compilerarg value="-s"/>
+      <compilerarg value="${generated}"/>
+    </javac>
+    
+    <!-- compilation -->
+    <javac classpathref="cp" destdir="${build}">      
+      <src path="${src}"/>
+      <src path="${generated}"/>
+    </javac>    
+]]></programlisting>
+
+    <para>
+      <emphasis>src</emphasis>를 메인 소스 폴더로 변경하고,
+      <emphasis>generated</emphasis>를 생성된 소스를 위한 폴더로 변경하고,
+      <emphasis>build</emphasis>를 클래스 생성 폴더로 변경한다.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Hamcrest matchers</title>
+
+    <para>Querydsl Collections 모듈은 Hamcrest matchers를 제공한다. 다음의 import를 통해 사용하면 된다.</para>
+
+    <programlisting language="java"><![CDATA[    
+import static org.hamcrest.core.IsEqual.equalTo;
+import static com.mysema.query.collections.PathMatcher.hasValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+]]></programlisting>
+
+    <para>다음과 같이 사용할 수 있다.</para>
+
+    <programlisting language="java"><![CDATA[  
+Car car = new Car();
+car.setHorsePower(123);
+        
+assertThat(car, hasValue($.horsePower));
+assertThat(car, hasValue($.horsePower, equalTo(123)));  
+]]></programlisting>
+
+    <para>
+      <ulink url="https://github.com/jeroenvs">Jeroen van Schagen</ulink>가 Hamcrest matchers를 기여했다.
+    </para>
+
+  </sect2>
+
+</sect1>

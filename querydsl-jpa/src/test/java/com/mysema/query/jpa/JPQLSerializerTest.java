@@ -13,6 +13,8 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.Arrays;
+
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -29,9 +31,6 @@ import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 import org.junit.Test;
-
-import java.util.Arrays;
-
 import static org.junit.Assert.assertEquals;
 
 public class JPQLSerializerTest {
@@ -44,7 +43,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(pred);
         assertEquals("cat.id = ?1 and (cat.name = ?2 or cat.name = ?3)", serializer.toString());
-        assertEquals("cat.id = 1 && cat.name = Kitty || cat.name = Boris", pred.toString());
+        assertEquals("cat.id = 1 && (cat.name = Kitty || cat.name = Boris)", pred.toString());
     }
 
     @Test

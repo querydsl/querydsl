@@ -38,7 +38,7 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
   @Before
   def setUp() {
     Class.forName("org.h2.Driver")
-    val url = "jdbc:h2:target/h2"
+    val url = "jdbc:h2:~/dbs/h2-scala"
     
     connection = DriverManager.getConnection(url, "sa", "")
     statement = connection.createStatement()

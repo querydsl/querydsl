@@ -1,22 +1,16 @@
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Date;
 
-import org.junit.Test;
-
-import com.mysema.query.sql.ColumnMetadata;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.MySQLTemplates;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.SQLSerializer;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.mysql.MySQLQuery;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class ExtendedSQLTest {
 
@@ -33,7 +27,7 @@ public class ExtendedSQLTest {
         public final StringPath lastName = createString("lastName");
 
         public QAuthor(String variable) {
-            super(QAuthor.class, PathMetadataFactory.forVariable(variable), null, "AUTHOR");
+            super(QAuthor.class, PathMetadataFactory.forVariable(variable), "", "AUTHOR");
             addMetadata();
         }
 
@@ -58,7 +52,7 @@ public class ExtendedSQLTest {
         public final DatePath<Date> published = createDate("published", Date.class);
 
         public QBook(String variable) {
-            super(QBook.class, PathMetadataFactory.forVariable(variable), null, "BOOK");
+            super(QBook.class, PathMetadataFactory.forVariable(variable), "", "BOOK");
             addMetadata();
         }
 

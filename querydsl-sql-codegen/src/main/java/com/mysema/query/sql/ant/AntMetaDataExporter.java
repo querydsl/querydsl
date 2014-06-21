@@ -190,12 +190,17 @@ public class AntMetaDataExporter extends Task {
     private String columnComparatorClass;
 
     /**
+     *
+     */
+    private boolean spatial;
+    
+    /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
      * com.bar.Foo for class
      *
      */
-	private String[] imports;
+    private String[] imports;
 
 
     @Override
@@ -239,6 +244,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setExportAll(exportAll);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+            exporter.setSpatial(spatial);
 
             if (imports != null && imports.length > 0) {
                 exporter.setImports(imports);
@@ -500,4 +506,13 @@ public class AntMetaDataExporter extends Task {
     public void setImports(String[] imports) {
         this.imports = imports;
     }
+
+    public boolean isSpatial() {
+        return spatial;
+    }
+
+    public void setSpatial(boolean spatial) {
+        this.spatial = spatial;
+    }
+
 }

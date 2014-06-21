@@ -150,6 +150,14 @@ public class SQLSerializerTest {
     }
 
     @Test
+    public void Like() {
+        Expression<?> expr = Expressions.stringTemplate("'%a%'").contains("%a%");
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(expr);
+        assertEquals("'%a%' like ? escape '\\'", serializer.toString());
+    }
+
+    @Test
     public void Override() {
         Configuration conf = new Configuration(new DerbyTemplates());
         conf.registerTableOverride("SURVEY", "surveys");
@@ -157,6 +165,28 @@ public class SQLSerializerTest {
         SQLQuery query = new SQLQuery(conf);
         query.from(survey);
         assertEquals("from surveys SURVEY", query.toString());
+    }
+
+    @Test
+    public void ColumnOverrides() {
+        Configuration conf = new Configuration(new DerbyTemplates());
+        conf.registerColumnOverride("SURVEY", "NAME", "LABEL");
+
+        SQLQuery query = new SQLQuery(conf);
+        query.from(survey).where(survey.name.isNull());
+        assertEquals("from SURVEY SURVEY\n" +
+                "where SURVEY.LABEL is null", query.toString());
+    }
+
+    @Test
+    public void ColumnOverrides2() {
+        Configuration conf = new Configuration(new DerbyTemplates());
+        conf.registerColumnOverride("PUBLIC", "SURVEY", "NAME", "LABEL");
+
+        SQLQuery query = new SQLQuery(conf);
+        query.from(survey).where(survey.name.isNull());
+        assertEquals("from SURVEY SURVEY\n" +
+                "where SURVEY.LABEL is null", query.toString());
     }
 
     @Test

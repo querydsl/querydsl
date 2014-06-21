@@ -381,6 +381,16 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void References() {
+        for (User u : users) {
+            if (u.getFriend() != null) {
+                assertQuery(user.friend().eq(u.getFriend()), u);
+                where(user.friend().ne(u.getFriend())).list();
+            }
+        }
+    }
+
+    @Test
     public void Various() {
         StringPath str = user.lastName;
         List<Predicate> predicates = new ArrayList<Predicate>();
@@ -516,6 +526,9 @@ public class MongodbQueryTest {
         }
         for (User u : users) {
             user.addFriend(u);
+        }
+        if (!users.isEmpty()) {
+            user.setFriend(users.get(users.size() - 1));
         }
         ds.save(user);
         users.add(user);

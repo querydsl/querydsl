@@ -12,6 +12,7 @@
     <xi:include href="tutorials/jpa.xml" />
     <xi:include href="tutorials/jdo.xml" />
     <xi:include href="tutorials/sql.xml" />
+    <xi:include href="tutorials/spatial.xml" />
     <xi:include href="tutorials/lucene.xml" />
     <xi:include href="tutorials/hibernate-search.xml" />
     <xi:include href="tutorials/mongodb.xml" />

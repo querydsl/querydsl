@@ -17,14 +17,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
@@ -37,19 +36,23 @@ import com.mysema.query.types.Path;
  */
 public final class Configuration {
 
-    private static final BigDecimalAsDoubleType BIGDECIMAL_AS_DOUBLE = new BigDecimalAsDoubleType();
-
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
 
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
 
+    private final Map<SchemaAndTable, SchemaAndTable> schemaTables = Maps.newHashMap();
+
     private final Map<String, String> schemas = Maps.newHashMap();
 
-    private final Map<Pair<String, String>, String> schemaTables = Maps.newHashMap();
-
     private final Map<String, String> tables = Maps.newHashMap();
+
+    private final Map<SchemaAndTable, Map<String, String>> schemaTableColumns = Maps.newHashMap();
+
+    private final Map<String, Map<String, String>> tableColumns = Maps.newHashMap();
+
+    private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
     private final SQLTemplates templates;
 
@@ -68,8 +71,11 @@ public final class Configuration {
      */
     public Configuration(SQLTemplates templates) {
         this.templates = templates;
-        if (!templates.isBigDecimalSupported()) {
-            javaTypeMapping.register(BIGDECIMAL_AS_DOUBLE);
+        for (Type<?> customType : templates.getCustomTypes()) {
+            javaTypeMapping.register(customType);
+        }
+        for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
+            schemaTables.put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -93,7 +99,7 @@ public final class Configuration {
     }
 
     /**
-     * Get the java type for the given jdbc type, table name and column name
+     * Use the other getJavaType method instead
      *
      * @param sqlType
      * @param size
@@ -102,13 +108,36 @@ public final class Configuration {
      * @param columnName
      * @return
      */
+    @Deprecated
     public Class<?> getJavaType(int sqlType, int size, int digits, String tableName, String columnName) {
+        return getJavaType(sqlType, null, size, digits, tableName, columnName);
+    }
+
+    /**
+     * Get the java type for the given jdbc type, table name and column name
+     *
+     * @param sqlType
+     * @param typeName
+     * @param size
+     * @param digits
+     * @param tableName
+     * @param columnName
+     * @return
+     */
+    public Class<?> getJavaType(int sqlType, String typeName, int size, int digits, String tableName, String columnName) {
+        // table.column mapped class
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null) {
             return type.getReturnedClass();
-        } else {
-            return jdbcTypeMapping.get(sqlType, size, digits);
+        } else if (typeName != null && !typeToName.isEmpty()) {
+            // typename mapped class
+            Class<?> clazz = typeToName.get(typeName.toLowerCase());
+            if (clazz != null) {
+                return clazz;
+            }
         }
+        // sql type mapped class
+        return jdbcTypeMapping.get(sqlType, size, digits);
     }
 
     /**
@@ -126,38 +155,76 @@ public final class Configuration {
     }
 
     /**
-     * Get schema override or schema
+     * Use getOverride instead
      *
      * @param schema
      * @return
      */
+    @Deprecated
     public String getSchema(String schema) {
-        if (schemas.containsKey(schema)) {
-            return schemas.get(schema);
-        } else {
-            return schema;
-        }
+        return schemas.get(schema);
     }
 
     /**
-     * Get table override or table
+     * Use getOverride instead
      *
      * @param schema
      * @param table
      * @return
      */
+    @Deprecated
     public String getTable(String schema, String table) {
-        if (!schemaTables.isEmpty() && schema != null) {
-            Pair<String, String> key = Pair.of(schema, table);
+        return getOverride(new SchemaAndTable(schema, table)).getTable();
+    }
+
+    /**
+     * Get the schema/table override
+     *
+     * @param schema
+     * @param table
+     * @return
+     */
+    @Nullable
+    public SchemaAndTable getOverride(SchemaAndTable key) {
+        if (!schemaTables.isEmpty() && key.getSchema() != null) {
             if (schemaTables.containsKey(key)) {
                 return schemaTables.get(key);
             }
         }
-        if (tables.containsKey(table)) {
-            return tables.get(table);
-        } else {
-            return table;
+        String schema = key.getSchema(), table = key.getTable();
+        boolean changed = false;
+        if (schemas.containsKey(key.getSchema())) {
+            schema = schemas.get(key.getSchema());
+            changed = true;
         }
+
+        if (tables.containsKey(key.getTable())) {
+            table = tables.get(key.getTable());
+            changed = true;
+        }
+        return changed ? new SchemaAndTable(schema, table) : key;
+    }
+
+    /**
+     * Get the column override
+     *
+     * @param key
+     * @param column
+     * @return
+     */
+    public String getColumnOverride(SchemaAndTable key, String column) {
+        Map<String, String> columnOverrides;
+        String newColumn = null;
+        columnOverrides = schemaTableColumns.get(key);
+        if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
+            return newColumn;
+        }
+        columnOverrides = tableColumns.get(key.getTable());
+        if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
+            return newColumn;
+        }
+        return column;
+
     }
 
     /**
@@ -228,7 +295,68 @@ public final class Configuration {
      * @return
      */
     public String registerTableOverride(String schema, String oldTable, String newTable) {
-        return schemaTables.put(Pair.of(schema, oldTable), newTable);
+        SchemaAndTable st = registerTableOverride(schema, oldTable, schema, newTable);
+        return st != null ? st.getTable() : null;
+    }
+
+    /**
+     * Register a schema specific table override
+     *
+     * @param schema
+     * @param oldTable
+     * @param newSchema
+     * @param newTable
+     * @return
+     */
+    public SchemaAndTable registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
+        return registerTableOverride(new SchemaAndTable(schema, oldTable), new SchemaAndTable(newSchema, newTable));
+    }
+
+    /**
+     * Register a schema specific table override
+     *
+     * @param from
+     * @param to
+     * @return
+     */
+    public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
+        return schemaTables.put(from, to);
+    }
+
+    /**
+     * Register a column override
+     *
+     * @param schema
+     * @param table
+     * @param oldColumn
+     * @param newColumn
+     * @return
+     */
+    public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
+        SchemaAndTable key = new SchemaAndTable(schema, table);
+        Map<String, String> columnOverrides = schemaTableColumns.get(key);
+        if (columnOverrides == null) {
+            columnOverrides = new HashMap<String, String>();
+            schemaTableColumns.put(key, columnOverrides);
+        }
+        return columnOverrides.put(oldColumn, newColumn);
+    }
+
+    /**
+     * Register a column override
+     *
+     * @param table
+     * @param oldColumn
+     * @param newColumn
+     * @return
+     */
+    public String registerColumnOverride(String table, String oldColumn, String newColumn) {
+        Map<String, String> columnOverrides = tableColumns.get(table);
+        if (columnOverrides == null) {
+            columnOverrides = new HashMap<String, String>();
+            tableColumns.put(table, columnOverrides);
+        }
+        return columnOverrides.put(oldColumn, newColumn);
     }
 
     /**
@@ -242,14 +370,24 @@ public final class Configuration {
     }
 
     /**
+     * Register a typeName to Class mapping
+     *
+     * @param typeName
+     * @param clazz
+     */
+    public void registerType(String typeName, Class<?> clazz) {
+        typeToName.put(typeName.toLowerCase(), clazz);
+    }
+
+    /**
      * Override the binding for the given NUMERIC type
      *
-     * @param size
-     * @param digits
+     * @param total total amount of digits
+     * @param decimal amount of fractional digits
      * @param javaType
      */
-    public void registerNumeric(int size, int digits, Class<?> javaType) {
-        jdbcTypeMapping.registerNumeric(size, digits, javaType);
+    public void registerNumeric(int total, int decimal, Class<?> javaType) {
+        jdbcTypeMapping.registerNumeric(total, decimal, javaType);
     }
 
     /**

@@ -13,6 +13,15 @@
  */
 package com.mysema.query.sql;
 
+import java.lang.reflect.Field;
+import java.sql.Types;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinType;
@@ -20,11 +29,8 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.*;
-
-import java.lang.reflect.Field;
-import java.sql.Types;
-import java.util.*;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -77,7 +83,11 @@ public class SQLTemplates extends Templates {
 
     }
 
-    private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
+    private final Map<Class<?>, String> class2type = Maps.newHashMap();
+
+    private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = Maps.newHashMap();
+
+    private final List<Type<?>> customTypes = Lists.newArrayList();
 
     private final String quoteStr;
 
@@ -172,8 +182,6 @@ public class SQLTemplates extends Templates {
     private boolean parameterMetadataAvailable = true;
 
     private boolean batchCountViaGetUpdateCount = false;
-
-    private boolean bigDecimalSupported = true;
 
     private boolean unionsWrapped = true;
 
@@ -376,8 +384,6 @@ public class SQLTemplates extends Templates {
             } else if (ch == '\'') {
                 builder.append("''");
                 continue;
-            } else if (ch == '\\') {
-                builder.append("\\");
             }
             builder.append(ch);
         }
@@ -388,6 +394,28 @@ public class SQLTemplates extends Templates {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
         }
+    }
+
+    protected void add(Map<Operator<?>, String> ops) {
+        for (Map.Entry<Operator<?>, String> entry : ops.entrySet()) {
+            add(entry.getKey(), entry.getValue());
+        }
+    }
+
+    protected void addTableOverride(SchemaAndTable from, SchemaAndTable to) {
+        tableOverrides.put(from, to);
+    }
+
+    /**
+     * Use customTypes instead
+     */
+    @Deprecated
+    public final boolean isBigDecimalSupported() {
+        return false;
+    }
+
+    public final List<Type<?>> getCustomTypes() {
+        return customTypes;
     }
 
     public final String getAsc() {
@@ -521,6 +549,10 @@ public class SQLTemplates extends Templates {
         return tableAlias;
     }
 
+    public final Map<SchemaAndTable, SchemaAndTable> getTableOverrides() {
+        return tableOverrides;
+    }
+
     public String getTypeForCast(Class<?> cl) {
         return getTypeForClass(cl);
     }
@@ -592,10 +624,6 @@ public class SQLTemplates extends Templates {
 
     public final boolean isBatchCountViaGetUpdateCount() {
         return batchCountViaGetUpdateCount;
-    }
-
-    public final boolean isBigDecimalSupported() {
-        return bigDecimalSupported;
     }
 
     public final boolean isUseQuotes() {
@@ -780,6 +808,10 @@ public class SQLTemplates extends Templates {
         }
     }
 
+    protected void addCustomType(Type<?> type) {
+        customTypes.add(type);
+    }
+
     protected void setAsc(String asc) {
         this.asc = asc;
     }
@@ -946,10 +978,6 @@ public class SQLTemplates extends Templates {
 
     protected void setBatchCountViaGetUpdateCount(boolean batchCountViaGetUpdateCount) {
         this.batchCountViaGetUpdateCount = batchCountViaGetUpdateCount;
-    }
-
-    protected void setBigDecimalSupported(boolean bigDecimalSupported) {
-        this.bigDecimalSupported = bigDecimalSupported;
     }
 
     protected void setUnionsWrapped(boolean unionsWrapped) {
