@@ -33,6 +33,7 @@ public class FirebirdTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setDummyTable("RDB$DATABASE");
         setUnionsWrapped(false);
+        setWrapSelectParameters(true);
         addClass2TypeMappings("smallint", Boolean.class, Byte.class);
         addClass2TypeMappings("varchar(256)", String.class);
         addClass2TypeMappings("double precision", Double.class);

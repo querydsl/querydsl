@@ -76,6 +76,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
+                && !target.equals(Target.FIREBIRD)
                 && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));

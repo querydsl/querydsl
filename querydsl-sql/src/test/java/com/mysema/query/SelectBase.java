@@ -782,7 +782,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLSERVER) // FIXME
+    @ExcludeIn({FIREBIRD, SQLSERVER}) // FIXME
     public void Math() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
 
