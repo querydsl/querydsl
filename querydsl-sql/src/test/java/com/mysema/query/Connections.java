@@ -356,6 +356,23 @@ public final class Connections {
             return;
         }
 
+        try {
+            stmt.execute("DECLARE EXTERNAL FUNCTION ltrim\n" +
+                    "   CSTRING(255)\n" +
+                    "   RETURNS CSTRING(255) FREE_IT\n" +
+                    "   ENTRY_POINT 'IB_UDF_ltrim' MODULE_NAME 'ib_udf'");
+        } catch (SQLException e) {
+            // do nothing
+        }
+        try {
+            stmt.execute("DECLARE EXTERNAL FUNCTION rtrim\n" +
+                    "   CSTRING(255) NULL\n" +
+                    "   RETURNS CSTRING(255) FREE_IT\n" +
+                    "   ENTRY_POINT 'IB_UDF_rtrim' MODULE_NAME 'ib_udf'");
+        } catch (SQLException e) {
+            // do nothing
+        }
+
         // survey
         dropTable(templates, "SURVEY");
         stmt.execute("create table SURVEY(ID int primary key, " +
