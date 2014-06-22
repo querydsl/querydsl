@@ -1,21 +1,9 @@
 package com.mysema.query;
 
-import static com.mysema.query.Constants.employee;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.TERADATA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.sql.domain.Employee;
@@ -27,6 +15,10 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
+import org.junit.Test;
+import static com.mysema.query.Constants.employee;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class UnionBase extends AbstractBaseTest {
 
@@ -110,7 +102,7 @@ public class UnionBase extends AbstractBaseTest {
     // FIXME for CUBRID
     // Teradata: The ORDER BY clause must contain only integer constants.
     @Test
-    @ExcludeIn({DERBY, CUBRID, TERADATA})
+    @ExcludeIn({DERBY, CUBRID, FIREBIRD, TERADATA})
     public void Union5() {
         /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name
          * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID)
@@ -131,7 +123,7 @@ public class UnionBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(TERADATA) // The ORDER BY clause must contain only integer constants.
+    @ExcludeIn({FIREBIRD, TERADATA}) // The ORDER BY clause must contain only integer constants.
     @SuppressWarnings("unchecked")
     public void Union_With_Order() throws SQLException {
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id);
@@ -142,6 +134,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @ExcludeIn(FIREBIRD)
     public void Union_Multi_Column_Projection_List() throws IOException{
         SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
@@ -154,6 +147,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @ExcludeIn(FIREBIRD)
     public void Union_Multi_Column_Projection_Iterate() throws IOException{
         SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
