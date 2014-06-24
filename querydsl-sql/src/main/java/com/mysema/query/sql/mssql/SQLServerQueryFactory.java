@@ -19,7 +19,7 @@ import javax.inject.Provider;
 
 import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -35,7 +35,7 @@ public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuer
     }
 
     public SQLServerQueryFactory(Provider<Connection> connection) {
-        this(new Configuration(new MySQLTemplates()), connection);
+        this(new Configuration(new SQLServerTemplates()), connection);
     }
 
     public SQLServerQueryFactory(SQLTemplates templates, Provider<Connection> connection) {

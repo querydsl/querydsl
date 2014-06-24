@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
@@ -629,6 +630,17 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Like_Escape() {
+        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen");
+
+        for (String str : strs) {
+            assertTrue(str, query()
+                .from(employee)
+                .where(Expressions.stringTemplate("'" + str + "'").contains(str)).count() > 0);
+        }
+    }
+
+    @Test
     @ExcludeIn(DERBY)
     public void Like_Number() {
         assertEquals(5, query().from(employee)
@@ -839,6 +851,24 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Nullif_Constant() {
         query().from(employee).list(employee.firstname.nullif("xxx"));
+    }
+
+    @Test
+    public void Num_Cast() {
+        query().from(employee).list(employee.id.castToNum(Long.class));
+        query().from(employee).list(employee.id.castToNum(Float.class));
+        query().from(employee).list(employee.id.castToNum(Double.class));
+    }
+
+    @Test
+    public void Num_Cast2() {
+        NumberExpression<Integer> num = Expressions.numberTemplate(Integer.class, "0");
+        query().uniqueResult(num.castToNum(Byte.class));
+        query().uniqueResult(num.castToNum(Short.class));
+        query().uniqueResult(num.castToNum(Integer.class));
+        query().uniqueResult(num.castToNum(Long.class));
+        query().uniqueResult(num.castToNum(Float.class));
+        query().uniqueResult(num.castToNum(Double.class));
     }
 
     @Test

@@ -52,12 +52,11 @@ public class MySQLTemplates extends SQLTemplates {
         setNullsLast(null);
 
         addClass2TypeMappings("bool", Boolean.class);
-        addClass2TypeMappings("int", Integer.class);
+        addClass2TypeMappings("signed",
+                Byte.class, Short.class, Integer.class, Long.class);
 
         addClass2TypeMappings("decimal",
-                Double.class,
-                Float.class,
-                BigDecimal.class);
+                Double.class, Float.class, BigDecimal.class);
         addClass2TypeMappings("char", String.class);
 
         add(Ops.CONCAT, "concat({0}, {1})",0);
@@ -105,6 +104,18 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(hour,{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(second,{0},{1})");
+    }
+
+    @Override
+    public String escapeLiteral(String str) {
+        StringBuilder builder = new StringBuilder();
+        for (char ch : super.escapeLiteral(str).toCharArray()) {
+            if (ch == '\\') {
+                builder.append("\\");
+            }
+            builder.append(ch);
+        }
+        return builder.toString();
     }
 
 }

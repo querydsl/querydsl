@@ -13,14 +13,14 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Ops;
-
-import java.sql.Types;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
@@ -127,6 +127,18 @@ public class SQLServerTemplates extends SQLTemplates {
         } else {
             return super.serialize(literal, jdbcType);
         }
+    }
+
+    @Override
+    protected String escapeForLike(String str) {
+        final StringBuilder rv = new StringBuilder(str.length() + 3);
+        for (char ch : str.toCharArray()) {
+            if (ch == getEscapeChar() || ch == '%' || ch == '_' || ch == '[') {
+                rv.append(getEscapeChar());
+            }
+            rv.append(ch);
+        }
+        return rv.toString();
     }
 
     @Override

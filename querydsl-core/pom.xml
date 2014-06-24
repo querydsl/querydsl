@@ -44,6 +44,7 @@
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>${cglib.version}</version>
+      <optional>true</optional>
     </dependency>
     
      <!-- backwards compatibility -->
