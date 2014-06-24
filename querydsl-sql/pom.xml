@@ -17,6 +17,7 @@
 
   <properties>
     <bridge-method.version>1.11</bridge-method.version>
+    <osgi.import.package>org.joda.time.*;version="[1.6,3)",${osgi.import.package.root}</osgi.import.package>
   </properties>
 
   <dependencies>
@@ -217,8 +218,8 @@
         </dependencies>
       </plugin>
       <plugin>
-        <groupId>com.springsource.bundlor</groupId>
-        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
       </plugin>   
     
       <plugin>
