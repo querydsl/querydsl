@@ -28,7 +28,7 @@
     <hibernate.search.version>4.2.0.Final</hibernate.search.version>
     <lucene.version>3.6.2</lucene.version>
     <osgi.import.package>
-      org.apache.lucene.*;version="[3,3.1)",
+      org.apache.lucene.*;version="[3.6,4)",
       org.hibernate.*;version="[4,5)",
       ${osgi.import.package.root}
     </osgi.import.package>
