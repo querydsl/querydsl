@@ -630,6 +630,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(FIREBIRD)
     public void Like_Escape() {
         List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen");
 
