@@ -484,7 +484,7 @@ public abstract class AbstractJPATest {
         query().from(cat).list(cat.birthdate.year());
         query().from(cat).list(cat.birthdate.yearMonth());
         query().from(cat).list(cat.birthdate.month());
-        query().from(cat).list(cat.birthdate.week());
+        //query().from(cat).list(cat.birthdate.week());
         query().from(cat).list(cat.birthdate.dayOfMonth());
         query().from(cat).list(cat.birthdate.hour());
         query().from(cat).list(cat.birthdate.minute());
