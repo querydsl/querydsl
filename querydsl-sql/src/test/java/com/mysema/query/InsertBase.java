@@ -391,5 +391,12 @@ public class InsertBase extends AbstractBaseTest {
         clause.execute();
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void Insert_With_TempateExpression_In_Batch() {
+        insert(survey)
+                .set(survey.id, 3)
+                .set(survey.name, Expressions.stringTemplate("'Hello'"))
+                .addBatch();
+    }
 
 }

@@ -13,30 +13,23 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.POSTGRES;
-import static com.mysema.query.Target.SQLSERVER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class MergeBase extends AbstractBaseTest{
 
@@ -170,5 +163,15 @@ public class MergeBase extends AbstractBaseTest{
         merge.execute();
 //        assertEquals(1, insert.execute());
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void Merge_With_TempateExpression_In_Batch() {
+        SQLMergeClause merge = merge(survey)
+                .keys(survey.id)
+                .set(survey.id, 5)
+                .set(survey.name, Expressions.stringTemplate("'5'"))
+                .addBatch();
+    }
+
 
 }

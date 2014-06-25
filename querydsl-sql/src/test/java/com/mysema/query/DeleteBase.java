@@ -13,27 +13,22 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.SQLSERVER;
-import static org.junit.Assert.assertEquals;
-
 import java.sql.SQLException;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.assertEquals;
 
 public class DeleteBase extends AbstractBaseTest{
 
@@ -114,5 +109,14 @@ public class DeleteBase extends AbstractBaseTest{
                 sq().from(employee).where(survey1.name.eq(employee.lastname)).exists());
         delete.execute();
     }
+
+
+    @Test(expected=IllegalArgumentException.class)
+    public void Delete_With_TempateExpression_In_Batch() {
+        delete(survey)
+            .where(Expressions.booleanTemplate("true"))
+            .addBatch();
+    }
+
 
 }
