@@ -23,14 +23,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DMLClause;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.SQLBindings;
-import com.mysema.query.sql.SQLListener;
-import com.mysema.query.sql.SQLListeners;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
+import com.mysema.query.sql.*;
+import com.mysema.query.types.*;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
@@ -53,6 +47,14 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
         this.useLiterals = configuration.getUseLiterals();
+    }
+
+    protected abstract void assertNoTemplateExpressionsInBatch();
+
+    protected void assertNoTemplateExpressionInBatch(Expression<?> expr) {
+        if (expr instanceof TemplateExpression) {
+            throw new IllegalArgumentException("Template expressions are not allowed in batch statements");
+        }
     }
 
     /**

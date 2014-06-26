@@ -13,20 +13,12 @@
  */
 package com.mysema.query.sql.dml;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javax.annotation.Nullable;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.DefaultQueryMetadata;
@@ -35,20 +27,12 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.InsertClause;
-import com.mysema.query.sql.AbstractSQLSubQuery;
-import com.mysema.query.sql.ColumnMetadata;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLBindings;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.types.Null;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.util.ResultSetAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SQLInsertClause defines an INSERT INTO clause
@@ -137,6 +121,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * @return
      */
     public SQLInsertClause addBatch() {
+        assertNoTemplateExpressionsInBatch();
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
             values.clear();
@@ -146,6 +131,13 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         values.clear();
         subQuery = null;
         return this;
+    }
+
+    @Override
+    protected void assertNoTemplateExpressionsInBatch() {
+        for (Expression<?> expr : values) {
+            assertNoTemplateExpressionInBatch(expr);
+        }
     }
 
     @Override

@@ -13,33 +13,23 @@
  */
 package com.mysema.query.sql.dml;
 
+import javax.annotation.Nonnegative;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinType;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
 import com.mysema.query.dml.DeleteClause;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLBindings;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.*;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.ValidatingVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SQLDeleteClause defines a DELETE clause
@@ -109,11 +99,17 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
      * @return
      */
     public SQLDeleteClause addBatch() {
+        assertNoTemplateExpressionsInBatch();
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
         metadata.setValidatingVisitor(validatingVisitor);
         return this;
+    }
+
+    @Override
+    protected void assertNoTemplateExpressionsInBatch() {
+        assertNoTemplateExpressionInBatch(metadata.getWhere());
     }
 
     private PreparedStatement createStatement() throws SQLException{

@@ -13,39 +13,22 @@
  */
 package com.mysema.query.sql.dml;
 
+import javax.annotation.Nonnegative;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnegative;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinType;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
 import com.mysema.query.dml.UpdateClause;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLBindings;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.types.Null;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
+import com.mysema.query.types.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SQLUpdateClause defines a UPDATE clause
@@ -112,11 +95,19 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
      * @return
      */
     public SQLUpdateClause addBatch() {
+        assertNoTemplateExpressionsInBatch();
         batches.add(new SQLUpdateBatch(metadata, updates));
         updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
         return this;
+    }
+
+    protected void assertNoTemplateExpressionsInBatch() {
+        for (Pair<Path<?>, Expression<?>> pair : updates) {
+            assertNoTemplateExpressionInBatch(pair.getSecond());
+        }
+        assertNoTemplateExpressionInBatch(metadata.getWhere());
     }
 
     private PreparedStatement createStatement() throws SQLException{
