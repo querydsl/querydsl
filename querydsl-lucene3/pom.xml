@@ -24,6 +24,10 @@
   
   <properties>
     <lucene.version>3.6.2</lucene.version>
+    <osgi.import.package>
+      org.apache.lucene.*;version="[3.6,4)",
+      ${osgi.import.package.root}
+    </osgi.import.package>
   </properties>
   
   <dependencies>   
@@ -86,8 +90,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.springsource.bundlor</groupId>
-        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
       </plugin>   
     
       <plugin>
