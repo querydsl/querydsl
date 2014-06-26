@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.apt.dynamo.DynamoAnnotationProcessor;
 import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
 import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
@@ -156,4 +157,11 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest {
         assertTrue(new File("target/roo/com/mysema/query/domain/QRooEntities_MyEntity.java").exists());
     }
 
+    @Test
+    public void DynamoAnnotationProcessor() throws IOException {
+        process(DynamoAnnotationProcessor.class, CLASSES, "dynamo");
+
+        assertTrue(new File("target/dynamo/com/mysema/query/domain/QDynamoEntity.java").exists());
+}
+    
 }

@@ -26,6 +26,7 @@
     <hibernate.version>4.2.0.Final</hibernate.version>
     <jdo.version>2.3-eb</jdo.version>
     <morphia.version>0.105</morphia.version>
+    <aws.version>1.4.2</aws.version>
   </properties>
 
   <dependencies>
@@ -78,6 +79,12 @@
       <groupId>org.mongodb.morphia</groupId>
       <artifactId>morphia</artifactId>
       <version>${morphia.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>${aws.version}</version>
       <scope>provided</scope>
     </dependency>
     
@@ -170,6 +177,7 @@
                 <descriptor>src/main/morphia.xml</descriptor>
                 <descriptor>src/main/roo.xml</descriptor>
                 <descriptor>src/main/onejar.xml</descriptor>
+                <descriptor>src/main/dynamo.xml</descriptor>
               </descriptors>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
