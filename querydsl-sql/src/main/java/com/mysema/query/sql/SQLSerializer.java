@@ -25,6 +25,8 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.sql.types.Null;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.Template.Element;
@@ -37,6 +39,8 @@ import com.mysema.query.types.Template.Element;
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS}
+
+    private static final Expression Q = Expressions.template(Object.class, "?");
 
     private static final String COMMA = ", ";
 
@@ -727,7 +731,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         } else if (constant instanceof Collection) {
             append("(");
             boolean first = true;
-            for (Object o : ((Collection)constant)) {
+            for (Object o : ((Collection) constant)) {
                 if (!first) {
                     append(COMMA);
                 }
@@ -740,13 +744,21 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             append(")");
 
-            int size = ((Collection)constant).size() - 1;
-            Path<?> lastPath = constantPaths.get(constantPaths.size()-1);
+            int size = ((Collection) constant).size() - 1;
+            Path<?> lastPath = constantPaths.get(constantPaths.size() - 1);
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
             }
         } else {
-            append("?");
+            if (stage == Stage.SELECT
+                && !Null.class.isInstance(constant)
+                && configuration.getTemplates().isWrapSelectParameters()) {
+                String typeName = templates.getTypeForCast(constant.getClass());
+                Expression type = Expressions.constant(typeName);
+                super.visitOperation(constant.getClass(), SQLOps.CAST, ImmutableList.<Expression<?>>of(Q, type));
+            } else {
+                append("?");
+            }
             constants.add(constant);
             if (constantPaths.size() < constants.size()) {
                 constantPaths.add(null);

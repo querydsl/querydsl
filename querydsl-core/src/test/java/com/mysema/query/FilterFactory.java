@@ -293,7 +293,9 @@ public class FilterFactory {
         rv.add(expr.indexOf(knownValue).gt(0));
 
         rv.add(expr.locate(other).gt(1));
-        rv.add(expr.locate("X", 2).gt(1));
+        if (!target.equals(Target.FIREBIRD)) { // FIXME
+            rv.add(expr.locate("X", 2).gt(1));
+        }
         rv.add(expr.locate(knownValue).gt(1));
 
 //        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)) {
@@ -321,6 +323,7 @@ public class FilterFactory {
         rv.add(expr.notLike("%"+knownValue.substring(1,2)+"%"));
 
         if (!target.equals(Target.DERBY)
+         && !target.equals(Target.FIREBIRD)
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)
          && !target.equals(Target.SQLITE)

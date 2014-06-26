@@ -17,23 +17,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.types.CollectionExpression;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.MapExpression;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.ArrayExpression;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.CollectionExpressionBase;
-import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.expr.DateExpression;
-import com.mysema.query.types.expr.DateTimeExpression;
-import com.mysema.query.types.expr.ListExpression;
-import com.mysema.query.types.expr.MapExpressionBase;
-import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.TimeExpression;
+import com.mysema.query.types.*;
+import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.ListPath;
 
 /**
@@ -91,6 +76,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
+                && !target.equals(Target.FIREBIRD)
                 && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
@@ -260,6 +246,7 @@ public class MatchingFiltersFactory {
         if (module != Module.LUCENE) {
             if (!module.equals(Module.SQL)
             || (!target.equals(Target.HSQLDB)
+            && !target.equals(Target.FIREBIRD)
             && !target.equals(Target.H2)
             && !target.equals(Target.DERBY)
             && !target.equals(Target.SQLITE)

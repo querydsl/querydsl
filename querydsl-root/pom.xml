@@ -37,6 +37,7 @@
     <cubrid.version>8.4.0</cubrid.version>
     <sqlite.version>3.7.2</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
+    <firebird.version>2.2.5</firebird.version>
     
     <guava.version>14.0</guava.version>
     <codegen.version>0.6.2</codegen.version>
