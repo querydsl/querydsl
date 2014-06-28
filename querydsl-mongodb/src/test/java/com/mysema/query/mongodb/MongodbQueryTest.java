@@ -149,6 +149,12 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Equals_and_Between() {
+        assertQuery(user.firstName.startsWith("Jaa").and(user.age.between(20, 30)), u2, u1);
+        assertQuery(user.firstName.startsWith("Jaa").and(user.age.goe(20).and(user.age.loe(30))), u2, u1);
+    }
+
+    @Test
     public void Exists() {
         assertTrue(where(user.firstName.eq("Jaakko")).exists());
         assertFalse(where(user.firstName.eq("JaakkoX")).exists());
