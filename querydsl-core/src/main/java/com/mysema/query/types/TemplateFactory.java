@@ -36,9 +36,9 @@ public class TemplateFactory {
     private static final Constant<String> PERCENT = ConstantImpl.create("%");
 
     private static final Pattern elementPattern = Pattern.compile("\\{"
-            + "(?<premod>%?%?)"
-            + "(?<index>\\d+)"
-            + "(?<postmod>[slu%]?%?)"
+            + "(%?%?)"
+            + "(\\d+)"
+            + "([slu%]?%?)"
             + "\\}");
 
     private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
@@ -177,9 +177,9 @@ public class TemplateFactory {
                 if (m.start() > end) {
                     elements.add(new Template.StaticText(template.substring(end, m.start())));
                 }
-                String premodifiers = m.group("premod").toLowerCase(Locale.ENGLISH);
-                int index = Integer.parseInt(m.group("index"));
-                String postmodifiers = m.group("postmod").toLowerCase(Locale.ENGLISH);
+                String premodifiers = m.group(1).toLowerCase(Locale.ENGLISH);
+                int index = Integer.parseInt(m.group(2));
+                String postmodifiers = m.group(3).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
                 Function<Object, Object> transformer = null;
                 switch (premodifiers.length()) {
