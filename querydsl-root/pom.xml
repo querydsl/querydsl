@@ -144,6 +144,16 @@
     </developer>    
   </developers>
 
+  <contributors>
+    <contributor>
+      <name>Marvin Froeder</name>
+      <email>velo.br@gmail.com</email>
+      <roles>
+        <role>querydsl-hazelcast initial contribution</role>
+      </roles>
+    </contributor>
+  </contributors>
+
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -286,6 +296,10 @@
               <title>Mongodb</title>
               <packages>com.mysema.query.mongodb*</packages>        
             </group>            
+            <group>
+              <title>Hazelcast</title>
+              <packages>com.mysema.query.hazelcast</packages>        
+            </group>            
           </groups>
         </configuration>
       </plugin>
@@ -410,6 +424,9 @@
         <!-- NoSQL -->
         <module>../querydsl-mongodb</module>
         
+        <!-- Hazelcast -->
+        <module>../querydsl-hazelcast</module>
+        
         <!-- Languages -->        
         <module>../querydsl-scala</module>
       </modules>
@@ -494,6 +511,16 @@
         <module>../querydsl-codegen</module>
         <module>../querydsl-apt</module>
         <module>../querydsl-collections</module>
+      </modules>
+    </profile>
+    
+    <profile>
+      <id>hazelcast</id>
+      <modules>
+        <module>../querydsl-core</module>
+        <module>../querydsl-codegen</module>
+        <module>../querydsl-apt</module> 
+        <module>../querydsl-hazelcast</module>        
       </modules>
     </profile>
     
