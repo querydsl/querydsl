@@ -397,7 +397,7 @@ public class InsertBase extends AbstractBaseTest {
         clause.execute();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void Insert_With_TempateExpression_In_Batch() {
         insert(survey)
                 .set(survey.id, 3)

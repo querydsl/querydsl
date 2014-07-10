@@ -111,7 +111,7 @@ public class DeleteBase extends AbstractBaseTest{
     }
 
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void Delete_With_TempateExpression_In_Batch() {
         delete(survey)
             .where(Expressions.booleanTemplate("true"))

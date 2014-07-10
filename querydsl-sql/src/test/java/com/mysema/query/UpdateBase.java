@@ -168,7 +168,7 @@ public class UpdateBase extends AbstractBaseTest {
         update.execute();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void Update_With_TempateExpression_In_Batch() {
         update(survey)
             .set(survey.id, 3)

@@ -164,13 +164,16 @@ public class MergeBase extends AbstractBaseTest{
 //        assertEquals(1, insert.execute());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
+    @IncludeIn(H2)
     public void Merge_With_TempateExpression_In_Batch() {
         SQLMergeClause merge = merge(survey)
                 .keys(survey.id)
                 .set(survey.id, 5)
                 .set(survey.name, Expressions.stringTemplate("'5'"))
                 .addBatch();
+
+        merge.execute();
     }
 
 

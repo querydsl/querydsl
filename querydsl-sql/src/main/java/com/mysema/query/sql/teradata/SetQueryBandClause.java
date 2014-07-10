@@ -97,11 +97,6 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
     }
 
     @Override
-    protected void assertNoTemplateExpressionsInBatch() {
-        // do nothing
-    }
-
-    @Override
     public List<SQLBindings> getSQL() {
         SQLBindings bindings;
         if (configuration.getUseLiterals() || forSession) {
