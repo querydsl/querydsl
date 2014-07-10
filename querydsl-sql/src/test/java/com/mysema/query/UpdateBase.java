@@ -124,6 +124,17 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Batch_Templates() throws SQLException{
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
+
+        SQLUpdateClause update = update(survey);
+        update.set(survey.name, "AA").where(survey.name.eq(Expressions.stringTemplate("'A'"))).addBatch();
+        update.set(survey.name, "BB").where(survey.name.eq(Expressions.stringTemplate("'B'"))).addBatch();
+        assertEquals(2, update.execute());
+    }
+
+    @Test
     public void Update_with_SubQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");

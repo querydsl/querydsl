@@ -135,8 +135,8 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             serializer.serializeUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
             stmt = stmts.get(serializer.toString());
             if (stmt == null) {
-                stmt = connection.prepareStatement(queryString);
-                stmts.put(queryString, stmt);
+                stmt = connection.prepareStatement(serializer.toString());
+                stmts.put(serializer.toString(), stmt);
             }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
