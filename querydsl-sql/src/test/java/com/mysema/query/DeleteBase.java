@@ -59,7 +59,7 @@ public class DeleteBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn(SQLITE)
+    @ExcludeIn({CUBRID, SQLITE})
     public void Batch_Templates() throws SQLException{
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
