@@ -65,6 +65,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @ExcludeIn(DERBY)
     public void Union_Multiple_Columns2() throws SQLException {
         SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.firstname, employee.lastname);
@@ -79,6 +80,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @ExcludeIn(DERBY)
     public void Union_Multiple_Columns3() throws SQLException {
         SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.firstname, employee.lastname);

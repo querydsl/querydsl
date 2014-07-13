@@ -511,8 +511,9 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     protected SQLSerializer serialize(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {
-            if (expandProjection(queryMixin.getMetadata().getProjection()).equals(
-                    expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
+            if (queryMixin.getMetadata().getProjection().isEmpty() ||
+                expandProjection(queryMixin.getMetadata().getProjection()).equals(
+                expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
                 serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
             } else {
                 QueryMixin mixin2 = new QueryMixin(queryMixin.getMetadata().clone());
