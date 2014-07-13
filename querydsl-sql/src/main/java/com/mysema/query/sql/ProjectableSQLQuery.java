@@ -14,10 +14,13 @@
 package com.mysema.query.sql;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
@@ -38,10 +41,14 @@ import com.mysema.query.types.template.SimpleTemplate;
  */
 public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Query<Q>> extends ProjectableQuery<Q> implements SQLCommonQuery<Q> {
 
+    private static final Path<?> defaultQueryAlias = new PathImpl(Object.class, "query");
+
     protected final Configuration configuration;
     
     @Nullable
     protected Expression<?> union;
+
+    private SubQueryExpression<?> firstUnionSubQuery;
 
     protected boolean unionAll;
 
@@ -292,6 +299,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
             throw new IllegalArgumentException("Don't mix union and from");
         }
         this.union = UnionUtils.union(sq, unionAll);
+        this.firstUnionSubQuery = sq[0];
         return new UnionImpl<Q ,RT>((Q)this, sq[0].getMetadata().getProjection());
     }
 
@@ -480,11 +488,44 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     public abstract Q clone();
     
     protected abstract SQLSerializer createSerializer();
-    
+
+    private Set<Path<?>> getRootPaths(Collection<Expression<?>> exprs) {
+        Set<Path<?>> paths = Sets.newHashSet();
+        for (Expression<?> e : exprs) {
+            Path<?> path = e.accept(PathExtractor.DEFAULT, null);
+            if (path != null && !path.getMetadata().isRoot()) {
+                paths.add(path.getMetadata().getRoot());
+            }
+        }
+        return paths;
+    }
+
+    private Collection<Expression<?>> expandProjection(Collection<Expression<?>> exprs) {
+        if (exprs.size() == 1 && exprs.iterator().next() instanceof FactoryExpression) {
+            return ((FactoryExpression) exprs.iterator().next()).getArgs();
+        } else {
+            return exprs;
+        }
+    }
+
     protected SQLSerializer serialize(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
+            if (expandProjection(queryMixin.getMetadata().getProjection()).equals(
+                    expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
+                serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
+            } else {
+                QueryMixin mixin2 = new QueryMixin(queryMixin.getMetadata().clone());
+                Set<Path<?>> paths = getRootPaths(expandProjection(mixin2.getMetadata().getProjection()));
+                if (paths.isEmpty()) {
+                    mixin2.from(ExpressionUtils.as((Expression) union, defaultQueryAlias));
+                } else if (paths.size() == 1) {
+                    mixin2.from(ExpressionUtils.as((Expression) union, paths.iterator().next()));
+                } else {
+                    throw new IllegalStateException("Unable to create serialize union");
+                }
+                serializer.serialize(mixin2.getMetadata(), forCountRow);
+            }
         } else {
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }

@@ -63,6 +63,34 @@ public class UnionBase extends AbstractBaseTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union_Multiple_Columns2() throws SQLException {
+        SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
+        SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.firstname, employee.lastname);
+        TestQuery query = query();
+        query.union(sq1, sq2);
+        List<String> list = query.list(employee.firstname);
+        assertFalse(list.isEmpty());
+        for (String row : list) {
+            assertNotNull(row);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union_Multiple_Columns3() throws SQLException {
+        SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
+        SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.firstname, employee.lastname);
+        TestQuery query = query();
+        query.union(sq1, sq2);
+        List<Tuple> list = query.list(employee.lastname, employee.firstname);
+        assertFalse(list.isEmpty());
+        for (Tuple row : list) {
+            System.out.println(row.get(0, String.class) + " " + row.get(1, String.class));
+        }
+    }
+
     @Test
     @SuppressWarnings("unchecked")
     public void Union_Empty_Result() throws SQLException {
