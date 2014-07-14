@@ -209,6 +209,9 @@
             <configuration>
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
+                  <excludes>
+                    <exclude>com/mysema/query/SearchResults</exclude>
+                  </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
