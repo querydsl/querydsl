@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,9 @@ import com.google.common.collect.ImmutableList;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.*;
-import com.mysema.query.types.*;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
@@ -47,14 +50,6 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
         this.useLiterals = configuration.getUseLiterals();
-    }
-
-    protected abstract void assertNoTemplateExpressionsInBatch();
-
-    protected void assertNoTemplateExpressionInBatch(Expression<?> expr) {
-        if (expr instanceof TemplateExpression) {
-            throw new IllegalArgumentException("Template expressions are not allowed in batch statements");
-        }
     }
 
     /**
@@ -123,7 +118,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         }
     }
 
-    protected long executeBatch(PreparedStatement stmt) throws SQLException {
+    private long executeBatch(PreparedStatement stmt) throws SQLException {
         if (configuration.getTemplates().isBatchCountViaGetUpdateCount()) {
             stmt.executeBatch();
             return stmt.getUpdateCount();
@@ -136,11 +131,25 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         }
     }
 
+    protected long executeBatch(Collection<PreparedStatement> stmts) throws SQLException {
+        long rv = 0;
+        for (PreparedStatement stmt : stmts) {
+            rv += executeBatch(stmt);
+        }
+        return rv;
+    }
+
     protected void close(Statement stmt) {
         try {
             stmt.close();
         } catch (SQLException e) {
             throw configuration.translate(e);
+        }
+    }
+
+    protected void close(Collection<? extends Statement> stmts) {
+        for (Statement stmt : stmts) {
+            close(stmt);
         }
     }
 

@@ -15,12 +15,10 @@ package com.mysema.query.sql.dml;
 
 import javax.annotation.Nullable;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
@@ -121,7 +119,6 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * @return
      */
     public SQLInsertClause addBatch() {
-        assertNoTemplateExpressionsInBatch();
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
             values.clear();
@@ -131,13 +128,6 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         values.clear();
         subQuery = null;
         return this;
-    }
-
-    @Override
-    protected void assertNoTemplateExpressionsInBatch() {
-        for (Expression<?> expr : values) {
-            assertNoTemplateExpressionInBatch(expr);
-        }
     }
 
     @Override
@@ -229,30 +219,45 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
             values.clear();
         }
-        PreparedStatement stmt = null;
-        if (batches.isEmpty()) {
-            serializer.serializeInsert(metadata, entity, columns, values, subQuery);
-            stmt = prepareStatementAndSetParameters(serializer, withKeys);
-        } else {
-            serializer.serializeInsert(metadata, entity, batches.get(0).getColumns(), batches
-                    .get(0).getValues(), batches.get(0).getSubQuery());
-            stmt = prepareStatementAndSetParameters(serializer, withKeys);
 
-            // add first batch
-            stmt.addBatch();
+        serializer.serializeInsert(metadata, entity, columns, values, subQuery);
+        return prepareStatementAndSetParameters(serializer, withKeys);
+    }
 
-            // add other batches
-            for (int i = 1; i < batches.size(); i++) {
-                SQLInsertBatch batch = batches.get(i);
-                serializer = createSerializer();
-                serializer.serializeInsert(metadata, entity, batch.getColumns(),
-                        batch.getValues(), batch.getSubQuery());
+    private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+        if (subQueryBuilder != null) {
+            subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
+            values.clear();
+        }
+
+        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+
+        // add first batch
+        SQLSerializer serializer = createSerializer();
+        serializer.serializeInsert(metadata, entity, batches.get(0).getColumns(), batches
+                .get(0).getValues(), batches.get(0).getSubQuery());
+        PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
+        stmt.addBatch();
+        stmts.put(serializer.toString(), stmt);
+
+        // add other batches
+        for (int i = 1; i < batches.size(); i++) {
+            SQLInsertBatch batch = batches.get(i);
+            serializer = createSerializer();
+            serializer.serializeInsert(metadata, entity, batch.getColumns(),
+                    batch.getValues(), batch.getSubQuery());
+            stmt = stmts.get(serializer.toString());
+            if (stmt == null) {
+                stmt = prepareStatementAndSetParameters(serializer, withKeys);
+                stmts.put(serializer.toString(), stmt);
+            } else {
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
                         metadata.getParams());
-                stmt.addBatch();
             }
+            stmt.addBatch();
         }
-        return stmt;
+
+        return stmts.values();
     }
 
     private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
@@ -288,14 +293,21 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      */
     public ResultSet executeWithKeys() {
         try {
-            final PreparedStatement stmt = createStatement(true);
+            PreparedStatement stmt = null;
+            Collection<PreparedStatement> stmts = null;
             if (batches.isEmpty()) {
+                stmt = createStatement(true);
                 listeners.notifyInsert(entity, metadata, columns, values, subQuery);
                 stmt.executeUpdate();
             } else {
+                stmts = createStatements(true);
                 listeners.notifyInserts(entity, metadata, batches);
                 stmt.executeBatch();
             }
+            if (stmts != null && stmts.size() > 1) {
+                throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
+            }
+            final Statement stmt2 = stmts != null ? stmts.iterator().next() : stmt;
             ResultSet rs = stmt.getGeneratedKeys();
             return new ResultSetAdapter(rs) {
                 @Override
@@ -303,7 +315,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                     try {
                         super.close();
                     } finally {
-                        stmt.close();
+                        stmt2.close();
                     }
                 }
             };
@@ -315,20 +327,25 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     @Override
     public long execute() {
         PreparedStatement stmt = null;
+        Collection<PreparedStatement> stmts = null;
         try {
-            stmt = createStatement(false);
             if (batches.isEmpty()) {
+                stmt = createStatement(false);
                 listeners.notifyInsert(entity, metadata, columns, values, subQuery);
                 return stmt.executeUpdate();
             } else {
+                stmts = createStatements(false);
                 listeners.notifyInserts(entity, metadata, batches);
-                return executeBatch(stmt);
+                return executeBatch(stmts);
             }
         } catch (SQLException e) {
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
+            }
+            if (stmts != null) {
+                close(stmts);
             }
         }
     }

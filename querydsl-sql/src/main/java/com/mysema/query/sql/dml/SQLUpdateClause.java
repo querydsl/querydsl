@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
@@ -95,7 +96,6 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
      * @return
      */
     public SQLUpdateClause addBatch() {
-        assertNoTemplateExpressionsInBatch();
         batches.add(new SQLUpdateBatch(metadata, updates));
         updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
         metadata = new DefaultQueryMetadata();
@@ -103,63 +103,70 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         return this;
     }
 
-    protected void assertNoTemplateExpressionsInBatch() {
-        for (Pair<Path<?>, Expression<?>> pair : updates) {
-            assertNoTemplateExpressionInBatch(pair.getSecond());
-        }
-        assertNoTemplateExpressionInBatch(metadata.getWhere());
+    private PreparedStatement createStatement() throws SQLException{
+        SQLSerializer serializer = createSerializer();
+        serializer.serializeUpdate(metadata, entity, updates);
+        queryString = serializer.toString();
+        constants = serializer.getConstants();
+        logger.debug(queryString);
+        PreparedStatement stmt = connection.prepareStatement(queryString);
+        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
+        return stmt;
     }
 
-    private PreparedStatement createStatement() throws SQLException{
-        PreparedStatement stmt;
-        if (batches.isEmpty()) {
-            SQLSerializer serializer = createSerializer();
-            serializer.serializeUpdate(metadata, entity, updates);
-            queryString = serializer.toString();
-            constants = serializer.getConstants();
-            logger.debug(queryString);
-            stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-        } else {
-            SQLSerializer serializer = createSerializer();
-            serializer.serializeUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
-            queryString = serializer.toString();
-            constants = serializer.getConstants();
-            logger.debug(queryString);
+    private Collection<PreparedStatement> createStatements() throws SQLException {
+        SQLSerializer serializer = createSerializer();
+        serializer.serializeUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
+        queryString = serializer.toString();
+        constants = serializer.getConstants();
+        logger.debug(queryString);
 
-            // add first batch
-            stmt = connection.prepareStatement(queryString);
+        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+
+        // add first batch
+        PreparedStatement stmt = connection.prepareStatement(queryString);
+        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
+        stmt.addBatch();
+        stmts.put(serializer.toString(), stmt);
+
+        // add other batches
+        for (int i = 1; i < batches.size(); i++) {
+            serializer = createSerializer();
+            serializer.serializeUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
+            stmt = stmts.get(serializer.toString());
+            if (stmt == null) {
+                stmt = connection.prepareStatement(serializer.toString());
+                stmts.put(serializer.toString(), stmt);
+            }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
-
-            // add other batches
-            for (int i = 1; i < batches.size(); i++) {
-                serializer = createSerializer();
-                serializer.serializeUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-                stmt.addBatch();
-            }
         }
-        return stmt;
+
+        return stmts.values();
     }
 
     @Override
     public long execute() {
         PreparedStatement stmt = null;
+        Collection<PreparedStatement> stmts = null;
         try {
-            stmt = createStatement();
             if (batches.isEmpty()) {
+                stmt = createStatement();
                 listeners.notifyUpdate(entity, metadata, updates);
                 return stmt.executeUpdate();
             } else {
+                stmts = createStatements();
                 listeners.notifyUpdates(entity, batches);
-                return executeBatch(stmt);
+                return executeBatch(stmts);
             }
         } catch (SQLException e) {
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
+            }
+            if (stmts != null) {
+                close(stmts);
             }
         }
     }

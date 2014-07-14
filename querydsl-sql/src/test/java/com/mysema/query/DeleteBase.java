@@ -59,6 +59,18 @@ public class DeleteBase extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn({CUBRID, SQLITE})
+    public void Batch_Templates() throws SQLException{
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
+
+        SQLDeleteClause delete = delete(survey);
+        delete.where(survey.name.eq(Expressions.stringTemplate("'A'"))).addBatch();
+        delete.where(survey.name.eq(Expressions.stringTemplate("'B'"))).addBatch();
+        assertEquals(2, delete.execute());
+    }
+
+    @Test
     @ExcludeIn(MYSQL)
     public void Delete() throws SQLException{
         long count = query().from(survey).count();
@@ -111,7 +123,7 @@ public class DeleteBase extends AbstractBaseTest{
     }
 
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void Delete_With_TempateExpression_In_Batch() {
         delete(survey)
             .where(Expressions.booleanTemplate("true"))

@@ -135,6 +135,23 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Insert_Batch_Templates() {
+        SQLInsertClause insert = insert(survey)
+                .set(survey.id, 5)
+                .set(survey.name, Expressions.stringTemplate("'55'"))
+                .addBatch();
+
+        insert.set(survey.id, 6)
+                .set(survey.name, Expressions.stringTemplate("'66'"))
+                .addBatch();
+
+        assertEquals(2, insert.execute());
+
+        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
+    }
+
+    @Test
     public void Insert_Batch2() {
         SQLInsertClause insert = insert(survey)
                 .set(survey.id, 5)
@@ -397,7 +414,7 @@ public class InsertBase extends AbstractBaseTest {
         clause.execute();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void Insert_With_TempateExpression_In_Batch() {
         insert(survey)
                 .set(survey.id, 3)
