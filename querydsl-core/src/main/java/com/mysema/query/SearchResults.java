@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -24,7 +25,9 @@ import com.google.common.collect.ImmutableList;
  *
  * @author tiwe
  */
-public final class SearchResults<T> {
+public final class SearchResults<T> implements Serializable {
+
+    private static final long serialVersionUID = -4591506147471300909L;
 
     private static final SearchResults<Object> EMPTY = new SearchResults<Object>(
             ImmutableList.of(), Long.MAX_VALUE, 0l, 0l); 
