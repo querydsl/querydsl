@@ -13,8 +13,11 @@
  */
 package com.mysema.query.jpa.hibernate;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.types.Path;
+import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
@@ -43,6 +46,8 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
 
     private final JPQLTemplates templates;
 
+    private final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
+
     public HibernateDeleteClause(Session session, EntityPath<?> entity) {
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
@@ -68,6 +73,9 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
+        for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()) {
+            query.setLockMode(entry.getKey().toString(), entry.getValue());
+        }
         HibernateUtil.setConstants(query, constants, md.getParams());
         return query.executeUpdate();
     }
@@ -79,7 +87,16 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         }        
         return this;
     }
-    
+
+    /**
+     * Set the lock mode for the given path.
+     */
+    @SuppressWarnings("unchecked")
+    public HibernateDeleteClause setLockMode(Path<?> path, LockMode lockMode) {
+        lockModes.put(path, lockMode);
+        return this;
+    }
+
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
