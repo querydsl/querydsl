@@ -128,7 +128,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
      * @param exprs the expression arguments to retrieve
      * @return
      */
-    public ResultSet getResultsgetResults(Expression<?>... exprs) {
+    public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.addProjection(exprs);
         SQLSerializer serializer = serialize(false);
         String queryString = serializer.toString();
