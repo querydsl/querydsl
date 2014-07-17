@@ -125,10 +125,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     /**
      * Get the results as an JDBC result set
      *
-     * @param args
+     * @param exprs the expression arguments to retrieve
      * @return
      */
-    public ResultSet getResults(Expression<?>... exprs) {
+    public ResultSet getResultsgetResults(Expression<?>... exprs) {
         queryMixin.addProjection(exprs);
         SQLSerializer serializer = serialize(false);
         String queryString = serializer.toString();
@@ -298,6 +298,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
+        QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
             if (configuration.getTemplates().isCountViaAnalytics()) {
                 List<RT> results;
@@ -318,16 +319,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                 } else {
                     total = count();
                 }
-                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                return new SearchResults<RT>(results, modifiers, total);
+                return new SearchResults<RT>(results, originalModifiers, total);
 
             } else {
                 queryMixin.addProjection(expr);
                 long total = count();
                 if (total > 0) {
                     queryMixin.getMetadata().clearProjection();
-                    QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                    return new SearchResults<RT>(list(expr), modifiers, total);
+                    return new SearchResults<RT>(list(expr), originalModifiers, total);
                 } else {
                     return SearchResults.emptyResults();
                 }
