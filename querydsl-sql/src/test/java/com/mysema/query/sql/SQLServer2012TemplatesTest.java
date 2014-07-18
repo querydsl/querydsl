@@ -13,10 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -24,6 +20,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.NumberTemplate;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 
 public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
@@ -64,14 +62,14 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     public void Limit() {
         query.from(survey1).limit(5);
         query.getMetadata().addProjection(survey1.id);
-        assertEquals("select survey1.ID from SURVEY survey1 offset ? rows fetch next ? rows only", query.toString());
+        assertEquals("select top 5 survey1.ID from SURVEY survey1", query.toString());
     }
 
     @Test
     public void Modifiers() {
-        query.from(survey1).limit(5).offset(3);
+        query.from(survey1).limit(5).offset(3).orderBy(survey1.id.asc());
         query.getMetadata().addProjection(survey1.id);
-        assertEquals("select survey1.ID from SURVEY survey1 offset ? rows fetch next ? rows only", query.toString());
+        assertEquals("select survey1.ID from SURVEY survey1 order by survey1.ID asc offset ? rows fetch next ? rows only", query.toString());
     }
 
     @Test
