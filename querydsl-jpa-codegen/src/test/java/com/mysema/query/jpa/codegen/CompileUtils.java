@@ -1,6 +1,5 @@
 package com.mysema.query.jpa.codegen;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,13 +28,9 @@ public class CompileUtils {
         List<String> options = new ArrayList<String>();
         options.addAll(getFiles(target));
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ByteArrayOutputStream err = new ByteArrayOutputStream();
-        int compilationResult = compiler.run(null, out, err, options.toArray(new String[options.size()]));
+        int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
 
         if (compilationResult != 0) {
-            System.out.println(new String(out.toByteArray()));
-            System.out.println(new String(err.toByteArray()));
             Assert.fail("Compilation Failed");
         }
     }
