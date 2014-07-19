@@ -1,20 +1,19 @@
 package com.mysema.query.jpa.domain5;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.hibernate.cfg.Configuration;
-import org.junit.Test;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.mysema.query.jpa.codegen.CompileUtils;
 import com.mysema.query.jpa.codegen.HibernateDomainExporter;
 import com.mysema.util.FileUtils;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
-public class DomainExporterTest {
+public class DomainExporter5Test {
     
     @Test
     public void Execute() throws IOException {
@@ -32,6 +31,8 @@ public class DomainExporterTest {
         File targetFile = new File(gen, "com/mysema/query/jpa/domain5/QCustomer.java");
         assertContains(targetFile, "SetPath<CustomerContact, QCustomerContact>",
                                    "SetPath<CustomerHistory, QCustomerHistory>");
+
+        CompileUtils.compile(gen.getAbsolutePath());
     }
 
 

@@ -1,17 +1,16 @@
 package com.mysema.query.jpa.domain12;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 
-import org.hibernate.cfg.Configuration;
-import org.junit.Test;
-
+import com.mysema.query.jpa.codegen.CompileUtils;
 import com.mysema.query.jpa.codegen.HibernateDomainExporter;
 import com.mysema.util.FileUtils;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
-public class DomainExporterTest {
+public class DomainExporter12Test {
 
     @Test
     public void Execute() throws IOException {
@@ -24,6 +23,8 @@ public class DomainExporterTest {
         
         assertTrue(new File(gen, "com/mysema/query/jpa/domain12/QEntity.java").exists());
         assertTrue(new File(gen, "com/mysema/query/jpa/domain12/QSupertype.java").exists());
+
+        CompileUtils.compile(gen.getAbsolutePath());
     }
     
 }
