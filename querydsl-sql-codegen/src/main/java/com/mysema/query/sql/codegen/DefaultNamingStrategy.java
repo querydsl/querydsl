@@ -15,6 +15,7 @@ package com.mysema.query.sql.codegen;
 
 import java.util.Locale;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.codegen.EntityType;
 
 /**
@@ -76,7 +77,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         if (fkName.toLowerCase().startsWith("fk_")) {
             fkName = fkName.substring(3) + "_" + fkName.substring(0,2);
         }
-        return getPropertyName(fkName, entityType);
+        return escape(entityType, getPropertyName(fkName, entityType));
     }
 
     @Override
@@ -90,7 +91,13 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         if (pkName.toLowerCase().startsWith("pk_")) {
             pkName = pkName.substring(3) + "_" + pkName.substring(0,2);
         }
-        return getPropertyName(pkName, entityType);
+        String propertyName = getPropertyName(pkName, entityType);
+        for (String candidate : ImmutableList.of(propertyName, propertyName + "Pk")) {
+            if (!entityType.getEscapedPropertyNames().contains(candidate)) {
+                return candidate;
+            }
+        }
+        return escape(entityType, propertyName);
     }
 
     protected String normalizePropertyName(String name) {
