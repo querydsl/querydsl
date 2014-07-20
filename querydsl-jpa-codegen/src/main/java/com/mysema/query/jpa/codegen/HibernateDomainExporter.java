@@ -13,24 +13,12 @@
  */
 package com.mysema.query.jpa.codegen;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
 import java.util.Iterator;
-
-import javax.xml.stream.XMLStreamException;
-
-import org.hibernate.MappingException;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.MappedSuperclass;
-import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.PersistentClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -39,6 +27,11 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
+import org.hibernate.MappingException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * HibernateDomainExporter exports Hibernate XML configuration files to Querydsl expression types
@@ -205,6 +198,14 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
         }
     }
 
+    private Type normalize(Type first, Type second) {
+        if (first.getFullName().equals(second.getFullName())) {
+            return first;
+        } else {
+            return second;
+        }
+    }
+
     private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p)
             throws NoSuchMethodException, ClassNotFoundException {
         if (p.isBackRef()) {
@@ -248,10 +249,13 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
                     if (collection.isMap()) {
                         Type keyType = typeFactory.get(Class.forName(propertyType.getParameters().get(0).getFullName()));
                         Type valueType = typeFactory.get(Class.forName(entityName));
-                        propertyType = new SimpleType(propertyType, keyType, valueType);
+                        propertyType = new SimpleType(propertyType,
+                                normalize(propertyType.getParameters().get(0), keyType),
+                                normalize(propertyType.getParameters().get(1), valueType));
                     } else {
                         Type componentType = typeFactory.get(Class.forName(entityName));
-                        propertyType = new SimpleType(propertyType, componentType);
+                        propertyType = new SimpleType(propertyType,
+                                normalize(propertyType.getParameters().get(0), componentType));
                     }
                 }
             } else if (collection.getElement() instanceof Component) {
