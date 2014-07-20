@@ -13,30 +13,16 @@
  */
 package com.mysema.query.jpa.codegen;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import javax.annotation.Nullable;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -49,20 +35,11 @@ import com.mysema.query.QueryException;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.CodegenModule;
-import com.mysema.query.codegen.EmbeddableSerializer;
-import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.SupertypeSerializer;
-import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 import com.mysema.util.Annotations;
 import com.mysema.util.ReflectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * AbstractDomainExporter is a common supertype for DomainExporters
@@ -336,6 +313,14 @@ public abstract class AbstractDomainExporter {
             return new OutputStreamWriter(new FileOutputStream(file), charset);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    protected Type normalize(Type first, Type second) {
+        if (first.getFullName().equals(second.getFullName())) {
+            return first;
+        } else {
+            return second;
         }
     }
 

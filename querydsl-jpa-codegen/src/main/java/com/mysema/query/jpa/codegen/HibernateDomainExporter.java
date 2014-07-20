@@ -198,14 +198,6 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
         }
     }
 
-    private Type normalize(Type first, Type second) {
-        if (first.getFullName().equals(second.getFullName())) {
-            return first;
-        } else {
-            return second;
-        }
-    }
-
     private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p)
             throws NoSuchMethodException, ClassNotFoundException {
         if (p.isBackRef()) {
