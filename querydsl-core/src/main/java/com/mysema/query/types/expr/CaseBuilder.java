@@ -92,7 +92,7 @@ public final class CaseBuilder {
             if (constant != null) {
                 return otherwise(ConstantImpl.create(constant));
             } else {
-                return otherwise((Expression)NullExpression.DEFAULT);
+                return otherwise((Expression<A>)null);
             }
         }
 
