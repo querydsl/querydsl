@@ -399,7 +399,8 @@
         <module>../querydsl-apt</module> 
         <module>../querydsl-collections</module>           
         <module>../querydsl-sql</module>
-        <module>../querydsl-sql-codegen</module>        
+        <module>../querydsl-sql-codegen</module>
+        <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>
         <module>../querydsl-jpa</module>    
         <module>../querydsl-jpa-codegen</module>
@@ -437,6 +438,7 @@
         <module>../querydsl-apt</module> 
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
+        <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>        
         <module>../querydsl-jpa</module>        
         <module>../querydsl-jpa-codegen</module>
@@ -452,6 +454,7 @@
         <module>../querydsl-apt</module> 
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
+        <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>        
         <module>../querydsl-jdo</module>
       </modules>
@@ -486,6 +489,7 @@
         <module>../querydsl-spatial</module>
         <module>../querydsl-sql</module>
         <module>../querydsl-sql-codegen</module>
+        <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>        
       </modules>
     </profile>        
