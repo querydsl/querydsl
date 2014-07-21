@@ -13,23 +13,14 @@
  */
 package com.mysema.query.jpa.codegen;
 
+import javax.persistence.Temporal;
+import javax.persistence.metamodel.*;
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
 import java.util.Map;
-
-import javax.persistence.Temporal;
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.EmbeddableType;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.MapAttribute;
-import javax.persistence.metamodel.MappedSuperclassType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.PluralAttribute;
-import javax.xml.stream.XMLStreamException;
-
-import org.hibernate.MappingException;
 
 import com.google.common.collect.Maps;
 import com.mysema.codegen.model.SimpleType;
@@ -39,6 +30,7 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
+import org.hibernate.MappingException;
 
 /**
  * JPADomainExporter exports JPA 2 metamodels to Querydsl expression types
@@ -192,11 +184,14 @@ public class JPADomainExporter extends AbstractDomainExporter {
                 Type keyType = typeFactory.get(map.getKeyJavaType());
                 Type valueType = typeFactory.get(map.getElementType().getJavaType());
                 valueType = getPropertyType(p, valueType);
-                propertyType = new SimpleType(propertyType, keyType, valueType);
+                propertyType = new SimpleType(propertyType,
+                        normalize(propertyType.getParameters().get(0), keyType),
+                        normalize(propertyType.getParameters().get(1), valueType));
             } else {
                 Type valueType = typeFactory.get(((PluralAttribute<?,?,?>)p).getElementType().getJavaType());
                 valueType = getPropertyType(p, valueType);
-                propertyType = new SimpleType(propertyType, valueType);
+                propertyType = new SimpleType(propertyType,
+                        normalize(propertyType.getParameters().get(0), valueType));
             }
         } else {
             propertyType = getPropertyType(p, propertyType);
