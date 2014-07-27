@@ -27,7 +27,7 @@ import com.mysema.query.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> {
+public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> {
 
     /**
      * Creates a detached query

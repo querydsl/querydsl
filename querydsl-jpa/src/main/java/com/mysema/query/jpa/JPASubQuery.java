@@ -21,7 +21,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public final class JPASubQuery extends AbstractJPASubQuery<JPASubQuery> {
+public class JPASubQuery extends AbstractJPASubQuery<JPASubQuery> {
 
     public JPASubQuery() {
         super();

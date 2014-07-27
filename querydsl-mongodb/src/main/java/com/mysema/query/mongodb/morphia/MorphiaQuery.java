@@ -32,7 +32,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public final class MorphiaQuery<K> extends MongodbQuery<K> {
+public class MorphiaQuery<K> extends MongodbQuery<K> {
 
     private final EntityCache cache;
 
