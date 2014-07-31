@@ -13,16 +13,10 @@
  */
 package com.mysema.query.jpa.codegen;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.cfg.Configuration;
-import org.junit.Test;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -32,6 +26,10 @@ import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.jpa.domain.Domain;
 import com.mysema.query.jpa.domain2.Domain2;
 import com.mysema.util.FileUtils;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class HibernateDomainExporterTest {
 
@@ -50,6 +48,8 @@ public class HibernateDomainExporterTest {
 
         File targetFile = new File("target/gen6/com/mysema/query/jpa/codegen/QMyEntity.java");
         assertContains(targetFile, "StringPath pk1", "StringPath pk2", "StringPath prop1");
+
+        CompileUtils.compile("target/gen6");
     }
 
     @Test
@@ -65,6 +65,8 @@ public class HibernateDomainExporterTest {
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/QContact.java");
         assertContains(targetFile, "StringPath email", "StringPath firstName",
                 "NumberPath<Long> id", "StringPath lastName");
+
+        CompileUtils.compile("target/gen1");
     }
 
     @Test
@@ -80,6 +82,8 @@ public class HibernateDomainExporterTest {
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/ContactType.java");
         assertContains(targetFile, "StringPath email", "StringPath firstName",
                 "NumberPath<Long> id", "StringPath lastName");
+
+        CompileUtils.compile("target/gen1");
     }
 
     @Test
@@ -95,6 +99,8 @@ public class HibernateDomainExporterTest {
         File targetFile = new File("target/gen2/com/mysema/query/jpa/domain2/QContact.java");
         assertContains(targetFile, "StringPath email", "StringPath firstName",
                 "NumberPath<Long> id", "StringPath lastName");
+
+        CompileUtils.compile("target/gen2");
     }
 
     @Test
@@ -126,6 +132,7 @@ public class HibernateDomainExporterTest {
             fail("Failed with " + failures.size() + " failures");
         }
 
+        CompileUtils.compile("target/gen3");
     }
 
     @Test
@@ -157,6 +164,8 @@ public class HibernateDomainExporterTest {
             fail("Failed with " + failures.size() + " failures");
         }
 
+        CompileUtils.compile("target/gen4");
+
     }
 
     @Test
@@ -174,6 +183,8 @@ public class HibernateDomainExporterTest {
 
         targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QHardwareStore.java");
         assertContains(targetFile, "StringPath code = _super.code;", "StringPath address");
+
+        CompileUtils.compile("target/gen5");
     }
 
     private static void assertContains(File file, String... strings) throws IOException {

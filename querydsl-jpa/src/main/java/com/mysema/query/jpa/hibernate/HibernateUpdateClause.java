@@ -13,9 +13,11 @@
  */
 package com.mysema.query.jpa.hibernate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
@@ -49,6 +51,8 @@ public class HibernateUpdateClause implements
 
     private final JPQLTemplates templates;
 
+    private final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
+
     public HibernateUpdateClause(Session session, EntityPath<?> entity) {
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
@@ -75,6 +79,9 @@ public class HibernateUpdateClause implements
         Map<Object, String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
+        for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()) {
+            query.setLockMode(entry.getKey().toString(), entry.getValue());
+        }
         HibernateUtil.setConstants(query, constants, metadata.getParams());
         return query.executeUpdate();
     }
@@ -125,6 +132,15 @@ public class HibernateUpdateClause implements
         for (Predicate p : o) {
             metadata.addWhere(p);    
         }        
+        return this;
+    }
+
+    /**
+     * Set the lock mode for the given path.
+     */
+    @SuppressWarnings("unchecked")
+    public HibernateUpdateClause setLockMode(Path<?> path, LockMode lockMode) {
+        lockModes.put(path, lockMode);
         return this;
     }
     

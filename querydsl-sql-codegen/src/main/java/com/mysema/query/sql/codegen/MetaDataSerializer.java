@@ -17,9 +17,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.mysema.query.codegen.*;
@@ -41,6 +43,21 @@ import static com.mysema.codegen.Symbols.*;
  *
  */
 public class MetaDataSerializer extends EntitySerializer {
+
+    private static final Map<Integer, String> typeConstants = Maps.newHashMap();
+
+    static {
+        try {
+            for (Field field : java.sql.Types.class.getDeclaredFields()) {
+                if (field.getType().equals(Integer.TYPE)) {
+                    typeConstants.put(field.getInt(null), field.getName());
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
+
+    }
 
     private final NamingStrategy namingStrategy;
 
@@ -175,7 +192,7 @@ public class MetaDataSerializer extends EntitySerializer {
             writer.imports(List.class.getPackage());
         }
 
-        writer.imports(ColumnMetadata.class);
+        writer.imports(ColumnMetadata.class, java.sql.Types.class);
 
         if (!entityPathType.getPackage().equals(ColumnMetadata.class.getPackage())) {
             writer.imports(entityPathType);
@@ -217,7 +234,11 @@ public class MetaDataSerializer extends EntitySerializer {
             columnMeta.append("ColumnMetadata");
             columnMeta.append(".named(\"" + metadata.getName() + "\")");
             columnMeta.append(".withIndex(" + metadata.getIndex() + ")");
-            columnMeta.append(".ofType(" + metadata.getJdbcType() + ")");
+            String type = String.valueOf(metadata.getJdbcType());
+            if (typeConstants.containsKey(metadata.getJdbcType())) {
+                type = "Types." + typeConstants.get(metadata.getJdbcType());
+            }
+            columnMeta.append(".ofType(" + type + ")");
             if (metadata.hasSize()) {
                 columnMeta.append(".withSize(" + metadata.getSize() + ")");
             }

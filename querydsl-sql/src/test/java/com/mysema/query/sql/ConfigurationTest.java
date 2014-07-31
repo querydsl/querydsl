@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -69,5 +70,21 @@ public class ConfigurationTest {
 //        assertEquals("emp", configuration.getTable("", "employee"));
 //        assertEquals("employees", configuration.getTable("public", "employee"));
     }
+
+    @Test
+    public void NumericOverriden() {
+        Configuration configuration = new Configuration(new H2Templates());
+        configuration.registerNumeric(19, 0, BigInteger.class);
+        assertEquals(configuration.getJavaType(Types.NUMERIC, "", 19, 0, "", ""), BigInteger.class);
+    }
+
+    @Test
+    public void NumericOverriden2() {
+        Configuration configuration = new Configuration(new H2Templates());
+        configuration.registerNumeric(18, 19, 0, 0, BigInteger.class);
+        assertEquals(configuration.getJavaType(Types.NUMERIC, "", 18, 0, "", ""), BigInteger.class);
+        assertEquals(configuration.getJavaType(Types.NUMERIC, "", 19, 0, "", ""), BigInteger.class);
+    }
+
 
 }
