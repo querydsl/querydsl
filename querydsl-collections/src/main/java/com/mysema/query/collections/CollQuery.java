@@ -23,7 +23,7 @@ import com.mysema.query.SimpleQuery;
  * @author tiwe
  *
  */
-public final class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable {
+public class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable {
 
     /**
      * Create a new CollQuery instance
