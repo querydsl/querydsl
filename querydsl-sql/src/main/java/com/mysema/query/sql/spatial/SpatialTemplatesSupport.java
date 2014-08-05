@@ -113,6 +113,22 @@ public final class SpatialTemplatesSupport {
         ops.put(SpatialOps.Y2, createSpatial(prefix + "Y", 2, asFunction));
         ops.put(SpatialOps.Z, createSpatial(prefix + "Z", 1, asFunction));
         ops.put(SpatialOps.Z2, createSpatial(prefix + "Z", 2, asFunction));
+
+        // extensions
+        ops.put(SpatialOps.AS_EWKT, createSpatial(prefix + "AsEWKT", 1, asFunction));
+        ops.put(SpatialOps.GEOM_FROM_TEXT, createSpatial(prefix + "GeomFromText", 1, asFunction));
+        ops.put(SpatialOps.SET_SRID, createSpatial(prefix + "SetSRID", 2, asFunction));
+        ops.put(SpatialOps.XMIN, createSpatial(prefix + "XMin", 1, asFunction));
+        ops.put(SpatialOps.XMAX, createSpatial(prefix + "XMax", 1, asFunction));
+        ops.put(SpatialOps.YMIN, createSpatial(prefix + "YMin", 1, asFunction));
+        ops.put(SpatialOps.YMAX, createSpatial(prefix + "YMax", 1, asFunction));
+        ops.put(SpatialOps.DWITHIN, createSpatial(prefix + "DWithin", 3, asFunction));
+        ops.put(SpatialOps.EXTENT, createSpatial(prefix + "Extent", 1, asFunction));
+        ops.put(SpatialOps.COLLECT, createSpatial(prefix + "Collect", 1, asFunction));
+        ops.put(SpatialOps.COLLECT2, createSpatial(prefix + "Collect", 2, asFunction));
+        ops.put(SpatialOps.TRANSLATE, createSpatial(prefix + "Translate", 3, asFunction));
+        ops.put(SpatialOps.TRANSLATE2, createSpatial(prefix + "Translate", 4, asFunction));
+
         return ops;
     }
 

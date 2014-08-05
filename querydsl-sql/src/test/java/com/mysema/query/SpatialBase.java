@@ -3,6 +3,8 @@ package com.mysema.query;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mysema.query.spatial.GeometryExpression;
+import com.mysema.query.spatial.GeometryExpressions;
 import com.mysema.query.spatial.PointExpression;
 import com.mysema.query.spatial.path.*;
 import com.mysema.query.sql.spatial.QShapes;
@@ -407,6 +409,34 @@ public class SpatialBase extends AbstractBaseTest {
         for (Expression<?> expr : expressions) {
             boolean logged = false;
             for (Object row : withMultiPolygons().list(expr)) {
+                if (row == null && !logged) {
+                    System.err.println(expr.toString());
+                    logged = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    @IncludeIn(Target.POSTGRES)
+    public void Extensions() {
+        List<Expression<?>> expressions = Lists.newArrayList();
+        GeometryExpression<?> expr1 = shapes.geometry;
+
+        expressions.add(GeometryExpressions.asEWKT(expr1));
+        expressions.add(GeometryExpressions.fromText(expr1.asText()));
+        expressions.add(GeometryExpressions.setSRID(expr1, 4326));
+        expressions.add(GeometryExpressions.xmin(expr1));
+        expressions.add(GeometryExpressions.xmax(expr1));
+        expressions.add(GeometryExpressions.ymin(expr1));
+        expressions.add(GeometryExpressions.ymax(expr1));
+        expressions.add(GeometryExpressions.dwithin(expr1, expr1, 1));
+        expressions.add(GeometryExpressions.collect(expr1, expr1));
+        expressions.add(GeometryExpressions.translate(expr1, 1, 1));
+
+        for (Expression<?> expr : expressions) {
+            boolean logged = false;
+            for (Object row : withPoints().list(expr)) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;

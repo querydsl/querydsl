@@ -106,4 +106,19 @@ public final class SpatialOps {
         // MultiCurve
         public static final Operator<Object> IS_CLOSED = new OperatorImpl<Object>(NS, "IS_CLOSED");
 
+        // Extensions
+        public static final Operator<Object> AS_EWKT = new OperatorImpl<Object>(NS, "AS_EWKT");
+        public static final Operator<Object> GEOM_FROM_TEXT = new OperatorImpl<Object>(NS, "GEOM_FROM_TEXT");
+        public static final Operator<Object> SET_SRID = new OperatorImpl<Object>(NS, "SET_SRID");
+        public static final Operator<Object> XMIN = new OperatorImpl<Object>(NS, "XMIN");
+        public static final Operator<Object> XMAX = new OperatorImpl<Object>(NS, "XMAX");
+        public static final Operator<Object> YMIN = new OperatorImpl<Object>(NS, "YMIN");
+        public static final Operator<Object> YMAX = new OperatorImpl<Object>(NS, "YMAX");
+        public static final Operator<Object> DWITHIN = new OperatorImpl<Object>(NS, "DWITHIN");
+        public static final Operator<Object> EXTENT = new OperatorImpl<Object>(NS, "EXTENT");
+        public static final Operator<Object> COLLECT = new OperatorImpl<Object>(NS, "COLLECT");
+        public static final Operator<Object> COLLECT2 = new OperatorImpl<Object>(NS, "COLLECT2");
+        public static final Operator<Object> TRANSLATE = new OperatorImpl<Object>(NS, "TRANSLATE");
+        public static final Operator<Object> TRANSLATE2 = new OperatorImpl<Object>(NS, "TRANSLATE2");
+
     }
