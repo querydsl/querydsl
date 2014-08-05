@@ -1,5 +1,6 @@
 package com.mysema.query.suites;
 
+import com.mysema.query.TestLoggingListener;
 import org.junit.BeforeClass;
 
 import com.mysema.query.BeanPopulationBase;
@@ -32,6 +33,7 @@ public class DerbySuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        TestLoggingListener.enable();
         Connections.initDerby();
         Connections.setTemplates(DerbyTemplates.builder().newLineToSingleSpace().build());
     }

@@ -32,6 +32,8 @@ import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.mysema.query.sql.SQLListenerContextBuilder.newContext;
+
 /**
  * SQLInsertClause defines an INSERT INTO clause
  *
@@ -214,6 +216,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     private PreparedStatement createStatement(boolean withKeys) throws SQLException {
+        listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
@@ -221,10 +224,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         }
 
         serializer.serializeInsert(metadata, entity, columns, values, subQuery);
+        context = newContext(context).with(serializer.toString()).build();
+        listeners.rendered(context);
         return prepareStatementAndSetParameters(serializer, withKeys);
     }
 
     private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+        listeners.preRender(context);
+
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
             values.clear();
@@ -239,13 +246,20 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
         stmt.addBatch();
         stmts.put(serializer.toString(), stmt);
+        context = newContext(context).with(serializer.toString()).build();
+        listeners.rendered(context);
 
         // add other batches
         for (int i = 1; i < batches.size(); i++) {
             SQLInsertBatch batch = batches.get(i);
+
+            listeners.preRender(context);
             serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, batch.getColumns(),
                     batch.getValues(), batch.getSubQuery());
+            context = newContext(context).with(serializer.toString()).build();
+            listeners.rendered(context);
+
             stmt = stmts.get(serializer.toString());
             if (stmt == null) {
                 stmt = prepareStatementAndSetParameters(serializer, withKeys);
@@ -262,6 +276,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
             boolean withKeys) throws SQLException {
+        listeners.prePrepare(context);
+
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
@@ -283,6 +299,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         }
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
                 metadata.getParams());
+
+        context = newContext(context).with(stmt).build();
+        listeners.prepared(context);
         return stmt;
     }
 
@@ -292,17 +311,25 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * @return
      */
     public ResultSet executeWithKeys() {
+        context = startContext(connection, metadata, entity);
         try {
             PreparedStatement stmt = null;
             Collection<PreparedStatement> stmts = null;
             if (batches.isEmpty()) {
                 stmt = createStatement(true);
                 listeners.notifyInsert(entity, metadata, columns, values, subQuery);
+
+                listeners.preExecute(context);
                 stmt.executeUpdate();
+                listeners.preExecute(context);
             } else {
                 stmts = createStatements(true);
+
                 listeners.notifyInserts(entity, metadata, batches);
+
+                listeners.preExecute(context);
                 stmt.executeBatch();
+                listeners.executed(context);
             }
             if (stmts != null && stmts.size() > 1) {
                 throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
@@ -320,25 +347,38 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 }
             };
         } catch (SQLException e) {
+            context = onException(context,e);
             throw configuration.translate(queryString, constants, e);
+        } finally {
+            endContext(context);
         }
     }
 
     @Override
     public long execute() {
+        context = startContext(connection,metadata,entity);
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;
         try {
             if (batches.isEmpty()) {
                 stmt = createStatement(false);
                 listeners.notifyInsert(entity, metadata, columns, values, subQuery);
-                return stmt.executeUpdate();
+
+                listeners.preExecute(context);
+                int rc = stmt.executeUpdate();
+                listeners.executed(context);
+                return rc;
             } else {
                 stmts = createStatements(false);
                 listeners.notifyInserts(entity, metadata, batches);
-                return executeBatch(stmts);
+
+                listeners.preExecute(context);
+                long rc = executeBatch(stmts);
+                listeners.executed(context);
+                return rc;
             }
         } catch (SQLException e) {
+            context = onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
@@ -347,6 +387,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            endContext(context);
         }
     }
 

@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql.dml;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +44,8 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected boolean useLiterals;
 
+    protected SQLListenerContext context;
+
     /**
      * @param configuration
      */
@@ -58,6 +61,45 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     public void addListener(SQLListener listener) {
         listeners.add(listener);
     }
+
+    /**
+     * Called to create and start a new SQL Listener context
+     * @param connection the database connection
+     * @param metadata the meta data for that context
+     * @param entity the entity for that context
+     * @return  the newly started context
+     */
+    protected SQLListenerContext startContext(Connection connection, QueryMetadata metadata, RelationalPath<?> entity)
+    {
+        SQLListenerContext context = SQLListenerContextBuilder.newContext(metadata).with(connection).with(entity).build();
+        listeners.start(context);
+        return context;
+    }
+
+    /**
+     * Called to make the call back to listeners when an exception happens
+     *
+     * @param context the current context in play
+     * @param e the exception
+     * @return the new context
+     */
+    protected SQLListenerContext onException(SQLListenerContext context, Exception e)
+    {
+        context = SQLListenerContextBuilder.newContext(context).with(e).build();
+        listeners.exception(context);
+        return context;
+    }
+
+    /**
+     * Called to end a SQL listener context
+     * @param context the listener context to end
+     */
+    protected void endContext(SQLListenerContext context)
+    {
+        listeners.end(context);
+        this.context = null;
+    }
+
 
     protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
         String queryString = serializer.toString();

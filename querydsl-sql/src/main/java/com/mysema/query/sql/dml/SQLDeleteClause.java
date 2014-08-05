@@ -34,6 +34,8 @@ import com.mysema.query.types.ValidatingVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.mysema.query.sql.SQLListenerContextBuilder.newContext;
+
 /**
  * SQLDeleteClause defines a DELETE clause
  *
@@ -110,39 +112,62 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     }
 
     private PreparedStatement createStatement() throws SQLException{
+        listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeDelete(metadata, entity);
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
+        context = newContext(context).with(queryString).build();
+        listeners.rendered(context);
+
+        listeners.prePrepare(context);
         PreparedStatement stmt = connection.prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
+
+        context = newContext(context).with(stmt).build();
+        listeners.prepared(context);
+
         return stmt;
     }
 
     private Collection<PreparedStatement> createStatements() throws SQLException {
+        listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeDelete(batches.get(0), entity);
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
+        context = newContext(context).with(queryString).build();
+        listeners.rendered(context);
 
         Map<String, PreparedStatement> stmts = Maps.newHashMap();
 
         // add first batch
+        listeners.prePrepare(context);
         PreparedStatement stmt = connection.prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         stmt.addBatch();
         stmts.put(queryString, stmt);
+        context = newContext(context).with(stmt).build();
+        listeners.prepared(context);
+
 
         // add other batches
         for (int i = 1; i < batches.size(); i++) {
+            listeners.preRender(context);
             serializer = createSerializer();
             serializer.serializeDelete(batches.get(i), entity);
+            context = newContext(context).with(serializer.toString()).build();
+            listeners.rendered(context);
+
             stmt = stmts.get(serializer.toString());
             if (stmt == null) {
+                listeners.prePrepare(context);
                 stmt = connection.prepareStatement(serializer.toString());
                 stmts.put(serializer.toString(), stmt);
+                context = newContext(context).with(stmt).build();
+                listeners.prepared(context);
             }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             stmt.addBatch();
@@ -153,19 +178,29 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
 
     @Override
     public long execute() {
+        context = startContext(connection, metadata, entity);
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;
         try {
             if (batches.isEmpty()) {
                 stmt = createStatement();
                 listeners.notifyDelete(entity, metadata);
-                return stmt.executeUpdate();
+
+                listeners.preExecute(context);
+                int rc = stmt.executeUpdate();
+                listeners.executed(context);
+                return rc;
             } else {
                 stmts = createStatements();
                 listeners.notifyDeletes(entity, batches);
-                return executeBatch(stmts);
+
+                listeners.preExecute(context);
+                long rc = executeBatch(stmts);
+                listeners.executed(context);
+                return rc;
             }
         } catch (SQLException e) {
+            context = onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
@@ -174,6 +209,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            endContext(context);
         }
     }
 
