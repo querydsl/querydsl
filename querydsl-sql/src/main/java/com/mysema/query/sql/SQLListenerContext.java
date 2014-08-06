@@ -14,53 +14,53 @@ import java.util.Map;
 public interface SQLListenerContext
 {
     /**
-     * The context map is a general purpose place that listeners can place objects.  It allows listeners to pass context
+     * The context getMap is a general purpose place that listeners can place objects.  It allows listeners to pass context
      * between themselves during callbacks.
      * <p/>
      * This is never null but can be empty
      *
-     * @return the context map
+     * @return the context getMap
      */
-    Map<String, Object> map();
+    Map<String, Object> getMap();
 
     /**
      * @return the underlying query metadata
      */
-    QueryMetadata queryMetadata();
+    QueryMetadata getMetadata();
 
     /**
      * NOTE : This can be null depending on the stage of the query execution
      *
      * @return the underlying sql
      */
-    String sql();
+    String getSQL();
 
     /**
      * NOTE : This can be null depending on the stage of the query execution
      *
      * @return the underlying entity affected
      */
-    RelationalPath<?> entity();
+    RelationalPath<?> getEntity();
 
     /**
      * NOTE : This can be null depending on the stage of the query execution
      *
      * @return the underlying connection if there is one
      */
-    Connection connection();
+    Connection getConnection();
 
     /**
      * NOTE : This can be null depending on whether an exception occurred
      *
      * @return the underlying exception that has happened during query execution
      */
-    Exception exception();
+    Exception getException();
 
     /**
      * NOTE : This can be null depending on the stage of the query execution
      *
      * @return the underlying set of prepared statements
      */
-    Collection<PreparedStatement> preparedStatements();
+    Collection<PreparedStatement> getPreparedStatements();
 
 }

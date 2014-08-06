@@ -40,13 +40,13 @@ public class SQLListenerContextBuilder
 
     public static SQLListenerContextBuilder newContext(SQLListenerContext context)
     {
-        return new SQLListenerContextBuilder(context.queryMetadata())
-                .with(context.map())
-                .with(context.connection())
-                .with(context.entity())
-                .with(context.exception())
-                .with(context.preparedStatements())
-                .with(context.sql())
+        return new SQLListenerContextBuilder(context.getMetadata())
+                .with(context.getMap())
+                .with(context.getConnection())
+                .with(context.getEntity())
+                .with(context.getException())
+                .with(context.getPreparedStatements())
+                .with(context.getSQL())
                 ;
     }
 
@@ -109,43 +109,43 @@ public class SQLListenerContextBuilder
     class SQLListenerContextImpl implements SQLListenerContext
     {
         @Override
-        public QueryMetadata queryMetadata()
+        public QueryMetadata getMetadata()
         {
             return md;
         }
 
         @Override
-        public RelationalPath<?> entity()
+        public RelationalPath<?> getEntity()
         {
             return entity;
         }
 
         @Override
-        public String sql()
+        public String getSQL()
         {
             return sql;
         }
 
         @Override
-        public Exception exception()
+        public Exception getException()
         {
             return exception;
         }
 
         @Override
-        public Connection connection()
+        public Connection getConnection()
         {
             return connection;
         }
 
         @Override
-        public Collection<PreparedStatement> preparedStatements()
+        public Collection<PreparedStatement> getPreparedStatements()
         {
             return preparedStatements;
         }
 
         @Override
-        public Map<String, Object> map()
+        public Map<String, Object> getMap()
         {
             return contextMap;
         }
@@ -168,7 +168,7 @@ public class SQLListenerContextBuilder
 
         private String nicerSql(final String sql)
         {
-            return "'" + (sql == null ? sql : sql.replace('\n', ' ')) + "'";
+            return "'" + (sql == null ? null : sql.replace('\n', ' ')) + "'";
         }
     }
 
