@@ -88,26 +88,32 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.from(args);
     }
 
+    @Deprecated
     public <P> Q fullJoin(CollectionExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
+    @Deprecated
     public <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
+    @Deprecated
     public <P> Q fullJoin(EntityPath<P> target) {
         return queryMixin.fullJoin(target);
     }
 
+    @Deprecated
     public <P> Q fullJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
+    @Deprecated
     public <P> Q fullJoin(MapExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
+    @Deprecated
     public <P> Q fullJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
