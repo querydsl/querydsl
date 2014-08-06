@@ -186,6 +186,7 @@
                   <Import-Package>
                     ${osgi.import.package}
                   </Import-Package>
+                  <Export-Package>com.mysema.query.*</Export-Package>
                 </instructions>
               </configuration>
             </execution>
