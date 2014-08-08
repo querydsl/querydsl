@@ -39,6 +39,7 @@ public final class JDBCTypeMapping {
     static{
         registerDefault(-101, Object.class);
         registerDefault(-102, java.sql.Timestamp.class); // Oracle: TIMESTAMP(6) WITH LOCAL TIME ZONE
+        registerDefault(2012, Object.class); // REF_CURSOR
 
         // BOOLEAN
         registerDefault(Types.BIT, Boolean.class);
