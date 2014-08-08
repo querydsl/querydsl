@@ -1,12 +1,10 @@
 package com.mysema.query.sql.teradata;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class SetQueryBandClauseTest {
 
@@ -40,7 +38,7 @@ public class SetQueryBandClauseTest {
         clause.forTransaction();
         clause.set("a", "b");
         clause.set("b", "c");
-        assertEquals("set query_band='b=c;a=b;' for transaction", clause.toString());
+        assertEquals("set query_band='a=b;b=c;' for transaction", clause.toString());
     }
 
     @Test
@@ -48,7 +46,7 @@ public class SetQueryBandClauseTest {
         clause.forTransaction();
         clause.set("a", "b");
         clause.set("b", "c");
-        assertEquals("set query_band='b=c;a=b;' for transaction", clause.getSQL().get(0).getSQL());
+        assertEquals("set query_band='a=b;b=c;' for transaction", clause.getSQL().get(0).getSQL());
     }
 
 }
