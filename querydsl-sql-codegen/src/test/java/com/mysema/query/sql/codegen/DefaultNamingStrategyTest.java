@@ -13,13 +13,12 @@
  */
 package com.mysema.query.sql.codegen;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class DefaultNamingStrategyTest {
 
@@ -86,11 +85,16 @@ public class DefaultNamingStrategyTest {
         assertEquals("refFooBar_", namingStrategy.getPropertyNameForForeignKey("REF_FOO_BAR_", entityModel));
     }
 
-
     @Test
     public void GetPropertyNameForPrimaryKey() {
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("pk_superior", entityModel));
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("PK_SUPERIOR", entityModel));
+    }
+
+    @Test
+    public void GetPropertyNameForPrimaryKey_Clash() {
+        entityModel.addProperty(new Property(entityModel, "id", Types.STRING));
+        assertEquals("idPk", namingStrategy.getPropertyNameForPrimaryKey("id", entityModel));
     }
 
     @Test

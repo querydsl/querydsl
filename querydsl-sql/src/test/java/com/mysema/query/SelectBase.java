@@ -145,13 +145,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
@@ -450,7 +450,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -630,6 +630,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(FIREBIRD)
     public void Like_Escape() {
         List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen");
 
@@ -708,7 +709,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({ORACLE, DERBY, FIREBIRD, SQLSERVER, CUBRID, TERADATA})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
@@ -794,7 +795,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLSERVER) // FIXME
+    @ExcludeIn({FIREBIRD, SQLSERVER}) // FIXME
     public void Math() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
 
@@ -854,6 +855,24 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Num_Cast() {
+        query().from(employee).list(employee.id.castToNum(Long.class));
+        query().from(employee).list(employee.id.castToNum(Float.class));
+        query().from(employee).list(employee.id.castToNum(Double.class));
+    }
+
+    @Test
+    public void Num_Cast2() {
+        NumberExpression<Integer> num = Expressions.numberTemplate(Integer.class, "0");
+        query().uniqueResult(num.castToNum(Byte.class));
+        query().uniqueResult(num.castToNum(Short.class));
+        query().uniqueResult(num.castToNum(Integer.class));
+        query().uniqueResult(num.castToNum(Long.class));
+        query().uniqueResult(num.castToNum(Float.class));
+        query().uniqueResult(num.castToNum(Double.class));
+    }
+
+    @Test
     public void Offset_Only() {
         query().from(employee)
             .orderBy(employee.firstname.asc())
@@ -910,7 +929,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, HSQLDB, ORACLE, SQLSERVER})
+    @ExcludeIn({DERBY, FIREBIRD, HSQLDB, ORACLE, SQLSERVER})
     @SkipForQuoted
     public void Path_Alias() {
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
@@ -1034,7 +1053,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, POSTGRES, SQLITE, TERADATA})
+    @ExcludeIn({FIREBIRD, ORACLE, POSTGRES, SQLITE, TERADATA})
     public void Random2() {
         query().uniqueResult(MathExpressions.random(10));
     }
@@ -1254,7 +1273,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(DERBY)
+    @ExcludeIn({DERBY, FIREBIRD})
     public void Substring() {
         //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
         query().from(employee)

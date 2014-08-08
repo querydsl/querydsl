@@ -13,41 +13,24 @@
  */
 package com.mysema.query.sql.dml;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.sql.*;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.StoreClause;
-import com.mysema.query.sql.ColumnMetadata;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLBindings;
-import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.*;
 import com.mysema.query.sql.types.Null;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.NullExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.util.ResultSetAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SQLMergeClause defines an MERGE INTO clause
@@ -220,14 +203,21 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     public ResultSet executeWithKeys() {
         try {
             if (configuration.getTemplates().isNativeMerge()) {
-                final PreparedStatement stmt = createStatement(true);
+                PreparedStatement stmt = null;
+                Collection<PreparedStatement> stmts = null;
                 if (batches.isEmpty()) {
+                    stmt = createStatement(true);
                     listeners.notifyMerge(entity, metadata, keys, columns, values, subQuery);
                     stmt.executeUpdate();
                 } else {
+                    stmts = createStatements(true);
                     listeners.notifyMerges(entity, metadata, batches);
                     stmt.executeBatch();
                 }
+                if (stmts != null && stmts.size() > 1) {
+                    throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
+                }
+                final Statement stmt2 = stmts != null ? stmts.iterator().next() : stmt;
                 ResultSet rs = stmt.getGeneratedKeys();
                 return new ResultSetAdapter(rs) {
                     @Override
@@ -235,7 +225,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                         try {
                             super.close();
                         } finally {
-                            stmt.close();
+                            stmt2.close();
                         }
                     }
                 };
@@ -323,7 +313,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         }
     }
 
-    private PreparedStatement createStatement(boolean withKeys) throws SQLException{
+    private PreparedStatement createStatement(boolean withKeys) throws SQLException {
         SQLSerializer serializer = createSerializer();
         PreparedStatement stmt = null;
         if (batches.isEmpty()) {
@@ -350,6 +340,37 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return stmt;
     }
 
+    private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+
+        // add first batch
+        SQLSerializer serializer = createSerializer();
+        serializer.serializeMerge(metadata, entity,
+                batches.get(0).getKeys(), batches.get(0).getColumns(),
+                batches.get(0).getValues(), batches.get(0).getSubQuery());
+        PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
+        stmts.put(serializer.toString(), stmt);
+        stmt.addBatch();
+
+        // add other batches
+        for (int i = 1; i < batches.size(); i++) {
+            SQLMergeBatch batch = batches.get(i);
+            serializer = createSerializer();
+            serializer.serializeMerge(metadata, entity,
+                    batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
+            stmt = stmts.get(serializer.toString());
+            if (stmt == null) {
+                stmt = prepareStatementAndSetParameters(serializer, withKeys);
+                stmts.put(serializer.toString(), stmt);
+            } else {
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
+            }
+            stmt.addBatch();
+        }
+
+        return stmts.values();
+    }
+
     private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
             boolean withKeys) throws SQLException {
         queryString = serializer.toString();
@@ -371,20 +392,25 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private long executeNativeMerge() {
         PreparedStatement stmt = null;
+        Collection<PreparedStatement> stmts = null;
         try {
-            stmt = createStatement(false);
             if (batches.isEmpty()) {
+                stmt = createStatement(false);
                 listeners.notifyMerge(entity, metadata, keys, columns, values, subQuery);
                 return stmt.executeUpdate();
             } else {
+                stmts = createStatements(false);
                 listeners.notifyMerges(entity, metadata, batches);
-                return executeBatch(stmt);
+                return executeBatch(stmts);
             }
         } catch (SQLException e) {
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
+            }
+            if (stmts != null) {
+                close(stmts);
             }
         }
     }

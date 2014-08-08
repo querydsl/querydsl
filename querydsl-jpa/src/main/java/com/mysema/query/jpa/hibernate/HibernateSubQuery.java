@@ -22,7 +22,7 @@ import com.mysema.query.jpa.AbstractJPASubQuery;
  * @author tiwe
  *
  */
-public final class HibernateSubQuery extends AbstractJPASubQuery<HibernateSubQuery> {
+public class HibernateSubQuery extends AbstractJPASubQuery<HibernateSubQuery> {
 
     public HibernateSubQuery() {
         super();

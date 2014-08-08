@@ -13,18 +13,18 @@
  */
 package com.mysema.query.sql.teradata;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.AbstractSQLClause;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * SetQueryBandClause provides support for Teradata specific set query_band executions.

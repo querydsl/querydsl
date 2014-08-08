@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.4.1.BUILD-SNAPSHOT</version>
+    <version>3.4.3.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -141,8 +141,8 @@
       </plugin>
        -->
       <plugin>
-        <groupId>com.springsource.bundlor</groupId>
-        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
       </plugin>    
          
       <plugin>

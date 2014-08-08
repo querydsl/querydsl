@@ -13,30 +13,23 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.POSTGRES;
-import static com.mysema.query.Target.SQLSERVER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
 
 public class MergeBase extends AbstractBaseTest{
 
@@ -154,6 +147,28 @@ public class MergeBase extends AbstractBaseTest{
 
     @Test
     @IncludeIn(H2)
+    public void MergeBatch_Templates() {
+        SQLMergeClause merge = merge(survey)
+            .keys(survey.id)
+            .set(survey.id, 5)
+            .set(survey.name, Expressions.stringTemplate("'5'"))
+            .addBatch();
+
+        merge
+            .keys(survey.id)
+            .set(survey.id, 6)
+            .set(survey.name, Expressions.stringTemplate("'6'"))
+            .addBatch();
+
+        assertEquals(2, merge.execute());
+
+        assertEquals(1l, query().from(survey).where(survey.name.eq("5")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("6")).count());
+    }
+
+
+    @Test
+    @IncludeIn(H2)
     public void MergeBatch_with_subquery() {
         SQLMergeClause merge = merge(survey)
             .keys(survey.id)
@@ -170,5 +185,18 @@ public class MergeBase extends AbstractBaseTest{
         merge.execute();
 //        assertEquals(1, insert.execute());
     }
+
+    @Test
+    @IncludeIn(H2)
+    public void Merge_With_TempateExpression_In_Batch() {
+        SQLMergeClause merge = merge(survey)
+                .keys(survey.id)
+                .set(survey.id, 5)
+                .set(survey.name, Expressions.stringTemplate("'5'"))
+                .addBatch();
+
+        merge.execute();
+    }
+
 
 }

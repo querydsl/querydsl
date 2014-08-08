@@ -27,7 +27,7 @@ import org.hibernate.StatelessSession;
  * @author tiwe
  *
  */
-public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQuery> {
+public class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQuery> {
 
     public HibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
         super(session, new Configuration(sqlTemplates));

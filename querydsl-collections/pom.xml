@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.4.1.BUILD-SNAPSHOT</version>
+    <version>3.4.3.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
@@ -33,6 +33,7 @@
       <artifactId>querydsl-apt</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- alias dependencies -->
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -59,6 +60,13 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
+
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>${cglib.version}</version>
+      <scope>test</scope>
+    </dependency>
     
     <dependency>
       <groupId>joda-time</groupId>
@@ -72,8 +80,8 @@
   <build>
     <plugins>      
       <plugin>
-        <groupId>com.springsource.bundlor</groupId>
-        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
       </plugin>    
       <plugin>
         <groupId>com.mysema.maven</groupId>

@@ -13,10 +13,11 @@
  */
 package com.mysema.query.jpa.impl;
 
-import java.util.Map;
-
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
+import java.util.Map;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
@@ -41,6 +42,9 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
 
     private final JPQLTemplates templates;
 
+    @Nullable
+    private LockModeType lockMode;
+
     public JPADeleteClause(EntityManager em, EntityPath<?> entity) {
         this(em, entity, JPAProvider.getTemplates(em));
     }
@@ -58,6 +62,9 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
+        if (lockMode != null) {
+            query.setLockMode(lockMode);
+        }
         JPAUtil.setConstants(query, constants, metadata.getParams());
         return query.executeUpdate();
     }
@@ -67,6 +74,11 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
         for (Predicate p : o) {
             metadata.addWhere(p);    
         }        
+        return this;
+    }
+
+    public JPADeleteClause setLockMode(LockModeType lockMode) {
+        this.lockMode = lockMode;
         return this;
     }
     

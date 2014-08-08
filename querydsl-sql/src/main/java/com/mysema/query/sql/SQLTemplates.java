@@ -14,6 +14,8 @@
 package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +33,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.*;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -193,6 +199,8 @@ public class SQLTemplates extends Templates {
 
     private boolean countViaAnalytics = false;
 
+    private boolean wrapSelectParameters = false;
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -343,11 +351,18 @@ public class SQLTemplates extends Templates {
         class2type.put(Boolean.class, "bit");
         class2type.put(Byte.class, "tinyint");
         class2type.put(Long.class, "bigint");
+        class2type.put(BigInteger.class, "bigint");
+        class2type.put(BigDecimal.class, "decimal");
         class2type.put(Short.class, "smallint");
         class2type.put(String.class, "varchar");
         class2type.put(java.sql.Date.class, "date");
         class2type.put(java.sql.Time.class, "time");
         class2type.put(java.sql.Timestamp.class, "timestamp");
+
+        class2type.put(LocalDateTime.class, "timestamp");
+        class2type.put(LocalDate.class, "date");
+        class2type.put(LocalTime.class, "time");
+        class2type.put(DateTime.class, "timestamp");
     }
 
     public String serialize(String literal, int jdbcType) {
@@ -562,7 +577,7 @@ public class SQLTemplates extends Templates {
         if (class2type.containsKey(clazz)) {
             return class2type.get(clazz);
         } else {
-            throw new IllegalArgumentException("Got not type for " + clazz.getName());
+            throw new IllegalArgumentException("Got no type for " + clazz.getName());
         }
     }
 
@@ -652,6 +667,10 @@ public class SQLTemplates extends Templates {
 
     public boolean isCountViaAnalytics() {
         return countViaAnalytics;
+    }
+
+    public boolean isWrapSelectParameters() {
+        return wrapSelectParameters;
     }
 
     protected void newLineToSingleSpace() {
@@ -1006,6 +1025,10 @@ public class SQLTemplates extends Templates {
 
     protected void setCountViaAnalytics(boolean countViaAnalytics) {
         this.countViaAnalytics = countViaAnalytics;
+    }
+
+    protected void setWrapSelectParameters(boolean b) {
+        this.wrapSelectParameters = b;
     }
 
 }

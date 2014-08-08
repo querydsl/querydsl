@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.4.1.BUILD-SNAPSHOT</version>
+    <version>3.4.3.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
@@ -18,6 +18,12 @@
   <properties>
     <mongodb.version>2.10.0</mongodb.version>
     <morphia.version>0.105</morphia.version>
+    <osgi.import.package>
+      com.mongodb;version="0.0.0",
+      org.mongodb.morphia.*;version="0.105",
+      org.bson.*;version="0.0.0",
+      ${osgi.import.package.root}
+    </osgi.import.package>
   </properties>
 
   <dependencies>
@@ -74,8 +80,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.springsource.bundlor</groupId>
-        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
       </plugin>
 
       <plugin>

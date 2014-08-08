@@ -480,6 +480,18 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Date() {
+        query().from(cat).list(cat.birthdate.year());
+        query().from(cat).list(cat.birthdate.yearMonth());
+        query().from(cat).list(cat.birthdate.month());
+        //query().from(cat).list(cat.birthdate.week());
+        query().from(cat).list(cat.birthdate.dayOfMonth());
+        query().from(cat).list(cat.birthdate.hour());
+        query().from(cat).list(cat.birthdate.minute());
+        query().from(cat).list(cat.birthdate.second());
+    }
+
+    @Test
     @ExcludeIn(ORACLE)
     public void Divide() {
         QSimpleTypes entity = new QSimpleTypes("entity1");
@@ -1469,3 +1481,4 @@ public abstract class AbstractJPATest {
                        .list(animal.id));
     }
 }
+

@@ -29,6 +29,10 @@ public enum Target{
     /**
      *
      */
+    FIREBIRD,
+    /**
+     *
+     */
     H2,
     /**
      * HSSQLDB
