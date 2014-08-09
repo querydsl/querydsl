@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -34,7 +32,7 @@ public class SOrder_item extends com.mysema.query.sql.RelationalPathBase<SOrder_
     public final com.mysema.query.sql.ForeignKey<SOrder> fk1b5e8cbeb968f515 = createForeignKey(order_id, "id");
 
     public SOrder_item(String variable) {
-        super(SOrder_item.class, forVariable(variable), "null", "order__item_");
+        super(SOrder_item.class, forVariable(variable), "", "order__item_");
         addMetadata();
     }
 
@@ -44,12 +42,12 @@ public class SOrder_item extends com.mysema.query.sql.RelationalPathBase<SOrder_
     }
 
     public SOrder_item(Path<? extends SOrder_item> path) {
-        super(path.getType(), path.getMetadata(), "null", "order__item_");
+        super(path.getType(), path.getMetadata(), "", "order__item_");
         addMetadata();
     }
 
     public SOrder_item(PathMetadata<?> metadata) {
-        super(SOrder_item.class, metadata, "null", "order__item_");
+        super(SOrder_item.class, metadata, "", "order__item_");
         addMetadata();
     }
 

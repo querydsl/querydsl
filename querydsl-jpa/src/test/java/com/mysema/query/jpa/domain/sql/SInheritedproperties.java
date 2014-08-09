@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +31,7 @@ public class SInheritedproperties extends com.mysema.query.sql.RelationalPathBas
     public final com.mysema.query.sql.PrimaryKey<SInheritedproperties> primary = createPrimaryKey(id);
 
     public SInheritedproperties(String variable) {
-        super(SInheritedproperties.class, forVariable(variable), "null", "inheritedproperties_");
+        super(SInheritedproperties.class, forVariable(variable), "", "inheritedproperties_");
         addMetadata();
     }
 
@@ -42,12 +41,12 @@ public class SInheritedproperties extends com.mysema.query.sql.RelationalPathBas
     }
 
     public SInheritedproperties(Path<? extends SInheritedproperties> path) {
-        super(path.getType(), path.getMetadata(), "null", "inheritedproperties_");
+        super(path.getType(), path.getMetadata(), "", "inheritedproperties_");
         addMetadata();
     }
 
     public SInheritedproperties(PathMetadata<?> metadata) {
-        super(SInheritedproperties.class, metadata, "null", "inheritedproperties_");
+        super(SInheritedproperties.class, metadata, "", "inheritedproperties_");
         addMetadata();
     }
 

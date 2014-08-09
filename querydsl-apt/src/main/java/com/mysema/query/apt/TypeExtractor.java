@@ -14,16 +14,7 @@
 package com.mysema.query.apt;
 
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.ErrorType;
-import javax.lang.model.type.ExecutableType;
-import javax.lang.model.type.NoType;
-import javax.lang.model.type.NullType;
-import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeVariable;
-import javax.lang.model.type.WildcardType;
-import javax.lang.model.util.AbstractTypeVisitor6;
+import javax.lang.model.type.*;
 
 /**
  * TypeExtractor is a visitor implementation which a concrete type given a general {@link TypeElement}
@@ -31,7 +22,7 @@ import javax.lang.model.util.AbstractTypeVisitor6;
  * @author tiwe
  *
  */
-public class TypeExtractor extends AbstractTypeVisitor6<TypeElement, Void> {
+public class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
 
     private final boolean skipEnum;
     
@@ -119,6 +110,5 @@ public class TypeExtractor extends AbstractTypeVisitor6<TypeElement, Void> {
     public TypeElement visitNoType(NoType t, Void p) {
         return null;
     }
-       
-    
+
 }

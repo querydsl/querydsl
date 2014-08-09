@@ -43,6 +43,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QExampleEntity.java");
 
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
 
         // FIXME
         expected.add("QExternalEntityTest_MyEntity.java");
@@ -80,6 +81,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
 
         expected.add("QTemporal2Test_Cheque.java");
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
 
         // FIXME
         expected.add("QGeneric4Test_HidaBez.java");

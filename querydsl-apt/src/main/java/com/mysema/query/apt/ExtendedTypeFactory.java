@@ -13,48 +13,18 @@
  */
 package com.mysema.query.apt;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.ErrorType;
-import javax.lang.model.type.ExecutableType;
-import javax.lang.model.type.NoType;
-import javax.lang.model.type.NullType;
-import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
-import javax.lang.model.type.TypeVisitor;
-import javax.lang.model.type.WildcardType;
-import javax.lang.model.util.AbstractTypeVisitor6;
+import javax.lang.model.type.*;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.TypeSuper;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.mysema.query.annotations.QueryExclude;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 
 /**
  * ExtendedTypeFactory is a factory for APT inspection based Type creation
@@ -82,7 +52,7 @@ public final class ExtendedTypeFactory {
 
     private boolean doubleIndexEntities = true;
 
-    private final TypeVisitor<Type, Boolean> visitor = new AbstractTypeVisitor6<Type, Boolean>() {
+    private final TypeVisitor<Type, Boolean> visitor = new SimpleTypeVisitorAdapter<Type, Boolean>() {
 
         @Override
         public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
@@ -187,16 +157,13 @@ public final class ExtendedTypeFactory {
             return defaultType;
         }
 
-        @Override
-        public Type visitUnknown(TypeMirror t, Boolean p) {
-            return defaultType;
-        }
-
     };
 
     // TODO : return TypeMirror instead ?!?
 
-    private final TypeVisitor<List<String>, Boolean> keyBuilder = new AbstractTypeVisitor6<List<String>, Boolean>() {
+    private final TypeVisitor<List<String>, Boolean> keyBuilder = new SimpleTypeVisitorAdapter<List<String>, Boolean>() {
+
+        private final List<String> defaultValue = Collections.singletonList("Object");
 
         private List<String> visitBase(TypeMirror t) {
             List<String> rv = new ArrayList<String>();
@@ -215,7 +182,7 @@ public final class ExtendedTypeFactory {
 
         @Override
         public List<String> visitNull(NullType t, Boolean p) {
-            return Collections.singletonList("Object");
+            return defaultValue;
         }
 
         @Override
@@ -274,7 +241,7 @@ public final class ExtendedTypeFactory {
 
         @Override
         public List<String> visitNoType(NoType t, Boolean p) {
-            return Collections.singletonList("Object");
+            return defaultValue;
         }
 
     };

@@ -1,14 +1,14 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +32,7 @@ public class SCalendarHolidays extends com.mysema.query.sql.RelationalPathBase<S
     public final com.mysema.query.sql.ForeignKey<SCalendar> fk31ce1edc591ebbc = createForeignKey(calendarId, "id");
 
     public SCalendarHolidays(String variable) {
-        super(SCalendarHolidays.class, forVariable(variable), "null", "Calendar_holidays");
+        super(SCalendarHolidays.class, forVariable(variable), "", "Calendar_holidays");
         addMetadata();
     }
 
@@ -42,12 +42,12 @@ public class SCalendarHolidays extends com.mysema.query.sql.RelationalPathBase<S
     }
 
     public SCalendarHolidays(Path<? extends SCalendarHolidays> path) {
-        super(path.getType(), path.getMetadata(), "null", "Calendar_holidays");
+        super(path.getType(), path.getMetadata(), "", "Calendar_holidays");
         addMetadata();
     }
 
     public SCalendarHolidays(PathMetadata<?> metadata) {
-        super(SCalendarHolidays.class, metadata, "null", "Calendar_holidays");
+        super(SCalendarHolidays.class, metadata, "", "Calendar_holidays");
         addMetadata();
     }
 

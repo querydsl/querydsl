@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -36,7 +35,7 @@ public class SDepartment extends com.mysema.query.sql.RelationalPathBase<SDepart
     public final com.mysema.query.sql.ForeignKey<SDepartment_employee> _fkc33a14ff7d2db0e1 = createInvForeignKey(id, "department__id");
 
     public SDepartment(String variable) {
-        super(SDepartment.class, forVariable(variable), "null", "department_");
+        super(SDepartment.class, forVariable(variable), "", "department_");
         addMetadata();
     }
 
@@ -46,12 +45,12 @@ public class SDepartment extends com.mysema.query.sql.RelationalPathBase<SDepart
     }
 
     public SDepartment(Path<? extends SDepartment> path) {
-        super(path.getType(), path.getMetadata(), "null", "department_");
+        super(path.getType(), path.getMetadata(), "", "department_");
         addMetadata();
     }
 
     public SDepartment(PathMetadata<?> metadata) {
-        super(SDepartment.class, metadata, "null", "department_");
+        super(SDepartment.class, metadata, "", "department_");
         addMetadata();
     }
 

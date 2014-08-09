@@ -212,6 +212,7 @@
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
                   <excludes>
                     <exclude>com/mysema/query/SearchResults</exclude>
+                    <exclude>com/mysema/query/apt/TypeExtractor</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>

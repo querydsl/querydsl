@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +27,7 @@ public class SNamed extends com.mysema.query.sql.RelationalPathBase<SNamed> {
     public final com.mysema.query.sql.PrimaryKey<SNamed> primary = createPrimaryKey(id);
 
     public SNamed(String variable) {
-        super(SNamed.class, forVariable(variable), "null", "named_");
+        super(SNamed.class, forVariable(variable), "", "named_");
         addMetadata();
     }
 
@@ -38,12 +37,12 @@ public class SNamed extends com.mysema.query.sql.RelationalPathBase<SNamed> {
     }
 
     public SNamed(Path<? extends SNamed> path) {
-        super(path.getType(), path.getMetadata(), "null", "named_");
+        super(path.getType(), path.getMetadata(), "", "named_");
         addMetadata();
     }
 
     public SNamed(PathMetadata<?> metadata) {
-        super(SNamed.class, metadata, "null", "named_");
+        super(SNamed.class, metadata, "", "named_");
         addMetadata();
     }
 

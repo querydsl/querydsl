@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +26,7 @@ public class SPlayerScores extends com.mysema.query.sql.RelationalPathBase<SPlay
     public final com.mysema.query.sql.ForeignKey<SPlayer> fkd5dc571fd8736d5c = createForeignKey(playerId, "id");
 
     public SPlayerScores(String variable) {
-        super(SPlayerScores.class, forVariable(variable), "null", "Player_scores");
+        super(SPlayerScores.class, forVariable(variable), "", "Player_scores");
         addMetadata();
     }
 
@@ -38,12 +36,12 @@ public class SPlayerScores extends com.mysema.query.sql.RelationalPathBase<SPlay
     }
 
     public SPlayerScores(Path<? extends SPlayerScores> path) {
-        super(path.getType(), path.getMetadata(), "null", "Player_scores");
+        super(path.getType(), path.getMetadata(), "", "Player_scores");
         addMetadata();
     }
 
     public SPlayerScores(PathMetadata<?> metadata) {
-        super(SPlayerScores.class, metadata, "null", "Player_scores");
+        super(SPlayerScores.class, metadata, "", "Player_scores");
         addMetadata();
     }
 

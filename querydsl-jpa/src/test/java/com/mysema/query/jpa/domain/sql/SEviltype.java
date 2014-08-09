@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -104,7 +102,7 @@ public class SEviltype extends com.mysema.query.sql.RelationalPathBase<SEviltype
     public final com.mysema.query.sql.ForeignKey<SEviltype> _fkd21f83512d7708c5 = createInvForeignKey(id, "getMetadata_id");
 
     public SEviltype(String variable) {
-        super(SEviltype.class, forVariable(variable), "null", "eviltype_");
+        super(SEviltype.class, forVariable(variable), "", "eviltype_");
         addMetadata();
     }
 
@@ -114,12 +112,12 @@ public class SEviltype extends com.mysema.query.sql.RelationalPathBase<SEviltype
     }
 
     public SEviltype(Path<? extends SEviltype> path) {
-        super(path.getType(), path.getMetadata(), "null", "eviltype_");
+        super(path.getType(), path.getMetadata(), "", "eviltype_");
         addMetadata();
     }
 
     public SEviltype(PathMetadata<?> metadata) {
-        super(SEviltype.class, metadata, "null", "eviltype_");
+        super(SEviltype.class, metadata, "", "eviltype_");
         addMetadata();
     }
 

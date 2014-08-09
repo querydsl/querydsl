@@ -1,13 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
+import javax.annotation.Generated;
+
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
-
-import javax.annotation.Generated;
-
 import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
@@ -44,7 +43,7 @@ public class SEmployee extends com.mysema.query.sql.RelationalPathBase<SEmployee
     public final com.mysema.query.sql.ForeignKey<SDepartment_employee> _fkc33a14ffd846a985 = createInvForeignKey(id, "employees_id");
 
     public SEmployee(String variable) {
-        super(SEmployee.class, forVariable(variable), "null", "employee_");
+        super(SEmployee.class, forVariable(variable), "", "employee_");
         addMetadata();
     }
 
@@ -54,12 +53,12 @@ public class SEmployee extends com.mysema.query.sql.RelationalPathBase<SEmployee
     }
 
     public SEmployee(Path<? extends SEmployee> path) {
-        super(path.getType(), path.getMetadata(), "null", "employee_");
+        super(path.getType(), path.getMetadata(), "", "employee_");
         addMetadata();
     }
 
     public SEmployee(PathMetadata<?> metadata) {
-        super(SEmployee.class, metadata, "null", "employee_");
+        super(SEmployee.class, metadata, "", "employee_");
         addMetadata();
     }
 

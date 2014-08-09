@@ -16,11 +16,12 @@
   <packaging>jar</packaging>
 
   <properties>
-    <bridge-method.version>1.11</bridge-method.version>
+    <bridge-method.version>1.13</bridge-method.version>
     <osgi.import.package>
       org.joda.time.*;version="[1.6,3)",
       ${osgi.import.package.root}
     </osgi.import.package>
+
   </properties>
 
   <dependencies>

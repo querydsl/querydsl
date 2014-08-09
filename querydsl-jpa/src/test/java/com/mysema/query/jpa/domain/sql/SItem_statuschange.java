@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +28,7 @@ public class SItem_statuschange extends com.mysema.query.sql.RelationalPathBase<
     public final com.mysema.query.sql.ForeignKey<SItem> fkcb99fb2aedc50192 = createForeignKey(item_id, "id");
 
     public SItem_statuschange(String variable) {
-        super(SItem_statuschange.class, forVariable(variable), "null", "item__statuschange_");
+        super(SItem_statuschange.class, forVariable(variable), "", "item__statuschange_");
         addMetadata();
     }
 
@@ -40,12 +38,12 @@ public class SItem_statuschange extends com.mysema.query.sql.RelationalPathBase<
     }
 
     public SItem_statuschange(Path<? extends SItem_statuschange> path) {
-        super(path.getType(), path.getMetadata(), "null", "item__statuschange_");
+        super(path.getType(), path.getMetadata(), "", "item__statuschange_");
         addMetadata();
     }
 
     public SItem_statuschange(PathMetadata<?> metadata) {
-        super(SItem_statuschange.class, metadata, "null", "item__statuschange_");
+        super(SItem_statuschange.class, metadata, "", "item__statuschange_");
         addMetadata();
     }
 

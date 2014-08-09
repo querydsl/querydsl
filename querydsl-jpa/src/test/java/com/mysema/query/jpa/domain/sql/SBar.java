@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +27,7 @@ public class SBar extends com.mysema.query.sql.RelationalPathBase<SBar> {
     public final com.mysema.query.sql.PrimaryKey<SBar> primary = createPrimaryKey(id);
 
     public SBar(String variable) {
-        super(SBar.class, forVariable(variable), "null", "bar_");
+        super(SBar.class, forVariable(variable), "", "bar_");
         addMetadata();
     }
 
@@ -38,12 +37,12 @@ public class SBar extends com.mysema.query.sql.RelationalPathBase<SBar> {
     }
 
     public SBar(Path<? extends SBar> path) {
-        super(path.getType(), path.getMetadata(), "null", "bar_");
+        super(path.getType(), path.getMetadata(), "", "bar_");
         addMetadata();
     }
 
     public SBar(PathMetadata<?> metadata) {
-        super(SBar.class, metadata, "null", "bar_");
+        super(SBar.class, metadata, "", "bar_");
         addMetadata();
     }
 

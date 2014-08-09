@@ -1,16 +1,14 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-
-import java.util.*;
+import java.util.Arrays;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -40,7 +38,7 @@ public class SBookversion extends com.mysema.query.sql.RelationalPathBase<SBookv
     public final com.mysema.query.sql.ForeignKey<SBookBookmarks> _fk94026827e33d3be4 = createInvForeignKey(Arrays.asList(bookIDIdentity, libraryIdentity), Arrays.asList("BookVersion_bookID_identity", "BookVersion_library_identity"));
 
     public SBookversion(String variable) {
-        super(SBookversion.class, forVariable(variable), "null", "bookversion_");
+        super(SBookversion.class, forVariable(variable), "", "bookversion_");
         addMetadata();
     }
 
@@ -50,12 +48,12 @@ public class SBookversion extends com.mysema.query.sql.RelationalPathBase<SBookv
     }
 
     public SBookversion(Path<? extends SBookversion> path) {
-        super(path.getType(), path.getMetadata(), "null", "bookversion_");
+        super(path.getType(), path.getMetadata(), "", "bookversion_");
         addMetadata();
     }
 
     public SBookversion(PathMetadata<?> metadata) {
-        super(SBookversion.class, metadata, "null", "bookversion_");
+        super(SBookversion.class, metadata, "", "bookversion_");
         addMetadata();
     }
 

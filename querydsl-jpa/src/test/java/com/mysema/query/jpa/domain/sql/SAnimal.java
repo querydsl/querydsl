@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.*;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -66,7 +64,7 @@ public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
     public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6f3881aaa7 = createInvForeignKey(id, "kitten_id");
 
     public SAnimal(String variable) {
-        super(SAnimal.class, forVariable(variable), "null", "animal_");
+        super(SAnimal.class, forVariable(variable), "", "animal_");
         addMetadata();
     }
 
@@ -76,12 +74,12 @@ public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
     }
 
     public SAnimal(Path<? extends SAnimal> path) {
-        super(path.getType(), path.getMetadata(), "null", "animal_");
+        super(path.getType(), path.getMetadata(), "", "animal_");
         addMetadata();
     }
 
     public SAnimal(PathMetadata<?> metadata) {
-        super(SAnimal.class, metadata, "null", "animal_");
+        super(SAnimal.class, metadata, "", "animal_");
         addMetadata();
     }
 

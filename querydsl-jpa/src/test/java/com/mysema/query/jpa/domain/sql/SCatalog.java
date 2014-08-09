@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +29,7 @@ public class SCatalog extends com.mysema.query.sql.RelationalPathBase<SCatalog> 
     public final com.mysema.query.sql.ForeignKey<SCatalog_price> _fkaa04532fbb9021ab = createInvForeignKey(id, "catalog__id");
 
     public SCatalog(String variable) {
-        super(SCatalog.class, forVariable(variable), "null", "catalog_");
+        super(SCatalog.class, forVariable(variable), "", "catalog_");
         addMetadata();
     }
 
@@ -40,12 +39,12 @@ public class SCatalog extends com.mysema.query.sql.RelationalPathBase<SCatalog> 
     }
 
     public SCatalog(Path<? extends SCatalog> path) {
-        super(path.getType(), path.getMetadata(), "null", "catalog_");
+        super(path.getType(), path.getMetadata(), "", "catalog_");
         addMetadata();
     }
 
     public SCatalog(PathMetadata<?> metadata) {
-        super(SCatalog.class, metadata, "null", "catalog_");
+        super(SCatalog.class, metadata, "", "catalog_");
         addMetadata();
     }
 

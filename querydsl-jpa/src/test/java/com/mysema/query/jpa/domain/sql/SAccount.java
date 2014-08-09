@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +31,7 @@ public class SAccount extends com.mysema.query.sql.RelationalPathBase<SAccount> 
     public final com.mysema.query.sql.ForeignKey<SPerson> fk809dbbd28cfac74 = createForeignKey(ownerI, "i");
 
     public SAccount(String variable) {
-        super(SAccount.class, forVariable(variable), "null", "account_");
+        super(SAccount.class, forVariable(variable), "", "account_");
         addMetadata();
     }
 
@@ -42,12 +41,12 @@ public class SAccount extends com.mysema.query.sql.RelationalPathBase<SAccount> 
     }
 
     public SAccount(Path<? extends SAccount> path) {
-        super(path.getType(), path.getMetadata(), "null", "account_");
+        super(path.getType(), path.getMetadata(), "", "account_");
         addMetadata();
     }
 
     public SAccount(PathMetadata<?> metadata) {
-        super(SAccount.class, metadata, "null", "account_");
+        super(SAccount.class, metadata, "", "account_");
         addMetadata();
     }
 

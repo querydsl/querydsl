@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.*;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -62,7 +60,7 @@ public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpl
     public final com.mysema.query.sql.PrimaryKey<SSimpletypes> primary = createPrimaryKey(id);
 
     public SSimpletypes(String variable) {
-        super(SSimpletypes.class, forVariable(variable), "null", "simpletypes_");
+        super(SSimpletypes.class, forVariable(variable), "", "simpletypes_");
         addMetadata();
     }
 
@@ -72,12 +70,12 @@ public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpl
     }
 
     public SSimpletypes(Path<? extends SSimpletypes> path) {
-        super(path.getType(), path.getMetadata(), "null", "simpletypes_");
+        super(path.getType(), path.getMetadata(), "", "simpletypes_");
         addMetadata();
     }
 
     public SSimpletypes(PathMetadata<?> metadata) {
-        super(SSimpletypes.class, metadata, "null", "simpletypes_");
+        super(SSimpletypes.class, metadata, "", "simpletypes_");
         addMetadata();
     }
 

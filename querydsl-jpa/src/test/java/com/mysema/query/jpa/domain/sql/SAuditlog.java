@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +28,7 @@ public class SAuditlog extends com.mysema.query.sql.RelationalPathBase<SAuditlog
     public final com.mysema.query.sql.ForeignKey<SItem> fkb88fbf6ae26109c = createForeignKey(itemId, "id");
 
     public SAuditlog(String variable) {
-        super(SAuditlog.class, forVariable(variable), "null", "auditlog_");
+        super(SAuditlog.class, forVariable(variable), "", "auditlog_");
         addMetadata();
     }
 
@@ -40,12 +38,12 @@ public class SAuditlog extends com.mysema.query.sql.RelationalPathBase<SAuditlog
     }
 
     public SAuditlog(Path<? extends SAuditlog> path) {
-        super(path.getType(), path.getMetadata(), "null", "auditlog_");
+        super(path.getType(), path.getMetadata(), "", "auditlog_");
         addMetadata();
     }
 
     public SAuditlog(PathMetadata<?> metadata) {
-        super(SAuditlog.class, metadata, "null", "auditlog_");
+        super(SAuditlog.class, metadata, "", "auditlog_");
         addMetadata();
     }
 
