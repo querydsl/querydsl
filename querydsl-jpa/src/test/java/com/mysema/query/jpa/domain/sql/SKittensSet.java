@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +30,7 @@ public class SKittensSet extends com.mysema.query.sql.RelationalPathBase<SKitten
     public final com.mysema.query.sql.ForeignKey<SAnimal> fk4fccad6f3881aaa7 = createForeignKey(kittenId, "id");
 
     public SKittensSet(String variable) {
-        super(SKittensSet.class, forVariable(variable), "null", "kittens_set");
+        super(SKittensSet.class, forVariable(variable), "", "kittens_set");
         addMetadata();
     }
 
@@ -42,12 +40,12 @@ public class SKittensSet extends com.mysema.query.sql.RelationalPathBase<SKitten
     }
 
     public SKittensSet(Path<? extends SKittensSet> path) {
-        super(path.getType(), path.getMetadata(), "null", "kittens_set");
+        super(path.getType(), path.getMetadata(), "", "kittens_set");
         addMetadata();
     }
 
     public SKittensSet(PathMetadata<?> metadata) {
-        super(SKittensSet.class, metadata, "null", "kittens_set");
+        super(SKittensSet.class, metadata, "", "kittens_set");
         addMetadata();
     }
 

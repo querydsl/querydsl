@@ -1,18 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +26,7 @@ public class SParent2 extends com.mysema.query.sql.RelationalPathBase<SParent2> 
     public final com.mysema.query.sql.ForeignKey<SChild2> _fk783f9ab6c2dbacbc = createInvForeignKey(id, "parent_id");
 
     public SParent2(String variable) {
-        super(SParent2.class, forVariable(variable), "null", "Parent2");
+        super(SParent2.class, forVariable(variable), "", "Parent2");
         addMetadata();
     }
 
@@ -42,12 +36,12 @@ public class SParent2 extends com.mysema.query.sql.RelationalPathBase<SParent2> 
     }
 
     public SParent2(Path<? extends SParent2> path) {
-        super(path.getType(), path.getMetadata(), "null", "Parent2");
+        super(path.getType(), path.getMetadata(), "", "Parent2");
         addMetadata();
     }
 
     public SParent2(PathMetadata<?> metadata) {
-        super(SParent2.class, metadata, "null", "Parent2");
+        super(SParent2.class, metadata, "", "Parent2");
         addMetadata();
     }
 

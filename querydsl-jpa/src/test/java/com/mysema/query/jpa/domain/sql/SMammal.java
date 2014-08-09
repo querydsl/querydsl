@@ -1,18 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -36,7 +31,7 @@ public class SMammal extends com.mysema.query.sql.RelationalPathBase<SMammal> {
     public final com.mysema.query.sql.ForeignKey<SWorldMammal> _fk4070aeece01c8ee7 = createInvForeignKey(id, "mammals_id");
 
     public SMammal(String variable) {
-        super(SMammal.class, forVariable(variable), "null", "Mammal");
+        super(SMammal.class, forVariable(variable), "", "Mammal");
         addMetadata();
     }
 
@@ -46,12 +41,12 @@ public class SMammal extends com.mysema.query.sql.RelationalPathBase<SMammal> {
     }
 
     public SMammal(Path<? extends SMammal> path) {
-        super(path.getType(), path.getMetadata(), "null", "Mammal");
+        super(path.getType(), path.getMetadata(), "", "Mammal");
         addMetadata();
     }
 
     public SMammal(PathMetadata<?> metadata) {
-        super(SMammal.class, metadata, "null", "Mammal");
+        super(SMammal.class, metadata, "", "Mammal");
         addMetadata();
     }
 

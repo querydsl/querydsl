@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +26,7 @@ public class SParameter extends com.mysema.query.sql.RelationalPathBase<SParamet
     public final com.mysema.query.sql.ForeignKey<SFormula> _fk1c4adbb924189298 = createInvForeignKey(id, "parameter_id");
 
     public SParameter(String variable) {
-        super(SParameter.class, forVariable(variable), "null", "parameter_");
+        super(SParameter.class, forVariable(variable), "", "parameter_");
         addMetadata();
     }
 
@@ -38,12 +36,12 @@ public class SParameter extends com.mysema.query.sql.RelationalPathBase<SParamet
     }
 
     public SParameter(Path<? extends SParameter> path) {
-        super(path.getType(), path.getMetadata(), "null", "parameter_");
+        super(path.getType(), path.getMetadata(), "", "parameter_");
         addMetadata();
     }
 
     public SParameter(PathMetadata<?> metadata) {
-        super(SParameter.class, metadata, "null", "parameter_");
+        super(SParameter.class, metadata, "", "parameter_");
         addMetadata();
     }
 

@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +30,7 @@ public class SOrderDeliveredItemIndices extends com.mysema.query.sql.RelationalP
     public final com.mysema.query.sql.ForeignKey<SOrder> fk30cbd6611a4d2378 = createForeignKey(orderId, "id");
 
     public SOrderDeliveredItemIndices(String variable) {
-        super(SOrderDeliveredItemIndices.class, forVariable(variable), "null", "Order_deliveredItemIndices");
+        super(SOrderDeliveredItemIndices.class, forVariable(variable), "", "Order_deliveredItemIndices");
         addMetadata();
     }
 
@@ -42,12 +40,12 @@ public class SOrderDeliveredItemIndices extends com.mysema.query.sql.RelationalP
     }
 
     public SOrderDeliveredItemIndices(Path<? extends SOrderDeliveredItemIndices> path) {
-        super(path.getType(), path.getMetadata(), "null", "Order_deliveredItemIndices");
+        super(path.getType(), path.getMetadata(), "", "Order_deliveredItemIndices");
         addMetadata();
     }
 
     public SOrderDeliveredItemIndices(PathMetadata<?> metadata) {
-        super(SOrderDeliveredItemIndices.class, metadata, "null", "Order_deliveredItemIndices");
+        super(SOrderDeliveredItemIndices.class, metadata, "", "Order_deliveredItemIndices");
         addMetadata();
     }
 

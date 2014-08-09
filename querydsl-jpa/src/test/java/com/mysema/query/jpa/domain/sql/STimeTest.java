@@ -1,18 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.TimePath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +22,7 @@ public class STimeTest extends com.mysema.query.sql.RelationalPathBase<STimeTest
     public final TimePath<java.sql.Time> timeTest = createTime("timeTest", java.sql.Time.class);
 
     public STimeTest(String variable) {
-        super(STimeTest.class, forVariable(variable), "null", "TIME_TEST");
+        super(STimeTest.class, forVariable(variable), "", "TIME_TEST");
         addMetadata();
     }
 
@@ -38,12 +32,12 @@ public class STimeTest extends com.mysema.query.sql.RelationalPathBase<STimeTest
     }
 
     public STimeTest(Path<? extends STimeTest> path) {
-        super(path.getType(), path.getMetadata(), "null", "TIME_TEST");
+        super(path.getType(), path.getMetadata(), "", "TIME_TEST");
         addMetadata();
     }
 
     public STimeTest(PathMetadata<?> metadata) {
-        super(STimeTest.class, metadata, "null", "TIME_TEST");
+        super(STimeTest.class, metadata, "", "TIME_TEST");
         addMetadata();
     }
 

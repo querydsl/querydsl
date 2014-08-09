@@ -1,18 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -34,7 +29,7 @@ public class SSurvey extends com.mysema.query.sql.RelationalPathBase<SSurvey> {
     public final com.mysema.query.sql.PrimaryKey<SSurvey> primary = createPrimaryKey(id);
 
     public SSurvey(String variable) {
-        super(SSurvey.class, forVariable(variable), "null", "SURVEY");
+        super(SSurvey.class, forVariable(variable), "", "SURVEY");
         addMetadata();
     }
 
@@ -44,12 +39,12 @@ public class SSurvey extends com.mysema.query.sql.RelationalPathBase<SSurvey> {
     }
 
     public SSurvey(Path<? extends SSurvey> path) {
-        super(path.getType(), path.getMetadata(), "null", "SURVEY");
+        super(path.getType(), path.getMetadata(), "", "SURVEY");
         addMetadata();
     }
 
     public SSurvey(PathMetadata<?> metadata) {
-        super(SSurvey.class, metadata, "null", "SURVEY");
+        super(SSurvey.class, metadata, "", "SURVEY");
         addMetadata();
     }
 

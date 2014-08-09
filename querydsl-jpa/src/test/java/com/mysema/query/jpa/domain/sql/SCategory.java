@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
+import javax.annotation.Generated;
+
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
-
-import javax.annotation.Generated;
-
 import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
@@ -51,7 +50,7 @@ public class SCategory extends com.mysema.query.sql.RelationalPathBase<SCategory
     public final com.mysema.query.sql.ForeignKey<SCategory_category> _fkc4e60b833c83109d = createInvForeignKey(id, "childId");
 
     public SCategory(String variable) {
-        super(SCategory.class, forVariable(variable), "null", "category_");
+        super(SCategory.class, forVariable(variable), "", "category_");
         addMetadata();
     }
 
@@ -61,12 +60,12 @@ public class SCategory extends com.mysema.query.sql.RelationalPathBase<SCategory
     }
 
     public SCategory(Path<? extends SCategory> path) {
-        super(path.getType(), path.getMetadata(), "null", "category_");
+        super(path.getType(), path.getMetadata(), "", "category_");
         addMetadata();
     }
 
     public SCategory(PathMetadata<?> metadata) {
-        super(SCategory.class, metadata, "null", "category_");
+        super(SCategory.class, metadata, "", "category_");
         addMetadata();
     }
 

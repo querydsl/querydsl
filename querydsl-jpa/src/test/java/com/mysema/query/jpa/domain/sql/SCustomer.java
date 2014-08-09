@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -38,7 +36,7 @@ public class SCustomer extends com.mysema.query.sql.RelationalPathBase<SCustomer
     public final com.mysema.query.sql.ForeignKey<SOrder> _fkc3df62d1b29c27bc = createInvForeignKey(id, "customer_id");
 
     public SCustomer(String variable) {
-        super(SCustomer.class, forVariable(variable), "null", "customer_");
+        super(SCustomer.class, forVariable(variable), "", "customer_");
         addMetadata();
     }
 
@@ -48,12 +46,12 @@ public class SCustomer extends com.mysema.query.sql.RelationalPathBase<SCustomer
     }
 
     public SCustomer(Path<? extends SCustomer> path) {
-        super(path.getType(), path.getMetadata(), "null", "customer_");
+        super(path.getType(), path.getMetadata(), "", "customer_");
         addMetadata();
     }
 
     public SCustomer(PathMetadata<?> metadata) {
-        super(SCustomer.class, metadata, "null", "customer_");
+        super(SCustomer.class, metadata, "", "customer_");
         addMetadata();
     }
 

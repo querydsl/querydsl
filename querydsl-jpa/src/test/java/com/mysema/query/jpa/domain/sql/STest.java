@@ -1,18 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +22,7 @@ public class STest extends com.mysema.query.sql.RelationalPathBase<STest> {
     public final StringPath name = createString("name");
 
     public STest(String variable) {
-        super(STest.class, forVariable(variable), "null", "TEST");
+        super(STest.class, forVariable(variable), "", "TEST");
         addMetadata();
     }
 
@@ -38,12 +32,12 @@ public class STest extends com.mysema.query.sql.RelationalPathBase<STest> {
     }
 
     public STest(Path<? extends STest> path) {
-        super(path.getType(), path.getMetadata(), "null", "TEST");
+        super(path.getType(), path.getMetadata(), "", "TEST");
         addMetadata();
     }
 
     public STest(PathMetadata<?> metadata) {
-        super(STest.class, metadata, "null", "TEST");
+        super(STest.class, metadata, "", "TEST");
         addMetadata();
     }
 

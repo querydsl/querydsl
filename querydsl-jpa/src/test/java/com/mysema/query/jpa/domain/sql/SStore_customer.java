@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +28,7 @@ public class SStore_customer extends com.mysema.query.sql.RelationalPathBase<SSt
     public final com.mysema.query.sql.ForeignKey<SCustomer> fk82ba2ce051f3c3e5 = createForeignKey(customersId, "id");
 
     public SStore_customer(String variable) {
-        super(SStore_customer.class, forVariable(variable), "null", "store__customer_");
+        super(SStore_customer.class, forVariable(variable), "", "store__customer_");
         addMetadata();
     }
 
@@ -40,12 +38,12 @@ public class SStore_customer extends com.mysema.query.sql.RelationalPathBase<SSt
     }
 
     public SStore_customer(Path<? extends SStore_customer> path) {
-        super(path.getType(), path.getMetadata(), "null", "store__customer_");
+        super(path.getType(), path.getMetadata(), "", "store__customer_");
         addMetadata();
     }
 
     public SStore_customer(PathMetadata<?> metadata) {
-        super(SStore_customer.class, metadata, "null", "store__customer_");
+        super(SStore_customer.class, metadata, "", "store__customer_");
         addMetadata();
     }
 

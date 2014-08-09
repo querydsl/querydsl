@@ -1,14 +1,14 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +30,7 @@ public class SDocument extends com.mysema.query.sql.RelationalPathBase<SDocument
     public final com.mysema.query.sql.PrimaryKey<SDocument> primary = createPrimaryKey(id);
 
     public SDocument(String variable) {
-        super(SDocument.class, forVariable(variable), "null", "document_");
+        super(SDocument.class, forVariable(variable), "", "document_");
         addMetadata();
     }
 
@@ -40,12 +40,12 @@ public class SDocument extends com.mysema.query.sql.RelationalPathBase<SDocument
     }
 
     public SDocument(Path<? extends SDocument> path) {
-        super(path.getType(), path.getMetadata(), "null", "document_");
+        super(path.getType(), path.getMetadata(), "", "document_");
         addMetadata();
     }
 
     public SDocument(PathMetadata<?> metadata) {
-        super(SDocument.class, metadata, "null", "document_");
+        super(SDocument.class, metadata, "", "document_");
         addMetadata();
     }
 

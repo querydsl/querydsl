@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +31,7 @@ public class SPersonid extends com.mysema.query.sql.RelationalPathBase<SPersonid
     public final com.mysema.query.sql.ForeignKey<SPerson> _fkd78fcfaad7999e61 = createInvForeignKey(id, "pid_id");
 
     public SPersonid(String variable) {
-        super(SPersonid.class, forVariable(variable), "null", "personid_");
+        super(SPersonid.class, forVariable(variable), "", "personid_");
         addMetadata();
     }
 
@@ -42,12 +41,12 @@ public class SPersonid extends com.mysema.query.sql.RelationalPathBase<SPersonid
     }
 
     public SPersonid(Path<? extends SPersonid> path) {
-        super(path.getType(), path.getMetadata(), "null", "personid_");
+        super(path.getType(), path.getMetadata(), "", "personid_");
         addMetadata();
     }
 
     public SPersonid(PathMetadata<?> metadata) {
-        super(SPersonid.class, metadata, "null", "personid_");
+        super(SPersonid.class, metadata, "", "personid_");
         addMetadata();
     }
 
