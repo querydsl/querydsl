@@ -285,6 +285,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
+    @Deprecated
     <P> Q fullJoin(EntityPath<P> target);
 
     /**
@@ -295,6 +296,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
+    @Deprecated
     <P> Q fullJoin(EntityPath<P> target, Path<P> alias);
 
     /**
@@ -305,6 +307,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
+    @Deprecated
     <P> Q fullJoin(CollectionExpression<?,P> target);
 
     /**
@@ -315,6 +318,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
+    @Deprecated
     <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
@@ -325,6 +329,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param target
      * @return
      */
+    @Deprecated
     <P> Q fullJoin(MapExpression<?, P> target);
 
     /**
@@ -335,6 +340,7 @@ public interface JPACommonQuery<Q extends JPACommonQuery<Q>> extends Query<Q> {
      * @param alias
      * @return
      */
+    @Deprecated
     <P> Q fullJoin(MapExpression<?, P> target, Path<P> alias);
     
     /**
