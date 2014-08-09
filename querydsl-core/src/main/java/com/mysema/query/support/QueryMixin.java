@@ -13,6 +13,8 @@
  */
 package com.mysema.query.support;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.JoinType;
@@ -47,6 +49,8 @@ public class QueryMixin<T> {
     private final QueryMetadata metadata;
 
     private final boolean expandAnyPaths;
+
+    private ReplaceVisitor replaceVisitor;
 
     private T self;
 
@@ -121,18 +125,35 @@ public class QueryMixin<T> {
         return p;
     }
 
+    private Path<?> normalizePath(Path<?> expr) {
+        Context context = new Context();
+        Path<?> replaced = (Path<?>)expr.accept(CollectionAnyVisitor.DEFAULT, context);
+        if (!replaced.equals(expr)) {
+            for (int i = 0; i < context.paths.size(); i++) {
+                Path path = context.paths.get(i).getMetadata().getParent();
+                Path replacement = context.replacements.get(i);
+                this.innerJoin(path, replacement);
+            }
+            return replaced;
+        } else {
+            return expr;
+        }
+    }
+
     @SuppressWarnings("rawtypes")
     public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
-        if (expandAnyPaths && expr instanceof Path) {
-            Context context = new Context();
-            Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
-            if (!replaced.equals(expr)) {
-                for (int i = 0; i < context.paths.size(); i++) {
-                    Path path = context.paths.get(i).getMetadata().getParent();
-                    Path replacement = context.replacements.get(i);
-                    this.innerJoin(path, replacement);
+        if (expandAnyPaths) {
+            if (expr instanceof Path) {
+                expr = (Expression)normalizePath((Path)expr);
+            } else if (expr != null) {
+                if (replaceVisitor == null) {
+                    replaceVisitor = new ReplaceVisitor() {
+                        public Expression<?> visit(Path<?> expr, @Nullable Void context) {
+                            return normalizePath(expr);
+                        }
+                    };
                 }
-                return replaced;
+                expr = (Expression)expr.accept(replaceVisitor, null);
             }
         }
         if (expr instanceof ProjectionRole<?>) {

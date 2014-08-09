@@ -241,6 +241,11 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Any_In_Projection3() {
+        assertFalse(query().from(cat).list(cat.kittens.any().name, cat.kittens.any().bodyWeight).isEmpty());
+    }
+
+    @Test
     public void Any_In1() {
         //select cat from Cat cat where exists (
         //  select cat_kittens from Cat cat_kittens where cat_kittens member of cat.kittens and cat_kittens in ?1)
