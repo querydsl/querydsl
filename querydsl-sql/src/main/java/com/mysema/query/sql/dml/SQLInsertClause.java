@@ -32,8 +32,6 @@ import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.mysema.query.sql.SQLListenerContextBuilder.newContext;
-
 /**
  * SQLInsertClause defines an INSERT INTO clause
  *
@@ -224,7 +222,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         }
 
         serializer.serializeInsert(metadata, entity, columns, values, subQuery);
-        context = newContext(context).with(serializer.toString()).build();
+        context.addSQL(serializer.toString());
         listeners.rendered(context);
         return prepareStatementAndSetParameters(serializer, withKeys);
     }
@@ -246,7 +244,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
         stmt.addBatch();
         stmts.put(serializer.toString(), stmt);
-        context = newContext(context).with(serializer.toString()).build();
+        context.addSQL(serializer.toString());
         listeners.rendered(context);
 
         // add other batches
@@ -257,7 +255,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, batch.getColumns(),
                     batch.getValues(), batch.getSubQuery());
-            context = newContext(context).with(serializer.toString()).build();
+            context.addSQL(serializer.toString());
             listeners.rendered(context);
 
             stmt = stmts.get(serializer.toString());
@@ -300,7 +298,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
                 metadata.getParams());
 
-        context = newContext(context).with(stmt).build();
+        context.addPreparedStatement(stmt);
         listeners.prepared(context);
         return stmt;
     }
@@ -347,7 +345,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 }
             };
         } catch (SQLException e) {
-            context = onException(context,e);
+            onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             endContext(context);
@@ -378,7 +376,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 return rc;
             }
         } catch (SQLException e) {
-            context = onException(context,e);
+            onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {

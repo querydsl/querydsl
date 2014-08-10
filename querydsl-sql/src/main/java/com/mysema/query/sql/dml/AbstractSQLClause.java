@@ -44,7 +44,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected boolean useLiterals;
 
-    protected SQLListenerContext context;
+    protected SQLListenerContextImpl context;
 
     /**
      * @param configuration
@@ -69,9 +69,9 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
      * @param entity the entity for that context
      * @return  the newly started context
      */
-    protected SQLListenerContext startContext(Connection connection, QueryMetadata metadata, RelationalPath<?> entity)
+    protected SQLListenerContextImpl startContext(Connection connection, QueryMetadata metadata, RelationalPath<?> entity)
     {
-        SQLListenerContext context = SQLListenerContextBuilder.newContext(metadata).with(connection).with(entity).build();
+        SQLListenerContextImpl context = new SQLListenerContextImpl(metadata,connection,entity);
         listeners.start(context);
         return context;
     }
@@ -81,20 +81,18 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
      *
      * @param context the current context in play
      * @param e the exception
-     * @return the new context
      */
-    protected SQLListenerContext onException(SQLListenerContext context, Exception e)
+    protected void onException(SQLListenerContextImpl context, Exception e)
     {
-        context = SQLListenerContextBuilder.newContext(context).with(e).build();
+        context.setException(e);
         listeners.exception(context);
-        return context;
     }
 
     /**
      * Called to end a SQL listener context
      * @param context the listener context to end
      */
-    protected void endContext(SQLListenerContext context)
+    protected void endContext(SQLListenerContextImpl context)
     {
         listeners.end(context);
         this.context = null;

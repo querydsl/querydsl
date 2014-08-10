@@ -31,8 +31,6 @@ import com.mysema.query.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.mysema.query.sql.SQLListenerContextBuilder.newContext;
-
 /**
  * SQLUpdateClause defines a UPDATE clause
  *
@@ -112,13 +110,13 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
-        context = newContext(context).with(queryString).build();
+        context.addSQL(queryString);
         listeners.prepared(context);
 
         listeners.prePrepare(context);
         PreparedStatement stmt = connection.prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-        context = newContext(context).with(stmt).build();
+        context.addPreparedStatement(stmt);
         listeners.prepared(context);
 
         return stmt;
@@ -131,7 +129,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
-        context = newContext(context).with(queryString).build();
+        context.addSQL(queryString);
         listeners.rendered(context);
 
         Map<String, PreparedStatement> stmts = Maps.newHashMap();
@@ -142,7 +140,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         stmt.addBatch();
         stmts.put(serializer.toString(), stmt);
-        context = newContext(context).with(stmt).build();
+        context.addPreparedStatement(stmt);
         listeners.prepared(context);
 
 
@@ -151,7 +149,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             listeners.preRender(context);
             serializer = createSerializer();
             serializer.serializeUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
-            context = newContext(context).with(serializer.toString()).build();
+            context.addSQL(serializer.toString());
             listeners.rendered(context);
 
             stmt = stmts.get(serializer.toString());
@@ -159,7 +157,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
                 listeners.prePrepare(context);
                 stmt = connection.prepareStatement(serializer.toString());
                 stmts.put(serializer.toString(), stmt);
-                context = newContext(context).with(stmt).build();
+                context.addPreparedStatement(stmt);
                 listeners.prepared(context);
             }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
@@ -194,7 +192,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
                 return rc;
             }
         } catch (SQLException e) {
-            context = onException(context,e);
+            onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {

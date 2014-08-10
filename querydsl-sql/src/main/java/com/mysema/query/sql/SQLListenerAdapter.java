@@ -18,11 +18,11 @@ class SQLListenerAdapter implements SQLDetailedListener
 {
 
     private final SQLListener sqlListener;
-    private final SQLDetailedListener SQLDetailedListener;
+    private final SQLDetailedListener detailedListener;
 
     SQLListenerAdapter(final SQLListener sqlListener)
     {
-        this.SQLDetailedListener = sqlListener instanceof SQLDetailedListener ? (SQLDetailedListener) sqlListener : null;
+        this.detailedListener = sqlListener instanceof SQLDetailedListener ? (SQLDetailedListener) sqlListener : null;
         this.sqlListener = sqlListener;
     }
 
@@ -34,81 +34,81 @@ class SQLListenerAdapter implements SQLDetailedListener
     @Override
     public void start(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.start(context);
+            detailedListener.start(context);
         }
     }
 
     @Override
     public void preRender(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.preRender(context);
+            detailedListener.preRender(context);
         }
     }
 
     @Override
     public void rendered(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.rendered(context);
+            detailedListener.rendered(context);
         }
     }
 
     @Override
     public void prePrepare(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.prePrepare(context);
+            detailedListener.prePrepare(context);
         }
     }
 
     @Override
     public void prepared(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.prepared(context);
+            detailedListener.prepared(context);
         }
     }
 
     @Override
     public void preExecute(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.preExecute(context);
+            detailedListener.preExecute(context);
         }
     }
 
     @Override
     public void executed(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.executed(context);
+            detailedListener.executed(context);
         }
     }
 
     @Override
     public void end(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.end(context);
+            detailedListener.end(context);
         }
     }
 
     @Override
     public void exception(final SQLListenerContext context)
     {
-        if (SQLDetailedListener != null)
+        if (detailedListener != null)
         {
-            SQLDetailedListener.exception(context);
+            detailedListener.exception(context);
         }
     }
 

@@ -32,8 +32,6 @@ import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.mysema.query.sql.SQLListenerContextBuilder.*;
-
 /**
  * SQLMergeClause defines an MERGE INTO clause
  *
@@ -254,7 +252,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 }
             }
         } catch (SQLException e) {
-            context = onException(context,e);
+            onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             endContext(context);
@@ -331,18 +329,18 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         PreparedStatement stmt = null;
         if (batches.isEmpty()) {
             serializer.serializeMerge(metadata, entity, keys, columns, values, subQuery);
-            context = newContext(context).with(serializer.toString()).build();
+            context.addSQL(serializer.toString());
             listeners.rendered(context);
 
             listeners.prePrepare(context);
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
-            context = newContext(context).with(stmt).build();
+            context.addPreparedStatement(stmt);
             listeners.prepared(context);
         } else {
             serializer.serializeMerge(metadata, entity,
                     batches.get(0).getKeys(), batches.get(0).getColumns(),
                     batches.get(0).getValues(), batches.get(0).getSubQuery());
-            context = newContext(context).with(serializer.toString()).build();
+            context.addSQL(serializer.toString());
             listeners.rendered(context);
 
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
@@ -356,7 +354,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 listeners.preRender(context);
                 serializer = createSerializer();
                 serializer.serializeMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
-                context = newContext(context).with(serializer.toString()).build();
+                context.addSQL(serializer.toString());
                 listeners.rendered(context);
 
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
@@ -375,7 +373,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         serializer.serializeMerge(metadata, entity,
                 batches.get(0).getKeys(), batches.get(0).getColumns(),
                 batches.get(0).getValues(), batches.get(0).getSubQuery());
-        context = newContext(context).with(serializer.toString()).build();
+        context.addSQL(serializer.toString());
         listeners.rendered(context);
 
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
@@ -419,7 +417,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             stmt = connection.prepareStatement(queryString);
         }
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-        context = newContext(context).with(stmt).build();
+        context.addPreparedStatement(stmt);
         listeners.prepared(context);
 
         return stmt;
@@ -448,7 +446,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 return rc;
             }
         } catch (SQLException e) {
-            context = onException(context,e);
+            onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {

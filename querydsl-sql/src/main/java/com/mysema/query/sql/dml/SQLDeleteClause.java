@@ -34,8 +34,6 @@ import com.mysema.query.types.ValidatingVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.mysema.query.sql.SQLListenerContextBuilder.newContext;
-
 /**
  * SQLDeleteClause defines a DELETE clause
  *
@@ -118,14 +116,14 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
-        context = newContext(context).with(queryString).build();
+        context.addSQL(queryString);
         listeners.rendered(context);
 
         listeners.prePrepare(context);
         PreparedStatement stmt = connection.prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
 
-        context = newContext(context).with(stmt).build();
+        context.addPreparedStatement(stmt);
         listeners.prepared(context);
 
         return stmt;
@@ -138,7 +136,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logger.debug(queryString);
-        context = newContext(context).with(queryString).build();
+        context.addSQL(queryString);
         listeners.rendered(context);
 
         Map<String, PreparedStatement> stmts = Maps.newHashMap();
@@ -149,7 +147,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         stmt.addBatch();
         stmts.put(queryString, stmt);
-        context = newContext(context).with(stmt).build();
+        context.addPreparedStatement(stmt);
         listeners.prepared(context);
 
 
@@ -158,7 +156,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             listeners.preRender(context);
             serializer = createSerializer();
             serializer.serializeDelete(batches.get(i), entity);
-            context = newContext(context).with(serializer.toString()).build();
+            context.addSQL(serializer.toString());
             listeners.rendered(context);
 
             stmt = stmts.get(serializer.toString());
@@ -166,7 +164,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
                 listeners.prePrepare(context);
                 stmt = connection.prepareStatement(serializer.toString());
                 stmts.put(serializer.toString(), stmt);
-                context = newContext(context).with(stmt).build();
+                context.addPreparedStatement(stmt);
                 listeners.prepared(context);
             }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
@@ -200,7 +198,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
                 return rc;
             }
         } catch (SQLException e) {
-            context = onException(context,e);
+            onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             if (stmt != null) {
