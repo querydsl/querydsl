@@ -10,8 +10,7 @@ import java.util.Collection;
  * A context object that is progressively filled out during query execution and is passed to each {@link
  * SQLDetailedListener} callback method
  */
-public interface SQLListenerContext
-{
+public interface SQLListenerContext {
     /**
      * The context getData is a general purpose place that listeners can place objects.  It allows listeners to pass
      * context between themselves during callbacks.
@@ -30,7 +29,7 @@ public interface SQLListenerContext
      * and then access if after that.
      *
      * @param dataKey the key to use
-     * @param value the value to place under that key
+     * @param value   the value to place under that key
      */
     void setData(String dataKey, Object value);
 

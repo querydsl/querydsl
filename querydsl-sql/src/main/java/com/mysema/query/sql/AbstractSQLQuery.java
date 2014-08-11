@@ -124,13 +124,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     /**
      * Called to create and start a new SQL Listener context
+     *
      * @param connection the database connection
-     * @param metadata the meta data for that context
-     * @return  the newly started context
+     * @param metadata   the meta data for that context
+     * @return the newly started context
      */
-    protected SQLListenerContextImpl startContext(Connection connection, QueryMetadata metadata)
-    {
-        SQLListenerContextImpl context = new SQLListenerContextImpl(metadata,connection);
+    protected SQLListenerContextImpl startContext(Connection connection, QueryMetadata metadata) {
+        SQLListenerContextImpl context = new SQLListenerContextImpl(metadata, connection);
         listeners.start(context);
         return context;
     }
@@ -139,11 +139,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
      * Called to make the call back to listeners when an exception happens
      *
      * @param context the current context in play
-     * @param e the exception
+     * @param e       the exception
      * @return the new context
      */
-    protected SQLListenerContextImpl onException(SQLListenerContextImpl context, Exception e)
-    {
+    protected SQLListenerContextImpl onException(SQLListenerContextImpl context, Exception e) {
         context.setException(e);
         listeners.exception(context);
         return context;
@@ -151,10 +150,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     /**
      * Called to end a SQL listener context
+     *
      * @param context the listener context to end
      */
-    protected void endContext(SQLListenerContext context)
-    {
+    protected void endContext(SQLListenerContext context) {
         listeners.end(context);
     }
 

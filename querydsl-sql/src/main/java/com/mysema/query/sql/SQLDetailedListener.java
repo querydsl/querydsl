@@ -3,8 +3,7 @@ package com.mysema.query.sql;
 /**
  * An extended listener interface that details much more about the preparation and execution of queries
  */
-public interface SQLDetailedListener extends SQLListener
-{
+public interface SQLDetailedListener extends SQLListener {
     /**
      * Called at the start of a query.  Most context parameters are empty at this stage
      *

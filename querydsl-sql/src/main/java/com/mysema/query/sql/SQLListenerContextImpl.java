@@ -16,8 +16,7 @@ import java.util.Map;
  * INTERNAL USE ONLY - {@link com.mysema.query.sql.SQLDetailedListener} implementations are not expected to use this
  * class directly
  */
-public class SQLListenerContextImpl implements SQLListenerContext
-{
+public class SQLListenerContextImpl implements SQLListenerContext {
     private final Map<String, Object> contextMap;
 
     private final QueryMetadata md;
@@ -32,8 +31,7 @@ public class SQLListenerContextImpl implements SQLListenerContext
 
     private Exception exception;
 
-    public SQLListenerContextImpl(final QueryMetadata metadata, final Connection connection, final RelationalPath<?> entity)
-    {
+    public SQLListenerContextImpl(final QueryMetadata metadata, final Connection connection, final RelationalPath<?> entity) {
         this.contextMap = Maps.newHashMap();
         this.preparedStatements = Lists.newArrayList();
         this.sqlStatements = Lists.newArrayList();
@@ -42,120 +40,100 @@ public class SQLListenerContextImpl implements SQLListenerContext
         this.entity = entity;
     }
 
-    public SQLListenerContextImpl(final QueryMetadata metadata, final Connection connection)
-    {
+    public SQLListenerContextImpl(final QueryMetadata metadata, final Connection connection) {
         this(metadata, connection, null);
     }
 
-    public SQLListenerContextImpl(final QueryMetadata metadata)
-    {
+    public SQLListenerContextImpl(final QueryMetadata metadata) {
         this(metadata, null, null);
     }
 
-    public void addSQL(final String sql)
-    {
+    public void addSQL(final String sql) {
         this.sqlStatements.add(sql);
     }
 
-    public void setEntity(final RelationalPath<?> entity)
-    {
+    public void setEntity(final RelationalPath<?> entity) {
         this.entity = entity;
     }
 
-    public void setConnection(final Connection connection)
-    {
+    public void setConnection(final Connection connection) {
         this.connection = connection;
     }
 
-    public void setException(final Exception exception)
-    {
+    public void setException(final Exception exception) {
         this.exception = exception;
     }
 
-    public void addPreparedStatement(final PreparedStatement preparedStatement)
-    {
+    public void addPreparedStatement(final PreparedStatement preparedStatement) {
         this.preparedStatements.add(preparedStatement);
     }
 
     @Override
-    public QueryMetadata getMetadata()
-    {
+    public QueryMetadata getMetadata() {
         return md;
     }
 
     @Override
-    public RelationalPath<?> getEntity()
-    {
+    public RelationalPath<?> getEntity() {
         return entity;
     }
 
     @Override
-    public String getSQL()
-    {
+    public String getSQL() {
         return sqlStatements.isEmpty() ? null : sqlStatements.get(0);
     }
 
     @Override
-    public Collection<String> getSQLStatements()
-    {
+    public Collection<String> getSQLStatements() {
         return sqlStatements;
     }
 
     @Override
-    public Exception getException()
-    {
+    public Exception getException() {
         return exception;
     }
 
     @Override
-    public Connection getConnection()
-    {
+    public Connection getConnection() {
         return connection;
     }
 
     @Override
-    public Collection<PreparedStatement> getPreparedStatements()
-    {
+    public Collection<PreparedStatement> getPreparedStatements() {
         return preparedStatements;
     }
 
     @Override
-    public PreparedStatement getPreparedStatement()
-    {
+    public PreparedStatement getPreparedStatement() {
         return preparedStatements.isEmpty() ? null : preparedStatements.get(0);
     }
 
     @Override
-    public Object getData(final String dataKey)
-    {
+    public Object getData(final String dataKey) {
         return contextMap.get(dataKey);
     }
 
     @Override
-    public void setData(final String dataKey, final Object value)
-    {
+    public void setData(final String dataKey, final Object value) {
         contextMap.put(dataKey, value);
     }
 
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder()
                 .append(" sql:").append(nicerSql(getSQL()))
                 .append(" connection:").append(connection == null ? "not connected" : "connected")
                 .append(" entity:").append(entity)
                 .append(" exception:").append(exception);
 
-        for (Map.Entry<String, Object> entry : contextMap.entrySet())
-        {
+        for (Map.Entry<String, Object> entry : contextMap.entrySet()) {
             sb.append(" [").append(entry.getKey()).append(":").append(entry.getValue()).append("]");
         }
         return sb.toString();
     }
 
-    private String nicerSql(final String sql)
-    {
+    private String nicerSql(final String sql) {
         return "'" + (sql == null ? null : sql.replace('\n', ' ')) + "'";
     }
 }
