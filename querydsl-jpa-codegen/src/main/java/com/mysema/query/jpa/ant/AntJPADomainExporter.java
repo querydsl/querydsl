@@ -138,12 +138,12 @@ public class AntJPADomainExporter {
         // We can assume we have the named persistence unit and its mapping file in our classpath,
         // but we may have to allow some properties in that persistence unit to be overridden before
         // we can successfully get that persistence unit's metamodel.
-        final Map<String, String> properties = (configuration != null) ? configuration.getProperties() : null;
-        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
+        Map<String, String> properties = (configuration != null) ? configuration.getProperties() : null;
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 
         // Now we can get the persistence unit's metamodel and export it to Querydsl query types.
-        final Metamodel configuration = emf.getMetamodel();
-        final JPADomainExporter exporter = new JPADomainExporter(namePrefix, nameSuffix, new File(targetFolder), configuration);
+        Metamodel configuration = emf.getMetamodel();
+        JPADomainExporter exporter = new JPADomainExporter(namePrefix, nameSuffix, new File(targetFolder), configuration);
         try {
             exporter.execute();
         } catch (IOException e) {
