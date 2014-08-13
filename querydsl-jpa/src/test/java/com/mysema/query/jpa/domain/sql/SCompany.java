@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -44,7 +43,7 @@ public class SCompany extends com.mysema.query.sql.RelationalPathBase<SCompany> 
     public final com.mysema.query.sql.ForeignKey<SDepartment> _fk1f3a274ddc953998 = createInvForeignKey(id, "company_id");
 
     public SCompany(String variable) {
-        super(SCompany.class, forVariable(variable), "null", "company_");
+        super(SCompany.class, forVariable(variable), "", "company_");
         addMetadata();
     }
 
@@ -54,12 +53,12 @@ public class SCompany extends com.mysema.query.sql.RelationalPathBase<SCompany> 
     }
 
     public SCompany(Path<? extends SCompany> path) {
-        super(path.getType(), path.getMetadata(), "null", "company_");
+        super(path.getType(), path.getMetadata(), "", "company_");
         addMetadata();
     }
 
     public SCompany(PathMetadata<?> metadata) {
-        super(SCompany.class, metadata, "null", "company_");
+        super(SCompany.class, metadata, "", "company_");
         addMetadata();
     }
 

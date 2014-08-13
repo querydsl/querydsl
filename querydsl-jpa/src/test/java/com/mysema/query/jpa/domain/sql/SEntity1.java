@@ -1,18 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -36,7 +31,7 @@ public class SEntity1 extends com.mysema.query.sql.RelationalPathBase<SEntity1> 
     public final com.mysema.query.sql.PrimaryKey<SEntity1> primary = createPrimaryKey(id);
 
     public SEntity1(String variable) {
-        super(SEntity1.class, forVariable(variable), "null", "Entity1");
+        super(SEntity1.class, forVariable(variable), "", "Entity1");
         addMetadata();
     }
 
@@ -46,12 +41,12 @@ public class SEntity1 extends com.mysema.query.sql.RelationalPathBase<SEntity1> 
     }
 
     public SEntity1(Path<? extends SEntity1> path) {
-        super(path.getType(), path.getMetadata(), "null", "Entity1");
+        super(path.getType(), path.getMetadata(), "", "Entity1");
         addMetadata();
     }
 
     public SEntity1(PathMetadata<?> metadata) {
-        super(SEntity1.class, metadata, "null", "Entity1");
+        super(SEntity1.class, metadata, "", "Entity1");
         addMetadata();
     }
 

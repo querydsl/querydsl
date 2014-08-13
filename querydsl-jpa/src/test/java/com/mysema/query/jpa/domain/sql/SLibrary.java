@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +26,7 @@ public class SLibrary extends com.mysema.query.sql.RelationalPathBase<SLibrary> 
     public final com.mysema.query.sql.ForeignKey<SBookversion> _fkef4bc070e364cd17 = createInvForeignKey(identity, "library_identity");
 
     public SLibrary(String variable) {
-        super(SLibrary.class, forVariable(variable), "null", "library_");
+        super(SLibrary.class, forVariable(variable), "", "library_");
         addMetadata();
     }
 
@@ -38,12 +36,12 @@ public class SLibrary extends com.mysema.query.sql.RelationalPathBase<SLibrary> 
     }
 
     public SLibrary(Path<? extends SLibrary> path) {
-        super(path.getType(), path.getMetadata(), "null", "library_");
+        super(path.getType(), path.getMetadata(), "", "library_");
         addMetadata();
     }
 
     public SLibrary(PathMetadata<?> metadata) {
-        super(SLibrary.class, metadata, "null", "library_");
+        super(SLibrary.class, metadata, "", "library_");
         addMetadata();
     }
 

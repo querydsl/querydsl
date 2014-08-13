@@ -13,15 +13,14 @@
  */
 package com.mysema.query.apt.jdo;
 
-import java.lang.annotation.Annotation;
-
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.jdo.annotations.EmbeddedOnly;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
-import javax.persistence.Embedded;
+import java.lang.annotation.Annotation;
 
+import com.mysema.query.annotations.QueryEmbedded;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
@@ -45,7 +44,7 @@ public class JDOAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> entity = PersistenceCapable.class;
         Class<? extends Annotation> superType = QuerySupertype.class;
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
-        Class<? extends Annotation> embedded = Embedded.class;
+        Class<? extends Annotation> embedded = QueryEmbedded.class;
         Class<? extends Annotation> skip = NotPersistent.class;
         return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Keywords.JDO,
                 entities, entity, superType, embeddable, embedded, skip);

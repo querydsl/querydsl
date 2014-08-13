@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +29,7 @@ public class SAuthor extends com.mysema.query.sql.RelationalPathBase<SAuthor> {
     public final com.mysema.query.sql.ForeignKey<SBook> _fk599229686eaf51c = createInvForeignKey(id, "AUTHOR_ID");
 
     public SAuthor(String variable) {
-        super(SAuthor.class, forVariable(variable), "null", "author_");
+        super(SAuthor.class, forVariable(variable), "", "author_");
         addMetadata();
     }
 
@@ -40,12 +39,12 @@ public class SAuthor extends com.mysema.query.sql.RelationalPathBase<SAuthor> {
     }
 
     public SAuthor(Path<? extends SAuthor> path) {
-        super(path.getType(), path.getMetadata(), "null", "author_");
+        super(path.getType(), path.getMetadata(), "", "author_");
         addMetadata();
     }
 
     public SAuthor(PathMetadata<?> metadata) {
-        super(SAuthor.class, metadata, "null", "author_");
+        super(SAuthor.class, metadata, "", "author_");
         addMetadata();
     }
 

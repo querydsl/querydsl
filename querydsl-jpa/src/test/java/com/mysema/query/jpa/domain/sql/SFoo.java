@@ -1,14 +1,14 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +32,7 @@ public class SFoo extends com.mysema.query.sql.RelationalPathBase<SFoo> {
     public final com.mysema.query.sql.ForeignKey<SFooNames> _fkb6129a8f94e297f8 = createInvForeignKey(id, "foo_id");
 
     public SFoo(String variable) {
-        super(SFoo.class, forVariable(variable), "null", "foo_");
+        super(SFoo.class, forVariable(variable), "", "foo_");
         addMetadata();
     }
 
@@ -42,12 +42,12 @@ public class SFoo extends com.mysema.query.sql.RelationalPathBase<SFoo> {
     }
 
     public SFoo(Path<? extends SFoo> path) {
-        super(path.getType(), path.getMetadata(), "null", "foo_");
+        super(path.getType(), path.getMetadata(), "", "foo_");
         addMetadata();
     }
 
     public SFoo(PathMetadata<?> metadata) {
-        super(SFoo.class, metadata, "null", "foo_");
+        super(SFoo.class, metadata, "", "foo_");
         addMetadata();
     }
 

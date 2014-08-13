@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -36,7 +35,7 @@ public class SCategoryprop extends com.mysema.query.sql.RelationalPathBase<SCate
     public final com.mysema.query.sql.ForeignKey<SCategory_categoryprop> _fk8543a280fd94cd90 = createInvForeignKey(id, "properties_id");
 
     public SCategoryprop(String variable) {
-        super(SCategoryprop.class, forVariable(variable), "null", "categoryprop_");
+        super(SCategoryprop.class, forVariable(variable), "", "categoryprop_");
         addMetadata();
     }
 
@@ -46,12 +45,12 @@ public class SCategoryprop extends com.mysema.query.sql.RelationalPathBase<SCate
     }
 
     public SCategoryprop(Path<? extends SCategoryprop> path) {
-        super(path.getType(), path.getMetadata(), "null", "categoryprop_");
+        super(path.getType(), path.getMetadata(), "", "categoryprop_");
         addMetadata();
     }
 
     public SCategoryprop(PathMetadata<?> metadata) {
-        super(SCategoryprop.class, metadata, "null", "categoryprop_");
+        super(SCategoryprop.class, metadata, "", "categoryprop_");
         addMetadata();
     }
 

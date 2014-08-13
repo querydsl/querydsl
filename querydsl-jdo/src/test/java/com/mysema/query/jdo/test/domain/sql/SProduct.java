@@ -57,17 +57,17 @@ public class SProduct extends RelationalPathBase<SProduct> {
     public final ForeignKey<SStoreProductsbyname> _storeProductsbynameFk2 = new ForeignKey<SStoreProductsbyname>(this, productId, "PRODUCT_ID_VID");
 
     public SProduct(String variable) {
-        super(SProduct.class, forVariable(variable), null, "PRODUCT");
+        super(SProduct.class, forVariable(variable), "", "PRODUCT");
         addMetadata();
     }
 
     public SProduct(BeanPath<? extends SProduct> entity) {
-        super(entity.getType(),entity.getMetadata(), null, "PRODUCT");
+        super(entity.getType(),entity.getMetadata(), "", "PRODUCT");
         addMetadata();
     }
 
     public SProduct(PathMetadata<?> metadata) {
-        super(SProduct.class, metadata, null, "PRODUCT");
+        super(SProduct.class, metadata, "", "PRODUCT");
         addMetadata();
     }
 

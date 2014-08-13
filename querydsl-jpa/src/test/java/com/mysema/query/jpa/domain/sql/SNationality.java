@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +30,7 @@ public class SNationality extends com.mysema.query.sql.RelationalPathBase<SNatio
     public final com.mysema.query.sql.ForeignKey<SPerson> _fkd78fcfaaf6578e38 = createInvForeignKey(id, "nationality_id");
 
     public SNationality(String variable) {
-        super(SNationality.class, forVariable(variable), "null", "nationality_");
+        super(SNationality.class, forVariable(variable), "", "nationality_");
         addMetadata();
     }
 
@@ -42,12 +40,12 @@ public class SNationality extends com.mysema.query.sql.RelationalPathBase<SNatio
     }
 
     public SNationality(Path<? extends SNationality> path) {
-        super(path.getType(), path.getMetadata(), "null", "nationality_");
+        super(path.getType(), path.getMetadata(), "", "nationality_");
         addMetadata();
     }
 
     public SNationality(PathMetadata<?> metadata) {
-        super(SNationality.class, metadata, "null", "nationality_");
+        super(SNationality.class, metadata, "", "nationality_");
         addMetadata();
     }
 

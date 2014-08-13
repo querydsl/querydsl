@@ -1,14 +1,14 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -48,7 +48,7 @@ public class SUserprop extends com.mysema.query.sql.RelationalPathBase<SUserprop
     public final com.mysema.query.sql.ForeignKey<SUser2_userprop> _fk4611b46aa56541dd = createInvForeignKey(id, "properties_id");
 
     public SUserprop(String variable) {
-        super(SUserprop.class, forVariable(variable), "null", "userprop_");
+        super(SUserprop.class, forVariable(variable), "", "userprop_");
         addMetadata();
     }
 
@@ -58,12 +58,12 @@ public class SUserprop extends com.mysema.query.sql.RelationalPathBase<SUserprop
     }
 
     public SUserprop(Path<? extends SUserprop> path) {
-        super(path.getType(), path.getMetadata(), "null", "userprop_");
+        super(path.getType(), path.getMetadata(), "", "userprop_");
         addMetadata();
     }
 
     public SUserprop(PathMetadata<?> metadata) {
-        super(SUserprop.class, metadata, "null", "userprop_");
+        super(SUserprop.class, metadata, "", "userprop_");
         addMetadata();
     }
 

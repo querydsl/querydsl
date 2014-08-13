@@ -71,31 +71,37 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
     }
 
     @Override
+    @Deprecated
     public <P> Q fullJoin(CollectionExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
     @Override
+    @Deprecated
     public <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
     @Override
+    @Deprecated
     public <P> Q fullJoin(EntityPath<P> target) {
         return queryMixin.fullJoin(target);
     }
 
     @Override
+    @Deprecated
     public <P> Q fullJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
     @Override
+    @Deprecated
     public <P> Q fullJoin(MapExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
     @Override
+    @Deprecated
     public <P> Q fullJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }

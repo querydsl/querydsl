@@ -13,14 +13,10 @@
  */
 package com.mysema.query.sql;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Projections;
-import com.mysema.query.types.QBean;
+import com.mysema.query.types.*;
 
 /**
  * RelationalPathUtils provides static utility methods for {@link RelationalPath} instances
@@ -51,7 +47,7 @@ public final class RelationalPathUtils {
     }
 
     private static <T> FactoryExpression<T> createBeanProjection(RelationalPath<T> path) {
-        Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
+        Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         for (Path<?> column : path.getColumns()) {
             bindings.put(column.getMetadata().getName(), column);
         }

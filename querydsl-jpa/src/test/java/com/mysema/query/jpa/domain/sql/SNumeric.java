@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +28,7 @@ public class SNumeric extends com.mysema.query.sql.RelationalPathBase<SNumeric> 
     public final com.mysema.query.sql.PrimaryKey<SNumeric> primary = createPrimaryKey(id);
 
     public SNumeric(String variable) {
-        super(SNumeric.class, forVariable(variable), "null", "numeric_");
+        super(SNumeric.class, forVariable(variable), "", "numeric_");
         addMetadata();
     }
 
@@ -40,12 +38,12 @@ public class SNumeric extends com.mysema.query.sql.RelationalPathBase<SNumeric> 
     }
 
     public SNumeric(Path<? extends SNumeric> path) {
-        super(path.getType(), path.getMetadata(), "null", "numeric_");
+        super(path.getType(), path.getMetadata(), "", "numeric_");
         addMetadata();
     }
 
     public SNumeric(PathMetadata<?> metadata) {
-        super(SNumeric.class, metadata, "null", "numeric_");
+        super(SNumeric.class, metadata, "", "numeric_");
         addMetadata();
     }
 

@@ -13,17 +13,16 @@
  */
 package com.mysema.query.types.path;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
-import org.junit.Test;
-
 import com.mysema.query.BooleanBuilder;
 import com.mysema.util.BeanMap;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class PathBuilderTest {
 
@@ -40,8 +39,9 @@ public class PathBuilderTest {
         User user = new User();
         user.setFirstName("firstName");
         user.setLastName("lastName");
-        assertEquals("entity.lastName = lastName && entity.firstName = firstName", 
-                getByExample(user).toString());
+        String byExample = getByExample(user).toString();
+        assertTrue(byExample.contains("entity.lastName = lastName"));
+        assertTrue(byExample.contains("entity.firstName = firstName"));
     }
 
     @Test

@@ -38,7 +38,7 @@ public class QPerson extends RelationalPathBase<QPerson> {
     public final PrimaryKey<QPerson> sysIdx118 = createPrimaryKey(id);
 
     public QPerson(String variable) {
-        super(QPerson.class, PathMetadataFactory.forVariable(variable), null, "PERSON");
+        super(QPerson.class, PathMetadataFactory.forVariable(variable), "", "PERSON");
         addMetadata();
     }
 

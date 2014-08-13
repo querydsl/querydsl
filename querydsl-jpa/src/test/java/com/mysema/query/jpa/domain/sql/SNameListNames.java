@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +27,7 @@ public class SNameListNames extends com.mysema.query.sql.RelationalPathBase<SNam
     public final com.mysema.query.sql.ForeignKey<SNamelist> fkd6c82d7217b6c3fc = createForeignKey(nameListId, "id");
 
     public SNameListNames(String variable) {
-        super(SNameListNames.class, forVariable(variable), "null", "NameList_names");
+        super(SNameListNames.class, forVariable(variable), "", "NameList_names");
         addMetadata();
     }
 
@@ -38,12 +37,12 @@ public class SNameListNames extends com.mysema.query.sql.RelationalPathBase<SNam
     }
 
     public SNameListNames(Path<? extends SNameListNames> path) {
-        super(path.getType(), path.getMetadata(), "null", "NameList_names");
+        super(path.getType(), path.getMetadata(), "", "NameList_names");
         addMetadata();
     }
 
     public SNameListNames(PathMetadata<?> metadata) {
-        super(SNameListNames.class, metadata, "null", "NameList_names");
+        super(SNameListNames.class, metadata, "", "NameList_names");
         addMetadata();
     }
 

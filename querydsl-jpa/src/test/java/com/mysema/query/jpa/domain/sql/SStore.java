@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +30,7 @@ public class SStore extends com.mysema.query.sql.RelationalPathBase<SStore> {
     public final com.mysema.query.sql.ForeignKey<SStore_customer> _fk82ba2ce035d2d6bb = createInvForeignKey(id, "store__id");
 
     public SStore(String variable) {
-        super(SStore.class, forVariable(variable), "null", "store_");
+        super(SStore.class, forVariable(variable), "", "store_");
         addMetadata();
     }
 
@@ -42,12 +40,12 @@ public class SStore extends com.mysema.query.sql.RelationalPathBase<SStore> {
     }
 
     public SStore(Path<? extends SStore> path) {
-        super(path.getType(), path.getMetadata(), "null", "store_");
+        super(path.getType(), path.getMetadata(), "", "store_");
         addMetadata();
     }
 
     public SStore(PathMetadata<?> metadata) {
-        super(SStore.class, metadata, "null", "store_");
+        super(SStore.class, metadata, "", "store_");
         addMetadata();
     }
 
