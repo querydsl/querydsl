@@ -13,14 +13,6 @@
  */
 package com.mysema.query.sql.dml;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DMLClause;
@@ -29,11 +21,15 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 
+import java.sql.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
  *
  * @author tiwe
- *
  */
 public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implements DMLClause<C> {
 
@@ -42,6 +38,8 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     protected final SQLListeners listeners;
 
     protected boolean useLiterals;
+
+    protected SQLListenerContextImpl context;
 
     /**
      * @param configuration
@@ -58,6 +56,42 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     public void addListener(SQLListener listener) {
         listeners.add(listener);
     }
+
+    /**
+     * Called to create and start a new SQL Listener context
+     *
+     * @param connection the database connection
+     * @param metadata   the meta data for that context
+     * @param entity     the entity for that context
+     * @return the newly started context
+     */
+    protected SQLListenerContextImpl startContext(Connection connection, QueryMetadata metadata, RelationalPath<?> entity) {
+        SQLListenerContextImpl context = new SQLListenerContextImpl(metadata, connection, entity);
+        listeners.start(context);
+        return context;
+    }
+
+    /**
+     * Called to make the call back to listeners when an exception happens
+     *
+     * @param context the current context in play
+     * @param e       the exception
+     */
+    protected void onException(SQLListenerContextImpl context, Exception e) {
+        context.setException(e);
+        listeners.exception(context);
+    }
+
+    /**
+     * Called to end a SQL listener context
+     *
+     * @param context the listener context to end
+     */
+    protected void endContext(SQLListenerContextImpl context) {
+        listeners.end(context);
+        this.context = null;
+    }
+
 
     protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
         String queryString = serializer.toString();

@@ -13,10 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.QueryMetadata;
@@ -27,22 +23,24 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 /**
  * SQLListeners is an SQLListener implementation which dispatches the
  * notifications to a list of SQLListener instances
  *
  * @author tiwe
- *
  */
-public class SQLListeners implements SQLListener {
+public class SQLListeners implements SQLDetailedListener {
 
     @Nullable
-    private final SQLListener parent;
+    private final SQLListenerAdapter parent;
 
-    private final List<SQLListener> listeners = Lists.newArrayList();
+    private final List<SQLListenerAdapter> listeners = Lists.newArrayList();
 
     public SQLListeners(SQLListener parent) {
-        this.parent = parent;
+        this.parent = new SQLListenerAdapter(parent);
     }
 
     public SQLListeners() {
@@ -50,7 +48,7 @@ public class SQLListeners implements SQLListener {
     }
 
     public void add(SQLListener listener) {
-        listeners.add(listener);
+        listeners.add(new SQLListenerAdapter(listener));
     }
 
     @Override
@@ -85,7 +83,7 @@ public class SQLListeners implements SQLListener {
 
     @Override
     public void notifyMerge(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> keys,
-            List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
+                            List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
         if (parent != null) {
             parent.notifyMerge(entity, md, keys, columns, values, subQuery);
         }
@@ -106,7 +104,7 @@ public class SQLListeners implements SQLListener {
 
     @Override
     public void notifyInsert(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> columns,
-            List<Expression<?>> values, SubQueryExpression<?> subQuery) {
+                             List<Expression<?>> values, SubQueryExpression<?> subQuery) {
         if (parent != null) {
             parent.notifyInsert(entity, md, columns, values, subQuery);
         }
@@ -117,7 +115,7 @@ public class SQLListeners implements SQLListener {
 
     @Override
     public void notifyInserts(RelationalPath<?> entity, QueryMetadata md,
-            List<SQLInsertBatch> batches) {
+                              List<SQLInsertBatch> batches) {
         if (parent != null) {
             parent.notifyInserts(entity, md, batches);
         }
@@ -128,7 +126,7 @@ public class SQLListeners implements SQLListener {
 
     @Override
     public void notifyUpdate(RelationalPath<?> entity, QueryMetadata md,
-            List<Pair<Path<?>, Expression<?>>> updates) {
+                             List<Pair<Path<?>, Expression<?>>> updates) {
         if (parent != null) {
             parent.notifyUpdate(entity, md, updates);
         }
@@ -147,4 +145,94 @@ public class SQLListeners implements SQLListener {
         }
     }
 
+
+    @Override
+    public void start(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.start(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.start(context);
+        }
+    }
+
+    @Override
+    public void preRender(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.preRender(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.preRender(context);
+        }
+    }
+
+    @Override
+    public void rendered(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.rendered(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.rendered(context);
+        }
+    }
+
+    @Override
+    public void prePrepare(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.prePrepare(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.prePrepare(context);
+        }
+    }
+
+    @Override
+    public void prepared(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.prepared(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.prepared(context);
+        }
+    }
+
+    @Override
+    public void preExecute(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.preExecute(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.preExecute(context);
+        }
+    }
+
+    @Override
+    public void executed(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.executed(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.executed(context);
+        }
+    }
+
+    @Override
+    public void end(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.end(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.end(context);
+        }
+    }
+
+    @Override
+    public void exception(final SQLListenerContext context) {
+        if (parent != null) {
+            parent.exception(context);
+        }
+        for (SQLListenerAdapter listener : listeners) {
+            listener.exception(context);
+        }
+    }
 }
