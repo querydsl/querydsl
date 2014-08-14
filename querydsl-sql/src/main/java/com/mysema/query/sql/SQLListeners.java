@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.QueryMetadata;
@@ -23,9 +26,6 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 /**
  * SQLListeners is an SQLListener implementation which dispatches the
  * notifications to a list of SQLListener instances
@@ -35,9 +35,9 @@ import java.util.List;
 public class SQLListeners implements SQLDetailedListener {
 
     @Nullable
-    private final SQLListenerAdapter parent;
+    private final SQLDetailedListener parent;
 
-    private final List<SQLListenerAdapter> listeners = Lists.newArrayList();
+    private final List<SQLDetailedListener> listeners = Lists.newArrayList();
 
     public SQLListeners(SQLListener parent) {
         this.parent = new SQLListenerAdapter(parent);
@@ -151,7 +151,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.start(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.start(context);
         }
     }
@@ -161,7 +161,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.preRender(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.preRender(context);
         }
     }
@@ -171,7 +171,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.rendered(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.rendered(context);
         }
     }
@@ -181,7 +181,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.prePrepare(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.prePrepare(context);
         }
     }
@@ -191,7 +191,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.prepared(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.prepared(context);
         }
     }
@@ -201,7 +201,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.preExecute(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.preExecute(context);
         }
     }
@@ -211,7 +211,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.executed(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.executed(context);
         }
     }
@@ -221,7 +221,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.end(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.end(context);
         }
     }
@@ -231,7 +231,7 @@ public class SQLListeners implements SQLDetailedListener {
         if (parent != null) {
             parent.exception(context);
         }
-        for (SQLListenerAdapter listener : listeners) {
+        for (SQLDetailedListener listener : listeners) {
             listener.exception(context);
         }
     }

@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,25 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.*;
+import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.*;
+import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.QueryException;
-import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.util.ResultSetAdapter;
 
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
@@ -140,12 +129,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
      *
      * @param context the current context in play
      * @param e       the exception
-     * @return the new context
      */
-    protected SQLListenerContextImpl onException(SQLListenerContextImpl context, Exception e) {
+    protected void onException(SQLListenerContextImpl context, Exception e) {
         context.setException(e);
         listeners.exception(context);
-        return context;
     }
 
     /**
@@ -204,7 +191,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                 }
             };
         } catch (SQLException e) {
-            context = onException(context, e);
+            onException(context, e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             reset();
@@ -224,7 +211,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
-        SQLListenerContextImpl context = startContext(conn,queryMixin.getMetadata());
+        SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
 
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
@@ -284,8 +271,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
             }
 
         } catch (SQLException e) {
-            context = onException(context, e);
-
+            onException(context, e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             endContext(context);
@@ -374,8 +360,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                 stmt.close();
             }
         } catch (SQLException e) {
-            context = onException(context, e);
-
+            onException(context, e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             endContext(context);
@@ -471,7 +456,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     }
 
     private long unsafeCount() throws SQLException {
-        SQLListenerContextImpl context = startContext(conn,getMetadata());
+        SQLListenerContextImpl context = startContext(conn, getMetadata());
 
         listeners.preRender(context);
         SQLSerializer serializer = serialize(true);
@@ -501,8 +486,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
             return rs.getLong(1);
         } catch (SQLException e) {
-            context = onException(context, e);
-
+            onException(context, e);
             throw configuration.translate(queryString, constants, e);
         } finally {
             try {
