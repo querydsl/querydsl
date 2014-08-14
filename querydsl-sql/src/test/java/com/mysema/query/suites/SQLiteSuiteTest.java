@@ -1,6 +1,5 @@
 package com.mysema.query.suites;
 
-import com.mysema.query.TestLoggingListener;
 import org.junit.BeforeClass;
 
 import com.mysema.query.BeanPopulationBase;
@@ -33,7 +32,6 @@ public class SQLiteSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        TestLoggingListener.enable();
         Connections.initSQLite();
         Connections.setTemplates(SQLiteTemplates.builder().newLineToSingleSpace().build());
     }
