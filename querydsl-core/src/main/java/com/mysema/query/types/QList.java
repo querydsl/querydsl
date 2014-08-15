@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableList;
  * @author tiwe
  *
  */
-public class QList extends FactoryExpressionBase<List<?>> implements FactoryExpression<List<?>> {
+public class QList extends FactoryExpressionBase<List<?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 

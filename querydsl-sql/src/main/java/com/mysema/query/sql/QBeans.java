@@ -20,12 +20,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.QBean;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.util.ArrayUtils;
 
 /**
@@ -33,7 +28,7 @@ import com.mysema.util.ArrayUtils;
  *
  * @author luis
  */
-public class QBeans extends ExpressionBase<Beans> implements FactoryExpression<Beans> {
+public class QBeans extends FactoryExpressionBase<Beans> {
 
     private static final long serialVersionUID = -4411839816134215923L;
 

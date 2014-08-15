@@ -46,7 +46,7 @@ import com.google.common.primitives.Primitives;
  *
  * @param <T> bean type
  */
-public class QBean<T> extends FactoryExpressionBase<T> implements FactoryExpression<T> {
+public class QBean<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -8210214512730989778L;
 

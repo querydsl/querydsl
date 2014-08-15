@@ -13,18 +13,16 @@
  */
 package com.mysema.query.types;
 
-import static com.mysema.query.util.ConstructorUtils.*;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import static com.mysema.query.util.ConstructorUtils.*;
 
 /**
  * ConstructorExpression represents a constructor invocation
@@ -45,7 +43,7 @@ import javax.annotation.concurrent.Immutable;
  * @param <T> expression type
  */
 @Immutable
-public class ConstructorExpression<T> extends ExpressionBase<T> implements FactoryExpression<T> {
+public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -602747921848073175L;
 

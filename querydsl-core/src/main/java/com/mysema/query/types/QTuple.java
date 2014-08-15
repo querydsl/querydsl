@@ -52,7 +52,7 @@ import com.mysema.query.Tuple;
  *
  */
 @Immutable
-public class QTuple extends FactoryExpressionBase<Tuple> implements FactoryExpression<Tuple> {
+public class QTuple extends FactoryExpressionBase<Tuple> {
 
     private static ImmutableMap<Expression<?>, Integer> createBindings(List<Expression<?>> exprs) {
         Map<Expression<?>, Integer> map = Maps.newHashMap();

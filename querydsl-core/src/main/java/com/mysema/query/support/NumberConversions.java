@@ -18,8 +18,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionBase;
 import com.mysema.query.types.Visitor;
 import com.mysema.util.MathUtils;
 
@@ -31,7 +31,7 @@ import com.mysema.util.MathUtils;
  *
  * @param <T>
  */
-public class NumberConversions<T> extends ExpressionBase<T> implements FactoryExpression<T> {
+public class NumberConversions<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -7834053123363933721L;
 
