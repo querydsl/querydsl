@@ -46,6 +46,11 @@ public class BooleanType extends AbstractType<Boolean> {
     }
 
     @Override
+    public String getLiteral(Boolean value) {
+        return value ? "1" : "0";
+    }
+
+    @Override
     public void setValue(PreparedStatement st, int startIndex, Boolean value) throws SQLException {
         st.setBoolean(startIndex, value);
     }
