@@ -13,11 +13,10 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -27,7 +26,7 @@ import com.google.common.collect.ImmutableList;
  * @author tiwe
  *
  */
-public class QList extends ExpressionBase<List<?>> implements FactoryExpression<List<?>> {
+public class QList extends FactoryExpressionBase<List<?>> implements FactoryExpression<List<?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 
