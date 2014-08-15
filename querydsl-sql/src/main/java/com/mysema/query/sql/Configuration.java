@@ -452,7 +452,7 @@ public final class Configuration {
     }
 
     /**
-     * @param listeners
+     * @param listener
      */
     public void addListener(SQLListener listener) {
         listeners.add(listener);
