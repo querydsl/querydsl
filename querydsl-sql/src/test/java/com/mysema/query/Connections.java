@@ -528,6 +528,13 @@ public final class Connections {
             return;
         }
 
+        // arrays
+        stmt.execute("drop table ARRAYTEST if exists");
+        stmt.execute("create table ARRAYTEST ( " +
+                "ID bigint primary key, " +
+                "INTEGERS integer array, " +
+                "MYARRAY varchar(8) array)");
+
         // dual
         stmt.execute("drop table DUAL if exists");
         stmt.execute("create table DUAL ( DUMMY varchar(1) )");
@@ -742,6 +749,7 @@ public final class Connections {
         dropTable(templates, "ARRAYTEST");
         stmt.execute("create table \"ARRAYTEST\" (\n" +
                 "\"ID\" bigint primary key,\n" +
+                "\"INTEGERS\" integer[],\n" +
                 "\"MYARRAY\" varchar(8)[])");
 
         // survey

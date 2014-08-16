@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +39,22 @@ import com.mysema.query.types.Path;
 public final class Configuration {
 
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
+
+    private static final Map<String, Integer> typeConstants = Maps.newHashMap();
+
+    static {
+        try {
+            for (Field field : java.sql.Types.class.getDeclaredFields()) {
+                if (field.getType().equals(Integer.TYPE)) {
+                    typeConstants.put(field.getName().toLowerCase(), field.getInt(null));
+                }
+            }
+            typeConstants.put("int4", Types.INTEGER);
+            typeConstants.put("int8", Types.BIGINT);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
+    }
 
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
 
@@ -134,6 +152,14 @@ public final class Configuration {
             Class<?> clazz = typeToName.get(typeName.toLowerCase());
             if (clazz != null) {
                 return clazz;
+            }
+            if (sqlType == Types.ARRAY) {
+                for (Map.Entry<String, Integer> entry : typeConstants.entrySet()) {
+                    if (typeName.toLowerCase().contains(entry.getKey())) {
+                        Class<?> componentType = jdbcTypeMapping.get(entry.getValue(), size, digits);
+                        return Array.newInstance(componentType, 0).getClass();
+                    }
+                }
             }
         }
         // sql type mapped class
