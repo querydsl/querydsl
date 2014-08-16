@@ -26,7 +26,6 @@ import com.mysema.query.types.PredicateOperation;
  *
  * @author tiwe
  *
- * @param <K>
  */
 public class AnyEmbeddedBuilder<K> {
 

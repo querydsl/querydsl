@@ -53,11 +53,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     private ReadPreference readPreference;
 
     /**
-     * Create a new MongodbQuery instance
-     *
-     * @param collection
-     * @param transformer
-     * @param serializer
+     * Create a new MongodbQuery instance 
      */
     public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate(), false);

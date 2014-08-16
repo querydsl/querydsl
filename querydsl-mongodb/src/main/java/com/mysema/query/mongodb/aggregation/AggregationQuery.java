@@ -38,9 +38,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- *  This class performs aggregation operations to deliver the results of operations
- * @author Komi Innocent <komi.innocent@gmail.com>
- * @param <T>
+ * This class performs aggregation operations to deliver the results of
+ * operations
+ *
+ * @author Komi Innocent
  */
 public class AggregationQuery<T> {
 
@@ -61,8 +62,8 @@ public class AggregationQuery<T> {
     }
 
     /**
-     * 
-     * @param aggregationOperations 
+     *
+     * @param aggregationOperations
      */
     private void createPipeline(List<AggregationOperation<T>> aggregationOperations) {
         for (AggregationOperation<T> operation : aggregationOperations) {
@@ -71,8 +72,8 @@ public class AggregationQuery<T> {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return return a list of T from the aggregation operation
      */
     public List<T> list() {
         try {
@@ -83,14 +84,14 @@ public class AggregationQuery<T> {
                 results.add(transformer.apply(dbObject));
             }
             return results;
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             return Collections.emptyList();
         }
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return return a list of DBObject from the aggregation operation
      */
     public List<DBObject> listResults() {
         try {
@@ -100,7 +101,7 @@ public class AggregationQuery<T> {
                 results.add(cursor.next());
             }
             return results;
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             return Collections.emptyList();
         }
     }

@@ -46,7 +46,7 @@ import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-//@Category(ExternalDB.class)
+@Category(ExternalDB.class)
 public class MongodbQueryTest {
 
     private final Mongo mongo;

@@ -16,8 +16,9 @@ import java.util.List;
 import org.bson.BSONObject;
 
 /**
- *  An aggregation projection operation
- * @author Komi Innocent <komi.innocent@gmail.com>
+ * An aggregation projection operation
+ *
+ * @author Komi Innocent
  */
 public class ProjectOperation<T> implements AggregationOperation<T> {
 

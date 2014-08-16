@@ -9,7 +9,7 @@ import com.mysema.query.types.Path;
 
 /**
  *  List of aggregation stages that should be performed by an aggregation Operation
- * @author Komi Serge Innocent <komi.innocent@gmail.com>
+ * @author Komi Innocent 
  */
 public class Aggregation {
 
