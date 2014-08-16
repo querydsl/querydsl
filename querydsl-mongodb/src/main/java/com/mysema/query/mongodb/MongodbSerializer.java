@@ -41,7 +41,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.Visitor; 
+import com.mysema.query.types.Visitor;
 
 /**
  * Serializes the given Querydsl query to a DBObject query for MongoDB
@@ -68,7 +68,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public Object visit(Constant<?> expr, Void context) {
         if (Enum.class.isAssignableFrom(expr.getType())) {
-            return ((Enum<?>)expr.getConstant()).name();
+            return ((Enum<?>) expr.getConstant()).name();
         } else {
             return expr.getConstant();
         }
@@ -105,29 +105,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         Operator<?> op = expr.getOperator();
         if (op == Ops.EQ) {
             if (expr.getArg(0) instanceof Operation) {
-                Operation<?> lhs = (Operation<?>) expr.getArg(0); 
+                Operation<?> lhs = (Operation<?>) expr.getArg(0);
                 if (lhs.getOperator() == Ops.COL_SIZE || lhs.getOperator() == Ops.ARRAY_SIZE) {
                     return asDBObject(asDBKey(lhs, 0), asDBObject("$size", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.DAY_OF_YEAR) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$dayOfYear", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.DAY_OF_MONTH) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$dayOfMonth", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.DAY_OF_WEEK) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$dayOfWeek", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.YEAR) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$year", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.MONTH) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$month", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.WEEK) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$week", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.HOUR) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$hour", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.MINUTE) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$minute", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.SECOND) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$second", asDBValue(expr, 1)));
-                } else if (lhs.getOperator() == Ops.DateTimeOps.MILLISECOND) {
-                    return asDBObject(asDBKey(lhs, 0), asDBObject("$millisecond", asDBValue(expr, 1)));
                 } else {
                     throw new UnsupportedOperationException("Illegal operation " + expr);
                 }
@@ -177,7 +157,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             list.add(handle(expr.getArg(1)));
             return asDBObject("$or", list);
 
-        } else if (op == Ops.NE) { 
+        } else if (op == Ops.NE) {
             if (isReference(expr, 0)) {
                 return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asReference(expr, 1)));
             } else {
@@ -217,7 +197,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.LIKE) {
-            String regex = ExpressionUtils.likeToRegex((Expression)expr.getArg(1)).toString();
+            String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
             return asDBObject(asDBKey(expr, 0), Pattern.compile(regex));
 
         } else if (op == Ops.BETWEEN) {
@@ -297,13 +277,50 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
         } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
+        } else if (op == Ops.DateTimeOps.DAY_OF_YEAR) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$dayOfYear", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.DAY_OF_MONTH) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$dayOfMonth", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.DAY_OF_WEEK) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$dayOfWeek", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.YEAR) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$year", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.MONTH) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$month", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.WEEK) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$week", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.HOUR) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$hour", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.MINUTE) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$minute", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.SECOND) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$second", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.DateTimeOps.MILLISECOND) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$millisecond", "$" + asDBKey(expr, 0)));
+        } else if (op == Ops.ALIAS) {
+
+            if (expr.getArg(0) instanceof Operation) {
+                Operation<?> lhs = (Operation<?>) expr.getArg(0);
+
+                Path<?> path = (Path<?>) lhs.getArg(0);
+                path.getMetadata().getName();
+
+                DBObject o = (DBObject) visit(lhs, context);
+                DBObject o2 = (DBObject) o.get(path.getMetadata().getName());
+
+                return asDBObject(asDBKey(expr, 1), o2);
+
+            } else {
+                throw new UnsupportedOperationException("Illegal operation " + expr);
+            }
+
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
-    
+
     protected DBRef asReference(Operation<?> expr, int constIndex) {
-        return asReference(((Constant<?>)expr.getArg(constIndex)).getConstant());
+        return asReference(((Constant<?>) expr.getArg(constIndex)).getConstant());
     }
 
     protected DBRef asReference(Object constant) {
@@ -324,7 +341,6 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         // override in subclass
         return false;
     }
-
 
     @Override
     public String visit(Path<?> expr, Void context) {

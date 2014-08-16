@@ -224,21 +224,17 @@ public class MongodbSerializerTest {
     @Test
     public void DateOperators() { 
         QDates dates=QDates.dates; 
-        assertQuery(dates.date.dayOfMonth().eq(11), dbo("date", dbo("$dayOfMonth",11)));
-        assertQuery(dates.date.dayOfWeek().eq(3), dbo("date", dbo("$dayOfWeek",3)));
-        assertQuery(dates.date.year().eq(2014), dbo("date", dbo("$year",2014)));
-        assertQuery(dates.date.month().eq(10), dbo("date", dbo("$month",10)));
-        assertQuery(dates.date.week().eq(50), dbo("date", dbo("$week",50)));
-        assertQuery(dates.date.hour().eq(20), dbo("date", dbo("$hour",20)));
-        assertQuery(dates.date.minute().eq(56), dbo("date", dbo("$minute",56)));
-        assertQuery(dates.date.second().eq(20), dbo("date", dbo("$second",20)));
-        assertQuery(dates.date.milliSecond().eq(200), dbo("date", dbo("$millisecond",200)));
-        assertQuery(dates.date.dayOfMonth().eq(11).not(), dbo("date", dbo("$ne",dbo("$dayOfMonth",11))));
-        assertQuery(dates.date.dayOfMonth().eq(11).and(dates.date.dayOfYear().eq(225)),
-                dbo("$and", dblist(
-                  dbo("date", dbo("$dayOfMonth", 11)),
-                  dbo("date", dbo("$dayOfYear", 225)))));
-
+        assertQuery(dates.date.dayOfMonth().as("day"), dbo("day", dbo("$dayOfMonth","$date")));
+        assertQuery(dates.date.dayOfMonth(), dbo("date", dbo("$dayOfMonth","$date")));
+        assertQuery(dates.date.dayOfWeek(), dbo("date", dbo("$dayOfWeek","$date")));
+        assertQuery(dates.date.year(), dbo("date", dbo("$year","$date")));
+        assertQuery(dates.date.month(), dbo("date", dbo("$month","$date")));
+        assertQuery(dates.date.week(), dbo("date", dbo("$week","$date")));
+        assertQuery(dates.date.hour(), dbo("date", dbo("$hour","$date")));
+        assertQuery(dates.date.minute(), dbo("date", dbo("$minute","$date")));
+        assertQuery(dates.date.second(), dbo("date", dbo("$second","$date")));
+        assertQuery(dates.date.milliSecond(), dbo("date", dbo("$millisecond","$date")));
+       
     }
 
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {

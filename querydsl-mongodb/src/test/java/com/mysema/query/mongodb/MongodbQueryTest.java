@@ -13,15 +13,14 @@
  */
 package com.mysema.query.mongodb;
 
-import java.net.UnknownHostException;
-import java.util.*;
-
 import com.google.common.collect.Lists;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
+import com.mysema.query.mongodb.aggregation.Aggregation;
+import com.mysema.query.mongodb.aggregation.AggregationOperation;
 import com.mysema.query.mongodb.domain.*;
 import com.mysema.query.mongodb.domain.User.Gender;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
@@ -30,18 +29,24 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.testutil.ExternalDB;
+import java.net.UnknownHostException;
+import java.util.*;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.*;
 
-@Category(ExternalDB.class)
+//@Category(ExternalDB.class)
 public class MongodbQueryTest {
 
     private final Mongo mongo;
@@ -82,7 +87,7 @@ public class MongodbQueryTest {
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
     }
 
-    @Test
+   @Test
     public void List_Keys() {
         User u = where(user.firstName.eq("Jaakko")).list(user.firstName, user.mainAddress().street).get(0);
         assertEquals("Jaakko", u.getFirstName());
@@ -91,21 +96,21 @@ public class MongodbQueryTest {
         assertNull(u.getMainAddress().postCode);
     }
 
-    @Test
+   @Test
     public void SingleResult_Keys() {
         User u = where(user.firstName.eq("Jaakko")).singleResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
 
-    @Test
+   @Test
     public void UniqueResult_Keys() {
         User u = where(user.firstName.eq("Jaakko")).uniqueResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
 
-    @Test
+   @Test
     public void List_Deep_Keys() {
         User u = where(user.firstName.eq("Jaakko")).singleResult(user.addresses.any().street);
         for (Address a : u.getAddresses()) {
@@ -114,22 +119,22 @@ public class MongodbQueryTest {
         }
     }
 
-    @Test
+   @Test
     public void Contains() {
         assertQuery(user.friends.contains(u1), u3, u4, u2);
     }
 
-    @Test
+   @Test
     public void Contains2() {
         assertQuery(user.friends.contains(u4));
     }
 
-    @Test
+   @Test
     public void NotContains() {
         assertQuery(user.friends.contains(u1).not(), u1);
     }
 
-    @Test
+   @Test
     public void Contains_Key() {
         MapEntity entity = new MapEntity();
         entity.getProperties().put("key", "value");
@@ -142,64 +147,64 @@ public class MongodbQueryTest {
         assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key2")).exists());
     }
 
-    @Test
+   @Test
     public void Equals_Ignore_Case() {
         assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).exists());
         assertFalse(where(user.firstName.equalsIgnoreCase("AaKk")).exists());
     }
 
-    @Test
+   @Test
     public void Equals_and_Between() {
         assertQuery(user.firstName.startsWith("Jaa").and(user.age.between(20, 30)), u2, u1);
         assertQuery(user.firstName.startsWith("Jaa").and(user.age.goe(20).and(user.age.loe(30))), u2, u1);
     }
 
-    @Test
+   @Test
     public void Exists() {
         assertTrue(where(user.firstName.eq("Jaakko")).exists());
         assertFalse(where(user.firstName.eq("JaakkoX")).exists());
         assertTrue(where(user.id.eq(u1.getId())).exists());
     }
 
-    @Test
+   @Test
     public void Find_By_Id() {
         assertNotNull(where(user.id.eq(u1.getId())).singleResult() != null);
     }
 
-    @Test
+   @Test
     public void NotExists() {
         assertFalse(where(user.firstName.eq("Jaakko")).notExists());
         assertTrue(where(user.firstName.eq("JaakkoX")).notExists());
     }
 
-    @Test
+   @Test
     public void UniqueResult() {
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
     }
 
-    @Test(expected=NonUniqueResultException.class)
+   @Test(expected=NonUniqueResultException.class)
     public void UniqueResultContract() {
         where(user.firstName.isNotNull()).uniqueResult();
     }
 
-    @Test
+   @Test
     public void SingleResult() {
         where(user.firstName.isNotNull()).singleResult();
     }
 
-    @Test
+   @Test
     public void LongPath() {
         assertEquals(2, query().where(user.mainAddress().city().name.eq("Helsinki")).count());
         assertEquals(2, query().where(user.mainAddress().city().name.eq("Tampere")).count());
     }
 
-    @Test
+   @Test
     public void CollectionPath() {
         assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
     }
 
-    @Test
+   @Test
     public void Dates() {
         long current = System.currentTimeMillis();
         int dayInMillis = 24 * 60 * 60 * 1000;
@@ -213,8 +218,31 @@ public class MongodbQueryTest {
         assertEquals(d, query(dates).where(dates.date.between(start, end)).singleResult());
         assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).count());
     }
-
+    
     @Test
+    public void DatesOperatorAggregationTest() {
+        DateTime dt = new DateTime("2014-08-11T14:39:45.618-01:00");
+        final int YEAR=dt.getYear();
+        final int DAY_OF_MONTH=dt.getDayOfMonth();
+        final int DAY_OF_WEEK=dt.getDayOfWeek();
+        final int DAY_OF_YEAR=dt.getDayOfYear();
+         
+        Date result=dt.toDate();
+        ds.delete(ds.createQuery(Dates.class));
+        Dates d = new Dates();
+        d.setDate(result);
+        ds.save(d); 
+        ds.save(dt.plusYears(15).toDate()); 
+        
+        AggregationOperation<Dates> project=Aggregation.project()
+                .expression(dates.date.dayOfMonth().as("month"))
+                .expression(dates.date.dayOfYear().as("day"));
+        
+        assertEquals(DAY_OF_MONTH, query(dates).aggregate(project).list().get(0).getMonth().longValue());  
+        assertEquals(DAY_OF_YEAR, query(dates).aggregate(project).list().get(0).getDay().longValue());  
+    }
+
+   @Test
     public void ElemMatch() {
 //      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1"}}}
         assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1")).count());
@@ -226,18 +254,18 @@ public class MongodbQueryTest {
         assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00200")).count());
     }
 
-    @Test
+   @Test
     public void IndexedAccess() {
         assertEquals(1, query().where(user.addresses.get(0).street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.get(1).street.eq("Aakatu1")).count());
     }
 
-    @Test
+   @Test
     public void Count() {
         assertEquals(4, query().count());
     }
 
-    @Test
+   @Test
     public void Order() {
         List<User> users = query().orderBy(user.age.asc()).list();
         assertEquals(asList(u1, u2, u3, u4), users);
@@ -246,13 +274,13 @@ public class MongodbQueryTest {
         assertEquals(asList(u4, u3, u2, u1), users);
     }
 
-    @Test
+   @Test
     public void Restrict() {
         assertEquals(asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
         assertEquals(asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
     }
 
-    @Test
+   @Test
     public void ListResults() {
         SearchResults<User> results = query().limit(2).orderBy(user.age.asc()).listResults();
         assertEquals(4l, results.getTotal());
@@ -263,14 +291,14 @@ public class MongodbQueryTest {
         assertEquals(2, results.getResults().size());
     }
 
-    @Test
+   @Test
     public void EmptyResults() {
         SearchResults<User> results = query().where(user.firstName.eq("XXX")).listResults();
         assertEquals(0l, results.getTotal());
         assertEquals(Collections.emptyList(), results.getResults());
     }
 
-    @Test
+   @Test
     public void EqInAndOrderByQueries() {
         assertQuery(user.firstName.eq("Jaakko"), u1);
         assertQuery(user.firstName.equalsIgnoreCase("jaakko"), u1);
@@ -294,7 +322,7 @@ public class MongodbQueryTest {
 
     }
 
-    @Test
+   @Test
     public void RegexQueries() {
         assertQuery(user.firstName.startsWith("Jaan"), u3, u4);
         assertQuery(user.firstName.startsWith("jaan"));
@@ -310,7 +338,7 @@ public class MongodbQueryTest {
         assertQuery(user.firstName.matches(".*aa.*[^i]$"), u3, u4, u1);
     }
 
-    @Test
+   @Test
     public void Like() {
         assertQuery(user.firstName.like("Jaan"));
         assertQuery(user.firstName.like("Jaan%"), u3, u4);
@@ -319,40 +347,40 @@ public class MongodbQueryTest {
         assertQuery(user.lastName.like("%unen"), u2, u1);
     }
 
-    @Test
+   @Test
     public void IsNotNull() {
         assertQuery(user.firstName.isNotNull(), u3, u4, u2, u1);
     }
 
-    @Test
+   @Test
     public void IsNull() {
         assertQuery(user.firstName.isNull());
     }
 
-    @Test
+   @Test
     public void IsEmpty() {
         assertQuery(user.firstName.isEmpty());
     }
 
-    @Test
+   @Test
     public void isEmpty2() {
         assertQuery(user.friends.isEmpty(), u1);
     }
 
-    @Test
+   @Test
     public void Not() {
         assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
         assertQuery(user.firstName.ne("Jaakko").not(), u1);
         assertQuery(user.firstName.matches("Jaakko").not(), u3, u4, u2);
     }
 
-    @Test
+   @Test
     public void Or() {
         assertQuery(user.lastName.eq("Aakkonen").or(user.lastName.eq("BeekkoNen")), u3, u4);
     }
 
     //This is not supported yet
-//    @Test
+//   @Test
 //    public void UniqueResult() {
 //
 //        addUser("Dille", "Duplikaatti");
@@ -363,7 +391,7 @@ public class MongodbQueryTest {
 //
 //    }
 
-    @Test
+   @Test
     public void Iterate() {
         User a = addUser("A", "A");
         User b = addUser("A1", "B");
@@ -379,14 +407,14 @@ public class MongodbQueryTest {
         assertEquals(false, i.hasNext());
     }
 
-    @Test
+   @Test
     public void UniqueResultAndLimitAndOffset() {
         MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
         assertEquals(4, q.list().size());
         assertEquals(u1, q.list().get(0));
     }
 
-    @Test
+   @Test
     public void References() {
         for (User u : users) {
             if (u.getFriend() != null) {
@@ -396,7 +424,7 @@ public class MongodbQueryTest {
         }
     }
 
-    @Test
+   @Test
     public void Various() {
         StringPath str = user.lastName;
         List<Predicate> predicates = new ArrayList<Predicate>();
@@ -429,17 +457,17 @@ public class MongodbQueryTest {
         }
     }
 
-    @Test
+   @Test
     public void Enum_Eq() {
         assertQuery(user.gender.eq(Gender.MALE), u3, u4, u2, u1);
     }
 
-    @Test
+   @Test
     public void Enum_Ne() {
         assertQuery(user.gender.ne(Gender.MALE));
     }
 
-    @Test
+   @Test
     public void In_ObjectIds() {
         Item i = new Item();
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
@@ -449,7 +477,7 @@ public class MongodbQueryTest {
         assertTrue(where(item, item.ctds.contains(ObjectId.get())).count() == 0);
     }
 
-    @Test
+   @Test
     public void In_ObjectIds2() {
         Item i = new Item();
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
@@ -459,12 +487,12 @@ public class MongodbQueryTest {
         assertTrue(where(item, item.ctds.any().in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
     }
 
-    @Test
+   @Test
     public void Size() {
         assertQuery(user.addresses.size().eq(2), u1);
     }
 
-    @Test
+   @Test
     public void ReadPreference() {
         MorphiaQuery<User> query = query();
         query.setReadPreference(ReadPreference.primary());
