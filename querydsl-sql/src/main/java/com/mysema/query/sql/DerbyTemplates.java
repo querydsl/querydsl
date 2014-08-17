@@ -13,11 +13,11 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
-
-import java.sql.Types;
 
 /**
  * DerbyTemplates is an SQL dialect for Derby
@@ -53,7 +53,6 @@ public class DerbyTemplates extends SQLTemplates {
     public DerbyTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable("sysibm.sysdummy1");
-        addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
         setFunctionJoinsWrapped(true);
         setDefaultValues("\nvalues (default)");
@@ -106,6 +105,14 @@ public class DerbyTemplates extends SQLTemplates {
 
         // left via substr
         add(Ops.StringOps.LEFT, "substr({0},1,{1})");
+
+        addTypeNameToCode("smallint", Types.TINYINT, true);
+        addTypeNameToCode("long varchar for bit data", Types.LONGVARBINARY);
+        addTypeNameToCode("varchar () for bit data", Types.VARBINARY);
+        addTypeNameToCode("char () for bit data", Types.BINARY);
+        addTypeNameToCode("long varchar", Types.LONGVARCHAR, true);
+        addTypeNameToCode("object", Types.JAVA_OBJECT, true);
+        addTypeNameToCode("xml", Types.SQLXML,true);
     }
 
     @Override

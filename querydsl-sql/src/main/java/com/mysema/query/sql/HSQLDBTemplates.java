@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.types.Ops;
 
 /**
@@ -78,11 +80,19 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('ss', {0}, {1})");
 
         add(Ops.DateTimeOps.DATE, "convert({0}, date)");
+
+        addTypeNameToCode("character", Types.CHAR, true);
+        addTypeNameToCode("float", Types.DOUBLE, true);
+        addTypeNameToCode("real", Types.DOUBLE);
+        addTypeNameToCode("nvarchar", Types.VARCHAR);
     }
 
-    @Override
-    public String getTypeForCast(Class<?> cl) {
-        return (cl.equals(String.class)) ? "varchar(10)" : getTypeForClass(cl);
+    public String getCastTypeNameForCode(int code) {
+        if (code == Types.VARCHAR) {
+            return "varchar(10)";
+        } else {
+            return super.getCastTypeNameForCode(code);
+        }
     }
 
 }

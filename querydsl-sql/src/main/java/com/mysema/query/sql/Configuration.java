@@ -13,8 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +22,6 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 import com.mysema.query.sql.types.Null;
@@ -39,22 +37,6 @@ import com.mysema.query.types.Path;
 public final class Configuration {
 
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
-
-    private static final Map<String, Integer> typeConstants = Maps.newHashMap();
-
-    static {
-        try {
-            for (Field field : java.sql.Types.class.getDeclaredFields()) {
-                if (field.getType().equals(Integer.TYPE)) {
-                    typeConstants.put(field.getName().toLowerCase(), field.getInt(null));
-                }
-            }
-            typeConstants.put("int4", Types.INTEGER);
-            typeConstants.put("int8", Types.BIGINT);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-    }
 
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
 
@@ -154,12 +136,14 @@ public final class Configuration {
                 return clazz;
             }
             if (sqlType == Types.ARRAY) {
-                for (Map.Entry<String, Integer> entry : typeConstants.entrySet()) {
-                    if (typeName.toLowerCase().contains(entry.getKey())) {
-                        Class<?> componentType = jdbcTypeMapping.get(entry.getValue(), size, digits);
-                        return Array.newInstance(componentType, 0).getClass();
-                    }
+                if (typeName.startsWith("_")) {
+                    typeName = typeName.substring(1);
+                } else if (typeName.endsWith(" array")) {
+                    typeName = typeName.substring(0, typeName.length() - 6);
                 }
+                int sqlComponentType = templates.getCodeForTypeName(typeName);
+                Class<?> componentType = jdbcTypeMapping.get(sqlComponentType, size, digits);
+                return Array.newInstance(componentType, 0).getClass();
             }
         }
         // sql type mapped class
@@ -206,8 +190,7 @@ public final class Configuration {
     /**
      * Get the schema/table override
      *
-     * @param schema
-     * @param table
+     * @param key
      * @return
      */
     @Nullable
@@ -288,6 +271,27 @@ public final class Configuration {
             }
         }
         return javaTypeMapping.getType(clazz);
+    }
+
+    /**
+     * Get the SQL type name for the given java type
+     *
+     * @param type
+     * @return
+     */
+    public String getTypeName(Class<?> type) {
+        int jdbcType = jdbcTypeMapping.get(type);
+        return templates.getTypeNameForCode(jdbcType);
+    }
+
+    /**
+     *
+     * @param type
+     * @return
+     */
+    public String getTypeNameForCast(Class<?> type) {
+        int jdbcType = jdbcTypeMapping.get(type);
+        return templates.getCastTypeNameForCode(jdbcType);
     }
 
     /**
@@ -478,7 +482,7 @@ public final class Configuration {
     }
 
     /**
-     * @param listeners
+     * @param listener
      */
     public void addListener(SQLListener listener) {
         listeners.add(listener);

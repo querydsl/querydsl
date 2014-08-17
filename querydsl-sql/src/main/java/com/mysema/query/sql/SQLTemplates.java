@@ -14,17 +14,13 @@
 package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -33,10 +29,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.*;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -89,7 +81,9 @@ public class SQLTemplates extends Templates {
 
     }
 
-    private final Map<Class<?>, String> class2type = Maps.newHashMap();
+    private final Map<String, Integer> typeNameToCode = Maps.newHashMap();
+
+    private final Map<Integer, String> codeToTypeName = Maps.newHashMap();
 
     private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = Maps.newHashMap();
 
@@ -342,27 +336,43 @@ public class SQLTemplates extends Templates {
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
 
-        for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
-                Double.class, Float.class, Integer.class, Long.class,
-                Short.class, String.class }) {
-            class2type.put(cl, cl.getSimpleName().toLowerCase(Locale.ENGLISH));
-        }
-
-        class2type.put(Boolean.class, "bit");
-        class2type.put(Byte.class, "tinyint");
-        class2type.put(Long.class, "bigint");
-        class2type.put(BigInteger.class, "bigint");
-        class2type.put(BigDecimal.class, "decimal");
-        class2type.put(Short.class, "smallint");
-        class2type.put(String.class, "varchar");
-        class2type.put(java.sql.Date.class, "date");
-        class2type.put(java.sql.Time.class, "time");
-        class2type.put(java.sql.Timestamp.class, "timestamp");
-
-        class2type.put(LocalDateTime.class, "timestamp");
-        class2type.put(LocalDate.class, "date");
-        class2type.put(LocalTime.class, "time");
-        class2type.put(DateTime.class, "timestamp");
+        // default type names
+        addTypeNameToCode("null", Types.NULL);
+        addTypeNameToCode("char", Types.CHAR);
+        addTypeNameToCode("datalink", Types.DATALINK);
+        addTypeNameToCode("numeric", Types.NUMERIC);
+        addTypeNameToCode("decimal", Types.DECIMAL);
+        addTypeNameToCode("integer", Types.INTEGER);
+        addTypeNameToCode("smallint", Types.SMALLINT);
+        addTypeNameToCode("float", Types.FLOAT);
+        addTypeNameToCode("real", Types.REAL);
+        addTypeNameToCode("double", Types.DOUBLE);
+        addTypeNameToCode("varchar", Types.VARCHAR);
+        addTypeNameToCode("longnvarchar", Types.LONGNVARCHAR);
+        addTypeNameToCode("nchar", Types.NCHAR);
+        addTypeNameToCode("boolean", Types.BOOLEAN);
+        addTypeNameToCode("nvarchar", Types.NVARCHAR);
+        addTypeNameToCode("rowid", Types.ROWID);
+        addTypeNameToCode("timestamp", Types.TIMESTAMP);
+        addTypeNameToCode("bit", Types.BIT);
+        addTypeNameToCode("time", Types.TIME);
+        addTypeNameToCode("tinyint", Types.TINYINT);
+        addTypeNameToCode("other", Types.OTHER);
+        addTypeNameToCode("bigint", Types.BIGINT);
+        addTypeNameToCode("longvarbinary", Types.LONGVARBINARY);
+        addTypeNameToCode("varbinary", Types.VARBINARY);
+        addTypeNameToCode("date", Types.DATE);
+        addTypeNameToCode("binary", Types.BINARY);
+        addTypeNameToCode("longvarchar", Types.LONGVARCHAR);
+        addTypeNameToCode("struct", Types.STRUCT);
+        addTypeNameToCode("array", Types.ARRAY);
+        addTypeNameToCode("java_object", Types.JAVA_OBJECT);
+        addTypeNameToCode("distinct", Types.DISTINCT);
+        addTypeNameToCode("ref", Types.REF);
+        addTypeNameToCode("blob", Types.BLOB);
+        addTypeNameToCode("clob", Types.CLOB);
+        addTypeNameToCode("nclob", Types.NCLOB);
+        addTypeNameToCode("sqlxml", Types.SQLXML);
     }
 
     public String serialize(String literal, int jdbcType) {
@@ -405,10 +415,15 @@ public class SQLTemplates extends Templates {
         return builder.toString();
     }
 
-    protected void addClass2TypeMappings(String type, Class<?>... classes) {
-        for (Class<?> cl : classes) {
-            class2type.put(cl, type);
+    protected void addTypeNameToCode(String type, int code, boolean override) {
+        typeNameToCode.put(type, code);
+        if (override || !codeToTypeName.containsKey(code)) {
+            codeToTypeName.put(code, type);
         }
+    }
+
+    protected void addTypeNameToCode(String type, int code) {
+        addTypeNameToCode(type, code, false);
     }
 
     protected void add(Map<Operator<?>, String> ops) {
@@ -568,17 +583,26 @@ public class SQLTemplates extends Templates {
         return tableOverrides;
     }
 
+    @Deprecated
     public String getTypeForCast(Class<?> cl) {
         return getTypeForClass(cl);
     }
 
+    @Deprecated
     public String getTypeForClass(Class<?> cl) {
-        Class<?> clazz = Primitives.wrap(cl);
-        if (class2type.containsKey(clazz)) {
-            return class2type.get(clazz);
-        } else {
-            throw new IllegalArgumentException("Got no type for " + clazz.getName());
-        }
+        throw new UnsupportedOperationException();
+    }
+
+    public String getTypeNameForCode(int code) {
+        return codeToTypeName.get(code);
+    }
+
+    public String getCastTypeNameForCode(int code) {
+        return getTypeNameForCode(code);
+    }
+
+    public int getCodeForTypeName(String type) {
+        return typeNameToCode.get(type);
     }
 
     public final String getUpdate() {

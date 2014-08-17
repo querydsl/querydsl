@@ -51,7 +51,6 @@ public class SQLServerTemplates extends SQLTemplates {
 
     public SQLServerTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
-        addClass2TypeMappings("decimal", Double.class);
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);
@@ -114,6 +113,34 @@ public class SQLServerTemplates extends SQLTemplates {
 
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
         add(Ops.DateTimeOps.CURRENT_DATE, "cast(getdate() as date)");
+
+        addTypeNameToCode("decimal", Types.DOUBLE, true);
+        addTypeNameToCode("tinyint identity", Types.TINYINT);
+        addTypeNameToCode("bigint identity", Types.BIGINT);
+        addTypeNameToCode("timestamp", Types.BINARY);
+        addTypeNameToCode("nchar", Types.CHAR);
+        addTypeNameToCode("uniqueidentifier", Types.CHAR);
+        addTypeNameToCode("numeric() identity", Types.NUMERIC);
+        addTypeNameToCode("money", Types.DECIMAL);
+        addTypeNameToCode("smallmoney", Types.DECIMAL);
+        addTypeNameToCode("decimal() identity", Types.DECIMAL);
+        addTypeNameToCode("int", Types.INTEGER);
+        addTypeNameToCode("int identity", Types.INTEGER);
+        addTypeNameToCode("smallint identity", Types.SMALLINT);
+        addTypeNameToCode("float", Types.DOUBLE);
+        addTypeNameToCode("nvarchar", Types.VARCHAR);
+        addTypeNameToCode("date", Types.VARCHAR);
+        addTypeNameToCode("time", Types.VARCHAR);
+        addTypeNameToCode("datetime2", Types.VARCHAR);
+        addTypeNameToCode("datetimeoffset", Types.VARCHAR);
+        addTypeNameToCode("sysname", Types.VARCHAR);
+        addTypeNameToCode("sql_variant", Types.VARCHAR);
+        addTypeNameToCode("datetime", Types.TIMESTAMP);
+        addTypeNameToCode("smalldatetime", Types.TIMESTAMP);
+        addTypeNameToCode("image", Types.BLOB);
+        addTypeNameToCode("ntext", Types.CLOB);
+        addTypeNameToCode("xml", Types.CLOB);
+        addTypeNameToCode("text", Types.CLOB);
     }
 
     @Override
