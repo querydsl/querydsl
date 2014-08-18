@@ -87,6 +87,7 @@ public class HSQLDBTemplates extends SQLTemplates {
         addTypeNameToCode("nvarchar", Types.VARCHAR);
     }
 
+    @Override
     public String getCastTypeNameForCode(int code) {
         if (code == Types.VARCHAR) {
             return "varchar(10)";

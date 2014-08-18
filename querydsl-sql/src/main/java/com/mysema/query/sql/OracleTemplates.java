@@ -133,6 +133,7 @@ public class OracleTemplates extends SQLTemplates {
         addTypeNameToCode("varchar2", Types.VARCHAR);
     }
 
+    @Override
     public String getCastTypeNameForCode(int code) {
         switch (code) {
             case Types.TINYINT:  return "number(3,0)";

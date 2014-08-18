@@ -94,6 +94,15 @@ public class FirebirdTemplates extends SQLTemplates {
     }
 
     @Override
+    public String getCastTypeNameForCode(int code) {
+        if (code == Types.VARCHAR) {
+            return "varchar(256)";
+        } else {
+            return super.getCastTypeNameForCode(code);
+        }
+    }
+
+    @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
         QueryModifiers mod = metadata.getModifiers();
         if (mod.isRestricting()) {

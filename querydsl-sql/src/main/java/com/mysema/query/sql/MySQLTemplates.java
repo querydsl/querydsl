@@ -136,7 +136,7 @@ public class MySQLTemplates extends SQLTemplates {
         return builder.toString();
     }
 
-
+    @Override
     public String getCastTypeNameForCode(int code) {
         switch (code) {
             case Types.TINYINT:
