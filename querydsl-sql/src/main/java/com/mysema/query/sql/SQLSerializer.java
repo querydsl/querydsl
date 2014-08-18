@@ -753,7 +753,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (stage == Stage.SELECT
                 && !Null.class.isInstance(constant)
                 && configuration.getTemplates().isWrapSelectParameters()) {
-                String typeName = templates.getTypeForCast(constant.getClass());
+                String typeName = configuration.getTypeNameForCast(constant.getClass());
                 Expression type = Expressions.constant(typeName);
                 super.visitOperation(constant.getClass(), SQLOps.CAST, ImmutableList.<Expression<?>>of(Q, type));
             } else {
