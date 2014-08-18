@@ -602,7 +602,11 @@ public class SQLTemplates extends Templates {
     }
 
     public int getCodeForTypeName(String type) {
-        return typeNameToCode.get(type);
+        Integer code = typeNameToCode.get(type);
+        if (code == null) {
+            throw new IllegalArgumentException("No code for " + type);
+        }
+        return code.intValue();
     }
 
     public final String getUpdate() {

@@ -23,7 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.mysema.query.sql.types.ArrayType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
@@ -76,6 +78,16 @@ public final class Configuration {
         }
         for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
             schemaTables.put(entry.getKey(), entry.getValue());
+        }
+
+        List<Class<?>> classes = ImmutableList.<Class<?>>of(String.class, Long.class, Integer.class, Short.class,
+                Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
+                java.sql.Time.class, Double.class, Float.class);
+        for (Class<?> cl : classes) {
+            int code = jdbcTypeMapping.get(cl);
+            String name = templates.getTypeNameForCode(code);
+            Class<?> arrType = Array.newInstance(cl, 0).getClass();
+            javaTypeMapping.register(new ArrayType(arrType, name));
         }
     }
 
