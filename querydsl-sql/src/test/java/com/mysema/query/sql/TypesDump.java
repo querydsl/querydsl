@@ -19,7 +19,7 @@ public class TypesDump {
             }
         }
 
-        Connections.initSQLServer();
+        Connections.initCubrid();
         try {
             Connection c = Connections.getConnection();
             DatabaseMetaData m = c.getMetaData();
@@ -34,6 +34,7 @@ public class TypesDump {
                         String suffix = rs.getString("LITERAL_SUFFIX");
                         String jdbcTypeStr = jdbcTypeField != null ? ("Types." + jdbcTypeField) : String.valueOf(jdbcType);
                         System.out.println("addTypeNameToCode(\"" + name.toLowerCase() + "\", " + jdbcTypeStr + ");");
+                        //System.out.println(rs.getInt("PRECISION"));
                     }
                 }
             } finally {
