@@ -13,12 +13,9 @@
  */
 package com.mysema.codegen;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import javax.lang.model.SourceVersion;
+import javax.tools.*;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
@@ -28,14 +25,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.jar.Manifest;
-
-import javax.lang.model.SourceVersion;
-import javax.tools.DiagnosticListener;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 
 import com.google.common.base.Joiner;
 
@@ -75,10 +64,14 @@ public class SimpleCompiler implements JavaCompiler {
                     paths.add(new File(decodedPath).getAbsolutePath());
                 }
             } else {
-                for (URL url : cl.getURLs()) {
-                    String decodedPath = URLDecoder.decode(url.getPath(), "UTF-8");
-                    paths.add(new File(decodedPath).getAbsolutePath());
-                }    
+                ClassLoader c = cl;
+                while (c instanceof URLClassLoader) {
+                    for (URL url : ((URLClassLoader)c).getURLs()) {
+                        String decodedPath = URLDecoder.decode(url.getPath(), "UTF-8");
+                        paths.add(new File(decodedPath).getAbsolutePath());
+                    }
+                    c = c.getParent();
+                }
             }            
             return pathJoiner.join(paths);
         } catch (UnsupportedEncodingException e) {
