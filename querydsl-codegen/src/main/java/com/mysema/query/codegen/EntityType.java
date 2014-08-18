@@ -13,15 +13,9 @@
  */
 package com.mysema.query.codegen;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import javax.annotation.Nullable;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.Constructor;
@@ -126,6 +120,15 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     public Collection<Annotation> getAnnotations() {
         return annotations.values();
+    }
+
+    @Override
+    public Type as(TypeCategory category) {
+        if (getCategory() == category) {
+            return this;
+        } else {
+            return super.as(category);
+        }
     }
 
     @Override
