@@ -13,50 +13,22 @@
  */
 package com.mysema.query.lucene;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
-
-import javax.annotation.Nullable;
-
-import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.NumericRangeQuery;
-import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.PrefixQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.search.WildcardQuery;
-import org.apache.lucene.util.BytesRef;
-import org.apache.lucene.util.NumericUtils;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
+import com.mysema.query.types.*;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.util.BytesRef;
+import org.apache.lucene.util.NumericUtils;
 
 /**
  * Serializes Querydsl queries to Lucene queries.
@@ -454,14 +426,16 @@ public class LuceneSerializer {
      * @return
      */
     protected String toField(Path<?> path) {
-        String rv = path.getMetadata().getName();
-        if (path.getMetadata().getParent() != null) {
-            Path<?> parent = path.getMetadata().getParent();
-            if (parent.getMetadata().getPathType() != PathType.VARIABLE) {
-                rv = toField(parent) + "." + rv;
-            }
+        PathMetadata md = path.getMetadata();
+        if (md.getPathType() == PathType.PROPERTY) {
+            return toField(md.getParent()) + "."  + md.getName();
+        } else if (md.getPathType() == PathType.COLLECTION_ANY) {
+            return toField(md.getParent());
+        } else if (md.getPathType() == PathType.VARIABLE) {
+            return md.getName();
+        } else {
+            throw new IllegalArgumentException("Unsupported path " + path);
         }
-        return rv;
     }
 
     private void verifyArguments(Operation<?> operation) {
