@@ -17,8 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
-import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionBase;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -29,7 +28,7 @@ import com.mysema.query.types.Visitor;
  *
  * @param <T>
  */
-public class EnumConversion<T> extends ExpressionBase<T> implements FactoryExpression<T> {
+public class EnumConversion<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = 7840412008633901748L;
 

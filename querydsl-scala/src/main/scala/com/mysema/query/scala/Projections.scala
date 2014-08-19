@@ -35,7 +35,7 @@ trait Projections {
    * @param mf
    * @return
    */
-  def create[T](expressions: Ex[_]*)(implicit mf: Manifest[T]) = {
+  def create[T](expressions: Ex[_]*)(implicit mf: Manifest[T]): ExpressionBase[_] = {
     val clazz = mf.runtimeClass.asInstanceOf[Class[T]]
     try {
       clazz.getConstructor()

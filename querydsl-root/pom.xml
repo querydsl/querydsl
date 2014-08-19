@@ -214,6 +214,19 @@
                     <exclude>com/mysema/query/SearchResults</exclude>
                     <exclude>com/mysema/query/sql/SQLListeners</exclude>
                     <exclude>com/mysema/query/apt/TypeExtractor</exclude>
+
+                    <exclude>com/mysema/query/sql/QBeans</exclude>
+                    <exclude>com/mysema/query/support/EnumConversion</exclude>
+                    <exclude>com/mysema/query/support/NumberConversion</exclude>
+                    <exclude>com/mysema/query/support/NumberConversions</exclude>
+                    <exclude>com/mysema/query/types/ArrayConstructorExpression</exclude>
+                    <exclude>com/mysema/query/types/ConstructorExpression</exclude>
+                    <exclude>com/mysema/query/types/FactoryExpressionBase</exclude>
+                    <exclude>com/mysema/query/types/MappingProjection</exclude>
+                    <exclude>com/mysema/query/types/QBean</exclude>
+                    <exclude>com/mysema/query/types/QList</exclude>
+                    <exclude>com/mysema/query/types/QMap</exclude>
+                    <exclude>com/mysema/query/types/QTuple</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
