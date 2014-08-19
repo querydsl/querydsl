@@ -427,14 +427,17 @@ public class LuceneSerializer {
      */
     protected String toField(Path<?> path) {
         PathMetadata md = path.getMetadata();
-        if (md.getPathType() == PathType.PROPERTY) {
-            return toField(md.getParent()) + "."  + md.getName();
-        } else if (md.getPathType() == PathType.COLLECTION_ANY) {
+        if (md.getPathType() == PathType.COLLECTION_ANY) {
             return toField(md.getParent());
-        } else if (md.getPathType() == PathType.VARIABLE) {
-            return md.getName();
         } else {
-            throw new IllegalArgumentException("Unsupported path " + path);
+            String rv = md.getName();
+            if (md.getParent() != null) {
+                Path<?> parent = md.getParent();
+                if (parent.getMetadata().getPathType() != PathType.VARIABLE) {
+                    rv = toField(parent) + "." + rv;
+                }
+            }
+            return rv;
         }
     }
 
