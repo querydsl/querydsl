@@ -21,6 +21,7 @@ import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.lucene.QueryElement;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.CollectionPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
@@ -62,6 +63,7 @@ public class LuceneSerializerTest {
     private StringPath publisher;
     private NumberPath<Integer> year;
     private NumberPath<Double> gross;
+    private CollectionPath<String, StringPath> titles;
 
     private NumberPath<Long> longField;
     private NumberPath<Short> shortField;
@@ -112,6 +114,7 @@ public class LuceneSerializerTest {
         year = entityPath.getNumber("year", Integer.class);
         rating = entityPath.getString("rating");
         gross = entityPath.getNumber("gross", Double.class);
+        titles = entityPath.getCollection("title", String.class, StringPath.class);
 
         longField = entityPath.getNumber("longField", Long.class);
         shortField = entityPath.getNumber("shortField", Short.class);
@@ -628,6 +631,11 @@ public class LuceneSerializerTest {
     @Ignore
     public void Boost() throws Exception {
         fail("Not yet implemented!");
+    }
+
+    @Test
+    public void PathAny() throws Exception {
+        testQuery(titles.any().eq("Jurassic"), "title:jurassic", 1);
     }
 
     private boolean unsupportedOperation(Predicate filter) {
