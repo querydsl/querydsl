@@ -292,7 +292,10 @@ public final class Configuration {
      * @return
      */
     public String getTypeName(Class<?> type) {
-        int jdbcType = jdbcTypeMapping.get(type);
+        Integer jdbcType = jdbcTypeMapping.get(type);
+        if (jdbcType == null) {
+            jdbcType = javaTypeMapping.getType(type).getSQLTypes()[0];
+        }
         return templates.getTypeNameForCode(jdbcType);
     }
 
@@ -302,7 +305,10 @@ public final class Configuration {
      * @return
      */
     public String getTypeNameForCast(Class<?> type) {
-        int jdbcType = jdbcTypeMapping.get(type);
+        Integer jdbcType = jdbcTypeMapping.get(type);
+        if (jdbcType == null) {
+            jdbcType = javaTypeMapping.getType(type).getSQLTypes()[0];
+        }
         return templates.getCastTypeNameForCode(jdbcType);
     }
 
