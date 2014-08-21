@@ -86,6 +86,7 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
 
+        addTypeNameToCode("smallint", Types.BIT, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);
         addTypeNameToCode("decimal", Types.DOUBLE, true);
         addTypeNameToCode("blob sub_type 0", Types.LONGVARBINARY);

@@ -416,7 +416,9 @@ public class SQLTemplates extends Templates {
     }
 
     protected void addTypeNameToCode(String type, int code, boolean override) {
-        typeNameToCode.put(type, code);
+        if (!typeNameToCode.containsKey(type)) {
+            typeNameToCode.put(type, code);
+        }
         if (override || !codeToTypeName.containsKey(code)) {
             codeToTypeName.put(code, type);
         }

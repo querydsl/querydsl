@@ -115,8 +115,8 @@ public class PostgresTemplates extends SQLTemplates {
         addTypeNameToCode("name", Types.VARCHAR);
         addTypeNameToCode("int8", Types.BIGINT, true);
         addTypeNameToCode("bigserial", Types.BIGINT);
-        addTypeNameToCode("int2", Types.TINYINT, true);
         addTypeNameToCode("int2", Types.SMALLINT, true);
+        addTypeNameToCode("int2", Types.TINYINT, true); // secondary mapping
         addTypeNameToCode("int4", Types.INTEGER, true);
         addTypeNameToCode("serial", Types.INTEGER);
         addTypeNameToCode("text", Types.VARCHAR);

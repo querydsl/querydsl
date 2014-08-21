@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql.codegen;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -20,20 +21,7 @@ import java.nio.charset.Charset;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.*;
 
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
@@ -43,21 +31,11 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.query.codegen.CodegenModule;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.TypeMappings;
-import com.mysema.query.sql.ColumnImpl;
-import com.mysema.query.sql.ColumnMetadata;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.support.ForeignKeyData;
-import com.mysema.query.sql.support.InverseForeignKeyData;
-import com.mysema.query.sql.support.NotNullImpl;
-import com.mysema.query.sql.support.PrimaryKeyData;
-import com.mysema.query.sql.support.SizeImpl;
+import com.mysema.query.codegen.*;
+import com.mysema.query.sql.*;
+import com.mysema.query.sql.support.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -76,6 +54,8 @@ import com.mysema.query.sql.support.SizeImpl;
 public class MetaDataExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
+
+    private final SQLTemplatesRegistry sqlTemplatesRegistry = new SQLTemplatesRegistry();
 
     private final SQLCodegenModule module = new SQLCodegenModule();
 
@@ -188,6 +168,13 @@ public class MetaDataExporter {
      * @throws SQLException
      */
     public void export(DatabaseMetaData md) throws SQLException {
+        SQLTemplates templates = sqlTemplatesRegistry.getTemplates(md);
+        if (templates != null) {
+            module.bind(Configuration.class, new Configuration(templates));
+        } else {
+            logger.info("Found no specific dialect for " + md.getDatabaseProductName());
+        }
+
         if (beanPackageName == null) {
             beanPackageName =  module.getPackageName();
         }
@@ -536,7 +523,7 @@ public class MetaDataExporter {
     /**
      * Set the Bean serializer class to create bean types as well
      *
-     * @param beanSerializer serializer for JavaBeans (default: null)
+     * @param beanSerializerClass serializer for JavaBeans (default: null)
      */
     public void setBeanSerializerClass(Class<? extends Serializer> beanSerializerClass) {
         module.bind(SQLCodegenModule.BEAN_SERIALIZER, beanSerializerClass);
@@ -550,7 +537,7 @@ public class MetaDataExporter {
     }
 
     /**
-     * @param columnComparator
+     * @param columnComparatorClass
      */
     public void setColumnComparatorClass(Class<? extends Comparator<Property>> columnComparatorClass) {
         module.bind(SQLCodegenModule.COLUMN_COMPARATOR, columnComparatorClass);

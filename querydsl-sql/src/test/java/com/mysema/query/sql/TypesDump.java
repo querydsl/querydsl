@@ -19,10 +19,11 @@ public class TypesDump {
             }
         }
 
-        Connections.initCubrid();
+        Connections.initOracle();
         try {
             Connection c = Connections.getConnection();
             DatabaseMetaData m = c.getMetaData();
+            System.out.println(m.getDatabaseProductName());
             ResultSet rs = m.getTypeInfo();
             try {
                 while (rs.next()) {

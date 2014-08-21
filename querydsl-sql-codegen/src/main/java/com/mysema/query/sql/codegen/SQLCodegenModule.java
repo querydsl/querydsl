@@ -46,7 +46,7 @@ public class SQLCodegenModule extends CodegenModule{
     public static final String SCHEMA_TO_PACKAGE = "schemaToPackage";
 
     public static final String COLUMN_COMPARATOR = "columnComparator";
-    
+
     @Override
     protected void configure() {
         super.configure();
