@@ -13,16 +13,14 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.Connection;
-
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
 
 import com.mysema.query.JoinFlag;
 import com.mysema.query.sql.domain.QSurvey;
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class JoinFlagsTest {
     
@@ -45,13 +43,13 @@ public class JoinFlagsTest {
     }
 
     @Test
-    public void JoinFlag_BeforeCondition() {
+    public void JoinFlags_BeforeCondition() {
         query.innerJoin(s2).on(s1.eq(s2));
         query.addJoinFlag(" a ", JoinFlag.Position.BEFORE_CONDITION);
         
         assertEquals("from SURVEY s\n" +
                 "inner join SURVEY s2 a \n" +
-                "on s = ?", query.toString());
+                "on s.ID = s2.ID", query.toString());
     }
     
     @Test
@@ -61,7 +59,7 @@ public class JoinFlagsTest {
         
         assertEquals("from SURVEY s\n" +
                 "inner join  b SURVEY s3\n" +
-                "on s = ?", query.toString());
+                "on s.ID = s3.ID", query.toString());
     }
     
     @Test
@@ -71,7 +69,7 @@ public class JoinFlagsTest {
         
         assertEquals("from SURVEY s\n" +
                 "inner join SURVEY s4\n" +
-                "on s = ? c", query.toString());
+                "on s.ID = s4.ID c", query.toString());
     }
     
     @Test
@@ -80,7 +78,7 @@ public class JoinFlagsTest {
         query.addJoinFlag(" d ", JoinFlag.Position.OVERRIDE);
         
         assertEquals("from SURVEY s d SURVEY s5\n" +
-                "on s = ?", query.toString());
+                "on s.ID = s5.ID", query.toString());
     }
     
     @Test
@@ -90,7 +88,7 @@ public class JoinFlagsTest {
         
         assertEquals("from SURVEY s e \n" +
                 "inner join SURVEY s6\n" +
-                "on s = ?", query.toString());
+                "on s.ID = s6.ID", query.toString());
     }
     
 
