@@ -1083,6 +1083,34 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void RelationalPath_Eq() {
+        query().from(employee, employee2)
+                .where(employee.eq(employee2))
+                .list(employee.id, employee2.id);
+    }
+
+    @Test
+    public void RelationalPath_Ne() {
+        query().from(employee, employee2)
+                .where(employee.ne(employee2))
+                .list(employee.id, employee2.id);
+    }
+
+    @Test
+    public void RelationalPath_Eq2() {
+        query().from(survey, survey2)
+                .where(survey.eq(survey2))
+                .list(survey.id, survey2.id);
+    }
+
+    @Test
+    public void RelationalPath_Ne2() {
+        query().from(survey, survey2)
+                .where(survey.ne(survey2))
+                .list(survey.id, survey2.id);
+    }
+
+    @Test
     @ExcludeIn(SQLITE)
     public void Right_Join() throws SQLException {
         query().from(employee).rightJoin(employee2)

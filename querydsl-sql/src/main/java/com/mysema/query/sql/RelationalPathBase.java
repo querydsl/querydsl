@@ -21,6 +21,8 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.types.*;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.path.BeanPath;
@@ -127,6 +129,81 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
             }
         }
         return countDistinct;
+    }
+
+    /**
+     * Compares the two relational paths using primary key columns
+     *
+     * @param right rhs of the comparison
+     * @return
+     */
+    @Override
+    public BooleanExpression eq(T right) {
+        if (right instanceof RelationalPath) {
+            return primaryKeyOperation(Ops.EQ, primaryKey, ((RelationalPath) right).getPrimaryKey());
+        } else {
+            return super.eq(right);
+        }
+    }
+
+    /**
+     * Compares the two relational paths using primary key columns
+     *
+     * @param right rhs of the comparison
+     * @return
+     */
+    @Override
+    public BooleanExpression eq(Expression<? super T> right) {
+        if (right instanceof RelationalPath) {
+            return primaryKeyOperation(Ops.EQ, primaryKey, ((RelationalPath) right).getPrimaryKey());
+        } else {
+            return super.eq(right);
+        }
+    }
+
+    /**
+     * Compares the two relational paths using primary key columns
+     *
+     * @param right rhs of the comparison
+     * @return
+     */
+    @Override
+    public BooleanExpression ne(T right) {
+        if (right instanceof RelationalPath) {
+            return primaryKeyOperation(Ops.NE, primaryKey, ((RelationalPath) right).getPrimaryKey());
+        } else {
+            return super.ne(right);
+        }
+    }
+
+    /**
+     * Compares the two relational paths using primary key columns
+     *
+     * @param right rhs of the comparison
+     * @return
+     */
+    @Override
+    public BooleanExpression ne(Expression<? super T> right) {
+        if (right instanceof RelationalPath) {
+            return primaryKeyOperation(Ops.NE, primaryKey, ((RelationalPath) right).getPrimaryKey());
+        } else {
+            return super.ne(right);
+        }
+    }
+
+    private BooleanExpression primaryKeyOperation(Operator<Boolean> op, PrimaryKey<?> pk1, PrimaryKey<?> pk2) {
+        if (pk1 == null || pk2 == null) {
+            throw new UnsupportedOperationException("No primary keys available");
+        }
+        if (pk1.getLocalColumns().size() != pk2.getLocalColumns().size()) {
+            throw new UnsupportedOperationException("Size mismatch for primary key columns");
+        }
+        BooleanExpression rv = null;
+        for (int i = 0; i < pk1.getLocalColumns().size(); i++) {
+            BooleanExpression pred = BooleanOperation.create(op, pk1.getLocalColumns().get(i), pk2.getLocalColumns().get(i));
+            rv = rv != null ? rv.and(pred) : pred;
+        }
+        return rv;
     }
 
     @Override
