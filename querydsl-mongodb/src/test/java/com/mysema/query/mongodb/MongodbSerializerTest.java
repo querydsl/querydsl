@@ -26,6 +26,7 @@ import org.junit.Test;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mysema.query.mongodb.domain.QDates;
 import com.mysema.query.mongodb.domain.QDummyEntity;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.morphia.MorphiaSerializer;
@@ -35,7 +36,7 @@ import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.StringPath; 
 
 public class MongodbSerializerTest {
 
@@ -73,12 +74,12 @@ public class MongodbSerializerTest {
 
     @Test
     public void Paths() {
-        QUser user = QUser.user;
+        QUser user = QUser.user; 
         assertEquals("user", serializer.visit(user, null));
         assertEquals("addresses", serializer.visit(user.addresses, null));
         assertEquals("addresses", serializer.visit(user.addresses.any(), null));
         assertEquals("addresses.street", serializer.visit(user.addresses.any().street, null));
-        assertEquals("firstName", serializer.visit(user.firstName, null));
+        assertEquals("firstName", serializer.visit(user.firstName, null)); 
     }
 
     @Test
@@ -219,7 +220,22 @@ public class MongodbSerializerTest {
                 dbo("title", dbo("$not", dbo("$lt","A"))).
                 append("year", dbo("$ne", 1800)));
     }
-
+    
+    @Test
+    public void DateOperators() { 
+        QDates dates=QDates.dates; 
+        assertQuery(dates.date.dayOfMonth().as("day"), dbo("day", dbo("$dayOfMonth","$date")));
+        assertQuery(dates.date.dayOfMonth(), dbo("date", dbo("$dayOfMonth","$date")));
+        assertQuery(dates.date.dayOfWeek(), dbo("date", dbo("$dayOfWeek","$date")));
+        assertQuery(dates.date.year(), dbo("date", dbo("$year","$date")));
+        assertQuery(dates.date.month(), dbo("date", dbo("$month","$date")));
+        assertQuery(dates.date.week(), dbo("date", dbo("$week","$date")));
+        assertQuery(dates.date.hour(), dbo("date", dbo("$hour","$date")));
+        assertQuery(dates.date.minute(), dbo("date", dbo("$minute","$date")));
+        assertQuery(dates.date.second(), dbo("date", dbo("$second","$date")));
+        assertQuery(dates.date.milliSecond(), dbo("date", dbo("$millisecond","$date")));
+       
+    }
 
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
         return Arrays.asList(order);

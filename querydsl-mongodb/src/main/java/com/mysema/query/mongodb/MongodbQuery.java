@@ -12,22 +12,23 @@
  * limitations under the License.
  */
 package com.mysema.query.mongodb;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+ 
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mongodb.*;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
+import com.mysema.query.mongodb.aggregation.AggregationOperation;
+import com.mysema.query.mongodb.aggregation.AggregationQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.*;
 import com.mysema.query.types.path.CollectionPathBase;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * MongodbQuery provides a general Querydsl query implementation with a pluggable DBObject to Bean transformation
@@ -52,11 +53,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     private ReadPreference readPreference;
 
     /**
-     * Create a new MongodbQuery instance
-     *
-     * @param collection
-     * @param transformer
-     * @param serializer
+     * Create a new MongodbQuery instance 
      */
     public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate(), false);
@@ -96,6 +93,10 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      */
     public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
         return new AnyEmbeddedBuilder<K>(queryMixin, collection);
+    }
+    
+    public AggregationQuery<K> aggregate(AggregationOperation<K> ... operations) {
+        return new AggregationQuery(collection, transformer, serializer,operations);
     }
 
     protected abstract DBCollection getCollection(Class<?> type);
