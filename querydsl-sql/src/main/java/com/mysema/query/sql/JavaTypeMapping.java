@@ -56,7 +56,7 @@ public class JavaTypeMapping {
         registerDefault(new TimeType());
         registerDefault(new URLType());
         registerDefault(new UtilDateType());
-        registerDefault(new UtilUUIDType(true));
+        registerDefault(new UtilUUIDType(false));
 
         // initialize joda time converters only if joda time is available
         try {
