@@ -47,7 +47,6 @@ public class InsertBase extends AbstractBaseTest {
         insert(survey).values(1, "Hello World", "Hello").execute();
 
         delete(QDateTest.qDateTest).execute();
-        delete(QUuids.uuids).execute();
     }
 
     @Before
@@ -424,6 +423,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @IncludeIn({H2, POSTGRES})
     public void Uuids() {
+        delete(QUuids.uuids).execute();
         QUuids uuids = QUuids.uuids;
         UUID uuid = UUID.randomUUID();
         insert(uuids).set(uuids.field, uuid).execute();
