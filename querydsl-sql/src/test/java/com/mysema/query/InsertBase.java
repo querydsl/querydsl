@@ -15,16 +15,14 @@ package com.mysema.query;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.DefaultMapper;
 import com.mysema.query.sql.dml.Mapper;
 import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.sql.domain.Employee;
-import com.mysema.query.sql.domain.QDateTest;
-import com.mysema.query.sql.domain.QEmployee;
-import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.sql.domain.*;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -49,6 +47,7 @@ public class InsertBase extends AbstractBaseTest {
         insert(survey).values(1, "Hello World", "Hello").execute();
 
         delete(QDateTest.qDateTest).execute();
+        delete(QUuids.uuids).execute();
     }
 
     @Before
@@ -420,6 +419,15 @@ public class InsertBase extends AbstractBaseTest {
                 .set(survey.id, 3)
                 .set(survey.name, Expressions.stringTemplate("'Hello'"))
                 .addBatch();
+    }
+
+    @Test
+    @IncludeIn({H2, POSTGRES})
+    public void Uuids() {
+        QUuids uuids = QUuids.uuids;
+        UUID uuid = UUID.randomUUID();
+        insert(uuids).set(uuids.field, uuid).execute();
+        assertEquals(uuid, query().from(uuids).singleResult(uuids.field));
     }
 
 }
