@@ -13,14 +13,11 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.UNCHECKED;
-
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
@@ -28,15 +25,8 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 /**
  * EmbeddableSerializer is a {@link Serializer} implementation for embeddable types
@@ -94,11 +84,6 @@ public final class EmbeddableSerializer extends EntitySerializer {
 
         // TODO : generate proper serialVersionUID here
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", model.hashCode() + "L");
-    }
-
-    @Override
-    protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
-        // no factory methods
     }
 
 }
