@@ -60,7 +60,7 @@ public final class Configuration {
 
     private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
-    private final SQLTemplates templates;
+    private SQLTemplates templates;
 
     private SQLExceptionTranslator exceptionTranslator = DefaultSQLExceptionTranslator.DEFAULT;
 
@@ -548,6 +548,13 @@ public final class Configuration {
      */
     public void setExceptionTranslator(SQLExceptionTranslator exceptionTranslator) {
         this.exceptionTranslator = exceptionTranslator;
+    }
+
+    /**
+     * @param templates
+     */
+    public void setTemplates(SQLTemplates templates) {
+        this.templates = templates;
     }
 
 }

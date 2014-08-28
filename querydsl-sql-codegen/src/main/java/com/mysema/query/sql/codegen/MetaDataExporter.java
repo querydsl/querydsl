@@ -168,13 +168,6 @@ public class MetaDataExporter {
      * @throws SQLException
      */
     public void export(DatabaseMetaData md) throws SQLException {
-        SQLTemplates templates = sqlTemplatesRegistry.getTemplates(md);
-        if (templates != null) {
-            module.bind(Configuration.class, new Configuration(templates));
-        } else {
-            logger.info("Found no specific dialect for " + md.getDatabaseProductName());
-        }
-
         if (beanPackageName == null) {
             beanPackageName =  module.getPackageName();
         }
@@ -190,6 +183,13 @@ public class MetaDataExporter {
         beanSerializer = module.get(Serializer.class, SQLCodegenModule.BEAN_SERIALIZER);
         namingStrategy = module.get(NamingStrategy.class);
         configuration = module.get(Configuration.class);
+
+        SQLTemplates templates = sqlTemplatesRegistry.getTemplates(md);
+        if (templates != null) {
+            configuration.setTemplates(templates);
+        } else {
+            logger.info("Found no specific dialect for " + md.getDatabaseProductName());
+        }
 
         if (beanSerializer == null) {
             keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(),
