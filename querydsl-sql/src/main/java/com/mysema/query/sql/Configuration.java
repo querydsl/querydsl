@@ -142,8 +142,9 @@ public final class Configuration {
         if (type != null) {
             return type.getReturnedClass();
         } else if (typeName != null && !typeToName.isEmpty()) {
+            typeName = typeName.toLowerCase();
             // typename mapped class
-            Class<?> clazz = typeToName.get(typeName.toLowerCase());
+            Class<?> clazz = typeToName.get(typeName);
             if (clazz != null) {
                 return clazz;
             }
@@ -152,6 +153,9 @@ public final class Configuration {
                     typeName = typeName.substring(1);
                 } else if (typeName.endsWith(" array")) {
                     typeName = typeName.substring(0, typeName.length() - 6);
+                }
+                if (typeName.contains("(")) {
+                    typeName = typeName.substring(0, typeName.indexOf("("));
                 }
                 int sqlComponentType = templates.getCodeForTypeName(typeName);
                 Class<?> componentType = jdbcTypeMapping.get(sqlComponentType, size, digits);
