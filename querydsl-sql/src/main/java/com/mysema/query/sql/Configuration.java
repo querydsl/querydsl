@@ -29,6 +29,8 @@ import com.mysema.query.sql.types.ArrayType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configuration for SQLQuery instances
@@ -37,6 +39,8 @@ import com.mysema.query.types.Path;
  *
  */
 public final class Configuration {
+
+    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
@@ -157,7 +161,11 @@ public final class Configuration {
                 if (typeName.contains("(")) {
                     typeName = typeName.substring(0, typeName.indexOf("("));
                 }
-                int sqlComponentType = templates.getCodeForTypeName(typeName);
+                Integer sqlComponentType = templates.getCodeForTypeName(typeName);
+                if (sqlComponentType == null) {
+                    logger.warn("Found no JDBC type for " + typeName + " using OTHER instead");
+                    sqlComponentType = Types.OTHER;
+                }
                 Class<?> componentType = jdbcTypeMapping.get(sqlComponentType, size, digits);
                 return Array.newInstance(componentType, 0).getClass();
             }
