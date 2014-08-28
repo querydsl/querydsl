@@ -145,7 +145,7 @@ public final class Configuration {
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null) {
             return type.getReturnedClass();
-        } else if (typeName != null && !typeToName.isEmpty()) {
+        } else if (typeName != null && !typeName.isEmpty()) {
             typeName = typeName.toLowerCase();
             // typename mapped class
             Class<?> clazz = typeToName.get(typeName);
@@ -158,9 +158,13 @@ public final class Configuration {
                 } else if (typeName.endsWith(" array")) {
                     typeName = typeName.substring(0, typeName.length() - 6);
                 }
+                if (typeName.contains("[")) {
+                    typeName = typeName.substring(0, typeName.indexOf("["));
+                }
                 if (typeName.contains("(")) {
                     typeName = typeName.substring(0, typeName.indexOf("("));
                 }
+
                 Integer sqlComponentType = templates.getCodeForTypeName(typeName);
                 if (sqlComponentType == null) {
                     logger.warn("Found no JDBC type for " + typeName + " using OTHER instead");
