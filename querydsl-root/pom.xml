@@ -106,9 +106,8 @@
   
   <developers>
     <developer>
-      <id>tiwe</id>
+      <id>timowest</id>
       <name>Timo Westkämper</name>
-      <email>timo.westkamper@gmail.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
         <role>Project Manager</role>
@@ -116,32 +115,36 @@
       </roles>
     </developer>
     <developer>
-      <id>sasa</id>
+      <id>ssaarela</id>
       <name>Samppa Saarela</name>
-      <email>samppa.saarela@mysema.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <id>vema</id>
+      <id>ponzao</id>
       <name>Vesa Marttila</name>
-      <email>vesa.marttila@mysema.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <id>laim</id>
+      <id>mangolas</id>
       <name>Lassi Immonen</name>
-      <email>lassi.immonen@mysema.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
         <role>Developer</role>
       </roles>
-    </developer>    
+    </developer>
+    <developer>
+      <id>Shredder121</id>
+      <name>Ruben Dijkstra</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <licenses>
