@@ -481,6 +481,10 @@ public final class Connections {
         stmt.execute("drop table QTEST if exists");
         stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");
 
+        // uuids
+        stmt.execute("drop table if exists UUIDS");
+        stmt.execute("create table UUIDS (FIELD uuid)");
+
         // survey
         stmt.execute("drop table SURVEY if exists");
         stmt.execute(CREATE_TABLE_SURVEY);
@@ -743,6 +747,10 @@ public final class Connections {
         stmt.execute("create table \"ARRAYTEST\" (\n" +
                 "\"ID\" bigint primary key,\n" +
                 "\"MYARRAY\" varchar(8)[])");
+
+        // uuids
+        dropTable(templates, "UUIDS");
+        stmt.execute("create table \"UUIDS\" (\"FIELD\" uuid)");
 
         // survey
         dropTable(templates, "SURVEY");

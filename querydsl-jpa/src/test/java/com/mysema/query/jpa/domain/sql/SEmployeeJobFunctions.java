@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +27,7 @@ public class SEmployeeJobFunctions extends com.mysema.query.sql.RelationalPathBa
     public final com.mysema.query.sql.ForeignKey<SEmployee> fk49690e2f75b8f5bc = createForeignKey(employeeId, "id");
 
     public SEmployeeJobFunctions(String variable) {
-        super(SEmployeeJobFunctions.class, forVariable(variable), "null", "Employee_jobFunctions");
+        super(SEmployeeJobFunctions.class, forVariable(variable), "", "Employee_jobFunctions");
         addMetadata();
     }
 
@@ -38,12 +37,12 @@ public class SEmployeeJobFunctions extends com.mysema.query.sql.RelationalPathBa
     }
 
     public SEmployeeJobFunctions(Path<? extends SEmployeeJobFunctions> path) {
-        super(path.getType(), path.getMetadata(), "null", "Employee_jobFunctions");
+        super(path.getType(), path.getMetadata(), "", "Employee_jobFunctions");
         addMetadata();
     }
 
     public SEmployeeJobFunctions(PathMetadata<?> metadata) {
-        super(SEmployeeJobFunctions.class, metadata, "null", "Employee_jobFunctions");
+        super(SEmployeeJobFunctions.class, metadata, "", "Employee_jobFunctions");
         addMetadata();
     }
 

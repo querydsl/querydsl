@@ -71,10 +71,10 @@ public class SQLSubQueryTest {
         SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));
         serializer.handle(expr);
 
-        assertEquals("(select EMPLOYEE.ID, EMPLOYEE.SUPERIOR_ID, EMPLOYEE.TIMEFIELD, EMPLOYEE.LASTNAME, EMPLOYEE.DATEFIELD, EMPLOYEE.SALARY, EMPLOYEE.FIRSTNAME, employee2.ID\n" +
-            "from EMPLOYEE EMPLOYEE\n" +
-            "inner join EMPLOYEE employee2\n" +
-            "on EMPLOYEE.SUPERIOR_ID = employee2.ID)", serializer.toString());
+        assertEquals("(select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID, employee2.ID\n" +
+                "from EMPLOYEE EMPLOYEE\n" +
+                "inner join EMPLOYEE employee2\n" +
+                "on EMPLOYEE.SUPERIOR_ID = employee2.ID)", serializer.toString());
     }
 
     @Test

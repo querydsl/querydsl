@@ -16,7 +16,6 @@ package com.mysema.query;
 import java.util.List;
 import javax.annotation.Nullable;
 import java.sql.Connection;
-import java.util.List;
 
 import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -94,44 +93,64 @@ public abstract class AbstractBaseTest {
     }
 
     protected SQLUpdateClause update(RelationalPath<?> e) {
-        return new SQLUpdateClause(connection, configuration, e);
+        SQLUpdateClause sqlUpdateClause = new SQLUpdateClause(connection, configuration, e);
+        sqlUpdateClause.addListener(new TestLoggingListener());
+        return sqlUpdateClause;
     }
 
     protected SQLInsertClause insert(RelationalPath<?> e) {
-        return new SQLInsertClause(connection, configuration, e);
+        SQLInsertClause sqlInsertClause = new SQLInsertClause(connection, configuration, e);
+        sqlInsertClause.addListener(new TestLoggingListener());
+        return sqlInsertClause;
     }
 
     protected SQLInsertClause insert(RelationalPath<?> e, AbstractSQLSubQuery<?> sq) {
-        return new SQLInsertClause(connection, configuration, e, sq);
+        SQLInsertClause sqlInsertClause = new SQLInsertClause(connection, configuration, e, sq);
+        sqlInsertClause.addListener(new TestLoggingListener());
+        return sqlInsertClause;
     }
 
     protected SQLDeleteClause delete(RelationalPath<?> e) {
-        return new SQLDeleteClause(connection, configuration, e);
+        SQLDeleteClause sqlDeleteClause = new SQLDeleteClause(connection, configuration, e);
+        sqlDeleteClause.addListener(new TestLoggingListener());
+        return sqlDeleteClause;
     }
 
     protected SQLMergeClause merge(RelationalPath<?> e) {
-        return new SQLMergeClause(connection, configuration, e);
+        SQLMergeClause sqlMergeClause = new SQLMergeClause(connection, configuration, e);
+        sqlMergeClause.addListener(new TestLoggingListener());
+        return sqlMergeClause;
     }
 
     protected ExtendedSQLQuery extQuery() {
-        return new ExtendedSQLQuery(connection, configuration);
+        ExtendedSQLQuery extendedSQLQuery = new ExtendedSQLQuery(connection, configuration);
+        extendedSQLQuery.addListener(new TestLoggingListener());
+        return extendedSQLQuery;
     }
 
     protected SQLInsertClause mysqlReplace(RelationalPath<?> path) {
-        return new MySQLReplaceClause(connection, configuration, path);
+        MySQLReplaceClause mySQLReplaceClause = new MySQLReplaceClause(connection, configuration, path);
+        mySQLReplaceClause.addListener(new TestLoggingListener());
+        return mySQLReplaceClause;
     }
 
     protected TestQuery query() {
-        return new TestQuery(connection, configuration);
+        TestQuery testQuery = new TestQuery(connection, configuration);
+        testQuery.addListener(new TestLoggingListener());
+        return testQuery;
     }
 
     protected TeradataQuery teradataQuery() {
-        return new TeradataQuery(connection, configuration);
+        TeradataQuery teradataQuery = new TeradataQuery(connection, configuration);
+        teradataQuery.addListener(new TestLoggingListener());
+        return teradataQuery;
     }
 
     protected TestQuery testQuery() {
-        return new TestQuery(connection, configuration,
+        TestQuery testQuery = new TestQuery(connection, configuration,
                 new DefaultQueryMetadata().noValidate());
+        testQuery.addListener(new TestLoggingListener());
+        return testQuery;
     }
 
     protected SQLSubQuery sq() {

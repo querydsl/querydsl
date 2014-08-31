@@ -391,6 +391,23 @@ public final class Configuration {
     }
 
     /**
+     * Override multiple numeric bindings, both begin and end are inclusive
+     *
+     * @param beginTotal
+     * @param endTotal
+     * @param beginDecimal
+     * @param endDecimal
+     * @param javaType
+     */
+    public void registerNumeric (int beginTotal, int endTotal, int beginDecimal, int endDecimal, Class <?> javaType) {
+        for (int total = beginTotal; total <= endTotal; total++) {
+            for (int decimal = beginDecimal; decimal <= endDecimal; decimal++) {
+                registerNumeric(total, decimal, javaType);
+            }
+        }
+    }
+
+    /**
      * Register the given javaType for the given table and column
      *
      * @param table
@@ -435,7 +452,7 @@ public final class Configuration {
     }
 
     /**
-     * @param listeners
+     * @param listener
      */
     public void addListener(SQLListener listener) {
         listeners.add(listener);

@@ -1,18 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DatePath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -28,7 +22,7 @@ public class SDateTest extends com.mysema.query.sql.RelationalPathBase<SDateTest
     public final DatePath<java.sql.Date> dateTest = createDate("dateTest", java.sql.Date.class);
 
     public SDateTest(String variable) {
-        super(SDateTest.class, forVariable(variable), "null", "DATE_TEST");
+        super(SDateTest.class, forVariable(variable), "", "DATE_TEST");
         addMetadata();
     }
 
@@ -38,12 +32,12 @@ public class SDateTest extends com.mysema.query.sql.RelationalPathBase<SDateTest
     }
 
     public SDateTest(Path<? extends SDateTest> path) {
-        super(path.getType(), path.getMetadata(), "null", "DATE_TEST");
+        super(path.getType(), path.getMetadata(), "", "DATE_TEST");
         addMetadata();
     }
 
     public SDateTest(PathMetadata<?> metadata) {
-        super(SDateTest.class, metadata, "null", "DATE_TEST");
+        super(SDateTest.class, metadata, "", "DATE_TEST");
         addMetadata();
     }
 

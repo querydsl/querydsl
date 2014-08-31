@@ -1,12 +1,11 @@
 package com.mysema.query.jpa.domain.sql;
 
+import javax.annotation.Generated;
+
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.NumberPath;
-
-import javax.annotation.Generated;
-
 import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
@@ -29,7 +28,7 @@ public class SCalendar extends com.mysema.query.sql.RelationalPathBase<SCalendar
     public final com.mysema.query.sql.ForeignKey<SNationality> _fkab8efa23591ebbc = createInvForeignKey(id, "calendar_id");
 
     public SCalendar(String variable) {
-        super(SCalendar.class, forVariable(variable), "null", "calendar_");
+        super(SCalendar.class, forVariable(variable), "", "calendar_");
         addMetadata();
     }
 
@@ -39,12 +38,12 @@ public class SCalendar extends com.mysema.query.sql.RelationalPathBase<SCalendar
     }
 
     public SCalendar(Path<? extends SCalendar> path) {
-        super(path.getType(), path.getMetadata(), "null", "calendar_");
+        super(path.getType(), path.getMetadata(), "", "calendar_");
         addMetadata();
     }
 
     public SCalendar(PathMetadata<?> metadata) {
-        super(SCalendar.class, metadata, "null", "calendar_");
+        super(SCalendar.class, metadata, "", "calendar_");
         addMetadata();
     }
 

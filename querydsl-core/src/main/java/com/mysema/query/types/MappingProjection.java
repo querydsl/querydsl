@@ -13,10 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import java.util.List;
 
 import com.mysema.query.Tuple;
 
@@ -37,7 +36,7 @@ import com.mysema.query.Tuple;
  * @param <T> expression type
  */
 @Immutable
-public abstract class MappingProjection<T> extends ExpressionBase<T> implements FactoryExpression<T> {
+public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -948494350919774466L;
 

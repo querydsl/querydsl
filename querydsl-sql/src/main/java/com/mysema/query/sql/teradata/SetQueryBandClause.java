@@ -38,7 +38,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
 
     private boolean forSession = true;
 
-    private final Map<String, String> values = Maps.newHashMap();
+    private final Map<String, String> values = Maps.newLinkedHashMap();
 
     private transient String queryString;
 

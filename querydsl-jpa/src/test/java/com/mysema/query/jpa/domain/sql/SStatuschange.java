@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -30,7 +29,7 @@ public class SStatuschange extends com.mysema.query.sql.RelationalPathBase<SStat
     public final com.mysema.query.sql.ForeignKey<SItem_statuschange> _fkcb99fb2ab2bd098d = createInvForeignKey(id, "statusChanges_id");
 
     public SStatuschange(String variable) {
-        super(SStatuschange.class, forVariable(variable), "null", "statuschange_");
+        super(SStatuschange.class, forVariable(variable), "", "statuschange_");
         addMetadata();
     }
 
@@ -40,12 +39,12 @@ public class SStatuschange extends com.mysema.query.sql.RelationalPathBase<SStat
     }
 
     public SStatuschange(Path<? extends SStatuschange> path) {
-        super(path.getType(), path.getMetadata(), "null", "statuschange_");
+        super(path.getType(), path.getMetadata(), "", "statuschange_");
         addMetadata();
     }
 
     public SStatuschange(PathMetadata<?> metadata) {
-        super(SStatuschange.class, metadata, "null", "statuschange_");
+        super(SStatuschange.class, metadata, "", "statuschange_");
         addMetadata();
     }
 

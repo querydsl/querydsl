@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -56,7 +55,7 @@ public class SItem extends com.mysema.query.sql.RelationalPathBase<SItem> {
     public final com.mysema.query.sql.ForeignKey<SLineItems> _fkb2e400c3d8e44c3 = createInvForeignKey(id, "lineItems_id");
 
     public SItem(String variable) {
-        super(SItem.class, forVariable(variable), "null", "item_");
+        super(SItem.class, forVariable(variable), "", "item_");
         addMetadata();
     }
 
@@ -66,12 +65,12 @@ public class SItem extends com.mysema.query.sql.RelationalPathBase<SItem> {
     }
 
     public SItem(Path<? extends SItem> path) {
-        super(path.getType(), path.getMetadata(), "null", "item_");
+        super(path.getType(), path.getMetadata(), "", "item_");
         addMetadata();
     }
 
     public SItem(PathMetadata<?> metadata) {
-        super(SItem.class, metadata, "null", "item_");
+        super(SItem.class, metadata, "", "item_");
         addMetadata();
     }
 

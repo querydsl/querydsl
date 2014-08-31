@@ -1,16 +1,14 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-
-import java.util.*;
+import java.util.Arrays;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -38,7 +36,7 @@ public class SBookBookmarks extends com.mysema.query.sql.RelationalPathBase<SBoo
     public final com.mysema.query.sql.ForeignKey<SBookversion> fk94026827e33d3be4 = createForeignKey(Arrays.asList(bookVersionBookIDIdentity, bookVersionLibraryIdentity), Arrays.asList("bookID_identity", "library_identity"));
 
     public SBookBookmarks(String variable) {
-        super(SBookBookmarks.class, forVariable(variable), "null", "book_bookmarks");
+        super(SBookBookmarks.class, forVariable(variable), "", "book_bookmarks");
         addMetadata();
     }
 
@@ -48,12 +46,12 @@ public class SBookBookmarks extends com.mysema.query.sql.RelationalPathBase<SBoo
     }
 
     public SBookBookmarks(Path<? extends SBookBookmarks> path) {
-        super(path.getType(), path.getMetadata(), "null", "book_bookmarks");
+        super(path.getType(), path.getMetadata(), "", "book_bookmarks");
         addMetadata();
     }
 
     public SBookBookmarks(PathMetadata<?> metadata) {
-        super(SBookBookmarks.class, metadata, "null", "book_bookmarks");
+        super(SBookBookmarks.class, metadata, "", "book_bookmarks");
         addMetadata();
     }
 

@@ -13,9 +13,11 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.support.Expressions;
 
 /**
  * SQLServer2012Templates is an SQL dialect for Microsoft SQL Server 2012 and later
@@ -24,6 +26,8 @@ import com.mysema.query.QueryModifiers;
  *
  */
 public class SQLServer2012Templates extends SQLServerTemplates {
+
+    private String topTemplate = "top {0s} ";
 
     private String limitOffsetTemplate = "\noffset {1} rows fetch next {0} rows only";
 
@@ -52,7 +56,22 @@ public class SQLServer2012Templates extends SQLServerTemplates {
 
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
-        context.serializeForQuery(metadata, forCountRow);
+        if (!forCountRow && metadata.getModifiers().isRestricting() && metadata.getOrderBy().isEmpty()
+                && !metadata.getJoins().isEmpty()) {
+            QueryModifiers mod = metadata.getModifiers();
+            // use top if order by is empty
+            if (mod.getOffset() == null) {
+                // select top ...
+                metadata = metadata.clone();
+                metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
+                        Expressions.template(Integer.class, topTemplate, mod.getLimit())));
+                context.serializeForQuery(metadata, forCountRow);
+            } else {
+                throw new IllegalStateException("offset not supported without order by");
+            }
+        } else {
+            context.serializeForQuery(metadata, forCountRow);
+        }
 
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());
@@ -61,13 +80,15 @@ public class SQLServer2012Templates extends SQLServerTemplates {
 
     @Override
     protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
-        QueryModifiers mod = metadata.getModifiers();
-        if (mod.getLimit() == null) {
-            context.handle(offsetTemplate, mod.getOffset());
-        } else if (mod.getOffset() == null) {
-            context.handle(limitOffsetTemplate, mod.getLimit(), 0);
-        } else {
-            context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());
+        if (!metadata.getOrderBy().isEmpty()) {
+            QueryModifiers mod = metadata.getModifiers();
+            if (mod.getLimit() == null) {
+                context.handle(offsetTemplate, mod.getOffset());
+            } else if (mod.getOffset() == null) {
+                context.handle(limitOffsetTemplate, mod.getLimit(), 0);
+            } else {
+                context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());
+            }
         }
     }
 

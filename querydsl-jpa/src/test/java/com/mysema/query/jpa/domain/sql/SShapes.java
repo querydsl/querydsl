@@ -1,18 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +27,7 @@ public class SShapes extends com.mysema.query.sql.RelationalPathBase<SShapes> {
     public final com.mysema.query.sql.PrimaryKey<SShapes> primary = createPrimaryKey(id);
 
     public SShapes(String variable) {
-        super(SShapes.class, forVariable(variable), "null", "SHAPES");
+        super(SShapes.class, forVariable(variable), "", "SHAPES");
         addMetadata();
     }
 
@@ -42,12 +37,12 @@ public class SShapes extends com.mysema.query.sql.RelationalPathBase<SShapes> {
     }
 
     public SShapes(Path<? extends SShapes> path) {
-        super(path.getType(), path.getMetadata(), "null", "SHAPES");
+        super(path.getType(), path.getMetadata(), "", "SHAPES");
         addMetadata();
     }
 
     public SShapes(PathMetadata<?> metadata) {
-        super(SShapes.class, metadata, "null", "SHAPES");
+        super(SShapes.class, metadata, "", "SHAPES");
         addMetadata();
     }
 

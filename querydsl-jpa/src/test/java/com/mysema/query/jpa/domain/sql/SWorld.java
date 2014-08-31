@@ -1,18 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +26,7 @@ public class SWorld extends com.mysema.query.sql.RelationalPathBase<SWorld> {
     public final com.mysema.query.sql.ForeignKey<SWorldMammal> _fk4070aeecd3538cf8 = createInvForeignKey(id, "World_id");
 
     public SWorld(String variable) {
-        super(SWorld.class, forVariable(variable), "null", "World");
+        super(SWorld.class, forVariable(variable), "", "World");
         addMetadata();
     }
 
@@ -42,12 +36,12 @@ public class SWorld extends com.mysema.query.sql.RelationalPathBase<SWorld> {
     }
 
     public SWorld(Path<? extends SWorld> path) {
-        super(path.getType(), path.getMetadata(), "null", "World");
+        super(path.getType(), path.getMetadata(), "", "World");
         addMetadata();
     }
 
     public SWorld(PathMetadata<?> metadata) {
-        super(SWorld.class, metadata, "null", "World");
+        super(SWorld.class, metadata, "", "World");
         addMetadata();
     }
 

@@ -13,11 +13,10 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.fail;
-
 import java.lang.reflect.Field;
 
 import org.junit.Test;
+import static org.junit.Assert.fail;
 
 public class SQLTypeMappingTest {
 
@@ -28,7 +27,7 @@ public class SQLTypeMappingTest {
             if (field.getType().equals(int.class)) {
                 int val = field.getInt(null);
                 if (mapping.get(val,0,0) == null) {
-                    fail("Got no value for " + field.getName());
+                    fail("Got no value for " + field.getName() + " (" + val + ")");
                 }
             }
         }

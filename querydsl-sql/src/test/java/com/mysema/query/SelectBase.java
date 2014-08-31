@@ -755,6 +755,18 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(10, results.getTotal());
     }
 
+    @Test
+    @ExcludeIn({DERBY, HSQLDB})
+    public void Literals() {
+        assertEquals(1, singleResult(ConstantImpl.create(1)).intValue());
+        assertEquals(2l, singleResult(ConstantImpl.create(2l)).longValue());
+        assertEquals(3.0, singleResult(ConstantImpl.create(3.0)).doubleValue(), 0.001);
+        assertEquals(4.0f, singleResult(ConstantImpl.create(4.0f)).floatValue(), 0.001);
+        assertEquals(true, singleResult(ConstantImpl.create(true)));
+        assertEquals(false, singleResult(ConstantImpl.create(false)));
+        assertEquals("abc", singleResult(ConstantImpl.create("abc")));
+    }
+
     private double log(double x, int y) {
         return Math.log(x) / Math.log(y);
     }
@@ -1068,6 +1080,34 @@ public class SelectBase extends AbstractBaseTest {
             Employee e2 = row.get(employee2);
             assertEquals(e1.getId(), e2.getId());
         }
+    }
+
+    @Test
+    public void RelationalPath_Eq() {
+        query().from(employee, employee2)
+                .where(employee.eq(employee2))
+                .list(employee.id, employee2.id);
+    }
+
+    @Test
+    public void RelationalPath_Ne() {
+        query().from(employee, employee2)
+                .where(employee.ne(employee2))
+                .list(employee.id, employee2.id);
+    }
+
+    @Test
+    public void RelationalPath_Eq2() {
+        query().from(survey, survey2)
+                .where(survey.eq(survey2))
+                .list(survey.id, survey2.id);
+    }
+
+    @Test
+    public void RelationalPath_Ne2() {
+        query().from(survey, survey2)
+                .where(survey.ne(survey2))
+                .list(survey.id, survey2.id);
     }
 
     @Test

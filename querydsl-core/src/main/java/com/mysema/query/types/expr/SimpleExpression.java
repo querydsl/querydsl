@@ -209,7 +209,11 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression ne(T right) {
-        return ne(ConstantImpl.create(right));
+        if (right == null) {
+            throw new IllegalArgumentException("ne(null) is not allowed. Use isNotNull() instead");
+        } else {
+            return ne(ConstantImpl.create(right));
+        }
     }
 
     /**

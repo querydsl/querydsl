@@ -13,9 +13,6 @@
  */
 package com.mysema.query.sql.types;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -23,57 +20,18 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Currency;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
+import com.mysema.commons.lang.Pair;
 import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
-
-import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.BigDecimalType;
-import com.mysema.query.sql.types.BigIntegerType;
-import com.mysema.query.sql.types.BlobType;
-import com.mysema.query.sql.types.ByteType;
-import com.mysema.query.sql.types.BytesType;
-import com.mysema.query.sql.types.CalendarType;
-import com.mysema.query.sql.types.CharacterType;
-import com.mysema.query.sql.types.ClobType;
-import com.mysema.query.sql.types.CurrencyType;
-import com.mysema.query.sql.types.DateTimeType;
-import com.mysema.query.sql.types.DateType;
-import com.mysema.query.sql.types.DoubleType;
-import com.mysema.query.sql.types.EnumByNameType;
-import com.mysema.query.sql.types.EnumByOrdinalType;
-import com.mysema.query.sql.types.FloatType;
-import com.mysema.query.sql.types.IntegerType;
-import com.mysema.query.sql.types.LocalDateTimeType;
-import com.mysema.query.sql.types.LocalDateType;
-import com.mysema.query.sql.types.LocalTimeType;
-import com.mysema.query.sql.types.LongType;
-import com.mysema.query.sql.types.NumericBooleanType;
-import com.mysema.query.sql.types.ObjectType;
-import com.mysema.query.sql.types.ShortType;
-import com.mysema.query.sql.types.StringType;
-import com.mysema.query.sql.types.TimeType;
-import com.mysema.query.sql.types.TimestampType;
-import com.mysema.query.sql.types.TrueFalseType;
-import com.mysema.query.sql.types.Type;
-import com.mysema.query.sql.types.URLType;
-import com.mysema.query.sql.types.UtilDateType;
-import com.mysema.query.sql.types.YesNoType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TypeTest implements InvocationHandler{
 
@@ -135,6 +93,9 @@ public class TypeTest implements InvocationHandler{
 
         valueAndType.add(Pair.of(EasyMock.createNiceMock(Blob.class), new BlobType()));
         valueAndType.add(Pair.of(EasyMock.createNiceMock(Clob.class), new ClobType()));
+
+        valueAndType.add(Pair.of(UUID.randomUUID(),   new UtilUUIDType(true)));
+        valueAndType.add(Pair.of(UUID.randomUUID(),   new UtilUUIDType(false)));
 
         for (Pair pair : valueAndType) {
             value = null;

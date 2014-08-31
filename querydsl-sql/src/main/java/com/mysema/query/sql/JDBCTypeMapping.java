@@ -17,6 +17,8 @@ import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Blob;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +41,9 @@ public final class JDBCTypeMapping {
     static{
         registerDefault(-101, Object.class);
         registerDefault(-102, java.sql.Timestamp.class); // Oracle: TIMESTAMP(6) WITH LOCAL TIME ZONE
+        registerDefault(2012, Object.class); // REF_CURSOR
+        registerDefault(2013, Time.class);   // TIME_WITH_TIMEZONE
+        registerDefault(2014, Timestamp.class); // TIMESTAMP_WIH_TIMEZONE
 
         // BOOLEAN
         registerDefault(Types.BIT, Boolean.class);

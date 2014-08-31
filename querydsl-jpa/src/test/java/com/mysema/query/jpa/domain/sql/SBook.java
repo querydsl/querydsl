@@ -1,14 +1,13 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -34,7 +33,7 @@ public class SBook extends com.mysema.query.sql.RelationalPathBase<SBook> {
     public final com.mysema.query.sql.ForeignKey<SAuthor> fk599229686eaf51c = createForeignKey(authorId, "id");
 
     public SBook(String variable) {
-        super(SBook.class, forVariable(variable), "null", "book_");
+        super(SBook.class, forVariable(variable), "", "book_");
         addMetadata();
     }
 
@@ -44,12 +43,12 @@ public class SBook extends com.mysema.query.sql.RelationalPathBase<SBook> {
     }
 
     public SBook(Path<? extends SBook> path) {
-        super(path.getType(), path.getMetadata(), "null", "book_");
+        super(path.getType(), path.getMetadata(), "", "book_");
         addMetadata();
     }
 
     public SBook(PathMetadata<?> metadata) {
-        super(SBook.class, metadata, "null", "book_");
+        super(SBook.class, metadata, "", "book_");
         addMetadata();
     }
 

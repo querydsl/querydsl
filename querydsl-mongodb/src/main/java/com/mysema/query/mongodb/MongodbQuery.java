@@ -13,39 +13,20 @@
  */
 package com.mysema.query.mongodb;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.ReadPreference;
+import com.mongodb.*;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinExpression;
-import com.mysema.query.NonUniqueResultException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.SimpleProjectable;
-import com.mysema.query.SimpleQuery;
+import com.mysema.query.*;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.Predicate;
+import com.mysema.query.types.*;
 import com.mysema.query.types.path.CollectionPathBase;
 
 /**
@@ -268,7 +249,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     public List<K> list() {
         try {
             DBCursor cursor = createCursor();
-            List<K> results = new ArrayList<K>(cursor.size());
+            List<K> results = new ArrayList<K>();
             for (DBObject dbObject : cursor) {
                 results.add(transformer.apply(dbObject));
             }

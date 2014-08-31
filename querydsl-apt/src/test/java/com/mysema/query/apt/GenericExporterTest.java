@@ -43,6 +43,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QExampleEntity.java");
 
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
+        expected.add("QEmbeddable3Test_EmbeddableClass.java");
 
         // FIXME
         expected.add("QExternalEntityTest_MyEntity.java");
@@ -80,6 +82,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
 
         expected.add("QTemporal2Test_Cheque.java");
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
+        expected.add("QEmbeddable3Test_EmbeddableClass.java");
 
         // FIXME
         expected.add("QGeneric4Test_HidaBez.java");
@@ -90,6 +94,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QGeneric12Test_ChannelRole.java");
         expected.add("QManyToManyTest_Person.java");
         expected.add("QOneToOneTest_Person.java");
+        expected.add("QGeneric16Test_HidaBez.java");
+        expected.add("QGeneric16Test_HidaBezGruppe.java");
 
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }

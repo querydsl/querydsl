@@ -13,8 +13,6 @@
  */
 package com.mysema.query.jdo.test.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
-
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
@@ -22,6 +20,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -45,15 +44,15 @@ public class SStore extends RelationalPathBase<SStore> {
     public final ForeignKey<SStoreProducts> _storeProductsFk1 = new ForeignKey<SStoreProducts>(this, storeId, "STORE_ID_OID");
 
     public SStore(String variable) {
-        super(SStore.class, forVariable(variable), null, "STORE");
+        super(SStore.class, forVariable(variable), "", "STORE");
     }
 
     public SStore(BeanPath<? extends SStore> entity) {
-        super(entity.getType(),entity.getMetadata(), null, "STORE");
+        super(entity.getType(),entity.getMetadata(), "", "STORE");
     }
 
     public SStore(PathMetadata<?> metadata) {
-        super(SStore.class, metadata, null, "STORE");
+        super(SStore.class, metadata, "", "STORE");
     }
 
 }

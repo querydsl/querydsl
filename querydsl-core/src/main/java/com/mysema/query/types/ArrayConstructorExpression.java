@@ -13,10 +13,9 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.concurrent.Immutable;
 import java.lang.reflect.Array;
 import java.util.List;
-
-import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -28,7 +27,7 @@ import com.google.common.collect.ImmutableList;
  * @param <T> component type
  */
 @Immutable
-public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implements FactoryExpression<T[]> {
+public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
 
     private static final long serialVersionUID = 8667880104290226505L;
 

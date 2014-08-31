@@ -1,14 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -34,7 +32,7 @@ public class SPrice extends com.mysema.query.sql.RelationalPathBase<SPrice> {
     public final com.mysema.query.sql.ForeignKey<SCatalog_price> _fkaa04532f5222eaf7 = createInvForeignKey(id, "prices_id");
 
     public SPrice(String variable) {
-        super(SPrice.class, forVariable(variable), "null", "price_");
+        super(SPrice.class, forVariable(variable), "", "price_");
         addMetadata();
     }
 
@@ -44,12 +42,12 @@ public class SPrice extends com.mysema.query.sql.RelationalPathBase<SPrice> {
     }
 
     public SPrice(Path<? extends SPrice> path) {
-        super(path.getType(), path.getMetadata(), "null", "price_");
+        super(path.getType(), path.getMetadata(), "", "price_");
         addMetadata();
     }
 
     public SPrice(PathMetadata<?> metadata) {
-        super(SPrice.class, metadata, "null", "price_");
+        super(SPrice.class, metadata, "", "price_");
         addMetadata();
     }
 

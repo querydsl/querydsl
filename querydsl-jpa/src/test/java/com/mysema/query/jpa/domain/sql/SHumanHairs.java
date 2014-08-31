@@ -1,18 +1,12 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
 
 import com.mysema.query.sql.ColumnMetadata;
-
-import java.io.*;
-
-import java.io.File;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -32,7 +26,7 @@ public class SHumanHairs extends com.mysema.query.sql.RelationalPathBase<SHumanH
     public final com.mysema.query.sql.ForeignKey<SMammal> fk6649531ff097e318 = createForeignKey(humanId, "id");
 
     public SHumanHairs(String variable) {
-        super(SHumanHairs.class, forVariable(variable), "null", "Human_hairs");
+        super(SHumanHairs.class, forVariable(variable), "", "Human_hairs");
         addMetadata();
     }
 
@@ -42,12 +36,12 @@ public class SHumanHairs extends com.mysema.query.sql.RelationalPathBase<SHumanH
     }
 
     public SHumanHairs(Path<? extends SHumanHairs> path) {
-        super(path.getType(), path.getMetadata(), "null", "Human_hairs");
+        super(path.getType(), path.getMetadata(), "", "Human_hairs");
         addMetadata();
     }
 
     public SHumanHairs(PathMetadata<?> metadata) {
-        super(SHumanHairs.class, metadata, "null", "Human_hairs");
+        super(SHumanHairs.class, metadata, "", "Human_hairs");
         addMetadata();
     }
 

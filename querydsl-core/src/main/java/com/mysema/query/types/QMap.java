@@ -37,7 +37,7 @@ import com.google.common.collect.Maps;
  * @author tiwe
  *
  */
-public class QMap extends ExpressionBase<Map<Expression<?>,?>> implements FactoryExpression<Map<Expression<?>,?>>{
+public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 

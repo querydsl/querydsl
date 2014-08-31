@@ -54,8 +54,6 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     public static Elements ELEMENTS;
 
-    private static final Set<Element> DELEGATE_METHODS = new HashSet<Element>();
-
     public static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
 
     private final TypeExtractor typeExtractor = new TypeExtractor(true);
@@ -431,23 +429,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     private Set<TypeElement> processDelegateMethods() {
-        Set<Element> delegateMethods = new HashSet<Element>();
-        delegateMethods.addAll(getElements(QueryDelegate.class));
-        for (Element element : DELEGATE_METHODS) {
-            TypeElement parent = (TypeElement)element.getEnclosingElement();
-            // replace with element from current session
-            parent = processingEnv.getElementUtils().getTypeElement(parent.getQualifiedName().toString());
-            if (parent != null) {
-                for (Element child : parent.getEnclosedElements()) {
-                    if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())) {
-                        delegateMethods.add(child);
-                    }
-                }
-            }
-        }
-        DELEGATE_METHODS.clear();
-        DELEGATE_METHODS.addAll(delegateMethods);
-
+        Set<Element> delegateMethods = (Set)getElements(QueryDelegate.class);
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
 
         for (Element delegateMethod : delegateMethods) {
@@ -558,7 +540,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
+        return SourceVersion.latestSupported();
     }
 
     private void serialize(Serializer serializer, Collection<EntityType> models) {

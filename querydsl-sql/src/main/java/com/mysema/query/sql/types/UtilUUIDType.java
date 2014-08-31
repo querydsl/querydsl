@@ -27,17 +27,33 @@ import java.util.UUID;
  */
 public class UtilUUIDType extends AbstractType<UUID> {
 
+    private final boolean asString;
+
     public UtilUUIDType() {
-        super(Types.OTHER);
+        this(Types.OTHER, true);
+    }
+
+    public UtilUUIDType(boolean asString) {
+        this(Types.OTHER, asString);
     }
 
     public UtilUUIDType(int type) {
+        this(type, true);
+    }
+
+    public UtilUUIDType(int type, boolean asString) {
         super(type);
+        this.asString = asString;
     }
 
     @Override
     public UUID getValue(ResultSet rs, int startIndex) throws SQLException {
-        return UUID.fromString(rs.getString(startIndex));
+        if (asString) {
+            String str = rs.getString(startIndex);
+            return str != null ? UUID.fromString(str) : null;
+        } else {
+            return (UUID) rs.getObject(startIndex);
+        }
     }
 
     @Override
@@ -47,6 +63,11 @@ public class UtilUUIDType extends AbstractType<UUID> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, UUID value) throws SQLException {
-        st.setString(startIndex, value.toString());
+        if (asString) {
+            st.setString(startIndex, value.toString());
+        } else {
+            st.setObject(startIndex, value);
+        }
+
     }
 }

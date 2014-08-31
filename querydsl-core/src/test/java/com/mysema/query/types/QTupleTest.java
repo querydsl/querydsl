@@ -13,16 +13,16 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Arrays;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Ignore;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class QTupleTest {
 
@@ -107,5 +107,11 @@ public class QTupleTest {
         QTuple expr = new QTuple(ImmutableList.<Expression<?>>of(str1, str1));
         assertEquals(1, expr.getArgs().size());
         assertEquals(str1, expr.getArgs().get(0));
+    }
+
+    @Test
+    public void NewInstance() {
+        assertNotNull(new QTuple(str1, str1).newInstance(null, null));
+        assertNull(new QTuple(str1, str1).skipNulls().newInstance(null, null));
     }
 }

@@ -13,16 +13,16 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpression;
-import com.mysema.query.types.Ops;
-
 import javax.annotation.Nullable;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.NullExpression;
+import com.mysema.query.types.Ops;
 
 /**
  * CaseBuilder enables the construction of typesafe case-when-then-else
@@ -92,7 +92,7 @@ public final class CaseBuilder {
             if (constant != null) {
                 return otherwise(ConstantImpl.create(constant));
             } else {
-                return otherwise((Expression)NullExpression.DEFAULT);
+                return otherwise((Q)NullExpression.DEFAULT);
             }
         }
 
