@@ -205,7 +205,6 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         try {
             if (configuration.getTemplates().isNativeMerge()) {
                 PreparedStatement stmt = null;
-                Collection<PreparedStatement> stmts = null;
                 if (batches.isEmpty()) {
                     stmt = createStatement(true);
                     listeners.notifyMerge(entity, metadata, keys, columns, values, subQuery);
@@ -214,17 +213,19 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                     stmt.executeUpdate();
                     listeners.executed(context);
                 } else {
-                    stmts = createStatements(true);
+                    Collection<PreparedStatement> stmts = createStatements(true);
+                    if (stmts != null && stmts.size() > 1) {
+                        throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
+                    }
+                    stmt = stmts.iterator().next();
                     listeners.notifyMerges(entity, metadata, batches);
 
                     listeners.preExecute(context);
                     stmt.executeBatch();
                     listeners.executed(context);
                 }
-                if (stmts != null && stmts.size() > 1) {
-                    throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
-                }
-                final Statement stmt2 = stmts != null ? stmts.iterator().next() : stmt;
+
+                final Statement stmt2 = stmt;
                 ResultSet rs = stmt.getGeneratedKeys();
                 return new ResultSetAdapter(rs) {
                     @Override
