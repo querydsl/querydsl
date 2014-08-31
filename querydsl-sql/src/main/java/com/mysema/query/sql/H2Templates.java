@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.types.Ops;
 
 /**
@@ -56,6 +58,12 @@ public class H2Templates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(cosh({0}) / sinh({0}))");
 
         add(Ops.DateTimeOps.DATE, "convert({0}, date)");
+
+        addTypeNameToCode("result_set", -10);
+        addTypeNameToCode("identity", Types.BIGINT);
+        addTypeNameToCode("uuid", Types.BINARY);
+        addTypeNameToCode("serial", Types.INTEGER);
+        addTypeNameToCode("varchar_ignorecase", Types.VARCHAR);
     }
 
 }

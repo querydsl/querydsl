@@ -11,12 +11,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Joiner;
 import com.mysema.query.QueryException;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * CreateTableClause defines a CREATE TABLE clause
@@ -32,6 +32,8 @@ public class CreateTableClause {
 
     private final Connection connection;
 
+    private final Configuration configuration;
+
     private final SQLTemplates templates;
 
     private final String table;
@@ -44,9 +46,10 @@ public class CreateTableClause {
 
     private final List<ForeignKeyData> foreignKeys = new ArrayList<ForeignKeyData>();
 
-    public CreateTableClause(Connection conn, SQLTemplates templates, String table) {
+    public CreateTableClause(Connection conn, Configuration c, String table) {
         this.connection = conn;
-        this.templates = templates;
+        this.configuration = c;
+        this.templates = c.getTemplates();
         this.table = templates.quoteIdentifier(table);
     }
 
@@ -58,7 +61,8 @@ public class CreateTableClause {
      * @return
      */
     public CreateTableClause column(String name, Class<?> type) {
-        columns.add(new ColumnData(templates.quoteIdentifier(name), templates.getTypeForClass(type)));
+        String typeName = configuration.getTypeName(type);
+        columns.add(new ColumnData(templates.quoteIdentifier(name), typeName));
         return this;
     }
 

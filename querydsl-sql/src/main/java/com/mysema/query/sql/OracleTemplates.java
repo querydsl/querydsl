@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import java.math.BigInteger;
 import java.sql.Types;
 import java.util.List;
 
@@ -70,15 +69,6 @@ public class OracleTemplates extends SQLTemplates {
         setWithRecursive("with ");
         setCountViaAnalytics(true);
 
-        // type mappings
-        addClass2TypeMappings("number(3,0)", Byte.class);
-        addClass2TypeMappings("number(1,0)", Boolean.class);
-        addClass2TypeMappings("number(19,0)", BigInteger.class, Long.class);
-        addClass2TypeMappings("number(5,0)", Short.class);
-        addClass2TypeMappings("number(10,0)", Integer.class);
-        addClass2TypeMappings("double precision", Double.class);
-        addClass2TypeMappings("varchar(4000 char)", String.class);
-
         add(Ops.ALIAS, "{0} {1}");
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
@@ -132,6 +122,28 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_HOUR, "trunc({0}, 'hh')");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc({0}, 'mi')");
         add(Ops.DateTimeOps.TRUNC_SECOND, "{0}"); // not truncated
+
+        addTypeNameToCode("intervalds", -104);
+        addTypeNameToCode("intervalym", -103);
+        addTypeNameToCode("timestamp with local time zone", -102);
+        addTypeNameToCode("timestamp with time zone", -101);
+        addTypeNameToCode("long raw", Types.LONGVARBINARY);
+        addTypeNameToCode("raw", Types.VARBINARY);
+        addTypeNameToCode("long", Types.LONGVARCHAR);
+        addTypeNameToCode("varchar2", Types.VARCHAR);
+    }
+
+    @Override
+    public String getCastTypeNameForCode(int code) {
+        switch (code) {
+            case Types.TINYINT:  return "number(3,0)";
+            case Types.SMALLINT: return "number(5,0)";
+            case Types.INTEGER:  return "number(10,0)";
+            case Types.BIGINT:   return "number(19,0)";
+            case Types.DOUBLE:   return "double precision";
+            case Types.VARCHAR:  return "varchar(4000 char)";
+            default: return super.getCastTypeNameForCode(code);
+        }
     }
 
     @Override

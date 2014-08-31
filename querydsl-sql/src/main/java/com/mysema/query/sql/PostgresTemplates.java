@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.types.Ops;
 
 /**
@@ -48,9 +50,6 @@ public class PostgresTemplates extends SQLTemplates {
         setCountDistinctMultipleColumns(true);
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
-
-        addClass2TypeMappings("numeric(3,0)", Byte.class);
-        addClass2TypeMappings("double precision", Double.class);
 
         // String
         add(Ops.MATCHES, "{0} ~ {1}");
@@ -110,6 +109,23 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS,   hoursDiff);
         add(Ops.DateTimeOps.DIFF_MINUTES, minutesDiff);
         add(Ops.DateTimeOps.DIFF_SECONDS, secondsDiff);
+
+        addTypeNameToCode("bool", Types.BIT, true);
+        addTypeNameToCode("bytea", Types.BINARY);
+        addTypeNameToCode("name", Types.VARCHAR);
+        addTypeNameToCode("int8", Types.BIGINT, true);
+        addTypeNameToCode("bigserial", Types.BIGINT);
+        addTypeNameToCode("int2", Types.SMALLINT, true);
+        addTypeNameToCode("int2", Types.TINYINT, true); // secondary mapping
+        addTypeNameToCode("int4", Types.INTEGER, true);
+        addTypeNameToCode("serial", Types.INTEGER);
+        addTypeNameToCode("text", Types.VARCHAR);
+        addTypeNameToCode("oid", Types.BIGINT);
+        addTypeNameToCode("xml", Types.SQLXML, true);
+        addTypeNameToCode("float4", Types.REAL, true);
+        addTypeNameToCode("float8", Types.DOUBLE, true);
+        addTypeNameToCode("bpchar", Types.CHAR);
+        addTypeNameToCode("timestamptz", Types.TIMESTAMP);
     }
 
 }

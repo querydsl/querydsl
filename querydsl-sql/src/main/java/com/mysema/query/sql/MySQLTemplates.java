@@ -13,7 +13,7 @@
  */
 package com.mysema.query.sql;
 
-import java.math.BigDecimal;
+import java.sql.Types;
 
 import com.mysema.query.types.Ops;
 
@@ -50,14 +50,6 @@ public class MySQLTemplates extends SQLTemplates {
         setLimitRequired(true);
         setNullsFirst(null);
         setNullsLast(null);
-
-        addClass2TypeMappings("bool", Boolean.class);
-        addClass2TypeMappings("signed",
-                Byte.class, Short.class, Integer.class, Long.class);
-
-        addClass2TypeMappings("decimal",
-                Double.class, Float.class, BigDecimal.class);
-        addClass2TypeMappings("char", String.class);
 
         add(Ops.CONCAT, "concat({0}, {1})",0);
 
@@ -104,6 +96,32 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(hour,{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(second,{0},{1})");
+
+        addTypeNameToCode("bool", Types.BIT, true);
+        addTypeNameToCode("tinyint unsigned", Types.TINYINT);
+        addTypeNameToCode("bigint unsigned", Types.BIGINT);
+        addTypeNameToCode("long varbinary", Types.LONGVARBINARY, true);
+        addTypeNameToCode("mediumblob", Types.LONGVARBINARY);
+        addTypeNameToCode("longblob", Types.LONGVARBINARY);
+        addTypeNameToCode("blob", Types.LONGVARBINARY);
+        addTypeNameToCode("tinyblob", Types.LONGVARBINARY);
+        addTypeNameToCode("long varchar", Types.LONGVARCHAR, true);
+        addTypeNameToCode("mediumtext", Types.LONGVARCHAR);
+        addTypeNameToCode("longtext", Types.LONGVARCHAR);
+        addTypeNameToCode("text", Types.LONGVARCHAR);
+        addTypeNameToCode("tinytext", Types.LONGVARCHAR);
+        addTypeNameToCode("integer unsigned", Types.INTEGER);
+        addTypeNameToCode("int", Types.INTEGER);
+        addTypeNameToCode("int unsigned", Types.INTEGER);
+        addTypeNameToCode("mediumint", Types.INTEGER);
+        addTypeNameToCode("mediumint unsigned", Types.INTEGER);
+        addTypeNameToCode("smallint unsigned", Types.SMALLINT);
+        addTypeNameToCode("float", Types.REAL, true);
+        addTypeNameToCode("double precision", Types.DOUBLE, true);
+        addTypeNameToCode("real", Types.DOUBLE);
+        addTypeNameToCode("enum", Types.VARCHAR);
+        addTypeNameToCode("set", Types.VARCHAR);
+        addTypeNameToCode("datetime", Types.TIMESTAMP, true);
     }
 
     @Override
@@ -116,6 +134,22 @@ public class MySQLTemplates extends SQLTemplates {
             builder.append(ch);
         }
         return builder.toString();
+    }
+
+    @Override
+    public String getCastTypeNameForCode(int code) {
+        switch (code) {
+            case Types.TINYINT:
+            case Types.SMALLINT:
+            case Types.INTEGER:
+            case Types.BIGINT: return "signed";
+            case Types.FLOAT:
+            case Types.DOUBLE:
+            case Types.REAL:
+            case Types.DECIMAL: return "decimal";
+            case Types.VARCHAR: return "char";
+            default: return super.getCastTypeNameForCode(code);
+        }
     }
 
 }

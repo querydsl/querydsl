@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,12 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.mysema.query.sql.types.ArrayType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Configuration for SQLQuery instances
@@ -35,6 +39,8 @@ import com.mysema.query.types.Path;
  *
  */
 public final class Configuration {
+
+    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
@@ -54,7 +60,7 @@ public final class Configuration {
 
     private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
-    private final SQLTemplates templates;
+    private SQLTemplates templates;
 
     private SQLExceptionTranslator exceptionTranslator = DefaultSQLExceptionTranslator.DEFAULT;
 
@@ -76,6 +82,16 @@ public final class Configuration {
         }
         for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
             schemaTables.put(entry.getKey(), entry.getValue());
+        }
+
+        List<Class<?>> classes = ImmutableList.<Class<?>>of(String.class, Long.class, Integer.class, Short.class,
+                Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
+                java.sql.Time.class, Double.class, Float.class);
+        for (Class<?> cl : classes) {
+            int code = jdbcTypeMapping.get(cl);
+            String name = templates.getTypeNameForCode(code);
+            Class<?> arrType = Array.newInstance(cl, 0).getClass();
+            javaTypeMapping.register(new ArrayType(arrType, name));
         }
     }
 
@@ -129,11 +145,33 @@ public final class Configuration {
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null) {
             return type.getReturnedClass();
-        } else if (typeName != null && !typeToName.isEmpty()) {
+        } else if (typeName != null && !typeName.isEmpty()) {
+            typeName = typeName.toLowerCase();
             // typename mapped class
-            Class<?> clazz = typeToName.get(typeName.toLowerCase());
+            Class<?> clazz = typeToName.get(typeName);
             if (clazz != null) {
                 return clazz;
+            }
+            if (sqlType == Types.ARRAY) {
+                if (typeName.startsWith("_")) {
+                    typeName = typeName.substring(1);
+                } else if (typeName.endsWith(" array")) {
+                    typeName = typeName.substring(0, typeName.length() - 6);
+                }
+                if (typeName.contains("[")) {
+                    typeName = typeName.substring(0, typeName.indexOf("["));
+                }
+                if (typeName.contains("(")) {
+                    typeName = typeName.substring(0, typeName.indexOf("("));
+                }
+
+                Integer sqlComponentType = templates.getCodeForTypeName(typeName);
+                if (sqlComponentType == null) {
+                    logger.warn("Found no JDBC type for " + typeName + " using OTHER instead");
+                    sqlComponentType = Types.OTHER;
+                }
+                Class<?> componentType = jdbcTypeMapping.get(sqlComponentType, size, digits);
+                return Array.newInstance(componentType, 0).getClass();
             }
         }
         // sql type mapped class
@@ -180,8 +218,7 @@ public final class Configuration {
     /**
      * Get the schema/table override
      *
-     * @param schema
-     * @param table
+     * @param key
      * @return
      */
     @Nullable
@@ -262,6 +299,33 @@ public final class Configuration {
             }
         }
         return javaTypeMapping.getType(clazz);
+    }
+
+    /**
+     * Get the SQL type name for the given java type
+     *
+     * @param type
+     * @return
+     */
+    public String getTypeName(Class<?> type) {
+        Integer jdbcType = jdbcTypeMapping.get(type);
+        if (jdbcType == null) {
+            jdbcType = javaTypeMapping.getType(type).getSQLTypes()[0];
+        }
+        return templates.getTypeNameForCode(jdbcType);
+    }
+
+    /**
+     *
+     * @param type
+     * @return
+     */
+    public String getTypeNameForCast(Class<?> type) {
+        Integer jdbcType = jdbcTypeMapping.get(type);
+        if (jdbcType == null) {
+            jdbcType = javaTypeMapping.getType(type).getSQLTypes()[0];
+        }
+        return templates.getCastTypeNameForCode(jdbcType);
     }
 
     /**
@@ -484,6 +548,13 @@ public final class Configuration {
      */
     public void setExceptionTranslator(SQLExceptionTranslator exceptionTranslator) {
         this.exceptionTranslator = exceptionTranslator;
+    }
+
+    /**
+     * @param templates
+     */
+    public void setTemplates(SQLTemplates templates) {
+        this.templates = templates;
     }
 
 }

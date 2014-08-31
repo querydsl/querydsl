@@ -13,12 +13,12 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.types.Ops;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import java.sql.Types;
 
 /**
  * SQLiteTemplates is a SQL dialect for SQLite
@@ -94,6 +94,8 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.MathOps.RANDOM2, "random({0})");
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
+
+        addTypeNameToCode("text", Types.VARCHAR);
     }
 
     @Override

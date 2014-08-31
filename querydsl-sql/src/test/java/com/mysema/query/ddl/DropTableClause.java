@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.mysema.query.QueryException;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.Configuration;
 
 /**
  * DropTableClause defines a DROP TABLE clause
@@ -24,9 +24,9 @@ public class DropTableClause {
     
     private final String table;
     
-    public DropTableClause(Connection conn, SQLTemplates templates, String table) {
+    public DropTableClause(Connection conn, Configuration c, String table) {
         this.connection = conn;
-        this.table = templates.quoteIdentifier(table);
+        this.table = c.getTemplates().quoteIdentifier(table);
     }
     
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")

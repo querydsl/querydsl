@@ -753,7 +753,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (stage == Stage.SELECT
                 && !Null.class.isInstance(constant)
                 && configuration.getTemplates().isWrapSelectParameters()) {
-                String typeName = templates.getTypeForCast(constant.getClass());
+                String typeName = configuration.getTypeNameForCast(constant.getClass());
                 Expression type = Expressions.constant(typeName);
                 super.visitOperation(constant.getClass(), SQLOps.CAST, ImmutableList.<Expression<?>>of(Q, type));
             } else {
@@ -853,13 +853,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
 
         } else if (operator == Ops.STRING_CAST) {
-            final String typeName = templates.getTypeForCast(String.class);
+            final String typeName = configuration.getTypeNameForCast(String.class);
             super.visitOperation(String.class, SQLOps.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
-            final String typeName = templates.getTypeForCast(targetType);
+            final String typeName = configuration.getTypeNameForCast(targetType);
             super.visitOperation(targetType, SQLOps.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 

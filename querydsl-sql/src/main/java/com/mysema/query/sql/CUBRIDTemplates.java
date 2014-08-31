@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
@@ -72,6 +74,15 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+
+        addTypeNameToCode("numeric(3,0)", Types.TINYINT, true);
+        addTypeNameToCode("numeric(38,0)", Types.BIGINT, true);
+        addTypeNameToCode("bit varying", Types.LONGVARBINARY);
+        addTypeNameToCode("bit varying", Types.VARBINARY);
+        addTypeNameToCode("bit", Types.BINARY, true);
+        addTypeNameToCode("varchar", Types.LONGVARCHAR, true);
+        addTypeNameToCode("double", Types.FLOAT, true);
+        addTypeNameToCode("float", Types.REAL, true);
     }
 
     @Override

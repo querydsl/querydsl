@@ -59,10 +59,6 @@ public class TeradataTemplates extends SQLTemplates {
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
 
-        addClass2TypeMappings("byteint", Byte.class);
-        addClass2TypeMappings("double precision", Double.class);
-        addClass2TypeMappings("varchar(4000)", String.class);
-
         add(Ops.NE, "{0} <> {1}");
 
         // String

@@ -157,11 +157,11 @@ public final class Connections {
     }
 
     private static CreateTableClause createTable(SQLTemplates templates, String table) {
-        return new CreateTableClause(connHolder.get(), templates, table);
+        return new CreateTableClause(connHolder.get(), new Configuration(templates), table);
     }
 
     public static void dropTable(SQLTemplates templates, String table) throws SQLException{
-        new DropTableClause(connHolder.get(), templates, table).execute();
+        new DropTableClause(connHolder.get(), new Configuration(templates), table).execute();
     }
 
     public static void dropType(Statement stmt, String type) throws SQLException {
@@ -532,6 +532,13 @@ public final class Connections {
             return;
         }
 
+        // arrays
+        stmt.execute("drop table ARRAYTEST if exists");
+        stmt.execute("create table ARRAYTEST ( " +
+                "ID bigint primary key, " +
+                "INTEGERS integer array, " +
+                "MYARRAY varchar(8) array)");
+
         // dual
         stmt.execute("drop table DUAL if exists");
         stmt.execute("create table DUAL ( DUMMY varchar(1) )");
@@ -746,6 +753,7 @@ public final class Connections {
         dropTable(templates, "ARRAYTEST");
         stmt.execute("create table \"ARRAYTEST\" (\n" +
                 "\"ID\" bigint primary key,\n" +
+                "\"INTEGERS\" integer[],\n" +
                 "\"MYARRAY\" varchar(8)[])");
 
         // uuids

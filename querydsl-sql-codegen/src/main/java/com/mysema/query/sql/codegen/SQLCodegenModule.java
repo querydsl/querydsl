@@ -20,6 +20,7 @@ import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.SQLTemplates;
 
 /**
  * SQLCodegenModule is a dependency injection module with codegen configuration
@@ -46,12 +47,12 @@ public class SQLCodegenModule extends CodegenModule{
     public static final String SCHEMA_TO_PACKAGE = "schemaToPackage";
 
     public static final String COLUMN_COMPARATOR = "columnComparator";
-    
+
     @Override
     protected void configure() {
         super.configure();
         bind(NamingStrategy.class, DefaultNamingStrategy.class);
-        bind(Configuration.class, Configuration.DEFAULT);
+        bind(Configuration.class, new Configuration(SQLTemplates.DEFAULT));
         bind(Serializer.class, MetaDataSerializer.class);
         bind(QueryTypeFactory.class, SQLQueryTypeFactory.class);
         bind(BEAN_SERIALIZER, (Class<?>)null);

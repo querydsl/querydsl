@@ -1,5 +1,7 @@
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
@@ -34,9 +36,6 @@ public class FirebirdTemplates extends SQLTemplates {
         setDummyTable("RDB$DATABASE");
         setUnionsWrapped(false);
         setWrapSelectParameters(true);
-        addClass2TypeMappings("smallint", Boolean.class, Byte.class);
-        addClass2TypeMappings("varchar(256)", String.class);
-        addClass2TypeMappings("double precision", Double.class);
 
         // string
         add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");
@@ -86,6 +85,25 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_HOURS, "datediff(hour,{0},{1})");
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
+
+        addTypeNameToCode("smallint", Types.BOOLEAN, true);
+        addTypeNameToCode("smallint", Types.BIT, true);
+        addTypeNameToCode("smallint", Types.TINYINT, true);
+        addTypeNameToCode("decimal", Types.DOUBLE, true);
+        addTypeNameToCode("blob sub_type 0", Types.LONGVARBINARY);
+        addTypeNameToCode("blob sub_type 1", Types.LONGVARCHAR);
+        addTypeNameToCode("double precision", Types.DOUBLE);
+        addTypeNameToCode("array", Types.OTHER);
+        addTypeNameToCode("blob sub_type <0 ", Types.BLOB);
+    }
+
+    @Override
+    public String getCastTypeNameForCode(int code) {
+        if (code == Types.VARCHAR) {
+            return "varchar(256)";
+        } else {
+            return super.getCastTypeNameForCode(code);
+        }
     }
 
     @Override
