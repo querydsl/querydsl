@@ -70,11 +70,6 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     protected final QueryMixin<T> queryMixin;
 
-    @Nullable
-    protected Expression<?> union;
-
-    protected boolean unionAll;
-
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata, Configuration conf, PersistenceManager persistenceManager,
                             boolean detach) {

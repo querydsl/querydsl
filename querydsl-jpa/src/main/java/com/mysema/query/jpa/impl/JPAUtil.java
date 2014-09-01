@@ -44,7 +44,7 @@ public final class JPAUtil {
                 }
             }
             if (hasParameters) {
-                Parameter parameter = query.getParameter(Integer.valueOf(key));
+                Parameter parameter = query.getParameter(Integer.parseInt(key));
                 Class parameterType = parameter != null ? parameter.getParameterType() : null;
                 if (parameterType != null && !parameterType.isInstance(val)) {
                     if (val instanceof Number && Number.class.isAssignableFrom(parameterType)) {

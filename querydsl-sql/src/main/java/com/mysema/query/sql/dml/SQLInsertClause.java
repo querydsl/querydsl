@@ -312,7 +312,6 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         context = startContext(connection, metadata, entity);
         try {
             PreparedStatement stmt = null;
-            Collection<PreparedStatement> stmts = null;
             if (batches.isEmpty()) {
                 stmt = createStatement(true);
                 listeners.notifyInsert(entity, metadata, columns, values, subQuery);
@@ -321,18 +320,19 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 stmt.executeUpdate();
                 listeners.preExecute(context);
             } else {
-                stmts = createStatements(true);
-
+                Collection<PreparedStatement> stmts = createStatements(true);
+                if (stmts != null && stmts.size() > 1) {
+                    throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
+                }
+                stmt = stmts.iterator().next();
                 listeners.notifyInserts(entity, metadata, batches);
 
                 listeners.preExecute(context);
                 stmt.executeBatch();
                 listeners.executed(context);
             }
-            if (stmts != null && stmts.size() > 1) {
-                throw new IllegalStateException("executeWithKeys called with batch statement and multiple SQL strings");
-            }
-            final Statement stmt2 = stmts != null ? stmts.iterator().next() : stmt;
+
+            final Statement stmt2 = stmt;
             ResultSet rs = stmt.getGeneratedKeys();
             return new ResultSetAdapter(rs) {
                 @Override
