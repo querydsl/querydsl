@@ -13,6 +13,11 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Generated;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Set;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
@@ -20,11 +25,6 @@ import com.mysema.codegen.model.*;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
-
-import javax.annotation.Generated;
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.Set;
 
 /**
  * ProjectionSerializer is a {@link Serializer} implementation for projection types
@@ -57,7 +57,15 @@ public final class ProjectionSerializer implements Serializer{
 
         // imports
         writer.imports(NumberExpression.class.getPackage());
-        writer.imports(Expression.class, ConstructorExpression.class, Generated.class);
+        writer.imports(ConstructorExpression.class, Generated.class);
+
+        Set<Integer> sizes = Sets.newHashSet();
+        for (Constructor c : model.getConstructors()) {
+            sizes.add(c.getParameters().size());
+        }
+        if (sizes.size() != model.getConstructors().size()) {
+            writer.imports(Expression.class);
+        }
 
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
