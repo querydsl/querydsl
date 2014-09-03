@@ -561,6 +561,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoBatooJPA
     public void Enum_Eq() {
         assertEquals(1, query().from(company).where(company.ratingOrdinal.eq(Rating.A)).count());
         assertEquals(1, query().from(company).where(company.ratingString.eq(Rating.AA)).count());
