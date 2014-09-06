@@ -13,14 +13,15 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.*;
+
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.*;
 import com.mysema.query.types.*;
-
-import java.util.*;
 
 /**
  * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change
@@ -31,7 +32,7 @@ import java.util.*;
  */
 public final class NativeSQLSerializer extends SQLSerializer {
 
-    private final Map<Expression<?>, String> aliases = Maps.newHashMap();
+    private final ListMultimap<Expression<?>, String> aliases = ArrayListMultimap.create();
 
     private final boolean wrapEntityProjections;
 
@@ -48,7 +49,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
         return expr instanceof Operation && ((Operation<?>)expr).getOperator() == Ops.ALIAS;
     }
 
-    public Map<Expression<?>, String> getAliases() {
+    public ListMultimap<Expression<?>, String> getAliases() {
         return aliases;
     }
 
