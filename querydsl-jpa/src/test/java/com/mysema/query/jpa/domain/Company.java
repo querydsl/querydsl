@@ -13,15 +13,8 @@
  */
 package com.mysema.query.jpa.domain;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.batoo.jpa.annotations.Index;
 
@@ -51,4 +44,7 @@ public class Company {
     public int id;
 
     public String name;
+
+    @Column(name="official_name")
+    public String officialName;
 }
