@@ -12,10 +12,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QCompany;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Projections;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.testutil.ExcludeIn;
@@ -250,6 +247,12 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
+    public void Projections_DuplicateColumns() {
+        SAnimal cat = new SAnimal("cat");
+        assertEquals(1, query().from(cat).list(new QList(cat.count(), cat.count())).size());
+    }
+
+    @Test
     public void Single_Result() {
         query().from(cat).singleResult(cat.id);
     }
@@ -356,5 +359,6 @@ public abstract class AbstractSQLTest {
 //        assertEquals(6, rows.size());
 //        print(rows);
     }
+
 
 }

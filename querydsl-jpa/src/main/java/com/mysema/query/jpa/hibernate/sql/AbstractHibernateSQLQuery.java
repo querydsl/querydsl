@@ -15,8 +15,10 @@ package com.mysema.query.jpa.hibernate.sql;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
 import com.mysema.query.NonUniqueResultException;
@@ -86,7 +88,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
 
         if (!forCount) {
-            Map<Expression<?>, String> aliases = serializer.getAliases();
+            ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
+            Set<String> used = Sets.newHashSet();
             // set entity paths
             List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
             Expression<?> proj = projection.get(0);
@@ -95,13 +98,25 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
                     if (isEntityExpression(expr)) {
                         query.addEntity(extractEntityExpression(expr).toString(), expr.getType());
                     } else if (aliases.containsKey(expr)) {
-                        query.addScalar(aliases.get(expr));
+                        for (String scalar : aliases.get(expr)) {
+                            if (!used.contains(scalar)) {
+                                query.addScalar(scalar);
+                                used.add(scalar);
+                                break;
+                            }
+                        }
                     }
                 }
             } else if (isEntityExpression(proj)) {
                 query.addEntity(extractEntityExpression(proj).toString(), proj.getType());
             } else if (aliases.containsKey(proj)) {
-                query.addScalar(aliases.get(proj));
+                for (String scalar : aliases.get(proj)) {
+                    if (!used.contains(scalar)) {
+                        query.addScalar(scalar);
+                        used.add(scalar);
+                        break;
+                    }
+                }
             }
 
             // set result transformer, if projection is a FactoryExpression instance

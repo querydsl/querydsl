@@ -13,8 +13,20 @@
  */
 package com.mysema.query.jpa.sql;
 
+import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
 import com.mysema.query.jpa.AbstractSQLQuery;
@@ -29,15 +41,6 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -113,19 +116,33 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
             query = entityManager.createNativeQuery(queryString);
         }
         if (!forCount) {
-            Map<Expression<?>, String> aliases = serializer.getAliases();
+            ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
+            Set<String> used = Sets.newHashSet();
             if (proj instanceof FactoryExpression) {
                 for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
                     if (isEntityExpression(expr)) {
                         queryHandler.addEntity(query, extractEntityExpression(expr).toString(), expr.getType());
                     } else if (aliases.containsKey(expr)) {
-                        queryHandler.addScalar(query, aliases.get(expr), expr.getType());
+                        for (String scalar : aliases.get(expr)) {
+                            if (!used.contains(scalar)) {
+                                queryHandler.addScalar(query, scalar, expr.getType());
+                                used.add(scalar);
+                                break;
+                            }
+
+                        }
                     }
                 }
             } else if (isEntityExpression(proj)) {
                 queryHandler.addEntity(query, extractEntityExpression(proj).toString(), proj.getType());
             } else if (aliases.containsKey(proj)) {
-                queryHandler.addScalar(query, aliases.get(proj), proj.getType());
+                for (String scalar : aliases.get(proj)) {
+                    if (!used.contains(scalar)) {
+                        queryHandler.addScalar(query, scalar, proj.getType());
+                        used.add(scalar);
+                        break;
+                    }
+                }
             }
         }
 

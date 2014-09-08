@@ -13,13 +13,17 @@
  */
 package com.mysema.query.jpa;
 
-import javax.persistence.Table;
 import javax.persistence.Column;
-import java.util.*;
+import javax.persistence.Table;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.*;
@@ -34,7 +38,7 @@ import com.mysema.query.types.*;
  */
 public final class NativeSQLSerializer extends SQLSerializer {
 
-    private final Map<Expression<?>, String> aliases = Maps.newHashMap();
+    private final ListMultimap<Expression<?>, String> aliases = ArrayListMultimap.create();
 
     private final boolean wrapEntityProjections;
 
@@ -78,7 +82,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
         return expr instanceof Operation && ((Operation<?>)expr).getOperator() == Ops.ALIAS;
     }
 
-    public Map<Expression<?>, String> getAliases() {
+    public ListMultimap<Expression<?>, String> getAliases() {
         return aliases;
     }
 
