@@ -1,23 +1,15 @@
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QCompany;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.types.ConstructorExpression;
@@ -27,6 +19,9 @@ import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.testutil.ExcludeIn;
+import org.junit.Ignore;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public abstract class AbstractSQLTest {
 
@@ -157,6 +152,12 @@ public abstract class AbstractSQLTest {
         for (CatDTO cat : results) {
             assertTrue(cat.cat instanceof Cat);
         }
+    }
+
+    @Test
+    public void EntityQueries7() {
+        QCompany company = QCompany.company;
+        query().from(company).list(company.officialName);
     }
 
     @Test

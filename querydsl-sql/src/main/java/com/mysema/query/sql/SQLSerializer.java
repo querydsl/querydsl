@@ -79,7 +79,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         this.dml = dml;
     }
 
-    private void appendAsColumnName(Path<?> path) {
+    protected void appendAsColumnName(Path<?> path) {
         String column = ColumnMetadata.getName(path);
         if (path.getMetadata().getParent() instanceof RelationalPath) {
             RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
@@ -92,11 +92,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return configuration.getOverride(path.getSchemaAndTable());
     }
 
-    private void appendSchemaName(String schema) {
+    protected void appendSchemaName(String schema) {
         append(templates.quoteIdentifier(schema));
     }
 
-    private void appendTableName(String table) {
+    protected void appendTableName(String table) {
         append(templates.quoteIdentifier(table));
     }
 
@@ -162,7 +162,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handleTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
-    private void handleJoinTarget(JoinExpression je) {
+    protected void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
