@@ -15,6 +15,8 @@ package com.mysema.query.sql;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 /**
  *
  */
@@ -41,7 +43,7 @@ public class SchemaAndTable implements Serializable {
             return true;
         } else if (o instanceof SchemaAndTable) {
             SchemaAndTable st = (SchemaAndTable)o;
-            return st.schema.equals(schema) && st.table.equals(table);
+            return Objects.equal(st.schema, schema) && Objects.equal(st.table, table);
         } else {
             return false;
         }
@@ -49,7 +51,7 @@ public class SchemaAndTable implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31 * schema.hashCode() + table.hashCode();
+        return (schema != null ? 31 * schema.hashCode() : 0) + table.hashCode();
     }
 
 }

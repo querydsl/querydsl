@@ -13,12 +13,18 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.*;
+import javax.persistence.Column;
+import javax.persistence.Table;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.*;
 import com.mysema.query.types.*;
@@ -43,6 +49,33 @@ public final class NativeSQLSerializer extends SQLSerializer {
     public NativeSQLSerializer(Configuration configuration, boolean wrapEntityProjections) {
         super(configuration);
         this.wrapEntityProjections = wrapEntityProjections;
+    }
+
+    @Override
+    protected void appendAsColumnName(Path<?> path) {
+        if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
+            SQLTemplates templates = getTemplates();
+            Column column = path.getAnnotatedElement().getAnnotation(Column.class);
+            append(templates.quoteIdentifier(column.name()));
+        } else {
+            super.appendAsColumnName(path);
+        }
+    }
+
+    @Override
+    protected void handleJoinTarget(JoinExpression je) {
+        SQLTemplates templates = getTemplates();
+        Class<?> type = je.getTarget().getType();
+        if (type.getAnnotation(Table.class) != null && templates.isSupportsAlias()) {
+            Table table = type.getAnnotation(Table.class);
+            if (!table.schema().isEmpty() && templates.isPrintSchema()) {
+                appendSchemaName(table.schema());
+                append(".");
+            }
+            appendTableName(table.name());
+            append(templates.getTableAlias());
+        }
+        super.handleJoinTarget(je);
     }
 
     private boolean isAlias(Expression<?> expr) {
@@ -78,6 +111,8 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     aliases.put(args[i], alias);
                     args[i] = ExpressionUtils.as(args[i], alias);
                     modified = true;
+                } else if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
+                    aliases.put(path, path.getAnnotatedElement().getAnnotation(Column.class).name());
                 } else {
                     aliases.put(path, ColumnMetadata.getName(path));
                 }
@@ -87,7 +122,12 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 for (int j = 0; j < fargs.size(); j++) {
                     if (fargs.get(j) instanceof Path) {
                         Path<?> path = (Path<?>) fargs.get(j);
-                        String columnName = ColumnMetadata.getName(path);
+                        String columnName;
+                        if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
+                            columnName = path.getAnnotatedElement().getAnnotation(Column.class).name();
+                        } else {
+                            columnName = ColumnMetadata.getName(path);
+                        }
                         if (!used.add(columnName)) {
                             String alias = "col__"+(i+1)+"_"+(j+1);
                             aliases.put(path, alias);

@@ -9,6 +9,7 @@ import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QCompany;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.types.*;
@@ -148,6 +149,12 @@ public abstract class AbstractSQLTest {
         for (CatDTO cat : results) {
             assertTrue(cat.cat instanceof Cat);
         }
+    }
+
+    @Test
+    public void EntityQueries7() {
+        QCompany company = QCompany.company;
+        query().from(company).list(company.officialName);
     }
 
     @Test
