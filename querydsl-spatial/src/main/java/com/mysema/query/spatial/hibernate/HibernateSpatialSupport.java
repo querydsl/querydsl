@@ -11,16 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.spatial;
-
-import com.google.common.collect.Maps;
-import com.mysema.query.types.Operator;
+package com.mysema.query.spatial.hibernate;
 
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.mysema.query.spatial.SpatialOps;
+import com.mysema.query.types.Operator;
+
 public class HibernateSpatialSupport {
 
-    public static Map<Operator<?>, String> getSpatialOps(String prefix, boolean asFunction) {
+    public static Map<Operator<?>, String> getSpatialOps() {
         Map<Operator<?>, String> ops = Maps.newHashMap();
         ops.put(SpatialOps.DIMENSION, "dimension({0})");
         ops.put(SpatialOps.GEOMETRY_TYPE, "geometrytype({0}, {1})");
