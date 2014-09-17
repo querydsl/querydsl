@@ -373,7 +373,7 @@
     </repository>
     <repository>
       <id>opengeo</id>
-      <url>http://repo.boundlessgeo.com</url>
+      <url>http://repo.boundlessgeo.com/main</url>
     </repository>
     <repository>
       <id>nexus</id>
