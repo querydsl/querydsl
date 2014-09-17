@@ -114,7 +114,7 @@ public abstract class AbstractEvaluatorFactory implements EvaluatorFactory {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Evaluator<T> createEvaluator(String source, ClassType projection, String[] names,
+    public synchronized <T> Evaluator<T> createEvaluator(String source, ClassType projection, String[] names,
             Type[] types, Class<?>[] classes, Map<String, Object> constants) {
         try {
             final String id = toId(source, projection.getJavaClass(), types, constants.values());
