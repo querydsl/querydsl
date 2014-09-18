@@ -376,6 +376,10 @@
       <url>http://download.osgeo.org/webdav/geotools</url>
     </repository>
     <repository>
+      <id>mapfish</id>
+      <url>http://dev.mapfish.org/maven/repository/repository</url>
+    </repository>
+    <repository>
       <id>nexus</id>
       <url>https://maven.nuxeo.org/nexus/content/groups/public</url>
     </repository>
