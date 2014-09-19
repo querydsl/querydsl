@@ -38,8 +38,8 @@
     <sqlite.version>3.7.2</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
     <firebird.version>2.2.5</firebird.version>
-    
-    <guava.version>14.0</guava.version>
+
+    <guava.version>18.0</guava.version>
     <codegen.version>0.6.4</codegen.version>
     <mysema.lang.version>0.2.4</mysema.lang.version>
     <cglib.version>2.2.2</cglib.version>    
@@ -373,7 +373,11 @@
     </repository>
     <repository>
       <id>opengeo</id>
-      <url>http://repo.opengeo.org</url>
+      <url>http://download.osgeo.org/webdav/geotools</url>
+    </repository>
+    <repository>
+      <id>mapfish</id>
+      <url>http://dev.mapfish.org/maven/repository/repository</url>
     </repository>
     <repository>
       <id>nexus</id>
