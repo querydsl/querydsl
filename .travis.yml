@@ -7,6 +7,7 @@ services:
 addons:
   postgresql: "9.3"
 install:
+  - ./travis/maven.sh
   - sh -c 'cd querydsl-root && mvn -B -q install -Dmaven.javadoc.skip=true -DskipTests=true'
 before_script:
   - mysql -u root -e "source travis/mysql.sql"
