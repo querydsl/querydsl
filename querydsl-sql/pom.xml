@@ -320,10 +320,12 @@
 
   <repositories>
     <!--for cubrid:cubrid-jdbc -->
+    <!--
     <repository>
       <id>CUBRID</id>
       <url>http://maven.cubrid.org</url>
     </repository>
+    -->
     <!-- for oracle -->
     <repository>
       <id>datanucleus</id>
