@@ -12,6 +12,7 @@ before_script:
   - mysql -u root -e "source travis/mysql.sql"
   - psql -U postgres -f travis/postgresql.sql  
   - psql -c 'create extension postgis;' -d querydsl -U postgres
+  - ./travis/maven.sh
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
 script:
