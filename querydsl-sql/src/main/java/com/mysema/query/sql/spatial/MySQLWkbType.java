@@ -56,7 +56,7 @@ public class MySQLWkbType extends AbstractType<Geometry> {
             System.arraycopy(bytes, 4, wkb, 0, wkb.length);
             int srid = bytes[3] << 24 | (bytes[2] & 0xff) << 16 | (bytes[1] & 0xff) << 8 | (bytes[0] & 0xff);
             // TODO make sure srid is set
-            WkbDecoder decoder = Wkb.newWkbDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
+            WkbDecoder decoder = Wkb.newDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
             return decoder.decode(ByteBuffer.from(wkb));
         } else {
             return null;
@@ -65,7 +65,7 @@ public class MySQLWkbType extends AbstractType<Geometry> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        WkbEncoder encoder = Wkb.newWkbEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
+        WkbEncoder encoder = Wkb.newEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
         ByteBuffer buffer = encoder.encode(value, byteOrder);
         int srid = value.getSRID();
 
@@ -83,7 +83,7 @@ public class MySQLWkbType extends AbstractType<Geometry> {
 
     @Override
     public String getLiteral(Geometry geometry) {
-        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        String str = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
         if (geometry.getSRID() > -1) {
             return "GeomFromText('" + str + "', " + geometry.getSRID() + ")";
         } else {

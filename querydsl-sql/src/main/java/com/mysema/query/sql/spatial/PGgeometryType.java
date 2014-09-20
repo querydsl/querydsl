@@ -56,7 +56,7 @@ public class PGgeometryType extends AbstractType<Geometry> {
 
     @Override
     public String getLiteral(Geometry geometry) {
-        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        String str = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
         return "'" + str + "'";
     }
 

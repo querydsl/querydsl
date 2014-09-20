@@ -196,7 +196,7 @@ public class PGgeometryConverter {
             point[offset++] = geometry.m;
         }
         DimensionalFlag flag = DimensionalFlag.valueOf(d == 3, geometry.haveMeasure);
-        return new Point(PointCollectionFactory.create(point, flag), crs);
+        return new Point(PointCollectionFactory.create(point, flag, crs));
     }
 
     private static PointSequence convertPoints(org.postgis.Point[] points) {
@@ -204,8 +204,9 @@ public class PGgeometryConverter {
             return PointCollectionFactory.createEmpty();
         }
         org.postgis.Point first = points[0];
+        CrsId crs = CrsId.valueOf(first.srid);
         DimensionalFlag flag = DimensionalFlag.valueOf(first.dimension == 3, first.haveMeasure);
-        PointSequenceBuilder pointSequence = PointSequenceBuilders.variableSized(flag);
+        PointSequenceBuilder pointSequence = PointSequenceBuilders.variableSized(flag, crs);
         for (int i = 0; i < points.length; i++) {
             pointSequence.add(convert(points[i]));
         }
@@ -254,13 +255,13 @@ public class PGgeometryConverter {
 
     private static LinearRing convert(org.postgis.LinearRing geometry) {
         PointSequence points = convertPoints(geometry.getPoints());
-        return new LinearRing(points, CrsId.valueOf(geometry.getSrid()));
+        return new LinearRing(points);
     }
 
 
     private static LineString convert(org.postgis.LineString geometry) {
         PointSequence points = convertPoints(geometry.getPoints());
-        return new LineString(points, CrsId.valueOf(geometry.getSrid()));
+        return new LineString(points);
     }
 
     private PGgeometryConverter() {}
