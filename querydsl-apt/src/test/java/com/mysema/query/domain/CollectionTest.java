@@ -13,14 +13,10 @@
  */
 package com.mysema.query.domain;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Test;
+import java.util.*;
 
 import com.mysema.query.annotations.QueryEntity;
+import org.junit.Test;
 
 public class CollectionTest {
     
@@ -50,6 +46,29 @@ public class CollectionTest {
         Set<?> set1;
         
         Set set2;
+    }
+
+    @QueryEntity
+    public static class Classes {
+
+        HashMap map1;
+
+        HashMap<?,?> map2;
+
+        HashMap<String, String> map3;
+
+        ArrayList list1;
+
+        ArrayList<?> list2;
+
+        ArrayList<String> list3;
+
+        HashSet set1;
+
+        HashSet<?> set2;
+
+        HashSet<String> set3;
+
     }
     
     @Test
