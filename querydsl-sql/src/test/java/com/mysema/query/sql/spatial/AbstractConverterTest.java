@@ -45,7 +45,7 @@ public abstract class AbstractConverterTest {
         // linestring
         data.add(LineString.createEmpty());
         for (int i = 0; i < 6; i++) {
-            data.add(new LineString(createSequence(crs, (Point)data.get(i))));
+            data.add(new LineString(createSequence(crs, (Point)data.get(i), (Point)data.get(i))));
         }
 
         // polgyon
