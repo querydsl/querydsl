@@ -104,7 +104,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         } else if (entity.getPrimaryKey() != null) {
             return entity.getPrimaryKey().getLocalColumns();
         } else {
-            throw new IllegalStateException("No keys where defined, invoke keys(..) to add keys");
+            throw new IllegalStateException("No keys were defined, invoke keys(..) to add keys");
         }
     }
 
