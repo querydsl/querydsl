@@ -97,6 +97,16 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
+    
+    private List<? extends Path<?>> getKeys() {
+        if (!keys.isEmpty()) {
+            return keys;
+        } else if (entity.getPrimaryKey() != null) {
+            return entity.getPrimaryKey().getLocalColumns();
+        } else {
+            throw new IllegalStateException("No keys where defined, invoke keys(..) to add keys");
+        }
+    }
 
     /**
      * Add the current state of bindings as a batch item
@@ -243,7 +253,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                     // update
                     SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
                     populate(update);
-                    update.where(ExpressionUtils.in((Expression)keys.get(0),ids));
+                    update.where(ExpressionUtils.in((Expression)getKeys().get(0),ids));
                     return EmptyResultSet.DEFAULT;
                 } else {
                     // insert
@@ -296,7 +306,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));
             }
         }
-        return query.list(keys.get(0));
+        return query.list(getKeys().get(0));
     }
 
     @SuppressWarnings("unchecked")
@@ -306,7 +316,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             // update
             SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
             populate(update);
-            update.where(ExpressionUtils.in((Expression)keys.get(0),ids));
+            update.where(ExpressionUtils.in((Expression)getKeys().get(0),ids));
             return update.execute();
         } else {
             // insert
@@ -411,7 +421,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         if (withKeys) {
             String[] target = new String[keys.size()];
             for (int i = 0; i < target.length; i++) {
-                target[i] = ColumnMetadata.getName(keys.get(i));
+                target[i] = ColumnMetadata.getName(getKeys().get(i));
             }
             stmt = connection.prepareStatement(queryString, target);
         } else {
