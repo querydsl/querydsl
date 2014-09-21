@@ -360,6 +360,11 @@
 
   <repositories>
     <repository>
+      <id>querydsl</id>
+      <url>http://www.querydsl.com/maven</url>
+    </repository>
+    <!--
+    <repository>
       <id>jahia</id>
       <url>http://maven.jahia.org/maven2</url>
     </repository>
@@ -372,10 +377,6 @@
       <url>http://maven.geotoolkit.org</url>
     </repository>
     <repository>
-      <id>opengeo</id>
-      <url>http://download.osgeo.org/webdav/geotools</url>
-    </repository>
-    <repository>
       <id>mapfish</id>
       <url>http://dev.mapfish.org/maven/repository/repository</url>
     </repository>
@@ -383,6 +384,7 @@
       <id>nexus</id>
       <url>https://maven.nuxeo.org/nexus/content/groups/public</url>
     </repository>
+    -->
   </repositories>
 
   <pluginRepositories>
