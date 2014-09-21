@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * Annotations is a merging apapter for the {@link AnnotatedElement} interface
+ * Annotations is a merging adapter for the {@link AnnotatedElement} interface
  * 
  * @author tiwe
  *
