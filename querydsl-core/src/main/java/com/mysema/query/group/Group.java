@@ -36,8 +36,8 @@ public interface Group {
     /**
      * Returns the value of the given group. 
      * 
-     * @param <T> Type of element in a single ResultSet row, i.e. type of Expression&lt;T>
-     * @param <R> Target type of this group, e.g. List&lt;T>
+     * @param <T> Type of element in a single ResultSet row, i.e. type of {@code Expression<T>}
+     * @param <R> Target type of this group, e.g. {@code List<T>}
      * @param coldef 
      * @throws NoSuchElementException if group is undefined.
      * @throws ClassCastException if group is of different type  

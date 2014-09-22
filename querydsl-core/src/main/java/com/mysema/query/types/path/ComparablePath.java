@@ -28,7 +28,7 @@ import com.mysema.query.types.expr.ComparableExpression;
  * @author tiwe
  *
  * @param <T> expression type
- * @see java.util.ComparableType
+ * @see Comparable
  */
 @SuppressWarnings({"unchecked"})
 public class ComparablePath<T extends Comparable> extends ComparableExpression<T> implements Path<T> {

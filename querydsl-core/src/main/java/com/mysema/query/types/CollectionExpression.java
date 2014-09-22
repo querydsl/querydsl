@@ -20,7 +20,7 @@ import java.util.Collection;
  *
  * @author tiwe
  *
- * @param <C> expression type
+ * @param <T> expression type
  * @param <E> element type
  * @see java.util.Collection
  */

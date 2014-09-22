@@ -78,7 +78,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     /**
      * Cast the path to a subtype querytype
      *
-     * @param <T>
+     * @param <U>
      * @param clazz
      * @return
      */

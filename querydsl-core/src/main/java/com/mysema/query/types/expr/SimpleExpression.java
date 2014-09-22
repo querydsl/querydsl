@@ -284,7 +284,6 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Get a <code>nullif(this, other)</code> expression
      *
-     * @param expr
      * @param other
      * @return
      */
@@ -296,7 +295,6 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Get a <code>nullif(this, other)</code> expression
      *
-     * @param expr
      * @param other
      * @return
      */
