@@ -71,7 +71,8 @@ public interface SQLCommonQueryFactory<Q extends SQLCommonQuery<?>, // extends A
     /**
      * Create a new SELECT query
      *
-     * @param from
+     * @param subQuery
+     * @param alias
      * @return
      */
     Q from(SubQueryExpression<?> subQuery, Path<?> alias);

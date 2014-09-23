@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,23 +13,22 @@
  */
 package com.mysema.query.sql;
 
-import java.sql.Connection;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
+import java.sql.Connection;
 
 /**
- * SQLQuery is a JDBC based implementation of the {@link SQLCommonQuery} interface
+ * SQLQuery is a JDBC based implementation of the {@link SQLCommonQuery}
+ * interface
  *
  * @author tiwe
  */
 public class SQLQuery extends AbstractSQLQuery<SQLQuery> {
 
     /**
-     * Create a detached SQLQuery instance
-     * The query can be attached via the clone method
+     * Create a detached SQLQuery instance The query can be attached via the
+     * clone method
      *
-     * @param connection Connection to use
      * @param templates SQLTemplates to use
      */
     public SQLQuery(SQLTemplates templates) {
@@ -59,13 +58,13 @@ public class SQLQuery extends AbstractSQLQuery<SQLQuery> {
 
     /**
      * Create a new SQLQuery instance
-     * 
+     *
      * @param configuration
      */
-    public SQLQuery( Configuration configuration) {
+    public SQLQuery(Configuration configuration) {
         this(null, configuration);
     }
-    
+
     /**
      * Create a new SQLQuery instance
      *
@@ -80,7 +79,7 @@ public class SQLQuery extends AbstractSQLQuery<SQLQuery> {
      * Create a new SQLQuery instance
      *
      * @param conn
-     * @param templates
+     * @param configuration
      * @param metadata
      */
     public SQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
