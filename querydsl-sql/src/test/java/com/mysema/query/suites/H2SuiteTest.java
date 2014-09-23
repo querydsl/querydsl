@@ -1,7 +1,6 @@
 package com.mysema.query.suites;
 
 import com.mysema.query.*;
-import com.mysema.query.SpatialBase;
 import com.mysema.query.sql.spatial.GeoDBTemplates;
 import org.junit.BeforeClass;
 
