@@ -430,8 +430,9 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({CUBRID, DERBY, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
-        int offset = TimeZone.getDefault().getOffset(0);
-        Date date = new java.sql.Date(-offset);
+
+        LocalDate localDate = new LocalDate(1970, 1, 10);
+        Date date = new Date(localDate.toDateMidnight().getMillis());
 
         int years = query.singleResult(SQLExpressions.datediff(DatePart.year, date, employee.datefield));
         int months = query.singleResult(SQLExpressions.datediff(DatePart.month, date, employee.datefield));
@@ -441,10 +442,10 @@ public class SelectBase extends AbstractBaseTest {
         int minutes = query.singleResult(SQLExpressions.datediff(DatePart.minute, date, employee.datefield));
         int seconds = query.singleResult(SQLExpressions.datediff(DatePart.second, date, employee.datefield));
 
-        assertEquals(949449600, seconds);
-        assertEquals(15824160,  minutes);
-        assertEquals(263736,    hours);
-        assertEquals(10989,     days);
+        assertEquals(949363200, seconds);
+        assertEquals(15822720,  minutes);
+        assertEquals(263712,    hours);
+        assertEquals(10988,     days);
         assertEquals(361,       months);
         assertEquals(30,        years);
     }
@@ -471,7 +472,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void DateTime() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
-        assertEquals(Integer.valueOf(2),      query.singleResult(employee.datefield.dayOfMonth()));
+        assertEquals(Integer.valueOf(10),      query.singleResult(employee.datefield.dayOfMonth()));
         assertEquals(Integer.valueOf(2),      query.singleResult(employee.datefield.month()));
         assertEquals(Integer.valueOf(2000),   query.singleResult(employee.datefield.year()));
         assertEquals(Integer.valueOf(200002), query.singleResult(employee.datefield.yearMonth()));
@@ -1576,7 +1577,7 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({DERBY, H2})
     public void YearWeek() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
-        assertEquals(Integer.valueOf(200005), query.singleResult(employee.datefield.yearWeek()));
+        assertEquals(Integer.valueOf(200006), query.singleResult(employee.datefield.yearWeek()));
     }
 
 }
