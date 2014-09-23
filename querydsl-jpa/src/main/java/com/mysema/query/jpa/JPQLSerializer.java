@@ -13,24 +13,12 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Nullable;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -39,6 +27,7 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.util.MathUtils;
 
 /**
@@ -427,10 +416,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
-        // NOTE turns entityPath in collection into entityPath.id in (collection of ids)
-        if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
-            Path<?> lhs = (Path<?>) args.get(0);
-            Constant<?> rhs = (Constant<?>) args.get(1);
+        Path<?> lhs = (Path<?>) args.get(0);
+        Constant<?> rhs = (Constant<?>) args.get(1);
+        if (((Collection)rhs.getConstant()).isEmpty()) {
+            operator = Ops.EQ;
+            args = ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO);
+        } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             final Metamodel metamodel = entityManager.getMetamodel();
             final PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
             final EntityType<?> entityType = metamodel.entity(args.get(0).getType());
@@ -447,6 +438,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 args = ImmutableList.of(lhs, rhs);
             }
         }
+
         super.visitOperation(type, operator, args);
     }
 
