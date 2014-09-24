@@ -23,7 +23,6 @@ import com.mysema.query.QueryMetadata;
  *
  * @author tiwe
  *
- * @param <A>
  */
 public class JDOQuery extends AbstractJDOQuery<JDOQuery> {
 
@@ -31,7 +30,6 @@ public class JDOQuery extends AbstractJDOQuery<JDOQuery> {
      * Create a detached JDOQuery instance
      * The query can be attached via the clone method
      *
-     * @param persistenceManager
      */
     public JDOQuery() {
         super(null, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
