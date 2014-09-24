@@ -270,7 +270,6 @@ public final class Configuration {
      * @param path
      * @param i
      * @param value
-     * @return
      * @throws SQLException
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })

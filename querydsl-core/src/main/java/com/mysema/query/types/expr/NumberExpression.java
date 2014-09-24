@@ -269,7 +269,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this >= right
+     * @return {@code this >= right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression goe(A right) {
@@ -281,7 +281,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this >= right
+     * @return {@code this >= right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression goe(Expression<A> right) {
@@ -309,7 +309,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this > right
+     * @return {@code this > right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression gt(A right) {
@@ -321,7 +321,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this > right
+     * @return {@code this > right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression gt(Expression<A> right) {
@@ -441,7 +441,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this <= right
+     * @return {@code this <= right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression loe(A right) {
@@ -453,7 +453,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this <= right
+     * @return {@code this <= right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression loe(Expression<A> right) {
@@ -491,7 +491,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this < right
+     * @return {@code this < right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression lt(A right) {
@@ -503,7 +503,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @param <A>
      * @param right rhs of the comparison
-     * @return this < right
+     * @return {@code this < right}
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression lt(Expression<A> right) {

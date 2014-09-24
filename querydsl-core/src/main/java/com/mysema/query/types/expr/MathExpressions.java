@@ -182,7 +182,7 @@ public final class MathExpressions {
      * Round to s decimal places
      *
      * @param num
-     * @params s
+     * @param s
      * @return
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num, int s) {

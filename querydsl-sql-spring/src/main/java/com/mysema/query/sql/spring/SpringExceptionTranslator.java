@@ -23,7 +23,7 @@ import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
  * SpringExceptionTranslator is an SQLExceptionTranslator implementation which uses Spring's
  * exception translation functionality internally
  *
- * <p>>Usage example</p>
+ * <p>Usage example</p>
  * <pre>
  * {@code
  * Configuration configuration = new Configuration(templates);

@@ -46,7 +46,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add a single grouping expression
      *
-     * @param o
+     * @param e
      * @return
      */
     public Q groupBy(Expression<?> e) {
@@ -66,7 +66,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add a single filter for aggregation
      *
-     * @param o
+     * @param e
      * @return
      */
     public Q having(Predicate e) {
@@ -160,7 +160,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Set the given parameter to the given value
      *
-     * @param <T>
+     * @param <P>
      * @param param
      * @param value
      * @return

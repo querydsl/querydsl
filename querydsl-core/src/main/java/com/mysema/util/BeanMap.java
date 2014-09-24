@@ -38,10 +38,10 @@ import com.google.common.primitives.Primitives;
 /**
  * An implementation of Map for JavaBeans which uses introspection to
  * get and put properties in the bean.
- * <p/>
+ * <p>
  * If an exception occurs during attempts to get or set a property then the
  * property is considered non existent in the Map
- * <p/>
+ * <p>
  *
  * @author James Strachan
  * @author Matt Hall, John Watkinson, Stephen Colebourne
@@ -151,26 +151,26 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     /**
      * Clone this bean map using the following process:
-     * <p/>
+     * <p>
      * <ul>
      * <li>If there is no underlying bean, return a cloned BeanMap without a
      * bean.
-     * <p/>
+     * <p>
      * <li>Since there is an underlying bean, try to instantiate a new bean of
      * the same type using Class.newInstance().
-     * <p/>
+     * <p>
      * <li>If the instantiation fails, throw a CloneNotSupportedException
-     * <p/>
+     * <p>
      * <li>Clone the bean map and set the newly instantiated bean as the
      * underlying bean for the bean map.
-     * <p/>
+     * <p>
      * <li>Copy each property that is both readable and writable from the
      * existing object to a cloned bean map.
-     * <p/>
+     * <p>
      * <li>If anything fails along the way, throw a
      * CloneNotSupportedException.
-     * <p/>
-     * <ul>
+     * <p>
+     * </ul>
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -257,11 +257,11 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     /**
      * Returns true if the bean defines a property with the given name.
-     * <p/>
+     * <p>
      * The given name must be a <code>String</code>; if not, this method
      * returns false. This method will also return false if the bean
      * does not define a property with that name.
-     * <p/>
+     * <p>
      * Write-only properties will not be matched as the test operates against
      * property read methods.
      *
@@ -277,13 +277,13 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     /**
      * Returns the value of the bean's property with the given name.
-     * <p/>
+     * <p>
      * The given name must be a {@link String} and must not be
      * null; otherwise, this method returns <code>null</code>.
      * If the bean defines a property with the given name, the value of
      * that property is returned.  Otherwise, <code>null</code> is
      * returned.
-     * <p/>
+     * <p>
      * Write-only properties will not be matched as the test operates against
      * property read methods.
      *
@@ -350,7 +350,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     /**
      * Get the keys for this BeanMap.
-     * <p/>
+     * <p>
      * Write-only properties are <b>not</b> included in the returned set of
      * property names, although it is possible to set their value and to get
      * their type.
@@ -365,7 +365,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     /**
      * Gets a Set of MapEntry objects that are the mappings for this BeanMap.
-     * <p/>
+     * <p>
      * Each MapEntry can be set but not removed.
      *
      * @return the unmodifiable set of mappings
@@ -417,7 +417,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
     /**
      * Convenience method for getting an iterator over the keys.
-     * <p/>
+     * <p>
      * Write-only properties will not be returned in the iterator.
      *
      * @return an iterator over the keys
@@ -682,14 +682,14 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * given value.  If such a constructor is found, a new object is
      * created by passing the given value to that constructor, and the
      * newly constructed object is returned.<P>
-     * <p/>
+     * <p>
      * If no such constructor exists, and the given type is a primitive
      * type, then the given value is converted to a string using its
      * {@link Object#toString() toString()} method, and that string is
      * parsed into the correct primitive type using, for instance,
      * {@link Integer#valueOf(String)} to convert the string into an
      * <code>int</code>.<P>
-     * <p/>
+     * <p>
      * If no special constructor exists and the given type is not a
      * primitive type, this method returns the original value.
      *
