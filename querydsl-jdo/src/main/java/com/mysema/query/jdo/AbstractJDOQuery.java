@@ -13,36 +13,23 @@
  */
 package com.mysema.query.jdo;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.NonUniqueResultException;
-import com.mysema.query.QueryException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
+import com.mysema.query.*;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -100,7 +87,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     /**
      * Add the fetch group to the set of active fetch groups.
      *
-     * @param string
+     * @param fetchGroupName
      * @return
      */
     @Override
@@ -300,7 +287,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
      * A positive integer will result in that number of references from the
      * initial object to be fetched.
      *
-     * @param maxFetchDepth
+     * @param depth
      * @return
      */
     @Override

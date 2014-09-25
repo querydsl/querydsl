@@ -127,7 +127,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
      * Define an inner join from the Collection typed path to the alias
      *
      * @param <P>
-     * @param collectionPath
+     * @param target
      * @param alias
      * @return
      */
@@ -140,7 +140,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
      * Define an inner join from the Map typed path to the alias
      *
      * @param <P>
-     * @param mapPath
+     * @param target
      * @param alias
      * @return
      */
@@ -153,7 +153,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
      * Define a left join from the Collection typed path to the alias
      *
      * @param <P>
-     * @param collectionPath
+     * @param target
      * @param alias
      * @return
      */
@@ -166,7 +166,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
      * Define a left join from the Map typed path to the alias
      *
      * @param <P>
-     * @param mapPath
+     * @param target
      * @param alias
      * @return
      */

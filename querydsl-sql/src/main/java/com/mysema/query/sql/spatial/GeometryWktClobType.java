@@ -43,7 +43,7 @@ public class GeometryWktClobType extends AbstractType<Geometry> {
         Clob clob = rs.getClob(startIndex);
         String str = clob != null ? clob.getSubString(1, (int) clob.length()) : null;
         if (str != null) {
-            return Wkt.newWktDecoder(Wkt.Dialect.POSTGIS_EWKT_1).decode(str);
+            return Wkt.newDecoder(Wkt.Dialect.POSTGIS_EWKT_1).decode(str);
         } else {
             return null;
         }
@@ -51,13 +51,13 @@ public class GeometryWktClobType extends AbstractType<Geometry> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(value);
+        String str = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(value);
         st.setString(startIndex, str);
     }
 
     @Override
     public String getLiteral(Geometry geometry) {
-        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        String str = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
         return "'" + str + "'";
     }
 

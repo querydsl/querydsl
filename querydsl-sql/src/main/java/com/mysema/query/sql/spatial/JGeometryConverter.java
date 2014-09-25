@@ -13,30 +13,11 @@
  */
 package com.mysema.query.sql.spatial;
 
-import static oracle.spatial.geometry.JGeometry.GTYPE_COLLECTION;
-import static oracle.spatial.geometry.JGeometry.GTYPE_CURVE;
-import static oracle.spatial.geometry.JGeometry.GTYPE_MULTICURVE;
-import static oracle.spatial.geometry.JGeometry.GTYPE_MULTIPOINT;
-import static oracle.spatial.geometry.JGeometry.GTYPE_MULTIPOLYGON;
-import static oracle.spatial.geometry.JGeometry.GTYPE_POINT;
-import static oracle.spatial.geometry.JGeometry.GTYPE_POLYGON;
 import oracle.spatial.geometry.JGeometry;
-
-import org.geolatte.geom.DimensionalFlag;
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.LineString;
-import org.geolatte.geom.LinearRing;
-import org.geolatte.geom.MultiLineString;
-import org.geolatte.geom.MultiPoint;
-import org.geolatte.geom.MultiPolygon;
+import org.geolatte.geom.*;
 import org.geolatte.geom.Point;
-import org.geolatte.geom.PointCollection;
-import org.geolatte.geom.PointCollectionFactory;
-import org.geolatte.geom.PointSequence;
-import org.geolatte.geom.PolyHedralSurface;
-import org.geolatte.geom.Polygon;
 import org.geolatte.geom.crs.CrsId;
+import static oracle.spatial.geometry.JGeometry.*;
 
 /**
  * @author tiwe
@@ -192,11 +173,12 @@ public class JGeometryConverter {
     }
 
     private static PointSequence getPoints(JGeometry geometry) {
+        CrsId crs = CrsId.valueOf(geometry.getSRID());
         int dimensions = geometry.getDimensions();
         boolean measured = geometry.isLRSGeometry();
         DimensionalFlag flag = DimensionalFlag.valueOf(dimensions > (measured ? 3 : 2), measured);
         double[] ordinates = geometry.getOrdinatesArray();
-        return PointCollectionFactory.create(ordinates, flag);
+        return PointCollectionFactory.create(ordinates, flag, crs);
     }
 
     private static Polygon convertPolygon(JGeometry geometry) {
@@ -207,8 +189,8 @@ public class JGeometryConverter {
         Object[] elements = geometry.getOrdinatesOfElements();
         LinearRing[] rings = new LinearRing[elements.length];
         for (int i = 0; i < elements.length; i++) {
-            PointSequence points = PointCollectionFactory.create((double[]) elements[i], flag);
-            rings[i] = new LinearRing(points, crs);
+            PointSequence points = PointCollectionFactory.create((double[]) elements[i], flag, crs);
+            rings[i] = new LinearRing(points);
         }
         return new Polygon(rings);
     }
@@ -219,13 +201,13 @@ public class JGeometryConverter {
         int dimensions = geometry.getDimensions();
         boolean measured = geometry.isLRSGeometry();
         DimensionalFlag flag = DimensionalFlag.valueOf(dimensions > (measured ? 3 : 2), measured);
-        return new Point(PointCollectionFactory.create(point, flag), crs);
+        return new Point(PointCollectionFactory.create(point, flag, crs));
     }
 
     private static LineString convertCurve(JGeometry geometry) {
         CrsId crs = CrsId.valueOf(geometry.getSRID());
         PointSequence points = getPoints(geometry);
-        return new LineString(points, crs);
+        return new LineString(points);
     }
 
     private static MultiPoint convertMultiPoint(JGeometry geometry) {
@@ -243,7 +225,7 @@ public class JGeometryConverter {
         for (int i = 0; i < points.length; i++) {
             double[] coords = new double[dimensions];
             System.arraycopy(ordinates, offset, coords, 0, coords.length);
-            points[i] = new Point(PointCollectionFactory.create(coords, flag), crs);
+            points[i] = new Point(PointCollectionFactory.create(coords, flag, crs));
             offset += dimensions;
         }
         return new MultiPoint(points);
@@ -272,7 +254,7 @@ public class JGeometryConverter {
         LineString[] lineStrings = new LineString[elements.length];
         for (int i = 0; i < elements.length; i++) {
             PointSequence points = getPoints(elements[i]);
-            lineStrings[i] = new LineString(points, crs);
+            lineStrings[i] = new LineString(points);
         }
         return new MultiLineString(lineStrings);
     }

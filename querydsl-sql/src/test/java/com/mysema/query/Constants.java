@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import org.joda.time.LocalDate;
 
 public final class Constants {
 
@@ -35,14 +36,10 @@ public final class Constants {
     public static final QSurvey survey2 = new QSurvey("s2");
 
     static{
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        cal.set(Calendar.YEAR, 2000);
-        cal.set(Calendar.MONTH, 1);
-        cal.set(Calendar.DAY_OF_MONTH, 2);
-        date = new java.sql.Date(cal.getTimeInMillis());
+        LocalDate localDate = new LocalDate(2000, 2, 10);
+        date = new java.sql.Date(localDate.toDateMidnight().getMillis());
 
-        cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.set(1970, 0, 1, 3, 4);
         cal.set(Calendar.SECOND, 30);
         cal.set(Calendar.MILLISECOND, 0);

@@ -87,7 +87,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * Get an intersection of this and the given expression
      *
      * @param right right hand side of the union
-     * @return this && right
+     * @return {@code this && right}
      */
     public BooleanExpression and(@Nullable Predicate right) {
         right = (Predicate) ExpressionUtils.extract(right);

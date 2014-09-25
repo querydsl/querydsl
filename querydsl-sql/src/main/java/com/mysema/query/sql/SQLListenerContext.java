@@ -14,7 +14,7 @@ public interface SQLListenerContext {
     /**
      * The context getData is a general purpose place that listeners can place objects.  It allows listeners to pass
      * context between themselves during callbacks.
-     * <p/>
+     * <p>
      *
      * @param dataKey the key to look up
      * @return the context object under that key
@@ -24,7 +24,7 @@ public interface SQLListenerContext {
     /**
      * The context setData is a general purpose place that listeners can place objects.  It allows listeners to pass
      * context between themselves during callbacks.
-     * <p/>
+     * <p>
      * A good time to place objects into the context is during {@link com.mysema.query.sql.SQLDetailedListener#start(SQLListenerContext)}
      * and then access if after that.
      *

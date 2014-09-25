@@ -55,7 +55,7 @@ public class GeometryWkbType extends AbstractType<Geometry> {
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
         byte[] bytes = rs.getBytes(startIndex);
         if (bytes != null) {
-            WkbDecoder decoder = Wkb.newWkbDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
+            WkbDecoder decoder = Wkb.newDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
             return decoder.decode(ByteBuffer.from(bytes));
         } else {
             return null;
@@ -64,14 +64,14 @@ public class GeometryWkbType extends AbstractType<Geometry> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        WkbEncoder encoder = Wkb.newWkbEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
+        WkbEncoder encoder = Wkb.newEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
         ByteBuffer buffer = encoder.encode(value, byteOrder);
         st.setBytes(startIndex, buffer.toByteArray());
     }
 
     @Override
     public String getLiteral(Geometry geometry) {
-        String str = Wkt.newWktEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        String str = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
         return "'" + str + "'";
     }
 

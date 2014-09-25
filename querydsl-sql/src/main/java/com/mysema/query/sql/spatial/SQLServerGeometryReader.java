@@ -107,15 +107,19 @@ public class SQLServerGeometryReader {
         } else if (!singlePoint) {
             numberOfPoints = dis.readInt();
         }
-        dimensionalFlag = DimensionalFlag.XY;
+        //dimensionalFlag = DimensionalFlag.XY;
+        dimensionalFlag = DimensionalFlag.d2D;
         if (hasM) {
             if (hasZ) {
-                dimensionalFlag = DimensionalFlag.XYZM;
+                //dimensionalFlag = DimensionalFlag.XYZM;
+                dimensionalFlag = DimensionalFlag.d3DM;
             } else {
-                dimensionalFlag = DimensionalFlag.XYM;
+                //dimensionalFlag = DimensionalFlag.XYM;
+                dimensionalFlag = DimensionalFlag.d2DM;
             }
         } else if (hasZ) {
-            dimensionalFlag = DimensionalFlag.XYZ;
+            //dimensionalFlag = DimensionalFlag.XYZ;
+            dimensionalFlag = DimensionalFlag.d3D;
         }
 
         // points
@@ -133,7 +137,7 @@ public class SQLServerGeometryReader {
 
         } else if (singleLine) {
             PointSequence points = createPoints(0, 2);
-            return new LineString(points, crsId);
+            return new LineString(points);
 
         } else {
             // figures
@@ -211,14 +215,14 @@ public class SQLServerGeometryReader {
         }
         List<LinearRing> linearRings = Lists.newArrayList();
         for (int i = figureOffset; i <= figureStopIdx; i++) {
-            linearRings.add(new LinearRing(createPoints(i), crsId));
+            linearRings.add(new LinearRing(createPoints(i)));
         }
         return new Polygon(linearRings.toArray(new LinearRing[0]));
     }
 
     private LineString decodeLineString(int shapeIdx) {
         Shape shape = shapes[shapeIdx];
-        return new LineString(createPoints(shape.figureOffset), crsId);
+        return new LineString(createPoints(shape.figureOffset));
     }
 
     private Point decodePoint(int shapeIdx) {
@@ -231,19 +235,19 @@ public class SQLServerGeometryReader {
         double y = points[idx][1];
         if (hasM) {
             if (hasZ) {
-                return Points.create(x, y, zValues[idx], mValues[idx], crsId);
+                return Points.create3DM(x, y, zValues[idx], mValues[idx], crsId);
             } else {
-                return Points.createMeasured(x, y, mValues[idx], crsId);
+                return Points.create2DM(x, y, mValues[idx], crsId);
             }
         } else if (hasZ) {
             return Points.create3D(x, y, zValues[idx], crsId);
         } else {
-            return Points.create(x, y, crsId);
+            return Points.create2D(x, y, crsId);
         }
     }
 
     private PointSequence createPoints(int idx1, int idx2) {
-        PointSequenceBuilder builder = PointSequenceBuilders.fixedSized(idx2 - idx1, dimensionalFlag);
+        PointSequenceBuilder builder = PointSequenceBuilders.fixedSized(idx2 - idx1, dimensionalFlag, crsId);
         for (int i = idx1; i < idx2; i++) {
             builder.add(createPoint(i));
         }

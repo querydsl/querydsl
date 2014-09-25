@@ -78,7 +78,7 @@ public final class FactoryExpressionUtils {
     }
 
     /**
-     * @param exprs
+     * @param projection
      * @return
      */
     public static FactoryExpression<?> wrap(List<? extends Expression<?>> projection) {
