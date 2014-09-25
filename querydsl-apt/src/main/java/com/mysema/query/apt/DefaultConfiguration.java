@@ -22,9 +22,7 @@ import java.lang.annotation.Annotation;
 import java.util.*;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
@@ -181,23 +179,7 @@ public class DefaultConfiguration implements Configuration {
         try {
             // register additional mappings, if querydsl-spatial is on the classpath
             Class.forName("com.mysema.query.spatial.GeometryExpression");
-            TypeMappings typeMappings = module.get(TypeMappings.class);
-            Map<String, String> additions = Maps.newHashMap();
-            additions.put("Geometry", "GeometryPath");
-            additions.put("GeometryCollection", "GeometryCollectionPath");
-            additions.put("LinearRing", "LinearRingPath");
-            additions.put("LineString", "LineStringPath");
-            additions.put("MultiLineString", "MultiLineStringPath");
-            additions.put("MultiPoint", "MultiPointPath");
-            additions.put("MultiPolygon", "MultiPolygonPath");
-            additions.put("Point", "PointPath");
-            additions.put("Polygon", "PolygonPath");
-            additions.put("PolyHedralSurface", "PolyhedralSurfacePath");
-            for (Map.Entry<String, String> entry : additions.entrySet()) {
-                typeMappings.register(
-                        new SimpleType("org.geolatte.geom."+ entry.getKey()),
-                        new SimpleType("com.mysema.query.spatial.path." + entry.getValue()));
-            }
+            SpatialSupport.addSupport(module);
         } catch (Exception e) {
             // do nothing
         }
