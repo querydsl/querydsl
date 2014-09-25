@@ -413,10 +413,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
         Path<?> lhs = (Path<?>) args.get(0);
+        @SuppressWarnings("unchecked")
         Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
         if (rhs.getConstant().isEmpty()) {
             operator = Ops.EQ;
@@ -428,7 +428,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (entityType.hasSingleIdAttribute()) {
                 SingularAttribute<?,?> id = getIdProperty(entityType);
                 // turn lhs into id path
-                lhs = new PathImpl(id.getJavaType(), lhs, id.getName());
+                lhs = new PathImpl<Object>(id.getJavaType(), lhs, id.getName());
                 // turn rhs into id collection
                 Set<Object> ids = new HashSet<Object>();
                 for (Object entity : rhs.getConstant()) {
