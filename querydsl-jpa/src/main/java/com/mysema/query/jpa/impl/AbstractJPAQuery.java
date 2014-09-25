@@ -13,28 +13,19 @@
  */
 package com.mysema.query.jpa.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.NonUniqueResultException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
+import com.mysema.query.*;
 import com.mysema.query.jpa.JPAQueryBase;
 import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.JPQLTemplates;
@@ -42,6 +33,8 @@ import com.mysema.query.jpa.QueryHandler;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
@@ -100,7 +93,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     /**
      * Expose the original JPA query for the given projection
      *
-     * @param expr
+     * @param expr1
+     * @param expr2
+     * @param rest
      * @return
      */
     public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {

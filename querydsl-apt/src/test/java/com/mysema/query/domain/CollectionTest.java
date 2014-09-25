@@ -13,14 +13,14 @@
  */
 package com.mysema.query.domain;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Test;
+import java.util.*;
 
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.SetPath;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class CollectionTest {
     
@@ -51,11 +51,47 @@ public class CollectionTest {
         
         Set set2;
     }
+
+    @QueryEntity
+    public static class Classes {
+
+        HashMap map1;
+
+        HashMap<?,?> map2;
+
+        HashMap<String, String> map3;
+
+        ArrayList list1;
+
+        ArrayList<?> list2;
+
+        ArrayList<String> list3;
+
+        HashSet set1;
+
+        HashSet<?> set2;
+
+        HashSet<String> set3;
+
+    }
     
     @Test
     public void test() {
 //        assertEquals(String.class, QMapWithUndefinedValueTest_Person.person.appData.getParameter(1));
 //        assertEquals(Object.class, QMapWithUndefinedValueTest_Person.person.appData.getParameter(1));
+
+        assertEquals(MapPath.class, QCollectionTest_Classes.classes.map1.getClass());
+        assertEquals(MapPath.class, QCollectionTest_Classes.classes.map2.getClass());
+        assertEquals(MapPath.class, QCollectionTest_Classes.classes.map3.getClass());
+
+        assertEquals(ListPath.class, QCollectionTest_Classes.classes.list1.getClass());
+        assertEquals(ListPath.class, QCollectionTest_Classes.classes.list2.getClass());
+        assertEquals(ListPath.class, QCollectionTest_Classes.classes.list3.getClass());
+
+        assertEquals(SetPath.class, QCollectionTest_Classes.classes.set1.getClass());
+        assertEquals(SetPath.class, QCollectionTest_Classes.classes.set2.getClass());
+        assertEquals(SetPath.class, QCollectionTest_Classes.classes.set3.getClass());
+
     }
 
 }

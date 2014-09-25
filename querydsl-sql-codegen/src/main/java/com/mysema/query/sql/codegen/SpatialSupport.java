@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql.codegen;
 
-import java.awt.Polygon;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +24,7 @@ import org.geolatte.geom.MultiLineString;
 import org.geolatte.geom.MultiPoint;
 import org.geolatte.geom.MultiPolygon;
 import org.geolatte.geom.Point;
+import org.geolatte.geom.Polygon;
 import org.geolatte.geom.PolyHedralSurface;
 
 import com.google.common.collect.ImmutableSet;

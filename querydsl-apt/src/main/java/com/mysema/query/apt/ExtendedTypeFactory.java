@@ -317,6 +317,25 @@ public final class ExtendedTypeFactory {
     private Type createClassType(DeclaredType declaredType, TypeElement typeElement, boolean deep) {
         // other
         String name = typeElement.getQualifiedName().toString();
+
+        if (name.startsWith("java.")) {
+            String simpleName = typeElement.getSimpleName().toString();
+            Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
+
+            if (isAssignable(declaredType, mapType)) {
+                return createMapType(simpleName, i, deep);
+
+            } else if (isAssignable(declaredType, listType)) {
+                return createCollectionType(Types.LIST, simpleName, i, deep);
+
+            } else if (isAssignable(declaredType, setType)) {
+                return createCollectionType(Types.SET, simpleName, i, deep);
+
+            } else if (isAssignable(declaredType, collectionType)) {
+                return createCollectionType(Types.COLLECTION, simpleName, i, deep);
+            }
+        }
+
         TypeCategory typeCategory = TypeCategory.get(name);
 
         if (typeCategory != TypeCategory.NUMERIC

@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * A mutable implementation of SQL listener context.
- * <p/>
+ * <p>
  * INTERNAL USE ONLY - {@link com.mysema.query.sql.SQLDetailedListener} implementations are not expected to use this
  * class directly
  */

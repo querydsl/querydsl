@@ -38,38 +38,33 @@ public final class MathUtils {
         return MathUtils.<D>cast(res, (Class<D>)num1.getClass());
     }
 
-    @SuppressWarnings("unchecked")
     public static <D extends Number> D cast(Number num, Class<D> type) {
-        Number rv;
-        if (type.equals(Byte.class)) {
-            rv = num.byteValue();
+        D rv;
+        if (type.isInstance(num)) {
+            rv = type.cast(num);
+        } else if (type.equals(Byte.class)) {
+            rv = type.cast(num.byteValue());
         } else if (type.equals(Double.class)) {
-            rv = num.doubleValue();
+            rv = type.cast(num.doubleValue());
         } else if (type.equals(Float.class)) {
-            rv = num.floatValue();
+            rv = type.cast(num.floatValue());
         } else if (type.equals(Integer.class)) {
-            rv = num.intValue();
+            rv = type.cast(num.intValue());
         } else if (type.equals(Long.class)) {
-            rv = num.longValue();
+            rv = type.cast(num.longValue());
         } else if (type.equals(Short.class)) {
-            rv = num.shortValue();
+            rv = type.cast(num.shortValue());
         } else if (type.equals(BigDecimal.class)) {
-            if (num instanceof BigDecimal) {
-                rv = num;
-            } else {
-                rv = new BigDecimal(num.toString());
-            }
+            rv = type.cast(new BigDecimal(num.toString()));
         } else if (type.equals(BigInteger.class)) {
-            if (num instanceof BigInteger) {
-                rv = num;
-            } else if (num instanceof BigDecimal) {
-                rv = ((BigDecimal)num).toBigInteger();
+            if (num instanceof BigDecimal) {
+                rv = type.cast(((BigDecimal) num).toBigInteger());
             } else {
-                rv = new BigInteger(num.toString());
+                rv = type.cast(new BigInteger(num.toString()));
             }
         } else {
             throw new IllegalArgumentException(String.format("Illegal type : %s", type.getSimpleName()));
         }
-        return (D) rv;
+        return rv;
     }
 }

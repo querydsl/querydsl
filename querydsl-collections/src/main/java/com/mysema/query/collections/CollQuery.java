@@ -44,7 +44,7 @@ public class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable
     /**
      * Create a new CollQuery instance
      *
-     * @param evaluatorFactory
+     * @param queryEngine
      */
     public CollQuery(QueryEngine queryEngine) {
         super(new DefaultQueryMetadata(), queryEngine);
@@ -55,7 +55,6 @@ public class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable
      * Create a new CollQuery instance
      *
      * @param metadata
-     * @param evaluatorFactory
      */
     public CollQuery(QueryMetadata metadata) {
         super(metadata, DefaultQueryEngine.getDefault());
@@ -65,7 +64,7 @@ public class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable
      * Create a new CollQuery instance
      *
      * @param metadata
-     * @param evaluatorFactory
+     * @param queryEngine
      */
     public CollQuery(QueryMetadata metadata, QueryEngine queryEngine) {
         super(metadata, queryEngine);

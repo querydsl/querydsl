@@ -13,9 +13,8 @@
  */
 package com.mysema.query.jdo;
 
-import java.io.Closeable;
-
 import javax.jdo.PersistenceManager;
+import java.io.Closeable;
 
 import com.mysema.query.Projectable;
 
@@ -38,7 +37,7 @@ public interface JDOQLQuery extends JDOCommonQuery<JDOQLQuery>, Projectable, Clo
     /**
      * Add the fetch group to the set of active fetch groups.
      * 
-     * @param string
+     * @param fetchGroupName
      * @return
      */
     JDOQLQuery addFetchGroup(String fetchGroupName);

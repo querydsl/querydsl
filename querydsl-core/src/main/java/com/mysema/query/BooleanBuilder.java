@@ -84,7 +84,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
 
     /**
      * Create the intersection of this and the union of the given args
-     * <p>(this && (arg1 || arg2 ... || argN))</p>
+     * {@code (this && (arg1 || arg2 ... || argN))}
      *
      * @param args
      * @return
@@ -168,7 +168,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
 
     /**
      * Create the union of this and the intersection of the given args
-     * <p>(this || (arg1 && arg2 ... && argN))</p>
+     * {@code (this || (arg1 && arg2 ... && argN))}
      *
      * @param args
      * @return
