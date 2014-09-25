@@ -710,15 +710,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    public void In8() {
-        assertEquals(0, query().from(cat).where(cat.name.in(ImmutableList.<String>of())).count());
-    }
-
-    @Test
-    @IncludeIn(Target.H2)
-    @NoBatooJPA
     public void In_Empty() {
-        query().from(cat).where(cat.name.in(Collections.<String>emptyList())).count();
+        assertEquals(0, query().from(cat).where(cat.name.in(ImmutableList.<String>of())).count());
     }
 
     @Test
