@@ -417,8 +417,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
         Path<?> lhs = (Path<?>) args.get(0);
-        Constant<?> rhs = (Constant<?>) args.get(1);
-        if (((Collection)rhs.getConstant()).isEmpty()) {
+        Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
+        if (rhs.getConstant().isEmpty()) {
             operator = Ops.EQ;
             args = ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO);
         } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
@@ -430,8 +430,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 // turn lhs into id path
                 lhs = new PathImpl(id.getJavaType(), lhs, id.getName());
                 // turn rhs into id collection
-                Set ids = new HashSet();
-                for (Object entity : (Collection<?>)rhs.getConstant()) {
+                Set<Object> ids = new HashSet<Object>();
+                for (Object entity : rhs.getConstant()) {
                     ids.add(util.getIdentifier(entity));
                 }
                 rhs = ConstantImpl.create(ids);
