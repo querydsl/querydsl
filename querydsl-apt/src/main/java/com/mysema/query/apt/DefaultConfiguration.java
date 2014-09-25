@@ -13,56 +13,25 @@
  */
 package com.mysema.query.apt;
 
-import static com.mysema.query.apt.APTOptions.QUERYDSL_CREATE_DEFAULT_VARIABLE;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_ENTITY_ACCESSORS;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_CLASSES;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_PACKAGES;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_INCLUDED_CLASSES;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_INCLUDED_PACKAGES;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_LIST_ACCESSORS;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_MAP_ACCESSORS;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_PACKAGE_SUFFIX;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_PREFIX;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_SUFFIX;
-import static com.mysema.query.apt.APTOptions.QUERYDSL_UNKNOWN_AS_EMBEDDABLE;
-
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.CodegenModule;
-import com.mysema.query.codegen.EmbeddableSerializer;
-import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.ProjectionSerializer;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.SupertypeSerializer;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 import com.mysema.query.types.Expression;
 import com.mysema.util.Annotations;
+import static com.mysema.query.apt.APTOptions.*;
 
 /**
  * DefaultConfiguration is a simple implementation of the {@link Configuration} interface
@@ -207,6 +176,30 @@ public class DefaultConfiguration implements Configuration {
                     includedClasses.add(className);
                 }
             }
+        }
+
+        try {
+            // register additional mappings, if querydsl-spatial is on the classpath
+            Class.forName("com.mysema.query.spatial.GeometryExpression");
+            TypeMappings typeMappings = module.get(TypeMappings.class);
+            Map<String, String> additions = Maps.newHashMap();
+            additions.put("GeometryCollection", "GeometryCollectionPath");
+            additions.put("Geometry", "GeometryPath");
+            additions.put("LinearRing", "LinearRingPath");
+            additions.put("LineString", "LineStringPath");
+            additions.put("MultiLineString", "MultiLineStringPath");
+            additions.put("MultiPoint", "MultiPointPath");
+            additions.put("MultiPolygon", "MultiPolygonPath");
+            additions.put("Point", "PointPath");
+            additions.put("Polygon", "PolygonPath");
+            additions.put("PolyHedralSurface", "PolyhedralSurfacePath");
+            for (Map.Entry<String, String> entry : additions.entrySet()) {
+                typeMappings.register(
+                        new SimpleType("org.geolatte.geom."+ entry.getKey()),
+                        new SimpleType("com.mysema.query.spatial.path." + entry.getValue()));
+            }
+        } catch (Exception e) {
+            // do nothing
         }
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
