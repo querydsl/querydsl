@@ -13,20 +13,8 @@
  */
 package com.mysema.util;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.*;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
@@ -163,9 +151,7 @@ public final class ReflectionUtils {
         Set<Field> fields = new HashSet<Field>();
         Class<?> c = cl;
         while (c != null) {
-            for (Field field : c.getDeclaredFields()) {
-                fields.add(field);
-            }
+            fields.addAll(Arrays.asList(c.getDeclaredFields()));
             c = c.getSuperclass();
         }
         return fields;
