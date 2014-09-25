@@ -361,7 +361,7 @@ public class GenericExporter {
 
     private void addConstructors(Class<?> cl, EntityType type) {
         for (Constructor<?> constructor : cl.getConstructors()) {
-            if (constructor.getAnnotation(QueryProjection.class) != null) {
+            if (constructor.isAnnotationPresent(QueryProjection.class)) {
                 List<Parameter> parameters = Lists.newArrayList();
                 for (int i = 0; i < constructor.getParameterTypes().length; i++) {
                     Type parameterType = typeFactory.get(
@@ -507,15 +507,15 @@ public class GenericExporter {
     private void handleClass(Class<?> cl) {
         if (stopClasses.contains(cl) || cl.isAnnotationPresent(QueryExclude.class)) {
             return;
-        } else if (cl.getAnnotation(entityAnnotation) != null) {
+        } else if (cl.isAnnotationPresent(entityAnnotation)) {
             entityTypes.put(cl, null);
-        } else if (cl.getAnnotation(embeddableAnnotation) != null) {
+        } else if (cl.isAnnotationPresent(embeddableAnnotation)) {
             embeddableTypes.put(cl, null);
-        } else if (cl.getAnnotation(supertypeAnnotation) != null) {
+        } else if (cl.isAnnotationPresent(supertypeAnnotation)) {
             superTypes.put(cl, null);
         } else {
             for (Constructor<?> constructor : cl.getConstructors()) {
-                if (constructor.getAnnotation(QueryProjection.class) != null) {
+                if (constructor.isAnnotationPresent(QueryProjection.class)) {
                     projectionTypes.put(cl, null);
                     break;
                 }

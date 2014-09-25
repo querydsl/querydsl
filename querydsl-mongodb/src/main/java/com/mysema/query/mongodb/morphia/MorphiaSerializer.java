@@ -49,7 +49,7 @@ public class MorphiaSerializer extends MongodbSerializer {
 
     @Override
     protected boolean isReference(Path<?> arg) {
-        return arg.getAnnotatedElement().getAnnotation(Reference.class) != null;
+        return arg.getAnnotatedElement().isAnnotationPresent(Reference.class);
     }
 
     @Override
