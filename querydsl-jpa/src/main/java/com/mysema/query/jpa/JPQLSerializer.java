@@ -13,24 +13,12 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Nullable;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -39,6 +27,7 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.util.MathUtils;
 
 /**
@@ -424,29 +413,32 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
-        // NOTE turns entityPath in collection into entityPath.id in (collection of ids)
-        if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
-            Path<?> lhs = (Path<?>) args.get(0);
-            Constant<?> rhs = (Constant<?>) args.get(1);
+        Path<?> lhs = (Path<?>) args.get(0);
+        @SuppressWarnings("unchecked")
+        Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
+        if (rhs.getConstant().isEmpty()) {
+            operator = Ops.EQ;
+            args = ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO);
+        } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             final Metamodel metamodel = entityManager.getMetamodel();
             final PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
             final EntityType<?> entityType = metamodel.entity(args.get(0).getType());
             if (entityType.hasSingleIdAttribute()) {
                 SingularAttribute<?,?> id = getIdProperty(entityType);
                 // turn lhs into id path
-                lhs = new PathImpl(id.getJavaType(), lhs, id.getName());
+                lhs = new PathImpl<Object>(id.getJavaType(), lhs, id.getName());
                 // turn rhs into id collection
-                Set ids = new HashSet();
-                for (Object entity : (Collection<?>)rhs.getConstant()) {
+                Set<Object> ids = new HashSet<Object>();
+                for (Object entity : rhs.getConstant()) {
                     ids.add(util.getIdentifier(entity));
                 }
                 rhs = ConstantImpl.create(ids);
                 args = ImmutableList.of(lhs, rhs);
             }
         }
+
         super.visitOperation(type, operator, args);
     }
 

@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.Group;
@@ -709,10 +710,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @IncludeIn(Target.H2)
-    @NoBatooJPA
     public void In_Empty() {
-        query().from(cat).where(cat.name.in(Collections.<String>emptyList())).count();
+        assertEquals(0, query().from(cat).where(cat.name.in(ImmutableList.<String>of())).count());
     }
 
     @Test
