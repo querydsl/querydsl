@@ -183,8 +183,8 @@ public class DefaultConfiguration implements Configuration {
             Class.forName("com.mysema.query.spatial.GeometryExpression");
             TypeMappings typeMappings = module.get(TypeMappings.class);
             Map<String, String> additions = Maps.newHashMap();
-            additions.put("GeometryCollection", "GeometryCollectionPath");
             additions.put("Geometry", "GeometryPath");
+            additions.put("GeometryCollection", "GeometryCollectionPath");
             additions.put("LinearRing", "LinearRingPath");
             additions.put("LineString", "LineStringPath");
             additions.put("MultiLineString", "MultiLineStringPath");

@@ -21,6 +21,7 @@
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.geolatte</groupId>
       <artifactId>geolatte-geom</artifactId>
@@ -34,6 +35,12 @@
       <version>${project.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   
@@ -63,6 +70,25 @@
             <goals>
               <goal>test-jar</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>apt-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>test-process</goal>
+              <goal>add-test-sources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-test-sources/java</outputDirectory>
+              <processors>
+                <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              </processors>
+            </configuration>
           </execution>
         </executions>
       </plugin>
