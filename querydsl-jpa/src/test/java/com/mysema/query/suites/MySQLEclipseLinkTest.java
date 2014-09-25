@@ -20,6 +20,10 @@ public class MySQLEclipseLinkTest extends AbstractJPASuite {
             // not supported in MySQL/EclipseLink
         }
         @Override
+        public void Enum_StartsWith() {
+            // not supported in MySQL/EclipseLink
+        }
+        @Override
         public void Order_StringValue() {
             // not supported in MySQL/EclipseLink
         }
