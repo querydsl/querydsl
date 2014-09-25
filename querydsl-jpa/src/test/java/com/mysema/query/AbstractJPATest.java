@@ -570,20 +570,25 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoBatooJPA
-    public void Enum_in() {
+    public void Enum_In() {
         assertEquals(1, query().from(company).where(company.ratingOrdinal.in(Rating.A, Rating.AA)).count());
         assertEquals(1, query().from(company).where(company.ratingString.in(Rating.A, Rating.AA)).count());
     }
 
     @Test
     @NoBatooJPA
-    public void Enum_In() {
+    public void Enum_In2() {
         QEmployee employee = QEmployee.employee;
 
         JPQLQuery query = query();
         query.from(employee).where(employee.lastName.eq("Smith"), employee.jobFunctions
                 .contains(JobFunction.CODER));
         assertEquals(1l, query.count());
+    }
+
+    @Test
+    public void Enum_StartsWith() {
+        assertEquals(1, query().from(company).where(company.ratingString.stringValue().startsWith("A")).count());
     }
 
     @Test
