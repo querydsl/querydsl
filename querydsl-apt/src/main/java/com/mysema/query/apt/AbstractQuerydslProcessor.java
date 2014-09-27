@@ -183,6 +183,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             Type superType = superTypes.pop();
             if (!context.allTypes.containsKey(superType.getFullName())) {
                 TypeElement typeElement = processingEnv.getElementUtils().getTypeElement(superType.getFullName());
+                if (conf.isStrictMode() && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
+                    continue;
+                }
                 if (typeElement == null) {
                     throw new IllegalStateException("Found no type for " + superType.getFullName());
                 }
@@ -230,7 +233,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
 
         // from annotation less supertypes
-        elements.addAll(getAnnotationlessSupertypes(elements));
+        if (!conf.isStrictMode()) {
+            elements.addAll(getAnnotationlessSupertypes(elements));
+        }
 
         // register possible embedded types of non-tracked supertypes
         if (conf.getEmbeddedAnnotation() != null) {
