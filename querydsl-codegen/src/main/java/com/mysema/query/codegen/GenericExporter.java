@@ -303,14 +303,10 @@ public class GenericExporter {
         }
     }
 
-    private boolean containsAny(Annotation[] annotations, Class<? extends Annotation>... entityAnnotations) {
-        if (annotations != null && annotations.length > 0) {
-            for (Annotation ann : annotations) {
-                for (Class<? extends Annotation> annType : entityAnnotations) {
-                    if (ann.annotationType().equals(annType)) {
-                        return true;
-                    }
-                }
+    private boolean containsAny(Class<?> clazz, Class<? extends Annotation>... annotations) {
+        for (Class<? extends Annotation> annType : annotations) {
+            if (clazz.isAnnotationPresent(annType)) {
+                return true;
             }
         }
         return false;
@@ -332,7 +328,7 @@ public class GenericExporter {
 
             typeMappings.register(type, queryTypeFactory.create(type));
 
-            if (strictMode && cl.getSuperclass() != null && !containsAny(cl.getSuperclass().getAnnotations(),
+            if (strictMode && cl.getSuperclass() != null && !containsAny(cl.getSuperclass(),
                     entityAnnotation, supertypeAnnotation, embeddableAnnotation)) {
                 // skip supertype handling
                 return type;
