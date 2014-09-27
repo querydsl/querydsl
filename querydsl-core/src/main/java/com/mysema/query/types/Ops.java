@@ -39,7 +39,7 @@ public final class Ops {
 
     public static final Operator<Number>  NUMCAST = new OperatorImpl<Number>(NS, "NUMCAST");
 
-    public static final Operator<String>  STRING_CAST = new OperatorImpl<String>(NS, "STING_CAST");
+    public static final Operator<String>  STRING_CAST = new OperatorImpl<String>(NS, "STRING_CAST");
 
     public static final Operator<Object>  ALIAS = new OperatorImpl<Object>(NS, "ALIAS");
 
