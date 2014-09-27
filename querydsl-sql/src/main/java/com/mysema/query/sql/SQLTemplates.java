@@ -13,12 +13,13 @@
  */
 package com.mysema.query.sql;
 
+import static com.google.common.base.CharMatcher.inRange;
+
 import java.lang.reflect.Field;
 import java.sql.Types;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.Pair;
@@ -41,6 +42,10 @@ public class SQLTemplates extends Templates {
     public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
+
+    private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
+            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
+            .negate().precomputed();
 
     public abstract static class Builder {
 
@@ -727,14 +732,7 @@ public class SQLTemplates extends Templates {
     }
 
     protected boolean requiresQuotes(final String identifier) {
-        for (int i = 0; i < identifier.length(); i++) {
-            final char ch = identifier.charAt(i);
-            //0-9,a-z,A-Z_
-            if (ch < '0' || (ch > '9' && ch < 'A') || (ch > 'Z' && ch < '_') || ch > 'z') {
-                return true;
-            }
-        }
-        return false;
+        return NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier);
     }
 
     /**
