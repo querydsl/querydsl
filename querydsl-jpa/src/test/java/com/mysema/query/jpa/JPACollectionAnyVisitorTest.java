@@ -13,10 +13,6 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QDomesticCat;
@@ -26,6 +22,8 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 
 public class JPACollectionAnyVisitorTest {
@@ -46,8 +44,8 @@ public class JPACollectionAnyVisitorTest {
     public void Simple_BooleanOperation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");
         assertMatches("exists \\(select 1\n" +
-                "from Cat cat_kittens.*\n" +
-                "where cat_kittens.* in elements\\(cat\\.kittens\\) and cat_kittens.*\\.name = \\?1\\)", serialize(predicate));
+                "from cat.kittens as cat_kittens.*\n" +
+                "where cat_kittens.*\\.name = \\?1\\)", serialize(predicate));
     }
 
     @Test
@@ -64,18 +62,18 @@ public class JPACollectionAnyVisitorTest {
     public void Simple_StringOperation() {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");
         assertMatches("exists \\(select 1\n"+
-                "from Cat cat_kittens.*\n" +
-                "where cat_kittens.* in elements\\(cat.kittens\\) and substring\\(cat_kittens.*\\.name,2\\) = \\?1\\)", serialize(predicate));
+                "from cat.kittens as cat_kittens.*\n" +
+                "where substring\\(cat_kittens.*\\.name,2\\) = \\?1\\)", serialize(predicate));
     }
 
     @Test
     public void And_Operation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertMatches("exists \\(select 1\n"+
-                "from Cat cat_kittens.*\n" +
-                "where cat_kittens.* in elements\\(cat.kittens\\) and cat_kittens.*\\.name = \\?1\\) and exists \\(select 1\n" +
-                "from Cat cat_kittens.*\n" +
-                "where cat_kittens.* in elements\\(cat.kittens\\) and cat_kittens.*\\.bodyWeight > \\?2\\)", serialize(predicate));
+                "from cat.kittens as cat_kittens.*\n" +
+                "where cat_kittens.*\\.name = \\?1\\) and exists \\(select 1\n" +
+                "from cat.kittens as cat_kittens.*\n" +
+                "where cat_kittens.*\\.bodyWeight > \\?2\\)", serialize(predicate));
     }
 
     @Test
@@ -83,8 +81,8 @@ public class JPACollectionAnyVisitorTest {
         Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}",
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertMatches("exists \\(select 1\n" +
-                "from Cat cat_kittens.*\n" +
-                "where cat_kittens.* in elements\\(cat\\.kittens\\) and cat_kittens.*\\.name = \\?1\\)", serialize(templateExpr));
+                "from cat.kittens as cat_kittens.*\n" +
+                "where cat_kittens.*\\.name = \\?1\\)", serialize(templateExpr));
     }
 
     @Test
@@ -98,8 +96,8 @@ public class JPACollectionAnyVisitorTest {
         Predicate predicate = anyCat.name.eq("X");
 
         assertMatches("exists \\(select 1\n" +
-            "from DomesticCat cat_kittens.*\n" +
-            "where cat_kittens.* in elements\\(cat.kittens\\) and cat_kittens.*\\.name = \\?1\\)", serialize(predicate));
+            "from cat.kittens as cat_kittens.*\n" +
+            "where cat_kittens.*\\.name = \\?1\\)", serialize(predicate));
     }
 
     private String serialize(Expression<?> expression) {

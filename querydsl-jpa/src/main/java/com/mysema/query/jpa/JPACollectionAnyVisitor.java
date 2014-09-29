@@ -13,21 +13,15 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
+import java.util.UUID;
 
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.PredicateOperation;
-import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.SimplePath;
 
 /**
  * JPACollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
@@ -48,8 +42,7 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
             Path<?> child = c.paths.get(i).getMetadata().getParent();
             EntityPath<Object> replacement = (EntityPath<Object>) c.replacements.get(i);
             if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
-                query.from(replacement);
-                query.where(PredicateOperation.create(Ops.IN, replacement, child));
+                query.from(new ListPath(c.paths.get(i).getType(), SimplePath.class, child.getMetadata()), replacement);
             } else {
                 // join via parent
                 Path<?> parent = child.getMetadata().getParent();

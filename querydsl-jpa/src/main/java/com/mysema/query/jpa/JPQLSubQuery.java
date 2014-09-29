@@ -14,11 +14,15 @@
 package com.mysema.query.jpa;
 
 import com.mysema.query.Detachable;
+import com.mysema.query.types.CollectionExpression;
+import com.mysema.query.types.Path;
 
 /**
  * @author tiwe
  *
  */
 public interface JPQLSubQuery extends Detachable, JPACommonQuery<JPQLSubQuery>{
+
+    <P> JPQLSubQuery from(CollectionExpression<?,P> target, Path<P> alias);
 
 }
