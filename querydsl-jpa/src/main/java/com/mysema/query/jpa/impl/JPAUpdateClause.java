@@ -20,12 +20,12 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
+import com.mysema.query.jpa.JPAQueryMixin;
 import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.*;
 
 /**
@@ -36,7 +36,7 @@ import com.mysema.query.types.*;
  */
 public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
 
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
+    private final QueryMixin queryMixin = new JPAQueryMixin();
 
     private final EntityManager entityManager;
 
@@ -52,27 +52,27 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     public JPAUpdateClause(EntityManager em, EntityPath<?> entity, JPQLTemplates templates) {
         this.entityManager = em;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity);
+        queryMixin.addJoin(JoinType.DEFAULT, entity);
     }
 
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForUpdate(metadata);
+        serializer.serializeForUpdate(queryMixin.getMetadata());
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
         if (lockMode != null) {
             query.setLockMode(lockMode);
         }
-        JPAUtil.setConstants(query, constants, metadata.getParams());
+        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
 
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
         if (value != null) {
-            metadata.addProjection(ExpressionUtils.eqConst(path, value));
+            queryMixin.addProjection(ExpressionUtils.eqConst(path, value));
         } else {
             setNull(path);
         }
@@ -82,7 +82,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public <T> JPAUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
-            metadata.addProjection(ExpressionUtils.eq(path, expression));    
+            queryMixin.addProjection(ExpressionUtils.eq(path, expression));
         } else {
             setNull(path);
         }        
@@ -91,7 +91,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     
     @Override
     public <T> JPAUpdateClause setNull(Path<T> path) {
-        metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        queryMixin.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         return this;
     }
 
@@ -100,9 +100,9 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) != null) {
-                metadata.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
+                queryMixin.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
             } else {
-                metadata.addProjection(ExpressionUtils.eq((Expression)paths.get(i), 
+                queryMixin.addProjection(ExpressionUtils.eq((Expression)paths.get(i),
                         new NullExpression(paths.get(i).getType())));
             }
         }
@@ -112,7 +112,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public JPAUpdateClause where(Predicate... o) {
         for (Predicate p : o) {
-            metadata.addWhere(p);   
+            queryMixin.where(p);
         }        
         return this;
     }
@@ -125,13 +125,13 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForUpdate(metadata);
+        serializer.serializeForUpdate(queryMixin.getMetadata());
         return serializer.toString();
     }
 
     @Override
     public boolean isEmpty() {
-        return metadata.getProjection().isEmpty();
+        return queryMixin.getMetadata().getProjection().isEmpty();
     }
 
 }
