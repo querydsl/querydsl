@@ -98,6 +98,7 @@ public class JPABase extends AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(Target.MYSQL)
     public void Delete_Where_Any() {
         delete(cat).where(cat.kittens.any().name.eq("XXX")).execute();
     }
