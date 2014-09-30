@@ -14,7 +14,9 @@
 package com.mysema.query.sql;
 
 import java.sql.Types;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.types.Ops;
 
 /**
@@ -26,6 +28,14 @@ import com.mysema.query.types.Ops;
  *
  */
 public class PostgresTemplates extends SQLTemplates {
+
+    //TODO: Add all postgres specific reserved words
+    private static final Set<String> POSTGRES_RESERVED_WORDS
+            = ImmutableSet.<String>builder()
+            .addAll(SQL_RESERVED_WORDS)
+            .add("ANALYSE",
+                    "ANALYZE")
+            .build();
 
     public static Builder builder() {
         return new Builder() {
@@ -45,7 +55,7 @@ public class PostgresTemplates extends SQLTemplates {
     }
 
     public PostgresTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        super(POSTGRES_RESERVED_WORDS, "\"", escape, quote);
         setDummyTable(null);
         setCountDistinctMultipleColumns(true);
         setCountViaAnalytics(true);

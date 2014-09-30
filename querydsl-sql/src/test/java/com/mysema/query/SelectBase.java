@@ -618,6 +618,11 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Keyword() {
+        query().from(employee).singleResult(employee.firstname.as("from"));
+    }
+
+    @Test
     public void Left_Join() throws SQLException {
         query().from(employee).leftJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))

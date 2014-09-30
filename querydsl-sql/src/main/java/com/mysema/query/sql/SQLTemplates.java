@@ -20,6 +20,7 @@ import java.sql.Types;
 import java.util.*;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.Pair;
@@ -39,6 +40,13 @@ import com.mysema.query.types.*;
  */
 public class SQLTemplates extends Templates {
 
+    //TODO: Add all common SQL reserved words
+    protected static final ImmutableSet<String> SQL_RESERVED_WORDS
+            = ImmutableSet.<String>builder()
+            .add("FROM",
+                    "SELECT")
+            .build();
+
     public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
@@ -46,6 +54,8 @@ public class SQLTemplates extends Templates {
     private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
             CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
             .negate().precomputed();
+
+    private final Set<String> reservedWords;
 
     public abstract static class Builder {
 
@@ -200,8 +210,14 @@ public class SQLTemplates extends Templates {
 
     private boolean wrapSelectParameters = false;
 
+    @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
+        this(SQL_RESERVED_WORDS, quoteStr, escape, useQuotes);
+    }
+
+    protected SQLTemplates(Set<String> reservedKeywords, String quoteStr, char escape, boolean useQuotes) {
         super(escape);
+        this.reservedWords = reservedKeywords;
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
 
@@ -732,7 +748,12 @@ public class SQLTemplates extends Templates {
     }
 
     protected boolean requiresQuotes(final String identifier) {
-        return NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier);
+        return NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)
+                || isReservedWord(identifier);
+    }
+
+    private boolean isReservedWord(String identifier) {
+        return reservedWords.contains(identifier.toUpperCase());
     }
 
     /**
