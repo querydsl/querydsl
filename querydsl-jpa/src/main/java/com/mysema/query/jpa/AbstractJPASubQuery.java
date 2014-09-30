@@ -18,11 +18,8 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
-import com.mysema.query.types.CollectionExpression;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.MapExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.*;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 
@@ -68,6 +65,11 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
     @Override
     public Q from(EntityPath<?>... o) {
         return queryMixin.from(o);
+    }
+
+    @Override
+    public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
+        return queryMixin.fullJoin(Expressions.as((Path)target, alias));
     }
 
     @Override

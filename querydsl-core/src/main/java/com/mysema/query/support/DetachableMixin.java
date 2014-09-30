@@ -18,28 +18,9 @@ import javax.annotation.Nullable;
 import com.mysema.query.Detachable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.Tuple;
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpression;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.ProjectionRole;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.expr.DateExpression;
-import com.mysema.query.types.expr.DateTimeExpression;
-import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.expr.Wildcard;
-import com.mysema.query.types.query.BooleanSubQuery;
-import com.mysema.query.types.query.ComparableSubQuery;
-import com.mysema.query.types.query.DateSubQuery;
-import com.mysema.query.types.query.DateTimeSubQuery;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.NumberSubQuery;
-import com.mysema.query.types.query.SimpleSubQuery;
-import com.mysema.query.types.query.StringSubQuery;
-import com.mysema.query.types.query.TimeSubQuery;
+import com.mysema.query.types.*;
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.query.*;
 
 /**
  * Mixin style implementation of the Detachable interface
@@ -65,7 +46,11 @@ public class DetachableMixin implements Detachable {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No sources given");
         }
-        return unique(queryMixin.getMetadata().getJoins().get(0).getTarget()).exists();
+        Expression<?> expr = queryMixin.getMetadata().getJoins().get(0).getTarget();
+        if (expr instanceof Operation && ((Operation)expr).getOperator() == Ops.ALIAS) {
+            expr = ((Operation)expr).getArg(1);
+        }
+        return unique(expr).exists();
     }
 
     @Override
