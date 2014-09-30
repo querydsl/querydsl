@@ -68,6 +68,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest2"));
         exporter.addStopClass(ForwardingSet.class);
+        exporter.setStrictMode(true);
         exporter.export(AbstractEntityTest.class.getPackage());
 
         List<String> expected = new ArrayList<String>();
@@ -96,6 +97,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QOneToOneTest_Person.java");
         expected.add("QGeneric16Test_HidaBez.java");
         expected.add("QGeneric16Test_HidaBezGruppe.java");
+        expected.add("QProperties2Test_ConcreteX.java");
 
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }
@@ -151,7 +153,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
             for (String failure : failures) {
                 System.err.println(failure);
             }
-            fail("Failed with " + failures.size() + " failures, " + successes + " succeeded");
+            fail("Failed with " + failures.size() + " failures, " + successes + " succeeded, " + failures);
         }
     }
 

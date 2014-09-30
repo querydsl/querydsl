@@ -13,29 +13,12 @@
  */
 package com.mysema.query.codegen;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Nullable;
+import java.io.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.nio.charset.Charset;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -49,17 +32,7 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
 import com.mysema.query.QueryException;
-import com.mysema.query.annotations.Config;
-import com.mysema.query.annotations.PropertyType;
-import com.mysema.query.annotations.QueryEmbeddable;
-import com.mysema.query.annotations.QueryEmbedded;
-import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.annotations.QueryExclude;
-import com.mysema.query.annotations.QueryInit;
-import com.mysema.query.annotations.QueryProjection;
-import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.annotations.QueryTransient;
-import com.mysema.query.annotations.QueryType;
+import com.mysema.query.annotations.*;
 import com.mysema.util.BeanUtils;
 import com.mysema.util.ClassPathUtils;
 import com.mysema.util.ReflectionUtils;
@@ -146,6 +119,8 @@ public class GenericExporter {
     private final ClassLoader classLoader;
 
     private Set<File> generatedFiles = new HashSet<File>();
+
+    private boolean strictMode;
 
     /**
      * Create a GenericExporter instance using the given classloader and charset for serializing
@@ -328,6 +303,15 @@ public class GenericExporter {
         }
     }
 
+    private boolean containsAny(Class<?> clazz, Class<? extends Annotation>... annotations) {
+        for (Class<? extends Annotation> annType : annotations) {
+            if (clazz.isAnnotationPresent(annType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private EntityType createEntityType(Class<?> cl, Map<Class<?>, EntityType> types) {
         if (types.get(cl) != null) {
             return types.get(cl);
@@ -343,6 +327,13 @@ public class GenericExporter {
             }
 
             typeMappings.register(type, queryTypeFactory.create(type));
+
+            if (strictMode && cl.getSuperclass() != null && !containsAny(cl.getSuperclass(),
+                    entityAnnotation, supertypeAnnotation, embeddableAnnotation)) {
+                // skip supertype handling
+                return type;
+            }
+
             if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())
                 && !cl.getSuperclass().isAnnotationPresent(QueryExclude.class)) {
                 type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
@@ -716,5 +707,13 @@ public class GenericExporter {
         stopClasses.add(cl);
     }
 
+    /**
+     * Set whether annotationless superclasses are handled or not (default: true)
+     *
+     * @param s
+     */
+    public void setStrictMode(boolean s) {
+        strictMode = s;
+    }
 
 }
