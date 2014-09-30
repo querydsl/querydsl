@@ -248,13 +248,13 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             } else {
                 if (hasRow()) {
                     // update
-                    SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
+                    SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
                     populate(update);
                     addKeyConditions(update);
                     return EmptyResultSet.DEFAULT;
                 } else {
                     // insert
-                    SQLInsertClause insert = new SQLInsertClause(connection, configuration.getTemplates(), entity);
+                    SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
                     populate(insert);
                     return insert.executeWithKeys();
                 }
@@ -294,7 +294,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     private boolean hasRow() {
-        SQLQuery query = new SQLQuery(connection, configuration.getTemplates()).from(entity);
+        SQLQuery query = new SQLQuery(connection, configuration).from(entity);
         addKeyConditions(query);
         return query.exists();
     }
@@ -316,13 +316,13 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     private long executeCompositeMerge() {
         if (hasRow()) {
             // update
-            SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
+            SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
             populate(update);
             addKeyConditions(update);
             return update.execute();
         } else {
             // insert
-            SQLInsertClause insert = new SQLInsertClause(connection, configuration.getTemplates(), entity);
+            SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
             populate(insert);
             return insert.execute();
 
