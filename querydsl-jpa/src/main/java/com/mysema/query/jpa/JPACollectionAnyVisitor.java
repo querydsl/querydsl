@@ -13,20 +13,12 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
+import java.util.UUID;
 
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.PredicateOperation;
-import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.path.EntityPathBase;
 
 /**

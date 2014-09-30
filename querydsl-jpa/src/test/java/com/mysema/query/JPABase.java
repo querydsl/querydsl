@@ -13,6 +13,14 @@
  */
 package com.mysema.query;
 
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.domain.*;
@@ -27,15 +35,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
-
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.Assert.*;
 
 /**
@@ -96,6 +95,12 @@ public class JPABase extends AbstractJPATest {
     @NoBatooJPA
     public void Delete_Where() {
         delete(cat).where(cat.name.eq("XXX")).execute();
+    }
+
+    @Test
+    @ExcludeIn(Target.MYSQL)
+    public void Delete_Where_Any() {
+        delete(cat).where(cat.kittens.any().name.eq("XXX")).execute();
     }
 
     @Test
