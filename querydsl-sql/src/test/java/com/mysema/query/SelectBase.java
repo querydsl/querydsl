@@ -571,6 +571,15 @@ public class SelectBase extends AbstractBaseTest {
                .list(employee.id.count());
     }
 
+    @Test
+    public void GroupBy_Validate() {
+        NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
+        query().from(employee)
+               .groupBy(alias)
+               .list(employee.salary.multiply(100).as(alias),
+                     employee.salary.avg());
+    }
+
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {

@@ -13,31 +13,17 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.util.CollectionUtils.add;
-import static com.mysema.query.util.CollectionUtils.addSorted;
-import static com.mysema.query.util.CollectionUtils.copyOf;
-import static com.mysema.query.util.CollectionUtils.copyOfSorted;
-import static com.mysema.query.util.CollectionUtils.put;
-import static com.mysema.query.util.CollectionUtils.removeSorted;
-
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamsVisitor;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.ValidatingVisitor;
+import com.mysema.query.types.*;
+import static com.mysema.query.util.CollectionUtils.*;
 
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
@@ -128,7 +114,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void addGroupBy(Expression<?> o) {
         addLastJoin();
-        validate(o);
+        // group by elements can't be validated, since they can refer to projection elements
+        // that are declared later
         groupBy = add(groupBy, o);
     }
 
