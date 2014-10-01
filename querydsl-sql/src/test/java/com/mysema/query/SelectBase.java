@@ -618,8 +618,9 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Keyword() {
-        query().from(employee).singleResult(employee.firstname.as("from"));
+    public void Keywords() {
+        QEmployee from = new QEmployee("from");
+        query().from(QEmployee.employee.as(from)).singleResult(from.firstname.as("from"));
     }
 
     @Test
