@@ -56,6 +56,11 @@ public class DefaultQueryMetadataTest {
     public void Validation() {
         metadata.addWhere(str.isNull());
     }
+
+    @Test
+    public void Validation_No_Error() {
+        metadata.addGroupBy(str);
+    }
     
     @Test
     public void GetGroupBy() {
