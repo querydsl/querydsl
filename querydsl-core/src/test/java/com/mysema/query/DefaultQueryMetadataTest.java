@@ -43,12 +43,12 @@ public class DefaultQueryMetadataTest {
     
     @Test
     public void AddHaving_With_Null() {
-        metadata.addWhere((Predicate)null);
+        metadata.addHaving((Predicate)null);
     }
     
     @Test
     public void AddHaving_With_BooleanBuilder() {
-        metadata.addWhere(new BooleanBuilder());
+        metadata.addHaving(new BooleanBuilder());
     }
     
     
