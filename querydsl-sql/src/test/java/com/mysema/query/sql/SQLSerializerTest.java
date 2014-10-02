@@ -87,9 +87,10 @@ public class SQLSerializerTest {
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
-        assertEquals("(select user.id, user.username\n" +
-        	"from user\n" +
-        	"where user.id = ?)", serializer.toString());
+        //USER is a reserved word in ANSI SQL 2008
+        assertEquals("(select \"user\".id, \"user\".username\n" +
+                "from \"user\"\n" +
+                "where \"user\".id = ?)", serializer.toString());
     }
 
     @Test
@@ -103,9 +104,10 @@ public class SQLSerializerTest {
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
-        assertEquals("(select user.id, user.username\n" +
-                "from user\n" +
-                "where user.id = ?)", serializer.toString());
+        //USER is a reserved word in ANSI SQL 2008
+        assertEquals("(select \"user\".id, \"user\".username\n" +
+                "from \"user\"\n" +
+                "where \"user\".id = ?)", serializer.toString());
     }
 
     @Test
