@@ -220,9 +220,12 @@ public class EntitySerializer implements Serializer {
     protected void initEntityFields(CodeWriter writer, SerializerConfig config,
             EntityType model) throws IOException {
         Supertype superType = model.getSuperType();
-        if (superType != null && superType.getEntityType() != null && superType.getEntityType().hasEntityFields()) {
-            Type superQueryType = typeMappings.getPathType(superType.getEntityType(), model, false);
-            writer.line("this._super = new " + writer.getRawName(superQueryType) + "(type, metadata, inits);");
+        if (superType != null) {
+            EntityType entityType = superType.getEntityType();
+            if (entityType != null && entityType.hasEntityFields()) {
+                Type superQueryType = typeMappings.getPathType(entityType, model, false);
+                writer.line("this._super = new " + writer.getRawName(superQueryType) + "(type, metadata, inits);");
+            }
         }
 
         for (Property field : model.getProperties()) {
