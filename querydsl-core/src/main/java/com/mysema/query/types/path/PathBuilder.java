@@ -13,7 +13,11 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.Maps;
 import com.mysema.query.types.EntityPath;
@@ -44,6 +48,19 @@ public class PathBuilder<T> extends EntityPathBase<T> {
 
     private final Map<Path<?>, Object> propertyMetadata = Maps.newHashMap();
 
+    private final PathBuilderValidator validator;
+
+    /**
+     * Creates a new PathBuilder instance
+     *
+     * @param type
+     * @param pathMetadata
+     */
+    public PathBuilder(Class<? extends T> type, PathMetadata<?> pathMetadata, PathBuilderValidator validator) {
+        super(type, pathMetadata);
+        this.validator = validator;
+    }
+
     /**
      * Creates a new PathBuilder instance
      *
@@ -51,7 +68,18 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param pathMetadata
      */
     public PathBuilder(Class<? extends T> type, PathMetadata<?> pathMetadata) {
-        super(type, pathMetadata);
+        this(type, pathMetadata, PathBuilderValidator.DEFAULT);
+    }
+
+
+    /**
+     * Creates a new PathBuilder instance
+     *
+     * @param type
+     * @param variable
+     */
+    public PathBuilder(Class<? extends T> type, String variable, PathBuilderValidator validator) {
+        this(type, PathMetadataFactory.forVariable(variable), validator);
     }
 
     /**
@@ -61,7 +89,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param variable
      */
     public PathBuilder(Class<? extends T> type, String variable) {
-        super(type, PathMetadataFactory.forVariable(variable));
+        this(type, PathMetadataFactory.forVariable(variable), PathBuilderValidator.DEFAULT);
     }
 
     /**
@@ -77,13 +105,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
         return newPath;
     }
 
-    /**
-     * Override this method to do some validation of the properties created
-     *
-     * @param property
-     */
-    protected void validate(String property) {
-        // do nothing
+    private void validate(String property, Class<?> propertyType) {
+        validator.validate(getType(), property, propertyType);
     }
 
     @Override
@@ -101,8 +124,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     public PathBuilder<Object> get(String property) {
         PathBuilder<Object> path = (PathBuilder) properties.get(property);
         if (path == null) {
-            validate(property);
-            path = new PathBuilder<Object>(Object.class, forProperty(property));
+            validate(property, Object.class);
+            path = new PathBuilder<Object>(Object.class, forProperty(property), validator);
             properties.put(property, path);
         }
         return path;
@@ -120,8 +143,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     public <A> PathBuilder<A> get(String property, Class<A> type) {
         PathBuilder<A> path = (PathBuilder<A>) properties.get(property);
         if (path == null || !type.isAssignableFrom(path.getType())) {
-            validate(property);
-            path = new PathBuilder<A>(type, forProperty(property));
+            validate(property, type);
+            path = new PathBuilder<A>(type, forProperty(property), validator);
             properties.put(property, path);
         }
         return path;
@@ -137,7 +160,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A, E> ArrayPath<A, E> getArray(String property, Class<A> type) {
-        validate(property);
+        validate(property, Array.newInstance(type, 0).getClass());
         return super.createArray(property, type);
     }
 
@@ -157,7 +180,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public BooleanPath getBoolean(String propertyName) {
-        validate(propertyName);
+        validate(propertyName, Boolean.class);
         return super.createBoolean(propertyName);
     }
 
@@ -170,7 +193,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> CollectionPath<A, PathBuilder<A>> getCollection(String property, Class<A> type) {
-        validate(property);
+        validate(property, Collection.class);
         return super.<A, PathBuilder<A>>createCollection(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
@@ -185,7 +208,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<E> queryType) {
-        validate(property);
+        validate(property, Collection.class);
         return super.<A, E>createCollection(property, type, queryType, PathInits.DIRECT);
     }
 
@@ -209,7 +232,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> ComparablePath<A> getComparable(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createComparable(property, type);
     }
 
@@ -233,7 +256,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> DatePath<A> getDate(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createDate(property, type);
     }
 
@@ -257,7 +280,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> DateTimePath<A> getDateTime(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createDateTime(property, type);
     }
 
@@ -270,7 +293,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Enum<A>> EnumPath<A> getEnum(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createEnum(property, type);
     }
 
@@ -294,7 +317,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> ListPath<A, PathBuilder<A>> getList(String property, Class<A> type) {
-        validate(property);
+        validate(property, List.class);
         return super.<A, PathBuilder<A>>createList(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
@@ -309,7 +332,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<E> queryType) {
-        validate(property);
+        validate(property, List.class);
         return super.<A, E>createList(property, type, queryType, PathInits.DIRECT);
     }
 
@@ -324,7 +347,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <K, V> MapPath<K, V, PathBuilder<V>> getMap(String property, Class<K> key, Class<V> value) {
-        validate(property);
+        validate(property, Map.class);
         return super.<K,V,PathBuilder<V>>createMap(property, key, value, PathBuilder.class);
     }
 
@@ -341,7 +364,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <K, V, E extends SimpleExpression<V>> MapPath<K, V, E> getMap(String property, Class<K> key, Class<V> value, Class<E> queryType) {
-        validate(property);
+        validate(property, Map.class);
         return super.<K,V,E>createMap(property, key, value, queryType);
     }
 
@@ -365,7 +388,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Number & Comparable<?>> NumberPath<A> getNumber(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createNumber(property, type);
     }
 
@@ -378,7 +401,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.<A, PathBuilder<A>>createSet(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
@@ -393,7 +416,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<E> queryType) {
-        validate(property);
+        validate(property, Set.class);
         return super.<A, E>createSet(property, type, queryType, PathInits.DIRECT);
     }
 
@@ -417,7 +440,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> SimplePath<A> getSimple(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createSimple(property, type);
     }
 
@@ -437,7 +460,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public StringPath getString(String property) {
-        validate(property);
+        validate(property, String.class);
         return super.createString(property);
     }
 
@@ -460,7 +483,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> TimePath<A> getTime(String property, Class<A> type) {
-        validate(property);
+        validate(property, type);
         return super.createTime(property, type);
     }
 
