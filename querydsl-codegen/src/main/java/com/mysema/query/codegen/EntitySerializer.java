@@ -13,6 +13,13 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Generated;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -23,14 +30,6 @@ import com.mysema.query.types.*;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.*;
-
-import javax.annotation.Generated;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.*;
-
 import static com.mysema.codegen.Symbols.*;
 
 /**
@@ -221,12 +220,12 @@ public class EntitySerializer implements Serializer {
     protected void initEntityFields(CodeWriter writer, SerializerConfig config,
             EntityType model) throws IOException {
         Supertype superType = model.getSuperType();
-        if (superType != null && superType.getEntityType() == null) {
-            throw new IllegalStateException("No entity type for " + superType.getType().getFullName());
-        }
-        if (superType != null && superType.getEntityType().hasEntityFields()) {
-            Type superQueryType = typeMappings.getPathType(superType.getEntityType(), model, false);
-            writer.line("this._super = new " + writer.getRawName(superQueryType) + "(type, metadata, inits);");
+        if (superType != null) {
+            EntityType entityType = superType.getEntityType();
+            if (entityType != null && entityType.hasEntityFields()) {
+                Type superQueryType = typeMappings.getPathType(entityType, model, false);
+                writer.line("this._super = new " + writer.getRawName(superQueryType) + "(type, metadata, inits);");
+            }
         }
 
         for (Property field : model.getProperties()) {
