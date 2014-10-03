@@ -55,7 +55,7 @@ public interface Detachable {
     BooleanExpression exists();
 
     /**
-     * Create a projection expression for the given projection
+     * Create a multi row subquery expression for the given projection
      *
      * @param args
      * @return
@@ -63,7 +63,7 @@ public interface Detachable {
     ListSubQuery<Tuple> list(Expression<?>... args);
     
     /**
-     * Create a projection expression for the given projection
+     * Create a multi row subquery expression for the given projection
      * Non expression arguments are converted into constant expressions
      * 
      * @param args
@@ -72,7 +72,7 @@ public interface Detachable {
     ListSubQuery<Tuple> list(Object... args);
 
     /**
-     * Create a projection expression for the given projection
+     * Create a multi row subquery expression for the given projection
      *
      * @param <RT>
      *            generic type of the List
@@ -90,7 +90,7 @@ public interface Detachable {
     BooleanExpression notExists();
 
     /**
-     * Create a projection expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param args
      * @return
@@ -98,7 +98,7 @@ public interface Detachable {
     SimpleSubQuery<Tuple> unique(Expression<?>... args);
     
     /**
-     * Create a projection expression for the given projection
+     * Create a single row subquery expression for the given projection
      * Non expression arguments are converted into constant expressions
      * 
      * @param args
@@ -107,7 +107,7 @@ public interface Detachable {
     SimpleSubQuery<Tuple> unique(Object... args);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      *            return type
@@ -117,7 +117,7 @@ public interface Detachable {
     <RT> SimpleSubQuery<RT> unique(Expression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param projection
      * @return
@@ -125,7 +125,7 @@ public interface Detachable {
     BooleanSubQuery unique(Predicate projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param projection
      * @return
@@ -133,7 +133,7 @@ public interface Detachable {
     StringSubQuery unique(StringExpression projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
@@ -142,7 +142,7 @@ public interface Detachable {
     <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
@@ -151,7 +151,7 @@ public interface Detachable {
     <RT extends Comparable<?>> DateSubQuery<RT> unique(DateExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
@@ -160,7 +160,7 @@ public interface Detachable {
     <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(DateTimeExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
@@ -169,7 +169,7 @@ public interface Detachable {
     <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
