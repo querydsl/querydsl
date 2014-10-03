@@ -212,6 +212,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public QueryMetadata clone() {
         try {
+            addLastJoin();
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
             clone.exprInJoins = copyOf(exprInJoins);
             clone.groupBy = copyOf(groupBy);
@@ -362,6 +363,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public boolean equals(Object o) {
         if (o instanceof QueryMetadata) {
+            addLastJoin();
             QueryMetadata q = (QueryMetadata)o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
@@ -382,6 +384,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public int hashCode() {
+        addLastJoin();
         return Objects.hashCode(flags, groupBy, having, joins, modifiers,
                 orderBy, params, projection, unique, where);
     }
