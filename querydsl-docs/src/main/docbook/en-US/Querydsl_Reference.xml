@@ -26,7 +26,11 @@
           <author>
             <firstname>Lassi</firstname>
             <surname>Immonen</surname>
-          </author>		  
+          </author>
+          <author>
+            <firstname>Ruben</firstname>
+            <surname>Dijkstra</surname>
+          </author>
         </authorgroup>
         <mediaobject>        
             <imageobject role="fo">
