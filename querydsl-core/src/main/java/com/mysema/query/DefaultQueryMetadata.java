@@ -381,7 +381,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
                 && Objects.equal(q.getHaving(), having)
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
-                && q.getJoins().equals(joins.getJoins())
+                && q.getJoins().equals(getJoins())
                 && Objects.equal(q.getModifiers(), modifiers)
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
