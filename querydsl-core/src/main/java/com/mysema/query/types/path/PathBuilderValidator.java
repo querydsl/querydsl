@@ -13,7 +13,7 @@
  */
 package com.mysema.query.types.path;
 
-import com.sun.xml.internal.ws.util.StringUtils;
+import com.mysema.util.BeanUtils;
 
 /**
  * PathBuilderValidator validates PathBuilder properties at creation time
@@ -27,49 +27,43 @@ public interface PathBuilderValidator {
      * @param property
      * @param propertyType
      */
-    void validate(Class<?> parent, String property, Class<?> propertyType);
+    boolean validate(Class<?> parent, String property, Class<?> propertyType);
 
     public final PathBuilderValidator DEFAULT = new PathBuilderValidator() {
         @Override
-        public void validate(Class<?> parent, String property, Class<?> propertyType) {
-            // do nothing
+        public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
+            return true;
         }
     };
 
     public final PathBuilderValidator FIELDS = new PathBuilderValidator() {
         @Override
-        public void validate(Class<?> parent, String property, Class<?> propertyType) {
-            boolean found = false;
-            while (found || !parent.equals(Object.class)) {
+        public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
+            while (!parent.equals(Object.class)) {
                 try {
                     parent.getDeclaredField(property);
-                    found = true;
+                    return true;
                 } catch (NoSuchFieldException e) {
                     parent = parent.getSuperclass();
                 }
             }
-            if (!found) {
-                throw new IllegalArgumentException("Illegal property " + property);
-            }
+            return false;
         }
     };
 
     public final PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
         @Override
-        public void validate(Class<?> parent, String property, Class<?> propertyType) {
-            boolean found = false;
-            String accessor = "get" + StringUtils.capitalize(property);
-            while (found || !parent.equals(Object.class)) {
+        public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
+            String accessor = "get" + BeanUtils.capitalize(property);
+            while (!parent.equals(Object.class)) {
                 try {
                     parent.getDeclaredMethod(accessor);
-                    found = true;
+                    return true;
                 } catch (NoSuchMethodException e) {
                     parent = parent.getSuperclass();
                 }
             }
-            if (!found) {
-                throw new IllegalArgumentException("Illegal property " + property);
-            }
+            return false;
         }
     };
 

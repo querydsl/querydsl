@@ -105,8 +105,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
         return newPath;
     }
 
-    private void validate(String property, Class<?> propertyType) {
-        validator.validate(getType(), property, propertyType);
+    protected void validate(String property, Class<?> propertyType) {
+        if (!validator.validate(getType(), property, propertyType)) {
+            throw new IllegalArgumentException("Illegal property " + property);
+        }
     }
 
     @Override
