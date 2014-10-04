@@ -55,15 +55,12 @@ public interface PathBuilderValidator {
         @Override
         public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
             String accessor = "get" + BeanUtils.capitalize(property);
-            while (!parent.equals(Object.class)) {
-                try {
-                    parent.getDeclaredMethod(accessor);
-                    return true;
-                } catch (NoSuchMethodException e) {
-                    parent = parent.getSuperclass();
-                }
+            try {
+                parent.getMethod(accessor);
+                return true;
+            } catch (NoSuchMethodException e) {
+                return false;
             }
-            return false;
         }
     };
 
