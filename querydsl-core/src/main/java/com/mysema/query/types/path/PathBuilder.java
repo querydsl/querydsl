@@ -55,6 +55,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      *
      * @param type
      * @param pathMetadata
+     * @param validator
      */
     public PathBuilder(Class<? extends T> type, PathMetadata<?> pathMetadata, PathBuilderValidator validator) {
         super(type, pathMetadata);
@@ -77,6 +78,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      *
      * @param type
      * @param variable
+     * @param validator
      */
     public PathBuilder(Class<? extends T> type, String variable, PathBuilderValidator validator) {
         this(type, PathMetadataFactory.forVariable(variable), validator);
