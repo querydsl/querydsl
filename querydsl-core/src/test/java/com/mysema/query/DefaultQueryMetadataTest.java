@@ -155,6 +155,14 @@ public class DefaultQueryMetadataTest {
     }
 
     @Test
+    public void JoinShouldBeCommitted() {
+        DefaultQueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, str);
+        DefaultQueryMetadata emptyMetadata = new DefaultQueryMetadata();
+        assertFalse(md.equals(emptyMetadata));
+    }
+
+    @Test
     public void Clone() {
         metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addGroupBy(str);
