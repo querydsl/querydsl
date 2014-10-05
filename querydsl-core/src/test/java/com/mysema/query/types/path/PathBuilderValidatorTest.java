@@ -16,7 +16,9 @@ public class PathBuilderValidatorTest {
         public String getName() { return ""; }
     }
 
-    public static class ExtendedProject extends Project {}
+    public static class ExtendedProject extends Project {
+        public boolean isStarted() { return true; }
+    }
 
     @Test
     public void Default() {
@@ -40,5 +42,6 @@ public class PathBuilderValidatorTest {
         assertFalse(PathBuilderValidator.PROPERTIES.validate(ExtendedCustomer.class, "name", String.class));
         assertTrue(PathBuilderValidator.PROPERTIES.validate(Project.class, "name", String.class));
         assertTrue(PathBuilderValidator.PROPERTIES.validate(ExtendedProject.class, "name", String.class));
+        assertTrue(PathBuilderValidator.PROPERTIES.validate(ExtendedProject.class, "started", Boolean.class));
     }
 }

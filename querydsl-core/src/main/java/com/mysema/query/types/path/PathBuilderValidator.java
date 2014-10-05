@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.google.common.primitives.Primitives;
 import com.mysema.util.BeanUtils;
 
 /**
@@ -54,7 +55,9 @@ public interface PathBuilderValidator {
     public final PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
         @Override
         public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
-            return BeanUtils.isAccessorPresent("get", property, parent);
+            return BeanUtils.isAccessorPresent("get", property, parent)
+                    || (Primitives.wrap(propertyType).equals(Boolean.class)
+                    && BeanUtils.isAccessorPresent("is", property, parent));
         }
     };
 
