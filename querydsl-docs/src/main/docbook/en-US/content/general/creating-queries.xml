@@ -136,7 +136,7 @@ entityPath.getMap("map", String.class, String.class, StringPath.class).get("key"
 PathBuilder<Customer> customer = new PathBuilder<Customer>(Customer.class, "customer", validator);
 ]]></programlisting>
 
-    <para>PathBuilderValidator.FIELDS will verify for field exists, PathBuilderValidator.PROPERTIES validates
+    <para>PathBuilderValidator.FIELDS will verify field existence, PathBuilderValidator.PROPERTIES validates
       Bean properties and JPAPathBuilderValidator validates using a JPA metamodel.
     </para>
 
