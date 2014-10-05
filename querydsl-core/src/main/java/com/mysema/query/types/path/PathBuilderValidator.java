@@ -54,13 +54,7 @@ public interface PathBuilderValidator {
     public final PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
         @Override
         public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
-            String accessor = "get" + BeanUtils.capitalize(property);
-            try {
-                parent.getMethod(accessor);
-                return true;
-            } catch (NoSuchMethodException e) {
-                return false;
-            }
+            return BeanUtils.isAccessorPresent("get", property, parent);
         }
     };
 

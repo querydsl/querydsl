@@ -37,5 +37,13 @@ public final class BeanUtils {
         return Introspector.decapitalize(name);
     }
 
+    public static boolean isAccessorPresent(String prefix, String property, Class<?> bean) {
+        try {
+            bean.getMethod(prefix + capitalize(property));
+            return true;
+        } catch (NoSuchMethodException ex) {
+            return false;
+        }
+    }
     private BeanUtils() {}
 }
