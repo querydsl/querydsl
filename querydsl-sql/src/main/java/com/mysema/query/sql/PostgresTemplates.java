@@ -29,7 +29,7 @@ import com.mysema.query.types.Ops;
  */
 public class PostgresTemplates extends SQLTemplates {
 
-    private static final Set<String> POSTGRES_RESERVED_WORDS
+    protected static final Set<String> POSTGRES_RESERVED_WORDS
             = ImmutableSet.of(
                     "ALL", "ANALYSE", "ANALYZE", "AND", "ANY", "ARRAY", "AS",
                     "ASC", "ASYMMETRIC", "AUTHORIZATION", "BINARY", "BOTH",

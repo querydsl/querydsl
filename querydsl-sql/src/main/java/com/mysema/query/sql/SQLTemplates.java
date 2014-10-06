@@ -40,7 +40,7 @@ import com.mysema.query.types.*;
  */
 public class SQLTemplates extends Templates {
 
-    protected static final ImmutableSet<String> SQL_RESERVED_WORDS
+    protected static final Set<String> SQL_RESERVED_WORDS
             = ImmutableSet.of(
                     "ABS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE",
                     "ARRAY", "ARRAY_AGG", "AS", "ASENSITIVE", "ASYMMETRIC",

@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import java.sql.Types;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 import com.mysema.query.types.Ops;
@@ -28,7 +29,7 @@ import com.mysema.query.types.Ops;
  */
 public class MySQLTemplates extends SQLTemplates {
 
-    protected static final ImmutableSet<String> MYSQL_RESERVED_WORDS
+    protected static final Set<String> MYSQL_RESERVED_WORDS
             = ImmutableSet.of(
                     "ACCESSIBLE", "ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS",
                     "ASC", "ASENSITIVE", "BEFORE", "BETWEEN", "BIGINT", "BINARY",
