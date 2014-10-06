@@ -818,9 +818,9 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, SQLSERVER}) // FIXME
+    @ExcludeIn({FIREBIRD}) // FIXME
     public void Math() {
-        Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
+        Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.50");
 
         assertEquals(Math.acos(0.5), singleResult(MathExpressions.acos(expr)), 0.001);
         assertEquals(Math.asin(0.5), singleResult(MathExpressions.asin(expr)), 0.001);
