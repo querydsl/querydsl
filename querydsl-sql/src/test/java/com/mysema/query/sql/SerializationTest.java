@@ -13,12 +13,7 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.Connection;
-
-import org.easymock.EasyMock;
-import org.junit.Test;
 
 import com.mysema.query.Survey;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -29,6 +24,9 @@ import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.path.PathBuilder;
+import org.easymock.EasyMock;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class SerializationTest {
 
@@ -208,6 +206,18 @@ public class SerializationTest {
         assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
             "from SURVEY survey2)\n\n" +
             "from dual", q.toString());
+    }
+
+    @Test
+    public void With_Tuple2() {
+        QSurvey survey2 = new QSurvey("survey2");
+        SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
+        q.with(survey, survey.id, survey.name).as(
+                new SQLSubQuery().from(survey2).list(survey2.id, survey2.name));
+
+        assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
+                "from SURVEY survey2)\n\n" +
+                "from dual", q.toString());
     }
 
     @Test
