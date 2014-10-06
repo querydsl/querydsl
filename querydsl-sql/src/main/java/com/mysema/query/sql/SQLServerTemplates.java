@@ -77,6 +77,9 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.MOD, "{0} % {1}", 10);
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.LN, "LOG({0})");
+        add(Ops.MathOps.LOG, "LOG({0}, {1})");
+        add(Ops.MathOps.POWER, "POWER({0}, {1})");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 
