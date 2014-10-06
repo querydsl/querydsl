@@ -121,7 +121,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     @Override
     public boolean exists() {
-        boolean rv = limit(1).uniqueResult(getSource()) != null;
+        boolean rv = singleResult(getSource()) != null;
         close();
         return rv;
     }
