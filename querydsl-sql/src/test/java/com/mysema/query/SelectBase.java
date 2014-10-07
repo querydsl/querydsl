@@ -818,7 +818,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD}) // FIXME
     public void Math() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.50");
 

@@ -58,7 +58,7 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
         add(Ops.MathOps.DEG, "({0} / pi() * 180.0)");
-        add(Ops.MathOps.RAD, "({0} / 180.0 * pi())");
+        add(Ops.MathOps.RAD, "(({0} / 180.0) * pi())");
 
         //
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
