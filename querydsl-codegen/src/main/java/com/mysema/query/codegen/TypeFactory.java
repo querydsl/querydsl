@@ -17,7 +17,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +34,7 @@ import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 import com.mysema.util.ReflectionUtils;
+import java.lang.reflect.AnnotatedElement;
 
 /**
  * TypeFactory is a factory class for {@link Type} instances
@@ -46,9 +46,11 @@ public final class TypeFactory {
 
     private static final Type ANY = new TypeExtends(Types.OBJECT);
 
-    private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
+    private final Map<TypeKey, Type> cache = new HashMap<TypeKey, Type>();
 
     private final List<Class<? extends Annotation>> entityAnnotations;
+    
+    private final List<AnnotationHelper> annotationHelpers = Lists.<AnnotationHelper> newArrayList();
 
     private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
 
@@ -67,19 +69,42 @@ public final class TypeFactory {
         if (cl.getTypeParameters().length > 0) {
             generic = new ParameterizedTypeImpl(cl, cl.getTypeParameters());
         }
-        return (EntityType) get(true, cl, generic);
+        return (EntityType) get(true, cl, null, generic);
     }
 
     public Type get(Class<?> cl) {
-        return get(isEntityClass(cl), cl, cl);
+        return get(cl, cl);
     }
-
+    
     public Type get(Class<?> cl, java.lang.reflect.Type genericType) {
-        return get(isEntityClass(cl), cl, genericType);
+        return get(isEntityClass(cl), cl, null, genericType);
     }
 
+    public Type get(Class<?> cl, AnnotatedElement annotated, java.lang.reflect.Type genericType) {
+        return get(isEntityClass(cl), cl, annotated, genericType);
+    }
+    
     public Type get(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {
-        List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
+        return get(entity, cl, null, genericType);
+    }
+
+    public Type get(boolean entity, Class<?> cl, AnnotatedElement annotated, java.lang.reflect.Type genericType) {
+        TypeKey key = new TypeKey(cl, genericType);
+        AnnotationHelper annotationHelper = null;
+        Annotation selectedAnnotation = null;
+        if (annotated != null){
+            for (Annotation annotation : annotated.getDeclaredAnnotations()){
+                for (AnnotationHelper helper : annotationHelpers) {
+                    if (helper.isSupported(annotation.annotationType())){
+                        key.annotationClass = annotation.annotationType();
+                        selectedAnnotation = annotated.getAnnotation(key.annotationClass);
+                        annotationHelper = helper;
+                        key.custom = helper.getCustomKey(selectedAnnotation);
+                        break;
+                    }
+                }
+            }
+        }
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
             if (entity && !(value instanceof EntityType)) {
@@ -89,14 +114,14 @@ public final class TypeFactory {
             return value;
 
         } else {
-            Type value = create(entity, cl, genericType, key);
+            Type value = create(entity, cl, annotationHelper, selectedAnnotation, genericType, key);
             cache.put(key, value);
             return value;
         }
     }
 
-    private Type create(boolean entity, Class<?> cl, java.lang.reflect.Type genericType,
-            List<java.lang.reflect.Type> key) {
+    private Type create(boolean entity, Class<?> cl, AnnotationHelper annotationHelper, Annotation annotation, java.lang.reflect.Type genericType,
+            TypeKey key) {
         if (cl.isPrimitive()) {
             cl = Primitives.wrap(cl);
         }
@@ -117,7 +142,7 @@ public final class TypeFactory {
         } else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)) {
             value = new ClassType(TypeCategory.NUMERIC, cl, parameters);
         } else if (entity) {
-            value = createOther(cl, entity, parameters);
+            value = createOther(cl, entity, annotationHelper, annotation, parameters);
         } else if (Map.class.isAssignableFrom(cl)) {
             value = new SimpleType(Types.MAP, parameters[0], asGeneric(parameters[1]));
         } else if (List.class.isAssignableFrom(cl)) {
@@ -127,7 +152,7 @@ public final class TypeFactory {
         } else if (Collection.class.isAssignableFrom(cl)) {
             value = new SimpleType(Types.COLLECTION, asGeneric(parameters[0]));
         } else {
-            value = createOther(cl, entity, parameters);
+            value = createOther(cl, entity, annotationHelper, annotation, parameters);
         }
 
         if (genericType instanceof TypeVariable) {
@@ -155,9 +180,11 @@ public final class TypeFactory {
         return type;
     }
 
-    private Type createOther(Class<?> cl, boolean entity, Type[] parameters) {
+    private Type createOther(Class<?> cl, boolean entity, AnnotationHelper annotationHelper, Annotation annotation, Type[] parameters) {
         TypeCategory typeCategory = TypeCategory.get(cl.getName());
-        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
+        if (annotationHelper != null){
+            typeCategory = annotationHelper.getTypeByAnnotation(cl, annotation);
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
             && !cl.equals(Comparable.class)) {
             typeCategory = TypeCategory.COMPARABLE;
         } else if (embeddableTypes.contains(cl)) {
@@ -167,6 +194,7 @@ public final class TypeFactory {
         } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
             typeCategory = TypeCategory.CUSTOM;
         }
+        
         return new ClassType(typeCategory, cl, parameters);
     }
 
@@ -197,14 +225,14 @@ public final class TypeFactory {
         java.lang.reflect.Type parameter = ReflectionUtils.getTypeParameter(genericType, i);
         if (parameter instanceof TypeVariable) {
             TypeVariable variable = (TypeVariable)parameter;
-            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), parameter);
+            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), null, parameter);
             return new TypeExtends(variable.getName(), rv);
         } else if (parameter instanceof WildcardType
             && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
             && ((WildcardType)parameter).getLowerBounds().length == 0) {
             return ANY;
         } else {
-            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), parameter);
+            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), null, parameter);
             if (parameter instanceof WildcardType) {
                 rv = new TypeExtends(rv);
             }
@@ -222,7 +250,7 @@ public final class TypeFactory {
     }
 
     public void extendTypes() {
-        for (Map.Entry<List<java.lang.reflect.Type>, Type> entry : cache.entrySet()) {
+        for (Map.Entry<TypeKey, Type> entry : cache.entrySet()) {
             if (entry.getValue() instanceof EntityType) {
                 EntityType entityType = (EntityType)entry.getValue();
                 if (entityType.getProperties().isEmpty()) {
@@ -246,5 +274,64 @@ public final class TypeFactory {
     public void addEmbeddableType(Class<?> cl) {
         embeddableTypes.add(cl);
     }
+    
+    public void addAnnotationHelper(AnnotationHelper annotationHelper){
+        annotationHelpers.add(annotationHelper);
+    }
+    
+    private static final class TypeKey {
+        
+        private Class<?> typeClass;
+        private java.lang.reflect.Type genericType;
+        private Class<? extends Annotation> annotationClass;
+        private Object custom;
 
+        private TypeKey(Class<?> cl, java.lang.reflect.Type genericType) {
+            this.typeClass = cl;
+            this.genericType = genericType;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 5;
+            hash = 17 * hash + (this.typeClass != null ? this.typeClass.hashCode() : 0);
+            hash = 17 * hash + (this.genericType != null ? this.genericType.hashCode() : 0);
+            hash = 17 * hash + (this.annotationClass != null ? this.annotationClass.hashCode() : 0);
+            hash = 17 * hash + (this.custom != null ? this.custom.hashCode() : 0);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final TypeKey other = (TypeKey) obj;
+            if (this.typeClass != other.typeClass && (this.typeClass == null || !this.typeClass.equals(other.typeClass))) {
+                return false;
+            }
+            if (this.genericType != other.genericType && (this.genericType == null || !this.genericType.equals(other.genericType))) {
+                return false;
+            }
+            if (this.annotationClass != other.annotationClass && (this.annotationClass == null || !this.annotationClass.equals(other.annotationClass))) {
+                return false;
+            }
+            if ((this.custom == null) ? (other.custom != null) : !this.custom.equals(other.custom)) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    public static interface AnnotationHelper {
+        
+        boolean isSupported(Class<? extends Annotation> annotationClass);
+        
+        Object getCustomKey(Annotation annotation);
+
+        public TypeCategory getTypeByAnnotation(Class<?> cl, Annotation annotation);
+    }
 }

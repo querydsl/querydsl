@@ -101,9 +101,11 @@ public class GenericExporter {
 
     @Nullable
     private File targetFolder;
-
+    
     @Nullable
     private TypeFactory typeFactory;
+    
+    private final List<TypeFactory.AnnotationHelper> annotationHelpers = Lists.<TypeFactory.AnnotationHelper> newArrayList();
 
     @Nullable
     private TypeMappings typeMappings;
@@ -202,6 +204,10 @@ public class GenericExporter {
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
         typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
+        for (TypeFactory.AnnotationHelper helper : annotationHelpers){
+            typeFactory.addAnnotationHelper(helper);
+        }
+        
         // process supertypes
         for (Class<?> cl : superTypes.keySet()) {
             createEntityType(cl, superTypes);
@@ -448,7 +454,7 @@ public class GenericExporter {
             }
         }
         if (propertyType == null) {
-            propertyType = typeFactory.get(type, genericType);
+            propertyType = typeFactory.get(type, annotated, genericType);
             if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))) {
                 String fullName = ClassUtils.getFullName(type);
                 if (!allTypes.containsKey(fullName)) {
@@ -716,4 +722,12 @@ public class GenericExporter {
         strictMode = s;
     }
 
+    /**
+     * Add a annotation helper object to process custom annotations
+     * 
+     * @param annotationHelper 
+     */
+    public void addAnnotationHelper(TypeFactory.AnnotationHelper annotationHelper){
+        annotationHelpers.add(annotationHelper);
+    }
 }
