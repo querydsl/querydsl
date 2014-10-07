@@ -65,7 +65,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
     @Override
     public boolean exists() {
         if (templates.isSelect1Supported()) {
-            return limit(1).singleResult(NumberTemplate.ONE) != null;
+            return singleResult(NumberTemplate.ONE) != null;
         } else {            
             EntityPath<?> entityPath = (EntityPath<?>) queryMixin.getMetadata().getJoins().get(0).getTarget();
             return !limit(1).list(entityPath).isEmpty();

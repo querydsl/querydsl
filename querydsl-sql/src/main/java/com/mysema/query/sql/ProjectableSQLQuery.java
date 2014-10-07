@@ -147,7 +147,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
 
     @Override
     public boolean exists() {
-        return limit(1).singleResult(NumberTemplate.ONE) != null;
+        return singleResult(NumberTemplate.ONE) != null;
     }
 
     @WithBridgeMethods(value=AbstractSQLQuery.class, castRequired=true)
