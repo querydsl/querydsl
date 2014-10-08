@@ -14,6 +14,7 @@
 package com.mysema.util;
 
 import java.beans.Introspector;
+import java.lang.reflect.Method;
 
 /**
  * BeanUtils provides JavaBean compliant property de/capitalization functionality
@@ -45,5 +46,14 @@ public final class BeanUtils {
             return false;
         }
     }
+
+    public static Method getAccessor(String prefix, String property, Class<?> bean) {
+        try {
+            return bean.getMethod(prefix + capitalize(property));
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
     private BeanUtils() {}
 }

@@ -34,11 +34,11 @@ public class JPAPathBuilderValidator implements PathBuilderValidator {
     }
 
     @Override
-    public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
+    public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
         try {
-            return metamodel.managedType(parent).getAttribute(property) != null;
+            return (Class)metamodel.managedType(parent).getAttribute(property).getJavaType();
         } catch (IllegalArgumentException e) {
-            return false;
+            return null;
         }
     }
 }

@@ -13,6 +13,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.Method;
+
 import com.google.common.primitives.Primitives;
 import com.mysema.util.BeanUtils;
 
@@ -28,36 +30,37 @@ public interface PathBuilderValidator {
      * @param property
      * @param propertyType
      */
-    boolean validate(Class<?> parent, String property, Class<?> propertyType);
+    <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType);
 
     public final PathBuilderValidator DEFAULT = new PathBuilderValidator() {
         @Override
-        public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
-            return true;
+        public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
+            return propertyType;
         }
     };
 
     public final PathBuilderValidator FIELDS = new PathBuilderValidator() {
         @Override
-        public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
+        public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
             while (!parent.equals(Object.class)) {
                 try {
-                    parent.getDeclaredField(property);
-                    return true;
+                    return (Class<? extends T>) parent.getDeclaredField(property).getType();
                 } catch (NoSuchFieldException e) {
                     parent = parent.getSuperclass();
                 }
             }
-            return false;
+            return null;
         }
     };
 
     public final PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
         @Override
-        public boolean validate(Class<?> parent, String property, Class<?> propertyType) {
-            return BeanUtils.isAccessorPresent("get", property, parent)
-                    || (Primitives.wrap(propertyType).equals(Boolean.class)
-                    && BeanUtils.isAccessorPresent("is", property, parent));
+        public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
+            Method getter = BeanUtils.getAccessor("get", property, parent);
+            if (getter == null && Primitives.wrap(propertyType).equals(Boolean.class)) {
+                getter = BeanUtils.getAccessor("is", property, parent);
+            }
+            return getter != null ? (Class<? extends T>) getter.getReturnType() : null;
         }
     };
 

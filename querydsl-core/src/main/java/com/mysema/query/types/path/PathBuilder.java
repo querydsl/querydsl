@@ -107,8 +107,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
         return newPath;
     }
 
-    protected void validate(String property, Class<?> propertyType) {
-        if (!validator.validate(getType(), property, propertyType)) {
+    protected <T> Class<? extends T> validate(String property, Class<T> propertyType) {
+        Class<?  extends T> validatedType = validator.validate(getType(), property, propertyType);
+        if (validatedType != null) {
+            return validatedType;
+        } else {
             throw new IllegalArgumentException("Illegal property " + property);
         }
     }
@@ -128,8 +131,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     public PathBuilder<Object> get(String property) {
         PathBuilder<Object> path = (PathBuilder) properties.get(property);
         if (path == null) {
-            validate(property, Object.class);
-            path = new PathBuilder<Object>(Object.class, forProperty(property), validator);
+            Class<?> vtype = validate(property, Object.class);
+            path = new PathBuilder<Object>(vtype, forProperty(property), validator);
             properties.put(property, path);
         }
         return path;
@@ -147,8 +150,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     public <A> PathBuilder<A> get(String property, Class<A> type) {
         PathBuilder<A> path = (PathBuilder<A>) properties.get(property);
         if (path == null || !type.isAssignableFrom(path.getType())) {
-            validate(property, type);
-            path = new PathBuilder<A>(type, forProperty(property), validator);
+            Class<? extends A> vtype = validate(property, type);
+            path = new PathBuilder<A>(vtype, forProperty(property), validator);
             properties.put(property, path);
         }
         return path;
@@ -236,8 +239,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> ComparablePath<A> getComparable(String property, Class<A> type) {
-        validate(property, type);
-        return super.createComparable(property, type);
+        Class<? extends A> vtype = validate(property, type);
+        return super.createComparable(property, (Class)vtype);
     }
 
     /**
@@ -260,8 +263,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> DatePath<A> getDate(String property, Class<A> type) {
-        validate(property, type);
-        return super.createDate(property, type);
+        Class<? extends A> vtype = validate(property, type);
+        return super.createDate(property, (Class)vtype);
     }
 
     /**
@@ -284,8 +287,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> DateTimePath<A> getDateTime(String property, Class<A> type) {
-        validate(property, type);
-        return super.createDateTime(property, type);
+        Class<? extends A> vtype = validate(property, type);
+        return super.createDateTime(property, (Class)vtype);
     }
 
     /**
@@ -392,8 +395,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Number & Comparable<?>> NumberPath<A> getNumber(String property, Class<A> type) {
-        validate(property, type);
-        return super.createNumber(property, type);
+        Class<? extends A> vtype = validate(property, type);
+        return super.createNumber(property, (Class)vtype);
     }
 
     /**
@@ -405,7 +408,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
-        validate(property, type);
+        validate(property, Set.class);
         return super.<A, PathBuilder<A>>createSet(property, type, PathBuilder.class, PathInits.DIRECT);
     }
 
@@ -444,8 +447,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> SimplePath<A> getSimple(String property, Class<A> type) {
-        validate(property, type);
-        return super.createSimple(property, type);
+        Class<? extends A> vtype = validate(property, type);
+        return super.createSimple(property, (Class)vtype);
     }
 
     /**
@@ -487,8 +490,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A extends Comparable<?>> TimePath<A> getTime(String property, Class<A> type) {
-        validate(property, type);
-        return super.createTime(property, type);
+        Class<? extends A> vtype = validate(property, type);
+        return super.createTime(property, (Class)vtype);
     }
 
     /**
