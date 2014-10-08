@@ -127,7 +127,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
         e = (Predicate)ExpressionUtils.extract(e);
         if (e != null) {
-            validate(e);
+            // having elements can't be validated, since they can refer to projection elements
+            // that are declared later
             having = and(having, e);
         }
     }
