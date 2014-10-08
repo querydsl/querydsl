@@ -728,6 +728,27 @@ query.from(employee)
 ]]></programlisting>
   
   </sect2>
+
+  <sect2>
+
+    <title>Common table expressions</title>
+
+    <para>Common table expressions are supported in Querydsl SQL via two syntax variants</para>
+
+    <programlisting language="java"><![CDATA[
+query.with(employee, sq().from(employee).where(employee.name.startsWith("A")).list(employee.all()))
+     .from(...)
+]]></programlisting>
+
+    <para>And using a column listing</para>
+
+    <programlisting language="java"><![CDATA[
+query.with(employee, employee.id, employee.name)
+     .as(sq().from(employee).where(employee.name.startsWith("A")).list(employee.id, employee.name))
+     .from(...)
+]]></programlisting>
+
+  </sect2>
   
   <sect2>
   
