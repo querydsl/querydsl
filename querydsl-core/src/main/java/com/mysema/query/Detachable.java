@@ -77,7 +77,7 @@ public interface Detachable {
      * @param <RT>
      *            generic type of the List
      * @param projection
-     * @return a List over the projection
+     * @return
      */
     <RT> ListSubQuery<RT> list(Expression<RT> projection);
     
@@ -112,7 +112,7 @@ public interface Detachable {
      * @param <RT>
      *            return type
      * @param projection
-     * @return the result or null for an empty result
+     * @return 
      */
     <RT> SimpleSubQuery<RT> unique(Expression<RT> projection);
 
