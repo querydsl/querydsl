@@ -13,18 +13,19 @@
  */
 package com.mysema.query.codegen;
 
+import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Primitives;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
@@ -35,7 +36,6 @@ import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 import com.mysema.util.ReflectionUtils;
 import java.lang.reflect.AnnotatedElement;
-import java.util.Objects;
 
 /**
  * TypeFactory is a factory class for {@link Type} instances
@@ -47,13 +47,13 @@ public final class TypeFactory {
 
     private static final Type ANY = new TypeExtends(Types.OBJECT);
 
-    private final Map<TypeKey, Type> cache = new HashMap<TypeKey, Type>();
+    private final Map<List<?>, Type> cache = Maps.newHashMap();
 
     private final List<Class<? extends Annotation>> entityAnnotations;
 
-    private final List<AnnotationHelper> annotationHelpers = Lists.<AnnotationHelper>newArrayList();
+    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
 
-    private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
+    private final Set<Class<?>> embeddableTypes = Sets.newHashSet();
 
     private boolean unknownAsEntity = false;
 
@@ -90,22 +90,23 @@ public final class TypeFactory {
     }
 
     public Type get(boolean entity, Class<?> cl, AnnotatedElement annotated, java.lang.reflect.Type genericType) {
-        TypeKey key = new TypeKey(cl, genericType);
+        ImmutableList.Builder<Object> keyBuilder = ImmutableList.builder().add(cl).add(genericType);
         AnnotationHelper annotationHelper = null;
         Annotation selectedAnnotation = null;
         if (annotated != null) {
             for (Annotation annotation : annotated.getDeclaredAnnotations()) {
                 for (AnnotationHelper helper : annotationHelpers) {
                     if (helper.isSupported(annotation.annotationType())) {
-                        key.annotationClass = annotation.annotationType();
-                        selectedAnnotation = annotated.getAnnotation(key.annotationClass);
+                        keyBuilder.add(annotation.annotationType());
+                        selectedAnnotation = annotated.getAnnotation(annotation.annotationType());
                         annotationHelper = helper;
-                        key.custom = helper.getCustomKey(selectedAnnotation);
+                        keyBuilder.add(helper.getCustomKey(selectedAnnotation));
                         break;
                     }
                 }
             }
         }
+        List<?> key = keyBuilder.build();
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
             if (entity && !(value instanceof EntityType)) {
@@ -122,7 +123,7 @@ public final class TypeFactory {
     }
 
     private Type create(boolean entity, Class<?> cl, AnnotationHelper annotationHelper, Annotation annotation, java.lang.reflect.Type genericType,
-            TypeKey key) {
+            List<?> key) {
         if (cl.isPrimitive()) {
             cl = Primitives.wrap(cl);
         }
@@ -251,7 +252,7 @@ public final class TypeFactory {
     }
 
     public void extendTypes() {
-        for (Map.Entry<TypeKey, Type> entry : cache.entrySet()) {
+        for (Map.Entry<List<?>, Type> entry : cache.entrySet()) {
             if (entry.getValue() instanceof EntityType) {
                 EntityType entityType = (EntityType) entry.getValue();
                 if (entityType.getProperties().isEmpty()) {
@@ -278,38 +279,5 @@ public final class TypeFactory {
 
     public void addAnnotationHelper(AnnotationHelper annotationHelper) {
         annotationHelpers.add(annotationHelper);
-    }
-
-    private static final class TypeKey {
-
-        private Class<?> typeClass;
-        private java.lang.reflect.Type genericType;
-        private Class<? extends Annotation> annotationClass;
-        private Object custom;
-
-        private TypeKey(Class<?> cl, java.lang.reflect.Type genericType) {
-            this.typeClass = cl;
-            this.genericType = genericType;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.typeClass, this.genericType, this.annotationClass, this.custom);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final TypeKey other = (TypeKey) obj;
-            return Objects.equals(this.typeClass, other.typeClass)
-                    && Objects.equals(this.genericType, other.genericType)
-                    && Objects.equals(this.annotationClass, other.annotationClass)
-                    && Objects.equals(this.custom, other.custom);
-        }
     }
 }
