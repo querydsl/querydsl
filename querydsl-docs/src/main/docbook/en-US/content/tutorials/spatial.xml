@@ -56,17 +56,25 @@
     <para>The code generation for Querydsl SQL can be set to detect the usage of spatial types in
     database schemas and use geolatte types in these case via the spatial property:</para>
     
-    <programlisting language="xml"><![CDATA[   
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${querydsl.version}</version>
-  ...
-  <configuration>
-    ...
-    <spatial>true</spatial>
-  </configuration>
-</plugin>  
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        ...
+        <configuration>
+          ...
+          <spatial>true</spatial>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>  
     
   </sect2>  

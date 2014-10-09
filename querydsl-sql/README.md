@@ -21,32 +21,42 @@ The SQL module provides integration with the JDBC API.
 **Code generation via Maven**
 
 This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :
-   
-    <plugin>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-maven-plugin</artifactId>
-      <version>${querydsl.version}</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>export</goal>
-          </goals>
-        </execution>            
-      </executions>
-      <configuration>
-        <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-        <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-        <packageName>com.myproject.domain</packageName>
-        <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> 
-      </configuration>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.derby</groupId>
-          <artifactId>derby</artifactId>
-          <version>${derby.version}</version>
-        </dependency>
-      </dependencies>
-    </plugin>  
+
+```XML
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>export</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+          <packageName>com.myproject.domain</packageName>
+          <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
+```
 
 Use the goal test-export to add the targetFolder as a test compile source root instead of a compile source root.
 

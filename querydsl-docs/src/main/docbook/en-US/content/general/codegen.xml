@@ -521,26 +521,34 @@ exporter.export(DomainClass.class.getPackage());
 
       <para>Here is an example for JPA annotated classes</para>
 
-      <programlisting language="xml"><![CDATA[            
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${querydsl.version}</version>  
-  <executions>
-    <execution>    
-      <phase>process-classes</phase>
-      <goals>
-        <goal>jpa-export</goal>
-      </goals>
-      <configuration>
-        <targetFolder>target/generated-sources/java</targetFolder>
-        <packages>
-          <package>com.example.domain</package>
-        </packages>
-      </configuration>      
-    </execution>
-  </executions>
-</plugin>           
+      <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <executions>
+          <execution>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>jpa-export</goal>
+            </goals>
+            <configuration>
+              <targetFolder>target/generated-sources/java</targetFolder>
+              <packages>
+                <package>com.example.domain</package>
+              </packages>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
       <para>This will export the JPA annotated classes of the <code>com.example.domain</code> package and
@@ -623,38 +631,46 @@ exporter.export(DomainClass.class.getPackage());
       configuration
       </para>
       
-      <programlisting language="xml"><![CDATA[                        
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${querydsl.version}</version>  
-  <dependencies>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-scala</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
-    </dependency>
-  </dependencies>
-  <executions>
-    <execution>
-      <goals>
-        <goal>jpa-export</goal>
-      </goals>
-      <configuration>
-        <targetFolder>target/generated-sources/scala</targetFolder>
-        <scala>true</scala>
-        <packages>
-          <package>com.example.domain</package>
-        </packages>       
-      </configuration>
-    </execution>
-  </executions>
-</plugin>               
+      <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-scala</artifactId>
+            <version>${querydsl.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jpa-export</goal>
+            </goals>
+            <configuration>
+              <targetFolder>target/generated-sources/scala</targetFolder>
+              <scala>true</scala>
+              <packages>
+                <package>com.example.domain</package>
+              </packages>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
     </sect3>
