@@ -27,23 +27,33 @@ The Collections module provides integration with Java Collections and Beans.
 
 If you are not using JPA or JDO you can generate Querydsl query types for your domain types by annotating them with the com.mysema.query.annotations.QueryEntity annotation and adding the following plugin configuration into your Maven configuration (pom.xml) :
 
-    <plugin>
-      <groupId>com.mysema.maven</groupId>
-      <artifactId>apt-maven-plugin</artifactId>
-      <version>1.0.6</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>process</goal>
-          </goals>
-          <configuration>
-            <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
-          </configuration>
-        </execution>
-      </executions>
-    </plugin>
-    
+```XML
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>apt-maven-plugin</artifactId>
+        <version>1.0.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
+              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
+```
+
 **Querying**
 
 Querying with Querydsl Collections is as simple as this :
