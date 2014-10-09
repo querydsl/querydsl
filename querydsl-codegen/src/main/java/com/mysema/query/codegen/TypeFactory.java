@@ -306,13 +306,10 @@ public final class TypeFactory {
                 return false;
             }
             final TypeKey other = (TypeKey) obj;
-            if (Objects.equals(this.typeClass, other.typeClass)
+            return Objects.equals(this.typeClass, other.typeClass)
                     && Objects.equals(this.genericType, other.genericType)
                     && Objects.equals(this.annotationClass, other.annotationClass)
-                    && Objects.equals(this.custom, other.custom)) {
-                return true;
-            }
-            return false;
+                    && Objects.equals(this.custom, other.custom);
         }
     }
 }

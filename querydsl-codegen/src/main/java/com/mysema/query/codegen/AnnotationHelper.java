@@ -39,10 +39,10 @@ public interface AnnotationHelper {
     Object getCustomKey(Annotation annotation);
 
     /**
-     * Get the {@link TypeCategory) according with object Class and Annotation.
+     * Get the {@link TypeCategory} according with object Class and Annotation.
      * @param cl Class of type.
      * @param annotation Annotation found on element.
      * @return Custom {@link TypeCategory}.
      */
-    public TypeCategory getTypeByAnnotation(Class<?> cl, Annotation annotation);
+    TypeCategory getTypeByAnnotation(Class<?> cl, Annotation annotation);
 }
