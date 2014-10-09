@@ -13,8 +13,6 @@
  */
 package com.mysema.query.maven;
 
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.query.codegen.AnnotationHelper;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -22,9 +20,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import com.mysema.query.codegen.GenericExporter;
-import com.mysema.query.codegen.TypeFactory;
-import java.lang.annotation.Annotation;
-import javax.persistence.Temporal;
 
 /**
  * JPAExporterMojo calls the GenericExporter tool using the classpath of the
@@ -46,37 +41,6 @@ public class JPAExporterMojo extends AbstractExporterMojo {
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
 
         // AnnotationHelpers to process specific JPA annotations
-        exporter.addAnnotationHelper(TemporalAnnotationHelper.INSTANCE);
-    }
-
-    private static class TemporalAnnotationHelper implements AnnotationHelper {
-        
-        static final TemporalAnnotationHelper INSTANCE = new TemporalAnnotationHelper();
-
-        private TemporalAnnotationHelper() {
-        }
-
-        @Override
-        public boolean isSupported(Class<? extends Annotation> annotationClass) {
-            return Temporal.class.isAssignableFrom(annotationClass);
-        }
-
-        @Override
-        public Object getCustomKey(Annotation annotation) {
-            return ((Temporal) annotation).value();
-        }
-
-        @Override
-        public TypeCategory getTypeByAnnotation(Class<?> cl, Annotation annotation) {
-            switch (((Temporal) annotation).value()) {
-                case DATE:
-                    return TypeCategory.DATE;
-                case TIME:
-                    return TypeCategory.TIME;
-                case TIMESTAMP:
-                    return TypeCategory.DATETIME;
-            }
-            return null;
-        }
+        exporter.addAnnotationHelper(JPATemporalAnnotationHelper.INSTANCE);
     }
 }
