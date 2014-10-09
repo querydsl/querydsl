@@ -105,7 +105,7 @@ public class GenericExporter {
     @Nullable
     private TypeFactory typeFactory;
     
-    private final List<TypeFactory.AnnotationHelper> annotationHelpers = Lists.<TypeFactory.AnnotationHelper> newArrayList();
+    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
 
     @Nullable
     private TypeMappings typeMappings;
@@ -204,7 +204,8 @@ public class GenericExporter {
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
         typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
-        for (TypeFactory.AnnotationHelper helper : annotationHelpers){
+        // copy annotations helpers to typeFactory
+        for (AnnotationHelper helper : annotationHelpers){
             typeFactory.addAnnotationHelper(helper);
         }
         
@@ -727,7 +728,7 @@ public class GenericExporter {
      * 
      * @param annotationHelper 
      */
-    public void addAnnotationHelper(TypeFactory.AnnotationHelper annotationHelper){
+    public void addAnnotationHelper(AnnotationHelper annotationHelper){
         annotationHelpers.add(annotationHelper);
     }
 }
