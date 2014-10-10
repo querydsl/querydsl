@@ -74,4 +74,4 @@ Querying with Querydsl JPA is as simple as this :
       .where(customer.firstName.eq("Bob"))
       .uniqueResult(customer);
       
-For more information on the Querydsl JPA module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration      
+For more information on the Querydsl JPA module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration

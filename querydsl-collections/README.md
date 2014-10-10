@@ -67,4 +67,4 @@ Querying with Querydsl Collections is as simple as this :
         System.out.println(name);
     }
 
-For more information on the Querydsl Collections module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html    
+For more information on the Querydsl Collections module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s08.html
