@@ -69,4 +69,4 @@ Querying with Querydsl Mongodb with Morphia is as simple as this :
         .list();
 
 
-For more information on the Querydsl Mongodb module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s06.html
+For more information on the Querydsl Mongodb module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html
