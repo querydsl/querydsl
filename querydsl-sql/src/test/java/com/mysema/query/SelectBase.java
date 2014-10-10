@@ -595,6 +595,12 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn(H2)
+    public void In_Empty() {
+        query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).list(employee);
+    }
+
+    @Test
     public void Inner_Join() throws SQLException {
         query().from(employee).innerJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
