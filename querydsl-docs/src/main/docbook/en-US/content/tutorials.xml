@@ -2,13 +2,13 @@
 
 <chapter id="tutorials" xmlns:xi="http://www.w3.org/2001/XInclude">
     <title>Tutorials</title>
-    
+
     <para>
     Instead of a general Getting started guide we provide integration
     guides for the main backends of Querydsl.
     </para>
-    
-    
+
+
     <xi:include href="tutorials/jpa.xml" />
     <xi:include href="tutorials/jdo.xml" />
     <xi:include href="tutorials/sql.xml" />
@@ -18,5 +18,5 @@
     <xi:include href="tutorials/mongodb.xml" />
     <xi:include href="tutorials/collections.xml" />
     <xi:include href="tutorials/scala.xml" />
-	
-</chapter>    
+
+</chapter>

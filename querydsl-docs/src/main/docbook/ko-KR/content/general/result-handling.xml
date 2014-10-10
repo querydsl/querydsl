@@ -1,41 +1,41 @@
 <sect1 id="result_handling">
 
   <title>결과 처리</title>
-  
+
   <para>Querydsl은 결과 처리를 커스터마이징 하기 위해 행 기반 변환을 위한 FactoryExpressions과
    집합을 위한 ResultTransformer를 제공하고 있다.</para>
 
-  <para><code>com.mysema.query.types.FactoryExpression</code> 인터페이스는 빈 생성, 생성자 호출 
+  <para><code>com.mysema.query.types.FactoryExpression</code> 인터페이스는 빈 생성, 생성자 호출
   그리고 더 복잡한 객체를 생성하기 위해 사용된다. <code>com.mysema.query.types.Projections</code> 클래스를
   이용해서 FactoryExpression 구현체 기능에 접근할 수 있다.</para>
-  
+
   <para><code>com.mysema.query.ResultTransformer</code> 인터페이스의 주요 구현체는 <code>GroupBy</code> 클래스이다.</para>
 
   <sect2>
-  
+
     <title>다중 컬럼 리턴</title>
-    
+
     <para>Querydsl 3.0 부터 다중 컬럼 결과를 위한 기본 타입은 <code>com.mysema.query.Tuple</code> 이다.
-    Tuple은 타입에 안전한 Map을 제공하고, 이를 통해 Tuple 행 객체로부터 컬럼 데이터에 접근할 수 있다.</para> 
-    
+    Tuple은 타입에 안전한 Map을 제공하고, 이를 통해 Tuple 행 객체로부터 컬럼 데이터에 접근할 수 있다.</para>
+
     <programlisting language="java"><![CDATA[
 List<Tuple> result = query.from(employee).list(employee.firstName, employee.lastName);
 for (Tuple row : result) {
      System.out.println("firstName " + row.get(employee.firstName));
-     System.out.println("lastName " + row.get(employee.lastName)); 
-}}     
-]]></programlisting>    
+     System.out.println("lastName " + row.get(employee.lastName));
+}}
+]]></programlisting>
 
     <para>위 예제를 QTuple 클래스를 이용하면 다음과 같이 작성할 수 있다.</para>
-    
+
     <programlisting language="java"><![CDATA[
 List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
 for (Tuple row : result) {
      System.out.println("firstName " + row.get(employee.firstName));
-     System.out.println("lastName " + row.get(employee.lastName)); 
-}}     
-]]></programlisting>        
-  
+     System.out.println("lastName " + row.get(employee.lastName));
+}}
+]]></programlisting>
+
   </sect2>
 
   <sect2>
@@ -43,26 +43,26 @@ for (Tuple row : result) {
     <title>빈 생성(population)</title>
 
     <para>쿼리 결과로부터 빈을 생성하고 싶다면, Bean 프로젝션을 사용하면 된다.</para>
-    
+
     <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.list(
     Projections.bean(UserDTO.class, user.firstName, user.lastName));
 ]]></programlisting>
 
    <para>setter 메서드 대신 필드에 직접 접근해야 한다면 다음 코드를 사용하면 된다.</para>
-   
+
 <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.list(
     Projections.fields(UserDTO.class, user.firstName, user.lastName));
-]]></programlisting>   
+]]></programlisting>
 
   </sect2>
 
   <sect2>
     <title>생성자 사용</title>
-    
+
     <para>생성자 기반의 행 변환을 하는 방법은 다음과 같다.</para>
-    
+
     <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.list(
     Projections.bean(UserDTO.class, user.firstName, user.lastName));
@@ -87,7 +87,7 @@ class CustomerDTO {
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id, customer.name));     
+List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id, customer.name));
 ]]></programlisting>
 
     <para>이 예제가 Hibernate용 코드이긴 하지만, 다른 모든 모듈에서도 이 기능을 사용할 수 있다.
@@ -114,7 +114,7 @@ class Customer {
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, customer.name));   
+List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, customer.name));
 ]]></programlisting>
 
     <para>코드 생성을 할 수 없다면, 다음과 같이 생성자 프로젝션을 생성할 수 있다.
@@ -122,7 +122,7 @@ List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, cu
 
     <programlisting language="java"><![CDATA[
 List<Customer> dtos = query.from(customer)
-    .list(ConstructorExpression.create(Customer.class, customer.id, customer.name));   
+    .list(ConstructorExpression.create(Customer.class, customer.id, customer.name));
 ]]></programlisting>
 
   </sect2>
@@ -142,7 +142,7 @@ List<Customer> dtos = query.from(customer)
 
     <programlisting language="java"><![CDATA[
 import static com.mysema.query.group.GroupBy.*;
-   
+
 Map<Integer, List<Comment>> results = query.from(post, comment)
     .where(comment.post.id.eq(post.id))
     .transform(groupBy(post.id).as(list(comment)));
@@ -152,7 +152,7 @@ Map<Integer, List<Comment>> results = query.from(post, comment)
 
     <para>다중 결과 컬럼</para>
 
-    <programlisting language="java"><![CDATA[    
+    <programlisting language="java"><![CDATA[
 Map<Integer, Group> results = query.from(post, comment)
     .where(comment.post.id.eq(post.id))
     .transform(groupBy(post.id).as(post.name, set(comment.id)));
@@ -164,7 +164,7 @@ Map<Integer, Group> results = query.from(post, comment)
     <para>Group은 GroupBy에 대해 Tuple 인터페이스와 같은 역할을 한다.</para>
 
     <para>
-      더 많은 예제는 
+      더 많은 예제는
       <ulink
         url="https://github.com/mysema/querydsl/blob/master/querydsl-collections/src/test/java/com/mysema/query/collections/GroupByTest.java"
       >여기</ulink>를 참고한다.
@@ -173,4 +173,4 @@ Map<Integer, Group> results = query.from(post, comment)
 
   </sect2>
 
-</sect1>    
+</sect1>

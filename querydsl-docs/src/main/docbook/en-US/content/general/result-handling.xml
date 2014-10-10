@@ -1,43 +1,43 @@
 <sect1 id="result_handling">
 
   <title>Result handling</title>
-  
+
   <para>Querydsl provides two ways to customize results, FactoryExpressions for row based transformation
   and ResultTransformer for aggregation.</para>
 
   <para>The <code>com.mysema.query.types.FactoryExpression</code> interface is used for Bean creation,
-  constructor invocation and for the creation of more complex objects. The functionality of the 
-  FactoryExpression implementations of Querydsl can be accessed via the 
+  constructor invocation and for the creation of more complex objects. The functionality of the
+  FactoryExpression implementations of Querydsl can be accessed via the
   <code>com.mysema.query.types.Projections</code> class.</para>
-  
+
   <para>For the <code>com.mysema.query.ResultTransformer</code> interface <code>GroupBy</code> is the
   main implementation.</para>
 
   <sect2>
-  
+
     <title>Returning multiple columns</title>
-    
+
     <para>Since Querydsl 3.0 the default type for multi-column results is <code>com.mysema.query.Tuple</code>.
-    Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para> 
-    
+    Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para>
+
     <programlisting language="java"><![CDATA[
 List<Tuple> result = query.from(employee).list(employee.firstName, employee.lastName);
 for (Tuple row : result) {
      System.out.println("firstName " + row.get(employee.firstName));
-     System.out.println("lastName " + row.get(employee.lastName)); 
-}}     
-]]></programlisting>    
+     System.out.println("lastName " + row.get(employee.lastName));
+}}
+]]></programlisting>
 
     <para>This example could also have been written via the QTuple expression class like this</para>
-    
+
     <programlisting language="java"><![CDATA[
 List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
 for (Tuple row : result) {
      System.out.println("firstName " + row.get(employee.firstName));
-     System.out.println("lastName " + row.get(employee.lastName)); 
-}}     
-]]></programlisting>        
-  
+     System.out.println("lastName " + row.get(employee.lastName));
+}}
+]]></programlisting>
+
   </sect2>
 
   <sect2>
@@ -46,7 +46,7 @@ for (Tuple row : result) {
 
     <para>In cases where Beans need to be populated based on the results of the query, Bean projections
     can be used like this</para>
-    
+
     <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.list(
     Projections.bean(UserDTO.class, user.firstName, user.lastName));
@@ -54,19 +54,19 @@ List<UserDTO> dtos = query.list(
 
    <para>When fields should be directly used instead of setters the following variant can be
    used instead</para>
-   
+
 <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.list(
     Projections.fields(UserDTO.class, user.firstName, user.lastName));
-]]></programlisting>   
+]]></programlisting>
 
   </sect2>
 
   <sect2>
     <title>Constructor usage</title>
-    
+
     <para>Constructor based row transformation can be used like this</para>
-    
+
     <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.list(
     Projections.bean(UserDTO.class, user.firstName, user.lastName));
@@ -92,7 +92,7 @@ class CustomerDTO {
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id, customer.name));     
+List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id, customer.name));
 ]]></programlisting>
 
     <para>While the example is Hibernate specific, this feature is
@@ -100,8 +100,8 @@ List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id,
     </para>
 
     <para>If the type with the QueryProjection annotation is not an annotated entity
-      type, you can use the constructor projection like in the example, but if the 
-      annotated type would be an entity type, then the constructor projection would need to be 
+      type, you can use the constructor projection like in the example, but if the
+      annotated type would be an entity type, then the constructor projection would need to be
       created via a call to the static create method of the query type:
     </para>
 
@@ -120,7 +120,7 @@ class Customer {
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, customer.name));   
+List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, customer.name));
 ]]></programlisting>
 
     <para>Alternatively, if code generation is not an option, you can
@@ -129,7 +129,7 @@ List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, cu
 
     <programlisting language="java"><![CDATA[
 List<Customer> dtos = query.from(customer)
-    .list(ConstructorExpression.create(Customer.class, customer.id, customer.name));   
+    .list(ConstructorExpression.create(Customer.class, customer.id, customer.name));
 ]]></programlisting>
 
   </sect2>
@@ -151,7 +151,7 @@ List<Customer> dtos = query.from(customer)
 
     <programlisting language="java"><![CDATA[
 import static com.mysema.query.group.GroupBy.*;
-   
+
 Map<Integer, List<Comment>> results = query.from(post, comment)
     .where(comment.post.id.eq(post.id))
     .transform(groupBy(post.id).as(list(comment)));
@@ -161,7 +161,7 @@ Map<Integer, List<Comment>> results = query.from(post, comment)
 
     <para>Multiple result columns</para>
 
-    <programlisting language="java"><![CDATA[    
+    <programlisting language="java"><![CDATA[
 Map<Integer, Group> results = query.from(post, comment)
     .where(comment.post.id.eq(post.id))
     .transform(groupBy(post.id).as(post.name, set(comment.id)));
@@ -184,4 +184,4 @@ Map<Integer, Group> results = query.from(post, comment)
 
   </sect2>
 
-</sect1>    
+</sect1>

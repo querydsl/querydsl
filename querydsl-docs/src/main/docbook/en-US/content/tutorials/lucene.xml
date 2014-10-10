@@ -5,7 +5,7 @@
   <title>Querying Lucene</title>
 
   <para>This chapter describes the querying functionality of the Lucene module.</para>
-  
+
   <sect2>
     <title>Maven integration</title>
 
@@ -13,7 +13,7 @@
       Querydsl Lucene can be used via the querydsl-lucene3 module for Lucene 3 and querydsl-lucene4
       for Lucene 4
     </para>
-    
+
     <para>Lucene 3:</para>
 
     <programlisting language="xml"><![CDATA[
@@ -27,11 +27,11 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>    
+</dependency>
 ]]></programlisting>
 
   <para>Lucene 4:</para>
-  
+
     <programlisting language="xml"><![CDATA[
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
@@ -43,8 +43,8 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>    
-]]></programlisting>  
+</dependency>
+]]></programlisting>
 
   </sect2>
 
@@ -55,16 +55,16 @@
     <para>With fields year and title a manually created query type could look something
       like this:</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 public class QDocument extends EntityPathBase<Document>{
     private static final long serialVersionUID = -4872833626508344081L;
-        
+
     public QDocument(String var) {
         super(Document.class, PathMetadataFactory.forVariable(var));
     }
 
     public final StringPath year = createString("year");
-        
+
     public final StringPath title = createString("title");
 }
 ]]></programlisting>
@@ -81,11 +81,11 @@ public class QDocument extends EntityPathBase<Document>{
 
     <para>Querying with Querydsl Lucene is as simple as this:</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 QDocument doc = new QDocument("doc");
 
 IndexSearcher searcher = new IndexSearcher(index);
-LuceneQuery query = new LuceneQuery(true, searcher); 
+LuceneQuery query = new LuceneQuery(true, searcher);
 List<Document> documents = query
     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
     .list();
@@ -93,7 +93,7 @@ List<Document> documents = query
 
     <para>which is transformed into the following Lucene query:</para>
 
-    <programlisting><![CDATA[     
+    <programlisting><![CDATA[
 +year:[1800 TO 2000] +title:huckle*
 ]]></programlisting>
 
@@ -143,7 +143,7 @@ List<Document> documents = query
 
     <para>The syntax for declaring ordering is </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .orderBy(doc.title.asc(), doc.year.desc())
@@ -152,7 +152,7 @@ query
 
     <para>which is equivalent to the following Lucene query</para>
 
-    <programlisting>  
+    <programlisting>
 title:*
 </programlisting>
 
@@ -163,7 +163,7 @@ title:*
     </para>
 
     <programlisting language="java"><![CDATA[
-Sort sort = ...; 
+Sort sort = ...;
 query
     .where(doc.title.like("*"))
     .sort(sort)
@@ -177,7 +177,7 @@ query
 
     <para>The syntax for declaring a limit is </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .limit(10)
@@ -191,7 +191,7 @@ query
 
     <para>The syntax for declaring an offset is </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .offset(3)
@@ -208,7 +208,7 @@ query
       <code>com.mysema.query.lucene.LuceneExpressions</code> class:
     </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(LuceneExpressions.fuzzyLike(doc.title, "Hello"))
     .list();
@@ -222,7 +222,7 @@ query
 
     <para>It is possible to apply a single Lucene filter to the query like this:</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .filter(filter)
@@ -232,7 +232,7 @@ query
     <para>A shortcut for distinct filtering is provided via the distinct(Path) method:
     </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .distinct(doc.title)

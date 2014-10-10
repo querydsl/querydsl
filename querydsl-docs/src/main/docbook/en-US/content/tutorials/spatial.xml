@@ -3,33 +3,33 @@
 <sect1 id="spatial" revision="1">
 
   <title>Querydsl Spatial</title>
-  
-  <para>Support for Spatial queries is available via the Querydsl Spatial module, which is an extension 
+
+  <para>Support for Spatial queries is available via the Querydsl Spatial module, which is an extension
   module to the SQL module. The Spatial module supports the object model of Simple Feature Access in queries
   and object binding.</para>
-  
+
   <para>The <ulink url="http://www.geolatte.org/">geolatte</ulink> project is used for the object model.</para>
-  
+
   <imagedata fileref="media/spatial.svg" scalefit="1" width="90%"/>
-  
+
   <sect2>
     <title>Maven integration</title>
-    
+
     <para>
       Add the following dependency to your Maven project:
     </para>
-    
+
     <programlisting language="xml"><![CDATA[
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-spatial</artifactId>
   <version>${querydsl.version}</version>
-</dependency>    
+</dependency>
 ]]></programlisting>
 
     <para>Additionally the following database specific extra dependencies:</para>
-    
-<programlisting language="xml"><![CDATA[    
+
+<programlisting language="xml"><![CDATA[
 <!-- for PostgreSQL usage -->
 <dependency>
   <groupId>org.postgis</groupId>
@@ -46,16 +46,16 @@
   <scope>provided</scope>
 </dependency>
 ]]></programlisting>
-    
+
   </sect2>
-  
+
   <sect2>
 
     <title>Code generation via Maven</title>
-    
+
     <para>The code generation for Querydsl SQL can be set to detect the usage of spatial types in
     database schemas and use geolatte types in these case via the spatial property:</para>
-    
+
     <programlisting language="xml"><![CDATA[
 <project>
   <build>
@@ -75,18 +75,18 @@
     </plugins>
   </build>
 </project>
-]]></programlisting>  
-    
-  </sect2>  
-  
+]]></programlisting>
+
+  </sect2>
+
   <sect2>
-  
+
     <title>Runtime configuration</title>
-    
+
     <para>The runtime configuration aspect of the spatial module is that instead of the normal
     SQLTemplates instances, spatial enabled instances are used. Below is a list of spatial enabled
     SQLTemplates classes.</para>
-    
+
     <itemizedlist>
       <listitem>
         <para>GeoDBTemplates (for H2)</para>
@@ -106,81 +106,81 @@
       <listitem>
         <para>TeradataSpatialTemplates</para>
       </listitem>
-    </itemizedlist>    
-  
+    </itemizedlist>
+
   </sect2>
-  
+
   <sect2>
-  
+
     <title>Querying</title>
-    
-    <para>With code generation and runtime configuration set for spatial types we can now try 
+
+    <para>With code generation and runtime configuration set for spatial types we can now try
     queries with it.</para>
-    
+
     <sect3>
-    
+
       <title>Filter by Distance</title>
-      
+
       <programlisting language="java"><![CDATA[
-Geometry point = Wkt.fromWkt("Point(2 2)");  
-query.where(table.geo.distance(point).lt(5.0));      
-]]></programlisting>      
+Geometry point = Wkt.fromWkt("Point(2 2)");
+query.where(table.geo.distance(point).lt(5.0));
+]]></programlisting>
 
       <para>In addition to straight distance between geometries spherical and spherodial distance are provided via
       distanceSphere and distanceSpheroid.</para>
-    
+
     </sect3>
-    
+
     <sect3>
-    
+
       <title>Contains</title>
-      
+
       <programlisting language="java"><![CDATA[
-Geometry point = Wkt.fromWkt("Point(2 2)");  
-query.where(table.geo.contains(point));      
-]]></programlisting>        
-    
-    </sect3>
-    
-    <sect3>
-    
-      <title>Intersection</title>
-      
-      <programlisting language="java"><![CDATA[
-Geometry geo = query.uniqueResult(table.geo1.intersection(table.geo2));      
+Geometry point = Wkt.fromWkt("Point(2 2)");
+query.where(table.geo.contains(point));
 ]]></programlisting>
-    
+
     </sect3>
-    
+
     <sect3>
-     
-      <title>Access to the SPATIAL_REF_SYS table</title>   
-    
-      <para>Unified access to the SPATIAL_REF_SYS standard table is provided via the QSpatialRefSys 
+
+      <title>Intersection</title>
+
+      <programlisting language="java"><![CDATA[
+Geometry geo = query.uniqueResult(table.geo1.intersection(table.geo2));
+]]></programlisting>
+
+    </sect3>
+
+    <sect3>
+
+      <title>Access to the SPATIAL_REF_SYS table</title>
+
+      <para>Unified access to the SPATIAL_REF_SYS standard table is provided via the QSpatialRefSys
       and SpatialRefSys classes. SPATIAL_REF_SYS contains data about the supported spatial reference systems.</para>
-      
+
       <programlisting language="java"><![CDATA[
 QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
 List<SpatialRefSys> referenceSystems = query.from(spatialRefSys).list(spatialRefSys);
-]]></programlisting>      
-    
+]]></programlisting>
+
     </sect3>
-  
+
   </sect2>
-  
+
   <sect2>
-  
+
     <title>Inheritance</title>
-    
+
     <para>In case you use only generic geometry types in your database schema you can use conversion methods
     in the object model to convert to more specific types.</para>
-    
+
     <programlisting language="java"><![CDATA[
 GeometryPath<Geometry> geometry = shapes.geometry;
 PointPath<Point> point = geometry.asPoint();
 NumberExpression<Double> pointX = point.x(); // x() is not available on GeometryExpression/GeometryPath
 ]]></programlisting>
-  
+
   </sect2>
-  
-</sect1>  
+
+</sect1>

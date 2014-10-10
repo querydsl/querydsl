@@ -8,7 +8,7 @@
     <bookinfo>
         <title>Querydsl - Reference Documentation</title>
         <!-- Type-safe queries for Java -->
-        <productname>Querydsl</productname>    
+        <productname>Querydsl</productname>
         <releaseinfo>&versionNumber;</releaseinfo>
         <authorgroup>
           <author>
@@ -32,7 +32,7 @@
             <surname>Dijkstra</surname>
           </author>
         </authorgroup>
-        <mediaobject>        
+        <mediaobject>
             <imageobject role="fo">
                 <imagedata fileref="media/global.logo.png" align="center" />
             </imageobject>
@@ -40,7 +40,7 @@
                 <imagedata fileref="media/global.logo.png" depth="3cm" />
             </imageobject>
         </mediaobject>
-                
+
         <copyright>
             <year>&copyrightYear;</year>
             <holder>&copyrightHolder;</holder>
@@ -51,11 +51,11 @@
 
     <toc/>
 
-    <xi:include href="content/preface.xml"/>       
+    <xi:include href="content/preface.xml"/>
     <xi:include href="content/intro.xml" />
-    <xi:include href="content/tutorials.xml"/>    
-    <xi:include href="content/general.xml"/>                
+    <xi:include href="content/tutorials.xml"/>
+    <xi:include href="content/general.xml"/>
     <xi:include href="content/troubleshooting.xml"/>
-    
+
 </book>
 

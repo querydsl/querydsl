@@ -62,7 +62,7 @@ for (String name : query.from($(c),cats)
 
   <para>
     기본 데이터 타입이 아니고 final이 아닌 모든 별칭 프로퍼티는 별칭 자체이다.
-    따라서, $ 메서드 내에서 기본 데이터 타입이나 final 타입이 나오기 전까지 메서드를 
+    따라서, $ 메서드 내에서 기본 데이터 타입이나 final 타입이 나오기 전까지 메서드를
     이어서 호출할 수 있다. 다음은 예이다.
   </para>
 
@@ -88,4 +88,4 @@ $(c.getMate().getName().toLowerCase())
   </para>
 
 </sect1>
-  
+

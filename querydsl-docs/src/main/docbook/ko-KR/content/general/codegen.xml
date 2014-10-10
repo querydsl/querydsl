@@ -5,7 +5,7 @@
   <para>Querydsl은 JPA, JDO, Mongodb 모듈에서 코드 생성을 위해 자바6의 APT 어노테이션 처리 기능을 사용한다.
 이 절에서는 코드 생성을 위한 다양한 설정 옵션과 APT에 대한 대안을 설명한다.
   </para>
-  
+
   <sect2>
     <title>경로 초기화</title>
 
@@ -16,15 +16,15 @@
     </para>
 
     <programlisting language="java"><![CDATA[
-@Entity      
+@Entity
 class Event {
     @QueryInit("customer.address")
     Account account;
-}      
+}
 
 @Entity
 class Account{
-    Customer customer;    
+    Customer customer;
 }
 
 @Entity
@@ -64,7 +64,7 @@ class Customer{
     <para>
       직렬화 옵션은 다음과 같다.
     </para>
-    
+
     <table>
       <title>Config 옵션</title>
       <tgroup cols='2' align='left' colsep='1' rowsep='1'>
@@ -110,7 +110,7 @@ class Customer{
 @Entity
 public class User {
     //...
-}     
+}
 ]]></programlisting>
 
     <para>엔티티 타입 직렬화 커스터마이징::</para>
@@ -127,7 +127,7 @@ import com.mysema.query.annotations.Config;
     <para>
       만약 직렬화 설정을 글로벌하게 변경하고 싶다면, 다음의 APT 옵셥을 사용하면 된다.
     </para>
-    
+
     <table>
       <title>APT 옵션</title>
       <tgroup cols='2' align='left' colsep='1' rowsep='1'>
@@ -179,7 +179,7 @@ import com.mysema.query.annotations.Config;
           <row>
             <entry>querydsl.includedClasses</entry>
             <entry>코드 생성에 포함될 클래스 이름 목록 (콤마로 구분) (default: all)</entry>
-          </row>          
+          </row>
           <row>
             <entry>querydsl.excludedPackages</entry>
             <entry>코드 생성에서 제외할 패키지 이름 (콤마로 구분) (default: none)</entry>
@@ -188,10 +188,10 @@ import com.mysema.query.annotations.Config;
             <entry>querydsl.excludedClasses</entry>
             <entry>코드 생성에서 제외할 클래스 이름 (콤마로 구분) (default: none)</entry>
           </row>
-          
+
         </tbody>
       </tgroup>
-    </table> 
+    </table>
 
     <para>다음은 메이븐 APT 플러그인 옵션 사용 예다.
     </para>
@@ -215,7 +215,7 @@ import com.mysema.query.annotations.Config;
             <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
             <options>
               <querydsl.entityAccessors>true</querydsl.entityAccessors>
-            </options>          
+            </options>
           </configuration>
         </execution>
       </executions>
@@ -233,8 +233,8 @@ import com.mysema.query.annotations.Config;
     <title>커스텀 타입 매핑</title>
 
     <para>
-      경로 타입을 바꾸고 싶으면 커스텀 타입 매핑을 사용하면 된다. 특정 String 경로에 대해 비교나 
-      String 연산을 막아야 하거나 커스텀 타입을 위해 Date/Time 지원이 추가되어야 하는 경우에 
+      경로 타입을 바꾸고 싶으면 커스텀 타입 매핑을 사용하면 된다. 특정 String 경로에 대해 비교나
+      String 연산을 막아야 하거나 커스텀 타입을 위해 Date/Time 지원이 추가되어야 하는 경우에
       커스텀 타입 매핑을 유용하게 사용할 수 있다. Joda time API와 JDK(java.util.Date, Calendar 그리고 하위 타입)의
       시간 타입은 기본으로 지원하며, 다른 API가 필요할 경우 이 기능을 사용하면 된다.
     </para>
@@ -242,17 +242,17 @@ import com.mysema.query.annotations.Config;
     <para>다음은 예시다.</para>
 
     <programlisting language="java"><![CDATA[
-@Entity      
-public class MyEntity{      
+@Entity
+public class MyEntity{
     @QueryType(PropertyType.SIMPLE)
     public String stringAsSimple;
-        
+
     @QueryType(PropertyType.COMPARABLE)
     public String stringAsComparable;
-        
+
     @QueryType(PropertyType.NONE)
-    public String stringNotInQuerydsl;    
-}        
+    public String stringNotInQuerydsl;
+}
 ]]></programlisting>
 
     <para><code>PropertyType.NONE</code>은 쿼리 타입 생성시 프로퍼티를 생략할 때 사용된다.
@@ -265,44 +265,44 @@ public class MyEntity{
   <sect2>
     <title>위임 메서드(Delegate methods)</title>
 
-    <para>정적 메서드를 위임 메서드로 선언하려면, 해당하는 도메인 타입을 값으로 갖는 
+    <para>정적 메서드를 위임 메서드로 선언하려면, 해당하는 도메인 타입을 값으로 갖는
       QueryDelegate 어노테이션을 정적 메서드에 적용하고, 정적 메서드의 첫 번째 파라미터로
       해당하는 Querydsl 쿼리 타입을 제공한다.
     </para>
 
     <para>다음은 예제다. </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 @QueryEntity
 public static class User{
-       
+
     String name;
-       
+
     User manager;
-       
+
 }
 ]]></programlisting>
 
-<programlisting language="java"><![CDATA[   
+<programlisting language="java"><![CDATA[
 @QueryDelegate(User.class)
 public static BooleanPath isManagedBy(QUser user, User other){
     return user.manager.eq(other);
-}   
+}
 ]]></programlisting>
 
     <para>QUser 쿼리 타입의 생성된 메서드는 다음과 같다.</para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 public BooleanPath isManagedBy(QUser other) {
     return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
 }
-    
+
 ]]></programlisting>
 
     <para>내장 타입을 확장하는데 위임 메서드를 사용할 수도 있다. 다음은 몇 가지 예제다.
     </para>
 
-    <programlisting language="java"><![CDATA[       
+    <programlisting language="java"><![CDATA[
 public class QueryExtensions {
 
     @QueryDelegate(Date.class)
@@ -318,14 +318,14 @@ public class QueryExtensions {
         second.add(1, Calendar.DAY_OF_MONTH);
         return timestamp.goe(first).and(timestamp.lt(new Timestamp(second.getTimeInMillis())));
     }
-    
-}    
+
+}
 ]]></programlisting>
 
     <para>내장 타입을 위한 위임 메서드를 선언하면, 위임 메서드를 알맞게 사용하는 하위 클래스가 만들어진다.
     </para>
 
-    <programlisting language="java"><![CDATA[      
+    <programlisting language="java"><![CDATA[
 public class QDate extends DatePath<java.sql.Date> {
 
     public QDate(BeanPath<? extends java.sql.Date> entity) {
@@ -408,7 +408,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
   <sect2>
 
     <title>클래스패스 기반 코드 생성</title>
-    
+
      <para>어노테이션이 적용된 자바 소스를 사용할 수 없는 경우(예를 들어, Scala나 Groovy와 같은
       다른 JVM 언어를 사용했거나, 바이트코드 조작을 이용해서 어노테이션을 추가한 경우 등),
       <code>GenericExporter</code> 클래스를 사용해서 클래스패스에서 어노테이션이 적용된 클래스를
@@ -422,16 +422,16 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 
     <para>다음은 JPA를 위한 예제다.</para>
 
-    <programlisting language="java"><![CDATA[    		
+    <programlisting language="java"><![CDATA[
 GenericExporter exporter = new GenericExporter();
 exporter.setKeywords(Keywords.JPA);
 exporter.setEntityAnnotation(Entity.class);
 exporter.setEmbeddableAnnotation(Embeddable.class);
-exporter.setEmbeddedAnnotation(Embedded.class);        
+exporter.setEmbeddedAnnotation(Embedded.class);
 exporter.setSupertypeAnnotation(MappedSuperclass.class);
 exporter.setSkipAnnotation(Transient.class);
 exporter.setTargetFolder(new File("target/generated-sources/java"));
-exporter.export(DomainClass.class.getPackage());    	
+exporter.export(DomainClass.class.getPackage());
 ]]></programlisting>
 
     <para>이 코드는 DomainClass의 패키지 및 그 하위패키지에 위치한 모든 JPA 애노테이션 적용 클래스를
@@ -445,13 +445,13 @@ exporter.export(DomainClass.class.getPackage());
       <para>querydsl-maven-plugin의 generic-export, jpa-exportㅡjdo-export 골을 통해
        GenericExporter를 사용할 수 있다.
       </para>
-      
+
       <para>
       각 골은 Querydsl, JPA, JDO 어노테이션에 매핑된다.
       </para>
-      
+
       <para>설정 엘리먼트는 다음과 같다.</para>
-      
+
       <table>
         <title>메이븐 설정</title>
         <tgroup cols='3' align='left' colsep='1' rowsep='1'>
@@ -471,8 +471,8 @@ exporter.export(DomainClass.class.getPackage());
               <entry>targetFolder</entry>
               <entry>생성된 소스가 위치할 대상 폴더</entry>
             </row>
-            <row>    
-              <entry>boolean</entry>       
+            <row>
+              <entry>boolean</entry>
               <entry>scala</entry>
               <entry>Scala 소스를 생성하려면 true (기본값: false)</entry>
             </row>
@@ -481,7 +481,7 @@ exporter.export(DomainClass.class.getPackage());
               <entry>packages</entry>
               <entry>엔티티 클래스를 검색할 패키지</entry>
             </row>
-            <row> 
+            <row>
               <entry>boolean</entry>
               <entry>handleFields</entry>
               <entry>필드를 프로퍼티로 처리할 경우 true (기본값: true)</entry>
@@ -503,7 +503,7 @@ exporter.export(DomainClass.class.getPackage());
             </row>
           </tbody>
         </tgroup>
-      </table>      
+      </table>
 
       <para>다음은 JPA 어노테이션이 적용된 클래스를 위한 예다.</para>
 
@@ -541,10 +541,10 @@ exporter.export(DomainClass.class.getPackage());
         위 메이븐 설정은 <code>com.example.domain</code> 및 그 하위 패키지의
         JPA 애노테이션 적용 클래스를 찾아 target/generated-sources/java 디렉토리에 코드를 생성한다.
       </para>
-      
+
       <para>생성 후에, 직접 생성된 소스를 컴파일하려면 그 소스 폴더를 위한 <code>compile</code> 골을 사용하면 된다.</para>
-    
- <programlisting language="xml"><![CDATA[                        
+
+ <programlisting language="xml"><![CDATA[
 <execution>
   <goals>
     <goal>compile</goal>
@@ -552,11 +552,11 @@ exporter.export(DomainClass.class.getPackage());
   <configuration>
     <sourceFolder>target/generated-sources/scala</targetFolder>
   </configuration>
-</execution>         
-]]></programlisting>    
-    
+</execution>
+]]></programlisting>
+
     <para><code>compile</code> 골은 다음 설정 엘리먼트를 갖는다.</para>
-    
+
     <table>
       <title>메이븐 설정</title>
       <tgroup cols='3' align='left' colsep='1' rowsep='1'>
@@ -600,22 +600,22 @@ exporter.export(DomainClass.class.getPackage());
             <entry>Map</entry>
             <entry>compilerOptions</entry>
             <entry>컴파일러 옵션</entry>
-          </row>            
+          </row>
         </tbody>
       </tgroup>
-    </table>    
-    
+    </table>
+
     <para><code>sourceFolder</code>를 제외한 모든 옵션은 선택사항이다.</para>
-    
+
   </sect3>
-  
+
   <sect3>
-  
-    <title>Scala 지원</title>      
+
+    <title>Scala 지원</title>
 
       <para>Scala 출력을 원하면, 다음 설정을 사용하자.
       </para>
-      
+
       <programlisting language="xml"><![CDATA[
 <project>
   <build>
@@ -662,4 +662,4 @@ exporter.export(DomainClass.class.getPackage());
 
   </sect2>
 
-</sect1>    
+</sect1>

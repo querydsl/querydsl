@@ -28,8 +28,8 @@
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
-</dependency>    
-    
+</dependency>
+
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
@@ -40,7 +40,7 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>   
+</dependency>
 ]]></programlisting>
 
     <para>
@@ -95,7 +95,7 @@
     </para>
 
     <para>
-      생성된 Query 타입을 이용하면 JPA 쿼리 인스턴스와 
+      생성된 Query 타입을 이용하면 JPA 쿼리 인스턴스와
       쿼리 도메인 모델 인스턴스를 생성할 수 있다.
     </para>
 
@@ -113,18 +113,18 @@
     <programlisting language="xml"><![CDATA[
     <!-- APT based code generation -->
     <javac srcdir="${src}" classpathref="cp">
-      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
       <compilerarg value="com.mysema.query.apt.jpa.JPAAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
-    
+
     <!-- compilation -->
-    <javac classpathref="cp" destdir="${build}">      
+    <javac classpathref="cp" destdir="${build}">
       <src path="${src}"/>
       <src path="${generated}"/>
-    </javac>    
+    </javac>
 ]]></programlisting>
 
     <para>
@@ -147,7 +147,7 @@
       <code>@RooJpaEntity</code>와 <code>@RooJpaActiveRecord</code> 애노테이션이 적용된
       클래스를 처리한다.
     </para>
-    
+
     <para>
       APT 기반의 코드 생성 기능은 AspectJ IDT에는 잘 동작하지 않는다.
     </para>
@@ -171,7 +171,7 @@
 HibernateDomainExporter exporter = new HibernateDomainExporter(
   "Q",                     // name prefix
   new File("target/gen3"), // target folder
-  configuration);          // instance of org.hibernate.cfg.Configuration 
+  configuration);          // instance of org.hibernate.cfg.Configuration
 
 exporter.export();
 ]]></programlisting>
@@ -258,17 +258,17 @@ QCustomer customer = new QCustomer("myCustomer");
     </para>
 
 <programlisting language="java"><![CDATA[
-// where entityManager is a JPA EntityManager   
-JPAQuery query = new JPAQuery(entityManager); 
+// where entityManager is a JPA EntityManager
+JPAQuery query = new JPAQuery(entityManager);
 ]]></programlisting>
 
     <para>Hibernate를 사용한다면, <code>HibernateQuery</code>를 사용하면 된다.    </para>
 
     <programlisting language="java"><![CDATA[
 // where session is a Hibernate session
-HibernateQuery query = new HibernateQuery(session); 
+HibernateQuery query = new HibernateQuery(session);
 ]]></programlisting>
-    
+
 
     <para>JPAQuery와 HibernateQuery는 둘 다 JPQLQuery 인터페이스를 구현하고 있다.</para>
 
@@ -296,7 +296,7 @@ Customer bob = query.from(customer)
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 QCompany company = QCompany.company;
-query.from(customer, company);    
+query.from(customer, company);
 ]]></programlisting>
 
     <para>
@@ -305,7 +305,7 @@ query.from(customer, company);
 
     <programlisting language="java"><![CDATA[
 query.from(customer)
-    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));   
+    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));
 ]]></programlisting>
 
     <para>또는, 다음과 같이 해도 된다.</para>
@@ -340,7 +340,7 @@ query.from(customer)
       조인 역시 타입에 안전하며 다음 패턴에 따라 작성한다.
     </para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 QCat cat = QCat.cat;
 QCat mate = new QCat("mate");
 QCate kitten = new QCat("kitten");
@@ -360,7 +360,7 @@ from Cat as cat
 
     <para>다음은 조인을 사용하는 또 다른 예다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query.from(cat)
     .leftJoin(cat.kittens, kitten)
     .on(kitten.bodyWeight.gt(10.0))
@@ -369,10 +369,10 @@ query.from(cat)
 
     <para>위 코드의 JPQL 버전은 다음과 같다.</para>
 
-    <programlisting>  
+    <programlisting>
 from Cat as cat
     left join cat.kittens as kitten
-    on kitten.bodyWeight > 10.0  
+    on kitten.bodyWeight > 10.0
 </programlisting>
 
   </sect2>
@@ -430,7 +430,7 @@ from Cat as cat
 
     <para>정렬을 위한 구문은 다음과 같다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 query.from(customer)
     .orderBy(customer.lastName.asc(), customer.firstName.desc())
@@ -439,7 +439,7 @@ query.from(customer)
 
     <para>위 코드는 다음의 JPQL과 동일하다.</para>
 
-    <programlisting>  
+    <programlisting>
 from Customer as customer
     order by customer.lastName asc, customer.firstName desc
 </programlisting>
@@ -452,7 +452,7 @@ from Customer as customer
 
     <para>그룹핑은 다음과 같은 코드로 처리한다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query.from(customer)
     .groupBy(customer.lastName)
     .list(customer.lastName);
@@ -460,7 +460,7 @@ query.from(customer)
 
     <para>동등한 JPQL은 다음고 같다.</para>
 
-    <programlisting>  
+    <programlisting>
 select customer.lastName
     from Customer as customer
     group by customer.lastName
@@ -475,12 +475,12 @@ select customer.lastName
       다음은 몇 가지 예다.
     </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // delete all customers
 new JPADeleteClause(entityManager, customer).execute();
 // delete all customers with a level less than 3
-new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();  
+new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();
 ]]></programlisting>
 
     <para>JPADeleteClause 생성자의 두 번째 파라미터는 삭제할 엔티티 대상이다.
@@ -489,24 +489,24 @@ new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute
     </para>
 
     <para>Hibernate 이용시, HibernateDeleteClause를 사용하면 된다.</para>
-    
+
     <para>JPA의 DML 절은 JPA 레벨의 영속성 전파 규칙을 따르지 않고,
       2차 레벨 캐시와의 연동되지 않는다.</para>
   </sect2>
 
   <sect2>
     <title>UpdateClause</title>
-    
+
     <para>Querydsl JPA의 UpdateClause은 간단한 update-set/where-execute 형태를 취한다.
       다음은 몇 가지 예다.
     </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // rename customers named Bob to Bobby
 new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     .set(customer.name, "Bobby")
-    .execute();  
+    .execute();
 ]]></programlisting>
 
     <para>JPAUpdateClause 생성자의 두 번째 파라미터는 수정할 엔티티 대상이다.
@@ -515,7 +515,7 @@ new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     </para>
 
     <para>Hibernate 이용시, HibernateUpdateClause를 사용한다.</para>
-    
+
     <para>JPA에서 DML 절은 JPA 레벨의 영속성 전파 규칙을 따르지 않고,
       2차 레벨 캐시와 연동되지 않는다.</para>
 
@@ -625,12 +625,12 @@ List results = jpaQuery.getResultList();
 
     <programlisting language="java"><![CDATA[
 // serialization templates
-SQLTemplates templates = new DerbyTemplates(); 
+SQLTemplates templates = new DerbyTemplates();
 // query types (S* for SQL, Q* for domain types)
-SAnimal cat = new SAnimal("cat");   
-SAnimal mate = new SAnimal("mate"); 
-QCat catEntity = QCat.cat;          
- 
+SAnimal cat = new SAnimal("cat");
+SAnimal mate = new SAnimal("mate");
+QCat catEntity = QCat.cat;
+
 JPASQLQuery query = new JPASQLQuery(entityManager, templates);
 List<String> names = query.from(cat).list(cat.name);
 ]]></programlisting>
@@ -638,13 +638,13 @@ List<String> names = query.from(cat).list(cat.name);
     <para>한 쿼리에서 엔티티(예, QCat)와 테이블(예, SAnimal)에 대한 참조를 섞어 쓰고 싶다면,
       같은 변수명을 갖도록 해야 한다. SAnimal.animal은 "animal"이란 변수명을 가지므로
       새로운 인스턴스 (new SAnimal("cat"))을 대신 사용했다.</para>
-    
+
     <para>다음과 같이 할 수도 있다.</para>
-    
+
     <programlisting language="java"><![CDATA[
-QCat catEntity = QCat.cat;    
+QCat catEntity = QCat.cat;
 SAnimal cat = new SAnimal(catEntity.getMetadata().getName());
-]]></programlisting>      
+]]></programlisting>
 
     <para>다중 컬럼 쿼리:</para>
 

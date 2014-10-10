@@ -5,14 +5,14 @@
   <title>루신 쿼리</title>
 
   <para>이 절에서는 루신 모듈의 쿼리 기능을 설명한다.</para>
-  
+
   <sect2>
     <title>Maven integration</title>
 
     <para>
       Querydsl 루신을 사용하려면 루신 3은 querydsl-lucene3 모듈을 그리고 루신 4는 querydsl-lucene4 모듈을 사용한다.
     </para>
-    
+
     <para>루신 3:</para>
 
     <programlisting language="xml"><![CDATA[
@@ -26,11 +26,11 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>    
+</dependency>
 ]]></programlisting>
 
   <para>루신 4:</para>
-  
+
     <programlisting language="xml"><![CDATA[
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
@@ -42,8 +42,8 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>    
-]]></programlisting>  
+</dependency>
+]]></programlisting>
 
   </sect2>
 
@@ -53,16 +53,16 @@
 
     <para>다음과 같은 방식으로 year와 title 필드를 가진 쿼리 타입을 직접 작성할 수 있다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 public class QDocument extends EntityPathBase<Document>{
     private static final long serialVersionUID = -4872833626508344081L;
-        
+
     public QDocument(String var) {
         super(Document.class, PathMetadataFactory.forVariable(var));
     }
 
     public final StringPath year = createString("year");
-        
+
     public final StringPath title = createString("title");
 }
 ]]></programlisting>
@@ -79,11 +79,11 @@ public class QDocument extends EntityPathBase<Document>{
 
     <para>Querydsl 루신으로 쿼리하는 것은 간단하다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 QDocument doc = new QDocument("doc");
 
 IndexSearcher searcher = new IndexSearcher(index);
-LuceneQuery query = new LuceneQuery(true, searcher); 
+LuceneQuery query = new LuceneQuery(true, searcher);
 List<Document> documents = query
     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
     .list();
@@ -91,7 +91,7 @@ List<Document> documents = query
 
     <para>위 코드는 다음의 루신 쿼리로 바뀐다.</para>
 
-    <programlisting><![CDATA[     
+    <programlisting><![CDATA[
 +year:[1800 TO 2000] +title:huckle*
 ]]></programlisting>
 
@@ -131,7 +131,7 @@ List<Document> documents = query
 
     <para>정렬 구문은 다음과 같다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .orderBy(doc.title.asc(), doc.year.desc())
@@ -140,7 +140,7 @@ query
 
     <para>위 코드는 다음 루신 쿼리와 동일하다.</para>
 
-    <programlisting>  
+    <programlisting>
 title:*
 </programlisting>
 
@@ -150,7 +150,7 @@ title:*
     </para>
 
     <programlisting language="java"><![CDATA[
-Sort sort = ...; 
+Sort sort = ...;
 query
     .where(doc.title.like("*"))
     .sort(sort)
@@ -164,7 +164,7 @@ query
 
     <para>결과 개수 제한은 다음과 같이 한다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .limit(10)
@@ -178,7 +178,7 @@ query
 
     <para>오프셋은 다음과 같이 지정한다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .offset(3)
@@ -195,7 +195,7 @@ query
     fuzzyLike 메서드를 이용해서 퍼지 검색을 할 수 있다.
     </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(LuceneExpressions.fuzzyLike(doc.title, "Hello"))
     .list();
@@ -209,7 +209,7 @@ query
 
     <para>단일 루신 필터를 쿼리에 적용할 수 있다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .filter(filter)
@@ -219,7 +219,7 @@ query
     <para>distinct 필터링을 위한 distinct(Path) 메서드를 제공한다.
     </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .distinct(doc.title)

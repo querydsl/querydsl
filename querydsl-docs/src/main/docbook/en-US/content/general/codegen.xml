@@ -6,29 +6,29 @@
     generation in the JPA, JDO and Mongodb modules. This section describes various configuration
     options for the code generation and an alternative to APT usage.
   </para>
-  
+
   <sect2>
     <title>Path initialization</title>
 
     <para>
       By default Querydsl initializes only reference properties of the first two levels. In cases where
       longer initialization paths are required, these have to be annotated in the domain
-      types via 
+      types via
        <code>com.mysema.query.annotations.QueryInit</code>
       annotations. QueryInit is used on properties where deep initializations are
       needed. The following example demonstrates the usage.
     </para>
 
     <programlisting language="java"><![CDATA[
-@Entity      
+@Entity
 class Event {
     @QueryInit("customer.address")
     Account account;
-}      
+}
 
 @Entity
 class Account{
-    Customer customer;    
+    Customer customer;
 }
 
 @Entity
@@ -47,8 +47,8 @@ class Customer{
 
     <para>
       The automatic path initialization replaces the manual one, which
-      required the entity fields to be non-final. The declarative format has the benefit 
-      to be applied to all top level instances of a Query type and to enable the usage 
+      required the entity fields to be non-final. The declarative format has the benefit
+      to be applied to all top level instances of a Query type and to enable the usage
       of final entity fields.
     </para>
 
@@ -71,7 +71,7 @@ class Customer{
     <para>
       The serialization options are
     </para>
-    
+
     <table>
       <title>Config options</title>
       <tgroup cols='2' align='left' colsep='1' rowsep='1'>
@@ -117,7 +117,7 @@ class Customer{
 @Entity
 public class User {
     //...
-}     
+}
 ]]></programlisting>
 
     <para>Customization of package content:</para>
@@ -135,7 +135,7 @@ import com.mysema.query.annotations.Config;
       If you want to customize the serializer configuration globally,
       you can do this via the following APT options
     </para>
-    
+
     <table>
       <title>APT options</title>
       <tgroup cols='2' align='left' colsep='1' rowsep='1'>
@@ -187,7 +187,7 @@ import com.mysema.query.annotations.Config;
           <row>
             <entry>querydsl.includedClasses</entry>
             <entry>comma separated list of class names to be included into code generation (default: all)</entry>
-          </row>          
+          </row>
           <row>
             <entry>querydsl.excludedPackages</entry>
             <entry>comma separated list of packages to be excluded from code generation (default: none)</entry>
@@ -196,10 +196,10 @@ import com.mysema.query.annotations.Config;
             <entry>querydsl.excludedClasses</entry>
             <entry>comma separated list of class names to be excluded from code generation (default: none)</entry>
           </row>
-          
+
         </tbody>
       </tgroup>
-    </table> 
+    </table>
 
     <para>Using the Maven APT plugin this works for example like this:
     </para>
@@ -223,7 +223,7 @@ import com.mysema.query.annotations.Config;
             <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
             <options>
               <querydsl.entityAccessors>true</querydsl.entityAccessors>
-            </options>          
+            </options>
           </configuration>
         </execution>
       </executions>
@@ -245,27 +245,27 @@ import com.mysema.query.annotations.Config;
       type. This can be useful for example in cases where comparison and String operations should
       be blocked on certain String paths or Date / Time support for
       custom types needs to be added. Support for Date / Time types of the Joda time API
-      and JDK (java.util.Date, Calendar and subtypes) is built in, but other APIs might need 
+      and JDK (java.util.Date, Calendar and subtypes) is built in, but other APIs might need
       to be supported using this feature.
     </para>
 
     <para>The following example demonstrates the usage:</para>
 
     <programlisting language="java"><![CDATA[
-@Entity      
-public class MyEntity{      
+@Entity
+public class MyEntity{
     @QueryType(PropertyType.SIMPLE)
     public String stringAsSimple;
-        
+
     @QueryType(PropertyType.COMPARABLE)
     public String stringAsComparable;
-        
+
     @QueryType(PropertyType.NONE)
-    public String stringNotInQuerydsl;    
-}        
+    public String stringNotInQuerydsl;
+}
 ]]></programlisting>
 
-    <para>The value <code>PropertyType.NONE</code> can be used to skip a property in the 
+    <para>The value <code>PropertyType.NONE</code> can be used to skip a property in the
       query type generation. This case is different from @Transient or @QueryTransient
       annotated properties, where properties are not persisted. PropertyType.NONE just
       omits the property from the Querydsl query type.
@@ -283,38 +283,38 @@ public class MyEntity{
 
     <para>Here is a simple example from a unit test: </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 @QueryEntity
 public static class User{
-       
+
     String name;
-       
+
     User manager;
-       
+
 }
 ]]></programlisting>
 
-<programlisting language="java"><![CDATA[   
+<programlisting language="java"><![CDATA[
 @QueryDelegate(User.class)
 public static BooleanPath isManagedBy(QUser user, User other){
     return user.manager.eq(other);
-}   
+}
 ]]></programlisting>
 
     <para>And the generated methods in the QUser query type:</para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 public BooleanPath isManagedBy(QUser other) {
     return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
 }
-    
+
 ]]></programlisting>
 
     <para>Delegate methods can also be used to extend built-in types.
       Here are some examples
     </para>
 
-    <programlisting language="java"><![CDATA[       
+    <programlisting language="java"><![CDATA[
 public class QueryExtensions {
 
     @QueryDelegate(Date.class)
@@ -330,15 +330,15 @@ public class QueryExtensions {
         second.add(1, Calendar.DAY_OF_MONTH);
         return timestamp.goe(first).and(timestamp.lt(new Timestamp(second.getTimeInMillis())));
     }
-    
-}    
+
+}
 ]]></programlisting>
 
     <para>When delegate methods are declared for builtin types then subclasses with the
         proper delegate method usages are created:
     </para>
 
-    <programlisting language="java"><![CDATA[      
+    <programlisting language="java"><![CDATA[
 public class QDate extends DatePath<java.sql.Date> {
 
     public QDate(BeanPath<? extends java.sql.Date> entity) {
@@ -421,7 +421,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
   <sect2>
 
     <title>Classpath based code generation</title>
-    
+
      <para>For cases where annotated Java sources
     are not available, such as the usage of a different JVM
     language such as Scala or Groovy or annotation addition via bytecode manipulation the
@@ -436,16 +436,16 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 
     <para>Below is an example for JPA</para>
 
-    <programlisting language="java"><![CDATA[    		
+    <programlisting language="java"><![CDATA[
 GenericExporter exporter = new GenericExporter();
 exporter.setKeywords(Keywords.JPA);
 exporter.setEntityAnnotation(Entity.class);
 exporter.setEmbeddableAnnotation(Embeddable.class);
-exporter.setEmbeddedAnnotation(Embedded.class);        
+exporter.setEmbeddedAnnotation(Embedded.class);
 exporter.setSupertypeAnnotation(MappedSuperclass.class);
 exporter.setSkipAnnotation(Transient.class);
 exporter.setTargetFolder(new File("target/generated-sources/java"));
-exporter.export(DomainClass.class.getPackage());    	
+exporter.export(DomainClass.class.getPackage());
 ]]></programlisting>
 
     <para>This will export all the JPA annotated classes in the package of the DomainClass
@@ -459,13 +459,13 @@ exporter.export(DomainClass.class.getPackage());
       <para>The goals generic-export, jpa-export and jdo-export of the querydsl-maven-plugin
         can be used for GenericExporter usage via Maven.
       </para>
-      
+
       <para>
-      The different goals are mapped to the Querydsl, JPA and JDO annotations. 
+      The different goals are mapped to the Querydsl, JPA and JDO annotations.
       </para>
-      
+
       <para>The configuration elements are</para>
-      
+
       <table>
         <title>Maven configuration</title>
         <tgroup cols='3' align='left' colsep='1' rowsep='1'>
@@ -485,8 +485,8 @@ exporter.export(DomainClass.class.getPackage());
               <entry>targetFolder</entry>
               <entry>target folder for generated sources</entry>
             </row>
-            <row>    
-              <entry>boolean</entry>       
+            <row>
+              <entry>boolean</entry>
               <entry>scala</entry>
               <entry>true, if Scala sources should be generated instead (default: false)</entry>
             </row>
@@ -495,7 +495,7 @@ exporter.export(DomainClass.class.getPackage());
               <entry>packages</entry>
               <entry>packages to be introspected for entity classes</entry>
             </row>
-            <row> 
+            <row>
               <entry>boolean</entry>
               <entry>handleFields</entry>
               <entry>true, if fields should be treated as properties (default: true)</entry>
@@ -517,7 +517,7 @@ exporter.export(DomainClass.class.getPackage());
             </row>
           </tbody>
         </tgroup>
-      </table>      
+      </table>
 
       <para>Here is an example for JPA annotated classes</para>
 
@@ -552,13 +552,13 @@ exporter.export(DomainClass.class.getPackage());
 ]]></programlisting>
 
       <para>This will export the JPA annotated classes of the <code>com.example.domain</code> package and
-      subpackages to the target/generated-sources/java directory.           
+      subpackages to the target/generated-sources/java directory.
       </para>
-      
+
       <para>If you need to compile the generated sources directly after that, then you can use
       the <code>compile</code> goal for that.</para>
-    
- <programlisting language="xml"><![CDATA[                        
+
+ <programlisting language="xml"><![CDATA[
 <execution>
   <goals>
     <goal>compile</goal>
@@ -566,11 +566,11 @@ exporter.export(DomainClass.class.getPackage());
   <configuration>
     <sourceFolder>target/generated-sources/scala</targetFolder>
   </configuration>
-</execution>         
-]]></programlisting>    
-    
+</execution>
+]]></programlisting>
+
     <para>The <code>compile</code> goal has the following configuration elements</para>
-    
+
     <table>
       <title>Maven configuration</title>
       <tgroup cols='3' align='left' colsep='1' rowsep='1'>
@@ -614,23 +614,23 @@ exporter.export(DomainClass.class.getPackage());
             <entry>Map</entry>
             <entry>compilerOptions</entry>
             <entry>options for the compiler</entry>
-          </row>            
+          </row>
         </tbody>
       </tgroup>
-    </table>    
-    
+    </table>
+
     <para>All options except <code>sourceFolder</code> are optional.</para>
-    
+
   </sect3>
-  
+
   <sect3>
-  
-    <title>Scala support</title>      
+
+    <title>Scala support</title>
 
       <para>If you need Scala output of the classes, use a variant of the following
       configuration
       </para>
-      
+
       <programlisting language="xml"><![CDATA[
 <project>
   <build>
@@ -677,4 +677,4 @@ exporter.export(DomainClass.class.getPackage());
 
   </sect2>
 
-</sect1>    
+</sect1>
