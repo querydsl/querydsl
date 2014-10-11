@@ -13,10 +13,14 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Map;
 
 import com.google.common.primitives.Primitives;
 import com.mysema.util.BeanUtils;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * PathBuilderValidator validates PathBuilder properties at creation time
@@ -44,7 +48,14 @@ public interface PathBuilderValidator {
         public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
             while (!parent.equals(Object.class)) {
                 try {
-                    return (Class<? extends T>) parent.getDeclaredField(property).getType();
+                    Field field = parent.getDeclaredField(property);
+                    if (Map.class.isAssignableFrom(field.getType())) {
+                        return (Class) ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 1);
+                    } else if (Collection.class.isAssignableFrom(field.getType())) {
+                        return (Class) ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0);
+                    } else {
+                        return (Class) Primitives.wrap(field.getType());
+                    }
                 } catch (NoSuchFieldException e) {
                     parent = parent.getSuperclass();
                 }
@@ -60,7 +71,17 @@ public interface PathBuilderValidator {
             if (getter == null && Primitives.wrap(propertyType).equals(Boolean.class)) {
                 getter = BeanUtils.getAccessor("is", property, parent);
             }
-            return getter != null ? (Class<? extends T>) getter.getReturnType() : null;
+            if (getter != null) {
+                if (Map.class.isAssignableFrom(getter.getReturnType())) {
+                    return (Class) ReflectionUtils.getTypeParameterAsClass(getter.getGenericReturnType(), 1);
+                } else if (Collection.class.isAssignableFrom(getter.getReturnType())) {
+                    return (Class) ReflectionUtils.getTypeParameterAsClass(getter.getGenericReturnType(), 0);
+                } else {
+                    return (Class) Primitives.wrap(getter.getReturnType());
+                }
+            } else {
+                return null;
+            }
         }
     };
 

@@ -14,8 +14,12 @@
 package com.mysema.query.jpa.support;
 
 import javax.persistence.EntityManager;
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.PluralAttribute;
 
+import com.google.common.primitives.Primitives;
 import com.mysema.query.types.path.PathBuilderValidator;
 
 /**
@@ -36,7 +40,13 @@ public class JPAPathBuilderValidator implements PathBuilderValidator {
     @Override
     public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
         try {
-            return (Class)metamodel.managedType(parent).getAttribute(property).getJavaType();
+            ManagedType managedType = metamodel.managedType(parent);
+            Attribute attribute = managedType.getAttribute(property);
+            if (attribute instanceof PluralAttribute) {
+                return ((PluralAttribute)attribute).getElementType().getJavaType();
+            } else {
+                return Primitives.wrap(attribute.getJavaType());
+            }
         } catch (IllegalArgumentException e) {
             return null;
         }
