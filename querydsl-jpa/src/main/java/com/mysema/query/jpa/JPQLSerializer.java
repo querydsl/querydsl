@@ -419,7 +419,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         @SuppressWarnings("unchecked")
         Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
         if (rhs.getConstant().isEmpty()) {
-            operator = Ops.EQ;
+            operator = operator == Ops.IN ? Ops.EQ : Ops.NE;
             args = ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO);
         } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             final Metamodel metamodel = entityManager.getMetamodel();

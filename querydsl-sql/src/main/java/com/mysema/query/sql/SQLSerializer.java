@@ -30,6 +30,7 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.Template.Element;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -873,6 +874,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 // handle only target
                 handle(args.get(1));
             }
+
+        } else if ((operator == Ops.IN || operator == Ops.NOT_IN)
+                && args.get(0) instanceof Path
+                && args.get(1) instanceof Constant
+                && ((Constant<Collection>)args.get(1)).getConstant().isEmpty()) {
+            super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
+                    ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
 
         } else if (operator == SQLOps.WITH_COLUMNS) {
             boolean oldSkipParent = skipParent;

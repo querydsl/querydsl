@@ -595,9 +595,14 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(H2)
     public void In_Empty() {
-        query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).list(employee);
+        assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).count());
+    }
+
+    @Test
+    public void NotIn_Empty() {
+        long count = query().from(employee).count();
+        assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of())).count());
     }
 
     @Test
