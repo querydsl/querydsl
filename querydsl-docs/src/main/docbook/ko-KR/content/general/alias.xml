@@ -88,4 +88,3 @@ $(c.getMate().getName().toLowerCase())
   </para>
 
 </sect1>
-

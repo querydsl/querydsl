@@ -168,7 +168,6 @@ Map<Integer, Group> results = query.from(post, comment)
       <ulink
         url="https://github.com/mysema/querydsl/blob/master/querydsl-collections/src/test/java/com/mysema/query/collections/GroupByTest.java"
       >여기</ulink>를 참고한다.
-      .
     </para>
 
   </sect2>

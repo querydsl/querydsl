@@ -5,7 +5,7 @@
   <title>Querying in Scala</title>
 
   <para>Generic support for Querydsl usage in Scala is available via querydsl-scala
-    module. To add it to your Maven build, use the following snippet :
+    module. To add it to your Maven build, use the following snippet:
   </para>
 
   <programlisting language="xml"><![CDATA[
@@ -116,7 +116,7 @@ query.from(person).select(person.firstName, person.lastName, person.age)
 
     <para>
       Like with Querydsl SQL for Java you need to generate Query types to be able to construct
-      your queries. The following code examples show how this is done :
+      your queries. The following code examples show how this is done:
     </para>
 
     <para>Generation without Bean types :</para>
