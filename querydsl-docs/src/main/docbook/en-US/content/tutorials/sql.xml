@@ -957,7 +957,7 @@ assertEquals(2, insert.execute());
 java.sql.Connection conn = ...;
 MetaDataExporter exporter = new MetaDataExporter();
 exporter.setPackageName("com.myproject.mydomain");
-exporter.setTargetFolder(new File("src/main/java"))	;
+exporter.setTargetFolder(new File("src/main/java"));
 exporter.setBeanSerializer(new BeanSerializer());
 exporter.export(conn.getMetaData());
 ]]></programlisting>

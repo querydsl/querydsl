@@ -7,9 +7,9 @@
     본 장은 레퍼런스 튜토리얼에서 다루지 않은 내용을 설명한다.
     </para>
 
-	<xi:include href="general/creating-queries.xml" />
-	<xi:include href="general/result-handling.xml"/>
-	<xi:include href="general/codegen.xml"/>
-	<xi:include href="general/alias.xml" />
+    <xi:include href="general/creating-queries.xml" />
+    <xi:include href="general/result-handling.xml"/>
+    <xi:include href="general/codegen.xml"/>
+    <xi:include href="general/alias.xml" />
 
 </chapter>
