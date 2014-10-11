@@ -54,7 +54,7 @@
     <para>다음과 같은 방식으로 year와 title 필드를 가진 쿼리 타입을 직접 작성할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[
-public class QDocument extends EntityPathBase<Document>{
+public class QDocument extends EntityPathBase<Document> {
     private static final long serialVersionUID = -4872833626508344081L;
 
     public QDocument(String var) {

@@ -23,12 +23,12 @@ class Event {
 }
 
 @Entity
-class Account{
+class Account {
     Customer customer;
 }
 
 @Entity
-class Customer{
+class Customer {
     String name;
     Address address;
     // ...
@@ -108,7 +108,7 @@ class Customer{
     <programlisting language="java"><![CDATA[
 @Config(entityAccessors=true)
 @Entity
-public class User {
+public class User {
     //...
 }
 ]]></programlisting>
@@ -243,7 +243,7 @@ import com.mysema.query.annotations.Config;
 
     <programlisting language="java"><![CDATA[
 @Entity
-public class MyEntity{
+public class MyEntity {
     @QueryType(PropertyType.SIMPLE)
     public String stringAsSimple;
 
@@ -274,7 +274,7 @@ public class MyEntity{
 
     <programlisting language="java"><![CDATA[
 @QueryEntity
-public static class User{
+public static class User {
 
     String name;
 
@@ -285,7 +285,7 @@ public static class User{
 
 <programlisting language="java"><![CDATA[
 @QueryDelegate(User.class)
-public static BooleanPath isManagedBy(QUser user, User other){
+public static BooleanPath isManagedBy(QUser user, User other) {
     return user.manager.eq(other);
 }
 ]]></programlisting>
@@ -306,12 +306,12 @@ public BooleanPath isManagedBy(QUser other) {
 public class QueryExtensions {
 
     @QueryDelegate(Date.class)
-    public static BooleanExpression inPeriod(DatePath<Date> date, Pair<Date,Date> period){
+    public static BooleanExpression inPeriod(DatePath<Date> date, Pair<Date,Date> period) {
         return date.goe(period.getFirst()).and(date.loe(period.getSecond()));
     }
 
     @QueryDelegate(Timestamp.class)
-    public static BooleanExpression inDatePeriod(DateTimePath<Timestamp> timestamp, Pair<Date,Date> period){
+    public static BooleanExpression inDatePeriod(DateTimePath<Timestamp> timestamp, Pair<Date,Date> period) {
         Timestamp first = new Timestamp(DateUtils.truncate(period.getFirst(), Calendar.DAY_OF_MONTH).getTime());
         Calendar second = Calendar.getInstance();
         second.setTime(DateUtils.truncate(period.getSecond(), Calendar.DAY_OF_MONTH));

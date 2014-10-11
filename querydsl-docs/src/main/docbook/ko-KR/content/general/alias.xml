@@ -19,7 +19,7 @@
 QCat cat = new QCat("cat");
 for (String name : query.from(cat,cats)
     .where(cat.kittens.size().gt(0))
-    .list(cat.name)){
+    .list(cat.name)) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -33,7 +33,7 @@ for (String name : query.from(cat,cats)
 Cat c = alias(Cat.class, "cat");
 for (String name : query.from($(c),cats)
     .where($(c.getKittens()).size().gt(0))
-    .list($(c.getName()))){
+    .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -55,7 +55,7 @@ import static com.mysema.query.alias.Alias.alias;
 Cat c = alias(Cat.class, "cat");
 for (String name : query.from($(c),cats)
     .where($(c.getKittens().size()).gt(0))
-    .list($(c.getName()))){
+    .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>

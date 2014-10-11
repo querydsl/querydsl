@@ -48,7 +48,7 @@ import static com.mysema.query.alias.Alias.*;
 Cat c = alias(Cat.class, "cat");
 for (String name : from($(c),cats)
   .where($(c.getKittens()).size().gt(0))
-  .list($(c.getName()))){
+  .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -63,7 +63,7 @@ for (String name : from($(c),cats)
 Cat c = alias(Cat.class, "cat");
 for (String name : from($(c),cats)
   .where($(c.getKittens().size()).gt(0))
-  .list($(c.getName()))){
+  .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -114,7 +114,7 @@ $(c.getMate().getName().toLowerCase())
 QCat cat = new QCat("cat");
 for (String name : from(cat,cats)
   .where(cat.kittens.size().gt(0))
-  .list(cat.name)){
+  .list(cat.name)) {
     System.out.println(name);
 }
 ]]></programlisting>

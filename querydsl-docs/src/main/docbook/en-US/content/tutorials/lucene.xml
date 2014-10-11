@@ -56,7 +56,7 @@
       like this:</para>
 
     <programlisting language="java"><![CDATA[
-public class QDocument extends EntityPathBase<Document>{
+public class QDocument extends EntityPathBase<Document> {
     private static final long serialVersionUID = -4872833626508344081L;
 
     public QDocument(String var) {

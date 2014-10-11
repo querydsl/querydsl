@@ -17,11 +17,11 @@
     </para>
 
     <programlisting language="java"><![CDATA[
-public List<Customer> getCustomer(String... names){
+public List<Customer> getCustomer(String... names) {
     QCustomer customer = QCustomer.customer;
     JPAQuery query = new JPAQuery(entityManager).from(customer);
     BooleanBuilder builder = new BooleanBuilder();
-    for (String name : names){
+    for (String name : names) {
         builder.or(customer.name.eq(name));
     }
     query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...
@@ -174,12 +174,12 @@ Expression<String> cases = customer.annualSpending
 
     <programlisting language="java"><![CDATA[
 // from Account
-QAccount extends EntityPathBase<Account>{
+QAccount extends EntityPathBase<Account> {
     // ...
 }
 
 // from BankAccount extends Account
-QBankAccount extends EntityPathBase<BankAccount>{
+QBankAccount extends EntityPathBase<BankAccount> {
 
     public final QAccount _super = new QAccount(this);
 

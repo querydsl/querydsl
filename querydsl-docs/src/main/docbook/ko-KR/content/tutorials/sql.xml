@@ -685,11 +685,11 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
         super(conn, new Configuration(templates), metadata);
     }
 
-    public MySQLQuery bigResult(){
+    public MySQLQuery bigResult() {
         return addFlag(Position.AFTER_SELECT, "SQL_BIG_RESULT ");
     }
 
-    public MySQLQuery bufferResult(){
+    public MySQLQuery bufferResult() {
         return addFlag(Position.AFTER_SELECT, "SQL_BUFFER_RESULT ");
     }
 
@@ -972,19 +972,19 @@ assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
     <para>앞서 예제에서 사용한 팩토리 메서드는 다음과 같다.</para>
 
     <programlisting language="java"><![CDATA[
-protected SQLUpdateClause update(RelationalPath<?> e){
+protected SQLUpdateClause update(RelationalPath<?> e) {
     return new SQLUpdateClause(Connections.getConnection(), templates, e);
 }
 
-protected SQLInsertClause insert(RelationalPath<?> e){
+protected SQLInsertClause insert(RelationalPath<?> e) {
     return new SQLInsertClause(Connections.getConnection(), templates, e);
 }
 
-protected SQLDeleteClause delete(RelationalPath<?> e){
+protected SQLDeleteClause delete(RelationalPath<?> e) {
     return new SQLDeleteClause(Connections.getConnection(), templates, e);
 }
 
-protected SQLMergeClause merge(RelationalPath<?> e){
+protected SQLMergeClause merge(RelationalPath<?> e) {
     return new SQLMergeClause(Connections.getConnection(), templates, e);
 }
 

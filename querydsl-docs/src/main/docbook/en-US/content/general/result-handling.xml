@@ -80,7 +80,7 @@ List<UserDTO> dtos = query.list(
 class CustomerDTO {
 
   @QueryProjection
-  public CustomerDTO(long id, String name){
+  public CustomerDTO(long id, String name) {
      ...
   }
 
@@ -110,7 +110,7 @@ List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id,
 class Customer {
 
   @QueryProjection
-  public Customer(long id, String name){
+  public Customer(long id, String name) {
      ...
   }
 
