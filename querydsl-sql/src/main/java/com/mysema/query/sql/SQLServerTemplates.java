@@ -55,6 +55,7 @@ public class SQLServerTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
         setDefaultValues("\ndefault values");
+        setArraysSupported(false);
 
         // String
         add(Ops.CONCAT, "{0} + {1}", 13);

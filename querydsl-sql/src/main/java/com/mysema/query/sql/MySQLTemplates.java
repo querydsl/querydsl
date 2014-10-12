@@ -46,6 +46,7 @@ public class MySQLTemplates extends SQLTemplates {
 
     public MySQLTemplates(char escape, boolean quote) {
         super("`", escape, quote);
+        setArraysSupported(false);
         setParameterMetadataAvailable(false);
         setLimitRequired(true);
         setNullsFirst(null);
