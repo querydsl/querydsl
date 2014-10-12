@@ -45,7 +45,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private static final String COMMA = ", ";
 
-    private final List<Path<?>> constantPaths = new ArrayList<Path<?>>();
+    private final LinkedList<Path<?>> constantPaths = new LinkedList<Path<?>>();
 
     private final List<Object> constants = new ArrayList<Object>();
 
@@ -746,7 +746,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(")");
 
             int size = ((Collection) constant).size() - 1;
-            Path<?> lastPath = constantPaths.isEmpty() ? null : constantPaths.get(constantPaths.size() - 1);
+            Path<?> lastPath = constantPaths.peekLast();
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
             }
