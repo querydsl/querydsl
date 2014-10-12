@@ -10,6 +10,7 @@ import java.sql.*;
 public class ArrayType<T> extends AbstractType<T> {
 
     private static void copy(Object source, Object target, int length) {
+        // Note: System.arrayCopy doesn't handle copying from/to primitive arrays properly
         for (int i = 0; i < length; i++) {
             Object val = java.lang.reflect.Array.get(source, i);
             java.lang.reflect.Array.set(target, i, val);
