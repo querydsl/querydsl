@@ -30,6 +30,8 @@ import com.mysema.util.ReflectionUtils;
  */
 public class JavaTypeMapping {
 
+    private static final Type<Object> DEFAULT = new ObjectType();
+
     private static final Map<Class<?>,Type<?>> defaultTypes = new HashMap<Class<?>,Type<?>>();
 
     static{
@@ -107,7 +109,7 @@ public class JavaTypeMapping {
             if (resolvedType != null) {
                 resolvedTypesByClass.put(clazz, resolvedType);
             } else {
-                throw new IllegalArgumentException("Found no type for " + clazz.getName());
+                return (Type)DEFAULT;
             }
         }
         return (Type<T>) resolvedType;

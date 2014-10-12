@@ -146,6 +146,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({DERBY, HSQLDB})
+    public void Array_Null() {
+        Expression<Integer[]> expr = Expressions.template(Integer[].class, "null");
+        assertNull(query().singleResult(expr));
+    }
+
+    @Test
     public void Array_Projection() {
         List<String[]> results = query().from(employee).list(
                 new ArrayConstructorExpression<String>(String[].class, employee.firstname));
@@ -594,7 +601,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({H2, DERBY, SQLSERVER})
+    @ExcludeIn({H2, DERBY, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
         NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
         query().from(employee)
