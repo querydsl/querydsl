@@ -1129,7 +1129,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, SQLSERVER})
+    @ExcludeIn(DERBY)
     public void Round() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "1.32");
 
