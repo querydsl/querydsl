@@ -748,6 +748,10 @@ query.with(employee, employee.id, employee.name)
      .from(...)
 ]]></programlisting>
 
+    <para>If the columns of the common table expression are a subset of an existing table or view
+    it is advisable to use a generated path type for it, e.g. QEmployee in this case, but if the
+    columns don't fit any existing table PathBuilder can be used instead.</para>
+
   </sect2>
   
   <sect2>
