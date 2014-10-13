@@ -188,7 +188,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (Ops.aggOps.contains(operator)) {
-            throw new UnsupportedOperationException("Aggregation operators are supported only for single expression results");
+            throw new UnsupportedOperationException("Aggregation operators are only supported as single expressions");
         }
         if (args.size() == 2 && OPERATOR_SYMBOLS.containsKey(operator) 
              && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())) {
