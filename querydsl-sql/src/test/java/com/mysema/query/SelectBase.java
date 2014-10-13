@@ -783,7 +783,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, DERBY})
+    @ExcludeIn({SQLITE, DERBY})
     public void LPad() {
         assertEquals("  ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
         assertEquals("!!ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
@@ -1129,7 +1129,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, SQLSERVER})
+    @ExcludeIn(DERBY)
     public void Round() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "1.32");
 
@@ -1138,7 +1138,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, DERBY})
+    @ExcludeIn({SQLITE, DERBY})
     public void Rpad() {
         assertEquals("ab  ", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
         assertEquals("ab!!", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
