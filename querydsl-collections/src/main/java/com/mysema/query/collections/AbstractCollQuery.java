@@ -27,11 +27,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.Tuple;
 import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.MapExpression;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
+import com.mysema.query.types.*;
 
 /**
  * AbstractCollQuery provides a base class for Collection query implementations.
@@ -116,6 +112,27 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
         iterables.put(entity, col);
         return (Q)this;
     }
+
+    @Override
+    public Q groupBy(Expression<?> e) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Q groupBy(Expression<?>... o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Q having(Predicate e) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Q having(Predicate... e) {
+        throw new UnsupportedOperationException();
+    }
+
 
     public abstract QueryMetadata getMetadata();
 
