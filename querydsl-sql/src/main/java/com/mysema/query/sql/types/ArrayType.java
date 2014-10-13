@@ -3,6 +3,8 @@ package com.mysema.query.sql.types;
 import javax.annotation.Nullable;
 import java.sql.*;
 
+import com.google.common.primitives.Primitives;
+
 /**
  *
  * @param <T>
@@ -21,10 +23,13 @@ public class ArrayType<T> extends AbstractType<T> {
 
     private final String typeName;
 
+    private final boolean convertPrimitives;
+
     public ArrayType(Class<T> type, String typeName) {
         super(Types.ARRAY);
         this.type = type;
         this.typeName = typeName;
+        this.convertPrimitives = type.getComponentType().isPrimitive();
     }
 
     @Override
@@ -38,14 +43,14 @@ public class ArrayType<T> extends AbstractType<T> {
         Array arr = rs.getArray(startIndex);
         if (arr != null) {
             Object[] rv = (Object[])arr.getArray();
-            if (!type.isAssignableFrom(rv.getClass())) {
+            if (convertPrimitives) {
+                // primitives out
                 Object rv2 = java.lang.reflect.Array.newInstance(type.getComponentType(), rv.length);
                 copy(rv, rv2, rv.length);
                 return (T) rv2;
             } else {
                 return (T) rv;
             }
-
         } else {
             return null;
         }
@@ -53,8 +58,12 @@ public class ArrayType<T> extends AbstractType<T> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, T value) throws SQLException {
-        if (!type.isAssignableFrom(value.getClass())) {
-
+        if (convertPrimitives) {
+            // primitives in
+            int length = java.lang.reflect.Array.getLength(value);
+            Object value2 = java.lang.reflect.Array.newInstance(Primitives.wrap(type.getComponentType()), length);
+            copy(value, value2, length);
+            value = (T)value2;
         }
         Array arr = st.getConnection().createArrayOf(typeName, (Object[])value);
         st.setArray(startIndex, arr);
