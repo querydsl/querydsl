@@ -30,6 +30,7 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.Template.Element;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -44,7 +45,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private static final String COMMA = ", ";
 
-    private final List<Path<?>> constantPaths = new ArrayList<Path<?>>();
+    private final LinkedList<Path<?>> constantPaths = new LinkedList<Path<?>>();
 
     private final List<Object> constants = new ArrayList<Object>();
 
@@ -745,7 +746,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(")");
 
             int size = ((Collection) constant).size() - 1;
-            Path<?> lastPath = constantPaths.get(constantPaths.size() - 1);
+            Path<?> lastPath = constantPaths.peekLast();
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
             }
@@ -832,10 +833,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
          && args.get(0) instanceof Path<?>
          && args.get(1) instanceof Constant<?>
          && operator != Ops.NUMCAST) {
-            for (Element element : templates.getTemplate(operator).getElements()) {
-                if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
-                    constantPaths.add((Path<?>)args.get(0));
-                    break;
+            Object constant = ((Constant)args.get(1)).getConstant();
+            if (!Collection.class.isInstance(constant) || !((Collection)constant).isEmpty()) {
+                for (Element element : templates.getTemplate(operator).getElements()) {
+                    if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
+                        constantPaths.add((Path<?>)args.get(0));
+                        break;
+                    }
                 }
             }
         }
@@ -870,6 +874,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 // handle only target
                 handle(args.get(1));
             }
+
+        } else if ((operator == Ops.IN || operator == Ops.NOT_IN)
+                && args.get(0) instanceof Path
+                && args.get(1) instanceof Constant
+                && ((Constant<Collection>)args.get(1)).getConstant().isEmpty()) {
+            super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
+                    ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
 
         } else if (operator == SQLOps.WITH_COLUMNS) {
             boolean oldSkipParent = skipParent;
