@@ -27,6 +27,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.*;
+import com.mysema.query.types.expr.Wildcard;
 import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -250,7 +251,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                         return newInstance((FactoryExpression<RT>) expr, rs, 0);
                     }
                 };
-            } else if (expr.getType().isArray()) {
+            } else if (expr.equals(Wildcard.all)) {
                 return new SQLResultIterator<RT>(configuration, stmt, rs) {
                     @Override
                     public RT produceNext(ResultSet rs) throws Exception {
@@ -311,7 +312,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                     lastCell = null;
                     final List<RT> rv = new ArrayList<RT>();
                     if (expr instanceof FactoryExpression) {
-                        FactoryExpression<RT> fe = (FactoryExpression<RT>)expr;
+                        FactoryExpression<RT> fe = (FactoryExpression<RT>) expr;
                         while (rs.next()) {
                             if (getLastCell) {
                                 lastCell = rs.getObject(fe.getArgs().size() + 1);
@@ -319,7 +320,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                             }
                             rv.add(newInstance(fe, rs, 0));
                         }
-                    }  else if (expr.getType().isArray()) {
+                    } else if (expr.equals(Wildcard.all)) {
                         while (rs.next()) {
                             Object[] row = new Object[rs.getMetaData().getColumnCount()];
                             if (getLastCell) {

@@ -195,6 +195,8 @@ public class SQLTemplates extends Templates {
 
     private boolean wrapSelectParameters = false;
 
+    private boolean arraysSupported = true;
+
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = quoteStr;
@@ -699,6 +701,10 @@ public class SQLTemplates extends Templates {
         return wrapSelectParameters;
     }
 
+    public boolean isArraysSupported() {
+        return arraysSupported;
+    }
+
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -1055,6 +1061,10 @@ public class SQLTemplates extends Templates {
 
     protected void setWrapSelectParameters(boolean b) {
         this.wrapSelectParameters = b;
+    }
+
+    protected void setArraysSupported(boolean b) {
+        this.arraysSupported = b;
     }
 
 }

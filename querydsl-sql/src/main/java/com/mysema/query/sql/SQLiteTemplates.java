@@ -60,6 +60,8 @@ public class SQLiteTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
         setDefaultValues("\ndefault values");
+        setArraysSupported(false);
+
         add(Ops.MOD, "{0} % {1}");
 
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");

@@ -124,6 +124,35 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn(POSTGRES) // TODO generalize array literal projections
+    public void Array() {
+        Expression<Integer[]> expr = Expressions.template(Integer[].class, "'{1,2,3}'::int[]");
+        Integer[] result = query().singleResult(expr);
+        assertEquals(3, result.length);
+        assertEquals(1, result[0].intValue());
+        assertEquals(2, result[1].intValue());
+        assertEquals(3, result[2].intValue());
+    }
+
+    @Test
+    @IncludeIn(POSTGRES) // TODO generalize array literal projections
+    public void Array2() {
+        Expression<int[]> expr = Expressions.template(int[].class, "'{1,2,3}'::int[]");
+        int[] result = query().singleResult(expr);
+        assertEquals(3, result.length);
+        assertEquals(1, result[0]);
+        assertEquals(2, result[1]);
+        assertEquals(3, result[2]);
+    }
+
+    @Test
+    @ExcludeIn({DERBY, HSQLDB})
+    public void Array_Null() {
+        Expression<Integer[]> expr = Expressions.template(Integer[].class, "null");
+        assertNull(query().singleResult(expr));
+    }
+
+    @Test
     public void Array_Projection() {
         List<String[]> results = query().from(employee).list(
                 new ArrayConstructorExpression<String>(String[].class, employee.firstname));
@@ -572,7 +601,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({H2, DERBY})
+    @ExcludeIn({H2, DERBY, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
         NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
         query().from(employee)

@@ -36,6 +36,7 @@ public class FirebirdTemplates extends SQLTemplates {
         setDummyTable("RDB$DATABASE");
         setUnionsWrapped(false);
         setWrapSelectParameters(true);
+        setArraysSupported(false);
 
         // string
         add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");
