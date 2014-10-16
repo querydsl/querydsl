@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.sql.support.SQLExceptionWrapper;
 
 /**
  * Default implementation of the SQLExceptionTranslator interface
@@ -28,14 +29,30 @@ public final class DefaultSQLExceptionTranslator implements SQLExceptionTranslat
 
     public static final SQLExceptionTranslator DEFAULT = new DefaultSQLExceptionTranslator();
 
+    private static final SQLExceptionWrapper WRAPPER = SQLExceptionWrapper.INSTANCE;
+
     @Override
     public RuntimeException translate(SQLException e) {
-        return new QueryException(e);
+        if (containsAdditionalExceptions(e)) {
+            return WRAPPER.wrap(e);
+        } else {
+            return new QueryException(e);
+        }
     }
 
     @Override
     public RuntimeException translate(String sql, List<Object> bindings, SQLException e) {
-        return new QueryException("Caught " + e.getClass().getSimpleName() + " for " + sql, e);
+        String message = "Caught " + e.getClass().getSimpleName()
+                + " for " + sql;
+        if (containsAdditionalExceptions(e)) {
+            return WRAPPER.wrap(message, e);
+        } else {
+            return new QueryException(message, e);
+        }
+    }
+
+    private static boolean containsAdditionalExceptions(SQLException e) {
+        return e.getNextException() != null;
     }
 
     private DefaultSQLExceptionTranslator() {}
