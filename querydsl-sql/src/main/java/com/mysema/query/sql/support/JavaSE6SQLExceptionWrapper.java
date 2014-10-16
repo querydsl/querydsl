@@ -14,9 +14,11 @@
 package com.mysema.query.sql.support;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.mysema.query.QueryException;
 
 /**
@@ -29,21 +31,35 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
 
     @Override
     public RuntimeException wrap(SQLException exception) {
-        return new QueryException(new WrappedSQLCauseException(exception));
+        Iterable<Throwable> linkedSQLExceptions = getLinkedSQLExceptions(exception);
+        return new QueryException(
+                new WrappedSQLCauseException(linkedSQLExceptions, exception));
     }
 
     @Override
     public RuntimeException wrap(String message, SQLException exception) {
-        return new QueryException(message, new WrappedSQLCauseException(exception));
+        Iterable<Throwable> linkedSQLExceptions = getLinkedSQLExceptions(exception);
+        return new QueryException(message,
+                new WrappedSQLCauseException(linkedSQLExceptions, exception));
+    }
+
+    private static Iterable<Throwable> getLinkedSQLExceptions(SQLException exception) {
+        ArrayList<Throwable> rv = Lists.newArrayList();
+        SQLException nextException = exception.getNextException();
+        while (nextException != null) {
+            rv.add(nextException);
+            nextException = nextException.getNextException();
+        }
+        return rv;
     }
 
     private static class WrappedSQLCauseException extends Exception {
 
         private static final long serialVersionUID = 1L;
 
-        public WrappedSQLCauseException(SQLException exception) {
+        private WrappedSQLCauseException(Iterable<Throwable> exceptions, SQLException exception) {
             super("Detailed SQLException information:\n" + Iterables
-                    .transform(exception, exceptionMessageFunction), exception);
+                    .transform(exceptions, exceptionMessageFunction), exception);
         }
     }
     private static final Function<Throwable, String> exceptionMessageFunction = new Function<Throwable, String>() {
