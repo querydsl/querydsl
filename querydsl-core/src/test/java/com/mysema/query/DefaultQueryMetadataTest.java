@@ -58,8 +58,13 @@ public class DefaultQueryMetadataTest {
     }
 
     @Test
-    public void Validation_No_Error() {
+    public void Validation_No_Error_For_GroupBy() {
         metadata.addGroupBy(str);
+    }
+
+    @Test
+    public void Validation_No_Error_For_Having() {
+        metadata.addHaving(str.isNull());
     }
     
     @Test
