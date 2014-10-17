@@ -108,7 +108,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     protected <T> Class<? extends T> validate(String property, Class<T> propertyType) {
-        Class<?  extends T> validatedType = validator.validate(getType(), property, propertyType);
+        Class<T> validatedType = (Class)validator.validate(getType(), property, propertyType);
         if (validatedType != null) {
             return validatedType;
         } else {

@@ -34,18 +34,18 @@ public interface PathBuilderValidator {
      * @param property
      * @param propertyType
      */
-    <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType);
+    Class<?> validate(Class<?> parent, String property, Class<?> propertyType);
 
     public final PathBuilderValidator DEFAULT = new PathBuilderValidator() {
         @Override
-        public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
+        public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             return propertyType;
         }
     };
 
     public final PathBuilderValidator FIELDS = new PathBuilderValidator() {
         @Override
-        public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
+        public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             while (!parent.equals(Object.class)) {
                 try {
                     Field field = parent.getDeclaredField(property);
@@ -66,7 +66,7 @@ public interface PathBuilderValidator {
 
     public final PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
         @Override
-        public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
+        public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             Method getter = BeanUtils.getAccessor("get", property, parent);
             if (getter == null && Primitives.wrap(propertyType).equals(Boolean.class)) {
                 getter = BeanUtils.getAccessor("is", property, parent);

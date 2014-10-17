@@ -38,7 +38,7 @@ public class JPAPathBuilderValidator implements PathBuilderValidator {
     }
 
     @Override
-    public <T> Class<? extends T> validate(Class<?> parent, String property, Class<T> propertyType) {
+    public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
         try {
             ManagedType managedType = metamodel.managedType(parent);
             Attribute attribute = managedType.getAttribute(property);
