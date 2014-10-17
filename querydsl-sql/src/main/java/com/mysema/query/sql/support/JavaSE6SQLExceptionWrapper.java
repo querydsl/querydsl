@@ -13,10 +13,15 @@
  */
 package com.mysema.query.sql.support;
 
+import static com.google.common.base.StandardSystemProperty.LINE_SEPARATOR;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.query.QueryException;
@@ -58,22 +63,24 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
         private static final long serialVersionUID = 1L;
 
         private WrappedSQLCauseException(Iterable<Throwable> exceptions, SQLException exception) {
-            super("Detailed SQLException information:\n" + Iterables
-                    .transform(exceptions, exceptionMessageFunction), exception);
+            super("Detailed SQLException information:" + LINE_SEPARATOR.value()
+                    + lineJoiner.join(Iterables
+                            .transform(exceptions, exceptionMessageFunction)), exception);
         }
     }
+
+    private static final Joiner lineJoiner = Joiner.on(LINE_SEPARATOR.value());
     private static final Function<Throwable, String> exceptionMessageFunction = new Function<Throwable, String>() {
         @Override
         public String apply(Throwable input) {
             if (input instanceof SQLException) {
                 SQLException sqle = (SQLException) input;
-                return new StringBuilder()
-                        .append("SQLState: ").append(sqle.getSQLState())
-                        .append(", ")
-                        .append("ErrorCode: ").append(sqle.getErrorCode())
-                        .append(", ")
-                        .append("Message: ").append(sqle.getMessage())
-                        .toString();
+                StringWriter writer = new StringWriter();
+                new PrintWriter(writer, true)
+                        .printf("SQLState: %s%n", sqle.getSQLState())
+                        .printf("ErrorCode: %s%n", sqle.getErrorCode())
+                        .printf("Message: %s%n", sqle.getMessage());
+                return writer.toString();
             }
             return input.toString();
         }
