@@ -35,8 +35,9 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
                 .values("New Survey", "New Survey"));
         Exception result = null;
         try {
-            execute(update(survey).set(survey.id, 1)
-                    .addBatch());
+            execute(update(survey)
+                    .set(survey.id, 1).addBatch()
+                    .set(survey.id, 2).addBatch());
         } catch (QueryException e) {
             result = e;
         }
