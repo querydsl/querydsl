@@ -24,6 +24,11 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
                 .execute("ALTER TABLE SURVEY ADD CONSTRAINT UNIQUE_ID UNIQUE(ID)");
     }
 
+    public static void tearDown() throws Exception {
+        Connections.getConnection().createStatement()
+                .execute("ALTER TABLE SURVEY DROP CONSTRAINT UNIQUE_ID");
+    }
+
     @Test
     public void UpdateBatchFailed() {
         execute(insert(survey).columns(survey.name, survey.name2)
