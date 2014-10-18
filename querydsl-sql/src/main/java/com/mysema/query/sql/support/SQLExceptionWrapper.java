@@ -19,10 +19,10 @@ import java.sql.SQLException;
 
 /**
  * A {@code SQLExceptionWrapper} is used to accommodate for
- * {@literal Java™ 7}'s suppressed exceptions.
+ * Java™ 7's suppressed exceptions.
  *
  * <p>
- * When {@literal Java™ 6} is used, a fallback {@code SQLExceptionWrapper}
+ * When Java™ 6 is used, a fallback {@code SQLExceptionWrapper}
  * that produces similar output is used instead.
  * </p>
  * @author Shredder121
