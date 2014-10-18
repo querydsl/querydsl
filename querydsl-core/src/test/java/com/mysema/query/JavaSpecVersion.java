@@ -18,7 +18,7 @@ import static com.google.common.base.StandardSystemProperty.JAVA_SPECIFICATION_V
 /**
  * The different Java™ specification versions.
  *
- * @author Ruben
+ * @author Shredder121
  */
 public enum JavaSpecVersion {
 
