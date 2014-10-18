@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import com.google.common.base.Throwables;
 import com.mysema.query.AbstractBaseTest;
 import com.mysema.query.Connections;
+import com.mysema.query.JavaSpecVersion;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.H2Templates;
 
@@ -42,7 +43,15 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
             result = e;
         }
         assertNotNull(result);
-        assertTrue(Throwables.getStackTraceAsString(result)
-                .contains("Suppressed"));
+        String stackTraceAsString = Throwables.getStackTraceAsString(result);
+        switch (JavaSpecVersion.CURRENT) {
+            case JAVA6:
+                assertTrue(stackTraceAsString
+                        .contains("Detailed SQLException information:"));
+                break;
+            default://Java™ 7 and higher
+                assertTrue(stackTraceAsString
+                        .contains("Suppressed:"));
+        }
     }
 }
