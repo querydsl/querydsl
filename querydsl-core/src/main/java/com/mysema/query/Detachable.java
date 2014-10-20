@@ -58,7 +58,7 @@ public interface Detachable {
      * Create a multi row subquery expression for the given projection
      *
      * @param args
-     * @return
+     * @return a view of the subquery result as a list
      */
     ListSubQuery<Tuple> list(Expression<?>... args);
     
@@ -67,7 +67,7 @@ public interface Detachable {
      * Non expression arguments are converted into constant expressions
      * 
      * @param args
-     * @return
+     * @return a view of the subquery result as a list
      */
     ListSubQuery<Tuple> list(Object... args);
 
@@ -77,7 +77,7 @@ public interface Detachable {
      * @param <RT>
      *            generic type of the List
      * @param projection
-     * @return
+     * @return a view of the subquery result as a list
      */
     <RT> ListSubQuery<RT> list(Expression<RT> projection);
     
@@ -102,7 +102,7 @@ public interface Detachable {
      * Non expression arguments are converted into constant expressions
      * 
      * @param args
-     * @return
+     * @return a view of the subquery result as a single value
      */
     SimpleSubQuery<Tuple> unique(Object... args);
 
@@ -112,7 +112,7 @@ public interface Detachable {
      * @param <RT>
      *            return type
      * @param projection
-     * @return 
+     * @return a view of the subquery result as a single value
      */
     <RT> SimpleSubQuery<RT> unique(Expression<RT> projection);
 
@@ -120,7 +120,7 @@ public interface Detachable {
      * Create a single row subquery expression for the given projection
      *
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     BooleanSubQuery unique(Predicate projection);
 
@@ -128,7 +128,7 @@ public interface Detachable {
      * Create a single row subquery expression for the given projection
      *
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     StringSubQuery unique(StringExpression projection);
 
@@ -137,7 +137,7 @@ public interface Detachable {
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection);
 
@@ -146,7 +146,7 @@ public interface Detachable {
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     <RT extends Comparable<?>> DateSubQuery<RT> unique(DateExpression<RT> projection);
 
@@ -155,7 +155,7 @@ public interface Detachable {
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(DateTimeExpression<RT> projection);
 
@@ -164,7 +164,7 @@ public interface Detachable {
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection);
 
@@ -173,7 +173,7 @@ public interface Detachable {
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
      */
     <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection);
 
