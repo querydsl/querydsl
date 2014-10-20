@@ -157,6 +157,7 @@ public interface Detachable {
      *
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     BooleanSubQuery unique(Predicate projection);
 
@@ -165,6 +166,7 @@ public interface Detachable {
      *
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     StringSubQuery unique(StringExpression projection);
 
@@ -174,6 +176,7 @@ public interface Detachable {
      * @param <RT>
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection);
 
@@ -183,6 +186,7 @@ public interface Detachable {
      * @param <RT>
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> DateSubQuery<RT> unique(DateExpression<RT> projection);
 
@@ -192,6 +196,7 @@ public interface Detachable {
      * @param <RT>
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(DateTimeExpression<RT> projection);
 
@@ -201,6 +206,7 @@ public interface Detachable {
      * @param <RT>
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection);
 
@@ -210,6 +216,7 @@ public interface Detachable {
      * @param <RT>
      * @param projection
      * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection);
 
