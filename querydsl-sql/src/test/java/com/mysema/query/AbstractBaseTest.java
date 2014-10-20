@@ -14,7 +14,9 @@
 package com.mysema.query;
 
 import java.util.List;
+
 import javax.annotation.Nullable;
+
 import java.sql.Connection;
 
 import com.mysema.query.sql.*;
@@ -24,11 +26,15 @@ import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
+
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import static org.junit.Assert.assertEquals;
+
+import com.mysema.query.dml.DMLClause;
 
 public abstract class AbstractBaseTest {
 
@@ -155,6 +161,14 @@ public abstract class AbstractBaseTest {
 
     protected SQLSubQuery sq() {
         return new SQLSubQuery();
+    }
+
+    protected long execute(DMLClause<?>... clauses) {
+        long execute = 0;
+        for (DMLClause<?> clause : clauses) {
+            execute += clause.execute();
+        }
+        return execute;
     }
 
 }
