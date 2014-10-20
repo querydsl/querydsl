@@ -43,12 +43,20 @@ public interface Detachable {
     /**
      * Return the count of matched rows as a sub query
      *
+     * <p>Usage</p>
+     *
+     * {@code query.where(subQuery.from(customer).where(...).count().gt(1)) }
+     *
      * @return
      */
     NumberSubQuery<Long> count();
 
     /**
      * Create an exists(this) expression
+     *
+     * <p>Usage</p>
+     *
+     * {@code query.where(subQuery.from(customer).where(...).exists()) }
      *
      * @return
      */
@@ -74,6 +82,10 @@ public interface Detachable {
     /**
      * Create a multi row subquery expression for the given projection
      *
+     * <p>Usage</p>
+     *
+     * {@code customer.name.in(subQuery.from(customer).where(...).list(customer.name))}
+     *
      * @param <RT>
      *            generic type of the List
      * @param projection
@@ -84,6 +96,10 @@ public interface Detachable {
 
     /**
      * Create an not exists(this) expression
+     *
+     * <p>Usage</p>
+     *
+     * {@code query.where(subQuery.from(customer).where(...).notExists()) }
      *
      * @return
      */
@@ -108,6 +124,10 @@ public interface Detachable {
 
     /**
      * Create a single row subquery expression for the given projection
+     *
+     * <p>Usage</p>
+     *
+     * {@code person.age.eq(subQuery.from(person).unique(person.age.max())) }
      *
      * @param <RT>
      *            return type
