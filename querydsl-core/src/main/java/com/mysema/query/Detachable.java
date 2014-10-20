@@ -65,6 +65,10 @@ public interface Detachable {
     /**
      * Create a multi row subquery expression for the given projection
      *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).list(person.firstName, person.lastName).countDistinct() }
+     *
      * @param args
      * @return a view of the subquery result as a list
      */
@@ -72,7 +76,11 @@ public interface Detachable {
     
     /**
      * Create a multi row subquery expression for the given projection
-     * Non expression arguments are converted into constant expressions
+     * <p>Non expression arguments are converted into constant expressions</p>
+     *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).list(person.firstName, "M")}
      * 
      * @param args
      * @return a view of the subquery result as a list
@@ -108,6 +116,10 @@ public interface Detachable {
     /**
      * Create a single row subquery expression for the given projection
      *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).unique(person.firstName, person.lastName)}
+     *
      * @param args
      * @return
      */
@@ -115,7 +127,11 @@ public interface Detachable {
     
     /**
      * Create a single row subquery expression for the given projection
-     * Non expression arguments are converted into constant expressions
+     * <p>Non expression arguments are converted into constant expressions</p>
+     *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).unique(person.firstName, "M")}
      * 
      * @param args
      * @return a view of the subquery result as a single value
