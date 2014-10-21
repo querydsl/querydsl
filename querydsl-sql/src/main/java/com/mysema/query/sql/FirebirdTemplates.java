@@ -1,17 +1,13 @@
 package com.mysema.query.sql;
 
 import java.sql.Types;
-import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
 
 public class FirebirdTemplates extends SQLTemplates {
 
-    protected static final Set<String> FIREBIRD_RESERVED_WORDS
-            = ImmutableSet.of();
     private String limitOffsetTemplate = "\nrows {0} to {1}";
 
     private String limitTemplate = "\nrows {0}";
