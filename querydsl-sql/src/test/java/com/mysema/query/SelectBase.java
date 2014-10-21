@@ -668,6 +668,12 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Keywords() {
+        QEmployee from = new QEmployee("from");
+        query().from(QEmployee.employee.as(from)).singleResult(from.firstname.as("from"));
+    }
+
+    @Test
     public void Left_Join() throws SQLException {
         query().from(employee).leftJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
