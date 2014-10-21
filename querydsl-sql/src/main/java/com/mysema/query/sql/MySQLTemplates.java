@@ -93,6 +93,7 @@ public class MySQLTemplates extends SQLTemplates {
 
     public MySQLTemplates(char escape, boolean quote) {
         super(MYSQL_RESERVED_WORDS, "`", escape, quote);
+        setArraysSupported(false);
         setParameterMetadataAvailable(false);
         setLimitRequired(true);
         setNullsFirst(null);

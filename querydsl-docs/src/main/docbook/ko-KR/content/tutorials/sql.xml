@@ -44,32 +44,40 @@
 
     <para>코드 생성은 주로 메이븐 플러그인을 통해서 수행한다. 다음은 설정 예다.</para>
 
-    <programlisting language="xml"><![CDATA[   
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${querydsl.version}</version>
-  <executions>
-    <execution>
-      <goals>
-        <goal>export</goal>
-      </goals>
-    </execution>            
-  </executions>
-  <configuration>
-    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-    <packageName>com.myproject.domain</packageName>
-    <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
-  </configuration>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>${derby.version}</version>
-    </dependency>
-  </dependencies>
-</plugin>  
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>export</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+          <packageName>com.myproject.domain</packageName>
+          <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
     <para>

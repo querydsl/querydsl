@@ -20,22 +20,32 @@ The Mongodb module provides integration with the Mongodb API.
 
 And now, configure the Maven APT plugin which generates the query types used by Querydsl :
 
-    <plugin>
-      <groupId>com.mysema.maven</groupId>
-      <artifactId>apt-maven-plugin</artifactId>
-      <version>1.0.6</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>process</goal>
-          </goals>
-          <configuration>
-            <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor</processor>
-          </configuration>
-        </execution>
-      </executions>
-    </plugin>
+```XML
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>apt-maven-plugin</artifactId>
+        <version>1.0.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
+              <processor>com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
+```
 
 The MorphiaAnnotationProcessor finds domain types annotated with the com.google.code.morphia.annotations.Entity annotation and generates Querydsl query types for them.
 
@@ -59,4 +69,4 @@ Querying with Querydsl Mongodb with Morphia is as simple as this :
         .list();
 
 
-For more information on the Querydsl Mongodb module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s06.html
+For more information on the Querydsl Mongodb module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html

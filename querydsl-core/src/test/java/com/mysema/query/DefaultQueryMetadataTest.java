@@ -13,19 +13,15 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
-
-import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class DefaultQueryMetadataTest {
 
@@ -47,18 +43,28 @@ public class DefaultQueryMetadataTest {
     
     @Test
     public void AddHaving_With_Null() {
-        metadata.addWhere((Predicate)null);
+        metadata.addHaving((Predicate)null);
     }
     
     @Test
     public void AddHaving_With_BooleanBuilder() {
-        metadata.addWhere(new BooleanBuilder());
+        metadata.addHaving(new BooleanBuilder());
     }
     
     
     @Test(expected=IllegalArgumentException.class)
     public void Validation() {
+        metadata.addWhere(str.isNull());
+    }
+
+    @Test
+    public void Validation_No_Error_For_GroupBy() {
         metadata.addGroupBy(str);
+    }
+
+    @Test
+    public void Validation_No_Error_For_Having() {
+        metadata.addHaving(str.isNull());
     }
     
     @Test
@@ -151,6 +157,14 @@ public class DefaultQueryMetadataTest {
         assertFalse(metadata.isUnique());
         metadata.setUnique(true);
         assertTrue(metadata.isUnique());
+    }
+
+    @Test
+    public void JoinShouldBeCommitted() {
+        DefaultQueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, str);
+        DefaultQueryMetadata emptyMetadata = new DefaultQueryMetadata();
+        assertFalse(md.equals(emptyMetadata));
     }
 
     @Test

@@ -19,11 +19,8 @@ import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinType;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.*;
 import com.mysema.query.sql.types.Null;
@@ -32,6 +29,7 @@ import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
 /**
  * SQLMergeClause defines an MERGE INTO clause
  *
@@ -248,16 +246,15 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                     }
                 };
             } else {
-                List<?> ids = getIds();
-                if (!ids.isEmpty()) {
+                if (hasRow()) {
                     // update
-                    SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
+                    SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
                     populate(update);
-                    update.where(ExpressionUtils.in((Expression)getKeys().get(0),ids));
+                    addKeyConditions(update);
                     return EmptyResultSet.DEFAULT;
                 } else {
                     // insert
-                    SQLInsertClause insert = new SQLInsertClause(connection, configuration.getTemplates(), entity);
+                    SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
                     populate(insert);
                     return insert.executeWithKeys();
                 }
@@ -296,31 +293,36 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         }
     }
 
-    private List<?> getIds() {
-         // select
-        SQLQuery query = new SQLQuery(connection, configuration.getTemplates()).from(entity);
+    private boolean hasRow() {
+        SQLQuery query = new SQLQuery(connection, configuration).from(entity);
+        addKeyConditions(query);
+        return query.exists();
+    }
+
+    private void addKeyConditions(FilteredClause query) {
+        List<? extends Path<?>> keys = getKeys();
         for (int i=0; i < columns.size(); i++) {
-            if (values.get(i) instanceof NullExpression) {
-                query.where(ExpressionUtils.isNull(columns.get(i)));
-            } else {
-                query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));
+            if (keys.contains(columns.get(i))) {
+                if (values.get(i) instanceof NullExpression) {
+                    query.where(ExpressionUtils.isNull(columns.get(i)));
+                } else {
+                    query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));
+                }
             }
         }
-        return query.list(getKeys().get(0));
     }
 
     @SuppressWarnings("unchecked")
     private long executeCompositeMerge() {
-        List<?> ids = getIds();
-        if (!ids.isEmpty()) {
+        if (hasRow()) {
             // update
-            SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
+            SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
             populate(update);
-            update.where(ExpressionUtils.in((Expression)getKeys().get(0),ids));
+            addKeyConditions(update);
             return update.execute();
         } else {
             // insert
-            SQLInsertClause insert = new SQLInsertClause(connection, configuration.getTemplates(), entity);
+            SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
             populate(insert);
             return insert.execute();
 

@@ -1,11 +1,10 @@
 package com.mysema.query.collections;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class AggregationTest extends AbstractQueryTest {
 
@@ -50,6 +49,11 @@ public class AggregationTest extends AbstractQueryTest {
     @Test
     public void Min() {
         assertEquals(Integer.valueOf(2), query.uniqueResult(cat.weight.min()));
+    }
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void Min_And_Max() {
+        query.uniqueResult(cat.weight.min(), cat.weight.max());
     }
 
     @Test

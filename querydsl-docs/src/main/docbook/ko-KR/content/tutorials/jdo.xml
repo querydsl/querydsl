@@ -411,31 +411,39 @@ WHERE this.weeklyhours >
     </para>
 
     <programlisting language="xml"><![CDATA[
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${project.version}</version>
-  <executions>
-    <execution>
-      <goals>
-        <goal>export</goal>
-      </goals>
-    </execution>            
-  </executions>
-  <configuration>
-    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-    <packageName>com.mycompany.mydomain</packageName>
-    <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> 
-  </configuration>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>${derby.version}</version>
-    </dependency>
-  </dependencies>
-</plugin>
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>export</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+          <packageName>com.mycompany.mydomain</packageName>
+          <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
     <para>지정한 위치에 쿼리 타입을 성공적으로 생성했다면, 쿼리에서 그 타입을 사용할 수 있다.

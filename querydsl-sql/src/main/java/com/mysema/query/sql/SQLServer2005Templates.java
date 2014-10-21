@@ -22,6 +22,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 
@@ -64,6 +65,9 @@ public class SQLServer2005Templates extends SQLServerTemplates {
 
     public SQLServer2005Templates(char escape, boolean quote) {
         super(escape, quote);
+        //The older MSSQL Server suite doesn't support logarithms with a base other
+        //than 10 and the natural logarithm, so we do it manually
+        add(Ops.MathOps.LOG, "(LOG({0}) / LOG({1}))");
     }
 
     @Override

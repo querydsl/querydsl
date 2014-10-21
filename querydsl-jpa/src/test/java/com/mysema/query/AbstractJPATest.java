@@ -40,7 +40,6 @@ import com.mysema.query.types.*;
 import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.*;
 import com.mysema.testutil.ExcludeIn;
-import com.mysema.testutil.IncludeIn;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -950,10 +949,10 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @IncludeIn(Target.H2)
     @NoBatooJPA
     public void Not_In_Empty() {
-        query().from(cat).where(cat.name.notIn(Collections.<String>emptyList())).count();
+        long count = query().from(cat).count();
+        assertEquals(count, query().from(cat).where(cat.name.notIn(Collections.<String>emptyList())).count());
     }
 
     @Test

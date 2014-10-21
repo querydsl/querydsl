@@ -43,6 +43,10 @@ public interface Detachable {
     /**
      * Return the count of matched rows as a sub query
      *
+     * <p>Usage</p>
+     *
+     * {@code query.where(subQuery.from(customer).where(...).count().gt(1)) }
+     *
      * @return
      */
     NumberSubQuery<Long> count();
@@ -50,34 +54,50 @@ public interface Detachable {
     /**
      * Create an exists(this) expression
      *
+     * <p>Usage</p>
+     *
+     * {@code query.where(subQuery.from(customer).where(...).exists()) }
+     *
      * @return
      */
     BooleanExpression exists();
 
     /**
-     * Create a projection expression for the given projection
+     * Create a multi row subquery expression for the given projection
+     *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).list(person.firstName, person.lastName).countDistinct() }
      *
      * @param args
-     * @return
+     * @return a view of the subquery result as a list
      */
     ListSubQuery<Tuple> list(Expression<?>... args);
     
     /**
-     * Create a projection expression for the given projection
-     * Non expression arguments are converted into constant expressions
+     * Create a multi row subquery expression for the given projection
+     * <p>Non expression arguments are converted into constant expressions</p>
+     *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).list(person.firstName, "M")}
      * 
      * @param args
-     * @return
+     * @return a view of the subquery result as a list
      */
     ListSubQuery<Tuple> list(Object... args);
 
     /**
-     * Create a projection expression for the given projection
+     * Create a multi row subquery expression for the given projection
+     *
+     * <p>Usage</p>
+     *
+     * {@code customer.name.in(subQuery.from(customer).where(...).list(customer.name))}
      *
      * @param <RT>
      *            generic type of the List
      * @param projection
-     * @return a List over the projection
+     * @return a view of the subquery result as a list
      */
     <RT> ListSubQuery<RT> list(Expression<RT> projection);
     
@@ -85,12 +105,20 @@ public interface Detachable {
     /**
      * Create an not exists(this) expression
      *
+     * <p>Usage</p>
+     *
+     * {@code query.where(subQuery.from(customer).where(...).notExists()) }
+     *
      * @return
      */
     BooleanExpression notExists();
 
     /**
-     * Create a projection expression for the given projection
+     * Create a single row subquery expression for the given projection
+     *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).unique(person.firstName, person.lastName)}
      *
      * @param args
      * @return
@@ -98,82 +126,97 @@ public interface Detachable {
     SimpleSubQuery<Tuple> unique(Expression<?>... args);
     
     /**
-     * Create a projection expression for the given projection
-     * Non expression arguments are converted into constant expressions
+     * Create a single row subquery expression for the given projection
+     * <p>Non expression arguments are converted into constant expressions</p>
+     *
+     * <p>Usage</p>
+     *
+     * {@code subQuery.from(person).unique(person.firstName, "M")}
      * 
      * @param args
-     * @return
+     * @return a view of the subquery result as a single value
      */
     SimpleSubQuery<Tuple> unique(Object... args);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
+     *
+     * <p>Usage</p>
+     *
+     * {@code person.age.eq(subQuery.from(person).unique(person.age.max())) }
      *
      * @param <RT>
      *            return type
      * @param projection
-     * @return the result or null for an empty result
+     * @return a view of the subquery result as a single value
      */
     <RT> SimpleSubQuery<RT> unique(Expression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     BooleanSubQuery unique(Predicate projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     StringSubQuery unique(StringExpression projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> DateSubQuery<RT> unique(DateExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(DateTimeExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection);
 
     /**
-     * Create a subquery expression for the given projection
+     * Create a single row subquery expression for the given projection
      *
      * @param <RT>
      * @param projection
-     * @return
+     * @return a view of the subquery result as a single value
+     * @see #unique(com.mysema.query.types.Expression)
      */
     <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection);
 

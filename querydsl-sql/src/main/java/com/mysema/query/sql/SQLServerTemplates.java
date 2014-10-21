@@ -55,6 +55,7 @@ public class SQLServerTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
         setDefaultValues("\ndefault values");
+        setArraysSupported(false);
 
         // String
         add(Ops.CONCAT, "{0} + {1}", 13);
@@ -71,12 +72,20 @@ public class SQLServerTemplates extends SQLTemplates {
 
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
         add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2})");
+        add(Ops.StringOps.LPAD, "right(replicate(' ', {1}) + left({0}, {1}), {1})");
+        add(Ops.StringOps.LPAD2, "right(replicate({2}, {1}) + left({0}, {1}), {1})");
+        add(Ops.StringOps.RPAD, "left(left({0}, {1}) + replicate(' ', {1}), {1})");
+        add(Ops.StringOps.RPAD2, "left(left({0}, {1}) + replicate({2}, {1}), {1})");
 
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
         add(Ops.MOD, "{0} % {1}", 10);
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.LN, "log({0})");
+        add(Ops.MathOps.LOG, "log({0}, {1})");
+        add(Ops.MathOps.POWER, "power({0}, {1})");
+        add(Ops.MathOps.ROUND, "round({0}, 0)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 

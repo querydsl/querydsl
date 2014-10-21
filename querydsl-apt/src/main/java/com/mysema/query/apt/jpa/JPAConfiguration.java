@@ -56,6 +56,7 @@ public class JPAConfiguration extends DefaultConfiguration {
         this.annotations = getAnnotations();
         // TODO replace with proper injection in Querydsl 4.0.0
         this.types = AbstractQuerydslProcessor.TYPES;
+        setStrictMode(true);
     }
 
     @SuppressWarnings("unchecked")

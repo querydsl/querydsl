@@ -55,4 +55,4 @@ which is transformed into the following Lucene query :
      
     +year:[1800 TO 2000] +title:huckle*
 
-For more information on the Querydsl Lucene module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html    
+For more information on the Querydsl Lucene module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s05.html

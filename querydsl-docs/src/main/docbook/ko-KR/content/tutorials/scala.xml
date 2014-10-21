@@ -200,39 +200,47 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
         다음은 설정 예다.
       </para>
 
-      <programlisting language="xml"><![CDATA[      
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${querydsl.version}</version>
-  <configuration>
-    <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-    <jdbcUrl>jdbc:mysql://localhost:3306/test</jdbcUrl>
-    <jdbcUser>matko</jdbcUser>
-    <jdbcPassword>matko</jdbcPassword>			
-    <packageName>com.example.schema</packageName>
-    <targetFolder>${project.basedir}/src/main/scala</targetFolder>
-    <exportBeans>true</exportBeans>
-    <createScalaSources>true</createScalaSources>    		    
-  </configuration>
-  <dependencies>
-    <dependency>
-      <groupId>mysql</groupId>
-	  <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.16</version>
-	</dependency>
-	  <dependency>
-    	<groupId>com.mysema.querydsl</groupId>
-    	<artifactId>querydsl-scala</artifactId>
-    	<version>${querydsl.version}</version>
-  	  </dependency>
-  	  <dependency>
-    	<groupId>org.scala-lang</groupId>
-    	<artifactId>scala-library</artifactId>
-    	<version>${scala.version}</version>
-  	  </dependency>
-  </dependencies>
-</plugin>     
+      <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <configuration>
+          <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+          <jdbcUrl>jdbc:mysql://localhost:3306/test</jdbcUrl>
+          <jdbcUser>matko</jdbcUser>
+          <jdbcPassword>matko</jdbcPassword>
+          <packageName>com.example.schema</packageName>
+          <targetFolder>${project.basedir}/src/main/scala</targetFolder>
+          <exportBeans>true</exportBeans>
+          <createScalaSources>true</createScalaSources>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.16</version>
+          </dependency>
+          <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-scala</artifactId>
+            <version>${querydsl.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
       <para>querydsl:export 메이븐 골을 실행한다.</para>

@@ -13,17 +13,11 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.collections.CollQueryFactory.from;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Test;
 
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
@@ -31,6 +25,10 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import org.junit.Test;
+import static com.mysema.query.collections.CollQueryFactory.from;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CollQueryTest extends AbstractQueryTest {
 
@@ -158,6 +156,16 @@ public class CollQueryTest extends AbstractQueryTest {
         for (BigDecimal num : nums) {
             assertEquals(-1, num.compareTo(new BigDecimal("35")));
         }
+    }
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void GroupBy() {
+        query().from(cat, cats).groupBy(cat.name);
+    }
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void Having() {
+        query().from(cat, cats).having(cat.name.isNull());
     }
 
 }

@@ -47,32 +47,40 @@
     <para>This functionality should be primarily used via the Maven plugin. Here is an example:
     </para>
 
-    <programlisting language="xml"><![CDATA[   
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${querydsl.version}</version>
-  <executions>
-    <execution>
-      <goals>
-        <goal>export</goal>
-      </goals>
-    </execution>            
-  </executions>
-  <configuration>
-    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-    <packageName>com.myproject.domain</packageName>
-    <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
-  </configuration>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>${derby.version}</version>
-    </dependency>
-  </dependencies>
-</plugin>  
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>export</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+          <packageName>com.myproject.domain</packageName>
+          <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
     <para>

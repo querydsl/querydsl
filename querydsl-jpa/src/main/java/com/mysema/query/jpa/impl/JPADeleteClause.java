@@ -19,12 +19,12 @@ import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import java.util.Map;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
+import com.mysema.query.jpa.JPAQueryMixin;
 import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Predicate;
 
@@ -36,7 +36,7 @@ import com.mysema.query.types.Predicate;
  */
 public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
 
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
+    private final QueryMixin queryMixin = new JPAQueryMixin();
 
     private final EntityManager entityManager;
 
@@ -52,27 +52,27 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
     public JPADeleteClause(EntityManager entityManager, EntityPath<?> entity, JPQLTemplates templates) {
         this.entityManager = entityManager;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity);
+        queryMixin.addJoin(JoinType.DEFAULT, entity);
     }
 
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForDelete(metadata);
+        serializer.serializeForDelete(queryMixin.getMetadata());
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
         if (lockMode != null) {
             query.setLockMode(lockMode);
         }
-        JPAUtil.setConstants(query, constants, metadata.getParams());
+        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
     
     @Override
     public JPADeleteClause where(Predicate... o) {
         for (Predicate p : o) {
-            metadata.addWhere(p);    
+            queryMixin.where(p);
         }        
         return this;
     }
@@ -85,7 +85,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForDelete(metadata);
+        serializer.serializeForDelete(queryMixin.getMetadata());
         return serializer.toString();
     }
 
