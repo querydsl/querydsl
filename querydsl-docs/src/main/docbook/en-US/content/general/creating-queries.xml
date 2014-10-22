@@ -129,6 +129,18 @@ entityPath.getMap("map", String.class, String.class).get("key");
 entityPath.getMap("map", String.class, String.class, StringPath.class).get("key").lower();
 ]]></programlisting>
 
+    <para>For PathBuilder validation a PathBuilderValidator can be used. It can be injected in the constructor
+    and will be used transitively for the new PathBuilder</para>
+
+    <programlisting language="java"><![CDATA[
+PathBuilder<Customer> customer = new PathBuilder<Customer>(Customer.class, "customer", validator);
+]]></programlisting>
+
+    <para>PathBuilderValidator.FIELDS will verify field existence, PathBuilderValidator.PROPERTIES validates
+      Bean properties and JPAPathBuilderValidator validates using a JPA metamodel.
+    </para>
+
+
   </sect2>
 
   <sect2>
