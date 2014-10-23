@@ -629,6 +629,15 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn({HSQLDB, MYSQL, POSTGRES, TERADATA, ORACLE})
+    public void In_Multiple_Columns() {
+        query().from(employee)
+                .where(Expressions.list(employee.firstname, employee.lastname)
+                        .in(sq().from(employee).list(employee.firstname, employee.lastname)))
+                .list(employee);
+    }
+
+    @Test
     public void NotIn_Empty() {
         long count = query().from(employee).count();
         assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of())).count());
