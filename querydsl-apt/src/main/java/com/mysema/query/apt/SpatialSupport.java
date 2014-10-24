@@ -66,9 +66,6 @@ public final class SpatialSupport {
     public static void addSupport(AbstractModule module) {
         registerTypes(module.get(TypeMappings.class));
         addImports(module,"com.mysema.query.spatial.path");
-    }
-    
-    public static void addJTSSupport(AbstractModule module) {
     	registerJTSTypes(module.get(TypeMappings.class));
     	addImports(module,"com.mysema.query.spatial.jts.path");
     }
