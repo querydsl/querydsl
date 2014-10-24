@@ -178,6 +178,14 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
+        try {
+            // register additional mappings, if querydsl-spatial is on the classpath
+            Class.forName("com.mysema.query.spatial.GeometryExpression");
+            SpatialSupport.addSupport(module);
+        } catch (Exception e) {
+            // do nothing
+        }
+
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");
 

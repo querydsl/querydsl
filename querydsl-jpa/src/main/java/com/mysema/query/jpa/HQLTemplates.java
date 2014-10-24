@@ -95,6 +95,14 @@ public class HQLTemplates extends JPQLTemplates {
 
         add(Ops.CONTAINS_KEY, "{1} in indices({0})");
         add(Ops.CONTAINS_VALUE, "{1} in elements({0})");
+
+        // add Hibernate Spatial mappings, if on classpath
+        try {
+            Class cl = Class.forName("com.mysema.query.spatial.hibernate.HibernateSpatialSupport");
+            add((Map)cl.getMethod("getSpatialOps").invoke(null));
+        } catch (Exception e) {
+            // do nothing
+        }
     }
 
     @Override
