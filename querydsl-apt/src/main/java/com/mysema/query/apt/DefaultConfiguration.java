@@ -183,6 +183,14 @@ public class DefaultConfiguration implements Configuration {
         } catch (Exception e) {
             // do nothing
         }
+        
+        try {
+        	// register additional mappings, if querydsl-spatial and JTS is on the classpath
+        	Class.forName("com.mysema.query.spatial.jts.JTSGeometryExpression");
+        	SpatialSupport.addJTSSupport(module);
+        } catch (Exception e) {
+        	// do nothing
+        }
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");

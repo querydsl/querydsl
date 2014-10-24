@@ -31,10 +31,27 @@ public final class SpatialSupport {
                     new SimpleType("com.mysema.query.spatial.path." + entry.getValue()));
         }
     }
+    
+    private static void registerJTSTypes(TypeMappings typeMappings) {
+    	Map<String, String> additions = Maps.newHashMap();
+    	additions.put("Geometry", "GeometryPath");
+    	additions.put("GeometryCollection", "GeometryCollectionPath");
+    	additions.put("LinearRing", "LinearRingPath");
+    	additions.put("LineString", "LineStringPath");
+    	additions.put("MultiLineString", "MultiLineStringPath");
+    	additions.put("MultiPoint", "MultiPointPath");
+    	additions.put("MultiPolygon", "MultiPolygonPath");
+    	additions.put("Point", "PointPath");
+    	additions.put("Polygon", "PolygonPath");
+    	for (Map.Entry<String, String> entry : additions.entrySet()) {
+    		typeMappings.register(
+    				new SimpleType("com.vividsolutions.jts.geom."+ entry.getKey()),
+    				new SimpleType("com.mysema.query.spatial.jts.path." + entry.getValue()));
+    	}
+    }
 
-    private static void addImports(AbstractModule module) {
+    private static void addImports(AbstractModule module, String packageName) {
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
-        String packageName = "com.mysema.query.spatial.path";
         if (imports.isEmpty()) {
             imports = ImmutableSet.of(packageName);
         } else {
@@ -48,7 +65,12 @@ public final class SpatialSupport {
 
     public static void addSupport(AbstractModule module) {
         registerTypes(module.get(TypeMappings.class));
-        addImports(module);
+        addImports(module,"com.mysema.query.spatial.path");
+    }
+    
+    public static void addJTSSupport(AbstractModule module) {
+    	registerJTSTypes(module.get(TypeMappings.class));
+    	addImports(module,"com.mysema.query.spatial.jts.path");
     }
 
     private SpatialSupport() {}
