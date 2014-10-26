@@ -1172,6 +1172,14 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void SubQuery4() {
+        QCat cat = QCat.cat;
+        QCat other = new QCat("other");
+        query().from(cat)
+               .list(cat.name, new JPASubQuery().from(other).where(other.name.eq(cat.name)).count());
+    }
+
+    @Test
     public void Substring() {
         for (String str : query().from(cat).list(cat.name.substring(1,2))) {
             assertEquals(1, str.length());
