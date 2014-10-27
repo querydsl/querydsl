@@ -70,6 +70,11 @@ public class CollectionTest extends AbstractJDOTest {
     public void Collection_Any_And() {
         query(store, store.products.any().name.eq("Sony Discman").and(store.products.any().price.gt(10.0)));
     }
+
+    @Test
+    public void Collection_Any_Count() {
+        query().from(store).where(store.products.any().name.eq("Sony Discman")).count();
+    }
     
     @Test
     @Ignore // Not supported
