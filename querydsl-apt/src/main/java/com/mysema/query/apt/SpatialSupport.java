@@ -31,10 +31,27 @@ public final class SpatialSupport {
                     new SimpleType("com.mysema.query.spatial.path." + entry.getValue()));
         }
     }
+    
+    private static void registerJTSTypes(TypeMappings typeMappings) {
+    	Map<String, String> additions = Maps.newHashMap();
+    	additions.put("Geometry", "JTSGeometryPath");
+    	additions.put("GeometryCollection", "JTSGeometryCollectionPath");
+    	additions.put("LinearRing", "JTSLinearRingPath");
+    	additions.put("LineString", "JTSLineStringPath");
+    	additions.put("MultiLineString", "JTSMultiLineStringPath");
+    	additions.put("MultiPoint", "JTSMultiPointPath");
+    	additions.put("MultiPolygon", "JTSMultiPolygonPath");
+    	additions.put("Point", "JTSPointPath");
+    	additions.put("Polygon", "JTSPolygonPath");
+    	for (Map.Entry<String, String> entry : additions.entrySet()) {
+    		typeMappings.register(
+    				new SimpleType("com.vividsolutions.jts.geom."+ entry.getKey()),
+    				new SimpleType("com.mysema.query.spatial.jts.path." + entry.getValue()));
+    	}
+    }
 
-    private static void addImports(AbstractModule module) {
+    private static void addImports(AbstractModule module, String packageName) {
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
-        String packageName = "com.mysema.query.spatial.path";
         if (imports.isEmpty()) {
             imports = ImmutableSet.of(packageName);
         } else {
@@ -48,7 +65,9 @@ public final class SpatialSupport {
 
     public static void addSupport(AbstractModule module) {
         registerTypes(module.get(TypeMappings.class));
-        addImports(module);
+        addImports(module,"com.mysema.query.spatial.path");
+    	registerJTSTypes(module.get(TypeMappings.class));
+    	addImports(module,"com.mysema.query.spatial.jts.path");
     }
 
     private SpatialSupport() {}
