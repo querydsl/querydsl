@@ -1,11 +1,14 @@
 package com.mysema.query.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
+
 
 public class Generic14Test {
 
@@ -22,6 +25,13 @@ public class Generic14Test {
     @MappedSuperclass
     public static class BasePersistable<T extends Serializable> extends AbstractPersistable<T> implements UpdateInfo {
 
+        private T id;
+
+        @Override
+        public T getId() {
+            return id;
+        }
+
     }
 
     @MappedSuperclass
@@ -30,6 +40,7 @@ public class Generic14Test {
     }
 
     public interface Persistable<T> {
+        T getId();
 
     }
 
