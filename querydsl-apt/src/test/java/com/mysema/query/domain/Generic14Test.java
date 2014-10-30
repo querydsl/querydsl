@@ -1,6 +1,7 @@
 package com.mysema.query.domain;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 
@@ -9,16 +10,25 @@ import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
 
-
 public class Generic14Test {
 
     @Entity
-    public static class UserAccount extends BaseReferencablePersistable<Long> {
+    public static class UserAccount extends BaseReferencablePersistable<UserAccount, Long> {
+
+        public UserAccount() {
+            super(UserAccount.class);
+        }
 
     }
 
     @MappedSuperclass
-    public static abstract class BaseReferencablePersistable<PK extends Serializable> extends BasePersistable<PK> {
+    public static abstract class BaseReferencablePersistable<T, PK extends Serializable> extends BasePersistable<PK> {
+
+        private Class<T> entityClass;
+
+        public BaseReferencablePersistable(Class<T> entityClass) {
+            this.entityClass = entityClass;
+        }
 
     }
 
@@ -40,6 +50,7 @@ public class Generic14Test {
     }
 
     public interface Persistable<T> {
+
         T getId();
 
     }
@@ -54,5 +65,7 @@ public class Generic14Test {
         assertNotNull(QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
         assertNotNull(QGeneric14Test_BasePersistable.basePersistable);
         assertNotNull(QGeneric14Test_AbstractPersistable.abstractPersistable);
+        assertTrue(QGeneric14Test_UserAccount.userAccount.id
+                .getType().isAssignableFrom(Long.class));
     }
 }
