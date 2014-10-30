@@ -113,7 +113,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 append(SELECT_COUNT_THIS);
             } else {
                 append(SELECT_COUNT);
-                handle(joins.get(0).getTarget());
+                handle(source);
                 append(")");
             }
 
