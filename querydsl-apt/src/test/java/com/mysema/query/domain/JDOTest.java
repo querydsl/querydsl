@@ -42,6 +42,10 @@ public class JDOTest extends AbstractTest {
 
         private String stringField2;
 
+        public String getStringfield1() {
+            return stringField1;
+        }
+
         public String getStringField2() {
             return stringField2;
         }
@@ -56,6 +60,7 @@ public class JDOTest extends AbstractTest {
 
         cl = QJDOTest_JDOEntity2.class;
         match(StringPath.class, "stringField1");
+        assertMissing("stringfield1");
         match(StringPath.class, "stringField2");
     }
 

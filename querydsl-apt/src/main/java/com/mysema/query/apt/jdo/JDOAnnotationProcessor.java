@@ -46,7 +46,11 @@ public class JDOAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> embedded = QueryEmbedded.class;
         Class<? extends Annotation> skip = NotPersistent.class;
-        return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Keywords.JDO,
+        DefaultConfiguration configuration = new DefaultConfiguration(
+                roundEnv, processingEnv.getOptions(), Keywords.JDO,
                 entities, entity, superType, embeddable, embedded, skip);
+
+        configuration.setUseGetters(false);
+        return configuration;
     }
 }
