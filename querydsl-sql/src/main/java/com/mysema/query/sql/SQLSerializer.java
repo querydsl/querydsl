@@ -18,13 +18,11 @@ import java.util.*;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinFlag;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
@@ -828,6 +826,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+        boolean pathAdded = false;
         if (args.size() == 2
          && !useLiterals
          && args.get(0) instanceof Path<?>
@@ -838,6 +837,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 for (Element element : templates.getTemplate(operator).getElements()) {
                     if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
                         constantPaths.add((Path<?>)args.get(0));
+                        pathAdded = true;
                         break;
                     }
                 }
@@ -877,10 +877,29 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         } else if ((operator == Ops.IN || operator == Ops.NOT_IN)
                 && args.get(0) instanceof Path
-                && args.get(1) instanceof Constant
-                && ((Constant<Collection>)args.get(1)).getConstant().isEmpty()) {
-            super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
-                    ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
+                && args.get(1) instanceof Constant) {
+            Collection<Object> coll = ((Constant<Collection>)args.get(1)).getConstant();
+            if (coll.isEmpty()) {
+                super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
+                        ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
+            } else {
+                if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
+                    super.visitOperation(type, operator, args);
+                } else {
+                    if (!constantPaths.isEmpty()) {
+                        constantPaths.removeLast();
+                    }
+                    BooleanBuilder b = new BooleanBuilder();
+                    for (List part : Iterables.partition(coll, templates.getListMaxSize())) {
+                        if (operator == Ops.IN) {
+                            b.or(ExpressionUtils.in(args.get(0), part));
+                        } else {
+                            b.and(ExpressionUtils.notIn(args.get(0), part));
+                        }
+                    }
+                    b.getValue().accept(this, null);
+                }
+            }
 
         } else if (operator == SQLOps.WITH_COLUMNS) {
             boolean oldSkipParent = skipParent;

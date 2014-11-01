@@ -624,6 +624,28 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(SQLITE)
+    public void In_Long_List() {
+        List<Integer> ids = Lists.newArrayList();
+        for (int i = 0; i < 20000; i++) {
+            ids.add(i);
+        }
+        assertEquals(
+            query().from(employee).count(),
+            query().from(employee).where(employee.id.in(ids)).count());
+    }
+
+    @Test
+    @ExcludeIn(SQLITE)
+    public void NotIn_Long_List() {
+        List<Integer> ids = Lists.newArrayList();
+        for (int i = 0; i < 20000; i++) {
+            ids.add(i);
+        }
+        assertEquals(0, query().from(employee).where(employee.id.notIn(ids)).count());
+    }
+
+    @Test
     public void In_Empty() {
         assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).count());
     }
