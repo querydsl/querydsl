@@ -25,8 +25,6 @@ import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
-import com.mysema.query.apt.DefaultConfiguration;
-import com.mysema.query.codegen.Keywords;
 
 /**
  * AnnotationProcessor for JDO which takes {@link PersistenceCapable}, {@link EmbeddedOnly} and
@@ -46,11 +44,7 @@ public class JDOAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> embedded = QueryEmbedded.class;
         Class<? extends Annotation> skip = NotPersistent.class;
-        DefaultConfiguration configuration = new DefaultConfiguration(
-                roundEnv, processingEnv.getOptions(), Keywords.JDO,
+        return new JDOConfiguration(roundEnv, processingEnv.getOptions(),
                 entities, entity, superType, embeddable, embedded, skip);
-
-        configuration.setUseGetters(false);
-        return configuration;
     }
 }
