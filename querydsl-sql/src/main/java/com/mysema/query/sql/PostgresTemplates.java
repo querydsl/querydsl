@@ -73,6 +73,7 @@ public class PostgresTemplates extends SQLTemplates {
         setCountDistinctMultipleColumns(true);
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
+        setUnquotedReservedWordsAsIdentifierSupported(true);
 
         // String
         add(Ops.MATCHES, "{0} ~ {1}");
