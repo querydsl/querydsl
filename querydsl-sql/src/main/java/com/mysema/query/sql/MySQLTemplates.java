@@ -96,7 +96,7 @@ public class MySQLTemplates extends SQLTemplates {
         setArraysSupported(false);
         setParameterMetadataAvailable(false);
         setLimitRequired(true);
-        setUnquotedReservedWordsAsIdentifierSupported(true);
+        setSupportsUnquotedReservedWordsAsIdentifier(true);
         setNullsFirst(null);
         setNullsLast(null);
 

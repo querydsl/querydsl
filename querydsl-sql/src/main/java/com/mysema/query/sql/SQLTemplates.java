@@ -273,7 +273,7 @@ public class SQLTemplates extends Templates {
 
     private boolean arraysSupported = true;
 
-    private boolean unquotedReservedWordsAsIdentifierSupported = false;
+    private boolean supportsUnquotedReservedWordsAsIdentifier = false;
 
     @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
@@ -789,8 +789,8 @@ public class SQLTemplates extends Templates {
         return arraysSupported;
     }
 
-    public boolean isUnquotedReservedWordsAsIdentifierSupported() {
-        return unquotedReservedWordsAsIdentifierSupported;
+    public boolean isSupportsUnquotedReservedWordsAsIdentifier() {
+        return supportsUnquotedReservedWordsAsIdentifier;
     }
 
     protected void newLineToSingleSpace() {
@@ -827,7 +827,7 @@ public class SQLTemplates extends Templates {
     protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
         if (NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)) {
             return true;
-        } else if (precededByDot && isUnquotedReservedWordsAsIdentifierSupported()) {
+        } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
             return false;
         } else {
             return isReservedWord(identifier);
@@ -1162,8 +1162,8 @@ public class SQLTemplates extends Templates {
         this.arraysSupported = b;
     }
 
-    public void setUnquotedReservedWordsAsIdentifierSupported(boolean unquotedReservedWordsAsIdentifierSupported) {
-        this.unquotedReservedWordsAsIdentifierSupported = unquotedReservedWordsAsIdentifierSupported;
+    public void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
+        this.supportsUnquotedReservedWordsAsIdentifier = b;
     }
 
 }
