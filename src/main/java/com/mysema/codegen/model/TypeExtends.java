@@ -16,6 +16,7 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -45,7 +46,7 @@ public class TypeExtends extends TypeAdapter {
     @Override
     public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
         if (!asArgType) {
-            if (type.equals(Types.OBJECT)) {
+            if (Types.OBJECT.equals(type)) {
                 return "?";
             } else {
                 String genericName = super.getGenericName(true, packages, classes);
@@ -58,6 +59,18 @@ public class TypeExtends extends TypeAdapter {
 
     public String getVarName() {
         return varName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof TypeExtends) {
+            return Objects.equal(((TypeExtends) o).varName, varName)
+                && ((TypeExtends) o).type.equals(type);
+        } else {
+            return false;
+        }
     }
 
 }
