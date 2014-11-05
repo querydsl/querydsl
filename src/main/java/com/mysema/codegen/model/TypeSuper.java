@@ -16,6 +16,8 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
+import com.google.common.base.Objects;
+
 /**
  * TypeSuper is a Type for type variables and wildcard types
  * 
@@ -62,5 +64,17 @@ public class TypeSuper extends TypeAdapter {
 
     public String getVarName() {
         return varName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof TypeSuper) {
+            return Objects.equal(((TypeSuper) o).varName, varName)
+                    && ((TypeSuper) o).superType.equals(superType);
+        } else {
+            return false;
+        }
     }
 }
