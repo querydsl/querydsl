@@ -886,7 +886,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
                     super.visitOperation(type, operator, args);
                 } else {
-                    if (!constantPaths.isEmpty()) {
+                    if (pathAdded) {
                         constantPaths.removeLast();
                     }
                     BooleanBuilder b = new BooleanBuilder();
