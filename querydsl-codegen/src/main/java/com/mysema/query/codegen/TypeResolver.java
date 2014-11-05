@@ -71,9 +71,7 @@ public final class TypeResolver {
         int index = -1;
         for (int i = 0; i < declaringType.getParameters().size(); i++) {
             Type param = unwrap(declaringType.getParameters().get(i));
-            if (param instanceof TypeExtends && Objects.equal(((TypeExtends)param).getVarName(), varName)) {
-                index = i;
-            } else if (param instanceof TypeSuper && Objects.equal(((TypeSuper) param).getVarName(), varName)) {
+            if (Objects.equal(getVarName(param), varName)) {
                 index = i;
             }
         }
