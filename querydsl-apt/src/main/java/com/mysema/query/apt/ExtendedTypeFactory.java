@@ -558,7 +558,7 @@ public final class ExtendedTypeFactory {
                 }
             // interface
             } else {
-                superTypes = new HashSet<Type>(e.getInterfaces().size());
+                superTypes = new LinkedHashSet<Type>(e.getInterfaces().size());
                 for (TypeMirror mirror : e.getInterfaces()) {
                     Type iface = getType(mirror, deep);
                     if (!iface.getFullName().startsWith("java")) {
