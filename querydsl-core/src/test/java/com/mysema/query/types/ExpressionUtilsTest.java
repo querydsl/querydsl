@@ -16,6 +16,9 @@ package com.mysema.query.types;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.List;
+
+import com.google.common.collect.ImmutableSet;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -143,7 +146,14 @@ public class ExpressionUtilsTest {
     public void In() {
         assertEquals("str in [a, b, c]", ExpressionUtils.in(str, Arrays.asList("a","b","c")).toString());
     }
-    
+
+    @Test
+    public void InAny() {
+        ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
+        assertEquals("str in [a, b, c] || str in [d, e, f]",
+                ExpressionUtils.inAny(str, of).toString());
+    }
+
     @Test
     public void IsNull() {
         assertEquals("str is null", ExpressionUtils.isNull(str).toString());
@@ -162,6 +172,13 @@ public class ExpressionUtilsTest {
     @Test
     public void Ne() {
         assertEquals("str != str2", ExpressionUtils.ne(str, str2).toString());
+    }
+
+    @Test
+    public void NotInAny() {
+        ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
+        assertEquals("str not in [a, b, c] && str not in [d, e, f]",
+                ExpressionUtils.notInAny(str, of).toString());
     }
 
 }

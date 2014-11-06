@@ -876,9 +876,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
 
         } else if ((operator == Ops.IN || operator == Ops.NOT_IN)
-                && args.get(0) instanceof Path
-                && args.get(1) instanceof Constant) {
-            Collection<Object> coll = ((Constant<Collection>)args.get(1)).getConstant();
+                && args.get(0) instanceof Path<?>
+                && args.get(1) instanceof Constant<?>) {
+            //The type of the constant expression is compatible with the left
+            //expression, since the compile time checking mandates it to be.
+            @SuppressWarnings("unchecked")
+            Collection<Object> coll = ((Constant<Collection<Object>>)args.get(1)).getConstant();
             if (coll.isEmpty()) {
                 super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
                         ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
@@ -886,18 +889,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
                     super.visitOperation(type, operator, args);
                 } else {
+                    //The type of the path is compatible with the constant
+                    //expression, since the compile time checking mandates it to be
+                    @SuppressWarnings("unchecked")
+                    Expression<Object> path = (Expression<Object>) args.get(0);
                     if (pathAdded) {
                         constantPaths.removeLast();
                     }
-                    BooleanBuilder b = new BooleanBuilder();
-                    for (List part : Iterables.partition(coll, templates.getListMaxSize())) {
-                        if (operator == Ops.IN) {
-                            b.or(ExpressionUtils.in(args.get(0), part));
-                        } else {
-                            b.and(ExpressionUtils.notIn(args.get(0), part));
-                        }
+                    Iterable<List<Object>> partitioned = Iterables
+                            .partition(coll, templates.getListMaxSize());
+                    Predicate result;
+                    if (operator == Ops.IN) {
+                        result = ExpressionUtils.inAny(path, partitioned);
+                    } else {
+                        result = ExpressionUtils.notInAny(path, partitioned);
                     }
-                    b.getValue().accept(this, null);
+                    result.accept(this, null);
                 }
             }
 
