@@ -624,7 +624,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, SQLITE})
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER})
     public void In_Long_List() {
         List<Integer> ids = Lists.newArrayList();
         for (int i = 0; i < 20000; i++) {
@@ -636,7 +636,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, SQLITE})
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER})
     public void NotIn_Long_List() {
         List<Integer> ids = Lists.newArrayList();
         for (int i = 0; i < 20000; i++) {
