@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,8 +37,8 @@ import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
+
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class SQLSerializerTest {
 
@@ -174,6 +177,14 @@ public class SQLSerializerTest {
         query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
+    }
+
+    @Test
+    public void Keyword_After_Dot() {
+        SQLQuery query = new SQLQuery(MySQLTemplates.DEFAULT);
+        PathBuilder<Survey> surveyBuilder = new PathBuilder<Survey>(Survey.class, "survey");
+        query.from(surveyBuilder).where(surveyBuilder.get("not").isNotNull());
+        assertFalse(query.toString().contains("`"));
     }
 
     @Test

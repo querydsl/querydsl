@@ -52,13 +52,13 @@ public final class NativeSQLSerializer extends SQLSerializer {
     }
 
     @Override
-    protected void appendAsColumnName(Path<?> path) {
+    protected void appendAsColumnName(Path<?> path, boolean precededByDot) {
         if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
             SQLTemplates templates = getTemplates();
             Column column = path.getAnnotatedElement().getAnnotation(Column.class);
-            append(templates.quoteIdentifier(column.name()));
+            append(templates.quoteIdentifier(column.name(), precededByDot));
         } else {
-            super.appendAsColumnName(path);
+            super.appendAsColumnName(path, precededByDot);
         }
     }
 
@@ -68,11 +68,15 @@ public final class NativeSQLSerializer extends SQLSerializer {
         Class<?> type = je.getTarget().getType();
         if (type.getAnnotation(Table.class) != null && templates.isSupportsAlias()) {
             Table table = type.getAnnotation(Table.class);
+            boolean precededByDot;
             if (!table.schema().isEmpty() && templates.isPrintSchema()) {
                 appendSchemaName(table.schema());
                 append(".");
+                precededByDot = true;
+            } else {
+                precededByDot = false;
             }
-            appendTableName(table.name());
+            appendTableName(table.name(), precededByDot);
             append(templates.getTableAlias());
         }
         super.handleJoinTarget(je);

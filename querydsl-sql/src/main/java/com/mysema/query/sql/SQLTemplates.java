@@ -277,6 +277,8 @@ public class SQLTemplates extends Templates {
 
     private int listMaxSize = 0;
 
+    private boolean supportsUnquotedReservedWordsAsIdentifier = false;
+
     @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         this(SQL_RESERVED_WORDS, quoteStr, escape, useQuotes);
@@ -795,6 +797,10 @@ public class SQLTemplates extends Templates {
         return listMaxSize;
     }
 
+    public boolean isSupportsUnquotedReservedWordsAsIdentifier() {
+        return supportsUnquotedReservedWordsAsIdentifier;
+    }
+
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -815,16 +821,25 @@ public class SQLTemplates extends Templates {
     }
 
     public final String quoteIdentifier(String identifier) {
-        if (useQuotes || requiresQuotes(identifier)) {
+        return quoteIdentifier(identifier, false);
+    }
+
+    public final String quoteIdentifier(String identifier, boolean precededByDot) {
+        if (useQuotes || requiresQuotes(identifier, precededByDot)) {
             return quoteStr + identifier + quoteStr;
         } else {
             return identifier;
         }
     }
 
-    protected boolean requiresQuotes(final String identifier) {
-        return NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)
-                || isReservedWord(identifier);
+    protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
+        if (NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)) {
+            return true;
+        } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
+            return false;
+        } else {
+            return isReservedWord(identifier);
+        }
     }
 
     private boolean isReservedWord(String identifier) {
@@ -1158,4 +1173,9 @@ public class SQLTemplates extends Templates {
     protected void setListMaxSize(int i ) {
         listMaxSize = i;
     }
+
+    public void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
+        this.supportsUnquotedReservedWordsAsIdentifier = b;
+    }
+
 }

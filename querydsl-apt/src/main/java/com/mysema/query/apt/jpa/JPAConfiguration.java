@@ -86,7 +86,7 @@ public class JPAConfiguration extends DefaultConfiguration {
                 methods |= element.getKind().equals(ElementKind.METHOD);
             }
         }
-        return VisitorConfig.get(fields, methods);
+        return VisitorConfig.get(fields, methods, VisitorConfig.ALL);
     }
 
     @Override
