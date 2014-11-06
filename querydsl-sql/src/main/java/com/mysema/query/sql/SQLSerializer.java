@@ -80,13 +80,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         this.dml = dml;
     }
 
-    protected void appendAsColumnName(Path<?> path) {
+    protected void appendAsColumnName(Path<?> path, boolean precededByDot) {
         String column = ColumnMetadata.getName(path);
         if (path.getMetadata().getParent() instanceof RelationalPath) {
             RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
             column = configuration.getColumnOverride(parent.getSchemaAndTable(), column);
         }
-        append(templates.quoteIdentifier(column));
+        append(templates.quoteIdentifier(column, precededByDot));
     }
 
     private SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
@@ -97,8 +97,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteIdentifier(schema));
     }
 
-    protected void appendTableName(String table) {
-        append(templates.quoteIdentifier(table));
+    protected void appendTableName(String table, boolean precededByDot) {
+        append(templates.quoteIdentifier(table, precededByDot));
     }
 
     public List<Object> getConstants() {
@@ -169,11 +169,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
+                boolean precededByDot;
                 if (templates.isPrintSchema()) {
                     appendSchemaName(schemaAndTable.getSchema());
                     append(".");
+                    precededByDot = true;
+                } else {
+                    precededByDot = false;
                 }
-                appendTableName(schemaAndTable.getTable());
+                appendTableName(schemaAndTable.getTable(), precededByDot);
                 append(templates.getTableAlias());
             }
         }
@@ -782,23 +786,31 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (dml) {
             if (path.equals(entity) && path instanceof RelationalPath<?>) {
                 SchemaAndTable schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
+                boolean precededByDot;
                 if (dmlWithSchema && templates.isPrintSchema()) {
                     appendSchemaName(schemaAndTable.getSchema());
                     append(".");
+                    precededByDot = true;
+                } else {
+                    precededByDot = false;
                 }
-                appendTableName(schemaAndTable.getTable());
+                appendTableName(schemaAndTable.getTable(), precededByDot);
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
-                appendAsColumnName(path);
+                appendAsColumnName(path, false);
                 return null;
             }
         }
         final PathMetadata<?> metadata = path.getMetadata();
+        boolean precededByDot;
         if (metadata.getParent() != null && (!skipParent || dml)) {
             visit(metadata.getParent(), context);
             append(".");
+            precededByDot = true;
+        } else {
+            precededByDot = false;
         }
-        appendAsColumnName(path);
+        appendAsColumnName(path, precededByDot);
         return null;
     }
 
