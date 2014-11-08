@@ -50,7 +50,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Before
-    public void setUp() throws SQLException{
+    public void setUp() throws SQLException {
         reset();
     }
 
@@ -428,6 +428,15 @@ public class InsertBase extends AbstractBaseTest {
         UUID uuid = UUID.randomUUID();
         insert(uuids).set(uuids.field, uuid).execute();
         assertEquals(uuid, query().from(uuids).singleResult(uuids.field));
+    }
+
+    @Test
+    public void XML() {
+        delete(QXmlTest.xmlTest).execute();
+        QXmlTest xmlTest = QXmlTest.xmlTest;
+        String contents = "<html><head></head><body></body></html>";
+        insert(xmlTest).set(xmlTest.col, contents).execute();
+        assertEquals(contents, query().from(xmlTest).singleResult(xmlTest.col));
     }
 
 }

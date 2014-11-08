@@ -13,12 +13,11 @@
  */
 package com.mysema.query;
 
+import javax.annotation.Nullable;
+import java.sql.Connection;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import java.sql.Connection;
-
+import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
@@ -26,15 +25,12 @@ import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
-
+import com.mysema.query.sql.types.XMLAsStringType;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import static org.junit.Assert.assertEquals;
-
-import com.mysema.query.dml.DMLClause;
 
 public abstract class AbstractBaseTest {
 
@@ -80,6 +76,13 @@ public abstract class AbstractBaseTest {
 
     @Nullable
     protected String expectedQuery;
+
+    public AbstractBaseTest() {
+        // TODO enable registration of (jdbc type, java type) -> usertype mappings
+        if (target == Target.POSTGRES || target == Target.ORACLE) {
+            configuration.register("xml_test", "col", new XMLAsStringType());
+        }
+    }
 
     @Rule
     public static MethodRule skipForQuotedRule = new SkipForQuotedRule();
