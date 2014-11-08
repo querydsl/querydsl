@@ -13,20 +13,13 @@
  */
 package com.mysema.query.types;
 
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.template.BooleanTemplate;
+import org.junit.Test;
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.CaseBuilder;
-import com.mysema.query.types.expr.EnumExpression;
-import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.template.BooleanTemplate;
 
 public class CaseBuilderTest {
 
@@ -61,6 +54,22 @@ public class CaseBuilderTest {
                 "when customer.annualSpending > 10000 then true " +
                 "else false " +
                 "end", cases.toString());
+    }
+
+    @Test
+    public void BooleanTyped_Predicate() {
+        Customer c = alias(Customer.class, "customer");
+        BooleanExpression cases = new CaseBuilder()
+                .when((Predicate)$(c.getAnnualSpending()).gt(20000)).then(false)
+                .when((Predicate)$(c.getAnnualSpending()).gt(10000)).then(true)
+                .otherwise(false);
+
+        assertEquals(
+                "case " +
+                        "when customer.annualSpending > 20000 then false " +
+                        "when customer.annualSpending > 10000 then true " +
+                        "else false " +
+                        "end", cases.toString());
     }
 
     @Test
