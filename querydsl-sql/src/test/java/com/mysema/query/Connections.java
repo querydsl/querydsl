@@ -289,7 +289,7 @@ public final class Connections {
 
         // xml
         stmt.execute("drop table if exists XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         cubridInited = true;
     }
@@ -349,7 +349,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         derbyInited = true;
     }
@@ -463,7 +463,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         firebirdInited = true;
     }
@@ -535,7 +535,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         h2Inited = true;
     }
@@ -601,7 +601,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         hsqlInited = true;
     }
@@ -671,7 +671,7 @@ public final class Connections {
 
         // xml
         stmt.execute("drop table if exists XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         mysqlInited = true;
     }
@@ -749,7 +749,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(col XMLTYPE)");
+        stmt.execute("create table XML_TEST(COL XMLTYPE)");
 
         oracleInited = true;
     }
@@ -841,7 +841,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table \"XML_TEST\"(\"col\" XML)");
+        stmt.execute("create table \"XML_TEST\"(\"COL\" XML)");
 
         postgresInited = true;
     }
@@ -908,7 +908,7 @@ public final class Connections {
 
         // xml
         stmt.execute("drop table if exists XML_TEST");
-        stmt.execute("create table XML_TEST(col varchar(128))");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
 
         sqliteInited = true;
     }
@@ -964,7 +964,7 @@ public final class Connections {
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(col XML)");
+        stmt.execute("create table XML_TEST(COL XML)");
 
         sqlServerInited = true;
     }
@@ -1032,6 +1032,11 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         teradataInited = true;
     }
 

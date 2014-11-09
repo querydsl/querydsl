@@ -20,12 +20,12 @@ public class QXmlTest extends RelationalPathSpatial<QXmlTest> {
 
     private static final long serialVersionUID = 574759316;
 
-    public static final QXmlTest xmlTest = new QXmlTest("xml_test");
+    public static final QXmlTest xmlTest = new QXmlTest("XML_TEST");
 
-    public final StringPath col = createString("col");
+    public final StringPath col = createString("COL");
 
     public QXmlTest(String variable) {
-        super(QXmlTest.class, forVariable(variable), "public", "xml_test");
+        super(QXmlTest.class, forVariable(variable), "PUBLIC", "XML_TEST");
         addMetadata();
     }
 
@@ -35,17 +35,17 @@ public class QXmlTest extends RelationalPathSpatial<QXmlTest> {
     }
 
     public QXmlTest(Path<? extends QXmlTest> path) {
-        super(path.getType(), path.getMetadata(), "public", "xml_test");
+        super(path.getType(), path.getMetadata(), "PUBLIC", "XML_TEST");
         addMetadata();
     }
 
     public QXmlTest(PathMetadata<?> metadata) {
-        super(QXmlTest.class, metadata, "public", "xml_test");
+        super(QXmlTest.class, metadata, "PUBLIC", "XML_TEST");
         addMetadata();
     }
 
     public void addMetadata() {
-        addMetadata(col, ColumnMetadata.named("col").withIndex(1).ofType(Types.SQLXML).withSize(2147483647));
+        addMetadata(col, ColumnMetadata.named("COL").withIndex(1).ofType(Types.SQLXML).withSize(2147483647));
     }
 
 }
