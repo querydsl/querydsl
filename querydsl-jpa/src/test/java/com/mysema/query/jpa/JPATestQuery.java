@@ -41,6 +41,15 @@ public interface JPATestQuery<T> extends SubQueryExpression<T> {
             // single result
             Cat c = select(cat).from(cat).where(cat.id.eq(1)).firstResult();
 
+            //intermediate result storing
+            JPATestQuery<Cat> select = query.select(cat);
+            if (cat == other) {
+                select.where(cat.ne(other));
+            } else {
+                select.where(cat.eq(other));
+            }
+            long count = select.count();
+            List<Cat> result = select.list();
         }
 
         private <T> JPATestQuery<T> select(Expression<T> e) {
