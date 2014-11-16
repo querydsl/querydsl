@@ -14,20 +14,40 @@
 package com.mysema.query.domain;
 
 import static org.junit.Assert.*;
-import junit.framework.Assert;
 
 public abstract class AbstractTest {
 
-    public Class<?> cl;
+    private Class<?> cl;
+
+    private com.mysema.query.types.Expression<?> standardVariable;
+
+    protected <T extends com.mysema.query.types.Expression<?>> void start(Class<T> cl, T standardVariable) {
+        this.cl = cl;
+        this.standardVariable = standardVariable;
+
+    }
 
     protected void match(Class<?> expectedType, String name) throws SecurityException, NoSuchFieldException {
         assertTrue(cl.getSimpleName()+"."+name + " failed", expectedType.isAssignableFrom(cl.getField(name).getType()));
     }
 
+    protected void matchType(Class<?> expectedType, String name) throws NoSuchFieldException, IllegalAccessException {
+        Class<?> type = ((com.mysema.query.types.Expression)cl.getField(name).get(standardVariable)).getType();
+        assertTrue(cl.getSimpleName()+"."+name + " failed", expectedType.isAssignableFrom(type));
+    }
+
+    protected void assertPresent(String name) {
+        try {
+            cl.getField(name);
+        } catch (NoSuchFieldException e) {
+            fail("Expected present field : " + cl.getSimpleName() + "." + name);
+        }
+    }
+
     protected void assertMissing(String name) {
         try {
             cl.getField(name);
-            Assert.fail("Expected missing field : " + cl.getSimpleName() + "." + name);
+            fail("Expected missing field : " + cl.getSimpleName() + "." + name);
         } catch (NoSuchFieldException e) {
             // expected
         }

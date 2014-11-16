@@ -66,25 +66,25 @@ public class InterfaceTypeTest extends AbstractTest {
 
     @Test
     public void QInterfaceType_relation() throws SecurityException, NoSuchFieldException {
-        cl = QInterfaceTypeTest_InterfaceType.class;
+        start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(QInterfaceTypeTest_InterfaceType.class, "relation");
     }
 
     @Test
     public void QInterfaceType_relation2() throws SecurityException, NoSuchFieldException {
-        cl = QInterfaceTypeTest_InterfaceType.class;
+        start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(ListPath.class, "relation2");
     }
 
     @Test
     public void QInterfaceType_relation3() throws SecurityException, NoSuchFieldException {
-        cl = QInterfaceTypeTest_InterfaceType.class;
+        start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(ListPath.class, "relation3");
     }
 
     @Test
     public void QInterfaceType_relation4() throws SecurityException, NoSuchFieldException {
-        cl = QInterfaceTypeTest_InterfaceType.class;
+        start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(NumberPath.class, "relation4");
     }
 

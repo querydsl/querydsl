@@ -13,14 +13,12 @@
  */
 package com.mysema.query.domain;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
+
+import org.junit.Test;
 
 public class BlockingTest extends AbstractTest {
 
@@ -50,9 +48,8 @@ public class BlockingTest extends AbstractTest {
 
     @Test
     public void Entity_Fields_are_available() {
-        assertTrue(QBlockingTest_Entity.entity.field1 != null);
-
-        cl = QBlockingTest_Entity.class;
+        start(QBlockingTest_Entity.class, QBlockingTest_Entity.entity);
+        assertPresent("field1");
         assertMissing("blockedField");
     }
     

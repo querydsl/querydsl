@@ -49,12 +49,12 @@ public class JDOTest extends AbstractTest {
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
-        cl = QJDOTest_JDOEntity.class;
+        start(QJDOTest_JDOEntity.class, QJDOTest_JDOEntity.jDOEntity);
         match(StringPath.class, "prop");
         assertMissing("skipped");
         assertMissing("skippedEntity");
 
-        cl = QJDOTest_JDOEntity2.class;
+        start(QJDOTest_JDOEntity2.class, QJDOTest_JDOEntity2.jDOEntity2);
         match(StringPath.class, "stringField1");
         match(StringPath.class, "stringField2");
     }

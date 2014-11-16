@@ -115,7 +115,7 @@ public class RelationTest extends AbstractTest {
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
-        cl = QRelationTest_RelationType.class;
+        start(QRelationTest_RelationType.class, QRelationTest_RelationType.relationType);
         match(EnumPath.class, "enumProperty");
         match(ListPath.class, "enumList");
         match(MapPath.class, "enumMap1");

@@ -264,7 +264,7 @@ public class SimpleTypesTest extends AbstractTest {
 
     @Test
     public void Simple_Types() throws SecurityException, NoSuchFieldException {
-        cl = QSimpleTypesTest_SimpleTypes.class;
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(NumberPath.class, "id");
         match(NumberPath.class, "bigDecimal");
         match(NumberPath.class, "bigInteger");
@@ -304,36 +304,38 @@ public class SimpleTypesTest extends AbstractTest {
 
     @Test
     public void Custom_Literal() throws SecurityException, NoSuchFieldException {
-        cl = QSimpleTypesTest_SimpleTypes.class;
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(SimplePath.class, "customLiteral");
     }
 
     @Test
     public void Custom_ComparableLiteral() throws SecurityException, NoSuchFieldException {
-        cl = QSimpleTypesTest_SimpleTypes.class;
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(ComparablePath.class, "customComparableLiteral");
     }
 
     @Test
     public void Custom_Number() throws SecurityException, NoSuchFieldException {
-        cl = QSimpleTypesTest_SimpleTypes.class;
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(SimplePath.class, "customNumber");
     }
 
     @Test
     public void Custom_ComparableNumber() throws SecurityException, NoSuchFieldException {
-        cl = QSimpleTypesTest_SimpleTypes.class;
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(NumberPath.class, "customComparableNumber");
     }
 
-    @Test(expected=NoSuchFieldException.class)
+    @Test
     public void Skipped_Field1() throws SecurityException, NoSuchFieldException {
-        QSimpleTypesTest_SimpleTypes.class.getField("skipMe");
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        assertMissing("skipMe");
     }
 
-    @Test(expected=NoSuchFieldException.class)
+    @Test
     public void Skipped_Field2() throws SecurityException, NoSuchFieldException {
-        QSimpleTypesTest_SimpleTypes.class.getField("test");
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        assertMissing("test");
     }
 
 }

@@ -54,15 +54,18 @@ public class Inheritance4Test extends AbstractTest {
     }
 
     @Test
-    public void test() throws SecurityException, NoSuchFieldException{
-        cl = QInheritance4Test_EntityWithComparable.class;
+    public void test() throws IllegalAccessException, NoSuchFieldException{
+        start(QInheritance4Test_EntityWithComparable.class, QInheritance4Test_EntityWithComparable.entityWithComparable);
         match(SimplePath.class, "field");
+        matchType(Comparable.class, "field");
 
-        cl = QInheritance4Test_EntityWithNumber.class;
+        start(QInheritance4Test_EntityWithNumber.class, QInheritance4Test_EntityWithNumber.entityWithNumber);
         match(NumberPath.class, "field");
+        matchType(Long.class, "field");
 
-        cl = QInheritance4Test_EntityWithString.class;
+        start(QInheritance4Test_EntityWithString.class, QInheritance4Test_EntityWithString.entityWithString);
         match(StringPath.class, "field");
+        matchType(String.class, "field");
 
     }
 }
