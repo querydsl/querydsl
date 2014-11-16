@@ -286,6 +286,11 @@ public final class Connections {
         stmt.execute("drop table if exists DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        stmt.execute("drop table if exists XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         cubridInited = true;
     }
 
@@ -341,6 +346,11 @@ public final class Connections {
 
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         derbyInited = true;
     }
 
@@ -450,6 +460,11 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         firebirdInited = true;
     }
 
@@ -517,6 +532,11 @@ public final class Connections {
         stmt.execute("drop table DATE_TEST if exists");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         h2Inited = true;
     }
 
@@ -578,6 +598,11 @@ public final class Connections {
         stmt.execute("drop table DATE_TEST if exists");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         hsqlInited = true;
     }
 
@@ -643,6 +668,11 @@ public final class Connections {
         stmt.execute("drop table if exists DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        stmt.execute("drop table if exists XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         mysqlInited = true;
     }
 
@@ -716,6 +746,11 @@ public final class Connections {
         // date_test and time_test
         dropTable(templates, "DATE_TEST");
         stmt.execute("create table date_test(date_test date)");
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL XMLTYPE)");
+
         oracleInited = true;
     }
 
@@ -803,6 +838,11 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(quote(CREATE_TABLE_TIMETEST, "TIME_TEST"));
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table \"XML_TEST\"(\"COL\" XML)");
+
         postgresInited = true;
     }
 
@@ -865,6 +905,11 @@ public final class Connections {
         stmt.execute("drop table if exists DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        stmt.execute("drop table if exists XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         sqliteInited = true;
     }
 
@@ -916,6 +961,11 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL XML)");
+
         sqlServerInited = true;
     }
 
@@ -982,6 +1032,11 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // xml
+        dropTable(templates, "XML_TEST");
+        stmt.execute("create table XML_TEST(COL varchar(128))");
+
         teradataInited = true;
     }
 
