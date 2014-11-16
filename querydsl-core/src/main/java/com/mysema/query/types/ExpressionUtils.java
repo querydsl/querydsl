@@ -13,14 +13,15 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryException;
 
 
@@ -225,6 +226,22 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Create a {@code left in right or...} expression for each list
+     *
+     * @param <D>
+     * @param left
+     * @param lists
+     * @return a {@code left in right or...} expression
+     */
+    public static <D> Predicate inAny(Expression<D> left, Iterable<? extends Collection<? extends D>> lists) {
+        BooleanBuilder rv = new BooleanBuilder();
+        for (Collection<? extends D> list : lists) {
+            rv.or(in(left, list));
+        }
+        return rv;
+    }
+
+    /**
      * Create a left is null expression
      *
      * @param left
@@ -387,6 +404,50 @@ public final class ExpressionUtils {
      */
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
         return PredicateOperation.create(Ops.NE, left, right);
+    }
+
+    /**
+     * Create an left not in right expression
+     *
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <D> Predicate notIn(Expression<D> left, CollectionExpression<?,? extends D> right) {
+        return PredicateOperation.create(Ops.NOT_IN, left, right);
+    }
+
+    /**
+     * Create an left not in right expression
+     *
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <D> Predicate notIn(Expression<D> left, Collection<? extends D> right) {
+        if (right.size() == 1) {
+            return neConst(left, right.iterator().next());
+        } else {
+            return PredicateOperation.create(Ops.NOT_IN, left, ConstantImpl.create(right));
+        }
+    }
+
+    /**
+     * Create a {@code left not in right and...} expression for each list
+     *
+     * @param <D>
+     * @param left
+     * @param lists
+     * @return a {@code left not in right and...} expression
+     */
+    public static <D> Predicate notInAny(Expression<D> left, Iterable<? extends Collection<? extends D>> lists) {
+        BooleanBuilder rv = new BooleanBuilder();
+        for (Collection<? extends D> list : lists) {
+            rv.and(notIn(left, list));
+        }
+        return rv;
     }
 
     /**

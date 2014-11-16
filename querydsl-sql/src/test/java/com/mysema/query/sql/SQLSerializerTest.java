@@ -30,6 +30,7 @@ import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Wildcard;
@@ -111,6 +112,30 @@ public class SQLSerializerTest {
         assertEquals("(select \"user\".id, \"user\".username\n" +
                 "from \"user\"\n" +
                 "where \"user\".id = ?)", serializer.toString());
+    }
+
+    @Test
+    public void In() {
+        StringPath path = Expressions.stringPath("str");
+        Expression<?> expr = ExpressionUtils.in(path, Arrays.asList("1", "2", "3"));
+
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(expr);
+        assertEquals(Arrays.asList(path, path, path), serializer.getConstantPaths());
+        assertEquals(3, serializer.getConstants().size());
+    }
+
+    @Test
+    public void Or_In() {
+        StringPath path = Expressions.stringPath("str");
+        Expression<?> expr = ExpressionUtils.anyOf(
+                ExpressionUtils.in(path, Arrays.asList("1", "2", "3")),
+                ExpressionUtils.in(path, Arrays.asList("4", "5", "6")));
+
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(expr);
+        assertEquals(Arrays.asList(path, path, path, path, path, path), serializer.getConstantPaths());
+        assertEquals(6, serializer.getConstants().size());
     }
 
     @Test

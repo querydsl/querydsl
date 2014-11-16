@@ -13,11 +13,12 @@
  */
 package com.mysema.query.sql;
 
-import static com.google.common.base.CharMatcher.inRange;
-
 import java.lang.reflect.Field;
 import java.sql.Types;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
@@ -31,6 +32,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.*;
+import static com.google.common.base.CharMatcher.inRange;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -272,6 +274,8 @@ public class SQLTemplates extends Templates {
     private boolean wrapSelectParameters = false;
 
     private boolean arraysSupported = true;
+
+    private int listMaxSize = 0;
 
     private boolean supportsUnquotedReservedWordsAsIdentifier = false;
 
@@ -789,6 +793,10 @@ public class SQLTemplates extends Templates {
         return arraysSupported;
     }
 
+    public int getListMaxSize() {
+        return listMaxSize;
+    }
+
     public boolean isSupportsUnquotedReservedWordsAsIdentifier() {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
@@ -1160,6 +1168,10 @@ public class SQLTemplates extends Templates {
 
     protected void setArraysSupported(boolean b) {
         this.arraysSupported = b;
+    }
+
+    protected void setListMaxSize(int i ) {
+        listMaxSize = i;
     }
 
     public void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
