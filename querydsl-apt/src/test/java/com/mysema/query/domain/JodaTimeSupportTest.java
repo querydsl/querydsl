@@ -50,14 +50,21 @@ public class JodaTimeSupportTest extends AbstractTest {
     }
 
     @Test
-    public void test() throws SecurityException, NoSuchFieldException {
+    public void test() throws IllegalAccessException, NoSuchFieldException {
         start(QJodaTimeSupportTest_JodaTimeSupport.class, QJodaTimeSupportTest_JodaTimeSupport.jodaTimeSupport);
         match(DateTimePath.class, "dateMidnight");
+        matchType(DateMidnight.class, "dateMidnight");
         match(DateTimePath.class, "dateTime");
+        matchType(DateTime.class, "dateTime");
         match(DateTimePath.class, "instant");
+        matchType(Instant.class, "instant");
         match(DatePath.class, "localDate");
+        matchType(LocalDate.class, "localDate");
         match(DateTimePath.class, "localDateTime");
+        matchType(LocalDateTime.class, "localDateTime");
         match(TimePath.class, "localTime");
+        matchType(LocalTime.class, "localTime");
         match(ComparablePath.class, "partial");
+        matchType(Partial.class, "partial");
     }
 }
