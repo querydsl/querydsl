@@ -212,7 +212,7 @@ import com.mysema.query.annotations.Config;
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>apt-maven-plugin</artifactId>
-      <version>1.0.9</version>
+      <version>1.1.2</version>
       <executions>
         <execution>
           <goals>
@@ -397,7 +397,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>apt-maven-plugin</artifactId>
-      <version>1.0.9</version>
+      <version>1.1.2</version>
       <executions>
         <execution>
           <goals>
