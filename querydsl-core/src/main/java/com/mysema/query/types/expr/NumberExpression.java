@@ -151,7 +151,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @SuppressWarnings("unchecked")
     private T cast(Number number) {
         Class<T> type = (Class<T>) getType();
-        if (type.equals(number.getClass())) {
+        if (type.isAssignableFrom(number.getClass())) {
             return (T) number;
         } else if (Byte.class.equals(type)) {
             return (T) Byte.valueOf(number.byteValue());
