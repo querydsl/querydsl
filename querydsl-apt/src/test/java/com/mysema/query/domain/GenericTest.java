@@ -13,17 +13,18 @@
  */
 package com.mysema.query.domain;
 
-import java.util.Date;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Ignore;
+import java.util.Date;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.domain.rel.SimpleType;
 import com.mysema.query.domain.rel.SimpleType2;
 
-@Ignore
-public class GenericTest {
+import org.junit.Test;
+
+public class GenericTest extends AbstractTest {
 
     @QueryEntity
     public static class GenericType<T extends ItemType> {
@@ -118,4 +119,25 @@ public class GenericTest {
 
     }
 
+    @Test
+    public void test() throws NoSuchFieldException, IllegalAccessException {
+        assertNotNull(QGenericTest_ItemType.itemType);
+        assertNotNull(QGenericTest_GenericType.genericType);
+        assertNotNull(QGenericTest_GenericType2.genericType2);
+
+        start(QGenericTest_GenericType.class, QGenericTest_GenericType.genericType);
+        matchType(ItemType.class, "itemType");
+
+        start(QGenericTest_GenericType2.class, QGenericTest_GenericType2.genericType2);
+        matchType(ItemType.class, "itemType");
+        matchType(GenericSimpleType.class, "prop1");
+        matchType(GenericSimpleType.class, "prop2");
+        matchType(GenericSimpleType.class, "prop3");
+        matchType(GenericComparableType.class, "comp1");
+        matchType(GenericComparableType.class, "comp2");
+        matchType(GenericComparableType.class, "comp3");
+        assertMissing("num1");
+        matchType(GenericNumberType.class, "num2");
+        matchType(GenericNumberType.class, "num3");
+    }
 }

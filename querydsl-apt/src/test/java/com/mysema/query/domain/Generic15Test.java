@@ -2,13 +2,13 @@ package com.mysema.query.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
-public class Generic15Test {
+public class Generic15Test extends AbstractTest {
 
     @MappedSuperclass
     public static abstract class Compound<T extends Containable> {
@@ -33,8 +33,9 @@ public class Generic15Test {
     }
 
     @Test
-    public void test() {
-        // QMyContainable
-        assertEquals(MyCompound.class, QGeneric15Test_MyContainable.myContainable.compound.getType());
+    public void test() throws IllegalAccessException, NoSuchFieldException {
+        start(QGeneric15Test_MyContainable.class, QGeneric15Test_MyContainable.myContainable);
+        match(QGeneric15Test_MyCompound.class, "compound");
+        matchType(MyCompound.class, "compound");
     }
 }

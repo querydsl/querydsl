@@ -1,13 +1,17 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.junit.Test;
 
-public class Generic16Test {
+public class Generic16Test extends AbstractTest {
 
     @Entity
     public static abstract class HidaBez<B extends HidaBez<B, G>, G extends HidaBezGruppe<G, B>> extends CapiBCKeyedByGrundstueck {
@@ -38,7 +42,9 @@ public class Generic16Test {
 
     @Test
     public void test() {
-
+        assertNotNull(QGeneric16Test_HidaBez.hidaBez);
+        assertNotNull(QGeneric4Test_HidaBezGruppe.hidaBezGruppe);
+        assertTrue(QGeneric16Test_HidaBezGruppe.hidaBezGruppe.bez.getElementType().equals(HidaBez.class));
     }
 
 }

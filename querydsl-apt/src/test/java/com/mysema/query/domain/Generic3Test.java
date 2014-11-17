@@ -3,9 +3,11 @@ package com.mysema.query.domain;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 
+import com.mysema.query.types.path.StringPath;
+
 import org.junit.Test;
 
-public class Generic3Test {
+public class Generic3Test extends AbstractTest {
     
     @MappedSuperclass
     public static abstract class BaseEntity<E extends BaseEntity<E>> {
@@ -25,8 +27,10 @@ public class Generic3Test {
     }
     
     @Test
-    public void test() {
-        
+    public void test() throws NoSuchFieldException {
+        start(QGeneric3Test_MyOrder.class, QGeneric3Test_MyOrder.myOrder);
+        match(StringPath.class, "property1");
+        match(StringPath.class, "property2");
     }
     
 }

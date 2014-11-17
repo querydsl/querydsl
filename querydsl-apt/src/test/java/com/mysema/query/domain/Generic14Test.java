@@ -1,7 +1,6 @@
 package com.mysema.query.domain;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 
@@ -10,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
 
-public class Generic14Test {
+public class Generic14Test extends AbstractTest {
 
     @Entity
     public static class UserAccount extends BaseReferencablePersistable<UserAccount, Long> {
@@ -60,12 +59,17 @@ public class Generic14Test {
     }
 
     @Test
-    public void test() {
-        assertNotNull(QGeneric14Test_UserAccount.userAccount);
-        assertNotNull(QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
-        assertNotNull(QGeneric14Test_BasePersistable.basePersistable);
+    public void test() throws IllegalAccessException, NoSuchFieldException {
         assertNotNull(QGeneric14Test_AbstractPersistable.abstractPersistable);
-        assertTrue(QGeneric14Test_UserAccount.userAccount.id
-                .getType().isAssignableFrom(Long.class));
+
+        start(QGeneric14Test_BasePersistable.class, QGeneric14Test_BasePersistable.basePersistable);
+        matchType(Serializable.class, "id");
+
+        start(QGeneric14Test_BaseReferencablePersistable.class, QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
+        matchType(Class.class, "entityClass");
+        matchType(Serializable.class, "id");
+
+        start(QGeneric14Test_UserAccount.class, QGeneric14Test_UserAccount.userAccount);
+        matchType(Long.class, "id");
     }
 }
