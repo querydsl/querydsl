@@ -13,14 +13,14 @@
  */
 package com.mysema.query.support;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.*;
 import com.mysema.query.types.*;
 import com.mysema.query.types.template.BooleanTemplate;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ReplaceVisitor is a deep visitor that can be customized to replace segments of
@@ -80,6 +80,7 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
     @Override
     public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
         QueryMetadata md = new DefaultQueryMetadata();
+        md.setValidate(false);
         md.setDistinct(expr.getMetadata().isDistinct());
         md.setModifiers(expr.getMetadata().getModifiers());
         md.setUnique(expr.getMetadata().isUnique());

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.5.1.BUILD-SNAPSHOT</version>
+  <version>3.6.0.BUILD-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -215,6 +215,7 @@
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
                   <excludes>
                     <exclude>com/mysema/query/jpa/NativeSQLSerializer</exclude>
+                    <exclude>com/mysema/query/sql/types/ArrayType</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>

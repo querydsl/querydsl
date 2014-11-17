@@ -20,8 +20,7 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.types.path.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 
 public class QBeanTest {
@@ -169,6 +168,15 @@ public class QBeanTest {
         assertEquals("Fritz", bean.getName());
         assertEquals(30, bean.getAge());
         assertEquals(true, bean.isMarried());
+    }
+
+    @Test
+    public void skipNulls() {
+        QBean bean = Projections.bean(Object.class);
+        assertEquals(bean, bean);
+        assertEquals(bean.skipNulls(), bean.skipNulls());
+        assertFalse(bean.skipNulls().equals(bean));
+        assertFalse(bean.equals(bean.skipNulls()));
     }
 
 }
