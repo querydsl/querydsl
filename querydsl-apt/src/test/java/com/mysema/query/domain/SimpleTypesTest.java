@@ -16,6 +16,8 @@ package com.mysema.query.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
@@ -263,77 +265,105 @@ public class SimpleTypesTest extends AbstractTest {
     }
 
     @Test
-    public void Simple_Types() throws SecurityException, NoSuchFieldException {
+    public void Simple_Types() throws IllegalAccessException, NoSuchFieldException {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(NumberPath.class, "id");
+        matchType(Long.class, "id");
         match(NumberPath.class, "bigDecimal");
+        matchType(BigDecimal.class, "bigDecimal");
         match(NumberPath.class, "bigInteger");
+        matchType(BigInteger.class, "bigInteger");
 //        match(PNumber.class, "bbyte");
         match(NumberPath.class, "bbyte2");
+        matchType(Byte.class, "bbyte");
         match(NumberPath.class, "ddouble");
+        matchType(Double.class, "ddouble");
         match(NumberPath.class, "ddouble2");
+        matchType(Double.class, "ddouble2");
         match(NumberPath.class, "ffloat");
+        matchType(Float.class, "ffloat");
         match(NumberPath.class, "ffloat2");
+        matchType(Float.class, "ffloat2");
 //        match(PNumber.class, "iint");
         match(NumberPath.class, "iint2");
+        matchType(Integer.class, "iint2");
         match(NumberPath.class, "llong");
+        matchType(Long.class, "llong");
         match(NumberPath.class, "llong2");
+        matchType(Long.class, "llong2");
 
         match(ComparablePath.class, "cchar");
+        matchType(Character.class, "cchar");
         match(ComparablePath.class, "cchar2");
+        matchType(Character.class, "cchar2");
 
         match(StringPath.class, "sstring");
 
         match(DateTimePath.class, "date");
+        matchType(Date.class, "date");
         match(DateTimePath.class, "calendar");
+        matchType(Calendar.class, "calendar");
 //        match(PDateTime.class, "timestamp");
 
         match(TimePath.class, "time");
+        matchType(Time.class, "time");
 
         match(SimplePath.class, "llocale");
+        matchType(Locale.class, "llocale");
         match(SimplePath.class, "serializable");
+        matchType(Serializable.class, "serializable");
         match(SimplePath.class, "object");
+        matchType(Object.class, "object");
         match(SimplePath.class, "clazz");
+        matchType(Class.class, "clazz");
         match(SimplePath.class, "packageAsLiteral");
+        matchType(Package.class, "packageAsLiteral");
 
         match(SimplePath.class, "clob");
+        matchType(Clob.class, "clob");
         match(SimplePath.class, "blob");
+        matchType(Blob.class, "blob");
 
         match(EnumPath.class, "myEnum");
+        matchType(MyEnum.class, "myEnum");
     }
 
     @Test
-    public void Custom_Literal() throws SecurityException, NoSuchFieldException {
+    public void Custom_Literal() throws IllegalAccessException, NoSuchFieldException {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(SimplePath.class, "customLiteral");
+        matchType(CustomLiteral.class, "customLiteral");
     }
 
     @Test
-    public void Custom_ComparableLiteral() throws SecurityException, NoSuchFieldException {
+    public void Custom_ComparableLiteral() throws IllegalAccessException, NoSuchFieldException {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(ComparablePath.class, "customComparableLiteral");
+        matchType(CustomComparableLiteral.class, "customComparableLiteral");
     }
 
     @Test
-    public void Custom_Number() throws SecurityException, NoSuchFieldException {
+    public void Custom_Number() throws IllegalAccessException, NoSuchFieldException {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(SimplePath.class, "customNumber");
+        matchType(CustomNumber.class, "customNumber");
     }
 
     @Test
-    public void Custom_ComparableNumber() throws SecurityException, NoSuchFieldException {
+    public void Custom_ComparableNumber() throws IllegalAccessException, NoSuchFieldException {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         match(NumberPath.class, "customComparableNumber");
+        matchType(CustomComparableNumber.class, "customComparableNumber");
     }
 
     @Test
-    public void Skipped_Field1() throws SecurityException, NoSuchFieldException {
+    public void Skipped_Field1() {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         assertMissing("skipMe");
     }
 
     @Test
-    public void Skipped_Field2() throws SecurityException, NoSuchFieldException {
+    public void Skipped_Field2() {
         start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
         assertMissing("test");
     }
