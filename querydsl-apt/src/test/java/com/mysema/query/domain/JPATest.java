@@ -37,7 +37,7 @@ public class JPATest extends AbstractTest {
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
-        cl = QJPATest_JPAEntity.class;
+        start(QJPATest_JPAEntity.class, QJPATest_JPAEntity.jPAEntity);
         match(StringPath.class, "prop");
         assertMissing("skipped");
         assertMissing("skippedEntity");

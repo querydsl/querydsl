@@ -1,26 +1,45 @@
 package com.mysema.query.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
-
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
-public class Generic14Test {
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+
+import org.junit.Test;
+
+public class Generic14Test extends AbstractTest {
 
     @Entity
-    public static class UserAccount extends BaseReferencablePersistable<Long> {
+    public static class UserAccount extends BaseReferencablePersistable<UserAccount, Long> {
+
+        public UserAccount() {
+            super(UserAccount.class);
+        }
 
     }
 
     @MappedSuperclass
-    public static abstract class BaseReferencablePersistable<PK extends Serializable> extends BasePersistable<PK> {
+    public static abstract class BaseReferencablePersistable<T, PK extends Serializable> extends BasePersistable<PK> {
+
+        private Class<T> entityClass;
+
+        public BaseReferencablePersistable(Class<T> entityClass) {
+            this.entityClass = entityClass;
+        }
 
     }
 
     @MappedSuperclass
     public static class BasePersistable<T extends Serializable> extends AbstractPersistable<T> implements UpdateInfo {
+
+        private T id;
+
+        @Override
+        public T getId() {
+            return id;
+        }
 
     }
 
@@ -31,6 +50,8 @@ public class Generic14Test {
 
     public interface Persistable<T> {
 
+        T getId();
+
     }
 
     public interface UpdateInfo {
@@ -38,10 +59,17 @@ public class Generic14Test {
     }
 
     @Test
-    public void test() {
-        assertNotNull(QGeneric14Test_UserAccount.userAccount);
-        assertNotNull(QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
-        assertNotNull(QGeneric14Test_BasePersistable.basePersistable);
+    public void test() throws IllegalAccessException, NoSuchFieldException {
         assertNotNull(QGeneric14Test_AbstractPersistable.abstractPersistable);
+
+        start(QGeneric14Test_BasePersistable.class, QGeneric14Test_BasePersistable.basePersistable);
+        matchType(Serializable.class, "id");
+
+        start(QGeneric14Test_BaseReferencablePersistable.class, QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
+        matchType(Class.class, "entityClass");
+        matchType(Serializable.class, "id");
+
+        start(QGeneric14Test_UserAccount.class, QGeneric14Test_UserAccount.userAccount);
+        matchType(Long.class, "id");
     }
 }

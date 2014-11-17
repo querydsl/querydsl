@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
+import static org.junit.Assert.assertEquals;
 
 public class Generic8Test {
     
@@ -17,6 +18,11 @@ public class Generic8Test {
         List<T> values;
         
         List<? extends T> values2;
+
+    }
+
+    @QueryEntity
+    public static class IntermediateEntity<E> extends Superclass<E> {
 
     }
     
@@ -31,9 +37,16 @@ public class Generic8Test {
 
     }
 
+    @QueryEntity
+    public static class Entity3 extends IntermediateEntity<String> {
+
+    }
+
     @Test
     public void test() {
-        
+        assertEquals(String.class, QGeneric8Test_Entity.entity.values.getElementType());
+        assertEquals(Integer.class, QGeneric8Test_Entity2.entity2.values.getElementType());
+        assertEquals(String.class, QGeneric8Test_Entity3.entity3.values.getElementType());
     }
 
 }
