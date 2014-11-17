@@ -331,14 +331,14 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable A from, @Nullable A to) {
         if (from == null) {
             if (to != null) {
-                return BooleanOperation.create(Ops.LOE, mixin, ConstantImpl.create(to));
+                return loe(to);
             } else {
                 throw new IllegalArgumentException("Either from or to needs to be non-null");
             }
         } else if (to == null) {
-            return BooleanOperation.create(Ops.GOE, mixin, ConstantImpl.create(from));
+            return goe(from);
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, mixin, ConstantImpl.create(from), ConstantImpl.create(to));
+            return between(ConstantImpl.create(cast(from)), ConstantImpl.create(cast(to)));
         }
     }
 
