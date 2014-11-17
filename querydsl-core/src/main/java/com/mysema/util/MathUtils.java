@@ -63,7 +63,7 @@ public final class MathUtils {
                 rv = type.cast(new BigInteger(num.toString()));
             }
         } else {
-            throw new IllegalArgumentException(String.format("Illegal type : %s", type.getSimpleName()));
+            throw new IllegalArgumentException(String.format("Unsupported target type : %s", type.getSimpleName()));
         }
         return rv;
     }
