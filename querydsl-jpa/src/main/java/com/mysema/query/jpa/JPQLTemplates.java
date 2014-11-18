@@ -183,4 +183,8 @@ public class JPQLTemplates extends Templates {
         return queryHandler;
     }
 
+    public boolean isCaseWithLiterals() {
+        return false;
+    }
+
 }

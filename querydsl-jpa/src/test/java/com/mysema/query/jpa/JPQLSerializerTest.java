@@ -19,6 +19,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.domain.QCat;
+import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.Location;
 import com.mysema.query.jpa.domain.QDomesticCat;
 import com.mysema.query.jpa.domain.QEmployee;
@@ -222,5 +223,33 @@ public class JPQLSerializerTest {
         serializer.serialize(md, false, null);
         assertEquals("select cat_\nfrom Cat cat_\n  inner join cat_.mate on cat_.mate.alive",
                 serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_boolean() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral(Boolean.TRUE);
+        assertEquals("true", serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_number() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral(1.543);
+        assertEquals("1.543", serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_string() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral("abc''def");
+        assertEquals("'abc''''def'", serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_enum() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral(JobFunction.MANAGER);
+        assertEquals("com.mysema.query.jpa.domain.JobFunction.MANAGER", serializer.toString());
     }
 }
