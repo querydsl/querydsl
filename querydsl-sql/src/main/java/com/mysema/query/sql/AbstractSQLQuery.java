@@ -162,7 +162,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         SQLSerializer serializer = serialize(false);
         String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
+            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
         }
         context.addSQL(queryString);
         listeners.rendered(context);
@@ -218,7 +218,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         SQLSerializer serializer = serialize(false);
         final String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
+            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
         }
         context.addSQL(queryString);
         listeners.rendered(context);
@@ -290,7 +290,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         SQLSerializer serializer = serialize(false);
         final String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
+            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
         }
         context.addSQL(queryString);
         listeners.rendered(context);
@@ -463,7 +463,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         SQLSerializer serializer = serialize(true);
         final String queryString = serializer.toString();
         if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
+            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
         }
         context.addSQL(queryString);
         listeners.rendered(context);
