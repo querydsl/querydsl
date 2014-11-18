@@ -13,8 +13,6 @@
  */
 package com.mysema.query.types.expr;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,30 +146,8 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return castToNum(Byte.class);
     }
 
-    @SuppressWarnings("unchecked")
     private T cast(Number number) {
-        Class<T> type = (Class<T>) getType();
-        if (type.isAssignableFrom(number.getClass())) {
-            return (T) number;
-        } else if (Byte.class.equals(type)) {
-            return (T) Byte.valueOf(number.byteValue());
-        } else if (Double.class.equals(type)) {
-            return (T) Double.valueOf(number.doubleValue());
-        } else if (Float.class.equals(type)) {
-            return (T) Float.valueOf(number.floatValue());
-        } else if (Integer.class.equals(type)) {
-            return (T) Integer.valueOf(number.intValue());
-        } else if (Long.class.equals(type)) {
-            return (T) Long.valueOf(number.longValue());
-        } else if (Short.class.equals(type)) {
-            return (T) Short.valueOf(number.shortValue());
-        } else if (BigInteger.class.equals(type)) {
-            return (T) new BigInteger(String.valueOf(number.longValue()));
-        } else if (BigDecimal.class.equals(type)) {
-            return (T) new BigDecimal(number.toString());
-        } else {
-            throw new IllegalArgumentException("Unsupported target type : " + type.getName());
-        }
+        return MathUtils.cast(number, getType());
     }
 
     @Override
@@ -355,14 +331,14 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable A from, @Nullable A to) {
         if (from == null) {
             if (to != null) {
-                return BooleanOperation.create(Ops.LOE, mixin, ConstantImpl.create(to));
+                return loe(to);
             } else {
                 throw new IllegalArgumentException("Either from or to needs to be non-null");
             }
         } else if (to == null) {
-            return BooleanOperation.create(Ops.GOE, mixin, ConstantImpl.create(from));
+            return goe(from);
         } else {
-            return BooleanOperation.create(Ops.BETWEEN, mixin, ConstantImpl.create(from), ConstantImpl.create(to));
+            return between(ConstantImpl.create(cast(from)), ConstantImpl.create(cast(to)));
         }
     }
 

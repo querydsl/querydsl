@@ -23,6 +23,16 @@ import org.junit.Test;
 public class MathUtilsTest {
 
     @Test
+    public void Sum() {
+        assertEquals(Integer.valueOf(5), MathUtils.sum(2, 3.0));
+    }
+
+    @Test
+    public void Difference() {
+        assertEquals(Integer.valueOf(2), MathUtils.difference(5, 3.0));
+    }
+
+    @Test
     public void Cast() {
         Integer value = Integer.valueOf(1);
         assertEquals(BigDecimal.class, MathUtils.cast(value, BigDecimal.class).getClass());
@@ -33,6 +43,15 @@ public class MathUtilsTest {
         assertEquals(Long.class, MathUtils.cast(value, Long.class).getClass());
         assertEquals(Short.class, MathUtils.cast(value, Short.class).getClass());
         assertEquals(Byte.class, MathUtils.cast(value, Byte.class).getClass());
+
+        assertEquals(BigDecimal.ONE, MathUtils.cast(value, BigDecimal.class));
+        assertEquals(BigInteger.ONE, MathUtils.cast(value, BigInteger.class));
+        assertEquals(Double.valueOf(1), MathUtils.cast(value, Double.class));
+        assertEquals(Float.valueOf(1), MathUtils.cast(value, Float.class));
+        assertEquals(Integer.valueOf(1), MathUtils.cast(value, Integer.class));
+        assertEquals(Long.valueOf(1), MathUtils.cast(value, Long.class));
+        assertEquals(Short.valueOf((short) 1), MathUtils.cast(value, Short.class));
+        assertEquals(Byte.valueOf((byte) 1), MathUtils.cast(value, Byte.class));
     }
 
 }
