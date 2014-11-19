@@ -161,15 +161,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
         String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
-        }
         context.addSQL(queryString);
         listeners.rendered(context);
 
         listeners.notifyQuery(queryMixin.getMetadata());
 
         List<Object> constants = serializer.getConstants();
+        if (logger.isDebugEnabled()) {
+            logger.debug("query with params as MDC");
+        }
         try {
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -217,15 +217,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
         final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
-        }
         context.addSQL(queryString);
         listeners.rendered(context);
 
 
         listeners.notifyQuery(queryMixin.getMetadata());
         List<Object> constants = serializer.getConstants();
+        if (logger.isDebugEnabled()) {
+            logger.debug("query with params as MDC");
+        }
         try {
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -289,14 +289,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
         final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
-        }
         context.addSQL(queryString);
         listeners.rendered(context);
 
         listeners.notifyQuery(queryMixin.getMetadata());
         List<Object> constants = serializer.getConstants();
+        if (logger.isDebugEnabled()) {
+            logger.debug("query with params as MDC");
+        }
         try {
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -462,13 +462,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(true);
         final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}\n with : {}", queryString, serializer.getConstants());
-        }
         context.addSQL(queryString);
         listeners.rendered(context);
 
         List<Object> constants = serializer.getConstants();
+        if (logger.isDebugEnabled()) {
+            logger.debug("query with params as MDC");
+        }
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
