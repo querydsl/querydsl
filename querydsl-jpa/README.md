@@ -35,7 +35,7 @@ And now, configure the Maven APT plugin :
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
         <executions>
           <execution>
             <goals>

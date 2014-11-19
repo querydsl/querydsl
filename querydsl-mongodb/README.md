@@ -28,7 +28,7 @@ And now, configure the Maven APT plugin which generates the query types used by 
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
         <executions>
           <execution>
             <goals>
