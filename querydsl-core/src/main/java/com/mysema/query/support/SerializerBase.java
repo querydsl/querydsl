@@ -13,26 +13,16 @@
  */
 package com.mysema.query.support;
 
+import com.google.common.collect.ImmutableList;
+import com.mysema.query.JoinFlag;
+import com.mysema.query.QueryFlag;
+import com.mysema.query.types.*;
+import org.apache.log4j.MDC;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.ImmutableList;
-import com.mysema.query.JoinFlag;
-import com.mysema.query.QueryFlag;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.Visitor;
 
 /**
  * SerializerBase is a stub for Serializer implementations which serialize query metadata to Strings
@@ -196,11 +186,14 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     @Override
     public String toString() {
+        String queryString;
         if (normalize) {
-            return Normalization.normalize(builder.toString());    
+            queryString = Normalization.normalize(builder.toString());
         } else {
-            return builder.toString();
-        }        
+            queryString = builder.toString();
+        }
+        MDC.put("querydsl.query", queryString);
+        return queryString;
     }
 
     @Override

@@ -37,9 +37,19 @@
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>
       <version>${mysema.lang.version}</version>
-    </dependency>     
-    
-    <!-- alias dependencies -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+      <!-- alias dependencies -->
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
