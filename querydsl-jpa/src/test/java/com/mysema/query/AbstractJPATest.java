@@ -1179,7 +1179,6 @@ public abstract class AbstractJPATest {
                .list(cat.name, new JPASubQuery().from(other).where(other.name.eq(cat.name)).count());
     }
 
-
     @Test
     public void SubQuery5() {
         QEmployee employee = QEmployee.employee;
@@ -1189,7 +1188,6 @@ public abstract class AbstractJPATest {
                         .list(employee2.id).count().gt(1))
                 .count();
     }
-
 
     @Test
     public void Substring() {
