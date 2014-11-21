@@ -449,25 +449,6 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    public void Count_Subquery() {
-        QEmployee employee = QEmployee.employee;
-        QEmployee employee2 = new QEmployee("e2");
-        query().from(employee)
-               .where(subQuery().from(employee2)
-                                .list(employee2.id).count().gt(1))
-               .count();
-    }
-
-    @Test
-    public void Count_Subquery2() {
-        QEmployee employee = QEmployee.employee;
-        QEmployee employee2 = new QEmployee("e2");
-        query().from(employee)
-                .where(subQuery().from(employee2).count().gt(1))
-                .count();
-    }
-
-    @Test
     public void Count_Distinct() {
         QCat cat = QCat.cat;
         query().from(cat)
@@ -1197,6 +1178,18 @@ public abstract class AbstractJPATest {
         query().from(cat)
                .list(cat.name, new JPASubQuery().from(other).where(other.name.eq(cat.name)).count());
     }
+
+
+    @Test
+    public void SubQuery5() {
+        QEmployee employee = QEmployee.employee;
+        QEmployee employee2 = new QEmployee("e2");
+        query().from(employee)
+                .where(subQuery().from(employee2)
+                        .list(employee2.id).count().gt(1))
+                .count();
+    }
+
 
     @Test
     public void Substring() {
