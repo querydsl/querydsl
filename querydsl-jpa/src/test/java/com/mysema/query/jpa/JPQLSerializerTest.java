@@ -50,7 +50,7 @@ public class JPQLSerializerTest {
     @Test
     public void Case() {
         QCat cat = QCat.cat;
-        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
                 .when(cat.toes.eq(3)).then(3)
                 .otherwise(4);
@@ -58,16 +58,37 @@ public class JPQLSerializerTest {
         assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else ?3 end", serializer.toString());
     }
 
+    @Test
+    public void Case_Hibernate() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
+                .when(cat.toes.eq(3)).then(3)
+                .otherwise(4);
+        serializer.handle(expr);
+        assertEquals("case when (cat.toes = 2) then 2 when (cat.toes = 3) then 3 else 4 end", serializer.toString());
+    }
 
     @Test
     public void Case2() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
+                .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                .otherwise(4);
+        serializer.handle(expr);
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
+    }
+
+    @Test
+    public void Case2_Hibernate() {
         QCat cat = QCat.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
+        assertEquals("case when (cat.toes = 2) then (cat.id * 2) when (cat.toes = 3) then (cat.id * 3) else 4 end", serializer.toString());
     }
 
     @Test
