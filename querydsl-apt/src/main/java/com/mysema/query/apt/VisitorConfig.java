@@ -42,6 +42,10 @@ public enum VisitorConfig {
 
     private final boolean visitFieldProperties, visitMethodProperties, visitConstructors;
 
+    public static VisitorConfig get(boolean fields, boolean methods) {
+        return get(fields, methods, VisitorConfig.ALL);
+    }
+
     public static VisitorConfig get(boolean fields, boolean methods, VisitorConfig defaultConfig) {
         if (fields && methods) {
             return VisitorConfig.ALL;
