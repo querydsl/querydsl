@@ -1180,6 +1180,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void SubQuery5() {
+        QEmployee employee = QEmployee.employee;
+        QEmployee employee2 = new QEmployee("e2");
+        query().from(employee)
+                .where(subQuery().from(employee2)
+                        .list(employee2.id).count().gt(1))
+                .count();
+    }
+
+    @Test
     public void Substring() {
         for (String str : query().from(cat).list(cat.name.substring(1,2))) {
             assertEquals(1, str.length());
