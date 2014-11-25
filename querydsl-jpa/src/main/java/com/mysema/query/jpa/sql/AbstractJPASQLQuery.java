@@ -41,6 +41,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -96,7 +97,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
 
@@ -273,14 +274,24 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         }
     }
 
-    protected void logQuery(String queryString) {
+
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     protected void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     @Override

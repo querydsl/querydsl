@@ -35,6 +35,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
@@ -119,7 +120,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         Query query = entityManager.createQuery(queryString);
         JPAUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
@@ -264,10 +265,24 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
+    }
+
+    @Override
+    protected void reset() {
+        super.reset();
+        cleanupMDC();
     }
 
     @Override

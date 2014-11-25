@@ -15,6 +15,7 @@ package com.mysema.query.jpa.hibernate.sql;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ListMultimap;
@@ -38,6 +39,7 @@ import org.hibernate.Query;
 import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -82,7 +84,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
         HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
@@ -183,14 +185,23 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         }
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     protected void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     @SuppressWarnings("unchecked")

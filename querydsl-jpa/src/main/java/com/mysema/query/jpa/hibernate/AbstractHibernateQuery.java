@@ -13,40 +13,25 @@
  */
 package com.mysema.query.jpa.hibernate;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
-import org.hibernate.FlushMode;
-import org.hibernate.LockMode;
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.*;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.FactoryExpressionTransformer;
-import com.mysema.query.jpa.HQLTemplates;
-import com.mysema.query.jpa.JPAQueryBase;
-import com.mysema.query.jpa.JPQLSerializer;
-import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.jpa.ScrollableResultsIterator;
+import com.mysema.query.jpa.*;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
+import org.hibernate.*;
+import org.hibernate.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface
@@ -138,7 +123,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
         if (fetchSize > 0) {
@@ -258,10 +243,23 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
+    }
+
+    protected void reset() {
+        super.reset();
+        cleanupMDC();
     }
 
     /**

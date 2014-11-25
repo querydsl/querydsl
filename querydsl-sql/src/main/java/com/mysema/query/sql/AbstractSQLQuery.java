@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import com.mysema.query.types.expr.Wildcard;
 import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
@@ -161,9 +163,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
         String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
+        logQuery(queryString, serializer.getConstants());
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -217,9 +217,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
         final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
+        logQuery(queryString, serializer.getConstants());
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -289,9 +287,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(false);
         final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
+        logQuery(queryString, serializer.getConstants());
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -422,6 +418,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     private void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths,
@@ -462,9 +459,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         listeners.preRender(context);
         SQLSerializer serializer = serialize(true);
         final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
+        logQuery(queryString, serializer.getConstants());
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -500,7 +495,22 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                 }
             }
             endContext(context);
+            cleanupMDC();
         }
+    }
+
+    protected void logQuery(String queryString, Collection<Object> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
+        if (logger.isDebugEnabled()) {
+            logger.debug(normalizedQuery);
+        }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     public void setUseLiterals(boolean useLiterals) {

@@ -30,6 +30,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -137,7 +138,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
-        logQuery(serializer.toString());
+        logQuery(serializer.toString(), serializer.getConstantToLabel());
 
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
@@ -160,10 +161,18 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return query;
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     @SuppressWarnings("unchecked")
@@ -278,6 +287,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     private void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     /**
