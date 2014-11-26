@@ -73,13 +73,16 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     public long count() {
         QueryModifiers modifiers = getMetadata().getModifiers();
-        Query query = createQuery(modifiers, true);
-        reset();
-        Long rv = (Long)query.uniqueResult();
-        if (rv != null) {
-            return rv.longValue();
-        } else {
-            throw new QueryException("Query returned null");
+        try {
+            Query query = createQuery(modifiers, true);
+            Long rv = (Long)query.uniqueResult();
+            if (rv != null) {
+                return rv.longValue();
+            } else {
+                throw new QueryException("Query returned null");
+            }
+        } finally {
+            reset();
         }
     }
 
@@ -199,10 +202,13 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      */
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        Query query = createQuery(projection);
-        reset();
-        ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
-        return new ScrollableResultsIterator<RT>(results);
+        try {
+            Query query = createQuery(projection);
+            ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
+            return new ScrollableResultsIterator<RT>(results);
+        } finally {
+            reset();
+        }
     }
 
     @Override
@@ -213,9 +219,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        Query query = createQuery(expr);
-        reset();
-        return query.list();
+        try {
+            return createQuery(expr).list();
+        } finally {
+            reset();
+        }
     }
 
     @Override
@@ -225,10 +233,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
-        Query countQuery = createQuery(null, true);
-        long total = (Long) countQuery.uniqueResult();
         try{
+            queryMixin.addProjection(expr);
+            Query countQuery = createQuery(null, true);
+            long total = (Long) countQuery.uniqueResult();
+
             if (total > 0) {
                 QueryModifiers modifiers = getMetadata().getModifiers();
                 Query query = createQuery(modifiers, false);
@@ -272,9 +281,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expression<?> expr) {
-        Query query = createQuery(expr);
-        reset();
-        return query.scroll(mode);
+        try {
+            return createQuery(expr).scroll(mode);
+        } finally {
+            reset();
+        }
     }
 
     /**
@@ -287,9 +298,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expression<?>... args) {
-        Query query = createQuery(args);
-        reset();
-        return query.scroll(mode);
+        try {
+            return createQuery(args).scroll(mode);
+        } finally {
+            reset();
+        }
     }
 
     /**
@@ -387,13 +400,16 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     private Object uniqueResult() {
-        QueryModifiers modifiers = getMetadata().getModifiers();
-        Query query = createQuery(modifiers, false);
-        reset();
-        try{
-            return query.uniqueResult();
-        } catch (org.hibernate.NonUniqueResultException e) {
-            throw new NonUniqueResultException();
+        try {
+            QueryModifiers modifiers = getMetadata().getModifiers();
+            Query query = createQuery(modifiers, false);
+            try{
+                return query.uniqueResult();
+            } catch (org.hibernate.NonUniqueResultException e) {
+                throw new NonUniqueResultException();
+            }
+        } finally {
+            reset();
         }
     }
     

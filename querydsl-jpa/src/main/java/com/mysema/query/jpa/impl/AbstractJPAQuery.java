@@ -75,9 +75,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Override
     public long count() {
-        Query query = createQuery(null, true);
-        reset();
-        return (Long) query.getSingleResult();
+        try {
+            Query query = createQuery(null, true);
+            return (Long) query.getSingleResult();
+        } finally {
+            reset();
+        }
     }
 
     /**
@@ -222,8 +225,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        Query query = createQuery(expr);
-        return queryHandler.<RT>iterate(query, projection);
+        try {
+            Query query = createQuery(expr);
+            return queryHandler.<RT>iterate(query, projection);
+        } finally {
+            reset();
+        }
     }
 
     @Override
@@ -234,8 +241,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        Query query = createQuery(expr);
         try {
+            Query query = createQuery(expr);
             return (List<RT>) getResultList(query);
         } finally {
             reset();
@@ -249,20 +256,23 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
-        Query countQuery = createQuery(null, true);
-        long total = (Long) countQuery.getSingleResult();
-        if (total > 0) {
-            QueryModifiers modifiers = getMetadata().getModifiers();
-            Query query = createQuery(modifiers, false);
-            @SuppressWarnings("unchecked")
-            List<RT> list = (List<RT>) getResultList(query);
+        try {
+            queryMixin.addProjection(expr);
+            Query countQuery = createQuery(null, true);
+            long total = (Long) countQuery.getSingleResult();
+            if (total > 0) {
+                QueryModifiers modifiers = getMetadata().getModifiers();
+                Query query = createQuery(modifiers, false);
+                @SuppressWarnings("unchecked")
+                List<RT> list = (List<RT>) getResultList(query);
+                return new SearchResults<RT>(list, modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }
+        } finally {
             reset();
-            return new SearchResults<RT>(list, modifiers, total);
-        } else {
-            reset();
-            return SearchResults.emptyResults();
         }
+
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
@@ -294,8 +304,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @Nullable
     @SuppressWarnings("unchecked")
     private <RT> RT  uniqueResult() {
-        Query query = createQuery(getMetadata().getModifiers(), false);
         try{
+            Query query = createQuery(getMetadata().getModifiers(), false);
             return (RT) getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);

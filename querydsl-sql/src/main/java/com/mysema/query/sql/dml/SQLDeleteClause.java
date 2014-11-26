@@ -115,7 +115,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         serializer.serializeDelete(metadata, entity);
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -135,7 +135,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         serializer.serializeDelete(batches.get(0), entity);
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -207,6 +207,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            reset();
             endContext(context);
         }
     }

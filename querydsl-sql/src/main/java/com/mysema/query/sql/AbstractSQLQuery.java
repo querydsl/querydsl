@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
 import com.mysema.query.support.QueryMixin;
@@ -159,18 +160,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         queryMixin.addProjection(exprs);
 
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
 
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(false);
-        String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstants());
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-        listeners.notifyQuery(queryMixin.getMetadata());
-
-        List<Object> constants = serializer.getConstants();
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(false);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+            listeners.notifyQuery(queryMixin.getMetadata());
+
+            constants = serializer.getConstants();
+
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
@@ -213,18 +217,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
 
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(false);
-        final String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstants());
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-
-        listeners.notifyQuery(queryMixin.getMetadata());
-        List<Object> constants = serializer.getConstants();
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(false);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+
+            listeners.notifyQuery(queryMixin.getMetadata());
+            constants = serializer.getConstants();
+
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), metadata.getParams());
@@ -283,17 +290,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     public <RT> List<RT> list(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
 
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(false);
-        final String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstants());
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-        listeners.notifyQuery(queryMixin.getMetadata());
-        List<Object> constants = serializer.getConstants();
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(false);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+            listeners.notifyQuery(queryMixin.getMetadata());
+            constants = serializer.getConstants();
+
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
@@ -455,18 +465,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     private long unsafeCount() throws SQLException {
         SQLListenerContextImpl context = startContext(conn, getMetadata());
-
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(true);
-        final String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstants());
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-        List<Object> constants = serializer.getConstants();
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
         PreparedStatement stmt = null;
         ResultSet rs = null;
+
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(true);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+            constants = serializer.getConstants();
             listeners.prePrepare(context);
 
             stmt = conn.prepareStatement(queryString);

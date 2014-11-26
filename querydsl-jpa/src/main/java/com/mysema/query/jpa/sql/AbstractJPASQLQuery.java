@@ -245,33 +245,44 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
-        Query query = createQuery(projection);
-        return (List<RT>) getResultList(query);
+        try {
+            Query query = createQuery(projection);
+            return (List<RT>) getResultList(query);
+        } finally {
+            reset();
+        }
     }
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        Query query = createQuery(expr);
-        return queryHandler.<RT>iterate(query, null);
+        try {
+            Query query = createQuery(expr);
+            return queryHandler.<RT>iterate(query, null);
+        } finally {
+            reset();
+        }
     }
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
-        queryMixin.addProjection(projection);
-        Query query = createQuery(true);
-        long total = ((Number)query.getSingleResult()).longValue();
-        if (total > 0) {
-            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            query = createQuery(false);
-            @SuppressWarnings("unchecked")
-            List<RT> list = (List<RT>) getResultList(query);
+        try {
+            queryMixin.addProjection(projection);
+            Query query = createQuery(true);
+            long total = ((Number)query.getSingleResult()).longValue();
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                query = createQuery(false);
+                @SuppressWarnings("unchecked")
+                List<RT> list = (List<RT>) getResultList(query);
+                return new SearchResults<RT>(list, modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }
+        } finally {
             reset();
-            return new SearchResults<RT>(list, modifiers, total);
-        } else {
-            reset();
-            return SearchResults.emptyResults();
         }
+
     }
 
 
