@@ -614,7 +614,7 @@ public class SelectBase extends AbstractBaseTest {
     public void Having_Count() {
         //Produces empty resultset https://github.com/querydsl/querydsl/issues/1055
         query().from(employee)
-                .innerJoin(employee2)
+                .innerJoin(employee2).on(employee.id.eq(employee2.id))
                 .groupBy(employee.id)
                 .having(Wildcard.count.eq(4L))
                 .listResults(employee.id, employee.firstname);
