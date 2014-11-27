@@ -610,6 +610,30 @@ public class SelectBase extends AbstractBaseTest {
                      employee.salary.avg());
     }
 
+    @Test
+    public void GroupBy_Count() {
+        List<Integer> ids = query().from(employee).groupBy(employee.id).list(employee.id);
+        long count = query().from(employee).groupBy(employee.id).count();
+        SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
+                .limit(1).listResults(employee.id);
+
+        assertEquals(10, ids.size());
+        assertEquals(10, count);
+        assertEquals(1, results.getResults().size());
+        assertEquals(10, results.getTotal());
+    }
+
+    @Test
+    public void GroupBy_Distinct_Count() {
+        List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().list(NumberTemplate.ONE);
+        SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
+                .limit(1).distinct().listResults(NumberTemplate.ONE);
+
+        assertEquals(1, ids.size());
+        assertEquals(1, results.getResults().size());
+        assertEquals(1, results.getTotal());
+    }
+
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {
