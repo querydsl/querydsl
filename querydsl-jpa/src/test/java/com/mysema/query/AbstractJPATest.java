@@ -39,6 +39,7 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.*;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -670,6 +671,31 @@ public abstract class AbstractJPATest {
                .groupBy(cat.birthdate.yearMonth())
                .orderBy(cat.birthdate.yearMonth().asc())
                .list(cat.id.count());
+    }
+
+    @Test
+    public void GroupBy_Count() {
+        List<Integer> ids = query().from(cat).groupBy(cat.id).list(cat.id);
+        long count = query().from(cat).groupBy(cat.id).count();
+        SearchResults<Integer> results = query().from(cat).groupBy(cat.id)
+                .limit(1).listResults(cat.id);
+
+        long catCount = query().from(cat).count();
+        assertEquals(catCount, ids.size());
+        assertEquals(catCount, count);
+        assertEquals(catCount, results.getResults().size());
+        assertEquals(catCount, results.getTotal());
+    }
+
+    @Test
+    public void GroupBy_Distinct_Count() {
+        List<Integer> ids = query().from(cat).groupBy(cat.id).distinct().list(NumberTemplate.ONE);
+        SearchResults<Integer> results = query().from(cat).groupBy(cat.id)
+                .limit(1).distinct().listResults(NumberTemplate.ONE);
+
+        assertEquals(1, ids.size());
+        assertEquals(1, results.getResults().size());
+        assertEquals(1, results.getTotal());
     }
 
     @Test
