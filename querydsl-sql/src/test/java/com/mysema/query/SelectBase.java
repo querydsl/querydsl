@@ -611,6 +611,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({FIREBIRD})
     public void GroupBy_Count() {
         List<Integer> ids = query().from(employee).groupBy(employee.id).list(employee.id);
         long count = query().from(employee).groupBy(employee.id).count();
@@ -624,6 +625,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({FIREBIRD})
     public void GroupBy_Distinct_Count() {
         List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().list(NumberTemplate.ONE);
         SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
