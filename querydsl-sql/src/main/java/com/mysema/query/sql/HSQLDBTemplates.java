@@ -47,6 +47,7 @@ public class HSQLDBTemplates extends SQLTemplates {
         setLimitRequired(true);
         setAutoIncrement(" identity");
         setDefaultValues("\ndefault values");
+        setFunctionJoinsWrapped(true);
         add(Ops.TRIM, "trim(both from {0})");
         add(Ops.NEGATE, "{0} * -1", 7);
 
