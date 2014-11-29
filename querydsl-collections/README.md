@@ -35,7 +35,7 @@ If you are not using JPA or JDO you can generate Querydsl query types for your d
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
         <executions>
           <execution>
             <goals>

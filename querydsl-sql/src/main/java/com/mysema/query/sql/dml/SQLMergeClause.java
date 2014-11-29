@@ -189,8 +189,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
-        ResultSet rs = executeWithKeys();
+        ResultSet rs = null;
         try{
+            rs = executeWithKeys();
             List<T> rv = new ArrayList<T>();
             while (rs.next()) {
                 rv.add(configuration.get(rs, path, 1, type));
@@ -198,8 +199,11 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             return rv;
         } catch (SQLException e) {
             throw configuration.translate(e);
-        }finally{
-            close(rs);
+        }finally {
+            if (rs != null) {
+                close(rs);
+            }
+            reset();
         }
     }
 
@@ -263,6 +267,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             onException(context,e);
             throw configuration.translate(queryString, constants, e);
         } finally {
+            reset();
             endContext(context);
         }
     }
@@ -418,7 +423,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         PreparedStatement stmt;
         if (withKeys) {
             String[] target = new String[keys.size()];
@@ -468,6 +473,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             if (stmts != null) {
                 close(stmts);
             }
+            reset();
             endContext(context);
         }
     }

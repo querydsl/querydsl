@@ -15,6 +15,7 @@ package com.mysema.query.jpa.hibernate.sql;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ListMultimap;
@@ -38,6 +39,7 @@ import org.hibernate.Query;
 import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
@@ -82,7 +84,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
         HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
@@ -151,58 +153,77 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
-        Query query = createQuery(projection);
-        reset();
-        return query.list();
+        try {
+            return createQuery(projection).list();
+        } finally {
+            reset();
+        }
     }
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        Query query = createQuery(projection);
-        reset();
-        ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
-        return new ScrollableResultsIterator<RT>(results);
+        try {
+            Query query = createQuery(projection);
+            ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
+            return new ScrollableResultsIterator<RT>(results);
+        } finally {
+            reset();
+        }
     }
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
-        queryMixin.addProjection(projection);
-        Query query = createQuery(true);
-        long total = ((Number)query.uniqueResult()).longValue();
-        if (total > 0) {
-            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            query = createQuery(false);
-            @SuppressWarnings("unchecked")
-            List<RT> list = query.list();
+        try {
+            queryMixin.addProjection(projection);
+            Query query = createQuery(true);
+            long total = ((Number)query.uniqueResult()).longValue();
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                query = createQuery(false);
+                @SuppressWarnings("unchecked")
+                List<RT> list = query.list();
+                return new SearchResults<RT>(list, modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }
+        } finally {
             reset();
-            return new SearchResults<RT>(list, modifiers, total);
-        } else {
-            reset();
-            return SearchResults.emptyResults();
         }
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     protected void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        Query query = createQuery(expr);
-        return (RT)uniqueResult(query);
+        try {
+            Query query = createQuery(expr);
+            return (RT)uniqueResult(query);
+        } finally {
+            reset();
+        }
     }
 
     @Nullable
     private Object uniqueResult(Query query) {
-        reset();
         try{
             return query.uniqueResult();
         }catch (org.hibernate.NonUniqueResultException e) {

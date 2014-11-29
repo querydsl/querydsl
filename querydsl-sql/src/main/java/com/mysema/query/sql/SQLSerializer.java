@@ -842,7 +842,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(TemplateExpression<?> expr, Void context) {
-        if (inJoin && templates.isFunctionJoinsWrapped()) {
+        if (inJoin && expr instanceof RelationalFunctionCall
+                && templates.isFunctionJoinsWrapped()) {
             append("table(");
             super.visit(expr, context);
             append(")");

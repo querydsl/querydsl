@@ -304,16 +304,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-4700
     @NoBatooJPA
     public void Case() {
-        query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
-    }
-
-    @Test(expected=ClassCastException.class)
-    @NoEclipseLink
-    @NoBatooJPA
-    public void Case_Hibernate() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
     }
 
@@ -1203,6 +1195,16 @@ public abstract class AbstractJPATest {
         QCat other = new QCat("other");
         query().from(cat)
                .list(cat.name, new JPASubQuery().from(other).where(other.name.eq(cat.name)).count());
+    }
+
+    @Test
+    public void SubQuery5() {
+        QEmployee employee = QEmployee.employee;
+        QEmployee employee2 = new QEmployee("e2");
+        query().from(employee)
+                .where(subQuery().from(employee2)
+                        .list(employee2.id).count().gt(1))
+                .count();
     }
 
     @Test

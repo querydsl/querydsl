@@ -109,7 +109,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         serializer.serializeUpdate(metadata, entity, updates);
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.prepared(context);
 
@@ -128,7 +128,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         serializer.serializeUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -201,6 +201,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            reset();
             endContext(context);
         }
     }

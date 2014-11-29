@@ -30,6 +30,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -108,15 +109,19 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
 
     @Override
     public long count() {
-        Query query = createQuery(true);
-        query.setUnique(true);
-        reset();
-        Long rv = (Long) execute(query, true);
-        if (rv != null) {
-            return rv.longValue();
-        } else {
-            throw new QueryException("Query returned null");
+        try {
+            Query query = createQuery(true);
+            query.setUnique(true);
+            Long rv = (Long) execute(query, true);
+            if (rv != null) {
+                return rv.longValue();
+            } else {
+                throw new QueryException("Query returned null");
+            }
+        } finally {
+            reset();
         }
+
     }
 
     @Override
@@ -137,7 +142,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
-        logQuery(serializer.toString());
+        logQuery(serializer.toString(), serializer.getConstantToLabel());
 
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
@@ -160,10 +165,18 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return query;
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     @SuppressWarnings("unchecked")
@@ -246,10 +259,13 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
-        Object rv = execute(createQuery(false), false);
-        reset();
-        return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
+        try {
+            queryMixin.addProjection(expr);
+            Object rv = execute(createQuery(false), false);
+            return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
+        } finally {
+            reset();
+        }
     }
 
     @Override
@@ -260,24 +276,28 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     @Override
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
-        Query countQuery = createQuery(true);
-        countQuery.setUnique(true);
-        countQuery.setResult("count(this)");
-        long total = (Long) execute(countQuery, true);
-        if (total > 0) {
-            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            Query query = createQuery(false);
+        try {
+            queryMixin.addProjection(expr);
+            Query countQuery = createQuery(true);
+            countQuery.setUnique(true);
+            countQuery.setResult("count(this)");
+            long total = (Long) execute(countQuery, true);
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                Query query = createQuery(false);
+                return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }
+        } finally {
             reset();
-            return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
-        } else {
-            reset();
-            return SearchResults.emptyResults();
         }
+
     }
 
     private void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     /**
@@ -327,22 +347,26 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
-        Query query = createQuery(false);
-        reset();
-        Object rv = execute(query, false);
-        if (rv instanceof List) {
-            List<?> list = (List)rv;
-            if (!list.isEmpty()) {
-                if (list.size() > 1) {
-                    throw new NonUniqueResultException();
+        try {
+            Query query = createQuery(false);
+            Object rv = execute(query, false);
+            if (rv instanceof List) {
+                List<?> list = (List)rv;
+                if (!list.isEmpty()) {
+                    if (list.size() > 1) {
+                        throw new NonUniqueResultException();
+                    }
+                    return list.get(0);
+                } else {
+                    return null;
                 }
-                return list.get(0);
             } else {
-                return null;
+                return rv;
             }
-        } else {
-            return rv;
+        } finally {
+            reset();
         }
+
     }
 
 }
