@@ -280,6 +280,12 @@ public class Templates {
         precedence.put(op, pre);
     }
 
+    protected final void add(Map<Operator<?>, String> ops) {
+        for (Map.Entry<Operator<?>, String> entry : ops.entrySet()) {
+            add(entry.getKey(), entry.getValue());
+        }
+    }
+
     public final char getEscapeChar() {
         return escape;
     }

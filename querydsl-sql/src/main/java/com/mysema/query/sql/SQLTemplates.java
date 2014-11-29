@@ -518,12 +518,6 @@ public class SQLTemplates extends Templates {
         addTypeNameToCode(type, code, false);
     }
 
-    protected void add(Map<Operator<?>, String> ops) {
-        for (Map.Entry<Operator<?>, String> entry : ops.entrySet()) {
-            add(entry.getKey(), entry.getValue());
-        }
-    }
-
     protected void addTableOverride(SchemaAndTable from, SchemaAndTable to) {
         tableOverrides.put(from, to);
     }
