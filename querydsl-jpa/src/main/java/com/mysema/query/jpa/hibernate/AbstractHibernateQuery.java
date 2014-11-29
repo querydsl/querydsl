@@ -13,40 +13,25 @@
  */
 package com.mysema.query.jpa.hibernate;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
-import org.hibernate.FlushMode;
-import org.hibernate.LockMode;
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.*;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.FactoryExpressionTransformer;
-import com.mysema.query.jpa.HQLTemplates;
-import com.mysema.query.jpa.JPAQueryBase;
-import com.mysema.query.jpa.JPQLSerializer;
-import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.jpa.ScrollableResultsIterator;
+import com.mysema.query.jpa.*;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
+import org.hibernate.*;
+import org.hibernate.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface
@@ -88,13 +73,16 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     public long count() {
         QueryModifiers modifiers = getMetadata().getModifiers();
-        Query query = createQuery(modifiers, true);
-        reset();
-        Long rv = (Long)query.uniqueResult();
-        if (rv != null) {
-            return rv.longValue();
-        } else {
-            throw new QueryException("Query returned null");
+        try {
+            Query query = createQuery(modifiers, true);
+            Long rv = (Long)query.uniqueResult();
+            if (rv != null) {
+                return rv.longValue();
+            } else {
+                throw new QueryException("Query returned null");
+            }
+        } finally {
+            reset();
         }
     }
 
@@ -138,7 +126,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
         if (fetchSize > 0) {
@@ -214,10 +202,13 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      */
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        Query query = createQuery(projection);
-        reset();
-        ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
-        return new ScrollableResultsIterator<RT>(results);
+        try {
+            Query query = createQuery(projection);
+            ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
+            return new ScrollableResultsIterator<RT>(results);
+        } finally {
+            reset();
+        }
     }
 
     @Override
@@ -228,9 +219,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        Query query = createQuery(expr);
-        reset();
-        return query.list();
+        try {
+            return createQuery(expr).list();
+        } finally {
+            reset();
+        }
     }
 
     @Override
@@ -240,10 +233,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
-        Query countQuery = createQuery(null, true);
-        long total = (Long) countQuery.uniqueResult();
         try{
+            queryMixin.addProjection(expr);
+            Query countQuery = createQuery(null, true);
+            long total = (Long) countQuery.uniqueResult();
+
             if (total > 0) {
                 QueryModifiers modifiers = getMetadata().getModifiers();
                 Query query = createQuery(modifiers, false);
@@ -258,10 +252,23 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
     }
 
-    protected void logQuery(String queryString) {
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
+            logger.debug(normalizedQuery);
         }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
+    }
+
+    protected void reset() {
+        super.reset();
+        cleanupMDC();
     }
 
     /**
@@ -274,9 +281,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expression<?> expr) {
-        Query query = createQuery(expr);
-        reset();
-        return query.scroll(mode);
+        try {
+            return createQuery(expr).scroll(mode);
+        } finally {
+            reset();
+        }
     }
 
     /**
@@ -289,9 +298,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expression<?>... args) {
-        Query query = createQuery(args);
-        reset();
-        return query.scroll(mode);
+        try {
+            return createQuery(args).scroll(mode);
+        } finally {
+            reset();
+        }
     }
 
     /**
@@ -389,13 +400,16 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     private Object uniqueResult() {
-        QueryModifiers modifiers = getMetadata().getModifiers();
-        Query query = createQuery(modifiers, false);
-        reset();
-        try{
-            return query.uniqueResult();
-        } catch (org.hibernate.NonUniqueResultException e) {
-            throw new NonUniqueResultException();
+        try {
+            QueryModifiers modifiers = getMetadata().getModifiers();
+            Query query = createQuery(modifiers, false);
+            try{
+                return query.uniqueResult();
+            } catch (org.hibernate.NonUniqueResultException e) {
+                throw new NonUniqueResultException();
+            }
+        } finally {
+            reset();
         }
     }
     

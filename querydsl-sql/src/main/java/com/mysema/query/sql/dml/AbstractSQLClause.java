@@ -13,18 +13,21 @@
  */
 package com.mysema.query.sql.dml;
 
-import com.google.common.collect.ImmutableList;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.dml.DMLClause;
-import com.mysema.query.sql.*;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-
 import java.sql.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.dml.DMLClause;
+import com.mysema.query.sql.*;
+import com.mysema.query.support.QueryBase;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
+import org.slf4j.Logger;
+import org.slf4j.MDC;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
@@ -193,6 +196,24 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         } catch (SQLException e) {
             throw configuration.translate(e);
         }
+    }
+
+    protected void logQuery(Logger logger, String queryString, Collection<Object> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(QueryBase.MDC_QUERY, normalizedQuery);
+        MDC.put(QueryBase.MDC_PARAMETERS, String.valueOf(parameters));
+        if (logger.isDebugEnabled()) {
+            logger.debug(normalizedQuery);
+        }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(QueryBase.MDC_QUERY);
+        MDC.remove(QueryBase.MDC_PARAMETERS);
+    }
+
+    protected void reset() {
+        cleanupMDC();
     }
 
     public void setUseLiterals(boolean useLiterals) {

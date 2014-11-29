@@ -41,6 +41,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -96,7 +97,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString);
+        logQuery(queryString, serializer.getConstantToLabel());
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
 
@@ -244,43 +245,64 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
-        Query query = createQuery(projection);
-        return (List<RT>) getResultList(query);
+        try {
+            Query query = createQuery(projection);
+            return (List<RT>) getResultList(query);
+        } finally {
+            reset();
+        }
     }
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        Query query = createQuery(expr);
-        return queryHandler.<RT>iterate(query, null);
+        try {
+            Query query = createQuery(expr);
+            return queryHandler.<RT>iterate(query, null);
+        } finally {
+            reset();
+        }
     }
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
-        queryMixin.addProjection(projection);
-        Query query = createQuery(true);
-        long total = ((Number)query.getSingleResult()).longValue();
-        if (total > 0) {
-            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            query = createQuery(false);
-            @SuppressWarnings("unchecked")
-            List<RT> list = (List<RT>) getResultList(query);
+        try {
+            queryMixin.addProjection(projection);
+            Query query = createQuery(true);
+            long total = ((Number)query.getSingleResult()).longValue();
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                query = createQuery(false);
+                @SuppressWarnings("unchecked")
+                List<RT> list = (List<RT>) getResultList(query);
+                return new SearchResults<RT>(list, modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }
+        } finally {
             reset();
-            return new SearchResults<RT>(list, modifiers, total);
-        } else {
-            reset();
-            return SearchResults.emptyResults();
+        }
+
+    }
+
+
+    protected void logQuery(String queryString, Map<Object, String> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
+        if (logger.isDebugEnabled()) {
+            logger.debug(normalizedQuery);
         }
     }
 
-    protected void logQuery(String queryString) {
-        if (logger.isDebugEnabled()) {
-            logger.debug(queryString.replace('\n', ' '));
-        }
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     protected void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     @Override
