@@ -482,10 +482,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
             listeners.preExecute(context);
             rs = stmt.executeQuery();
-            rs.next();
+            boolean hasResult = rs.next();
             listeners.executed(context);
 
-            return rs.getLong(1);
+            if (hasResult) {
+                return rs.getLong(1);
+            } else {
+                return 0;
+            }
         } catch (SQLException e) {
             onException(context, e);
             throw configuration.translate(queryString, constants, e);
