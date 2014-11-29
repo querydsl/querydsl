@@ -637,6 +637,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({FIREBIRD})
     public void Having_Count() {
         //Produces empty resultset https://github.com/querydsl/querydsl/issues/1055
         query().from(employee)
