@@ -139,6 +139,19 @@ public class SerializationTest {
     }
 
     @Test
+    public void FunctionCall3() {
+        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
+        SQLQuery q = new SQLQuery(new HSQLDBTemplates());
+        q.from(survey)
+            .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
+
+        assertEquals("from SURVEY SURVEY\n" +
+                "join table(TableValuedFunction(?)) as tokFunc\n" +
+                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+    }
+
+    @Test
     public void Union() {
         SQLQuery q = new SQLQuery(SQLTemplates.DEFAULT);
         q.union(new SQLSubQuery().from(survey).list(survey.all()),
