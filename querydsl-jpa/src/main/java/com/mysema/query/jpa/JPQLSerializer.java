@@ -79,6 +79,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private boolean inProjection = false;
 
+    private boolean inCaseOperation = false;
+
     static{
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
@@ -279,21 +281,62 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     public void visitConstant(Object constant) {
-        boolean wrap = templates.wrapConstant(constant);
-        if (wrap) {
-             append("(");
-        }
-        append("?");
-        if (!getConstantToLabel().containsKey(constant)) {
-            final String constLabel = String.valueOf(getConstantToLabel().size()+1);
-            getConstantToLabel().put(constant, constLabel);
-            append(constLabel);
+        if (inCaseOperation && templates.isCaseWithLiterals()) {
+            visitLiteral(constant);
         } else {
-            append(getConstantToLabel().get(constant));
+            boolean wrap = templates.wrapConstant(constant);
+            if (wrap) {
+                append("(");
+            }
+            append("?");
+            if (!getConstantToLabel().containsKey(constant)) {
+                final String constLabel = String.valueOf(getConstantToLabel().size()+1);
+                getConstantToLabel().put(constant, constLabel);
+                append(constLabel);
+            } else {
+                append(getConstantToLabel().get(constant));
+            }
+            if (wrap) {
+                append(")");
+            }
         }
-        if (wrap) {
-            append(")");
+    }
+
+    public void visitLiteral(Object constant) {
+        if (constant instanceof Boolean) {
+            append(constant.toString());
+        } else if (constant instanceof Number) {
+            append(constant.toString());
+        } else if (constant instanceof String) {
+            append("'");
+            append(escapeLiteral(constant.toString()));
+            append("'");
+        } else if (constant instanceof Enum) {
+            append(constant.getClass().getName());
+            append(".");
+            append(((Enum) constant).name());
+        } else {
+            // TODO date time literals
+            throw new IllegalArgumentException("Unsupported constant " + constant);
         }
+    }
+
+    private String escapeLiteral(String str) {
+        StringBuilder builder = new StringBuilder();
+        for (char ch : str.toCharArray()) {
+            if (ch == '\n') {
+                builder.append("\\n");
+                continue;
+            } else if (ch == '\r') {
+                builder.append("\\r");
+                continue;
+            } else if (ch == '\'') {
+                builder.append("''");
+                continue;
+            }
+            builder.append(ch);
+        }
+        return builder.toString();
     }
 
     @Override
@@ -336,7 +379,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @Override
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
-        boolean old = wrapElements;
+        boolean oldInCaseOperation = inCaseOperation;
+        inCaseOperation = inCaseOperation || operator.equals(Ops.CASE) || operator.equals(Ops.CASE_EQ);
+        boolean oldWrapElements = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
         if (operator == Ops.EQ && args.get(1) instanceof Operation &&
@@ -387,7 +432,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             super.visitOperation(type, operator, args);
         }
 
-        wrapElements = old;
+        inCaseOperation = oldInCaseOperation;
+        wrapElements = oldWrapElements;
     }
 
     private void visitNumCast(List<? extends Expression<?>> args) {

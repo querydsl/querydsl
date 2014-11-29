@@ -141,4 +141,9 @@ public class HQLTemplates extends JPQLTemplates {
         return true;
     }
 
+    @Override
+    public boolean isCaseWithLiterals() {
+        return true;
+    }
+
 }
