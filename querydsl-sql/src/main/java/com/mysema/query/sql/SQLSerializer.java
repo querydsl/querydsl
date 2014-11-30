@@ -264,6 +264,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
             if (!metadata.isDistinct()) {
                 append(templates.getCountStar());
+                if (!groupBy.isEmpty()) {
+                    append(templates.getFrom());
+                    append("(");
+                    append(templates.getSelect());
+                    append("1 ");
+                    suffix = ") internal";
+                }
+
             } else {
                 List<? extends Expression<?>> columns;
                 if (sqlSelect.isEmpty()) {
@@ -271,7 +279,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 } else {
                     columns = sqlSelect;
                 }
-                if (columns.size() == 1) {
+                if (!groupBy.isEmpty()) {
+                    // select count(*) from (select distinct ...)
+                    append(templates.getCountStar());
+                    append(templates.getFrom());
+                    append("(");
+                    append(templates.getSelectDistinct());
+                    handle(COMMA, columns);
+                    suffix = ") internal";
+                } else if (columns.size() == 1) {
                     append(templates.getDistinctCountStart());
                     handle(columns.get(0));
                     append(templates.getDistinctCountEnd());

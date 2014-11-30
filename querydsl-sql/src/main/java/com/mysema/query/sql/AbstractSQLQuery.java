@@ -379,7 +379,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
-            if (configuration.getTemplates().isCountViaAnalytics()) {
+            if (configuration.getTemplates().isCountViaAnalytics()
+                && queryMixin.getMetadata().getGroupBy().isEmpty()) {
                 List<RT> results;
                 try {
                     queryMixin.addFlag(rowCountFlag);
