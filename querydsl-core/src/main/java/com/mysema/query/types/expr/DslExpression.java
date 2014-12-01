@@ -13,10 +13,11 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.Field;
+
+import com.mysema.query.types.*;
 
 /**
  * DslExpression is the base class for DSL expressions, but {@link SimpleExpression} is the base class
@@ -31,7 +32,7 @@ public abstract class DslExpression<T> implements Expression<T> {
 
     protected final Expression<T> mixin;
 
-    protected final int hashCode;
+    protected transient final int hashCode;
 
     public DslExpression(Expression<T> mixin) {
         this.mixin = mixin;
@@ -76,5 +77,17 @@ public abstract class DslExpression<T> implements Expression<T> {
     public final String toString() {
         return mixin.toString();
     }
+
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        try {
+            ois.defaultReadObject();
+            Field field = DslExpression.class.getDeclaredField("hashCode");
+            field.setAccessible(true);
+            field.set(this, mixin.hashCode());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
