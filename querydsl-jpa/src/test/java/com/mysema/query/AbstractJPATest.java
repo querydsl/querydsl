@@ -13,10 +13,7 @@
  */
 package com.mysema.query;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -305,6 +302,29 @@ public abstract class AbstractJPATest {
         assertEquals(1, query().from(cat).where(where).count());
         assertEquals(1, query().from(cat).where(where2).count());
     }
+
+    @Test
+    public void Any_Serialized2() throws Exception {
+        Predicate where = cat.kittens.any().name.eq("Ruth123");
+
+        File file = new File("target", "predicate.ser");
+        if (!file.exists()) {
+            // serialize predicate on first run
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+            out.writeObject(where);
+            out.close();
+            assertEquals(1, query().from(cat).where(where).count());
+        } else {
+            // deserialize predicate on second run
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileInputStream);
+            Predicate where2 = (Predicate) in.readObject();
+            in.close();
+            assertEquals(1, query().from(cat).where(where2).count());
+        }
+    }
+
 
     @SuppressWarnings("unchecked")
     @Test

@@ -13,10 +13,12 @@
  */
 package com.mysema.query.types;
 
-import java.io.Serializable;
-
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.lang.reflect.Field;
 
 import com.google.common.base.Objects;
 
@@ -32,7 +34,7 @@ public final class PathMetadata<T> implements Serializable{
 
     private final Object element;
 
-    private final int hashCode;
+    private transient final int hashCode;
 
     @Nullable
     private final Path<?> parent, root;
@@ -96,6 +98,17 @@ public final class PathMetadata<T> implements Serializable{
 
     public boolean isRoot() {
         return parent == null || (pathType == PathType.DELEGATE && parent.getMetadata().isRoot());
+    }
+
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        try {
+            ois.defaultReadObject();
+            Field field = PathMetadata.class.getDeclaredField("hashCode");
+            field.setAccessible(true);
+            field.set(this, 31 * element.hashCode() + pathType.hashCode());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
