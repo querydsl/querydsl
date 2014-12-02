@@ -106,7 +106,9 @@ public final class PathMetadata<T> implements Serializable{
             Field field = PathMetadata.class.getDeclaredField("hashCode");
             field.setAccessible(true);
             field.set(this, 31 * element.hashCode() + pathType.hashCode());
-        } catch (Exception e) {
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
