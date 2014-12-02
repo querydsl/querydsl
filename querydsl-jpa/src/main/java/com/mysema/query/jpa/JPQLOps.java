@@ -36,5 +36,9 @@ public final class JPQLOps {
 
     public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>(NS, "NOT_MEMBER_OF");
 
+    public static final Operator<Object> KEY = new OperatorImpl<Object>(NS, "KEY");
+
+    public static final Operator<Object> VALUE = new OperatorImpl<Object>(NS, "VALUE");
+
     private JPQLOps(){}
 }

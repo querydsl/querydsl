@@ -40,20 +40,26 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private final Map<Expression<?>, Path<?>> aliases = Maps.newHashMap();
 
+    private final JPAMapAccessVisitor mapAccessVisitor;
+
     private ReplaceVisitor replaceVisitor;
 
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
 
     public static final JoinFlag FETCH_ALL_PROPERTIES = new JoinFlag(" fetch all properties");
 
-    public JPAQueryMixin() {}
+    public JPAQueryMixin() {
+        mapAccessVisitor = new JPAMapAccessVisitor(getMetadata());
+    }
 
     public JPAQueryMixin(QueryMetadata metadata) {
         super(metadata);
+        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
     }
 
     public JPAQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
+        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
     }
 
     public T fetch() {
