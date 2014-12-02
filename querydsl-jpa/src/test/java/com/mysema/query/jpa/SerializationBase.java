@@ -69,7 +69,7 @@ public class SerializationBase {
 
     @Test
     public void Any_Serialized() throws Exception {
-        Predicate where = cat.kittens.any().name.eq("Ruth123");
+        Predicate where = cat.kittens.any().name.eq("Ruth234");
 
         // serialize predicate
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -83,13 +83,13 @@ public class SerializationBase {
         Predicate where2 = (Predicate) in.readObject();
         in.close();
 
-        assertEquals(1, query().from(cat).where(where).count());
-        assertEquals(1, query().from(cat).where(where2).count());
+        assertEquals(0, query().from(cat).where(where).count());
+        assertEquals(0, query().from(cat).where(where2).count());
     }
 
     @Test
     public void Any_Serialized2() throws Exception {
-        Predicate where = cat.kittens.any().name.eq("Ruth123");
+        Predicate where = cat.kittens.any().name.eq("Ruth234");
 
         File file = new File("target", "predicate.ser");
         if (!file.exists()) {
@@ -98,14 +98,14 @@ public class SerializationBase {
             ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
             out.writeObject(where);
             out.close();
-            assertEquals(1, query().from(cat).where(where).count());
+            assertEquals(0, query().from(cat).where(where).count());
         } else {
             // deserialize predicate on second run
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             Predicate where2 = (Predicate) in.readObject();
             in.close();
-            assertEquals(1, query().from(cat).where(where2).count());
+            assertEquals(0, query().from(cat).where(where2).count());
         }
     }
 
