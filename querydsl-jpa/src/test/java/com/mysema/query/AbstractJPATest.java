@@ -865,9 +865,10 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoHibernate
     public void Map_Get2() {
         QShow show = QShow.show;
-        query().from(show).where(show.acts.get("X").isNull()).count();
+        assertEquals(1, query().from(show).where(show.acts.get("a").eq("A")).count());
     }
 
     @Test
