@@ -31,8 +31,11 @@ public abstract class DslExpression<T> implements Expression<T> {
 
     protected final Expression<T> mixin;
 
+    protected final int hashCode;
+
     public DslExpression(Expression<T> mixin) {
         this.mixin = mixin;
+        this.hashCode = mixin.hashCode();
     }
 
     @Override
@@ -66,7 +69,7 @@ public abstract class DslExpression<T> implements Expression<T> {
 
     @Override
     public final int hashCode() {
-        return mixin.hashCode();
+        return hashCode;
     }
 
     @Override
