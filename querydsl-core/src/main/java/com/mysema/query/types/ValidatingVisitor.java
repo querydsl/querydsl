@@ -13,13 +13,12 @@
  */
 package com.mysema.query.types;
 
-import static com.mysema.query.util.CollectionUtils.add;
-
 import java.io.Serializable;
 import java.util.Set;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
+import static com.mysema.query.util.CollectionUtils.add;
 
 /**
  * ValidatingVisitor visits expressions and ensures that only known path instances are used
@@ -74,7 +73,7 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
 
     @Override
     public Set<Expression<?>> visit(Path<?> expr, Set<Expression<?>> known) {
-        if (!known.contains(expr.getRoot())) {
+        if (!known.contains(expr.getRoot()) && expr.getMetadata().getPathType() != PathType.DELEGATE) {
             throw new IllegalArgumentException(String.format(errorTemplate,  expr.getRoot()));
         }
         return known;

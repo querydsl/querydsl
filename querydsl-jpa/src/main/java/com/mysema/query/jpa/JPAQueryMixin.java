@@ -154,6 +154,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     @Override
     public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
+        expr = (Expression<RT>) expr.accept(mapAccessVisitor, null);
         if (forOrder) {
             if (expr instanceof Path) {
                 expr = convertPathForOrder((Path)expr);
@@ -175,6 +176,9 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     protected Predicate normalize(Predicate predicate, boolean where) {
         if (predicate != null) {
             predicate = (Predicate) ExpressionUtils.extract(predicate);
+        }
+        if (predicate != null) {
+            predicate = (Predicate) predicate.accept(mapAccessVisitor, null);
         }
         if (predicate != null) {
             // transform any usage

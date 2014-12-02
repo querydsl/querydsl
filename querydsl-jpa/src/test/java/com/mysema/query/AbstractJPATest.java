@@ -859,6 +859,18 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Map_Get() {
+        QShow show = QShow.show;
+        query().from(show).list(show.acts.get("a"));
+    }
+
+    @Test
+    public void Map_Get2() {
+        QShow show = QShow.show;
+        query().from(show).where(show.acts.get("X").isNull()).count();
+    }
+
+    @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey() {
         QShow show = QShow.show;

@@ -29,10 +29,11 @@ class JPAMapAccessVisitor extends ReplaceVisitor {
                 // join parent as path123 on key(path123) = ...
                 // expr -> value(path123)
                 Path parent = pathMetadata.getParent();
-                Path joinPath = new PathImpl(Object.class, "path" + (replacements.size() + 1));
-                metadata.addJoin(JoinType.DEFAULT, ExpressionUtils.as(parent, joinPath));
+                ParametrizedExpression parExpr = (ParametrizedExpression) parent;
+                Path joinPath = new PathImpl(parExpr.getParameter(1), "path" + (replacements.size() + 1));
+                metadata.addJoin(JoinType.JOIN, ExpressionUtils.as(parent, joinPath));
                 metadata.addJoinCondition(ExpressionUtils.eq(
-                        Expressions.operation(Object.class, JPQLOps.KEY, joinPath),
+                        Expressions.operation(parExpr.getParameter(0), JPQLOps.KEY, joinPath),
                         pathMetadata.getElement() instanceof Expression ? (Expression)pathMetadata.getElement()
                                 : ConstantImpl.create(pathMetadata.getElement())));
                 Expression<?> value = Expressions.operation(expr.getType(), JPQLOps.VALUE, joinPath);
