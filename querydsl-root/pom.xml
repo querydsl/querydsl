@@ -531,6 +531,12 @@
                 <exclude>**/MSSQLSuiteTest.java</exclude>
                 <exclude>**/TeradataSuiteTest.java</exclude>
               </excludes>
+              <properties>
+                <property>
+                  <name>listener</name>
+                  <value>com.mysema.testutil.TravisFoldListener</value>
+                </property>
+              </properties>
             </configuration>
           </plugin>
         </plugins>
