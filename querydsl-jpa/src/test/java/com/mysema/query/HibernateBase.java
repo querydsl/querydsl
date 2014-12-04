@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.jpa.HQLTemplates;
+import com.mysema.query.jpa.HibernateTest;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.ScrollableResultsIterator;
 import com.mysema.query.jpa.domain.Cat;
@@ -43,7 +44,7 @@ import com.mysema.testutil.HibernateTestRunner;
  *
  */
 @RunWith(HibernateTestRunner.class)
-public class HibernateBase extends AbstractJPATest {
+public class HibernateBase extends AbstractJPATest implements HibernateTest {
 
     private static final QCat cat = QCat.cat;
 
@@ -70,6 +71,7 @@ public class HibernateBase extends AbstractJPATest {
         return HQLTemplates.DEFAULT;
     }
 
+    @Override
     public void setSession(Session session) {
         this.session = session;
     }

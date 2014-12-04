@@ -13,28 +13,23 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 import javax.persistence.EntityManager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.JPATest;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
-public class SerializationBase {
+public class SerializationBase implements JPATest {
     
     private QCat cat = QCat.cat;
     
@@ -75,6 +70,7 @@ public class SerializationBase {
         query2.list(cat);        
     }
 
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

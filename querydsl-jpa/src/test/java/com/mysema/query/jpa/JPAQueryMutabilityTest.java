@@ -24,6 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.JPATest;
 import com.mysema.query.QueryMutability;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
@@ -34,7 +35,7 @@ import com.mysema.testutil.JPATestRunner;
 
 @Ignore
 @RunWith(JPATestRunner.class)
-public class JPAQueryMutabilityTest{
+public class JPAQueryMutabilityTest implements JPATest {
 
     private static final SQLTemplates derbyTemplates = new DerbyTemplates();
 
@@ -44,6 +45,7 @@ public class JPAQueryMutabilityTest{
         return new JPASQLQuery(entityManager, derbyTemplates);
     }
 
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

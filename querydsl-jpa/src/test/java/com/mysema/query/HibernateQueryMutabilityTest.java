@@ -23,13 +23,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.jpa.HibernateTest;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.testutil.HibernateTestRunner;
 
 @Ignore
 @RunWith(HibernateTestRunner.class)
-public class HibernateQueryMutabilityTest{
+public class HibernateQueryMutabilityTest implements HibernateTest {
 
     private Session session;
 
@@ -37,6 +38,7 @@ public class HibernateQueryMutabilityTest{
         return new HibernateQuery(session);
     }
 
+    @Override
     public void setSession(Session session) {
         this.session = session;
     }
