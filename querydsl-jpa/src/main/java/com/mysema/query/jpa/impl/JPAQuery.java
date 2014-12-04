@@ -74,10 +74,16 @@ public class JPAQuery extends AbstractJPAQuery<JPAQuery> {
         super(em, templates, metadata);
     }
 
-    public JPAQuery clone(EntityManager entityManager) {
-        JPAQuery q = new JPAQuery(entityManager, JPAProvider.getTemplates(entityManager), getMetadata().clone());
+    @Override
+    public JPAQuery clone(EntityManager entityManager, JPQLTemplates templates) {
+        JPAQuery q = new JPAQuery(entityManager, templates, getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public JPAQuery clone(EntityManager entityManager) {
+        return clone(entityManager, JPAProvider.getTemplates(entityManager));
     }
 
 }
