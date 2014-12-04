@@ -357,7 +357,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     /**
      * Clone the state of this query to a new instance with the given EntityManager
-     * using the specified templates
+     * and the specified templates
      *
      * @param entityManager
      * @param templates
@@ -371,12 +371,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Q clone() {
-        JPQLTemplates existingTemplates = getTemplates();
-        if (existingTemplates != null) {
-            return clone(entityManager, existingTemplates);
-        }else {
-            return clone(entityManager);
-        }
+        return clone(entityManager, getTemplates());
     }
 
 }
