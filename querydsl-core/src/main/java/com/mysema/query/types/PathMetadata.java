@@ -13,10 +13,9 @@
  */
 package com.mysema.query.types;
 
-import java.io.Serializable;
-
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import java.io.Serializable;
 
 import com.google.common.base.Objects;
 
@@ -43,8 +42,8 @@ public final class PathMetadata<T> implements Serializable{
         this.parent = parent;
         this.element = element;
         this.pathType = type;
-        this.hashCode = 31 * element.hashCode() + pathType.hashCode();
         this.root = parent != null ? parent.getRoot() : null;
+        this.hashCode = 31 * element.hashCode() + pathType.name().hashCode();
     }
 
     @Override
