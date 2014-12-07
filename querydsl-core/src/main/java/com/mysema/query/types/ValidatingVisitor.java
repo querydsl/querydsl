@@ -73,7 +73,7 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
 
     @Override
     public Set<Expression<?>> visit(Path<?> expr, Set<Expression<?>> known) {
-        if (!known.contains(expr.getRoot()) && expr.getMetadata().getPathType() != PathType.DELEGATE) {
+        if (!known.contains(expr.getRoot())) {
             throw new IllegalArgumentException(String.format(errorTemplate,  expr.getRoot()));
         }
         return known;

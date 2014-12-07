@@ -61,21 +61,10 @@ public final class PathMetadataFactory {
      * @param delegate
      * @return
      */
-    @Deprecated
     public static <T> PathMetadata<T> forDelegate(Path<T> delegate) {
         return new PathMetadata<T>(delegate, delegate, PathType.DELEGATE);
     }
 
-    /**
-     * Create a new PathMetadata for delegate access
-     *
-     * @param delegate
-     * @return
-     */
-    public static <T> PathMetadata<T> forDelegate(Expression<T> delegate) {
-        return new PathMetadata<T>(null, delegate, PathType.DELEGATE);
-    }
-    
     /**
      * Create a new PathMetadata for indexed list access
      * 
