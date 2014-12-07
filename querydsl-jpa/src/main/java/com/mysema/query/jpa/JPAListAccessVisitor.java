@@ -10,35 +10,31 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ReplaceVisitor;
 import com.mysema.query.types.*;
 
-class JPAMapAccessVisitor extends ReplaceVisitor {
+class JPAListAccessVisitor extends ReplaceVisitor {
 
     private final QueryMetadata metadata;
 
     private final Map<Path<?>, Path<?>> replacements = Maps.newHashMap();
 
-    public JPAMapAccessVisitor(QueryMetadata metadata) {
+    public JPAListAccessVisitor(QueryMetadata metadata) {
         this.metadata = metadata;
     }
 
     public Expression<?> visit(Path<?> expr, @Nullable Void context) {
         expr = (Path<?>) super.visit(expr, null);
         PathMetadata pathMetadata = expr.getMetadata();
-        if (pathMetadata.getPathType() == PathType.MAPVALUE
-         || pathMetadata.getPathType() == PathType.MAPVALUE_CONSTANT) {
+        if (pathMetadata.getPathType() == PathType.LISTVALUE
+                || pathMetadata.getPathType() == PathType.LISTVALUE_CONSTANT) {
             Path<?> replacement = replacements.get(expr);
             if (replacement == null) {
-                // join parent as path123 on key(path123) = ...
-                // expr -> value(path123)
+                // join parent as path123 on index(path123) = ...
                 Path parent = pathMetadata.getParent();
-                ParametrizedExpression parExpr = (ParametrizedExpression) parent;
-                Path joinPath = new PathImpl(parExpr.getParameter(1),
+                replacement = new PathImpl(expr.getType(),
                         ExpressionUtils.createRootVariable(parent));
-                metadata.addJoin(JoinType.JOIN, ExpressionUtils.as(parent, joinPath));
+                metadata.addJoin(JoinType.JOIN, ExpressionUtils.as(parent, replacement));
                 metadata.addJoinCondition(ExpressionUtils.eq(
-                        Expressions.operation(parExpr.getParameter(0), JPQLOps.KEY, joinPath),
+                        (Expression)Expressions.operation(Integer.class, JPQLOps.INDEX, replacement),
                         ExpressionUtils.toExpression(pathMetadata.getElement())));
-                Expression<?> value = Expressions.operation(expr.getType(), JPQLOps.VALUE, joinPath);
-                replacement = new PathImpl(expr.getType(), PathMetadataFactory.forDelegate(value));
                 replacements.put(expr, replacement);
             }
             return replacement;
