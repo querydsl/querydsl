@@ -541,7 +541,7 @@ public final class ExpressionUtils {
     public static String createRootVariable(Path<?> path) {
         String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 5);
-        return variable + suffix;
+        return variable + "_" + suffix;
     }
 
     /**

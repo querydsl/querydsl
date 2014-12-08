@@ -31,7 +31,7 @@ class JPAListAccessVisitor extends ReplaceVisitor {
                 Path parent = pathMetadata.getParent();
                 replacement = new PathImpl(expr.getType(),
                         ExpressionUtils.createRootVariable(parent));
-                metadata.addJoin(JoinType.JOIN, ExpressionUtils.as(parent, replacement));
+                metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(parent, replacement));
                 metadata.addJoinCondition(ExpressionUtils.eq(
                         (Expression)Expressions.operation(Integer.class, JPQLOps.INDEX, replacement),
                         ExpressionUtils.toExpression(pathMetadata.getElement())));
