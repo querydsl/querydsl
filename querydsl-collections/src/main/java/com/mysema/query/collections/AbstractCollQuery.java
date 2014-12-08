@@ -37,11 +37,11 @@ import com.mysema.query.types.Path;
  * AbstractCollQuery provides a base class for Collection query implementations.
  * Extend it like this
  *
- * <pre>
- * public class MyType extends AbstractColQuery&lt;MyType&gt;{
+ * <pre>{@code
+ * public class MyType extends AbstractColQuery<MyType> {
  *   ...
  * }
- * </pre>
+ * }</pre>
  *
  * @see CollQuery
  *

@@ -186,7 +186,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
     /**
      * Returns the smallest (closest to negative infinity)
-     * <code>double</code> value that is greater than or equal to the
+     * {@code double} value that is greater than or equal to the
      * argument and is equal to a mathematical integer
      *
      * @return ceil(this)
@@ -251,7 +251,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
     /**
      * Returns the largest (closest to positive infinity)
-     * <code>double</code> value that is less than or equal to the
+     * {@code double} value that is less than or equal to the
      * argument and is equal to a mathematical integer.
      *
      * @return floor(this)
@@ -265,7 +265,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &gt;= right</code> expression
+     * Create a {@code this >= right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -277,7 +277,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &gt;= right</code> expression
+     * Create a {@code this >= right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -305,7 +305,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &gt; right</code> expression
+     * Create a {@code this > right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -317,7 +317,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &gt; right</code> expression
+     * Create a {@code this > right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -345,7 +345,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>from &lt; this &lt; to</code> expression
+     * Create a {@code from <= this <= to} expression
      *
      * @param <A>
      * @param from
@@ -367,7 +367,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>from &lt; this &lt; to</code> expression
+     * Create a {@code from <= this <= to} expression
      *
      * @param <A>
      * @param from
@@ -417,7 +417,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Expr: <code>this like str</code>
+     * Expr: {@code this like str}
      *
      * @param str
      * @return
@@ -427,7 +427,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Expr: <code>this like str</code>
+     * Expr: {@code this like str}
      *
      * @param str
      * @return
@@ -437,7 +437,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &lt;= right</code> expression
+     * Create a {@code this <= right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -449,7 +449,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &lt;= right</code> expression
+     * Create a {@code this <= right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -487,7 +487,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &lt; right</code> expression
+     * Create a {@code this < right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -499,7 +499,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &lt; right</code> expression
+     * Create a {@code this < right} expression
      *
      * @param <A>
      * @param right rhs of the comparison
@@ -601,7 +601,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Returns the closest <code>int</code> to the argument.
+     * Returns the closest {@code int} to this.
      *
      * @return round(this)
      * @see java.lang.Math#round(double)

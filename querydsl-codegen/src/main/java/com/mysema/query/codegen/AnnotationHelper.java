@@ -27,14 +27,14 @@ public interface AnnotationHelper {
     /**
      * Verify if AnnotationHelper instance can handle the annotation.
      * @param annotationClass Annotation class.
-     * @return <code>true</code> if this AnnotationHelper can handle the annotation.
+     * @return {@code true} if this AnnotationHelper can handle the annotation.
      */
     boolean isSupported(Class<? extends Annotation> annotationClass);
 
     /**
      * Get specific object that will be used as part of type cache key.
      * @param annotation Annotation instance.
-     * @return Any object, normally a annotation param. Can be <code>null</code>.
+     * @return Any object, normally a annotation param. Can be {@code null}.
      */
     Object getCustomKey(Annotation annotation);
 

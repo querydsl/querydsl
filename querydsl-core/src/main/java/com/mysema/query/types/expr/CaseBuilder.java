@@ -29,13 +29,13 @@ import com.mysema.query.types.Ops;
  * constructs :
  * e.g.
  *
- * <pre>
- * Expression&lt;String&gt; cases = new CaseBuilder()
+ * <pre>{@code
+ * Expression<String> cases = new CaseBuilder()
  *     .when(c.annualSpending.gt(10000)).then("Premier")
  *     .when(c.annualSpending.gt(5000)).then("Gold")
  *     .when(c.annualSpending.gt(2000)).then("Silver")
  *     .otherwise("Bronze");
- * </pre>
+ * }</pre>
  *
  * @author tiwe
  *

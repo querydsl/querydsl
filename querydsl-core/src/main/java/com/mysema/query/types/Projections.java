@@ -115,10 +115,10 @@ public final class Projections {
      * Create a Map typed projection for the given expressions
      * 
      * <p>Example</p>
-     * <pre>
-     * Map&lt;Expression&lt;?&gt;, ?&gt; map = query.singleResult(
-     *     Projections.map(user.firstName, user.lastName);     
-     * </pre>
+     * <pre>{@code
+     * Map<Expression<?>, ?> map = query.singleResult(
+     *      Projections.map(user.firstName, user.lastName));
+     * }</pre>
      * 
      * @param exprs arguments for the projection
      * @return
