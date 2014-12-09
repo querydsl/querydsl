@@ -25,14 +25,17 @@ import org.junit.runner.notification.RunListener;
  */
 public class TravisFoldListener extends RunListener {
 
+    private static final long ID = System.currentTimeMillis();
+
     @Override
     public void testRunStarted(Description description) throws Exception {
-        System.out.println("travis_fold:start:tests");
+        System.out.println("travis_fold:start:tests" + ID);
+        System.out.println("Running tests");
     }
 
     @Override
     public void testRunFinished(Result result) throws Exception {
-        System.out.println("travis_fold:end:tests");
+        System.out.println("travis_fold:end:tests" + ID);
     }
 
 }

@@ -244,7 +244,7 @@ public final class TypeFactory {
 
     private boolean isEntityClass(Class<?> cl) {
         for (Class<? extends Annotation> clazz : entityAnnotations) {
-            if (cl.getAnnotation(clazz) != null) {
+            if (cl.isAnnotationPresent(clazz)) {
                 return true;
             }
         }

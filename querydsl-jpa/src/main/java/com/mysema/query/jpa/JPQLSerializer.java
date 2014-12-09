@@ -448,7 +448,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             final List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
             final Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
             // use discriminator value instead of fqnm
-            if (cl.getAnnotation(DiscriminatorValue.class) != null) {
+            if (cl.isAnnotationPresent(DiscriminatorValue.class)) {
                 newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
             } else {
                 newArgs.set(1, ConstantImpl.create(cl.getSimpleName()));

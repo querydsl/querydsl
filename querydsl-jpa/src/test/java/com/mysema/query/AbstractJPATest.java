@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -279,11 +280,6 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Any_Simple() {
-        assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
-    }
-
-    @Test
-    public void Any_Usage() {
         assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
     }
 

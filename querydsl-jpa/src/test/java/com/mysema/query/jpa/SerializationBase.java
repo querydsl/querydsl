@@ -13,20 +13,18 @@
  */
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.*;
-
-import java.io.*;
-
 import javax.persistence.EntityManager;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.io.*;
 
 import com.mysema.query.JPATest;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.Predicate;
 import com.mysema.testutil.JPATestRunner;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
 
 @RunWith(JPATestRunner.class)
 public class SerializationBase implements JPATest {
@@ -38,7 +36,7 @@ public class SerializationBase implements JPATest {
     @Test
     public void test() throws IOException, ClassNotFoundException{
         // create query
-        JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery query = query();
         query.from(cat).where(cat.name.eq("Kate")).list(cat);
         
         // get metadata
@@ -68,6 +66,52 @@ public class SerializationBase implements JPATest {
         JPAQuery query2 = new JPAQuery(entityManager, metadata2);
         assertEquals("select cat\nfrom Cat cat\nwhere cat.name = ?1", query2.toString());
         query2.list(cat);        
+    }
+
+    @Test
+    public void Any_Serialized() throws Exception {
+        Predicate where = cat.kittens.any().name.eq("Ruth234");
+
+        // serialize predicate
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(baos);
+        out.writeObject(where);
+        out.close();
+
+        // deserialize predicate
+        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream in = new ObjectInputStream(bain);
+        Predicate where2 = (Predicate) in.readObject();
+        in.close();
+
+        assertEquals(0, query().from(cat).where(where).count());
+        assertEquals(0, query().from(cat).where(where2).count());
+    }
+
+    @Test
+    public void Any_Serialized2() throws Exception {
+        Predicate where = cat.kittens.any().name.eq("Ruth234");
+
+        File file = new File("target", "predicate.ser");
+        if (!file.exists()) {
+            // serialize predicate on first run
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+            out.writeObject(where);
+            out.close();
+            assertEquals(0, query().from(cat).where(where).count());
+        } else {
+            // deserialize predicate on second run
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileInputStream);
+            Predicate where2 = (Predicate) in.readObject();
+            in.close();
+            assertEquals(0, query().from(cat).where(where2).count());
+        }
+    }
+
+    private JPAQuery query() {
+        return new JPAQuery(entityManager);
     }
 
     @Override

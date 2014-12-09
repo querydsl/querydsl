@@ -29,10 +29,10 @@ public abstract class ExpressionBase<T> implements Expression<T> {
     private final Class<? extends T> type;
     
     @Nullable
-    private volatile String toString;
+    private transient volatile String toString;
 
     @Nullable
-    private volatile Integer hashCode;
+    private transient volatile Integer hashCode;
     
     public ExpressionBase(Class<? extends T> type) {
         this.type = type;

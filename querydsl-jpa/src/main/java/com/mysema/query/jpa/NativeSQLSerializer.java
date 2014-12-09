@@ -66,7 +66,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
     protected void handleJoinTarget(JoinExpression je) {
         SQLTemplates templates = getTemplates();
         Class<?> type = je.getTarget().getType();
-        if (type.getAnnotation(Table.class) != null && templates.isSupportsAlias()) {
+        if (type.isAnnotationPresent(Table.class) && templates.isSupportsAlias()) {
             Table table = type.getAnnotation(Table.class);
             boolean precededByDot;
             if (!table.schema().isEmpty() && templates.isPrintSchema()) {
