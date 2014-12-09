@@ -28,7 +28,7 @@ import com.mysema.testutil.JPATestRunner;
 
 @Ignore
 @RunWith(JPATestRunner.class)
-public class JPAQueryMutabilityTest {
+public class JPAQueryMutabilityTest implements JPATest {
 
     private EntityManager entityManager;
 
@@ -36,6 +36,7 @@ public class JPAQueryMutabilityTest {
         return new JPAQuery(entityManager);
     }
 
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

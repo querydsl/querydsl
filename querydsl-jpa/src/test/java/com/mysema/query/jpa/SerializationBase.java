@@ -16,6 +16,7 @@ package com.mysema.query.jpa;
 import javax.persistence.EntityManager;
 import java.io.*;
 
+import com.mysema.query.JPATest;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -26,7 +27,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 @RunWith(JPATestRunner.class)
-public class SerializationBase {
+public class SerializationBase implements JPATest {
     
     private QCat cat = QCat.cat;
     
@@ -113,6 +114,7 @@ public class SerializationBase {
         return new JPAQuery(entityManager);
     }
 
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
