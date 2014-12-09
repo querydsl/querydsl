@@ -13,9 +13,10 @@
  */
 package com.mysema.query.sql.dml;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -26,6 +27,7 @@ import com.mysema.query.sql.*;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.*;
 import com.mysema.util.ResultSetAdapter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -485,9 +487,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      * @return
      */
     public SQLMergeClause keys(Path<?>... paths) {
-        for (Path<?> path : paths) {
-            keys.add(path);
-        }
+        keys.addAll(Arrays.asList(paths));
         return this;
     }
 
