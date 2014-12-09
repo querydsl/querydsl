@@ -236,6 +236,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+        boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
 
         if (subQueryBuilder != null) {
@@ -250,7 +251,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         serializer.serializeInsert(metadata, entity, batches.get(0).getColumns(), batches
                 .get(0).getValues(), batches.get(0).getSubQuery());
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
-        stmt.addBatch();
+        if (addBatches) {
+            stmt.addBatch();
+        }
         stmts.put(serializer.toString(), stmt);
         context.addSQL(serializer.toString());
         listeners.rendered(context);
@@ -274,7 +277,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
                         metadata.getParams());
             }
-            stmt.addBatch();
+            if (addBatches) {
+                stmt.addBatch();
+            }
         }
 
         return stmts.values();
