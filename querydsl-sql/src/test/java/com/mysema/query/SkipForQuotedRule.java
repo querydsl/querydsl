@@ -13,8 +13,8 @@ public class SkipForQuotedRule implements MethodRule {
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
         SQLTemplates templates = Connections.getTemplates();
         if (templates.isUseQuotes() || templates.isPrintSchema()) {
-            boolean run = method.getMethod().getAnnotation(SkipForQuoted.class) == null;
-            return run ? base :  EmptyStatement.DEFAULT;
+            boolean skip = method.getMethod().isAnnotationPresent(SkipForQuoted.class);
+            return skip ? EmptyStatement.DEFAULT : base;
         } else {
             return base;
         }
