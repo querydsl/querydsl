@@ -482,6 +482,8 @@ public class SQLTemplates extends Templates {
             case Types.NVARCHAR:
             case Types.VARCHAR:
                 return "'" + escapeLiteral(literal) + "'";
+            case Types.OTHER:
+                return "'" + literal + "'";
             default:
                 return literal;
         }
