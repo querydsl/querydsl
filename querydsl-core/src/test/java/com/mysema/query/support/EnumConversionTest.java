@@ -1,10 +1,12 @@
 package com.mysema.query.support;
 
 import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import static org.junit.Assert.fail;
 
 import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.StringPath;
+
+import org.junit.Test;
 
 public class EnumConversionTest {
 
@@ -22,5 +24,13 @@ public class EnumConversionTest {
         EnumPath<Color> color = new EnumPath<Color>(Color.class, "path");
         EnumConversion<Color> conv = new EnumConversion<Color>(color);
         assertEquals(Color.RED, conv.newInstance(2));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void Illegal() {
+        StringPath string = new StringPath("path");
+        EnumConversion<String> conv = new EnumConversion<String>(string);
+        fail("EnumConversion successfully created for a non-enum type");
+        conv.newInstance(0);
     }
 }
