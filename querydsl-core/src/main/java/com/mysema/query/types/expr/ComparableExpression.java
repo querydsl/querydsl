@@ -51,7 +51,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>from &lt;= this &lt;= to</code> expression
+     * Get a {@code from <= this <= to} expression
      *
      * @param from
      * @param to
@@ -72,7 +72,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>first &lt;= this &lt;= second</code> expression
+     * Get a {@code from <= this <= to} expression
      *
      * @param from
      * @param to
@@ -94,7 +94,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this not between from and to</code> expression
+     * Get a {@code this not between from and to} expression
      *
      * @param from
      * @param to
@@ -105,7 +105,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this not between from and to</code> expression
+     * Get a {@code this not between from and to} expression
      *
      * @param from
      * @param to
@@ -116,7 +116,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &gt; right</code> expression
+     * Get a {@code this > right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -127,7 +127,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &gt; right</code> expression
+     * Get a {@code this > right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -155,7 +155,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &gt;= right</code> expression
+     * Get a {@code this >= right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -166,7 +166,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &gt;= right</code> expression
+     * Get a {@code this >= right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -193,7 +193,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &lt; right</code> expression
+     * Get a {@code this < right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -204,7 +204,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &lt; right</code> expression
+     * Get a {@code this < right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -232,7 +232,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &lt;= right</code> expression
+     * Get a {@code this <= right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -243,7 +243,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>this &lt;= right</code> expression
+     * Get a {@code this <= right} expression
      *
      * @param right rhs of the comparison
      * @return

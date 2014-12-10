@@ -14,7 +14,7 @@
     <para>When using improperly encoded fields or getters you might the following
       stacktrace:</para>
 
-    <programlisting><![CDATA[    
+    <programlisting><![CDATA[
 java.lang.RuntimeException: Caught exception for field com.mysema.query.jdoql.testdomain.Store#products
   at com.mysema.query.apt.Processor$2.visitType(Processor.java:117)
   at com.mysema.query.apt.Processor$2.visitType(Processor.java:80)
@@ -38,11 +38,11 @@ Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for L
 
     <programlisting language="java"><![CDATA[
     private Collection names; // WRONG
-    
+
     private Collection<String> names; // RIGHT
-    
+
     private Map employeesByName; // WRONG
-    
+
     private Map<String,Employee> employeesByName; // RIGHT
 ]]></programlisting>
 

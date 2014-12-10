@@ -4,7 +4,7 @@
 
   <title>Scala에서 쿼리하기</title>
 
-  <para>querydsl-scala 모듈을 통해 Scala에서 Querydsl을 사용할 수 있다. 
+  <para>querydsl-scala 모듈을 통해 Scala에서 Querydsl을 사용할 수 있다.
     이 모듈을 사용하려면 메이븐 빌드에 다음의 코드를 추가한다.
   </para>
 
@@ -52,7 +52,7 @@ expr gt 5               expr > 5
 expr goe 5              expr >= 5
 expr notBetween(2,6)    expr not between (2,6)
 expr negate             -expr
- 
+
 // numeric
 expr add 3              expr + 3
 expr subtract 3         expr - 3
@@ -75,7 +75,7 @@ map.get("X")            map("X")
     </para>
 
     <para>
-      Querydsl 쿼리에서 Scala 프로젝션을 활성화하려면 
+      Querydsl 쿼리에서 Scala 프로젝션을 활성화하려면
       <code>RichProjectable</code>와 <code>RichSimpleProjectable</code> 래퍼를 사용해야 한다.
       <code>com.mysema.query.scala.Helpers</code>를 임포트 함으로써 필요한 임의 변환이 가능해진다.
     </para>
@@ -84,7 +84,7 @@ map.get("X")            map("X")
       예를 들어, 표준 API를 이용한 다음 쿼리는 <code>Object[]</code> 타입의  <code>java.util.List</code>를 리턴한다.
     </para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 query.from(person).list(person.firstName, person.lastName, person.age)
 ]]></programlisting>
 
@@ -97,7 +97,7 @@ query.from(person).list(person.firstName, person.lastName, person.age)
 
     <programlisting language="java"><![CDATA[
 import com.mysema.query.scala.Helpers._
-  
+
 query.from(person).select(person.firstName, person.lastName, person.age)
 ]]></programlisting>
 
@@ -117,7 +117,7 @@ query.from(person).select(person.firstName, person.lastName, person.age)
 
     <para>빈 타입 없이 생성하기:</para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 val directory = new java.io.File("target/jdbcgen1")
 val namingStrategy = new DefaultNamingStrategy()
 val exporter = new MetaDataExporter()
@@ -133,7 +133,7 @@ exporter.export(connection.getMetaData)
 
     <para>빈 타입을 이용해서 생성하기:</para>
 
-    <programlisting language="java"><![CDATA[    
+    <programlisting language="java"><![CDATA[
 val directory = new java.io.File("target/jdbcgen2")
 val namingStrategy = new DefaultNamingStrategy()
 val exporter = new MetaDataExporter()
@@ -145,7 +145,7 @@ exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
 exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer])
 exporter.setCreateScalaSources(true)
 exporter.setTypeMappings(ScalaTypeMappings.create)
-exporter.export(connection.getMetaData)        
+exporter.export(connection.getMetaData)
 ]]></programlisting>
 
     <sect3>
@@ -167,14 +167,14 @@ exporter.export(connection.getMetaData)
 
       <para>다음의 일반 쿼리를 사용하는 대신에</para>
 
-      <programlisting language="java"><![CDATA[    
-query().from(employee).select(employee.firstName, employee.lastName)        
+      <programlisting language="java"><![CDATA[
+query().from(employee).select(employee.firstName, employee.lastName)
 ]]></programlisting>
 
       <para>다음과 같이 Employee 또는 QEmployee의 companio 객체를 사용할 수 있다.</para>
 
-      <programlisting language="java"><![CDATA[    
-Employee.select(_.firstName, _.lastName)        
+      <programlisting language="java"><![CDATA[
+Employee.select(_.firstName, _.lastName)
 ]]></programlisting>
 
       <para>표현식에 orderBy, where, select, single, unique를 사용하는 대신,
@@ -182,8 +182,8 @@ Employee.select(_.firstName, _.lastName)
         다음은 앞 예제를 확장한 형식이다.
       </para>
 
-      <programlisting language="java"><![CDATA[    
-Employee.select({ e => e.firstName }, { e => e.lastName })        
+      <programlisting language="java"><![CDATA[
+Employee.select({ e => e.firstName }, { e => e.lastName })
 ]]></programlisting>
 
       <para>
@@ -257,7 +257,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
 
     <para>다음은 JPA를 이용할 때의 예제다.</para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 @Entity
 class User {
   @BeanProperty
@@ -299,8 +299,8 @@ query.from(person).where(person.firstName like "Rob%").unique(person)
     <para>Long where</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person) 
-  .where(person.firstName like "Rob%", person.lastName like "An%") 
+query.from(person)
+  .where(person.firstName like "Rob%", person.lastName like "An%")
   .list(person)
 ]]></programlisting>
 
@@ -313,8 +313,8 @@ query.from(person).orderBy(person.firstName asc).list(person)
     <para>Not null</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person) 
-  .where(person.firstName isEmpty, person.lastName isNotNull) 
+query.from(person)
+  .where(person.firstName isEmpty, person.lastName isNotNull)
   .list(person)
 ]]></programlisting>
 
@@ -335,4 +335,4 @@ val person = Person as "person"
 
   </sect2>
 
-</sect1>  
+</sect1>

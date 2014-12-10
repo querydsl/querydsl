@@ -124,14 +124,14 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     //-------------------------------------------------------------------------
 
     /**
-     * Constructs a new empty <code>BeanMap</code>.
+     * Constructs a new empty {@code BeanMap}.
      */
     public BeanMap() {
     }
 
     /**
-     * Constructs a new <code>BeanMap</code> that operates on the
-     * specified bean.  If the given bean is <code>null</code>, then
+     * Constructs a new {@code BeanMap} that operates on the
+     * specified bean.  If the given bean is {@code null}, then
      * this map will be empty.
      *
      * @param bean the bean for this map to operate on
@@ -237,7 +237,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * This method reinitializes the bean map to have default values for the
      * bean's properties.  This is accomplished by constructing a new instance
      * of the bean which the map uses as its underlying data source.  This
-     * behavior for <code>clear()</code> differs from the Map contract in that
+     * behavior for {@link Map#clear() clear()} differs from the Map contract in that
      * the mappings are not actually removed from the map (the mappings for a
      * BeanMap are fixed).
      */
@@ -258,7 +258,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     /**
      * Returns true if the bean defines a property with the given name.
      * <p>
-     * The given name must be a <code>String</code>; if not, this method
+     * The given name must be a {@code String}; if not, this method
      * returns false. This method will also return false if the bean
      * does not define a property with that name.
      * <p>
@@ -266,7 +266,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * property read methods.
      *
      * @param name the name of the property to check
-     * @return false if the given name is null or is not a <code>String</code>;
+     * @return false if the given name is null or is not a {@code String};
      *         false if the bean does not define a property with that name; or
      *         true if the bean does define a property with that name
      */
@@ -279,9 +279,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * Returns the value of the bean's property with the given name.
      * <p>
      * The given name must be a {@link String} and must not be
-     * null; otherwise, this method returns <code>null</code>.
+     * null; otherwise, this method returns {@code null}.
      * If the bean defines a property with the given name, the value of
-     * that property is returned.  Otherwise, <code>null</code> is
+     * that property is returned. Otherwise, {@code null} is
      * returned.
      * <p>
      * Write-only properties will not be matched as the test operates against
@@ -408,7 +408,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * Returns the type of the property with the given name.
      *
      * @param name the name of the property
-     * @return the type of the property, or <code>null</code> if no such
+     * @return the type of the property, or {@code null} if no such
      *         property exists
      */
     public Class<?> getType(String name) {
@@ -688,7 +688,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * {@link Object#toString() toString()} method, and that string is
      * parsed into the correct primitive type using, for instance,
      * {@link Integer#valueOf(String)} to convert the string into an
-     * <code>int</code>.<P>
+     * {@code int}.<P>
      * <p>
      * If no special constructor exists and the given type is not a
      * primitive type, this method returns the original value.

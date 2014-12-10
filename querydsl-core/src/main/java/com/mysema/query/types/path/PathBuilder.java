@@ -30,11 +30,11 @@ import com.mysema.query.types.expr.SimpleExpression;
  * PathBuilder is an extension to EntityPathBase for dynamic path construction
  *
  * <p>Usage example:</p>
- * <pre>
- * PathBuilder&lt;User&gt; user = new PathBuilder&lt;User&gt;(User.class, "user");
+ * <pre>{@code
+ * PathBuilder<User> user = new PathBuilder<User>(User.class, "user");
  * Predicate filter = user.getString("firstName").eq("Bob");
- * List&lt;User&gt; users = query.from(user).where(filter).list(user);
- * </pre>
+ * List<User> users = query.from(user).where(filter).list(user);
+ * }</pre>
  *
  * @author tiwe
  *

@@ -22,8 +22,8 @@
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
-</dependency>        
-    
+</dependency>
+
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-jdo</artifactId>
@@ -34,7 +34,7 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>    
+</dependency>
 ]]></programlisting>
 
     <para>
@@ -99,18 +99,18 @@
     <programlisting language="xml"><![CDATA[
     <!-- APT based code generation -->
     <javac srcdir="${src}" classpathref="cp">
-      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
       <compilerarg value="com.mysema.query.apt.jdo.JDOAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
-    
+
     <!-- compilation -->
-    <javac classpathref="cp" destdir="${build}">      
+    <javac classpathref="cp" destdir="${build}">
       <src path="${src}"/>
       <src path="${generated}"/>
-    </javac>    
+    </javac>
 ]]></programlisting>
 
     <para>
@@ -139,20 +139,20 @@
 public class Customer {
   private String firstName;
   private String lastName;
-  
-  public String getFirstName(){
+
+  public String getFirstName() {
     return firstName;
   }
-  
-  public String getLastName(){
+
+  public String getLastName() {
     return lastName;
   }
-  
-  public void setFirstName(String fn){
+
+  public void setFirstName(String fn) {
     firstName = fn;
   }
-  
-  public void setLastName(String ln)[
+
+  public void setLastName(String ln) {
     lastName = ln;
   }
 }
@@ -228,7 +228,7 @@ query.close();
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 QCompany company = QCompany.company;
-query.from(customer, company);    
+query.from(customer, company);
 ]]></programlisting>
 
     <para>
@@ -237,7 +237,7 @@ query.from(customer, company);
 
     <programlisting language="java"><![CDATA[
 query.from(customer)
-    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));   
+    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));
 ]]></programlisting>
 
     <para>또는, 다음과 같이 해도 된다.</para>
@@ -303,7 +303,7 @@ query.from(customer)
 
     <para>정렬을 위한 구문은 다음과 같다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 query.from(customer)
     .orderBy(customer.lastName.asc(), customer.firstName.desc())
@@ -318,7 +318,7 @@ query.from(customer)
 
     <para>그룹핑은 다음과 같은 코드로 처리한다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query.from(customer)
     .groupBy(customer.lastName)
     .list(customer.lastName);
@@ -333,12 +333,12 @@ query.from(customer)
       다음은 몇 가지 예다.
     </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // delete all customers
 new JDODeleteClause(pm, customer).execute();
 // delete all customers with a level less than 3
-new JDODeleteClause(pm, customer).where(customer.level.lt(3)).execute();  
+new JDODeleteClause(pm, customer).where(customer.level.lt(3)).execute();
 ]]></programlisting>
 
     <para>JDODeleteClause 생성자의 두 번째 파라미터는 삭제할 엔티티 대상이다.
@@ -364,14 +364,14 @@ QDepartment d = new QDepartment("d");
 query.from(department)
     .where(department.employees.size().eq(
         new JDOSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
-     )).list(department);  
+     )).list(department);
 ]]></programlisting>
 
     <para>위 코드는 다음의 네이티브 JDO 쿼리를 표현한다.</para>
 
     <programlisting>
 SELECT this FROM com.mysema.query.jdoql.models.company.Department
-WHERE this.employees.size() == 
+WHERE this.employees.size() ==
 (SELECT max(d.employees.size()) FROM com.mysema.query.jdoql.models.company.Department d)
 </programlisting>
 
@@ -391,8 +391,8 @@ query.from(employee)
     <para>위 코드는 다음의 네이티브 JDO 쿼리를 표현한다.</para>
 
     <programlisting>
-SELECT this FROM com.mysema.query.jdoql.models.company.Employee 
-WHERE this.weeklyhours > 
+SELECT this FROM com.mysema.query.jdoql.models.company.Employee
+WHERE this.weeklyhours >
 (SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)
 </programlisting>
 
@@ -453,11 +453,11 @@ WHERE this.weeklyhours >
 
     <programlisting language="java"><![CDATA[
 // serialization templates
-SQLTemplates templates = new DerbyTemplates(); 
+SQLTemplates templates = new DerbyTemplates();
 // query types (S* for SQL, Q* for domain types)
-SAnimal cat = new SAnimal("cat");   
-SAnimal mate = new SAnimal("mate"); 
- 
+SAnimal cat = new SAnimal("cat");
+SAnimal mate = new SAnimal("mate");
+
 JDOSQLQuery query = new JDOSQLQuery(pm, templates);
 List<String> names = query.from(cat).list(cat.name);
 ]]></programlisting>

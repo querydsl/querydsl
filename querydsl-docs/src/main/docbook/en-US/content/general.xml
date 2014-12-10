@@ -8,9 +8,9 @@
     It follows a use case oriented structure.
     </para>
     
-	<xi:include href="general/creating-queries.xml" />
-	<xi:include href="general/result-handling.xml"/>
-	<xi:include href="general/codegen.xml"/>
-	<xi:include href="general/alias.xml" />
+    <xi:include href="general/creating-queries.xml" />
+    <xi:include href="general/result-handling.xml"/>
+    <xi:include href="general/codegen.xml"/>
+    <xi:include href="general/alias.xml" />
                            
 </chapter>    

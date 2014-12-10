@@ -19,8 +19,8 @@
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
-</dependency>    
-        
+</dependency>
+
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-mongodb</artifactId>
@@ -31,7 +31,7 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>    
+</dependency>
 ]]></programlisting>
 
     <para>
@@ -95,12 +95,12 @@
     <programlisting language="java"><![CDATA[
 Morphia morphia;
 Datastore datastore;
-// ...	
+// ...
 QUser user = new QUser("user");
 MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
 List<User> list = query
-	.where(user.firstName.eq("Bob"))
-	.list();
+    .where(user.firstName.eq("Bob"))
+    .list();
 ]]></programlisting>
 
   </sect2>
@@ -139,7 +139,7 @@ List<User> list = query
 
     <para>정렬 구문은 다음과 같다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .orderBy(doc.title.asc(), doc.year.desc())
@@ -155,7 +155,7 @@ query
 
     <para>다음과 같이 결과 개수를 제한한다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .limit(10)
@@ -169,7 +169,7 @@ query
 
     <para>다음과 같이 오프셋을 지정한다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .offset(3)
@@ -184,7 +184,7 @@ query
 
     <para>near(Douyble[]) 메서드를 이용해서 공간 검색을 할 수 있다.</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(geoEntity.location.near(50.0, 50.0))
     .list();
@@ -200,7 +200,7 @@ query
     singleResult 메서드를 사용하면 된다.
     </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
     .list(doc.title, doc.path);

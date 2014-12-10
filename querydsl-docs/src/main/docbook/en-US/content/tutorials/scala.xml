@@ -5,7 +5,7 @@
   <title>Querying in Scala</title>
 
   <para>Generic support for Querydsl usage in Scala is available via querydsl-scala
-    module. To add it to your Maven build, use the following snippet :
+    module. To add it to your Maven build, use the following snippet:
   </para>
 
   <programlisting language="xml"><![CDATA[
@@ -52,7 +52,7 @@ expr gt 5               expr > 5
 expr goe 5              expr >= 5
 expr notBetween(2,6)    expr not between (2,6)
 expr negate             -expr
- 
+
 // numeric
 expr add 3              expr + 3
 expr subtract 3         expr - 3
@@ -86,7 +86,7 @@ map.get("X")            map("X")
       type <code>Object[]</code>.
     </para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 query.from(person).list(person.firstName, person.lastName, person.age)
 ]]></programlisting>
 
@@ -100,7 +100,7 @@ query.from(person).list(person.firstName, person.lastName, person.age)
 
     <programlisting language="java"><![CDATA[
 import com.mysema.query.scala.Helpers._
-  
+
 query.from(person).select(person.firstName, person.lastName, person.age)
 ]]></programlisting>
 
@@ -116,12 +116,12 @@ query.from(person).select(person.firstName, person.lastName, person.age)
 
     <para>
       Like with Querydsl SQL for Java you need to generate Query types to be able to construct
-      your queries. The following code examples show how this is done :
+      your queries. The following code examples show how this is done:
     </para>
 
     <para>Generation without Bean types :</para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 val directory = new java.io.File("target/jdbcgen1")
 val namingStrategy = new DefaultNamingStrategy()
 val exporter = new MetaDataExporter()
@@ -137,7 +137,7 @@ exporter.export(connection.getMetaData)
 
     <para>Generation with Bean types :</para>
 
-    <programlisting language="java"><![CDATA[    
+    <programlisting language="java"><![CDATA[
 val directory = new java.io.File("target/jdbcgen2")
 val namingStrategy = new DefaultNamingStrategy()
 val exporter = new MetaDataExporter()
@@ -149,7 +149,7 @@ exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
 exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer])
 exporter.setCreateScalaSources(true)
 exporter.setTypeMappings(ScalaTypeMappings.create)
-exporter.export(connection.getMetaData)        
+exporter.export(connection.getMetaData)
 ]]></programlisting>
 
     <sect3>
@@ -174,15 +174,15 @@ exporter.export(connection.getMetaData)
 
       <para>Instead of the following normal syntax</para>
 
-      <programlisting language="java"><![CDATA[    
-query().from(employee).select(employee.firstName, employee.lastName)        
+      <programlisting language="java"><![CDATA[
+query().from(employee).select(employee.firstName, employee.lastName)
 ]]></programlisting>
 
       <para>you could use the companion object of Employee or QEmployee and write it like
         this </para>
 
-      <programlisting language="java"><![CDATA[    
-Employee.select(_.firstName, _.lastName)        
+      <programlisting language="java"><![CDATA[
+Employee.select(_.firstName, _.lastName)
 ]]></programlisting>
 
       <para>Instead of giving expressions to orderBy, where, select, single and unique you
@@ -190,8 +190,8 @@ Employee.select(_.firstName, _.lastName)
         the query and return another expression. The expanded form of the previous example would be
       </para>
 
-      <programlisting language="java"><![CDATA[    
-Employee.select({ e => e.firstName }, { e => e.lastName })        
+      <programlisting language="java"><![CDATA[
+Employee.select({ e => e.firstName }, { e => e.lastName })
 ]]></programlisting>
 
       <para>
@@ -267,7 +267,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
 
     <para>Here is a minimal example with JPA :</para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 @Entity
 class User {
   @BeanProperty
@@ -309,8 +309,8 @@ query.from(person).where(person.firstName like "Rob%").unique(person)
     <para>Long where</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person) 
-  .where(person.firstName like "Rob%", person.lastName like "An%") 
+query.from(person)
+  .where(person.firstName like "Rob%", person.lastName like "An%")
   .list(person)
 ]]></programlisting>
 
@@ -323,8 +323,8 @@ query.from(person).orderBy(person.firstName asc).list(person)
     <para>Not null</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person) 
-  .where(person.firstName isEmpty, person.lastName isNotNull) 
+query.from(person)
+  .where(person.firstName isEmpty, person.lastName isNotNull)
   .list(person)
 ]]></programlisting>
 
@@ -344,4 +344,4 @@ val person = Person as "person"
 
   </sect2>
 
-</sect1>  
+</sect1>
