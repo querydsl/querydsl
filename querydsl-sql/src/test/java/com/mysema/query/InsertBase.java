@@ -422,6 +422,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn({H2, POSTGRES})
+    @SkipForQuoted
     public void Uuids() {
         delete(QUuids.uuids).execute();
         QUuids uuids = QUuids.uuids;
