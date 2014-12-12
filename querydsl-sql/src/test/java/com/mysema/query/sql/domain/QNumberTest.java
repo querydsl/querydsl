@@ -1,7 +1,10 @@
 package com.mysema.query.sql.domain;
 
-import javax.annotation.Generated;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+
 import java.sql.Types;
+
+import javax.annotation.Generated;
 
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.spatial.RelationalPathSpatial;
@@ -9,7 +12,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.NumberPath;
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 
 

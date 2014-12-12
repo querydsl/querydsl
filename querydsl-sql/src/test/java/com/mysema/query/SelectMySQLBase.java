@@ -1,12 +1,14 @@
 package com.mysema.query;
 
-import com.mysema.query.sql.domain.QNumberTest;
-import com.mysema.query.sql.mysql.MySQLQuery;
-import com.mysema.testutil.IncludeIn;
-import org.junit.Test;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.mysema.query.sql.domain.QNumberTest;
+import com.mysema.query.sql.mysql.MySQLQuery;
+import com.mysema.testutil.IncludeIn;
 
 
 public class SelectMySQLBase extends AbstractBaseTest {
