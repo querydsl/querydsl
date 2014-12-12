@@ -25,7 +25,7 @@ public class QNumberTest extends RelationalPathSpatial<QNumberTest> {
 
     public final BooleanPath col1Boolean = createBoolean("col1");
 
-    public final NumberPath col1Number = createNumber("col2", Byte.class);
+    public final NumberPath<Byte> col1Number = createNumber("col2", Byte.class);
 
     public QNumberTest(String variable) {
         super(QNumberTest.class, forVariable(variable), "null", "NUMBER_TEST");
