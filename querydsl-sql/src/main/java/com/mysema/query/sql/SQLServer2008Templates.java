@@ -22,6 +22,9 @@ package com.mysema.query.sql;
  */
 public class SQLServer2008Templates extends SQLServer2005Templates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final SQLServer2008Templates DEFAULT = new SQLServer2008Templates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

@@ -26,6 +26,9 @@ import com.mysema.query.types.Ops;
  */
 public class TeradataTemplates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final TeradataTemplates DEFAULT = new TeradataTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

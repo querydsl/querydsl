@@ -25,6 +25,9 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class MySQLSpatialTemplates extends MySQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final MySQLSpatialTemplates DEFAULT = new MySQLSpatialTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

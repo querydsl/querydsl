@@ -25,6 +25,9 @@ import java.lang.reflect.Field;
  */
 public class JavaTemplates extends Templates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final JavaTemplates DEFAULT = new JavaTemplates();
+
     public JavaTemplates() {
         add(Ops.EQ, "{0} == {1}");
         add(Ops.IS_NULL, "{0} == null");

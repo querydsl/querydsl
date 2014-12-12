@@ -112,6 +112,7 @@ public class SQLTemplates extends Templates {
 
     public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
     private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =

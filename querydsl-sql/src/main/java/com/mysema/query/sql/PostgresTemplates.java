@@ -50,6 +50,9 @@ public class PostgresTemplates extends SQLTemplates {
                     "TRAILING", "TRUE", "UNION", "UNIQUE", "USER", "USING",
                     "VARIADIC", "VERBOSE", "WHEN", "WHERE", "WINDOW", "WITH");
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final PostgresTemplates DEFAULT = new PostgresTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

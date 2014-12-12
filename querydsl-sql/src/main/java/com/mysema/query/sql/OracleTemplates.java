@@ -33,6 +33,9 @@ import com.mysema.query.types.Path;
  */
 public class OracleTemplates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final OracleTemplates DEFAULT = new OracleTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override
