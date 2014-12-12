@@ -112,12 +112,16 @@ public final class Configuration {
      * @return
      */
     public String asLiteral(Object o) {
-        Type type = javaTypeMapping.getType(o.getClass());
-        if (type != null) {
-            return templates.serialize(type.getLiteral(o), type.getSQLTypes()[0]);
+        if (Null.class.isInstance(o)) {
+            return "null";
         } else {
-            throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
-        }
+            Type type = javaTypeMapping.getType(o.getClass());
+            if (type != null) {
+                return templates.serialize(type.getLiteral(o), type.getSQLTypes()[0]);
+            } else {
+                throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
+            }
+        }                
     }
 
     public SQLTemplates getTemplates() {

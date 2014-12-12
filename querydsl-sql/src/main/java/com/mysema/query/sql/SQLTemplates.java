@@ -482,8 +482,20 @@ public class SQLTemplates extends Templates {
             case Types.NVARCHAR:
             case Types.VARCHAR:
                 return "'" + escapeLiteral(literal) + "'";
+            case Types.BIGINT:
+            case Types.BIT:
+            case Types.BOOLEAN:
+            case Types.DECIMAL:
+            case Types.DOUBLE:
+            case Types.FLOAT:
+            case Types.INTEGER:
+            case Types.NULL:
+            case Types.NUMERIC:
+            case Types.SMALLINT:
+            case Types.TINYINT:
+                return literal;                        
             default:
-                return literal;
+                return "'" + literal + "'";
         }
     }
 

@@ -85,10 +85,10 @@ public abstract class AbstractBaseTest {
     }
 
     @Rule
-    public static MethodRule skipForQuotedRule = new SkipForQuotedRule();
+    public MethodRule skipForQuotedRule = new SkipForQuotedRule(configuration);
 
     @Rule
-    public static MethodRule targetRule = new TargetRule();
+    public MethodRule targetRule = new TargetRule();
 
     protected <T> void add(List<T> list, T arg, Target... exclusions) {
         if (exclusions.length > 0) {

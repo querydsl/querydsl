@@ -156,7 +156,9 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     }
 
     private long executeBatch(PreparedStatement stmt) throws SQLException {
-        if (configuration.getTemplates().isBatchCountViaGetUpdateCount()) {
+        if (configuration.getUseLiterals()) {
+            return stmt.executeUpdate();
+        } else if (configuration.getTemplates().isBatchCountViaGetUpdateCount()) {
             stmt.executeBatch();
             return stmt.getUpdateCount();
         } else {
