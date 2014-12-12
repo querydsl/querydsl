@@ -36,7 +36,7 @@ public class SelectMySQLBase extends AbstractBaseTest {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
         insert(numberTest).set(numberTest.col1Boolean, true).execute();
-        insert(numberTest).set(numberTest.col1Number, 1).execute();
+        insert(numberTest).set(numberTest.col1Number, (byte)1).execute();
         assertEquals(2, query().from(numberTest).list(numberTest.col1Boolean).size());
         assertEquals(2, query().from(numberTest).list(numberTest.col1Number).size());
     }
