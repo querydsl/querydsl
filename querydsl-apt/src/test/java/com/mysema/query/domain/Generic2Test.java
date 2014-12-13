@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
 
-public class Generic2Test {
+public class Generic2Test extends AbstractTest {
 
     public static class Range<T extends Comparable<? super T>> {
         private T min;
@@ -52,8 +52,10 @@ public class Generic2Test {
     }
     
     @Test
-    public void test() {
-        
+    public void test() throws NoSuchFieldException {
+        start(QGeneric2Test_Foo.class, QGeneric2Test_Foo.foo);
+        assertPresent("range");
+        match(QGeneric2Test_Range.class, "range");
     }
 
 }

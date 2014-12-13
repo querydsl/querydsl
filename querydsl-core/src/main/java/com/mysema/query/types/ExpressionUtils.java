@@ -13,14 +13,12 @@
  */
 package com.mysema.query.types;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.annotation.Nullable;
 
+import java.util.*;
+
 import com.google.common.collect.ImmutableList;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryException;
 
 
@@ -33,6 +31,17 @@ import com.mysema.query.QueryException;
  *
  */
 public final class ExpressionUtils {
+
+    private static class UnderscoreTemplates extends Templates {
+        private UnderscoreTemplates() {
+            add(PathType.PROPERTY, "{0}_{1}");
+            add(PathType.COLLECTION_ANY, "{0}");
+            add(PathType.LISTVALUE, "{0}_{1}");
+            add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");
+        }
+    }
+
+    private static final Templates TEMPLATES = new UnderscoreTemplates();
 
     /**
      * @param col
@@ -225,6 +234,22 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Create a {@code left in right or...} expression for each list
+     *
+     * @param <D>
+     * @param left
+     * @param lists
+     * @return a {@code left in right or...} expression
+     */
+    public static <D> Predicate inAny(Expression<D> left, Iterable<? extends Collection<? extends D>> lists) {
+        BooleanBuilder rv = new BooleanBuilder();
+        for (Collection<? extends D> list : lists) {
+            rv.or(in(left, list));
+        }
+        return rv;
+    }
+
+    /**
      * Create a left is null expression
      *
      * @param left
@@ -390,6 +415,50 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Create an left not in right expression
+     *
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <D> Predicate notIn(Expression<D> left, CollectionExpression<?,? extends D> right) {
+        return PredicateOperation.create(Ops.NOT_IN, left, right);
+    }
+
+    /**
+     * Create an left not in right expression
+     *
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <D> Predicate notIn(Expression<D> left, Collection<? extends D> right) {
+        if (right.size() == 1) {
+            return neConst(left, right.iterator().next());
+        } else {
+            return PredicateOperation.create(Ops.NOT_IN, left, ConstantImpl.create(right));
+        }
+    }
+
+    /**
+     * Create a {@code left not in right and...} expression for each list
+     *
+     * @param <D>
+     * @param left
+     * @param lists
+     * @return a {@code left not in right and...} expression
+     */
+    public static <D> Predicate notInAny(Expression<D> left, Iterable<? extends Collection<? extends D>> lists) {
+        BooleanBuilder rv = new BooleanBuilder();
+        for (Collection<? extends D> list : lists) {
+            rv.and(notIn(left, list));
+        }
+        return rv;
+    }
+
+    /**
      * Create a left or right expression
      *
      * @param left
@@ -460,6 +529,32 @@ public final class ExpressionUtils {
             }
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Create a new root variable based on the given path
+     *
+     * @param path
+     * @return
+     */
+    public static String createRootVariable(Path<?> path) {
+        String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
+        String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 5);
+        return variable + "_" + suffix;
+    }
+
+    /**
+     * Converts the given object to an Expression
+     *
+     * @param o
+     * @return
+     */
+    public static Expression<?> toExpression(Object o) {
+        if (o instanceof Expression) {
+            return (Expression<?>) o;
+        } else {
+            return ConstantImpl.create(o);
         }
     }
 

@@ -109,7 +109,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         serializer.serializeUpdate(metadata, entity, updates);
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.prepared(context);
 
@@ -123,12 +123,13 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     }
 
     private Collection<PreparedStatement> createStatements() throws SQLException {
+        boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeUpdate(batches.get(0).getMetadata(), entity, batches.get(0).getUpdates());
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -138,7 +139,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         listeners.prePrepare(context);
         PreparedStatement stmt = connection.prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-        stmt.addBatch();
+        if (addBatches) {
+            stmt.addBatch();
+        }
         stmts.put(serializer.toString(), stmt);
         context.addPreparedStatement(stmt);
         listeners.prepared(context);
@@ -161,7 +164,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
                 listeners.prepared(context);
             }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-            stmt.addBatch();
+            if (addBatches) {
+                stmt.addBatch();
+            }
         }
 
         return stmts.values();
@@ -201,6 +206,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            reset();
             endContext(context);
         }
     }

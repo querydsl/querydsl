@@ -34,7 +34,7 @@ import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
-public class JPASQLBase extends AbstractSQLTest {
+public class JPASQLBase extends AbstractSQLTest implements JPATest {
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
@@ -51,7 +51,7 @@ public class JPASQLBase extends AbstractSQLTest {
         return new JPASQLQuery(entityManager, templates);
     }
 
-
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

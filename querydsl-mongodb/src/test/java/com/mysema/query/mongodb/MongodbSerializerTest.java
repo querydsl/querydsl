@@ -20,9 +20,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -31,11 +28,10 @@ import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.morphia.MorphiaSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class MongodbSerializerTest {
 
@@ -239,9 +235,7 @@ public class MongodbSerializerTest {
 
     public static BasicDBList dblist(Object... contents) {
         BasicDBList list = new BasicDBList();
-        for (Object o : contents) {
-            list.add(o);
-        }
+        list.addAll(Arrays.asList(contents));
         return list;
     }
 

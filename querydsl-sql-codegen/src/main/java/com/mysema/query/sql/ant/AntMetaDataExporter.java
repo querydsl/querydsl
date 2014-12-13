@@ -93,7 +93,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * schemaPattern a schema name pattern; must match the schema name
      *        as it is stored in the database; "" retrieves those without a schema;
-     *        <code>null</code> means that the schema name should not be used to narrow
+     *        {@code null} means that the schema name should not be used to narrow
      *        the search (default: null)
      */
     private String schemaPattern;

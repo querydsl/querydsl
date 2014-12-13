@@ -44,13 +44,14 @@ import com.mysema.query.types.path.EntityPathBase;
  * @author tiwe
  *
  */
+@Deprecated
 public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
     
     private static final class UnderscoreTemplates extends Templates {
         {
             add(PathType.PROPERTY, "{0}_{1}");
             add(PathType.LISTVALUE, "{0}_{1}");
-            add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");        
+            add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");
         }
     }
 

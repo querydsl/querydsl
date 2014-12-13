@@ -57,7 +57,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      * @param type
      */
     public EntityType(Type type) {
-        this(type, new HashSet<Supertype>());
+        this(type, new LinkedHashSet<Supertype>());
     }
     
     /**
@@ -88,9 +88,11 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
 
     public void addProperty(Property field) {
-        propertyNames.add(field.getName());
-        escapedPropertyNames.add(field.getEscapedName());
-        properties.add(validateField(field));
+        if (!propertyNames.contains(field.getName())) {
+            propertyNames.add(field.getName());
+            escapedPropertyNames.add(field.getEscapedName());
+            properties.add(validateField(field));
+        }
     }
 
     public void addSupertype(Supertype entityType) {

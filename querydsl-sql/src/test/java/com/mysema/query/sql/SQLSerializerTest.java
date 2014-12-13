@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,14 +30,15 @@ import com.mysema.query.sql.domain.QEmployeeNoPK;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
+
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class SQLSerializerTest {
 
@@ -87,9 +91,10 @@ public class SQLSerializerTest {
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
-        assertEquals("(select user.id, user.username\n" +
-        	"from user\n" +
-        	"where user.id = ?)", serializer.toString());
+        //USER is a reserved word in ANSI SQL 2008
+        assertEquals("(select \"user\".id, \"user\".username\n" +
+                "from \"user\"\n" +
+                "where \"user\".id = ?)", serializer.toString());
     }
 
     @Test
@@ -103,9 +108,34 @@ public class SQLSerializerTest {
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
-        assertEquals("(select user.id, user.username\n" +
-                "from user\n" +
-                "where user.id = ?)", serializer.toString());
+        //USER is a reserved word in ANSI SQL 2008
+        assertEquals("(select \"user\".id, \"user\".username\n" +
+                "from \"user\"\n" +
+                "where \"user\".id = ?)", serializer.toString());
+    }
+
+    @Test
+    public void In() {
+        StringPath path = Expressions.stringPath("str");
+        Expression<?> expr = ExpressionUtils.in(path, Arrays.asList("1", "2", "3"));
+
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(expr);
+        assertEquals(Arrays.asList(path, path, path), serializer.getConstantPaths());
+        assertEquals(3, serializer.getConstants().size());
+    }
+
+    @Test
+    public void Or_In() {
+        StringPath path = Expressions.stringPath("str");
+        Expression<?> expr = ExpressionUtils.anyOf(
+                ExpressionUtils.in(path, Arrays.asList("1", "2", "3")),
+                ExpressionUtils.in(path, Arrays.asList("4", "5", "6")));
+
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.handle(expr);
+        assertEquals(Arrays.asList(path, path, path, path, path, path), serializer.getConstantPaths());
+        assertEquals(6, serializer.getConstants().size());
     }
 
     @Test
@@ -147,6 +177,14 @@ public class SQLSerializerTest {
         query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
+    }
+
+    @Test
+    public void Keyword_After_Dot() {
+        SQLQuery query = new SQLQuery(MySQLTemplates.DEFAULT);
+        PathBuilder<Survey> surveyBuilder = new PathBuilder<Survey>(Survey.class, "survey");
+        query.from(surveyBuilder).where(surveyBuilder.get("not").isNotNull());
+        assertFalse(query.toString().contains("`"));
     }
 
     @Test

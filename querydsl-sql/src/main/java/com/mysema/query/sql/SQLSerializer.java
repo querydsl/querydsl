@@ -18,18 +18,17 @@ import java.util.*;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinFlag;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.*;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.Template.Element;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -44,7 +43,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private static final String COMMA = ", ";
 
-    private final List<Path<?>> constantPaths = new ArrayList<Path<?>>();
+    private final LinkedList<Path<?>> constantPaths = new LinkedList<Path<?>>();
 
     private final List<Object> constants = new ArrayList<Object>();
 
@@ -79,13 +78,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         this.dml = dml;
     }
 
-    protected void appendAsColumnName(Path<?> path) {
+    protected void appendAsColumnName(Path<?> path, boolean precededByDot) {
         String column = ColumnMetadata.getName(path);
         if (path.getMetadata().getParent() instanceof RelationalPath) {
             RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
             column = configuration.getColumnOverride(parent.getSchemaAndTable(), column);
         }
-        append(templates.quoteIdentifier(column));
+        append(templates.quoteIdentifier(column, precededByDot));
     }
 
     private SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
@@ -96,8 +95,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteIdentifier(schema));
     }
 
-    protected void appendTableName(String table) {
-        append(templates.quoteIdentifier(table));
+    protected void appendTableName(String table, boolean precededByDot) {
+        append(templates.quoteIdentifier(table, precededByDot));
     }
 
     public List<Object> getConstants() {
@@ -168,11 +167,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
+                boolean precededByDot;
                 if (templates.isPrintSchema()) {
                     appendSchemaName(schemaAndTable.getSchema());
                     append(".");
+                    precededByDot = true;
+                } else {
+                    precededByDot = false;
                 }
-                appendTableName(schemaAndTable.getTable());
+                appendTableName(schemaAndTable.getTable(), precededByDot);
                 append(templates.getTableAlias());
             }
         }
@@ -261,6 +264,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
             if (!metadata.isDistinct()) {
                 append(templates.getCountStar());
+                if (!groupBy.isEmpty()) {
+                    append(templates.getFrom());
+                    append("(");
+                    append(templates.getSelect());
+                    append("1 ");
+                    suffix = ") internal";
+                }
+
             } else {
                 List<? extends Expression<?>> columns;
                 if (sqlSelect.isEmpty()) {
@@ -268,7 +279,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 } else {
                     columns = sqlSelect;
                 }
-                if (columns.size() == 1) {
+                if (!groupBy.isEmpty()) {
+                    // select count(*) from (select distinct ...)
+                    append(templates.getCountStar());
+                    append(templates.getFrom());
+                    append("(");
+                    append(templates.getSelectDistinct());
+                    handle(COMMA, columns);
+                    suffix = ") internal";
+                } else if (columns.size() == 1) {
                     append(templates.getDistinctCountStart());
                     handle(columns.get(0));
                     append(templates.getDistinctCountEnd());
@@ -745,7 +764,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(")");
 
             int size = ((Collection) constant).size() - 1;
-            Path<?> lastPath = constantPaths.get(constantPaths.size() - 1);
+            Path<?> lastPath = constantPaths.peekLast();
             for (int i = 0; i < size; i++) {
                 constantPaths.add(lastPath);
             }
@@ -781,23 +800,31 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (dml) {
             if (path.equals(entity) && path instanceof RelationalPath<?>) {
                 SchemaAndTable schemaAndTable = getSchemaAndTable((RelationalPath<?>) path);
+                boolean precededByDot;
                 if (dmlWithSchema && templates.isPrintSchema()) {
                     appendSchemaName(schemaAndTable.getSchema());
                     append(".");
+                    precededByDot = true;
+                } else {
+                    precededByDot = false;
                 }
-                appendTableName(schemaAndTable.getTable());
+                appendTableName(schemaAndTable.getTable(), precededByDot);
                 return null;
             } else if (entity.equals(path.getMetadata().getParent()) && skipParent) {
-                appendAsColumnName(path);
+                appendAsColumnName(path, false);
                 return null;
             }
         }
         final PathMetadata<?> metadata = path.getMetadata();
+        boolean precededByDot;
         if (metadata.getParent() != null && (!skipParent || dml)) {
             visit(metadata.getParent(), context);
             append(".");
+            precededByDot = true;
+        } else {
+            precededByDot = false;
         }
-        appendAsColumnName(path);
+        appendAsColumnName(path, precededByDot);
         return null;
     }
 
@@ -815,7 +842,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(TemplateExpression<?> expr, Void context) {
-        if (inJoin && templates.isFunctionJoinsWrapped()) {
+        if (inJoin && expr instanceof RelationalFunctionCall
+                && templates.isFunctionJoinsWrapped()) {
             append("table(");
             super.visit(expr, context);
             append(")");
@@ -827,15 +855,20 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+        boolean pathAdded = false;
         if (args.size() == 2
          && !useLiterals
          && args.get(0) instanceof Path<?>
          && args.get(1) instanceof Constant<?>
          && operator != Ops.NUMCAST) {
-            for (Element element : templates.getTemplate(operator).getElements()) {
-                if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
-                    constantPaths.add((Path<?>)args.get(0));
-                    break;
+            Object constant = ((Constant)args.get(1)).getConstant();
+            if (!Collection.class.isInstance(constant) || !((Collection)constant).isEmpty()) {
+                for (Element element : templates.getTemplate(operator).getElements()) {
+                    if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
+                        constantPaths.add((Path<?>)args.get(0));
+                        pathAdded = true;
+                        break;
+                    }
                 }
             }
         }
@@ -869,6 +902,39 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             } else {
                 // handle only target
                 handle(args.get(1));
+            }
+
+        } else if ((operator == Ops.IN || operator == Ops.NOT_IN)
+                && args.get(0) instanceof Path<?>
+                && args.get(1) instanceof Constant<?>) {
+            //The type of the constant expression is compatible with the left
+            //expression, since the compile time checking mandates it to be.
+            @SuppressWarnings("unchecked")
+            Collection<Object> coll = ((Constant<Collection<Object>>)args.get(1)).getConstant();
+            if (coll.isEmpty()) {
+                super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
+                        ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
+            } else {
+                if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
+                    super.visitOperation(type, operator, args);
+                } else {
+                    //The type of the path is compatible with the constant
+                    //expression, since the compile time checking mandates it to be
+                    @SuppressWarnings("unchecked")
+                    Expression<Object> path = (Expression<Object>) args.get(0);
+                    if (pathAdded) {
+                        constantPaths.removeLast();
+                    }
+                    Iterable<List<Object>> partitioned = Iterables
+                            .partition(coll, templates.getListMaxSize());
+                    Predicate result;
+                    if (operator == Ops.IN) {
+                        result = ExpressionUtils.inAny(path, partitioned);
+                    } else {
+                        result = ExpressionUtils.notInAny(path, partitioned);
+                    }
+                    result.accept(this, null);
+                }
             }
 
         } else if (operator == SQLOps.WITH_COLUMNS) {

@@ -13,19 +13,19 @@
  */
 package com.mysema.query.codegen;
 
+import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Primitives;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
@@ -35,6 +35,7 @@ import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 import com.mysema.util.ReflectionUtils;
+import java.lang.reflect.AnnotatedElement;
 
 /**
  * TypeFactory is a factory class for {@link Type} instances
@@ -46,11 +47,13 @@ public final class TypeFactory {
 
     private static final Type ANY = new TypeExtends(Types.OBJECT);
 
-    private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
+    private final Map<List<?>, Type> cache = Maps.newHashMap();
 
     private final List<Class<? extends Annotation>> entityAnnotations;
 
-    private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
+    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
+
+    private final Set<Class<?>> embeddableTypes = Sets.newHashSet();
 
     private boolean unknownAsEntity = false;
 
@@ -67,19 +70,43 @@ public final class TypeFactory {
         if (cl.getTypeParameters().length > 0) {
             generic = new ParameterizedTypeImpl(cl, cl.getTypeParameters());
         }
-        return (EntityType) get(true, cl, generic);
+        return (EntityType) get(true, cl, null, generic);
     }
 
     public Type get(Class<?> cl) {
-        return get(isEntityClass(cl), cl, cl);
+        return get(cl, cl);
     }
 
     public Type get(Class<?> cl, java.lang.reflect.Type genericType) {
-        return get(isEntityClass(cl), cl, genericType);
+        return get(isEntityClass(cl), cl, null, genericType);
+    }
+
+    public Type get(Class<?> cl, AnnotatedElement annotated, java.lang.reflect.Type genericType) {
+        return get(isEntityClass(cl), cl, annotated, genericType);
     }
 
     public Type get(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {
-        List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
+        return get(entity, cl, null, genericType);
+    }
+
+    public Type get(boolean entity, Class<?> cl, AnnotatedElement annotated, java.lang.reflect.Type genericType) {
+        ImmutableList.Builder<Object> keyBuilder = ImmutableList.builder().add(cl).add(genericType);
+        AnnotationHelper annotationHelper = null;
+        Annotation selectedAnnotation = null;
+        if (annotated != null) {
+            for (Annotation annotation : annotated.getDeclaredAnnotations()) {
+                for (AnnotationHelper helper : annotationHelpers) {
+                    if (helper.isSupported(annotation.annotationType())) {
+                        keyBuilder.add(annotation.annotationType());
+                        selectedAnnotation = annotated.getAnnotation(annotation.annotationType());
+                        annotationHelper = helper;
+                        keyBuilder.add(helper.getCustomKey(selectedAnnotation));
+                        break;
+                    }
+                }
+            }
+        }
+        List<?> key = keyBuilder.build();
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
             if (entity && !(value instanceof EntityType)) {
@@ -89,14 +116,14 @@ public final class TypeFactory {
             return value;
 
         } else {
-            Type value = create(entity, cl, genericType, key);
+            Type value = create(entity, cl, annotationHelper, selectedAnnotation, genericType, key);
             cache.put(key, value);
             return value;
         }
     }
 
-    private Type create(boolean entity, Class<?> cl, java.lang.reflect.Type genericType,
-            List<java.lang.reflect.Type> key) {
+    private Type create(boolean entity, Class<?> cl, AnnotationHelper annotationHelper, Annotation annotation, java.lang.reflect.Type genericType,
+            List<?> key) {
         if (cl.isPrimitive()) {
             cl = Primitives.wrap(cl);
         }
@@ -117,7 +144,7 @@ public final class TypeFactory {
         } else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)) {
             value = new ClassType(TypeCategory.NUMERIC, cl, parameters);
         } else if (entity) {
-            value = createOther(cl, entity, parameters);
+            value = createOther(cl, entity, annotationHelper, annotation, parameters);
         } else if (Map.class.isAssignableFrom(cl)) {
             value = new SimpleType(Types.MAP, parameters[0], asGeneric(parameters[1]));
         } else if (List.class.isAssignableFrom(cl)) {
@@ -127,11 +154,11 @@ public final class TypeFactory {
         } else if (Collection.class.isAssignableFrom(cl)) {
             value = new SimpleType(Types.COLLECTION, asGeneric(parameters[0]));
         } else {
-            value = createOther(cl, entity, parameters);
+            value = createOther(cl, entity, annotationHelper, annotation, parameters);
         }
 
         if (genericType instanceof TypeVariable) {
-            TypeVariable tv = (TypeVariable)genericType;
+            TypeVariable tv = (TypeVariable) genericType;
             if (tv.getBounds().length == 1 && tv.getBounds()[0].equals(Object.class)) {
                 value = new TypeSuper(tv.getName(), value);
             } else {
@@ -155,10 +182,12 @@ public final class TypeFactory {
         return type;
     }
 
-    private Type createOther(Class<?> cl, boolean entity, Type[] parameters) {
+    private Type createOther(Class<?> cl, boolean entity, AnnotationHelper annotationHelper, Annotation annotation, Type[] parameters) {
         TypeCategory typeCategory = TypeCategory.get(cl.getName());
-        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
-            && !cl.equals(Comparable.class)) {
+        if (annotationHelper != null) {
+            typeCategory = annotationHelper.getTypeByAnnotation(cl, annotation);
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
+                && !cl.equals(Comparable.class)) {
             typeCategory = TypeCategory.COMPARABLE;
         } else if (embeddableTypes.contains(cl)) {
             typeCategory = TypeCategory.CUSTOM;
@@ -167,6 +196,7 @@ public final class TypeFactory {
         } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
             typeCategory = TypeCategory.CUSTOM;
         }
+
         return new ClassType(typeCategory, cl, parameters);
     }
 
@@ -175,9 +205,9 @@ public final class TypeFactory {
         if (parameterCount > 0) {
             return getGenericParameters(cl, genericType, parameterCount);
         } else if (Map.class.isAssignableFrom(cl)) {
-            return new Type[]{ Types.OBJECT, Types.OBJECT };
+            return new Type[]{Types.OBJECT, Types.OBJECT};
         } else if (Collection.class.isAssignableFrom(cl)) {
-            return new Type[]{ Types.OBJECT };
+            return new Type[]{Types.OBJECT};
         } else {
             return new Type[0];
         }
@@ -196,15 +226,15 @@ public final class TypeFactory {
     private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType, int i) {
         java.lang.reflect.Type parameter = ReflectionUtils.getTypeParameter(genericType, i);
         if (parameter instanceof TypeVariable) {
-            TypeVariable variable = (TypeVariable)parameter;
-            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), parameter);
+            TypeVariable variable = (TypeVariable) parameter;
+            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), null, parameter);
             return new TypeExtends(variable.getName(), rv);
         } else if (parameter instanceof WildcardType
-            && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
-            && ((WildcardType)parameter).getLowerBounds().length == 0) {
+                && ((WildcardType) parameter).getUpperBounds()[0].equals(Object.class)
+                && ((WildcardType) parameter).getLowerBounds().length == 0) {
             return ANY;
         } else {
-            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), parameter);
+            Type rv = get(ReflectionUtils.getTypeParameterAsClass(genericType, i), null, parameter);
             if (parameter instanceof WildcardType) {
                 rv = new TypeExtends(rv);
             }
@@ -214,7 +244,7 @@ public final class TypeFactory {
 
     private boolean isEntityClass(Class<?> cl) {
         for (Class<? extends Annotation> clazz : entityAnnotations) {
-            if (cl.getAnnotation(clazz) != null) {
+            if (cl.isAnnotationPresent(clazz)) {
                 return true;
             }
         }
@@ -222,13 +252,13 @@ public final class TypeFactory {
     }
 
     public void extendTypes() {
-        for (Map.Entry<List<java.lang.reflect.Type>, Type> entry : cache.entrySet()) {
+        for (Map.Entry<List<?>, Type> entry : cache.entrySet()) {
             if (entry.getValue() instanceof EntityType) {
-                EntityType entityType = (EntityType)entry.getValue();
+                EntityType entityType = (EntityType) entry.getValue();
                 if (entityType.getProperties().isEmpty()) {
                     for (Type type : cache.values()) {
                         if (type.getFullName().equals(entityType.getFullName()) && type instanceof EntityType) {
-                            EntityType base = (EntityType)type;
+                            EntityType base = (EntityType) type;
                             for (Property property : base.getProperties()) {
                                 entityType.addProperty(property);
                             }
@@ -247,4 +277,7 @@ public final class TypeFactory {
         embeddableTypes.add(cl);
     }
 
+    public void addAnnotationHelper(AnnotationHelper annotationHelper) {
+        annotationHelpers.add(annotationHelper);
+    }
 }

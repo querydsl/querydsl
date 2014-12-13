@@ -15,10 +15,13 @@ package com.mysema.query.domain;
 
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 import org.junit.Test;
-
-import com.mysema.query.types.path.StringPath;
 
 public class JDOTest extends AbstractTest {
 
@@ -37,26 +40,53 @@ public class JDOTest extends AbstractTest {
     @PersistenceCapable
     public static class JDOEntity2 {
 
-        @SuppressWarnings("unused")
         private String stringField1;
 
         private String stringField2;
+
+        public String getStringfield1() {
+            return stringField1;
+        }
 
         public String getStringField2() {
             return stringField2;
         }
     }
 
+    @PersistenceCapable
+    public static class JDOEntity3 {
+
+        private Integer integerField;
+
+        private String stringField;
+
+        @PrimaryKey
+        public Integer getId() {
+            return integerField;
+        }
+
+        @Persistent
+        public String getName() {
+            return stringField;
+        }
+    }
+
     @Test
-    public void test() throws SecurityException, NoSuchFieldException {
-        cl = QJDOTest_JDOEntity.class;
+    public void test() throws IllegalAccessException, NoSuchFieldException {
+        start(QJDOTest_JDOEntity.class, QJDOTest_JDOEntity.jDOEntity);
         match(StringPath.class, "prop");
         assertMissing("skipped");
         assertMissing("skippedEntity");
 
-        cl = QJDOTest_JDOEntity2.class;
+        start(QJDOTest_JDOEntity2.class, QJDOTest_JDOEntity2.jDOEntity2);
         match(StringPath.class, "stringField1");
+        assertMissing("stringfield1");
         match(StringPath.class, "stringField2");
+
+        start(QJDOTest_JDOEntity3.class, QJDOTest_JDOEntity3.jDOEntity3);
+        match(NumberPath.class, "id");
+        matchType(Integer.class, "id");
+        match(StringPath.class, "name");
     }
 
 }

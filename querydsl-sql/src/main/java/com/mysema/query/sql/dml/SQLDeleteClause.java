@@ -115,7 +115,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         serializer.serializeDelete(metadata, entity);
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -130,12 +130,13 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     }
 
     private Collection<PreparedStatement> createStatements() throws SQLException {
+        boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeDelete(batches.get(0), entity);
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         context.addSQL(queryString);
         listeners.rendered(context);
 
@@ -145,7 +146,9 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         listeners.prePrepare(context);
         PreparedStatement stmt = connection.prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-        stmt.addBatch();
+        if (addBatches) {
+            stmt.addBatch();
+        }
         stmts.put(queryString, stmt);
         context.addPreparedStatement(stmt);
         listeners.prepared(context);
@@ -168,7 +171,9 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
                 listeners.prepared(context);
             }
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-            stmt.addBatch();
+            if (addBatches) {
+                stmt.addBatch();
+            }
         }
 
         return stmts.values();
@@ -207,6 +212,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            reset();
             endContext(context);
         }
     }

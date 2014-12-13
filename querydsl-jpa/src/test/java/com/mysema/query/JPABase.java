@@ -13,13 +13,22 @@
  */
 package com.mysema.query;
 
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
+import static org.junit.Assert.*;
+
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.runner.RunWith;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.jpa.JPASubQuery;
@@ -30,19 +39,13 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.JPATestRunner;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.MethodRule;
-import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 
 /**
  * @author tiwe
  *
  */
 @RunWith(JPATestRunner.class)
-public class JPABase extends AbstractJPATest {
+public class JPABase extends AbstractJPATest implements JPATest {
 
     private static final QCat cat = QCat.cat;
 
@@ -68,6 +71,7 @@ public class JPABase extends AbstractJPATest {
         return new JPAQuery(entityManager, new DefaultQueryMetadata().noValidate());
     }
 
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

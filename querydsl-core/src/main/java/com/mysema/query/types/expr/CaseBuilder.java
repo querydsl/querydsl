@@ -19,23 +19,20 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpression;
-import com.mysema.query.types.Ops;
+import com.mysema.query.types.*;
 
 /**
  * CaseBuilder enables the construction of typesafe case-when-then-else
  * constructs :
  * e.g.
  *
- * <pre>
- * Expression&lt;String&gt; cases = new CaseBuilder()
+ * <pre>{@code
+ * Expression<String> cases = new CaseBuilder()
  *     .when(c.annualSpending.gt(10000)).then("Premier")
  *     .when(c.annualSpending.gt(5000)).then("Gold")
  *     .when(c.annualSpending.gt(2000)).then("Silver")
  *     .otherwise("Bronze");
- * </pre>
+ * }</pre>
  *
  * @author tiwe
  *
@@ -45,16 +42,16 @@ public final class CaseBuilder {
     private static class CaseElement<A> {
 
         @Nullable
-        private final BooleanExpression condition;
+        private final Predicate condition;
 
         private final Expression<A> target;
 
-        public CaseElement(@Nullable BooleanExpression condition, Expression<A> target) {
+        public CaseElement(@Nullable Predicate condition, Expression<A> target) {
             this.condition = condition;
             this.target = target;
         }
 
-        public BooleanExpression getCondition() {
+        public Predicate getCondition() {
             return condition;
         }
 
@@ -81,7 +78,7 @@ public final class CaseBuilder {
             this.type = type;
         }
 
-        Cases<A,Q> addCase(BooleanExpression condition, Expression<A> expr) {
+        Cases<A,Q> addCase(Predicate condition, Expression<A> expr) {
             cases.add(0, new CaseElement<A>(condition, expr));
             return this;
         }
@@ -116,6 +113,11 @@ public final class CaseBuilder {
             return createResult(type, last);
         }
 
+        public CaseWhen<A,Q> when(Predicate b) {
+            return new CaseWhen<A,Q>(this, b);
+        }
+
+        // TODO remove in 4.0.0
         public CaseWhen<A,Q> when(BooleanExpression b) {
             return new CaseWhen<A,Q>(this, b);
         }
@@ -131,10 +133,16 @@ public final class CaseBuilder {
      */
     public static class CaseWhen<A,Q extends Expression<A>> {
 
-        private final BooleanExpression b;
+        private final Predicate b;
 
         private final Cases<A,Q> cases;
 
+        public CaseWhen(Cases<A,Q> cases, Predicate b) {
+            this.cases = cases;
+            this.b = b;
+        }
+
+        // TODO remove in 4.0.0
         public CaseWhen(Cases<A,Q> cases, BooleanExpression b) {
             this.cases = cases;
             this.b = b;
@@ -157,15 +165,20 @@ public final class CaseBuilder {
      */
     public static class Initial {
 
-        private final BooleanExpression when;
+        private final Predicate when;
 
+        public Initial(Predicate b) {
+            this.when = b;
+        }
+
+        // TODO remove in 4.0.0
         public Initial(BooleanExpression b) {
             this.when = b;
         }
 
         public <A> Cases<A, SimpleExpression<A>> then(Expression<A> expr) {
-            if (expr instanceof BooleanExpression) {
-                return (Cases) then((BooleanExpression) expr);
+            if (expr instanceof Predicate) {
+                return (Cases) then((Predicate) expr);
             } else if (expr instanceof StringExpression) {
                 return (Cases) then((StringExpression) expr);
             } else if (expr instanceof NumberExpression) {
@@ -200,9 +213,15 @@ public final class CaseBuilder {
 
         // Boolean
 
+        public Cases<Boolean, BooleanExpression> then(Predicate expr) {
+            return thenBoolean(expr);
+        }
+
+        // TODO remove in 4.0.0
         public Cases<Boolean, BooleanExpression> then(BooleanExpression expr) {
             return thenBoolean(expr);
         }
+
 
         private Cases<Boolean, BooleanExpression> thenBoolean(Expression<Boolean> expr) {
             return new Cases<Boolean,BooleanExpression>(Boolean.class) {
@@ -382,8 +401,12 @@ public final class CaseBuilder {
 
     }
 
-    public Initial when(BooleanExpression b) {
+    public Initial when(Predicate b) {
         return new Initial(b);
     }
 
+    // TODO remove in 4.0.0
+    public Initial when(BooleanExpression b) {
+        return new Initial(b);
+    }
 }

@@ -13,14 +13,15 @@
  */
 package com.mysema.query.support;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.*;
 import com.mysema.query.types.*;
 import com.mysema.query.types.template.BooleanTemplate;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ReplaceVisitor is a deep visitor that can be customized to replace segments of
@@ -67,11 +68,14 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
         } else {
             PathMetadata metadata = expr.getMetadata();
             Path<?> parent = (Path)metadata.getParent().accept(this, null);
-            if (parent.equals(metadata.getParent())) {
+            Object element = metadata.getElement();
+            if (element instanceof Expression<?>) {
+                element = ((Expression) element).accept(this, null);
+            }
+            if (parent.equals(metadata.getParent()) && Objects.equals(element, metadata.getElement())) {
                 return expr;
             } else {
-                metadata = new PathMetadata(parent, metadata.getElement(),
-                        metadata.getPathType());
+                metadata = new PathMetadata(parent, element, metadata.getPathType());
                 return new PathImpl(expr.getType(), metadata);
             }
         }
@@ -80,6 +84,7 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
     @Override
     public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
         QueryMetadata md = new DefaultQueryMetadata();
+        md.setValidate(false);
         md.setDistinct(expr.getMetadata().isDistinct());
         md.setModifiers(expr.getMetadata().getModifiers());
         md.setUnique(expr.getMetadata().isUnique());

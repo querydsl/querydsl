@@ -13,14 +13,18 @@
  */
 package com.mysema.query.apt;
 
+import static com.mysema.query.apt.APTOptions.*;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
-import java.lang.annotation.Annotation;
-import java.util.*;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.query.annotations.Config;
@@ -29,7 +33,6 @@ import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.*;
 import com.mysema.query.types.Expression;
 import com.mysema.util.Annotations;
-import static com.mysema.query.apt.APTOptions.*;
 
 /**
  * DefaultConfiguration is a simple implementation of the {@link Configuration} interface
@@ -39,7 +42,7 @@ import static com.mysema.query.apt.APTOptions.*;
  */
 public class DefaultConfiguration implements Configuration {
 
-    private static final String DEFAULT_SEPARATOR = ",";
+    private static final Splitter DEFAULT_SPLITTER = Splitter.on(",");
 
     private boolean unknownAsEmbedded;
 
@@ -145,37 +148,41 @@ public class DefaultConfiguration implements Configuration {
         if (options.containsKey(QUERYDSL_EXCLUDED_PACKAGES)) {
             String packageString = options.get(QUERYDSL_EXCLUDED_PACKAGES);
             if (!Strings.isNullOrEmpty(packageString)) {
-                for (String packageName : packageString.split(DEFAULT_SEPARATOR)) {
-                    excludedPackages.add(packageName);
-                }
+                List<String> packages = DEFAULT_SPLITTER.splitToList(packageString);
+                excludedPackages.addAll(packages);
             }
         }
 
         if (options.containsKey(QUERYDSL_EXCLUDED_CLASSES)) {
             String classString = options.get(QUERYDSL_EXCLUDED_CLASSES);
             if (!Strings.isNullOrEmpty(classString)) {
-                for (String className : classString.split(DEFAULT_SEPARATOR)) {
-                    excludedClasses.add(className);
-                }
+                List<String> classes = DEFAULT_SPLITTER.splitToList(classString);
+                excludedClasses.addAll(classes);
             }
         }
 
         if (options.containsKey(QUERYDSL_INCLUDED_PACKAGES)) {
             String packageString = options.get(QUERYDSL_INCLUDED_PACKAGES);
             if (!Strings.isNullOrEmpty(packageString)) {
-                for (String packageName : packageString.split(DEFAULT_SEPARATOR)) {
-                    includedPackages.add(packageName);
-                }
+                List<String> packages = DEFAULT_SPLITTER.splitToList(packageString);
+                includedPackages.addAll(packages);
             }
         }
 
         if (options.containsKey(QUERYDSL_INCLUDED_CLASSES)) {
             String classString = options.get(QUERYDSL_INCLUDED_CLASSES);
             if (!Strings.isNullOrEmpty(classString)) {
-                for (String className : classString.split(DEFAULT_SEPARATOR)) {
-                    includedClasses.add(className);
-                }
+                List<String> classes = DEFAULT_SPLITTER.splitToList(classString);
+                includedClasses.addAll(classes);
             }
+        }
+
+        try {
+            // register additional mappings, if querydsl-spatial is on the classpath
+            Class.forName("com.mysema.query.spatial.GeometryExpression");
+            SpatialSupport.addSupport(module);
+        } catch (Exception e) {
+            // do nothing
         }
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,

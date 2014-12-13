@@ -13,19 +13,11 @@
  */
 package com.mysema.query.jdo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import java.io.IOException;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
+import java.io.IOException;
 
-import com.mysema.query.types.Projections;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import com.google.common.collect.ImmutableList;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.jdo.test.domain.Book;
@@ -33,6 +25,12 @@ import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QBook;
 import com.mysema.query.jdo.test.domain.QProduct;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Projections;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class BasicsTest extends AbstractJDOTest {
 
@@ -183,6 +181,17 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void Ne() {
         assertEquals("ne", 2, query(product, product.price.ne(100.00)).size());
+    }
+
+    @Test
+    public void In_Empty() {
+        assertEquals(0, query(product, product.name.in(ImmutableList.<String>of())).size());
+    }
+
+    @Test
+    public void Not_In_Empty() {
+        int count = query(product, product.name.isNotNull()).size();
+        assertEquals(count, query(product, product.name.notIn(ImmutableList.<String>of())).size());
     }
 
     @Test

@@ -101,9 +101,11 @@ public class GenericExporter {
 
     @Nullable
     private File targetFolder;
-
+    
     @Nullable
     private TypeFactory typeFactory;
+    
+    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
 
     @Nullable
     private TypeMappings typeMappings;
@@ -202,6 +204,11 @@ public class GenericExporter {
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
         typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
+        // copy annotations helpers to typeFactory
+        for (AnnotationHelper helper : annotationHelpers){
+            typeFactory.addAnnotationHelper(helper);
+        }
+        
         // process supertypes
         for (Class<?> cl : superTypes.keySet()) {
             createEntityType(cl, superTypes);
@@ -352,7 +359,7 @@ public class GenericExporter {
 
     private void addConstructors(Class<?> cl, EntityType type) {
         for (Constructor<?> constructor : cl.getConstructors()) {
-            if (constructor.getAnnotation(QueryProjection.class) != null) {
+            if (constructor.isAnnotationPresent(QueryProjection.class)) {
                 List<Parameter> parameters = Lists.newArrayList();
                 for (int i = 0; i < constructor.getParameterTypes().length; i++) {
                     Type parameterType = typeFactory.get(
@@ -448,7 +455,7 @@ public class GenericExporter {
             }
         }
         if (propertyType == null) {
-            propertyType = typeFactory.get(type, genericType);
+            propertyType = typeFactory.get(type, annotated, genericType);
             if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))) {
                 String fullName = ClassUtils.getFullName(type);
                 if (!allTypes.containsKey(fullName)) {
@@ -498,15 +505,15 @@ public class GenericExporter {
     private void handleClass(Class<?> cl) {
         if (stopClasses.contains(cl) || cl.isAnnotationPresent(QueryExclude.class)) {
             return;
-        } else if (cl.getAnnotation(entityAnnotation) != null) {
+        } else if (cl.isAnnotationPresent(entityAnnotation)) {
             entityTypes.put(cl, null);
-        } else if (cl.getAnnotation(embeddableAnnotation) != null) {
+        } else if (cl.isAnnotationPresent(embeddableAnnotation)) {
             embeddableTypes.put(cl, null);
-        } else if (cl.getAnnotation(supertypeAnnotation) != null) {
+        } else if (cl.isAnnotationPresent(supertypeAnnotation)) {
             superTypes.put(cl, null);
         } else {
             for (Constructor<?> constructor : cl.getConstructors()) {
-                if (constructor.getAnnotation(QueryProjection.class) != null) {
+                if (constructor.isAnnotationPresent(QueryProjection.class)) {
                     projectionTypes.put(cl, null);
                     break;
                 }
@@ -716,4 +723,12 @@ public class GenericExporter {
         strictMode = s;
     }
 
+    /**
+     * Add a annotation helper object to process custom annotations
+     * 
+     * @param annotationHelper 
+     */
+    public void addAnnotationHelper(AnnotationHelper annotationHelper){
+        annotationHelpers.add(annotationHelper);
+    }
 }

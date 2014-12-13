@@ -40,20 +40,31 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private final Map<Expression<?>, Path<?>> aliases = Maps.newHashMap();
 
+    private final JPAMapAccessVisitor mapAccessVisitor;
+
+    private final JPAListAccessVisitor listAccessVisitor;
+
     private ReplaceVisitor replaceVisitor;
 
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
 
     public static final JoinFlag FETCH_ALL_PROPERTIES = new JoinFlag(" fetch all properties");
 
-    public JPAQueryMixin() {}
+    public JPAQueryMixin() {
+        mapAccessVisitor = new JPAMapAccessVisitor(getMetadata());
+        listAccessVisitor = new JPAListAccessVisitor(getMetadata());
+    }
 
     public JPAQueryMixin(QueryMetadata metadata) {
         super(metadata);
+        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
+        listAccessVisitor = new JPAListAccessVisitor(metadata);
     }
 
     public JPAQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
+        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
+        listAccessVisitor = new JPAListAccessVisitor(metadata);
     }
 
     public T fetch() {
@@ -148,6 +159,8 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     @Override
     public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
+        expr = (Expression<RT>) expr.accept(mapAccessVisitor, null);
+        expr = (Expression<RT>) expr.accept(listAccessVisitor, null);
         if (forOrder) {
             if (expr instanceof Path) {
                 expr = convertPathForOrder((Path)expr);
@@ -171,18 +184,12 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             predicate = (Predicate) ExpressionUtils.extract(predicate);
         }
         if (predicate != null) {
+            predicate = (Predicate) predicate.accept(mapAccessVisitor, null);
+            predicate = (Predicate) predicate.accept(listAccessVisitor, null);
+        }
+        if (predicate != null) {
             // transform any usage
             predicate = (Predicate) predicate.accept(JPACollectionAnyVisitor.DEFAULT, new Context());
-
-            // transform list access
-            Context context = new Context();
-            predicate = (Predicate) predicate.accept(ListAccessVisitor.DEFAULT, context);
-            for (int i = 0; i < context.paths.size(); i++) {
-                Path<?> path = context.paths.get(i);
-                if (!paths.contains(path)) {
-                    addCondition(context, i, path, where);
-                }
-            }
             return predicate;
         } else {
             return null;

@@ -13,35 +13,16 @@
  */
 package com.mysema.query.jdo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Stack;
-
 import javax.annotation.Nullable;
+import java.util.*;
+import java.util.Map.Entry;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.Param;
 
 /**
@@ -132,14 +113,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 append(SELECT_COUNT_THIS);
             } else {
                 append(SELECT_COUNT);
-                boolean first = true;
-                for (JoinExpression je : joins) {
-                    if (!first) {
-                        append(COMMA);
-                    }
-                    handle(je.getTarget());
-                    first = false;
-                }
+                handle(source);
                 append(")");
             }
 

@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Primitives;
 import com.mysema.query.sql.types.ArrayType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
@@ -84,15 +85,24 @@ public final class Configuration {
             schemaTables.put(entry.getKey(), entry.getValue());
         }
 
-        List<Class<?>> classes = ImmutableList.<Class<?>>of(String.class, Long.class, Integer.class, Short.class,
-                Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
-                java.sql.Time.class, Double.class, Float.class);
-        for (Class<?> cl : classes) {
-            int code = jdbcTypeMapping.get(cl);
-            String name = templates.getTypeNameForCode(code);
-            Class<?> arrType = Array.newInstance(cl, 0).getClass();
-            javaTypeMapping.register(new ArrayType(arrType, name));
+        if (templates.isArraysSupported()) {
+            // register array types
+            List<Class<?>> classes = ImmutableList.<Class<?>>of(String.class, Long.class, Integer.class, Short.class,
+                    Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
+                    java.sql.Time.class, Double.class, Float.class);
+            for (Class<?> cl : classes) {
+                int code = jdbcTypeMapping.get(cl);
+                String name = templates.getTypeNameForCode(code);
+                Class<?> arrType = Array.newInstance(cl, 0).getClass();
+                javaTypeMapping.register(new ArrayType(arrType, name));
+                if (Primitives.isWrapperType(cl) && !cl.equals(Byte.class)) {
+                    cl = Primitives.unwrap(cl);
+                    arrType = Array.newInstance(cl, 0).getClass();
+                    javaTypeMapping.register(new ArrayType(arrType, name));
+                }
+            }
         }
+
     }
 
     /**
@@ -102,12 +112,16 @@ public final class Configuration {
      * @return
      */
     public String asLiteral(Object o) {
-        Type type = javaTypeMapping.getType(o.getClass());
-        if (type != null) {
-            return templates.serialize(type.getLiteral(o), type.getSQLTypes()[0]);
+        if (Null.class.isInstance(o)) {
+            return "null";
         } else {
-            throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
-        }
+            Type type = javaTypeMapping.getType(o.getClass());
+            if (type != null) {
+                return templates.serialize(type.getLiteral(o), type.getSQLTypes()[0]);
+            } else {
+                throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
+            }
+        }                
     }
 
     public SQLTemplates getTemplates() {

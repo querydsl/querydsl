@@ -3,13 +3,13 @@
   <title>Creating queries</title>
 
   <para>Query construction in Querydsl involves calling query methods with expression arguments. Since
-  query methods are mostly module specific and have already been presented in the tutorial section, 
+  query methods are mostly module specific and have already been presented in the tutorial section,
   this part will focus on expressions.</para>
-  
-  <para>Expressions are normally constructed by accessing fields and calling methods on the generated 
-  expression types of your domain module. For cases where code generation is not applicable generic ways 
+
+  <para>Expressions are normally constructed by accessing fields and calling methods on the generated
+  expression types of your domain module. For cases where code generation is not applicable generic ways
   to construct expressions can be used instead.</para>
-  
+
   <sect2>
     <title>Complex predicates</title>
 
@@ -19,14 +19,14 @@
     </para>
 
     <programlisting language="java"><![CDATA[
-public List<Customer> getCustomer(String... names){
-    QCustomer customer = QCustomer.customer;    
-    JPAQuery query = new JPAQuery(entityManager).from(customer);    
+public List<Customer> getCustomer(String... names) {
+    QCustomer customer = QCustomer.customer;
+    JPAQuery query = new JPAQuery(entityManager).from(customer);
     BooleanBuilder builder = new BooleanBuilder();
-    for (String name : names){
+    for (String name : names) {
         builder.or(customer.name.eq(name));
     }
-    query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...  
+    query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...
     return query.list(customer);
 }
 ]]></programlisting>
@@ -34,7 +34,7 @@ public List<Customer> getCustomer(String... names){
     <para><code>BooleanBuilder</code> is mutable and represents initially null and after each <code>and</code>
     or <code>or</code> call the result of the operation.</para>
 
-  </sect2>  
+  </sect2>
 
   <sect2>
 
@@ -45,16 +45,16 @@ public List<Customer> getCustomer(String... names){
       class is a static factory class for dynamic expression construction.
       The factory methods are named by the returned type and are mostly self-documenting.
     </para>
-    
+
     <para>
     In general the <code>Expressions</code> class should be used only in cases where fluent DSL forms
-    can't be used, such as dynamic paths, custom syntax or custom operations.  
+    can't be used, such as dynamic paths, custom syntax or custom operations.
     </para>
-    
+
     <para>The following expression </para>
 
     <programlisting language="java"><![CDATA[
-QPerson person = QPerson.person; 	    
+QPerson person = QPerson.person;
 person.firstName.startsWith("P");
 ]]></programlisting>
 
@@ -73,9 +73,9 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
     </para>
 
   </sect2>
-  
+
   <sect2>
-  
+
     <title>Dynamic paths</title>
 
     <para>In addition to the <code>Expressions</code> based expression creation Querydsl provides
@@ -86,7 +86,7 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
       <code>EntityPathBase</code> and can be used as an alternative to class generation and alias-usage
       for path generation.
     </para>
-    
+
     <para>
     Compared to the Expressions API PathBuilder doesn't provide direct support for unknown operations
     or custom syntax, but the syntax is closer to the normal DSL.
@@ -129,6 +129,18 @@ entityPath.getMap("map", String.class, String.class).get("key");
 entityPath.getMap("map", String.class, String.class, StringPath.class).get("key").lower();
 ]]></programlisting>
 
+    <para>For PathBuilder validation a PathBuilderValidator can be used. It can be injected in the constructor
+    and will be used transitively for the new PathBuilder</para>
+
+    <programlisting language="java"><![CDATA[
+PathBuilder<Customer> customer = new PathBuilder<Customer>(Customer.class, "customer", validator);
+]]></programlisting>
+
+    <para>PathBuilderValidator.FIELDS will verify field existence, PathBuilderValidator.PROPERTIES validates
+      Bean properties and JPAPathBuilderValidator validates using a JPA metamodel.
+    </para>
+
+
   </sect2>
 
   <sect2>
@@ -138,33 +150,33 @@ entityPath.getMap("map", String.class, String.class, StringPath.class).get("key"
       <code>CaseBuilder</code> class like this:
     </para>
 
-    <programlisting language="java"><![CDATA[    
-QCustomer customer = QCustomer.customer;    
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
 Expression<String> cases = new CaseBuilder()
     .when(customer.annualSpending.gt(10000)).then("Premier")
     .when(customer.annualSpending.gt(5000)).then("Gold")
     .when(customer.annualSpending.gt(2000)).then("Silver")
     .otherwise("Bronze");
-// The cases expression can now be used in a projection or condition        
+// The cases expression can now be used in a projection or condition
 ]]></programlisting>
 
     <para>For case expressions with equals-operations use the following simpler form instead:
     </para>
 
-    <programlisting language="java"><![CDATA[    
-QCustomer customer = QCustomer.customer;    
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
 Expression<String> cases = customer.annualSpending
     .when(10000).then("Premier")
     .when(5000).then("Gold")
     .when(2000).then("Silver")
     .otherwise("Bronze");
-// The cases expression can now be used in a projection or condition        
+// The cases expression can now be used in a projection or condition
 ]]></programlisting>
 
     <para>Case expressions are not yet supported in JDOQL.</para>
 
   </sect2>
-  
+
   <sect2>
 
     <title>Casting expressions</title>
@@ -186,17 +198,17 @@ Expression<String> cases = customer.annualSpending
 
     <programlisting language="java"><![CDATA[
 // from Account
-QAccount extends EntityPathBase<Account>{
+QAccount extends EntityPathBase<Account> {
     // ...
 }
 
 // from BankAccount extends Account
-QBankAccount extends EntityPathBase<BankAccount>{
+QBankAccount extends EntityPathBase<BankAccount> {
 
     public final QAccount _super = new QAccount(this);
-    
+
     // ...
-}            
+}
 ]]></programlisting>
 
     <para>To cast from a supertype to a subtype you can use the
@@ -206,24 +218,24 @@ QBankAccount extends EntityPathBase<BankAccount>{
 
     <programlisting language="java"><![CDATA[
 QAccount account = new QAccount("account");
-QBankAccount bankAccount = account.as(QBankAccount.class);    
+QBankAccount bankAccount = account.as(QBankAccount.class);
 ]]></programlisting>
 
-  </sect2>  
-  
-  <sect2>
-  
-    <title>Select literals</title>
-    
-    <para>Literals can be selected by refering to them via Constant expressions. Here is a simple example </para>
-    
-    <programlisting language="java"><![CDATA[
-query.list(Expressions.constant(1),
-           Expressions.constant("abc"));    
-]]></programlisting>     
-
-    <para>Constant expressions are often used in subqueries.</para>    
-  
   </sect2>
 
-</sect1>    
+  <sect2>
+
+    <title>Select literals</title>
+
+    <para>Literals can be selected by refering to them via Constant expressions. Here is a simple example </para>
+
+    <programlisting language="java"><![CDATA[
+query.list(Expressions.constant(1),
+           Expressions.constant("abc"));
+]]></programlisting>
+
+    <para>Constant expressions are often used in subqueries.</para>
+
+  </sect2>
+
+</sect1>

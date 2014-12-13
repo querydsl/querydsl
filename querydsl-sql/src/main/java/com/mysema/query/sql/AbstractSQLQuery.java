@@ -20,16 +20,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.*;
+import com.mysema.query.types.expr.Wildcard;
 import com.mysema.util.ResultSetAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
@@ -156,20 +160,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         queryMixin.addProjection(exprs);
 
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
 
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(false);
-        String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-        listeners.notifyQuery(queryMixin.getMetadata());
-
-        List<Object> constants = serializer.getConstants();
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(false);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+            listeners.notifyQuery(queryMixin.getMetadata());
+
+            constants = serializer.getConstants();
+
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
@@ -212,20 +217,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
 
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(false);
-        final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-
-        listeners.notifyQuery(queryMixin.getMetadata());
-        List<Object> constants = serializer.getConstants();
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(false);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+
+            listeners.notifyQuery(queryMixin.getMetadata());
+            constants = serializer.getConstants();
+
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), metadata.getParams());
@@ -250,7 +256,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                         return newInstance((FactoryExpression<RT>) expr, rs, 0);
                     }
                 };
-            } else if (expr.getType().isArray()) {
+            } else if (expr.equals(Wildcard.all)) {
                 return new SQLResultIterator<RT>(configuration, stmt, rs) {
                     @Override
                     public RT produceNext(ResultSet rs) throws Exception {
@@ -284,19 +290,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     public <RT> List<RT> list(Expression<RT> expr) {
         expr = queryMixin.addProjection(expr);
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
 
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(false);
-        final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-        listeners.notifyQuery(queryMixin.getMetadata());
-        List<Object> constants = serializer.getConstants();
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(false);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+            listeners.notifyQuery(queryMixin.getMetadata());
+            constants = serializer.getConstants();
+
             listeners.prePrepare(context);
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             try {
@@ -311,7 +318,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                     lastCell = null;
                     final List<RT> rv = new ArrayList<RT>();
                     if (expr instanceof FactoryExpression) {
-                        FactoryExpression<RT> fe = (FactoryExpression<RT>)expr;
+                        FactoryExpression<RT> fe = (FactoryExpression<RT>) expr;
                         while (rs.next()) {
                             if (getLastCell) {
                                 lastCell = rs.getObject(fe.getArgs().size() + 1);
@@ -319,7 +326,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                             }
                             rv.add(newInstance(fe, rs, 0));
                         }
-                    }  else if (expr.getType().isArray()) {
+                    } else if (expr.equals(Wildcard.all)) {
                         while (rs.next()) {
                             Object[] row = new Object[rs.getMetaData().getColumnCount()];
                             if (getLastCell) {
@@ -372,7 +379,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
-            if (configuration.getTemplates().isCountViaAnalytics()) {
+            if (configuration.getTemplates().isCountViaAnalytics()
+                && queryMixin.getMetadata().getGroupBy().isEmpty()) {
                 List<RT> results;
                 try {
                     queryMixin.addFlag(rowCountFlag);
@@ -421,6 +429,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     private void reset() {
         queryMixin.getMetadata().reset();
+        cleanupMDC();
     }
 
     protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths,
@@ -457,20 +466,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     private long unsafeCount() throws SQLException {
         SQLListenerContextImpl context = startContext(conn, getMetadata());
-
-        listeners.preRender(context);
-        SQLSerializer serializer = serialize(true);
-        final String queryString = serializer.toString();
-        if (logger.isDebugEnabled()) {
-            logger.debug("query : {}", queryString);
-        }
-        context.addSQL(queryString);
-        listeners.rendered(context);
-
-        List<Object> constants = serializer.getConstants();
+        String queryString = null;
+        List<Object> constants = ImmutableList.of();
         PreparedStatement stmt = null;
         ResultSet rs = null;
+
         try {
+            listeners.preRender(context);
+            SQLSerializer serializer = serialize(true);
+            queryString = serializer.toString();
+            logQuery(queryString, serializer.getConstants());
+            context.addSQL(queryString);
+            listeners.rendered(context);
+
+            constants = serializer.getConstants();
             listeners.prePrepare(context);
 
             stmt = conn.prepareStatement(queryString);
@@ -481,10 +490,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
             listeners.preExecute(context);
             rs = stmt.executeQuery();
-            rs.next();
+            boolean hasResult = rs.next();
             listeners.executed(context);
 
-            return rs.getLong(1);
+            if (hasResult) {
+                return rs.getLong(1);
+            } else {
+                return 0;
+            }
         } catch (SQLException e) {
             onException(context, e);
             throw configuration.translate(queryString, constants, e);
@@ -499,7 +512,22 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                 }
             }
             endContext(context);
+            cleanupMDC();
         }
+    }
+
+    protected void logQuery(String queryString, Collection<Object> parameters) {
+        String normalizedQuery = queryString.replace('\n', ' ');
+        MDC.put(MDC_QUERY, normalizedQuery);
+        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
+        if (logger.isDebugEnabled()) {
+            logger.debug(normalizedQuery);
+        }
+    }
+
+    protected void cleanupMDC() {
+        MDC.remove(MDC_QUERY);
+        MDC.remove(MDC_PARAMETERS);
     }
 
     public void setUseLiterals(boolean useLiterals) {

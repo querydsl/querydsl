@@ -25,12 +25,12 @@ public class NumberExpressionTest {
     
     @Test
     public void Between_Start_Given() {
-        assertEquals(intPath.goe(1), intPath.between(1, null));        
+        assertEquals(intPath.goe(1L), intPath.between(1L, null));
     }
     
     @Test
     public void Between_End_Given() {
-        assertEquals(intPath.loe(3), intPath.between(null, 3));
+        assertEquals(intPath.loe(3L), intPath.between(null, 3L));
     }
 
 }

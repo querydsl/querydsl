@@ -55,7 +55,7 @@ public final class TypeResolver {
                 resolved = type;
             }            
         }
-        
+
         return resolved;
     }
 
@@ -71,14 +71,14 @@ public final class TypeResolver {
         int index = -1;
         for (int i = 0; i < declaringType.getParameters().size(); i++) {
             Type param = unwrap(declaringType.getParameters().get(i));
-            if (param instanceof TypeExtends && Objects.equal(((TypeExtends)param).getVarName(), varName)) {
+            if (Objects.equal(getVarName(param), varName)) {
                 index = i;
             }
         }
         
         if (index == -1) {
             throw new IllegalStateException("Did not find type " + varName
-                    + " in " + declaringType.getParameters());
+                    + " in " + declaringType + " for " + context);
         }
 
         Supertype type = context.getSuperType();            
@@ -86,7 +86,7 @@ public final class TypeResolver {
             type = type.getEntityType().getSuperType();                
         }        
         if (!type.getType().getParameters().isEmpty()) {
-            return type.getType().getParameters().get(index);    
+            return type.getType().getParameters().get(index);
         } else {
             // raw type
             return resolved;

@@ -22,14 +22,15 @@ import javax.persistence.Transient;
 import com.mysema.query.codegen.GenericExporter;
 
 /**
- * JPAExporterMojo calls the GenericExporter tool using the classpath of the module
- * 
+ * JPAExporterMojo calls the GenericExporter tool using the classpath of the
+ * module
+ *
  * @goal jpa-export
  * @requiresDependencyResolution test
  * @author tiwe
  */
 public class JPAExporterMojo extends AbstractExporterMojo {
-
+    
     @Override
     protected void configure(GenericExporter exporter) {
         super.configure(exporter);
@@ -38,6 +39,8 @@ public class JPAExporterMojo extends AbstractExporterMojo {
         exporter.setEntityAnnotation(Entity.class);
         exporter.setSkipAnnotation(Transient.class);
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
-    }
 
+        // AnnotationHelpers to process specific JPA annotations
+        exporter.addAnnotationHelper(JPATemporalAnnotationHelper.INSTANCE);
+    }
 }

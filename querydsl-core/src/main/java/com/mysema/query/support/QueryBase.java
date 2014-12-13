@@ -28,6 +28,10 @@ import com.mysema.query.types.Predicate;
  */
 public abstract class QueryBase<Q extends QueryBase<Q>> {
 
+    public static final String MDC_QUERY = "querydsl.query";
+
+    public static final String MDC_PARAMETERS = "querydsl.parameters";
+
     protected final QueryMixin<Q> queryMixin;
 
     public QueryBase(QueryMixin<Q> queryMixin) {

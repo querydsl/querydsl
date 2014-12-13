@@ -19,6 +19,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.domain.QCat;
+import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.Location;
 import com.mysema.query.jpa.domain.QDomesticCat;
 import com.mysema.query.jpa.domain.QEmployee;
@@ -49,7 +50,7 @@ public class JPQLSerializerTest {
     @Test
     public void Case() {
         QCat cat = QCat.cat;
-        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
                 .when(cat.toes.eq(3)).then(3)
                 .otherwise(4);
@@ -57,16 +58,37 @@ public class JPQLSerializerTest {
         assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else ?3 end", serializer.toString());
     }
 
+    @Test
+    public void Case_Hibernate() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
+                .when(cat.toes.eq(3)).then(3)
+                .otherwise(4);
+        serializer.handle(expr);
+        assertEquals("case when (cat.toes = 2) then 2 when (cat.toes = 3) then 3 else 4 end", serializer.toString());
+    }
 
     @Test
     public void Case2() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
+                .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                .otherwise(4);
+        serializer.handle(expr);
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
+    }
+
+    @Test
+    public void Case2_Hibernate() {
         QCat cat = QCat.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
+        assertEquals("case when (cat.toes = 2) then (cat.id * 2) when (cat.toes = 3) then (cat.id * 3) else 4 end", serializer.toString());
     }
 
     @Test
@@ -222,5 +244,33 @@ public class JPQLSerializerTest {
         serializer.serialize(md, false, null);
         assertEquals("select cat_\nfrom Cat cat_\n  inner join cat_.mate on cat_.mate.alive",
                 serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_boolean() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral(Boolean.TRUE);
+        assertEquals("true", serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_number() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral(1.543);
+        assertEquals("1.543", serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_string() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral("abc''def");
+        assertEquals("'abc''''def'", serializer.toString());
+    }
+
+    @Test
+    public void visitLiteral_enum() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visitLiteral(JobFunction.MANAGER);
+        assertEquals("com.mysema.query.jpa.domain.JobFunction.MANAGER", serializer.toString());
     }
 }

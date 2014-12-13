@@ -13,10 +13,11 @@
  */
 package com.mysema.query;
 
-import java.util.List;
 import javax.annotation.Nullable;
 import java.sql.Connection;
+import java.util.List;
 
+import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
@@ -24,6 +25,7 @@ import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
+import com.mysema.query.sql.types.XMLAsStringType;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.slf4j.Logger;
@@ -75,11 +77,18 @@ public abstract class AbstractBaseTest {
     @Nullable
     protected String expectedQuery;
 
-    @Rule
-    public static MethodRule skipForQuotedRule = new SkipForQuotedRule();
+    public AbstractBaseTest() {
+        // TODO enable registration of (jdbc type, java type) -> usertype mappings
+        if (target == Target.POSTGRES || target == Target.ORACLE) {
+            configuration.register("XML_TEST", "COL", new XMLAsStringType());
+        }
+    }
 
     @Rule
-    public static MethodRule targetRule = new TargetRule();
+    public MethodRule skipForQuotedRule = new SkipForQuotedRule(configuration);
+
+    @Rule
+    public MethodRule targetRule = new TargetRule();
 
     protected <T> void add(List<T> list, T arg, Target... exclusions) {
         if (exclusions.length > 0) {
@@ -155,6 +164,14 @@ public abstract class AbstractBaseTest {
 
     protected SQLSubQuery sq() {
         return new SQLSubQuery();
+    }
+
+    protected long execute(DMLClause<?>... clauses) {
+        long execute = 0;
+        for (DMLClause<?> clause : clauses) {
+            execute += clause.execute();
+        }
+        return execute;
     }
 
 }

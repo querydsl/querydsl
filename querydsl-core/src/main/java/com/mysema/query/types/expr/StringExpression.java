@@ -301,7 +301,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Expr: <code>this like str</code>
+     * Expr: {@code this like str}
      *
      * @param str
      * @return
@@ -311,7 +311,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Expr: <code>this like str</code>
+     * Expr: {@code this like str}
      *
      * @param str
      * @return
@@ -321,7 +321,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
     
     /**
-     * Expr: <code>this like str</code>
+     * Expr: {@code this like str}
      *
      * @param str
      * @return
@@ -331,7 +331,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Expr: <code>this like str</code>
+     * Expr: {@code this like str}
      *
      * @param str
      * @return
@@ -471,7 +471,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
     
     /**
-     * Expr: <code>this not like str</code>
+     * Expr: {@code this not like str}
      *
      * @param str
      * @return
@@ -481,7 +481,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Expr: <code>this not like str</code>
+     * Expr: {@code this not like str}
      *
      * @param str
      * @return
@@ -491,7 +491,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
         
     /**
-     * Expr: <code>this not like str</code>
+     * Expr: {@code this not like str}
      *
      * @param str
      * @return
@@ -501,7 +501,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Expr: <code>this not like str</code>
+     * Expr: {@code this not like str}
      *
      * @param str
      * @return

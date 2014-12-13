@@ -13,7 +13,7 @@
 
   <para>
     Querydsl for JPA is an alternative to both JPQL and Criteria queries. It combines the
-    dynamic nature of Criteria queries with the expressiveness of JPQL and all that in a fully 
+    dynamic nature of Criteria queries with the expressiveness of JPQL and all that in a fully
     typesafe manner.
   </para>
 
@@ -30,8 +30,8 @@
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
-</dependency>    
-    
+</dependency>
+
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
@@ -42,7 +42,7 @@
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>   
+</dependency>
 ]]></programlisting>
 
     <para>
@@ -57,7 +57,7 @@
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>apt-maven-plugin</artifactId>
-      <version>1.0.9</version>
+      <version>1.1.3</version>
       <executions>
         <execution>
           <goals>
@@ -116,18 +116,18 @@
     <programlisting language="xml"><![CDATA[
     <!-- APT based code generation -->
     <javac srcdir="${src}" classpathref="cp">
-      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
       <compilerarg value="com.mysema.query.apt.jpa.JPAAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
-    
+
     <!-- compilation -->
-    <javac classpathref="cp" destdir="${build}">      
+    <javac classpathref="cp" destdir="${build}">
       <src path="${src}"/>
       <src path="${generated}"/>
-    </javac>    
+    </javac>
 ]]></programlisting>
 
     <para>
@@ -158,7 +158,7 @@
       <code>@Entity</code>
       annotated classes.
     </para>
-    
+
     <para>
       APT based code generation doesn't work well with AspectJ IDTs.
     </para>
@@ -180,7 +180,7 @@
 HibernateDomainExporter exporter = new HibernateDomainExporter(
   "Q",                     // name prefix
   new File("target/gen3"), // target folder
-  configuration);          // instance of org.hibernate.cfg.Configuration 
+  configuration);          // instance of org.hibernate.cfg.Configuration
 
 exporter.export();
 ]]></programlisting>
@@ -215,15 +215,15 @@ public class Customer {
     private String firstName;
     private String lastName;
 
-    public String getFirstName(){
+    public String getFirstName() {
         return firstName;
     }
 
-    public String getLastName(){
+    public String getLastName() {
         return lastName;
     }
 
-    public void setFirstName(String fn){
+    public void setFirstName(String fn) {
         firstName = fn;
     }
 
@@ -271,19 +271,19 @@ QCustomer customer = new QCustomer("myCustomer");
     </para>
 
 <programlisting language="java"><![CDATA[
-// where entityManager is a JPA EntityManager   
-JPAQuery query = new JPAQuery(entityManager); 
+// where entityManager is a JPA EntityManager
+JPAQuery query = new JPAQuery(entityManager);
 ]]></programlisting>
 
-    <para>If you are using the Hibernate API instead, you can instantiate a 
+    <para>If you are using the Hibernate API instead, you can instantiate a
     <code>HibernateQuery</code> like this:
     </para>
 
     <programlisting language="java"><![CDATA[
 // where session is a Hibernate session
-HibernateQuery query = new HibernateQuery(session); 
+HibernateQuery query = new HibernateQuery(session);
 ]]></programlisting>
-    
+
 
     <para>Both JPAQuery and HibernateQuery implement the JPQLQuery interface.</para>
 
@@ -313,7 +313,7 @@ Customer bob = query.from(customer)
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 QCompany company = QCompany.company;
-query.from(customer, company);    
+query.from(customer, company);
 ]]></programlisting>
 
     <para>
@@ -322,7 +322,7 @@ query.from(customer, company);
 
     <programlisting language="java"><![CDATA[
 query.from(customer)
-    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));   
+    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));
 ]]></programlisting>
 
     <para>Or like this</para>
@@ -357,7 +357,7 @@ query.from(customer)
       join and full join. Join usage is typesafe, and follows the following pattern:
     </para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 QCat cat = QCat.cat;
 QCat mate = new QCat("mate");
 QCate kitten = new QCat("kitten");
@@ -377,7 +377,7 @@ from Cat as cat
 
     <para>Another example</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query.from(cat)
     .leftJoin(cat.kittens, kitten)
     .on(kitten.bodyWeight.gt(10.0))
@@ -386,10 +386,10 @@ query.from(cat)
 
     <para>With the following JPQL version</para>
 
-    <programlisting>  
+    <programlisting>
 from Cat as cat
     left join cat.kittens as kitten
-    on kitten.bodyWeight > 10.0  
+    on kitten.bodyWeight > 10.0
 </programlisting>
 
   </sect2>
@@ -450,7 +450,7 @@ from Cat as cat
 
     <para>The syntax for declaring ordering is </para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 query.from(customer)
     .orderBy(customer.lastName.asc(), customer.firstName.desc())
@@ -459,7 +459,7 @@ query.from(customer)
 
     <para>which is equivalent to the following native JPQL</para>
 
-    <programlisting>  
+    <programlisting>
 from Customer as customer
     order by customer.lastName asc, customer.firstName desc
 </programlisting>
@@ -472,7 +472,7 @@ from Customer as customer
 
     <para>Grouping can be done in the following form</para>
 
-    <programlisting language="java"><![CDATA[ 
+    <programlisting language="java"><![CDATA[
 query.from(customer)
     .groupBy(customer.lastName)
     .list(customer.lastName);
@@ -480,7 +480,7 @@ query.from(customer)
 
     <para>which is equivalent to the following native JPQL</para>
 
-    <programlisting>  
+    <programlisting>
 select customer.lastName
     from Customer as customer
     group by customer.lastName
@@ -496,12 +496,12 @@ select customer.lastName
       examples:
     </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // delete all customers
 new JPADeleteClause(entityManager, customer).execute();
 // delete all customers with a level less than 3
-new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();  
+new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();
 ]]></programlisting>
 
     <para>The second parameter of the JPADeleteClause constructor is the entity to
@@ -512,24 +512,24 @@ new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute
     </para>
 
     <para>For Hibernate based Delete usage, use the HibernateDeleteClause instead.</para>
-    
-    <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide 
+
+    <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide
     finegrained second level cache interaction.</para>
   </sect2>
 
   <sect2>
     <title>Update clauses</title>
-    
+
     <para>Update clauses in Querydsl JPA follow a simple update-set/where-execute form.
       Here are some examples:
     </para>
 
-    <programlisting language="java"><![CDATA[   
+    <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // rename customers named Bob to Bobby
 new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     .set(customer.name, "Bobby")
-    .execute();  
+    .execute();
 ]]></programlisting>
 
     <para>The second parameter of the JPAUpdateClause constructor is the entity to
@@ -540,8 +540,8 @@ new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     </para>
 
     <para>For Hibernate based Update usage, use the HibernateUpdateClause instead.</para>
-    
-    <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide 
+
+    <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide
     finegrained second level cache interaction.</para>
 
   </sect2>
@@ -611,31 +611,39 @@ List results = jpaQuery.getResultList();
     </para>
 
     <programlisting language="xml"><![CDATA[
-<plugin>
-  <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-maven-plugin</artifactId>
-  <version>${project.version}</version>
-  <executions>
-    <execution>
-      <goals>
-        <goal>export</goal>
-      </goals>
-    </execution>            
-  </executions>
-  <configuration>
-    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-    <packageName>com.mycompany.mydomain</packageName>
-    <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> 
-  </configuration>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>${derby.version}</version>
-    </dependency>
-  </dependencies>
-</plugin>
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${querydsl.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>export</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+          <packageName>com.mycompany.mydomain</packageName>
+          <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
 ]]></programlisting>
 
     <para>When the query types have successfully been generated into the location of your
@@ -646,26 +654,26 @@ List results = jpaQuery.getResultList();
 
     <programlisting language="java"><![CDATA[
 // serialization templates
-SQLTemplates templates = new DerbyTemplates(); 
+SQLTemplates templates = new DerbyTemplates();
 // query types (S* for SQL, Q* for domain types)
-SAnimal cat = new SAnimal("cat");   
-SAnimal mate = new SAnimal("mate"); 
-QCat catEntity = QCat.cat;          
- 
+SAnimal cat = new SAnimal("cat");
+SAnimal mate = new SAnimal("mate");
+QCat catEntity = QCat.cat;
+
 JPASQLQuery query = new JPASQLQuery(entityManager, templates);
 List<String> names = query.from(cat).list(cat.name);
 ]]></programlisting>
 
-    <para>If you mix entity (e.g. QCat) and table (e.g. SAnimal) references in your query you need to make sure that they 
+    <para>If you mix entity (e.g. QCat) and table (e.g. SAnimal) references in your query you need to make sure that they
     use the same variable names. SAnimal.animal has the variable name "animal", so a new instance
     (new SAnimal("cat")) was used instead.</para>
-    
+
     <para>An alternative pattern could be</para>
-    
+
     <programlisting language="java"><![CDATA[
-QCat catEntity = QCat.cat;    
+QCat catEntity = QCat.cat;
 SAnimal cat = new SAnimal(catEntity.getMetadata().getName());
-]]></programlisting>      
+]]></programlisting>
 
     <para>Query multiple columns:</para>
 

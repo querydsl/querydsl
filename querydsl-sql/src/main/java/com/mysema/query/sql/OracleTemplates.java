@@ -68,6 +68,7 @@ public class OracleTemplates extends SQLTemplates {
         setBatchCountViaGetUpdateCount(true);
         setWithRecursive("with ");
         setCountViaAnalytics(true);
+        setListMaxSize(1000);
 
         add(Ops.ALIAS, "{0} {1}");
         add(SQLOps.NEXTVAL, "{0s}.nextval");

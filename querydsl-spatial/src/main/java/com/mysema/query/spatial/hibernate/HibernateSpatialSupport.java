@@ -11,16 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.spatial;
-
-import com.google.common.collect.Maps;
-import com.mysema.query.types.Operator;
+package com.mysema.query.spatial.hibernate;
 
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.mysema.query.spatial.SpatialOps;
+import com.mysema.query.types.Operator;
+
 public class HibernateSpatialSupport {
 
-    public static Map<Operator<?>, String> getSpatialOps(String prefix, boolean asFunction) {
+    public static Map<Operator<?>, String> getSpatialOps() {
         Map<Operator<?>, String> ops = Maps.newHashMap();
         ops.put(SpatialOps.DIMENSION, "dimension({0})");
         ops.put(SpatialOps.GEOMETRY_TYPE, "geometrytype({0}, {1})");
@@ -32,15 +33,15 @@ public class HibernateSpatialSupport {
         ops.put(SpatialOps.IS_SIMPLE, "issimple({0})");
         ops.put(SpatialOps.BOUNDARY, "boundary({0})");
 
-        ops.put(SpatialOps.EQUALS, "equals({0}, {1})");
-        ops.put(SpatialOps.DISJOINT, "disjoint({0}, {1})");
-        ops.put(SpatialOps.INTERSECTS, "intersects({0}, {1})");
-        ops.put(SpatialOps.TOUCHES, "touches({0}, {1})");
-        ops.put(SpatialOps.CROSSES, "crosses({0}, {1})");
-        ops.put(SpatialOps.WITHIN, "within({0}, {1})");
-        ops.put(SpatialOps.CONTAINS, "contains({0}, {1})");
-        ops.put(SpatialOps.OVERLAPS, "overlaps({0}, {1})");
-        ops.put(SpatialOps.RELATE, "relate({0}, {1}, {2})");
+        ops.put(SpatialOps.EQUALS, "equals({0}, {1}) = true");
+        ops.put(SpatialOps.DISJOINT, "disjoint({0}, {1}) = true");
+        ops.put(SpatialOps.INTERSECTS, "intersects({0}, {1}) = true");
+        ops.put(SpatialOps.TOUCHES, "touches({0}, {1}) = true");
+        ops.put(SpatialOps.CROSSES, "crosses({0}, {1}) = true");
+        ops.put(SpatialOps.WITHIN, "within({0}, {1}) = true");
+        ops.put(SpatialOps.CONTAINS, "contains({0}, {1}) = true");
+        ops.put(SpatialOps.OVERLAPS, "overlaps({0}, {1}) = true");
+        ops.put(SpatialOps.RELATE, "relate({0}, {1}, {2}) = true");
 
         ops.put(SpatialOps.DISTANCE, "distance({0}, {1})");
         ops.put(SpatialOps.BUFFER, "buffer({0}, {1})");

@@ -28,14 +28,14 @@ import com.mysema.query.types.Ops;
  * for equals-operations :
  * e.g.
  *
- * <pre>
+ * <pre>{@code
  * QCustomer c = QCustomer.customer;
- * Expression&lt;Integer&gt; cases = c.annualSpending
+ * Expression<Integer> cases = c.annualSpending
  *     .when(1000l).then(1)
  *     .when(2000l).then(2)
  *     .when(5000l).then(3)
  *     .otherwise(4);
- * </pre>
+ * }</pre>
  *
  * @author tiwe
  *

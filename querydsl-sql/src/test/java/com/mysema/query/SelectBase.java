@@ -124,6 +124,35 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn(POSTGRES) // TODO generalize array literal projections
+    public void Array() {
+        Expression<Integer[]> expr = Expressions.template(Integer[].class, "'{1,2,3}'::int[]");
+        Integer[] result = query().singleResult(expr);
+        assertEquals(3, result.length);
+        assertEquals(1, result[0].intValue());
+        assertEquals(2, result[1].intValue());
+        assertEquals(3, result[2].intValue());
+    }
+
+    @Test
+    @IncludeIn(POSTGRES) // TODO generalize array literal projections
+    public void Array2() {
+        Expression<int[]> expr = Expressions.template(int[].class, "'{1,2,3}'::int[]");
+        int[] result = query().singleResult(expr);
+        assertEquals(3, result.length);
+        assertEquals(1, result[0]);
+        assertEquals(2, result[1]);
+        assertEquals(3, result[2]);
+    }
+
+    @Test
+    @ExcludeIn({DERBY, HSQLDB})
+    public void Array_Null() {
+        Expression<Integer[]> expr = Expressions.template(Integer[].class, "null");
+        assertNull(query().singleResult(expr));
+    }
+
+    @Test
     public void Array_Projection() {
         List<String[]> results = query().from(employee).list(
                 new ArrayConstructorExpression<String>(String[].class, employee.firstname));
@@ -572,13 +601,50 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({H2, DERBY})
+    @ExcludeIn({H2, DERBY, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
         NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
         query().from(employee)
                .groupBy(alias)
                .list(employee.salary.multiply(100).as(alias),
                      employee.salary.avg());
+    }
+
+    @Test
+    @ExcludeIn({FIREBIRD})
+    public void GroupBy_Count() {
+        List<Integer> ids = query().from(employee).groupBy(employee.id).list(employee.id);
+        long count = query().from(employee).groupBy(employee.id).count();
+        SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
+                .limit(1).listResults(employee.id);
+
+        assertEquals(10, ids.size());
+        assertEquals(10, count);
+        assertEquals(1, results.getResults().size());
+        assertEquals(10, results.getTotal());
+    }
+
+    @Test
+    @ExcludeIn({FIREBIRD})
+    public void GroupBy_Distinct_Count() {
+        List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().list(NumberTemplate.ONE);
+        SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
+                .limit(1).distinct().listResults(NumberTemplate.ONE);
+
+        assertEquals(1, ids.size());
+        assertEquals(1, results.getResults().size());
+        assertEquals(1, results.getTotal());
+    }
+
+    @Test
+    @ExcludeIn({FIREBIRD})
+    public void Having_Count() {
+        //Produces empty resultset https://github.com/querydsl/querydsl/issues/1055
+        query().from(employee)
+                .innerJoin(employee2).on(employee.id.eq(employee2.id))
+                .groupBy(employee.id)
+                .having(Wildcard.count.eq(4L))
+                .listResults(employee.id, employee.firstname);
     }
 
     @SuppressWarnings("unchecked")
@@ -592,6 +658,39 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void In() {
         query().from(employee).where(employee.id.in(Arrays.asList(1,2))).list(employee);
+    }
+
+    @Test
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER})
+    public void In_Long_List() {
+        List<Integer> ids = Lists.newArrayList();
+        for (int i = 0; i < 20000; i++) {
+            ids.add(i);
+        }
+        assertEquals(
+            query().from(employee).count(),
+            query().from(employee).where(employee.id.in(ids)).count());
+    }
+
+    @Test
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER})
+    public void NotIn_Long_List() {
+        List<Integer> ids = Lists.newArrayList();
+        for (int i = 0; i < 20000; i++) {
+            ids.add(i);
+        }
+        assertEquals(0, query().from(employee).where(employee.id.notIn(ids)).count());
+    }
+
+    @Test
+    public void In_Empty() {
+        assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).count());
+    }
+
+    @Test
+    public void NotIn_Empty() {
+        long count = query().from(employee).count();
+        assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of())).count());
     }
 
     @Test
@@ -783,7 +882,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, DERBY})
+    @ExcludeIn({SQLITE, DERBY})
     public void LPad() {
         assertEquals("  ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
         assertEquals("!!ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
@@ -819,7 +918,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Math() {
-        Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
+        Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.50");
 
         assertEquals(Math.acos(0.5), singleResult(MathExpressions.acos(expr)), 0.001);
         assertEquals(Math.asin(0.5), singleResult(MathExpressions.asin(expr)), 0.001);
@@ -1129,7 +1228,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, SQLSERVER})
+    @ExcludeIn(DERBY)
     public void Round() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "1.32");
 
@@ -1138,7 +1237,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, DERBY})
+    @ExcludeIn({SQLITE, DERBY})
     public void Rpad() {
         assertEquals("ab  ", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
         assertEquals("ab!!", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));

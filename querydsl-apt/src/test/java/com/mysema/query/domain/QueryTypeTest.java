@@ -50,11 +50,12 @@ public class QueryTypeTest extends AbstractTest {
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
-        cl = QQueryTypeTest_QueryTypeEntity.class;
+        start(QQueryTypeTest_QueryTypeEntity.class, QQueryTypeTest_QueryTypeEntity.queryTypeEntity);
         match(SimplePath.class, "stringAsSimple");
         match(ComparablePath.class, "stringAsComparable");
         match(DatePath.class, "stringAsDate");
         match(DateTimePath.class, "stringAsDateTime");
         match(TimePath.class, "stringAsTime");
+        assertMissing("stringNotInQuerydsl");
     }
 }

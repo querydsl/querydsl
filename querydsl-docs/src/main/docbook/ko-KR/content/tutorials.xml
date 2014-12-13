@@ -2,12 +2,12 @@
 
 <chapter id="tutorials" xmlns:xi="http://www.w3.org/2001/XInclude">
     <title>튜토리얼</title>
-    
+
     <para>
     일반적인 시작 안내 문서 대신 Querydsl이 지원하는 주요 백엔드 기술에 대한 안내 문서를 제공한다.
     </para>
-    
-    
+
+
     <xi:include href="tutorials/jpa.xml" />
     <xi:include href="tutorials/jdo.xml" />
     <xi:include href="tutorials/sql.xml" />
@@ -16,5 +16,5 @@
     <xi:include href="tutorials/mongodb.xml" />
     <xi:include href="tutorials/collections.xml" />
     <xi:include href="tutorials/scala.xml" />
-	
-</chapter>    
+
+</chapter>

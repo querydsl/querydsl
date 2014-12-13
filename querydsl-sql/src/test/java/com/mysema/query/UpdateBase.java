@@ -62,14 +62,13 @@ public class UpdateBase extends AbstractBaseTest {
         // update call with full update count
         assertEquals(count, update(survey).set(survey.name, "S").execute());
         assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
-
     }
 
     @Test
     @IncludeIn({CUBRID, H2, MYSQL, ORACLE, SQLSERVER})
     public void Update_Limit() {
-        insert(survey).values(2, "A","B").execute();
-        insert(survey).values(3, "B","C").execute();
+        assertEquals(1, insert(survey).values(2, "A","B").execute());
+        assertEquals(1, insert(survey).values(3, "B","C").execute());
 
         assertEquals(2, update(survey).set(survey.name, "S").limit(2).execute());
     }
@@ -95,7 +94,19 @@ public class UpdateBase extends AbstractBaseTest {
 
     @Test
     public void Update3() {
-        update(survey).set(survey.name, survey.name.append("X")).execute();
+        assertEquals(1, update(survey).set(survey.name, survey.name.append("X")).execute());
+    }
+
+    @Test
+    public void Update4() {
+        assertEquals(1, insert(survey).values(2, "A","B").execute());
+        assertEquals(1, update(survey).set(survey.name, "AA").where(survey.name.eq("A")).execute());
+    }
+
+    @Test
+    public void Update5() {
+        assertEquals(1, insert(survey).values(3, "B","C").execute());
+        assertEquals(1, update(survey).set(survey.name, "BB").where(survey.name.eq("B")).execute());
     }
 
     @Test
@@ -114,8 +125,8 @@ public class UpdateBase extends AbstractBaseTest {
 
     @Test
     public void Batch() throws SQLException{
-        insert(survey).values(2, "A","B").execute();
-        insert(survey).values(3, "B","C").execute();
+        assertEquals(1, insert(survey).values(2, "A","B").execute());
+        assertEquals(1, insert(survey).values(3, "B","C").execute());
 
         SQLUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
@@ -125,8 +136,8 @@ public class UpdateBase extends AbstractBaseTest {
 
     @Test
     public void Batch_Templates() throws SQLException{
-        insert(survey).values(2, "A","B").execute();
-        insert(survey).values(3, "B","C").execute();
+        assertEquals(1, insert(survey).values(2, "A","B").execute());
+        assertEquals(1, insert(survey).values(3, "B","C").execute());
 
         SQLUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq(Expressions.stringTemplate("'A'"))).addBatch();

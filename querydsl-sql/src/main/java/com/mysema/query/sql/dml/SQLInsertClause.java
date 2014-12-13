@@ -165,8 +165,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
-        ResultSet rs = executeWithKeys();
+        ResultSet rs = null;
         try {
+            rs = executeWithKeys();
             if (rs.next()) {
                 return configuration.get(rs, path, 1, type);
             } else {
@@ -175,7 +176,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         } catch (SQLException e) {
             throw configuration.translate(e);
         } finally {
-            close(rs);
+            if (rs != null) {
+                close(rs);
+            }
+            reset();
         }
     }
 
@@ -199,8 +203,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
-        ResultSet rs = executeWithKeys();
+        ResultSet rs = null;
         try {
+            rs = executeWithKeys();
             List<T> rv = new ArrayList<T>();
             while (rs.next()) {
                 rv.add(configuration.get(rs, path, 1, type));
@@ -209,7 +214,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         } catch (SQLException e) {
             throw configuration.translate(e);
         } finally {
-            close(rs);
+            if (rs != null) {
+                close(rs);
+            }
+            reset();
         }
     }
 
@@ -228,6 +236,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+        boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
 
         if (subQueryBuilder != null) {
@@ -242,7 +251,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         serializer.serializeInsert(metadata, entity, batches.get(0).getColumns(), batches
                 .get(0).getValues(), batches.get(0).getSubQuery());
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
-        stmt.addBatch();
+        if (addBatches) {
+            stmt.addBatch();
+        }
         stmts.put(serializer.toString(), stmt);
         context.addSQL(serializer.toString());
         listeners.rendered(context);
@@ -266,7 +277,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
                         metadata.getParams());
             }
-            stmt.addBatch();
+            if (addBatches) {
+                stmt.addBatch();
+            }
         }
 
         return stmts.values();
@@ -278,7 +291,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
         queryString = serializer.toString();
         constants = serializer.getConstants();
-        logger.debug(queryString);
+        logQuery(logger, queryString, constants);
         PreparedStatement stmt;
         if (withKeys) {
             if (entity.getPrimaryKey() != null) {
@@ -345,9 +358,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 }
             };
         } catch (SQLException e) {
-            onException(context,e);
+            onException(context, e);
             throw configuration.translate(queryString, constants, e);
         } finally {
+            reset();
             endContext(context);
         }
     }
@@ -385,6 +399,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             if (stmts != null) {
                 close(stmts);
             }
+            reset();
             endContext(context);
         }
     }

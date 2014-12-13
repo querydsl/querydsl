@@ -14,6 +14,7 @@
 package com.mysema.query.jpa;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.mysema.query.types.Expression;
 
@@ -30,6 +31,12 @@ public abstract class AbstractQueryTest implements Constants {
     protected static void assertToString(String expected, Expression<?> expr) {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT, null);
         assertEquals(expected, serializer.handle(expr).toString().replace("\n", " "));
+    }
+
+    protected static void assertMatches(String expected, Expression<?> expr) {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT, null);
+        String str = serializer.handle(expr).toString().replace("\n", " ");
+        assertTrue(expected + "\n!=\n" + str, str.matches(expected));
     }
 
 }

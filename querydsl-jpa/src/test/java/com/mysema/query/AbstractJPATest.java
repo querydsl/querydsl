@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -39,8 +40,8 @@ import com.mysema.query.support.Expressions;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.*;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
-import com.mysema.testutil.IncludeIn;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -282,11 +283,6 @@ public abstract class AbstractJPATest {
         assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
     }
 
-    @Test
-    public void Any_Usage() {
-        assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
-    }
-
     @SuppressWarnings("unchecked")
     @Test
     public void ArrayProjection() {
@@ -304,16 +300,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-4700
     @NoBatooJPA
     public void Case() {
-        query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
-    }
-
-    @Test(expected=ClassCastException.class)
-    @NoEclipseLink
-    @NoBatooJPA
-    public void Case_Hibernate() {
         query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
     }
 
@@ -321,8 +309,8 @@ public abstract class AbstractJPATest {
     public void Case2() {
         query().from(cat)
             .list(Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
-                                     .when(cat.toes.eq(3)).then(cat.id.multiply(3))
-                                     .otherwise(4));
+                    .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                    .otherwise(4));
     }
 
     @Test
@@ -674,6 +662,33 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @Ignore // FIXME
+    public void GroupBy_Count() {
+        List<Integer> ids = query().from(cat).groupBy(cat.id).list(cat.id);
+        long count = query().from(cat).groupBy(cat.id).count();
+        SearchResults<Integer> results = query().from(cat).groupBy(cat.id)
+                .limit(1).listResults(cat.id);
+
+        long catCount = query().from(cat).count();
+        assertEquals(catCount, ids.size());
+        assertEquals(catCount, count);
+        assertEquals(catCount, results.getResults().size());
+        assertEquals(catCount, results.getTotal());
+    }
+
+    @Test
+    @Ignore // FIXME
+    public void GroupBy_Distinct_Count() {
+        List<Integer> ids = query().from(cat).groupBy(cat.id).distinct().list(NumberTemplate.ONE);
+        SearchResults<Integer> results = query().from(cat).groupBy(cat.id)
+                .limit(1).distinct().listResults(NumberTemplate.ONE);
+
+        assertEquals(1, ids.size());
+        assertEquals(1, results.getResults().size());
+        assertEquals(1, results.getTotal());
+    }
+
+    @Test
     public void In() {
         assertEquals(3l, query().from(cat).where(cat.name.in("Bob123", "Ruth123", "Felix123")).count());
 
@@ -840,6 +855,19 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Map_Get() {
+        QShow show = QShow.show;
+        query().from(show).list(show.acts.get("a"));
+    }
+
+    @Test
+    @NoHibernate
+    public void Map_Get2() {
+        QShow show = QShow.show;
+        assertEquals(1, query().from(show).where(show.acts.get("a").eq("A")).count());
+    }
+
+    @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey() {
         QShow show = QShow.show;
@@ -950,10 +978,10 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @IncludeIn(Target.H2)
     @NoBatooJPA
     public void Not_In_Empty() {
-        query().from(cat).where(cat.name.notIn(Collections.<String>emptyList())).count();
+        long count = query().from(cat).count();
+        assertEquals(count, query().from(cat).where(cat.name.notIn(Collections.<String>emptyList())).count());
     }
 
     @Test
@@ -1170,6 +1198,24 @@ public abstract class AbstractJPATest {
                                        .where(other.name.indexOf("B").eq(0))
                                        .unique(other.name)))
             .list(cat);
+    }
+
+    @Test
+    public void SubQuery4() {
+        QCat cat = QCat.cat;
+        QCat other = new QCat("other");
+        query().from(cat)
+               .list(cat.name, new JPASubQuery().from(other).where(other.name.eq(cat.name)).count());
+    }
+
+    @Test
+    public void SubQuery5() {
+        QEmployee employee = QEmployee.employee;
+        QEmployee employee2 = new QEmployee("e2");
+        query().from(employee)
+                .where(subQuery().from(employee2)
+                        .list(employee2.id).count().gt(1))
+                .count();
     }
 
     @Test

@@ -14,6 +14,7 @@
 package com.mysema.query.sql.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,9 +33,7 @@ public class PrimaryKeyData {
     
     public PrimaryKeyData(String name, String[] c) {
         this.name = name;
-        for (String column : c) {
-            columns.add(column);
-        }
+        columns.addAll(Arrays.asList(c));
     }
 
     public void add(String column) {

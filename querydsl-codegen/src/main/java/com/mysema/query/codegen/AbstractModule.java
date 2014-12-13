@@ -113,7 +113,7 @@ public abstract class AbstractModule {
     private <T> T createInstance(Class<? extends T> implementation) {
         Constructor<?> constructor = null;
         for (Constructor<?> c : implementation.getConstructors()) {
-            if (c.getAnnotation(Inject.class) != null) {
+            if (c.isAnnotationPresent(Inject.class)) {
                 constructor = c;
                 break;
             }

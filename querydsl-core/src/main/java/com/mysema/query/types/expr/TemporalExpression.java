@@ -32,7 +32,7 @@ public abstract class TemporalExpression<T extends Comparable> extends Comparabl
     }
 
     /**
-     * Get a <code>this &gt; right</code> expression
+     * Get a {@code this > right} expression
      *
      * @param right
      * @return
@@ -42,7 +42,7 @@ public abstract class TemporalExpression<T extends Comparable> extends Comparabl
     }
 
     /**
-     * Get a <code>this &gt; right</code> expression
+     * Get a {@code this > right} expression
      *
      * @param right
      * @return
@@ -52,7 +52,7 @@ public abstract class TemporalExpression<T extends Comparable> extends Comparabl
     }
 
     /**
-     * Get a <code>this &lt; right</code> expression
+     * Get a {@code this < right} expression
      *
      * @param right
      * @return
@@ -62,7 +62,7 @@ public abstract class TemporalExpression<T extends Comparable> extends Comparabl
     }
 
     /**
-     * Get a <code>this &lt; right</code> expression
+     * Get a {@code this < right} expression
      *
      * @param right
      * @return

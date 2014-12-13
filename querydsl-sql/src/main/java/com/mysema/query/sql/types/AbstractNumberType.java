@@ -31,8 +31,16 @@ public abstract class AbstractNumberType<T extends Number & Comparable<T>> exten
 
     @Override
     public T getValue(ResultSet rs, int startIndex) throws SQLException {
-        Number num = (Number) rs.getObject(startIndex);
-        return num != null ? MathUtils.cast(num, getReturnedClass()) : null; 
+        Object obj = rs.getObject(startIndex);
+        if (obj instanceof Number) {
+            return MathUtils.cast((Number) obj, getReturnedClass());
+        } else if (obj instanceof Boolean) {
+            return MathUtils.cast(Boolean.TRUE.equals(obj) ? 1 : 0, getReturnedClass());
+        } else if (obj != null) {
+            throw new IllegalArgumentException(obj.toString());
+        } else {
+            return null;
+        }
     }
     
 }

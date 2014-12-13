@@ -169,18 +169,18 @@ public class SubQueryTest extends AbstractQueryTest{
 
     @Test
     public void Indexed_Access() {
-        assertToString("(select count(cat) from Cat cat   " +
-        		"left join cat.kittens as cat_kittens_0 " +
-        		"where index(cat_kittens_0) = ?1 and cat_kittens_0.name = ?2)", 
+        assertMatches("\\(select count\\(cat\\) from Cat cat   " +
+        		"left join cat.kittens as cat_kittens_\\w+ " +
+        		"with index\\(cat_kittens_\\w+\\) = \\?1 where cat_kittens_\\w+.name = \\?2\\)",
         		                                                          
         		sub().from(cat).where(cat.kittens.get(0).name.eq("Kate")).count());
     }
     
     @Test
     public void Indexed_Access_Without_Constant() {
-        assertToString("(select count(cat) from Cat cat   " +
-                        "left join cat.kittens as cat_kittens_cat_id " +
-                        "where index(cat_kittens_cat_id) = cat.id and cat_kittens_cat_id.name = ?1)", 
+        assertMatches("\\(select count\\(cat\\) from Cat cat   " +
+                        "left join cat.kittens as cat_kittens_\\w+ " +
+                        "with index\\(cat_kittens_\\w+\\) = cat.id where cat_kittens_\\w+.name = \\?1\\)",
                                                                                   
                         sub().from(cat).where(cat.kittens.get(cat.id).name.eq("Kate")).count());
     }

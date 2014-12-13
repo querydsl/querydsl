@@ -321,7 +321,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     /**
-     * Create an <code>this instanceOf type</code> expression
+     * Create an {@code this instanceOf type} expression
      *
      * @param <B>
      * @param type
