@@ -762,6 +762,19 @@ query.with(employee, employee.id, employee.name)
     it is advisable to use a generated path type for it, e.g. QEmployee in this case, but if the
     columns don't fit any existing table PathBuilder can be used instead.</para>
 
+    <para>Below is an example for such a case</para>
+
+    <programlisting language="java"><![CDATA[
+QEmployee employee = QEmployee.employee;
+QDepartment department = QDepartment.department;
+PathBuilder<Tuple> emp = new PathBuilder<Tuple>(Tuple.class, "emp");
+query.with(emp, sq().from(employee).innerJoin(department).on(employee.departmentId.eq(department.id))
+                    .list(employee.id, employee.name, employee.departmentId,
+                          department.name.as("departmentName")))
+
+     .from(...)
+]]></programlisting>
+
   </sect2>
 
   <sect2>
