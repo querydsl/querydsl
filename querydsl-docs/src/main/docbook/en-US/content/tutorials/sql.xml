@@ -744,6 +744,7 @@ query.from(employee)
     <para>Common table expressions are supported in Querydsl SQL via two syntax variants</para>
 
     <programlisting language="java"><![CDATA[
+QEmployee employee = QEmployee.employee;
 query.with(employee, sq().from(employee).where(employee.name.startsWith("A")).list(employee.all()))
      .from(...)
 ]]></programlisting>
@@ -751,6 +752,7 @@ query.with(employee, sq().from(employee).where(employee.name.startsWith("A")).li
     <para>And using a column listing</para>
 
     <programlisting language="java"><![CDATA[
+QEmployee employee = QEmployee.employee;
 query.with(employee, employee.id, employee.name)
      .as(sq().from(employee).where(employee.name.startsWith("A")).list(employee.id, employee.name))
      .from(...)
@@ -761,7 +763,7 @@ query.with(employee, employee.id, employee.name)
     columns don't fit any existing table PathBuilder can be used instead.</para>
 
   </sect2>
-  
+
   <sect2>
 
     <title>Other SQL expressions</title>
