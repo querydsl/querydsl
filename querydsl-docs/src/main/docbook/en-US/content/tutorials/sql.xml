@@ -771,7 +771,6 @@ PathBuilder<Tuple> emp = new PathBuilder<Tuple>(Tuple.class, "emp");
 query.with(emp, sq().from(employee).innerJoin(department).on(employee.departmentId.eq(department.id))
                     .list(employee.id, employee.name, employee.departmentId,
                           department.name.as("departmentName")))
-
      .from(...)
 ]]></programlisting>
 
