@@ -13,10 +13,11 @@
  */
 package com.mysema.query.jpa.domain;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.*;
 
 /**
  * The Class Cat.

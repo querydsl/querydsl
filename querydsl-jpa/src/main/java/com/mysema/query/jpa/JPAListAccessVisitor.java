@@ -1,7 +1,8 @@
 package com.mysema.query.jpa;
 
-import javax.annotation.Nullable;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 import com.mysema.query.JoinType;

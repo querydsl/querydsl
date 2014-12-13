@@ -13,9 +13,10 @@
  */
 package com.mysema.query.jpa;
 
-import com.mysema.query.types.Expression;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import com.mysema.query.types.Expression;
 
 public abstract class AbstractQueryTest implements Constants {
 

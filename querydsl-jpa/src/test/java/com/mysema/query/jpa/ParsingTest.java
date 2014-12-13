@@ -13,8 +13,14 @@
  */
 package com.mysema.query.jpa;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+import static com.mysema.query.Target.*;
+import static com.mysema.query.alias.Alias.$;
+import static com.mysema.query.alias.Alias.alias;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import com.mysema.query.NoBatooJPA;
 import com.mysema.query.NoEclipseLink;
 import com.mysema.query.NoOpenJPA;
@@ -23,12 +29,9 @@ import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.testutil.ExcludeIn;
-import org.junit.Ignore;
-import org.junit.Test;
-import static com.mysema.query.Target.*;
-import static com.mysema.query.alias.Alias.$;
-import static com.mysema.query.alias.Alias.alias;
-import static org.junit.Assert.assertEquals;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 public class ParsingTest extends AbstractQueryTest {
 

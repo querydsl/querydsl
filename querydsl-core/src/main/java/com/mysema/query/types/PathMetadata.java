@@ -13,9 +13,10 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
+
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import java.io.Serializable;
 
 import com.google.common.base.Objects;
 

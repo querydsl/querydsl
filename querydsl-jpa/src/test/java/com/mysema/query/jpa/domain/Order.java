@@ -13,8 +13,9 @@
  */
 package com.mysema.query.jpa.domain;
 
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.*;
 
 /**
  * The Class Order.

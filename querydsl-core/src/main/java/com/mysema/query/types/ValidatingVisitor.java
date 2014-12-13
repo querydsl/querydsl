@@ -13,12 +13,13 @@
  */
 package com.mysema.query.types;
 
+import static com.mysema.query.util.CollectionUtils.add;
+
 import java.io.Serializable;
 import java.util.Set;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
-import static com.mysema.query.util.CollectionUtils.add;
 
 /**
  * ValidatingVisitor visits expressions and ensures that only known path instances are used
