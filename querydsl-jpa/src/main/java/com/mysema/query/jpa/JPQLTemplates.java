@@ -136,6 +136,8 @@ public class JPQLTemplates extends Templates {
         add(JPQLOps.TYPE, "type({0})");
         add(JPQLOps.INDEX, "index({0})");
         add(JPQLOps.TREAT, "treat({0} as {1s})");
+        add(JPQLOps.KEY, "key({0})");
+        add(JPQLOps.VALUE, "value({0})");
 
         //CHECKSTYLE:ON
     }

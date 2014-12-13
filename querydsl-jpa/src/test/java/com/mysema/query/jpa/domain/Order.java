@@ -15,15 +15,7 @@ package com.mysema.query.jpa.domain;
 
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.IndexColumn;
+import javax.persistence.*;
 
 /**
  * The Class Order.
@@ -35,19 +27,19 @@ public class Order {
     Customer customer;
 
     @ElementCollection
-    @IndexColumn(name = "_index")
+    @OrderColumn(name = "_index")
     List<Integer> deliveredItemIndices;
 
     @Id
     long id;
 
     @OneToMany
-    @IndexColumn(name = "_index")
+    @OrderColumn(name = "_index")
     List<Item> items;
   
     @OneToMany
     @JoinTable(name = "LineItems")
-    @IndexColumn(name = "_index")
+    @OrderColumn(name = "_index")
     List<Item> lineItems;
 
     boolean paid;

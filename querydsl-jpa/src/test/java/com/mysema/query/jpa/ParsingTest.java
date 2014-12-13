@@ -13,12 +13,7 @@
  */
 package com.mysema.query.jpa;
 
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.POSTGRES;
+import static com.mysema.query.Target.*;
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
@@ -26,27 +21,17 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 import com.mysema.query.NoBatooJPA;
 import com.mysema.query.NoEclipseLink;
 import com.mysema.query.NoOpenJPA;
-import com.mysema.query.jpa.domain.Cat;
-import com.mysema.query.jpa.domain.Catalog;
-import com.mysema.query.jpa.domain.Color;
-import com.mysema.query.jpa.domain.Customer;
-import com.mysema.query.jpa.domain.DomesticCat;
-import com.mysema.query.jpa.domain.Payment;
-import com.mysema.query.jpa.domain.Product;
-import com.mysema.query.jpa.domain.QFamily;
-import com.mysema.query.jpa.domain.QFooDTO;
-import com.mysema.query.jpa.domain.QItem;
-import com.mysema.query.jpa.domain.QProduct;
+import com.mysema.query.jpa.domain.*;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.testutil.ExcludeIn;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 public class ParsingTest extends AbstractQueryTest {
 
@@ -401,7 +386,6 @@ public class ParsingTest extends AbstractQueryTest {
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void DocoExamples98_9() throws Exception {
         query().from(person, calendar).select(person).where(
                 calendar.holidays("national holiday").eq(person.birthDay),
@@ -409,7 +393,6 @@ public class ParsingTest extends AbstractQueryTest {
     }
     
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     @ExcludeIn({DERBY, HSQLDB, ORACLE})
     public void DocoExamples98_10() throws Exception {
         query().from(item, ord).select(item).where(
