@@ -13,7 +13,8 @@
  */
 package com.mysema.query.sql.codegen;
 
-import javax.tools.JavaCompiler;
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -22,13 +23,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.tools.JavaCompiler;
+
+import org.junit.*;
+
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.util.FileUtils;
-import junit.framework.Assert;
-import org.junit.*;
-import static org.junit.Assert.*;
 
 public class MetaDataExporterTest {
 

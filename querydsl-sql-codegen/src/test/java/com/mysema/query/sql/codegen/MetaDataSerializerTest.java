@@ -19,8 +19,7 @@ import java.util.Set;
 
 import javax.tools.JavaCompiler;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

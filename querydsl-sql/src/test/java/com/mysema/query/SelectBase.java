@@ -51,7 +51,7 @@ import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public class SelectBase extends AbstractBaseTest {
 
