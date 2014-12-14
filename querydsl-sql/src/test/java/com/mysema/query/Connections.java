@@ -869,7 +869,7 @@ public final class Connections {
 
         // numbers
         dropTable(templates, "NUMBER_TEST");
-        stmt.execute("create table NUMBER_TEST(col1 boolean)");
+        stmt.execute("create table \"NUMBER_TEST\"(\"COL1\" boolean)");
 
         // xml
         dropTable(templates, "XML_TEST");
