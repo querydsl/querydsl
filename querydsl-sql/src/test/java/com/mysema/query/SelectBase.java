@@ -997,7 +997,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({MYSQL, ORACLE})
     public void Number_As_Boolean() {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
@@ -1008,7 +1007,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({MYSQL, ORACLE})
     public void Number_As_Boolean_Null() {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
