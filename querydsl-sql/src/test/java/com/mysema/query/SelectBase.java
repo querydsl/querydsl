@@ -997,7 +997,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, POSTGRES})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, POSTGRES})
     public void Number_As_Boolean() {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
