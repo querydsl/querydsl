@@ -472,7 +472,7 @@ public final class Connections {
 
         // numbers
         dropTable(templates, "NUMBER_TEST");
-        stmt.execute("create table NUMBER_TEST(col1 bit)");
+        stmt.execute("create table NUMBER_TEST(col1 char(1))");
 
         // xml
         dropTable(templates, "XML_TEST");
