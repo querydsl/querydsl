@@ -13,12 +13,23 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.*;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -39,16 +50,8 @@ import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+
 import junit.framework.Assert;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
-import org.junit.Ignore;
-import org.junit.Test;
-import static com.mysema.query.Constants.*;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.*;
 
 public class SelectBase extends AbstractBaseTest {
 
@@ -991,6 +994,28 @@ public class SelectBase extends AbstractBaseTest {
         query().uniqueResult(num.castToNum(Long.class));
         query().uniqueResult(num.castToNum(Float.class));
         query().uniqueResult(num.castToNum(Double.class));
+    }
+
+    @Test
+    @IncludeIn({MYSQL, ORACLE})
+    public void Number_As_Boolean() {
+        QNumberTest numberTest = QNumberTest.numberTest;
+        delete(numberTest).execute();
+        insert(numberTest).set(numberTest.col1Boolean, true).execute();
+        insert(numberTest).set(numberTest.col1Number, (byte)1).execute();
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Boolean).size());
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Number).size());
+    }
+
+    @Test
+    @IncludeIn({MYSQL, ORACLE})
+    public void Number_As_Boolean_Null() {
+        QNumberTest numberTest = QNumberTest.numberTest;
+        delete(numberTest).execute();
+        insert(numberTest).setNull(numberTest.col1Boolean).execute();
+        insert(numberTest).setNull(numberTest.col1Number).execute();
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Boolean).size());
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Number).size());
     }
 
     @Test

@@ -17,11 +17,12 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hsqldb.types.Types;
+
 import com.google.common.collect.Maps;
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
 import com.mysema.query.sql.*;
-import org.hsqldb.types.Types;
 
 /**
  * @author tiwe
@@ -750,6 +751,10 @@ public final class Connections {
         // date_test and time_test
         dropTable(templates, "DATE_TEST");
         stmt.execute("create table date_test(date_test date)");
+
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 number(1,0))");
 
         // xml
         dropTable(templates, "XML_TEST");
