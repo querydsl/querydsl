@@ -25,6 +25,9 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class SQLServer2008SpatialTemplates extends SQLServer2008Templates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final SQLServer2008SpatialTemplates DEFAULT = new SQLServer2008SpatialTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

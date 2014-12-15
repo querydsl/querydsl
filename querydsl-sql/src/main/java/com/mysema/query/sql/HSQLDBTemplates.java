@@ -25,6 +25,9 @@ import com.mysema.query.types.Ops;
  */
 public class HSQLDBTemplates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final HSQLDBTemplates DEFAULT = new HSQLDBTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

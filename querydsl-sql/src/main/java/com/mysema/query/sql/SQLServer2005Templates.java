@@ -34,6 +34,9 @@ import com.mysema.query.types.Path;
  */
 public class SQLServer2005Templates extends SQLServerTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final SQLServer2005Templates DEFAULT = new SQLServer2005Templates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

@@ -27,6 +27,9 @@ import com.mysema.query.types.Ops;
  */
 public class CUBRIDTemplates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final CUBRIDTemplates DEFAULT = new CUBRIDTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override
