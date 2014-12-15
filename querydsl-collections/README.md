@@ -58,13 +58,15 @@ If you are not using JPA or JDO you can generate Querydsl query types for your d
 
 Querying with Querydsl Collections is as simple as this :
 
-    import static com.mysema.query.collections.CollQueryFactory.*;
-    
-    QCat cat = new QCat("cat");
-    for (String name : from(cat,cats)
-      .where(cat.kittens.size().gt(0))
-      .list(cat.name)){
-        System.out.println(name);
-    }
+```JAVA
+import static com.mysema.query.collections.CollQueryFactory.*;
+
+QCat cat = new QCat("cat");
+for (String name : from(cat,cats)
+  .where(cat.kittens.size().gt(0))
+  .list(cat.name)){
+    System.out.println(name);
+}
+```
 
 For more information on the Querydsl Collections module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s08.html
