@@ -34,8 +34,10 @@ Free support is provided in the Querydsl Google Group https://groups.google.com/
 
 Querydsl provides releases via public Maven repositories, but you can build the sources also yourself like this
 
-    cd querydsl-root
-    mvn -DskipTests=true clean install 
+```SHELL
+$ cd querydsl-root
+$ mvn -DskipTests=true clean install
+```
 
 For more information visit the project homepage at http://www.querydsl.com/.
 
@@ -54,10 +56,10 @@ place it in the ```devops``` directory.
 
 To launch the virtual machine:
 
-```
-$> cd devops
-devops$> librarian-puppet install
-devops$> vagrant up
+```SHELL
+$ cd devops
+$ librarian-puppet install
+$ vagrant up
 ``` 
 
 All of the databases' default ports are forwarded to the host machine. See the Vagrantfile for details.
