@@ -45,7 +45,7 @@ Code generation is not available for Lucene, since no schema data is available.
 
 Querying with Querydsl Lucene is as simple as this:
 
-``` 
+```JAVA
 QDocument doc = new QDocument("doc");
 
 IndexSearcher searcher = new IndexSearher(index);
