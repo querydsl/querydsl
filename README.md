@@ -34,7 +34,7 @@ Free support is provided in the Querydsl Google Group https://groups.google.com/
 
 Querydsl provides releases via public Maven repositories, but you can build the sources also yourself like this
 
-```SHELL
+```BASH
 $ cd querydsl-root
 $ mvn -DskipTests=true clean install
 ```
@@ -56,7 +56,7 @@ place it in the ```devops``` directory.
 
 To launch the virtual machine:
 
-```SHELL
+```BASH
 $ cd devops
 $ librarian-puppet install
 $ vagrant up
