@@ -299,7 +299,11 @@
             <group>
               <title>Mongodb</title>
               <packages>com.mysema.query.mongodb*</packages>        
-            </group>            
+            </group>
+            <group>
+              <title>Elasticsearch</title>
+              <packages>com.mysema.query.elasticsearch*</packages>
+            </group>
           </groups>
         </configuration>
       </plugin>
@@ -408,6 +412,7 @@
         
         <!-- NoSQL -->
         <module>../querydsl-mongodb</module>
+        <module>../querydsl-elasticsearch</module>
         
         <!-- Languages -->        
         <module>../querydsl-scala</module>
@@ -475,6 +480,16 @@
         <module>../querydsl-mongodb</module>        
       </modules>
     </profile>
+
+    <profile>
+      <id>elasticsearch</id>
+      <modules>
+        <module>../querydsl-core</module>
+        <module>../querydsl-codegen</module>
+        <module>../querydsl-apt</module>
+        <module>../querydsl-elasticsearch</module>
+      </modules>
+     </profile>
     
     <profile>
       <id>sql</id>
