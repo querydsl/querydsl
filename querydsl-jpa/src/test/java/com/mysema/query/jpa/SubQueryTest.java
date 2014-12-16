@@ -20,6 +20,7 @@ import org.junit.Test;
 import com.mysema.query.domain.QCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QUser;
+import com.mysema.query.types.query.NumberSubQuery;
 
 public class SubQueryTest extends AbstractQueryTest{
 
@@ -189,6 +190,16 @@ public class SubQueryTest extends AbstractQueryTest{
     public void IndexOf() {
         assertToString("(select count(cat) from Cat cat where locate(?1,cat.name)-1 = ?2)",                
                         sub().from(cat).where(cat.name.indexOf("a").eq(1)).count());
+    }
+
+    @Test
+    public void OrderBy() {
+        JPQLQuery query = query().from(cat1).where(cat1.alive);
+        NumberSubQuery<Double> subquery = sub().from(cat).where(cat.mate.id.eq(cat1.id)).unique(cat.floatProperty.avg());
+        query.orderBy(subquery.subtract(-1.0f).asc());
+
+        assertEquals("select cat1 from Cat cat1 where cat1.alive order by (select avg(cat.floatProperty) from Cat cat where cat.mate.id = cat1.id) - ?1 asc",
+                query.toString().replace("\n", " "));
     }
     
 }
