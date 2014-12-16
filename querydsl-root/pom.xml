@@ -147,6 +147,13 @@
     </developer>
   </developers>
 
+  <contributors>
+    <contributor>
+      <name>Marvin Froeder</name>
+      <email>velo.br@gmail.com</email>
+    </contributor>
+  </contributors>
+
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
