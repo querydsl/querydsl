@@ -176,6 +176,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
                             return convertPathForOrder(expr);
                         }
                         public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
+                            // don't shorten paths inside subquery expressions
                             return expr;
                         }
                     };
