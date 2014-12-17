@@ -13,9 +13,21 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.SQLSubQuery;
@@ -29,16 +41,6 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.*;
 
 public class InsertBase extends AbstractBaseTest {
 
@@ -435,7 +437,7 @@ public class InsertBase extends AbstractBaseTest {
     public void XML() {
         delete(QXmlTest.xmlTest).execute();
         QXmlTest xmlTest = QXmlTest.xmlTest;
-        String contents = "<html><head></head><body></body></html>";
+        String contents = "<html><head>a</head><body>b</body></html>";
         insert(xmlTest).set(xmlTest.col, contents).execute();
         assertEquals(contents, query().from(xmlTest).singleResult(xmlTest.col));
     }

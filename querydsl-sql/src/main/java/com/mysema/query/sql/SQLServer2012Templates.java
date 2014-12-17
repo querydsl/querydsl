@@ -27,6 +27,9 @@ import com.mysema.query.support.Expressions;
  */
 public class SQLServer2012Templates extends SQLServerTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final SQLServer2012Templates DEFAULT = new SQLServer2012Templates();
+
     private String topTemplate = "top {0s} ";
 
     private String limitOffsetTemplate = "\noffset {1} rows fetch next {0} rows only";

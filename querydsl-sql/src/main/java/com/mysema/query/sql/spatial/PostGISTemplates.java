@@ -25,6 +25,9 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class PostGISTemplates extends PostgresTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final PostGISTemplates DEFAULT = new PostGISTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

@@ -24,7 +24,8 @@ import com.mysema.query.types.Ops;
  */
 public class JodaTimeTemplates extends CollQueryTemplates {
 
-    public static final CollQueryTemplates DEFAULT = new JodaTimeTemplates();
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final JodaTimeTemplates DEFAULT = new JodaTimeTemplates();
 
     protected JodaTimeTemplates() {
         add(Ops.DateTimeOps.YEAR,         "{0}.getYear()");

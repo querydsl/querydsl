@@ -13,8 +13,6 @@
  */
 package com.mysema.query.apt;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.tools.JavaCompiler;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +21,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.processing.AbstractProcessor;
+import javax.tools.JavaCompiler;
+
+import org.junit.Assert;
+
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.util.FileUtils;
-import junit.framework.Assert;
 
 public abstract class AbstractProcessorTest {
 

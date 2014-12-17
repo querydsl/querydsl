@@ -24,6 +24,9 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class GeoDBTemplates extends H2Templates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final GeoDBTemplates DEFAULT = new GeoDBTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

@@ -74,6 +74,9 @@ public class MySQLTemplates extends SQLTemplates {
                     "VARCHAR", "VARCHARACTER", "VARYING", "WHEN", "WHERE", "WHILE",
                     "WITH", "WRITE", "XOR", "YEAR_MONTH", "ZEROFILL");
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final MySQLTemplates DEFAULT = new MySQLTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

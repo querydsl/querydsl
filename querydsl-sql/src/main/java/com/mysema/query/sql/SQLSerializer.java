@@ -13,16 +13,20 @@
  */
 package com.mysema.query.sql;
 
-import javax.annotation.Nullable;
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.*;
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinFlag;
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
@@ -268,7 +272,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     append(templates.getFrom());
                     append("(");
                     append(templates.getSelect());
-                    append("1 ");
+                    append("1 as one ");
                     suffix = ") internal";
                 }
 
