@@ -22,7 +22,7 @@ import static com.mysema.query.group.GroupBy.max;
 import static com.mysema.query.group.GroupBy.min;
 import static com.mysema.query.group.GroupBy.set;
 import static com.mysema.query.group.GroupBy.sum;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
