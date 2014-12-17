@@ -23,6 +23,10 @@ public enum Target{
      */
     CUBRID,
     /**
+     * DB2
+     */
+    DB2,
+    /**
      * Derby
      */
     DERBY,

@@ -192,6 +192,12 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>com.ibm.db2</groupId>
+      <artifactId>db2-jdbc</artifactId>
+      <version>1.0</version>
+    </dependency>
+
   </dependencies>
   
   <build>
