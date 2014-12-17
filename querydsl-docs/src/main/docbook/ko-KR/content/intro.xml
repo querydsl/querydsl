@@ -10,7 +10,7 @@
       Querydsl은 타입에 안전한 방식으로 HQL 쿼리를 실행하기 위한 목적으로 만들어졌다.
       HQL 쿼리를 작성하다보면 String 연결을 이용하게 되고,
       이는 결과적으로 읽기 어려운 코드를 만드는 문제를 야기한다.
-      String을 이용해서 도메인 타입과 프로퍼티를 참조하다보면 
+      String을 이용해서 도메인 타입과 프로퍼티를 참조하다보면
       오타 등으로 잘못된 참조를 하게 될 수 있으며,
       이는 String을 이용해서 HQL 작성할 때 발생하는 또 다른 문제다.
     </para>
@@ -50,11 +50,11 @@
     </para>
 
     <para>
-      Javadoc에서 com.mysema.query.Query, com.mysema.query.Projectable 그리고 
+      Javadoc에서 com.mysema.query.Query, com.mysema.query.Projectable 그리고
       com.mysema.query.types.Expression의 내용을 보면 Querydsl 쿼리와 표현 타입이 제공하는
       표현력을 알게 될 것이다.
     </para>
 
   </sect1>
 
-</chapter>    
+</chapter>

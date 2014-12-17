@@ -20,9 +20,9 @@
     </para>
 
     <programlisting language="java"><![CDATA[
-// needed for access of the Querydsl Collections API    
+// needed for access of the Querydsl Collections API
 import static com.mysema.query.collections.CollQueryFactory.*;
-// needed, if you use the $-invocations    
+// needed, if you use the $-invocations
 import static com.mysema.query.alias.Alias.*;
 ]]></programlisting>
 
@@ -32,8 +32,8 @@ import static com.mysema.query.alias.Alias.*;
     </para>
 
     <para>
-      $ 메서드로 감싸는 방법으로 Cat 타입의 별칭 인스턴스 및 그것의 getter 메서드 호출을 
-      경로로 바꾼다. 예를 들어, <code>c.getKittens()</code>에 대한 호출은 
+      $ 메서드로 감싸는 방법으로 Cat 타입의 별칭 인스턴스 및 그것의 getter 메서드 호출을
+      경로로 바꾼다. 예를 들어, <code>c.getKittens()</code>에 대한 호출은
       $ 메서드를 통해 c.kittends 경로로 바뀐다.
     </para>
 
@@ -41,7 +41,7 @@ import static com.mysema.query.alias.Alias.*;
 Cat c = alias(Cat.class, "cat");
 for (String name : from($(c),cats)
   .where($(c.getKittens()).size().gt(0))
-  .list($(c.getName()))){
+  .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -54,13 +54,13 @@ for (String name : from($(c),cats)
 Cat c = alias(Cat.class, "cat");
 for (String name : from($(c),cats)
   .where($(c.getKittens().size()).gt(0))
-  .list($(c.getName()))){
+  .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
 
     <para>
-      별칭의 모든 비-기본타입과 non-final 타입 프로퍼티는 별칭 그 자체이다. 
+      별칭의 모든 비-기본타입과 non-final 타입 프로퍼티는 별칭 그 자체이다.
       따라서, $ 메서드 범위안에서 기본 타입이나 non-final 타입 (예, java.lang.String)을 만날 때 까지
       연속된 메서드 호출이 가능하다.
     </para>
@@ -104,7 +104,7 @@ $(c.getMate().getName().toLowerCase())
 QCat cat = new QCat("cat");
 for (String name : from(cat,cats)
   .where(cat.kittens.size().gt(0))
-  .list(cat.name)){
+  .list(cat.name)) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -129,8 +129,8 @@ for (String name : from(cat,cats)
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
-</dependency>    
-    
+</dependency>
+
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
@@ -141,7 +141,7 @@ for (String name : from(cat,cats)
   <groupId>org.slf4j</groupId>
   <artifactId>slf4j-log4j12</artifactId>
   <version>1.6.1</version>
-</dependency>   
+</dependency>
 ]]></programlisting>
 
 
@@ -190,18 +190,18 @@ for (String name : from(cat,cats)
     <programlisting language="xml"><![CDATA[
     <!-- APT based code generation -->
     <javac srcdir="${src}" classpathref="cp">
-      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
       <compilerarg value="com.mysema.query.apt.QuerydslAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
-    
+
     <!-- compilation -->
-    <javac classpathref="cp" destdir="${build}">      
+    <javac classpathref="cp" destdir="${build}">
       <src path="${src}"/>
       <src path="${generated}"/>
-    </javac>    
+    </javac>
 ]]></programlisting>
 
     <para>
@@ -218,7 +218,7 @@ for (String name : from(cat,cats)
 
     <para>Querydsl Collections 모듈은 Hamcrest matchers를 제공한다. 다음의 import를 통해 사용하면 된다.</para>
 
-    <programlisting language="java"><![CDATA[    
+    <programlisting language="java"><![CDATA[
 import static org.hamcrest.core.IsEqual.equalTo;
 import static com.mysema.query.collections.PathMatcher.hasValue;
 import static org.junit.Assert.assertEquals;
@@ -227,12 +227,12 @@ import static org.junit.Assert.assertThat;
 
     <para>다음과 같이 사용할 수 있다.</para>
 
-    <programlisting language="java"><![CDATA[  
+    <programlisting language="java"><![CDATA[
 Car car = new Car();
 car.setHorsePower(123);
-        
+
 assertThat(car, hasValue($.horsePower));
-assertThat(car, hasValue($.horsePower, equalTo(123)));  
+assertThat(car, hasValue($.horsePower, equalTo(123)));
 ]]></programlisting>
 
     <para>

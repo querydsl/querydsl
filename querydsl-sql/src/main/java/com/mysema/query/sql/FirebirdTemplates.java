@@ -8,6 +8,9 @@ import com.mysema.query.types.Ops;
 
 public class FirebirdTemplates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final FirebirdTemplates DEFAULT = new FirebirdTemplates();
+
     private String limitOffsetTemplate = "\nrows {0} to {1}";
 
     private String limitTemplate = "\nrows {0}";

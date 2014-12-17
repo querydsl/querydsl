@@ -669,6 +669,10 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
 
+        // numbers
+        stmt.execute("drop table if exists NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 tinyint(1))");
+
         // xml
         stmt.execute("drop table if exists XML_TEST");
         stmt.execute("create table XML_TEST(COL varchar(128))");

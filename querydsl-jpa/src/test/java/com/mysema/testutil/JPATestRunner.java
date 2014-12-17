@@ -13,7 +13,8 @@
  */
 package com.mysema.testutil;
 
-import java.lang.reflect.Method;
+import static com.google.common.base.Verify.verify;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
+import com.mysema.query.JPATest;
 import com.mysema.query.Mode;
 
 /**
@@ -43,16 +45,17 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
 
     private EntityManager entityManager;
 
-    private Method setter;
-
     private boolean isDerby;
 
-    public JPATestRunner(Class<?> klass) throws InitializationError{
+    public JPATestRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }
 
     @Override
     protected List<MethodRule> rules(Object test) {
+        verify(test instanceof JPATest, "In order to use the %s for %s, it should (directly or indirectly) implement %s",
+                JPATestRunner.class.getSimpleName(), test.getClass(), JPATest.class);
+
         List<MethodRule> rules = super.rules(test);
         rules.add(new MethodRule() {
             @Override
@@ -60,10 +63,7 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
                 return new Statement() {
                     @Override
                     public void evaluate() throws Throwable {
-                        if (setter == null) {
-                            setter = target.getClass().getMethod("setEntityManager", EntityManager.class);
-                        }
-                        setter.invoke(target, entityManager);
+                        ((JPATest) target).setEntityManager(entityManager);
                         base.evaluate();
                     }
                 };

@@ -14,31 +14,8 @@
 package com.mysema.query.support;
 
 
-import java.util.UUID;
-
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.types.CollectionExpression;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.PredicateOperation;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.ToStringVisitor;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.SimplePath;
@@ -54,14 +31,13 @@ import com.mysema.query.types.template.BooleanTemplate;
 @SuppressWarnings("unchecked")
 public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
 
-    public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
-
-    public static final Templates TEMPLATES = new Templates() {
-    {
+    @Deprecated
+    public static final Templates TEMPLATES = new Templates() {{
         add(PathType.PROPERTY, "{0}_{1}");
         add(PathType.COLLECTION_ANY, "{0}");
     }};
 
+    public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
 
     @SuppressWarnings("rawtypes")
     private static <T> Path<T> replaceParent(Path<T> path, Path<?> parent) {
@@ -139,9 +115,8 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
         if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY) {
             Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, context);
             expr = new PathImpl<Object>(expr.getType(), PathMetadataFactory.forCollectionAny(parent));
-            String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
-            String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
-            EntityPath<?> replacement = new EntityPathBase<Object>(expr.getType(), variable + suffix);
+            EntityPath<?> replacement = new EntityPathBase<Object>(expr.getType(),
+                    ExpressionUtils.createRootVariable(expr));
             context.add(expr, replacement);
             return replacement;
 

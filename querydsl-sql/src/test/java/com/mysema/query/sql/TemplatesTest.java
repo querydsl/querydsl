@@ -15,7 +15,9 @@ package com.mysema.query.sql;
 
 import org.junit.Test;
 
-public class TemplatesTest {
+import com.mysema.query.TemplatesTestBase;
+
+public class TemplatesTest extends TemplatesTestBase {
 
     @Test
     public void test() {

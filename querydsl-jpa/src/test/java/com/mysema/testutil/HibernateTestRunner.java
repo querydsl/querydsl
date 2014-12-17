@@ -13,8 +13,14 @@
  */
 package com.mysema.testutil;
 
-import com.mysema.query.Mode;
-import com.mysema.query.jpa.domain.Domain;
+import static com.google.common.base.Verify.verify;
+
+import java.io.InputStream;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -29,12 +35,9 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
+import com.mysema.query.Mode;
+import com.mysema.query.jpa.HibernateTest;
+import com.mysema.query.jpa.domain.Domain;
 
 /**
  * @author tiwe
@@ -46,8 +49,6 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
 
     private Session session;
 
-    private Method setter;
-
     private boolean isDerby = false;
 
     public HibernateTestRunner(Class<?> klass) throws InitializationError {
@@ -56,6 +57,9 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
 
     @Override
     protected List<MethodRule> rules(Object test) {
+        verify(test instanceof HibernateTest, "In order to use the %s for %s, it should (directly or indirectly) implement %s",
+                HibernateTestRunner.class.getSimpleName(), test.getClass(), HibernateTest.class);
+
         List<MethodRule> rules = super.rules(test);
         rules.add(new MethodRule() {
             @Override
@@ -63,10 +67,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
                 return new Statement() {
                     @Override
                     public void evaluate() throws Throwable {
-                        if (setter == null) {
-                            setter = target.getClass().getMethod("setSession", Session.class);
-                        }
-                        setter.invoke(target, session);
+                        ((HibernateTest) target).setSession(session);
                         base.evaluate();
                     }
                 };

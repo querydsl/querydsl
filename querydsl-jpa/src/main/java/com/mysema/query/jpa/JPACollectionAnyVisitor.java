@@ -14,7 +14,6 @@
 package com.mysema.query.jpa;
 
 import javax.persistence.Entity;
-import java.util.UUID;
 
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
@@ -46,9 +45,8 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
             } else {
                 // join via parent
                 Path<?> parent = child.getMetadata().getParent();
-                String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
-                String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
-                EntityPathBase<Object> newParent = new EntityPathBase<Object>(parent.getType(), prefix + suffix);
+                EntityPathBase<Object> newParent = new EntityPathBase<Object>(parent.getType(),
+                        ExpressionUtils.createRootVariable(parent));
                 EntityPath<Object> newChild = new EntityPathBase<Object>(child.getType(),
                         PathMetadataFactory.forProperty(newParent, child.getMetadata().getName()));
                 query.from(newParent).innerJoin(newChild, replacement);

@@ -24,6 +24,7 @@ import com.mysema.query.types.Ops;
  */
 public final class JDOQLTemplates extends JavaTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final JDOQLTemplates DEFAULT = new JDOQLTemplates();
 
     protected JDOQLTemplates() {

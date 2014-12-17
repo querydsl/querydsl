@@ -27,7 +27,7 @@ import com.mysema.testutil.HibernateTestRunner;
 
 @Ignore
 @RunWith(HibernateTestRunner.class)
-public class UniqueResultsTest {
+public class UniqueResultsTest implements HibernateTest {
 
     private Session session;
 
@@ -48,6 +48,7 @@ public class UniqueResultsTest {
         return new HibernateQuery(session);
     }
 
+    @Override
     public void setSession(Session session) {
         this.session = session;
     }

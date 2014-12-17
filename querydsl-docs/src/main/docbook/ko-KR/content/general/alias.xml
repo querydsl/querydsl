@@ -19,7 +19,7 @@
 QCat cat = new QCat("cat");
 for (String name : query.from(cat,cats)
     .where(cat.kittens.size().gt(0))
-    .list(cat.name)){
+    .list(cat.name)) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -33,7 +33,7 @@ for (String name : query.from(cat,cats)
 Cat c = alias(Cat.class, "cat");
 for (String name : query.from($(c),cats)
     .where($(c.getKittens()).size().gt(0))
-    .list($(c.getName()))){
+    .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -55,14 +55,14 @@ import static com.mysema.query.alias.Alias.alias;
 Cat c = alias(Cat.class, "cat");
 for (String name : query.from($(c),cats)
     .where($(c.getKittens().size()).gt(0))
-    .list($(c.getName()))){
+    .list($(c.getName()))) {
     System.out.println(name);
 }
 ]]></programlisting>
 
   <para>
     기본 데이터 타입이 아니고 final이 아닌 모든 별칭 프로퍼티는 별칭 자체이다.
-    따라서, $ 메서드 내에서 기본 데이터 타입이나 final 타입이 나오기 전까지 메서드를 
+    따라서, $ 메서드 내에서 기본 데이터 타입이나 final 타입이 나오기 전까지 메서드를
     이어서 호출할 수 있다. 다음은 예이다.
   </para>
 
@@ -88,4 +88,3 @@ $(c.getMate().getName().toLowerCase())
   </para>
 
 </sect1>
-  

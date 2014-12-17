@@ -22,6 +22,9 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class OracleSpatialTemplates extends OracleTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final OracleSpatialTemplates DEFAULT = new OracleSpatialTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

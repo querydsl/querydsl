@@ -21,7 +21,7 @@ import com.mysema.testutil.Performance;
 @RunWith(JPATestRunner.class)
 @Ignore
 @Category(Performance.class)
-public class QueryPerformanceTest {
+public class QueryPerformanceTest implements JPATest {
 
     private static final int iterations = 1000;
 
@@ -99,6 +99,7 @@ public class QueryPerformanceTest {
     }
 
 
+    @Override
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

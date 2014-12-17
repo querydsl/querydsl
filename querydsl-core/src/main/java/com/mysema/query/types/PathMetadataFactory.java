@@ -64,7 +64,7 @@ public final class PathMetadataFactory {
     public static <T> PathMetadata<T> forDelegate(Path<T> delegate) {
         return new PathMetadata<T>(delegate, delegate, PathType.DELEGATE);
     }
-    
+
     /**
      * Create a new PathMetadata for indexed list access
      * 

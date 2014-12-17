@@ -25,6 +25,7 @@ import com.mysema.query.types.PathType;
  */
 public class CollQueryTemplates extends JavaTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //intentional
     public static final CollQueryTemplates DEFAULT = new CollQueryTemplates();
 
     protected CollQueryTemplates() {

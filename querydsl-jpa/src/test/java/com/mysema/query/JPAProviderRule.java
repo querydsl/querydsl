@@ -37,11 +37,8 @@ public class JPAProviderRule implements MethodRule {
     }
     
     private <T extends Annotation> boolean hasAnnotation(FrameworkMethod method, Class<T> clazz) {
-        T rv = method.getMethod().getAnnotation(clazz);
-        if (rv == null) {
-            rv = method.getMethod().getDeclaringClass().getAnnotation(clazz);
-        }
-        return rv != null;
+        return method.getMethod().isAnnotationPresent(clazz)
+                || method.getMethod().getDeclaringClass().isAnnotationPresent(clazz);
     }
 
 }

@@ -16,19 +16,22 @@ package com.mysema.query.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-import com.mysema.query.JPAProviderRule;
-import com.mysema.query.TargetRule;
-import com.mysema.query.jpa.impl.JPAProvider;
-import com.mysema.query.jpa.impl.JPAUtil;
-import com.mysema.testutil.JPATestRunner;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.JPAProviderRule;
+import com.mysema.query.JPATest;
+import com.mysema.query.TargetRule;
+import com.mysema.query.jpa.impl.JPAProvider;
+import com.mysema.query.jpa.impl.JPAUtil;
+import com.mysema.testutil.JPATestRunner;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+
 @RunWith(JPATestRunner.class)
-public class JPAIntegrationBase extends ParsingTest {
+public class JPAIntegrationBase extends ParsingTest implements JPATest {
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
@@ -45,27 +48,21 @@ public class JPAIntegrationBase extends ParsingTest {
         return new QueryHelper(templates) {
             @Override
             public void parse() throws RecognitionException, TokenStreamException {
+                JPQLSerializer serializer = new JPQLSerializer(templates);
+                serializer.serialize(getMetadata(), false, null);
+                Query query = em.createQuery(serializer.toString());
+                JPAUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
                 try {
-                    //System.out.println("query : " + toString().replace('\n', ' '));
-
-                    // create Query and execute it
-                    JPQLSerializer serializer = new JPQLSerializer(templates);
-                    serializer.serialize(getMetadata(), false, null);
-                    Query query = em.createQuery(serializer.toString());
-                    JPAUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
-                    try {
-                        query.getResultList();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new RuntimeException(e);
-                    }
-                } finally {
-                    //System.out.println();
+                    query.getResultList();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         };
     }
 
+    @Override
     public void setEntityManager(EntityManager em) {
         this.em = em;
         this.templates = JPAProvider.getTemplates(em);

@@ -13,7 +13,7 @@
  */
 package com.mysema.query.mongodb;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -31,11 +31,7 @@ import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.morphia.MorphiaSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.*;
 
 public class MongodbSerializerTest {
 
@@ -239,9 +235,7 @@ public class MongodbSerializerTest {
 
     public static BasicDBList dblist(Object... contents) {
         BasicDBList list = new BasicDBList();
-        for (Object o : contents) {
-            list.add(o);
-        }
+        list.addAll(Arrays.asList(contents));
         return list;
     }
 

@@ -13,8 +13,18 @@
  */
 package com.mysema.query.jpa;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
@@ -23,20 +33,12 @@ import com.mysema.query.jpa.hibernate.HibernateUpdateClause;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.HibernateTestRunner;
-import org.hibernate.Query;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 @RunWith(HibernateTestRunner.class)
-public class IntegrationBase extends ParsingTest {
+public class IntegrationBase extends ParsingTest implements HibernateTest {
 
     private Session session;
 
@@ -161,6 +163,7 @@ public class IntegrationBase extends ParsingTest {
 
     }
 
+    @Override
     public void setSession(Session session) {
         this.session = session;
     }

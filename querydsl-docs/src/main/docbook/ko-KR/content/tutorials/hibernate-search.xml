@@ -23,8 +23,8 @@
 QUser user = QUser.user;
 SearchQuery<User> query = new SearchQuery<User>(session, user);
 List<User> list = query
-	.where(user.firstName.eq("Bob"))
-	.list();
+    .where(user.firstName.eq("Bob"))
+    .list();
 ]]></programlisting>
 
   </sect2>

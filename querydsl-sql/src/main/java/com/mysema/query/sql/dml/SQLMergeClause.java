@@ -342,6 +342,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     private PreparedStatement createStatement(boolean withKeys) throws SQLException {
+        boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         PreparedStatement stmt = null;
@@ -364,7 +365,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
 
             // add first batch
-            stmt.addBatch();
+            if (addBatches) {
+                stmt.addBatch();
+            }
 
             // add other batches
             for (int i = 1; i < batches.size(); i++) {
@@ -376,13 +379,16 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 listeners.rendered(context);
 
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
-                stmt.addBatch();
+                if (addBatches) {
+                    stmt.addBatch();
+                }
             }
         }
         return stmt;
     }
 
     private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+        boolean addBatches = !configuration.getUseLiterals();
         Map<String, PreparedStatement> stmts = Maps.newHashMap();
 
         // add first batch
@@ -396,7 +402,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
         stmts.put(serializer.toString(), stmt);
-        stmt.addBatch();
+        if (addBatches) {
+            stmt.addBatch();
+        }
 
         // add other batches
         for (int i = 1; i < batches.size(); i++) {
@@ -411,7 +419,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             } else {
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
             }
-            stmt.addBatch();
+            if (addBatches) {
+                stmt.addBatch();
+            }
         }
 
         return stmts.values();
@@ -485,9 +495,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      * @return
      */
     public SQLMergeClause keys(Path<?>... paths) {
-        for (Path<?> path : paths) {
-            keys.add(path);
-        }
+        keys.addAll(Arrays.asList(paths));
         return this;
     }
 

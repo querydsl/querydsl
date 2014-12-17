@@ -16,6 +16,7 @@ package com.mysema.query.support;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpressionBase;
 import com.mysema.query.types.Visitor;
@@ -34,16 +35,14 @@ public class EnumConversion<T> extends FactoryExpressionBase<T> {
 
     private final List<Expression<?>> exprs;
 
-    private final Enum<?>[] values;
+    private final T[] values;
 
     public EnumConversion(Expression<T> expr) {
         super(expr.getType());
+        Class<? extends T> type = getType();
+        Preconditions.checkArgument(type.isEnum(), "%s is not an enum", type);
         exprs = Collections.<Expression<?>>singletonList(expr);
-        try {
-            values = (Enum<?>[]) expr.getType().getMethod("values").invoke(null);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        values = type.getEnumConstants();
     }
 
     @Override
@@ -60,11 +59,15 @@ public class EnumConversion<T> extends FactoryExpressionBase<T> {
     public T newInstance(Object... args) {
         if (args[0] != null) {
             if (args[0] instanceof String) {
-                return (T)Enum.valueOf((Class)getType(), (String)args[0]);
+                @SuppressWarnings("unchecked") //The expression type is an enum
+                T rv = (T) Enum.valueOf(getType().asSubclass(Enum.class), (String)args[0]);
+                return rv;
             } else if (args[0] instanceof Number) {
-                return (T)values[((Number)args[0]).intValue()];
+                return values[((Number)args[0]).intValue()];
             } else {
-                return (T)args[0];
+                @SuppressWarnings("unchecked")
+                T rv = (T)args[0];
+                return rv;
             }
         } else {
             return null;

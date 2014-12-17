@@ -17,14 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.IndexColumn;
+import javax.persistence.*;
 
 /**
  * The Class Cat.
@@ -39,7 +32,7 @@ public class Cat extends Animal {
 
     @OneToMany
     @JoinTable(name = "kittens", joinColumns = @JoinColumn(name = "cat_id"), inverseJoinColumns = @JoinColumn(name = "kitten_id"))
-    @IndexColumn(name = "ind")
+    @OrderColumn(name = "ind")
     private List<Cat> kittens = new ArrayList<Cat>();
 
     @OneToMany

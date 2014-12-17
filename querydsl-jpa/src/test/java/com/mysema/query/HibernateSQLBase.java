@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.jpa.HibernateTest;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.Color;
 import com.mysema.query.jpa.domain.QCat;
@@ -33,7 +34,7 @@ import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.HibernateTestRunner;
 
 @RunWith(HibernateTestRunner.class)
-public class HibernateSQLBase extends AbstractSQLTest {
+public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
@@ -49,6 +50,7 @@ public class HibernateSQLBase extends AbstractSQLTest {
         return new HibernateSQLQuery(session, templates);
     }
 
+    @Override
     public void setSession(Session session) {
         this.session = session;
     }

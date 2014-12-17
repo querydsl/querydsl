@@ -1,6 +1,14 @@
 package com.mysema.query.mongodb;
 
+import static org.junit.Assert.*;
+
 import java.net.UnknownHostException;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
@@ -10,13 +18,6 @@ import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
 import com.mysema.query.types.Predicate;
 import com.mysema.testutil.ExternalDB;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.*;
 
 @Category(ExternalDB.class)
 public class JoinTest {

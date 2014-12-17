@@ -73,7 +73,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Create a <code>this is not null</code> expression
+     * Create a {@code this is not null} expression
      *
      * @return
      */
@@ -85,7 +85,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Create a <code>this is null</code> expression
+     * Create a {@code this is null} expression
      *
      * @return
      */
@@ -97,7 +97,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get the <code>count(this)</code> expression
+     * Get the {@code count(this)} expression
      *
      * @return count(this)
      */
@@ -110,7 +110,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
 
     /**
-     * Get the <code>count(distinct this)</code> expression
+     * Get the {@code count(distinct this)} expression
      *
      * @return count(distinct this)
      */
@@ -122,7 +122,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this == right</code> expression
+     * Get a {@code this == right} expression
      *
      * <p>Use expr.isNull() instead of expr.eq(null)</p>
      *
@@ -138,7 +138,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this == right</code> expression
+     * Get a {@code this == right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -164,7 +164,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this in right</code> expression
+     * Get a {@code this in right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -178,7 +178,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this in right</code> expression
+     * Get a {@code this in right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -193,7 +193,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
 
     /**
-     * Get a <code>this in right</code> expression
+     * Get a {@code this in right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -203,7 +203,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this &lt;&gt; right</code> expression
+     * Get a {@code this <> right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -217,7 +217,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this &lt;&gt; right</code> expression
+     * Get a {@code this <> right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -243,7 +243,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this not in right</code> expression
+     * Get a {@code this not in right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -257,7 +257,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this not in right</code> expression
+     * Get a {@code this not in right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -271,7 +271,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>this not in right</code> expression
+     * Get a {@code this not in right} expression
      *
      * @param right rhs of the comparison
      * @return
@@ -282,7 +282,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
 
     /**
-     * Get a <code>nullif(this, other)</code> expression
+     * Get a {@code nullif(this, other)} expression
      *
      * @param other
      * @return
@@ -293,7 +293,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a <code>nullif(this, other)</code> expression
+     * Get a {@code nullif(this, other)} expression
      *
      * @param other
      * @return
