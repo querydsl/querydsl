@@ -34,6 +34,9 @@ public class SQLiteTemplates extends SQLTemplates {
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final SQLiteTemplates DEFAULT = new SQLiteTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

@@ -27,6 +27,9 @@ import com.mysema.query.sql.types.StringAsObjectType;
  */
 public class TeradataSpatialTemplates extends TeradataTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final TeradataSpatialTemplates DEFAULT = new TeradataSpatialTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override

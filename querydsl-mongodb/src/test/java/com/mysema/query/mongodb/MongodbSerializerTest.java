@@ -13,12 +13,15 @@
  */
 package com.mysema.query.mongodb;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -29,9 +32,6 @@ import com.mysema.query.mongodb.morphia.MorphiaSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.path.*;
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class MongodbSerializerTest {
 

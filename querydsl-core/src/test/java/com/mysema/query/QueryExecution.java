@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.support.QueryBase;

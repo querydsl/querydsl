@@ -437,7 +437,7 @@ public class InsertBase extends AbstractBaseTest {
     public void XML() {
         delete(QXmlTest.xmlTest).execute();
         QXmlTest xmlTest = QXmlTest.xmlTest;
-        String contents = "<html><head></head><body></body></html>";
+        String contents = "<html><head>a</head><body>b</body></html>";
         insert(xmlTest).set(xmlTest.col, contents).execute();
         assertEquals(contents, query().from(xmlTest).singleResult(xmlTest.col));
     }

@@ -30,6 +30,9 @@ import com.mysema.query.types.Ops;
  */
 public class SQLServerTemplates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final SQLServerTemplates DEFAULT = new SQLServerTemplates();
+
     public static Builder builder() {
         return new Builder() {
             @Override
