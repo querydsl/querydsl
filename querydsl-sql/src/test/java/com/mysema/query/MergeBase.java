@@ -13,8 +13,17 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.domain.QSurvey;
@@ -23,13 +32,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.*;
 
 public class MergeBase extends AbstractBaseTest{
 
@@ -96,7 +98,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, POSTGRES, SQLSERVER})
+    @ExcludeIn({CUBRID, DB2, DERBY, POSTGRES, SQLSERVER})
     public void Merge_With_Keys_Null_Id() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
                 .setNull(survey.id)

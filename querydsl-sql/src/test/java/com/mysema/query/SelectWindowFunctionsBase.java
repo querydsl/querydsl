@@ -3,6 +3,7 @@ package com.mysema.query;
 import static com.mysema.query.Constants.employee;
 import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Target.DB2;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.Target.TERADATA;
@@ -36,9 +37,9 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.avg(path));
         add(exprs, SQLExpressions.count(path));
         add(exprs, SQLExpressions.corr(path, path2));
-        add(exprs, SQLExpressions.covarPop(path, path2));
-        add(exprs, SQLExpressions.covarSamp(path, path2));
-        add(exprs, SQLExpressions.cumeDist(), TERADATA);
+        add(exprs, SQLExpressions.covarPop(path, path2), DB2);
+        add(exprs, SQLExpressions.covarSamp(path, path2), DB2);
+        add(exprs, SQLExpressions.cumeDist(), DB2, TERADATA);
         add(exprs, SQLExpressions.denseRank(), TERADATA);
         add(exprs, SQLExpressions.firstValue(path), TERADATA);
         add(exprs, SQLExpressions.lag(path), TERADATA);
@@ -46,18 +47,18 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.lead(path), TERADATA);
         add(exprs, SQLExpressions.max(path));
         add(exprs, SQLExpressions.min(path));
-        add(exprs, SQLExpressions.nthValue(path, 2), TERADATA);
-        add(exprs, SQLExpressions.ntile(3), TERADATA);
-        add(exprs, SQLExpressions.percentRank());
+        add(exprs, SQLExpressions.nthValue(path, 2), DB2, TERADATA);
+        add(exprs, SQLExpressions.ntile(3), DB2, TERADATA);
+        add(exprs, SQLExpressions.percentRank(), DB2);
         add(exprs, SQLExpressions.rank());
         add(exprs, SQLExpressions.rowNumber());
         add(exprs, SQLExpressions.stddev(path), TERADATA);
-        add(exprs, SQLExpressions.stddevPop(path), TERADATA);
-        add(exprs, SQLExpressions.stddevSamp(path), TERADATA);
+        add(exprs, SQLExpressions.stddevPop(path), DB2, TERADATA);
+        add(exprs, SQLExpressions.stddevSamp(path), DB2, TERADATA);
         add(exprs, SQLExpressions.sum(path));
         add(exprs, SQLExpressions.variance(path), TERADATA);
-        add(exprs, SQLExpressions.varPop(path), TERADATA);
-        add(exprs, SQLExpressions.varSamp(path), TERADATA);
+        add(exprs, SQLExpressions.varPop(path), DB2, TERADATA);
+        add(exprs, SQLExpressions.varSamp(path), DB2, TERADATA);
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
@@ -121,7 +122,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLSERVER)
+    @ExcludeIn({DB2, SQLSERVER})
     public void WindowFunctions_Regr() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;

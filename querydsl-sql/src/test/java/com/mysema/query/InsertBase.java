@@ -13,9 +13,21 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.SQLSubQuery;
@@ -29,16 +41,6 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.expr.Param;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Constants.survey2;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.*;
 
 public class InsertBase extends AbstractBaseTest {
 
@@ -171,14 +173,14 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(DERBY)
+    @ExcludeIn({DB2, DERBY})
     public void Insert_Null_Without_Columns() {
         assertEquals(1, insert(survey)
                 .values(4, null, null).execute());
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, HSQLDB, DERBY, ORACLE})
+    @ExcludeIn({FIREBIRD, HSQLDB, DB2, DERBY, ORACLE})
     public void Insert_Without_Values() {
         assertEquals(1, insert(survey).execute());
     }

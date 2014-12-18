@@ -323,6 +323,7 @@ public class FilterFactory {
         rv.add(expr.notLike("%"+knownValue.substring(1,2)+"%"));
 
         if (!target.equals(Target.DERBY)
+         && !target.equals(Target.DB2)
          && !target.equals(Target.FIREBIRD)
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)

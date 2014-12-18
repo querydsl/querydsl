@@ -15,23 +15,31 @@ package com.mysema.query.sql;
 
 import java.sql.Types;
 
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
 
 /**
- * DB2Templates is an SQL dialect for DB2
+ * DB2Templates is an SQL dialect for DB2 10.1.2
  *
  * @author tiwe
  *
  */
 public class DB2Templates extends SQLTemplates {
 
-    private String limitOffsetTemplate = "\noffset {1s} rows fetch next {0s} rows only";
-
     private String limitTemplate = "\nfetch first {0s} rows only";
 
-    private String offsetTemplate = "\noffset {0s} rows";
+    private String outerQueryStart = "select * from (\n  ";
+
+    private String outerQueryEnd = ") a where ";
+
+    private String limitOffsetTemplate = "rn > {0} and rn <= {1}";
+
+    private String offsetTemplate = "rn > {0}";
+
+    private String outerQuerySuffix = " order by rn";
 
     public static Builder builder() {
         return new Builder() {
@@ -56,20 +64,12 @@ public class DB2Templates extends SQLTemplates {
         setAutoIncrement(" generated always as identity");
         setFunctionJoinsWrapped(true);
         setDefaultValues("\nvalues (default)");
-
-        add(Ops.CONCAT, "varchar({0} || {1})");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
+        setNullsFirst(null);
+        setNullsLast(null);
 
         add(SQLOps.NEXTVAL, "next value for {0s}");
 
-        // case for eq
-        add(Ops.CASE_EQ, "case {1} end");
-        add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
-        add(Ops.CASE_EQ_ELSE,  "else {0}");
-
-        add(Ops.MathOps.RANDOM, "random()");
-        add(Ops.MathOps.ROUND, "floor({0})"); // FIXME
-        add(Ops.MathOps.POWER, "exp({1} * log({0}))");
+        add(Ops.MathOps.RANDOM, "rand()");
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
@@ -87,24 +87,30 @@ public class DB2Templates extends SQLTemplates {
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
 
-        add(Ops.DateTimeOps.ADD_YEARS, "{fn timestampadd(SQL_TSI_YEAR, {1}, {0})}");
-        add(Ops.DateTimeOps.ADD_MONTHS, "{fn timestampadd(SQL_TSI_MONTH, {1}, {0})}");
-        add(Ops.DateTimeOps.ADD_WEEKS, "{fn timestampadd(SQL_TSI_WEEK, {1}, {0})}");
-        add(Ops.DateTimeOps.ADD_DAYS, "{fn timestampadd(SQL_TSI_DAY, {1}, {0})}");
-        add(Ops.DateTimeOps.ADD_HOURS, "{fn timestampadd(SQL_TSI_HOUR, {1}, {0})}");
-        add(Ops.DateTimeOps.ADD_MINUTES, "{fn timestampadd(SQL_TSI_MINUTE, {1}, {0})}");
-        add(Ops.DateTimeOps.ADD_SECONDS, "{fn timestampadd(SQL_TSI_SECOND, {1}, {0})}");
+        add(Ops.DateTimeOps.ADD_YEARS, "{0} + {1} years");
+        add(Ops.DateTimeOps.ADD_MONTHS, "{0} + {1} months");
+        add(Ops.DateTimeOps.ADD_WEEKS, "{0} + {1} weeks");
+        add(Ops.DateTimeOps.ADD_DAYS, "{0} + {1} days");
+        add(Ops.DateTimeOps.ADD_HOURS, "{0} + {1} hours");
+        add(Ops.DateTimeOps.ADD_MINUTES, "{0} + {1} minutes");
+        add(Ops.DateTimeOps.ADD_SECONDS, "{0} + {1} seconds");
 
-        add(Ops.DateTimeOps.DIFF_YEARS, "{fn timestampdiff(SQL_TSI_YEAR, {0}, {1})}");
-        add(Ops.DateTimeOps.DIFF_MONTHS, "{fn timestampdiff(SQL_TSI_MONTH, {0}, {1})}");
-        add(Ops.DateTimeOps.DIFF_WEEKS, "{fn timestampdiff(SQL_TSI_WEEK, {0}, {1})}");
-        add(Ops.DateTimeOps.DIFF_DAYS, "{fn timestampdiff(SQL_TSI_DAY, {0}, {1})}");
-        add(Ops.DateTimeOps.DIFF_HOURS, "{fn timestampdiff(SQL_TSI_HOUR, {0}, {1})}");
-        add(Ops.DateTimeOps.DIFF_MINUTES, "{fn timestampdiff(SQL_TSI_MINUTE, {0}, {1})}");
-        add(Ops.DateTimeOps.DIFF_SECONDS, "{fn timestampdiff(SQL_TSI_SECOND, {0}, {1})}");
+        // FIXME
+        add(Ops.DateTimeOps.DIFF_YEARS, "timestampdiff(256, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_MONTHS, "timestampdiff(64, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "timestampdiff(32, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_DAYS, "timestampdiff(16, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(8, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(4, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(2, char({0} - {1}))");
 
-        // left via substr
-        add(Ops.StringOps.LEFT, "substr({0},1,{1})");
+        add(Ops.DateTimeOps.TRUNC_YEAR, "trunc_timestamp({0}, 'year')");
+        add(Ops.DateTimeOps.TRUNC_MONTH, "trunc_timestamp({0}, 'month')");
+        add(Ops.DateTimeOps.TRUNC_WEEK, "trunc_timestamp({0}, 'week')");
+        add(Ops.DateTimeOps.TRUNC_DAY, "trunc_timestamp({0}, 'day')");
+        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc_timestamp({0}, 'hour')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_timestamp({0}, 'minute')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "trunc_timestamp({0}, 'second')");
 
         addTypeNameToCode("smallint", Types.TINYINT, true);
         addTypeNameToCode("long varchar for bit data", Types.LONGVARBINARY);
@@ -114,6 +120,15 @@ public class DB2Templates extends SQLTemplates {
         addTypeNameToCode("object", Types.JAVA_OBJECT, true);
         addTypeNameToCode("xml", Types.SQLXML,true);
     }
+
+    @Override
+    public String getCastTypeNameForCode(int code) {
+        switch (code) {
+            case Types.VARCHAR:  return "varchar(4000)";
+            default: return super.getCastTypeNameForCode(code);
+        }
+    }
+
 
     @Override
     public String serialize(String literal, int jdbcType) {
@@ -129,15 +144,44 @@ public class DB2Templates extends SQLTemplates {
     }
 
     @Override
-    protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
-        QueryModifiers mod = metadata.getModifiers();
-        if (mod.getLimit() == null) {
-            context.handle(offsetTemplate, mod.getOffset());
-        } else if (mod.getOffset() == null) {
-            context.handle(limitTemplate, mod.getLimit());
+    public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
+        if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
+            QueryModifiers mod = metadata.getModifiers();
+            if (mod.getOffset() == null) {
+                context.serializeForQuery(metadata, forCountRow);
+                context.handle(limitTemplate, mod.getLimit());
+            } else {
+                context.append(outerQueryStart);
+                metadata = metadata.clone();
+                WindowFunction<Long> rn = SQLExpressions.rowNumber().over();
+                for (OrderSpecifier<?> os : metadata.getOrderBy()) {
+                    rn.orderBy(os);
+                }
+                metadata.addProjection(rn.as("rn"));
+                metadata.clearOrderBy();
+                context.serializeForQuery(metadata, forCountRow);
+                context.append(outerQueryEnd);
+                if (mod.getLimit() == null) {
+                    context.handle(offsetTemplate, mod.getOffset());
+                } else {
+                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
+                }
+                context.append(outerQuerySuffix);
+            }
+
         } else {
-            context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());
+            context.serializeForQuery(metadata, forCountRow);
+        }
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(QueryFlag.Position.END, metadata.getFlags());
         }
     }
+
+    @Override
+    protected void serializeModifiers(QueryMetadata metadata, SQLSerializer context) {
+        // do nothing
+    }
+
 
 }

@@ -13,12 +13,23 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.*;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.*;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -39,16 +50,8 @@ import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+
 import junit.framework.Assert;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
-import org.junit.Ignore;
-import org.junit.Test;
-import static com.mysema.query.Constants.*;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.*;
 
 public class SelectBase extends AbstractBaseTest {
 
@@ -174,13 +177,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
@@ -433,7 +436,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, DB2, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
         TestQuery query = query().from(employee, employee2);
@@ -456,7 +459,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, HSQLDB, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
 
@@ -480,7 +483,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
+    @ExcludeIn({CUBRID, DB2, DERBY, FIREBIRD, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -601,7 +604,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({H2, DERBY, ORACLE, SQLSERVER})
+    @ExcludeIn({H2, DB2, DERBY, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
         NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
         query().from(employee)
@@ -752,7 +755,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(DERBY)
+    @ExcludeIn({DB2, DERBY})
     public void Like_Number() {
         assertEquals(5, query().from(employee)
                 .where(employee.id.like("1%")).count());
@@ -819,7 +822,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, DERBY, FIREBIRD, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({ORACLE, DB2, DERBY, FIREBIRD, SQLSERVER, CUBRID, TERADATA})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
@@ -866,7 +869,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, HSQLDB})
+    @ExcludeIn({DB2, DERBY, HSQLDB})
     public void Literals() {
         assertEquals(1, singleResult(ConstantImpl.create(1)).intValue());
         assertEquals(2l, singleResult(ConstantImpl.create(2l)).longValue());
@@ -1050,7 +1053,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, HSQLDB, ORACLE, SQLSERVER})
+    @ExcludeIn({DB2, DERBY, FIREBIRD, HSQLDB, ORACLE, SQLSERVER})
     @SkipForQuoted
     public void Path_Alias() {
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
@@ -1422,7 +1425,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD})
+    @ExcludeIn({DB2, DERBY, FIREBIRD})
     public void Substring() {
         //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
         query().from(employee)
@@ -1481,7 +1484,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(DERBY)
+    @ExcludeIn({DB2, DERBY})
     public void Tuple2() {
         query().from(employee)
             .list(Expressions.as(ConstantImpl.create("1"),"code"),
@@ -1682,7 +1685,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, H2})
+    @ExcludeIn({DB2, DERBY, H2})
     public void YearWeek() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
         assertEquals(Integer.valueOf(200006), query.singleResult(employee.datefield.yearWeek()));

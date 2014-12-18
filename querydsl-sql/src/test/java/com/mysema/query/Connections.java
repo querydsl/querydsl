@@ -60,7 +60,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited, firebirdInited;
+    private static boolean db2Inited, derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited, firebirdInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null) {
@@ -88,9 +88,9 @@ public final class Connections {
     }
 
     private static Connection getDB2() throws SQLException, ClassNotFoundException {
-        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        String url = "jdbc:derby:target/demoDB;create=true";
-        return DriverManager.getConnection(url, "", "");
+        Class.forName("com.ibm.db2.jcc.DB2Driver");
+        String url = "jdbc:db2://192.168.0.14:50001/SAMPLE";
+        return DriverManager.getConnection(url, "db2inst1", "a3sd!fDj");
     }
 
     private static Connection getDerby() throws SQLException, ClassNotFoundException {
@@ -302,20 +302,16 @@ public final class Connections {
     }
 
     public static void initDB2() throws SQLException, ClassNotFoundException {
-        targetHolder.set(Target.DERBY);
-        SQLTemplates templates = new DerbyTemplates();
-        Connection c = getDerby();
+        targetHolder.set(Target.DB2);
+        SQLTemplates templates = new DB2Templates();
+        Connection c = getDB2();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (derbyInited) {
+        if (db2Inited) {
             return;
         }
-
-        // types
-        dropType(stmt, "price restrict");
-        stmt.execute("create type price external name 'com.example.Price' language java");
 
         // survey
         dropTable(templates, "SURVEY");
@@ -358,7 +354,7 @@ public final class Connections {
         dropTable(templates, "XML_TEST");
         stmt.execute("create table XML_TEST(COL varchar(128))");
 
-        derbyInited = true;
+        db2Inited = true;
     }
 
 

@@ -58,7 +58,6 @@ public class DerbyTemplates extends SQLTemplates {
         setDefaultValues("\nvalues (default)");
 
         add(Ops.CONCAT, "varchar({0} || {1})");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
 
         add(SQLOps.NEXTVAL, "next value for {0s}");
 
