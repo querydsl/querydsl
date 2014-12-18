@@ -29,6 +29,9 @@ import com.mysema.query.types.OrderSpecifier;
  */
 public class DB2Templates extends SQLTemplates {
 
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
+    public static final DB2Templates DEFAULT = new DB2Templates();
+
     private String limitTemplate = "\nfetch first {0s} rows only";
 
     private String outerQueryStart = "select * from (\n  ";
