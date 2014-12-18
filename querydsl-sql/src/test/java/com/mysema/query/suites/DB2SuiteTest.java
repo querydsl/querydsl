@@ -1,10 +1,13 @@
 package com.mysema.query.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.query.*;
 import com.mysema.query.sql.DB2Templates;
+import com.mysema.testutil.ExternalDB;
 
+@Category(ExternalDB.class)
 public class DB2SuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
