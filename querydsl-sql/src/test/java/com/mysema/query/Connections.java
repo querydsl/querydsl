@@ -17,11 +17,12 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 
+import org.hsqldb.types.Types;
+
 import com.google.common.collect.Maps;
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
 import com.mysema.query.sql.*;
-import org.hsqldb.types.Types;
 
 /**
  * @author tiwe
@@ -287,6 +288,10 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
 
+        // numbers
+        stmt.execute("drop table if exists NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 int)");
+
         // xml
         stmt.execute("drop table if exists XML_TEST");
         stmt.execute("create table XML_TEST(COL varchar(128))");
@@ -346,6 +351,10 @@ public final class Connections {
 
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 boolean)");
 
         // xml
         dropTable(templates, "XML_TEST");
@@ -461,6 +470,10 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
 
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 char(1))");
+
         // xml
         dropTable(templates, "XML_TEST");
         stmt.execute("create table XML_TEST(COL varchar(128))");
@@ -526,12 +539,15 @@ public final class Connections {
         stmt.execute("alter table EMPLOYEE alter column id int auto_increment");
         addEmployees(INSERT_INTO_EMPLOYEE);
 
-
         // date_test and time_test
         stmt.execute("drop table TIME_TEST if exists");
         stmt.execute("drop table DATE_TEST if exists");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 boolean)");
 
         // xml
         dropTable(templates, "XML_TEST");
@@ -598,6 +614,10 @@ public final class Connections {
         stmt.execute("drop table DATE_TEST if exists");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 boolean)");
 
         // xml
         dropTable(templates, "XML_TEST");
@@ -751,6 +771,10 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute("create table date_test(date_test date)");
 
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 number(1,0))");
+
         // xml
         dropTable(templates, "XML_TEST");
         stmt.execute("create table XML_TEST(COL XMLTYPE)");
@@ -843,6 +867,10 @@ public final class Connections {
         stmt.execute(quote(CREATE_TABLE_TIMETEST, "TIME_TEST"));
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
 
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table \"NUMBER_TEST\"(\"COL1\" boolean)");
+
         // xml
         dropTable(templates, "XML_TEST");
         stmt.execute("create table \"XML_TEST\"(\"COL\" XML)");
@@ -910,6 +938,10 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
 
+        // numbers
+        stmt.execute("drop table if exists NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 integer)");
+
         // xml
         stmt.execute("drop table if exists XML_TEST");
         stmt.execute("create table XML_TEST(COL varchar(128))");
@@ -965,6 +997,10 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 bit)");
 
         // xml
         dropTable(templates, "XML_TEST");
@@ -1036,6 +1072,10 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 int)");
 
         // xml
         dropTable(templates, "XML_TEST");

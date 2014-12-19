@@ -30,7 +30,7 @@ public class QNumberTest extends RelationalPathSpatial<QNumberTest> {
     public final NumberPath<Byte> col1Number = createNumber("col2", Byte.class);
 
     public QNumberTest(String variable) {
-        super(QNumberTest.class, forVariable(variable), "null", "NUMBER_TEST");
+        super(QNumberTest.class, forVariable(variable), "PUBLIC", "NUMBER_TEST");
         addMetadata();
     }
 
@@ -40,18 +40,18 @@ public class QNumberTest extends RelationalPathSpatial<QNumberTest> {
     }
 
     public QNumberTest(Path<? extends QNumberTest> path) {
-        super(path.getType(), path.getMetadata(), "null", "NUMBER_TEST");
+        super(path.getType(), path.getMetadata(), "PUBLIC", "NUMBER_TEST");
         addMetadata();
     }
 
     public QNumberTest(PathMetadata<?> metadata) {
-        super(QNumberTest.class, metadata, "null", "NUMBER_TEST");
+        super(QNumberTest.class, metadata, "PUBLIC", "NUMBER_TEST");
         addMetadata();
     }
 
     public void addMetadata() {
-        addMetadata(col1Boolean, ColumnMetadata.named("col1").withIndex(1).ofType(Types.BIT));
-        addMetadata(col1Number, ColumnMetadata.named("col1").withIndex(1).ofType(Types.BIT));
+        addMetadata(col1Boolean, ColumnMetadata.named("COL1").withIndex(1).ofType(Types.BIT));
+        addMetadata(col1Number, ColumnMetadata.named("COL1").withIndex(1).ofType(Types.BIT));
     }
 
 }

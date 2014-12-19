@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql.domain;
 
+import java.sql.Types;
+
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
@@ -48,9 +50,9 @@ public class QSurvey extends RelationalPathBase<QSurvey>{
     }
 
     protected void addMetadata() {
-        addMetadata(name, ColumnMetadata.named("NAME"));
-        addMetadata(name2, ColumnMetadata.named("NAME2"));
-        addMetadata(id, ColumnMetadata.named("ID"));
+        addMetadata(name, ColumnMetadata.named("NAME").ofType(Types.VARCHAR));
+        addMetadata(name2, ColumnMetadata.named("NAME2").ofType(Types.VARCHAR));
+        addMetadata(id, ColumnMetadata.named("ID").ofType(Types.INTEGER));
     }
 
 }

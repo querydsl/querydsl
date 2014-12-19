@@ -14,6 +14,7 @@
 package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
+import java.sql.Types;
 
 import com.mysema.query.sql.ColumnMetadata;
 import com.mysema.query.sql.ForeignKey;
@@ -65,13 +66,13 @@ public class QEmployee extends RelationalPathBase<Employee> {
     }
 
     protected void addMetadata() {
-        addMetadata(id, ColumnMetadata.named("ID"));
-        addMetadata(firstname, ColumnMetadata.named("FIRSTNAME"));
-        addMetadata(lastname, ColumnMetadata.named("LASTNAME"));
-        addMetadata(salary, ColumnMetadata.named("SALARY"));
-        addMetadata(datefield, ColumnMetadata.named("DATEFIELD"));
-        addMetadata(timefield, ColumnMetadata.named("TIMEFIELD"));
-        addMetadata(superiorId, ColumnMetadata.named("SUPERIOR_ID"));
+        addMetadata(id, ColumnMetadata.named("ID").ofType(Types.INTEGER));
+        addMetadata(firstname, ColumnMetadata.named("FIRSTNAME").ofType(Types.VARCHAR));
+        addMetadata(lastname, ColumnMetadata.named("LASTNAME").ofType(Types.VARCHAR));
+        addMetadata(salary, ColumnMetadata.named("SALARY").ofType(Types.DECIMAL));
+        addMetadata(datefield, ColumnMetadata.named("DATEFIELD").ofType(Types.DATE));
+        addMetadata(timefield, ColumnMetadata.named("TIMEFIELD").ofType(Types.TIME));
+        addMetadata(superiorId, ColumnMetadata.named("SUPERIOR_ID").ofType(Types.INTEGER));
     }
 
 }
