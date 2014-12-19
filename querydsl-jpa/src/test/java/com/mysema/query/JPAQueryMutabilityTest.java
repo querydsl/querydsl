@@ -13,27 +13,39 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.support.Expressions.numberOperation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.jpa.HQLTemplates;
+import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.OperatorImpl;
 import com.mysema.testutil.JPATestRunner;
 
-@Ignore
 @RunWith(JPATestRunner.class)
 public class JPAQueryMutabilityTest implements JPATest {
 
     private EntityManager entityManager;
 
+    private final OperatorImpl<Integer> customOperator = new OperatorImpl<Integer>("CUSTOM", "SIGN");
+
+    private final JPQLTemplates customTemplates = new HQLTemplates() {{
+            add(customOperator, "sign({0})");
+    }};
+
     protected JPAQuery query() {
         return new JPAQuery(entityManager);
+    }
+
+    protected JPAQuery query(JPQLTemplates templates) {
+        return new JPAQuery(entityManager, templates);
     }
 
     @Override
@@ -86,6 +98,33 @@ public class JPAQueryMutabilityTest implements JPATest {
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
         query2.list(cat);
+    }
+
+    @Test
+    public void Clone_Custom_Templates() {
+        QCat cat = QCat.cat;
+        JPAQuery query = query().from(cat);
+        //attach using the custom templates
+        query.clone(entityManager, customTemplates)
+                .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
+    }
+
+    @Test
+    public void Clone_Keep_Templates() {
+        QCat cat = QCat.cat;
+        JPAQuery query = query(customTemplates).from(cat);
+        //keep the original templates
+        query.clone()
+                .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void Clone_Lose_Templates() {
+        QCat cat = QCat.cat;
+        JPAQuery query = query(customTemplates).from(cat);
+        //clone using the entitymanager's default templates
+        query.clone(entityManager)
+                .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
     }
 
     private void assertProjectionEmpty(JPAQuery query) {
