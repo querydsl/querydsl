@@ -6,24 +6,26 @@ The JPA module provides integration with the JPA 2 persistence API.
 
  Add the following dependencies to your Maven project :
 
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>${querydsl.version}</version>
-      <scope>provided</scope>
-    </dependency>    
-        
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-jpa</artifactId>
-      <version>${querydsl.version}</version>
-    </dependency>
+```XML
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-apt</artifactId>
+  <version>${querydsl.version}</version>
+  <scope>provided</scope>
+</dependency>    
     
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
-    </dependency>   
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-jpa</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>
+```
 
 And now, configure the Maven APT plugin :
 
@@ -68,10 +70,12 @@ Now you are able to construct JPQL query instances and instances of the query do
 
 Querying with Querydsl JPA is as simple as this :
 
-    QCustomer customer = QCustomer.customer;
-    JPAQuery query = new JPAQuery(entityManager);
-    Customer bob = query.from(customer)
-      .where(customer.firstName.eq("Bob"))
-      .uniqueResult(customer);
-      
+```JAVA
+QCustomer customer = QCustomer.customer;
+JPAQuery query = new JPAQuery(entityManager);
+Customer bob = query.from(customer)
+  .where(customer.firstName.eq("Bob"))
+  .uniqueResult(customer);
+```
+
 For more information on the Querydsl JPA module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration
