@@ -13,12 +13,13 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.*;
+
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
-import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -282,7 +283,20 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @Override
     public void visitConstant(Object constant) {
         if (inCaseOperation && templates.isCaseWithLiterals()) {
-            visitLiteral(constant);
+            if (constant instanceof Collection) {
+                append("(");
+                boolean first = true;
+                for (Object o : (Collection)constant) {
+                    if (!first) {
+                        append(", ");
+                    }
+                    visitLiteral(o);
+                    first = false;
+                }
+                append(")");
+            } else {
+                visitLiteral(constant);
+            }
         } else {
             boolean wrap = templates.wrapConstant(constant);
             if (wrap) {

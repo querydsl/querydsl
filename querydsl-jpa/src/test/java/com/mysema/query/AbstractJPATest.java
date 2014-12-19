@@ -13,15 +13,19 @@
  */
 package com.mysema.query;
 
-import java.io.*;
+import static org.junit.Assert.*;
+import static com.mysema.query.Target.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.Calendar;
 import java.util.Map.Entry;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
@@ -42,11 +46,9 @@ import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.*;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.*;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 /**
  * @author tiwe
@@ -310,6 +312,14 @@ public abstract class AbstractJPATest {
         query().from(cat)
             .list(Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
                     .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                    .otherwise(4));
+    }
+
+    @Test
+    public void Case3() {
+        query().from(cat)
+            .list(Expressions.cases()
+                    .when(cat.toes.in(2, 3)).then(cat.id.multiply(cat.toes))
                     .otherwise(4));
     }
 
