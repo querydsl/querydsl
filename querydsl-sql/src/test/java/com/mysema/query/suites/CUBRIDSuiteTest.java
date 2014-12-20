@@ -24,7 +24,7 @@ public class CUBRIDSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initCubrid();
-        Connections.setTemplates(CUBRIDTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(CUBRIDTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

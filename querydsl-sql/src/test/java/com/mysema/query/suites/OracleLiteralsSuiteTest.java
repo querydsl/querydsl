@@ -26,7 +26,7 @@ public class OracleLiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initOracle();
-        Connections.setTemplates(OracleSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(OracleSpatialTemplates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

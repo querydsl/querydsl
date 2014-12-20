@@ -83,11 +83,7 @@ public final class Connections {
         return configurationHolder.get();
     }
 
-    public static void setConfiguration(Configuration conf) {
-        configurationHolder.set(conf);
-    }
-
-    public static void setTemplates(SQLTemplates templates) {
+    public static void initConfiguration(SQLTemplates templates) {
         configurationHolder.set(new Configuration(templates));
     }
 

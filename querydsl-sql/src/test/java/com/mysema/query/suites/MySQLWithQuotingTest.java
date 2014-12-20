@@ -24,7 +24,7 @@ public class MySQLWithQuotingTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.setTemplates(MySQLSpatialTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.initConfiguration(MySQLSpatialTemplates.builder().quote().newLineToSingleSpace().build());
     }
 
 }

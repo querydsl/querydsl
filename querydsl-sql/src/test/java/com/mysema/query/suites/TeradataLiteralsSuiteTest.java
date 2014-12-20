@@ -27,7 +27,7 @@ public class TeradataLiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initTeradata();
-        Connections.setTemplates(TeradataSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(TeradataSpatialTemplates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

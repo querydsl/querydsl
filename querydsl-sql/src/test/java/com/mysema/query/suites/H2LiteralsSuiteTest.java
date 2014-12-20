@@ -22,7 +22,7 @@ public class H2LiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(GeoDBTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(GeoDBTemplates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

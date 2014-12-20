@@ -26,7 +26,7 @@ public class MSSQLLiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initSQLServer();
-        Connections.setTemplates(SQLServer2008SpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(SQLServer2008SpatialTemplates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

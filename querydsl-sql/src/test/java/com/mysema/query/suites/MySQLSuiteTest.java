@@ -27,7 +27,7 @@ public class MySQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.setTemplates(MySQLSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(MySQLSpatialTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

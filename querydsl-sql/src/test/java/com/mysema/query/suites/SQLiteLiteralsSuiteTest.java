@@ -21,7 +21,7 @@ public class SQLiteLiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initSQLite();
-        Connections.setTemplates(SQLiteTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(SQLiteTemplates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

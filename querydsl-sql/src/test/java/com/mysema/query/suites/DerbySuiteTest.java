@@ -21,7 +21,7 @@ public class DerbySuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initDerby();
-        Connections.setTemplates(DerbyTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(DerbyTemplates.builder().newLineToSingleSpace().build());
     }
 
 }
