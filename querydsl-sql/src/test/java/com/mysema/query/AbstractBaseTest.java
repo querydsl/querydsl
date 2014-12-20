@@ -75,8 +75,6 @@ public abstract class AbstractBaseTest {
 
     protected Configuration configuration = Connections.getConfiguration();
 
-    protected SQLTemplates templates = configuration.getTemplates();
-
     @Nullable
     protected String expectedQuery;
 
