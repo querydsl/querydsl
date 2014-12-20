@@ -11,15 +11,16 @@ import java.io.File.pathSeparator
 trait CompileTestUtils {
 
   private object env extends Settings {
+
+    private def jarPathOfClass(className: String) = {
+      Class.forName(className).getProtectionDomain.getCodeSource.getLocation
+    }
+
     val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList
     val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
 
     classpath.value = cp.mkString(pathSeparator)
     usejavacp.value = true
-  }
-
-  private def jarPathOfClass(className: String) = {
-    Class.forName(className).getProtectionDomain.getCodeSource.getLocation
   }
 
   def assertCompileSuccess(files: Traversable[File]): Unit = {
