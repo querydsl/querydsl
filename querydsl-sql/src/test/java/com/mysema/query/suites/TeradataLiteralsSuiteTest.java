@@ -4,11 +4,11 @@ import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
 import com.mysema.query.*;
-import com.mysema.query.sql.FirebirdTemplates;
+import com.mysema.query.sql.spatial.TeradataSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
-public class FirebirdSuiteTest extends AbstractSuite {
+public class TeradataLiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
@@ -16,6 +16,9 @@ public class FirebirdSuiteTest extends AbstractSuite {
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
+    public static class SelectTeradata extends SelectTeradataBase {}
+    public static class Spatial extends SpatialBase {}
+    public static class SelectWindowFunctions extends SelectWindowFunctionsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
@@ -23,7 +26,9 @@ public class FirebirdSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initFirebird();
-        Connections.setTemplates(FirebirdTemplates.builder().newLineToSingleSpace().build());
+        Connections.initTeradata();
+        Connections.setTemplates(TeradataSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.getConfiguration().setUseLiterals(true);
     }
+
 }

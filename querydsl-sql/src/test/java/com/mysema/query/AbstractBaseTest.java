@@ -13,9 +13,17 @@
  */
 package com.mysema.query;
 
-import javax.annotation.Nullable;
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Connection;
 import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.junit.Rule;
+import org.junit.rules.MethodRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.*;
@@ -26,11 +34,6 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.query.sql.teradata.TeradataQuery;
 import com.mysema.query.sql.types.XMLAsStringType;
-import org.junit.Rule;
-import org.junit.rules.MethodRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractBaseTest {
 
@@ -68,11 +71,11 @@ public abstract class AbstractBaseTest {
 
     protected Connection connection = Connections.getConnection();
 
-    protected SQLTemplates templates = Connections.getTemplates();
-
     protected Target target = Connections.getTarget();
 
-    protected Configuration configuration = new Configuration(templates);
+    protected Configuration configuration = Connections.getConfiguration();
+
+    protected SQLTemplates templates = configuration.getTemplates();
 
     @Nullable
     protected String expectedQuery;

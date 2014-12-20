@@ -1,14 +1,11 @@
 package com.mysema.query.suites;
 
 import org.junit.BeforeClass;
-import org.junit.experimental.categories.Category;
 
 import com.mysema.query.*;
-import com.mysema.query.sql.FirebirdTemplates;
-import com.mysema.testutil.ExternalDB;
+import com.mysema.query.sql.spatial.GeoDBTemplates;
 
-@Category(ExternalDB.class)
-public class FirebirdSuiteTest extends AbstractSuite {
+public class H2LiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
@@ -16,6 +13,7 @@ public class FirebirdSuiteTest extends AbstractSuite {
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
+    public static class Spatial extends SpatialBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
@@ -23,7 +21,9 @@ public class FirebirdSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initFirebird();
-        Connections.setTemplates(FirebirdTemplates.builder().newLineToSingleSpace().build());
+        Connections.initH2();
+        Connections.setTemplates(GeoDBTemplates.builder().newLineToSingleSpace().build());
+        Connections.getConfiguration().setUseLiterals(true);
     }
+
 }

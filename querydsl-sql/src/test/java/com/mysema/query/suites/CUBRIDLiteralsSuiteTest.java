@@ -4,11 +4,11 @@ import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
 import com.mysema.query.*;
-import com.mysema.query.sql.FirebirdTemplates;
+import com.mysema.query.sql.CUBRIDTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
-public class FirebirdSuiteTest extends AbstractSuite {
+public class CUBRIDLiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
@@ -23,7 +23,9 @@ public class FirebirdSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initFirebird();
-        Connections.setTemplates(FirebirdTemplates.builder().newLineToSingleSpace().build());
+        Connections.initCubrid();
+        Connections.setTemplates(CUBRIDTemplates.builder().newLineToSingleSpace().build());
+        Connections.getConfiguration().setUseLiterals(true);
     }
+
 }

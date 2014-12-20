@@ -1,11 +1,11 @@
 package com.mysema.query.suites;
 
+import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
+
 import com.mysema.query.*;
 import com.mysema.query.sql.spatial.MySQLSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
-
-import org.junit.BeforeClass;
-import org.junit.experimental.categories.Category;
 
 @Category(ExternalDB.class)
 public class MySQLSuiteTest extends AbstractSuite {
@@ -23,13 +23,6 @@ public class MySQLSuiteTest extends AbstractSuite {
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
     public static class Update extends UpdateBase {}
-
-    // with literals
-    public static class DeleteUseLiterals extends DeleteUseLiteralsBase {}
-    public static class InsertUseLiterals extends InsertUseLiteralsBase {}
-    public static class MergeUseLiterals extends MergeUseLiteralsBase {}
-    public static class SelectUseLiterals extends SelectUseLiteralsBase {}
-    public static class UpdateUseLiterals extends UpdateUseLiteralsBase {}
 
     @BeforeClass
     public static void setUp() throws Exception {

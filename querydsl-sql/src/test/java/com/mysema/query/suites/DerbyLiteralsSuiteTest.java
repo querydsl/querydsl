@@ -1,14 +1,11 @@
 package com.mysema.query.suites;
 
 import org.junit.BeforeClass;
-import org.junit.experimental.categories.Category;
 
 import com.mysema.query.*;
-import com.mysema.query.sql.FirebirdTemplates;
-import com.mysema.testutil.ExternalDB;
+import com.mysema.query.sql.DerbyTemplates;
 
-@Category(ExternalDB.class)
-public class FirebirdSuiteTest extends AbstractSuite {
+public class DerbyLiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
@@ -23,7 +20,9 @@ public class FirebirdSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initFirebird();
-        Connections.setTemplates(FirebirdTemplates.builder().newLineToSingleSpace().build());
+        Connections.initDerby();
+        Connections.setTemplates(DerbyTemplates.builder().newLineToSingleSpace().build());
+        Connections.getConfiguration().setUseLiterals(true);
     }
+
 }

@@ -52,4 +52,13 @@ public class MySQLSpatialTemplates extends MySQLTemplates {
         add(SpatialOps.NUM_INTERIOR_RING, "NumInteriorRings({0})");
     }
 
+    public String serialize(String literal, int jdbcType) {
+        // TODO better check for spatial literals
+        if (literal.startsWith("GeomFromText")) {
+            return literal;
+        } else {
+            return super.serialize(literal, jdbcType);
+        }
+    }
+
 }

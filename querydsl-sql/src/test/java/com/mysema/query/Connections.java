@@ -36,7 +36,7 @@ public final class Connections {
 
     private static ThreadLocal<Target> targetHolder = new ThreadLocal<Target>();
 
-    private static ThreadLocal<SQLTemplates> templatesHolder = new ThreadLocal<SQLTemplates>();
+    private static ThreadLocal<Configuration> configurationHolder = new ThreadLocal<Configuration>();
 
     // datetest
     private static final String CREATE_TABLE_DATETEST = "create table DATE_TEST(DATE_TEST date)";
@@ -79,12 +79,16 @@ public final class Connections {
         return targetHolder.get();
     }
 
-    public static SQLTemplates getTemplates() {
-        return templatesHolder.get();
+    public static Configuration getConfiguration() {
+        return configurationHolder.get();
+    }
+
+    public static void setConfiguration(Configuration conf) {
+        configurationHolder.set(conf);
     }
 
     public static void setTemplates(SQLTemplates templates) {
-        templatesHolder.set(templates);
+        configurationHolder.set(new Configuration(templates));
     }
 
     private static Connection getDerby() throws SQLException, ClassNotFoundException {
