@@ -48,7 +48,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     @Nullable
     protected Expression<?> union;
 
-    private SubQueryExpression<?> firstUnionSubQuery;
+    protected SubQueryExpression<?> firstUnionSubQuery;
 
     protected boolean unionAll;
 
@@ -482,6 +482,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     protected void clone(Q query) {
         this.union = query.union;
         this.unionAll = query.unionAll;
+        this.firstUnionSubQuery = query.firstUnionSubQuery;
     }
 
     @Override

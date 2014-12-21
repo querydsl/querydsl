@@ -11,6 +11,7 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Projections;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
@@ -235,5 +236,18 @@ public class UnionBase extends AbstractBaseTest {
         }
     }
 
+    @Test
+    @ExcludeIn({DERBY, CUBRID})
+    public void Union_Clone() {
+        NumberPath<Integer> idAlias = new NumberPath<Integer>(Integer.class, "id");
+        ListSubQuery<Employee> sq1 = sq().from(employee)
+                .list(Projections.constructor(Employee.class, employee.id.as(idAlias)));
+        ListSubQuery<Employee> sq2 = sq().from(employee)
+                .list(Projections.constructor(Employee.class, employee.id.as(idAlias)));
+
+        TestQuery query = query();
+        query.union(sq1, sq2);
+        query.clone().list(idAlias);
+    }
 
 }

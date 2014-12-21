@@ -62,6 +62,7 @@ public abstract class AbstractBaseTest {
             TestQuery q = new TestQuery(conn, getConfiguration(), getMetadata().clone());
             q.union = union;
             q.unionAll = unionAll;
+            q.firstUnionSubQuery = firstUnionSubQuery;
             return q;
         }
     }
