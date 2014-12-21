@@ -61,6 +61,6 @@ public class GeometryWktType extends AbstractType<Geometry> {
 
     @Override
     public String getLiteral(Geometry geometry) {
-        return Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
+        return "'" + Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry) + "'";
     }
 }

@@ -50,13 +50,4 @@ public class GeoDBTemplates extends H2Templates {
         add(SpatialTemplatesSupport.getSpatialOps(true));
     }
 
-    public String serialize(String literal, int jdbcType) {
-        // TODO better check for spatial literals
-        if (literal.startsWith("ST_")) {
-            return literal;
-        } else {
-            return super.serialize(literal, jdbcType);
-        }
-    }
-
 }
