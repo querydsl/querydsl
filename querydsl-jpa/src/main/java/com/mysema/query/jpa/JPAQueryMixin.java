@@ -13,17 +13,22 @@
  */
 package com.mysema.query.jpa;
 
-import javax.persistence.Entity;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
+import javax.persistence.Entity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.*;
+import com.mysema.query.support.Context;
+import com.mysema.query.support.PathsExtractor;
+import com.mysema.query.support.QueryMixin;
+import com.mysema.query.support.ReplaceVisitor;
 import com.mysema.query.types.*;
 import com.mysema.query.types.path.CollectionPathBase;
 
@@ -169,6 +174,10 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
                     replaceVisitor = new ReplaceVisitor() {
                         public Expression<?> visit(Path<?> expr, Void context) {
                             return convertPathForOrder(expr);
+                        }
+                        public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
+                            // don't shorten paths inside subquery expressions
+                            return expr;
                         }
                     };
                 }
