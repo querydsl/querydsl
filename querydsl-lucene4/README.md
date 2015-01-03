@@ -48,7 +48,7 @@ Querying with Querydsl Lucene is as simple as this:
 ```JAVA
 QDocument doc = new QDocument("doc");
 
-IndexSearcher searcher = new IndexSearher(index);
+IndexSearcher searcher = new IndexSearcher(index);
 LuceneQuery query = new LuceneQuery(true, searcher); 
 List<Document> documents = query
     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
