@@ -262,6 +262,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean spatial;
     
     /**
+     * comma separated list of "table types" to export.
+     * ex: "TABLE, VIEW, MATERIALIZED VIEW"
+     * 
+     * @parameter
+     */
+    private String tableTypesToExport;
+    
+    /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
      * com.bar.Foo for class
@@ -326,6 +334,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             exporter.setExportTables(exportTables);
             exporter.setExportViews(exportViews);
             exporter.setExportAll(exportAll);
+            exporter.setTableTypesToExport(tableTypesToExport);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
             exporter.setSpatial(spatial);
