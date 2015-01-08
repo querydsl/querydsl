@@ -354,6 +354,10 @@ public final class Connections {
         dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_DATETEST);
 
+        // numbers
+        dropTable(templates, "NUMBER_TEST");
+        stmt.execute("create table NUMBER_TEST(col1 int)");
+
         // xml
         dropTable(templates, "XML_TEST");
         stmt.execute("create table XML_TEST(COL varchar(128))");
