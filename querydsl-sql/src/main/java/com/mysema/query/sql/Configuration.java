@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
@@ -30,8 +34,6 @@ import com.mysema.query.sql.types.ArrayType;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Configuration for SQLQuery instances
@@ -289,7 +291,7 @@ public final class Configuration {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> void set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException {
         if (Null.class.isInstance(value)) {
-            Integer sqlType = path != null ? jdbcTypeMapping.get(path.getType()) : null;
+            Integer sqlType = path != null ? ColumnMetadata.getColumnMetadata(path).getJdbcType() : null;
             if (sqlType != null) {
                 stmt.setNull(i, sqlType);
             } else {

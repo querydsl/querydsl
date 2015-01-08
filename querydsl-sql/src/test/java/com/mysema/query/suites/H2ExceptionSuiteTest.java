@@ -25,7 +25,7 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(H2Templates.builder().build());
+        Connections.initConfiguration(H2Templates.builder().build());
 
         Connections.getConnection().createStatement()
                 .execute("ALTER TABLE SURVEY ADD CONSTRAINT UNIQUE_ID UNIQUE(ID)");

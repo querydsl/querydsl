@@ -290,6 +290,12 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     /**
      * Adds a common table expression
      *
+     * <p>Usage</p>
+     * <pre>
+     * query.with(alias, subQuery)
+     *      .from(...)
+     * </pre>
+     *
      * @param alias
      * @param o
      * @return
@@ -298,6 +304,12 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
 
     /**
      * Adds a common table expression
+     *
+     * <p>Usage</p>
+     * <pre>
+     * query.with(alias, subQuery)
+     *      .from(...)
+     * </pre>
      *
      * @param alias
      * @param query
@@ -308,6 +320,12 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     /**
      * Adds a common table expression
      *
+     * <p>Usage</p>
+     * <pre>
+     * query.with(alias, columns...).as(subQuery)
+     *      .from(...)
+     * </pre>
+     *
      * @param alias
      * @param columns
      * @return
@@ -316,6 +334,12 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
 
     /**
      * Adds a common table expression
+     *
+     * <p>Usage</p>
+     * <pre>
+     * query.withRecursive(alias, subQuery)
+     *      .from(...)
+     * </pre>
      *
      * @param alias
      * @param o
@@ -326,6 +350,12 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     /**
      * Adds a common table expression
      *
+     * <p>Usage</p>
+     * <pre>
+     * query.withRecursive(alias, subQuery)
+     *      .from(...)
+     * </pre>
+     *
      * @param alias
      * @param query
      * @return
@@ -334,6 +364,12 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
 
     /**
      * Adds a common table expression
+     *
+     * <p>Usage</p>
+     * <pre>
+     * query.withRecursive(alias, columns...).as(subQuery)
+     *      .from(...)
+     * </pre>
      *
      * @param alias
      * @param columns

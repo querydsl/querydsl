@@ -996,6 +996,27 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, POSTGRES})
+    public void Number_As_Boolean() {
+        QNumberTest numberTest = QNumberTest.numberTest;
+        delete(numberTest).execute();
+        insert(numberTest).set(numberTest.col1Boolean, true).execute();
+        insert(numberTest).set(numberTest.col1Number, (byte)1).execute();
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Boolean).size());
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Number).size());
+    }
+
+    @Test
+    public void Number_As_Boolean_Null() {
+        QNumberTest numberTest = QNumberTest.numberTest;
+        delete(numberTest).execute();
+        insert(numberTest).setNull(numberTest.col1Boolean).execute();
+        insert(numberTest).setNull(numberTest.col1Number).execute();
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Boolean).size());
+        assertEquals(2, query().from(numberTest).list(numberTest.col1Number).size());
+    }
+
+    @Test
     public void Offset_Only() {
         query().from(employee)
             .orderBy(employee.firstname.asc())

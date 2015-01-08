@@ -507,12 +507,12 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
-              <excludedGroups>com.mysema.testutil.DummyInterface</excludedGroups>
+              <excludedGroups>com.mysema.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
-                <exclude>**/DB2SuiteTest.java</exclude>
-                <exclude>**/MSSQLSuiteTest.java</exclude>
-                <exclude>**/TeradataSuiteTest.java</exclude>
+                <exclude>**/DB2*SuiteTest.java</exclude>
+                <exclude>**/MSSQL*SuiteTest.java</exclude>
+                <exclude>**/Teradata*SuiteTest.java</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -528,16 +528,16 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-              <excludedGroups>com.mysema.testutil.DummyInterface</excludedGroups>
+              <excludedGroups>com.mysema.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
-                <exclude>**/DB2SuiteTest.java</exclude>
+                <exclude>**/DB2*SuiteTest.java</exclude>
                 <exclude>**/ExportOracleTest.java</exclude>
                 <exclude>**/ExportTeradataTest.java</exclude>
-                <exclude>**/OracleSuiteTest.java</exclude>
+                <exclude>**/Oracle*SuiteTest.java</exclude>
                 <exclude>**/OracleWithQuotingTest.java</exclude> 
-                <exclude>**/MSSQLSuiteTest.java</exclude>
-                <exclude>**/TeradataSuiteTest.java</exclude>
+                <exclude>**/MSSQL*SuiteTest.java</exclude>
+                <exclude>**/Teradata*SuiteTest.java</exclude>
               </excludes>
               <properties>
                 <property>

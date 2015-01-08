@@ -1,14 +1,26 @@
 package com.mysema.query.scala
 
+import java.io.File._
+
 import scala.tools.nsc._
 import scala.tools.nsc.interpreter.IR.Success
 import scala.io.Source.fromFile
 import java.io.File
+import java.io.File.pathSeparator
 
 trait CompileTestUtils {
-    
-  private def jarPathOfClass(className: String) = {
-    Class.forName(className).getProtectionDomain.getCodeSource.getLocation
+
+  private object env extends Settings {
+
+    private def jarPathOfClass(className: String) = {
+      Class.forName(className).getProtectionDomain.getCodeSource.getLocation
+    }
+
+    val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList
+    val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
+
+    classpath.value = cp.mkString(pathSeparator)
+    usejavacp.value = true
   }
 
   def assertCompileSuccess(files: Traversable[File]): Unit = {
@@ -16,23 +28,12 @@ trait CompileTestUtils {
                            map (fromFile(_).mkString)
                            mkString ("\n"))
   }
-  
+
   def assertCompileSuccess(source: String): Unit = {
-    import java.io.File.pathSeparator
-
-    val env = new Settings
-
-    val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList
-    val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
-
-    env.classpath.value = cp.mkString(pathSeparator)
-
-    env.usejavacp.value = true
-
     val out = new java.io.ByteArrayOutputStream
     val interpreterWriter = new java.io.PrintWriter(out)
 
-    val interpreter = new Interpreter(env, interpreterWriter)
+    val interpreter = new scala.tools.nsc.interpreter.IMain(env, interpreterWriter)
     try {
       val result = interpreter.interpret(source.replaceAll("package", "import"))
       if (result != Success) {

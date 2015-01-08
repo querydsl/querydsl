@@ -6,24 +6,26 @@ The JDO module provides integration with the JDO API.
 
  Add the following dependencies to your Maven project :
 
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>${querydsl.version}</version>
-      <scope>provided</scope>
-    </dependency>        
-        
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-jdo</artifactId>
-      <version>${querydsl.version}</version>
-    </dependency>
+```XML
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-apt</artifactId>
+  <version>${querydsl.version}</version>
+  <scope>provided</scope>
+</dependency>        
     
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
-    </dependency>    
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-jdo</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>
+```
 
 And now, configure the Maven APT plugin which generates the query types used by Querydsl :
 
@@ -66,11 +68,13 @@ Now you are able to construct JDOQL query instances and instances of the query d
 
 Querying with Querydsl JDO is as simple as this :
 
-    QCustomer customer = QCustomer.customer;
-    JDOQuery query = new JDOQuery(pm);
-    Customer bob = query.from(customer)
-      .where(customer.firstName.eq("Bob"))
-      .uniqueResult(customer);
-    query.close();
+```JAVA
+QCustomer customer = QCustomer.customer;
+JDOQuery query = new JDOQuery(pm);
+Customer bob = query.from(customer)
+  .where(customer.firstName.eq("Bob"))
+  .uniqueResult(customer);
+query.close();
+```
 
 For more information on the Querydsl JDO module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html

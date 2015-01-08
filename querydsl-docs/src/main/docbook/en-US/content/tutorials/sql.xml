@@ -742,6 +742,45 @@ query.from(employee)
 
   <sect2>
 
+    <title>Common table expressions</title>
+
+    <para>Common table expressions are supported in Querydsl SQL via two syntax variants</para>
+
+    <programlisting language="java"><![CDATA[
+QEmployee employee = QEmployee.employee;
+query.with(employee, sq().from(employee).where(employee.name.startsWith("A")).list(employee.all()))
+     .from(...)
+]]></programlisting>
+
+    <para>And using a column listing</para>
+
+    <programlisting language="java"><![CDATA[
+QEmployee employee = QEmployee.employee;
+query.with(employee, employee.id, employee.name)
+     .as(sq().from(employee).where(employee.name.startsWith("A")).list(employee.id, employee.name))
+     .from(...)
+]]></programlisting>
+
+    <para>If the columns of the common table expression are a subset of an existing table or view
+    it is advisable to use a generated path type for it, e.g. QEmployee in this case, but if the
+    columns don't fit any existing table PathBuilder can be used instead.</para>
+
+    <para>Below is an example for such a case</para>
+
+    <programlisting language="java"><![CDATA[
+QEmployee employee = QEmployee.employee;
+QDepartment department = QDepartment.department;
+PathBuilder<Tuple> emp = new PathBuilder<Tuple>(Tuple.class, "emp");
+query.with(emp, sq().from(employee).innerJoin(department).on(employee.departmentId.eq(department.id))
+                    .list(employee.id, employee.name, employee.departmentId,
+                          department.name.as("departmentName")))
+     .from(...)
+]]></programlisting>
+
+  </sect2>
+
+  <sect2>
+
     <title>Other SQL expressions</title>
 
     <para>

@@ -8,7 +8,7 @@ import com.mysema.query.sql.spatial.OracleSpatialTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
-public class OracleSuiteTest extends AbstractSuite {
+public class OracleLiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
@@ -27,6 +27,7 @@ public class OracleSuiteTest extends AbstractSuite {
     public static void setUp() throws Exception {
         Connections.initOracle();
         Connections.initConfiguration(OracleSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.getConfiguration().setUseLiterals(true);
     }
 
 }

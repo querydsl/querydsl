@@ -6,17 +6,18 @@ The SQL module provides integration with the JDBC API.
 
  Add the following dependencies to your Maven project :
 
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-sql</artifactId>
-      <version>${querydsl.version}</version>
-    </dependency>    
-            
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
-    </dependency>   
+```XML
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-sql</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>
+```
 
 **Code generation via Maven**
 
@@ -63,13 +64,14 @@ Use the goal test-export to add the targetFolder as a test compile source root i
 **Querying**
 
 Querying with Querydsl SQL is as simple as this :
- 
-    QCustomer customer = new QCustomer("c");
 
-    SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
-    SQLQuery query = new SQLQuery(connection, dialect); 
-    List<String> lastNames = query.from(customer)
-        .where(customer.firstName.eq("Bob"))
-        .list(customer.lastName);
-        
+```JAVA 
+QCustomer customer = new QCustomer("c");
+
+SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
+SQLQuery query = new SQLQuery(connection, dialect); 
+List<String> lastNames = query.from(customer)
+    .where(customer.firstName.eq("Bob"))
+    .list(customer.lastName);
+```
 For more information on the Querydsl SQL module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
