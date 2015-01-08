@@ -1,10 +1,11 @@
 package com.mysema.query.suites;
 
+import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
+
 import com.mysema.query.*;
 import com.mysema.query.sql.FirebirdTemplates;
 import com.mysema.testutil.ExternalDB;
-import org.junit.BeforeClass;
-import org.junit.experimental.categories.Category;
 
 @Category(ExternalDB.class)
 public class FirebirdSuiteTest extends AbstractSuite {
@@ -20,16 +21,9 @@ public class FirebirdSuiteTest extends AbstractSuite {
     public static class Union extends UnionBase {}
     public static class Update extends UpdateBase {}
 
-    // with literals
-    public static class DeleteUseLiterals extends DeleteUseLiteralsBase {}
-    public static class InsertUseLiterals extends InsertUseLiteralsBase {}
-    public static class MergeUseLiterals extends MergeUseLiteralsBase {}
-    public static class SelectUseLiterals extends SelectUseLiteralsBase {}
-    public static class UpdateUseLiterals extends UpdateUseLiteralsBase {}
-
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initFirebird();
-        Connections.setTemplates(FirebirdTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(FirebirdTemplates.builder().newLineToSingleSpace().build());
     }
 }

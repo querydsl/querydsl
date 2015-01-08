@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import static com.google.common.base.CharMatcher.inRange;
+
 import java.lang.reflect.Field;
 import java.sql.Types;
 import java.util.Arrays;
@@ -32,7 +34,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.*;
-import static com.google.common.base.CharMatcher.inRange;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -496,7 +497,9 @@ public class SQLTemplates extends Templates {
             case Types.TINYINT:
                 return literal;                        
             default:
-                return "'" + literal + "'";
+                // for other JDBC types the Type instance is expected to provide
+                // the necessary quoting
+                return literal;
         }
     }
 

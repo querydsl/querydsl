@@ -9,7 +9,7 @@ import com.mysema.query.sql.spatial.PostGISTemplates;
 import com.mysema.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
-public class PostgreSQLSuiteTest extends AbstractSuite {
+public class PostgreSQLLiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
@@ -48,6 +48,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     public static void setUp() throws Exception {
         Connections.initPostgres();
         Connections.initConfiguration(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.getConfiguration().setUseLiterals(true);
     }
 
 }
