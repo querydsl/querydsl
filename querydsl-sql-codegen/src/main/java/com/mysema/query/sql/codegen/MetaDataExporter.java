@@ -203,17 +203,17 @@ public class MetaDataExporter {
         }
 
         String[] typesArray = null;
-        
-        if(tableTypesToExport != null && !tableTypesToExport.isEmpty()) {
-        	List<String> types = new ArrayList<String>();
-        	if(tableTypesToExport.contains(",")) {
-        		for(String tableType : tableTypesToExport.split(",")) {
-        			types.add(tableType.trim());
-        		}
-        	} else {
-        		types.add(tableTypesToExport.trim());
-        	}
-        	typesArray = types.toArray(new String[types.size()]);
+
+        if (tableTypesToExport != null && !tableTypesToExport.isEmpty()) {
+            List<String> types = new ArrayList<String>();
+            if (tableTypesToExport.contains(",")) {
+                for (String tableType : tableTypesToExport.split(",")) {
+                    types.add(tableType.trim());
+                }
+            } else {
+                types.add(tableTypesToExport.trim());
+            }
+            typesArray = types.toArray(new String[types.size()]);
         } else if (!exportAll) {
             List<String> types = new ArrayList<String>(2);
             if (exportTables) {
@@ -662,8 +662,8 @@ public class MetaDataExporter {
     /**
      * @param tableTypesToExport
      */
-	public void setTableTypesToExport(String tableTypesToExport) {
-		this.tableTypesToExport = tableTypesToExport;
-	}
+    public void setTableTypesToExport(String tableTypesToExport) {
+        this.tableTypesToExport = tableTypesToExport;
+    }
 
 }
