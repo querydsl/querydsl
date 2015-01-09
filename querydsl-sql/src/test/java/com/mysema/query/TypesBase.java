@@ -47,7 +47,7 @@ public class TypesBase extends AbstractBaseTest {
                 c.size(256);
             }
             c.execute();
-            RelationalPath<Object> entityPath = new RelationalPathBase<Object>(Object.class, tableName, "", tableName);
+            RelationalPath<Object> entityPath = new RelationalPathBase<Object>(Object.class, tableName, "PUBLIC", tableName);
             Path<?> columnPath = Expressions.path(entry.getKey(), entityPath, "col");
             insert(entityPath).set((Path)columnPath, entry.getValue()).execute();
             new DropTableClause(connection, configuration, tableName).execute();
