@@ -206,12 +206,8 @@ public class MetaDataExporter {
 
         if (tableTypesToExport != null && !tableTypesToExport.isEmpty()) {
             List<String> types = new ArrayList<String>();
-            if (tableTypesToExport.contains(",")) {
-                for (String tableType : tableTypesToExport.split(",")) {
-                    types.add(tableType.trim());
-                }
-            } else {
-                types.add(tableTypesToExport.trim());
+            for (String tableType : tableTypesToExport.split(",")) {
+                types.add(tableType.trim());
             }
             typesArray = types.toArray(new String[types.size()]);
         } else if (!exportAll) {
