@@ -10,6 +10,7 @@ public class HsqldbLiteralsSuiteTest extends AbstractSuite {
     public static class BeanPopulation extends BeanPopulationBase {}
     public static class Delete extends DeleteBase {}
     public static class Insert extends InsertBase {}
+    public static class KeywordQuoting extends KeywordQuotingBase {}
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}

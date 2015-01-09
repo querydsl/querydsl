@@ -119,7 +119,9 @@ public class DerbyTemplates extends SQLTemplates {
 
     @Override
     public String serialize(String literal, int jdbcType) {
-        if (jdbcType == Types.TIMESTAMP) {
+        if (jdbcType == Types.BOOLEAN) {
+            return "1".equals(literal) ? "true" : "false";
+        } else if (jdbcType == Types.TIMESTAMP) {
             return "{ts '" + literal + "'}";
         } else if (jdbcType == Types.DATE) {
             return "{d '" + literal + "'}";
