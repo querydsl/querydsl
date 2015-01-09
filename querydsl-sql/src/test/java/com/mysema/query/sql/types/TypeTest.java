@@ -13,6 +13,9 @@
  */
 package com.mysema.query.sql.types;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -23,15 +26,14 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
-import com.mysema.commons.lang.Pair;
 import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+
+import com.mysema.commons.lang.Pair;
 
 public class TypeTest implements InvocationHandler{
 
@@ -61,6 +63,8 @@ public class TypeTest implements InvocationHandler{
         List<Pair<?,?>> valueAndType = new ArrayList<Pair<?,?>>();
         valueAndType.add(Pair.of(new BigDecimal("1"), new BigDecimalType()));
         valueAndType.add(Pair.of(new BigInteger("2"), new BigIntegerType()));
+        valueAndType.add(Pair.of(new BigDecimal("1.0"), new BigDecimalAsDoubleType()));
+        valueAndType.add(Pair.of(new BigInteger("2"), new BigIntegerAsLongType()));
         //valueAndType.add(Pair.of(Boolean.TRUE,         new BooleanType()));
         valueAndType.add(Pair.of(Byte.valueOf((byte)1),   new ByteType()));
         valueAndType.add(Pair.of(new byte[0],         new BytesType()));

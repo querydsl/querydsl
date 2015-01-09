@@ -39,7 +39,8 @@ public class BigIntegerAsLongType extends AbstractType<BigInteger> {
 
     @Override
     public BigInteger getValue(ResultSet rs, int startIndex) throws SQLException {
-        return BigInteger.valueOf(rs.getLong(startIndex));
+        Number num = (Number) rs.getObject(startIndex);
+        return num != null ? BigInteger.valueOf(num.longValue()) : null;
     }
 
     @Override

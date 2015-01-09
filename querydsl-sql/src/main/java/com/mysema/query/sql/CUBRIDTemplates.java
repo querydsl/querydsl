@@ -17,6 +17,7 @@ import java.sql.Types;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.sql.types.NumericBooleanType;
 import com.mysema.query.types.Ops;
 
 /**
@@ -54,6 +55,7 @@ public class CUBRIDTemplates extends SQLTemplates {
     public CUBRIDTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable(null);
+        addCustomType(NumericBooleanType.DEFAULT);
         setParameterMetadataAvailable(false);
         setNullsFirst(null);
         setNullsLast(null);
