@@ -356,7 +356,7 @@ public final class Connections {
 
         // numbers
         dropTable(templates, "NUMBER_TEST");
-        stmt.execute("create table NUMBER_TEST(col1 int)");
+        stmt.execute("create table NUMBER_TEST(col1 smallint)");
 
         // xml
         dropTable(templates, "XML_TEST");

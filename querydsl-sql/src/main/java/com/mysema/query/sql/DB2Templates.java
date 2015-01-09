@@ -187,6 +187,7 @@ public class DB2Templates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_timestamp({0}, 'minute')");
         add(Ops.DateTimeOps.TRUNC_SECOND, "trunc_timestamp({0}, 'second')");
 
+        addTypeNameToCode("smallint", Types.BOOLEAN, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);
         addTypeNameToCode("long varchar for bit data", Types.LONGVARBINARY);
         addTypeNameToCode("varchar () for bit data", Types.VARBINARY);
