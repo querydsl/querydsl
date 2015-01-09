@@ -15,13 +15,17 @@ import org.junit.Test;
 import com.google.common.collect.Maps;
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Path;
 import com.mysema.testutil.ExcludeIn;
 
 public class TypesBase extends AbstractBaseTest {
 
     @Test
     public void CreateTables() {
-        Map<Class<?>, Object> instances = Maps.newHashMap();
+        Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
         instances.put(BigInteger.class, BigInteger.valueOf(1));
         instances.put(Long.class, Long.valueOf(1));
         instances.put(Integer.class, Integer.valueOf(1));
@@ -36,13 +40,16 @@ public class TypesBase extends AbstractBaseTest {
 
         for (Map.Entry<Class<?>, Object> entry : instances.entrySet()) {
             String tableName = "test_" + entry.getKey().getSimpleName();
+            new DropTableClause(connection, configuration, tableName).execute();
             CreateTableClause c = new CreateTableClause(connection, configuration, tableName)
                     .column("col", entry.getKey());
             if (entry.getKey().equals(String.class)) {
                 c.size(256);
             }
             c.execute();
-            // TODO insert
+            RelationalPath<Object> entityPath = new RelationalPathBase<Object>(Object.class, tableName, "", tableName);
+            Path<?> columnPath = Expressions.path(entry.getKey(), entityPath, "col");
+            insert(entityPath).set((Path)columnPath, entry.getValue()).execute();
             new DropTableClause(connection, configuration, tableName).execute();
         }
 
