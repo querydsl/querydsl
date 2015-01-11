@@ -510,6 +510,7 @@
               <excludedGroups>com.mysema.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
+                <exclude>**/DB2*SuiteTest.java</exclude>
                 <exclude>**/MSSQL*SuiteTest.java</exclude>
                 <exclude>**/Teradata*SuiteTest.java</exclude>
               </excludes>
@@ -530,6 +531,7 @@
               <excludedGroups>com.mysema.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
+                <exclude>**/DB2*SuiteTest.java</exclude>
                 <exclude>**/ExportOracleTest.java</exclude>
                 <exclude>**/ExportTeradataTest.java</exclude>
                 <exclude>**/Oracle*SuiteTest.java</exclude>

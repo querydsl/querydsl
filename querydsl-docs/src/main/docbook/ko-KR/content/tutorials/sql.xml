@@ -402,6 +402,9 @@ Configuration configuration = new Configuration(templates);
         <para>CUBRIDTemplates (tested with CUBRID 8.4)</para>
       </listitem>
       <listitem>
+        <para>DB2Templates (tested with DB2 10.1.2)</para>
+      </listitem>
+      <listitem>
         <para>DerbyTemplates (tested with Derby 10.8.2.2)</para>
       </listitem>
       <listitem>

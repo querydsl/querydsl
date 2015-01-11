@@ -15,10 +15,12 @@ package com.mysema.query.sql;
 
 import java.sql.Types;
 
-import com.mysema.query.sql.types.BigDecimalAsDoubleType;
-import com.mysema.query.types.Ops;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import com.mysema.query.sql.types.BigDecimalAsDoubleType;
+import com.mysema.query.sql.types.BigIntegerAsLongType;
+import com.mysema.query.types.Ops;
 
 /**
  * SQLiteTemplates is a SQL dialect for SQLite
@@ -58,6 +60,7 @@ public class SQLiteTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setDummyTable(null);
         addCustomType(BigDecimalAsDoubleType.DEFAULT);
+        addCustomType(BigIntegerAsLongType.DEFAULT);
         setUnionsWrapped(false);
         setLimitRequired(true);
         setNullsFirst(null);

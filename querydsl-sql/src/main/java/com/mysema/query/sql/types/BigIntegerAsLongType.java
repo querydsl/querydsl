@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2015, Timo Westkämper
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,45 +13,45 @@
  */
 package com.mysema.query.sql.types;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BigDecimalAsDoubleType maps BigDecimal to Double on the JDBC level
+ * BigIntegerType maps BigInteger to Long on the JDBC level
  *
  * @author tiwe
  *
  */
-public class BigDecimalAsDoubleType extends AbstractType<BigDecimal> {
+public class BigIntegerAsLongType extends AbstractType<BigInteger> {
 
-    public static final BigDecimalAsDoubleType DEFAULT = new BigDecimalAsDoubleType();
+    public static final BigIntegerAsLongType DEFAULT = new BigIntegerAsLongType();
 
-    public BigDecimalAsDoubleType() {
-        super(Types.DOUBLE);
+    public BigIntegerAsLongType() {
+        super(Types.NUMERIC);
     }
 
-    public BigDecimalAsDoubleType(int type) {
+    public BigIntegerAsLongType(int type) {
         super(type);
     }
 
     @Override
-    public BigDecimal getValue(ResultSet rs, int startIndex) throws SQLException {
-        Number num = (Number)rs.getObject(startIndex);
-        return num != null ? BigDecimal.valueOf(num.doubleValue()) : null;
+    public BigInteger getValue(ResultSet rs, int startIndex) throws SQLException {
+        Number num = (Number) rs.getObject(startIndex);
+        return num != null ? BigInteger.valueOf(num.longValue()) : null;
     }
 
     @Override
-    public Class<BigDecimal> getReturnedClass() {
-        return BigDecimal.class;
+    public Class<BigInteger> getReturnedClass() {
+        return BigInteger.class;
     }
 
     @Override
-    public void setValue(PreparedStatement st, int startIndex, BigDecimal value)
+    public void setValue(PreparedStatement st, int startIndex, BigInteger value)
             throws SQLException {
-        st.setDouble(startIndex, value.doubleValue());
+        st.setLong(startIndex, value.longValue());
     }
 
 }

@@ -1,19 +1,59 @@
 package com.mysema.query;
 
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.POSTGRES;
-import static com.mysema.query.Target.TERADATA;
+import static com.mysema.query.Target.*;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.junit.Test;
 
+import com.google.common.collect.Maps;
+import com.mysema.query.ddl.CreateTableClause;
+import com.mysema.query.ddl.DropTableClause;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Path;
 import com.mysema.testutil.ExcludeIn;
 
 public class TypesBase extends AbstractBaseTest {
+
+    @Test
+    public void CreateTables() {
+        Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
+        instances.put(BigInteger.class, BigInteger.valueOf(1));
+        instances.put(Long.class, Long.valueOf(1));
+        instances.put(Integer.class, Integer.valueOf(1));
+        instances.put(Short.class, Short.valueOf((short)1));
+        instances.put(Byte.class, Byte.valueOf((byte)1));
+        instances.put(BigDecimal.class, BigDecimal.valueOf(1.0));
+        instances.put(Double.class, Double.valueOf(1.0));
+        instances.put(Float.class, Float.valueOf((float)1.0));
+        instances.put(Boolean.class, Boolean.TRUE);
+        instances.put(Character.class, Character.valueOf('a'));
+        instances.put(String.class, "ABC");
+
+        for (Map.Entry<Class<?>, Object> entry : instances.entrySet()) {
+            String tableName = "test_" + entry.getKey().getSimpleName();
+            new DropTableClause(connection, configuration, tableName).execute();
+            CreateTableClause c = new CreateTableClause(connection, configuration, tableName)
+                    .column("col", entry.getKey());
+            if (entry.getKey().equals(String.class)) {
+                c.size(256);
+            }
+            c.execute();
+            RelationalPath<Object> entityPath = new RelationalPathBase<Object>(Object.class, tableName, "PUBLIC", tableName);
+            Path<?> columnPath = Expressions.path(entry.getKey(), entityPath, "col");
+            insert(entityPath).set((Path)columnPath, entry.getValue()).execute();
+            new DropTableClause(connection, configuration, tableName).execute();
+        }
+
+    }
 
     @Test
     @ExcludeIn({CUBRID, POSTGRES, TERADATA})

@@ -61,7 +61,6 @@ public class DerbyTemplates extends SQLTemplates {
         setDefaultValues("\nvalues (default)");
 
         add(Ops.CONCAT, "varchar({0} || {1})");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
 
         add(SQLOps.NEXTVAL, "next value for {0s}");
 
@@ -120,7 +119,9 @@ public class DerbyTemplates extends SQLTemplates {
 
     @Override
     public String serialize(String literal, int jdbcType) {
-        if (jdbcType == Types.TIMESTAMP) {
+        if (jdbcType == Types.BOOLEAN) {
+            return "1".equals(literal) ? "true" : "false";
+        } else if (jdbcType == Types.TIMESTAMP) {
             return "{ts '" + literal + "'}";
         } else if (jdbcType == Types.DATE) {
             return "{d '" + literal + "'}";

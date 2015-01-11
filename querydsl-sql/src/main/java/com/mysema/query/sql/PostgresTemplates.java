@@ -155,4 +155,13 @@ public class PostgresTemplates extends SQLTemplates {
         addTypeNameToCode("timestamptz", Types.TIMESTAMP);
     }
 
+    @Override
+    public String serialize(String literal, int jdbcType) {
+        if (jdbcType == Types.BOOLEAN) {
+            return "1".equals(literal) ? "true" : "false";
+        } else {
+            return super.serialize(literal, jdbcType);
+        }
+    }
+
 }

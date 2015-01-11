@@ -28,6 +28,8 @@ import javax.annotation.Nullable;
  */
 public class NumericBooleanType extends AbstractType<Boolean> {
 
+    public static NumericBooleanType DEFAULT = new NumericBooleanType();
+
     public NumericBooleanType() {
         super(Types.INTEGER);
     }

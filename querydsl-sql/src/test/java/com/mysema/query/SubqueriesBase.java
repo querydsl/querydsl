@@ -1,8 +1,15 @@
 package com.mysema.query;
 
+import static com.mysema.query.Constants.*;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.sql.Configuration;
@@ -18,11 +25,6 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.testutil.ExcludeIn;
-import org.junit.Test;
-import static com.mysema.query.Constants.*;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class SubqueriesBase extends AbstractBaseTest {
 
@@ -54,6 +56,7 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @SkipForQuoted
+    @ExcludeIn(DB2) // ID is reserved IN DB2
     public void SubQueries() throws SQLException {
         // subquery in where block
         expectedQuery = "select e.ID from EMPLOYEE e "

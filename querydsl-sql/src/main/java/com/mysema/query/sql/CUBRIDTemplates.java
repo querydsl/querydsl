@@ -17,6 +17,7 @@ import java.sql.Types;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.sql.types.NumericBooleanType;
 import com.mysema.query.types.Ops;
 
 /**
@@ -54,6 +55,7 @@ public class CUBRIDTemplates extends SQLTemplates {
     public CUBRIDTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setDummyTable(null);
+        addCustomType(NumericBooleanType.DEFAULT);
         setParameterMetadataAvailable(false);
         setNullsFirst(null);
         setNullsLast(null);
@@ -79,6 +81,7 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 
+        addTypeNameToCode("numeric(1,0)", Types.BOOLEAN, true);
         addTypeNameToCode("numeric(3,0)", Types.TINYINT, true);
         addTypeNameToCode("numeric(38,0)", Types.BIGINT, true);
         addTypeNameToCode("bit varying", Types.LONGVARBINARY);
