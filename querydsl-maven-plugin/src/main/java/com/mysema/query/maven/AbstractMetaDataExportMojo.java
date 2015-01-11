@@ -261,12 +261,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private boolean spatial;
     
-    /**
-     * comma separated list of "table types" to export.
-     * ex: "TABLE, VIEW, MATERIALIZED VIEW"
-     * 
-     * @parameter
-     */
+	/**
+	 * Comma-separated list of table types to export (allowable values will
+	 * depend on JDBC driver). Allows for arbitrary set of types to be exported,
+	 * e.g.: "TABLE, MATERIALIZED VIEW". The exportTables and exportViews
+	 * parameters will be ignored if this parameter is set. (default: none)
+	 * 
+	 * @parameter
+	 */
     private String tableTypesToExport;
     
     /**
