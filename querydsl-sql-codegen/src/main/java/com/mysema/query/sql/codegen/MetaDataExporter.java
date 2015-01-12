@@ -109,6 +109,9 @@ public class MetaDataExporter {
     private boolean exportForeignKeys = true;
 
     private boolean spatial = false;
+    
+    @Nullable
+    private String tableTypesToExport; 
 
     public MetaDataExporter() {}
 
@@ -200,7 +203,14 @@ public class MetaDataExporter {
         }
 
         String[] typesArray = null;
-        if (!exportAll) {
+
+        if (tableTypesToExport != null && !tableTypesToExport.isEmpty()) {
+            List<String> types = new ArrayList<String>();
+            for (String tableType : tableTypesToExport.split(",")) {
+                types.add(tableType.trim());
+            }
+            typesArray = types.toArray(new String[types.size()]);
+        } else if (!exportAll) {
             List<String> types = new ArrayList<String>(2);
             if (exportTables) {
                 types.add("TABLE");
@@ -643,6 +653,13 @@ public class MetaDataExporter {
      */
     public void setSpatial(boolean spatial) {
         this.spatial = spatial;
+    }
+
+    /**
+     * @param tableTypesToExport
+     */
+    public void setTableTypesToExport(String tableTypesToExport) {
+        this.tableTypesToExport = tableTypesToExport;
     }
 
 }
