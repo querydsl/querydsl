@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.6.1.BUILD-SNAPSHOT</version>
+    <version>4.0.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
   <name>Querydsl - JPA support</name>
   <description>JPA support for Querydsl</description>
@@ -73,19 +73,19 @@
     </dependency>
 
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
     </dependency> 
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
@@ -196,7 +196,7 @@
     </dependency>
 
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -321,14 +321,14 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor>
               <logOnlyOnError>true</logOnlyOnError>
             </configuration>            
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${project.version}</version>
         <!-- 
@@ -343,7 +343,7 @@
         <configuration>
           <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
           <jdbcUrl>jdbc:derby:target/derbydb;create=true</jdbcUrl>
-          <packageName>com.mysema.query.jpa.domain.sql</packageName>
+          <packageName>com.querydsl.jpa.domain.sql</packageName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
             <imports>

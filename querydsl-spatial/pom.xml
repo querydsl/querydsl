@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.6.1.BUILD-SNAPSHOT</version>
+    <version>4.0.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-spatial</artifactId>
   <name>Querydsl - Spatial module</name>
   <description>core module for querydsl</description>
@@ -17,7 +17,7 @@
   
   <dependencies>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -30,14 +30,14 @@
 
     <!--test -->
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -86,7 +86,7 @@
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processors>
-                <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+                <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
               </processors>
             </configuration>
           </execution>

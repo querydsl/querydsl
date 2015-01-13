@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.6.1.BUILD-SNAPSHOT</version>
+    <version>4.0.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jdo</artifactId>
   <name>Querydsl - JDO support</name>
   <description>JDO support for Querydsl</description>
@@ -42,25 +42,25 @@
    </dependency>
      -->        
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-codegen</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>        
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>        
     
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
@@ -111,7 +111,7 @@
     </dependency>    
     
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -244,7 +244,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
               <logOnlyOnError>true</logOnlyOnError>
             </configuration>
           </execution>
@@ -252,13 +252,13 @@
       </plugin>   
       
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
           <jdbcDriver>org.hsqldb.jdbcDriver</jdbcDriver>
           <jdbcUrl>jdbc:hsqldb:target/jdo</jdbcUrl>
-          <packageName>com.mysema.query.jdo.test.domain.sql</packageName>
+          <packageName>com.querydsl.jdo.test.domain.sql</packageName>
           <userName>sa</userName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
