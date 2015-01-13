@@ -8,14 +8,14 @@ The JPA module provides integration with the JPA 2 persistence API.
 
 ```XML
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>    
     
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -45,7 +45,7 @@ And now, configure the Maven APT plugin :
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
@@ -58,7 +58,7 @@ And now, configure the Maven APT plugin :
 
 The JPAAnnotationProcessor finds domain types annotated with the javax.persistence.Entity annotation and generates query types for them.
 
-If you use Hibernate annotations in your domain types you should use the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor instead.
+If you use Hibernate annotations in your domain types you should use the APT processor com.querydsl.apt.hibernate.HibernateAnnotationProcessor instead.
 
 Run clean install and you will get your Query types generated into target/generated-sources/java.
 

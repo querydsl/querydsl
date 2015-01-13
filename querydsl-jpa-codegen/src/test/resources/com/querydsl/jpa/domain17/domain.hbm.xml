@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.querydsl.jpa.domain17" default-access="field">
+
+  <class name="HidaBezGruppe">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <set name="bez" inverse="true" cascade="all-delete-orphan" sort="natural" fetch="subselect">
+      <key column="gruppe_FK_ID"/>
+      <one-to-many class="HidaBez"/>
+    </set>
+  </class>
+
+  <class name="HidaBez">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+  </class>
+
+</hibernate-mapping>

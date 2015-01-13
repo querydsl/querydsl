@@ -26,14 +26,14 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -65,7 +65,7 @@
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
           </configuration>
         </execution>
       </executions>
@@ -84,7 +84,7 @@
     <para>
       If you use Hibernate annotations in your domain types you should use
       the APT processor
-      <code>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</code>
+      <code>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</code>
       instead.
     </para>
 
@@ -118,7 +118,7 @@
     <javac srcdir="${src}" classpathref="cp">
       <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
-      <compilerarg value="com.mysema.query.apt.jpa.JPAAnnotationProcessor"/>
+      <compilerarg value="com.querydsl.apt.jpa.JPAAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
@@ -149,9 +149,9 @@
 
     <para>
       If you are using Querydsl JPA with Spring Roo you can replace
-      <code>com.mysema.query.apt.jpa.JPAAnnotationProcessor</code>
+      <code>com.querydsl.apt.jpa.JPAAnnotationProcessor</code>
       with
-      <code>com.mysema.query.apt.roo.RooAnnotationProcessor</code>
+      <code>com.querydsl.apt.roo.RooAnnotationProcessor</code>
       which will handle
       <code>@RooJpaEntity</code> and <code>@RooJpaActiveRecord</code>
       annotated classes instead of
@@ -173,7 +173,7 @@
       metadata to create your Querydsl model.
     </para>
 
-    <para><code>com.mysema.query.jpa.codegen.HibernateDomainExporter</code> provides the
+    <para><code>com.querydsl.jpa.codegen.HibernateDomainExporter</code> provides the
       functionality for this:</para>
 
     <programlisting language="java"><![CDATA[
@@ -616,7 +616,7 @@ List results = jpaQuery.getResultList();
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>

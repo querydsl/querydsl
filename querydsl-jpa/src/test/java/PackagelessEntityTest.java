@@ -15,8 +15,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.types.path.PathBuilder;
+import com.querydsl.jpa.JPASubQuery;
+import com.querydsl.core.types.path.PathBuilder;
 
 
 public class PackagelessEntityTest {

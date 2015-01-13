@@ -303,7 +303,7 @@
               </property>                  
             </systemProperties>    
             <includes>
-              <include>com/mysema/query/PackageVerification.java</include>
+              <include>com/querydsl/jpa/PackageVerification.java</include>
             </includes>
           </configuration>
           </execution>

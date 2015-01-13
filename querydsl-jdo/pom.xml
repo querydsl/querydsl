@@ -158,7 +158,7 @@
         <version>${dn.plugin.version}</version>
         <configuration>
             <metadataDirectory>target/test-classes</metadataDirectory>
-            <metadataIncludes>com/mysema/query/jdo/test/domain/*.class</metadataIncludes>
+            <metadataIncludes>com/querydsl/jdo/test/domain/*.class</metadataIncludes>
             <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>
             <verbose>true</verbose>
             <props>src/test/resources/datanucleus.properties</props>
@@ -226,7 +226,7 @@
               </property>                  
             </systemProperties>    
             <includes>
-              <include>com/mysema/query/PackageVerification.java</include>
+              <include>com/querydsl/jdo/PackageVerification.java</include>
             </includes>
           </configuration>
           </execution>

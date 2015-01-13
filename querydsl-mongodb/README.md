@@ -8,7 +8,7 @@ The Mongodb module provides integration with the Mongodb API.
 
 ```XML
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-mongodb</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -38,7 +38,7 @@ And now, configure the Maven APT plugin which generates the query types used by 
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor</processor>
+              <processor>com.querydsl.mongodb.morphia.MorphiaAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>

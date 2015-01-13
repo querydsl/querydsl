@@ -15,14 +15,14 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-mongodb</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -55,7 +55,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.morphia.MorphiaAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.morphia.MorphiaAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>

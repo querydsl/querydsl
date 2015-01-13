@@ -27,8 +27,8 @@
       <unpack>true</unpack>
       <excludes>
         <exclude>cglib:cglib</exclude>
-        <exclude>com.mysema.querydsl:querydsl-sql</exclude>
-        <exclude>com.mysema.querydsl:querydsl-jpa</exclude>
+        <exclude>com.querydsl:querydsl-sql</exclude>
+        <exclude>com.querydsl:querydsl-jpa</exclude>
         <exclude>org.slf4j:slf4j-api</exclude>
         <exclude>org.slf4j:slf4j-log4j12</exclude>                
       </excludes>
@@ -37,7 +37,7 @@
       <unpack>true</unpack>
       <scope>provided</scope>
       <includes>
-        <include>com.mysema.querydsl:*</include>
+        <include>com.querydsl:*</include>
         <include>com.mysema.codegen:*</include>
         <include>org.hibernate.javax.persistence:*</include>
       </includes>

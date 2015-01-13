@@ -8,13 +8,13 @@ The Collections module provides integration with Java Collections and Beans.
 
 ```XML
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -25,7 +25,7 @@ The Collections module provides integration with Java Collections and Beans.
 </dependency>   
 ```
 
-If you are not using JPA or JDO you can generate Querydsl query types for your domain types by annotating them with the com.mysema.query.annotations.QueryEntity annotation and adding the following plugin configuration into your Maven configuration (pom.xml) :
+If you are not using JPA or JDO you can generate Querydsl query types for your domain types by annotating them with the com.querydsl.core.annotations.QueryEntity annotation and adding the following plugin configuration into your Maven configuration (pom.xml) :
 
 ```XML
 <project>
@@ -43,7 +43,7 @@ If you are not using JPA or JDO you can generate Querydsl query types for your d
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
@@ -59,7 +59,7 @@ If you are not using JPA or JDO you can generate Querydsl query types for your d
 Querying with Querydsl Collections is as simple as this :
 
 ```JAVA
-import static com.mysema.query.collections.CollQueryFactory.*;
+import static com.querydsl.collections.CollQueryFactory.*;
 
 QCat cat = new QCat("cat");
 for (String name : from(cat,cats)
