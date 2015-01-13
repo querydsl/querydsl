@@ -12,7 +12,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedDerbyDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.ExtendedDerbyDialect" />
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />
             <property name="hibernate.connection.url" value="jdbc:derby:target/derbydb-hibernate;create=true" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
@@ -48,7 +48,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedHSQLDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.ExtendedHSQLDialect" />
             <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
             <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb-hibernate;shutdown=true" />
             <property name="hibernate.connection.user" value="sa" />
@@ -114,61 +114,61 @@
     
     <persistence-unit name="h2-batoo">
         <provider>org.batoo.jpa.core.BatooPersistenceProvider</provider>
-        <class>com.mysema.query.jpa.domain.Account</class>
-        <class>com.mysema.query.jpa.domain.Animal</class>
-        <class>com.mysema.query.jpa.domain.AuditLog</class>
-        <class>com.mysema.query.jpa.domain.Author</class>
-        <class>com.mysema.query.jpa.domain.Bar</class>
-        <class>com.mysema.query.jpa.domain.Book</class>     
-        <class>com.mysema.query.jpa.domain.Calendar</class>
-        <class>com.mysema.query.jpa.domain.Cat</class>
-        <class>com.mysema.query.jpa.domain.Catalog</class> 
-        <class>com.mysema.query.jpa.domain.Company</class>
-        <class>com.mysema.query.jpa.domain.Customer</class>
-        <class>com.mysema.query.jpa.domain.Department</class>
-        <class>com.mysema.query.jpa.domain.Document</class>
-        <class>com.mysema.query.jpa.domain.Dolphin</class>
-        <class>com.mysema.query.jpa.domain.DomesticCat</class>
-        <class>com.mysema.query.jpa.domain.EmbeddedType</class>
-        <class>com.mysema.query.jpa.domain.Employee</class>
-        <class>com.mysema.query.jpa.domain.Entity1</class>
-        <class>com.mysema.query.jpa.domain.Entity2</class>
-        <class>com.mysema.query.jpa.domain.EvilType</class>
-        <class>com.mysema.query.jpa.domain.Foo</class>
-        <class>com.mysema.query.jpa.domain.Formula</class>
-        <class>com.mysema.query.jpa.domain.Human</class>
-        <class>com.mysema.query.jpa.domain.InheritedProperties</class>
-        <class>com.mysema.query.jpa.domain.Item</class>
-        <class>com.mysema.query.jpa.domain.Location</class>
-        <class>com.mysema.query.jpa.domain.Mammal</class>
-        <class>com.mysema.query.jpa.domain.Name</class>
-        <class>com.mysema.query.jpa.domain.NameList</class>
-        <class>com.mysema.query.jpa.domain.Named</class>
-        <class>com.mysema.query.jpa.domain.Nationality</class>
-        <class>com.mysema.query.jpa.domain.Novel</class>
-        <class>com.mysema.query.jpa.domain.Numeric</class>
-        <class>com.mysema.query.jpa.domain.Order</class>
-        <class>com.mysema.query.jpa.domain.Parameter</class>
-        <class>com.mysema.query.jpa.domain.Payment</class>
-        <class>com.mysema.query.jpa.domain.Person</class>
-        <class>com.mysema.query.jpa.domain.PersonId</class>
-        <class>com.mysema.query.jpa.domain.Player</class>
-        <class>com.mysema.query.jpa.domain.Price</class>
-        <class>com.mysema.query.jpa.domain.Product</class>
-        <class>com.mysema.query.jpa.domain.Show</class>
-        <class>com.mysema.query.jpa.domain.SimpleTypes</class>
-        <class>com.mysema.query.jpa.domain.Status</class>
-        <class>com.mysema.query.jpa.domain.StatusChange</class>
-        <class>com.mysema.query.jpa.domain.Store</class>
-        <class>com.mysema.query.jpa.domain.Superclass</class>
-        <class>com.mysema.query.jpa.domain.User</class>
-        <class>com.mysema.query.jpa.domain.World</class>
-        <class>com.mysema.query.jpa.domain4.BookDefinition</class>
-        <class>com.mysema.query.jpa.domain4.BookID</class>
-        <class>com.mysema.query.jpa.domain4.BookMark</class>        
-        <class>com.mysema.query.jpa.domain4.BookVersion</class>
-        <class>com.mysema.query.jpa.domain4.BookVersionPK</class>
-        <class>com.mysema.query.jpa.domain4.Library</class>
+        <class>com.querydsl.jpa.domain.Account</class>
+        <class>com.querydsl.jpa.domain.Animal</class>
+        <class>com.querydsl.jpa.domain.AuditLog</class>
+        <class>com.querydsl.jpa.domain.Author</class>
+        <class>com.querydsl.jpa.domain.Bar</class>
+        <class>com.querydsl.jpa.domain.Book</class>
+        <class>com.querydsl.jpa.domain.Calendar</class>
+        <class>com.querydsl.jpa.domain.Cat</class>
+        <class>com.querydsl.jpa.domain.Catalog</class>
+        <class>com.querydsl.jpa.domain.Company</class>
+        <class>com.querydsl.jpa.domain.Customer</class>
+        <class>com.querydsl.jpa.domain.Department</class>
+        <class>com.querydsl.jpa.domain.Document</class>
+        <class>com.querydsl.jpa.domain.Dolphin</class>
+        <class>com.querydsl.jpa.domain.DomesticCat</class>
+        <class>com.querydsl.jpa.domain.EmbeddedType</class>
+        <class>com.querydsl.jpa.domain.Employee</class>
+        <class>com.querydsl.jpa.domain.Entity1</class>
+        <class>com.querydsl.jpa.domain.Entity2</class>
+        <class>com.querydsl.jpa.domain.EvilType</class>
+        <class>com.querydsl.jpa.domain.Foo</class>
+        <class>com.querydsl.jpa.domain.Formula</class>
+        <class>com.querydsl.jpa.domain.Human</class>
+        <class>com.querydsl.jpa.domain.InheritedProperties</class>
+        <class>com.querydsl.jpa.domain.Item</class>
+        <class>com.querydsl.jpa.domain.Location</class>
+        <class>com.querydsl.jpa.domain.Mammal</class>
+        <class>com.querydsl.jpa.domain.Name</class>
+        <class>com.querydsl.jpa.domain.NameList</class>
+        <class>com.querydsl.jpa.domain.Named</class>
+        <class>com.querydsl.jpa.domain.Nationality</class>
+        <class>com.querydsl.jpa.domain.Novel</class>
+        <class>com.querydsl.jpa.domain.Numeric</class>
+        <class>com.querydsl.jpa.domain.Order</class>
+        <class>com.querydsl.jpa.domain.Parameter</class>
+        <class>com.querydsl.jpa.domain.Payment</class>
+        <class>com.querydsl.jpa.domain.Person</class>
+        <class>com.querydsl.jpa.domain.PersonId</class>
+        <class>com.querydsl.jpa.domain.Player</class>
+        <class>com.querydsl.jpa.domain.Price</class>
+        <class>com.querydsl.jpa.domain.Product</class>
+        <class>com.querydsl.jpa.domain.Show</class>
+        <class>com.querydsl.jpa.domain.SimpleTypes</class>
+        <class>com.querydsl.jpa.domain.Status</class>
+        <class>com.querydsl.jpa.domain.StatusChange</class>
+        <class>com.querydsl.jpa.domain.Store</class>
+        <class>com.querydsl.jpa.domain.Superclass</class>
+        <class>com.querydsl.jpa.domain.User</class>
+        <class>com.querydsl.jpa.domain.World</class>
+        <class>com.querydsl.jpa.domain4.BookDefinition</class>
+        <class>com.querydsl.jpa.domain4.BookID</class>
+        <class>com.querydsl.jpa.domain4.BookMark</class>
+        <class>com.querydsl.jpa.domain4.BookVersion</class>
+        <class>com.querydsl.jpa.domain4.BookVersionPK</class>
+        <class>com.querydsl.jpa.domain4.Library</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/dbs/h2-batoo" />
@@ -260,7 +260,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedOracleDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.ExtendedOracleDialect" />
             <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
             <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe" />
             <property name="hibernate.connection.username" value="querydsl" />
@@ -277,7 +277,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="com.mysema.query.jpa.support.TeradataDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.TeradataDialect" />
             <property name="hibernate.connection.driver_class" value="com.teradata.jdbc.TeraDriver" />
             <property name="hibernate.connection.url" value="jdbc:teradata://teradata/dbc" />
             <property name="hibernate.connection.username" value="querydsl" />

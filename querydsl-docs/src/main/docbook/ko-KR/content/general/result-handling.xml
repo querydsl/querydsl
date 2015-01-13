@@ -5,17 +5,17 @@
   <para>Querydsl은 결과 처리를 커스터마이징 하기 위해 행 기반 변환을 위한 FactoryExpressions과
    집합을 위한 ResultTransformer를 제공하고 있다.</para>
 
-  <para><code>com.mysema.query.types.FactoryExpression</code> 인터페이스는 빈 생성, 생성자 호출
-  그리고 더 복잡한 객체를 생성하기 위해 사용된다. <code>com.mysema.query.types.Projections</code> 클래스를
+  <para><code>com.querydsl.core.types.FactoryExpression</code> 인터페이스는 빈 생성, 생성자 호출
+  그리고 더 복잡한 객체를 생성하기 위해 사용된다. <code>com.querydsl.core.types.Projections</code> 클래스를
   이용해서 FactoryExpression 구현체 기능에 접근할 수 있다.</para>
 
-  <para><code>com.mysema.query.ResultTransformer</code> 인터페이스의 주요 구현체는 <code>GroupBy</code> 클래스이다.</para>
+  <para><code>com.querydsl.ResultTransformer</code> 인터페이스의 주요 구현체는 <code>GroupBy</code> 클래스이다.</para>
 
   <sect2>
 
     <title>다중 컬럼 리턴</title>
 
-    <para>Querydsl 3.0 부터 다중 컬럼 결과를 위한 기본 타입은 <code>com.mysema.query.Tuple</code> 이다.
+    <para>Querydsl 3.0 부터 다중 컬럼 결과를 위한 기본 타입은 <code>com.querydsl.Tuple</code> 이다.
     Tuple은 타입에 안전한 Map을 제공하고, 이를 통해 Tuple 행 객체로부터 컬럼 데이터에 접근할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[
@@ -132,7 +132,7 @@ List<Customer> dtos = query.from(customer)
     <title>결과 집합(aggregation)</title>
 
     <para>
-      <code>com.mysema.query.group.GroupBy</code> 클래스는 메모리에서 쿼리 결과에 대한 집합 연산을 수행하는
+      <code>com.querydsl.core.group.GroupBy</code> 클래스는 메모리에서 쿼리 결과에 대한 집합 연산을 수행하는
       집합 함수를 제공한다. 다음은 사용 예이다.
     </para>
 
@@ -141,7 +141,7 @@ List<Customer> dtos = query.from(customer)
     </para>
 
     <programlisting language="java"><![CDATA[
-import static com.mysema.query.group.GroupBy.*;
+import static com.querydsl.core.group.GroupBy.*;
 
 Map<Integer, List<Comment>> results = query.from(post, comment)
     .where(comment.post.id.eq(post.id))

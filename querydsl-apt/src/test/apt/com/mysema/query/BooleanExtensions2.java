@@ -1,8 +1,8 @@
-package com.mysema.query;
+package com.querydsl;
 
-import com.mysema.query.annotations.*;
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import com.querydsl.core.annotations.*;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.path.*;
 
 public class BooleanExtensions2 {
     

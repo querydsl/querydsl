@@ -14,7 +14,7 @@
       By default Querydsl initializes only reference properties of the first two levels. In cases where
       longer initialization paths are required, these have to be annotated in the domain
       types via
-       <code>com.mysema.query.annotations.QueryInit</code>
+       <code>com.querydsl.core.annotations.QueryInit</code>
       annotations. QueryInit is used on properties where deep initializations are
       needed. The following example demonstrates the usage.
     </para>
@@ -124,9 +124,9 @@ public class User {
 
     <programlisting language="java"><![CDATA[
 @Config(listAccessors=true)
-package com.mysema.query.domain.rel;
+package com.querydsl.core.domain.rel;
 
-import com.mysema.query.annotations.Config;
+import com.querydsl.core.annotations.Config;
 ]]></programlisting>
 
   <!-- TODO table for options ? -->
@@ -220,7 +220,7 @@ import com.mysema.query.annotations.Config;
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             <options>
               <querydsl.entityAccessors>true</querydsl.entityAccessors>
             </options>
@@ -305,7 +305,7 @@ public static BooleanPath isManagedBy(QUser user, User other) {
 
     <programlisting language="java"><![CDATA[
 public BooleanPath isManagedBy(QUser other) {
-    return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
+    return DelegateTest.isManagedBy(this, other);
 }
 
 ]]></programlisting>
@@ -385,7 +385,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
     </para>
 
     <para>
-      To actually create the types use the <code>com.mysema.query.apt.QuerydslAnnotationProcessor</code>.
+      To actually create the types use the <code>com.querydsl.apt.QuerydslAnnotationProcessor</code>.
       In Maven you do it like this:
     </para>
 
@@ -405,7 +405,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
           </configuration>
         </execution>
       </executions>
@@ -431,7 +431,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 
     <para>To make GenericExporter available add a dependency to the querydsl-codegen
       module to your project, or to be more precise
-      <code>com.mysema.querydsl:querydsl-codegen:${querydsl.version}</code>.
+      <code>com.querydsl:querydsl-codegen:${querydsl.version}</code>.
     </para>
 
     <para>Below is an example for JPA</para>
@@ -527,7 +527,7 @@ exporter.export(DomainClass.class.getPackage());
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>
@@ -637,12 +637,12 @@ exporter.export(DomainClass.class.getPackage());
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <dependencies>
           <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-scala</artifactId>
             <version>${querydsl.version}</version>
           </dependency>

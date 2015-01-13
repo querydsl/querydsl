@@ -24,9 +24,9 @@
 
     <programlisting language="java"><![CDATA[
 // needed for access of the Querydsl Collections API
-import static com.mysema.query.collections.CollQueryFactory.*;
+import static com.querydsl.collections.CollQueryFactory.*;
 // needed, if you use the $-invocations
-import static com.mysema.query.alias.Alias.*;
+import static com.mysequerydslery.alias.Alias.*;
 ]]></programlisting>
 
     <para>
@@ -136,14 +136,14 @@ for (String name : from(cat,cats)
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -160,7 +160,7 @@ for (String name : from(cat,cats)
       If you are not using JPA or JDO you can generate expression types for your
       domain types by
       annotating them with the
-      <code>com.mysema.query.annotations.QueryEntity</code>
+      <code>com.querydsl.core.annotations.QueryEntity</code>
       annotation and adding the
       following plugin configuration into your Maven configuration (pom.xml):
     </para>
@@ -181,7 +181,7 @@ for (String name : from(cat,cats)
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
           </configuration>
         </execution>
       </executions>
@@ -207,7 +207,7 @@ for (String name : from(cat,cats)
     <javac srcdir="${src}" classpathref="cp">
       <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
-      <compilerarg value="com.mysema.query.apt.QuerydslAnnotationProcessor"/>
+      <compilerarg value="com.querydsl.apt.QuerydslAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
@@ -239,7 +239,7 @@ for (String name : from(cat,cats)
 
     <programlisting language="java"><![CDATA[
 import static org.hamcrest.core.IsEqual.equalTo;
-import static com.mysema.query.collections.PathMatcher.hasValue;
+import static com.querydsl.collections.PathMatcher.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 ]]></programlisting>

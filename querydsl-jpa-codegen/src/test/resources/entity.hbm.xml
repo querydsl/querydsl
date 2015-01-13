@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.mysema.query.jpa.codegen.MyEntity" table="MY_TABLE">
+    <class name="com.querydsl.jpa.codegen.MyEntity" table="MY_TABLE">
         <composite-id>
             <key-property name="pk1" column="PK1"/>
             <key-property name="pk2" column="PK2"/>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.querydsl.jpa.domain5" default-lazy="false">
+    <class name="CustomerContact" table="customer_contact">
+
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="value"/>
+
+    </class>
+</hibernate-mapping>

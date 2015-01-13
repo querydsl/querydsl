@@ -20,14 +20,14 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jdo</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -61,7 +61,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.jdo.JDOAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
@@ -107,7 +107,7 @@
     <javac srcdir="${src}" classpathref="cp">
       <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
-      <compilerarg value="com.mysema.query.apt.jdo.JDOAnnotationProcessor"/>
+      <compilerarg value="com.querydsl.apt.jdo.JDOAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
@@ -390,10 +390,10 @@ query.from(department)
     <para>represents the following native JDO query</para>
 
     <programlisting>
-SELECT this FROM com.mysema.query.jdoql.models.company.Department
-WHERE this.employees.size() ==
-(SELECT max(d.employees.size()) FROM com.mysema.query.jdoql.models.company.Department d)
-</programlisting>
+      SELECT this FROM com.querydsl.jdoql.models.company.Department
+      WHERE this.employees.size() ==
+      (SELECT max(d.employees.size()) FROM com.mysequerydslery.jdoql.models.company.Department d)
+    </programlisting>
 
     <para>Another example</para>
 
@@ -411,10 +411,10 @@ query.from(employee)
     <para>which represents the following native JDO query</para>
 
     <programlisting>
-SELECT this FROM com.mysema.query.jdoql.models.company.Employee
-WHERE this.weeklyhours >
-(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)
-</programlisting>
+      SELECT this FROM com.querydsl.jdoql.models.company.Employee
+      WHERE this.weeklyhours >
+      (SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)
+    </programlisting>
 
   </sect2>
 
@@ -434,7 +434,7 @@ WHERE this.weeklyhours >
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>

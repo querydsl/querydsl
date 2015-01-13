@@ -13,19 +13,16 @@
     <para>올바르게 인코딩되지 않은 필드나 getter를 사용할 경우, 다음과 같은 에러가 발생한다.</para>
 
     <programlisting><![CDATA[
-java.lang.RuntimeException: Caught exception for field com.mysema.query.jdoql.testdomain.Store#products
-  at com.mysema.query.apt.Processor$2.visitType(Processor.java:117)
-  at com.mysema.query.apt.Processor$2.visitType(Processor.java:80)
+java.lang.RuntimeException: Caught exception for field com.querydsl.jdoql.testdomain.Store#products
+  at com.querydsl.apt.Processor$2.visitType(Processor.java:117)
+  at com.mysequerydslery.apt.Processor$2.visitType(Processor.java:80)
   at com.sun.tools.javac.code.Symbol$ClassSymbol.accept(Symbol.java:827)
-  at com.mysema.query.apt.Processor.getClassModel(Processor.java:154)
-  at com.mysema.query.apt.Processor.process(Processor.java:191)
+  at com.mquerydsl.query.apt.Processor.getClassModel(Processor.java:154)
+  atquerydslmysema.query.apt.Processor.process(Processor.java:191)
   ...
 Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for List
-  at com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:112)
-  at com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:40)
-  at com.sun.tools.javac.code.Type$ClassType.accept(Type.java:696)
-  at com.mysema.query.apt.APTTypeModel.<init>(APTTypeModel.java:55)
-  at com.mysema.query.apt.APTTypeModel.get(APTTypeModel.java:48)
+  at com.mquerydsl.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:112querydslt com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:40)
+  at com.sun.tools.javac.code.Type$ClassType.accept(Type.java:696querydslt com.mysema.query.apt.APTTypeModel.<init>(APTTypeModel.javaquerydsl  at com.mysema.query.apt.APTTypeModel.get(APTTypeModequerydsla:48)
   at com.mysema.query.apt.Processor$2.visitType(Processor.java:114)
   ... 35 more
 ]]></programlisting>
@@ -55,7 +52,7 @@ Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for L
 
     <para>이에 대한 가장 쉬운 해결책은 멀티쓰레드 환경에서 사용되기 전에 단일 쓰레드에서 클래스를 초기화하는 것이다.</para>
 
-    <para>이런 목적으로 com.mysema.util.ClassPathUtils 클래스를 사용할 수 있다.</para>
+    <para>이런 목적으로 com.querydsl.core.util.ClassPathUtils 클래스를 사용할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[
     ClassPathUtils.scanPackage(Thread.currentThread().getContextClassLoader(), packageToLoad);

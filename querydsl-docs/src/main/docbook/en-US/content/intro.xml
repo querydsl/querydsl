@@ -51,8 +51,8 @@
 
     <para>
       To get an impression of the expressivity of the Querydsl query and expression types go to
-      the javadocs and explore <code>com.mysema.query.Query</code>, <code>com.mysema.query.Projectable</code>
-      and <code>com.mysema.query.types.Expression</code>.
+      the javadocs and explore <code>com.querydsl.Query</code>, <code>com.querydsl.Projectable</code>
+      and <code>com.querydsl.core.types.Expression</code>.
     </para>
 
   </sect1>

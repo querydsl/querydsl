@@ -17,7 +17,7 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-lucene3</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -33,7 +33,7 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-lucene4</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -191,7 +191,7 @@ query
 
     <title>퍼지(fuzzy) 검색</title>
 
-    <para><code>com.mysema.query.lucene.LuceneExpressions</code> 클래스에서 정의된
+    <para><code>com.querydsl.lucene3.LuceneExpressions</code> 클래스에서 정의된
     fuzzyLike 메서드를 이용해서 퍼지 검색을 할 수 있다.
     </para>
 

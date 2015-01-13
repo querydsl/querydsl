@@ -10,7 +10,7 @@
 
   <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-scala</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -77,7 +77,7 @@ map.get("X")            map("X")
     <para>
       The <code>RichProjectable</code> and <code>RichSimpleProjectable</code> wrappers should be used to enable
       Scala projections for Querydsl queries.
-      By importing the contents of <code>com.mysema.query.scala.Helpers</code>
+      By importing the contents of <code>com.querydsl.scala.Helpers</code>
       the needed implicit conversions become available.
     </para>
 
@@ -99,7 +99,7 @@ query.from(person).list(person.firstName, person.lastName, person.age)
     </para>
 
     <programlisting language="java"><![CDATA[
-import com.mysema.query.scala.Helpers._
+import com.querydsl.scala.Helpers._
 
 query.from(person).select(person.firstName, person.lastName, person.age)
 ]]></programlisting>
@@ -164,7 +164,7 @@ exporter.export(connection.getMetaData)
         The domain oriented queries are implemented as implicit conversions from
         <code>RelationalPath</code> instances into queries. This functionality
         can be made available by implementing the
-        <code>com.mysema.query.scala.sql.SQLHelpers</code>
+        <code>com.querydsl.scala.sql.SQLHelpers</code>
         trait in your service or DAO classes.
       </para>
 
@@ -195,7 +195,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
 ]]></programlisting>
 
       <para>
-        See the signature of the <code>com.mysema.query.scala.sql.RichSimpleQuery</code>
+        See the signature of the <code>com.querydsl.scala.sql.RichSimpleQuery</code>
         class for details.
       </para>
 
@@ -215,7 +215,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <configuration>
@@ -235,7 +235,7 @@ Employee.select({ e => e.firstName }, { e => e.lastName })
             <version>5.1.16</version>
           </dependency>
           <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-scala</artifactId>
             <version>${querydsl.version}</version>
           </dependency>

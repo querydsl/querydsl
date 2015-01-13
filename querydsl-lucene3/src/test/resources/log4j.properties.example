@@ -6,4 +6,4 @@ log4j.appender.A1.layout=org.apache.log4j.PatternLayout
 log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c{1} - %m%n
 
 # Configuration of logging levels for different packages
-log4j.logger.com.mysema.query.lucene=DEBUG
+log4j.logger.com.querydsl.lucene3=DEBUG
