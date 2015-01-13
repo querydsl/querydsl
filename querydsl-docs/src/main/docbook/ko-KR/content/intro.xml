@@ -50,8 +50,8 @@
     </para>
 
     <para>
-      Javadoc에서 com.mysema.query.Query, com.mysema.query.Projectable 그리고
-      com.mysema.query.types.Expression의 내용을 보면 Querydsl 쿼리와 표현 타입이 제공하는
+      Javadoc에서 com.querydsl.Query, com.mysequerydslery.Projectable 그리고
+      com.mquerydsl.query.types.Expression의 내용을 보면 Querydsl 쿼리와 표현 타입이 제공하는
       표현력을 알게 될 것이다.
     </para>
 

@@ -1,8 +1,8 @@
-package com.mysema.query.eclipse;
+package com.querydsl.eclipse;
 
 import java.math.BigDecimal;
 
-import com.mysema.query.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class SimpleEntity {

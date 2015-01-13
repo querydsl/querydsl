@@ -5,7 +5,7 @@
 
 <hibernate-configuration>
 <session-factory>
-	<property name="hibernate.dialect">com.mysema.query.jpa.support.ExtendedDerbyDialect</property>
+	<property name="hibernate.dialect">com.querydsl.jpa.support.ExtendedDerbyDialect</property>
 	<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
 	<property name="hibernate.connection.url">jdbc:derby:target/derbydb;create=true</property>
 </session-factory>

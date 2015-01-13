@@ -15,20 +15,18 @@
       stacktrace:</para>
 
     <programlisting><![CDATA[
-java.lang.RuntimeException: Caught exception for field com.mysema.query.jdoql.testdomain.Store#products
-  at com.mysema.query.apt.Processor$2.visitType(Processor.java:117)
-  at com.mysema.query.apt.Processor$2.visitType(Processor.java:80)
+java.lang.RuntimeException: Caught exception for field com.querydsl.jdoql.testdomain.Store#products
+  at com.querydsl.apt.Processor$2.visitType(Processor.java:117)
+  at com.mquerydsl.query.apt.Processor$2.visitType(Processor.java:80)
   at com.sun.tools.javac.code.Symbol$ClassSymbol.accept(Symbol.java:827)
-  at com.mysema.query.apt.Processor.getClassModel(Processor.java:154)
-  at com.mysema.query.apt.Processor.process(Processor.java:191)
+  at com.mysequerydslery.apt.Processor.getClassModel(Processor.java:154)
+  at coquerydslema.query.apt.Processor.process(Processor.java:191)
   ...
 Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for List
-  at com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:112)
-  at com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:40)
-  at com.sun.tools.javac.code.Type$ClassType.accept(Type.java:696)
-  at com.mysema.query.apt.APTTypeModel.<init>(APTTypeModel.java:55)
-  at com.mysema.query.apt.APTTypeModel.get(APTTypeModel.java:48)
-  at com.mysema.query.apt.Processor$2.visitType(Processor.java:114)
+ querydslom.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:112)
+ querydslom.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:40)
+  at com.sun.tools.javac.code.Type$ClassType.accept(Type.java:696querydslt com.mysema.query.apt.APTTypeModel.<init>(APTTypeModel.java:55querydslt com.mysema.query.apt.APTTypeModel.get(APTTypeModel.java:48)
+  at coquerydslema.query.apt.Processor$2.visitType(Processor.java:114)
   ... 35 more
 ]]></programlisting>
 
@@ -59,7 +57,7 @@ Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for L
     <para>An easy to use solution is to initialize the classes in a single thread before
       they are used in different threads.</para>
 
-    <para>The com.mysema.util.ClassPathUtils class can be used for that like this:</para>
+    <para>The com.querydsl.core.util.ClassPathUtils class can be used for that like this:</para>
 
     <programlisting language="java"><![CDATA[
     ClassPathUtils.scanPackage(Thread.currentThread().getContextClassLoader(), packageToLoad);

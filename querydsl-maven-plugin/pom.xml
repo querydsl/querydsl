@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-root</artifactId>
-        <version>3.6.1.BUILD-SNAPSHOT</version>
+        <version>4.0.0.BUILD-SNAPSHOT</version>
         <relativePath>../querydsl-root/pom.xml</relativePath>
     </parent>
 
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-maven-plugin</artifactId>
     <name>Querydsl - Maven plugin</name>
     <description>Querydsl Maven plugin</description>
@@ -56,7 +56,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-sql-codegen</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -89,7 +89,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

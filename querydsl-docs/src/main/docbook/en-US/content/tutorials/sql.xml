@@ -16,13 +16,13 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql-codegen</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
@@ -53,7 +53,7 @@
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>
@@ -262,7 +262,7 @@
 
 <programlisting language="xml"><![CDATA[
 <customTypes>
-  <customType>com.mysema.query.sql.types.InputStreamType</customType>
+  <customType>com.querydsl.sql.types.InputStreamType</customType>
 </customTypes>
 ]]></programlisting>
 
@@ -356,7 +356,7 @@
     <title>Code generation via ANT</title>
 
     <para>
-      The ANT task <code>com.mysema.query.sql.ant.AntMetaDataExporter</code>
+      The ANT task <code>com.querydsl.sql.codegen.ant.AntMetaDataExporter</code>
       of the querydsl-sql module provides the same functionality as an ANT task.
       The configuration parameters of the task are the same as for the Maven plugin.
     </para>
@@ -398,8 +398,9 @@ exporter.export(conn.getMetaData());
 
     <title>Configuration</title>
 
-    <para>The configuration is done via the com.mysema.query.sql.Configuration class which takes the
-    Querydsl SQL dialect as an argument. For H2 you would create it like this</para>
+    <para>The configuration is done via the com.querydsl.sql.Configuration class which takes
+      the
+      Querydsl SQL dialect as an argument. For H2 you would create it like this</para>
 
     <programlisting language="java"><![CDATA[
 SQLTemplates templates = new H2Templates();
@@ -676,7 +677,7 @@ query.list(Expressions.constant(1),
            Expressions.constant("abc"));
 ]]></programlisting>
 
-    <para>The class  <code>com.mysema.query.support.Expressions</code> offers also other useful static methods for
+    <para>The class  <code>com.querydsl.core.support.Expressions</code> offers also other useful static methods for
     projections, operation and template creation.</para>
 
   </sect2>
@@ -721,7 +722,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     <para>
       The flags are custom SQL snippets that can be inserted at specific points in the
       serialization. The supported positions are the enums of the
-      <code>com.mysema.query.QueryFlag.Position</code> enum class.
+      <code>com.querydsl.QueryFlag.Position</code> enum class.
     </para>
 
   </sect2>
@@ -1114,7 +1115,7 @@ System.out.println(bindings.getSQL());
 
     <para>Querydsl SQL provides the possibility to declare custom type mappings for
       ResultSet/Statement interaction. The custom type mappings can be
-      declared in com.mysema.query.sql.Configuration instances, which are supplied as constructor
+      declared in com.querydsl.sql.Configuration instances, which are supplied as constructor
       arguments to the actual queries:
     </para>
 

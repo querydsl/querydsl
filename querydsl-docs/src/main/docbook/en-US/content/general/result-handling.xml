@@ -5,19 +5,19 @@
   <para>Querydsl provides two ways to customize results, FactoryExpressions for row based transformation
   and ResultTransformer for aggregation.</para>
 
-  <para>The <code>com.mysema.query.types.FactoryExpression</code> interface is used for Bean creation,
+  <para>The <code>com.querydsl.core.types.FactoryExpression</code> interface is used for Bean creation,
   constructor invocation and for the creation of more complex objects. The functionality of the
   FactoryExpression implementations of Querydsl can be accessed via the
-  <code>com.mysema.query.types.Projections</code> class.</para>
+  <code>com.querydsl.core.types.Projections</code> class.</para>
 
-  <para>For the <code>com.mysema.query.ResultTransformer</code> interface <code>GroupBy</code> is the
+  <para>For the <code>com.querydsl.ResultTransformer</code> interface <code>GroupBy</code> is the
   main implementation.</para>
 
   <sect2>
 
     <title>Returning multiple columns</title>
 
-    <para>Since Querydsl 3.0 the default type for multi-column results is <code>com.mysema.query.Tuple</code>.
+    <para>Since Querydsl 3.0 the default type for multi-column results is <code>com.querydsl.Tuple</code>.
     Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para>
 
     <programlisting language="java"><![CDATA[
@@ -140,7 +140,7 @@ List<Customer> dtos = query.from(customer)
 
     <para>
       The
-      <code>com.mysema.query.group.GroupBy</code>
+      <code>com.querydsl.core.group.GroupBy</code>
       class provides aggregation functionality which can be used to aggregate query results
       in memory. Below are some usage examples.
     </para>
@@ -150,7 +150,7 @@ List<Customer> dtos = query.from(customer)
     </para>
 
     <programlisting language="java"><![CDATA[
-import static com.mysema.query.group.GroupBy.*;
+import static com.querydsl.core.group.GroupBy.*;
 
 Map<Integer, List<Comment>> results = query.from(post, comment)
     .where(comment.post.id.eq(post.id))

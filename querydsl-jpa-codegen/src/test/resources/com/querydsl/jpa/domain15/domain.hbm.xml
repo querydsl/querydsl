@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+   
+<hibernate-mapping package="com.querydsl.jpa.domain15" default-access="field">
+
+  <class name="Superclass">  
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="values"/>    
+    <property name="values2"/>
+  </class>
+
+  <class name="Entity">  
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="values"/>    
+    <property name="values2"/>
+  </class>
+  
+  <class name="Entity2">  
+    <id name="id">
+      <generator class="native"/>
+    </id>
+  </class>  
+
+</hibernate-mapping>

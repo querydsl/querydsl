@@ -21,9 +21,9 @@
 
     <programlisting language="java"><![CDATA[
 // needed for access of the Querydsl Collections API
-import static com.mysema.query.collections.CollQueryFactory.*;
+import static com.querydsl.collections.CollQueryFactory.*;
 // needed, if you use the $-invocations
-import static com.mysema.query.alias.Alias.*;
+import static com.mysequerydslery.alias.Alias.*;
 ]]></programlisting>
 
     <para>
@@ -125,14 +125,14 @@ for (String name : from(cat,cats)
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -146,7 +146,7 @@ for (String name : from(cat,cats)
 
 
     <para>
-      JPA나 JDO를 사용하지 않는다면, 도메인 타입에 <code>com.mysema.query.annotations.QueryEntity</code>
+      JPA나 JDO를 사용하지 않는다면, 도메인 타입에 <code>com.querydsl.core.annotations.QueryEntity</code>
       애노테이션을 적용하고 메이븐 설정(pom.xml)에 다음 플러그인 설정을 추가함으로써
       표현식 타입을 생성할 수 있다.
     </para>
@@ -167,7 +167,7 @@ for (String name : from(cat,cats)
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
           </configuration>
         </execution>
       </executions>
@@ -192,7 +192,7 @@ for (String name : from(cat,cats)
     <javac srcdir="${src}" classpathref="cp">
       <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
-      <compilerarg value="com.mysema.query.apt.QuerydslAnnotationProcessor"/>
+      <compilerarg value="com.querydsl.apt.QuerydslAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
@@ -220,7 +220,7 @@ for (String name : from(cat,cats)
 
     <programlisting language="java"><![CDATA[
 import static org.hamcrest.core.IsEqual.equalTo;
-import static com.mysema.query.collections.PathMatcher.hasValue;
+import static com.querydsl.collections.PathMatcher.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 ]]></programlisting>

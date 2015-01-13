@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
     <version>3.2.1</version>
     <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-docs</artifactId>
   <name>Querydsl - Documentation</name>
   <packaging>jdocbook</packaging>

@@ -15,13 +15,13 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql-codegen</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
@@ -50,7 +50,7 @@
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>
@@ -248,7 +248,7 @@
 
 <programlisting language="xml"><![CDATA[
 <customTypes>
-  <customType>com.mysema.query.sql.types.InputStreamType</customType>
+  <customType>com.querydsl.sql.types.InputStreamType</customType>
 </customTypes>
 ]]></programlisting>
 
@@ -342,7 +342,7 @@
     <title>ANT를 통한 코드 생성</title>
 
     <para>
-      Querydsl-sql 모듈이 제공하는 <code>com.mysema.query.sql.ant.AntMetaDataExporter</code>
+      Querydsl-sql 모듈이 제공하는 <code>com.querydsl.sql.codegen.ant.AntMetaDataExporter</code>
       ANT 태스크는 ANT 태스크(어떤 ANT 태스크?)와 같은 기능을 제공한다.
       태스크의 설정 파라미터느는
       메이븐 플러그인과 동일하다.
@@ -384,7 +384,7 @@ exporter.export(conn.getMetaData());
 
     <title>설정</title>
 
-    <para>com.mysema.query.sql.Configuration 클래스를 이용해서 설정하며,
+    <para>com.querydsl.sql.Configuration 클래스를 이용해서 설정하며,
       Configuration 클래스는 생성자 인자로 Querydsl SQL Dialect를 취한다.
       예를 들어, H2 DB 사용시 다음과 같이 생성한다.</para>
 
@@ -659,7 +659,7 @@ query.list(Expressions.constant(1),
            Expressions.constant("abc"));
 ]]></programlisting>
 
-    <para><code>com.mysema.query.support.Expressions</code> 클래스는
+    <para><code>com.querydsl.core.support.Expressions</code> 클래스는
     프로젝션, 오퍼레이션, 템플릿 생성을 위한 유용한 정적 메서드도 제공한다.</para>
 
   </sect2>
@@ -703,7 +703,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
 
     <para>
       플래그는 직렬화 과정에서 특정 위치에 삽입될 수 있는 커스텀 SQL 부분 코드다.
-      <code>com.mysema.query.QueryFlag.Position</code> 열거 타입에 지원되는 위치가 정의되어 있다.
+      <code>com.querydsl.QueryFlag.Position</code> 열거 타입에 지원되는 위치가 정의되어 있다.
     </para>
 
   </sect2>
@@ -1051,7 +1051,7 @@ System.out.println(bindings.getSQL());
     <title>커스텀 타입</title>
 
     <para>Querydsl SQL은 ResultSet/Statement에서 커스텀 타입 매핑을 지원한다.
-      com.mysema.query.sql.Configuration 객체를 이용해서 커스텀 카입 매핑을 등록한다.
+      com.querydsl.sql.Configuration 객체를 이용해서 커스텀 카입 매핑을 등록한다.
       Configuration 객체는 실제 쿼리의 생성자 인자로 제공된다.
     </para>
 

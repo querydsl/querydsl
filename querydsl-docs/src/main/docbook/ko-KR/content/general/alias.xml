@@ -43,8 +43,8 @@ for (String name : query.from($(c),cats)
   </para>
 
   <programlisting language="java"><![CDATA[
-import static com.mysema.query.alias.Alias.$;
-import static com.mysema.query.alias.Alias.alias;
+import static com.querydsl.core.alias.Alias.$;
+import static com.mysequerydslery.alias.Alias.alias;
 ]]></programlisting>
 
   <para>

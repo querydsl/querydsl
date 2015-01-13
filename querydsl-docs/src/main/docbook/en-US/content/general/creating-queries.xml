@@ -14,7 +14,7 @@
     <title>Complex predicates</title>
 
     <para>
-      To construct complex boolean expressions, use the <code>com.mysema.query.BooleanBuilder</code> class. It
+      To construct complex boolean expressions, use the <code>com.querydsl.BooleanBuilder</code> class. It
       implements Predicate and can be used in cascaded form:
     </para>
 
@@ -41,7 +41,7 @@ public List<Customer> getCustomer(String... names) {
     <title>Dynamic expressions</title>
 
     <para>
-      The <code>com.mysema.query.support.Expressions</code>
+      The <code>com.querydsl.core.support.Expressions</code>
       class is a static factory class for dynamic expression construction.
       The factory methods are named by the returned type and are mostly self-documenting.
     </para>
@@ -82,7 +82,7 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
     also a more fluent API for dynamic path creation.</para>
 
     <para>
-      For dynamic path generation the <code>com.mysema.query.types.path.PathBuilder</code> class can be used. It extends
+      For dynamic path generation the <code>com.querydsl.core.types.path.PathBuilder</code> class can be used. It extends
       <code>EntityPathBase</code> and can be used as an alternative to class generation and alias-usage
       for path generation.
     </para>
@@ -184,9 +184,9 @@ Expression<String> cases = customer.annualSpending
     <para>
       To avoid a generic signature in expression types the type hierarchies are
       flattened. The result is that all generated query types are direct subclasses of
-      <code>com.mysema.query.types.path.EntityPathBase</code>
+      <code>com.querydsl.core.types.path.EntityPathBase</code>
       or
-      <code>com.mysema.query.types.path.BeanPath</code>
+      <code>com.querydsl.core.types.path.BeanPath</code>
       and cannot be directly cast to their logical supertypes.
     </para>
 

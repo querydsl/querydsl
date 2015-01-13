@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.6.1.BUILD-SNAPSHOT</version>
+    <version>4.0.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-scala</artifactId>
   <name>Querydsl - Scala support</name>
   <packaging>jar</packaging>
@@ -25,7 +25,7 @@
   
   <dependencies>   
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -44,13 +44,13 @@
     
     <!-- provided -->
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-sql-codegen</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
@@ -58,7 +58,7 @@
     
     <!-- test -->
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -66,7 +66,7 @@
     </dependency>
         
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -174,7 +174,7 @@
       </plugin>
     <!--
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
@@ -182,12 +182,12 @@
           <targetFolder>target/genericExporter</targetFolder>
           <scala>true</scala>
           <packages>
-            <package>com.mysema.query.scala</package>
+            <package>com.querydsl.scala</package>
           </packages>
         </configuration>
         <dependencies>
           <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-scala</artifactId>
             <version>${project.version}</version>
           </dependency>

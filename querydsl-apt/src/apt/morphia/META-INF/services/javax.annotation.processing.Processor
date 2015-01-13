@@ -1,1 +1,1 @@
-com.mysema.query.apt.morphia.MorphiaAnnotationProcessor
+querydsl.apt.morphia.MorphiaAnnotationProcessor

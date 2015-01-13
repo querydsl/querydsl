@@ -1,1 +1,1 @@
-com.mysema.query.apt.jpa.JPAAnnotationProcessor
+querydsl.apt.jpa.JPAAnnotationProcessor

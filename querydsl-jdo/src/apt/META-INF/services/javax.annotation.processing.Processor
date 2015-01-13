@@ -1,1 +1,1 @@
-com.mysema.query.apt.jdo.JDOAnnotationProcessor
+querydsl.apt.jdo.JDOAnnotationProcessor

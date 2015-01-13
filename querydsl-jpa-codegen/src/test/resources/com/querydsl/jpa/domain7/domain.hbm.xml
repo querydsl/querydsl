@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.querydsl.jpa.domain7">
+   <class name="A" table="A">
+      <id access="field" name="id" type="int" column="A_ID" length="4">
+         <generator class="sequence"><param name="sequence">a_id_seq</param></generator>
+      </id>
+      <list access="field" name="b" lazy="true" inverse="false">
+         <key column="A_ID" not-null="true" unique="true" />
+         <index column="B_IDX" />
+         <one-to-many class="B" />
+      </list>
+   </class>
+   
+   <class name="B" table="B">
+      <id access="field" name="id" type="int" column="B_ID" length="4">
+         <generator class="sequence"><param name="sequence">b_id_seq</param></generator>
+      </id>
+      <list access="field" name="c" lazy="true" inverse="false">
+         <key column="B_ID" not-null="true" unique="true" />
+         <index column="C_IDX" />
+         <one-to-many class="C" />
+      </list>
+      <many-to-one access="field" name="a" class="A"
+         foreign-key="FK_B_A" column="A_ID" insert="false" update="false"
+         not-null="true" />
+   </class>
+   
+   <class name="C" table="C">
+      <id access="field" name="id" type="int" column="C_ID" length="4">
+         <generator class="sequence"><param name="sequence">c_id_seq</param></generator>
+      </id>
+      <many-to-one access="field" name="b" class="B"
+         foreign-key="FK_C_B" column="B_ID" insert="false" update="false"
+         not-null="true" />
+   </class>
+</hibernate-mapping>

@@ -8,14 +8,14 @@ The JDO module provides integration with the JDO API.
 
 ```XML
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>        
     
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jdo</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -45,7 +45,7 @@ And now, configure the Maven APT plugin which generates the query types used by 
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.jdo.JDOAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>

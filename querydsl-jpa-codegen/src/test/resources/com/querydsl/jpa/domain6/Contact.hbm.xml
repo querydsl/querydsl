@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.querydsl.jpa.domain6" default-lazy="false">
+  <class name="Contact" table="CONTACT" mutable="false">
+    <id name="id" column="ID">
+      <generator class="increment" />
+    </id>
+    <property name="name" column="name" not-null="true" />
+    <list name="phoneNumbers" table="CONTACT_PHONE_NUMBER" lazy="false">
+        <key column="CONTACT_ID"/>
+        <list-index column="INDEX" base="0"/>
+        <composite-element class="PhoneNumber">
+            <property name="type"/>
+            <property name="number" />
+        </composite-element>
+    </list>
+  </class>
+</hibernate-mapping>  

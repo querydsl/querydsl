@@ -12,8 +12,8 @@
  * limitations under the License.
  */
 
-import static com.mysema.query.alias.Alias.$;
-import static com.mysema.query.alias.Alias.alias;
+import static com.querydsl.core.alias.Alias.$;
+import static com.querydsl.core.alias.Alias.alias;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.CollQueryFactory;
+import com.querydsl.collections.CollQueryFactory;
 
 public class InnerClassTest {
 
