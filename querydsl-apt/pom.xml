@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.6.1.BUILD-SNAPSHOT</version>
+    <version>4.0.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <name>Querydsl - APT support</name>
   <description>APT based Source code generation for Querydsl</description>
@@ -30,7 +30,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-codegen</artifactId>
       <version>${project.version}</version>
       <exclusions>
@@ -101,7 +101,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -128,14 +128,14 @@
     <plugins>
     <!-- 
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
           <testClasspath>true</testClasspath>
           <targetFolder>target/genericExporter</targetFolder>
           <packages>
-            <package>com.mysema.query.domain</package>
+            <package>com.querydsl.core.domain</package>
           </packages>
         </configuration>
       </plugin>
@@ -176,7 +176,7 @@
           </execution>    
         </executions>        
       </plugin>         
-         
+
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
@@ -191,10 +191,10 @@
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <logOnlyOnError>true</logOnlyOnError>
               <processors>
-                <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
-                <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 
-                <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
-                <processor>com.mysema.query.apt.roo.RooAnnotationProcessor</processor>
+                <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
+                <processor>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</processor>
+                <processor>com.querydsl.apt.jdo.JDOAnnotationProcessor</processor>
+                <processor>com.querydsl.apt.roo.RooAnnotationProcessor</processor>
               </processors>              
             </configuration>
           </execution>                            
