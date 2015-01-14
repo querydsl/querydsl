@@ -3,9 +3,8 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.sql.*;
-import com.querydsl.sql.spatial.MySQLSpatialTemplates;
 import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.*;
 
 @Category(ExternalDB.class)
 public class MySQLWithQuotingTest extends AbstractSuite {
@@ -25,7 +24,7 @@ public class MySQLWithQuotingTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.initConfiguration(MySQLSpatialTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.initConfiguration(MySQLTemplates.builder().quote().newLineToSingleSpace().build());
     }
 
 }

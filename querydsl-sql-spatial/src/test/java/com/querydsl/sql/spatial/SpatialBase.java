@@ -1,4 +1,4 @@
-package com.querydsl.sql;
+package com.querydsl.sql.spatial;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import com.querydsl.spatial.GeometryExpression;
 import com.querydsl.spatial.GeometryExpressions;
 import com.querydsl.spatial.PointExpression;
 import com.querydsl.spatial.path.*;
+import com.querydsl.sql.AbstractBaseTest;
 import com.querydsl.sql.spatial.QShapes;
 import com.querydsl.sql.spatial.QSpatialRefSys;
 import com.querydsl.sql.spatial.Shapes;

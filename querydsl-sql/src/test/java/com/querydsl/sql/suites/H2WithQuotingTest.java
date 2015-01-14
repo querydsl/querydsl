@@ -12,7 +12,6 @@ public class H2WithQuotingTest extends AbstractSuite {
     public static class KeywordQuoting extends KeywordQuotingBase {}
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
-    public static class Select extends SelectBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}

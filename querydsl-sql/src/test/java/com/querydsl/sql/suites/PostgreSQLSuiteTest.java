@@ -3,9 +3,8 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.sql.*;
-import com.querydsl.sql.spatial.PostGISTemplates;
 import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.*;
 
 @Category(ExternalDB.class)
 public class PostgreSQLSuiteTest extends AbstractSuite {
@@ -21,7 +20,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
         public void setUp() throws Exception {
             //NOTE: replacing the templates with a non-quoting one
             previous = configuration;
-            configuration = new Configuration(PostGISTemplates.builder().newLineToSingleSpace().build());
+            configuration = new Configuration(PostgresTemplates.builder().newLineToSingleSpace().build());
             super.setUp();
         }
 
@@ -36,7 +35,6 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
-    public static class Spatial extends SpatialBase {}
     public static class SelectWindowFunctions extends SelectWindowFunctionsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
@@ -46,7 +44,7 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initPostgres();
-        Connections.initConfiguration(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.initConfiguration(PostgresTemplates.builder().quote().newLineToSingleSpace().build());
     }
 
 }

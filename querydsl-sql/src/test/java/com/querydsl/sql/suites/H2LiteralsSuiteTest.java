@@ -3,7 +3,6 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 
 import com.querydsl.sql.*;
-import com.querydsl.sql.spatial.GeoDBTemplates;
 
 public class H2LiteralsSuiteTest extends AbstractSuite {
 
@@ -14,7 +13,6 @@ public class H2LiteralsSuiteTest extends AbstractSuite {
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
-    public static class Spatial extends SpatialBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
@@ -23,7 +21,7 @@ public class H2LiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.initConfiguration(GeoDBTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(H2Templates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

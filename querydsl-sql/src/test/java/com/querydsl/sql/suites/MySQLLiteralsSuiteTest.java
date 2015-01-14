@@ -3,9 +3,8 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.sql.*;
-import com.querydsl.sql.spatial.MySQLSpatialTemplates;
 import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.*;
 
 @Category(ExternalDB.class)
 public class MySQLLiteralsSuiteTest extends AbstractSuite {
@@ -18,7 +17,6 @@ public class MySQLLiteralsSuiteTest extends AbstractSuite {
     public static class Merge extends MergeBase {}
     public static class Select extends SelectBase {}
     public static class SelectMySQL extends SelectMySQLBase {}
-    public static class Spatial extends SpatialBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
@@ -27,7 +25,7 @@ public class MySQLLiteralsSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
-        Connections.initConfiguration(MySQLSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(MySQLTemplates.builder().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

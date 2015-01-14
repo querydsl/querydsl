@@ -3,9 +3,8 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.sql.*;
-import com.querydsl.sql.spatial.OracleSpatialTemplates;
 import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.*;
 
 @Category(ExternalDB.class)
 public class OracleSuiteTest extends AbstractSuite {
@@ -27,7 +26,7 @@ public class OracleSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initOracle();
-        Connections.initConfiguration(OracleSpatialTemplates.builder().newLineToSingleSpace().build());
+        Connections.initConfiguration(OracleTemplates.builder().newLineToSingleSpace().build());
     }
 
 }

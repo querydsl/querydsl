@@ -1,14 +1,16 @@
 package com.querydsl.sql.domain;
 
-import javax.annotation.Generated;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
 import java.sql.Types;
 
-import com.querydsl.sql.ColumnMetadata;
-import com.querydsl.sql.spatial.RelationalPathSpatial;
+import javax.annotation.Generated;
+
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.path.StringPath;
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.RelationalPathBase;
 
 
 
@@ -16,7 +18,7 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
  * QXmlTest is a Querydsl query type for QXmlTest
  */
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
-public class QXmlTest extends RelationalPathSpatial<QXmlTest> {
+public class QXmlTest extends RelationalPathBase<QXmlTest> {
 
     private static final long serialVersionUID = 574759316;
 

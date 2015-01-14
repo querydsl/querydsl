@@ -6,12 +6,12 @@
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
     <version>4.0.0.BUILD-SNAPSHOT</version>
-    <relativePath>../querydsl-root/pom.xml</relativePath> 
+    <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
   <groupId>com.querydsl</groupId>
-  <artifactId>querydsl-sql</artifactId>
-  <name>Querydsl - SQL support</name>
+  <artifactId>querydsl-sql-spatial</artifactId>
+  <name>Querydsl - SQL Spatial support</name>
   <description>SQL support for Querydsl</description>
   <packaging>jar</packaging>
 
@@ -27,36 +27,25 @@
   <dependencies>
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-core</artifactId>
+      <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-spatial</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <version>1.10</version>
     </dependency>
 
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>1.6</version>
-    </dependency>    
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>1.1.0.Final</version>
-    </dependency>
-       
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <scope>provided</scope>      
-    </dependency>    
-    
-    <dependency>  
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-      <version>1_2</version>
-    </dependency>    
+      <scope>provided</scope>
+    </dependency>
 
     <!-- test -->
     <dependency>
@@ -94,19 +83,19 @@
       <groupId>org.postgis</groupId>
       <artifactId>postgis-jdbc</artifactId>
       <version>1.3.3</version>
-      <scope>test</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>ojdbc6</artifactId>
       <version>${oracle.version}</version>
-      <scope>test</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>oracle</groupId>
       <artifactId>sdoapi</artifactId>
       <version>11.2.0</version>
-      <scope>test</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
@@ -126,7 +115,7 @@
       <version>0.7</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>cubrid</groupId>
       <artifactId>cubrid-jdbc</artifactId>
@@ -156,10 +145,12 @@
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-spatial</artifactId>
+      <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+      <type>test-jar</type>
     </dependency>
+
 
     <dependency>
       <groupId>jdepend</groupId>
@@ -187,7 +178,7 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -224,8 +215,8 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
-      </plugin>   
-    
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -255,40 +246,13 @@
         <configuration>
           <systemProperties>
             <property>
-                <name>derby.stream.error.file</name>
-                <value>target/derby.log</value>
+              <name>derby.stream.error.file</name>
+              <value>target/derby.log</value>
             </property>
           </systemProperties>
         </configuration>
-      </plugin>         
-      
-      <!-- 
-      <plugin>
-        <groupId>com.querydsl</groupId>
-        <artifactId>querydsl-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-export</goal>
-            </goals>
-          </execution>            
-        </executions>
-        <configuration>
-          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-          <packageName>com.querydsl.sql.domain2</packageName>
-          <targetFolder>target/generated-test-sources/java</targetFolder>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>${derby.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
-       -->
+
     </plugins>
   </build>
 

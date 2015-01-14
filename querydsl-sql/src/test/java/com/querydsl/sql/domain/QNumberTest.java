@@ -6,12 +6,12 @@ import java.sql.Types;
 
 import javax.annotation.Generated;
 
-import com.querydsl.sql.ColumnMetadata;
-import com.querydsl.sql.spatial.RelationalPathSpatial;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.path.BooleanPath;
 import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.RelationalPathBase;
 
 
 
@@ -19,7 +19,7 @@ import com.querydsl.core.types.path.NumberPath;
  * QNumberTest is a Querydsl query type for QNumberTest
  */
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
-public class QNumberTest extends RelationalPathSpatial<QNumberTest> {
+public class QNumberTest extends RelationalPathBase<QNumberTest> {
 
     private static final long serialVersionUID = 291758928;
 

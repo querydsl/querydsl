@@ -32,7 +32,7 @@
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-spatial</artifactId>
+      <artifactId>querydsl-sql-spatial</artifactId>
       <version>${project.version}</version>
     </dependency>        
 
