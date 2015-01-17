@@ -75,10 +75,6 @@ public class HQLTemplates extends JPQLTemplates {
         builder.put(BigDecimal.class, "big_decimal");
         typeNames = builder.build();
 
-        // TODO : remove this when Hibernate supports type(alias)
-        add(Ops.INSTANCE_OF, "{0}.class = {1}");
-        // TODO : remove this when Hibernate supports type(alias)
-        add(JPQLOps.TYPE, "{0}.class");
         // TODO : remove this when Hibernate supports member of properly
         add(JPQLOps.MEMBER_OF, "{0} in elements({1})");
         add(JPQLOps.NOT_MEMBER_OF, "{0} not in elements({1})");
@@ -108,11 +104,6 @@ public class HQLTemplates extends JPQLTemplates {
     @Override
     public boolean wrapElements(Operator<?> operator) {
         return wrapElements.contains(operator);
-    }
-
-    @Override
-    public boolean isTypeAsString() {
-        return true;
     }
 
     @Override
