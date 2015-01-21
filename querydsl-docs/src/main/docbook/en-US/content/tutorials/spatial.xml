@@ -21,7 +21,7 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-spatial</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -62,7 +62,7 @@
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         ...

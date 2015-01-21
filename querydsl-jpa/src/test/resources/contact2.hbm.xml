@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="com.mysema.query.jpa.domain2.Contact" table="CONTACT">
+  <class name="com.querydsl.jpa.domain2.Contact" table="CONTACT">
    <id name="id" type="long" column="ID" >
    <generator class="assigned"/>
   </id>

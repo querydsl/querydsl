@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.mysema.querydsl</groupId>
+    <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>3.6.1.BUILD-SNAPSHOT</version>
+    <version>4.0.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-mongodb</artifactId>
   <name>Querydsl - Mongodb support</name>
   <description>Mongodb support for Querydsl</description>
@@ -47,12 +47,12 @@
     </dependency>
 
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
@@ -69,7 +69,7 @@
 
     <!-- test -->
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -95,7 +95,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.morphia.MorphiaAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.morphia.MorphiaAnnotationProcessor</processor>
               <logOnlyOnError>true</logOnlyOnError>
               <options>
                 <defaultOverwrite>true</defaultOverwrite>
@@ -143,7 +143,7 @@
                 </property>
               </systemProperties>
               <includes>
-                <include>com/mysema/query/PackageVerification.java</include>
+                <include>com/querydsl/jpa/PackageVerification.java</include>
               </includes>
             </configuration>
           </execution>

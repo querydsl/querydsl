@@ -2,9 +2,9 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.6.1.BUILD-SNAPSHOT</version>
+  <version>4.0.0.BUILD-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -219,10 +219,6 @@
             <configuration>
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
-                  <excludes>
-                    <exclude>com/mysema/query/jpa/NativeSQLSerializer</exclude>
-                    <exclude>com/mysema/query/sql/types/ArrayType</exclude>
-                  </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
@@ -258,47 +254,47 @@
           <groups>
             <group>
               <title>Core</title>
-              <packages>com.mysema.query:com.mysema.query.alias:com.mysema.query.annotations:com.mysema.query.codegen:com.mysema.query.dml:com.mysema.query.functions:com.mysema.query.serialization:com.mysema.query.support:com.mysema.query.types*</packages>
+              <packages>com.querydsl.core*</packages>
             </group>
             <group>
               <title>APT</title>
-              <packages>com.mysema.query.apt*</packages>
+              <packages>com.querydsl.apt*</packages>
             </group>
             <group>
               <title>Spatial</title>
-              <packages>com.mysema.query.spatial*</packages>
+              <packages>com.querydsl.spatial*</packages>
             </group>
             <group>
               <title>Collections</title>
-              <packages>com.mysema.query.collections*</packages>
+              <packages>com.querydsl.collections*</packages>
             </group>
             <group>
               <title>JPA</title>
-              <packages>com.mysema.query.jpa*</packages>
+              <packages>com.querydsl.jpa*</packages>
             </group>
             <group>
               <title>JDO</title>
-              <packages>com.mysema.query.jdo*</packages>
+              <packages>com.querydsl.jdo*</packages>
             </group>
             <group>
               <title>SQL</title>
-              <packages>com.mysema.query.sql*</packages>
+              <packages>com.querydsl.sql*</packages>
             </group>
             <group>
               <title>Spatial</title>
-              <packages>com.mysema.query.spatial*</packages>
+              <packages>com.querydsl.spatial*</packages>
             </group>
             <group>
               <title>Lucene</title>
-              <packages>com.mysema.query.lucene</packages>
+              <packages>com.querydsl.lucene3:com.querydsl.lucene4</packages>
             </group>
             <group>
               <title>Hibernate Search</title>
-              <packages>com.mysema.query.search</packages>
+              <packages>com.querydsl.search</packages>
             </group>
             <group>
               <title>Mongodb</title>
-              <packages>com.mysema.query.mongodb*</packages>        
+              <packages>com.querydsl.mongodb*</packages>
             </group>            
           </groups>
         </configuration>
@@ -352,7 +348,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Xms256m -Xmx512m -XX:MaxPermSize=512m</argLine>
-          <excludedGroups>com.mysema.testutil.ExternalDB</excludedGroups>
+          <excludedGroups>com.querydsl.core.testutil.ExternalDB</excludedGroups>
         </configuration>
         <dependencies>
           <dependency>
@@ -394,6 +390,7 @@
         <module>../querydsl-apt</module> 
         <module>../querydsl-collections</module>           
         <module>../querydsl-sql</module>
+        <module>../querydsl-sql-spatial</module>
         <module>../querydsl-sql-codegen</module>
         <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>
@@ -432,6 +429,7 @@
         <module>../querydsl-spatial</module>
         <module>../querydsl-apt</module> 
         <module>../querydsl-sql</module>
+        <module>../querydsl-sql-spatial</module>
         <module>../querydsl-sql-codegen</module>
         <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>        
@@ -448,6 +446,7 @@
         <module>../querydsl-spatial</module>
         <module>../querydsl-apt</module> 
         <module>../querydsl-sql</module>
+        <module>../querydsl-sql-spatial</module>
         <module>../querydsl-sql-codegen</module>
         <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>        
@@ -483,6 +482,7 @@
         <module>../querydsl-codegen</module>
         <module>../querydsl-spatial</module>
         <module>../querydsl-sql</module>
+        <module>../querydsl-sql-spatial</module>
         <module>../querydsl-sql-codegen</module>
         <module>../querydsl-sql-spring</module>
         <module>../querydsl-maven-plugin</module>        
@@ -507,7 +507,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
-              <excludedGroups>com.mysema.testutil.Performance</excludedGroups>
+              <excludedGroups>com.querydsl.core.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
                 <exclude>**/DB2*SuiteTest.java</exclude>
@@ -528,7 +528,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-              <excludedGroups>com.mysema.testutil.Performance</excludedGroups>
+              <excludedGroups>com.querydsl.core.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
                 <exclude>**/DB2*SuiteTest.java</exclude>
@@ -542,7 +542,7 @@
               <properties>
                 <property>
                   <name>listener</name>
-                  <value>com.mysema.testutil.TravisFoldListener</value>
+                  <value>com.querydsl.core.testutil.TravisFoldListener</value>
                 </property>
               </properties>
             </configuration>

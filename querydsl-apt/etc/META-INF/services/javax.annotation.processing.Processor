@@ -1,1 +1,1 @@
-com.mysema.query.apt.EntityAnnotationProcessor
+com.querydsl.apt.EntityAnnotationProcessor

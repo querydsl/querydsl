@@ -6,7 +6,7 @@
   <persistence-unit name="AntJPADomainExporterTest">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <mapping-file>META-INF/orm.xml</mapping-file>
-    <class>com.mysema.query.jpa.ant.Departments</class>
+    <class>com.querydsl.jpa.codegen.ant.Departments</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

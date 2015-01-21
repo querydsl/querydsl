@@ -1,1 +1,1 @@
-com.mysema.query.apt.hibernate.HibernateAnnotationProcessor
+com.querydsl.apt.hibernate.HibernateAnnotationProcessor

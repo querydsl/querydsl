@@ -24,14 +24,14 @@
 
     <programlisting language="xml"><![CDATA[
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
 
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -63,7 +63,7 @@
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
           </configuration>
         </execution>
       </executions>
@@ -81,7 +81,7 @@
 
     <para>
       도메인 타입으로 Hibernate 애노테이션을 사용하면, APT 프로세서로
-      <code>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</code>를 사용해야 한다.
+      <code>com.querydsl.apt.hibernate.HibernateAnnotationProcessor</code>를 사용해야 한다.
     </para>
 
     <para>
@@ -115,7 +115,7 @@
     <javac srcdir="${src}" classpathref="cp">
       <compilerarg value="-proc:only"/>
       <compilerarg value="-processor"/>
-      <compilerarg value="com.mysema.query.apt.jpa.JPAAnnotationProcessor"/>
+      <compilerarg value="com.querydsl.apt.jpa.JPAAnnotationProcessor"/>
       <compilerarg value="-s"/>
       <compilerarg value="${generated}"/>
     </javac>
@@ -141,8 +141,8 @@
 
     <para>
       스프링 Roo에서 Querydsl JPA를 사용한다면,
-      <code>com.mysema.query.apt.jpa.JPAAnnotationProcessor</code> 대신
-      <code>com.mysema.query.apt.roo.RooAnnotationProcessor</code>를 사용할 수 있다.
+      <code>com.querydsl.apt.jpa.JPAAnnotationProcessor</code> 대신
+      <code>com.querydsl.apt.roo.RooAnnotationProcessor</code>를 사용할 수 있다.
       RooAnnotationProcessor는 <code>@Entity</code>가 적용된 클래스 대신
       <code>@RooJpaEntity</code>와 <code>@RooJpaActiveRecord</code> 애노테이션이 적용된
       클래스를 처리한다.
@@ -164,7 +164,7 @@
     </para>
 
     <para>
-      <code>com.mysema.query.jpa.codegen.HibernateDomainExporter</code>가 이 기능을 제공한다.
+      <code>com.querydsl.jpa.codegen.HibernateDomainExporter</code>가 이 기능을 제공한다.
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -588,7 +588,7 @@ List results = jpaQuery.getResultList();
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>

@@ -11,7 +11,7 @@
 
     <para>
       기본적으로 Querydsl은 처음 2레벨의 레퍼런스 프로퍼티만 초기화한다. 더 깊은 경로로 초기화해야 한다면,
-      <code>com.mysema.query.annotations.QueryInit</code> 애노테이션을 도메인 타입에 적용해야 한다.
+      <code>com.querydsl.core.annotations.QueryInit</code> 애노테이션을 도메인 타입에 적용해야 한다.
       더 깊은 레벨로 초기화가 필요한 프로퍼티에 QueryInit 어노테이션을 적용한다. 다음은 적용 예를 보여주고 있다.
     </para>
 
@@ -117,9 +117,9 @@ public class User {
 
     <programlisting language="java"><![CDATA[
 @Config(listAccessors=true)
-package com.mysema.query.domain.rel;
+package com.querydsl.core.domain.rel;
 
-import com.mysema.query.annotations.Config;
+import com.querydsl.core.annotations.Config;
 ]]></programlisting>
 
   <!-- TODO table for options ? -->
@@ -212,7 +212,7 @@ import com.mysema.query.annotations.Config;
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             <options>
               <querydsl.entityAccessors>true</querydsl.entityAccessors>
             </options>
@@ -294,7 +294,7 @@ public static BooleanPath isManagedBy(QUser user, User other) {
 
     <programlisting language="java"><![CDATA[
 public BooleanPath isManagedBy(QUser other) {
-    return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
+    return DelegateTest.isManagedBy(this, other);
 }
 
 ]]></programlisting>
@@ -372,7 +372,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
     </para>
 
     <para>
-      실제로 타입을 생성하려면 <code>com.mysema.query.apt.QuerydslAnnotationProcessor</code>를 사용한다.
+      실제로 타입을 생성하려면 <code>com.querydsl.apt.QuerydslAnnotationProcessor</code>를 사용한다.
       메이븐 설정 방법은 다음과 같다.
     </para>
 
@@ -392,7 +392,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
           </goals>
           <configuration>
             <outputDirectory>target/generated-sources/java</outputDirectory>
-            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
           </configuration>
         </execution>
       </executions>
@@ -417,7 +417,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 
     <para>
       GenericExporter를 사용하려면 querydsl-codegen 모듈을 의존에 추가해주어야 한다.
-      (더 정확하게는 <code>com.mysema.querydsl:querydsl-codegen:${querydsl.version}</code> 모듈)
+      (더 정확하게는 <code>com.querydsl:querydsl-codegen:${querydsl.version}</code> 모듈)
     </para>
 
     <para>다음은 JPA를 위한 예제다.</para>
@@ -513,7 +513,7 @@ exporter.export(DomainClass.class.getPackage());
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>
@@ -622,12 +622,12 @@ exporter.export(DomainClass.class.getPackage());
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <dependencies>
           <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-scala</artifactId>
             <version>${querydsl.version}</version>
           </dependency>

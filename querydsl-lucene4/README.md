@@ -7,7 +7,7 @@ The Lucene module provides integration with the Lucene 4 indexing library.
  Add the following dependencies to your Maven project :
 ```XML
 <dependency>
-  <groupId>com.mysema.querydsl</groupId>
+  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-lucene4</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
