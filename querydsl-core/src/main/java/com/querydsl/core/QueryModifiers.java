@@ -30,6 +30,9 @@ public final class QueryModifiers implements Serializable{
 
     private static final long serialVersionUID = 2934344588433680339L;
 
+    /**
+     * No limit and not offset restriction
+     */
     public static final QueryModifiers EMPTY = new QueryModifiers();
 
     private static int toInt(Long l) {

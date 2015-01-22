@@ -83,7 +83,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     @Override
-    protected <D> Expression<D> createAlias(Expression<?> expr, Path<?> alias) {
+    protected <D> Expression<D> createAlias(Expression<?> expr, Path<D> alias) {
         aliases.put(expr, alias);
         return super.createAlias(expr, alias);
     }

@@ -17,18 +17,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.querydsl.core.JoinType;
-import com.querydsl.core.dml.UpdateClause;
-import com.querydsl.jpa.HQLTemplates;
-import com.querydsl.jpa.JPAQueryMixin;
-import com.querydsl.jpa.JPQLSerializer;
-import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.*;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
+
+import com.google.common.collect.Maps;
+import com.querydsl.core.JoinType;
+import com.querydsl.core.dml.UpdateClause;
+import com.querydsl.core.support.Expressions;
+import com.querydsl.core.support.QueryMixin;
+import com.querydsl.core.types.*;
+import com.querydsl.jpa.HQLTemplates;
+import com.querydsl.jpa.JPAQueryMixin;
+import com.querydsl.jpa.JPQLSerializer;
+import com.querydsl.jpa.JPQLTemplates;
 
 /**
  * UpdateClause implementation for Hibernate
@@ -40,6 +43,8 @@ public class HibernateUpdateClause implements
         UpdateClause<HibernateUpdateClause> {
 
     private final QueryMixin queryMixin = new JPAQueryMixin();
+
+    private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
 
     private final SessionHolder session;
 
@@ -69,7 +74,7 @@ public class HibernateUpdateClause implements
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForUpdate(queryMixin.getMetadata());
+        serializer.serializeForUpdate(queryMixin.getMetadata(), updates);
         Map<Object, String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
@@ -83,7 +88,7 @@ public class HibernateUpdateClause implements
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
         if (value != null) {
-            queryMixin.addProjection(ExpressionUtils.eqConst(path, value));
+            updates.put(path, Expressions.constant(value));
         } else {
             setNull(path);
         }
@@ -93,7 +98,7 @@ public class HibernateUpdateClause implements
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
-            queryMixin.addProjection(ExpressionUtils.eq(path, expression));
+            updates.put(path, expression);
         } else {
             setNull(path);
         }        
@@ -102,7 +107,7 @@ public class HibernateUpdateClause implements
     
     @Override
     public <T> HibernateUpdateClause setNull(Path<T> path) {
-        queryMixin.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        updates.put(path, new NullExpression<T>(path.getType()));
         return this;
     }
 
@@ -111,10 +116,9 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) != null) {
-                queryMixin.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
+                updates.put(paths.get(i), Expressions.constant(values.get(i)));
             } else {
-                queryMixin.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)),
-                        new NullExpression(paths.get(i).getType())));
+                updates.put(paths.get(i), new NullExpression(paths.get(i).getType()));
             }
 
         }
@@ -141,13 +145,13 @@ public class HibernateUpdateClause implements
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForUpdate(queryMixin.getMetadata());
+        serializer.serializeForUpdate(queryMixin.getMetadata(), updates);
         return serializer.toString();
     }
 
     @Override
     public boolean isEmpty() {
-        return queryMixin.getMetadata().getProjection().isEmpty();
+        return updates.isEmpty();
     }
 
 

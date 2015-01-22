@@ -13,17 +13,20 @@
  */
 package com.querydsl.jpa;
 
-import javax.persistence.EntityManager;
+import static org.junit.Assert.*;
+
 import java.io.*;
 
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.jpa.testutil.JPATestRunner;
+import javax.persistence.EntityManager;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
+
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
 public class SerializationBase implements JPATest {
@@ -42,7 +45,7 @@ public class SerializationBase implements JPATest {
         QueryMetadata metadata = query.getMetadata();
         assertFalse(metadata.getJoins().isEmpty());
         assertTrue(metadata.getWhere() != null);
-        assertTrue(metadata.getProjection().isEmpty());
+        assertTrue(metadata.getProjection() != null);
         
         // serialize metadata
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -14,12 +14,14 @@
 package com.querydsl.jdo.dml;
 
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.UpdateClause;
+import com.querydsl.core.support.Expressions;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
@@ -34,6 +36,8 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
+    private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+
     @Override
     public long execute() {
         // TODO : implement
@@ -45,10 +49,9 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
     public JDOUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) != null) {
-                metadata.addProjection(ExpressionUtils.eqConst(((Expression)paths.get(i)), values.get(i)));
+                updates.put(paths.get(i), Expressions.constant(values.get(i)));
             } else {
-                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), 
-                        new NullExpression(paths.get(i).getType())));
+                updates.put(paths.get(i), new NullExpression(paths.get(i).getType()));
             }
         }
         return this;
@@ -57,9 +60,9 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
     @Override
     public <T> JDOUpdateClause set(Path<T> path, T value) {
         if (value != null) {
-            metadata.addProjection(ExpressionUtils.eqConst(path, value));
+            updates.put(path, Expressions.constant(value));
         } else {
-            metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+            updates.put(path, new NullExpression<T>(path.getType()));
         }
         return this;
     }
@@ -67,13 +70,13 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
 
     @Override
     public <T> JDOUpdateClause set(Path<T> path, Expression<? extends T> expression) {
-        metadata.addProjection(ExpressionUtils.eq(path, expression));
+        updates.put(path, expression);
         return this;
     }
     
     @Override
     public <T> JDOUpdateClause setNull(Path<T> path) {
-        metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        updates.put(path, new NullExpression<T>(path.getType()));
         return this;
     }
     
@@ -87,7 +90,7 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
 
     @Override
     public boolean isEmpty() {
-        return metadata.getProjection().isEmpty();
+        return updates.isEmpty();
     }
 
 

@@ -56,7 +56,7 @@ public class QueryMetadaSerializationTest {
 //        metadata.getJoins().get(0).addFlag(new JoinFlag(""));
         metadata.addJoinCondition(expr.isEmpty());
         metadata.addOrderBy(expr.asc());
-        metadata.addProjection(expr);
+        metadata.setProjection(expr);
         metadata.addWhere(expr.isEmpty());
         
         // serialize metadata

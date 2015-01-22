@@ -7,6 +7,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.expr.Wildcard;
 import com.querydsl.core.types.path.DatePath;
 import com.querydsl.core.types.path.NumberPath;
@@ -94,9 +95,7 @@ public class ExtendedSQLTest {
            .forUpdate();
            // of(author.firstName, author.lastName)
 
-        query.getMetadata().addProjection(author.firstName);
-        query.getMetadata().addProjection(author.lastName);
-        query.getMetadata().addProjection(Wildcard.count);
+        query.getMetadata().setProjection(Projections.tuple(author.firstName, author.lastName, Wildcard.count));
 
         SQLSerializer serializer = new SQLSerializer(new Configuration(new MySQLTemplates()));
         serializer.serialize(query.getMetadata(), false);

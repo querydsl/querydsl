@@ -188,7 +188,7 @@ public class DefaultQueryEngine implements QueryEngine {
                 order(metadata, sources, list);
             }
             // projection
-            if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)) {
+            if (metadata.getProjection() != null && !metadata.getProjection().equals(source)) {
                 list = project(metadata, sources, list);
             }
             // limit + offset
@@ -224,7 +224,7 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
-        Expression<?> projection = metadata.getProjection().get(0);
+        Expression<?> projection = metadata.getProjection();
         Operator<?> aggregator = null;
         if (projection instanceof Operation && Ops.aggOps.contains(((Operation)projection).getOperator())) {
             Operation<?> aggregation = (Operation<?>)projection;

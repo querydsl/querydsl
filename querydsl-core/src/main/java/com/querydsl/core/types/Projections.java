@@ -32,6 +32,19 @@ public final class Projections {
     public static <T> ArrayConstructorExpression<T> array(Class<T[]> type, Expression<T>... exprs) {
         return new ArrayConstructorExpression<T>(type, exprs);
     }
+
+    /**
+     * Create an appending factory expression which serializes all the arguments but the uses
+     * the base value as the return value
+     *
+     * @param base
+     * @param rest
+     * @param <T>
+     * @return
+     */
+    public static <T> AppendingFactoryExpression<T> appending(Expression<T> base, Expression<?>... rest) {
+        return new AppendingFactoryExpression<T>(base, rest);
+    }
     
     /**
      * Create a Bean populating projection for the given type and expressions

@@ -57,7 +57,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @Test
     public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         assertEquals("select * from (  " +
                 "select a.*, rownum rn from (   " +
                 "select survey1.ID from SURVEY survey1  ) " +
@@ -68,7 +68,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @Test
     public void Modifiers2() {
         query.from(survey1).limit(5).offset(3);
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         query.getMetadata().addFlag(new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() "));
 
         assertEquals("select * from (  " +

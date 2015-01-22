@@ -29,7 +29,7 @@ public class PerformanceTest {
         md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, survey);
         md.addWhere(survey.id.eq(10));
-        md.addProjection(survey.name);
+        md.setProjection(survey.name);
         
         templates = new H2Templates();
         configuration = new Configuration(templates);

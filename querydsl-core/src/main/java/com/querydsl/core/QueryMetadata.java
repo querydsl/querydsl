@@ -77,13 +77,6 @@ public interface QueryMetadata extends Serializable {
     void addOrderBy(OrderSpecifier<?> o);
 
     /**
-     * Add the given projections
-     *
-     * @param o
-     */
-    void addProjection(Expression<?> o);
-
-    /**
      * Add the given where expressions
      *
      * @param o
@@ -94,11 +87,6 @@ public interface QueryMetadata extends Serializable {
      * Clear the order expressions
      */
     void clearOrderBy();
-
-    /**
-     * Clear the projection
-     */
-    void clearProjection();
 
     /**
      * Clear the where expressions
@@ -124,6 +112,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
+    @Nullable
     Predicate getHaving();
 
     /**
@@ -152,7 +141,8 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    List<Expression<?>> getProjection();
+    @Nullable
+    Expression<?> getProjection();
 
     /**
      * Get the parameters
@@ -220,6 +210,11 @@ public interface QueryMetadata extends Serializable {
      * @param value
      */
     <T> void setParam(ParamExpression<T> param, T value);
+
+    /**
+     * @param o
+     */
+    void setProjection(Expression<?> o);
 
     /**
      * @param flag

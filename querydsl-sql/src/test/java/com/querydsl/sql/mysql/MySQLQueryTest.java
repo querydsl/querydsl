@@ -35,7 +35,7 @@ public class MySQLQueryTest {
         }});
         query.from(survey);
         query.orderBy(survey.name.asc());
-        query.getMetadata().addProjection(survey.name);
+        query.getMetadata().setProjection(survey.name);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class MySQLQueryTest {
         query.from(survey);
         query.forceIndex("col1_index");
         query.orderBy(survey.name.asc());
-        query.getMetadata().addProjection(survey.name);
+        query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey force index (col1_index) " +
                      "order by survey.NAME asc", toString(query));
@@ -103,7 +103,7 @@ public class MySQLQueryTest {
         query.from(survey);
         query.ignoreIndex("col1_index");
         query.orderBy(survey.name.asc());
-        query.getMetadata().addProjection(survey.name);
+        query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey ignore index (col1_index) " +
                      "order by survey.NAME asc", toString(query));
@@ -117,7 +117,7 @@ public class MySQLQueryTest {
         query.from(survey);
         query.useIndex("col1_index");
         query.orderBy(survey.name.asc());
-        query.getMetadata().addProjection(survey.name);
+        query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey use index (col1_index) " +
                      "order by survey.NAME asc", toString(query));
@@ -131,7 +131,7 @@ public class MySQLQueryTest {
         query.from(survey);
         query.useIndex("col1_index","col2_index");
         query.orderBy(survey.name.asc());
-        query.getMetadata().addProjection(survey.name);
+        query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey use index (col1_index, col2_index) " +
                      "order by survey.NAME asc", toString(query));

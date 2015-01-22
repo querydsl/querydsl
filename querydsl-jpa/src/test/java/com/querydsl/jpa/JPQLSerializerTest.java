@@ -13,16 +13,16 @@
  */
 package com.querydsl.jpa;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
+
+import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.domain.QCat;
-import com.querydsl.jpa.domain.JobFunction;
-import com.querydsl.jpa.domain.Location;
-import com.querydsl.jpa.domain.QDomesticCat;
-import com.querydsl.jpa.domain.QEmployee;
 import com.querydsl.core.support.Expressions;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
@@ -31,8 +31,10 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.path.EntityPathBase;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.StringPath;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import com.querydsl.jpa.domain.JobFunction;
+import com.querydsl.jpa.domain.Location;
+import com.querydsl.jpa.domain.QDomesticCat;
+import com.querydsl.jpa.domain.QEmployee;
 
 public class JPQLSerializerTest {
 
@@ -226,7 +228,7 @@ public class JPQLSerializerTest {
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
         md.addJoin(JoinType.JOIN, cat.mate.as((Path) QDomesticCat.domesticCat));
-        md.addProjection(QDomesticCat.domesticCat);
+        md.setProjection(QDomesticCat.domesticCat);
         serializer.serialize(md, false, null);
         assertEquals("select domesticCat\n" +
                 "from Cat cat\n" +

@@ -21,12 +21,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.junit.Test;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
-import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.sql.domain.QEmployeeNoPK;
-import com.querydsl.sql.domain.QSurvey;
 import com.querydsl.core.support.Expressions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
@@ -36,8 +35,9 @@ import com.querydsl.core.types.expr.Wildcard;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.PathBuilder;
 import com.querydsl.core.types.path.StringPath;
-
-import org.junit.Test;
+import com.querydsl.sql.domain.QEmployee;
+import com.querydsl.sql.domain.QEmployeeNoPK;
+import com.querydsl.sql.domain.QSurvey;
 
 public class SQLSerializerTest {
 
@@ -299,7 +299,7 @@ public class SQLSerializerTest {
              .from(sub);
 
         QueryMetadata md = query.getMetadata();
-        md.addProjection(Wildcard.all);
+        md.setProjection(Wildcard.all);
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(md, false);
         assertEquals("with recursive sub as ((select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.SUPERIOR_ID\n" +
@@ -335,7 +335,7 @@ public class SQLSerializerTest {
              .from(sub);
 
         QueryMetadata md = query.getMetadata();
-        md.addProjection(Wildcard.all);
+        md.setProjection(Wildcard.all);
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(md, false);
         assertEquals("with recursive sub (ID, FIRSTNAME, SUPERIOR_ID) as ((select EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.SUPERIOR_ID\n" +

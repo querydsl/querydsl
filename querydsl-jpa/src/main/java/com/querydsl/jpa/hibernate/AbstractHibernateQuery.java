@@ -29,10 +29,8 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.FactoryExpressionUtils;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
+import com.querydsl.core.util.ArrayUtils;
 import com.querydsl.jpa.*;
 
 /**
@@ -95,7 +93,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public Query createQuery(Expression<?> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -108,9 +106,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
-        queryMixin.addProjection(expr1);
-        queryMixin.addProjection(expr2);
-        queryMixin.addProjection(rest);
+        queryMixin.setProjection(ExpressionUtils.list(Object[].class,
+                ArrayUtils.combine(Expression.class, expr1, expr2, rest)));
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -121,7 +118,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @return
      */
     public Query createQuery(Expression<?>[] args) {
-        queryMixin.addProjection(args);
+        queryMixin.setProjection(ExpressionUtils.list(Object[].class, args));
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -168,17 +165,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
 
         // set transformer, if necessary
-        List<? extends Expression<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1 && !forCount) {
-            Expression<?> expr = projection.get(0);
-            if (expr instanceof FactoryExpression<?>) {
-                query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
-            }
-        } else if (!forCount) {
-            FactoryExpression<?> proj = FactoryExpressionUtils.wrap(projection);
-            if (proj != null) {
-                query.setResultTransformer(new FactoryExpressionTransformer(proj));
-            }
+        Expression<?> projection = getMetadata().getProjection();
+        if (!forCount && projection instanceof FactoryExpression) {
+            query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection));
         }
         return query;
     }
@@ -236,7 +225,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         try{
-            queryMixin.addProjection(expr);
+            queryMixin.setProjection(expr);
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.uniqueResult();
 
@@ -397,7 +386,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         return (RT)uniqueResult();
     }
 

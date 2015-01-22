@@ -13,11 +13,12 @@
  */
 package com.querydsl.mongodb;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
@@ -150,7 +151,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     protected List<Object> getIds(Class<?> targetType, Predicate condition) {
         DBCollection collection = getCollection(targetType);
         // TODO : fetch only ids
-        DBCursor cursor = createCursor(collection, condition, Collections.<Expression<?>>emptyList(),
+        DBCursor cursor = createCursor(collection, condition, null,
                 QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
         if (cursor.hasNext()) {
             List<Object> ids = new ArrayList<Object>(cursor.count());
@@ -212,7 +213,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     public CloseableIterator<K> iterate(Path<?>... paths) {
-        queryMixin.addProjection(paths);
+        queryMixin.setProjection(paths);
         return iterate();
     }
 
@@ -241,7 +242,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     public List<K> list(Path<?>... paths) {
-        queryMixin.addProjection(paths);
+        queryMixin.setProjection(paths);
         return list();
     }
 
@@ -265,7 +266,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         return createCursor(collection, filter, metadata.getProjection(), metadata.getModifiers(), metadata.getOrderBy());
     }
 
-    protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, List<Expression<?>> projection,
+    protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, Expression<?> projection,
             QueryModifiers modifiers, List<OrderSpecifier<?>> orderBy) {
         DBCursor cursor = collection.find(createQuery(where), createProjection(projection));
         Integer limit = modifiers.getLimitAsInteger();
@@ -285,11 +286,13 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         return cursor;
     }
 
-    private DBObject createProjection(List<Expression<?>> projection) {
-        if (!projection.isEmpty()) {
+    private DBObject createProjection(Expression<?> projection) {
+        if (projection instanceof FactoryExpression) {
             DBObject obj = new BasicDBObject();
-            for (Expression<?> expr : projection) {
-                obj.put((String)serializer.handle(expr), 1);
+            for (Object expr : ((FactoryExpression)projection).getArgs()) {
+                if (expr instanceof Expression) {
+                    obj.put((String)serializer.handle((Expression) expr), 1);
+                }
             }
             return obj;
         }
@@ -297,7 +300,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     public K singleResult(Path<?>...paths) {
-        queryMixin.addProjection(paths);
+        queryMixin.setProjection(paths);
         return singleResult();
     }
 
@@ -316,7 +319,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     public K uniqueResult(Path<?>... paths) {
-        queryMixin.addProjection(paths);
+        queryMixin.setProjection(paths);
         return uniqueResult();
     }
 
@@ -343,7 +346,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     public SearchResults<K> listResults(Path<?>... paths) {
-        queryMixin.addProjection(paths);
+        queryMixin.setProjection(paths);
         return listResults();
     }
 

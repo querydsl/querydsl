@@ -265,7 +265,7 @@ public class QueryPerformanceTest {
         final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
         md.addWhere(companies.id.eq(1l));
-        md.addProjection(companies.name);
+        md.setProjection(companies.name);
         
         Runner.run("ser1", new Benchmark() {
             @Override
@@ -287,7 +287,7 @@ public class QueryPerformanceTest {
         final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
         md.addWhere(companies.id.eq(1l));
-        md.addProjection(companies.name);
+        md.setProjection(companies.name);
         
         Runner.run("ser2 (non normalized)", new Benchmark() {
             @Override

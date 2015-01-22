@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.hibernate.DefaultSessionHolder;
@@ -102,7 +103,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     }
 
     @Test
-    public void Scroll() throws IOException{
+    public void Scroll() throws IOException {
         CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(cat)
                 .createQuery(cat).scroll());
         assertTrue(cats.hasNext());
@@ -113,7 +114,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     }
 
     @Test
-    public void ScrollArray() throws IOException{
+    public void ScrollArray() throws IOException {
         CloseableIterator<Object[]> rows = new ScrollableResultsIterator<Object[]>(query()
                 .from(cat)
                 .createQuery(cat.name, cat.birthdate).scroll(), true);
@@ -127,5 +128,28 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
         rows.close();
     }
 
+    @Test
+    public void createQuery() {
+        List<Object[]> rows = query().from(cat).createQuery(cat.id, cat.name).list();
+        for (Object[] row : rows) {
+            assertEquals(2, row.length);
+        }
+    }
+
+    @Test
+    public void createQuery2() {
+        List<Object[]> rows = query().from(cat).createQuery(new Expression[]{cat.id, cat.name}).list();
+        for (Object[] row : rows) {
+            assertEquals(2, row.length);
+        }
+    }
+
+    @Test
+    public void createQuery3() {
+        List<String> rows = query().from(cat).createQuery(cat.name).list();
+        for (String row : rows) {
+            assertTrue(row instanceof String);
+        }
+    }
 
 }

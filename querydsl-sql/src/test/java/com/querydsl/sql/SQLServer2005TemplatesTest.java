@@ -31,7 +31,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     @Override
     @Test
     public void NoFrom() {
-        query.getMetadata().addProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(NumberTemplate.ONE);
         assertEquals("select 1", query.toString());
     }
 
@@ -63,14 +63,14 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     @Test
     public void Limit() {
         query.from(survey1).limit(5);
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         assertEquals("select top (?) survey1.ID from SURVEY survey1", query.toString());
     }
 
     @Test
     public void Modifiers() {
         query.from(survey1).limit(5).offset(3);
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         assertEquals("select * from (" +
       		"   select survey1.ID, row_number() over () as rn from SURVEY survey1) a " +
       		"where rn > ? and rn <= ? order by rn", query.toString());

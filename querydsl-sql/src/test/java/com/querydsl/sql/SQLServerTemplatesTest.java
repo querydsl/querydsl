@@ -31,7 +31,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
     @Override
     @Test
     public void NoFrom() {
-        query.getMetadata().addProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(NumberTemplate.ONE);
         assertEquals("select 1", query.toString());
     }
 
@@ -63,7 +63,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
     @Test
     public void Limit() {
         query.from(survey1).limit(5);
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         assertEquals("select top 5 survey1.ID from SURVEY survey1", query.toString());
     }
 

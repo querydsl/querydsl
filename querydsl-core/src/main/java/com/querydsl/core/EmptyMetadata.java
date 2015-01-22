@@ -61,7 +61,7 @@ public final class EmptyMetadata implements QueryMetadata {
     }
 
     @Override
-    public void addProjection(Expression<?> o) {
+    public void setProjection(Expression<?> o) {
         throw new UnsupportedOperationException();
     }
 
@@ -72,11 +72,6 @@ public final class EmptyMetadata implements QueryMetadata {
 
     @Override
     public void clearOrderBy() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void clearProjection() {
         throw new UnsupportedOperationException();
     }
 
@@ -116,8 +111,8 @@ public final class EmptyMetadata implements QueryMetadata {
     }
 
     @Override
-    public List<Expression<?>> getProjection() {
-        return Collections.emptyList();
+    public Expression<?> getProjection() {
+        return null;
     }
 
     @Override

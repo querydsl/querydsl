@@ -104,7 +104,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
         // paging
         QueryModifiers modifiers = metadata.getModifiers();
-        if (modifiers != null && modifiers.isRestricting() && !forCount) {
+        if (modifiers.isRestricting() && !forCount) {
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();
             if (limit != null) {

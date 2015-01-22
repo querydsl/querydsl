@@ -18,20 +18,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.SubQueryExpressionImpl;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.CollectionExpressionBase;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.expr.SimpleOperation;
-import com.querydsl.core.types.expr.Wildcard;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.expr.*;
 
 /**
  * List result subquery
@@ -85,19 +73,13 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     private NumberExpression<Long> count(Operator<Long> operator) {
         QueryMetadata md = subQueryMixin.getMetadata().clone();
-        Expression<?> e = null;
-        if (md.getProjection().size() == 1) {
-            e = md.getProjection().get(0);
-        } else if (!md.getProjection().isEmpty()) {
-            e = ExpressionUtils.list(Object.class, md.getProjection());
-        }
-        md.clearProjection();
+        Expression<?> e = md.getProjection();
         if (e != null) {
-            md.addProjection(OperationImpl.create(Long.class, operator, e));
+            md.setProjection(OperationImpl.create(Long.class, operator, e));
         } else if (operator == Ops.AggOps.COUNT_AGG) {
-            md.addProjection(Wildcard.count);
+            md.setProjection(Wildcard.count);
         } else {
-            md.addProjection(Wildcard.countDistinct);
+            md.setProjection(Wildcard.countDistinct);
         }
 
         return new NumberSubQuery<Long>(Long.class, md);

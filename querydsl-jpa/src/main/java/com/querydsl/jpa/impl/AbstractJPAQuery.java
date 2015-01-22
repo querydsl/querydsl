@@ -13,29 +13,32 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.util.ArrayUtils;
 import com.querydsl.jpa.JPAQueryBase;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.QueryHandler;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.FactoryExpressionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
@@ -90,7 +93,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Query createQuery(Expression<?> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -103,9 +106,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
-        queryMixin.addProjection(expr1);
-        queryMixin.addProjection(expr2);
-        queryMixin.addProjection(rest);
+        queryMixin.setProjection(ExpressionUtils.list(Object[].class, ArrayUtils.combine(Expression.class, expr1, expr2, rest)));
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -116,7 +117,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     public Query createQuery(Expression<?>[] args) {
-        queryMixin.addProjection(args);
+        queryMixin.setProjection(ExpressionUtils.list(Object[].class, args));
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -148,20 +149,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
 
         // set transformer, if necessary and possible
-        List<? extends Expression<?>> projection = getMetadata().getProjection();
+        Expression<?> projection = getMetadata().getProjection();
 
-        FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;
+        if (!forCount && projection instanceof FactoryExpression) {
 
-        if (!forCount && ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null)) {
-            Expression<?> expr = wrapped != null ? wrapped : projection.get(0);
-
-            if (!queryHandler.transform(query, (FactoryExpression<?>)expr)) {
-                this.projection = (FactoryExpression<?>)projection.get(0);
-                if (wrapped != null) {
-                    this.projection = wrapped;
-                    getMetadata().clearProjection();
-                    getMetadata().addProjection(wrapped);
-                }
+            if (!queryHandler.transform(query, (FactoryExpression<?>) projection)) {
+                this.projection = (FactoryExpression) projection;
             }
         }
 
@@ -257,7 +250,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         try {
-            queryMixin.addProjection(expr);
+            queryMixin.setProjection(expr);
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.getSingleResult();
             if (total > 0) {
@@ -297,7 +290,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         return uniqueResult();
     }
 

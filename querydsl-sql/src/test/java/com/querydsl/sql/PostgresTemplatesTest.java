@@ -32,7 +32,7 @@ public class PostgresTemplatesTest extends AbstractSQLTemplatesTest{
     
     @Test
     public void NoFrom() {
-        query.getMetadata().addProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(NumberTemplate.ONE);
         assertEquals("select 1", query.toString());
     }
     

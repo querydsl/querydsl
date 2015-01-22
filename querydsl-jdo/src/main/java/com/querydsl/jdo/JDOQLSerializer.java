@@ -13,9 +13,10 @@
  */
 package com.querydsl.jdo;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.Map.Entry;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
@@ -96,7 +97,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
-        final List<? extends Expression<?>> select = metadata.getProjection();
+        final Expression<?> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
         final Expression<?> source = joins.get(0).getTarget();
         final Predicate where = metadata.getWhere();
@@ -117,7 +118,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 append(")");
             }
 
-        } else if (!select.isEmpty()) {
+        } else if (select != null) {
             if (metadata.isDistinct()) {
                 append(SELECT_DISTINCT);
             } else if (metadata.isUnique() && !subQuery) {
@@ -125,8 +126,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             } else {
                 append(SELECT);
             }
-            if (select.size() >1 || !select.get(0).equals(source) || metadata.isDistinct()) {
-                handle(COMMA, select);    
+            if (!select.equals(source) || metadata.isDistinct()) {
+                handle(select);
             } else {
                 skippedSelect = true;
             }

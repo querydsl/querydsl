@@ -39,7 +39,7 @@ public class PaginationTest {
             QueryMixin query = new QueryMixin();
             query.from(employee);
             query.orderBy(employee.firstname.asc());
-            query.addProjection(employee.id);
+            query.setProjection(employee.id);
 
             System.out.println(templates.getClass().getSimpleName());
             System.out.println();

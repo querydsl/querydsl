@@ -45,7 +45,7 @@ public abstract class AbstractSQLTemplatesTest {
 
     @Test
     public void NoFrom() {
-        query.getMetadata().addProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(NumberTemplate.ONE);
         if (templates.getDummyTable() == null) {
             assertEquals("select 1", query.toString());
         } else {

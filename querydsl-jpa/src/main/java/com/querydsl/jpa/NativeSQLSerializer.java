@@ -13,12 +13,13 @@
  */
 package com.querydsl.jpa;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
@@ -26,8 +27,8 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.*;
 import com.querydsl.core.types.*;
+import com.querydsl.sql.*;
 
 /**
  * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change
@@ -103,72 +104,66 @@ public final class NativeSQLSerializer extends SQLSerializer {
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
         // TODO get rid of this wrapping when Hibernate doesn't require unique aliases anymore
-        int size = metadata.getProjection().size();
-        Expression<?>[] args = metadata.getProjection().toArray(new Expression<?>[size]);
         boolean modified = false;
         Set<String> used = new HashSet<String>();
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof Path) {
-                Path<?> path = (Path<?>)args[i];
-                if (!used.add(path.getMetadata().getName())) {
-                    String alias = "col__"+(i+1);
-                    aliases.put(args[i], alias);
-                    args[i] = ExpressionUtils.as(args[i], alias);
-                    modified = true;
-                } else if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
-                    aliases.put(path, path.getAnnotatedElement().getAnnotation(Column.class).name());
-                } else {
-                    aliases.put(path, ColumnMetadata.getName(path));
-                }
-            } else if (args[i] instanceof FactoryExpression) {
-                FactoryExpression<?> factoryExpr = (FactoryExpression<?>)args[i];
-                List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
-                for (int j = 0; j < fargs.size(); j++) {
-                    if (fargs.get(j) instanceof Path) {
-                        Path<?> path = (Path<?>) fargs.get(j);
-                        String columnName;
-                        if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
-                            columnName = path.getAnnotatedElement().getAnnotation(Column.class).name();
-                        } else {
-                            columnName = ColumnMetadata.getName(path);
-                        }
-                        if (!used.add(columnName)) {
-                            String alias = "col__"+(i+1)+"_"+(j+1);
-                            aliases.put(path, alias);
-                            fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
-                        } else {
-                            aliases.put(path, columnName);
-                        }
-                    } else if (isAlias(fargs.get(j))) {
-                        Operation<?> operation = (Operation<?>)fargs.get(j);
-                        aliases.put(operation, operation.getArg(1).toString());
-                    } else if (!isAllExpression(fargs.get(j))) {
-                        String alias = "col__"+(i+1)+"_"+(j+1);
-                        aliases.put(fargs.get(j), alias);
-                        fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
-                    }
-                }
-                args[i] = new QTuple(ImmutableList.copyOf(fargs));
+        Expression<?> projection = metadata.getProjection();
+        if (projection instanceof Path) {
+            Path<?> path = (Path<?>)projection;
+            if (!used.add(path.getMetadata().getName())) {
+                String alias = "col_1";
+                aliases.put(projection, alias);
+                projection = ExpressionUtils.as(projection, alias);
                 modified = true;
-            } else if (isAlias(args[i])) {
-                Operation<?> operation = (Operation<?>)args[i];
-                aliases.put(operation, operation.getArg(1).toString());
+            } else if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
+                aliases.put(path, path.getAnnotatedElement().getAnnotation(Column.class).name());
             } else {
-                // https://github.com/querydsl/querydsl/issues/80
-                if (!isAllExpression(args[i])) {
-                    String alias = "col__"+(i+1);
-                    aliases.put(args[i], alias);
-                    args[i] = ExpressionUtils.as(args[i], alias);
-                    modified = true;
+                aliases.put(path, ColumnMetadata.getName(path));
+            }
+        } else if (projection instanceof FactoryExpression) {
+            FactoryExpression<?> factoryExpr = (FactoryExpression<?>)projection;
+            List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
+            for (int j = 0; j < fargs.size(); j++) {
+                if (fargs.get(j) instanceof Path) {
+                    Path<?> path = (Path<?>) fargs.get(j);
+                    String columnName;
+                    if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
+                        columnName = path.getAnnotatedElement().getAnnotation(Column.class).name();
+                    } else {
+                        columnName = ColumnMetadata.getName(path);
+                    }
+                    if (!used.add(columnName)) {
+                        String alias = "col_"+(j+1);
+                        aliases.put(path, alias);
+                        fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
+                    } else {
+                        aliases.put(path, columnName);
+                    }
+                } else if (isAlias(fargs.get(j))) {
+                    Operation<?> operation = (Operation<?>)fargs.get(j);
+                    aliases.put(operation, operation.getArg(1).toString());
+                } else if (!isAllExpression(fargs.get(j))) {
+                    String alias = "col_"+(j+1);
+                    aliases.put(fargs.get(j), alias);
+                    fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                 }
+            }
+            projection = new QTuple(ImmutableList.copyOf(fargs));
+            modified = true;
+        } else if (isAlias(projection)) {
+            Operation<?> operation = (Operation<?>)projection;
+            aliases.put(operation, operation.getArg(1).toString());
+        } else {
+            // https://github.com/querydsl/querydsl/issues/80
+            if (!isAllExpression(projection)) {
+                String alias = "col_1";
+                aliases.put(projection, alias);
+                projection = ExpressionUtils.as(projection, alias);
+                modified = true;
             }
         }
         if (modified) {
             metadata = metadata.clone();
-            metadata.clearProjection();
-            for (Expression<?> arg : args) {
-                metadata.addProjection(arg);
-            }
+            metadata.setProjection(projection);
         }
         super.serialize(metadata, forCountRow);
     }

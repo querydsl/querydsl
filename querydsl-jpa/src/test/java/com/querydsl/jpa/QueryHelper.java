@@ -13,23 +13,27 @@
  */
 package com.querydsl.jpa;
 
-import javax.annotation.Nullable;
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-import antlr.collections.AST;
+import javax.annotation.Nullable;
+
+import org.hibernate.hql.internal.ast.HqlParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import org.hibernate.hql.internal.ast.HqlParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import static org.junit.Assert.assertEquals;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+import antlr.collections.AST;
 
 class QueryHelper extends JPAQueryBase<QueryHelper> {
 
@@ -90,7 +94,7 @@ class QueryHelper extends JPAQueryBase<QueryHelper> {
     }
 
     public QueryHelper select(Expression<?>... exprs) {
-        queryMixin.addProjection(exprs);
+        queryMixin.setProjection(exprs);
         return this;
     }
 
