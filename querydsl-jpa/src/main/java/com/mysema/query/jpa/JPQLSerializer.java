@@ -417,9 +417,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 super.visitOperation(type, operator, args);
             }
 
-        } else if (operator == Ops.INSTANCE_OF) {
-            visitInstanceOf(type, operator, args);
-
         } else if (operator == Ops.NUMCAST) {
             visitNumCast(args);
 
@@ -454,23 +451,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
         final String typeName = templates.getTypeForCast(targetType);
         visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
-    }
-
-    private void visitInstanceOf(Class<?> type, Operator<?> operator,
-            List<? extends Expression<?>> args) {
-        if (templates.isTypeAsString()) {
-            final List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
-            final Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
-            // use discriminator value instead of fqnm
-            if (cl.isAnnotationPresent(DiscriminatorValue.class)) {
-                newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
-            } else {
-                newArgs.set(1, ConstantImpl.create(cl.getSimpleName()));
-            }
-            super.visitOperation(type, operator, newArgs);
-        } else {
-            super.visitOperation(type, operator, args);
-        }
     }
 
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
