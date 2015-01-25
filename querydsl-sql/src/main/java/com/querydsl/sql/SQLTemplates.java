@@ -941,7 +941,7 @@ public class SQLTemplates extends Templates {
      * @param context
      */
     public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-            List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
+            Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
         context.serializeForUpdate(metadata, entity, updates);
 
         // limit

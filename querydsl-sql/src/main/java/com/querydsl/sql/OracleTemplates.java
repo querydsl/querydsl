@@ -14,9 +14,8 @@
 package com.querydsl.sql;
 
 import java.sql.Types;
-import java.util.List;
+import java.util.Map;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
@@ -209,7 +208,7 @@ public class OracleTemplates extends SQLTemplates {
 
     @Override
     public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-            List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
+            Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
         context.serializeForUpdate(metadata, entity, updates);
 
         // limit
