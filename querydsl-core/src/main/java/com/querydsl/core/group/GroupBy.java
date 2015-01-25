@@ -57,7 +57,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Comparable<E>> AbstractGroupExpression<E, E> min(Expression<E> expression) {
+    public static <E extends Comparable<? super E>> AbstractGroupExpression<E, E> min(Expression<E> expression) {
         return new GMin<E>(expression);
     }
 
@@ -67,7 +67,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Number & Comparable<E>> AbstractGroupExpression<E, E> sum(Expression<E> expression) {
+    public static <E extends Number> AbstractGroupExpression<E, E> sum(Expression<E> expression) {
         return new GSum<E>(expression);
     }
 
@@ -77,7 +77,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Number & Comparable<E>> AbstractGroupExpression<E, E> avg(Expression<E> expression) {
+    public static <E extends Number> AbstractGroupExpression<E, E> avg(Expression<E> expression) {
         return new GAvg<E>(expression);
     }
 
@@ -87,7 +87,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Comparable<E>> AbstractGroupExpression<E, E> max(Expression<E> expression) {
+    public static <E extends Comparable<? super E>> AbstractGroupExpression<E, E> max(Expression<E> expression) {
         return new GMax<E>(expression);
     }
 
