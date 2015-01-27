@@ -13,20 +13,23 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-import java.util.List;
-import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.UpdateClause;
+import com.querydsl.core.support.Expressions;
+import com.querydsl.core.support.QueryMixin;
+import com.querydsl.core.types.*;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.*;
 
 /**
  * UpdateClause implementation for JPA
@@ -37,6 +40,8 @@ import com.querydsl.core.types.*;
 public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
 
     private final QueryMixin queryMixin = new JPAQueryMixin();
+
+    private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
 
     private final EntityManager entityManager;
 
@@ -58,7 +63,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForUpdate(queryMixin.getMetadata());
+        serializer.serializeForUpdate(queryMixin.getMetadata(), updates);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
@@ -72,7 +77,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
         if (value != null) {
-            queryMixin.addProjection(ExpressionUtils.eqConst(path, value));
+            updates.put(path, Expressions.constant(value));
         } else {
             setNull(path);
         }
@@ -82,7 +87,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public <T> JPAUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
-            queryMixin.addProjection(ExpressionUtils.eq(path, expression));
+            updates.put(path, expression);
         } else {
             setNull(path);
         }        
@@ -91,7 +96,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     
     @Override
     public <T> JPAUpdateClause setNull(Path<T> path) {
-        queryMixin.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        updates.put(path, new NullExpression<T>(path.getType()));
         return this;
     }
 
@@ -100,10 +105,9 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) != null) {
-                queryMixin.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
+                updates.put(paths.get(i), Expressions.constant(values.get(i)));
             } else {
-                queryMixin.addProjection(ExpressionUtils.eq((Expression)paths.get(i),
-                        new NullExpression(paths.get(i).getType())));
+                updates.put(paths.get(i), new NullExpression(paths.get(i).getType()));
             }
         }
         return this;
@@ -125,13 +129,13 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForUpdate(queryMixin.getMetadata());
+        serializer.serializeForUpdate(queryMixin.getMetadata(), updates);
         return serializer.toString();
     }
 
     @Override
     public boolean isEmpty() {
-        return queryMixin.getMetadata().getProjection().isEmpty();
+        return updates.isEmpty();
     }
 
 }

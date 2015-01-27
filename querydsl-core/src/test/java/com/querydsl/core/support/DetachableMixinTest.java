@@ -23,11 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.core.alias.Alias;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.NullExpression;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.query.ListSubQuery;
 
 
@@ -60,7 +56,7 @@ public class DetachableMixinTest {
     public void List_Objects() {
         query.from(new PathImpl(Object.class, "x"));
         ListSubQuery subQuery = detachable.list(new PathImpl(Object.class, "x"), "XXX");
-        List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
+        List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
         assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
     }
@@ -69,7 +65,7 @@ public class DetachableMixinTest {
     public void Unique_Objects() {
         query.from(new PathImpl(Object.class, "x"));
         SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), "XXX");
-        List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
+        List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
         assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
     }
@@ -78,7 +74,7 @@ public class DetachableMixinTest {
     public void Null_As_Template() {
         query.from(new PathImpl(Object.class, "x"));
         SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), null);
-        List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
+        List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
         assertEquals(NullExpression.DEFAULT, exprs.get(1));
     }

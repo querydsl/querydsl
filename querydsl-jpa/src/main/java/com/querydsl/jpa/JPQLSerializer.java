@@ -154,7 +154,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
-        final List<? extends Expression<?>> select = metadata.getProjection();
+        final Expression<?> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
         final Predicate where = metadata.getWhere();
         final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
@@ -173,12 +173,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             } else {
                 append(SELECT_COUNT_DISTINCT);
             }
-            if(!select.isEmpty()) {
-                if (select.get(0) instanceof FactoryExpression) {
+            if (select != null) {
+                if (select instanceof FactoryExpression) {
                     handle(joins.get(0).getTarget());
                 } else {
                     // TODO : make sure this works
-                    handle(COMMA, select);
+                    handle(select);
                 }
             } else {
                 handle(joins.get(0).getTarget());
@@ -191,8 +191,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             } else {
                 append(SELECT_DISTINCT);
             }
-            if (!select.isEmpty()) {
-                handle(COMMA, select);
+            if (select != null) {
+                handle(select);
             } else {
                 handle(metadata.getJoins().get(0).getTarget());
             }
@@ -248,11 +248,20 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    public void serializeForUpdate(QueryMetadata md) {
+    public void serializeForUpdate(QueryMetadata md, Map<Path<?>, Expression<?>> updates) {
         append(UPDATE);
         handleJoinTarget(md.getJoins().get(0));
         append(SET);
-        handle(COMMA, md.getProjection());
+        boolean first = true;
+        for (Map.Entry<Path<?>, Expression<?>> entry : updates.entrySet()) {
+            if (!first) {
+                append(", ");
+            }
+            handle(entry.getKey());
+            append(" = ");
+            handle(entry.getValue());
+            first = false;
+        }
         if (md.getWhere() != null) {
             append(WHERE).handle(md.getWhere());
         }

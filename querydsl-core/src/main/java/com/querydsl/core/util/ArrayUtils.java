@@ -23,6 +23,14 @@ import java.lang.reflect.Array;
  */
 public final class ArrayUtils {
 
+    public static <T> T[] combine(Class<T> type, T first, T second, T... rest) {
+        T[] array = (T[]) Array.newInstance(type, rest.length + 2);
+        array[0] = first;
+        array[1] = second;
+        System.arraycopy(rest, 0, array, 2, rest.length);
+        return array;
+    }
+
     public static Object[] combine(int size, Object[]... arrays) {
         int offset = 0;
         Object[] target = new Object[size];

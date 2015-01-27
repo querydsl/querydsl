@@ -14,6 +14,6 @@
 
 
 /**
- * Query implementations for HQL and JPAQL
+ * Query implementations for HQL and JPQL
  */
 package com.querydsl.jpa;

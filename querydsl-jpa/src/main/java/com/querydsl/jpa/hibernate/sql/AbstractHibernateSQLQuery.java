@@ -79,7 +79,13 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
-        queryMixin.addProjection(args);
+        queryMixin.setProjection(args);
+        return createQuery(false);
+    }
+
+    public Query createQuery(Expression<?> arg) {
+        queryMixin.getMetadata().setValidate(false);
+        queryMixin.setProjection(arg);
         return createQuery(false);
     }
 
@@ -95,10 +101,9 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
             ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
             Set<String> used = Sets.newHashSet();
             // set entity paths
-            List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-            Expression<?> proj = projection.get(0);
-            if (proj instanceof FactoryExpression) {
-                for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+            Expression<?> projection = queryMixin.getMetadata().getProjection();
+            if (projection instanceof FactoryExpression) {
+                for (Expression<?> expr : ((FactoryExpression<?>)projection).getArgs()) {
                     if (isEntityExpression(expr)) {
                         query.addEntity(extractEntityExpression(expr).toString(), expr.getType());
                     } else if (aliases.containsKey(expr)) {
@@ -111,10 +116,10 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
                         }
                     }
                 }
-            } else if (isEntityExpression(proj)) {
-                query.addEntity(extractEntityExpression(proj).toString(), proj.getType());
-            } else if (aliases.containsKey(proj)) {
-                for (String scalar : aliases.get(proj)) {
+            } else if (isEntityExpression(projection)) {
+                query.addEntity(extractEntityExpression(projection).toString(), projection.getType());
+            } else if (aliases.containsKey(projection)) {
+                for (String scalar : aliases.get(projection)) {
                     if (!used.contains(scalar)) {
                         query.addScalar(scalar);
                         used.add(scalar);
@@ -124,8 +129,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
             }
 
             // set result transformer, if projection is a FactoryExpression instance
-            if (projection.size() == 1 && proj instanceof FactoryExpression) {
-                query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) proj));
+            if (projection instanceof FactoryExpression) {
+                query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection));
             }
         }
 
@@ -177,7 +182,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         try {
-            queryMixin.addProjection(projection);
+            queryMixin.setProjection(projection);
             Query query = createQuery(true);
             long total = ((Number)query.uniqueResult()).longValue();
             if (total > 0) {

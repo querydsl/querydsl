@@ -13,12 +13,17 @@
  */
 package com.querydsl.jdo;
 
-import javax.annotation.Nullable;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
+
+import javax.annotation.Nullable;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
@@ -28,9 +33,6 @@ import com.querydsl.core.support.ProjectableQuery;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -150,9 +152,9 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         queries.add(query);
 
         if (!forCount) {
-            List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-            if (projection.get(0) instanceof FactoryExpression) {
-                this.projection = (FactoryExpression<?>)projection.get(0);
+            Expression<?> projection = queryMixin.getMetadata().getProjection();
+            if (projection instanceof FactoryExpression) {
+                this.projection = (FactoryExpression<?>)projection;
             }
             if (!fetchGroups.isEmpty()) {
                 query.getFetchPlan().setGroups(fetchGroups);
@@ -260,7 +262,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         try {
-            queryMixin.addProjection(expr);
+            queryMixin.setProjection(expr);
             Object rv = execute(createQuery(false), false);
             return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
         } finally {
@@ -277,7 +279,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         try {
-            queryMixin.addProjection(expr);
+            queryMixin.setProjection(expr);
             Query countQuery = createQuery(true);
             countQuery.setUnique(true);
             countQuery.setResult("count(this)");
@@ -338,7 +340,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     @SuppressWarnings("unchecked")
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         return (RT)uniqueResult();
     }
 

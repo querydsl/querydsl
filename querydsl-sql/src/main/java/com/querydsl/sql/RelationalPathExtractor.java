@@ -44,8 +44,8 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
     public static Set<RelationalPath<?>> extract(QueryMetadata md) {
         Set<RelationalPath<?>> known = ImmutableSet.of();
         known = DEFAULT.visitJoins(md.getJoins(), known);
-        for (Expression<?> p : md.getProjection()) {
-            known = p.accept(DEFAULT, known);
+        if (md.getProjection() != null) {
+            known = md.getProjection().accept(DEFAULT, known);
         }
         for (OrderSpecifier<?> o : md.getOrderBy()) {
             known = o.getTarget().accept(DEFAULT, known);
@@ -109,8 +109,8 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
         Set<RelationalPath<?>> old = known;
         final QueryMetadata md = expr.getMetadata();
         known = visitJoins(md.getJoins(), known);
-        for (Expression<?> p : md.getProjection()) {
-            known = p.accept(this, known);
+        if (md.getProjection() != null) {
+            known = md.getProjection().accept(this, known);
         }
         for (OrderSpecifier<?> o : md.getOrderBy()) {
             known = o.getTarget().accept(this, known);

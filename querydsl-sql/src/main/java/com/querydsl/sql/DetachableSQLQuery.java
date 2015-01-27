@@ -405,7 +405,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
      * @return
      */
     public SQLBindings getSQL(Expression<?>... exprs) {
-        queryMixin.addProjection(exprs);
+        queryMixin.setProjection(exprs);
         SQLSerializer serializer = serialize(false);
         ImmutableList.Builder<Object> args = ImmutableList.builder();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();

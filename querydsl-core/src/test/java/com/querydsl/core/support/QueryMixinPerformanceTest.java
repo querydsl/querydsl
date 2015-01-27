@@ -23,7 +23,7 @@ public class QueryMixinPerformanceTest {
             QueryMixin mixin = new QueryMixin();
             mixin.from(entity);
             mixin.where(other.eq(new DummyEntity()));
-            mixin.addProjection(entity);
+            mixin.setProjection(entity);
         }
         System.err.println(System.currentTimeMillis() - start);
     }
@@ -40,7 +40,7 @@ public class QueryMixinPerformanceTest {
             QueryMixin mixin = new QueryMixin();
             mixin.from(entities);
             mixin.where(other.eq(new DummyEntity()));
-            mixin.addProjection(entity);
+            mixin.setProjection(entity);
         }
         System.err.println(System.currentTimeMillis() - start);
     }

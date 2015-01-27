@@ -15,16 +15,15 @@ package com.querydsl.jpa;
 
 import static com.querydsl.core.support.Expressions.numberOperation;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.querydsl.core.types.OperatorImpl;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.core.types.OperatorImpl;
 import com.querydsl.jpa.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
@@ -57,35 +56,22 @@ public class JPAQueryMutability2Test implements JPATest {
         JPAQuery query = query().from(cat);
 
         query.count();
-        assertProjectionEmpty(query);
         query.distinct().count();
-        assertProjectionEmpty(query);
 
         query.iterate(cat);
-        assertProjectionEmpty(query);
         query.iterate(cat,cat);
-        assertProjectionEmpty(query);
         query.distinct().iterate(cat);
-        assertProjectionEmpty(query);
         query.distinct().iterate(cat,cat);
-        assertProjectionEmpty(query);
 
         query.list(cat);
-        assertProjectionEmpty(query);
         query.list(cat,cat);
-        assertProjectionEmpty(query);
         query.distinct().list(cat);
-        assertProjectionEmpty(query);
         query.distinct().list(cat,cat);
-        assertProjectionEmpty(query);
 
         query.listResults(cat);
-        assertProjectionEmpty(query);
         query.distinct().listResults(cat);
-        assertProjectionEmpty(query);
 
         query.map(cat.name, cat);
-        assertProjectionEmpty(query);
     }
 
     @Test
@@ -123,10 +109,6 @@ public class JPAQueryMutability2Test implements JPATest {
         //clone using the entitymanager's default templates
         query.clone(entityManager)
                 .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
-    }
-
-    private void assertProjectionEmpty(JPAQuery query) {
-        assertTrue(query.getMetadata().getProjection().isEmpty());
     }
 
 }

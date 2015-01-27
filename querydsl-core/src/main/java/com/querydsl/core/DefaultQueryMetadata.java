@@ -13,17 +13,19 @@
  */
 package com.querydsl.core;
 
-import javax.annotation.Nullable;
+import static com.querydsl.core.util.CollectionUtils.*;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.*;
-import static com.querydsl.core.util.CollectionUtils.*;
 
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
@@ -54,12 +56,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private Set<JoinFlag> joinFlags = ImmutableSet.of();
 
-    @Nullable
     private QueryModifiers modifiers = QueryModifiers.EMPTY;
 
     private List<OrderSpecifier<?>> orderBy = ImmutableList.of();
 
-    private List<Expression<?>> projection = ImmutableList.of();
+    @Nullable
+    private Expression<?> projection;
 
     // NOTE : this is not necessarily serializable
     private Map<ParamExpression<?>,Object> params = ImmutableMap.<ParamExpression<?>, Object>of();
@@ -176,10 +178,10 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void addProjection(Expression<?> o) {
+    public void setProjection(Expression<?> o) {
         addLastJoin();
         validate(o);
-        projection = add(projection, o);
+        projection = o;
     }
 
     @Override
@@ -201,11 +203,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void clearProjection() {
-        projection = ImmutableList.of();
-    }
-
-    @Override
     public void clearWhere() {
         where = new BooleanBuilder();
     }
@@ -221,7 +218,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             clone.joins = copyOf(joins);
             clone.modifiers = modifiers;
             clone.orderBy = copyOf(orderBy);
-            clone.projection = copyOf(projection);
+            clone.projection = projection;
             clone.params = copyOf(params);
             clone.where = where;
             clone.flags = copyOfSorted(flags);
@@ -248,7 +245,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    @Nullable
     public QueryModifiers getModifiers() {
         return modifiers;
     }
@@ -264,7 +260,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public List<Expression<?>> getProjection() {
+    public Expression<?> getProjection() {
         return projection;
     }
 
@@ -285,7 +281,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void reset() {
-        clearProjection();
         params = ImmutableMap.of();
         modifiers = QueryModifiers.EMPTY;
     }
@@ -305,7 +300,10 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void setModifiers(@Nullable QueryModifiers restriction) {
+    public void setModifiers(QueryModifiers restriction) {
+        if (restriction == null) {
+            throw new NullPointerException();
+        }
         this.modifiers = restriction;
     }
 
@@ -372,10 +370,10 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
                 && q.getJoins().equals(joins)
-                && Objects.equal(q.getModifiers(), modifiers)
+                && q.getModifiers().equals(modifiers)
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
-                && q.getProjection().equals(projection)
+                && Objects.equal(q.getProjection(), projection)
                 && Objects.equal(q.getWhere(), where);
 
         } else {

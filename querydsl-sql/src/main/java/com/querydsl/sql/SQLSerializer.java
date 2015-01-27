@@ -195,7 +195,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         boolean oldSkipParent = skipParent;
         skipParent = false;
-        final List<? extends Expression<?>> select = metadata.getProjection();
+        final Expression<?> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
         final Predicate where = metadata.getWhere();
         final List<? extends Expression<?>> groupBy = metadata.getGroupBy();
@@ -205,24 +205,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final boolean hasFlags = !flags.isEmpty();
         String suffix = null;
 
-        List<Expression<?>> sqlSelect;
-        if (select.size() == 1) {
-            final Expression<?> first = select.get(0);
-            if (first instanceof FactoryExpression) {
-                sqlSelect = ((FactoryExpression<?>)first).getArgs();
-            } else {
-                sqlSelect = (List)select;
-            }
+        List<? extends Expression<?>> sqlSelect;
+        if (select instanceof FactoryExpression) {
+            sqlSelect = ((FactoryExpression<?>)select).getArgs();
+        } else if (select != null) {
+            sqlSelect = ImmutableList.of(select);
         } else {
-            sqlSelect = new ArrayList<Expression<?>>(select.size());
-            for (Expression<?> selectExpr : select) {
-                if (selectExpr instanceof FactoryExpression) {
-                    // transforms constructor arguments into individual select expressions
-                    sqlSelect.addAll(((FactoryExpression<?>) selectExpr).getArgs());
-                } else {
-                    sqlSelect.add(selectExpr);
-                }
-            }
+            sqlSelect = ImmutableList.of();
         }
 
         // with

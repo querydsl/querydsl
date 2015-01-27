@@ -48,7 +48,6 @@ import com.querydsl.sql.SQLSerializer;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableSQLQuery<T> {
 
-
     private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
 
     private final Closeable closeable = new Closeable() {
@@ -119,9 +118,9 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         queries.add(query);
 
         if (!forCount) {
-            List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-            if (projection.get(0) instanceof FactoryExpression) {
-                this.projection = (FactoryExpression<?>)projection.get(0);
+            Expression<?> projection = queryMixin.getMetadata().getProjection();
+            if (projection instanceof FactoryExpression) {
+                this.projection = (FactoryExpression<?>)projection;
             }
         } else {
             query.setResultClass(Long.class);
@@ -200,7 +199,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         Object rv = execute(createQuery(false), false);
         reset();
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT) rv);
@@ -214,7 +213,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     @Override
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
         long total = (Long) execute(countQuery, true);
@@ -255,7 +254,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     @SuppressWarnings("unchecked")
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.addProjection(expr);
+        queryMixin.setProjection(expr);
         return (RT)uniqueResult();
     }
 

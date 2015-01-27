@@ -13,11 +13,12 @@
  */
 package com.querydsl.sql;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
@@ -300,7 +301,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         }
         this.union = UnionUtils.union(sq, unionAll);
         this.firstUnionSubQuery = sq[0];
-        return new UnionImpl<Q ,RT>((Q)this, sq[0].getMetadata().getProjection());
+        return new UnionImpl<Q ,RT>((Q)this, (Expression<RT>) sq[0].getMetadata().getProjection());
     }
 
     @Override
@@ -430,8 +431,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
-        if (getMetadata().getModifiers().getLimit() == null
-           && !expr.toString().contains("count(")) {
+        if (getMetadata().getModifiers().getLimit() == null && !expr.toString().contains("count(")) {
             limit(2);
         }
         CloseableIterator<RT> iterator = iterate(expr);
@@ -490,7 +490,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     
     protected abstract SQLSerializer createSerializer();
 
-    private Set<Path<?>> getRootPaths(Collection<Expression<?>> exprs) {
+    private Set<Path<?>> getRootPaths(Collection<? extends Expression<?>> exprs) {
         Set<Path<?>> paths = Sets.newHashSet();
         for (Expression<?> e : exprs) {
             Path<?> path = e.accept(PathExtractor.DEFAULT, null);
@@ -501,20 +501,20 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         return paths;
     }
 
-    private Collection<Expression<?>> expandProjection(Collection<Expression<?>> exprs) {
-        if (exprs.size() == 1 && exprs.iterator().next() instanceof FactoryExpression) {
-            return ((FactoryExpression) exprs.iterator().next()).getArgs();
+    private Collection<? extends Expression<?>> expandProjection(Expression<?> expr) {
+        if (expr instanceof FactoryExpression) {
+            return ((FactoryExpression)expr).getArgs();
         } else {
-            return exprs;
+            return ImmutableList.of(expr);
         }
     }
 
     protected SQLSerializer serialize(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {
-            if (queryMixin.getMetadata().getProjection().isEmpty() ||
-                expandProjection(queryMixin.getMetadata().getProjection()).equals(
-                expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
+            if (queryMixin.getMetadata().getProjection() == null ||
+                expandProjection(queryMixin.getMetadata().getProjection())
+                .equals(expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
                 serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
             } else {
                 QueryMixin mixin2 = new QueryMixin(queryMixin.getMetadata().clone());
@@ -541,7 +541,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @return
      */
     public SQLBindings getSQL(Expression<?>... exprs) {
-        queryMixin.addProjection(exprs);
+        queryMixin.setProjection(exprs);
         SQLSerializer serializer = serialize(false);
         ImmutableList.Builder<Object> args = ImmutableList.builder();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();

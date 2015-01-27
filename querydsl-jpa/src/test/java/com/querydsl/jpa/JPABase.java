@@ -33,12 +33,13 @@ import org.junit.runner.RunWith;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Target;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.expr.BooleanExpression;
 import com.querydsl.jpa.domain.*;
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.jpa.testutil.JPATestRunner;
 
 /**
@@ -235,4 +236,27 @@ public class JPABase extends AbstractJPATest implements JPATest {
                 .singleResult(new QCatSummary(cat.breed.count(), exists)));
     }
 
+    @Test
+    public void createQuery() {
+        List<Object[]> rows = query().from(cat).createQuery(cat.id, cat.name).getResultList();
+        for (Object[] row : rows) {
+            assertEquals(2, row.length);
+        }
+    }
+
+    @Test
+    public void createQuery2() {
+        List<Object[]> rows = query().from(cat).createQuery(new Expression[]{cat.id, cat.name}).getResultList();
+        for (Object[] row : rows) {
+            assertEquals(2, row.length);
+        }
+    }
+
+    @Test
+    public void createQuery3() {
+        List<String> rows = query().from(cat).createQuery(cat.name).getResultList();
+        for (String row : rows) {
+            assertTrue(row instanceof String);
+        }
+    }
 }

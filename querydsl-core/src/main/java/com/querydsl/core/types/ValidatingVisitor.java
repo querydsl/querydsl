@@ -85,8 +85,8 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
         Set<Expression<?>> old = known;
         final QueryMetadata md = expr.getMetadata();
         known = visitJoins(md.getJoins(), known);
-        for (Expression<?> p : md.getProjection()) {
-            known = p.accept(this, known);
+        if (md.getProjection() != null) {
+            known = md.getProjection().accept(this, known);
         }
         for (OrderSpecifier<?> o : md.getOrderBy()) {
             known = o.getTarget().accept(this, known);

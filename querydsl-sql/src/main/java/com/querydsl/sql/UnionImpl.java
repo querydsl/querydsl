@@ -30,35 +30,25 @@ import com.querydsl.core.types.Predicate;
  * @param <Q>
  * @param <RT>
  */
-public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT> {
+public class UnionImpl<Q extends Query<Q> & Projectable, RT>  implements Union<RT> {
     
     private final Q query;
     
-    private final Expression<?>[] projection;
+    private final Expression<RT> projection;
         
-    public UnionImpl(Q query, List<? extends Expression<?>> projection) {
+    public UnionImpl(Q query, Expression<RT> projection) {
         this.query = query;
-        this.projection = projection.toArray(new Expression[projection.size()]);
+        this.projection = projection;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public List<RT> list() {
-        if (projection.length == 1) {
-            return (List<RT>) query.list(projection[0]);
-        } else {
-            return (List<RT>) query.list(projection);
-        }
+        return query.list(projection);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public CloseableIterator<RT> iterate() {
-        if (projection.length == 1) {
-            return (CloseableIterator<RT>) query.iterate(projection[0]);
-        } else {
-            return (CloseableIterator<RT>) query.iterate(projection);
-        }
+        return query.iterate(projection);
     }
 
     @Override
@@ -74,7 +64,6 @@ public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT> 
     }
 
     
-    @SuppressWarnings("unchecked")
     @Override
     public Union<RT> orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);

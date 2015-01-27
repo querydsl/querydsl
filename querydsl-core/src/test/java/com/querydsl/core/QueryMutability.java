@@ -13,13 +13,11 @@
  */
 package com.querydsl.core;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.Expression;
-import static org.junit.Assert.assertTrue;
 
 public final class QueryMutability<T extends QueryBase<T> & Projectable> {
 
@@ -37,65 +35,43 @@ public final class QueryMutability<T extends QueryBase<T> & Projectable> {
     public void test(Expression<?> p1, Expression<?> p2) throws IOException {
         System.err.println("count");
         query.count();
-        assertProjectionEmpty();
 
         System.err.println("countDistinct");
         query.distinct().count();
-        assertProjectionEmpty();
 
         System.err.println("iterate");
         query.iterate(p1);
-        assertProjectionEmpty();
 
         query.iterate(p1, p2);
-        assertProjectionEmpty();
 
         System.err.println("iterateDistinct");
         query.distinct().iterate(p1);
-        assertProjectionEmpty();
 
         query.distinct().iterate(p1, p2);
-        assertProjectionEmpty();
 
         System.err.println("list");
         query.list(p1);
-        assertProjectionEmpty();
 
         query.list(p1, p2);
-        assertProjectionEmpty();
 
         System.err.println("distinct list");
         query.distinct().list(p1);
-        assertProjectionEmpty();
 
         query.distinct().list(p1, p2);
-        assertProjectionEmpty();
 
         System.err.println("listResults");
         query.listResults(p1);
-        assertProjectionEmpty();
 
         System.err.println("distinct listResults");
         query.distinct().listResults(p1);
-        assertProjectionEmpty();
 
         System.err.println("map");
         query.map(p1, p2);
-        assertProjectionEmpty();
 
         System.err.println("uniqueResult");
         query.uniqueResult(p1);
-        assertProjectionEmpty();
 
         query.uniqueResult(p1, p2);
-        assertProjectionEmpty();
-    }
-
-    private void assertProjectionEmpty() throws IOException{
-        assertTrue(metadata.getProjection().isEmpty());
-        if (query instanceof Closeable) {
-            ((Closeable)query).close();
-        }
     }
 
 }

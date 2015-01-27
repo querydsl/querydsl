@@ -22,20 +22,8 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.FactoryExpressionUtils;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.FactoryExpressionUtils.FactoryExpressionAdapter;
-import com.querydsl.core.types.MapExpression;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.ParamExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.ProjectionRole;
-import com.querydsl.core.types.QTuple;
-import com.querydsl.core.types.SubQueryExpression;
 
 /**
  * Mixin style Query implementation
@@ -105,16 +93,18 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public <E> Expression<E> addProjection(Expression<E> e) {
+    public <E> Expression<E> setProjection(Expression<E> e) {
         e = convert(e, false);
-        metadata.addProjection(e);
+        metadata.setProjection(e);
         return e;
     }
 
-    public T addProjection(Expression<?>... o) {
-        for (Expression<?> e : o) {
-            metadata.addProjection(convert(e, false));
+    public T setProjection(Expression<?>... o) {
+        Expression<?>[] copy = new Expression<?>[o.length];
+        for (int i = 0; i < copy.length; i++) {
+            copy[i] = convert(o[i], false);
         }
+        metadata.setProjection(Projections.tuple(copy));
         return self;
     }
 
@@ -169,7 +159,7 @@ public class QueryMixin<T> {
         return new QTuple(args);
     }
 
-    protected <D> Expression<D> createAlias(Expression<?> expr, Path<?> alias) {
+    protected <D> Expression<D> createAlias(Expression<?> expr, Path<D> alias) {
         assertRoot(alias);
         return ExpressionUtils.as((Expression)expr, alias);
     }

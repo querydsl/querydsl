@@ -152,7 +152,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     }
 
     /**
-     * Defines both limit and offset of the query results
+     * Defines both limit and offset of the query results,
+     * use {@link QueryModifiers#EMPTY} to apply no paging.
      *
      * @param modifiers
      * @return

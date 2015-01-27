@@ -13,14 +13,15 @@
  */
 package com.querydsl.jpa;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.jpa.domain.sql.SAnimal;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.MySQLTemplates;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 
 public class NativeSQLSerializerTest {
@@ -33,7 +34,7 @@ public class NativeSQLSerializerTest {
         SAnimal cat = SAnimal.animal_;
         md.addJoin(JoinType.DEFAULT, cat);
         md.addWhere(cat.name.in("X", "Y"));
-        md.addProjection(cat.id);
+        md.setProjection(cat.id);
         serializer.serialize(md, false);
         assertEquals("select animal_.id\n" +
         	"from animal_ animal_\n" +

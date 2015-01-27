@@ -13,6 +13,10 @@
  */
 package com.querydsl.sql;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.OperationImpl;
@@ -20,8 +24,6 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.expr.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 
 public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
@@ -29,7 +31,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     @Override
     @Test
     public void NoFrom() {
-        query.getMetadata().addProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(NumberTemplate.ONE);
         assertEquals("select 1", query.toString());
     }
 
@@ -61,14 +63,14 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     @Test
     public void Limit() {
         query.from(survey1).limit(5);
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         assertEquals("select top 5 survey1.ID from SURVEY survey1", query.toString());
     }
 
     @Test
     public void Modifiers() {
         query.from(survey1).limit(5).offset(3).orderBy(survey1.id.asc());
-        query.getMetadata().addProjection(survey1.id);
+        query.getMetadata().setProjection(survey1.id);
         assertEquals("select survey1.ID from SURVEY survey1 order by survey1.ID asc offset ? rows fetch next ? rows only", query.toString());
     }
 

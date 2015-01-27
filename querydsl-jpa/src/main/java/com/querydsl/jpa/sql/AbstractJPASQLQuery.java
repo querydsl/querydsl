@@ -13,15 +13,20 @@
  */
 package com.querydsl.jpa.sql;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ListMultimap;
@@ -29,6 +34,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.jpa.AbstractSQLQuery;
 import com.querydsl.jpa.NativeSQLSerializer;
 import com.querydsl.jpa.QueryHandler;
@@ -36,12 +43,6 @@ import com.querydsl.jpa.impl.JPAProvider;
 import com.querydsl.jpa.impl.JPAUtil;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.FactoryExpressionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -90,7 +91,13 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
 
     public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
-        queryMixin.addProjection(args);
+        queryMixin.setProjection(args);
+        return createQuery(false);
+    }
+
+    public Query createQuery(Expression<?> arg) {
+        queryMixin.getMetadata().setValidate(false);
+        queryMixin.setProjection(arg);
         return createQuery(false);
     }
 
@@ -98,19 +105,14 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
         logQuery(queryString, serializer.getConstantToLabel());
-        List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
+        Expression<?> projection = queryMixin.getMetadata().getProjection();
         Query query;
 
-        Expression<?> proj = projection.get(0);
-        if (!FactoryExpression.class.isAssignableFrom(proj.getClass()) && isEntityExpression(proj)) {
-            if (projection.size() == 1) {
-                if (queryHandler.createNativeQueryTyped()) {
-                    query = entityManager.createNativeQuery(queryString, proj.getType());
-                } else {
-                    query = entityManager.createNativeQuery(queryString);
-                }
+        if (!FactoryExpression.class.isAssignableFrom(projection.getClass()) && isEntityExpression(projection)) {
+            if (queryHandler.createNativeQueryTyped()) {
+                query = entityManager.createNativeQuery(queryString, projection.getType());
             } else {
-                throw new IllegalArgumentException("Only single element entity projections are supported");
+                query = entityManager.createNativeQuery(queryString);
             }
 
         } else {
@@ -119,8 +121,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         if (!forCount) {
             ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
             Set<String> used = Sets.newHashSet();
-            if (proj instanceof FactoryExpression) {
-                for (Expression<?> expr : ((FactoryExpression<?>)proj).getArgs()) {
+            if (projection instanceof FactoryExpression) {
+                for (Expression<?> expr : ((FactoryExpression<?>)projection).getArgs()) {
                     if (isEntityExpression(expr)) {
                         queryHandler.addEntity(query, extractEntityExpression(expr).toString(), expr.getType());
                     } else if (aliases.containsKey(expr)) {
@@ -134,12 +136,12 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
                         }
                     }
                 }
-            } else if (isEntityExpression(proj)) {
-                queryHandler.addEntity(query, extractEntityExpression(proj).toString(), proj.getType());
-            } else if (aliases.containsKey(proj)) {
-                for (String scalar : aliases.get(proj)) {
+            } else if (isEntityExpression(projection)) {
+                queryHandler.addEntity(query, extractEntityExpression(projection).toString(), projection.getType());
+            } else if (aliases.containsKey(projection)) {
+                for (String scalar : aliases.get(projection)) {
                     if (!used.contains(scalar)) {
-                        queryHandler.addScalar(query, scalar, proj.getType());
+                        queryHandler.addScalar(query, scalar, projection.getType());
                         used.add(scalar);
                         break;
                     }
@@ -162,17 +164,9 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         // set constants
         JPAUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
 
-        FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;
-        if ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null) {
-            Expression<?> expr = wrapped != null ? wrapped : projection.get(0);
-
-            if (!queryHandler.transform(query, (FactoryExpression<?>)expr)) {
-                this.projection = (FactoryExpression<?>)projection.get(0);
-                if (wrapped != null) {
-                    this.projection = wrapped;
-                    getMetadata().clearProjection();
-                    getMetadata().addProjection(wrapped);
-                }
+        if (projection instanceof FactoryExpression) {
+            if (!queryHandler.transform(query, (FactoryExpression<?>)projection)) {
+                this.projection = (FactoryExpression<?>)projection;
             }
         }
 
@@ -267,7 +261,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         try {
-            queryMixin.addProjection(projection);
+            queryMixin.setProjection(projection);
             Query query = createQuery(true);
             long total = ((Number)query.getSingleResult()).longValue();
             if (total > 0) {

@@ -13,7 +13,6 @@
  */
 package com.querydsl.sql;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +23,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
@@ -31,9 +36,6 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.Wildcard;
 import com.querydsl.core.util.ResultSetAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
@@ -157,7 +159,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
      * @return
      */
     public ResultSet getResults(Expression<?>... exprs) {
-        queryMixin.addProjection(exprs);
+        queryMixin.setProjection(exprs);
 
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
         String queryString = null;
@@ -210,7 +212,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        expr = queryMixin.addProjection(expr);
+        expr = queryMixin.setProjection(expr);
         return iterateSingle(queryMixin.getMetadata(), expr);
     }
 
@@ -288,7 +290,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expression<RT> expr) {
-        expr = queryMixin.addProjection(expr);
+        expr = queryMixin.setProjection(expr);
         SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
@@ -402,10 +404,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
                 return new SearchResults<RT>(results, originalModifiers, total);
 
             } else {
-                queryMixin.addProjection(expr);
+                queryMixin.setProjection(expr);
                 long total = count();
                 if (total > 0) {
-                    queryMixin.getMetadata().clearProjection();
                     return new SearchResults<RT>(list(expr), originalModifiers, total);
                 } else {
                     return SearchResults.emptyResults();

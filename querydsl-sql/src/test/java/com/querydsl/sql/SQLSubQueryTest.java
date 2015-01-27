@@ -13,19 +13,21 @@
  */
 package com.querydsl.sql;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
+import org.junit.Test;
+
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.sql.domain.QSurvey;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.BooleanOperation;
 import com.querydsl.core.types.expr.Wildcard;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.query.ListSubQuery;
 import com.querydsl.core.types.query.NumberSubQuery;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import com.querydsl.sql.domain.QEmployee;
+import com.querydsl.sql.domain.QSurvey;
 
 public class SQLSubQueryTest {
 
@@ -42,19 +44,11 @@ public class SQLSubQueryTest {
     }
 
     @Test
-    public void Multiple_Projections() {
-        SQLSubQuery query = new SQLSubQuery();
-        query.from(employee);
-        assertEquals(1, query.list(employee).getMetadata().getProjection().size());
-        assertEquals(1, query.list(employee).getMetadata().getProjection().size());
-    }
-
-    @Test
     public void List() {
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee);
         ListSubQuery<?> subQuery = query.list(employee.id, "XXX", employee.firstname);
-        List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
+        List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
@@ -102,7 +96,7 @@ public class SQLSubQueryTest {
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee);
         SubQueryExpression<?> subQuery = query.unique(employee.id, "XXX", employee.firstname);
-        List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
+        List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));

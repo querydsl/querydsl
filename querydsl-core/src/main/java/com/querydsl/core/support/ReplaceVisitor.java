@@ -13,10 +13,11 @@
  */
 package com.querydsl.core.support;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
@@ -120,8 +121,8 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
                 .entrySet()) {
             md.setParam((ParamExpression)entry.getKey().accept(this, null), entry.getValue());
         }
-        for (Expression<?> e : expr.getMetadata().getProjection()) {
-            md.addProjection(e.accept(this, null));
+        if (expr.getMetadata().getProjection() != null) {
+            md.setProjection(expr.getMetadata().getProjection().accept(this, null));
         }
         Predicate where = expr.getMetadata().getWhere();
         if (where != null) {

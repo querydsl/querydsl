@@ -21,10 +21,7 @@ import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.support.Expressions;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
 
 
 /**
@@ -90,7 +87,8 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                     rn.orderBy(os);
                 }
-                metadata.addProjection(rn.as("rn"));
+                Expression<?> pr = Projections.appending(metadata.getProjection(), rn.as("rn"));
+                metadata.setProjection(pr);
                 metadata.clearOrderBy();
                 context.serializeForQuery(metadata, forCountRow);
                 context.append(outerQueryEnd);
