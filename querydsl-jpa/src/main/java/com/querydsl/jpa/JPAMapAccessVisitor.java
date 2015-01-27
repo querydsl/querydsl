@@ -11,7 +11,7 @@ import com.querydsl.core.support.Expressions;
 import com.querydsl.core.support.ReplaceVisitor;
 import com.querydsl.core.types.*;
 
-class JPAMapAccessVisitor extends ReplaceVisitor {
+class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
 
     private final QueryMetadata metadata;
 
