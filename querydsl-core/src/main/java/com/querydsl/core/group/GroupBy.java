@@ -20,7 +20,7 @@ import java.util.Set;
 import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.QList;
+import com.querydsl.core.types.Projections;
 
 /**
  * Groups results by the first expression.
@@ -48,7 +48,7 @@ public final class GroupBy {
      * @return
      */
     public static GroupByBuilder<List<?>> groupBy(Expression<?>... keys) {
-        return new GroupByBuilder<List<?>>(new QList(keys));
+        return new GroupByBuilder<List<?>>(Projections.list(keys));
     }
 
     /**

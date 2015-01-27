@@ -2,10 +2,7 @@ package com.querydsl.collections;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.set;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +15,6 @@ import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.group.Group;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.QTuple;
 
 public class GroupBy3Test {
 
@@ -55,7 +51,7 @@ public class GroupBy3Test {
                           .as("assetThreats")));
 
         Projectable projectable = createMock(Projectable.class);
-        expect(projectable.iterate(new QTuple(
+        expect(projectable.iterate(Projections.tuple(
                 riskAnalysis.id,
                 riskAnalysis.id,
                 assetThreat.id,
@@ -82,7 +78,7 @@ public class GroupBy3Test {
                           .as("assetThreats")));
 
         Projectable projectable = createMock(Projectable.class);
-        expect(projectable.iterate(new QTuple(
+        expect(projectable.iterate(Projections.tuple(
                 riskAnalysis.id,
                 riskAnalysis.id,
                 assetThreat.id,

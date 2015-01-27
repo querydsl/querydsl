@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.path.BeanPath;
 import com.querydsl.core.types.path.NumberPath;
@@ -85,7 +86,7 @@ public class QBean2Test {
     @Test
     public void NewInstance() {
         QPerson p = QPerson.person;
-        QBean<Person> projection = new QBean<Person>(Person.class, p.id, p.firstName.as("firstName"), p.lastName.as("lastName"));
+        QBean<Person> projection = Projections.bean(Person.class, p.id, p.firstName.as("firstName"), p.lastName.as("lastName"));
 
         Person person = projection.newInstance(3, "John", "Doe");
         assertEquals(3,      person.getId());

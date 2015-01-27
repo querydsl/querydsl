@@ -156,7 +156,7 @@ public class QueryMixin<T> {
     }
 
     public Expression<Tuple> createProjection(Expression<?>[] args) {
-        return new QTuple(args);
+        return Projections.tuple(args);
     }
 
     protected <D> Expression<D> createAlias(Expression<?> expr, Path<D> alias) {

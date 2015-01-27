@@ -367,7 +367,7 @@ public abstract class AbstractJPATest {
         //select cat.id, ?1 as const from Cat cat
         List<Cat> cats = query().from(cat).list(cat);
         Path<String> path = new StringPath("const");
-        List<Tuple> tuples = query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", path)));
+        List<Tuple> tuples = query().from(cat).list(cat.id, Expressions.constantAs("abc", path));
         for (int i = 0; i < cats.size(); i++) {
             assertEquals(Integer.valueOf(cats.get(i).getId()), tuples.get(i).get(cat.id));
             assertEquals("abc", tuples.get(i).get(path));
@@ -379,7 +379,7 @@ public abstract class AbstractJPATest {
     @NoBatooJPA
     public void Constant_Hibernate() {
         //select cat.id, ?1 as const from Cat cat
-        query().from(cat).list(new QTuple(cat.id, Expressions.constantAs("abc", new StringPath("const"))));
+        query().from(cat).list(cat.id, Expressions.constantAs("abc", new StringPath("const")));
     }
 
     @Test
@@ -962,7 +962,7 @@ public abstract class AbstractJPATest {
     @Test
     public void NestedProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
-        List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, concat));
+        List<Tuple> tuples = query().from(cat).list(cat.name, concat);
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples) {
             assertEquals(
@@ -1464,7 +1464,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void TupleProjection() {
-        List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
+        List<Tuple> tuples = query().from(cat).list(cat.name, cat);
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
@@ -1475,7 +1475,7 @@ public abstract class AbstractJPATest {
     @Test
     public void TupleProjection_As_SearchResults() {
         SearchResults<Tuple> tuples = query().from(cat).limit(1)
-                .listResults(new QTuple(cat.name, cat));
+                .listResults(cat.name, cat);
         assertEquals(1, tuples.getResults().size());
         assertTrue(tuples.getTotal() > 0);
     }

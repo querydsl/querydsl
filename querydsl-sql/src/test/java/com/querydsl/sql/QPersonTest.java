@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 
 public class QPersonTest {
@@ -56,7 +57,7 @@ public class QPersonTest {
     @Test
     public void Populate() {
         QPerson person = QPerson.person;
-        QBean<Person> personProjection = new QBean<Person>(Person.class, person.id, person.firstname, person.securedid);
+        QBean<Person> personProjection = Projections.bean(Person.class, person.id, person.firstname, person.securedid);
         Person p = personProjection.newInstance(3, "X", "Y");
         assertEquals(3, p.getId());
         assertEquals("X", p.getFirstname());

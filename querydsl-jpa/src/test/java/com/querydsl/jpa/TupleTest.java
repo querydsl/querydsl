@@ -13,12 +13,13 @@
  */
 package com.querydsl.jpa;
 
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.hibernate.HibernateSubQuery;
-import com.querydsl.core.types.QTuple;
-import com.querydsl.core.types.SubQueryExpression;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.hibernate.HibernateSubQuery;
 
 public class TupleTest extends AbstractQueryTest {
         
@@ -29,11 +30,11 @@ public class TupleTest extends AbstractQueryTest {
         
         SubQueryExpression<?> subQuery = subQuery().from(cat)
         .where(subQuery()
-           .from(cat)
-           .groupBy(cat.mate)
-           .list(new QTuple(cat.mate, cat.birthdate.max()))
-             .contains(new QTuple(cat.mate, cat.birthdate)))
-        .list(new QTuple(cat.birthdate, cat.name, cat.mate));
+                .from(cat)
+                .groupBy(cat.mate)
+                .list(cat.mate, cat.birthdate.max())
+                .contains(Projections.tuple(cat.mate, cat.birthdate)))
+        .list(Projections.tuple(cat.birthdate, cat.name, cat.mate));
         
         assertToString(
                 "(select cat.birthdate, cat.name, cat.mate from Cat cat " +

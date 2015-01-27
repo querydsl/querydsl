@@ -22,7 +22,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.FactoryExpressionUtils;
-import com.querydsl.core.types.QTuple;
+import com.querydsl.core.types.Projections;
 
 /**
  * Provides aggregated results as a map
@@ -43,7 +43,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
 
         // create groups
-        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(new QTuple(expressions));
+        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(Projections.tuple(expressions));
         boolean hasGroups = false;
         for (Expression<?> e : expr.getArgs()) {
             hasGroups |= e instanceof GroupExpression;

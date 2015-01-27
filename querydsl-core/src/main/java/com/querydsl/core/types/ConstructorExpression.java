@@ -13,16 +13,18 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import static com.querydsl.core.util.ConstructorUtils.*;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import static com.querydsl.core.util.ConstructorUtils.*;
 
 /**
  * ConstructorExpression represents a constructor invocation
@@ -64,11 +66,11 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     private transient Iterable<Function<Object[], Object[]>> transformers;
 
-    public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
+    protected ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));
     }
 
-    public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
+    protected ConstructorExpression(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
         super(type);
         this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
         this.args = args;

@@ -23,7 +23,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.FactoryExpressionUtils;
-import com.querydsl.core.types.QTuple;
+import com.querydsl.core.types.Projections;
 
 /**
  * Provides aggregated results as a list
@@ -42,7 +42,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
     @Override
     public List<V> transform(Projectable projectable) {
         // create groups
-        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(new QTuple(expressions));
+        FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(Projections.tuple(expressions));
         boolean hasGroups = false;
         for (Expression<?> e : expr.getArgs()) {
             hasGroups |= e instanceof GroupExpression;

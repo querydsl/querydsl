@@ -147,7 +147,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                 }
             }
-            projection = new QTuple(ImmutableList.copyOf(fargs));
+            projection = Projections.tuple(ImmutableList.copyOf(fargs));
             modified = true;
         } else if (isAlias(projection)) {
             Operation<?> operation = (Operation<?>)projection;

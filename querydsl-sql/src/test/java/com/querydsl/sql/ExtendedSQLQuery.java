@@ -22,7 +22,7 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.QBean;
+import com.querydsl.core.types.Projections;
 
 /**
  * @author tiwe
@@ -63,7 +63,7 @@ public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> {
     }
     
     private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs) {
-        return new QBean<T>(type, exprs);
+        return Projections.bean(type, exprs);
     }
 
     @Override

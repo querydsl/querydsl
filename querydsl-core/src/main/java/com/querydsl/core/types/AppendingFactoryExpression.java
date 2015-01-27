@@ -25,7 +25,7 @@ public class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
 
     private final List<Expression<?>> args;
 
-    public AppendingFactoryExpression(Expression<T> base, Expression<?>... rest) {
+    protected AppendingFactoryExpression(Expression<T> base, Expression<?>... rest) {
         super(base.getType());
         this.base = base;
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();

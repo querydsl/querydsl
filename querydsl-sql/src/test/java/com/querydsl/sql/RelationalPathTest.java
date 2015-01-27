@@ -2,17 +2,14 @@ package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.querydsl.sql.domain.QSurvey;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QTuple;
+import com.querydsl.sql.domain.QSurvey;
 
 public class RelationalPathTest {
 
@@ -29,7 +26,7 @@ public class RelationalPathTest {
     public void In_Tuple() throws ClassNotFoundException, IOException {
         //(survey.id, survey.name)
         QSurvey survey = QSurvey.survey;
-        QTuple tuple = new QTuple(survey.id, survey.name);
+        QTuple tuple = Projections.tuple(survey.id, survey.name);
         serialize(tuple);
         serialize(tuple.newInstance(1, "a"));
     }
