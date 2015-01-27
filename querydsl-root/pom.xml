@@ -289,10 +289,6 @@
               <packages>com.querydsl.sql*</packages>
             </group>
             <group>
-              <title>Spatial</title>
-              <packages>com.querydsl.spatial*</packages>
-            </group>
-            <group>
               <title>Lucene 3</title>
               <packages>com.querydsl.lucene3*</packages>
             </group>
