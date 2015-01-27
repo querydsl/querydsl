@@ -381,7 +381,7 @@ public class MongodbQueryTest {
 
     @Test
     public void UniqueResultAndLimitAndOffset() {
-        MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
+        MorphiaQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
         assertEquals(4, q.list().size());
         assertEquals(u1, q.list().get(0));
     }
@@ -485,11 +485,11 @@ public class MongodbQueryTest {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
 
-    private <T> MongodbQuery<T> where(EntityPath<T> entity, Predicate... e) {
+    private <T> MorphiaQuery<T> where(EntityPath<T> entity, Predicate... e) {
         return new MorphiaQuery<T>(morphia, ds, entity).where(e);
     }
 
-    private MongodbQuery<User> where(Predicate ... e) {
+    private MorphiaQuery<User> where(Predicate ... e) {
         return query().where(e);
     }
 
@@ -501,7 +501,7 @@ public class MongodbQueryTest {
         return new MorphiaQuery<T>(morphia, ds, path);
     }
 
-    private void assertQuery(MongodbQuery<User> query, User ... expected ) {
+    private void assertQuery(MorphiaQuery<User> query, User ... expected ) {
         //System.out.println(query.toString());
         List<User> results = query.list();
 
