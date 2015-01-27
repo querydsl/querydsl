@@ -294,15 +294,15 @@
             </group>
             <group>
               <title>Lucene 3</title>
-              <packages>com.querydsl.lucene3</packages>
+              <packages>com.querydsl.lucene3*</packages>
             </group>
             <group>
               <title>Lucene 4</title>
-              <packages>com.querydsl.lucene4</packages>
+              <packages>com.querydsl.lucene4*</packages>
             </group>
             <group>
               <title>Hibernate Search</title>
-              <packages>com.querydsl.hibernate.search</packages>
+              <packages>com.querydsl.hibernate.search*</packages>
             </group>
             <group>
               <title>Mongodb</title>
