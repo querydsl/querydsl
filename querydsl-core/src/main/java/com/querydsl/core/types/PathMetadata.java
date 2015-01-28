@@ -13,9 +13,10 @@
  */
 package com.querydsl.core.types;
 
+import java.io.Serializable;
+
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import java.io.Serializable;
 
 import com.google.common.base.Objects;
 
@@ -34,7 +35,7 @@ public final class PathMetadata<T> implements Serializable{
     private final int hashCode;
 
     @Nullable
-    private final Path<?> parent, root;
+    private final Path<?> parent, rootPath;
 
     private final PathType pathType;
 
@@ -42,7 +43,7 @@ public final class PathMetadata<T> implements Serializable{
         this.parent = parent;
         this.element = element;
         this.pathType = type;
-        this.root = parent != null ? parent.getRoot() : null;
+        this.rootPath = parent != null ? parent.getRoot() : null;
         this.hashCode = 31 * element.hashCode() + pathType.name().hashCode();
     }
 
@@ -84,8 +85,8 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     @Nullable
-    public Path<?> getRoot() {
-        return root;
+    public Path<?> getRootPath() {
+        return rootPath;
     }
 
     @Override

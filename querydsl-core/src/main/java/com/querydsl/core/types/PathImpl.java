@@ -46,7 +46,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     public PathImpl(Class<? extends T> type, PathMetadata<?> metadata) {
         super(type);
         this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
+        this.root = metadata.getRootPath() != null ? metadata.getRootPath() : this;
     }
 
     public PathImpl(Class<? extends T> type, Path<?> parent, String property) {
