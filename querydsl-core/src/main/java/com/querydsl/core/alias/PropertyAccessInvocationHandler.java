@@ -210,22 +210,22 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
             path = pathFactory.createMapPath(keyType, valueType, metadata);
-            rv = aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, path);
 
         } else if (typeSystem.isListType(type)) {
             Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createListPath(elementType, metadata);
-            rv = aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, path);
 
         } else if (typeSystem.isSetType(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameterAsClass(genericType, 0);
             path = pathFactory.createSetPath(elementType, metadata);
-            rv = aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, path);
 
         } else if (typeSystem.isCollectionType(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameterAsClass(genericType, 0);
             path = pathFactory.createCollectionPath(elementType, metadata);
-            rv = aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
             path = pathFactory.createEnumPath((Class)type, metadata);
@@ -244,7 +244,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
                 path = pathFactory.createEntityPath(type, metadata);
             }
             if (!Modifier.isFinal(type.getModifiers())) {
-                rv = aliasFactory.createAliasForProperty(type, parent, path);
+                rv = aliasFactory.createAliasForProperty(type, path);
             } else {
                 rv = null;
             }
