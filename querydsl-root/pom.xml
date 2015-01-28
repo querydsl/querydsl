@@ -258,11 +258,15 @@
           <groups>
             <group>
               <title>Core</title>
-              <packages>com.mysema.query:com.mysema.query.alias:com.mysema.query.annotations:com.mysema.query.codegen:com.mysema.query.dml:com.mysema.query.functions:com.mysema.query.serialization:com.mysema.query.support:com.mysema.query.types*</packages>
+              <packages>com.mysema.query:com.mysema.query.alias:com.mysema.query.annotations:com.mysema.query.codegen:com.mysema.query.dml:com.mysema.query.functions:com.mysema.query.serialization:com.mysema.query.support:com.mysema.query.types*:com.mysema.query.group*</packages>
             </group>
             <group>
               <title>APT</title>
               <packages>com.mysema.query.apt*</packages>
+            </group>
+            <group>
+              <title>Maven</title>
+              <packages>com.mysema.query.maven*</packages>
             </group>
             <group>
               <title>Spatial</title>
@@ -285,16 +289,12 @@
               <packages>com.mysema.query.sql*</packages>
             </group>
             <group>
-              <title>Spatial</title>
-              <packages>com.mysema.query.spatial*</packages>
-            </group>
-            <group>
               <title>Lucene</title>
-              <packages>com.mysema.query.lucene</packages>
+              <packages>com.mysema.query.lucene*</packages>
             </group>
             <group>
               <title>Hibernate Search</title>
-              <packages>com.mysema.query.search</packages>
+              <packages>com.mysema.query.hibernate.search*</packages>
             </group>
             <group>
               <title>Mongodb</title>
