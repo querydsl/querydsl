@@ -22,7 +22,6 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.support.Expressions;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 
@@ -51,7 +50,7 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
             if (values.get(i) != null) {
                 updates.put(paths.get(i), Expressions.constant(values.get(i)));
             } else {
-                updates.put(paths.get(i), new NullExpression(paths.get(i).getType()));
+                updates.put(paths.get(i), Expressions.nullExpression(paths.get(i)));
             }
         }
         return this;
@@ -62,7 +61,7 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
         if (value != null) {
             updates.put(path, Expressions.constant(value));
         } else {
-            updates.put(path, new NullExpression<T>(path.getType()));
+            updates.put(path, Expressions.nullExpression(path));
         }
         return this;
     }
@@ -76,7 +75,7 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
     
     @Override
     public <T> JDOUpdateClause setNull(Path<T> path) {
-        updates.put(path, new NullExpression<T>(path.getType()));
+        updates.put(path, Expressions.nullExpression(path));
         return this;
     }
     

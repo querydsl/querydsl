@@ -77,7 +77,7 @@ public final class Expressions {
     @SuppressWarnings("unchecked")
     public static <D> SimpleExpression<D> as(Expression<D> source, Path<D> alias) {
         if (source == null) {
-            return as((Expression)NullExpression.DEFAULT, alias);
+            return as((Expression)nullExpression(), alias);
         } else {
             return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);
         }
@@ -163,7 +163,7 @@ public final class Expressions {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <D> SimpleExpression<D> constantAs(D source, Path<D> alias) {
         if (source == null) {
-            return as((Expression)NullExpression.DEFAULT, alias);
+            return as((Expression)nullExpression(), alias);
         } else {
             return as(ConstantImpl.create(source), alias);
         }
@@ -630,6 +630,37 @@ public final class Expressions {
             rv = SimpleOperation.create(clazz, Ops.LIST, rv, exprs[i]);
         }
         return rv;
+    }
+
+    /**
+     * Get the default null expression
+     *
+     * @return
+     */
+    public static NullExpression<Object> nullExpression() {
+        return NullExpression.DEFAULT;
+    }
+
+    /**
+     * Get a null expression for the given type
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T> NullExpression<T> nullExpression(Class<T> type) {
+        return new NullExpression<T>(type);
+    }
+
+    /**
+     * Get a null expression for the given path
+     *
+     * @param path
+     * @param <T>
+     * @return
+     */
+    public static <T> NullExpression<T> nullExpression(Path<T> path) {
+        return new NullExpression<T>(path.getType());
     }
 
     private Expressions() {}
