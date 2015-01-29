@@ -354,7 +354,7 @@ query.from(customer)
     <title>Using joins</title>
 
     <para>Querydsl supports the following join variants in JPQL: inner join, join, left
-      join and full join. Join usage is typesafe, and follows the following pattern:
+      join and right join. Join usage is typesafe, and follows the following pattern:
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -406,7 +406,7 @@ from Cat as cat
     </para>
 
     <para>
-      <emphasis>innerJoin, join, leftJoin, fullJoin, on:</emphasis>
+      <emphasis>innerJoin, join, leftJoin, rightJoin, on:</emphasis>
       Add join elements using these constructs.
       For the join methods the first argument is the join source and the second the target
       (alias).

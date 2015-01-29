@@ -403,8 +403,8 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             }
             if (numericMappings != null) {
                 for (NumericMapping mapping : numericMappings) {
-                    int total = Math.max(mapping.size, mapping.total);
-                    int decimal = Math.max(mapping.digits, mapping.decimal);
+                    int total = mapping.total;
+                    int decimal = mapping.decimal;
                     configuration.registerNumeric(total, decimal, Class.forName(mapping.javaType));
                 }
             }

@@ -131,21 +131,6 @@ public final class Configuration {
     }
 
     /**
-     * Use the other getJavaType method instead
-     *
-     * @param sqlType
-     * @param size
-     * @param digits
-     * @param tableName
-     * @param columnName
-     * @return
-     */
-    @Deprecated
-    public Class<?> getJavaType(int sqlType, int size, int digits, String tableName, String columnName) {
-        return getJavaType(sqlType, null, size, digits, tableName, columnName);
-    }
-
-    /**
      * Get the java type for the given jdbc type, table name and column name
      *
      * @param sqlType
@@ -206,29 +191,6 @@ public final class Configuration {
     @Nullable
     public <T> T get(ResultSet rs, @Nullable Path<?> path, int i, Class<T> clazz) throws SQLException {
         return getType(path, clazz).getValue(rs, i);
-    }
-
-    /**
-     * Use getOverride instead
-     *
-     * @param schema
-     * @return
-     */
-    @Deprecated
-    public String getSchema(String schema) {
-        return schemas.get(schema);
-    }
-
-    /**
-     * Use getOverride instead
-     *
-     * @param schema
-     * @param table
-     * @return
-     */
-    @Deprecated
-    public String getTable(String schema, String table) {
-        return getOverride(new SchemaAndTable(schema, table)).getTable();
     }
 
     /**

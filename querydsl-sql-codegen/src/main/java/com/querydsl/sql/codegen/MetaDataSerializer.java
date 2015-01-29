@@ -13,12 +13,15 @@
  */
 package com.querydsl.sql.codegen;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import static com.mysema.codegen.Symbols.*;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -28,12 +31,10 @@ import com.querydsl.codegen.*;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;
 import com.querydsl.sql.PrimaryKey;
-import com.querydsl.sql.RelationalPathBase;
 import com.querydsl.sql.codegen.support.ForeignKeyData;
 import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.KeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
-import static com.mysema.codegen.Symbols.*;
 
 /**
  * MetaDataSerializer defines the Query type serialization logic for MetaDataExporter.
@@ -90,17 +91,6 @@ public class MetaDataSerializer extends EntitySerializer {
         this.imports = new HashSet<String>(imports);
         this.columnComparator = columnComparator;
         this.entityPathType = entityPathType;
-    }
-
-    @Deprecated
-    public MetaDataSerializer(
-            TypeMappings typeMappings,
-            NamingStrategy namingStrategy,
-            boolean innerClassesForKeys,
-            Set<String> imports,
-            Comparator<Property> columnComparator) {
-        this(typeMappings, namingStrategy, innerClassesForKeys,
-                imports, columnComparator, RelationalPathBase.class);
     }
 
     @Override

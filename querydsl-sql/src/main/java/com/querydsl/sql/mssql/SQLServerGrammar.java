@@ -14,9 +14,6 @@
 package com.querydsl.sql.mssql;
 
 
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.template.NumberTemplate;
-
 /**
  * Convenience functions and constants for SQL Server usage
  *
@@ -26,12 +23,6 @@ import com.querydsl.core.types.template.NumberTemplate;
 public final class SQLServerGrammar {
 
     private SQLServerGrammar() {}
-
-    @Deprecated
-    public static final NumberExpression<Long> rowNumber = NumberTemplate.create(Long.class, "row_number");
-
-    @Deprecated
-    public static final NumberExpression<Long> rn = NumberTemplate.create(Long.class, "rn");
 
     static String tableHints(SQLServerTableHints... tableHints) {
         StringBuilder hints = new StringBuilder(" with ").append("(");

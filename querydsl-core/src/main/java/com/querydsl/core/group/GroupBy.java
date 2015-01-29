@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.QList;
@@ -126,7 +125,6 @@ public final class GroupBy {
      * @param value
      * @return
      */
-    @WithBridgeMethods(value=Expression.class,castRequired=true)
     public static <K, V> AbstractGroupExpression<Pair<K, V>,Map<K, V>> map(Expression<K> key, Expression<V> value) {
         return new GMap<K, V>(QPair.create(key, value));
     }

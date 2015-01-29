@@ -31,12 +31,6 @@ import com.querydsl.core.types.template.BooleanTemplate;
 @SuppressWarnings("unchecked")
 public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
 
-    @Deprecated
-    public static final Templates TEMPLATES = new Templates() {{
-        add(PathType.PROPERTY, "{0}_{1}");
-        add(PathType.COLLECTION_ANY, "{0}");
-    }};
-
     public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
 
     @SuppressWarnings("rawtypes")

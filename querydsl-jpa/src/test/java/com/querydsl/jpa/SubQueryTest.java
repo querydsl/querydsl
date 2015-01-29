@@ -69,13 +69,7 @@ public class SubQueryTest extends AbstractQueryTest{
         assertEquals("select cat\nfrom Cat cat\n  left join cat.mate", 
                 sub().from(cat).leftJoin(cat.mate).toString());
     }
-    
-    @Test
-    public void FullJoin() {
-        assertEquals("select cat\nfrom Cat cat\n  full join cat.mate", 
-                sub().from(cat).fullJoin(cat.mate).toString());
-    }
-    
+
     @Test
     public void Join() {
         assertEquals("select cat\nfrom Cat cat\n  inner join cat.mate", 
