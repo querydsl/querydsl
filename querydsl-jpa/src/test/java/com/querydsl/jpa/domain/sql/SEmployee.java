@@ -57,7 +57,7 @@ public class SEmployee extends com.querydsl.sql.RelationalPathBase<SEmployee> {
         addMetadata();
     }
 
-    public SEmployee(PathMetadata<?> metadata) {
+    public SEmployee(PathMetadata metadata) {
         super(SEmployee.class, metadata, "", "employee_");
         addMetadata();
     }

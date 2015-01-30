@@ -32,7 +32,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
 
     private static final long serialVersionUID = -2498447742798348162L;
 
-    private final PathMetadata<?> metadata;
+    private final PathMetadata metadata;
 
     private final Path<?> root;
 
@@ -43,7 +43,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
         this(type, PathMetadataFactory.forVariable(variable));
     }
 
-    public PathImpl(Class<? extends T> type, PathMetadata<?> metadata) {
+    public PathImpl(Class<? extends T> type, PathMetadata metadata) {
         super(type);
         this.metadata = metadata;
         this.root = metadata.getRootPath() != null ? metadata.getRootPath() : this;
@@ -65,7 +65,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     }
 
     @Override
-    public final PathMetadata<?> getMetadata() {
+    public final PathMetadata getMetadata() {
         return metadata;
     }
 

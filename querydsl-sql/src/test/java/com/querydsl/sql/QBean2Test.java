@@ -44,7 +44,7 @@ public class QBean2Test {
             addMetadata();
         }
 
-        public QPerson(PathMetadata<?> metadata) {
+        public QPerson(PathMetadata metadata) {
             super(QPerson.class, metadata, "", "PERSON");
             addMetadata();
         }

@@ -74,7 +74,7 @@ public class SSimpletypes extends com.querydsl.sql.RelationalPathBase<SSimpletyp
         addMetadata();
     }
 
-    public SSimpletypes(PathMetadata<?> metadata) {
+    public SSimpletypes(PathMetadata metadata) {
         super(SSimpletypes.class, metadata, "", "simpletypes_");
         addMetadata();
     }

@@ -36,15 +36,15 @@ public class QArticle extends EntityPathBase<Article> {
         this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QArticle(PathMetadata<?> metadata) {
+    public QArticle(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QArticle(PathMetadata<?> metadata, PathInits inits) {
+    public QArticle(PathMetadata metadata, PathInits inits) {
         this(Article.class, metadata, inits);
     }
 
-    public QArticle(Class<? extends Article> type, PathMetadata<?> metadata, PathInits inits) {
+    public QArticle(Class<? extends Article> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.author = inits.isInitialized("author") ? new QPerson(forProperty("author")) : null;
         this.content = inits.isInitialized("content") ? new QContent(forProperty("content"), inits.get("content")) : null;

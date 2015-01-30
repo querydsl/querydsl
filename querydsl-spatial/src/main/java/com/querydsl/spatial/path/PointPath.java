@@ -43,11 +43,11 @@ public class PointPath<T extends Point> extends PointExpression<T> implements Pa
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public PointPath(PathMetadata<?> metadata) {
+    public PointPath(PathMetadata metadata) {
         this((Class<? extends T>) Point.class, metadata);
     }
 
-    public PointPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public PointPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class PointPath<T extends Point> extends PointExpression<T> implements Pa
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

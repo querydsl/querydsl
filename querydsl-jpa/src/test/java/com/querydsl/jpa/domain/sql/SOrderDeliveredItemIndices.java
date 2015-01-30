@@ -44,7 +44,7 @@ public class SOrderDeliveredItemIndices extends com.querydsl.sql.RelationalPathB
         addMetadata();
     }
 
-    public SOrderDeliveredItemIndices(PathMetadata<?> metadata) {
+    public SOrderDeliveredItemIndices(PathMetadata metadata) {
         super(SOrderDeliveredItemIndices.class, metadata, "", "Order_deliveredItemIndices");
         addMetadata();
     }

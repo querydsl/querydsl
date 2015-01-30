@@ -42,7 +42,7 @@ public class SFormula extends com.querydsl.sql.RelationalPathBase<SFormula> {
         addMetadata();
     }
 
-    public SFormula(PathMetadata<?> metadata) {
+    public SFormula(PathMetadata metadata) {
         super(SFormula.class, metadata, "", "formula_");
         addMetadata();
     }

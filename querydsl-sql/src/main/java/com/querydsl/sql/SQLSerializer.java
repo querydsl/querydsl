@@ -808,7 +808,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 return null;
             }
         }
-        final PathMetadata<?> metadata = path.getMetadata();
+        final PathMetadata metadata = path.getMetadata();
         boolean precededByDot;
         if (metadata.getParent() != null && (!skipParent || dml)) {
             visit(metadata.getParent(), context);

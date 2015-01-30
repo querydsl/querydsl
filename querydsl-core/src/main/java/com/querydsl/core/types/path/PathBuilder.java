@@ -57,7 +57,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param pathMetadata
      * @param validator
      */
-    public PathBuilder(Class<? extends T> type, PathMetadata<?> pathMetadata, PathBuilderValidator validator) {
+    public PathBuilder(Class<? extends T> type, PathMetadata pathMetadata, PathBuilderValidator validator) {
         super(type, pathMetadata);
         this.validator = validator;
     }
@@ -68,7 +68,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type
      * @param pathMetadata
      */
-    public PathBuilder(Class<? extends T> type, PathMetadata<?> pathMetadata) {
+    public PathBuilder(Class<? extends T> type, PathMetadata pathMetadata) {
         this(type, pathMetadata, PathBuilderValidator.DEFAULT);
     }
 

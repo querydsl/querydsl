@@ -43,11 +43,11 @@ public class JTSGeometryCollectionPath<T extends GeometryCollection> extends JTS
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSGeometryCollectionPath(PathMetadata<?> metadata) {
+    public JTSGeometryCollectionPath(PathMetadata metadata) {
         this((Class<? extends T>) GeometryCollection.class, metadata);
     }
 
-    public JTSGeometryCollectionPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSGeometryCollectionPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class JTSGeometryCollectionPath<T extends GeometryCollection> extends JTS
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

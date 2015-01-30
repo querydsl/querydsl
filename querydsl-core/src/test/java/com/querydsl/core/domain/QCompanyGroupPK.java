@@ -30,7 +30,7 @@ public class QCompanyGroupPK extends BeanPath<CompanyGroupPK> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QCompanyGroupPK(PathMetadata<?> metadata) {
+    public QCompanyGroupPK(PathMetadata metadata) {
         super(CompanyGroupPK.class, metadata);
     }
 

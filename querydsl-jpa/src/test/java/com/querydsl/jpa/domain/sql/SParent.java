@@ -43,7 +43,7 @@ public class SParent extends com.querydsl.sql.RelationalPathBase<SParent> {
         addMetadata();
     }
 
-    public SParent(PathMetadata<?> metadata) {
+    public SParent(PathMetadata metadata) {
         super(SParent.class, metadata, "", "parent_");
         addMetadata();
     }

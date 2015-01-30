@@ -33,7 +33,7 @@ public class QTSuperclass extends EntityPathBase<Superclass> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QTSuperclass(PathMetadata<?> metadata) {
+    public QTSuperclass(PathMetadata metadata) {
         super(Superclass.class, metadata);
     }
 

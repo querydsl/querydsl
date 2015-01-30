@@ -14,7 +14,7 @@ public class QPerson extends BeanPath<Person> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QPerson(PathMetadata<?> metadata) {
+    public QPerson(PathMetadata metadata) {
         super(Person.class, metadata);
     }
 

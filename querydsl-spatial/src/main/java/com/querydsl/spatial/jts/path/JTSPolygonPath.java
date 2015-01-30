@@ -43,11 +43,11 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSPolygonPath(PathMetadata<?> metadata) {
+    public JTSPolygonPath(PathMetadata metadata) {
         this((Class<? extends T>) Polygon.class, metadata);
     }
 
-    public JTSPolygonPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSPolygonPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

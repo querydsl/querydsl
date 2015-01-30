@@ -53,7 +53,7 @@ public class SStoreProductsbyname extends RelationalPathBase<SStoreProductsbynam
         super(entity.getType(),entity.getMetadata(), "", "STORE_PRODUCTSBYNAME");
     }
 
-    public SStoreProductsbyname(PathMetadata<?> metadata) {
+    public SStoreProductsbyname(PathMetadata metadata) {
         super(SStoreProductsbyname.class, metadata, "", "STORE_PRODUCTSBYNAME");
     }
 

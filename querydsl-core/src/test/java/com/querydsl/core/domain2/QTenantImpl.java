@@ -26,7 +26,7 @@ public class QTenantImpl extends EntityPathBase<TenantImpl> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QTenantImpl(PathMetadata<?> metadata) {
+    public QTenantImpl(PathMetadata metadata) {
         super(TenantImpl.class, metadata);
     }
 

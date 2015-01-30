@@ -52,7 +52,7 @@ public class SBookversion extends com.querydsl.sql.RelationalPathBase<SBookversi
         addMetadata();
     }
 
-    public SBookversion(PathMetadata<?> metadata) {
+    public SBookversion(PathMetadata metadata) {
         super(SBookversion.class, metadata, "", "bookversion_");
         addMetadata();
     }

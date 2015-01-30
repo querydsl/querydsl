@@ -45,7 +45,7 @@ public class SStatus extends com.querydsl.sql.RelationalPathBase<SStatus> {
         addMetadata();
     }
 
-    public SStatus(PathMetadata<?> metadata) {
+    public SStatus(PathMetadata metadata) {
         super(SStatus.class, metadata, "", "status_");
         addMetadata();
     }

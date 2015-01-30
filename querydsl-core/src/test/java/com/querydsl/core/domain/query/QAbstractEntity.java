@@ -42,7 +42,7 @@ public class QAbstractEntity extends EntityPathBase<AbstractEntity> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QAbstractEntity(PathMetadata<?> metadata) {
+    public QAbstractEntity(PathMetadata metadata) {
         super(AbstractEntity.class, metadata);
     }
 

@@ -67,11 +67,11 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSGeometryPath(PathMetadata<?> metadata) {
+    public JTSGeometryPath(PathMetadata metadata) {
         this((Class<? extends T>) Geometry.class, metadata);
     }
 
-    public JTSGeometryPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSGeometryPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -146,7 +146,7 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

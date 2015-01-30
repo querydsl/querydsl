@@ -36,7 +36,7 @@ public class QCompanies extends com.querydsl.sql.RelationalPathBase<QCompanies> 
         addMetadata();
     }
 
-    public QCompanies(PathMetadata<?> metadata) {
+    public QCompanies(PathMetadata metadata) {
         super(QCompanies.class, metadata, "PUBLIC", "COMPANIES");
         addMetadata();
     }

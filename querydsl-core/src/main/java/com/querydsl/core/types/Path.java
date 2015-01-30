@@ -27,7 +27,7 @@ public interface Path<T> extends Expression<T> {
      *
      * @return
      */
-    PathMetadata<?> getMetadata();
+    PathMetadata getMetadata();
 
     /**
      * Get the root for this path

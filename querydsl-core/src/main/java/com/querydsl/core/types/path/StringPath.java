@@ -38,7 +38,7 @@ public class StringPath extends StringExpression implements Path<String> {
         this(PathMetadataFactory.forProperty(parent, property));
     }
 
-    public StringPath(PathMetadata<?> metadata) {
+    public StringPath(PathMetadata metadata) {
         super(new PathImpl<String>(String.class, metadata));
         this.pathMixin = (PathImpl<String>)mixin;
     }
@@ -53,7 +53,7 @@ public class StringPath extends StringExpression implements Path<String> {
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

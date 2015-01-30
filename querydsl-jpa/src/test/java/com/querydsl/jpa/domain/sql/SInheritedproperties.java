@@ -45,7 +45,7 @@ public class SInheritedproperties extends com.querydsl.sql.RelationalPathBase<SI
         addMetadata();
     }
 
-    public SInheritedproperties(PathMetadata<?> metadata) {
+    public SInheritedproperties(PathMetadata metadata) {
         super(SInheritedproperties.class, metadata, "", "inheritedproperties_");
         addMetadata();
     }

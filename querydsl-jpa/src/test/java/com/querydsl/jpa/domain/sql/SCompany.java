@@ -57,7 +57,7 @@ public class SCompany extends com.querydsl.sql.RelationalPathBase<SCompany> {
         addMetadata();
     }
 
-    public SCompany(PathMetadata<?> metadata) {
+    public SCompany(PathMetadata metadata) {
         super(SCompany.class, metadata, "", "company_");
         addMetadata();
     }

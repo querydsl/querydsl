@@ -45,7 +45,7 @@ public class SShowActs extends com.querydsl.sql.RelationalPathBase<SShowActs> {
         addMetadata();
     }
 
-    public SShowActs(PathMetadata<?> metadata) {
+    public SShowActs(PathMetadata metadata) {
         super(SShowActs.class, metadata, "", "Show_acts");
         addMetadata();
     }

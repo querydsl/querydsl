@@ -45,7 +45,7 @@ public class SEntity1 extends com.querydsl.sql.RelationalPathBase<SEntity1> {
         addMetadata();
     }
 
-    public SEntity1(PathMetadata<?> metadata) {
+    public SEntity1(PathMetadata metadata) {
         super(SEntity1.class, metadata, "", "Entity1");
         addMetadata();
     }

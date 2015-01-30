@@ -47,7 +47,7 @@ public class SBook extends com.querydsl.sql.RelationalPathBase<SBook> {
         addMetadata();
     }
 
-    public SBook(PathMetadata<?> metadata) {
+    public SBook(PathMetadata metadata) {
         super(SBook.class, metadata, "", "book_");
         addMetadata();
     }

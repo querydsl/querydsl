@@ -40,7 +40,7 @@ public class SPlayer extends com.querydsl.sql.RelationalPathBase<SPlayer> {
         addMetadata();
     }
 
-    public SPlayer(PathMetadata<?> metadata) {
+    public SPlayer(PathMetadata metadata) {
         super(SPlayer.class, metadata, "", "player_");
         addMetadata();
     }

@@ -51,7 +51,7 @@ public class SUser extends com.querydsl.sql.RelationalPathBase<SUser> {
         addMetadata();
     }
 
-    public SUser(PathMetadata<?> metadata) {
+    public SUser(PathMetadata metadata) {
         super(SUser.class, metadata, "", "user_");
         addMetadata();
     }

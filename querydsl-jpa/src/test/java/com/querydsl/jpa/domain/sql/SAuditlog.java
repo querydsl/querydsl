@@ -42,7 +42,7 @@ public class SAuditlog extends com.querydsl.sql.RelationalPathBase<SAuditlog> {
         addMetadata();
     }
 
-    public SAuditlog(PathMetadata<?> metadata) {
+    public SAuditlog(PathMetadata metadata) {
         super(SAuditlog.class, metadata, "", "auditlog_");
         addMetadata();
     }

@@ -39,7 +39,7 @@ public class DslPath<T> extends DslExpression<T> implements Path<T> {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public DslPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public DslPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -54,7 +54,7 @@ public class DslPath<T> extends DslExpression<T> implements Path<T> {
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

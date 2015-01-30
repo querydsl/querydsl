@@ -30,8 +30,8 @@ public final class PathMetadataFactory {
      * @param index
      * @return
      */
-    public static PathMetadata<Integer> forArrayAccess(Path<?> parent, Expression<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
+    public static PathMetadata forArrayAccess(Path<?> parent, Expression<Integer> index) {
+        return new PathMetadata(parent, index, PathType.ARRAYVALUE);
     }
 
     /**
@@ -41,8 +41,8 @@ public final class PathMetadataFactory {
      * @param index
      * @return
      */
-    public static PathMetadata<Integer> forArrayAccess(Path<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE_CONSTANT);
+    public static PathMetadata forArrayAccess(Path<?> parent, @Nonnegative int index) {
+        return new PathMetadata(parent, index, PathType.ARRAYVALUE_CONSTANT);
     }
     
     /**
@@ -51,8 +51,8 @@ public final class PathMetadataFactory {
      * @param parent
      * @return
      */
-    public static PathMetadata<?> forCollectionAny(Path<?> parent) {
-        return new PathMetadata<String>(parent, "", PathType.COLLECTION_ANY);
+    public static PathMetadata forCollectionAny(Path<?> parent) {
+        return new PathMetadata(parent, "", PathType.COLLECTION_ANY);
     }
 
     /**
@@ -61,8 +61,8 @@ public final class PathMetadataFactory {
      * @param delegate
      * @return
      */
-    public static <T> PathMetadata<T> forDelegate(Path<T> delegate) {
-        return new PathMetadata<T>(delegate, delegate, PathType.DELEGATE);
+    public static <T> PathMetadata forDelegate(Path<T> delegate) {
+        return new PathMetadata(delegate, delegate, PathType.DELEGATE);
     }
 
     /**
@@ -72,8 +72,8 @@ public final class PathMetadataFactory {
      * @param index
      * @return
      */
-    public static PathMetadata<Integer> forListAccess(Path<?> parent, Expression<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
+    public static PathMetadata forListAccess(Path<?> parent, Expression<Integer> index) {
+        return new PathMetadata(parent, index, PathType.LISTVALUE);
     }
 
     /**
@@ -83,8 +83,8 @@ public final class PathMetadataFactory {
      * @param index
      * @return
      */
-    public static PathMetadata<Integer> forListAccess(Path<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE_CONSTANT);
+    public static PathMetadata forListAccess(Path<?> parent, @Nonnegative int index) {
+        return new PathMetadata(parent, index, PathType.LISTVALUE_CONSTANT);
     }
 
     /**
@@ -94,8 +94,8 @@ public final class PathMetadataFactory {
      * @param key
      * @return
      */
-    public static <KT> PathMetadata<KT> forMapAccess(Path<?> parent, Expression<KT> key) {
-        return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
+    public static <KT> PathMetadata forMapAccess(Path<?> parent, Expression<KT> key) {
+        return new PathMetadata(parent, key, PathType.MAPVALUE);
     }
 
     /**
@@ -105,8 +105,8 @@ public final class PathMetadataFactory {
      * @param key
      * @return
      */
-    public static <KT> PathMetadata<KT> forMapAccess(Path<?> parent, KT key) {
-        return new PathMetadata<KT>(parent, key, PathType.MAPVALUE_CONSTANT);
+    public static <KT> PathMetadata forMapAccess(Path<?> parent, KT key) {
+        return new PathMetadata(parent, key, PathType.MAPVALUE_CONSTANT);
     }
 
     /**
@@ -116,8 +116,8 @@ public final class PathMetadataFactory {
      * @param property
      * @return
      */
-    public static PathMetadata<String> forProperty(Path<?> parent, String property) {
-        return new PathMetadata<String>(parent, property, PathType.PROPERTY);
+    public static PathMetadata forProperty(Path<?> parent, String property) {
+        return new PathMetadata(parent, property, PathType.PROPERTY);
     }
 
     /**
@@ -126,8 +126,8 @@ public final class PathMetadataFactory {
      * @param variable
      * @return
      */
-    public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, variable, PathType.VARIABLE);
+    public static PathMetadata forVariable(String variable) {
+        return new PathMetadata(null, variable, PathType.VARIABLE);
     }
 
     private PathMetadataFactory() {}

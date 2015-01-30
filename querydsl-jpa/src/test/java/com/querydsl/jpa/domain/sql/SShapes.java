@@ -41,7 +41,7 @@ public class SShapes extends com.querydsl.sql.RelationalPathBase<SShapes> {
         addMetadata();
     }
 
-    public SShapes(PathMetadata<?> metadata) {
+    public SShapes(PathMetadata metadata) {
         super(SShapes.class, metadata, "", "SHAPES");
         addMetadata();
     }

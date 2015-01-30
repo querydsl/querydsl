@@ -36,7 +36,7 @@ public class Point extends ArrayPath<Double[], Double> {
         super(Double[].class, parent, property);
     }
 
-    public Point(PathMetadata<?> metadata) {
+    public Point(PathMetadata metadata) {
         super(Double[].class, metadata);
     }
 

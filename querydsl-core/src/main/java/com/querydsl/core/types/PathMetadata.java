@@ -26,7 +26,7 @@ import com.google.common.base.Objects;
  * @author tiwe
  */
 @Immutable
-public final class PathMetadata<T> implements Serializable{
+public final class PathMetadata implements Serializable{
 
     private static final long serialVersionUID = -1055994185028970065L;
 
@@ -51,8 +51,8 @@ public final class PathMetadata<T> implements Serializable{
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj instanceof PathMetadata<?>) {
-            PathMetadata<?> p = (PathMetadata<?>) obj;
+        } else if (obj instanceof PathMetadata) {
+            PathMetadata p = (PathMetadata) obj;
             return element.equals(p.element) &&
                     pathType == p.pathType &&
                     Objects.equal(parent, p.parent);

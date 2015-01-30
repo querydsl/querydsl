@@ -47,7 +47,7 @@ public class QPerson extends RelationalPathBase<QPerson> {
         addMetadata();
     }
 
-    public QPerson(PathMetadata<?> metadata) {
+    public QPerson(PathMetadata metadata) {
         super(QPerson.class, metadata, "", "PERSON");
         addMetadata();
     }

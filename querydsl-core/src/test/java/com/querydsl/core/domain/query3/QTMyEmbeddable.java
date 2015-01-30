@@ -43,7 +43,7 @@ public class QTMyEmbeddable extends BeanPath<MyEmbeddable> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QTMyEmbeddable(PathMetadata<?> metadata) {
+    public QTMyEmbeddable(PathMetadata metadata) {
         super(MyEmbeddable.class, metadata);
     }
 

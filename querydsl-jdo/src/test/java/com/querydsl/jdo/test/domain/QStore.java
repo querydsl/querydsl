@@ -52,7 +52,7 @@ public class QStore extends EntityPathBase<com.querydsl.jdo.test.domain.Store>{
           super(cl, PathMetadataFactory.forVariable(path));
     }
     
-    public QStore(PathMetadata<?> metadata) {
+    public QStore(PathMetadata metadata) {
          super(Store.class, metadata);
     }
     

@@ -53,7 +53,7 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
     //System.err.println(str)
-    assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) " +
+    assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata) " +
     		"extends EntityPathImpl[Person](cl, md) {"))
     assertTrue(str.contains("def this(variable: String) = " +
     		"this(classOf[Person], forVariable(variable))"))

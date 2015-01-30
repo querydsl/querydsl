@@ -42,7 +42,7 @@ public class QUuids extends RelationalPathBase<QUuids> {
         addMetadata();
     }
 
-    public QUuids(PathMetadata<?> metadata) {
+    public QUuids(PathMetadata metadata) {
         super(QUuids.class, metadata, "public", "UUIDS");
         addMetadata();
     }

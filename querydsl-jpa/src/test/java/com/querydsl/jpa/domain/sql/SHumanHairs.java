@@ -40,7 +40,7 @@ public class SHumanHairs extends com.querydsl.sql.RelationalPathBase<SHumanHairs
         addMetadata();
     }
 
-    public SHumanHairs(PathMetadata<?> metadata) {
+    public SHumanHairs(PathMetadata metadata) {
         super(SHumanHairs.class, metadata, "", "Human_hairs");
         addMetadata();
     }

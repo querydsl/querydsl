@@ -40,7 +40,7 @@ public class SShow extends com.querydsl.sql.RelationalPathBase<SShow> {
         addMetadata();
     }
 
-    public SShow(PathMetadata<?> metadata) {
+    public SShow(PathMetadata metadata) {
         super(SShow.class, metadata, "", "show_");
         addMetadata();
     }

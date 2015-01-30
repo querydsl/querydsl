@@ -46,7 +46,7 @@ public class SFoo extends com.querydsl.sql.RelationalPathBase<SFoo> {
         addMetadata();
     }
 
-    public SFoo(PathMetadata<?> metadata) {
+    public SFoo(PathMetadata metadata) {
         super(SFoo.class, metadata, "", "foo_");
         addMetadata();
     }

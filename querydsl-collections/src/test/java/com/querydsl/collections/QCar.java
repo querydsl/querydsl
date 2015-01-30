@@ -19,7 +19,7 @@ public class QCar extends BeanPath<Car> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QCar(PathMetadata<?> metadata) {
+    public QCar(PathMetadata metadata) {
         super(Car.class, metadata);
     }
 

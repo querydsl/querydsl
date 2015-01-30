@@ -44,7 +44,7 @@ public class SCatalog_price extends com.querydsl.sql.RelationalPathBase<SCatalog
         addMetadata();
     }
 
-    public SCatalog_price(PathMetadata<?> metadata) {
+    public SCatalog_price(PathMetadata metadata) {
         super(SCatalog_price.class, metadata, "", "catalog__price_");
         addMetadata();
     }

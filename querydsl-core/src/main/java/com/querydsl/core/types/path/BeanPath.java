@@ -59,11 +59,11 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         this(type, PathMetadataFactory.forProperty(parent, property), null);
     }
 
-    public BeanPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public BeanPath(Class<? extends T> type, PathMetadata metadata) {
         this(type, metadata, null);
     }
 
-    public BeanPath(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
+    public BeanPath(Class<? extends T> type, PathMetadata metadata, @Nullable PathInits inits) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
         this.inits = inits;
@@ -86,7 +86,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     public <U extends BeanPath<? extends T>> U as(Class<U> clazz) {
         try {
             if (!casts.containsKey(clazz)) {
-                PathMetadata<T> metadata;
+                PathMetadata metadata;
                 if (pathMixin.getMetadata().getPathType() != PathType.COLLECTION_ANY) {
                     metadata = PathMetadataFactory.forDelegate(pathMixin);
                 } else {
@@ -306,12 +306,12 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         return add(new TimePath<A>((Class) type, forProperty(property)));
     }
 
-    protected PathMetadata<?> forProperty(String property) {
+    protected PathMetadata forProperty(String property) {
         return PathMetadataFactory.forProperty(this, property);
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

@@ -43,11 +43,11 @@ public class JTSLineStringPath<T extends LineString> extends JTSLineStringExpres
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSLineStringPath(PathMetadata<?> metadata) {
+    public JTSLineStringPath(PathMetadata metadata) {
         this((Class<? extends T>) LineString.class, metadata);
     }
 
-    public JTSLineStringPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSLineStringPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class JTSLineStringPath<T extends LineString> extends JTSLineStringExpres
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

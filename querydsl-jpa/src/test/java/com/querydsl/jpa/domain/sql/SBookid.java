@@ -40,7 +40,7 @@ public class SBookid extends com.querydsl.sql.RelationalPathBase<SBookid> {
         addMetadata();
     }
 
-    public SBookid(PathMetadata<?> metadata) {
+    public SBookid(PathMetadata metadata) {
         super(SBookid.class, metadata, "", "bookid_");
         addMetadata();
     }

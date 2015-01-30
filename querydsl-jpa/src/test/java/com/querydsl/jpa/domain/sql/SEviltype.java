@@ -116,7 +116,7 @@ public class SEviltype extends com.querydsl.sql.RelationalPathBase<SEviltype> {
         addMetadata();
     }
 
-    public SEviltype(PathMetadata<?> metadata) {
+    public SEviltype(PathMetadata metadata) {
         super(SEviltype.class, metadata, "", "eviltype_");
         addMetadata();
     }

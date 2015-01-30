@@ -45,7 +45,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
       LIST->"List", MAP->"Map", NUMERIC->"Number", SET->"Set", SIMPLE->"Simple", 
       STRING->"String", TIME->"Time")
   
-  val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)"
+  val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata) extends EntityPathImpl[%2$s](cl, md)"
     
   var primitives = true  
     

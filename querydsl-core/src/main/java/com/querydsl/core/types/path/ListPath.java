@@ -60,12 +60,12 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
         this(elementType, queryType, PathMetadataFactory.forProperty(parent, property));   
     }
     
-    public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
+    public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata metadata) {
         this(elementType, queryType, metadata, PathInits.DIRECT);
     }
     
     @SuppressWarnings("unchecked")
-    public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata, PathInits inits) {
+    public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
         super(new PathImpl<List<E>>((Class)List.class, metadata), inits);
         this.elementType = (Class<E>)elementType;
         this.queryType = queryType;
@@ -85,22 +85,22 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
         return any;
     }
 
-    protected PathMetadata<Integer> forListAccess(int index) {
+    protected PathMetadata forListAccess(int index) {
         return PathMetadataFactory.forListAccess(this, index);
     }
 
-    protected PathMetadata<Integer> forListAccess(Expression<Integer> index) {
+    protected PathMetadata forListAccess(Expression<Integer> index) {
         return PathMetadataFactory.forListAccess(this, index);
     }
 
     private Q create(int index) {
-        PathMetadata<Integer> md = forListAccess(index);
+        PathMetadata md = forListAccess(index);
         return newInstance(queryType, md);
     }
 
     @Override
     public Q get(Expression<Integer> index) {
-        PathMetadata<Integer> md = forListAccess(index);
+        PathMetadata md = forListAccess(index);
         return newInstance(queryType, md);
     }
 
@@ -121,7 +121,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

@@ -41,7 +41,7 @@ public class QXmlTest extends RelationalPathBase<QXmlTest> {
         addMetadata();
     }
 
-    public QXmlTest(PathMetadata<?> metadata) {
+    public QXmlTest(PathMetadata metadata) {
         super(QXmlTest.class, metadata, "PUBLIC", "XML_TEST");
         addMetadata();
     }
