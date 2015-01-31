@@ -146,6 +146,12 @@ public class JPQLTemplates extends Templates {
         return false;
     }
 
+    @Deprecated
+    public boolean isTypeAsString() {
+        // TODO : get rid of this when Hibernate supports type(alias)
+        return false;
+    }
+
     public String getTypeForCast(Class<?> cl) {
         return cl.getSimpleName().toLowerCase();
     }

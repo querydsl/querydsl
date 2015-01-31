@@ -107,6 +107,11 @@ public class HQLTemplates extends JPQLTemplates {
     }
 
     @Override
+    public boolean isTypeAsString() {
+        return true;
+    }
+
+    @Override
     public String getTypeForCast(Class<?> cl) {
         return typeNames.get(cl);
     }
