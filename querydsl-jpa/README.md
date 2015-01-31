@@ -45,7 +45,7 @@ And now, configure the Maven APT plugin :
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+              <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
@@ -58,7 +58,7 @@ And now, configure the Maven APT plugin :
 
 The JPAAnnotationProcessor finds domain types annotated with the javax.persistence.Entity annotation and generates query types for them.
 
-If you use Hibernate annotations in your domain types you should use the APT processor com.mysema.querydsl.apt.hibernate.HibernateAnnotationProcessor instead.
+If you use Hibernate annotations in your domain types you should use the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor instead.
 
 Run clean install and you will get your Query types generated into target/generated-sources/java.
 
