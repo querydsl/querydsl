@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableList;
 
 public class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
 
+    private static final long serialVersionUID = -1337452521648394353L;
+
     private final Expression<T> base;
 
     private final List<Expression<?>> args;
