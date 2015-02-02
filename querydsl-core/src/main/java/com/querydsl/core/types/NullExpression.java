@@ -33,7 +33,7 @@ public class NullExpression<T> extends TemplateExpressionImpl<T> {
      */
     public static final NullExpression<Object> DEFAULT = new NullExpression<Object>(Object.class);
 
-    public NullExpression(Class<? extends T> type) {
+    private NullExpression(Class<? extends T> type) {
         super(type, NULL_TEMPLATE, Collections.<Expression<?>>emptyList());
     }
 

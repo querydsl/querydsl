@@ -637,8 +637,9 @@ public final class Expressions {
      *
      * @return
      */
-    public static NullExpression<Object> nullExpression() {
-        return NullExpression.DEFAULT;
+    @SuppressWarnings("unchecked")//does not produce non-null instances of T
+    public static <T> NullExpression<T> nullExpression() {
+        return (NullExpression<T>) NullExpression.DEFAULT;
     }
 
     /**
@@ -649,7 +650,7 @@ public final class Expressions {
      * @return
      */
     public static <T> NullExpression<T> nullExpression(Class<T> type) {
-        return new NullExpression<T>(type);
+        return nullExpression();
     }
 
     /**
@@ -660,7 +661,7 @@ public final class Expressions {
      * @return
      */
     public static <T> NullExpression<T> nullExpression(Path<T> path) {
-        return new NullExpression<T>(path.getType());
+        return nullExpression();
     }
 
     private Expressions() {}
