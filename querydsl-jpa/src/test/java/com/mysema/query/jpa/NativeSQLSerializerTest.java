@@ -13,17 +13,29 @@
  */
 package com.mysema.query.jpa;
 
+import static org.junit.Assert.assertEquals;
+
+import javax.persistence.Column;
+
+import org.junit.Test;
+
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import com.mysema.query.types.path.PathBuilder;
 
 
 public class NativeSQLSerializerTest {
+
+    public static class Entity {
+        @Column
+        private String name;
+
+        @Column(name="first_name")
+        private String firstName;
+    }
 
     @Test
     public void In() {
@@ -38,6 +50,24 @@ public class NativeSQLSerializerTest {
         assertEquals("select animal_.id\n" +
         	"from animal_ animal_\n" +
         	"where animal_.name in (?1, ?2)", serializer.toString());
+    }
+
+    @Test
+    public void Path_Column() {
+        PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class,"entity");
+        Configuration conf = new Configuration(new MySQLTemplates());
+        NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);
+        serializer.handle(entity.get("name"));
+        assertEquals("entity.name", serializer.toString());
+    }
+
+    @Test
+    public void Path_Column2() {
+        PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class,"entity");
+        Configuration conf = new Configuration(new MySQLTemplates());
+        NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);
+        serializer.handle(entity.get("firstName"));
+        assertEquals("entity.first_name", serializer.toString());
     }
 
 }
