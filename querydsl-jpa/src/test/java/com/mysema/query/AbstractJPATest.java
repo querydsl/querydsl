@@ -324,6 +324,19 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void CaseBuilder() {
+        QCat cat2 = new QCat("cat2");
+        NumberExpression<Integer> casex = new CaseBuilder()
+                .when(cat.weight.isNull().and(cat.weight.isNull())).then(0)
+                .when(cat.weight.isNull()).then(cat2.weight)
+                .when(cat2.weight.isNull()).then(cat.weight)
+                .otherwise(cat.weight.add(cat2.weight));
+
+        query().from(cat, cat2).orderBy(casex.asc()).list(cat.id, cat2.id);
+        query().from(cat, cat2).orderBy(casex.desc()).list(cat.id, cat2.id);
+    }
+
+    @Test
     public void Cast() {
         List<Cat> cats = query().from(cat).list(cat);
         List<Integer> weights = query().from(cat).list(cat.bodyWeight.castToNum(Integer.class));
