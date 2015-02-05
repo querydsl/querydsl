@@ -633,7 +633,7 @@ public final class Expressions {
     }
 
     /**
-     * Get the default null expression
+     * Get a null expression for the specified type
      *
      * @return
      */
@@ -643,7 +643,7 @@ public final class Expressions {
     }
 
     /**
-     * Get a null expression for the given type
+     * Get a null expression for the specified type
      *
      * @param type
      * @param <T>
@@ -654,7 +654,7 @@ public final class Expressions {
     }
 
     /**
-     * Get a null expression for the given path
+     * Get a null expression for the specified path
      *
      * @param path
      * @param <T>
