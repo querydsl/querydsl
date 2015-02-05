@@ -43,11 +43,11 @@ public class JTSLinearRingPath<T extends LinearRing> extends JTSLinearRingExpres
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSLinearRingPath(PathMetadata<?> metadata) {
+    public JTSLinearRingPath(PathMetadata metadata) {
         this((Class<? extends T>) LinearRing.class, metadata);
     }
 
-    public JTSLinearRingPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSLinearRingPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class JTSLinearRingPath<T extends LinearRing> extends JTSLinearRingExpres
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

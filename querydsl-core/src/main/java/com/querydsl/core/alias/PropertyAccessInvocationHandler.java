@@ -84,7 +84,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(ptyName)) {
                 rv = propToObj.get(ptyName);
             } else {
-                PathMetadata<String> pm = createPropertyPath((Path<?>) hostExpression, ptyName);
+                PathMetadata pm = createPropertyPath((Path<?>) hostExpression, ptyName);
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
@@ -97,7 +97,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(ptyName)) {
                 rv = propToObj.get(ptyName);
             } else {
-                PathMetadata<String> pm = createPropertyPath((Path<?>) hostExpression, ptyName);
+                PathMetadata pm = createPropertyPath((Path<?>) hostExpression, ptyName);
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
@@ -108,7 +108,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<Integer> pm = createListAccessPath((Path<?>) hostExpression, (Integer) args[0]);
+                PathMetadata pm = createListAccessPath((Path<?>) hostExpression, (Integer) args[0]);
                 Class<?> elementType = ((ParametrizedExpression<?>) hostExpression).getParameter(0);
                 rv = newInstance(elementType, elementType, proxy, propKey, pm);
             }
@@ -119,7 +119,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<?> pm = createMapAccessPath((Path<?>)hostExpression, args[0]);
+                PathMetadata pm = createMapAccessPath((Path<?>)hostExpression, args[0]);
                 Class<?> valueType = ((ParametrizedExpression<?>) hostExpression).getParameter(1);
                 rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
@@ -145,7 +145,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
     @SuppressWarnings({ "unchecked"})
     @Nullable
     protected <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, 
-            PathMetadata<?> metadata) {
+            PathMetadata metadata) {
         Expression<?> path;
         Object rv;
 
@@ -260,15 +260,15 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
         return BeanUtils.uncapitalize(name);
     }
 
-    protected PathMetadata<String> createPropertyPath(Path<?> path, String propertyName) {
+    protected PathMetadata createPropertyPath(Path<?> path, String propertyName) {
         return PathMetadataFactory.forProperty(path, propertyName);
     }
 
-    protected PathMetadata<Integer> createListAccessPath(Path<?> path, Integer index) {
+    protected PathMetadata createListAccessPath(Path<?> path, Integer index) {
         return PathMetadataFactory.forListAccess(path, index);
     }
 
-    protected PathMetadata<?> createMapAccessPath(Path<?> path, Object key) {
+    protected PathMetadata createMapAccessPath(Path<?> path, Object key) {
         return PathMetadataFactory.forMapAccess(path, key);
     }
 

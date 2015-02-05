@@ -28,15 +28,15 @@ public class QABase extends EntityPathBase<ABase> {
         this(ABase.class, forVariable(variable), INITS);
     }
 
-    public QABase(PathMetadata<?> metadata) {
+    public QABase(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QABase(PathMetadata<?> metadata, PathInits inits) {
+    public QABase(PathMetadata metadata, PathInits inits) {
         this(ABase.class, metadata, inits);
     }
 
-    public QABase(Class<? extends ABase> type, PathMetadata<?> metadata, PathInits inits) {
+    public QABase(Class<? extends ABase> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.tenant = inits.isInitialized("tenant") ? new QTenantImpl(forProperty("tenant")) : null;
     }

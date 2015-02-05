@@ -307,7 +307,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
     @Override
     public String visit(Path<?> expr, Void context) {
-        PathMetadata<?> metadata = expr.getMetadata();
+        PathMetadata metadata = expr.getMetadata();
         if (metadata.getParent() != null) {
             if (metadata.getPathType() == PathType.COLLECTION_ANY) {
                 return visit(metadata.getParent(), context);
@@ -319,7 +319,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         return getKeyForPath(expr, metadata);
     }
 
-    protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
+    protected String getKeyForPath(Path<?> expr, PathMetadata metadata) {
         if (expr.getType().equals(ObjectId.class)) {
             return "_id";
         } else {

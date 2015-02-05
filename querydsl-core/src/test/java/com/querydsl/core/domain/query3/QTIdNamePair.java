@@ -36,7 +36,7 @@ public class QTIdNamePair extends BeanPath<IdNamePair<?>> {
     }
 
     @SuppressWarnings("unchecked")
-    public QTIdNamePair(PathMetadata<?> metadata) {
+    public QTIdNamePair(PathMetadata metadata) {
         super((Class)IdNamePair.class, metadata);
     }
 

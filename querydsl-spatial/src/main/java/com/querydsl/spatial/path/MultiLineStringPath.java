@@ -43,11 +43,11 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public MultiLineStringPath(PathMetadata<?> metadata) {
+    public MultiLineStringPath(PathMetadata metadata) {
         this((Class<? extends T>) MultiLineString.class, metadata);
     }
 
-    public MultiLineStringPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public MultiLineStringPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

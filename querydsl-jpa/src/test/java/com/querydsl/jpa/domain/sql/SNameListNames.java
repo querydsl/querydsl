@@ -41,7 +41,7 @@ public class SNameListNames extends com.querydsl.sql.RelationalPathBase<SNameLis
         addMetadata();
     }
 
-    public SNameListNames(PathMetadata<?> metadata) {
+    public SNameListNames(PathMetadata metadata) {
         super(SNameListNames.class, metadata, "", "NameList_names");
         addMetadata();
     }

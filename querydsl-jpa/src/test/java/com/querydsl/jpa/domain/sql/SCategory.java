@@ -64,7 +64,7 @@ public class SCategory extends com.querydsl.sql.RelationalPathBase<SCategory> {
         addMetadata();
     }
 
-    public SCategory(PathMetadata<?> metadata) {
+    public SCategory(PathMetadata metadata) {
         super(SCategory.class, metadata, "", "category_");
         addMetadata();
     }

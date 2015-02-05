@@ -30,15 +30,15 @@ public class QTCompanyGroup extends EntityPathBase<CompanyGroup> {
         this(CompanyGroup.class, forVariable(variable), INITS);
     }
 
-    public QTCompanyGroup(PathMetadata<?> metadata) {
+    public QTCompanyGroup(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QTCompanyGroup(PathMetadata<?> metadata, PathInits inits) {
+    public QTCompanyGroup(PathMetadata metadata, PathInits inits) {
         this(CompanyGroup.class, metadata, inits);
     }
 
-    public QTCompanyGroup(Class<? extends CompanyGroup> type, PathMetadata<?> metadata, PathInits inits) {
+    public QTCompanyGroup(Class<? extends CompanyGroup> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.key = inits.isInitialized("key") ? new QTCompanyGroupPK(forProperty("key")) : null;
         this.mainCompany = inits.isInitialized("mainCompany") ? new QTCompany(forProperty("mainCompany"), inits.get("mainCompany")) : null;

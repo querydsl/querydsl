@@ -42,7 +42,7 @@ public class SChild2 extends com.querydsl.sql.RelationalPathBase<SChild2> {
         addMetadata();
     }
 
-    public SChild2(PathMetadata<?> metadata) {
+    public SChild2(PathMetadata metadata) {
         super(SChild2.class, metadata, "", "Child2");
         addMetadata();
     }

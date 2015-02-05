@@ -40,7 +40,7 @@ public class SPlayerScores extends com.querydsl.sql.RelationalPathBase<SPlayerSc
         addMetadata();
     }
 
-    public SPlayerScores(PathMetadata<?> metadata) {
+    public SPlayerScores(PathMetadata metadata) {
         super(SPlayerScores.class, metadata, "", "Player_scores");
         addMetadata();
     }

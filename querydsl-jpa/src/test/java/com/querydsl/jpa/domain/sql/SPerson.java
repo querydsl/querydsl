@@ -54,7 +54,7 @@ public class SPerson extends com.querydsl.sql.RelationalPathBase<SPerson> {
         addMetadata();
     }
 
-    public SPerson(PathMetadata<?> metadata) {
+    public SPerson(PathMetadata metadata) {
         super(SPerson.class, metadata, "", "person_");
         addMetadata();
     }

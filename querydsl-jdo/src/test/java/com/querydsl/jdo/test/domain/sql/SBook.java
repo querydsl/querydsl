@@ -53,7 +53,7 @@ public class SBook extends RelationalPathBase<SBook> {
         super(entity.getType(),entity.getMetadata(), "", "BOOK");
     }
 
-    public SBook(PathMetadata<?> metadata) {
+    public SBook(PathMetadata metadata) {
         super(SBook.class, metadata, "", "BOOK");
     }
 

@@ -42,7 +42,7 @@ public class SStore_customer extends com.querydsl.sql.RelationalPathBase<SStore_
         addMetadata();
     }
 
-    public SStore_customer(PathMetadata<?> metadata) {
+    public SStore_customer(PathMetadata metadata) {
         super(SStore_customer.class, metadata, "", "store__customer_");
         addMetadata();
     }

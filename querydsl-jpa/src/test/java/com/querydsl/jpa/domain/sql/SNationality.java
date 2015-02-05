@@ -44,7 +44,7 @@ public class SNationality extends com.querydsl.sql.RelationalPathBase<SNationali
         addMetadata();
     }
 
-    public SNationality(PathMetadata<?> metadata) {
+    public SNationality(PathMetadata metadata) {
         super(SNationality.class, metadata, "", "nationality_");
         addMetadata();
     }

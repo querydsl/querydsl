@@ -41,7 +41,7 @@ public class SBar extends com.querydsl.sql.RelationalPathBase<SBar> {
         addMetadata();
     }
 
-    public SBar(PathMetadata<?> metadata) {
+    public SBar(PathMetadata metadata) {
         super(SBar.class, metadata, "", "bar_");
         addMetadata();
     }

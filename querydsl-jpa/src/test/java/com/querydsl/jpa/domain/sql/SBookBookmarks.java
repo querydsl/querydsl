@@ -50,7 +50,7 @@ public class SBookBookmarks extends com.querydsl.sql.RelationalPathBase<SBookBoo
         addMetadata();
     }
 
-    public SBookBookmarks(PathMetadata<?> metadata) {
+    public SBookBookmarks(PathMetadata metadata) {
         super(SBookBookmarks.class, metadata, "", "book_bookmarks");
         addMetadata();
     }

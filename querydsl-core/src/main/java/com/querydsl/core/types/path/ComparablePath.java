@@ -41,7 +41,7 @@ public class ComparablePath<T extends Comparable> extends ComparableExpression<T
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public ComparablePath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public ComparablePath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -56,7 +56,7 @@ public class ComparablePath<T extends Comparable> extends ComparableExpression<T
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

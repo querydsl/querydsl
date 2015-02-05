@@ -44,7 +44,7 @@ public class SUser2_userprop extends com.querydsl.sql.RelationalPathBase<SUser2_
         addMetadata();
     }
 
-    public SUser2_userprop(PathMetadata<?> metadata) {
+    public SUser2_userprop(PathMetadata metadata) {
         super(SUser2_userprop.class, metadata, "", "user2__userprop_");
         addMetadata();
     }

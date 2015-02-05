@@ -62,7 +62,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     }
     
     @SuppressWarnings("unchecked")
-    public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata<?> metadata) {
+    public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata metadata) {
         super(new PathImpl<Map<K,V>>((Class)Map.class, metadata));
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
@@ -75,18 +75,18 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         return v.visit(pathMixin, context);
     }
 
-    protected PathMetadata<K> forMapAccess(K key) {
+    protected PathMetadata forMapAccess(K key) {
         return PathMetadataFactory.forMapAccess(this, key);
     }
 
-    protected PathMetadata<K> forMapAccess(Expression<K> key) {
+    protected PathMetadata forMapAccess(Expression<K> key) {
         return PathMetadataFactory.forMapAccess(this, key);
     }
 
     @Override
     public E get(Expression<K> key) {
         try {
-            PathMetadata<K> md =  forMapAccess(key);
+            PathMetadata md =  forMapAccess(key);
             return newInstance(md);
         } catch (NoSuchMethodException e) {
             throw new ExpressionException(e);
@@ -102,7 +102,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     @Override
     public E get(K key) {
         try {
-            PathMetadata<K> md =  forMapAccess(key);
+            PathMetadata md =  forMapAccess(key);
             return newInstance(md);
         } catch (NoSuchMethodException e) {
             throw new ExpressionException(e);
@@ -120,7 +120,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 
@@ -138,7 +138,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         return pathMixin.getAnnotatedElement();
     }
 
-    private E newInstance(PathMetadata<?> pm) throws NoSuchMethodException,
+    private E newInstance(PathMetadata pm) throws NoSuchMethodException,
         InstantiationException, IllegalAccessException,
         InvocationTargetException {
         if (constructor == null) {

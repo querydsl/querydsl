@@ -70,11 +70,11 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public GeometryPath(PathMetadata<?> metadata) {
+    public GeometryPath(PathMetadata metadata) {
         this((Class<? extends T>) Geometry.class, metadata);
     }
 
-    public GeometryPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public GeometryPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -156,7 +156,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

@@ -43,7 +43,7 @@ public class SLocation extends com.querydsl.sql.RelationalPathBase<SLocation> {
         addMetadata();
     }
 
-    public SLocation(PathMetadata<?> metadata) {
+    public SLocation(PathMetadata metadata) {
         super(SLocation.class, metadata, "", "location_");
         addMetadata();
     }

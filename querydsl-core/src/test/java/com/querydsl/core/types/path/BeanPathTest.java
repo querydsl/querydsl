@@ -37,11 +37,11 @@ public class BeanPathTest {
 
         private static final long serialVersionUID = 6225684967115368814L;
 
-        public MyBeanPath(PathMetadata<?> metadata) {
+        public MyBeanPath(PathMetadata metadata) {
             super(BeanPathTest.class, metadata);
         }
         
-        public MyBeanPath(PathMetadata<?> metadata, @Nullable PathInits inits) {
+        public MyBeanPath(PathMetadata metadata, @Nullable PathInits inits) {
             super(BeanPathTest.class, metadata);
         }
         

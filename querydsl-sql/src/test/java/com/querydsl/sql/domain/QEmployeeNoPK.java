@@ -56,7 +56,7 @@ public class QEmployeeNoPK extends RelationalPathBase<Employee> {
         addMetadata();
     }
 
-    public QEmployeeNoPK(PathMetadata<?> metadata) {
+    public QEmployeeNoPK(PathMetadata metadata) {
         super(Employee.class, metadata, "PUBLIC", "EMPLOYEE");
         addMetadata();
     }

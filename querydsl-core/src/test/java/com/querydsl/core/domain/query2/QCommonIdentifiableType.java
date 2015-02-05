@@ -51,7 +51,7 @@ public class QCommonIdentifiableType extends EntityPathBase<CommonIdentifiable<?
     }
 
     @SuppressWarnings("unchecked")
-    public QCommonIdentifiableType(PathMetadata<?> metadata) {
+    public QCommonIdentifiableType(PathMetadata metadata) {
         super((Class)CommonIdentifiable.class, metadata);
     }
 

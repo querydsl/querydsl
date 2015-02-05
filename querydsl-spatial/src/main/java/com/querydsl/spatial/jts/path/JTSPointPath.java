@@ -43,11 +43,11 @@ public class JTSPointPath<T extends Point> extends JTSPointExpression<T> impleme
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSPointPath(PathMetadata<?> metadata) {
+    public JTSPointPath(PathMetadata metadata) {
         this((Class<? extends T>) Point.class, metadata);
     }
 
-    public JTSPointPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSPointPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class JTSPointPath<T extends Point> extends JTSPointExpression<T> impleme
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

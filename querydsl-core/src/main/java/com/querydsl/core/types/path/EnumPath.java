@@ -39,7 +39,7 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public EnumPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public EnumPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -54,7 +54,7 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

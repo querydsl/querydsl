@@ -36,7 +36,7 @@ public class SDateTest extends com.querydsl.sql.RelationalPathBase<SDateTest> {
         addMetadata();
     }
 
-    public SDateTest(PathMetadata<?> metadata) {
+    public SDateTest(PathMetadata metadata) {
         super(SDateTest.class, metadata, "", "DATE_TEST");
         addMetadata();
     }

@@ -14,7 +14,7 @@ object QEmployee extends QEmployee("employee"){
 
 }
 
-class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee](md, "PUBLIC", "EMPLOYEE") {
+class QEmployee(md: PathMetadata) extends RelationalPathImpl[Employee](md, "PUBLIC", "EMPLOYEE") {
   def this(variable: String) = this(forVariable(variable))
 
   def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))

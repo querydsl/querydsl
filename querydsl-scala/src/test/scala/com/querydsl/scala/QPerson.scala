@@ -12,7 +12,7 @@ object QPerson extends QPerson("person"){
   
 }
 
-class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImpl[Person](cl, md) {
+class QPerson(cl: Class[_ <: Person], md: PathMetadata) extends EntityPathImpl[Person](cl, md) {
   def this(variable: String) = this(classOf[Person], forVariable(variable))
 
   def this(parent: Path[_], variable: String) = this(classOf[Person], forProperty(parent, variable))

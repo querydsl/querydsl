@@ -42,7 +42,7 @@ public class SNumeric extends com.querydsl.sql.RelationalPathBase<SNumeric> {
         addMetadata();
     }
 
-    public SNumeric(PathMetadata<?> metadata) {
+    public SNumeric(PathMetadata metadata) {
         super(SNumeric.class, metadata, "", "numeric_");
         addMetadata();
     }

@@ -46,7 +46,7 @@ public class SKittens extends com.querydsl.sql.RelationalPathBase<SKittens> {
         addMetadata();
     }
 
-    public SKittens(PathMetadata<?> metadata) {
+    public SKittens(PathMetadata metadata) {
         super(SKittens.class, metadata, "", "kittens");
         addMetadata();
     }

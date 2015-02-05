@@ -52,7 +52,7 @@ public class RelationalPathSpatial<T> extends RelationalPathBase<T> implements G
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
     }
 
-    public RelationalPathSpatial(Class<? extends T> type, PathMetadata<?> metadata, String schema, String table) {
+    public RelationalPathSpatial(Class<? extends T> type, PathMetadata metadata, String schema, String table) {
         super(type, metadata, schema, table);
     }
 

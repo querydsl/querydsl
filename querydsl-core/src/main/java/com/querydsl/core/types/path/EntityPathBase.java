@@ -34,11 +34,11 @@ public class EntityPathBase<T> extends BeanPath<T> implements EntityPath<T> {
         super(type, variable);
     }
 
-    public EntityPathBase(Class<? extends T> type, PathMetadata<?> metadata) {
+    public EntityPathBase(Class<? extends T> type, PathMetadata metadata) {
         super(type, metadata);
     }
 
-    public EntityPathBase(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
+    public EntityPathBase(Class<? extends T> type, PathMetadata metadata, @Nullable PathInits inits) {
         super(type, metadata, inits);
     }
 

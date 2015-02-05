@@ -32,7 +32,7 @@ import scala.reflect.BeanProperty
  * @author tiwe
  *
  */
-class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(implicit val mf: Manifest[T])
+class RelationalPathImpl[T](md: PathMetadata, schema: String, table: String)(implicit val mf: Manifest[T])
   extends BeanPath[T](mf.runtimeClass.asInstanceOf[Class[T]], md) with RelationalPath[T] {
 
   import scala.collection.JavaConversions._

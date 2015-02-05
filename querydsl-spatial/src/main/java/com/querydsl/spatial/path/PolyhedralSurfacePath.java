@@ -43,11 +43,11 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public PolyhedralSurfacePath(PathMetadata<?> metadata) {
+    public PolyhedralSurfacePath(PathMetadata metadata) {
         this((Class<? extends T>) PolyHedralSurface.class, metadata);
     }
 
-    public PolyhedralSurfacePath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public PolyhedralSurfacePath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

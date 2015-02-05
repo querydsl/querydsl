@@ -69,7 +69,7 @@ public class SItem extends com.querydsl.sql.RelationalPathBase<SItem> {
         addMetadata();
     }
 
-    public SItem(PathMetadata<?> metadata) {
+    public SItem(PathMetadata metadata) {
         super(SItem.class, metadata, "", "item_");
         addMetadata();
     }

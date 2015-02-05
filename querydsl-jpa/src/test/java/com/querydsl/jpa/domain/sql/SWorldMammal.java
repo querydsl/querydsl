@@ -44,7 +44,7 @@ public class SWorldMammal extends com.querydsl.sql.RelationalPathBase<SWorldMamm
         addMetadata();
     }
 
-    public SWorldMammal(PathMetadata<?> metadata) {
+    public SWorldMammal(PathMetadata metadata) {
         super(SWorldMammal.class, metadata, "", "World_Mammal");
         addMetadata();
     }

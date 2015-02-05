@@ -43,11 +43,11 @@ public class JTSMultiPointPath<T extends MultiPoint> extends JTSMultiPointExpres
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public JTSMultiPointPath(PathMetadata<?> metadata) {
+    public JTSMultiPointPath(PathMetadata metadata) {
         this((Class<? extends T>) MultiPoint.class, metadata);
     }
 
-    public JTSMultiPointPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public JTSMultiPointPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -66,7 +66,7 @@ public class JTSMultiPointPath<T extends MultiPoint> extends JTSMultiPointExpres
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

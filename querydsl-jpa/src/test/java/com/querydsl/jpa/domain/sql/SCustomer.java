@@ -50,7 +50,7 @@ public class SCustomer extends com.querydsl.sql.RelationalPathBase<SCustomer> {
         addMetadata();
     }
 
-    public SCustomer(PathMetadata<?> metadata) {
+    public SCustomer(PathMetadata metadata) {
         super(SCustomer.class, metadata, "", "customer_");
         addMetadata();
     }

@@ -54,7 +54,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
     public abstract Q any();
     
     @SuppressWarnings("unchecked")
-    protected Q newInstance(Class<Q> queryType, PathMetadata<?> pm) {
+    protected Q newInstance(Class<Q> queryType, PathMetadata pm) {
         try{
             if (constructor == null) {
                 if (Constants.isTyped(queryType)) {

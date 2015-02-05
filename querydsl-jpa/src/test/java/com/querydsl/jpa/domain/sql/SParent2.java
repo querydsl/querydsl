@@ -40,7 +40,7 @@ public class SParent2 extends com.querydsl.sql.RelationalPathBase<SParent2> {
         addMetadata();
     }
 
-    public SParent2(PathMetadata<?> metadata) {
+    public SParent2(PathMetadata metadata) {
         super(SParent2.class, metadata, "", "Parent2");
         addMetadata();
     }

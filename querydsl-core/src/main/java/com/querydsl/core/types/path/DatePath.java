@@ -40,7 +40,7 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public DatePath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public DatePath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -55,7 +55,7 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

@@ -39,7 +39,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
         this(PathMetadataFactory.forProperty(parent, property));
     }
 
-    public BooleanPath(PathMetadata<?> metadata) {
+    public BooleanPath(PathMetadata metadata) {
         super(new PathImpl<Boolean>(Boolean.class, metadata));
         this.pathMixin = (PathImpl<Boolean>)mixin;
     }
@@ -54,7 +54,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

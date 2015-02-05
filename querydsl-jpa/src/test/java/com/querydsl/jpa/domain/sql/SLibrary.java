@@ -40,7 +40,7 @@ public class SLibrary extends com.querydsl.sql.RelationalPathBase<SLibrary> {
         addMetadata();
     }
 
-    public SLibrary(PathMetadata<?> metadata) {
+    public SLibrary(PathMetadata metadata) {
         super(SLibrary.class, metadata, "", "library_");
         addMetadata();
     }

@@ -61,7 +61,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context> {
         
     @SuppressWarnings("unchecked")
     private static <T> Path<T> replaceParent(Path<T> path, Path<?> parent) {
-        PathMetadata<?> metadata = new PathMetadata(parent, path.getMetadata().getElement(), 
+        PathMetadata metadata = new PathMetadata(parent, path.getMetadata().getElement(),
                 path.getMetadata().getPathType());
         return new PathImpl<T>(path.getType(), metadata);
     }

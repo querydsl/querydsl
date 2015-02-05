@@ -45,7 +45,7 @@ public class SMammal extends com.querydsl.sql.RelationalPathBase<SMammal> {
         addMetadata();
     }
 
-    public SMammal(PathMetadata<?> metadata) {
+    public SMammal(PathMetadata metadata) {
         super(SMammal.class, metadata, "", "Mammal");
         addMetadata();
     }

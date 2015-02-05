@@ -43,7 +43,7 @@ public class SSurvey extends com.querydsl.sql.RelationalPathBase<SSurvey> {
         addMetadata();
     }
 
-    public SSurvey(PathMetadata<?> metadata) {
+    public SSurvey(PathMetadata metadata) {
         super(SSurvey.class, metadata, "", "SURVEY");
         addMetadata();
     }
