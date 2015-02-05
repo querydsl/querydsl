@@ -15,6 +15,7 @@ package com.querydsl.core.group;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.querydsl.core.types.Expression;
 
@@ -23,19 +24,39 @@ import com.querydsl.core.types.Expression;
  *
  * @param <T>
  */
-class GSet<T> extends AbstractGroupExpression<T, Set<T>> { 
+abstract class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
     
     private static final long serialVersionUID = -1575808026237160843L;
+
+    public static <U> GSet<U> createLinked(Expression<U> expr) {
+        return new GSet<U>(expr) {
+            @Override
+            protected Set<U> createSet() {
+                return new LinkedHashSet<U>();
+            }
+        };
+    }
+
+    public static <U> GSet<U> createSorted(Expression<U> expr) {
+        return new GSet<U>(expr) {
+            @Override
+            protected Set<U> createSet() {
+                return new TreeSet<U>();
+            }
+        };
+    }
 
     public GSet(Expression<T> expr) {
         super(Set.class, expr);
     }
 
+    protected abstract Set<T> createSet();
+
     @Override
     public GroupCollector<T,Set<T>> createGroupCollector() {
         return new GroupCollector<T,Set<T>>() {
 
-            private final Set<T> set = new LinkedHashSet<T>();
+            private final Set<T> set = createSet();
             
             @Override
             public void add(T o) {

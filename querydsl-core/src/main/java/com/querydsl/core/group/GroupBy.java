@@ -106,21 +106,35 @@ public final class GroupBy {
     }
 
     /**
-     * Create a new aggregating set expression
+     * Create a new aggregating set expression using a backing LinkedHashMap
      *
      * @param expression
      * @return
      */
     public static <E> AbstractGroupExpression<E, Set<E>> set(Expression<E> expression) {
-        return new GSet<E>(expression);
+        return GSet.createLinked(expression);
     }
 
     public static <E, F> GroupExpression<E, Set<F>> set(GroupExpression<E, F> groupExpression) {
-        return new MixinGroupExpression<E, F, Set<F>>(groupExpression, new GSet<F>(groupExpression));
+        return new MixinGroupExpression<E, F, Set<F>>(groupExpression, GSet.createLinked(groupExpression));
     }
 
     /**
-     * Create a new aggregating map expression
+     * Create a new aggregating set expression using a backing TreeSet
+     *
+     * @param expression
+     * @return
+     */
+    public static <E> AbstractGroupExpression<E, Set<E>> sortedSet(Expression<E> expression) {
+        return GSet.createSorted(expression);
+    }
+
+    public static <E, F> GroupExpression<E, Set<F>> sortedSet(GroupExpression<E, F> groupExpression) {
+        return new MixinGroupExpression<E, F, Set<F>>(groupExpression, GSet.createSorted(groupExpression));
+    }
+
+    /**
+     * Create a new aggregating map expression using a backing LinkedHashMap
      *
      * @param key
      * @param value
@@ -128,7 +142,7 @@ public final class GroupBy {
      */
     @WithBridgeMethods(value=Expression.class,castRequired=true)
     public static <K, V> AbstractGroupExpression<Pair<K, V>,Map<K, V>> map(Expression<K> key, Expression<V> value) {
-        return new GMap<K, V>(QPair.create(key, value));
+        return GMap.createLinked(QPair.create(key, value));
     }
 
     public static <K, V, T> AbstractGroupExpression<Pair<K, V>, Map<T, V>> map(GroupExpression<K, T> key, Expression<V> value) {
@@ -140,7 +154,31 @@ public final class GroupBy {
     }
 
     public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, Map<T, U>> map(GroupExpression<K, T> key, GroupExpression<V, U> value) {
-        return new GMap.Mixin<K, V, T, U, Map<T, U>>(key, value, new GMap<T, U>(QPair.create(key, value)));
+        return new GMap.Mixin<K, V, T, U, Map<T, U>>(key, value, GMap.createLinked(QPair.create(key, value)));
+    }
+
+    /**
+     * Create a new aggregating map expression using a backing TreeMap
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    @WithBridgeMethods(value=Expression.class,castRequired=true)
+    public static <K, V> AbstractGroupExpression<Pair<K, V>,Map<K, V>> sortedMap(Expression<K> key, Expression<V> value) {
+        return GMap.createSorted(QPair.create(key, value));
+    }
+
+    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, Map<T, V>> sortedMap(GroupExpression<K, T> key, Expression<V> value) {
+        return sortedMap(key, new GOne<V>(value));
+    }
+
+    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, Map<K, U>> sortedMap(Expression<K> key, GroupExpression<V, U> value) {
+        return sortedMap(new GOne<K>(key), value);
+    }
+
+    public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, Map<T, U>> sortedMap(GroupExpression<K, T> key, GroupExpression<V, U> value) {
+        return new GMap.Mixin<K, V, T, U, Map<T, U>>(key, value, GMap.createSorted(QPair.create(key, value)));
     }
 
     private GroupBy() {}

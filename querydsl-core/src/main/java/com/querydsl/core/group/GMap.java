@@ -16,6 +16,7 @@ package com.querydsl.core.group;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.mysema.commons.lang.Pair;
 
@@ -23,7 +24,7 @@ import com.mysema.commons.lang.Pair;
  * @param <K>
  * @param <V>
  */
-class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
+abstract class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
 
     private static final long serialVersionUID = 7106389414200843920L;
 
@@ -31,11 +32,31 @@ class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
         super(Map.class, qpair);
     }
 
+    protected abstract Map<K, V> createMap();
+
+    public static <T, U> GMap<T, U> createLinked(QPair<T, U> expr) {
+        return new GMap<T, U>(expr) {
+            @Override
+            protected Map<T, U> createMap() {
+                return new LinkedHashMap<T, U>();
+            }
+        };
+    }
+
+    public static <T, U> GMap<T, U> createSorted(QPair<T, U> expr) {
+        return new GMap<T, U>(expr) {
+            @Override
+            protected Map<T, U> createMap() {
+                return new TreeMap<T, U>();
+            }
+        };
+    }
+
     @Override
     public GroupCollector<Pair<K,V>, Map<K, V>> createGroupCollector() {
         return new GroupCollector<Pair<K,V>, Map<K, V>>() {
 
-            private final Map<K, V> map = new LinkedHashMap<K, V>();
+            private final Map<K, V> map = createMap();
 
             @Override
             public void add(Pair<K,V> pair) {
