@@ -35,16 +35,17 @@ import com.querydsl.core.types.path.CollectionPathBase;
  *
  * @author laimw
  *
+ * @param <Q>
  * @param <K>
  */
-public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
+public abstract class MongodbQuery<Q extends MongodbQuery<Q,K>, K> implements SimpleQuery<Q>, SimpleProjectable<K> {
 
     @SuppressWarnings("serial")
     private static class NoResults extends RuntimeException {}
 
     private final MongodbSerializer serializer;
 
-    private final QueryMixin<MongodbQuery<K>> queryMixin;
+    private final QueryMixin<Q> queryMixin;
 
     private final DBCollection collection;
 
@@ -60,7 +61,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      * @param serializer
      */
     public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
-        this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate(), false);
+        this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata().noValidate(), false);
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;
@@ -73,8 +74,8 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      * @param target
      * @return
      */
-    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {
-        return new JoinBuilder<K,T>(queryMixin, ref, target);
+    public <T> JoinBuilder<Q, K,T> join(Path<T> ref, Path<T> target) {
+        return new JoinBuilder<Q, K,T>(queryMixin, ref, target);
     }
 
     /**
@@ -84,8 +85,8 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      * @param target
      * @return
      */
-    public <T> JoinBuilder<K,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
-        return new JoinBuilder<K,T>(queryMixin, ref, target);
+    public <T> JoinBuilder<Q, K,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
+        return new JoinBuilder<Q, K,T>(queryMixin, ref, target);
     }
 
     /**
@@ -95,8 +96,8 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
      * @param target
      * @return
      */
-    public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
-        return new AnyEmbeddedBuilder<K>(queryMixin, collection);
+    public <T> AnyEmbeddedBuilder<Q, K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
+        return new AnyEmbeddedBuilder<Q, K>(queryMixin, collection);
     }
 
     protected abstract DBCollection getCollection(Class<?> type);
@@ -170,45 +171,45 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     }
 
     @Override
-    public MongodbQuery<K> distinct() {
+    public Q distinct() {
         return queryMixin.distinct();
     }
 
-    public MongodbQuery<K> where(Predicate e) {
+    public Q where(Predicate e) {
         return queryMixin.where(e);
     }
 
     @Override
-    public MongodbQuery<K> where(Predicate... e) {
+    public Q where(Predicate... e) {
         return queryMixin.where(e);
     }
 
     @Override
-    public MongodbQuery<K> limit(long limit) {
+    public Q limit(long limit) {
         return queryMixin.limit(limit);
     }
 
     @Override
-    public MongodbQuery<K> offset(long offset) {
+    public Q offset(long offset) {
         return queryMixin.offset(offset);
     }
 
     @Override
-    public MongodbQuery<K> restrict(QueryModifiers modifiers) {
+    public Q restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
     }
 
-    public MongodbQuery<K> orderBy(OrderSpecifier<?> o) {
+    public Q orderBy(OrderSpecifier<?> o) {
         return queryMixin.orderBy(o);
     }
 
     @Override
-    public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
+    public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
     }
 
     @Override
-    public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
+    public <T> Q set(ParamExpression<T> param, T value) {
         return queryMixin.set(param, value);
     }
 
