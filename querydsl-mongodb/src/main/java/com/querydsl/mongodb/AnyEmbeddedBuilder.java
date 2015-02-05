@@ -28,7 +28,7 @@ import com.querydsl.core.types.PredicateOperation;
  *
  * @param <K>
  */
-public class AnyEmbeddedBuilder<Q extends MongodbQuery<Q,K>, K> {
+public class AnyEmbeddedBuilder<Q extends AbstractMongodbQuery<K, Q>, K> {
 
     private final QueryMixin<Q> queryMixin;
 

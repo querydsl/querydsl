@@ -27,7 +27,7 @@ import com.querydsl.core.types.Expression;
  *
  * @param <Q>
  */
-public class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends DetachableQuery<Q> implements JDOCommonQuery<Q> {
+public abstract class AbstractJDOSubQuery<Q extends AbstractJDOSubQuery<Q>> extends DetachableQuery<Q> implements JDOCommonQuery<Q> {
 
     public AbstractJDOSubQuery() {
         this(new DefaultQueryMetadata().noValidate());

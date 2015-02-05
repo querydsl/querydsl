@@ -28,7 +28,7 @@ import com.querydsl.core.types.Predicate;
  * @param <K>
  * @param <T>
  */
-public class JoinBuilder<Q extends MongodbQuery<Q,K>, K, T> {
+public class JoinBuilder<Q extends AbstractMongodbQuery<K, Q>, K, T> {
 
     private final QueryMixin<Q> queryMixin;
 
