@@ -1,16 +1,20 @@
 package com.querydsl.core.support;
 
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.StringPath;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import javax.annotation.Nullable;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.path.StringPath;
 
 public class ReplaceVisitorTest {
 
-    private static final ReplaceVisitor visitor = new ReplaceVisitor() {
+    private static final ReplaceVisitor<Void> visitor = new ReplaceVisitor<Void>() {
         public Expression<?> visit(Path<?> expr, @Nullable Void context) {
             if (expr.getMetadata().isRoot()) {
                 return new PathImpl(expr.getType(), expr.getMetadata().getName() + "_");

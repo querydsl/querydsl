@@ -38,7 +38,11 @@ public class QueryMixin<T> {
 
     private final boolean expandAnyPaths;
 
-    private ReplaceVisitor replaceVisitor;
+    private final ReplaceVisitor<Void> replaceVisitor = new ReplaceVisitor<Void>() {
+        public Expression<?> visit(Path<?> expr, @Nullable Void context) {
+            return normalizePath(expr);
+        }
+    };
 
     private T self;
 
@@ -136,13 +140,6 @@ public class QueryMixin<T> {
             if (expr instanceof Path) {
                 expr = (Expression)normalizePath((Path)expr);
             } else if (expr != null) {
-                if (replaceVisitor == null) {
-                    replaceVisitor = new ReplaceVisitor() {
-                        public Expression<?> visit(Path<?> expr, @Nullable Void context) {
-                            return normalizePath(expr);
-                        }
-                    };
-                }
                 expr = (Expression)expr.accept(replaceVisitor, null);
             }
         }
