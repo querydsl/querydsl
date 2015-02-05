@@ -86,7 +86,7 @@ public class DetachableMixin implements Detachable {
         } else if (arg != null) {
             return ConstantImpl.create(arg);
         } else {
-            return NullExpression.DEFAULT;
+            return Expressions.nullExpression();
         }
     }
 
@@ -123,7 +123,7 @@ public class DetachableMixin implements Detachable {
     }
 
     private Expression<?> nullAsTemplate(@Nullable Expression<?> expr) {
-        return expr != null ? expr : NullExpression.DEFAULT;
+        return expr != null ? expr : Expressions.nullExpression();
     }
 
     @SuppressWarnings("unchecked")
