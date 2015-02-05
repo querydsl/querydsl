@@ -195,7 +195,7 @@
                   <Import-Package>
                     ${osgi.import.package}
                   </Import-Package>
-                  <Export-Package>com.mysema.*</Export-Package>
+                  <Export-Package>com.querydsl.*</Export-Package>
                 </instructions>
               </configuration>
             </execution>
