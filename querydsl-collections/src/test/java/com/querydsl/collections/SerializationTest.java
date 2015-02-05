@@ -20,6 +20,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QTuple;
 
 public class SerializationTest extends AbstractQueryTest{
@@ -28,7 +29,7 @@ public class SerializationTest extends AbstractQueryTest{
 
     // TODO : subqueries
 
-    private QTuple tuple = new QTuple(cat, otherCat);
+    private QTuple tuple = Projections.tuple(cat, otherCat);
 
     @Test
     public void OneSource_list() {
@@ -138,7 +139,7 @@ public class SerializationTest extends AbstractQueryTest{
     }
 
     public List<Tuple> pairsAsTuple(List<Cat> cat_, List<Cat> otherCat_) {
-        query().from(cat, cats).from(otherCat, cats).where(cat.name.eq(otherCat.name)).list(new QTuple(cat, otherCat));
+        query().from(cat, cats).from(otherCat, cats).where(cat.name.eq(otherCat.name)).list(Projections.tuple(cat, otherCat));
 
         List<Tuple> rv = new ArrayList<Tuple>();
         for (Cat cat : cat_) {                                  // from

@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QTuple;
 import com.querydsl.core.types.path.BooleanPath;
 import com.querydsl.core.types.path.NumberPath;
@@ -31,7 +32,7 @@ public class QTupleTest {
 
     private BooleanPath third = new BooleanPath("z");
 
-    private QTuple tupleExpression = new QTuple(first, second, third);
+    private QTuple tupleExpression = Projections.tuple(first, second, third);
 
     @Test
     public void NewInstanceObjectArray() {

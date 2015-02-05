@@ -21,11 +21,13 @@ import com.google.common.collect.ImmutableList;
 
 public class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
 
+    private static final long serialVersionUID = -1337452521648394353L;
+
     private final Expression<T> base;
 
     private final List<Expression<?>> args;
 
-    public AppendingFactoryExpression(Expression<T> base, Expression<?>... rest) {
+    protected AppendingFactoryExpression(Expression<T> base, Expression<?>... rest) {
         super(base.getType());
         this.base = base;
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();

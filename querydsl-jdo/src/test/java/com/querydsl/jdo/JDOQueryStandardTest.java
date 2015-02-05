@@ -143,7 +143,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     @Test
     public void TupleProjection() {
-        List<Tuple> tuples = query().from(product).list(new QTuple(product.name, product.price));
+        List<Tuple> tuples = query().from(product).list(product.name, product.price);
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples) {
             assertNotNull(tuple);

@@ -358,10 +358,10 @@ public class EntitySerializer implements Serializer {
 
             // body
             // TODO : replace with class reference
-            writer.beginLine("return new ConstructorExpression<" + genericName + ">(");
-            if (!localName.equals(genericName)) {
-                writer.append("(Class)");
-            }
+            writer.beginLine("return Projections.constructor(");
+//            if (!localName.equals(genericName)) {
+//                writer.append("(Class)");
+//            }
             writer.append(writer.getClassConstant(localName));
             writer.append(", new Class[]{");
             boolean first = true;
@@ -427,6 +427,7 @@ public class EntitySerializer implements Serializer {
         }
         if (!model.getConstructors().isEmpty()) {
             classes.add(ConstructorExpression.class);
+            classes.add(Projections.class);
             classes.add(Expression.class);
         }
         boolean inits = false;

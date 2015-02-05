@@ -13,10 +13,11 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -37,7 +38,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      *
      * @param args
      */
-    public QList(Expression<?>... args) {
+    protected QList(Expression<?>... args) {
         super((Class)List.class);
         this.args = ImmutableList.copyOf(args);
     }
@@ -47,7 +48,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      *
      * @param args
      */
-    public QList(ImmutableList<Expression<?>> args) {
+    protected QList(ImmutableList<Expression<?>> args) {
         super((Class)List.class);
         this.args = args;
     }
@@ -57,7 +58,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      *
      * @param args
      */
-    public QList(Expression<?>[]... args) {
+    protected QList(Expression<?>[]... args) {
         super((Class)List.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?>[] exprs: args) {

@@ -1,26 +1,31 @@
 package com.querydsl.jpa;
 
+import static org.junit.Assert.*;
+
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.expr.DateExpression;
+import com.querydsl.core.types.expr.Wildcard;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.Color;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.domain.QCompany;
 import com.querydsl.jpa.domain.sql.SAnimal;
 import com.querydsl.sql.SQLSubQuery;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.Wildcard;
-import com.querydsl.core.testutil.ExcludeIn;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public abstract class AbstractSQLTest {
 
@@ -251,7 +256,7 @@ public abstract class AbstractSQLTest {
     @Test
     public void Projections_DuplicateColumns() {
         SAnimal cat = new SAnimal("cat");
-        assertEquals(1, query().from(cat).list(new QList(cat.count(), cat.count())).size());
+        assertEquals(1, query().from(cat).list(Projections.list(cat.count(), cat.count())).size());
     }
 
     @Test

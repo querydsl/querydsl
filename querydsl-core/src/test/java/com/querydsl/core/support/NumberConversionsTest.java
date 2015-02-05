@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QTuple;
 import com.querydsl.core.types.path.EnumPath;
 import com.querydsl.core.types.path.NumberPath;
@@ -19,7 +20,7 @@ public class NumberConversionsTest {
     @Test
     public void Name() {
         EnumPath<Color> color = new EnumPath<Color>(Color.class, "path");
-        QTuple qTuple = new QTuple(color);
+        QTuple qTuple = Projections.tuple(color);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
         assertEquals(Color.BLUE, conversions.newInstance("BLUE").get(color));
     }
@@ -27,7 +28,7 @@ public class NumberConversionsTest {
     @Test
     public void Ordinal() {
         EnumPath<Color> color = new EnumPath<Color>(Color.class, "path");
-        QTuple qTuple = new QTuple(color);
+        QTuple qTuple = Projections.tuple(color);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
         assertEquals(Color.RED, conversions.newInstance(2).get(color));
     }
@@ -36,7 +37,7 @@ public class NumberConversionsTest {
     public void Safe_Number_Conversion() {
         StringPath strPath = new StringPath("strPath");
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
-        QTuple qTuple = new QTuple(strPath, intPath);
+        QTuple qTuple = Projections.tuple(strPath, intPath);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
         assertNotNull(conversions.newInstance(1, 2));
     }
@@ -45,7 +46,7 @@ public class NumberConversionsTest {
     public void Number_Conversion() {
         StringPath strPath = new StringPath("strPath");
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
-        QTuple qTuple = new QTuple(strPath, intPath);
+        QTuple qTuple = Projections.tuple(strPath, intPath);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
         Tuple tuple = conversions.newInstance("a", Long.valueOf(3));
         assertEquals("a", tuple.get(strPath));

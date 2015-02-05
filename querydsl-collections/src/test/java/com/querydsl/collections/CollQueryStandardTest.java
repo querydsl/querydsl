@@ -86,7 +86,7 @@ public class CollQueryStandardTest {
     @Test
     public void TupleProjection() {
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
-            .list(new QTuple(cat.name, cat.birthdate));
+            .list(cat.name, cat.birthdate);
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
@@ -97,7 +97,7 @@ public class CollQueryStandardTest {
     public void Nested_TupleProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
-            .list(new QTuple(concat, cat.name, cat.birthdate));
+            .list(concat, cat.name, cat.birthdate);
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
