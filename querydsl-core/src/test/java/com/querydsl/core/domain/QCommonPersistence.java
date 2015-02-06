@@ -32,7 +32,7 @@ public class QCommonPersistence extends BeanPath<CommonPersistence> implements E
         super(entity.getType(),entity.getMetadata());
     }
 
-    public QCommonPersistence(PathMetadata<?> metadata) {
+    public QCommonPersistence(PathMetadata metadata) {
         super(CommonPersistence.class, metadata);
     }
 

@@ -49,7 +49,16 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private final JPAListAccessVisitor listAccessVisitor;
 
-    private ReplaceVisitor replaceVisitor;
+    private final ReplaceVisitor<Void> replaceVisitor =  new ReplaceVisitor<Void>() {
+        public Expression<?> visit(Path<?> expr, Void context) {
+            return convertPathForOrder(expr);
+        }
+        public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
+            // don't shorten paths inside subquery expressions
+            return expr;
+        }
+    };
+
 
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
 
@@ -106,7 +115,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     private <T> Path<T> shorten(Path<T> path, List<Path<?>> paths) {
-        PathMetadata<?> metadata = path.getMetadata();
+        PathMetadata metadata = path.getMetadata();
         if (metadata.isRoot() || paths.contains(path)) {
             return path;
         } else if (aliases.containsKey(path)) {
@@ -138,7 +147,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     private <T> Path<T> convertPathForOrder(Path<T> path) {
-        PathMetadata<?> metadata = path.getMetadata();
+        PathMetadata metadata = path.getMetadata();
         // at least three levels
         if (metadata.getParent() != null && !metadata.getParent().getMetadata().isRoot()) {
             Set<Expression<?>> exprs = Sets.newHashSet();
@@ -170,17 +179,6 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             if (expr instanceof Path) {
                 expr = convertPathForOrder((Path)expr);
             } else {
-                if (replaceVisitor == null) {
-                    replaceVisitor = new ReplaceVisitor() {
-                        public Expression<?> visit(Path<?> expr, Void context) {
-                            return convertPathForOrder(expr);
-                        }
-                        public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
-                            // don't shorten paths inside subquery expressions
-                            return expr;
-                        }
-                    };
-                }
                 expr = (Expression<RT>)expr.accept(replaceVisitor, null);
             }
         }

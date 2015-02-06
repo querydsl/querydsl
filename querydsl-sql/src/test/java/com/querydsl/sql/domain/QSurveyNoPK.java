@@ -39,7 +39,7 @@ public class QSurveyNoPK extends RelationalPathBase<QSurveyNoPK>{
         addMetadata();
     }
 
-    public QSurveyNoPK(PathMetadata<?> metadata) {
+    public QSurveyNoPK(PathMetadata metadata) {
         super(QSurveyNoPK.class, metadata, "PUBLIC", "SURVEY");
         addMetadata();
     }

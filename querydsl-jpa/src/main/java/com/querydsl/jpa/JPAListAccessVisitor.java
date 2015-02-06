@@ -11,7 +11,7 @@ import com.querydsl.core.support.Expressions;
 import com.querydsl.core.support.ReplaceVisitor;
 import com.querydsl.core.types.*;
 
-class JPAListAccessVisitor extends ReplaceVisitor {
+class JPAListAccessVisitor extends ReplaceVisitor<Void> {
 
     private final QueryMetadata metadata;
 

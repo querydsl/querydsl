@@ -17,9 +17,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Nullable;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -28,6 +25,9 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.PathMetadataFactory;
+
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 
 /**
  * AliasFactory is a factory class for alias creation
@@ -90,11 +90,10 @@ public class AliasFactory {
      * 
      * @param <A>
      * @param cl
-     * @param parent
      * @param path
      * @return
      */
-    public <A> A createAliasForProperty(Class<A> cl, Object parent, Expression<?> path) {
+    public <A> A createAliasForProperty(Class<A> cl, Expression<?> path) {
         return createProxy(cl, path);
     }
 

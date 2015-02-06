@@ -32,15 +32,15 @@ public class QContent extends BeanPath<Content> {
         this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QContent(PathMetadata<?> metadata) {
+    public QContent(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QContent(PathMetadata<?> metadata, PathInits inits) {
+    public QContent(PathMetadata metadata, PathInits inits) {
         this(Content.class, metadata, inits);
     }
 
-    public QContent(Class<? extends Content> type, PathMetadata<?> metadata, PathInits inits) {
+    public QContent(Class<? extends Content> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.article = inits.isInitialized("article") ? new QArticle(forProperty("article"), inits.get("article")) : null;
     }

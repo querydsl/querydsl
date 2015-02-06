@@ -36,7 +36,7 @@ import javax.inject.Inject
 class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy)
     extends ScalaEntitySerializer(typeMappings) {
 
-  override val classHeaderFormat = "%s(md: PathMetadata[_]) extends RelationalPathImpl[%s](md, %s, %s)"
+  override val classHeaderFormat = "%s(md: PathMetadata) extends RelationalPathImpl[%s](md, %s, %s)"
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]])

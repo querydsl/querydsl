@@ -46,7 +46,7 @@ public class SLineItems extends com.querydsl.sql.RelationalPathBase<SLineItems> 
         addMetadata();
     }
 
-    public SLineItems(PathMetadata<?> metadata) {
+    public SLineItems(PathMetadata metadata) {
         super(SLineItems.class, metadata, "", "LineItems");
         addMetadata();
     }

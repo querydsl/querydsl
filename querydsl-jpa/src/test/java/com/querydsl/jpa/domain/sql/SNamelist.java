@@ -40,7 +40,7 @@ public class SNamelist extends com.querydsl.sql.RelationalPathBase<SNamelist> {
         addMetadata();
     }
 
-    public SNamelist(PathMetadata<?> metadata) {
+    public SNamelist(PathMetadata metadata) {
         super(SNamelist.class, metadata, "", "namelist_");
         addMetadata();
     }

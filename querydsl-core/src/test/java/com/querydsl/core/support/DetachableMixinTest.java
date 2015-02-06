@@ -76,7 +76,7 @@ public class DetachableMixinTest {
         SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), null);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
-        assertEquals(NullExpression.DEFAULT, exprs.get(1));
+        assertEquals(Expressions.nullExpression(), exprs.get(1));
     }
 
 }

@@ -257,8 +257,16 @@
               <packages>com.querydsl.core*</packages>
             </group>
             <group>
+              <title>Codegen</title>
+              <packages>com.querydsl.codegen*</packages>
+            </group>
+            <group>
               <title>APT</title>
               <packages>com.querydsl.apt*</packages>
+            </group>
+            <group>
+              <title>Maven</title>
+              <packages>com.querydsl.maven*</packages>
             </group>
             <group>
               <title>Spatial</title>
@@ -281,16 +289,16 @@
               <packages>com.querydsl.sql*</packages>
             </group>
             <group>
-              <title>Spatial</title>
-              <packages>com.querydsl.spatial*</packages>
+              <title>Lucene 3</title>
+              <packages>com.querydsl.lucene3*</packages>
             </group>
             <group>
-              <title>Lucene</title>
-              <packages>com.querydsl.lucene3:com.querydsl.lucene4</packages>
+              <title>Lucene 4</title>
+              <packages>com.querydsl.lucene4*</packages>
             </group>
             <group>
               <title>Hibernate Search</title>
-              <packages>com.querydsl.search</packages>
+              <packages>com.querydsl.hibernate.search*</packages>
             </group>
             <group>
               <title>Mongodb</title>

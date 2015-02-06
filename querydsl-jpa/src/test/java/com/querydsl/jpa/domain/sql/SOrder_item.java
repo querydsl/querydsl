@@ -46,7 +46,7 @@ public class SOrder_item extends com.querydsl.sql.RelationalPathBase<SOrder_item
         addMetadata();
     }
 
-    public SOrder_item(PathMetadata<?> metadata) {
+    public SOrder_item(PathMetadata metadata) {
         super(SOrder_item.class, metadata, "", "order__item_");
         addMetadata();
     }

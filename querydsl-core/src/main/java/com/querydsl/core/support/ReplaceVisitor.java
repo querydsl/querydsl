@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
@@ -28,16 +26,16 @@ import com.querydsl.core.types.template.BooleanTemplate;
  * ReplaceVisitor is a deep visitor that can be customized to replace segments of
  * expression trees
  */
-public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
+public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
 
     @Override
-    public Expression<?> visit(Constant<?> expr, @Nullable Void context) {
+    public Expression<?> visit(Constant<?> expr, C context) {
         return expr;
     }
 
     @Override
-    public Expression<?> visit(FactoryExpression<?> expr, @Nullable Void context) {
-        List<Expression<?>> args = visit(expr.getArgs());
+    public Expression<?> visit(FactoryExpression<?> expr, C context) {
+        List<Expression<?>> args = visit(expr.getArgs(), context);
         if (args.equals(expr.getArgs())) {
             return expr;
         } else {
@@ -46,8 +44,8 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
     }
 
     @Override
-    public Expression<?> visit(Operation<?> expr, @Nullable Void context) {
-        ImmutableList<Expression<?>> args = visit(expr.getArgs());
+    public Expression<?> visit(Operation<?> expr, C context) {
+        ImmutableList<Expression<?>> args = visit(expr.getArgs(), context);
         if (args.equals(expr.getArgs())) {
             return expr;
         } else if (expr instanceof Predicate) {
@@ -58,20 +56,20 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
     }
 
     @Override
-    public Expression<?> visit(ParamExpression<?> expr, @Nullable Void context) {
+    public Expression<?> visit(ParamExpression<?> expr, C context) {
         return expr;
     }
 
     @Override
-    public Expression<?> visit(Path<?> expr, @Nullable Void context) {
+    public Expression<?> visit(Path<?> expr, C context) {
         if (expr.getMetadata().isRoot()) {
             return expr;
         } else {
             PathMetadata metadata = expr.getMetadata();
-            Path<?> parent = (Path)metadata.getParent().accept(this, null);
+            Path<?> parent = (Path)metadata.getParent().accept(this, context);
             Object element = metadata.getElement();
             if (element instanceof Expression<?>) {
-                element = ((Expression) element).accept(this, null);
+                element = ((Expression) element).accept(this, context);
             }
             if (parent.equals(metadata.getParent()) && Objects.equals(element, metadata.getElement())) {
                 return expr;
@@ -83,34 +81,34 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
     }
 
     @Override
-    public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
+    public Expression<?> visit(SubQueryExpression<?> expr, C context) {
         QueryMetadata md = new DefaultQueryMetadata();
         md.setValidate(false);
         md.setDistinct(expr.getMetadata().isDistinct());
         md.setModifiers(expr.getMetadata().getModifiers());
         md.setUnique(expr.getMetadata().isUnique());
         for (QueryFlag flag : expr.getMetadata().getFlags()) {
-            md.addFlag(new QueryFlag(flag.getPosition(), flag.getFlag().accept(this, null)));
+            md.addFlag(new QueryFlag(flag.getPosition(), flag.getFlag().accept(this, context)));
         }
         for (Expression<?> e : expr.getMetadata().getGroupBy()) {
-            md.addGroupBy(e.accept(this, null));
+            md.addGroupBy(e.accept(this, context));
         }
         Predicate having = expr.getMetadata().getHaving();
         if (having != null) {
-            md.addHaving((Predicate)having.accept(this, null));
+            md.addHaving((Predicate)having.accept(this, context));
         }
         for (JoinExpression je : expr.getMetadata().getJoins()) {
-            md.addJoin(je.getType(), je.getTarget().accept(this, null));
+            md.addJoin(je.getType(), je.getTarget().accept(this, context));
             if (je.getCondition() != null) {
-                md.addJoinCondition((Predicate)je.getCondition().accept(this, null));
+                md.addJoinCondition((Predicate)je.getCondition().accept(this, context));
             }
             for (JoinFlag jf : je.getFlags()) {
-                md.addJoinFlag(new JoinFlag(jf.getFlag().accept(this, null), jf.getPosition()));
+                md.addJoinFlag(new JoinFlag(jf.getFlag().accept(this, context), jf.getPosition()));
             }
         }
         for (OrderSpecifier<?> os : expr.getMetadata().getOrderBy()) {
             OrderSpecifier<?> os2 = new OrderSpecifier(os.getOrder(), os.getTarget().accept(this,
-                    null));
+                    context));
             switch (os.getNullHandling()) {
                 case NullsFirst: os2 = os2.nullsFirst(); break;
                 case NullsLast: os2 = os2.nullsLast(); break;
@@ -119,14 +117,14 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
         }
         for (Map.Entry<ParamExpression<?>, Object> entry : expr.getMetadata().getParams()
                 .entrySet()) {
-            md.setParam((ParamExpression)entry.getKey().accept(this, null), entry.getValue());
+            md.setParam((ParamExpression)entry.getKey().accept(this, context), entry.getValue());
         }
         if (expr.getMetadata().getProjection() != null) {
-            md.setProjection(expr.getMetadata().getProjection().accept(this, null));
+            md.setProjection(expr.getMetadata().getProjection().accept(this, context));
         }
         Predicate where = expr.getMetadata().getWhere();
         if (where != null) {
-           md.addWhere((Predicate)where.accept(this, null));
+           md.addWhere((Predicate)where.accept(this, context));
         }
         if (expr.getMetadata().equals(md)) {
             return expr;
@@ -136,11 +134,11 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
     }
 
     @Override
-    public Expression<?> visit(TemplateExpression<?> expr, @Nullable Void context) {
+    public Expression<?> visit(TemplateExpression<?> expr, C context) {
         ImmutableList.Builder builder = ImmutableList.builder();
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression) {
-                builder.add(((Expression)arg).accept(this, null));
+                builder.add(((Expression)arg).accept(this, context));
             } else {
                 builder.add(arg);
             }
@@ -157,10 +155,10 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
         }
     }
 
-    private ImmutableList<Expression<?>> visit(List<Expression<?>> args) {
+    private ImmutableList<Expression<?>> visit(List<Expression<?>> args, C context) {
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?> arg : args) {
-            builder.add(arg.accept(this, null));
+            builder.add(arg.accept(this, context));
         }
         return builder.build();
     }

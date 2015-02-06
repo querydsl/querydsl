@@ -567,7 +567,7 @@ public class SelectBase extends AbstractBaseTest {
             .from(employee)
             .innerJoin(employee._superiorIdKey, employee2);
 
-        QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
+        QTuple subordinates = Projections.tuple(employee2.id, employee2.firstname, employee2.lastname);
 
         Map<Integer, Group> results = qry.transform(
             GroupBy.groupBy(employee.id).as(employee.firstname, employee.lastname,
@@ -947,7 +947,7 @@ public class SelectBase extends AbstractBaseTest {
     public void Nested_Tuple_Projection() {
         Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
         List<Tuple> tuples = query().from(employee)
-                .list(new QTuple(employee.firstname, employee.lastname, concat));
+                .list(employee.firstname, employee.lastname, concat);
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples) {
             String firstName = tuple.get(employee.firstname);
@@ -1159,7 +1159,7 @@ public class SelectBase extends AbstractBaseTest {
         List<Survey> surveys =
             query().from(
                 sq().from(survey).list(survey.all()).as("sq"))
-            .list(new QBean<Survey>(Survey.class, Collections.singletonMap("name", sq.get(survey.name))));
+            .list(Projections.bean(Survey.class, Collections.singletonMap("name", sq.get(survey.name))));
         assertFalse(surveys.isEmpty());
 
     }
@@ -1495,7 +1495,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Tuple_Projection() {
         List<Tuple> tuples = query().from(employee)
-                .list(new QTuple(employee.firstname, employee.lastname));
+                .list(employee.firstname, employee.lastname);
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(employee.firstname));
@@ -1671,7 +1671,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Wildcard_and_QTuple() {
         // wildcard and QTuple
-        for (Tuple tuple : query().from(survey).list(new QTuple(survey.all()))) {
+        for (Tuple tuple : query().from(survey).list(survey.all())) {
             assertNotNull(tuple.get(survey.id));
             assertNotNull(tuple.get(survey.name));
         }

@@ -46,7 +46,7 @@ public class SPrice extends com.querydsl.sql.RelationalPathBase<SPrice> {
         addMetadata();
     }
 
-    public SPrice(PathMetadata<?> metadata) {
+    public SPrice(PathMetadata metadata) {
         super(SPrice.class, metadata, "", "price_");
         addMetadata();
     }

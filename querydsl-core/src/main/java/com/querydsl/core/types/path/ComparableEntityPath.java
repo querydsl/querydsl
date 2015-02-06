@@ -33,7 +33,7 @@ public class ComparableEntityPath<T extends Comparable> extends ComparablePath<T
         super(type, parent, property);
     }
 
-    public ComparableEntityPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public ComparableEntityPath(Class<? extends T> type, PathMetadata metadata) {
         super(type, metadata);
     }
 

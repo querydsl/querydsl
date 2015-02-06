@@ -31,7 +31,7 @@ public class QPerson extends EntityPathBase<Person> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QPerson(PathMetadata<?> metadata) {
+    public QPerson(PathMetadata metadata) {
         super(Person.class, metadata);
     }
 

@@ -13,9 +13,8 @@
  */
 package com.querydsl.sql.dml;
 
-import java.util.List;
+import java.util.Map;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
@@ -30,9 +29,9 @@ public class SQLUpdateBatch {
 
     private final QueryMetadata metadata;
 
-    private final List<Pair<Path<?>,Expression<?>>> updates;
+    private final Map<Path<?>,Expression<?>> updates;
 
-    public SQLUpdateBatch(QueryMetadata metadata, List<Pair<Path<?>,Expression<?>>> updates) {
+    public SQLUpdateBatch(QueryMetadata metadata, Map<Path<?>,Expression<?>> updates) {
         this.metadata = metadata;
         this.updates = updates;
     }
@@ -41,7 +40,7 @@ public class SQLUpdateBatch {
         return metadata;
     }
 
-    public List<Pair<Path<?>, Expression<?>>> getUpdates() {
+    public Map<Path<?>, Expression<?>> getUpdates() {
         return updates;
     }
 

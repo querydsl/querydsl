@@ -40,7 +40,7 @@ public class SParameter extends com.querydsl.sql.RelationalPathBase<SParameter> 
         addMetadata();
     }
 
-    public SParameter(PathMetadata<?> metadata) {
+    public SParameter(PathMetadata metadata) {
         super(SParameter.class, metadata, "", "parameter_");
         addMetadata();
     }

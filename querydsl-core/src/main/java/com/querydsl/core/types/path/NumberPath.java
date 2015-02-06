@@ -39,7 +39,7 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public NumberPath(Class<? extends T> type, PathMetadata<?> metadata) {
+    public NumberPath(Class<? extends T> type, PathMetadata metadata) {
         super(new PathImpl<T>(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
@@ -54,7 +54,7 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
     }
     
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

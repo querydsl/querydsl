@@ -76,7 +76,7 @@ public class QDefaultQueryMetadata extends EntityPathBase<DefaultQueryMetadata> 
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QDefaultQueryMetadata(PathMetadata<?> metadata) {
+    public QDefaultQueryMetadata(PathMetadata metadata) {
         super(DefaultQueryMetadata.class, metadata);
     }
 

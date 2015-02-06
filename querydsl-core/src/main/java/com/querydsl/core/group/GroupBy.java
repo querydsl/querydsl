@@ -19,7 +19,7 @@ import java.util.Set;
 
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.QList;
+import com.querydsl.core.types.Projections;
 
 /**
  * Groups results by the first expression.
@@ -47,7 +47,7 @@ public final class GroupBy {
      * @return
      */
     public static GroupByBuilder<List<?>> groupBy(Expression<?>... keys) {
-        return new GroupByBuilder<List<?>>(new QList(keys));
+        return new GroupByBuilder<List<?>>(Projections.list(keys));
     }
 
     /**
@@ -56,7 +56,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Comparable<E>> AbstractGroupExpression<E, E> min(Expression<E> expression) {
+    public static <E extends Comparable<? super E>> AbstractGroupExpression<E, E> min(Expression<E> expression) {
         return new GMin<E>(expression);
     }
 
@@ -66,7 +66,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Number & Comparable<E>> AbstractGroupExpression<E, E> sum(Expression<E> expression) {
+    public static <E extends Number> AbstractGroupExpression<E, E> sum(Expression<E> expression) {
         return new GSum<E>(expression);
     }
 
@@ -76,7 +76,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Number & Comparable<E>> AbstractGroupExpression<E, E> avg(Expression<E> expression) {
+    public static <E extends Number> AbstractGroupExpression<E, E> avg(Expression<E> expression) {
         return new GAvg<E>(expression);
     }
 
@@ -86,7 +86,7 @@ public final class GroupBy {
      * @param expression
      * @return
      */
-    public static <E extends Comparable<E>> AbstractGroupExpression<E, E> max(Expression<E> expression) {
+    public static <E extends Comparable<? super E>> AbstractGroupExpression<E, E> max(Expression<E> expression) {
         return new GMax<E>(expression);
     }
 

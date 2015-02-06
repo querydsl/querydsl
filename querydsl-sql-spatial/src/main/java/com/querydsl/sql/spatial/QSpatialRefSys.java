@@ -60,7 +60,7 @@ public class QSpatialRefSys extends RelationalPathSpatial<SpatialRefSys> {
         addMetadata();
     }
 
-    public QSpatialRefSys(PathMetadata<?> metadata) {
+    public QSpatialRefSys(PathMetadata metadata) {
         super(SpatialRefSys.class, metadata, "public", "spatial_ref_sys");
         addMetadata();
     }

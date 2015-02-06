@@ -47,7 +47,7 @@ public class SDocumentprop extends com.querydsl.sql.RelationalPathBase<SDocument
         addMetadata();
     }
 
-    public SDocumentprop(PathMetadata<?> metadata) {
+    public SDocumentprop(PathMetadata metadata) {
         super(SDocumentprop.class, metadata, "", "documentprop_");
         addMetadata();
     }

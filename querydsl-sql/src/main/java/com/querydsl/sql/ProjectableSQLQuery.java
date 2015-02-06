@@ -455,7 +455,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         for (Expression<?> e : exprs) {
             Path<?> path = e.accept(PathExtractor.DEFAULT, null);
             if (path != null && !path.getMetadata().isRoot()) {
-                paths.add(path.getMetadata().getRoot());
+                paths.add(path.getMetadata().getRootPath());
             }
         }
         return paths;

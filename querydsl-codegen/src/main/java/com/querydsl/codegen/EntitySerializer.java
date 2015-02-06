@@ -13,12 +13,15 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Generated;
-import javax.inject.Inject;
-import javax.inject.Named;
+import static com.mysema.codegen.Symbols.*;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
+
+import javax.annotation.Generated;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -30,7 +33,6 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.ComparableExpression;
 import com.querydsl.core.types.expr.SimpleExpression;
 import com.querydsl.core.types.path.*;
-import static com.mysema.codegen.Symbols.*;
 
 /**
  * EntitySerializer is a {@link Serializer} implementation for entity types
@@ -42,7 +44,7 @@ public class EntitySerializer implements Serializer {
 
     private static final Joiner JOINER = Joiner.on("\", \"");
 
-    private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class, (Type)null));
+    private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class));
 
     private static final Parameter PATH_INITS = new Parameter("inits", new ClassType(PathInits.class));
 
@@ -356,10 +358,10 @@ public class EntitySerializer implements Serializer {
 
             // body
             // TODO : replace with class reference
-            writer.beginLine("return new ConstructorExpression<" + genericName + ">(");
-            if (!localName.equals(genericName)) {
-                writer.append("(Class)");
-            }
+            writer.beginLine("return Projections.constructor(");
+//            if (!localName.equals(genericName)) {
+//                writer.append("(Class)");
+//            }
             writer.append(writer.getClassConstant(localName));
             writer.append(", new Class[]{");
             boolean first = true;
@@ -425,6 +427,7 @@ public class EntitySerializer implements Serializer {
         }
         if (!model.getConstructors().isEmpty()) {
             classes.add(ConstructorExpression.class);
+            classes.add(Projections.class);
             classes.add(Expression.class);
         }
         boolean inits = false;

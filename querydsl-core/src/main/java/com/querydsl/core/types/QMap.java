@@ -13,9 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -48,7 +49,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * 
      * @param args
      */
-    public QMap(Expression<?>... args) {
+    protected QMap(Expression<?>... args) {
         super((Class)Map.class);
         this.args = ImmutableList.copyOf(args);
     }
@@ -58,7 +59,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * 
      * @param args
      */
-    public QMap(ImmutableList<Expression<?>> args) {
+    protected QMap(ImmutableList<Expression<?>> args) {
         super((Class)Map.class);
         this.args = args;
     }
@@ -68,7 +69,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * 
      * @param args
      */
-    public QMap(Expression<?>[]... args) {
+    protected QMap(Expression<?>[]... args) {
         super((Class)Map.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?>[] exprs: args) {

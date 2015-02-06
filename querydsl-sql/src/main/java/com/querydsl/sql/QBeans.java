@@ -48,7 +48,7 @@ public class QBeans extends FactoryExpressionBase<Beans> {
                     bindings.put(column.getMetadata().getName(), column);
                     listBuilder.add(column);
                 }
-                mapBuilder.put(path, new QBean<Object>((Class)path.getType(), bindings));
+                mapBuilder.put(path, Projections.bean((Class)path.getType(), bindings));
             }
             expressions = listBuilder.build();
             qBeans = mapBuilder.build();

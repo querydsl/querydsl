@@ -54,7 +54,7 @@ public final class RelationalPathUtils {
         if (bindings.isEmpty()) {
             throw new IllegalArgumentException("No bindings could be derived from " + path);
         }
-        return new QBean<T>((Class)path.getType(), true, bindings);
+        return Projections.<T>fields((Class)path.getType(), bindings);
     }
 
     private RelationalPathUtils() {}

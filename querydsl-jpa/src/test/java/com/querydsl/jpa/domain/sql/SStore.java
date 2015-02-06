@@ -44,7 +44,7 @@ public class SStore extends com.querydsl.sql.RelationalPathBase<SStore> {
         addMetadata();
     }
 
-    public SStore(PathMetadata<?> metadata) {
+    public SStore(PathMetadata metadata) {
         super(SStore.class, metadata, "", "store_");
         addMetadata();
     }

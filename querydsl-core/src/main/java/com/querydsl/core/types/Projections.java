@@ -13,6 +13,10 @@
  */
 package com.querydsl.core.types;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
+
 /**
  * Factory class for FactoryExpression instances
  * 
@@ -75,7 +79,28 @@ public final class Projections {
     public static <T> QBean<T> bean(Path<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, exprs);
     }
-    
+
+    /**
+     * Create a Bean populating projection for the given type and bindings
+     *
+     * @param type
+     * @param bindings
+     */
+    public static <T> QBean<T> bean(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
+        return new QBean<T>(type, bindings);
+    }
+
+    /**
+     * Create a Bean populating projection for the given type and bindings
+     *
+     * @param type
+     * @param bindings
+     */
+    public static <T> QBean<T> bean(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
+        return new QBean<T>(type, bindings);
+    }
+
+
     /**
      * Create a constructor invocation projection for the given type and expressions
      * 
@@ -93,7 +118,33 @@ public final class Projections {
     public static <T> ConstructorExpression<T> constructor(Class<T> type, Expression<?>... exprs) {
         return ConstructorExpression.create(type, exprs);
     }
-    
+
+    /**
+     * Create a constructor invocation projection for given type, parameter types and expressions
+     *
+     * @param type
+     * @param paramTypes
+     * @param exprs
+     * @param <T>
+     * @return
+     */
+    public static <T> ConstructorExpression<T> constructor(Class<T> type, Class<?>[] paramTypes, Expression<?>... exprs) {
+        return new ConstructorExpression<T>(type, paramTypes, exprs);
+    }
+
+    /**
+     * Create a constructor invocation projection for given type, parameter types and expressions
+     *
+     * @param type
+     * @param paramTypes
+     * @param exprs
+     * @param <T>
+     * @return
+     */
+    public static <T> ConstructorExpression<T> constructor(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> exprs) {
+        return new ConstructorExpression<T>(type, paramTypes, exprs);
+    }
+
     /**
      * Create a field access based Bean populating projection for the given type and expressions
      * 
@@ -123,7 +174,57 @@ public final class Projections {
     public static <T> QBean<T> fields(Path<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, true, exprs);
     }
-    
+
+    /**
+     * Create a field access based  Bean populating projection for the given type and bindings
+     *
+     * @param type
+     * @param bindings
+     */
+    public static <T> QBean<T> fields(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
+        return new QBean<T>(type, true, bindings);
+    }
+
+    /**
+     * Create a field access based Bean populating projection for the given type and bindings
+     *
+     * @param type
+     * @param bindings
+     */
+    public static <T> QBean<T> fields(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
+        return new QBean<T>(type, true, bindings);
+    }
+
+    /**
+     * Create a new List typed projection for the given expressions
+     *
+     * @param args
+     * @return
+     */
+    public static QList list(Expression<?>... args) {
+        return new QList(args);
+    }
+
+    /**
+     * Create a new List typed projection for the given expressions
+     *
+     * @param args
+     * @return
+     */
+    public static QList list(ImmutableList<Expression<?>> args) {
+        return new QList(args);
+    }
+
+    /**
+     * Create a new List typed projection for the given expressions
+     *
+     * @param args
+     * @return
+     */
+    public static QList list(Expression<?>[]... args) {
+        return new QList(args);
+    }
+
     /**
      * Create a Map typed projection for the given expressions
      * 
@@ -147,6 +248,26 @@ public final class Projections {
      * @return
      */
     public static QTuple tuple(Expression<?>... exprs) {
+        return new QTuple(exprs);
+    }
+
+    /**
+     * Create a Tuple typed projection for the given expressions
+     *
+     * @param exprs arguments for the projection
+     * @return
+     */
+    public static QTuple tuple(ImmutableList<Expression<?>> exprs) {
+        return new QTuple(exprs);
+    }
+
+    /**
+     * Create a Tuple typed projection for the given expressions
+     *
+     * @param exprs arguments for the projection
+     * @return
+     */
+    public static QTuple tuple(Expression<?>[]... exprs) {
         return new QTuple(exprs);
     }
     

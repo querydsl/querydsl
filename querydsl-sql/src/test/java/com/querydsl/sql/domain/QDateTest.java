@@ -21,7 +21,7 @@ public class QDateTest extends RelationalPathBase<QDateTest> {
         addMetadata();
     }
 
-    public QDateTest(PathMetadata<?> metadata) {
+    public QDateTest(PathMetadata metadata) {
         super(QDateTest.class, metadata, "PUBLIC", "DATE_TEST");
         addMetadata();
     }

@@ -43,7 +43,7 @@ public class QShapes extends RelationalPathSpatial<Shapes> {
         addMetadata();
     }
 
-    public QShapes(PathMetadata<?> metadata) {
+    public QShapes(PathMetadata metadata) {
         super(Shapes.class, metadata, "PUBLIC", "SHAPES");
         addMetadata();
     }

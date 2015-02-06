@@ -49,7 +49,7 @@ public class SDepartment extends com.querydsl.sql.RelationalPathBase<SDepartment
         addMetadata();
     }
 
-    public SDepartment(PathMetadata<?> metadata) {
+    public SDepartment(PathMetadata metadata) {
         super(SDepartment.class, metadata, "", "department_");
         addMetadata();
     }

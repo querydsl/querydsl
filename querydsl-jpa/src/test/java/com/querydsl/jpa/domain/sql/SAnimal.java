@@ -78,7 +78,7 @@ public class SAnimal extends com.querydsl.sql.RelationalPathBase<SAnimal> {
         addMetadata();
     }
 
-    public SAnimal(PathMetadata<?> metadata) {
+    public SAnimal(PathMetadata metadata) {
         super(SAnimal.class, metadata, "", "animal_");
         addMetadata();
     }

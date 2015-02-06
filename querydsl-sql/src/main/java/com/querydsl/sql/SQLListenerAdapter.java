@@ -1,15 +1,15 @@
 package com.querydsl.sql;
 
-import com.mysema.commons.lang.Pair;
+import java.util.List;
+import java.util.Map;
+
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.dml.SQLInsertBatch;
-import com.querydsl.sql.dml.SQLMergeBatch;
-import com.querydsl.sql.dml.SQLUpdateBatch;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
-
-import java.util.List;
+import com.querydsl.sql.dml.SQLInsertBatch;
+import com.querydsl.sql.dml.SQLMergeBatch;
+import com.querydsl.sql.dml.SQLUpdateBatch;
 
 /**
  * A simple adapter class that knows if the underlying listener is a simple or detailed SQL listener
@@ -127,7 +127,7 @@ class SQLListenerAdapter implements SQLDetailedListener {
     }
 
     @Override
-    public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final List<Pair<Path<?>, Expression<?>>> updates) {
+    public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final Map<Path<?>, Expression<?>> updates) {
         sqlListener.notifyUpdate(entity, md, updates);
     }
 

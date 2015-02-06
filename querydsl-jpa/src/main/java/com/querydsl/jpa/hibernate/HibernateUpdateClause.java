@@ -107,7 +107,7 @@ public class HibernateUpdateClause implements
     
     @Override
     public <T> HibernateUpdateClause setNull(Path<T> path) {
-        updates.put(path, new NullExpression<T>(path.getType()));
+        updates.put(path, Expressions.nullExpression(path));
         return this;
     }
 
@@ -118,7 +118,7 @@ public class HibernateUpdateClause implements
             if (values.get(i) != null) {
                 updates.put(paths.get(i), Expressions.constant(values.get(i)));
             } else {
-                updates.put(paths.get(i), new NullExpression(paths.get(i).getType()));
+                updates.put(paths.get(i), Expressions.nullExpression(paths.get(i)));
             }
 
         }

@@ -29,7 +29,7 @@ public class QTest_ extends EntityPathBase<Object> {
         super(Object.class, PathMetadataFactory.forVariable(path));
     }
 
-    public QTest_(PathMetadata<?> metadata) {
+    public QTest_(PathMetadata metadata) {
         super(Object.class, metadata);
     }
 

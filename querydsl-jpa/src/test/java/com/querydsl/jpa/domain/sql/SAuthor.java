@@ -43,7 +43,7 @@ public class SAuthor extends com.querydsl.sql.RelationalPathBase<SAuthor> {
         addMetadata();
     }
 
-    public SAuthor(PathMetadata<?> metadata) {
+    public SAuthor(PathMetadata metadata) {
         super(SAuthor.class, metadata, "", "author_");
         addMetadata();
     }

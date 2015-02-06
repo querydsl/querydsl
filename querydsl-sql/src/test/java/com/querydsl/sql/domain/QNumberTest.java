@@ -44,7 +44,7 @@ public class QNumberTest extends RelationalPathBase<QNumberTest> {
         addMetadata();
     }
 
-    public QNumberTest(PathMetadata<?> metadata) {
+    public QNumberTest(PathMetadata metadata) {
         super(QNumberTest.class, metadata, "PUBLIC", "NUMBER_TEST");
         addMetadata();
     }

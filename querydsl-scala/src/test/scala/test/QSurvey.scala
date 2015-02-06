@@ -13,7 +13,7 @@ object QSurvey extends QSurvey("survey"){
 
 }
 
-class QSurvey(md: PathMetadata[_]) extends RelationalPathImpl[Survey](md, "PUBLIC", "SURVEY") {
+class QSurvey(md: PathMetadata) extends RelationalPathImpl[Survey](md, "PUBLIC", "SURVEY") {
   def this(variable: String) = this(forVariable(variable))
 
   def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))

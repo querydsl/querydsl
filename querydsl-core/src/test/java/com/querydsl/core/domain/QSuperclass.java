@@ -28,7 +28,7 @@ public class QSuperclass extends EntityPathBase<Superclass> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QSuperclass(PathMetadata<?> metadata) {
+    public QSuperclass(PathMetadata metadata) {
         super(Superclass.class, metadata);
     }
 

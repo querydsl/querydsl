@@ -53,7 +53,7 @@ public class QBook extends EntityPathBase<com.querydsl.jdo.test.domain.Book>{
           super(cl, PathMetadataFactory.forVariable(path));
     }
     
-    public QBook(PathMetadata<?> metadata) {
+    public QBook(PathMetadata metadata) {
          super(com.querydsl.jdo.test.domain.Book.class, metadata);
     }
     

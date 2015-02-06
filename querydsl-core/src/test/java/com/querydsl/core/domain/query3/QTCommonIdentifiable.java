@@ -51,7 +51,7 @@ public class QTCommonIdentifiable extends EntityPathBase<CommonIdentifiable<? ex
     }
 
     @SuppressWarnings("unchecked")
-    public QTCommonIdentifiable(PathMetadata<?> metadata) {
+    public QTCommonIdentifiable(PathMetadata metadata) {
         super((Class)CommonIdentifiable.class, metadata);
     }
 

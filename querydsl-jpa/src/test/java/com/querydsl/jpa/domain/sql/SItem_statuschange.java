@@ -42,7 +42,7 @@ public class SItem_statuschange extends com.querydsl.sql.RelationalPathBase<SIte
         addMetadata();
     }
 
-    public SItem_statuschange(PathMetadata<?> metadata) {
+    public SItem_statuschange(PathMetadata metadata) {
         super(SItem_statuschange.class, metadata, "", "item__statuschange_");
         addMetadata();
     }

@@ -41,7 +41,7 @@ public class SGeneratedKeys extends com.querydsl.sql.RelationalPathBase<SGenerat
         addMetadata();
     }
 
-    public SGeneratedKeys(PathMetadata<?> metadata) {
+    public SGeneratedKeys(PathMetadata metadata) {
         super(SGeneratedKeys.class, metadata, "", "GENERATED_KEYS");
         addMetadata();
     }

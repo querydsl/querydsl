@@ -36,15 +36,15 @@ public class QAImpl extends EntityPathBase<AImpl> {
         this(entity.getType(), entity.getMetadata(), INITS);
     }
     
-    public QAImpl(PathMetadata<?> metadata) {
+    public QAImpl(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QAImpl(PathMetadata<?> metadata, PathInits inits) {
+    public QAImpl(PathMetadata metadata, PathInits inits) {
         this(AImpl.class, metadata, inits);
     }
 
-    public QAImpl(Class<? extends AImpl> type, PathMetadata<?> metadata, PathInits inits) {
+    public QAImpl(Class<? extends AImpl> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QABase(type, metadata, inits);
         this.id = _super.id;

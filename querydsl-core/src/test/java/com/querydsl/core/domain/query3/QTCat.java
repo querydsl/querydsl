@@ -73,15 +73,15 @@ public class QTCat extends EntityPathBase<Cat> {
         this(Cat.class, forVariable(variable), INITS);
     }
 
-    public QTCat(PathMetadata<?> metadata) {
+    public QTCat(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }
 
-    public QTCat(PathMetadata<?> metadata, PathInits inits) {
+    public QTCat(PathMetadata metadata, PathInits inits) {
         this(Cat.class, metadata, inits);
     }
 
-    public QTCat(Class<? extends Cat> type, PathMetadata<?> metadata, PathInits inits) {
+    public QTCat(Class<? extends Cat> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.mate = inits.isInitialized("mate") ? new QTCat(forProperty("mate"), inits.get("mate")) : null;
     }

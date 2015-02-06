@@ -4,11 +4,11 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
@@ -203,7 +203,7 @@ public class SQLListenersTest
         }
 
         @Override
-        public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final List<Pair<Path<?>, Expression<?>>> updates)
+        public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final Map<Path<?>, Expression<?>> updates)
         {
         }
 

@@ -36,7 +36,7 @@ public class STimeTest extends com.querydsl.sql.RelationalPathBase<STimeTest> {
         addMetadata();
     }
 
-    public STimeTest(PathMetadata<?> metadata) {
+    public STimeTest(PathMetadata metadata) {
         super(STimeTest.class, metadata, "", "TIME_TEST");
         addMetadata();
     }

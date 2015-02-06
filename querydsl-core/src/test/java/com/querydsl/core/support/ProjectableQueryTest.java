@@ -13,12 +13,12 @@
  */
 package com.querydsl.core.support;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.QBean;
+import com.querydsl.core.types.Projections;
 
 @SuppressWarnings("unchecked")
 public class ProjectableQueryTest {
@@ -35,7 +35,7 @@ public class ProjectableQueryTest {
     public void UniqueResult() {
        QueryMixin queryMixin = new QueryMixin();
        DummyProjectable projectable = new DummyProjectable(queryMixin);
-       projectable.uniqueResult(new QBean(Object.class));
+       projectable.uniqueResult(Projections.bean(Object.class));
        assertEquals(Long.valueOf(2), queryMixin.getMetadata().getModifiers().getLimit());
     }
 

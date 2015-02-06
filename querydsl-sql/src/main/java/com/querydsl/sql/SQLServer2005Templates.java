@@ -13,9 +13,8 @@
  */
 package com.querydsl.sql;
 
-import java.util.List;
+import java.util.Map;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -128,7 +127,7 @@ public class SQLServer2005Templates extends SQLServerTemplates {
 
     @Override
     public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-            List<Pair<Path<?>, Expression<?>>> updates, SQLSerializer context) {
+            Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
         // limit
         QueryModifiers mod = metadata.getModifiers();
         if (mod.isRestricting()) {

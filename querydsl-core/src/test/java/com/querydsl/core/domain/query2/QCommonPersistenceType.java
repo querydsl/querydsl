@@ -33,7 +33,7 @@ public class QCommonPersistenceType extends BeanPath<CommonPersistence> implemen
         super(entity.getType(),entity.getMetadata());
     }
 
-    public QCommonPersistenceType(PathMetadata<?> metadata) {
+    public QCommonPersistenceType(PathMetadata metadata) {
         super(CommonPersistence.class, metadata);
     }
 

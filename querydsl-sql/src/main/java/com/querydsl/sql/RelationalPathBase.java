@@ -61,7 +61,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
     }
 
-    public RelationalPathBase(Class<? extends T> type, PathMetadata<?> metadata, String schema,
+    public RelationalPathBase(Class<? extends T> type, PathMetadata metadata, String schema,
             String table) {
         super(type, metadata);
         this.schema = schema;

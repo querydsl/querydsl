@@ -53,7 +53,7 @@ public class QProduct extends EntityPathBase<com.querydsl.jdo.test.domain.Produc
           super(cl, PathMetadataFactory.forVariable(path));
     }
     
-    public QProduct(PathMetadata<?> metadata) {
+    public QProduct(PathMetadata metadata) {
          super(com.querydsl.jdo.test.domain.Product.class, metadata);
     }
     

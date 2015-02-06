@@ -41,7 +41,7 @@ public class KeywordQuotingBase extends AbstractBaseTest {
             addMetadata();
         }
 
-        public Quoting(PathMetadata<?> metadata) {
+        public Quoting(PathMetadata metadata) {
             super(Quoting.class, metadata, "PUBLIC", "quoting");
             addMetadata();
         }

@@ -59,7 +59,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     }
     
     @SuppressWarnings("unchecked")
-    public ArrayPath(Class<? super A> type, PathMetadata<?> metadata) {
+    public ArrayPath(Class<? super A> type, PathMetadata metadata) {
         super(new PathImpl<A>((Class)type, metadata));
         this.pathMixin = (PathImpl<A>)mixin;
         this.componentType = Primitives.wrap((Class<E>)type.getComponentType());
@@ -77,7 +77,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
      * @return
      */
     public SimplePath<E> get(Expression<Integer> index) {
-        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(pathMixin, index);
+        PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return new SimplePath<E>(componentType, md);
     }
 
@@ -88,7 +88,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
      * @return
      */
     public SimplePath<E> get(@Nonnegative int index) {
-        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(pathMixin, index);
+        PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return new SimplePath<E>(componentType, md);
     }
 
@@ -97,7 +97,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     }
 
     @Override
-    public PathMetadata<?> getMetadata() {
+    public PathMetadata getMetadata() {
         return pathMixin.getMetadata();
     }
 

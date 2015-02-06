@@ -42,7 +42,7 @@ public class SCompany_department extends com.querydsl.sql.RelationalPathBase<SCo
         addMetadata();
     }
 
-    public SCompany_department(PathMetadata<?> metadata) {
+    public SCompany_department(PathMetadata metadata) {
         super(SCompany_department.class, metadata, "", "company__department_");
         addMetadata();
     }

@@ -32,7 +32,7 @@ import com.querydsl.core.types.EntityPath;
  * @author tiwe
  *
  */
-public class MorphiaQuery<K> extends MongodbQuery<K> {
+public class MorphiaQuery<K> extends MongodbQuery<MorphiaQuery<K>, K> {
 
     private final EntityCache cache;
 

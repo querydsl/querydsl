@@ -3,8 +3,8 @@ package com.querydsl.sql;
 import static java.lang.String.format;
 
 import java.util.List;
+import java.util.Map;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
@@ -132,7 +132,7 @@ public class TestLoggingListener implements SQLDetailedListener
     }
 
     @Override
-    public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final List<Pair<Path<?>, Expression<?>>> updates)
+    public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final Map<Path<?>, Expression<?>> updates)
     {
         if (enabled) System.out.println(format("\t\t\tnotifyUpdate %s", entity));
     }

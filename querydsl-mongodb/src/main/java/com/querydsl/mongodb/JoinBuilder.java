@@ -24,24 +24,25 @@ import com.querydsl.core.types.Predicate;
  *
  * @author tiwe
  *
+ * @param <Q>
  * @param <K>
  * @param <T>
  */
-public class JoinBuilder<K, T> {
+public class JoinBuilder<Q extends MongodbQuery<Q,K>, K, T> {
 
-    private final QueryMixin<MongodbQuery<K>> queryMixin;
+    private final QueryMixin<Q> queryMixin;
 
     private final Path<?> ref;
 
     private final Path<T> target;
 
-    public JoinBuilder(QueryMixin<MongodbQuery<K>> queryMixin, Path<?> ref, Path<T> target) {
+    public JoinBuilder(QueryMixin<Q> queryMixin, Path<?> ref, Path<T> target) {
         this.queryMixin = queryMixin;
         this.ref = ref;
         this.target = target;
     }
 
-    public MongodbQuery<K> on(Predicate... conditions) {
+    public Q on(Predicate... conditions) {
         queryMixin.addJoin(JoinType.JOIN, ExpressionUtils.as((Path)ref, target));
         queryMixin.on(conditions);
         return queryMixin.getSelf();

@@ -13,11 +13,12 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -134,7 +135,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
      *
      * @param args
      */
-    public QTuple(Expression<?>... args) {
+    protected QTuple(Expression<?>... args) {
         super(Tuple.class);
         this.args = ImmutableList.copyOf(args);
         this.bindings = createBindings(this.args);
@@ -145,7 +146,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
      *
      * @param args
      */
-    public QTuple(ImmutableList<Expression<?>> args) {
+    protected QTuple(ImmutableList<Expression<?>> args) {
         super(Tuple.class);
         this.args = args;
         this.bindings = createBindings(this.args);
@@ -156,7 +157,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
      *
      * @param args
      */
-    public QTuple(Expression<?>[]... args) {
+    protected QTuple(Expression<?>[]... args) {
         super(Tuple.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?>[] exprs: args) {

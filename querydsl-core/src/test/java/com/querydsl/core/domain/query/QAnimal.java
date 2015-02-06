@@ -55,7 +55,7 @@ public class QAnimal extends EntityPathBase<Animal> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QAnimal(PathMetadata<?> metadata) {
+    public QAnimal(PathMetadata metadata) {
         super(Animal.class, metadata);
     }
 

@@ -66,7 +66,7 @@ public class SProduct extends RelationalPathBase<SProduct> {
         addMetadata();
     }
 
-    public SProduct(PathMetadata<?> metadata) {
+    public SProduct(PathMetadata metadata) {
         super(SProduct.class, metadata, "", "PRODUCT");
         addMetadata();
     }

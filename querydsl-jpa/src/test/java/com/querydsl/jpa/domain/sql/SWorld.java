@@ -40,7 +40,7 @@ public class SWorld extends com.querydsl.sql.RelationalPathBase<SWorld> {
         addMetadata();
     }
 
-    public SWorld(PathMetadata<?> metadata) {
+    public SWorld(PathMetadata metadata) {
         super(SWorld.class, metadata, "", "World");
         addMetadata();
     }

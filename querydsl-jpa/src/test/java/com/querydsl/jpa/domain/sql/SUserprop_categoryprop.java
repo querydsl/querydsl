@@ -44,7 +44,7 @@ public class SUserprop_categoryprop extends com.querydsl.sql.RelationalPathBase<
         addMetadata();
     }
 
-    public SUserprop_categoryprop(PathMetadata<?> metadata) {
+    public SUserprop_categoryprop(PathMetadata metadata) {
         super(SUserprop_categoryprop.class, metadata, "", "userprop__categoryprop_");
         addMetadata();
     }

@@ -34,7 +34,7 @@ public class PathFactoryTest {
 
     private PathFactory pathFactory = new DefaultPathFactory();
     
-    private PathMetadata<?> metadata = PathMetadataFactory.forVariable("var");
+    private PathMetadata metadata = PathMetadataFactory.forVariable("var");
     
     @Test
     public void CreateArrayPath() {

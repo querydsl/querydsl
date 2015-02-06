@@ -45,7 +45,7 @@ public class SAccount extends com.querydsl.sql.RelationalPathBase<SAccount> {
         addMetadata();
     }
 
-    public SAccount(PathMetadata<?> metadata) {
+    public SAccount(PathMetadata metadata) {
         super(SAccount.class, metadata, "", "account_");
         addMetadata();
     }

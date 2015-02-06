@@ -42,7 +42,7 @@ public class QTAbstractEntity extends EntityPathBase<AbstractEntity> {
         super(entity.getType(), entity.getMetadata());
     }
 
-    public QTAbstractEntity(PathMetadata<?> metadata) {
+    public QTAbstractEntity(PathMetadata metadata) {
         super(AbstractEntity.class, metadata);
     }
 

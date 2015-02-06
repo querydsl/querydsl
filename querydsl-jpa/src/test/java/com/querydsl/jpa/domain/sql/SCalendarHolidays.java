@@ -46,7 +46,7 @@ public class SCalendarHolidays extends com.querydsl.sql.RelationalPathBase<SCale
         addMetadata();
     }
 
-    public SCalendarHolidays(PathMetadata<?> metadata) {
+    public SCalendarHolidays(PathMetadata metadata) {
         super(SCalendarHolidays.class, metadata, "", "Calendar_holidays");
         addMetadata();
     }
