@@ -55,10 +55,9 @@ public final class NativeSQLSerializer extends SQLSerializer {
     @Override
     protected void appendAsColumnName(Path<?> path, boolean precededByDot) {
         if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
-            SQLTemplates templates = getTemplates();
             Column column = path.getAnnotatedElement().getAnnotation(Column.class);
             if (!column.name().isEmpty()) {
-               append(templates.quoteIdentifier(column.name(), precededByDot));
+               append(getTemplates().quoteIdentifier(column.name(), precededByDot));
             } else {
                super.appendAsColumnName(path, precededByDot);
             }
