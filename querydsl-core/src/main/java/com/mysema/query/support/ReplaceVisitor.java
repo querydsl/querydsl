@@ -16,8 +16,8 @@ package com.mysema.query.support;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.*;
 import com.mysema.query.types.*;
@@ -72,7 +72,7 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
             if (element instanceof Expression<?>) {
                 element = ((Expression) element).accept(this, null);
             }
-            if (parent.equals(metadata.getParent()) && Objects.equals(element, metadata.getElement())) {
+            if (parent.equals(metadata.getParent()) && Objects.equal(element, metadata.getElement())) {
                 return expr;
             } else {
                 metadata = new PathMetadata(parent, element, metadata.getPathType());
