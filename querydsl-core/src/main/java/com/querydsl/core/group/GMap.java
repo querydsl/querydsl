@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.group;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.mysema.commons.lang.Pair;
 
@@ -43,11 +40,20 @@ abstract class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>>
         };
     }
 
-    public static <T, U> GMap<T, U> createSorted(QPair<T, U> expr) {
+    public static <T extends Comparable<? super T>, U> GMap<T, U> createSorted(QPair<T, U> expr) {
         return new GMap<T, U>(expr) {
             @Override
             protected Map<T, U> createMap() {
                 return new TreeMap<T, U>();
+            }
+        };
+    }
+
+    public static <T, U> GMap<T, U> createSorted(QPair<T, U> expr, final Comparator<? super T> comparator) {
+        return new GMap<T, U>(expr) {
+            @Override
+            protected Map<T, U> createMap() {
+                return new TreeMap<T, U>(comparator);
             }
         };
     }

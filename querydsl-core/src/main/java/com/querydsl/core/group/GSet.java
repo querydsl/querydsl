@@ -13,6 +13,7 @@
  */
 package com.querydsl.core.group;
 
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,11 +38,20 @@ abstract class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
         };
     }
 
-    public static <U> GSet<U> createSorted(Expression<U> expr) {
+    public static <U extends Comparable<? super U>> GSet<U> createSorted(Expression<U> expr) {
         return new GSet<U>(expr) {
             @Override
             protected Set<U> createSet() {
                 return new TreeSet<U>();
+            }
+        };
+    }
+
+    public static <U> GSet<U> createSorted(Expression<U> expr, final Comparator<? super U> comparator) {
+        return new GSet<U>(expr) {
+            @Override
+            protected Set<U> createSet() {
+                return new TreeSet<U>(comparator);
             }
         };
     }
