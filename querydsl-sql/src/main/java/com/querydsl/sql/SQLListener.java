@@ -14,15 +14,15 @@
 package com.querydsl.sql;
 
 import java.util.List;
+import java.util.Map;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.dml.SQLInsertBatch;
-import com.querydsl.sql.dml.SQLMergeBatch;
-import com.querydsl.sql.dml.SQLUpdateBatch;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.sql.dml.SQLInsertBatch;
+import com.querydsl.sql.dml.SQLMergeBatch;
+import com.querydsl.sql.dml.SQLUpdateBatch;
 
 /**
  * Listener interface for SQL queries and clauses
@@ -106,7 +106,7 @@ public interface SQLListener {
      * @param updates metadata of batches
      */
     void notifyUpdate(RelationalPath<?> entity, QueryMetadata md,
-            List<Pair<Path<?>, Expression<?>>> updates);
+            Map<Path<?>, Expression<?>> updates);
 
     /**
      * Notify about a batch update

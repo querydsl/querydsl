@@ -21,18 +21,17 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.types.Null;
 import com.querydsl.core.support.Expressions;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Template.Element;
 import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.sql.types.Null;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -552,12 +551,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-            List<Pair<Path<?>, Expression<?>>> updates) {
+            Map<Path<?>, Expression<?>> updates) {
         templates.serializeUpdate(metadata, entity, updates, this);
     }
 
     void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-            List<Pair<Path<?>, Expression<?>>> updates) {
+            Map<Path<?>, Expression<?>> updates) {
         this.entity = entity;
 
         serialize(Position.START, metadata.getFlags());
@@ -574,16 +573,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.getSet());
         boolean first = true;
         skipParent = true;
-        for (final Pair<Path<?>,Expression<?>> update : updates) {
+        for (final Map.Entry<Path<?>,Expression<?>> update : updates.entrySet()) {
             if (!first) {
                 append(COMMA);
             }
-            handle(update.getFirst());
+            handle(update.getKey());
             append(" = ");
-            if (!useLiterals && update.getSecond() instanceof Constant<?>) {
-                constantPaths.add(update.getFirst());
+            if (!useLiterals && update.getValue() instanceof Constant<?>) {
+                constantPaths.add(update.getKey());
             }
-            handle(update.getSecond());
+            handle(update.getValue());
             first = false;
         }
         skipParent = false;

@@ -47,7 +47,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     private final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
 
-    private List<Pair<Path<?>,Expression<?>>> updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
+    private Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
 
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -97,7 +97,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
      */
     public SQLUpdateClause addBatch() {
         batches.add(new SQLUpdateBatch(metadata, updates));
-        updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
+        updates = Maps.newLinkedHashMap();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
         return this;
@@ -231,9 +231,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, (Expression<?>)value));
+            updates.put(path, (Expression<?>)value);
         } else if (value != null) {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, ConstantImpl.create(value)));
+            updates.put(path, ConstantImpl.create(value));
         } else {
             setNull(path);
         }
@@ -243,7 +243,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     @Override
     public <T> SQLUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));
+            updates.put(path, expression);
         } else {
             setNull(path);
         }
@@ -252,7 +252,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     @Override
     public <T> SQLUpdateClause setNull(Path<T> path) {
-        updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
+        updates.put(path, Null.CONSTANT);
         return this;
     }
 
@@ -260,11 +260,11 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
-                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), (Expression<?>)values.get(i)));
+                updates.put(paths.get(i), (Expression<?>) values.get(i));
             } else if (values.get(i) != null) {
-                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), ConstantImpl.create(values.get(i))));
+                updates.put(paths.get(i), ConstantImpl.create(values.get(i)));
             } else {
-                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), Null.CONSTANT));
+                updates.put(paths.get(i), Null.CONSTANT);
             }
         }
         return this;
