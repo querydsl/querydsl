@@ -275,7 +275,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (operator == Ops.INSTANCE_OF) {
             handle(args.get(0)).append(" instanceof ");
             append(((Constant<Class<?>>) args.get(1)).getConstant().getName());

@@ -257,7 +257,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private <T> CollectionExpressionBase<?,T> union(Operator<Object> op, List<? extends SubQueryExpression<?>> sq) {
+    private <T> CollectionExpressionBase<?,T> union(Operator op, List<? extends SubQueryExpression<?>> sq) {
         Expression<?> rv = sq.get(0);
         if (sq.size() == 1 && !CollectionExpression.class.isInstance(rv)) {
             return new ListSubQuery(rv.getType(), sq.get(0).getMetadata());

@@ -33,25 +33,25 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     private static final long serialVersionUID = 7432281499861357581L;
 
-    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?> one) {
+    public static BooleanExpression create(Operator op, Expression<?> one) {
         return new BooleanOperation(op, ImmutableList.<Expression<?>>of(one));
     }
     
-    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?> one, Expression<?> two) {
+    public static BooleanExpression create(Operator op, Expression<?> one, Expression<?> two) {
         return new BooleanOperation(op, ImmutableList.of(one, two));
     }
     
-    public static BooleanExpression create(Operator<? super Boolean> op, Expression<?>... args) {
+    public static BooleanExpression create(Operator op, Expression<?>... args) {
         return new BooleanOperation(op, args);
     }
     
     private final PredicateOperation opMixin;
 
-    protected BooleanOperation(Operator<? super Boolean> op, Expression<?>... args) {
+    protected BooleanOperation(Operator op, Expression<?>... args) {
         this(op, ImmutableList.copyOf(args));
     }
     
-    protected BooleanOperation(Operator<? super Boolean> op, ImmutableList<Expression<?>> args) {
+    protected BooleanOperation(Operator op, ImmutableList<Expression<?>> args) {
         super(new PredicateOperation((Operator)op, args));
         opMixin = (PredicateOperation)mixin;
     }
@@ -72,7 +72,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
 
     @Override
-    public Operator<? super Boolean> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

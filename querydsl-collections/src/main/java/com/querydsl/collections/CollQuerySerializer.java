@@ -50,7 +50,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
 
     private static final Set<Class<?>> WRAPPER_TYPES = ImmutableSet.copyOf(Primitives.allWrapperTypes());
     
-    private static final Map<Operator<?>, String> OPERATOR_SYMBOLS = Maps.newIdentityHashMap();
+    private static final Map<Operator, String> OPERATOR_SYMBOLS = Maps.newIdentityHashMap();
     
     private static final Map<Class<?>, String> CAST_SUFFIXES = Maps.newHashMap();
     
@@ -169,7 +169,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         throw new IllegalArgumentException("Not supported");
     }
 
-    private void visitCast(Operator<?> operator, Expression<?> source, Class<?> targetType) {
+    private void visitCast(Operator operator, Expression<?> source, Class<?> targetType) {
         if (Number.class.isAssignableFrom(source.getType()) && !Constant.class.isInstance(source)) {
             append("new ").append(source.getType().getSimpleName()).append("(");
             handle(source);
@@ -186,7 +186,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (Ops.aggOps.contains(operator)) {
             throw new UnsupportedOperationException("Aggregation operators are only supported as single expressions");
         }

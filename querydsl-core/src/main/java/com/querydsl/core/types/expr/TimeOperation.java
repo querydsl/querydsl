@@ -33,25 +33,25 @@ public class TimeOperation<T extends Comparable<?>> extends TimeExpression<T> im
 
     private static final long serialVersionUID = 9051606798649239240L;
 
-    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator op, Expression<?> one) {
         return new TimeOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
     }
     
-    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
         return new TimeOperation<D>(type, op, ImmutableList.of(one, two));
     }
         
-    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    public static <D extends Comparable<?>> TimeExpression<D> create(Class<D> type, Operator op, Expression<?>... args) {
         return new TimeOperation<D>(type, op, args);
     }
 
     private final OperationImpl<T> opMixin;
 
-    protected TimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected TimeOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected TimeOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
+    protected TimeOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
@@ -72,7 +72,7 @@ public class TimeOperation<T extends Comparable<?>> extends TimeExpression<T> im
     }
 
     @Override
-    public Operator<? super T> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

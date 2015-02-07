@@ -640,7 +640,7 @@ public class LuceneSerializerTest {
 
     private boolean unsupportedOperation(Predicate filter) {
         if (filter instanceof Operation<?>) {
-            Operator<?> op = ((Operation<?>) filter).getOperator();
+            Operator op = ((Operation<?>) filter).getOperator();
             if (op == Ops.STARTS_WITH_IC || op == Ops.EQ_IGNORE_CASE || op == Ops.STARTS_WITH_IC
                 || op == Ops.ENDS_WITH_IC || op == Ops.STRING_CONTAINS_IC) {
                 return true;

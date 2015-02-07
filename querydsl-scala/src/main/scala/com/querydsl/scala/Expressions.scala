@@ -39,7 +39,7 @@ object Constants {
 
 trait DslExpression[T] extends Expression[T] {
 
-  def as(right: Path[T]): DslExpression[T] = dsl(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  def as(right: Path[T]): DslExpression[T] = dsl(getType, ALIAS, this, right)
 
   def as(alias: String): DslExpression[T] = as(new PathImpl[T](getType, alias))
 
@@ -47,7 +47,7 @@ trait DslExpression[T] extends Expression[T] {
 
 trait SimpleExpression[T] extends DslExpression[T] {
 
-  override def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS, this, right)
 
   override def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))
 
@@ -89,7 +89,7 @@ trait SimpleExpression[T] extends DslExpression[T] {
 
   def nullif(right: T): SimpleExpression[T] = nullif(constant(right))
 
-  def nullif(right: Expression[T]) = simple[T](getType, NULLIF.asInstanceOf[Operator[T]], this, right)
+  def nullif(right: Expression[T]) = simple[T](getType, NULLIF, this, right)
 
   def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = {
     if (f == null) isNull else f(this.asInstanceOf[M])
@@ -215,7 +215,7 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
 
   def <=(right: Expression[T]) = loe(right)
 
-  override def as(right: Path[T]) = comparable(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]) = comparable(getType, ALIAS, this, right)
 
   override def as(alias: String): ComparableExpression[T] = as(new PathImpl[T](getType, alias))
 
@@ -391,7 +391,7 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
 
   def unary_! = not()
 
-  override def as(right: Path[java.lang.Boolean]) = boolean(ALIAS.asInstanceOf[Operator[java.lang.Boolean]], this, right)
+  override def as(right: Path[java.lang.Boolean]) = boolean(ALIAS, this, right)
 
   override def as(alias: String): BooleanExpression = as(new PathImpl[java.lang.Boolean](getType, alias))
 
@@ -487,7 +487,7 @@ trait StringExpression extends ComparableExpression[String] {
 
   def startsWithIgnoreCase(right: String): BooleanExpression = startsWithIgnoreCase(constant(right))
 
-  override def as(right: Path[String]) = string(ALIAS.asInstanceOf[Operator[String]], this, right)
+  override def as(right: Path[String]) = string(ALIAS, this, right)
 
   override def as(alias: String): StringExpression = as(new PathImpl[String](getType, alias))
 
@@ -515,7 +515,7 @@ trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   lazy val milliSecond = number(classOf[Integer], DateTimeOps.MILLISECOND, this)
 
-  override def as(right: Path[T]) = time(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]) = time(getType, ALIAS, this, right)
 
   override def as(alias: String): TimeExpression[T] = as(new PathImpl[T](getType, alias))
 
@@ -551,7 +551,7 @@ trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   lazy val milliSecond = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
 
-  override def as(right: Path[T]) = dateTime(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]) = dateTime(getType, ALIAS, this, right)
 
   override def as(alias: String): DateTimeExpression[T] = as(new PathImpl[T](getType, alias))
 
@@ -579,7 +579,7 @@ trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   lazy val yearWeek = year.multiply(100).add(week)
 
-  override def as(right: Path[T]) = date(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]) = date(getType, ALIAS, this, right)
 
   override def as(alias: String): DateExpression[T] = as(new PathImpl[T](getType, alias))
 
@@ -589,7 +589,7 @@ trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
   lazy val ordinal = number(classOf[Integer], Ops.ORDINAL, this)
 
-  override def as(right: Path[T]) = enum(getType.asInstanceOf[Class[T]], ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]) = enum(getType.asInstanceOf[Class[T]], ALIAS, this, right)
 
   override def as(alias: String): EnumExpression[T] = as(new PathImpl[T](getType, alias))
 

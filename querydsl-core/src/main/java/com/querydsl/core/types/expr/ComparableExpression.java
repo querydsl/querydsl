@@ -15,14 +15,7 @@ package com.querydsl.core.types.expr;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 /**
  * ComparableExpression extends {@link ComparableExpressionBase} to provide comparison methods.
@@ -42,7 +35,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     
     @Override
     public ComparableExpression<T> as(Path<T> alias) {
-        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, mixin, alias);
+        return ComparableOperation.<T>create((Class)getType(), Ops.ALIAS, mixin, alias);
     }
     
     @Override

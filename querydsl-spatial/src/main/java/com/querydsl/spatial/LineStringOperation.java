@@ -33,25 +33,25 @@ public class LineStringOperation<T extends LineString> extends LineStringExpress
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator op, Expression<?> one) {
         return new LineStringOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
     }
 
-    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
         return new LineStringOperation<D>(type, op, ImmutableList.of(one, two));
     }
 
-    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    public static <D extends LineString> LineStringOperation<D> create(Class<D> type, Operator op, Expression<?>... args) {
         return new LineStringOperation<D>(type, op, args);
     }
 
     private final OperationImpl< T> opMixin;
 
-    protected LineStringOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected LineStringOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected LineStringOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
+    protected LineStringOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
@@ -72,7 +72,7 @@ public class LineStringOperation<T extends LineString> extends LineStringExpress
     }
 
     @Override
-    public Operator<? super T> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

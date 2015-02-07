@@ -103,7 +103,7 @@ public class JavaTemplates extends Templates {
         // Math
         try {
             for (Field f : Ops.MathOps.class.getFields()) {
-                Operator<?> op = (Operator<?>) f.get(null);
+                Operator op = (Operator) f.get(null);
                 add(op, "Math." + getTemplate(op));
             }
         } catch (IllegalAccessException e) {

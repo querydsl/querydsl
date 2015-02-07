@@ -14,22 +14,13 @@
 package com.querydsl.lucene3;
 
 import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.OperatorImpl;
 
 /**
  * @author tiwe
  *
  */
-public final class LuceneOps {
-
-    private static final String NS = LuceneOps.class.getName();
-
-    static final Operator<Object> LUCENE_QUERY = new OperatorImpl<Object>(NS, "QUERY");
-
-    static final Operator<String> PHRASE = new OperatorImpl<String>(NS, "PHRASE");
-
-    static final Operator<String> TERM = new OperatorImpl<String>(NS, "TERM");
-
-    private LuceneOps() {}
-
+public enum LuceneOps implements Operator {
+    LUCENE_QUERY,
+    PHRASE,
+    TERM
 }

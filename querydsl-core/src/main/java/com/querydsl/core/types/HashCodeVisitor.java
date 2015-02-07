@@ -25,7 +25,7 @@ public final class HashCodeVisitor implements Visitor<Integer,Void> {
 
     @Override
     public Integer visit(Operation<?> expr, Void context) {
-        int result = expr.getOperator().hashCode();
+        int result = expr.getOperator().name().hashCode();
         return 31 * result + expr.getArgs().hashCode();
     }
 

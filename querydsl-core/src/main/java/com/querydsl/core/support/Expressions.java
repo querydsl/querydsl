@@ -271,7 +271,7 @@ public final class Expressions {
      * @param args
      * @return
      */
-    public static BooleanExpression predicate(Operator<Boolean> operation, Expression<?>... args) {
+    public static BooleanExpression predicate(Operator operation, Expression<?>... args) {
         return BooleanOperation.create(operation, args);
     }
 
@@ -283,7 +283,7 @@ public final class Expressions {
      * @param args
      * @return
      */
-    public static <T> SimpleExpression<T> operation(Class<T> type, Operator<? super T> operator,
+    public static <T> SimpleExpression<T> operation(Class<T> type, Operator operator,
             Expression<?>... args) {
         return SimpleOperation.create(type, operator, args);
     }
@@ -296,7 +296,7 @@ public final class Expressions {
      * @param args
      * @return
      */
-    public static <T> DslExpression<T> dslOperation(Class<T> type, Operator<? super T> operator,
+    public static <T> DslExpression<T> dslOperation(Class<T> type, Operator operator,
             Expression<?>... args) {
         return DslOperation.create(type, operator, args);
     }
@@ -308,7 +308,7 @@ public final class Expressions {
      * @param args
      * @return
      */
-    public static BooleanExpression booleanOperation(Operator<Boolean> operation, Expression<?>... args) {
+    public static BooleanExpression booleanOperation(Operator operation, Expression<?>... args) {
         return predicate(operation, args);
     }
 
@@ -321,7 +321,7 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> ComparableExpression<T> comparableOperation(Class<T> type,
-            Operator<? super T> operator, Expression<?>... args) {
+            Operator operator, Expression<?>... args) {
         return ComparableOperation.create(type, operator, args);
     }
 
@@ -334,7 +334,7 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> DateExpression<T> dateOperation(Class<T> type,
-            Operator<? super T> operator, Expression<?>... args) {
+            Operator operator, Expression<?>... args) {
         return DateOperation.create(type, operator, args);
     }
 
@@ -347,7 +347,7 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> DateTimeExpression<T> dateTimeOperation(Class<T> type,
-            Operator<? super T> operator, Expression<?>... args) {
+            Operator operator, Expression<?>... args) {
         return DateTimeOperation.create(type, operator, args);
     }
 
@@ -360,7 +360,7 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> TimeExpression<T> timeOperation(Class<T> type,
-            Operator<? super T> operator, Expression<?>... args) {
+            Operator operator, Expression<?>... args) {
         return TimeOperation.create(type, operator, args);
     }
 
@@ -373,7 +373,7 @@ public final class Expressions {
      * @return
      */
     public static <T extends Number & Comparable<?>> NumberExpression<T> numberOperation(Class<T> type,
-            Operator<? super T> operator, Expression<?>... args) {
+            Operator operator, Expression<?>... args) {
         return NumberOperation.create(type, operator, args);
     }
 
@@ -384,7 +384,7 @@ public final class Expressions {
      * @param args
      * @return
      */
-    public static StringExpression stringOperation(Operator<? super String> operator, Expression<?>... args) {
+    public static StringExpression stringOperation(Operator operator, Expression<?>... args) {
         return StringOperation.create(operator, args);
     }
 

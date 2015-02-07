@@ -101,7 +101,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
     @Override
     public Object visit(Operation<?> expr, Void context) {
-        Operator<?> op = expr.getOperator();
+        Operator op = expr.getOperator();
         if (op == Ops.EQ) {
             if (expr.getArg(0) instanceof Operation) {
                 Operation<?> lhs = (Operation<?>) expr.getArg(0);
@@ -140,7 +140,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             //is cases where this will get broken
             String key = arg.keySet().iterator().next();
             Operation<?> subOperation = (Operation<?>) expr.getArg(0);
-            Operator<?> subOp = subOperation.getOperator();
+            Operator subOp = subOperation.getOperator();
             if (subOp == Ops.IN) {
                 return visit(OperationImpl.create(Boolean.class, Ops.NOT_IN, subOperation.getArg(0),
                         subOperation.getArg(1)), context);

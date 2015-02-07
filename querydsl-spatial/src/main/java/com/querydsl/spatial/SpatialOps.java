@@ -14,111 +14,107 @@
 package com.querydsl.spatial;
 
 import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.OperatorImpl;
 
 /**
  * @author tiwe
  *
  */
-public final class SpatialOps {
+public enum SpatialOps implements Operator {
 
-        private static final String NS = SpatialOps.class.getName();
+    // Geometry
+    DIMENSION,
+    GEOMETRY_TYPE,
+    AS_TEXT,
+    AS_BINARY,
+    SRID,
+    SRID2,
+    IS_EMPTY,
+    IS_SIMPLE,
+    BOUNDARY,
+    ENVELOPE,
+    WKTTOSQL,
+    WKBTOSQL,
+    EQUALS,
+    DISJOINT,
+    INTERSECTS,
+    TOUCHES,
+    CROSSES,
+    WITHIN,
+    CONTAINS,
+    OVERLAPS,
+    RELATE,
+    DISTANCE,
+    DISTANCE2,
+    DISTANCE_SPHERE,
+    DISTANCE_SPHEROID,
+    INTERSECTION,
+    DIFFERENCE,
+    UNION,
+    SYMDIFFERENCE,
+    BUFFER,
+    BUFFER2,
+    CONVEXHULL,
+    TRANSFORM,
 
-        // Geometry
-        public static final Operator<Object> DIMENSION = new OperatorImpl<Object>(NS, "DIMENSION");
-        public static final Operator<Object> GEOMETRY_TYPE = new OperatorImpl<Object>(NS, "GEOMETRY_TYPE");
-        public static final Operator<Object> AS_TEXT = new OperatorImpl<Object>(NS, "AS_TEXT");
-        public static final Operator<Object> AS_BINARY = new OperatorImpl<Object>(NS, "AS_BINARY");
-        public static final Operator<Object> SRID = new OperatorImpl<Object>(NS, "SRID");
-        public static final Operator<Object> SRID2 = new OperatorImpl<Object>(NS, "SRID2");
-        public static final Operator<Object> IS_EMPTY = new OperatorImpl<Object>(NS, "IS_EMPTY");
-        public static final Operator<Object> IS_SIMPLE = new OperatorImpl<Object>(NS, "IS_SIMPLE");
-        public static final Operator<Object> BOUNDARY = new OperatorImpl<Object>(NS, "BOUNDARY");
-        public static final Operator<Object> ENVELOPE = new OperatorImpl<Object>(NS, "ENVELOPE");
-        public static final Operator<Object> WKTTOSQL = new OperatorImpl<Object>(NS, "WKTTOSQL");
-        public static final Operator<Object> WKBTOSQL = new OperatorImpl<Object>(NS, "WKBTOSQL");
-        public static final Operator<Object> EQUALS = new OperatorImpl<Object>(NS, "EQUALS");
-        public static final Operator<Object> DISJOINT = new OperatorImpl<Object>(NS, "DISJOINT");
-        public static final Operator<Object> INTERSECTS = new OperatorImpl<Object>(NS, "INTERSECTS");
-        public static final Operator<Object> TOUCHES = new OperatorImpl<Object>(NS, "TOUCHES");
-        public static final Operator<Object> CROSSES = new OperatorImpl<Object>(NS, "CROSSES");
-        public static final Operator<Object> WITHIN = new OperatorImpl<Object>(NS, "WITHIN");
-        public static final Operator<Object> CONTAINS = new OperatorImpl<Object>(NS, "CONTAINS");
-        public static final Operator<Object> OVERLAPS = new OperatorImpl<Object>(NS, "OVERLAPS");
-        public static final Operator<Object> RELATE = new OperatorImpl<Object>(NS, "RELATE");
-        public static final Operator<Object> DISTANCE = new OperatorImpl<Object>(NS, "DISTANCE");
-        public static final Operator<Object> DISTANCE2 = new OperatorImpl<Object>(NS, "DISTANCE2");
-        public static final Operator<Object> DISTANCE_SPHERE = new OperatorImpl<Object>(NS, "DISTANCE_SPHERE");
-        public static final Operator<Object> DISTANCE_SPHEROID = new OperatorImpl<Object>(NS, "DISTANCE_SPHEROID");
-        public static final Operator<Object> INTERSECTION = new OperatorImpl<Object>(NS, "INTERSECTION");
-        public static final Operator<Object> DIFFERENCE = new OperatorImpl<Object>(NS, "DIFFERENCE");
-        public static final Operator<Object> UNION = new OperatorImpl<Object>(NS, "UNION");
-        public static final Operator<Object> SYMDIFFERENCE = new OperatorImpl<Object>(NS, "SYMDIFFERENCE");
-        public static final Operator<Object> BUFFER = new OperatorImpl<Object>(NS, "BUFFER");
-        public static final Operator<Object> BUFFER2 = new OperatorImpl<Object>(NS, "BUFFER2");
-        public static final Operator<Object> CONVEXHULL = new OperatorImpl<Object>(NS, "CONVEXHULL");
-        public static final Operator<Object> TRANSFORM = new OperatorImpl<Object>(NS, "TRANSFORM");
+    // Point
+    X,
+    X2,
+    Y,
+    Y2,
+    Z,
+    Z2,
+    M,
+    M2,
 
-        // Point
-        public static final Operator<Object> X = new OperatorImpl<Object>(NS, "X");
-        public static final Operator<Object> X2 = new OperatorImpl<Object>(NS, "X2");
-        public static final Operator<Object> Y = new OperatorImpl<Object>(NS, "Y");
-        public static final Operator<Object> Y2 = new OperatorImpl<Object>(NS, "Y2");
-        public static final Operator<Object> Z = new OperatorImpl<Object>(NS, "Z");
-        public static final Operator<Object> Z2 = new OperatorImpl<Object>(NS, "Z2");
-        public static final Operator<Object> M = new OperatorImpl<Object>(NS, "M");
-        public static final Operator<Object> M2 = new OperatorImpl<Object>(NS, "M2");
+    // Curve
+    START_POINT,
+    END_POINT,
+    IS_RING,
+    LENGTH,
+    LENGTH2,
 
-        // Curve
-        public static final Operator<Object> START_POINT = new OperatorImpl<Object>(NS, "START_POINT");
-        public static final Operator<Object> END_POINT = new OperatorImpl<Object>(NS, "END_POINT");
-        public static final Operator<Object> IS_RING = new OperatorImpl<Object>(NS, "IS_RING");
-        public static final Operator<Object> LENGTH = new OperatorImpl<Object>(NS, "LENGTH");
-        public static final Operator<Object> LENGTH2 = new OperatorImpl<Object>(NS, "LENGTH2");
+    // LineString
+    NUM_POINTS,
+    POINTN,
 
-        //LineString
-        public static final Operator<Object> NUM_POINTS = new OperatorImpl<Object>(NS, "NUM_POINTS");
-        public static final Operator<Object> POINTN = new OperatorImpl<Object>(NS, "POINTN");
+    // Surface
+    AREA,
+    AREA2,
+    CENTROID,
+    POINT_ON_SURFACE,
 
-        // Surface
-        public static final Operator<Object> AREA = new OperatorImpl<Object>(NS, "AREA");
-        public static final Operator<Object> AREA2 = new OperatorImpl<Object>(NS, "AREA2");
-        public static final Operator<Object> CENTROID = new OperatorImpl<Object>(NS, "CENTROID");
-        public static final Operator<Object> POINT_ON_SURFACE = new OperatorImpl<Object>(NS, "POINT_ON_SURFACE");
+    // Polygon
+    EXTERIOR_RING,
+    EXTERIOR_RING2,
+    INTERIOR_RINGS,
+    INTERIOR_RINGS2,
+    NUM_INTERIOR_RING,
+    INTERIOR_RINGN,
 
-        // Polygon
-        public static final Operator<Object> EXTERIOR_RING = new OperatorImpl<Object>(NS, "EXTERIOR_RING");
-        public static final Operator<Object> EXTERIOR_RING2 = new OperatorImpl<Object>(NS, "EXTERIOR_RING2");
-        public static final Operator<Object> INTERIOR_RINGS = new OperatorImpl<Object>(NS, "INTERIOR_RINGS");
-        public static final Operator<Object> INTERIOR_RINGS2 = new OperatorImpl<Object>(NS, "INTERIOR_RINGS2");
-        public static final Operator<Object> NUM_INTERIOR_RING = new OperatorImpl<Object>(NS, "NUM_INTERIOR_RING");
-        public static final Operator<Object> INTERIOR_RINGN = new OperatorImpl<Object>(NS, "INTERIOR_RINGN");
+    // Polyhedral Surface
+    GEOMETRIES,
+    NUM_SURFACES,
+    SURFACE,
 
-        // Polyhedral Surface
-        public static final Operator<Object> GEOMETRIES = new OperatorImpl<Object>(NS, "GEOMETRIES");
-        public static final Operator<Object> NUM_SURFACES = new OperatorImpl<Object>(NS, "NUM_SURFACES");
-        public static final Operator<Object> SURFACE = new OperatorImpl<Object>(NS, "SURFACE");
+    // GeometryCollection
+    NUM_GEOMETRIES,
+    GEOMETRYN,
 
-        // GeometryCollection
-        public static final Operator<Object> NUM_GEOMETRIES = new OperatorImpl<Object>(NS, "NUM_GEOMETRIES");
-        public static final Operator<Object> GEOMETRYN = new OperatorImpl<Object>(NS, "GEOMETRYN");
+    // MultiCurve
+    IS_CLOSED,
 
-        // MultiCurve
-        public static final Operator<Object> IS_CLOSED = new OperatorImpl<Object>(NS, "IS_CLOSED");
-
-        // Extensions
-        public static final Operator<Object> AS_EWKT = new OperatorImpl<Object>(NS, "AS_EWKT");
-        public static final Operator<Object> GEOM_FROM_TEXT = new OperatorImpl<Object>(NS, "GEOM_FROM_TEXT");
-        public static final Operator<Object> SET_SRID = new OperatorImpl<Object>(NS, "SET_SRID");
-        public static final Operator<Object> XMIN = new OperatorImpl<Object>(NS, "XMIN");
-        public static final Operator<Object> XMAX = new OperatorImpl<Object>(NS, "XMAX");
-        public static final Operator<Object> YMIN = new OperatorImpl<Object>(NS, "YMIN");
-        public static final Operator<Object> YMAX = new OperatorImpl<Object>(NS, "YMAX");
-        public static final Operator<Object> DWITHIN = new OperatorImpl<Object>(NS, "DWITHIN");
-        public static final Operator<Object> EXTENT = new OperatorImpl<Object>(NS, "EXTENT");
-        public static final Operator<Object> COLLECT = new OperatorImpl<Object>(NS, "COLLECT");
-        public static final Operator<Object> COLLECT2 = new OperatorImpl<Object>(NS, "COLLECT2");
-        public static final Operator<Object> TRANSLATE = new OperatorImpl<Object>(NS, "TRANSLATE");
-        public static final Operator<Object> TRANSLATE2 = new OperatorImpl<Object>(NS, "TRANSLATE2");
-
-    }
+    // Extensions
+    AS_EWKT,
+    GEOM_FROM_TEXT,
+    SET_SRID,
+    XMIN,
+    XMAX,
+    YMIN,
+    YMAX,
+    DWITHIN,
+    EXTENT,
+    COLLECT,
+    COLLECT2,
+    TRANSLATE,
+    TRANSLATE2;
+}

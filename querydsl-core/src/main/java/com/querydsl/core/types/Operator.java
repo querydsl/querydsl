@@ -19,16 +19,14 @@ import java.io.Serializable;
  * Operator represents operator symbols
  *
  * @author tiwe
- *
- * @param <T> related expression type
  */
-public interface Operator<T> extends Serializable{
+public interface Operator extends Serializable{
 
     /**
      * Get the unique id for this Operator
      *
      * @return
      */
-    String getId();
+    String name();
     
 }

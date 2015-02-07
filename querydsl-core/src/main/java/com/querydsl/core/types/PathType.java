@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 /**
  * PathType represents the relation of a {@link Path} to its parent
  */
-public enum PathType implements Operator<Object> {
+public enum PathType implements Operator {
     /**
      * Indexed array access (array[i])
      */
@@ -66,10 +66,5 @@ public enum PathType implements Operator<Object> {
      * Root path
      */
     VARIABLE;
-    
-    @Override
-    public String getId() {
-        return name();
-    }
     
 }

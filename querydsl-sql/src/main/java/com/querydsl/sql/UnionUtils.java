@@ -29,7 +29,7 @@ import com.querydsl.core.types.SubQueryExpression;
 public final class UnionUtils {
 
     public static Expression<?> union(SubQueryExpression<?>[] union, boolean unionAll) {
-        final Operator<Object> operator = unionAll ? SQLOps.UNION_ALL : SQLOps.UNION;
+        final Operator operator = unionAll ? SQLOps.UNION_ALL : SQLOps.UNION;
         Expression<?> rv = union[0];
         for (int i = 1; i < union.length; i++) {
             rv = OperationImpl.create(rv.getType(), operator, rv, union[i]);
