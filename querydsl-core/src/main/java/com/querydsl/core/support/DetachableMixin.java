@@ -107,7 +107,7 @@ public class DetachableMixin implements Detachable {
         QueryMetadata metadata = queryMixin.getMetadata().clone();
         Expression<?>[] copy = new Expression<?>[projection.length];
         for (int i = 0; i < copy.length; i++) {
-            Expression<?> expr = queryMixin.convert(projection[i], false);
+            Expression<?> expr = queryMixin.convert(projection[i], QueryMixin.Role.SELECT);
             copy[i] = nullAsTemplate(expr);
         }
         metadata.setProjection(Projections.tuple(copy));
@@ -116,7 +116,7 @@ public class DetachableMixin implements Detachable {
 
     private QueryMetadata projection(Expression<?> projection) {
         QueryMetadata metadata = queryMixin.getMetadata().clone();
-        Expression<?> expr = queryMixin.convert(projection, false);
+        Expression<?> expr = queryMixin.convert(projection, QueryMixin.Role.SELECT);
         expr = nullAsTemplate(expr);
         metadata.setProjection(expr);
         return metadata;

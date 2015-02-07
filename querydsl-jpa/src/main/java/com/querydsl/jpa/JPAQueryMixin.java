@@ -172,21 +172,21 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     @Override
-    public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
+    public <RT> Expression<RT> convert(Expression<RT> expr, Role role) {
         expr = (Expression<RT>) expr.accept(mapAccessVisitor, null);
         expr = (Expression<RT>) expr.accept(listAccessVisitor, null);
-        if (forOrder) {
+        if (role == Role.ORDER_BY) {
             if (expr instanceof Path) {
                 expr = convertPathForOrder((Path)expr);
             } else {
                 expr = (Expression<RT>)expr.accept(replaceVisitor, null);
             }
         }
-        return Conversions.convert(super.convert(expr, forOrder));
+        return Conversions.convert(super.convert(expr, role));
     }
 
     @Override
-    protected Predicate normalize(Predicate predicate, boolean where) {
+    protected Predicate convert(Predicate predicate, Role role) {
         if (predicate != null) {
             predicate = (Predicate) ExpressionUtils.extract(predicate);
         }
