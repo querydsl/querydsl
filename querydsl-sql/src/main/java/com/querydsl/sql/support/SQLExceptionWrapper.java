@@ -35,7 +35,7 @@ public abstract class SQLExceptionWrapper {
         double javaVersion
                 = Double.parseDouble(JAVA_SPECIFICATION_VERSION.value());
         if (javaVersion > 1.6) {
-            INSTANCE = new JaveSE7SQLExceptionWrapper();
+            INSTANCE = new JavaSE7SQLExceptionWrapper();
         } else {
             INSTANCE = new JavaSE6SQLExceptionWrapper();
         }
