@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +29,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
+import com.querydsl.core.types.Path;
 import com.querydsl.sql.types.ArrayType;
 import com.querydsl.sql.types.Null;
 import com.querydsl.sql.types.Type;
-import com.querydsl.core.types.Path;
 
 /**
  * Configuration for SQLQuery instances
@@ -45,21 +44,13 @@ public final class Configuration {
 
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-    public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
+    static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
 
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
 
-    private final Map<SchemaAndTable, SchemaAndTable> schemaTables = Maps.newHashMap();
-
-    private final Map<String, String> schemas = Maps.newHashMap();
-
-    private final Map<String, String> tables = Maps.newHashMap();
-
-    private final Map<SchemaAndTable, Map<String, String>> schemaTableColumns = Maps.newHashMap();
-
-    private final Map<String, Map<String, String>> tableColumns = Maps.newHashMap();
+    private final NameMapping nameMapping = new NameMapping();
 
     private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
@@ -84,7 +75,7 @@ public final class Configuration {
             javaTypeMapping.register(customType);
         }
         for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
-            schemaTables.put(entry.getKey(), entry.getValue());
+            nameMapping.registerTableOverride(entry.getKey(), entry.getValue());
         }
 
         if (templates.isArraysSupported()) {
@@ -201,23 +192,7 @@ public final class Configuration {
      */
     @Nullable
     public SchemaAndTable getOverride(SchemaAndTable key) {
-        if (!schemaTables.isEmpty() && key.getSchema() != null) {
-            if (schemaTables.containsKey(key)) {
-                return schemaTables.get(key);
-            }
-        }
-        String schema = key.getSchema(), table = key.getTable();
-        boolean changed = false;
-        if (schemas.containsKey(key.getSchema())) {
-            schema = schemas.get(key.getSchema());
-            changed = true;
-        }
-
-        if (tables.containsKey(key.getTable())) {
-            table = tables.get(key.getTable());
-            changed = true;
-        }
-        return changed ? new SchemaAndTable(schema, table) : key;
+        return nameMapping.getOverride(key);
     }
 
     /**
@@ -228,18 +203,7 @@ public final class Configuration {
      * @return
      */
     public String getColumnOverride(SchemaAndTable key, String column) {
-        Map<String, String> columnOverrides;
-        String newColumn = null;
-        columnOverrides = schemaTableColumns.get(key);
-        if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
-            return newColumn;
-        }
-        columnOverrides = tableColumns.get(key.getTable());
-        if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
-            return newColumn;
-        }
-        return column;
-
+        return nameMapping.getColumnOverride(key, column);
     }
 
     /**
@@ -313,7 +277,7 @@ public final class Configuration {
      * @return
      */
     public String registerSchemaOverride(String oldSchema, String newSchema) {
-        return schemas.put(oldSchema, newSchema);
+        return nameMapping.registerSchemaOverride(oldSchema, newSchema);
     }
 
     /**
@@ -324,7 +288,7 @@ public final class Configuration {
      * @return
      */
     public String registerTableOverride(String oldTable, String newTable) {
-        return tables.put(oldTable, newTable);
+        return nameMapping.registerTableOverride(oldTable, newTable);
     }
 
     /**
@@ -361,7 +325,7 @@ public final class Configuration {
      * @return
      */
     public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
-        return schemaTables.put(from, to);
+        return nameMapping.registerTableOverride(from, to);
     }
 
     /**
@@ -374,13 +338,7 @@ public final class Configuration {
      * @return
      */
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
-        SchemaAndTable key = new SchemaAndTable(schema, table);
-        Map<String, String> columnOverrides = schemaTableColumns.get(key);
-        if (columnOverrides == null) {
-            columnOverrides = new HashMap<String, String>();
-            schemaTableColumns.put(key, columnOverrides);
-        }
-        return columnOverrides.put(oldColumn, newColumn);
+        return nameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
     }
 
     /**
@@ -392,12 +350,7 @@ public final class Configuration {
      * @return
      */
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
-        Map<String, String> columnOverrides = tableColumns.get(table);
-        if (columnOverrides == null) {
-            columnOverrides = new HashMap<String, String>();
-            tableColumns.put(table, columnOverrides);
-        }
-        return columnOverrides.put(oldColumn, newColumn);
+        return nameMapping.registerColumnOverride(table, oldColumn, newColumn);
     }
 
     /**

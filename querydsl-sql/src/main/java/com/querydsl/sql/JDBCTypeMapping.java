@@ -13,7 +13,6 @@
  */
 package com.querydsl.sql;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Blob;
@@ -22,6 +21,8 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
@@ -32,7 +33,7 @@ import com.querydsl.sql.types.Null;
  * @author tiwe
  *
  */
-public final class JDBCTypeMapping {
+final class JDBCTypeMapping {
 
     private static final Map<Integer, Class<?>> defaultTypes = new HashMap<Integer, Class<?>>();
 

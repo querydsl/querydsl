@@ -42,11 +42,11 @@ import com.querydsl.core.types.template.NumberTemplate;
 public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extends DetachableQuery<Q> implements SQLCommonQuery<Q> {
 
     protected final Configuration configuration;
-    
+
     public DetachableSQLQuery() {
         this(new DefaultQueryMetadata().noValidate());
     }
-    
+
     public DetachableSQLQuery(QueryMetadata metadata) {
         this(Configuration.DEFAULT, metadata);
     }
