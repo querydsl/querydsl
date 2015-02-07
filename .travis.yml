@@ -15,5 +15,6 @@ before_script:
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
 script:
+  - jdk_switcher use openjdk6
   - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'
 
