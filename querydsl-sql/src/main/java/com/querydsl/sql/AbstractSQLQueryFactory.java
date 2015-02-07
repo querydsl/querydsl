@@ -17,7 +17,6 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.dml.SQLMergeClause;
@@ -79,13 +78,11 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>, SQ ex
 
     @SuppressWarnings("unchecked")
     @Override
-    @WithBridgeMethods(value=SQLSubQuery.class, castRequired=true)
     public SQ subQuery() {
         return (SQ) new SQLSubQuery();
     }
 
     @Override
-    @WithBridgeMethods(value=SQLSubQuery.class, castRequired=true)
     public final SQ subQuery(Expression<?> from) {
         return subQuery().from(from);
     }

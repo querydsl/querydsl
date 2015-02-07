@@ -36,14 +36,6 @@ public class JoinTest {
     private final JPASubQuery subQuery = new JPASubQuery();
     private final HibernateQuery query = new HibernateQuery(new DummySessionHolder(), HQLTemplates.DEFAULT);
 
-    
-    @Test
-    public void SubQuery_FullJoin() {
-        subQuery.from($(alias));
-        subQuery.fullJoin($(alias.getNames()), path);
-        // TODO : assertions
-    }
-    
     @Test
     public void SubQuery_InnerJoin() {
         subQuery.from($(alias));
@@ -64,14 +56,7 @@ public class JoinTest {
         subQuery.leftJoin($(alias.getNames()), path);
         // TODO : assertions
     }
-    
-    @Test
-    public void Query_FullJoin() {
-        query.from($(alias));
-        query.fullJoin($(alias.getNames()), path);
-        // TODO : assertions
-    }
-    
+
     @Test
     public void Query_InnerJoin() {
         query.from($(alias));

@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
 @Embeddable
-@Deprecated
 public class FileAttachment {
 
     @Transient
@@ -41,12 +40,10 @@ public class FileAttachment {
         return null;
     }
 
-    @Deprecated
     public boolean exists() {
         return isSet();
     }
 
-    @Deprecated
     public long length() {
         return get().length();
     }

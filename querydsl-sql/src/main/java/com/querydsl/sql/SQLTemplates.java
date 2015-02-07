@@ -685,16 +685,6 @@ public class SQLTemplates extends Templates {
         return tableOverrides;
     }
 
-    @Deprecated
-    public String getTypeForCast(Class<?> cl) {
-        return getTypeForClass(cl);
-    }
-
-    @Deprecated
-    public String getTypeForClass(Class<?> cl) {
-        throw new UnsupportedOperationException();
-    }
-
     public String getTypeNameForCode(int code) {
         return codeToTypeName.get(code);
     }

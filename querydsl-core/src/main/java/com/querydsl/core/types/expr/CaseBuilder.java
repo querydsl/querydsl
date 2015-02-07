@@ -13,11 +13,12 @@
  */
 package com.querydsl.core.types.expr;
 
-import javax.annotation.Nullable;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.querydsl.core.types.*;
 
@@ -117,11 +118,6 @@ public final class CaseBuilder {
             return new CaseWhen<A,Q>(this, b);
         }
 
-        // TODO remove in 4.0.0
-        public CaseWhen<A,Q> when(BooleanExpression b) {
-            return new CaseWhen<A,Q>(this, b);
-        }
-
     }
 
     /**
@@ -138,12 +134,6 @@ public final class CaseBuilder {
         private final Cases<A,Q> cases;
 
         public CaseWhen(Cases<A,Q> cases, Predicate b) {
-            this.cases = cases;
-            this.b = b;
-        }
-
-        // TODO remove in 4.0.0
-        public CaseWhen(Cases<A,Q> cases, BooleanExpression b) {
             this.cases = cases;
             this.b = b;
         }
@@ -168,11 +158,6 @@ public final class CaseBuilder {
         private final Predicate when;
 
         public Initial(Predicate b) {
-            this.when = b;
-        }
-
-        // TODO remove in 4.0.0
-        public Initial(BooleanExpression b) {
             this.when = b;
         }
 
@@ -216,12 +201,6 @@ public final class CaseBuilder {
         public Cases<Boolean, BooleanExpression> then(Predicate expr) {
             return thenBoolean(expr);
         }
-
-        // TODO remove in 4.0.0
-        public Cases<Boolean, BooleanExpression> then(BooleanExpression expr) {
-            return thenBoolean(expr);
-        }
-
 
         private Cases<Boolean, BooleanExpression> thenBoolean(Expression<Boolean> expr) {
             return new Cases<Boolean,BooleanExpression>(Boolean.class) {
@@ -278,11 +257,6 @@ public final class CaseBuilder {
             return thenDate(ConstantImpl.create(date));
         }
 
-        @Deprecated
-        public Cases<java.sql.Date, DateExpression<java.sql.Date>> thenDate(java.sql.Date date) {
-            return then(date);
-        }
-
         // DateTime
 
         public <T extends Comparable> Cases<T, DateTimeExpression<T>> then(DateTimeExpression<T> expr) {
@@ -303,18 +277,8 @@ public final class CaseBuilder {
             return thenDateTime(ConstantImpl.create(ts));
         }
 
-        @Deprecated
-        public Cases<Timestamp, DateTimeExpression<Timestamp>> thenDateTime(Timestamp ts) {
-            return then(ts);
-        }
-
         public Cases<java.util.Date, DateTimeExpression<java.util.Date>> then(java.util.Date date) {
             return thenDateTime(ConstantImpl.create(date));
-        }
-
-        @Deprecated
-        public Cases<java.util.Date, DateTimeExpression<java.util.Date>> thenDateTime(java.util.Date date) {
-            return then(date);
         }
 
         // Enum
@@ -405,8 +369,4 @@ public final class CaseBuilder {
         return new Initial(b);
     }
 
-    // TODO remove in 4.0.0
-    public Initial when(BooleanExpression b) {
-        return new Initial(b);
-    }
 }

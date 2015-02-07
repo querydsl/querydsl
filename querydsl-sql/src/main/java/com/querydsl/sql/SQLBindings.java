@@ -32,11 +32,6 @@ public class SQLBindings {
         this.bindings = bindings;
     }
 
-    @Deprecated
-    public String getSql() {
-        return sql;
-    }
-
     public String getSQL() {
         return sql;
     }

@@ -519,7 +519,7 @@ WHERE c.first_name = 'Bob'
     </para>
 
     <para>
-      <emphasis>innerJoin, join, leftJoin, fullJoin, on:</emphasis>
+      <emphasis>innerJoin, join, leftJoin, rightJoin, fullJoin, on:</emphasis>
       Add join elements using these constructs.
       For the join methods the first argument is the join source and the second the target
       (alias).

@@ -389,7 +389,7 @@ from Cat as cat
     </para>
 
     <para>
-      <emphasis>innerJoin, join, leftJoin, fullJoin, on:</emphasis>
+      <emphasis>innerJoin, join, leftJoin, rightJoin, on:</emphasis>
       조인 부분을 추가한다. 조인 메서드에서 첫 번째 인자는 조인 소스이고,
       두 번재 인자는 대상(별칭)이다.
     </para>

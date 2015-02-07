@@ -60,15 +60,4 @@ public class JPQLQueryTest {
         query.leftJoin(cat.kittens, cat.mate);
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void FullJoinPEntityOfPPEntityOfP() {
-        query.fullJoin(cat.mate, cat.mate);
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void FullJoinPathOfQextendsCollectionOfPPathOfP() {
-        query.fullJoin(cat.kittens, cat.mate);
-    }
-
-
 }

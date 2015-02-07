@@ -19,9 +19,6 @@ package com.querydsl.maven;
  */
 public class NumericMapping {
 
-    @Deprecated
-    public int size, digits;
-
     public int total, decimal;
 
     public String javaType;

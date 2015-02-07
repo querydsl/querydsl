@@ -27,7 +27,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class SQLQueryFactoryTest {
 
-    private SQLQueryFactoryImpl queryFactory;
+    private SQLQueryFactory queryFactory;
 
     @Before
     public void setUp() {
@@ -37,7 +37,7 @@ public class SQLQueryFactoryTest {
                 return EasyMock.createNiceMock(Connection.class);
             }
         };
-        queryFactory = new SQLQueryFactoryImpl(SQLTemplates.DEFAULT, provider);
+        queryFactory = new SQLQueryFactory(SQLTemplates.DEFAULT, provider);
     }
 
     @Test

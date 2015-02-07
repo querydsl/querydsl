@@ -99,8 +99,8 @@ public class MetadataExportMojoTest {
     public void ExecuteWithNumericMappings() throws Exception {
         mojo.setTargetFolder("target/export5");
         NumericMapping mapping = new NumericMapping();
-        mapping.size = 1;
-        mapping.digits = 1;
+        mapping.total = 1;
+        mapping.decimal = 1;
         mapping.javaType = Number.class.getName();
         mojo.setNumericMappings(new NumericMapping[]{mapping});
 
