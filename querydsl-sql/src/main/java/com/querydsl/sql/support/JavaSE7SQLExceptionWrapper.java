@@ -23,7 +23,7 @@ import com.querydsl.core.QueryException;
  *
  * @author Shredder121
  */
-class JaveSE7SQLExceptionWrapper extends SQLExceptionWrapper {
+class JavaSE7SQLExceptionWrapper extends SQLExceptionWrapper {
 
     @Override
     public RuntimeException wrap(SQLException exception) {
