@@ -15,14 +15,15 @@ package com.querydsl.mongodb.morphia;
 
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
 import com.mongodb.DBRef;
-import com.querydsl.mongodb.MongodbSerializer;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathType;
+import com.querydsl.mongodb.MongodbSerializer;
 
 /**
  * MorphiaSerializer extends {@link MongodbSerializer} with Morphia specific annotation handling
@@ -40,7 +41,9 @@ public class MorphiaSerializer extends MongodbSerializer {
 
     @Override
     protected String getKeyForPath(Path<?> expr, PathMetadata metadata) {
-        if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
+        if (expr.getAnnotatedElement().isAnnotationPresent(Id.class)) {
+            return "_id";
+        } else if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
             return expr.getAnnotatedElement().getAnnotation(Property.class).value();
         } else {
             return super.getKeyForPath(expr, metadata);

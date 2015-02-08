@@ -18,30 +18,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
-import org.bson.types.ObjectId;
 
 import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
-import com.querydsl.core.types.Constant;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.ParamExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathType;
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * Serializes the given Querydsl query to a DBObject query for MongoDB
@@ -320,11 +303,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     protected String getKeyForPath(Path<?> expr, PathMetadata metadata) {
-        if (expr.getType().equals(ObjectId.class)) {
-            return "_id";
-        } else {
-            return metadata.getElement().toString();
-        }
+        return metadata.getElement().toString();
     }
 
     @Override
