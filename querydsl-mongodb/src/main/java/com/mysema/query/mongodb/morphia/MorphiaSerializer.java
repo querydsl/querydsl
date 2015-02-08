@@ -15,6 +15,7 @@ package com.mysema.query.mongodb.morphia;
 
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
@@ -40,10 +41,12 @@ public class MorphiaSerializer extends MongodbSerializer {
 
     @Override
     protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
-        if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
+        if (expr.getAnnotatedElement().isAnnotationPresent(Id.class)) {
+            return "_id";
+        } else if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
             return expr.getAnnotatedElement().getAnnotation(Property.class).value();
         } else {
-            return super.getKeyForPath(expr, metadata);
+            return metadata.getElement().toString();
         }
     }
 

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +28,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mysema.query.mongodb.domain.QDummyEntity;
+import com.mysema.query.mongodb.domain.QPerson;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.morphia.MorphiaSerializer;
 import com.mysema.query.types.Expression;
@@ -216,6 +218,13 @@ public class MongodbSerializerTest {
                 append("year", dbo("$ne", 1800)));
     }
 
+    @Test
+    public void ObjectId() {
+        ObjectId id = new ObjectId();
+        QPerson person = QPerson.person;
+        assertQuery(person.id.eq(id), dbo("_id",id));
+        assertQuery(person.addressId.eq(id), dbo("addressId",id));
+    }
 
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
         return Arrays.asList(order);
