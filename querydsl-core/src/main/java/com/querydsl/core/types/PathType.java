@@ -66,5 +66,9 @@ public enum PathType implements Operator {
      * Root path
      */
     VARIABLE;
+
+    public Class<?> getType() {
+        return Object.class;
+    }
     
 }

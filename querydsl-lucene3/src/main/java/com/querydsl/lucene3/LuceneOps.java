@@ -20,7 +20,17 @@ import com.querydsl.core.types.Operator;
  *
  */
 public enum LuceneOps implements Operator {
-    LUCENE_QUERY,
-    PHRASE,
-    TERM
+    LUCENE_QUERY(Object.class),
+    PHRASE(String.class),
+    TERM(String.class);
+
+    private final Class<?> type;
+
+    private LuceneOps(Class<?> type) {
+        this.type = type;
+    }
+
+    public Class<?> getType() {
+        return type;
+    }
 }

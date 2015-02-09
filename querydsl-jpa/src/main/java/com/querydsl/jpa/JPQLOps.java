@@ -20,12 +20,22 @@ import com.querydsl.core.types.Operator;
  *
  */
 public enum JPQLOps implements Operator {
-    TREAT,
-    INDEX,
-    TYPE,
-    CAST,
-    MEMBER_OF,
-    NOT_MEMBER_OF,
-    KEY,
-    VALUE
+    TREAT(Object.class),
+    INDEX(Integer.class),
+    TYPE(String.class),
+    CAST(Object.class),
+    MEMBER_OF(Boolean.class),
+    NOT_MEMBER_OF(Boolean.class),
+    KEY(Object.class),
+    VALUE(Object.class);
+
+    private final Class<?> type;
+
+    private JPQLOps(Class<?> type) {
+        this.type = type;
+    }
+
+    public Class<?> getType() {
+        return type;
+    }
 }

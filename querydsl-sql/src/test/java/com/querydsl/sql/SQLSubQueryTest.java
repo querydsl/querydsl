@@ -38,6 +38,7 @@ public class SQLSubQueryTest {
         Operator op = new Operator() {
             public String name() { return "unknownfn"; }
             public String toString() { return name(); }
+            public Class<?> getType() { return Object.class; }
         };
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee)

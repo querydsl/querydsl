@@ -25,96 +25,106 @@ import com.google.common.collect.ImmutableSet;
 public enum Ops implements Operator {
 
     // general
-    EQ,
-    NE,
-    IS_NULL,
-    IS_NOT_NULL,
-    INSTANCE_OF,
-    NUMCAST,
-    STRING_CAST,
-    ALIAS,
-    LIST,
-    SINGLETON,
-    ORDINAL,
-    WRAPPED,
+    EQ(Boolean.class),
+    NE(Boolean.class),
+    IS_NULL(Boolean.class),
+    IS_NOT_NULL(Boolean.class),
+    INSTANCE_OF(Boolean.class),
+    NUMCAST(Number.class),
+    STRING_CAST(String.class),
+    ALIAS(Object.class),
+    LIST(Object.class),
+    SINGLETON(Object.class),
+    ORDINAL(Integer.class),
+    WRAPPED(Object.class),
 
     // collection
-    IN, // cmp. contains
-    NOT_IN,
-    COL_IS_EMPTY,
-    COL_SIZE,
+    IN(Boolean.class), // cmp. contains
+    NOT_IN(Boolean.class),
+    COL_IS_EMPTY(Boolean.class),
+    COL_SIZE(Integer.class),
 
     // array
-    ARRAY_SIZE,
+    ARRAY_SIZE(Number.class),
 
     // map
-    CONTAINS_KEY,
-    CONTAINS_VALUE,
-    MAP_SIZE,
-    MAP_IS_EMPTY,
+    CONTAINS_KEY(Boolean.class),
+    CONTAINS_VALUE(Boolean.class),
+    MAP_SIZE(Integer.class),
+    MAP_IS_EMPTY(Boolean.class),
 
     // Boolean
-    AND,
-    NOT,
-    OR,
-    XNOR,
-    XOR,
+    AND(Boolean.class),
+    NOT(Boolean.class),
+    OR(Boolean.class),
+    XNOR(Boolean.class),
+    XOR(Boolean.class),
 
     // Comparable
-    BETWEEN,
-    GOE,
-    GT,
-    LOE,
-    LT,
+    BETWEEN(Boolean.class),
+    GOE(Boolean.class),
+    GT(Boolean.class),
+    LOE(Boolean.class),
+    LT(Boolean.class),
 
     // Number
-    NEGATE,
-    ADD,
-    DIV,
-    MULT,
-    SUB,
-    MOD,
+    NEGATE(Number.class),
+    ADD(Number.class),
+    DIV(Number.class),
+    MULT(Number.class),
+    SUB(Number.class),
+    MOD(Number.class),
 
     // String
-    CHAR_AT,
-    CONCAT,
-    LOWER,
-    SUBSTR_1ARG,
-    SUBSTR_2ARGS,
-    TRIM,
-    UPPER,
-    MATCHES,
-    MATCHES_IC,
-    STRING_LENGTH,
-    STRING_IS_EMPTY,
-    STARTS_WITH,
-    STARTS_WITH_IC,
-    INDEX_OF_2ARGS,
-    INDEX_OF,
-    EQ_IGNORE_CASE,
-    ENDS_WITH,
-    ENDS_WITH_IC,
-    STRING_CONTAINS,
-    STRING_CONTAINS_IC,
-    LIKE,
-    LIKE_ESCAPE,
+    CHAR_AT(Character.class),
+    CONCAT(String.class),
+    LOWER(String.class),
+    SUBSTR_1ARG(String.class),
+    SUBSTR_2ARGS(String.class),
+    TRIM(String.class),
+    UPPER(String.class),
+    MATCHES(Boolean.class),
+    MATCHES_IC(Boolean.class),
+    STRING_LENGTH(Integer.class),
+    STRING_IS_EMPTY(Boolean.class),
+    STARTS_WITH(Boolean.class),
+    STARTS_WITH_IC(Boolean.class),
+    INDEX_OF_2ARGS(Integer.class),
+    INDEX_OF(Integer.class),
+    EQ_IGNORE_CASE(Boolean.class),
+    ENDS_WITH(Boolean.class),
+    ENDS_WITH_IC(Boolean.class),
+    STRING_CONTAINS(Boolean.class),
+    STRING_CONTAINS_IC(Boolean.class),
+    LIKE(Boolean.class),
+    LIKE_ESCAPE(Boolean.class),
 
     // case
-    CASE,
-    CASE_WHEN,
-    CASE_ELSE,
+    CASE(Object.class),
+    CASE_WHEN(Object.class),
+    CASE_ELSE(Object.class),
 
     // case for eq
-    CASE_EQ,
-    CASE_EQ_WHEN,
-    CASE_EQ_ELSE,
+    CASE_EQ(Object.class),
+    CASE_EQ_WHEN(Object.class),
+    CASE_EQ_ELSE(Object.class),
 
     // coalesce
-    COALESCE,
-    NULLIF,
+    COALESCE(Object.class),
+    NULLIF(Object.class),
 
     // subquery operations
-    EXISTS;
+    EXISTS(Boolean.class);
+
+    private final Class<?> type;
+
+    private Ops(Class<?> type) {
+        this.type = type;
+    }
+
+    public Class<?> getType() {
+        return type;
+    }
 
     public static final Set<Operator> equalsOps = ImmutableSet.<Operator>of(EQ);
 
@@ -135,16 +145,26 @@ public enum Ops implements Operator {
      */
     @SuppressWarnings("unchecked")
     public enum AggOps implements Operator {
-        BOOLEAN_ALL,
-        BOOLEAN_ANY,
-        MAX_AGG,
-        MIN_AGG,
-        AVG_AGG,
-        SUM_AGG,
-        COUNT_AGG,
-        COUNT_DISTINCT_AGG,
-        COUNT_DISTINCT_ALL_AGG,
-        COUNT_ALL_AGG
+        BOOLEAN_ALL(Boolean.class),
+        BOOLEAN_ANY(Boolean.class),
+        MAX_AGG(Comparable.class),
+        MIN_AGG(Comparable.class),
+        AVG_AGG(Number.class),
+        SUM_AGG(Number.class),
+        COUNT_AGG(Number.class),
+        COUNT_DISTINCT_AGG(Number.class),
+        COUNT_DISTINCT_ALL_AGG(Number.class),
+        COUNT_ALL_AGG(Number.class);
+
+        private final Class<?> type;
+
+        private AggOps(Class<?> type) {
+            this.type = type;
+        }
+
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
@@ -152,11 +172,21 @@ public enum Ops implements Operator {
      */
     @SuppressWarnings("unchecked")
     public enum QuantOps implements Operator {
-        AVG_IN_COL,
-        MAX_IN_COL,
-        MIN_IN_COL,
-        ANY,
-        ALL
+        AVG_IN_COL(Number.class),
+        MAX_IN_COL(Comparable.class),
+        MIN_IN_COL(Comparable.class),
+        ANY(Object.class),
+        ALL(Object.class);
+
+        private final Class<?> type;
+
+        private QuantOps(Class<?> type) {
+            this.type = type;
+        }
+
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
@@ -164,44 +194,54 @@ public enum Ops implements Operator {
      */
     @SuppressWarnings("unchecked")
     public enum DateTimeOps implements Operator {
-        DATE,
-        CURRENT_DATE,
-        CURRENT_TIME,
-        CURRENT_TIMESTAMP,
-        ADD_YEARS,
-        ADD_MONTHS,
-        ADD_WEEKS,
-        ADD_DAYS,
-        ADD_HOURS,
-        ADD_MINUTES,
-        ADD_SECONDS,
-        DIFF_YEARS,
-        DIFF_MONTHS,
-        DIFF_WEEKS,
-        DIFF_DAYS,
-        DIFF_HOURS,
-        DIFF_MINUTES,
-        DIFF_SECONDS,
-        TRUNC_YEAR,
-        TRUNC_MONTH,
-        TRUNC_WEEK,
-        TRUNC_DAY,
-        TRUNC_HOUR,
-        TRUNC_MINUTE,
-        TRUNC_SECOND,
-        HOUR,
-        MINUTE,
-        MONTH,
-        SECOND,
-        MILLISECOND,
-        SYSDATE,
-        YEAR,
-        WEEK,
-        YEAR_MONTH,
-        YEAR_WEEK,
-        DAY_OF_WEEK,
-        DAY_OF_MONTH,
-        DAY_OF_YEAR
+        DATE(Comparable.class),
+        CURRENT_DATE(Comparable.class),
+        CURRENT_TIME(Comparable.class),
+        CURRENT_TIMESTAMP(Comparable.class),
+        ADD_YEARS(Comparable.class),
+        ADD_MONTHS(Comparable.class),
+        ADD_WEEKS(Comparable.class),
+        ADD_DAYS(Comparable.class),
+        ADD_HOURS(Comparable.class),
+        ADD_MINUTES(Comparable.class),
+        ADD_SECONDS(Comparable.class),
+        DIFF_YEARS(Comparable.class),
+        DIFF_MONTHS(Comparable.class),
+        DIFF_WEEKS(Comparable.class),
+        DIFF_DAYS(Comparable.class),
+        DIFF_HOURS(Comparable.class),
+        DIFF_MINUTES(Comparable.class),
+        DIFF_SECONDS(Comparable.class),
+        TRUNC_YEAR(Comparable.class),
+        TRUNC_MONTH(Comparable.class),
+        TRUNC_WEEK(Comparable.class),
+        TRUNC_DAY(Comparable.class),
+        TRUNC_HOUR(Comparable.class),
+        TRUNC_MINUTE(Comparable.class),
+        TRUNC_SECOND(Comparable.class),
+        HOUR(Integer.class),
+        MINUTE(Integer.class),
+        MONTH(Integer.class),
+        SECOND(Integer.class),
+        MILLISECOND(Integer.class),
+        SYSDATE(Comparable.class),
+        YEAR(Integer.class),
+        WEEK(Integer.class),
+        YEAR_MONTH(Integer.class),
+        YEAR_WEEK(Integer.class),
+        DAY_OF_WEEK(Integer.class),
+        DAY_OF_MONTH(Integer.class),
+        DAY_OF_YEAR(Integer.class);
+
+        private final Class<?> type;
+
+        private DateTimeOps(Class<?> type) {
+            this.type = type;
+        }
+
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
@@ -209,50 +249,70 @@ public enum Ops implements Operator {
      *
      */
     public enum MathOps implements Operator {
-        ABS,
-        ACOS,
-        ASIN,
-        ATAN,
-        CEIL,
-        COS,
-        TAN,
-        SQRT,
-        SIN,
-        ROUND,
-        ROUND2,
-        RANDOM,
-        RANDOM2,
-        POWER,
-        MIN,
-        MAX,
-        LOG,
-        FLOOR,
-        EXP,
-        COSH,
-        COT,
-        COTH,
-        DEG,
-        LN,
-        RAD,
-        SIGN,
-        SINH,
-        TANH
+        ABS(Number.class),
+        ACOS(Number.class),
+        ASIN(Number.class),
+        ATAN(Number.class),
+        CEIL(Number.class),
+        COS(Number.class),
+        TAN(Number.class),
+        SQRT(Number.class),
+        SIN(Number.class),
+        ROUND(Number.class),
+        ROUND2(Number.class),
+        RANDOM(Number.class),
+        RANDOM2(Number.class),
+        POWER(Number.class),
+        MIN(Number.class),
+        MAX(Number.class),
+        LOG(Number.class),
+        FLOOR(Number.class),
+        EXP(Number.class),
+        COSH(Number.class),
+        COT(Number.class),
+        COTH(Number.class),
+        DEG(Number.class),
+        LN(Number.class),
+        RAD(Number.class),
+        SIGN(Number.class),
+        SINH(Number.class),
+        TANH(Number.class);
+
+        private final Class<?> type;
+
+        private MathOps(Class<?> type) {
+            this.type = type;
+        }
+
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
      * String operators
      */
     public enum StringOps implements Operator {
-        LEFT,
-        RIGHT,
-        LTRIM,
-        RTRIM,
-        LPAD,
-        RPAD,
-        LPAD2,
-        RPAD2,
-        LOCATE,
-        LOCATE2
+        LEFT(String.class),
+        RIGHT(String.class),
+        LTRIM(String.class),
+        RTRIM(String.class),
+        LPAD(String.class),
+        RPAD(String.class),
+        LPAD2(String.class),
+        RPAD2(String.class),
+        LOCATE(Number.class),
+        LOCATE2(Number.class);
+
+        private final Class<?> type;
+
+        private StringOps(Class<?> type) {
+            this.type = type;
+        }
+
+        public Class<?> getType() {
+            return type;
+        }
     }
 
 }

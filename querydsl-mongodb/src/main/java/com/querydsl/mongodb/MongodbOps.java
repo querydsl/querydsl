@@ -20,6 +20,16 @@ import com.querydsl.core.types.Operator;
  *
  */
 public enum MongodbOps implements Operator {
-    NEAR,
-    ELEM_MATCH
+    NEAR(Boolean.class),
+    ELEM_MATCH(Boolean.class);
+
+    private final Class<?> type;
+
+    private MongodbOps(Class<?> type) {
+        this.type = type;
+    }
+
+    public Class<?> getType() {
+        return type;
+    }
 }

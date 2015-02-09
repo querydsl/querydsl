@@ -28,5 +28,12 @@ public interface Operator extends Serializable{
      * @return
      */
     String name();
+
+    /**
+     * Get the result type of the operator
+     *
+     * @return
+     */
+    Class<?> getType();
     
 }

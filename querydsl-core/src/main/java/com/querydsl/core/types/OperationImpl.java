@@ -17,7 +17,9 @@ import java.util.List;
 
 import javax.annotation.concurrent.Immutable;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Primitives;
 
 
 /**
@@ -50,6 +52,8 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     public OperationImpl(Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
         super(type);
+        Class<?> wrapped = Primitives.wrap(type);
+        Preconditions.checkArgument(operator.getType().isAssignableFrom(wrapped), operator.name());
         this.operator = operator;
         this.args = args;
     }
