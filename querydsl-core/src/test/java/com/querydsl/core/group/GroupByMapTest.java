@@ -17,7 +17,7 @@ package com.querydsl.core.group;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 import static com.querydsl.core.group.GroupBy.map;
-import static com.querydsl.core.group.GroupBy.set;
+import static com.querydsl.core.group.GroupBy.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -42,6 +42,18 @@ public class GroupByMapTest extends AbstractGroupByTest {
         Map<Integer, Group> results = BASIC_RESULTS
             .transform(groupBy(postId).as(postName, set(commentId)));
         assertEquals(4, results.size());
+    }
+
+    @Test
+    public void Set_By_Sorted() {
+        Map<Integer, Group> results = BASIC_RESULTS
+                .transform(groupBy(postId).as(postName, sortedSet(commentId)));
+
+        Group group = results.get(1);
+        Iterator<Integer> it = group.getSet(commentId).iterator();
+        assertEquals(1, it.next().intValue());
+        assertEquals(2, it.next().intValue());
+        assertEquals(3, it.next().intValue());
     }
 
     @Test
@@ -97,6 +109,19 @@ public class GroupByMapTest extends AbstractGroupByTest {
         Map<Integer, String> comments = group.getMap(commentId, commentText);
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
+    }
+
+    @Test
+    public void Map_Sorted() {
+        Map<Integer, Group> results = MAP_RESULTS.transform(
+                groupBy(postId).as(postName, sortedMap(commentId, commentText)));
+
+        Group group = results.get(1);
+
+        Iterator<Map.Entry<Integer, String>> it = group.getMap(commentId, commentText).entrySet().iterator();
+        assertEquals(1, it.next().getKey().intValue());
+        assertEquals(2, it.next().getKey().intValue());
+        assertEquals(3, it.next().getKey().intValue());
     }
 
     @Test
