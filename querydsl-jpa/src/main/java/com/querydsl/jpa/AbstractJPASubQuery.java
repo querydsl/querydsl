@@ -30,7 +30,7 @@ import com.querydsl.core.types.template.NumberTemplate;
  *
  * @param <Q> concrete subtype
  */
-public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends DetachableQuery<Q> implements JPQLSubQuery {
+public abstract class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends DetachableQuery<Q> implements JPQLSubQuery {
 
     private final JPAQueryMixin<Q> queryMixin;
 

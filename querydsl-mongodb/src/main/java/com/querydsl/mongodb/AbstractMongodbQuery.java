@@ -31,14 +31,15 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.path.CollectionPathBase;
 
 /**
- * MongodbQuery provides a general Querydsl query implementation with a pluggable DBObject to Bean transformation
+ * AbstractMongodbQuery provides a base class for general Querydsl query implementation with a
+ * pluggable DBObject to Bean transformation
  *
  * @author laimw
  *
- * @param <Q>
  * @param <K>
+ * @param <Q>
  */
-public abstract class MongodbQuery<Q extends MongodbQuery<Q,K>, K> implements SimpleQuery<Q>, SimpleProjectable<K> {
+public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, Q>> implements SimpleQuery<Q>, SimpleProjectable<K> {
 
     @SuppressWarnings("serial")
     private static class NoResults extends RuntimeException {}
@@ -60,7 +61,7 @@ public abstract class MongodbQuery<Q extends MongodbQuery<Q,K>, K> implements Si
      * @param transformer
      * @param serializer
      */
-    public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
+    public AbstractMongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata().noValidate(), false);
         this.transformer = transformer;
         this.collection = collection;

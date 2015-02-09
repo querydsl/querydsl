@@ -22,17 +22,17 @@ import com.google.common.base.Function;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.querydsl.mongodb.MongodbQuery;
+import com.querydsl.mongodb.AbstractMongodbQuery;
 import com.querydsl.core.types.EntityPath;
 
 /**
- * MorphiaQuery extends {@link MongodbQuery} with Morphia specific transformations
+ * MorphiaQuery extends {@link com.querydsl.mongodb.AbstractMongodbQuery} with Morphia specific transformations
  *
  * @author laimw
  * @author tiwe
  *
  */
-public class MorphiaQuery<K> extends MongodbQuery<MorphiaQuery<K>, K> {
+public class MorphiaQuery<K> extends AbstractMongodbQuery<K, MorphiaQuery<K>> {
 
     private final EntityCache cache;
 
