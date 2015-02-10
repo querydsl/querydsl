@@ -285,10 +285,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         return asReference(((Constant<?>)expr.getArg(constIndex)).getConstant());
     }
 
-    protected DBRef asReference(Object constant) {
-        // override in subclass
-        throw new UnsupportedOperationException();
-    }
+    protected abstract DBRef asReference(Object constant);
 
     protected boolean isReference(Operation<?> expr, int exprIndex) {
         Expression<?> arg = expr.getArg(exprIndex);
@@ -299,11 +296,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         }
     }
 
-    protected boolean isReference(Path<?> arg) {
-        // override in subclass
-        return false;
-    }
-
+    protected abstract boolean isReference(Path<?> arg);
 
     @Override
     public String visit(Path<?> expr, Void context) {
