@@ -52,7 +52,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
     
     protected BooleanOperation(Operator op, ImmutableList<Expression<?>> args) {
-        super(new PredicateOperation((Operator)op, args));
+        super(new PredicateOperation(op, args));
         opMixin = (PredicateOperation)mixin;
     }
     

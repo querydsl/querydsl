@@ -143,7 +143,6 @@ public enum Ops implements Operator {
     /**
      * Aggregation operators
      */
-    @SuppressWarnings("unchecked")
     public enum AggOps implements Operator {
         BOOLEAN_ALL(Boolean.class),
         BOOLEAN_ANY(Boolean.class),
@@ -170,7 +169,6 @@ public enum Ops implements Operator {
     /**
      * Quantification operators
      */
-    @SuppressWarnings("unchecked")
     public enum QuantOps implements Operator {
         AVG_IN_COL(Number.class),
         MAX_IN_COL(Comparable.class),
@@ -192,7 +190,6 @@ public enum Ops implements Operator {
     /**
      * Date and time operators
      */
-    @SuppressWarnings("unchecked")
     public enum DateTimeOps implements Operator {
         DATE(Comparable.class),
         CURRENT_DATE(Comparable.class),

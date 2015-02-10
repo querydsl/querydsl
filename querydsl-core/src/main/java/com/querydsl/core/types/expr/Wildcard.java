@@ -14,7 +14,6 @@
 package com.querydsl.core.types.expr;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.TemplateExpressionImpl;
 
@@ -44,7 +43,7 @@ public final class Wildcard {
     /**
      * Wilcard count distinct expression ((count(distinct *))
      */
-    public static final NumberExpression<Integer> countAsInt = NumberOperation.create(Integer.class, (Operator)Ops.AggOps.COUNT_ALL_AGG);
+    public static final NumberExpression<Integer> countAsInt = NumberOperation.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
     private Wildcard() {}
     

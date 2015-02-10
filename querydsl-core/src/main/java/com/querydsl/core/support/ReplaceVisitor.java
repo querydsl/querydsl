@@ -49,7 +49,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         if (args.equals(expr.getArgs())) {
             return expr;
         } else if (expr instanceof Predicate) {
-            return new PredicateOperation((Operator)expr.getOperator(), args);
+            return new PredicateOperation(expr.getOperator(), args);
         } else {
             return new OperationImpl(expr.getType(), expr.getOperator(), args);
         }
