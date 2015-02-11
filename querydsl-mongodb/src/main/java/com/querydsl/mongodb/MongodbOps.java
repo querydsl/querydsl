@@ -14,20 +14,22 @@
 package com.querydsl.mongodb;
 
 import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.OperatorImpl;
 
 /**
  * @author tiwe
  *
  */
-public final class MongodbOps {
+public enum MongodbOps implements Operator {
+    NEAR(Boolean.class),
+    ELEM_MATCH(Boolean.class);
 
-    private static final String NS = MongodbOps.class.getName();
+    private final Class<?> type;
 
-    public static final Operator<Boolean> NEAR = new OperatorImpl<Boolean>(NS, "NEAR");
+    private MongodbOps(Class<?> type) {
+        this.type = type;
+    }
 
-    public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>(NS, "ELEM_MATCH");
-
-    private MongodbOps() {}
-
+    public Class<?> getType() {
+        return type;
+    }
 }

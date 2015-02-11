@@ -142,7 +142,7 @@ public class JPQLTemplates extends Templates {
         //CHECKSTYLE:ON
     }
 
-    public boolean wrapElements(Operator<?> operator) {
+    public boolean wrapElements(Operator operator) {
         return false;
     }
 

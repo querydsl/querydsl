@@ -21,8 +21,8 @@ import com.querydsl.core.types.Operator;
 
 public class HibernateSpatialSupport {
 
-    public static Map<Operator<?>, String> getSpatialOps() {
-        Map<Operator<?>, String> ops = Maps.newHashMap();
+    public static Map<Operator, String> getSpatialOps() {
+        Map<Operator, String> ops = Maps.newHashMap();
         ops.put(SpatialOps.DIMENSION, "dimension({0})");
         ops.put(SpatialOps.GEOMETRY_TYPE, "geometrytype({0}, {1})");
         ops.put(SpatialOps.SRID, "srid({0})");

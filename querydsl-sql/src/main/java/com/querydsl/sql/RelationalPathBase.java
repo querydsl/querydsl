@@ -191,7 +191,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         }
     }
 
-    private BooleanExpression primaryKeyOperation(Operator<Boolean> op, PrimaryKey<?> pk1, PrimaryKey<?> pk2) {
+    private BooleanExpression primaryKeyOperation(Operator op, PrimaryKey<?> pk1, PrimaryKey<?> pk2) {
         if (pk1 == null || pk2 == null) {
             throw new UnsupportedOperationException("No primary keys available");
         }

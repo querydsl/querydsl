@@ -22,167 +22,117 @@ import com.google.common.collect.ImmutableSet;
  *
  * @author tiwe
  */
-public final class Ops {
-
-    private static final String NS = Ops.class.getName();
+public enum Ops implements Operator {
 
     // general
-    public static final Operator<Boolean> EQ = new OperatorImpl<Boolean>(NS, "EQ");
-
-    public static final Operator<Boolean> NE = new OperatorImpl<Boolean>(NS, "NE");
-
-    public static final Operator<Boolean> IS_NULL = new OperatorImpl<Boolean>(NS, "IS_NULL");
-
-    public static final Operator<Boolean> IS_NOT_NULL = new OperatorImpl<Boolean>(NS, "IS_NOT_NULL");
-
-    public static final Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>(NS, "INSTANCE_OF");
-
-    public static final Operator<Number>  NUMCAST = new OperatorImpl<Number>(NS, "NUMCAST");
-
-    public static final Operator<String>  STRING_CAST = new OperatorImpl<String>(NS, "STRING_CAST");
-
-    public static final Operator<Object>  ALIAS = new OperatorImpl<Object>(NS, "ALIAS");
-
-    public static final Operator<Object>  LIST = new OperatorImpl<Object>(NS, "LIST");
-
-    public static final Operator<Object>  SINGLETON = new OperatorImpl<Object>(NS, "SINGLETON");
-
-    public static final Operator<Integer> ORDINAL = new OperatorImpl<Integer>(NS, "ORDINAL");
-
-    public static final Operator<Object>  WRAPPED = new OperatorImpl<Object>(NS, "WRAPPED");
-
+    EQ(Boolean.class),
+    NE(Boolean.class),
+    IS_NULL(Boolean.class),
+    IS_NOT_NULL(Boolean.class),
+    INSTANCE_OF(Boolean.class),
+    NUMCAST(Number.class),
+    STRING_CAST(String.class),
+    ALIAS(Object.class),
+    LIST(Object.class),
+    SINGLETON(Object.class),
+    ORDINAL(Integer.class),
+    WRAPPED(Object.class),
 
     // collection
-    public static final Operator<Boolean> IN = new OperatorImpl<Boolean>(NS, "IN"); // cmp. contains
-
-    public static final Operator<Boolean> NOT_IN = new OperatorImpl<Boolean>(NS, "NOT_IN");
-
-    public static final Operator<Boolean> COL_IS_EMPTY = new OperatorImpl<Boolean>(NS, "COL_IS_EMPTY");
-
-    public static final Operator<Number>  COL_SIZE = new OperatorImpl<Number>(NS, "COL_SIZE");
-
+    IN(Boolean.class), // cmp. contains
+    NOT_IN(Boolean.class),
+    COL_IS_EMPTY(Boolean.class),
+    COL_SIZE(Integer.class),
 
     // array
-    public static final Operator<Number>  ARRAY_SIZE = new OperatorImpl<Number>(NS, "ARRAY_SIZE");
+    ARRAY_SIZE(Number.class),
 
     // map
-    public static final Operator<Boolean> CONTAINS_KEY = new OperatorImpl<Boolean>(NS, "CONTAINS_KEY");
-
-    public static final Operator<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>(NS, "CONTAINS_VALUE");
-
-    public static final Operator<Number>  MAP_SIZE = new OperatorImpl<Number>(NS, "MAP_SIZE");
-
-    public static final Operator<Boolean> MAP_IS_EMPTY = new OperatorImpl<Boolean>(NS, "MAP_IS_EMPTY");
+    CONTAINS_KEY(Boolean.class),
+    CONTAINS_VALUE(Boolean.class),
+    MAP_SIZE(Integer.class),
+    MAP_IS_EMPTY(Boolean.class),
 
     // Boolean
-    public static final Operator<Boolean> AND = new OperatorImpl<Boolean>(NS, "AND");
-
-    public static final Operator<Boolean> NOT = new OperatorImpl<Boolean>(NS, "NOT");
-
-    public static final Operator<Boolean> OR = new OperatorImpl<Boolean>(NS, "OR");
-
-    public static final Operator<Boolean> XNOR = new OperatorImpl<Boolean>(NS, "XNOR");
-
-    public static final Operator<Boolean> XOR = new OperatorImpl<Boolean>(NS, "XOR");
+    AND(Boolean.class),
+    NOT(Boolean.class),
+    OR(Boolean.class),
+    XNOR(Boolean.class),
+    XOR(Boolean.class),
 
     // Comparable
-    public static final Operator<Boolean> BETWEEN = new OperatorImpl<Boolean>(NS, "BETWEEN");
-
-    public static final Operator<Boolean> GOE = new OperatorImpl<Boolean>(NS, "GOE");
-
-    public static final Operator<Boolean> GT = new OperatorImpl<Boolean>(NS, "GT");
-
-    public static final Operator<Boolean> LOE = new OperatorImpl<Boolean>(NS, "LOE");
-
-    public static final Operator<Boolean> LT = new OperatorImpl<Boolean>(NS, "LT");
+    BETWEEN(Boolean.class),
+    GOE(Boolean.class),
+    GT(Boolean.class),
+    LOE(Boolean.class),
+    LT(Boolean.class),
 
     // Number
-    public static final Operator<Number>  NEGATE = new OperatorImpl<Number>(NS, "NEGATE");
-
-    public static final Operator<Number>  ADD = new OperatorImpl<Number>(NS, "ADD");
-
-    public static final Operator<Number>  DIV = new OperatorImpl<Number>(NS, "DIV");
-
-    public static final Operator<Number>  MULT = new OperatorImpl<Number>(NS, "MULT");
-
-    public static final Operator<Number>  SUB = new OperatorImpl<Number>(NS, "SUB");
-
-    public static final Operator<Number>  MOD = new OperatorImpl<Number>(NS, "MOD");
+    NEGATE(Number.class),
+    ADD(Number.class),
+    DIV(Number.class),
+    MULT(Number.class),
+    SUB(Number.class),
+    MOD(Number.class),
 
     // String
-    public static final Operator<Character> CHAR_AT = new OperatorImpl<Character>(NS, "CHAR_AT");
-
-    public static final Operator<String>  CONCAT = new OperatorImpl<String>(NS, "CONCAT");
-
-    public static final Operator<String>  LOWER = new OperatorImpl<String>(NS, "LOWER");
-
-    public static final Operator<String>  SUBSTR_1ARG = new OperatorImpl<String>(NS, "SUBSTR");
-
-    public static final Operator<String>  SUBSTR_2ARGS = new OperatorImpl<String>(NS, "SUBSTR2");
-
-    public static final Operator<String>  TRIM = new OperatorImpl<String>(NS, "TRIM");
-
-    public static final Operator<String>  UPPER = new OperatorImpl<String>(NS, "UPPER");
-
-    public static final Operator<Boolean> MATCHES = new OperatorImpl<Boolean>(NS, "MATCHES");
-
-    public static final Operator<Boolean> MATCHES_IC = new OperatorImpl<Boolean>(NS, "MATCHES_IC");
-
-    public static final Operator<Number>  STRING_LENGTH = new OperatorImpl<Number>(NS, "STRING_LENGTH");
-
-    public static final Operator<Boolean> STRING_IS_EMPTY = new OperatorImpl<Boolean>(NS, "STRING_IS_EMPTY");
-
-    public static final Operator<Boolean> STARTS_WITH = new OperatorImpl<Boolean>(NS, "STARTS_WITH");
-
-    public static final Operator<Boolean> STARTS_WITH_IC = new OperatorImpl<Boolean>(NS, "STATS_WITH_IC");
-
-    public static final Operator<Number>  INDEX_OF_2ARGS = new OperatorImpl<Number>(NS, "INDEX_OF2");
-
-    public static final Operator<Number>  INDEX_OF = new OperatorImpl<Number>(NS, "INDEX_OF");
-
-    public static final Operator<Boolean> EQ_IGNORE_CASE = new OperatorImpl<Boolean>(NS, "EQ_IGNORE_CASE");
-
-    public static final Operator<Boolean> ENDS_WITH = new OperatorImpl<Boolean>(NS, "ENDS_WITH");
-
-    public static final Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>(NS, "ENDS_WITH_IC");
-
-    public static final Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(NS, "STRING_CONTAINS");
-
-    public static final Operator<Boolean> STRING_CONTAINS_IC = new OperatorImpl<Boolean>(NS, "STRING_CONTAINS_IC");
-
-    public static final Operator<Boolean> LIKE = new OperatorImpl<Boolean>(NS, "LIKE");
-
-    public static final Operator<Boolean> LIKE_ESCAPE = new OperatorImpl<Boolean>(NS, "LIKE_ESCAPE");
+    CHAR_AT(Character.class),
+    CONCAT(String.class),
+    LOWER(String.class),
+    SUBSTR_1ARG(String.class),
+    SUBSTR_2ARGS(String.class),
+    TRIM(String.class),
+    UPPER(String.class),
+    MATCHES(Boolean.class),
+    MATCHES_IC(Boolean.class),
+    STRING_LENGTH(Integer.class),
+    STRING_IS_EMPTY(Boolean.class),
+    STARTS_WITH(Boolean.class),
+    STARTS_WITH_IC(Boolean.class),
+    INDEX_OF_2ARGS(Integer.class),
+    INDEX_OF(Integer.class),
+    EQ_IGNORE_CASE(Boolean.class),
+    ENDS_WITH(Boolean.class),
+    ENDS_WITH_IC(Boolean.class),
+    STRING_CONTAINS(Boolean.class),
+    STRING_CONTAINS_IC(Boolean.class),
+    LIKE(Boolean.class),
+    LIKE_ESCAPE(Boolean.class),
 
     // case
-    public static final Operator<Object>  CASE = new OperatorImpl<Object>(NS, "CASE");
-
-    public static final Operator<Object>  CASE_WHEN = new OperatorImpl<Object>(NS, "CASE_WHEN");
-
-    public static final Operator<Object>  CASE_ELSE = new OperatorImpl<Object>(NS, "CASE_ELSE");
+    CASE(Object.class),
+    CASE_WHEN(Object.class),
+    CASE_ELSE(Object.class),
 
     // case for eq
-    public static final Operator<Object>  CASE_EQ = new OperatorImpl<Object>(NS, "CASE_EQ");
-
-    public static final Operator<Object>  CASE_EQ_WHEN = new OperatorImpl<Object>(NS, "CASE_EQ_WHEN");
-
-    public static final Operator<Object>  CASE_EQ_ELSE = new OperatorImpl<Object>(NS, "CASE_EQ_ELSE");
+    CASE_EQ(Object.class),
+    CASE_EQ_WHEN(Object.class),
+    CASE_EQ_ELSE(Object.class),
 
     // coalesce
-    public static final Operator<Object>  COALESCE = new OperatorImpl<Object>(NS, "COALESCE");
-
-    public static final Operator<Object>  NULLIF = new OperatorImpl<Object>(NS, "NULLIF");
+    COALESCE(Object.class),
+    NULLIF(Object.class),
 
     // subquery operations
-    public static final Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(NS, "EXISTS");
+    EXISTS(Boolean.class);
 
-    public static final Set<Operator<?>> equalsOps = ImmutableSet.<Operator<?>>of(EQ);
+    private final Class<?> type;
 
-    public static final Set<Operator<?>> notEqualsOps = ImmutableSet.<Operator<?>>of(NE);
+    private Ops(Class<?> type) {
+        this.type = type;
+    }
 
-    public static final Set<Operator<?>> compareOps = ImmutableSet.<Operator<?>>of(EQ, NE, LT, GT, GOE, LOE);
+    public Class<?> getType() {
+        return type;
+    }
 
-    public static final Set<Operator<?>> aggOps = ImmutableSet.of(
+    public static final Set<Operator> equalsOps = ImmutableSet.<Operator>of(EQ);
+
+    public static final Set<Operator> notEqualsOps = ImmutableSet.<Operator>of(NE);
+
+    public static final Set<Operator> compareOps = ImmutableSet.<Operator>of(EQ, NE, LT, GT, GOE, LOE);
+
+    public static final Set<Operator> aggOps = ImmutableSet.<Operator>of(
             Ops.AggOps.AVG_AGG,
             Ops.AggOps.COUNT_AGG,
             Ops.AggOps.COUNT_DISTINCT_AGG,
@@ -193,238 +143,173 @@ public final class Ops {
     /**
      * Aggregation operators
      */
-    @SuppressWarnings("unchecked")
-    public static final class AggOps{
+    public enum AggOps implements Operator {
+        BOOLEAN_ALL(Boolean.class),
+        BOOLEAN_ANY(Boolean.class),
+        MAX_AGG(Comparable.class),
+        MIN_AGG(Comparable.class),
+        AVG_AGG(Number.class),
+        SUM_AGG(Number.class),
+        COUNT_AGG(Number.class),
+        COUNT_DISTINCT_AGG(Number.class),
+        COUNT_DISTINCT_ALL_AGG(Number.class),
+        COUNT_ALL_AGG(Number.class);
 
-        private static final String NS = AggOps.class.getName();
+        private final Class<?> type;
 
-        public static final Operator<Boolean> BOOLEAN_ALL = new OperatorImpl<Boolean>(NS, "BOOLEAN_ALL");
+        private AggOps(Class<?> type) {
+            this.type = type;
+        }
 
-        public static final Operator<Boolean> BOOLEAN_ANY = new OperatorImpl<Boolean>(NS, "BOOLEAN_ANY");
-
-        public static final Operator<Comparable> MAX_AGG = new OperatorImpl<Comparable>(NS, "MAX_AGG");
-
-        public static final Operator<Comparable> MIN_AGG = new OperatorImpl<Comparable>(NS, "MIN_AGG");
-
-        public static final Operator<Number> AVG_AGG = new OperatorImpl<Number>(NS, "AVG_AGG");
-
-        public static final Operator<Number> SUM_AGG = new OperatorImpl<Number>(NS, "SUM_AGG");
-
-        public static final Operator<Long> COUNT_AGG = new OperatorImpl<Long>(NS, "COUNT_AGG");
-
-        public static final Operator<Long> COUNT_DISTINCT_AGG = new OperatorImpl<Long>(NS, "COUNT_DISTINCT_AGG");
-
-        public static final Operator<Long> COUNT_DISTINCT_ALL_AGG = new OperatorImpl<Long>(NS, "COUNT_DISTINCT_ALL_AGG");
-
-        public static final Operator<Long> COUNT_ALL_AGG = new OperatorImpl<Long>(NS, "COUNT_ALL_AGG");
-
-        private AggOps() {}
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
      * Quantification operators
      */
-    @SuppressWarnings("unchecked")
-    public static final class QuantOps {
+    public enum QuantOps implements Operator {
+        AVG_IN_COL(Number.class),
+        MAX_IN_COL(Comparable.class),
+        MIN_IN_COL(Comparable.class),
+        ANY(Object.class),
+        ALL(Object.class);
 
-        private static final String NS = QuantOps.class.getName();
+        private final Class<?> type;
 
-        public static final Operator<Comparable> AVG_IN_COL = new OperatorImpl<Comparable>(NS, "AVG_IN_COL");
+        private QuantOps(Class<?> type) {
+            this.type = type;
+        }
 
-        public static final Operator<Comparable> MAX_IN_COL = new OperatorImpl<Comparable>(NS, "MAX_IN_COL");
-
-        public static final Operator<Comparable> MIN_IN_COL = new OperatorImpl<Comparable>(NS, "MIN_IN_COL");
-
-        public static final Operator<Object> ANY = new OperatorImpl<Object>(NS, "ANY");
-
-        public static final Operator<Object> ALL = new OperatorImpl<Object>(NS, "ALL");
-
-        private QuantOps() {}
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
      * Date and time operators
      */
-    @SuppressWarnings("unchecked")
-    public static final class DateTimeOps {
+    public enum DateTimeOps implements Operator {
+        DATE(Comparable.class),
+        CURRENT_DATE(Comparable.class),
+        CURRENT_TIME(Comparable.class),
+        CURRENT_TIMESTAMP(Comparable.class),
+        ADD_YEARS(Comparable.class),
+        ADD_MONTHS(Comparable.class),
+        ADD_WEEKS(Comparable.class),
+        ADD_DAYS(Comparable.class),
+        ADD_HOURS(Comparable.class),
+        ADD_MINUTES(Comparable.class),
+        ADD_SECONDS(Comparable.class),
+        DIFF_YEARS(Comparable.class),
+        DIFF_MONTHS(Comparable.class),
+        DIFF_WEEKS(Comparable.class),
+        DIFF_DAYS(Comparable.class),
+        DIFF_HOURS(Comparable.class),
+        DIFF_MINUTES(Comparable.class),
+        DIFF_SECONDS(Comparable.class),
+        TRUNC_YEAR(Comparable.class),
+        TRUNC_MONTH(Comparable.class),
+        TRUNC_WEEK(Comparable.class),
+        TRUNC_DAY(Comparable.class),
+        TRUNC_HOUR(Comparable.class),
+        TRUNC_MINUTE(Comparable.class),
+        TRUNC_SECOND(Comparable.class),
+        HOUR(Integer.class),
+        MINUTE(Integer.class),
+        MONTH(Integer.class),
+        SECOND(Integer.class),
+        MILLISECOND(Integer.class),
+        SYSDATE(Comparable.class),
+        YEAR(Integer.class),
+        WEEK(Integer.class),
+        YEAR_MONTH(Integer.class),
+        YEAR_WEEK(Integer.class),
+        DAY_OF_WEEK(Integer.class),
+        DAY_OF_MONTH(Integer.class),
+        DAY_OF_YEAR(Integer.class);
 
-        private static final String NS = DateTimeOps.class.getName();
+        private final Class<?> type;
 
-        public static final Operator<Comparable> DATE = new OperatorImpl<Comparable>(NS, "DATE");
+        private DateTimeOps(Class<?> type) {
+            this.type = type;
+        }
 
-        public static final Operator<Comparable> CURRENT_DATE = new OperatorImpl<Comparable>(NS, "CURRENT_DATE");
-
-        public static final Operator<Comparable> CURRENT_TIME = new OperatorImpl<Comparable>(NS, "CURRENT_TIME");
-
-        public static final Operator<Comparable> CURRENT_TIMESTAMP = new OperatorImpl<Comparable>(NS, "CURRENT_TIMESTAMP");
-
-        public static final Operator<Comparable> ADD_YEARS = new OperatorImpl<Comparable>(NS, "ADD_YEARS");
-
-        public static final Operator<Comparable> ADD_MONTHS = new OperatorImpl<Comparable>(NS, "ADD_MONTHS");
-
-        public static final Operator<Comparable> ADD_WEEKS = new OperatorImpl<Comparable>(NS, "ADD_WEEKS");
-
-        public static final Operator<Comparable> ADD_DAYS = new OperatorImpl<Comparable>(NS, "ADD_DAYS");
-
-        public static final Operator<Comparable> ADD_HOURS = new OperatorImpl<Comparable>(NS, "ADD_HOURS");
-
-        public static final Operator<Comparable> ADD_MINUTES = new OperatorImpl<Comparable>(NS, "ADD_MINUTES");
-
-        public static final Operator<Comparable> ADD_SECONDS = new OperatorImpl<Comparable>(NS, "ADD_SECONDS");
-
-        public static final Operator<Comparable> DIFF_YEARS = new OperatorImpl<Comparable>(NS, "DIFF_YEARS");
-
-        public static final Operator<Comparable> DIFF_MONTHS = new OperatorImpl<Comparable>(NS, "DIFF_MONTHS");
-
-        public static final Operator<Comparable> DIFF_WEEKS = new OperatorImpl<Comparable>(NS, "DIFF_WEEKS");
-
-        public static final Operator<Comparable> DIFF_DAYS = new OperatorImpl<Comparable>(NS, "DIFF_DAYS");
-
-        public static final Operator<Comparable> DIFF_HOURS = new OperatorImpl<Comparable>(NS, "DIFF_HOURS");
-
-        public static final Operator<Comparable> DIFF_MINUTES = new OperatorImpl<Comparable>(NS, "DIFF_MINUTES");
-
-        public static final Operator<Comparable> DIFF_SECONDS = new OperatorImpl<Comparable>(NS, "DIFF_SECONDS");
-
-        public static final Operator<Comparable> TRUNC_YEAR = new OperatorImpl<Comparable>(NS, "TRUNC_YEAR");
-
-        public static final Operator<Comparable> TRUNC_MONTH = new OperatorImpl<Comparable>(NS, "TRUNC_MONTH");
-
-        public static final Operator<Comparable> TRUNC_WEEK = new OperatorImpl<Comparable>(NS, "TRUNC_WEEK");
-
-        public static final Operator<Comparable> TRUNC_DAY = new OperatorImpl<Comparable>(NS, "TRUNC_DAY");
-
-        public static final Operator<Comparable> TRUNC_HOUR = new OperatorImpl<Comparable>(NS, "TRUNC_HOUR");
-
-        public static final Operator<Comparable> TRUNC_MINUTE = new OperatorImpl<Comparable>(NS, "TRUNC_MINUTE");
-
-        public static final Operator<Comparable> TRUNC_SECOND = new OperatorImpl<Comparable>(NS, "TRUNC_SECOND");
-
-        public static final Operator<Integer> HOUR = new OperatorImpl<Integer>(NS, "HOUR");
-
-        public static final Operator<Integer> MINUTE = new OperatorImpl<Integer>(NS, "MINUTE");
-
-        public static final Operator<Integer> MONTH = new OperatorImpl<Integer>(NS, "MONTH");
-
-        public static final Operator<Integer> SECOND = new OperatorImpl<Integer>(NS, "SECOND");
-
-        public static final Operator<Integer> MILLISECOND = new OperatorImpl<Integer>(NS, "MILLISECOND");
-
-        public static final Operator<Comparable> SYSDATE = new OperatorImpl<Comparable>(NS, "SYSDATE");
-
-        public static final Operator<Integer> YEAR = new OperatorImpl<Integer>(NS, "YEAR");
-
-        public static final Operator<Integer> WEEK = new OperatorImpl<Integer>(NS, "WEEK");
-
-        public static final Operator<Integer> YEAR_MONTH = new OperatorImpl<Integer>(NS, "YEAR_MONTH");
-
-        public static final Operator<Integer> YEAR_WEEK = new OperatorImpl<Integer>(NS, "YEAR_WEEK");
-
-        public static final Operator<Integer> DAY_OF_WEEK = new OperatorImpl<Integer>(NS, "DAY_OF_WEEK");
-
-        public static final Operator<Integer> DAY_OF_MONTH = new OperatorImpl<Integer>(NS, "DAY_OF_MONTH");
-
-        public static final Operator<Integer> DAY_OF_YEAR = new OperatorImpl<Integer>(NS, "DAY_OF_YEAR");
-
-        private DateTimeOps() {}
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
      * Math operators
      *
      */
-    public static final class MathOps {
+    public enum MathOps implements Operator {
+        ABS(Number.class),
+        ACOS(Number.class),
+        ASIN(Number.class),
+        ATAN(Number.class),
+        CEIL(Number.class),
+        COS(Number.class),
+        TAN(Number.class),
+        SQRT(Number.class),
+        SIN(Number.class),
+        ROUND(Number.class),
+        ROUND2(Number.class),
+        RANDOM(Number.class),
+        RANDOM2(Number.class),
+        POWER(Number.class),
+        MIN(Number.class),
+        MAX(Number.class),
+        LOG(Number.class),
+        FLOOR(Number.class),
+        EXP(Number.class),
+        COSH(Number.class),
+        COT(Number.class),
+        COTH(Number.class),
+        DEG(Number.class),
+        LN(Number.class),
+        RAD(Number.class),
+        SIGN(Number.class),
+        SINH(Number.class),
+        TANH(Number.class);
 
-        private static final String NS = MathOps.class.getName();
+        private final Class<?> type;
 
-        public static final Operator<Number> ABS = new OperatorImpl<Number>(NS, "ABS");
+        private MathOps(Class<?> type) {
+            this.type = type;
+        }
 
-        public static final Operator<Number> ACOS = new OperatorImpl<Number>(NS, "ACOS");
-
-        public static final Operator<Number> ASIN = new OperatorImpl<Number>(NS, "ASIN");
-
-        public static final Operator<Number> ATAN = new OperatorImpl<Number>(NS, "ATAN");
-
-        public static final Operator<Number> CEIL = new OperatorImpl<Number>(NS, "CEIL");
-
-        public static final Operator<Number> COS = new OperatorImpl<Number>(NS, "COS");
-
-        public static final Operator<Number> TAN = new OperatorImpl<Number>(NS, "TAN");
-
-        public static final Operator<Number> SQRT = new OperatorImpl<Number>(NS, "SQRT");
-
-        public static final Operator<Number> SIN = new OperatorImpl<Number>(NS, "SIN");
-
-        public static final Operator<Number> ROUND = new OperatorImpl<Number>(NS, "ROUND");
-
-        public static final Operator<Number> ROUND2 = new OperatorImpl<Number>(NS, "ROUND");
-
-        public static final Operator<Number> RANDOM = new OperatorImpl<Number>(NS, "RANDOM");
-
-        public static final Operator<Number> RANDOM2 = new OperatorImpl<Number>(NS, "RANDOM2");
-
-        public static final Operator<Number> POWER = new OperatorImpl<Number>(NS, "POWER");
-
-        public static final Operator<Number> MIN = new OperatorImpl<Number>(NS, "MIN");
-
-        public static final Operator<Number> MAX = new OperatorImpl<Number>(NS, "MAX");
-
-        public static final Operator<Number> LOG = new OperatorImpl<Number>(NS, "LOG");
-
-        public static final Operator<Number> FLOOR = new OperatorImpl<Number>(NS, "FLOOR");
-
-        public static final Operator<Number> EXP = new OperatorImpl<Number>(NS, "EXP");
-
-        public static final Operator<Number> COSH = new OperatorImpl<Number>(NS, "COSH");
-
-        public static final Operator<Number> COT = new OperatorImpl<Number>(NS, "COT");
-
-        public static final Operator<Number> COTH = new OperatorImpl<Number>(NS, "COTH");
-
-        public static final Operator<Number> DEG = new OperatorImpl<Number>(NS, "DEG");
-
-        public static final Operator<Number> LN = new OperatorImpl<Number>(NS, "LN");
-
-        public static final Operator<Number> RAD = new OperatorImpl<Number>(NS, "RAD");
-
-        public static final Operator<Number> SIGN = new OperatorImpl<Number>(NS, "SIGN");
-
-        public static final Operator<Number> SINH = new OperatorImpl<Number>(NS, "SINH");
-
-        public static final Operator<Number> TANH = new OperatorImpl<Number>(NS, "TANH");
-
-        private MathOps() {}
+        public Class<?> getType() {
+            return type;
+        }
     }
 
     /**
      * String operators
      */
-    public static final class StringOps {
+    public enum StringOps implements Operator {
+        LEFT(String.class),
+        RIGHT(String.class),
+        LTRIM(String.class),
+        RTRIM(String.class),
+        LPAD(String.class),
+        RPAD(String.class),
+        LPAD2(String.class),
+        RPAD2(String.class),
+        LOCATE(Number.class),
+        LOCATE2(Number.class);
 
-        private static final String NS = StringOps.class.getName();
+        private final Class<?> type;
 
-        public static final Operator<String> LEFT = new OperatorImpl<String>(NS, "LEFT");
+        private StringOps(Class<?> type) {
+            this.type = type;
+        }
 
-        public static final Operator<String> RIGHT = new OperatorImpl<String>(NS, "RIGHT");
-
-        public static final Operator<String> LTRIM = new OperatorImpl<String>(NS, "LTRIM");
-
-        public static final Operator<String> RTRIM = new OperatorImpl<String>(NS, "RTRIM");
-
-        public static final Operator<String> LPAD = new OperatorImpl<String>(NS, "LPAD");
-
-        public static final Operator<String> RPAD = new OperatorImpl<String>(NS, "RPAD");
-
-        public static final Operator<String> LPAD2 = new OperatorImpl<String>(NS, "LPAD2");
-
-        public static final Operator<String> RPAD2 = new OperatorImpl<String>(NS, "RPAD2");
-
-        public static final Operator<Number> LOCATE = new OperatorImpl<Number>(NS, "LOCATE");
-
-        public static final Operator<Number> LOCATE2 = new OperatorImpl<Number>(NS, "LOCATE2");
-
-        private StringOps() {}
+        public Class<?> getType() {
+            return type;
+        }
     }
 
-    private Ops() {}
 }

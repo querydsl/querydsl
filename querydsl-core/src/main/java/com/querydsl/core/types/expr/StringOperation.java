@@ -32,25 +32,25 @@ public class StringOperation extends StringExpression implements Operation<Strin
 
     private static final long serialVersionUID = 6846556373847139549L;
 
-    public static StringExpression create(Operator<? super String> op, Expression<?> one) {
+    public static StringExpression create(Operator op, Expression<?> one) {
         return new StringOperation(op, ImmutableList.<Expression<?>>of(one));
     }
     
-    public static StringExpression create(Operator<? super String> op, Expression<?> one, Expression<?> two) {
+    public static StringExpression create(Operator op, Expression<?> one, Expression<?> two) {
         return new StringOperation(op, ImmutableList.of(one, two));
     }
     
-    public static StringExpression create(Operator<? super String> op, Expression<?>... args) {
+    public static StringExpression create(Operator op, Expression<?>... args) {
         return new StringOperation(op, args);
     }
 
     private final OperationImpl<String> opMixin;
 
-    protected StringOperation(Operator<? super String> op, Expression<?>... args) {
+    protected StringOperation(Operator op, Expression<?>... args) {
         this(op, ImmutableList.copyOf(args));
     }
 
-    protected StringOperation(Operator<? super String> op, ImmutableList<Expression<?>> args) {
+    protected StringOperation(Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<String>(String.class, op, args));
         this.opMixin = (OperationImpl<String>)mixin;
     }
@@ -71,7 +71,7 @@ public class StringOperation extends StringExpression implements Operation<Strin
     }
 
     @Override
-    public Operator<? super String> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

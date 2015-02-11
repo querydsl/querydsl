@@ -72,7 +72,7 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
             }
             return builder.toString();
         } else {
-            return "unknown operation with operator " + o.getOperator().getId() + " and args " + o.getArgs();
+            return "unknown operation with operator " + o.getOperator().name() + " and args " + o.getArgs();
         }
     }
 

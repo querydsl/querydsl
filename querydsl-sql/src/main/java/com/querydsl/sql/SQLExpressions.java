@@ -278,7 +278,7 @@ public final class SQLExpressions {
      * @param expr
      */
     public static <D extends Comparable> DateExpression<D> datetrunc(DatePart unit, DateExpression<D> expr) {
-        return DateOperation.create(expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+        return DateOperation.create((Class)expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
 
     /**
@@ -288,7 +288,7 @@ public final class SQLExpressions {
      * @param expr
      */
     public static <D extends Comparable> DateTimeExpression<D> datetrunc(DatePart unit, DateTimeExpression<D> expr) {
-        return DateTimeOperation.create(expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+        return DateTimeOperation.create((Class)expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
 
     /**

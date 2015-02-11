@@ -846,7 +846,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean pathAdded = false;
         if (args.size() == 2
          && !useLiterals

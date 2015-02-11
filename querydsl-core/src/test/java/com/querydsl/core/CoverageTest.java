@@ -46,7 +46,7 @@ public class CoverageTest {
     @Test
     public void test() throws IllegalArgumentException, IllegalAccessException{
         // make sure all Operators are covered in expression factory methods
-        Set<Operator<?>> usedOperators = new HashSet<Operator<?>>();
+        Set<Operator> usedOperators = new HashSet<Operator>();
         List<Expression<?>> exprs = new ArrayList<Expression<?>>();
 
         Entity entity = Alias.alias(Entity.class, "entity");
@@ -99,7 +99,7 @@ public class CoverageTest {
         }
 
         // missing mappings
-        usedOperators.addAll(Arrays.<Operator<?>>asList(
+        usedOperators.addAll(Arrays.<Operator>asList(
             Ops.INSTANCE_OF,
             Ops.ALIAS,
             Ops.ARRAY_SIZE,
@@ -133,10 +133,10 @@ public class CoverageTest {
             Ops.EXISTS
          ));
 
-        List<Operator<?>> notContained = new ArrayList<Operator<?>>();
+        List<Operator> notContained = new ArrayList<Operator>();
         for (Field field : Ops.class.getFields()) {
             if (Operator.class.isAssignableFrom(field.getType())) {
-                Operator<?> val = (Operator<?>) field.get(null);
+                Operator val = (Operator) field.get(null);
                 if (!usedOperators.contains(val)) {
                     System.err.println(field.getName() + " was not contained");
                     notContained.add(val);

@@ -13,13 +13,13 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.concurrent.Immutable;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Primitives;
 
 
 /**
@@ -36,22 +36,24 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private final ImmutableList<Expression<?>> args;
 
-    private final Operator<? super T> operator;
+    private final Operator operator;
 
-    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?> one) {
+    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator operator, Expression<?> one) {
         return new OperationImpl<RT>(type, operator, ImmutableList.<Expression<?>>of(one));
     }
 
-    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?> one, Expression<?> two) {
+    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator operator, Expression<?> one, Expression<?> two) {
         return new OperationImpl<RT>(type, operator, ImmutableList.of(one, two));
     }
 
-    protected OperationImpl(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args) {
+    protected OperationImpl(Class<? extends T> type, Operator operator, Expression<?>... args) {
         this(type, operator, ImmutableList.copyOf(args));
     }
 
-    public OperationImpl(Class<? extends T> type, Operator<? super T> operator, ImmutableList<Expression<?>> args) {
+    public OperationImpl(Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
         super(type);
+        Class<?> wrapped = Primitives.wrap(type);
+        Preconditions.checkArgument(operator.getType().isAssignableFrom(wrapped), operator.name());
         this.operator = operator;
         this.args = args;
     }
@@ -67,7 +69,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     }
 
     @Override
-    public final Operator<? super T> getOperator() {
+    public final Operator getOperator() {
         return operator;
     }
 
@@ -88,27 +90,6 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     @Override
     public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
-    }
-
-    /**
-     * Resets operator field to singleton version
-     *
-     * @param ois
-     * @throws ClassNotFoundException
-     * @throws IOException
-     */
-    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-        try {
-            ois.defaultReadObject();
-            Field field = OperationImpl.class.getDeclaredField("operator");
-            field.setAccessible(true);
-            field.set(this, OperatorImpl.OPS.get(operator.getId()));
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
 }

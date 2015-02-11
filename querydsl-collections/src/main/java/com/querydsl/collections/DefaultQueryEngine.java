@@ -225,7 +225,7 @@ public class DefaultQueryEngine implements QueryEngine {
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
         Expression<?> projection = metadata.getProjection();
-        Operator<?> aggregator = null;
+        Operator aggregator = null;
         if (projection instanceof Operation && Ops.aggOps.contains(((Operation)projection).getOperator())) {
             Operation<?> aggregation = (Operation<?>)projection;
             aggregator = aggregation.getOperator();

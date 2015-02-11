@@ -45,12 +45,12 @@ public final class SpatialTemplatesSupport {
         return result.toString();
     }
 
-    public static Map<Operator<?>, String> getSpatialOps(boolean asFunction) {
+    public static Map<Operator, String> getSpatialOps(boolean asFunction) {
         return getSpatialOps("ST_", asFunction);
     }
 
-    public static Map<Operator<?>, String> getSpatialOps(String prefix, boolean asFunction) {
-        Map<Operator<?>, String> ops = Maps.newHashMap();
+    public static Map<Operator, String> getSpatialOps(String prefix, boolean asFunction) {
+        Map<Operator, String> ops = Maps.newHashMap();
         ops.put(SpatialOps.AREA, createSpatial(prefix + "Area", 1, asFunction));
         ops.put(SpatialOps.AREA2, createSpatial(prefix + "Area", 2, asFunction));
         ops.put(SpatialOps.AS_BINARY, createSpatial(prefix + "AsBinary", 1, asFunction));

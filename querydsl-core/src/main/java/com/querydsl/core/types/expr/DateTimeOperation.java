@@ -33,25 +33,25 @@ public class DateTimeOperation<T extends Comparable<?>> extends DateTimeExpressi
 
     private static final long serialVersionUID = 6523293814317168556L;
 
-    public static <D extends Comparable<?>> DateTimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+    public static <D extends Comparable<?>> DateTimeExpression<D> create(Class<D> type, Operator op, Expression<?> one) {
         return new DateTimeOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
     }
     
-    public static <D extends Comparable<?>> DateTimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+    public static <D extends Comparable<?>> DateTimeExpression<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
         return new DateTimeOperation<D>(type, op, ImmutableList.of(one, two));
     }
     
-    public static <D extends Comparable<?>> DateTimeExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    public static <D extends Comparable<?>> DateTimeExpression<D> create(Class<D> type, Operator op, Expression<?>... args) {
         return new DateTimeOperation<D>(type, op, args);
     }
 
     private final OperationImpl<T> opMixin;
 
-    protected DateTimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected DateTimeOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected DateTimeOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
+    protected DateTimeOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
@@ -72,7 +72,7 @@ public class DateTimeOperation<T extends Comparable<?>> extends DateTimeExpressi
     }
 
     @Override
-    public Operator<? super T> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

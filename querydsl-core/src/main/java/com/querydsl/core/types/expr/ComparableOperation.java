@@ -34,17 +34,17 @@ public class ComparableOperation<T extends Comparable<?>> extends
 
     private static final long serialVersionUID = 1129243977606098865L;
 
-    public static <D extends Comparable<?>> ComparableExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    public static <D extends Comparable<?>> ComparableExpression<D> create(Class<D> type, Operator op, Expression<?>... args) {
         return new ComparableOperation<D>(type, op, args);
     }
 
     private final OperationImpl<T> opMixin;
 
-    protected ComparableOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected ComparableOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
     
-    protected ComparableOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
+    protected ComparableOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
@@ -65,7 +65,7 @@ public class ComparableOperation<T extends Comparable<?>> extends
     }
 
     @Override
-    public Operator<? super T> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

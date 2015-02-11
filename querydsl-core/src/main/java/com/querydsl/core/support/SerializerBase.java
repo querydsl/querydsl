@@ -97,7 +97,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return builder.length();
     }
 
-    protected final Template getTemplate(Operator<?> op) {
+    protected final Template getTemplate(Operator op) {
         return templates.getTemplate(op);
     }
 
@@ -265,7 +265,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return null;
     }
     
-    protected void visitOperation(Class<?> type, Operator<?> operator, final List<? extends Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator operator, final List<? extends Expression<?>> args) {
         final Template template = templates.getTemplate(operator);
         if (template != null) {
             final int precedence = templates.getPrecedence(operator);        

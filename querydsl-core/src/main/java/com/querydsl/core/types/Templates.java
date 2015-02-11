@@ -26,9 +26,9 @@ public class Templates {
 
     public static final Templates DEFAULT = new Templates();
 
-    private final Map<Operator<?>, Template> templates = new IdentityHashMap<Operator<?>, Template>(150);
+    private final Map<Operator, Template> templates = new IdentityHashMap<Operator, Template>(150);
 
-    private final Map<Operator<?>, Integer> precedence = new IdentityHashMap<Operator<?>, Integer>(150);
+    private final Map<Operator, Integer> precedence = new IdentityHashMap<Operator, Integer>(150);
 
     private final TemplateFactory templateFactory;
 
@@ -268,20 +268,20 @@ public class Templates {
         //CHECKSTYLE:ON
     }
 
-    protected final void add(Operator<?> op, String pattern) {
+    protected final void add(Operator op, String pattern) {
         templates.put(op, templateFactory.create(pattern));
         if (!precedence.containsKey(op)) {
             precedence.put(op, -1);
         }
     }
 
-    protected final void add(Operator<?> op, String pattern, int pre) {
+    protected final void add(Operator op, String pattern, int pre) {
         templates.put(op, templateFactory.create(pattern));
         precedence.put(op, pre);
     }
 
-    protected final void add(Map<Operator<?>, String> ops) {
-        for (Map.Entry<Operator<?>, String> entry : ops.entrySet()) {
+    protected final void add(Map<Operator, String> ops) {
+        for (Map.Entry<Operator, String> entry : ops.entrySet()) {
             add(entry.getKey(), entry.getValue());
         }
     }
@@ -302,11 +302,11 @@ public class Templates {
     }
 
     @Nullable
-    public final Template getTemplate(Operator<?> op) {
+    public final Template getTemplate(Operator op) {
         return templates.get(op);
     }
 
-    public final int getPrecedence(Operator<?> op) {
+    public final int getPrecedence(Operator op) {
         return precedence.get(op).intValue();
     }
 

@@ -14,31 +14,28 @@
 package com.querydsl.jpa;
 
 import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.OperatorImpl;
 
 /**
  * @author tiwe
  *
  */
-public final class JPQLOps {
+public enum JPQLOps implements Operator {
+    TREAT(Object.class),
+    INDEX(Integer.class),
+    TYPE(String.class),
+    CAST(Object.class),
+    MEMBER_OF(Boolean.class),
+    NOT_MEMBER_OF(Boolean.class),
+    KEY(Object.class),
+    VALUE(Object.class);
 
-    private static final String NS = JPQLOps.class.getName();
+    private final Class<?> type;
 
-    public static final Operator<Object> TREAT = new OperatorImpl<Object>(NS, "TREAT");
+    private JPQLOps(Class<?> type) {
+        this.type = type;
+    }
 
-    public static final Operator<Integer> INDEX = new OperatorImpl<Integer>(NS, "INDEX");
-
-    public static final Operator<String> TYPE = new OperatorImpl<String>(NS, "TYPE");
-
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "CAST");
-
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(NS, "MEMBER_OF");
-
-    public static final Operator<Boolean> NOT_MEMBER_OF = new OperatorImpl<Boolean>(NS, "NOT_MEMBER_OF");
-
-    public static final Operator<Object> KEY = new OperatorImpl<Object>(NS, "KEY");
-
-    public static final Operator<Object> VALUE = new OperatorImpl<Object>(NS, "VALUE");
-
-    private JPQLOps(){}
+    public Class<?> getType() {
+        return type;
+    }
 }

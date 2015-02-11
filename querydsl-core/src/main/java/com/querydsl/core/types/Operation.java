@@ -42,6 +42,6 @@ public interface Operation<T> extends Expression<T> {
      *
      * @return
      */
-    Operator<? super T> getOperator();
+    Operator getOperator();
 
 }

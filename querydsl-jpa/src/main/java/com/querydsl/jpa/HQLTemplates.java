@@ -47,7 +47,7 @@ public class HQLTemplates extends JPQLTemplates {
         QUERY_HANDLER = instance;
     }
 
-    private static final List<Operator<?>> wrapElements = Arrays.<Operator<?>> asList(
+    private static final List<Operator> wrapElements = Arrays.<Operator> asList(
             Ops.QuantOps.ALL,
             Ops.QuantOps.ANY,
             Ops.QuantOps.AVG_IN_COL,
@@ -102,7 +102,7 @@ public class HQLTemplates extends JPQLTemplates {
     }
 
     @Override
-    public boolean wrapElements(Operator<?> operator) {
+    public boolean wrapElements(Operator operator) {
         return wrapElements.contains(operator);
     }
 

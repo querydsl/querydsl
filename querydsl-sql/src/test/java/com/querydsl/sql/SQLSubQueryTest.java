@@ -35,12 +35,16 @@ public class SQLSubQueryTest {
 
     @Test
     public void UnknownOperator() {
-        Operator op = new OperatorImpl(SQLSubQueryTest.class.getName(), "unknownfn");
+        Operator op = new Operator() {
+            public String name() { return "unknownfn"; }
+            public String toString() { return name(); }
+            public Class<?> getType() { return Object.class; }
+        };
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee)
             .where(BooleanOperation.create(op, employee.id));
 
-        assertEquals("from EMPLOYEE EMPLOYEE\nwhere com.querydsl.sql.SQLSubQueryTest#unknownfn(EMPLOYEE.ID)", query.toString());
+        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
     }
 
     @Test

@@ -38,7 +38,7 @@ import com.querydsl.core.util.MathUtils;
  */
 public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
-    private static final Set<Operator<?>> NUMERIC = ImmutableSet.<Operator<?>>of(
+    private static final Set<Operator> NUMERIC = ImmutableSet.<Operator>of(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
             Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN);
 
@@ -401,7 +401,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean oldInCaseOperation = inCaseOperation;
         inCaseOperation = inCaseOperation || operator.equals(Ops.CASE) || operator.equals(Ops.CASE_EQ);
         boolean oldWrapElements = wrapElements;
@@ -462,7 +462,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
     }
 
-    private void visitPathInCollection(Class<?> type, Operator<?> operator,
+    private void visitPathInCollection(Class<?> type, Operator operator,
             List<? extends Expression<?>> args) {
         Path<?> lhs = (Path<?>) args.get(0);
         @SuppressWarnings("unchecked")
@@ -503,7 +503,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void visitAnyInPath(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
+    private void visitAnyInPath(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
             final Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
             final Enum constant = (Enum)((Constant)args.get(0)).getConstant();

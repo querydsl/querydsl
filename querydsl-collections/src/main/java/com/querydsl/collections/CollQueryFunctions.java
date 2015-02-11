@@ -204,7 +204,7 @@ public final class CollQueryFunctions {
         return result;
     }
 
-    public static Number aggregate(Collection<Number> source, Expression<?> expr, Operator<?> aggregator) {
+    public static Number aggregate(Collection<Number> source, Expression<?> expr, Operator aggregator) {
         if (aggregator == Ops.AggOps.AVG_AGG) {
             Number sum = reduce(source, SUM);
             return sum.doubleValue() / source.size();

@@ -71,7 +71,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         return countDistinct;
     }
 
-    private NumberExpression<Long> count(Operator<Long> operator) {
+    private NumberExpression<Long> count(Operator operator) {
         QueryMetadata md = subQueryMixin.getMetadata().clone();
         Expression<?> e = md.getProjection();
         if (e != null) {

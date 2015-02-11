@@ -34,25 +34,25 @@ public class DateOperation<T extends Comparable<?>> extends
 
     private static final long serialVersionUID = -7859020164194396995L;
 
-    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one) {
+    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator op, Expression<?> one) {
         return new DateOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
     }
     
-    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?> one, Expression<?> two) {
+    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
         return new DateOperation<D>(type, op, ImmutableList.of(one, two));
     }
     
-    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    public static <D extends Comparable<?>> DateExpression<D> create(Class<D> type, Operator op, Expression<?>... args) {
         return new DateOperation<D>(type, op, args);
     }
     
     private final OperationImpl<T> opMixin;
 
-    protected DateOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected DateOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
     
-    protected DateOperation(Class<T> type, Operator<? super T> op, ImmutableList<Expression<?>> args) {
+    protected DateOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
@@ -73,7 +73,7 @@ public class DateOperation<T extends Comparable<?>> extends
     }
 
     @Override
-    public Operator<? super T> getOperator() {
+    public Operator getOperator() {
         return opMixin.getOperator();
     }
 

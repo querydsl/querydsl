@@ -70,7 +70,7 @@ public class LuceneSerializer {
     }
 
     private Query toQuery(Operation<?> operation, QueryMetadata metadata) {
-        Operator<?> op = operation.getOperator();
+        Operator op = operation.getOperator();
         if (op == Ops.OR) {
             return toTwoHandSidedQuery(operation, Occur.SHOULD, metadata);
         } else if (op == Ops.AND) {

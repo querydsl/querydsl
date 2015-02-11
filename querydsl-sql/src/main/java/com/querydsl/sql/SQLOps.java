@@ -19,7 +19,6 @@ import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.OperatorImpl;
 
 /**
  * SQLOps provides SQL specific operators
@@ -27,107 +26,66 @@ import com.querydsl.core.types.OperatorImpl;
  * @author tiwe
  *
  */
-public final class SQLOps {
+public enum SQLOps implements Operator {
+    ALL(Object.class),
+    CAST(Object.class),
+    CORR(Double.class),
+    COVARPOP(Double.class),
+    COVARSAMP(Double.class),
+    CUMEDIST(Double.class),
+    CUMEDIST2(Double.class),
+    DENSERANK(Long.class),
+    DENSERANK2(Long.class),
+    FIRSTVALUE(Object.class),
+    FOR_SHARE(Object.class),
+    FOR_UPDATE(Object.class),
+    LAG(Object.class),
+    LASTVALUE(Object.class),
+    LEAD(Object.class),
+    LISTAGG(Object.class),
+    NEXTVAL(Object.class),
+    NO_WAIT(Object.class),
+    NTHVALUE(Object.class),
+    NTILE(Object.class),
+    PERCENTRANK(Double.class),
+    PERCENTRANK2(Double.class),
+    PERCENTILECONT(Object.class),
+    PERCENTILEDISC(Object.class),
+    QUALIFY(Boolean.class),
+    RANK(Long.class),
+    RANK2(Long.class),
+    REGR_SLOPE(Object.class),
+    REGR_INTERCEPT(Object.class),
+    REGR_COUNT(Object.class),
+    REGR_R2(Object.class),
+    REGR_AVGX(Object.class),
+    REGR_AVGY(Object.class),
+    REGR_SXX(Object.class),
+    REGR_SYY(Object.class),
+    REGR_SXY(Object.class),
+    RATIOTOREPORT(Object.class),
+    ROWNUMBER(Long.class),
+    STDDEV(Object.class),
+    STDDEVPOP(Object.class),
+    STDDEVSAMP(Object.class),
+    STDDEV_DISTINCT(Object.class),
+    UNION(Object.class),
+    UNION_ALL(Object.class),
+    VARIANCE(Object.class),
+    VARPOP(Object.class),
+    VARSAMP(Object.class),
+    WITH_ALIAS(Object.class),
+    WITH_COLUMNS(Object.class);
 
-    private static final String NS = SQLOps.class.getName();
+    private final Class<?> type;
 
-    public static final Operator<Object> ALL = new OperatorImpl<Object>(NS, "ALL");
+    private SQLOps(Class<?> type) {
+        this.type = type;
+    }
 
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(NS, "CAST");
-
-    public static final Operator<Double> CORR = new OperatorImpl<Double>(NS, "CORR");
-
-    public static final Operator<Double> COVARPOP = new OperatorImpl<Double>(NS, "COVARPOP");
-
-    public static final Operator<Double> COVARSAMP = new OperatorImpl<Double>(NS, "COVARSAMP");
-
-    public static final Operator<Double> CUMEDIST = new OperatorImpl<Double>(NS, "CUMEDIST");
-
-    public static final Operator<Double> CUMEDIST2 = new OperatorImpl<Double>(NS, "CUMEDIST2");
-
-    public static final Operator<Long> DENSERANK = new OperatorImpl<Long>(NS, "DENSERANK");
-
-    public static final Operator<Long> DENSERANK2 = new OperatorImpl<Long>(NS, "DENSERANK2");
-
-    public static final Operator<Object> FIRSTVALUE = new OperatorImpl<Object>(NS, "FIRSTVALUE");
-
-    public static final Operator<Object> FOR_SHARE = new OperatorImpl<Object>(NS, "FOR_SHARE");
-
-    public static final Operator<Object> FOR_UPDATE = new OperatorImpl<Object>(NS, "FOR_UPDATE");
-
-    public static final Operator<Object> LAG = new OperatorImpl<Object>(NS, "LAG");
-
-    public static final Operator<Object> LASTVALUE = new OperatorImpl<Object>(NS, "LASTVALUE");
-
-    public static final Operator<Object> LEAD = new OperatorImpl<Object>(NS, "LEAD");
-
-    public static final Operator<Object> LISTAGG = new OperatorImpl<Object>(NS, "LISTAGG");
-
-    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>(NS, "NEXTVAL");
-
-    public static final Operator<Object> NO_WAIT = new OperatorImpl<Object>(NS, "NO_WAIT");
-
-    public static final Operator<Object> NTHVALUE = new OperatorImpl<Object>(NS, "NTHVALUE");
-
-    public static final Operator<Object> NTILE = new OperatorImpl<Object>(NS, "NTILE");
-
-    public static final Operator<Double> PERCENTRANK = new OperatorImpl<Double>(NS, "PERCENTRANK");
-
-    public static final Operator<Double> PERCENTRANK2 = new OperatorImpl<Double>(NS, "PERCENTRANK2");
-
-    public static final Operator<Object> PERCENTILECONT = new OperatorImpl<Object>(NS, "PERCENTILECONT");
-
-    public static final Operator<Object> PERCENTILEDISC = new OperatorImpl<Object>(NS, "PERCENTILEDISC");
-
-    public static final Operator<Boolean> QUALIFY = new OperatorImpl<Boolean>(NS, "QUALIFY");
-
-    public static final Operator<Long> RANK = new OperatorImpl<Long>(NS, "RANK");
-
-    public static final Operator<Long> RANK2 = new OperatorImpl<Long>(NS, "RANK2");
-
-    public static final Operator<Object> REGR_SLOPE = new OperatorImpl<Object>(NS, "REGR_SLOPE");
-
-    public static final Operator<Object> REGR_INTERCEPT = new OperatorImpl<Object>(NS, "REGR_INTERCEPT");
-
-    public static final Operator<Object> REGR_COUNT = new OperatorImpl<Object>(NS, "REGR_COUNT");
-
-    public static final Operator<Object> REGR_R2 = new OperatorImpl<Object>(NS, "REGR_R2");
-
-    public static final Operator<Object> REGR_AVGX = new OperatorImpl<Object>(NS, "REGR_AVGX");
-
-    public static final Operator<Object> REGR_AVGY = new OperatorImpl<Object>(NS, "REGR_AVGY");
-
-    public static final Operator<Object> REGR_SXX = new OperatorImpl<Object>(NS, "REGR_SXX");
-
-    public static final Operator<Object> REGR_SYY = new OperatorImpl<Object>(NS, "REGR_SYY");
-
-    public static final Operator<Object> REGR_SXY = new OperatorImpl<Object>(NS, "REGR_SXY");
-
-    public static final Operator<Object> RATIOTOREPORT = new OperatorImpl<Object>(NS, "RATIOTOREPORT");
-
-    public static final Operator<Long> ROWNUMBER = new OperatorImpl<Long>(NS, "ROWNUMBER");
-
-    public static final Operator<Object> STDDEV = new OperatorImpl<Object>(NS, "STDDEV");
-
-    public static final Operator<Object> STDDEVPOP = new OperatorImpl<Object>(NS, "STDDEVPOP");
-
-    public static final Operator<Object> STDDEVSAMP = new OperatorImpl<Object>(NS, "STDDEVSAMP");
-
-    public static final Operator<Object> STDDEV_DISTINCT = new OperatorImpl<Object>(NS, "STDDEV_DISTINCT");
-
-    public static final Operator<Object> UNION = new OperatorImpl<Object>(NS, "UNION");
-
-    public static final Operator<Object> UNION_ALL = new OperatorImpl<Object>(NS, "UNION_ALL");
-
-    public static final Operator<Object> VARIANCE = new OperatorImpl<Object>(NS, "VARIANCE");
-
-    public static final Operator<Object> VARPOP = new OperatorImpl<Object>(NS, "VARPOP");
-
-    public static final Operator<Object> VARSAMP = new OperatorImpl<Object>(NS, "VARSAMP");
-
-    public static final Operator<Object> WITH_ALIAS = new OperatorImpl<Object>(NS, "WITH_ALIAS");
-
-    public static final Operator<Object> WITH_COLUMNS = new OperatorImpl<Object>(NS, "WITH_COLUMNS");
+    public Class<?> getType() {
+        return type;
+    }
 
     public static final QueryFlag FOR_SHARE_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
             Object.class, FOR_SHARE, ImmutableList.<Expression<?>>of()));
@@ -137,7 +95,5 @@ public final class SQLOps {
 
     public static final QueryFlag NO_WAIT_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
             Object.class, NO_WAIT, ImmutableList.<Expression<?>>of()));
-
-    private SQLOps() {}
 
 }

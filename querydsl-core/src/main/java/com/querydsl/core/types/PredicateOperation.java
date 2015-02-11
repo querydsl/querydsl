@@ -32,15 +32,15 @@ public final class PredicateOperation extends OperationImpl<Boolean> implements 
     @Nullable
     private volatile Predicate not;
     
-    public static PredicateOperation create(Operator<Boolean> operator, Expression<?> one) {
+    public static PredicateOperation create(Operator operator, Expression<?> one) {
         return new PredicateOperation(operator, ImmutableList.<Expression<?>>of(one));
     }
     
-    public static PredicateOperation create(Operator<Boolean> operator, Expression<?> one, Expression<?> two) {
+    public static PredicateOperation create(Operator operator, Expression<?> one, Expression<?> two) {
         return new PredicateOperation(operator, ImmutableList.of(one, two));
     }
     
-    public PredicateOperation(Operator<Boolean> operator, ImmutableList<Expression<?>> args) {
+    public PredicateOperation(Operator operator, ImmutableList<Expression<?>> args) {
         super(Boolean.class, operator, args);
     }
     

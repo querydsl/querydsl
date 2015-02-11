@@ -33,7 +33,7 @@ public class JavaTemplatesTest {
         for (Field field : Ops.class.getFields()) {
             if (Operator.class.isAssignableFrom(field.getType())) {
                 matched++;
-                Operator<?> operator = (Operator<?>) field.get(null);
+                Operator operator = (Operator) field.get(null);
                 assertNotNull(field.getName() + " missing", templates.getTemplate(operator));
             }
         }

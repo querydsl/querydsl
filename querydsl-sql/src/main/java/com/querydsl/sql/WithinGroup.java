@@ -113,19 +113,19 @@ public class WithinGroup<T> extends SimpleOperation<T> {
         }
     }
 
-    public WithinGroup(Class<T> type, Operator<? super T> op) {
+    public WithinGroup(Class<T> type, Operator op) {
         super(type, op, ImmutableList.<Expression<?>>of());
     }
 
-    public WithinGroup(Class<T> type, Operator<? super T> op, Expression<?> arg) {
+    public WithinGroup(Class<T> type, Operator op, Expression<?> arg) {
         super(type, op, ImmutableList.<Expression<?>>of(arg));
     }
 
-    public WithinGroup(Class<T> type, Operator<? super T> op, Expression<?> arg1, Expression<?> arg2) {
+    public WithinGroup(Class<T> type, Operator op, Expression<?> arg1, Expression<?> arg2) {
         super(type, op, ImmutableList.<Expression<?>>of(arg1, arg2));
     }
 
-    public WithinGroup(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    public WithinGroup(Class<T> type, Operator op, Expression<?>... args) {
         super(type, op, merge(args));
     }
 
