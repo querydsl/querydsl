@@ -14,23 +14,14 @@
 package com.querydsl.core.group;
 
 
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
-import static com.querydsl.core.group.GroupBy.map;
 import static com.querydsl.core.group.GroupBy.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import org.junit.Test;
 
+import com.google.common.collect.Ordering;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -54,6 +45,18 @@ public class GroupByMapTest extends AbstractGroupByTest {
         assertEquals(1, it.next().intValue());
         assertEquals(2, it.next().intValue());
         assertEquals(3, it.next().intValue());
+    }
+
+    @Test
+    public void Set_By_Sorted_Reverse() {
+        Map<Integer, Group> results = BASIC_RESULTS
+                .transform(groupBy(postId).as(postName, sortedSet(commentId, Ordering.natural().reverse())));
+
+        Group group = results.get(1);
+        Iterator<Integer> it = group.getSet(commentId).iterator();
+        assertEquals(3, it.next().intValue());
+        assertEquals(2, it.next().intValue());
+        assertEquals(1, it.next().intValue());
     }
 
     @Test
@@ -123,6 +126,20 @@ public class GroupByMapTest extends AbstractGroupByTest {
         assertEquals(2, it.next().getKey().intValue());
         assertEquals(3, it.next().getKey().intValue());
     }
+
+    @Test
+    public void Map_Sorted_Reverse() {
+        Map<Integer, Group> results = MAP_RESULTS.transform(
+                groupBy(postId).as(postName, sortedMap(commentId, commentText, Ordering.natural().reverse())));
+
+        Group group = results.get(1);
+
+        Iterator<Map.Entry<Integer, String>> it = group.getMap(commentId, commentText).entrySet().iterator();
+        assertEquals(3, it.next().getKey().intValue());
+        assertEquals(2, it.next().getKey().intValue());
+        assertEquals(1, it.next().getKey().intValue());
+    }
+
 
     @Test
     public void Map2() {
