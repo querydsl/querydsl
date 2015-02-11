@@ -13,7 +13,6 @@
  */
 package com.querydsl.sql.codegen;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -22,6 +21,11 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
@@ -34,8 +38,6 @@ import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.codegen.*;
 import com.querydsl.sql.*;
 import com.querydsl.sql.codegen.support.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -266,7 +268,7 @@ public class MetaDataExporter {
                 columnDigits != null ? columnDigits.intValue() : 0,
                 tableName, columnName);
         if (clazz == null) {
-            throw new IllegalStateException("Found no mapping for " + columnType + " (" + tableName + "." + columnName + " " + typeName + ")");
+            clazz = Object.class;
         }
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)) {
