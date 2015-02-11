@@ -21,10 +21,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.testutil.Performance;
 
+@Category(Performance.class)
 public class LoadTest {
 
     private QCat cat = QCat.cat;

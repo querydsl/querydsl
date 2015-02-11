@@ -21,6 +21,9 @@ import java.sql.Blob;
 import java.sql.Types;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.querydsl.core.testutil.ReportingOnly;
 
 public class JDBCTypeMappingTest {
 
@@ -84,6 +87,7 @@ public class JDBCTypeMappingTest {
     }
 
     @Test
+    @Category(ReportingOnly.class)
     public void Max() {
         System.err.println("Byte: " + String.valueOf(Byte.MAX_VALUE).length());
         System.err.println("Short: " + String.valueOf(Short.MAX_VALUE).length());

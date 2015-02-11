@@ -1,13 +1,18 @@
 package com.querydsl.core.support;
 
-import com.querydsl.core.testutil.Benchmark;
-import com.querydsl.core.testutil.Runner;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.querydsl.core.testutil.Benchmark;
+import com.querydsl.core.testutil.Performance;
+import com.querydsl.core.testutil.Runner;
 
 public class NormalizationTest {
 
     @Test
+    @Category(Performance.class)
     public void Performance() throws Exception {
         Runner.run("NormalizationTest Performance", new Benchmark() {
 

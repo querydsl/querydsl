@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.google.common.collect.Lists;
+import com.querydsl.core.testutil.ReportingOnly;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.path.DateTimePath;
 
+@Category(ReportingOnly.class)
 public class DateArithmeticTest {
 
     private String serialize(Expression<?> expr, SQLTemplates templates) {
