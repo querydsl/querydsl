@@ -20,18 +20,20 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.querydsl.mongodb.domain.QDummyEntity;
-import com.querydsl.mongodb.domain.QUser;
-import com.querydsl.mongodb.morphia.MorphiaSerializer;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.path.*;
+import com.querydsl.mongodb.domain.QDummyEntity;
+import com.querydsl.mongodb.domain.QPerson;
+import com.querydsl.mongodb.domain.QUser;
+import com.querydsl.mongodb.morphia.MorphiaSerializer;
 
 public class MongodbSerializerTest {
 
@@ -214,6 +216,14 @@ public class MongodbSerializerTest {
         assertQuery(title.lt("A").not().and(year.ne(1800)),
                 dbo("title", dbo("$not", dbo("$lt","A"))).
                 append("year", dbo("$ne", 1800)));
+    }
+
+    @Test
+    public void ObjectId() {
+        ObjectId id = new ObjectId();
+        QPerson person = QPerson.person;
+        assertQuery(person.id.eq(id), dbo("_id",id));
+        assertQuery(person.addressId.eq(id), dbo("addressId",id));
     }
 
 
