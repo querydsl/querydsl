@@ -44,7 +44,7 @@ public class CollQueryMixin<T> extends QueryMixin<T> {
     }
 
     @Override
-    protected Predicate normalize(Predicate predicate, boolean where) {
+    protected Predicate convert(Predicate predicate, Role role) {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
         if (predicate != null) {
             Context context = new Context();

@@ -34,6 +34,8 @@ import com.querydsl.core.types.FactoryExpressionUtils.FactoryExpressionAdapter;
  */
 public class QueryMixin<T> {
 
+    public enum Role { SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY }
+
     private final QueryMetadata metadata;
 
     private final boolean expandAnyPaths;
@@ -98,7 +100,7 @@ public class QueryMixin<T> {
     }
 
     public <E> Expression<E> setProjection(Expression<E> e) {
-        e = convert(e, false);
+        e = convert(e, Role.SELECT);
         metadata.setProjection(e);
         return e;
     }
@@ -106,7 +108,7 @@ public class QueryMixin<T> {
     public T setProjection(Expression<?>... o) {
         Expression<?>[] copy = new Expression<?>[o.length];
         for (int i = 0; i < copy.length; i++) {
-            copy[i] = convert(o[i], false);
+            copy[i] = convert(o[i], Role.SELECT);
         }
         metadata.setProjection(Projections.tuple(copy));
         return self;
@@ -135,7 +137,7 @@ public class QueryMixin<T> {
     }
 
     @SuppressWarnings("rawtypes")
-    public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
+    public <RT> Expression<RT> convert(Expression<RT> expr, Role role) {
         if (expandAnyPaths) {
             if (expr instanceof Path) {
                 expr = (Expression)normalizePath((Path)expr);
@@ -144,13 +146,18 @@ public class QueryMixin<T> {
             }
         }
         if (expr instanceof ProjectionRole<?>) {
-            return convert(((ProjectionRole) expr).getProjection(), forOrder);
+            return convert(((ProjectionRole) expr).getProjection(), role);
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
             return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
         } else {
             return expr;
         }
     }
+
+    protected Predicate convert(Predicate condition, Role role) {
+        return condition;
+    }
+
 
     public Expression<Tuple> createProjection(Expression<?>[] args) {
         return Projections.tuple(args);
@@ -223,13 +230,13 @@ public class QueryMixin<T> {
     }
 
     public final T having(Predicate e) {
-        metadata.addHaving(normalize(e, false));
+        metadata.addHaving(convert(e, Role.HAVING));
         return self;
     }
 
     public final T having(Predicate... o) {
         for (Predicate e : o) {
-            metadata.addHaving(normalize(e, false));
+            metadata.addHaving(convert(e, Role.HAVING));
         }
         return self;
     }
@@ -328,19 +335,19 @@ public class QueryMixin<T> {
     }
 
     public final T on(Predicate condition) {
-        metadata.addJoinCondition(normalize(condition, false));
+        metadata.addJoinCondition(convert(condition, Role.FROM));
         return self;
     }
 
     public final T on(Predicate... conditions) {
         for (Predicate condition : conditions) {
-            metadata.addJoinCondition(normalize(condition, false));
+            metadata.addJoinCondition(convert(condition, Role.FROM));
         }
         return self;
     }
 
     public final T orderBy(OrderSpecifier<?> spec) {
-        Expression<?> e = convert(spec.getTarget(), true);
+        Expression<?> e = convert(spec.getTarget(), Role.ORDER_BY);
         if (!spec.getTarget().equals(e)) {
             metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e));
         } else {
@@ -404,19 +411,15 @@ public class QueryMixin<T> {
     }
 
     public final T where(Predicate e) {
-        metadata.addWhere(normalize(e, true));
+        metadata.addWhere(convert(e, Role.WHERE));
         return self;
     }
 
     public final T where(Predicate... o) {
         for (Predicate e : o) {
-            metadata.addWhere(normalize(e, true));
+            metadata.addWhere(convert(e, Role.WHERE));
         }
         return self;
-    }
-
-    protected Predicate normalize(Predicate condition, boolean where) {
-        return condition;
     }
 
     @Override

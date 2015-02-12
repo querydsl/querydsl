@@ -44,14 +44,14 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
     }
         
     @Override
-    protected Predicate normalize(Predicate predicate, boolean where) {
+    protected Predicate convert(Predicate predicate, Role role) {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
         if (predicate != null) {
             Context context = new Context();            
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.paths.size(); i++) {
                 Path<?> path = context.paths.get(i);            
-                addCondition(context, i, path, where);
+                addCondition(context, i, path, role);
             }
             return transformed;    
         } else {
@@ -60,11 +60,11 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void addCondition(Context context, int i, Path<?> path, boolean where) {
+    private void addCondition(Context context, int i, Path<?> path, Role role) {
         EntityPath<?> alias = context.replacements.get(i);                 
         from(alias);
         Predicate condition = PredicateOperation.create(Ops.IN, alias, path.getMetadata().getParent());
-        if (where) {
+        if (role == Role.WHERE) {
             super.where(condition);
         } else {
             super.having(condition);
