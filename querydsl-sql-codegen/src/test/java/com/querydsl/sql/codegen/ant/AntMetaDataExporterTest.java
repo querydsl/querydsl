@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql.codegen.ant;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,7 +23,6 @@ import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
 
 public class AntMetaDataExporterTest {
 
@@ -46,11 +47,11 @@ public class AntMetaDataExporterTest {
     @Test
     public void Execute() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
-        exporter.setJdbcDriverClass("org.h2.Driver");
-        exporter.setDbUserName("sa");
-        exporter.setDbUrl(url);
-        exporter.setTargetPackage("test");
-        exporter.setTargetSourceFolder("target/AntMetaDataExporterTest");
+        exporter.setJdbcDriver("org.h2.Driver");
+        exporter.setJdbcUser("sa");
+        exporter.setJdbcUrl(url);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder("target/AntMetaDataExporterTest");
         exporter.execute();
 
         assertTrue(new File("target/AntMetaDataExporterTest").exists());
@@ -59,11 +60,11 @@ public class AntMetaDataExporterTest {
     @Test
     public void Execute_With_Beans() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
-        exporter.setJdbcDriverClass("org.h2.Driver");
-        exporter.setDbUserName("sa");
-        exporter.setDbUrl(url);
-        exporter.setTargetPackage("test");
-        exporter.setTargetSourceFolder("target/AntMetaDataExporterTest2");
+        exporter.setJdbcDriver("org.h2.Driver");
+        exporter.setJdbcUser("sa");
+        exporter.setJdbcUrl(url);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder("target/AntMetaDataExporterTest2");
         exporter.setExportBeans(true);
         exporter.setNamePrefix("");
         exporter.setNameSuffix("Q");
@@ -78,11 +79,11 @@ public class AntMetaDataExporterTest {
     @Test
     public void Execute_With_Import() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
-        exporter.setJdbcDriverClass("org.h2.Driver");
-        exporter.setDbUserName("sa");
-        exporter.setDbUrl(url);
-        exporter.setTargetPackage("test");
-        exporter.setTargetSourceFolder("target/AntMetaDataExporterTest3");
+        exporter.setJdbcDriver("org.h2.Driver");
+        exporter.setJdbcUser("sa");
+        exporter.setJdbcUrl(url);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder("target/AntMetaDataExporterTest3");
         exporter.setExportBeans(true);
         exporter.setNamePrefix("");
         exporter.setNameSuffix("Q");

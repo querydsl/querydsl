@@ -36,7 +36,7 @@
 ]]></programlisting>
 
     <para>The querydsl-sql-codegen dependency can be skipped, if code generation happens
-      via Maven or Ant.</para>
+      via Maven.</para>
 
   </sect2>
 

@@ -19,13 +19,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
 import com.querydsl.sql.codegen.MetaDataExporter;
 import com.querydsl.sql.codegen.NamingStrategy;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
 
 /**
  * AntMetaDataExporter exports JDBC metadata to Querydsl query types
@@ -38,57 +39,52 @@ public class AntMetaDataExporter extends Task {
     /**
      * JDBC driver class name
      */
-    private String jdbcDriverClass;
+    private String jdbcDriver;
 
     /**
      * JDBC connection url
      */
-    private String dbUrl;
+    private String jdbcUrl;
 
     /**
      * JDBC connection username
      */
-    private String dbUserName;
+    private String jdbcUser;
 
     /**
      * JDBC connection password
      */
-    private String dbPassword;
+    private String jdbcPassword;
 
     /**
-     * name prefix for generated query types (default: "Q")
+     * name prefix for querydsl-types (default: "Q")
      */
     private String namePrefix;
 
     /**
-     * name suffix for generated query types (default: "")
+     * name suffix for querydsl-types (default: "")
      */
     private String nameSuffix;
 
     /**
-     * name prefix for generated bean types (default: "Q")
+     * name prefix for bean types (default: "")
      */
     private String beanPrefix;
 
     /**
-     * name suffix for generated bean types (default: "")
+     * name suffix for bean types (default: "")
      */
     private String beanSuffix;
 
     /**
-     * target package to generate classes to
+     * package name for sources
      */
-    private String targetPackage;
+    private String packageName;
 
     /**
-     * target package to generated bean classes to (default: targetPackage)
+     * package name for bean sources (default: packageName)
      */
-    private String beanTargetPackage;
-
-    /**
-     * target source folder
-     */
-    private String targetSourceFolder;
+    private String beanPackageName;
 
     /**
      * schemaPattern a schema name pattern; must match the schema name
@@ -105,64 +101,29 @@ public class AntMetaDataExporter extends Task {
     private String tableNamePattern;
 
     /**
-     * wrap key properties into inner classes (default: false)
+     * target source folder to create the sources into (e.g. target/generated-sources/java)
      */
-    private boolean innerClassesForKeys;
+    private String targetFolder;
+
+    /**
+     * namingstrategy class to override (default: DefaultNamingStrategy)
+     */
+    private String namingStrategyClass;
+
+    /**
+     *
+     */
+    private String beanSerializerClass;
+
+    /**
+     *
+     */
+    private String serializerClass;
 
     /**
      * serialize beans as well
      */
     private boolean exportBeans;
-
-    /**
-     * export validation annotations (@NotNull, @Size etc)
-     */
-    private boolean validationAnnotations = false;
-
-    /**
-     * charset encoding of the sources to be generated
-     */
-    private String sourceEncoding;
-
-    /**
-     *
-     */
-    private boolean columnAnnotations = false;
-
-    /**
-     *
-     */
-    private boolean schemaToPackage = false;
-
-    /**
-     *
-     */
-    private boolean lowerCase = false;
-
-    /**
-     *
-     */
-    private boolean exportTables = true;
-
-    /**
-     *
-     */
-    private boolean exportViews = true;
-
-    /**
-     *
-     */
-    private boolean exportAll = false;
-
-    /**
-     *
-     */
-    private boolean exportPrimaryKeys = true;
-
-    /**
-     *
-     */
-    private boolean exportForeignKeys = true;
 
     /**
      *
@@ -183,7 +144,67 @@ public class AntMetaDataExporter extends Task {
      *
      */
     private boolean beanPrintSupertype;
-    
+
+    /**
+     * wrap key properties into inner classes (default: false)
+     */
+    private boolean innerClassesForKeys;
+
+    /**
+     * export validation annotations (default: false)
+     */
+    private boolean validationAnnotations;
+
+    /**
+     * export column annotations (default: false)
+     */
+    private boolean columnAnnotations;
+
+    /**
+     *
+     */
+    private String[] customTypes;
+
+    /**
+     *
+     */
+    private boolean createScalaSources;
+
+    /**
+     *
+     */
+    private boolean schemaToPackage;
+
+    /**
+     *
+     */
+    private boolean lowerCase;
+
+    /**
+     *
+     */
+    private boolean exportTables;
+
+    /**
+     *
+     */
+    private boolean exportViews;
+
+    /**
+     *
+     */
+    private boolean exportAll;
+
+    /**
+     *
+     */
+    private boolean exportPrimaryKeys;
+
+    /**
+     *
+     */
+    private boolean exportForeignKeys;
+
     /**
      * override default column order (default: alphabetical)
      */
@@ -193,34 +214,40 @@ public class AntMetaDataExporter extends Task {
      *
      */
     private boolean spatial;
-    
+
     /**
-     * comma separated list of "table types" to export.
-     * ex: "TABLE, VIEW, MATERIALIZED VIEW"
-     * 
-     * @parameter
+     * Comma-separated list of table types to export (allowable values will
+     * depend on JDBC driver). Allows for arbitrary set of types to be exported,
+     * e.g.: "TABLE, MATERIALIZED VIEW". The exportTables and exportViews
+     * parameters will be ignored if this parameter is set. (default: none)
      */
     private String tableTypesToExport;
-    
+
     /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
      * com.bar.Foo for class
-     *
      */
     private String[] imports;
+
+    // Ant only
+    private String sourceEncoding;
 
 
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void execute() {
+        if (targetFolder == null) {
+            throw new BuildException("targetFolder is a mandatory property");
+        }
+
         Connection dbConn = null;
-        File targetPackagePath = new File(targetSourceFolder);
+        File targetPackagePath = new File(targetFolder);
 
         try {
-            Class.forName(jdbcDriverClass).newInstance();
+            Class.forName(jdbcDriver).newInstance();
 
-            dbConn = DriverManager.getConnection(dbUrl, dbUserName, dbPassword);
+            dbConn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
 
             NamingStrategy namingStrategy = new DefaultNamingStrategy();
             MetaDataExporter exporter = new MetaDataExporter();
@@ -236,8 +263,8 @@ public class AntMetaDataExporter extends Task {
             if (beanSuffix != null) {
                 exporter.setBeanSuffix(beanSuffix);
             }
-            exporter.setPackageName(targetPackage);
-            exporter.setBeanPackageName(beanTargetPackage);
+            exporter.setPackageName(packageName);
+            exporter.setBeanPackageName(beanPackageName);
             exporter.setTargetFolder(targetPackagePath);
             exporter.setNamingStrategy(namingStrategy);
             exporter.setInnerClassesForKeys(innerClassesForKeys);
@@ -308,36 +335,36 @@ public class AntMetaDataExporter extends Task {
         }
     }
 
-    public String getDbUrl() {
-        return dbUrl;
+    public String getJdbcDriver() {
+        return jdbcDriver;
     }
 
-    public void setDbUrl(String dbUrl) {
-        this.dbUrl = dbUrl;
+    public void setJdbcDriver(String jdbcDriver) {
+        this.jdbcDriver = jdbcDriver;
     }
 
-    public String getDbUserName() {
-        return dbUserName;
+    public String getJdbcUrl() {
+        return jdbcUrl;
     }
 
-    public void setDbUserName(String dbUserName) {
-        this.dbUserName = dbUserName;
+    public void setJdbcUrl(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
     }
 
-    public String getDbPassword() {
-        return dbPassword;
+    public String getJdbcUser() {
+        return jdbcUser;
     }
 
-    public void setDbPassword(String dbPassword) {
-        this.dbPassword = dbPassword;
+    public void setJdbcUser(String jdbcUser) {
+        this.jdbcUser = jdbcUser;
     }
 
-    public String getJdbcDriverClass() {
-        return jdbcDriverClass;
+    public String getJdbcPassword() {
+        return jdbcPassword;
     }
 
-    public void setJdbcDriverClass(String jdbcDriverClass) {
-        this.jdbcDriverClass = jdbcDriverClass;
+    public void setJdbcPassword(String jdbcPassword) {
+        this.jdbcPassword = jdbcPassword;
     }
 
     public String getNamePrefix() {
@@ -346,54 +373,6 @@ public class AntMetaDataExporter extends Task {
 
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
-    }
-
-    public String getTargetPackage() {
-        return targetPackage;
-    }
-
-    public void setTargetPackage(String targetPackage) {
-        this.targetPackage = targetPackage;
-    }
-
-    public String getTargetSourceFolder() {
-        return targetSourceFolder;
-    }
-
-    public void setTargetSourceFolder(String targetSourceFolder) {
-        this.targetSourceFolder = targetSourceFolder;
-    }
-
-    public void setSchemaPattern(String schemaPattern) {
-        this.schemaPattern = schemaPattern;
-    }
-
-    public void setTableNamePattern(String tableNamePattern) {
-        this.tableNamePattern = tableNamePattern;
-    }
-
-    public String getSchemaPattern() {
-        return schemaPattern;
-    }
-
-    public String getTableNamePattern() {
-        return tableNamePattern;
-    }
-
-    public boolean isInnerClassesForKeys() {
-        return innerClassesForKeys;
-    }
-
-    public void setInnerClassesForKeys(boolean innerClassesForKeys) {
-        this.innerClassesForKeys = innerClassesForKeys;
-    }
-
-    public boolean isExportBeans() {
-        return exportBeans;
-    }
-
-    public void setExportBeans(boolean exportBeans) {
-        this.exportBeans = exportBeans;
     }
 
     public String getNameSuffix() {
@@ -420,12 +399,116 @@ public class AntMetaDataExporter extends Task {
         this.beanSuffix = beanSuffix;
     }
 
-    public String getBeanTargetPackage() {
-        return beanTargetPackage;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setBeanTargetPackage(String beanTargetPackage) {
-        this.beanTargetPackage = beanTargetPackage;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getBeanPackageName() {
+        return beanPackageName;
+    }
+
+    public void setBeanPackageName(String beanPackageName) {
+        this.beanPackageName = beanPackageName;
+    }
+
+    public String getSchemaPattern() {
+        return schemaPattern;
+    }
+
+    public void setSchemaPattern(String schemaPattern) {
+        this.schemaPattern = schemaPattern;
+    }
+
+    public String getTableNamePattern() {
+        return tableNamePattern;
+    }
+
+    public void setTableNamePattern(String tableNamePattern) {
+        this.tableNamePattern = tableNamePattern;
+    }
+
+    public String getTargetFolder() {
+        return targetFolder;
+    }
+
+    public void setTargetFolder(String targetFolder) {
+        this.targetFolder = targetFolder;
+    }
+
+    public String getNamingStrategyClass() {
+        return namingStrategyClass;
+    }
+
+    public void setNamingStrategyClass(String namingStrategyClass) {
+        this.namingStrategyClass = namingStrategyClass;
+    }
+
+    public String getBeanSerializerClass() {
+        return beanSerializerClass;
+    }
+
+    public void setBeanSerializerClass(String beanSerializerClass) {
+        this.beanSerializerClass = beanSerializerClass;
+    }
+
+    public String getSerializerClass() {
+        return serializerClass;
+    }
+
+    public void setSerializerClass(String serializerClass) {
+        this.serializerClass = serializerClass;
+    }
+
+    public boolean isExportBeans() {
+        return exportBeans;
+    }
+
+    public void setExportBeans(boolean exportBeans) {
+        this.exportBeans = exportBeans;
+    }
+
+    public String[] getBeanInterfaces() {
+        return beanInterfaces;
+    }
+
+    public void setBeanInterfaces(String[] beanInterfaces) {
+        this.beanInterfaces = beanInterfaces;
+    }
+
+    public boolean isBeanAddToString() {
+        return beanAddToString;
+    }
+
+    public void setBeanAddToString(boolean beanAddToString) {
+        this.beanAddToString = beanAddToString;
+    }
+
+    public boolean isBeanAddFullConstructor() {
+        return beanAddFullConstructor;
+    }
+
+    public void setBeanAddFullConstructor(boolean beanAddFullConstructor) {
+        this.beanAddFullConstructor = beanAddFullConstructor;
+    }
+
+    public boolean isBeanPrintSupertype() {
+        return beanPrintSupertype;
+    }
+
+    public void setBeanPrintSupertype(boolean beanPrintSupertype) {
+        this.beanPrintSupertype = beanPrintSupertype;
+    }
+
+    public boolean isInnerClassesForKeys() {
+        return innerClassesForKeys;
+    }
+
+    public void setInnerClassesForKeys(boolean innerClassesForKeys) {
+        this.innerClassesForKeys = innerClassesForKeys;
     }
 
     public boolean isValidationAnnotations() {
@@ -436,20 +519,28 @@ public class AntMetaDataExporter extends Task {
         this.validationAnnotations = validationAnnotations;
     }
 
-    public String getSourceEncoding() {
-        return sourceEncoding;
-    }
-
-    public void setSourceEncoding(String sourceEncoding) {
-        this.sourceEncoding = sourceEncoding;
-    }
-
     public boolean isColumnAnnotations() {
         return columnAnnotations;
     }
 
     public void setColumnAnnotations(boolean columnAnnotations) {
         this.columnAnnotations = columnAnnotations;
+    }
+
+    public String[] getCustomTypes() {
+        return customTypes;
+    }
+
+    public void setCustomTypes(String[] customTypes) {
+        this.customTypes = customTypes;
+    }
+
+    public boolean isCreateScalaSources() {
+        return createScalaSources;
+    }
+
+    public void setCreateScalaSources(boolean createScalaSources) {
+        this.createScalaSources = createScalaSources;
     }
 
     public boolean isSchemaToPackage() {
@@ -508,12 +599,12 @@ public class AntMetaDataExporter extends Task {
         this.exportForeignKeys = exportForeignKeys;
     }
 
-    public String[] getImports() {
-        return imports;
+    public String getColumnComparatorClass() {
+        return columnComparatorClass;
     }
 
-    public void setImports(String[] imports) {
-        this.imports = imports;
+    public void setColumnComparatorClass(String columnComparatorClass) {
+        this.columnComparatorClass = columnComparatorClass;
     }
 
     public boolean isSpatial() {
@@ -524,4 +615,27 @@ public class AntMetaDataExporter extends Task {
         this.spatial = spatial;
     }
 
+    public String getTableTypesToExport() {
+        return tableTypesToExport;
+    }
+
+    public void setTableTypesToExport(String tableTypesToExport) {
+        this.tableTypesToExport = tableTypesToExport;
+    }
+
+    public String[] getImports() {
+        return imports;
+    }
+
+    public void setImports(String[] imports) {
+        this.imports = imports;
+    }
+
+    public String getSourceEncoding() {
+        return sourceEncoding;
+    }
+
+    public void setSourceEncoding(String sourceEncoding) {
+        this.sourceEncoding = sourceEncoding;
+    }
 }

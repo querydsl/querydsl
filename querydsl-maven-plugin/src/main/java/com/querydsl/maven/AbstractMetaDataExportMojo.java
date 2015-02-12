@@ -28,9 +28,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.codegen.DefaultNamingStrategy;
-import com.querydsl.sql.codegen.MetaDataExporter;
-import com.querydsl.sql.codegen.NamingStrategy;
+import com.querydsl.sql.codegen.*;
 import com.querydsl.sql.types.Type;
 
 /**
@@ -77,7 +75,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String namePrefix;
 
     /**
-     * name prefix for querydsl-types (default: "")
+     * name suffix for querydsl-types (default: "")
      * @parameter default-value=""
      */
     private String nameSuffix;
@@ -89,7 +87,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String beanPrefix;
 
     /**
-     * name prefix for bean types (default: "")
+     * name suffix for bean types (default: "")
      * @parameter default-value=""
      */
     private String beanSuffix;
