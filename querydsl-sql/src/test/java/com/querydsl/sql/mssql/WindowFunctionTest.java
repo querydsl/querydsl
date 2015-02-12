@@ -21,13 +21,16 @@ import org.junit.Test;
 
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
+import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.WindowFunction;
 import com.querydsl.core.types.Expression;
 
 public class WindowFunctionTest {
 
+    private static final Configuration configuration = new Configuration(SQLTemplates.DEFAULT);
+
     private static String toString(Expression<?> e) {
-        return new SQLSerializer(Configuration.DEFAULT).handle(e).toString();
+        return new SQLSerializer(configuration).handle(e).toString();
     }
 
 //    ROW_NUMBER() OVER (ORDER BY OrderDate) AS 'RowNumber'

@@ -35,7 +35,7 @@ import com.querydsl.sql.types.Null;
  * @author tiwe
  *
  */
-public final class JDBCTypeMapping {
+final class JDBCTypeMapping {
 
     private static final Set<Integer> NUMERIC_TYPES;
 

@@ -13,14 +13,15 @@
  */
 package com.querydsl.sql;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.common.primitives.Primitives;
-import com.querydsl.sql.types.*;
 import com.querydsl.core.util.ReflectionUtils;
+import com.querydsl.sql.types.*;
 
 /**
  * JavaTypeMapping provides a mapping from Class to Type instances
@@ -28,7 +29,7 @@ import com.querydsl.core.util.ReflectionUtils;
  * @author tiwe
  *
  */
-public class JavaTypeMapping {
+class JavaTypeMapping {
 
     private static final Type<Object> DEFAULT = new ObjectType();
 

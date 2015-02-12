@@ -13,16 +13,16 @@
  */
 package com.querydsl.jpa;
 
+import javax.persistence.Entity;
+
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.ProjectableSQLQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.TemplateExpression;
-
-import javax.persistence.Entity;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.ProjectableSQLQuery;
 
 /**
  * Abstract super class for SQLQuery implementation for JPA and Hibernate
@@ -39,8 +39,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
         }
 
         @Override
-        public <RT> Expression<RT> convert(Expression<RT> expr, boolean forOrder) {
-            return Conversions.convertForNativeQuery(super.convert(expr, forOrder));
+        public <RT> Expression<RT> convert(Expression<RT> expr, Role role) {
+            return Conversions.convertForNativeQuery(super.convert(expr, role));
         }
     }
 
