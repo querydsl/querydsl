@@ -20,13 +20,12 @@ public class ExpressivityTest {
     
     private DetachableMixin sub;
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Before
     public void setUp() {
         num = Expressions.numberPath(Integer.class, "num");
         str = Expressions.stringPath("str");
         date = Expressions.datePath(Date.class, "date");
-        QueryMixin query = new QueryMixin();
+        QueryMixin<?> query = new QueryMixin<Void>();
         query.from(num, str);
         sub = new DetachableMixin(query);
     }

@@ -36,7 +36,7 @@ import com.querydsl.core.types.Predicate;
  */
 public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
 
-    private final QueryMixin queryMixin = new JPAQueryMixin();
+    private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
     private final EntityManager entityManager;
 

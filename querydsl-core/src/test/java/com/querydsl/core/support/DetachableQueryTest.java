@@ -22,14 +22,14 @@ import org.junit.Test;
 import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.EntityPath;
 
-@SuppressWarnings("unchecked")
 public class DetachableQueryTest {
     
-    private QueryMixin query;
+    private QueryMixin<?> query;
     
-    private DetachableQuery detachable;
+    private DetachableQuery<?> detachable;
     
     @Before
+    @SuppressWarnings({"rawtypes", "unchecked"}) //not interested for testing purposes
     public void setUp() {
         query = new QueryMixin();
         detachable = new DetachableQuery(query);

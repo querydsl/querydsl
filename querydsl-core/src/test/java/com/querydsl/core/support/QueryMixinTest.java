@@ -28,8 +28,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 public class QueryMixinTest {
 
-    @SuppressWarnings("unchecked")
-    private QueryMixin<?> mixin = new QueryMixin();
+    private QueryMixin<?> mixin = new QueryMixin<Void>();
 
     private QCommonPersistence entity = new QCommonPersistence(PathMetadataFactory.forVariable("entity"));
 

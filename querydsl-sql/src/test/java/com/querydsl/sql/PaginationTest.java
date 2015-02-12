@@ -39,7 +39,7 @@ public class PaginationTest {
 
         for (SQLTemplates templates : list) {
             QEmployee employee = QEmployee.employee;
-            QueryMixin query = new QueryMixin();
+            QueryMixin<?> query = new QueryMixin<Void>();
             query.from(employee);
             query.orderBy(employee.firstname.asc());
             query.setProjection(employee.id);

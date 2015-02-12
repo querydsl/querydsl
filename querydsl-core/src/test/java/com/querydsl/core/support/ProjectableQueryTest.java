@@ -20,12 +20,11 @@ import org.junit.Test;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 
-@SuppressWarnings("unchecked")
 public class ProjectableQueryTest {
         
     @Test
     public void UniqueResult_Of_Array() {
-       QueryMixin queryMixin = new QueryMixin();
+       QueryMixin<DummyProjectable> queryMixin = new QueryMixin<DummyProjectable>();
        DummyProjectable projectable = new DummyProjectable(queryMixin);
        projectable.uniqueResult(new Expression[0]);
        assertEquals(Long.valueOf(2), queryMixin.getMetadata().getModifiers().getLimit());
@@ -33,7 +32,7 @@ public class ProjectableQueryTest {
     
     @Test
     public void UniqueResult() {
-       QueryMixin queryMixin = new QueryMixin();
+       QueryMixin<DummyProjectable> queryMixin = new QueryMixin<DummyProjectable>();
        DummyProjectable projectable = new DummyProjectable(queryMixin);
        projectable.uniqueResult(Projections.bean(Object.class));
        assertEquals(Long.valueOf(2), queryMixin.getMetadata().getModifiers().getLimit());

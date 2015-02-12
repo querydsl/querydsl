@@ -428,8 +428,8 @@ public class QueryMixin<T> {
     public final boolean equals(Object o) {
         if (o == this) {
             return true;
-        } else if (o instanceof QueryMixin) {
-            QueryMixin q = (QueryMixin)o;
+        } else if (o instanceof QueryMixin<?>) {
+            QueryMixin<?> q = (QueryMixin<?>)o;
             return q.metadata.equals(metadata);
         } else {
             return false;

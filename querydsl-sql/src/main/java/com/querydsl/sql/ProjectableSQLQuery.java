@@ -475,7 +475,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
                 .equals(expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
                 serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
             } else {
-                QueryMixin mixin2 = new QueryMixin(queryMixin.getMetadata().clone());
+                QueryMixin<Q> mixin2 = new QueryMixin<Q>(queryMixin.getMetadata().clone());
                 Set<Path<?>> paths = getRootPaths(expandProjection(mixin2.getMetadata().getProjection()));
                 if (paths.isEmpty()) {
                     mixin2.from(ExpressionUtils.as((Expression) union, defaultQueryAlias));

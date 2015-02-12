@@ -27,17 +27,15 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.ListSubQuery;
 
-
-@SuppressWarnings("unchecked")
 public class DetachableMixinTest {
 
-    private QueryMixin query;
+    private QueryMixin<?> query;
 
     private DetachableMixin detachable;
 
     @Before
     public void setUp() {
-        query = new QueryMixin();
+        query = new QueryMixin<Void>();
         detachable = new DetachableMixin(query);
     }
 
