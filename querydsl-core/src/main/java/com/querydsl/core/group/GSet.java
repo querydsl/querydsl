@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.group;
 
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import com.querydsl.core.types.Expression;
 
@@ -25,12 +22,12 @@ import com.querydsl.core.types.Expression;
  *
  * @param <T>
  */
-abstract class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
+abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
     
     private static final long serialVersionUID = -1575808026237160843L;
 
-    public static <U> GSet<U> createLinked(Expression<U> expr) {
-        return new GSet<U>(expr) {
+    public static <U> GSet<U, Set<U>> createLinked(Expression<U> expr) {
+        return new GSet<U, Set<U>>(expr) {
             @Override
             protected Set<U> createSet() {
                 return new LinkedHashSet<U>();
@@ -38,19 +35,19 @@ abstract class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
         };
     }
 
-    public static <U extends Comparable<? super U>> GSet<U> createSorted(Expression<U> expr) {
-        return new GSet<U>(expr) {
+    public static <U extends Comparable<? super U>> GSet<U, SortedSet<U>> createSorted(Expression<U> expr) {
+        return new GSet<U, SortedSet<U>>(expr) {
             @Override
-            protected Set<U> createSet() {
+            protected SortedSet<U> createSet() {
                 return new TreeSet<U>();
             }
         };
     }
 
-    public static <U> GSet<U> createSorted(Expression<U> expr, final Comparator<? super U> comparator) {
-        return new GSet<U>(expr) {
+    public static <U> GSet<U, SortedSet<U>> createSorted(Expression<U> expr, final Comparator<? super U> comparator) {
+        return new GSet<U, SortedSet<U>>(expr) {
             @Override
-            protected Set<U> createSet() {
+            protected SortedSet<U> createSet() {
                 return new TreeSet<U>(comparator);
             }
         };
@@ -60,13 +57,13 @@ abstract class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
         super(Set.class, expr);
     }
 
-    protected abstract Set<T> createSet();
+    protected abstract S createSet();
 
     @Override
-    public GroupCollector<T,Set<T>> createGroupCollector() {
-        return new GroupCollector<T,Set<T>>() {
+    public GroupCollector<T, S> createGroupCollector() {
+        return new GroupCollector<T, S>() {
 
-            private final Set<T> set = createSet();
+            private final S set = createSet();
             
             @Override
             public void add(T o) {
@@ -76,7 +73,7 @@ abstract class GSet<T> extends AbstractGroupExpression<T, Set<T>> {
             }
 
             @Override
-            public Set<T> get() {
+            public S get() {
                 return set;
             }
             
