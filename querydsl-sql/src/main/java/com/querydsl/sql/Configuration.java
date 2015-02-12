@@ -75,7 +75,7 @@ public final class Configuration {
             javaTypeMapping.register(customType);
         }
         for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
-            nameMapping.registerTableOverride(entry.getKey(), entry.getValue());
+            registerTableOverride(entry.getKey(), entry.getValue());
         }
 
         if (templates.isArraysSupported()) {
