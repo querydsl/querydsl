@@ -13,14 +13,24 @@
  */
 package com.querydsl.maven;
 
+import com.querydsl.sql.Configuration;
+
 /**
  * @author tiwe
  *
  */
-public class NumericMapping {
+public class NumericMapping implements Mapping {
 
     public int total, decimal;
 
     public String javaType;
 
+    @Override
+    public void apply(Configuration configuration) {
+        try {
+            configuration.registerNumeric(total, decimal, Class.forName(javaType));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

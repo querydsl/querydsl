@@ -13,11 +13,14 @@
  */
 package com.querydsl.maven;
 
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.types.Type;
+
 /**
  * @author tiwe
  *
  */
-public class TypeMapping {
+public class TypeMapping implements Mapping {
 
     public String table;
 
@@ -25,4 +28,22 @@ public class TypeMapping {
 
     public String type;
 
+    @Override
+    public void apply(Configuration configuration) {
+        try {
+            Class<?> typeClass = Class.forName(type);
+            if (Type.class.isAssignableFrom(typeClass)) {
+                configuration.register(table, column, (Type<?>)typeClass.newInstance());
+            } else {
+                configuration.register(table, column, typeClass);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
