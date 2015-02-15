@@ -13,8 +13,6 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
-
 /**
  * Visitor defines a Visitor signature for {@link Expression} instances.
  *
@@ -25,43 +23,37 @@ public interface Visitor<R,C> {
     /**
      * @param expr
      */
-    @Nullable
-    R visit(Constant<?> expr, @Nullable C context);
+    R visit(Constant<?> expr, C context);
 
     /**
      * @param expr
      */
-    @Nullable
-    R visit(FactoryExpression<?> expr, @Nullable C context);
+    R visit(FactoryExpression<?> expr, C context);
 
     /**
      * @param expr
      */
-    @Nullable
-    R visit(Operation<?> expr, @Nullable C context);
+    R visit(Operation<?> expr, C context);
 
     /**
      * @param expr
      */
-    @Nullable
-    R visit(ParamExpression<?> expr, @Nullable C context);
+    R visit(ParamExpression<?> expr, C context);
 
     /**
      * @param expr
      */
-    @Nullable
-    R visit(Path<?> expr, @Nullable C context);
+    R visit(Path<?> expr, C context);
 
     /**
      * @param expr
      */
-    @Nullable
-    R visit(SubQueryExpression<?> expr, @Nullable C context);
+    R visit(SubQueryExpression<?> expr, C context);
 
     /**
      * @param expr
      */
-    @Nullable
-    R visit(TemplateExpression<?> expr, @Nullable C context);
+
+    R visit(TemplateExpression<?> expr, C context);
 
 }
