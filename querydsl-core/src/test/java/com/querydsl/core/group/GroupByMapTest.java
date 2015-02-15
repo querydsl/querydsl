@@ -37,7 +37,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
 
     @Test
     public void Set_By_Sorted() {
-        Map<Integer, Group> results = BASIC_RESULTS
+        Map<Integer, Group> results = BASIC_RESULTS_UNORDERED
                 .transform(groupBy(postId).as(postName, sortedSet(commentId)));
 
         Group group = results.get(1);
@@ -49,7 +49,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
 
     @Test
     public void Set_By_Sorted_Reverse() {
-        Map<Integer, Group> results = BASIC_RESULTS
+        Map<Integer, Group> results = BASIC_RESULTS_UNORDERED
                 .transform(groupBy(postId).as(postName, sortedSet(commentId, Ordering.natural().reverse())));
 
         Group group = results.get(1);
