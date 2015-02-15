@@ -74,6 +74,14 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "date_add({0}, interval {1s} minute)");
         add(Ops.DateTimeOps.ADD_SECONDS, "date_add({0}, interval {1s} second)");
 
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "trunc({0},'yyyy')");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "trunc({0},'mm')");
+        add(Ops.DateTimeOps.TRUNC_WEEK,   "trunc({0},'day')");
+        add(Ops.DateTimeOps.TRUNC_DAY,    "trunc({0},'dd')");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "timestamp(date({0}),concat(hour({0}),':00:00'))");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "timestamp(date({0}),concat(hour({0}),':',minute({0}),':00'))");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "timestamp(date({0}),concat(hour({0}),':',minute({0}),':',second({0})))");
+
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");

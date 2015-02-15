@@ -105,6 +105,15 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "{fn timestampdiff(SQL_TSI_MINUTE, {0}, {1})}");
         add(Ops.DateTimeOps.DIFF_SECONDS, "{fn timestampdiff(SQL_TSI_SECOND, {0}, {1})}");
 
+        // yyyy-MM-dd hh:mm:ss
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "timestamp(substr(cast({0} as char(30)),1,4)||'-01-01 00:00:00')");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "timestamp(substr(cast({0} as char(30)),1,7)||'-01 00:00:00')");
+        // TODO weeks
+        add(Ops.DateTimeOps.TRUNC_DAY,    "timestamp(substr(cast({0} as char(30)),1,10)||' 00:00:00')");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "timestamp(substr(cast({0} as char(30)),1,13)||':00:00')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "timestamp(substr(cast({0} as char(30)),1,16)||':00')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "timestamp(substr(cast({0} as char(30)),1,19))");
+
         // left via substr
         add(Ops.StringOps.LEFT, "substr({0},1,{1})");
 

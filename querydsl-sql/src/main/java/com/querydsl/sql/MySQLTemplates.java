@@ -149,6 +149,14 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(second,{0},{1})");
 
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "str_to_date(concat(date_format({0},'%Y'),'-1-1'),'%Y-%m-%d')");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "str_to_date(concat(date_format({0},'%Y-%m'),'-1'),'%Y-%m-%d')");
+        add(Ops.DateTimeOps.TRUNC_WEEK,   "str_to_date(concat(date_format({0},'%Y-%u'),'-2'),'%Y-%u-%w')");
+        add(Ops.DateTimeOps.TRUNC_DAY,    "str_to_date(date_format({0},'%Y-%m-%d'),'%Y-%m-%d')");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "str_to_date(date_format({0},'%Y-%m-%d %k'),'%Y-%m-%d %k')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "str_to_date(date_format({0},'%Y-%m-%d %k:%i'),'%Y-%m-%d %k:%i')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "str_to_date(date_format({0},'%Y-%m-%d %k:%i:%s'),'%Y-%m-%d %k:%i:%s')");
+
         addTypeNameToCode("bool", Types.BIT, true);
         addTypeNameToCode("tinyint unsigned", Types.TINYINT);
         addTypeNameToCode("bigint unsigned", Types.BIGINT);

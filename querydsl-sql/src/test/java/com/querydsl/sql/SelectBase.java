@@ -482,7 +482,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -501,7 +501,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({DB2, ORACLE, POSTGRES, TERADATA})
+    @ExcludeIn({FIREBIRD, SQLITE}) // FIXME
     public void Date_Trunc2() {
         DateTimeExpression<DateTime> expr = DateTimeExpression.currentTimestamp(DateTime.class);
 
@@ -520,6 +520,13 @@ public class SelectBase extends AbstractBaseTest {
         DateTime toHour = tuple.get(SQLExpressions.datetrunc(DatePart.hour, expr));
         DateTime toMinute = tuple.get(SQLExpressions.datetrunc(DatePart.minute, expr));
         DateTime toSecond = tuple.get(SQLExpressions.datetrunc(DatePart.second, expr));
+
+        assertEquals(date.getZone(), toYear.getZone());
+        assertEquals(date.getZone(), toMonth.getZone());
+        assertEquals(date.getZone(), toDay.getZone());
+        assertEquals(date.getZone(), toHour.getZone());
+        assertEquals(date.getZone(), toMinute.getZone());
+        assertEquals(date.getZone(), toSecond.getZone());
 
         // year
         assertEquals(date.getYear(), toYear.getYear());

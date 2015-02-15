@@ -103,7 +103,7 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_MONTH, "trunc({0}, 'month')");
         add(Ops.DateTimeOps.TRUNC_WEEK, "trunc({0}, 'w')");
         add(Ops.DateTimeOps.TRUNC_DAY, "trunc({0}, 'dd')");
-        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc({0}, 'hh')");
+        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc({0}, 'hh24')");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc({0}, 'mi')");
         add(Ops.DateTimeOps.TRUNC_SECOND, "{0}"); // not truncated
     }
