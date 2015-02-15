@@ -16,6 +16,8 @@ package com.querydsl.maven;
 import com.querydsl.sql.Configuration;
 
 /**
+ * {@linkplain NumericMapping} is used to customize mappings of various numeric precisions to data types.
+ *
  * @author tiwe
  *
  */
