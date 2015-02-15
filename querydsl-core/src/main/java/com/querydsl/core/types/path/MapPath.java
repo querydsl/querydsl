@@ -20,13 +20,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionException;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.MapExpressionBase;
 import com.querydsl.core.types.expr.SimpleExpression;
 
@@ -63,7 +57,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     
     @SuppressWarnings("unchecked")
     public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata metadata) {
-        super(new PathImpl<Map<K,V>>((Class)Map.class, metadata));
+        super(new ParameterizedPathImpl<Map<K,V>>((Class)Map.class, metadata, keyType, valueType));
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;

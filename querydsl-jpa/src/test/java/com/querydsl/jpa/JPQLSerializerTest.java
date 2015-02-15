@@ -154,7 +154,7 @@ public class JPQLSerializerTest {
         serializer.serializeForDelete(md);
         assertEquals("delete from Cat kitten\n" +
                 "where kitten.id = ?1 and exists (select 1\n" +
-        	"from Cat cat\nwhere cat.id = ?2 and kitten in elements(cat.kittens))", serializer.toString());
+        	"from Cat cat\nwhere cat.id = ?2 and kitten member of cat.kittens)", serializer.toString());
     }
 
     @Test

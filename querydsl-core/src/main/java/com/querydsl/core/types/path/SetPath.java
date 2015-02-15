@@ -18,11 +18,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.SimpleExpression;
 
 /**
@@ -60,7 +56,7 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
     
     @SuppressWarnings("unchecked")
     public SetPath(Class<? super E> type, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
-        super(new PathImpl<Set<E>>((Class)Set.class, metadata), inits);
+        super(new ParameterizedPathImpl<Set<E>>((Class)Set.class, metadata, type), inits);
         this.elementType = (Class<E>)type;
         this.queryType = queryType;
         this.pathMixin = (PathImpl<Set<E>>)mixin;

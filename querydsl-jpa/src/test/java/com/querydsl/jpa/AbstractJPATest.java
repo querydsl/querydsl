@@ -907,42 +907,36 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey() {
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).count());
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey2() {
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsKey3() {
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsValue() {
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsValue2() {
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
     }
 
     @Test
-    @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Map_ContainsValue3() {
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());
