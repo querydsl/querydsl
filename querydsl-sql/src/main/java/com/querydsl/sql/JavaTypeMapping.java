@@ -61,21 +61,11 @@ class JavaTypeMapping {
         registerDefault(new UtilDateType());
         registerDefault(new UtilUUIDType(false));
 
-        // initialize joda time converters only if joda time is available
-        try {
-            Class.forName("org.joda.time.DateTime");
-            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.DateTimeType").newInstance());
-            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.LocalDateTimeType").newInstance());
-            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.LocalDateType").newInstance());
-            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.LocalTimeType").newInstance());
-        } catch (ClassNotFoundException e) {
-            // converters for joda.time are not loaded
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
+        // Joda time types
+        registerDefault(new DateTimeType());
+        registerDefault(new LocalDateTimeType());
+        registerDefault(new LocalDateType());
+        registerDefault(new LocalTimeType());
     }
 
     private static void registerDefault(Type<?> type) {
