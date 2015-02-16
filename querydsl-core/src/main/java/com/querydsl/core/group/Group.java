@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.group;
 
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 import com.querydsl.core.types.Expression;
 
@@ -67,6 +64,17 @@ public interface Group {
      * @return Set of values in this group
      */
     <T> Set<T> getSet(Expression<T> expr);
+
+    /**
+     * Returns a SortedSet of values in this group.
+     *
+     * @param <T> Value type of Set
+     * @param expr Grouped expression
+     * @throws NoSuchElementException if group is undefined.
+     * @throws ClassCastException if group is of different type (e.g. List)
+     * @return Set of values in this group
+     */
+    <T> SortedSet<T> getSortedSet(Expression<T> expr);
     
     /**
      * Returns a List of values in this group. 
@@ -91,5 +99,18 @@ public interface Group {
      * @return Map of values in this group
      */
     <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value);
+
+    /**
+     * Returns a SortedMap of values in this group
+     *
+     * @param <K> Key type of result Map
+     * @param <V> Value type of result Map
+     * @param key Key expression
+     * @param value Value expression
+     * @throws NoSuchElementException if group is undefined.
+     * @throws ClassCastException if group is of different type (e.g. List)
+     * @return Map of values in this group
+     */
+    <K, V> SortedMap<K, V> getSortedMap(Expression<K> key, Expression<V> value);
     
 }
