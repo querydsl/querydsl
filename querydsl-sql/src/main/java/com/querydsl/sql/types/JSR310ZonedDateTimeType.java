@@ -1,13 +1,17 @@
 package com.querydsl.sql.types;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.time.ZonedDateTime;
+
+import javax.annotation.Nullable;
+
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
  * JSR310ZonedDateTimeType maps java.time.ZonedDateTime to Date on the JDBC level
  *
  */
+@IgnoreJRERequirement //conditionally included
 public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDateTime> {
 
 

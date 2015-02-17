@@ -1,13 +1,17 @@
 package com.querydsl.sql.types;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.time.OffsetDateTime;
+
+import javax.annotation.Nullable;
+
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
  * JSR310OffsetDateTimeType maps java.time.OffsetDateTime to Date on the JDBC level
  *
  */
+@IgnoreJRERequirement //conditionally included
 public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetDateTime> {
 
 

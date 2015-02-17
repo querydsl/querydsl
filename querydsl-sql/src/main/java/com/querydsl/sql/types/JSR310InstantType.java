@@ -1,13 +1,17 @@
 package com.querydsl.sql.types;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.time.Instant;
+
+import javax.annotation.Nullable;
+
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
  * JSR310InstantType maps java.time.Instant to Date on the JDBC level
  *
  */
+@IgnoreJRERequirement //conditionally included
 public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     public JSR310InstantType() {
