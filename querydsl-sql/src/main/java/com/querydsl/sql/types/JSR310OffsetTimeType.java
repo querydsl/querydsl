@@ -8,7 +8,8 @@ import javax.annotation.Nullable;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310OffsetTimeType maps java.time.OffsetTime to Date on the JDBC level
+ * JSR310OffsetTimeType maps {@linkplain java.time.OffsetTime}
+ * to {@linkplain java.sql.Time} on the JDBC level
  *
  */
 @IgnoreJRERequirement //conditionally included

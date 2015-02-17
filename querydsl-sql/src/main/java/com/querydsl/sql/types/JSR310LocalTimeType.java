@@ -8,7 +8,8 @@ import javax.annotation.Nullable;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310LocalTimeType maps java.time.LocalTime to Date on the JDBC level
+ * JSR310LocalTimeType maps {@linkplain java.time.LocalTime}
+ * to {@linkplain java.sql.Time} on the JDBC level
  *
  */
 @IgnoreJRERequirement //conditionally included
