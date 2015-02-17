@@ -133,16 +133,14 @@ final class JDBCTypeMapping {
         if (decimal <= 0) {
             if (total > 18 || total == 0) {
                 return BigInteger.class;
-            } else if (total > 9 || total == 0) {
+            } else if (total > 9) {
                 return Long.class;
             } else if (total > 4) {
                 return Integer.class;
             } else if (total > 2) {
                 return Short.class;
-            } else if (total > 0) {
-                return Byte.class;
             } else {
-                return Boolean.class;
+                return Byte.class;
             }
         } else {
             return BigDecimal.class;
