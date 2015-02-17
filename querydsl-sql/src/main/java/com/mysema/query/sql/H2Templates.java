@@ -67,6 +67,15 @@ public class H2Templates extends SQLTemplates {
         addTypeNameToCode("uuid", Types.BINARY);
         addTypeNameToCode("serial", Types.INTEGER);
         addTypeNameToCode("varchar_ignorecase", Types.VARCHAR);
+
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "parsedatetime(formatdatetime({0},'yyyy'),'yyyy')");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "parsedatetime(formatdatetime({0},'yyyy-MM'),'yyyy-MM')");
+        add(Ops.DateTimeOps.TRUNC_WEEK,   "parsedatetime(formatdatetime({0},'YYYY-ww'),'YYYY-ww')");
+        add(Ops.DateTimeOps.TRUNC_DAY,    "parsedatetime(formatdatetime({0},'yyyy-MM-dd'),'yyyy-MM-dd')");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "parsedatetime(formatdatetime({0},'yyyy-MM-dd HH'),'yyyy-MM-dd HH')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "parsedatetime(formatdatetime({0},'yyyy-MM-dd HH:mm'),'yyyy-MM-dd HH:mm')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "parsedatetime(formatdatetime({0},'yyyy-MM-dd HH:mm:ss'),'yyyy-MM-dd HH:mm:ss')");
+
     }
 
 }
