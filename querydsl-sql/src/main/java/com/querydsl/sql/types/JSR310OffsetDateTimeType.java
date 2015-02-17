@@ -44,6 +44,6 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, OffsetDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, new Timestamp(value.toInstant().toEpochMilli()), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value.toInstant()), utc());
     }
 }

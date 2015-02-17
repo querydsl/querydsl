@@ -44,6 +44,6 @@ public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDat
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, ZonedDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, new Timestamp(value.toInstant().toEpochMilli()), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value.toInstant()), utc());
     }
 }

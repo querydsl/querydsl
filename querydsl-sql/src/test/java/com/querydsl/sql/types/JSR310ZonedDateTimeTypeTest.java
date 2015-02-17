@@ -1,25 +1,21 @@
 package com.querydsl.sql.types;
 
-import org.easymock.EasyMock;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.TimeZone;
 
-public class JSR310ZonedDateTimeTypeTest {
+import org.easymock.EasyMock;
+import org.junit.Test;
 
-    private static final Calendar UTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<ZonedDateTime> {
 
-    private JSR310ZonedDateTimeType type = new JSR310ZonedDateTimeType();
-
-    @BeforeClass
-    public static void setUpClass() {
-        UTC.setTimeInMillis(0);
+    public JSR310ZonedDateTimeTypeTest() {
+        super(new JSR310ZonedDateTimeType());
     }
 
     @Test
@@ -28,10 +24,23 @@ public class JSR310ZonedDateTimeTypeTest {
         Timestamp ts = new Timestamp(value.toInstant().toEpochMilli());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
-        stmt.setTimestamp(0, ts, UTC);
+        stmt.setTimestamp(1, ts, UTC);
         EasyMock.replay(stmt);
 
-        type.setValue(stmt, 0, value);
+        type.setValue(stmt, 1, value);
         EasyMock.verify(stmt);
+    }
+
+    @Test
+    public void Get() throws SQLException {
+        ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
+        EasyMock.expect(resultSet.getTimestamp(1, UTC)).andReturn(new Timestamp(UTC.getTimeInMillis()));
+        EasyMock.replay(resultSet);
+
+        ZonedDateTime result = type.getValue(resultSet, 1);
+        EasyMock.verify(resultSet);
+
+        assertNotNull(result);
+        assertTrue(result.toEpochSecond() == 0);
     }
 }

@@ -43,6 +43,6 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, new Timestamp(value.toInstant(ZoneOffset.UTC).toEpochMilli()), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value.toInstant(ZoneOffset.UTC)), utc());
     }
 }

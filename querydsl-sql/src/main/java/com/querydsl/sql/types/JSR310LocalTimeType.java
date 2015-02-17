@@ -38,7 +38,7 @@ public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
     @Override
     public LocalTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Time time = rs.getTime(startIndex, utc());
-        return time != null ? LocalTime.from(time.toInstant()) : null;
+        return time != null ? time.toLocalTime() : null;
     }
 
     @Override

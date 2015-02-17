@@ -2,6 +2,7 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.OffsetTime;
+import java.time.ZoneOffset;
 
 import javax.annotation.Nullable;
 
@@ -37,7 +38,7 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
     @Override
     public OffsetTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Time time = rs.getTime(startIndex, utc());
-        return time != null ? OffsetTime.from(time.toInstant()) : null;
+        return time != null ? OffsetTime.of(time.toLocalTime(), ZoneOffset.UTC) : null;
     }
 
     @Override
