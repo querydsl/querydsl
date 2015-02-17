@@ -35,13 +35,12 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
     @Nullable
     @Override
     public Instant getValue(ResultSet rs, int startIndex) throws SQLException {
-        Date date = rs.getDate(startIndex, utc());
-        return date != null ? Instant.from(date.toInstant()) : null;
+        Timestamp timestamp = rs.getTimestamp(startIndex, utc());
+        return timestamp != null ? timestamp.toInstant() : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Instant value) throws SQLException {
-        java.util.Date from = Date.from(value);
-        st.setDate(startIndex, new Date(from.getTime()), utc());
+        st.setTimestamp(startIndex, new Timestamp(value.toEpochMilli()), utc());
     }
 }

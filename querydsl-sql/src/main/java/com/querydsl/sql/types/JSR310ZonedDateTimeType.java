@@ -1,6 +1,7 @@
 package com.querydsl.sql.types;
 
 import java.sql.*;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import javax.annotation.Nullable;
@@ -36,13 +37,12 @@ public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDat
     @Nullable
     @Override
     public ZonedDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Date date = rs.getDate(startIndex, utc());
-        return date != null ? ZonedDateTime.from(date.toInstant()) : null;
+        Timestamp timestamp = rs.getTimestamp(startIndex, utc());
+        return timestamp != null ? ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneOffset.UTC) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, ZonedDateTime value) throws SQLException {
-        java.util.Date from = Date.from(value.toInstant());
-        st.setDate(startIndex, new Date(from.getTime()), utc());
+        st.setTimestamp(startIndex, new Timestamp(value.toInstant().toEpochMilli()), utc());
     }
 }

@@ -42,6 +42,6 @@ public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalTime value) throws SQLException {
-        st.setTime(startIndex, new Time(value.toNanoOfDay() / 1000000), utc());
+        st.setTime(startIndex, Time.valueOf(value), utc());
     }
 }
