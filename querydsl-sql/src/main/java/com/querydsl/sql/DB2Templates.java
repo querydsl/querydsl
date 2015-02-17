@@ -184,10 +184,10 @@ public class DB2Templates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_YEAR, "trunc_timestamp({0}, 'year')");
         add(Ops.DateTimeOps.TRUNC_MONTH, "trunc_timestamp({0}, 'month')");
         add(Ops.DateTimeOps.TRUNC_WEEK, "trunc_timestamp({0}, 'week')");
-        add(Ops.DateTimeOps.TRUNC_DAY, "trunc_timestamp({0}, 'day')");
-        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc_timestamp({0}, 'hour')");
-        add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_timestamp({0}, 'minute')");
-        add(Ops.DateTimeOps.TRUNC_SECOND, "trunc_timestamp({0}, 'second')");
+        add(Ops.DateTimeOps.TRUNC_DAY, "trunc_timestamp({0}, 'dd')");
+        add(Ops.DateTimeOps.TRUNC_HOUR, "trunc_timestamp({0}, 'hh')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_timestamp({0}, 'mi')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "trunc_timestamp({0}, 'ss')");
 
         addTypeNameToCode("smallint", Types.BOOLEAN, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);
