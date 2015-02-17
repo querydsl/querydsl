@@ -20,7 +20,7 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     @Override
     public String getLiteral(Instant value) {
-        return dateFormatter.format(value);
+        return dateTimeFormatter.format(value);
     }
 
     @Override

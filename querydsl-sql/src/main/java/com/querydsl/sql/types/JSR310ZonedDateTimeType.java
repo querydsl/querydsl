@@ -21,7 +21,7 @@ public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDat
 
     @Override
     public String getLiteral(ZonedDateTime value) {
-        return dateFormatter.format(value);
+        return dateTimeFormatter.format(value);
     }
 
     @Override

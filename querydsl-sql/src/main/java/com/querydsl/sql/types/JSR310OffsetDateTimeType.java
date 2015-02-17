@@ -21,7 +21,7 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
 
     @Override
     public String getLiteral(OffsetDateTime value) {
-        return dateFormatter.format(value);
+        return dateTimeFormatter.format(value);
     }
 
     @Override

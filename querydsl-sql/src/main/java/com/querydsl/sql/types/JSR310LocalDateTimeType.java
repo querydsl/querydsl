@@ -21,7 +21,7 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
 
     @Override
     public String getLiteral(LocalDateTime value) {
-        return dateFormatter.format(value);
+        return dateTimeFormatter.format(value);
     }
 
     @Override
