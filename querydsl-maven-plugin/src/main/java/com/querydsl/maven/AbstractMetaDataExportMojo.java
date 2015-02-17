@@ -212,6 +212,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private NumericMapping[] numericMappings;
 
     /**
+     * @parameter
+     */
+    private RenameMapping[] renameMappings;
+
+    /**
      * @parameter default-value=false
      */
     private boolean createScalaSources;
@@ -391,21 +396,20 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             }
             if (typeMappings != null) {
                 for (TypeMapping mapping : typeMappings) {
-                    Class<?> typeClass = Class.forName(mapping.type);
-                    if (Type.class.isAssignableFrom(typeClass)) {
-                        configuration.register(mapping.table, mapping.column, (Type<?>)typeClass.newInstance());
-                    } else {
-                        configuration.register(mapping.table, mapping.column, typeClass);
-                    }
+                    mapping.apply(configuration);
                 }
             }
             if (numericMappings != null) {
                 for (NumericMapping mapping : numericMappings) {
-                    int total = mapping.total;
-                    int decimal = mapping.decimal;
-                    configuration.registerNumeric(total, decimal, Class.forName(mapping.javaType));
+                    mapping.apply(configuration);
                 }
             }
+            if (renameMappings != null) {
+                for (RenameMapping mapping : renameMappings) {
+                    mapping.apply(configuration);
+                }
+            }
+
             if (columnComparatorClass != null) {
                 try {
                     exporter.setColumnComparatorClass( (Class) Class.forName(this.columnComparatorClass).asSubclass(Comparator.class));
@@ -552,6 +556,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
     public void setNumericMappings(NumericMapping[] numericMappings) {
         this.numericMappings = numericMappings;
+    }
+
+    public void setRenameMappings(RenameMapping[] renameMappings) {
+        this.renameMappings = renameMappings;
     }
 
     public void setImports(String[] imports) {

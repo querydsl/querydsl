@@ -176,4 +176,18 @@ public class MetadataExportMojoTest {
 
         assertTrue(new File("target/export12").exists());
     }
+
+    @Test
+    public void ExecuteWithRenames() throws Exception {
+        RenameMapping mapping = new RenameMapping();
+        mapping.fromSchema = "ABC";
+        mapping.toSchema = "DEF";
+
+        mojo.setTargetFolder("target/export13");
+        mojo.setRenameMappings(new RenameMapping[]{mapping});
+        mojo.execute();
+
+        assertEquals(Collections.singletonList("target/export13"), project.getCompileSourceRoots());
+        assertTrue(new File("target/export13").exists());
+    }
 }

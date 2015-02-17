@@ -54,4 +54,8 @@ public class SchemaAndTable implements Serializable {
         return (schema != null ? 31 * schema.hashCode() : 0) + table.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "(" + schema + " " + table + ")";
+    }
 }

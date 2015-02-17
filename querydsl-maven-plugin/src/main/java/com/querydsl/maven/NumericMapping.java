@@ -13,14 +13,26 @@
  */
 package com.querydsl.maven;
 
+import com.querydsl.sql.Configuration;
+
 /**
+ * {@linkplain NumericMapping} is used to customize mappings of various numeric precisions to data types.
+ *
  * @author tiwe
  *
  */
-public class NumericMapping {
+public class NumericMapping implements Mapping {
 
     public int total, decimal;
 
     public String javaType;
 
+    @Override
+    public void apply(Configuration configuration) {
+        try {
+            configuration.registerNumeric(total, decimal, Class.forName(javaType));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
