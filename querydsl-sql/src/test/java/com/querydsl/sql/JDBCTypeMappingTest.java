@@ -66,8 +66,7 @@ public class JDBCTypeMappingTest {
 //        10-18,0    -> Long
 //        5-9,0      -> Integer
 //        3-4,0      -> Short
-//        2,0        -> Byte
-//        0-1,0      -> Boolean
+//        1-2,0      -> Byte
 
 //        ?,?   -> BigDecimal
         assertEquals(typeMapping.get(Types.NUMERIC, 20, 0), BigInteger.class);
