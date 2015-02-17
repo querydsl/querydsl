@@ -34,13 +34,12 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
     @Nullable
     @Override
     public LocalDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Date date = rs.getDate(startIndex, utc());
-        return date != null ? LocalDateTime.from(date.toInstant()) : null;
+        Timestamp timestamp = rs.getTimestamp(startIndex, utc());
+        return timestamp != null ? LocalDateTime.from(timestamp.toInstant()) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDateTime value) throws SQLException {
-        java.util.Date from = Date.from(value.toInstant(ZoneOffset.UTC));
-        st.setDate(startIndex, new Date(from.getTime()), utc());
+        st.setTimestamp(startIndex, new Timestamp(value.toInstant(ZoneOffset.UTC).toEpochMilli()), utc());
     }
 }
