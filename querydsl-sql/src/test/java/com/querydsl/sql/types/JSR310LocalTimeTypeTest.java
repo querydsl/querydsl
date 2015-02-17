@@ -41,6 +41,6 @@ public class JSR310LocalTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
         EasyMock.verify(resultSet);
 
         assertNotNull(result);
-        assertTrue(result.toSecondOfDay() == 0);
+        assertTrue(result.getSecond() == 0);
     }
 }
