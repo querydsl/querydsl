@@ -10,7 +10,8 @@ import javax.annotation.Nullable;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310ZonedDateTimeType maps java.time.ZonedDateTime to Date on the JDBC level
+ * JSR310ZonedDateTimeType maps {@linkplain java.time.ZonedDateTime}
+ * to {@linkplain java.sql.Timestamp} on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */

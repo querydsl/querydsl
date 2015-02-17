@@ -9,7 +9,8 @@ import javax.annotation.Nullable;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310InstantType maps java.time.Instant to Date on the JDBC level
+ * JSR310InstantType maps {@linkplain java.time.Instant} to
+ * {@linkplain java.sql.Timestamp} on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */

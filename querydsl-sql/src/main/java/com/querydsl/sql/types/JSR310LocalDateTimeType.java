@@ -10,7 +10,8 @@ import javax.annotation.Nullable;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310LocalDateTimeType maps java.time.LocalDateTime to Date on the JDBC level
+ * JSR310LocalDateTimeType maps {@linkplain java.time.LocalDateTime}
+ * to {@linkplain java.sql.Timestamp} on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */
