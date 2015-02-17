@@ -78,6 +78,8 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_MONTH,  "trunc({0},'mm')");
         add(Ops.DateTimeOps.TRUNC_WEEK,   "trunc({0},'day')");
         add(Ops.DateTimeOps.TRUNC_DAY,    "trunc({0},'dd')");
+        // trunc works only with date arguments
+        // timestamp(datepart, timepart) reconstructs a datetime
         add(Ops.DateTimeOps.TRUNC_HOUR,   "timestamp(date({0}),concat(hour({0}),':00:00'))");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "timestamp(date({0}),concat(hour({0}),':',minute({0}),':00'))");
         add(Ops.DateTimeOps.TRUNC_SECOND, "timestamp(date({0}),concat(hour({0}),':',minute({0}),':',second({0})))");

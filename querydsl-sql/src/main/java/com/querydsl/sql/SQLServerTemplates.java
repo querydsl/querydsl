@@ -123,6 +123,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
 
+        // truncates timestamps by replacing suffix
         add(Ops.DateTimeOps.TRUNC_YEAR,   "CONVERT(DATETIME, CONVERT(VARCHAR(4), {0}, 120) + '-01-01')");
         add(Ops.DateTimeOps.TRUNC_MONTH,  "CONVERT(DATETIME, CONVERT(VARCHAR(7), {0}, 120) + '-01')");
         // TODO week
