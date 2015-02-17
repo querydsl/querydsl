@@ -1,14 +1,18 @@
 package com.querydsl.sql.types;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.time.LocalTime;
+
+import javax.annotation.Nullable;
+
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
  * JSR310LocalTimeType maps java.time.LocalTime to Date on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */
+@IgnoreJRERequirement //conditionally included
 public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
 
 
