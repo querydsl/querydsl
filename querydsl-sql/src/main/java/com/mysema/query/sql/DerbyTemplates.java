@@ -105,7 +105,7 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "{fn timestampdiff(SQL_TSI_MINUTE, {0}, {1})}");
         add(Ops.DateTimeOps.DIFF_SECONDS, "{fn timestampdiff(SQL_TSI_SECOND, {0}, {1})}");
 
-        // yyyy-MM-dd hh:mm:ss
+        // substrings 'yyyy-MM-dd hh:mm:ss' style date pattern and adds a static suffix
         add(Ops.DateTimeOps.TRUNC_YEAR,   "timestamp(substr(cast({0} as char(30)),1,4)||'-01-01 00:00:00')");
         add(Ops.DateTimeOps.TRUNC_MONTH,  "timestamp(substr(cast({0} as char(30)),1,7)||'-01 00:00:00')");
         // TODO weeks
