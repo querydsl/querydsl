@@ -3,6 +3,7 @@ package com.querydsl.sql.types;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +17,7 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDateTime> {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public JSR310LocalDateTimeType() {
         super(Types.TIMESTAMP);
@@ -27,7 +29,7 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
 
     @Override
     public String getLiteral(LocalDateTime value) {
-        return dateTimeFormatter.format(value);
+        return formatter.format(value);
     }
 
     @Override

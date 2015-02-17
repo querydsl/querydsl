@@ -3,6 +3,7 @@ package com.querydsl.sql.types;
 import java.sql.*;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +17,7 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 @IgnoreJRERequirement //conditionally included
 public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetDateTime> {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     public JSR310OffsetDateTimeType() {
         super(Types.TIMESTAMP);
@@ -27,7 +29,7 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
 
     @Override
     public String getLiteral(OffsetDateTime value) {
-        return dateTimeFormatter.format(value);
+        return formatter.format(value);
     }
 
     @Override

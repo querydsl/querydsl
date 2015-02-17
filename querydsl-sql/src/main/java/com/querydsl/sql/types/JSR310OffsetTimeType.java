@@ -2,6 +2,7 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.OffsetTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +16,8 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 @IgnoreJRERequirement //conditionally included
 public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime> {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_TIME;
+
     public JSR310OffsetTimeType() {
         super(Types.TIME);
     }
@@ -25,7 +28,7 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
 
     @Override
     public String getLiteral(OffsetTime value) {
-        return timeFormatter.format(value);
+        return formatter.format(value);
     }
 
     @Override
