@@ -1,6 +1,7 @@
 package com.querydsl.sql.types;
 
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -12,7 +13,7 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
  * @param <T>
  */
 @IgnoreJRERequirement //conditionally included
-public abstract  class AbstractJSR310DateTimeType<T> extends AbstractType<T> {
+public abstract class AbstractJSR310DateTimeType<T extends Temporal> extends AbstractType<T> {
 
     private static final Calendar UTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
