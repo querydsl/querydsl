@@ -83,6 +83,14 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff('mi', {0}, {1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff('ss', {0}, {1})");
 
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "trunc({0},'YY')");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "trunc({0},'MM')");
+        add(Ops.DateTimeOps.TRUNC_WEEK,   "trunc({0},'WW')");
+        add(Ops.DateTimeOps.TRUNC_DAY,    "trunc({0},'DD')");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "trunc({0},'HH')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc({0},'MI')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "trunc({0},'SS')");
+
         add(Ops.DateTimeOps.DATE, "convert({0}, date)");
 
         addTypeNameToCode("character", Types.CHAR, true);

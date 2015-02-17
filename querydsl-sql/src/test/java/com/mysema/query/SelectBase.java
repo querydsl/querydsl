@@ -482,7 +482,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DB2, DERBY, FIREBIRD, H2, HSQLDB, MYSQL, SQLITE, SQLSERVER, TERADATA}) // FIXME
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
@@ -498,6 +498,83 @@ public class SelectBase extends AbstractBaseTest {
         for (DatePart dp : dps) {
             query().singleResult(SQLExpressions.datetrunc(dp, expr));
         }
+    }
+
+    @Test
+    @ExcludeIn({FIREBIRD, SQLITE}) // FIXME
+    public void Date_Trunc2() {
+        DateTimeExpression<DateTime> expr = DateTimeExpression.currentTimestamp(DateTime.class);
+
+        Tuple tuple = query().singleResult(
+                expr,
+                SQLExpressions.datetrunc(DatePart.year, expr),
+                SQLExpressions.datetrunc(DatePart.month, expr),
+                SQLExpressions.datetrunc(DatePart.day, expr),
+                SQLExpressions.datetrunc(DatePart.hour, expr),
+                SQLExpressions.datetrunc(DatePart.minute, expr),
+                SQLExpressions.datetrunc(DatePart.second, expr));
+        DateTime date = tuple.get(expr);
+        DateTime toYear = tuple.get(SQLExpressions.datetrunc(DatePart.year, expr));
+        DateTime toMonth = tuple.get(SQLExpressions.datetrunc(DatePart.month, expr));
+        DateTime toDay = tuple.get(SQLExpressions.datetrunc(DatePart.day, expr));
+        DateTime toHour = tuple.get(SQLExpressions.datetrunc(DatePart.hour, expr));
+        DateTime toMinute = tuple.get(SQLExpressions.datetrunc(DatePart.minute, expr));
+        DateTime toSecond = tuple.get(SQLExpressions.datetrunc(DatePart.second, expr));
+
+        assertEquals(date.getZone(), toYear.getZone());
+        assertEquals(date.getZone(), toMonth.getZone());
+        assertEquals(date.getZone(), toDay.getZone());
+        assertEquals(date.getZone(), toHour.getZone());
+        assertEquals(date.getZone(), toMinute.getZone());
+        assertEquals(date.getZone(), toSecond.getZone());
+
+        // year
+        assertEquals(date.getYear(), toYear.getYear());
+        assertEquals(date.getYear(), toMonth.getYear());
+        assertEquals(date.getYear(), toDay.getYear());
+        assertEquals(date.getYear(), toHour.getYear());
+        assertEquals(date.getYear(), toMinute.getYear());
+        assertEquals(date.getYear(), toSecond.getYear());
+
+        // month
+        assertEquals(1,                     toYear.getMonthOfYear());
+        assertEquals(date.getMonthOfYear(), toMonth.getMonthOfYear());
+        assertEquals(date.getMonthOfYear(), toDay.getMonthOfYear());
+        assertEquals(date.getMonthOfYear(), toHour.getMonthOfYear());
+        assertEquals(date.getMonthOfYear(), toMinute.getMonthOfYear());
+        assertEquals(date.getMonthOfYear(), toSecond.getMonthOfYear());
+
+        // day
+        assertEquals(1, toYear.getDayOfMonth());
+        assertEquals(1, toMonth.getDayOfMonth());
+        assertEquals(date.getDayOfMonth(), toDay.getDayOfMonth());
+        assertEquals(date.getDayOfMonth(), toHour.getDayOfMonth());
+        assertEquals(date.getDayOfMonth(), toMinute.getDayOfMonth());
+        assertEquals(date.getDayOfMonth(), toSecond.getDayOfMonth());
+
+        // hour
+        assertEquals(0, toYear.getHourOfDay());
+        assertEquals(0, toMonth.getHourOfDay());
+        assertEquals(0, toDay.getHourOfDay());
+        assertEquals(date.getHourOfDay(), toHour.getHourOfDay());
+        assertEquals(date.getHourOfDay(), toMinute.getHourOfDay());
+        assertEquals(date.getHourOfDay(), toSecond.getHourOfDay());
+
+        // minute
+        assertEquals(0, toYear.getMinuteOfHour());
+        assertEquals(0, toMonth.getMinuteOfHour());
+        assertEquals(0, toDay.getMinuteOfHour());
+        assertEquals(0, toHour.getMinuteOfHour());
+        assertEquals(date.getMinuteOfHour(), toMinute.getMinuteOfHour());
+        assertEquals(date.getMinuteOfHour(), toSecond.getMinuteOfHour());
+
+        // second
+        assertEquals(0, toYear.getSecondOfMinute());
+        assertEquals(0, toMonth.getSecondOfMinute());
+        assertEquals(0, toDay.getSecondOfMinute());
+        assertEquals(0, toHour.getSecondOfMinute());
+        assertEquals(0, toMinute.getSecondOfMinute());
+        assertEquals(date.getSecondOfMinute(), toSecond.getSecondOfMinute());
     }
 
     @Test

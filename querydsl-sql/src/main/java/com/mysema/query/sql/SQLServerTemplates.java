@@ -123,9 +123,19 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
 
+        // truncates timestamps by replacing suffix
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "CONVERT(DATETIME, CONVERT(VARCHAR(4), {0}, 120) + '-01-01')");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "CONVERT(DATETIME, CONVERT(VARCHAR(7), {0}, 120) + '-01')");
+        // TODO week
+        add(Ops.DateTimeOps.TRUNC_DAY,    "CONVERT(DATETIME, CONVERT(VARCHAR(10), {0}, 120))");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "CONVERT(DATETIME, CONVERT(VARCHAR(13), {0}, 120) + ':00:00')");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "CONVERT(DATETIME, CONVERT(VARCHAR(16), {0}, 120) + ':00')");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "CONVERT(DATETIME, CONVERT(VARCHAR(19), {0}, 120))");
+
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");
         add(Ops.DateTimeOps.CURRENT_DATE, "cast(getdate() as date)");
 
+        addTypeNameToCode("bit", Types.BOOLEAN, true);
         addTypeNameToCode("decimal", Types.DOUBLE, true);
         addTypeNameToCode("tinyint identity", Types.TINYINT);
         addTypeNameToCode("bigint identity", Types.BIGINT);
