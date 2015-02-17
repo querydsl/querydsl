@@ -21,9 +21,11 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableSet;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
 
@@ -35,11 +37,13 @@ import com.querydsl.sql.types.Null;
  */
 final class JDBCTypeMapping {
 
+    private static final Set<Integer> NUMERIC_TYPES;
+
     private static final Map<Integer, Class<?>> defaultTypes = new HashMap<Integer, Class<?>>();
 
     private static final Map<Class<?>, Integer> defaultSqlTypes = new HashMap<Class<?>, Integer>();
 
-    static{
+    static {
         registerDefault(-101, Object.class);
         registerDefault(-102, java.sql.Timestamp.class); // Oracle: TIMESTAMP(6) WITH LOCAL TIME ZONE
         registerDefault(2012, Object.class); // REF_CURSOR
@@ -95,6 +99,14 @@ final class JDBCTypeMapping {
         registerDefault(Types.REF, Object.class);
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
+
+        ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
+        for (Map.Entry<Integer, Class<?>> entry : defaultTypes.entrySet()) {
+            if (Number.class.isAssignableFrom(entry.getValue())) {
+                builder.add(entry.getKey());
+            }
+        }
+        NUMERIC_TYPES = builder.build();
     }
 
     private static void registerDefault(int sqlType, Class<?> javaType) {
@@ -106,7 +118,7 @@ final class JDBCTypeMapping {
 
     private final Map<Class<?>, Integer> sqlTypes = new HashMap<Class<?>, Integer>();
 
-    private final Map<Pair<Integer,Integer>, Class<?>> numericTypes = new HashMap<Pair<Integer,Integer>, Class<?>>();
+    private final Map<Pair<Integer, Integer>, Class<?>> numericTypes = new HashMap<Pair<Integer,Integer>, Class<?>>();
 
     public void register(int sqlType, Class<?> javaType) {
         types.put(sqlType, javaType);
@@ -117,38 +129,35 @@ final class JDBCTypeMapping {
         numericTypes.put(Pair.of(total, decimal), javaType);
     }
 
-    private Class<?> getNumericClass(int total, int decimal) {
-        Pair<Integer,Integer> key = Pair.of(total, decimal);
-        if (numericTypes.containsKey(key)) {
-            return numericTypes.get(key);
-        } else if (decimal <= 0) {
+    private static Class<?> getNumericClass(int total, int decimal) {
+        if (decimal <= 0) {
             if (total > 18 || total == 0) {
                 return BigInteger.class;
-            } else if (total > 9 || total == 0) {
+            } else if (total > 9) {
                 return Long.class;
             } else if (total > 4) {
                 return Integer.class;
             } else if (total > 2) {
                 return Short.class;
-            } else if (total > 0) {
-                return Byte.class;
             } else {
-                return Boolean.class;
+                return Byte.class;
             }
         } else {
-            if (total > 16) {
-                return BigDecimal.class;
-            } else {
-                return Double.class;
-            }
+            return BigDecimal.class;
         }
     }
 
     @Nullable
     public Class<?> get(int sqlType, int total, int decimal) {
-        if (sqlType == Types.NUMERIC || sqlType == Types.DECIMAL) {
-            return getNumericClass(total, decimal);
-        } else if (types.containsKey(sqlType)) {
+        if (NUMERIC_TYPES.contains(sqlType)) {
+            Pair<Integer,Integer> key = Pair.of(total, decimal);
+            if (numericTypes.containsKey(key)) {
+                return numericTypes.get(key);
+            } else if (sqlType == Types.NUMERIC || sqlType == Types.DECIMAL) {
+                return getNumericClass(total, decimal);
+            }
+        }
+        if (types.containsKey(sqlType)) {
             return types.get(sqlType);
         } else {
             return defaultTypes.get(sqlType);

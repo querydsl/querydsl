@@ -66,11 +66,9 @@ public class JDBCTypeMappingTest {
 //        10-18,0    -> Long
 //        5-9,0      -> Integer
 //        3-4,0      -> Short
-//        2,0        -> Byte
-//        0-1,0      -> Boolean
+//        1-2,0      -> Byte
 
-//        17-...,?   -> BigDecimal
-//        0-16,?     -> Double
+//        ?,?   -> BigDecimal
         assertEquals(typeMapping.get(Types.NUMERIC, 20, 0), BigInteger.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 19, 0), BigInteger.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 15, 0), Long.class);
@@ -83,7 +81,7 @@ public class JDBCTypeMappingTest {
         assertEquals(typeMapping.get(Types.NUMERIC, 0, 0),  BigInteger.class);
 
         assertEquals(typeMapping.get(Types.NUMERIC, 17, 2), BigDecimal.class);
-        assertEquals(typeMapping.get(Types.NUMERIC, 5, 2),  Double.class);
+        assertEquals(typeMapping.get(Types.NUMERIC, 5, 2),  BigDecimal.class);
     }
 
     @Test
@@ -99,6 +97,20 @@ public class JDBCTypeMappingTest {
     public void NumericOverriden() {
         typeMapping.registerNumeric(19, 0, BigInteger.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 19, 0), BigInteger.class);
+    }
+
+    @Test
+    public void NumericOverriden2() {
+        typeMapping.registerNumeric(19, 0, BigInteger.class);
+        assertEquals(typeMapping.get(Types.INTEGER, 19, 0), BigInteger.class);
+        assertEquals(typeMapping.get(Types.INTEGER, 18, 0), Integer.class);
+    }
+
+    @Test
+    public void NumericOverriden3() {
+        typeMapping.registerNumeric(5, 2, BigDecimal.class);
+        assertEquals(typeMapping.get(Types.DOUBLE, 5, 2), BigDecimal.class);
+        assertEquals(typeMapping.get(Types.DOUBLE, 5, 1), Double.class);
     }
 
 }
