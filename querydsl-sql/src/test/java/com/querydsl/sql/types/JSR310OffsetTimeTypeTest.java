@@ -1,25 +1,21 @@
 package com.querydsl.sql.types;
 
-import org.easymock.EasyMock;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.OffsetTime;
-import java.util.Calendar;
-import java.util.TimeZone;
 
-public class JSR310OffsetTimeTypeTest {
+import org.easymock.EasyMock;
+import org.junit.Test;
 
-    private static final Calendar UTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+public class JSR310OffsetTimeTypeTest extends AbstractJSR310DateTimeTypeTest<OffsetTime> {
 
-    private JSR310OffsetTimeType type = new JSR310OffsetTimeType();
-
-    @BeforeClass
-    public static void setUpClass() {
-        UTC.setTimeInMillis(0);
+    public JSR310OffsetTimeTypeTest() {
+        super(new JSR310OffsetTimeType());
     }
 
     @Test
@@ -28,10 +24,23 @@ public class JSR310OffsetTimeTypeTest {
         Time time = Time.valueOf(value.toLocalTime());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
-        stmt.setTime(0, time, UTC);
+        stmt.setTime(1, time, UTC);
         EasyMock.replay(stmt);
 
-        type.setValue(stmt, 0, value);
+        type.setValue(stmt, 1, value);
         EasyMock.verify(stmt);
+    }
+
+    @Test
+    public void Get() throws SQLException {
+        ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
+        EasyMock.expect(resultSet.getTime(1, UTC)).andReturn(new Time(UTC.getTimeInMillis()));
+        EasyMock.replay(resultSet);
+
+        OffsetTime result = type.getValue(resultSet, 1);
+        EasyMock.verify(resultSet);
+
+        assertNotNull(result);
+        assertTrue(result.getSecond() == 0);
     }
 }
