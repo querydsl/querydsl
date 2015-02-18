@@ -395,7 +395,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, TERADATA}) // TODO fix postgresql
+    @ExcludeIn({CUBRID, DB2, HSQLDB, POSTGRESQL, SQLSERVER, SQLITE})
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
@@ -432,7 +432,7 @@ public class SelectBase extends AbstractBaseTest {
 
         Map<Object, Object> failures = Maps.newIdentityHashMap();
         for (Object dt : data) {
-            Object dt2 = query().singleResult(ConstantImpl.create(dt));
+            Object dt2 = query().singleResult(Expressions.constant(dt));
             if (!dt.equals(dt2)) {
                 failures.put(dt, dt2);
             }
@@ -443,6 +443,14 @@ public class SelectBase extends AbstractBaseTest {
                         + ": " + entry.getKey() + " != " + entry.getValue());
             }
             Assert.fail("Failed with " + failures);
+        }
+    }
+
+    @Test
+    @ExcludeIn({CUBRID, HSQLDB, POSTGRESQL, SQLSERVER, SQLITE})
+    public void Dates_Literals() {
+        if (configuration.getUseLiterals()) {
+            Dates();
         }
     }
 
@@ -479,10 +487,12 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DB2, SQLITE, TERADATA})
+    @ExcludeIn({DB2, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
-        TestQuery query = query().from(employee, employee2);
+        TestQuery query = query().from(employee).orderBy(employee.id.asc());
+        TestQuery query2 = query().from(employee, employee2)
+                .orderBy(employee.id.asc(), employee2.id.desc());
 
         List<DatePart> dps = Lists.newArrayList();
         add(dps, DatePart.year);
@@ -493,16 +503,21 @@ public class SelectBase extends AbstractBaseTest {
         add(dps, DatePart.minute, HSQLDB);
         add(dps, DatePart.second, HSQLDB);
 
-        Date date = new Date(0);
+        LocalDate localDate = new LocalDate(1970, 1, 10);
+        Date date = new Date(localDate.toDateMidnight().getMillis());
+
         for (DatePart dp : dps) {
-            query.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
-            query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
-            query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
+            int diff1 = query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
+            int diff2 = query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
+            int diff3 = query2.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+            assertEquals(diff1, -diff2);
         }
     }
 
+    // TDO Date_Diff with timestamps
+
     @Test
-    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, SQLITE, TERADATA})
+    @ExcludeIn({DB2, DERBY, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
 
@@ -631,7 +646,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
     public void DateTime_To_Date() {
         query().singleResult(SQLExpressions.date(DateTimeExpression.currentTimestamp()));
     }
@@ -1117,7 +1131,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, POSTGRESQL})
+    @ExcludeIn({DERBY, FIREBIRD, POSTGRESQL})
     public void Number_As_Boolean() {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
@@ -1152,7 +1166,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
     public void Order_NullsFirst() {
         query().from(survey)
             .orderBy(survey.name.asc().nullsFirst())
@@ -1160,7 +1173,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
     public void Order_NullsLast() {
         query().from(survey)
             .orderBy(survey.name.asc().nullsLast())

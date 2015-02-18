@@ -89,7 +89,7 @@ public final class Connections {
 
     private static Connection getDB2() throws SQLException, ClassNotFoundException {
         Class.forName("com.ibm.db2.jcc.DB2Driver");
-        String url = "jdbc:db2://192.168.0.24:50001/SAMPLE";
+        String url = "jdbc:db2://db2host:50001/SAMPLE";
         return DriverManager.getConnection(url, "db2inst1", "a3sd!fDj");
     }
 

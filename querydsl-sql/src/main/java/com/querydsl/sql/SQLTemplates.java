@@ -778,23 +778,23 @@ public class SQLTemplates extends Templates {
         return nullsLast;
     }
 
-    public boolean isCountViaAnalytics() {
+    public final boolean isCountViaAnalytics() {
         return countViaAnalytics;
     }
 
-    public boolean isWrapSelectParameters() {
+    public final boolean isWrapSelectParameters() {
         return wrapSelectParameters;
     }
 
-    public boolean isArraysSupported() {
+    public final boolean isArraysSupported() {
         return arraysSupported;
     }
 
-    public int getListMaxSize() {
+    public final int getListMaxSize() {
         return listMaxSize;
     }
 
-    public boolean isSupportsUnquotedReservedWordsAsIdentifier() {
+    public final boolean isSupportsUnquotedReservedWordsAsIdentifier() {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
 
@@ -1171,7 +1171,7 @@ public class SQLTemplates extends Templates {
         listMaxSize = i;
     }
 
-    public void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
+    protected void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
         this.supportsUnquotedReservedWordsAsIdentifier = b;
     }
 
