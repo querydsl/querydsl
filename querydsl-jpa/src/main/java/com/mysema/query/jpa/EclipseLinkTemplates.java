@@ -66,7 +66,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
 
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
         add(JPQLOps.CAST, "cast({0} {1s})");
-        add(Ops.STRING_CAST, "cast({0} varchar(255))");
+        add(Ops.STRING_CAST, "trim(cast({0} char(128)))");
         add(Ops.NUMCAST, "cast({0} {1s})");
 
         // datetime

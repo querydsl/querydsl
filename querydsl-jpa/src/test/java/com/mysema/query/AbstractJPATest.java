@@ -346,6 +346,24 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Cast_ToString() {
+        for (Tuple tuple : query().from(cat).list(cat.breed, cat.breed.stringValue())) {
+            assertEquals(
+                tuple.get(cat.breed).toString(),
+                tuple.get(cat.breed.stringValue()));
+        }
+    }
+
+    @Test
+    public void Cast_ToString_Append() {
+        for (Tuple tuple : query().from(cat).list(cat.breed, cat.breed.stringValue().append("test"))) {
+            assertEquals(
+                tuple.get(cat.breed).toString() + "test",
+                tuple.get(cat.breed.stringValue().append("test")));
+        }
+    }
+
+    @Test
     public void Collection_Predicates() {
         ListPath<Cat, QCat> path = cat.kittens;
         List<Predicate> predicates = Arrays.<Predicate>asList(
