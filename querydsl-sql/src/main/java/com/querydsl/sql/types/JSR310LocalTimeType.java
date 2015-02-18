@@ -2,19 +2,22 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.Nullable;
 
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310LocalTimeType maps java.time.LocalTime to Date on the JDBC level
+ * JSR310LocalTimeType maps {@linkplain java.time.LocalTime}
+ * to {@linkplain java.sql.Time} on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
 
     public JSR310LocalTimeType() {
         super(Types.TIME);
@@ -26,7 +29,7 @@ public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
 
     @Override
     public String getLiteral(LocalTime value) {
-        return timeFormatter.format(value);
+        return formatter.format(value);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
     @Override
     public LocalTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Time time = rs.getTime(startIndex, utc());
-        return time != null ? LocalTime.from(time.toInstant()) : null;
+        return time != null ? time.toLocalTime() : null;
     }
 
     @Override

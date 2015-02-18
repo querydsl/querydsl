@@ -2,18 +2,22 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.Nullable;
 
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310InstantType maps java.time.Instant to Date on the JDBC level
+ * JSR310InstantType maps {@linkplain java.time.Instant} to
+ * {@linkplain java.sql.Timestamp} on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 
     public JSR310InstantType() {
         super(Types.TIMESTAMP);
@@ -25,7 +29,7 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     @Override
     public String getLiteral(Instant value) {
-        return dateTimeFormatter.format(value);
+        return formatter.format(value);
     }
 
     @Override
@@ -42,6 +46,6 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Instant value) throws SQLException {
-        st.setTimestamp(startIndex, new Timestamp(value.toEpochMilli()), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value), utc());
     }
 }

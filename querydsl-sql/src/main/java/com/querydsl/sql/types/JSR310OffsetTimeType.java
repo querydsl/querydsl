@@ -2,18 +2,23 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.OffsetTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.Nullable;
 
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 /**
- * JSR310OffsetTimeType maps java.time.OffsetTime to Date on the JDBC level
+ * JSR310OffsetTimeType maps {@linkplain java.time.OffsetTime}
+ * to {@linkplain java.sql.Time} on the JDBC level
  *
  * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime> {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_TIME;
 
     public JSR310OffsetTimeType() {
         super(Types.TIME);
@@ -25,7 +30,7 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
 
     @Override
     public String getLiteral(OffsetTime value) {
-        return timeFormatter.format(value);
+        return formatter.format(value);
     }
 
     @Override
@@ -37,7 +42,7 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
     @Override
     public OffsetTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Time time = rs.getTime(startIndex, utc());
-        return time != null ? OffsetTime.from(time.toInstant()) : null;
+        return time != null ? OffsetTime.of(time.toLocalTime(), ZoneOffset.UTC) : null;
     }
 
     @Override
