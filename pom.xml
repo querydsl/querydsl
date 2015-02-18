@@ -27,7 +27,7 @@
     <project.checkout>scm:git:git@github.com:querydsl/querydsl.git</project.checkout>
     
     <!-- deps -->
-    <derby.version>10.10.1.1</derby.version>
+    <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.1</hsqldb.version>
     <h2.version>1.4.178</h2.version>
     <postgresql.version>9.3-1101-jdbc41</postgresql.version>

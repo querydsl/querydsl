@@ -395,7 +395,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DB2, HSQLDB, POSTGRESQL, SQLSERVER, SQLITE})
+    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLSERVER, SQLITE})
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
@@ -517,7 +517,7 @@ public class SelectBase extends AbstractBaseTest {
     // TDO Date_Diff with timestamps
 
     @Test
-    @ExcludeIn({DB2, DERBY, HSQLDB, SQLITE, TERADATA})
+    @ExcludeIn({DB2, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
 
@@ -541,14 +541,14 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER}) // FIXME
+    @ExcludeIn({FIREBIRD, SQLITE}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
         List<DatePart> dps = Lists.newArrayList();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
-        add(dps, DatePart.week);
+        add(dps, DatePart.week, DERBY);
         add(dps, DatePart.day);
         add(dps, DatePart.hour);
         add(dps, DatePart.minute);
@@ -1012,6 +1012,14 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(true, singleResult(ConstantImpl.create(true)));
         assertEquals(false, singleResult(ConstantImpl.create(false)));
         assertEquals("abc", singleResult(ConstantImpl.create("abc")));
+    }
+
+    @Test
+    @ExcludeIn({HSQLDB})
+    public void Literals_Literals() {
+        if (configuration.getUseLiterals()) {
+            Literals();
+        }
     }
 
     private double log(double x, int y) {
