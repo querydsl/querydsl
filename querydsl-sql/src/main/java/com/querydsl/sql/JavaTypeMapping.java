@@ -76,6 +76,24 @@ class JavaTypeMapping {
             throw new RuntimeException(e);
         }
 
+        // initialize java time api (JSR 310) converters only if java 8 is available
+        try {
+            Class.forName("java.time.Instant");
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310InstantType").newInstance());
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310LocalDateTimeType").newInstance());
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310LocalDateType").newInstance());
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310LocalTimeType").newInstance());
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310OffsetDateTimeType").newInstance());
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310OffsetTimeType").newInstance());
+            registerDefault((Type<?>)Class.forName("com.querydsl.sql.types.JSR310ZonedDateTimeType").newInstance());
+        } catch (ClassNotFoundException e) {
+            // converters for JSR 310 are not loaded
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static void registerDefault(Type<?> type) {
