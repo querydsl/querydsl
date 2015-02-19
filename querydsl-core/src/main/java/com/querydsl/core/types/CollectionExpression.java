@@ -24,6 +24,6 @@ import java.util.Collection;
  * @param <E> element type
  * @see java.util.Collection
  */
-public interface CollectionExpression<T extends Collection<E>, E> extends ParametrizedExpression<T> {
+public interface CollectionExpression<T extends Collection<E>, E> extends ParameterizedExpression<T> {
 
 }

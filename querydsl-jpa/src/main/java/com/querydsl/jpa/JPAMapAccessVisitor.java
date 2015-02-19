@@ -30,7 +30,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
             if (replacement == null) {
                 // join parent as path123 on key(path123) = ...
                 Path parent = pathMetadata.getParent();
-                ParametrizedExpression parExpr = (ParametrizedExpression) parent;
+                ParameterizedExpression parExpr = (ParameterizedExpression) parent;
                 replacement = new PathImpl(parExpr.getParameter(1),
                         ExpressionUtils.createRootVariable(parent));
                 metadata.addJoin(JoinType.JOIN, ExpressionUtils.as(parent, replacement));

@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +14,13 @@
 package com.querydsl.core.types;
 
 /**
- * ParametrizedExpression is a common interface for expressions with generic type parameters
- * 
+ * ParameterizedExpression is a common interface for expressions with generic type parameters
+ *
  * @author tiwe
  *
  * @param <T> expression type
  */
-public interface ParametrizedExpression<T> extends Expression<T> {
+public interface ParameterizedExpression<T> extends Expression<T> {
 
     /**
      * @param index

@@ -24,6 +24,6 @@ import java.util.Map;
  * @param <V> value type
  * @see java.util.Map
  */
-public interface MapExpression<K, V> extends ParametrizedExpression<Map<K,V>> {
+public interface MapExpression<K, V> extends ParameterizedExpression<Map<K,V>> {
 
 }
