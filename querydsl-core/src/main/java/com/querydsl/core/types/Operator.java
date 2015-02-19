@@ -17,7 +17,7 @@ import java.io.Serializable;
 
 /**
  * Operator represents operator symbols.
- * <p>Implementations should enums for automatic instance management.</p>
+ * <p>Implementations should be enums for automatic instance management.</p>
  *
  * @author tiwe
  */
