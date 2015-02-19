@@ -541,14 +541,14 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, SQLITE}) // FIXME
+    @ExcludeIn({SQLITE}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
         List<DatePart> dps = Lists.newArrayList();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
-        add(dps, DatePart.week, DERBY);
+        add(dps, DatePart.week, DERBY, FIREBIRD);
         add(dps, DatePart.day);
         add(dps, DatePart.hour);
         add(dps, DatePart.minute);
@@ -560,7 +560,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, SQLITE}) // FIXME
+    @ExcludeIn({SQLITE}) // FIXME
     public void Date_Trunc2() {
         DateTimeExpression<DateTime> expr = DateTimeExpression.currentTimestamp(DateTime.class);
 
