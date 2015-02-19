@@ -11,8 +11,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 /**
  * JSR310LocalTimeType maps {@linkplain java.time.LocalTime}
  * to {@linkplain java.sql.Time} on the JDBC level
- *
- * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {

@@ -9,8 +9,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 /**
  * Common abstract superclass for Type implementations for Java Time API (JSR310)
  *
- *  @author Artur Chyży <artur.chyzy@gmail.com>
- *
  * @param <T>
  */
 @IgnoreJRERequirement //conditionally included

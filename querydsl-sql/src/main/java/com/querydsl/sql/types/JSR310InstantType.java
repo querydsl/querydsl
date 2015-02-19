@@ -11,11 +11,9 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 /**
  * JSR310InstantType maps {@linkplain java.time.Instant} to
  * {@linkplain java.sql.Timestamp} on the JDBC level
- *
- * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
-public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
+public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant> {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
 

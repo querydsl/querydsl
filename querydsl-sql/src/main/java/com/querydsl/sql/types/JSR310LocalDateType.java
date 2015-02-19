@@ -11,8 +11,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 /**
  * JSR310LocalDateType maps {@linkplain java.time.LocalDate}
  * to {@linkplain java.sql.Date} on the JDBC level
- *
- * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {

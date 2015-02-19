@@ -12,8 +12,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 /**
  * JSR310OffsetTimeType maps {@linkplain java.time.OffsetTime}
  * to {@linkplain java.sql.Time} on the JDBC level
- *
- * @author Artur Chyży <artur.chyzy@gmail.com>
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime> {
