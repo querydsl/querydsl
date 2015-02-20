@@ -1844,4 +1844,12 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(Integer.valueOf(200006), query.singleResult(employee.datefield.yearWeek()));
     }
 
+    @Test
+    @IncludeIn({H2})
+    public void YearWeek_H2() {
+        TestQuery query = query().from(employee).orderBy(employee.id.asc());
+        assertEquals(Integer.valueOf(200007), query.singleResult(employee.datefield.yearWeek()));
+    }
+
+
 }
