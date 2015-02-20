@@ -447,7 +447,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, HSQLDB, POSTGRESQL, SQLSERVER, SQLITE})
+    @ExcludeIn({CUBRID, POSTGRESQL, SQLSERVER, SQLITE})
     public void Dates_Literals() {
         if (configuration.getUseLiterals()) {
             Dates();
@@ -1003,7 +1003,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DB2, DERBY, HSQLDB})
+    @ExcludeIn({DB2, DERBY})
     public void Literals() {
         assertEquals(1, singleResult(ConstantImpl.create(1)).intValue());
         assertEquals(2l, singleResult(ConstantImpl.create(2l)).longValue());
@@ -1015,7 +1015,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB})
     public void Literals_Literals() {
         if (configuration.getUseLiterals()) {
             Literals();
