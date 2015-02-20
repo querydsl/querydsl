@@ -14,6 +14,7 @@
 package com.querydsl.sql.types;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -36,6 +37,12 @@ public class DoubleType extends AbstractNumberType<Double> {
     @Override
     public Class<Double> getReturnedClass() {
         return Double.class;
+    }
+
+    @Override
+    public Double getValue(ResultSet rs, int startIndex) throws SQLException {
+        double val = rs.getDouble(startIndex);
+        return rs.wasNull() ? null : Double.valueOf(val);
     }
 
     @Override

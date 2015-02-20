@@ -14,6 +14,7 @@
 package com.querydsl.sql.types;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -36,6 +37,12 @@ public class LongType extends AbstractNumberType<Long> {
     @Override
     public Class<Long> getReturnedClass() {
         return Long.class;
+    }
+
+    @Override
+    public Long getValue(ResultSet rs, int startIndex) throws SQLException {
+        long val = rs.getLong(startIndex);
+        return rs.wasNull() ? null : Long.valueOf(val);
     }
 
     @Override

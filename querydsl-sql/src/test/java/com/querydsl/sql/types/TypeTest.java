@@ -45,7 +45,29 @@ public class TypeTest implements InvocationHandler{
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (method.getName().startsWith("get")) {
+        if (method.getName().equals("wasNull")) {
+            return value == null;
+        } else if (method.getName().startsWith("get")) {
+            if (method.getReturnType().isPrimitive() && value == null) {
+                Class<?> rt = method.getReturnType();
+                if (rt == Byte.TYPE) {
+                    return Byte.valueOf((byte)0);
+                } else if (rt == Short.TYPE) {
+                    return Short.valueOf((short)0);
+                } else if (rt == Integer.TYPE) {
+                    return Integer.valueOf(0);
+                } else if (rt == Long.TYPE) {
+                    return Long.valueOf(0);
+                } else if (rt == Float.TYPE) {
+                    return Float.valueOf(0);
+                } else if (rt == Double.TYPE) {
+                    return Double.valueOf(0);
+                } else if (rt == Boolean.TYPE) {
+                    return Boolean.FALSE;
+                } else if (rt == Character.TYPE) {
+                    return Character.valueOf((char)0);
+                }
+            }
             return value;
         } else {
             value = args[1];
@@ -104,7 +126,7 @@ public class TypeTest implements InvocationHandler{
         for (Pair pair : valueAndType) {
             value = null;
             Type type = (Type) pair.getSecond();
-            assertNull(type.getValue(resultSet, 0));
+            assertNull(type.toString(),   type.getValue(resultSet, 0));
             type.setValue(statement, 0, pair.getFirst());
             assertEquals(type.toString(), pair.getFirst(), type.getValue(resultSet, 0));
         }
