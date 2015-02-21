@@ -395,7 +395,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLSERVER, SQLITE})
+    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE})
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
@@ -447,7 +447,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, SQLSERVER, SQLITE})
+    @ExcludeIn({CUBRID, SQLITE})
     public void Dates_Literals() {
         if (configuration.getUseLiterals()) {
             Dates();
@@ -548,7 +548,7 @@ public class SelectBase extends AbstractBaseTest {
         List<DatePart> dps = Lists.newArrayList();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
-        add(dps, DatePart.week, DERBY, FIREBIRD);
+        add(dps, DatePart.week, DERBY, FIREBIRD, SQLSERVER);
         add(dps, DatePart.day);
         add(dps, DatePart.hour);
         add(dps, DatePart.minute);
