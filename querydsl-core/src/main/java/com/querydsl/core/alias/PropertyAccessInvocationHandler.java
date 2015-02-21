@@ -32,7 +32,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ParametrizedExpression;
+import com.querydsl.core.types.ParameterizedExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
@@ -109,7 +109,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = propToObj.get(propKey);
             } else {
                 PathMetadata pm = createListAccessPath((Path<?>) hostExpression, (Integer) args[0]);
-                Class<?> elementType = ((ParametrizedExpression<?>) hostExpression).getParameter(0);
+                Class<?> elementType = ((ParameterizedExpression<?>) hostExpression).getParameter(0);
                 rv = newInstance(elementType, elementType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
@@ -120,7 +120,7 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = propToObj.get(propKey);
             } else {
                 PathMetadata pm = createMapAccessPath((Path<?>)hostExpression, args[0]);
-                Class<?> valueType = ((ParametrizedExpression<?>) hostExpression).getParameter(1);
+                Class<?> valueType = ((ParameterizedExpression<?>) hostExpression).getParameter(1);
                 rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
