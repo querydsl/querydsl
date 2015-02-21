@@ -434,6 +434,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({ORACLE})
     public void XML() {
         delete(QXmlTest.xmlTest).execute();
         QXmlTest xmlTest = QXmlTest.xmlTest;
