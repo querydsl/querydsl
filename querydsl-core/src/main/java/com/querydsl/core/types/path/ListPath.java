@@ -20,12 +20,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.ListExpression;
 import com.querydsl.core.types.expr.SimpleExpression;
 
@@ -66,7 +61,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
-        super(new PathImpl<List<E>>((Class)List.class, metadata), inits);
+        super(new ParameterizedPathImpl<List<E>>((Class)List.class, metadata, elementType), inits);
         this.elementType = (Class<E>)elementType;
         this.queryType = queryType;
         this.pathMixin = (PathImpl<List<E>>)mixin;

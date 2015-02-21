@@ -23,7 +23,6 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.PathType;
 
 /**
  * HQLTemplates extends JPQLTemplates with Hibernate specific extensions
@@ -74,23 +73,6 @@ public class HQLTemplates extends JPQLTemplates {
         builder.put(Double.class, "double");
         builder.put(BigDecimal.class, "big_decimal");
         typeNames = builder.build();
-
-        // TODO : remove this when Hibernate supports member of properly
-        add(JPQLOps.MEMBER_OF, "{0} in elements({1})");
-        add(JPQLOps.NOT_MEMBER_OF, "{0} not in elements({1})");
-
-        // path types
-        for (PathType type : new PathType[] {
-                PathType.LISTVALUE,
-                PathType.MAPVALUE,
-                PathType.MAPVALUE_CONSTANT }) {
-            add(type, "{0}[{1}]");
-        }
-        add(PathType.LISTVALUE_CONSTANT, "{0}[{1s}]");
-        add(PathType.COLLECTION_ANY, "any elements({0})");
-
-        add(Ops.CONTAINS_KEY, "{1} in indices({0})");
-        add(Ops.CONTAINS_VALUE, "{1} in elements({0})");
 
         // add Hibernate Spatial mappings, if on classpath
         try {

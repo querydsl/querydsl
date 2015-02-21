@@ -21,6 +21,28 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
         this.metadata = metadata;
     }
 
+    @Override
+    public Expression<?> visit(Operation<?> expr, @Nullable Void context) {
+        if (expr.getOperator() == Ops.CONTAINS_KEY) {
+            ParameterizedExpression map = (ParameterizedExpression<?>) expr.getArg(0);
+            Expression key = expr.getArg(1);
+            Path replacement = new PathImpl<Object>(map.getParameter(1),
+                    ExpressionUtils.createRootVariable((Path<?>)map));
+            metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(map, replacement));
+            metadata.addJoinCondition(ExpressionUtils.eq(
+                    Expressions.operation(map.getParameter(0), JPQLOps.KEY, replacement),
+                    key));
+            return ExpressionUtils.isNotNull(replacement);
+        } else if (expr.getOperator() == Ops.CONTAINS_VALUE) {
+            ParameterizedExpression<?> map = (ParameterizedExpression<?>) expr.getArg(0);
+            Expression<?> value = expr.getArg(1);
+            return Expressions.predicate(JPQLOps.MEMBER_OF, value, map);
+        } else {
+            return super.visit(expr, context);
+        }
+    }
+
+    @Override
     public Expression<?> visit(Path<?> expr, @Nullable Void context) {
         expr = (Path<?>) super.visit(expr, null);
         PathMetadata pathMetadata = expr.getMetadata();
@@ -33,7 +55,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
                 ParameterizedExpression parExpr = (ParameterizedExpression) parent;
                 replacement = new PathImpl(parExpr.getParameter(1),
                         ExpressionUtils.createRootVariable(parent));
-                metadata.addJoin(JoinType.JOIN, ExpressionUtils.as(parent, replacement));
+                metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(parent, replacement));
                 metadata.addJoinCondition(ExpressionUtils.eq(
                         Expressions.operation(parExpr.getParameter(0), JPQLOps.KEY, replacement),
                         ExpressionUtils.toExpression(pathMetadata.getElement())));
