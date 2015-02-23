@@ -14,9 +14,11 @@
 package com.querydsl.jpa;
 
 import com.querydsl.core.QueryFactory;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.dml.DeleteClause;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
 
 /**
  * Common interface for JPA related QueryFactory implementations
@@ -24,7 +26,7 @@ import com.querydsl.core.types.EntityPath;
  * @author tiwe
  *
  */
-public interface JPQLQueryFactory extends QueryFactory<JPQLQuery, JPQLSubQuery> {
+public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<Void>> {
 
     /**
      * Create a new DELETE clause
@@ -35,12 +37,27 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery, JPQLSubQuery> 
     DeleteClause<?> delete(EntityPath<?> path);
 
     /**
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    <T> JPQLQuery<T> select(Expression<T> expr);
+
+    /**
+     *
+     * @param exprs
+     * @return
+     */
+    JPQLQuery<Tuple> select(Expression<?>... exprs);
+
+    /**
      * Create a new Query with the given source
      * 
      * @param from
      * @return
      */
-    JPQLQuery from(EntityPath<?> from);
+    JPQLQuery<Void> from(EntityPath<?> from);
     
     /**
      * Create a new UPDATE clause

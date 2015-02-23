@@ -21,20 +21,20 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 
 /**
- * SearchResults bundles data for paged search results
+ * QueryResults bundles data for paged query results
  *
  * @author tiwe
  */
-public final class SearchResults<T> implements Serializable {
+public final class QueryResults<T> implements Serializable {
 
     private static final long serialVersionUID = -4591506147471300909L;
 
-    private static final SearchResults<Object> EMPTY = new SearchResults<Object>(
+    private static final QueryResults<Object> EMPTY = new QueryResults<Object>(
             ImmutableList.of(), Long.MAX_VALUE, 0l, 0l); 
     
     @SuppressWarnings("unchecked")
-    public static <T> SearchResults<T> emptyResults() {
-        return (SearchResults<T>)EMPTY;
+    public static <T> QueryResults<T> emptyResults() {
+        return (QueryResults<T>)EMPTY;
     };
 
     private final long limit, offset, total;
@@ -49,7 +49,7 @@ public final class SearchResults<T> implements Serializable {
      * @param offset used offset
      * @param total total result rows count
      */
-    public SearchResults(List<T> results, @Nullable Long limit, @Nullable Long offset, long total) {
+    public QueryResults(List<T> results, @Nullable Long limit, @Nullable Long offset, long total) {
         this.limit = limit != null ? limit : Long.MAX_VALUE;
         this.offset = offset != null ? offset : 0l;
         this.total = total;
@@ -63,7 +63,7 @@ public final class SearchResults<T> implements Serializable {
      * @param mod limit and offset
      * @param total total result rows count
      */
-    public SearchResults(List<T> results, QueryModifiers mod, long total) {
+    public QueryResults(List<T> results, QueryModifiers mod, long total) {
         this(results, mod.getLimit(), mod.getOffset(), total);
     }
 

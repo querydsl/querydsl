@@ -2,13 +2,13 @@ package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.dsl.ListSubQuery;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
@@ -18,11 +18,11 @@ public class ListSubQueryTest {
     public void HashCode() {
         QSurvey survey = QSurvey.survey;
         QSurvey survey2 = new QSurvey("survey2");
-        ListSubQuery<Tuple> query1 = new SQLSubQuery().from(survey).list(survey.all());
-        ListSubQuery<Tuple> query2 = new SQLSubQuery().from(survey2).list(survey2.all());
+        SubQueryExpression<Tuple> query1 = new SQLQuery<Void>().from(survey).select(survey.all());
+        SubQueryExpression<Tuple> query2 = new SQLQuery<Void>().from(survey2).select(survey2.all());
 
 
-        Set<ListSubQuery<Tuple>> queries = new HashSet<ListSubQuery<Tuple>>();
+        Set<SubQueryExpression<Tuple>> queries = Sets.newHashSet();
         queries.add(query1);
         queries.add(query2);
         assertEquals(2, queries.size());
@@ -32,10 +32,10 @@ public class ListSubQueryTest {
     public void HashCode2() {
         QSurvey survey = new QSurvey("entity");
         QEmployee employee = new QEmployee("entity");
-        ListSubQuery<Integer> query1 = new SQLSubQuery().from(survey).list(survey.id);
-        ListSubQuery<Integer> query2 = new SQLSubQuery().from(employee).list(employee.id);
+        SubQueryExpression<Integer> query1 = new SQLQuery<Void>().from(survey).select(survey.id);
+        SubQueryExpression<Integer> query2 = new SQLQuery<Void>().from(employee).select(employee.id);
 
-        Set<ListSubQuery<Integer>> queries = new HashSet<ListSubQuery<Integer>>();
+        Set<SubQueryExpression<Integer>> queries = Sets.newHashSet();
         queries.add(query1);
         queries.add(query2);
         assertEquals(1, queries.size());

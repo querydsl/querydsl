@@ -30,7 +30,7 @@ public class BooleanTest {
         Entity entity = Alias.alias(Entity.class);
         CollQueryFactory.from(entity, Collections.singleton(new Entity()))
             .where($(entity.isBoolean1()).eq(Boolean.TRUE))
-            .count();
+            .fetchCount();
     }
     
     @Test
@@ -38,7 +38,7 @@ public class BooleanTest {
         Entity entity = Alias.alias(Entity.class);
         CollQueryFactory.from(entity, Collections.singleton(new Entity()))
             .where($(entity.getBoolean2()).eq(Boolean.TRUE))
-            .count();
+            .fetchCount();
         
     }
 

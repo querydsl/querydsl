@@ -31,18 +31,16 @@ import com.querydsl.core.types.SubQueryExpression;
  * @author tiwe
  *
  * @param <Q> query type
- * @param <SQ> subquery type
  * @param <D> delete clause type
  * @param <U> update clause type
  * @param <I> insert clause type
  * @param <M> merge clause type
  */
 public interface SQLCommonQueryFactory<Q extends SQLCommonQuery<?>, // extends AbstractSQLQuery<?>
-    SQ extends AbstractSQLSubQuery<?>,
     D extends SQLDeleteClause,
     U extends SQLUpdateClause,
     I extends SQLInsertClause,
-    M extends SQLMergeClause> extends QueryFactory<Q,SQ> {
+    M extends SQLMergeClause> extends QueryFactory<Q> {
 
     /**
      * Create a new DELETE clause
@@ -106,17 +104,5 @@ public interface SQLCommonQueryFactory<Q extends SQLCommonQuery<?>, // extends A
      */
     @Override
     Q query();
-
-    /* (non-Javadoc)
-     * @see com.querydsl.core.QueryFactory#subQuery()
-     */
-    @Override
-    SQ subQuery();
-
-    /**
-     * @param from
-     * @return
-     */
-    SQ subQuery(Expression<?> from);
 
 }

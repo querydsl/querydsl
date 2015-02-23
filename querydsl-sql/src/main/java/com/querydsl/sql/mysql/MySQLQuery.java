@@ -21,6 +21,8 @@ import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.MySQLTemplates;
@@ -34,7 +36,7 @@ import com.querydsl.sql.SQLTemplates;
  * @see SQLQuery
  *
  */
-public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
+public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
 
     private static final String WITH_ROLLUP = "\nwith rollup ";
 
@@ -59,7 +61,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     private static final Joiner JOINER = Joiner.on(", ");
 
     public MySQLQuery(Connection conn) {
-        this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());
+        this(conn, new Configuration(MySQLTemplates.DEFAULT), new DefaultQueryMetadata());
     }
 
     public MySQLQuery(Connection conn, SQLTemplates templates) {
@@ -77,35 +79,35 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     /**
      * @return
      */
-    public MySQLQuery bigResult() {
+    public MySQLQuery<T> bigResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BIG_RESULT);
     }
 
     /**
      * @return
      */
-    public MySQLQuery bufferResult() {
+    public MySQLQuery<T> bufferResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BUFFER_RESULT);
     }
 
     /**
      * @return
      */
-    public MySQLQuery cache() {
+    public MySQLQuery<T> cache() {
         return addFlag(Position.AFTER_SELECT, SQL_CACHE);
     }
 
     /**
      * @return
      */
-    public MySQLQuery calcFoundRows() {
+    public MySQLQuery<T> calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
     }
 
     /**
      * @return
      */
-    public MySQLQuery highPriority() {
+    public MySQLQuery<T> highPriority() {
         return addFlag(Position.AFTER_SELECT, HIGH_PRIORITY);
     }
 
@@ -113,7 +115,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
      * @param var
      * @return
      */
-    public MySQLQuery into(String var) {
+    public MySQLQuery<T> into(String var) {
         return addFlag(Position.END, "\ninto " + var);
     }
 
@@ -121,7 +123,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
      * @param file
      * @return
      */
-    public MySQLQuery intoDumpfile(File file) {
+    public MySQLQuery<T> intoDumpfile(File file) {
         return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'" );
     }
 
@@ -129,35 +131,35 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
      * @param file
      * @return
      */
-    public MySQLQuery intoOutfile(File file) {
+    public MySQLQuery<T> intoOutfile(File file) {
         return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'" );
     }
 
     /**
      * @return
      */
-    public MySQLQuery lockInShareMode() {
+    public MySQLQuery<T> lockInShareMode() {
         return addFlag(Position.END, LOCK_IN_SHARE_MODE);
     }
 
     /**
      * @return
      */
-    public MySQLQuery noCache() {
+    public MySQLQuery<T> noCache() {
         return addFlag(Position.AFTER_SELECT, SQL_NO_CACHE);
     }
 
     /**
      * @return
      */
-    public MySQLQuery smallResult() {
+    public MySQLQuery<T> smallResult() {
         return addFlag(Position.AFTER_SELECT, SQL_SMALL_RESULT);
     }
 
     /**
      * @return
      */
-    public MySQLQuery straightJoin() {
+    public MySQLQuery<T> straightJoin() {
         return addFlag(Position.AFTER_SELECT, STRAIGHT_JOIN);
     }
 
@@ -165,7 +167,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
      * @param indexes
      * @return
      */
-    public MySQLQuery forceIndex(String... indexes) {
+    public MySQLQuery<T> forceIndex(String... indexes) {
         return addJoinFlag(" force index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
 
@@ -173,7 +175,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
      * @param indexes
      * @return
      */
-    public MySQLQuery ignoreIndex(String... indexes) {
+    public MySQLQuery<T> ignoreIndex(String... indexes) {
         return addJoinFlag(" ignore index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
 
@@ -182,7 +184,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
      * @param indexes
      * @return
      */
-    public MySQLQuery useIndex(String... indexes) {
+    public MySQLQuery<T> useIndex(String... indexes) {
         return addJoinFlag(" use index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
 
@@ -190,15 +192,27 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     /**
      * @return
      */
-    public MySQLQuery withRollup() {
+    public MySQLQuery<T> withRollup() {
         return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);
     }
 
     @Override
-    public MySQLQuery clone(Connection conn) {
-        MySQLQuery q = new MySQLQuery(conn, getConfiguration(), getMetadata().clone());
+    public MySQLQuery<T> clone(Connection conn) {
+        MySQLQuery<T> q = new MySQLQuery<T>(conn, getConfiguration(), getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public <U> MySQLQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (MySQLQuery<U>) this;
+    }
+
+    @Override
+    public MySQLQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (MySQLQuery<Tuple>) this;
     }
     
 }

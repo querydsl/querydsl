@@ -46,9 +46,9 @@ public class RelationalFunctionCallTest {
         QSurvey table = new QSurvey("SURVEY");
         RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SQLSubQuery sq = new SQLSubQuery();
+        SQLQuery<Void> sq = new SQLQuery<Void>();
         SubQueryExpression<?> expr = sq.from(table)
-            .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).list(table.name);
+            .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).select(table.name);
 
         Configuration conf = new Configuration(new SQLServerTemplates());
         SQLSerializer serializer = new NativeSQLSerializer(conf, true);

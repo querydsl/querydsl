@@ -16,7 +16,7 @@ public class CastTest extends AbstractQueryTest {
     public void Cast() {
         query().from(QAnimal.animal, cats)
             .where(QAnimal.animal.as(QCat.class).breed.eq(0))
-            .list(QAnimal.animal);
+            .select(QAnimal.animal).fetch();
     }
 
     @Test
@@ -26,7 +26,7 @@ public class CastTest extends AbstractQueryTest {
          assertEquals(Color.TABBY, 
              CollQueryFactory.from(QAnimal.animal, cat)
                  .where(QAnimal.animal.instanceOf(Cat.class))
-                 .singleResult(QAnimal.animal.as(QCat.class).eyecolor));
+                 .select(QAnimal.animal.as(QCat.class).eyecolor).fetchFirst());
     }
     
 }

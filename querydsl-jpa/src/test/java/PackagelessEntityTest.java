@@ -11,12 +11,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.jpa.JPASubQuery;
 import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 
 public class PackagelessEntityTest {
@@ -24,7 +25,7 @@ public class PackagelessEntityTest {
     @SuppressWarnings("unchecked")
     @Test
     public void PackageLess_Path() {
-        JPASubQuery query = new JPASubQuery();
+        JPAQuery<Void> query = new JPAQuery<Void>();
         PathBuilder builder = new PathBuilder(PackagelessEntityTest.class,"entity");
         query.from(builder);
         assertEquals("select entity\nfrom PackagelessEntityTest entity", query.toString());

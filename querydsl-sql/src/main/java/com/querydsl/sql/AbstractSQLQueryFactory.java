@@ -31,7 +31,7 @@ import com.querydsl.core.types.SubQueryExpression;
  * @author tiwe
  *
  */
-public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>, SQ extends AbstractSQLSubQuery<SQ>> implements SQLCommonQueryFactory<Q, SQ,
+public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>> implements SQLCommonQueryFactory<Q,
     SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     protected final Configuration configuration;
@@ -74,17 +74,6 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>, SQ ex
     @Override
     public final SQLUpdateClause update(RelationalPath<?> path) {
         return new SQLUpdateClause(connection.get(), configuration, path);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public SQ subQuery() {
-        return (SQ) new SQLSubQuery();
-    }
-
-    @Override
-    public final SQ subQuery(Expression<?> from) {
-        return subQuery().from(from);
     }
 
     public final Configuration getConfiguration() {

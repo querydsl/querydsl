@@ -2,21 +2,21 @@ package com.querydsl.sql.postgresql;
 
 import static org.junit.Assert.assertEquals;
 
-import com.querydsl.sql.PostgreSQLTemplates;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.querydsl.sql.PostgreSQLTemplates;
 import com.querydsl.sql.domain.QSurvey;
 
 public class PostgreSQLQueryTest {
     
-    private PostgreSQLQuery query;
+    private PostgreSQLQuery<Void> query;
     
     private QSurvey survey = new QSurvey("survey");
     
     @Before
     public void setUp() {
-        query = new PostgreSQLQuery(null, new PostgreSQLTemplates() {{
+        query = new PostgreSQLQuery<Void>(null, new PostgreSQLTemplates() {{
             newLineToSingleSpace();
         }});        
     }

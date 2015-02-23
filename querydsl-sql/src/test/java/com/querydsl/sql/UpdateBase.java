@@ -54,16 +54,16 @@ public class UpdateBase extends AbstractBaseTest {
     @Test
     public void Update() throws SQLException{
         // original state
-        long count = query().from(survey).count();
-        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
+        long count = query().from(survey).fetchCount();
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).fetchCount());
 
         // update call with 0 update count
         assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute());
-        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).fetchCount());
 
         // update call with full update count
         assertEquals(count, update(survey).set(survey.name, "S").execute());
-        assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
+        assertEquals(count, query().from(survey).where(survey.name.eq("S")).fetchCount());
     }
 
     @Test
@@ -81,16 +81,16 @@ public class UpdateBase extends AbstractBaseTest {
         List<?> values = Collections.singletonList("S");
 
         // original state
-        long count = query().from(survey).count();
-        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
+        long count = query().from(survey).fetchCount();
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).fetchCount());
 
         // update call with 0 update count
         assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(paths, values).execute());
-        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).fetchCount());
 
         // update call with full update count
         assertEquals(count, update(survey).set(paths, values).execute());
-        assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
+        assertEquals(count, query().from(survey).where(survey.name.eq("S")).fetchCount());
 
     }
 
@@ -115,13 +115,13 @@ public class UpdateBase extends AbstractBaseTest {
     public void SetNull() {
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList(null);
-        long count = query().from(survey).count();
+        long count = query().from(survey).fetchCount();
         assertEquals(count, update(survey).set(paths, values).execute());
     }
 
     @Test
     public void SetNull2() {
-        long count = query().from(survey).count();
+        long count = query().from(survey).fetchCount();
         assertEquals(count, update(survey).set(survey.name, (String)null).execute());
     }
 
@@ -153,7 +153,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(new SQLSubQuery().from(employee).where(survey1.id.eq(employee.id)).exists());
+        update.where(new SQLQuery<Void>().from(employee).where(survey1.id.eq(employee.id)).exists());
         update.execute();
     }
 
@@ -163,7 +163,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
 
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
-        SQLSubQuery sq = sq().from(employee).where(employee.id.eq(param));
+        SQLQuery<Void> sq = query().from(employee).where(employee.id.eq(param));
         sq.set(param, -12478923);
 
         SQLUpdateClause update = update(survey1);
@@ -178,7 +178,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(new SQLSubQuery().from(employee).where(survey1.name.eq(employee.lastname)).exists());
+        update.where(new SQLQuery<Void>().from(employee).where(survey1.name.eq(employee.lastname)).exists());
         update.execute();
     }
 
@@ -188,7 +188,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(sq().from(employee).where(survey1.id.eq(employee.id)).notExists());
+        update.where(query().from(employee).where(survey1.id.eq(employee.id)).notExists());
         update.execute();
     }
 

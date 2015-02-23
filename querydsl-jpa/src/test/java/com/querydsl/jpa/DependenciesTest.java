@@ -17,9 +17,9 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 
-import jdepend.framework.JDepend;
-
 import org.junit.Test;
+
+import jdepend.framework.JDepend;
 
 public class DependenciesTest {
     
@@ -32,7 +32,7 @@ public class DependenciesTest {
         jdepend.addDirectory("target/classes/com/querydsl/jpa/impl");
         jdepend.addDirectory("target/classes/com/querydsl/jpa/sql");
 
-        jdepend.analyze();        
+        jdepend.analyze();
         assertFalse(jdepend.containsCycles());
 
     }

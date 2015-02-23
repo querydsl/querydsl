@@ -55,7 +55,7 @@ public class InnerJoinTest extends AbstractQueryTest{
             .innerJoin(cat.kittens, kitten)
             .where(cat.name.eq(kitten.name))
             .orderBy(cat.name.asc())
-            .list(cat);
+            .fetch();
         assertEquals("Bob", rv.get(0).getName());
         assertEquals("Kate", rv.get(1).getName());
 
@@ -68,7 +68,7 @@ public class InnerJoinTest extends AbstractQueryTest{
         List<Cat> rv =  CollQueryFactory.from($(cc), cats)
                         .innerJoin($(cc.getKittens()), $(ck))
                         .where($(cc.getName()).eq($(ck.getName())))
-                        .list($(cc));
+                        .fetch();
         assertFalse(rv.isEmpty());
     }
 
@@ -79,7 +79,7 @@ public class InnerJoinTest extends AbstractQueryTest{
             .innerJoin(cat.kittensByName, kitten)
             .where(cat.name.eq(kitten.name))
             .orderBy(cat.name.asc())
-            .list(cat);
+            .fetch();
         assertEquals("Bob", rv.get(0).getName());
         assertEquals("Kate", rv.get(1).getName());
     }

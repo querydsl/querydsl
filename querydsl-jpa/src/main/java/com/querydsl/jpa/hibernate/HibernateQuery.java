@@ -18,7 +18,10 @@ import org.hibernate.StatelessSession;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.HQLTemplates;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLTemplates;
 
 /**
@@ -27,7 +30,7 @@ import com.querydsl.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> {
+public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<T>> implements JPQLQuery<T> {
 
     /**
      * Creates a detached query
@@ -96,11 +99,23 @@ public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> {
     }
 
     @Override
-    protected HibernateQuery clone(SessionHolder sessionHolder) {
-        HibernateQuery q = new HibernateQuery(sessionHolder, 
+    protected HibernateQuery<T> clone(SessionHolder sessionHolder) {
+        HibernateQuery<T> q = new HibernateQuery<T>(sessionHolder,
                 getTemplates(), getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public <U> HibernateQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (HibernateQuery<U>) this;
+    }
+
+    @Override
+    public HibernateQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (HibernateQuery<Tuple>) this;
     }
 
 }

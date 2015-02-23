@@ -29,10 +29,9 @@ import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
-import com.querydsl.core.support.ProjectableQuery;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.support.FetchableSubQueryBase;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.CollectionPath;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -41,7 +40,7 @@ import com.querydsl.core.types.FactoryExpression;
  *
  * @param <Q>
  */
-public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends ProjectableQuery<Q> implements JDOQLQuery{
+public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> extends FetchableSubQueryBase<T, Q> implements JDOQLQuery<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(JDOQuery.class);
 
@@ -110,7 +109,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         try {
             Query query = createQuery(true);
             query.setUnique(true);
@@ -124,13 +123,6 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
             reset();
         }
 
-    }
-
-    @Override
-    public boolean exists() {
-        boolean rv = singleResult(getSource()) != null;
-        close();
-        return rv;
     }
 
     private Expression<?> getSource() {
@@ -231,8 +223,9 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return queryMixin.from(args);
     }
 
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
+    @Override
+    public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
+        return queryMixin.from(ExpressionUtils.as((Path)path, alias));
     }
 
     public JDOQLTemplates getTemplates() {
@@ -244,42 +237,24 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return new IteratorAdapter<Tuple>(list(args).iterator(), closeable);
+    public CloseableIterator<T> fetchIterate() {
+        return new IteratorAdapter<T>(fetch().iterator(), closeable);
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
-    }
-
-    @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expression<RT> expr) {
+    public List<T> fetch() {
         try {
-            queryMixin.setProjection(expr);
             Object rv = execute(createQuery(false), false);
-            return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
+            return rv instanceof List ? (List<T>)rv : Collections.singletonList((T)rv);
         } finally {
             reset();
         }
     }
 
     @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
-    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
+    public QueryResults<T> fetchResults() {
         try {
-            queryMixin.setProjection(expr);
             Query countQuery = createQuery(true);
             countQuery.setUnique(true);
             countQuery.setResult("count(this)");
@@ -287,14 +262,13 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
             if (total > 0) {
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
                 Query query = createQuery(false);
-                return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
+                return new QueryResults<T>((List<T>) execute(query, false), modifiers, total);
             } else {
-                return SearchResults.emptyResults();
+                return QueryResults.emptyResults();
             }
         } finally {
             reset();
         }
-
     }
 
     private void reset() {
@@ -330,22 +304,9 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         }
     }
 
+    @Nullable
     @Override
-    @Nullable
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    @Nullable
-    public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.setProjection(expr);
-        return (RT)uniqueResult();
-    }
-
-    @Nullable
-    private Object uniqueResult() {
+    public T fetchOne() {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
@@ -358,12 +319,12 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
                     if (list.size() > 1) {
                         throw new NonUniqueResultException();
                     }
-                    return list.get(0);
+                    return (T) list.get(0);
                 } else {
                     return null;
                 }
             } else {
-                return rv;
+                return (T) rv;
             }
         } finally {
             reset();

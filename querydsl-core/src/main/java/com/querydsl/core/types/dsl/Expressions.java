@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 
@@ -685,17 +684,6 @@ public final class Expressions {
      */
     public static BooleanTemplate booleanTemplate(Template template, ImmutableList<?> args) {
         return new BooleanTemplate(template, ImmutableList.copyOf(args));
-    }
-
-    /**
-     * Create a new SubQuery expression
-     *
-     * @param type
-     * @param metadata
-     * @return
-     */
-    public static <T> SimpleSubQuery<T> subQuery(Class<T> type, QueryMetadata metadata) {
-        return new SimpleSubQuery<T>(type, metadata);
     }
 
     /**

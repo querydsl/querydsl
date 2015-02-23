@@ -31,7 +31,7 @@ import com.querydsl.sql.ProjectableSQLQuery;
  *
  * @param <Q> concrete subtype
  */
-public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends ProjectableSQLQuery<Q> {
+public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 
     private static final class NativeQueryMixin<T> extends QueryMixin<T> {
         private NativeQueryMixin(QueryMetadata metadata) {

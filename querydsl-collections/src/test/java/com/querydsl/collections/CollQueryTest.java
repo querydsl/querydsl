@@ -48,7 +48,8 @@ public class CollQueryTest extends AbstractQueryTest {
     public void InstanceOf() {
         assertEquals(
                 Arrays.asList(c1, c2),
-                query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class)).list(cat));
+                query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class))
+                       .select(cat).fetch());
     }
 
     @Test
@@ -59,13 +60,14 @@ public class CollQueryTest extends AbstractQueryTest {
                 cat.birthdate.loe(new Date()), 
                 cat.birthdate.gt(new Date()),
                 cat.birthdate.goe(new Date()))
-            .list(cat);
+            .select(cat).fetch();
     }
 
     @Test
     public void ArrayProjection() {
         // select pairs of cats with different names
-        query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
+        query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name))
+               .select(cat.name, otherCat.name).fetch();
         assertEquals(4*3, last.res.size());
     }
 
@@ -77,51 +79,51 @@ public class CollQueryTest extends AbstractQueryTest {
                 num.shortValue(), num.stringValue() };
 
         for (Expression<?> e : expr) {
-            query().from(cat, Arrays.asList(c1, c2)).list(e);
+            query().from(cat, Arrays.asList(c1, c2)).select(e).fetch();
         }
 
     }
     
     @Test
     public void Clone() {
-        CollQuery query = new CollQuery().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
+        CollQuery<?> query = new CollQuery<Void>().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
         assertEquals("cat is not null", query.getMetadata().getWhere().toString());
     }
 
     @Test
     public void Primitives() {
         // select cats with kittens
-        query().from(cat, cats).where(cat.kittens.size().ne(0)).list(cat.name);
+        query().from(cat, cats).where(cat.kittens.size().ne(0)).select(cat.name).fetch();
         assertTrue(last.res.size() == 4);
 
         // select cats without kittens
-        query().from(cat, cats).where(cat.kittens.size().eq(0)).list(cat.name);
+        query().from(cat, cats).where(cat.kittens.size().eq(0)).select(cat.name).fetch();
         assertTrue(last.res.size() == 0);
     }
 
     @Test
     public void SimpleCases() {
         // select all cat names
-        query().from(cat, cats).list(cat.name);
+        query().from(cat, cats).select(cat.name).fetch();
         assertTrue(last.res.size() == 4);
 
         // select all kittens
-        query().from(cat, cats).list(cat.kittens);
+        query().from(cat, cats).select(cat.kittens).fetch();
         assertTrue(last.res.size() == 4);
 
         // select cats with kittens
-        query().from(cat, cats).where(cat.kittens.size().gt(0)).list(cat.name);
+        query().from(cat, cats).where(cat.kittens.size().gt(0)).select(cat.name).fetch();
         assertTrue(last.res.size() == 4);
 
         // select cats named Kitty
-        query().from(cat, cats).where(cat.name.eq("Kitty")).list(cat.name);
+        query().from(cat, cats).where(cat.name.eq("Kitty")).select(cat.name).fetch();
         assertTrue(last.res.size() == 1);
 
         // select cats named Kitt%
-        query().from(cat, cats).where(cat.name.matches("Kitt.*")).list(cat.name);
+        query().from(cat, cats).where(cat.name.matches("Kitt.*")).select(cat.name).fetch();
         assertTrue(last.res.size() == 1);
 
-        query().from(cat, cats).list(cat.bodyWeight.add(cat.weight));
+        query().from(cat, cats).select(cat.bodyWeight.add(cat.weight)).fetch();
     }
 
     @Test
@@ -130,19 +132,19 @@ public class CollQueryTest extends AbstractQueryTest {
         StringPath b = Expressions.stringPath("b");
         for (Tuple strs : from(a, "aa", "bb", "cc")
                 .from(b, Arrays.asList("a","b"))
-                .where(a.startsWith(b)).list(a, b)) {
+                .where(a.startsWith(b)).select(a, b).fetch()) {
             System.out.println(strs);
         }
 
-        query().from(cat, cats).list(cat.mate);
+        query().from(cat, cats).select(cat.mate).fetch();
 
-        query().from(cat, cats).list(cat.kittens);
+        query().from(cat, cats).select(cat.kittens).fetch();
 
-        query().from(cat, cats).where(cat.kittens.isEmpty()).list(cat);
+        query().from(cat, cats).where(cat.kittens.isEmpty()).select(cat).fetch();
 
-        query().from(cat, cats).where(cat.kittens.isNotEmpty()).list(cat);
+        query().from(cat, cats).where(cat.kittens.isNotEmpty()).select(cat).fetch();
 
-        query().from(cat, cats).where(cat.name.matches("fri.*")).list(cat.name);
+        query().from(cat, cats).where(cat.name.matches("fri.*")).select(cat.name).fetch();
 
     }
 
@@ -150,7 +152,7 @@ public class CollQueryTest extends AbstractQueryTest {
     public void BigDecimals() {
         NumberPath<BigDecimal> a = Expressions.numberPath(BigDecimal.class, "cost");
         List<BigDecimal> nums = from(a, new BigDecimal("2.1"), new BigDecimal("20.21"),
-                new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).list(a);
+                new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).select(a).fetch();
 
         for (BigDecimal num : nums) {
             System.out.println(num);

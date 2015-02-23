@@ -20,7 +20,7 @@ public class GroupByTest extends AbstractTest {
                 serialize(query()
                     .from(employee)
                     .groupBy(employee.emailAddress).having(employee.emailAddress.ne("XXX"))
-                    .list(employee)));
+                    .select(employee)));
     }
 
 }

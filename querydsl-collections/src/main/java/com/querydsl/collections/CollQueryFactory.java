@@ -44,8 +44,9 @@ public final class CollQueryFactory {
      * @param col source collection
      * @return
      */
-    public static <A> CollQuery from(A alias, Iterable<A> col) {
-        return new CollQuery().from(Alias.$(alias), col);
+    public static <A> CollQuery<A> from(A alias, Iterable<A> col) {
+        Path<A> expr = Alias.$(alias);
+        return new CollQuery<Void>().from(expr, col).select(expr);
     }
 
     /**
@@ -55,8 +56,8 @@ public final class CollQueryFactory {
      * @param arr source array
      * @return
      */
-    public static <A> CollQuery from(Path<A> path, A... arr) {
-        return new CollQuery().from(path, ImmutableList.copyOf(arr));
+    public static <A> CollQuery<A> from(Path<A> path, A... arr) {
+        return new CollQuery<Void>().from(path, ImmutableList.copyOf(arr)).select(path);
     }
 
     /**
@@ -66,8 +67,8 @@ public final class CollQueryFactory {
      * @param col source collection
      * @return
      */
-    public static <A> CollQuery from(Path<A> path, Iterable<A> col) {
-        return new CollQuery().from(path, col);
+    public static <A> CollQuery<A> from(Path<A> path, Iterable<A> col) {
+        return new CollQuery<Void>().from(path, col).select(path);
     }
 
     /**

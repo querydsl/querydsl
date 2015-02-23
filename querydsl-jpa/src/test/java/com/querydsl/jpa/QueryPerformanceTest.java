@@ -41,13 +41,13 @@ public class QueryPerformanceTest implements JPATest {
         Mode.target.remove();
     }
 
-    private JPAQuery query() {
-        return new JPAQuery(entityManager);
+    private JPAQuery<Void> query() {
+        return new JPAQuery<Void>(entityManager);
     }
 
     @Before
     public void setUp() {
-        if (query().from(QCat.cat).notExists()) {
+        if (query().from(QCat.cat).fetchCount() == 0) {
             for (int i = 0; i < iterations; i++) {
                 entityManager.persist(new Cat(String.valueOf(i), i + 100));
             }
@@ -71,7 +71,7 @@ public class QueryPerformanceTest implements JPATest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
-            Cat c = query().from(cat).where(cat.id.eq(i+100)).uniqueResult(cat);
+            Cat c = query().from(cat).where(cat.id.eq(i+100)).select(cat).fetchOne();
             assertNotNull(c);
         }
         System.err.println("by id - dsl" + (System.currentTimeMillis() - start));
@@ -94,7 +94,7 @@ public class QueryPerformanceTest implements JPATest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
-            Tuple row = query().from(cat).where(cat.id.eq(i+100)).uniqueResult(cat.id, cat.name);
+            Tuple row = query().from(cat).where(cat.id.eq(i+100)).select(cat.id, cat.name).fetchOne();
             assertNotNull(row);
         }
         System.err.println("by id - 2 cols - dsl" + (System.currentTimeMillis() - start));

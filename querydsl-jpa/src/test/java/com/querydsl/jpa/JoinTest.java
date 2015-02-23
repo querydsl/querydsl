@@ -23,6 +23,7 @@ import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.hibernate.HibernateQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 public class JoinTest {
 
@@ -34,8 +35,8 @@ public class JoinTest {
     private final Entity alias = Alias.alias(Entity.class);
 
     private final StringPath path = Expressions.stringPath("path");
-    private final JPASubQuery subQuery = new JPASubQuery();
-    private final HibernateQuery query = new HibernateQuery(new DummySessionHolder(), HQLTemplates.DEFAULT);
+    private final JPAQuery<Void> subQuery = new JPAQuery<Void>();
+    private final HibernateQuery<Void> query = new HibernateQuery<Void>(new DummySessionHolder(), HQLTemplates.DEFAULT);
 
     @Test
     public void SubQuery_InnerJoin() {

@@ -11,8 +11,8 @@ public class NullSafetyTest extends AbstractQueryTest {
     @Test
     public void Filters() {
         QCat cat = QCat.cat;
-        CollQuery query = CollQueryFactory.from(cat, Arrays.asList(new Cat(), new Cat("Bob")));
-        assertEquals(1l, query.where(cat.name.eq("Bob")).count());
+        CollQuery<Cat> query = CollQueryFactory.from(cat, Arrays.asList(new Cat(), new Cat("Bob")));
+        assertEquals(1l, query.where(cat.name.eq("Bob")).fetchCount());
     }
 
     @Test
@@ -25,8 +25,8 @@ public class NullSafetyTest extends AbstractQueryTest {
 
         QCat cat = QCat.cat;
         QCat kitten = new QCat("kitten");
-        CollQuery query = CollQueryFactory.from(cat, Arrays.asList(cat1, cat2)).innerJoin(cat.kittens, kitten);
-        assertEquals(1, query.where(kitten.name.eq("Bob")).count());
+        CollQuery<Cat> query = CollQueryFactory.from(cat, Arrays.asList(cat1, cat2)).innerJoin(cat.kittens, kitten);
+        assertEquals(1, query.where(kitten.name.eq("Bob")).fetchCount());
     }
 
 }

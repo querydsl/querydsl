@@ -19,13 +19,10 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.ListSubQuery;
-import com.querydsl.core.types.dsl.NumberSubQuery;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
@@ -33,25 +30,23 @@ public class SQLSubQueryTest {
 
     private static final QEmployee employee = QEmployee.employee;
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void UnknownOperator() {
         Operator op = new Operator() {
             public String name() { return "unknownfn"; }
             public String toString() { return name(); }
             public Class<?> getType() { return Object.class; }
         };
-        SQLSubQuery query = new SQLSubQuery();
+        SQLQuery<Void> query = new SQLQuery<Void>();
         query.from(employee)
-            .where(Expressions.booleanOperation(op, employee.id));
-
-        assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
+            .where(Expressions.booleanOperation(op, employee.id)).toString();
     }
 
     @Test
     public void List() {
-        SQLSubQuery query = new SQLSubQuery();
+        SQLQuery<Void> query = new SQLQuery<Void>();
         query.from(employee);
-        ListSubQuery<?> subQuery = query.list(employee.id, "XXX", employee.firstname);
+        SubQueryExpression<?> subQuery = query.select(employee.id, Expressions.constant("XXX"), employee.firstname);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
@@ -61,10 +56,10 @@ public class SQLSubQueryTest {
     @Test
     public void List_Entity() {
         QEmployee employee2 = new QEmployee("employee2");
-        SQLSubQuery query = new SQLSubQuery();
+        SQLQuery<Void> query = new SQLQuery<Void>();
         Expression<?> expr = query.from(employee)
              .innerJoin(employee.superiorIdKey, employee2)
-             .list(employee, employee2.id);
+             .select(employee, employee2.id);
 
         SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));
         serializer.handle(expr);
@@ -77,29 +72,29 @@ public class SQLSubQueryTest {
 
     @Test
     public void In() {
-        ListSubQuery<Integer> ints = new SQLSubQuery().from(employee).list(employee.id);
+        SubQueryExpression<Integer> ints = new SQLQuery<Void>().from(employee).select(employee.id);
         QEmployee.employee.id.in(ints);
     }
 
     @Test
     public void In_Union() {
-        ListSubQuery<Integer> ints1 = new SQLSubQuery().from(employee).list(employee.id);
-        ListSubQuery<Integer> ints2 = new SQLSubQuery().from(employee).list(employee.id);
-        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
+        SubQueryExpression<Integer> ints1 = new SQLQuery<Void>().from(employee).select(employee.id);
+        SubQueryExpression<Integer> ints2 = new SQLQuery<Void>().from(employee).select(employee.id);
+        QEmployee.employee.id.in(new SQLQuery<Void>().union(ints1, ints2));
     }
 
     @Test
     public void In_Union2() {
-        NumberSubQuery<Integer> ints1 = new SQLSubQuery().from(employee).unique(employee.id);
-        NumberSubQuery<Integer> ints2 = new SQLSubQuery().from(employee).unique(employee.id);
-        QEmployee.employee.id.in(new SQLSubQuery().union(ints1, ints2));
+        SubQueryExpression<Integer> ints1 = new SQLQuery<Void>().from(employee).select(employee.id);
+        SubQueryExpression<Integer> ints2 = new SQLQuery<Void>().from(employee).select(employee.id);
+        QEmployee.employee.id.in(new SQLQuery<Void>().union(ints1, ints2));
     }
 
     @Test
     public void Unique() {
-        SQLSubQuery query = new SQLSubQuery();
+        SQLQuery<Void> query = new SQLQuery<Void>();
         query.from(employee);
-        SubQueryExpression<?> subQuery = query.unique(employee.id, "XXX", employee.firstname);
+        SubQueryExpression<?> subQuery = query.select(employee.id, Expressions.constant("XXX"), employee.firstname);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
@@ -112,12 +107,12 @@ public class SQLSubQueryTest {
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
-        SubQueryExpression<?> subQuery = new SQLSubQuery().from(survey)
+        SubQueryExpression<?> subQuery = new SQLQuery<Void>().from(survey)
           .innerJoin(emp1)
            .on(survey.id.eq(emp1.id))
           .innerJoin(emp2)
            .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
-          .list(survey.id, emp2.firstname);
+          .select(survey.id, emp2.firstname);
 
         assertEquals(3, subQuery.getMetadata().getJoins().size());
     }
@@ -134,12 +129,12 @@ public class SQLSubQueryTest {
         // order by operator_total_permits asc
         // limit 10
 
-        Expression<?> e = new SQLSubQuery().from(survey)
+        Expression<?> e = new SQLQuery<Void>().from(survey)
             .where(survey.name.goe("A"))
             .groupBy(survey.name)
             .orderBy(operatorTotalPermits.asc())
             .limit(10)
-            .list(survey.name, Wildcard.count.as(operatorTotalPermits))
+            .select(survey.name, Wildcard.count.as(operatorTotalPermits))
             .as("top");
 
         new SQLQuery(null, SQLTemplates.DEFAULT).from(e);
@@ -147,10 +142,11 @@ public class SQLSubQueryTest {
 
     @Test
     public void Union() {
-        ListSubQuery<Object> q1 = new ListSubQuery<Object>(Object.class, new DefaultQueryMetadata());
-        ListSubQuery<Object> q2 = new ListSubQuery<Object>(Object.class, new DefaultQueryMetadata());
-        new SQLSubQuery().union(q1, q2);
-        new SQLSubQuery().union(q1);
+        QSurvey survey = QSurvey.survey;
+        SubQueryExpression<Integer> q1 = new SQLQuery<Void>().from(survey).select(survey.id);
+        SubQueryExpression<Integer> q2 = new SQLQuery<Void>().from(survey).select(survey.id);
+        new SQLQuery<Void>().union(q1, q2);
+        new SQLQuery<Void>().union(q1);
     }
 
     @Test
@@ -159,11 +155,11 @@ public class SQLSubQueryTest {
         QSurvey survey2 = new QSurvey("survey2");
         QSurvey survey3 = new QSurvey("survey3");
 
-        SQLQuery query = new SQLQuery(SQLTemplates.DEFAULT);
-        query.with(survey1, new SQLSubQuery().from(survey1).list(survey1.all()));
+        SQLQuery<Void> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        query.with(survey1, new SQLQuery<Void>().from(survey1).select(survey1.all()));
         query.union(
-              new SQLSubQuery().from(survey2).list(survey2.all()),
-              new SQLSubQuery().from(survey3).list(survey3.all()));
+              new SQLQuery<Void>().from(survey2).select(survey2.all()),
+              new SQLQuery<Void>().from(survey3).select(survey3.all()));
 
         assertEquals("with survey1 as (select survey1.NAME, survey1.NAME2, survey1.ID\n" +
                 "from SURVEY survey1)\n" +

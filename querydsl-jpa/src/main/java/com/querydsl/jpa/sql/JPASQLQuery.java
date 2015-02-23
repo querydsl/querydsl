@@ -16,6 +16,8 @@ package com.querydsl.jpa.sql;
 import javax.persistence.EntityManager;
 
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.QueryHandler;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
@@ -27,7 +29,7 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> {
+public class JPASQLQuery<T> extends AbstractJPASQLQuery<T, JPASQLQuery<T>> {
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
         super(entityManager, new Configuration(sqlTemplates));
@@ -54,10 +56,22 @@ public class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> {
     }
 
     @Override
-    public JPASQLQuery clone(EntityManager entityManager) {
-        JPASQLQuery q = new JPASQLQuery(entityManager, configuration, queryHandler, getMetadata().clone());
+    public JPASQLQuery<T> clone(EntityManager entityManager) {
+        JPASQLQuery<T> q = new JPASQLQuery<T>(entityManager, configuration, queryHandler, getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public <U> JPASQLQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (JPASQLQuery<U>) this;
+    }
+
+    @Override
+    public JPASQLQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (JPASQLQuery<Tuple>) this;
     }
 
 }

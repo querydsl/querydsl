@@ -13,24 +13,27 @@
  */
 package com.querydsl.jdo;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.io.IOException;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
-import java.io.IOException;
+
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jdo.test.domain.Book;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QBook;
 import com.querydsl.jdo.test.domain.QProduct;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Projections;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class BasicsTest extends AbstractJDOTest {
 
@@ -44,20 +47,20 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void Serialization() throws IOException{
-        JDOQuery query = query();
+        JDOQuery<Void> query = query();
 
         assertEquals("FROM com.querydsl.jdo.test.domain.Product", query.from(product).toString());
         assertEquals("FROM com.querydsl.jdo.test.domain.Product" +
             "\nVARIABLES com.querydsl.jdo.test.domain.Product product2",
             query.from(product2).toString());
 
-        query.where(product.ne(product2)).list(product, product2);
+        query.where(product.ne(product2)).select(product, product2).fetch();
         query.close();
     }
 
     @Test
     public void SubQuerySerialization() throws IOException{
-        JDOSubQuery query = sub();
+        JDOQuery<Void> query = query();
 
         assertEquals("FROM com.querydsl.jdo.test.domain.Product", query.from(product).toString());
         assertEquals("FROM com.querydsl.jdo.test.domain.Product" +
@@ -68,66 +71,66 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void Delete() {
-        long count = query().from(product).count();
+        long count = query().from(product).fetchCount();
         assertEquals(0, delete(product).where(product.name.eq("XXX")).execute());
         assertEquals(count, delete(product).execute());
     }
 
     @Test
     public void CountTests() {
-        assertEquals("count", 2, query().from(product).count());
+        assertEquals("count", 2, query().from(product).fetchCount());
     }
 
     @Test
     public void List_Distinct() {
-        query().from(product).distinct().list(product);
+        query().from(product).distinct().select(product).fetch();
     }
     
     @Test
     public void List_Distinct_Two_Sources() {
-        query().from(product, product2).distinct().list(product, product2);
+        query().from(product, product2).distinct().select(product, product2).fetch();
     }
     
     @Test
     public void Single_Result() {
-        query().from(product).singleResult(product);
+        query().from(product).select(product).fetchFirst();
     }
     
     @Test
     public void Single_Result_With_Array() {
-        query().from(product).singleResult(new Expression<?>[]{product});
+        query().from(product).select(new Expression<?>[]{product}).fetchFirst();
     }
 
     @Test
     public void FactoryExpression_In_GroupBy() {
         Expression<Product> productBean = Projections.bean(Product.class, product.name, product.description);
-        assertFalse(query().from(product).groupBy(productBean).list(productBean).isEmpty());
+        assertFalse(query().from(product).groupBy(productBean).select(productBean).fetch().isEmpty());
     }
 
     @Test(expected=NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results() {
-        query().from(product).uniqueResult(product);
+        query().from(product).select(product).fetchOne();
     }
 
     @Test
     public void SimpleTest() throws IOException{
-        JDOQuery query = new JDOQuery(pm, templates, false);
+        JDOQuery<Void> query = new JDOQuery<Void>(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman"))
-                .uniqueResult(product.name));
+                .select(product.name).fetchOne());
         query.close();
     }
 
     @Test
     public void ProjectionTests() {
         assertEquals("Sony Discman", query().from(product).where(product.name.eq("Sony Discman"))
-                .uniqueResult(product.name));
+                .select(product.name).fetchOne());
     }
 
     @Test
     public void BasicTests() {
-        assertEquals("list", 2, query().from(product).list(product).size());
-        assertEquals("list", 2, query().from(product).list(product.name,product.description).size());
-        assertEquals("list", 1, query().from(book).list(book).size());
+        assertEquals("list", 2, query().from(product).select(product).fetch().size());
+        assertEquals("list", 2, query().from(product).select(product.name,product.description).fetch().size());
+        assertEquals("list", 1, query().from(book).select(book).fetch().size());
         assertEquals("eq", 1, query(product, product.name.eq("Sony Discman")).size());
         assertEquals("instanceof ", 1, query(product,product.instanceOf(Book.class)).size());
     }
@@ -135,7 +138,7 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     @Ignore
     public void DetachedResults() {
-        for (Product p : detachedQuery().from(product).list(product)) {
+        for (Product p : detachedQuery().from(product).select(product).fetch()) {
             System.out.println(p);
         }
     }

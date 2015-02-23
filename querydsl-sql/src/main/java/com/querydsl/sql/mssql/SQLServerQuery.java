@@ -18,10 +18,9 @@ import java.sql.Connection;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.AbstractSQLQuery;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLServerTemplates;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.sql.*;
 
 /**
  * SQLServerQuery provides SQL Server related extensions to SQLQuery
@@ -29,10 +28,10 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> {
+public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
 
     public SQLServerQuery(Connection conn) {
-        this(conn, new SQLServerTemplates(), new DefaultQueryMetadata());
+        this(conn, SQLServerTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
     public SQLServerQuery(Connection conn, SQLTemplates templates) {
@@ -55,7 +54,7 @@ public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> {
      * @param tableHints
      * @return
      */
-    public SQLServerQuery tableHints(SQLServerTableHints... tableHints) {
+    public SQLServerQuery<T> tableHints(SQLServerTableHints... tableHints) {
         if (tableHints.length > 0) {
             String hints = SQLServerGrammar.tableHints(tableHints);
             addJoinFlag(hints, JoinFlag.Position.END);
@@ -64,10 +63,22 @@ public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> {
     }
     
     @Override
-    public SQLServerQuery clone(Connection conn) {
-        SQLServerQuery q = new SQLServerQuery(conn, getConfiguration(), getMetadata().clone());
+    public SQLServerQuery<T> clone(Connection conn) {
+        SQLServerQuery<T> q = new SQLServerQuery<T>(conn, getConfiguration(), getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public <U> SQLServerQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (SQLServerQuery<U>) this;
+    }
+
+    @Override
+    public SQLServerQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (SQLServerQuery<Tuple>) this;
     }
 
 }

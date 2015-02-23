@@ -36,7 +36,7 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {
                     QCat cat = QCat.cat;
-                    CollQueryFactory.from(cat, cats).where(cat.id.eq(i % size)).list(cat);
+                    CollQueryFactory.from(cat, cats).where(cat.id.eq(i % size)).select(cat).fetch();
                 }                
             }            
         });                      

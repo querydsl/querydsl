@@ -43,8 +43,8 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     private Session session;
 
     @Override
-    protected QueryHelper query() {
-        return new QueryHelper(HQLTemplates.DEFAULT) {
+    protected QueryHelper<Void> query() {
+        return new QueryHelper<Void>(HQLTemplates.DEFAULT) {
             @Override
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
@@ -102,8 +102,8 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         session.save(new Cat("Steve",11));
 
         QCat cat = QCat.cat;
-        HibernateQuery query = new HibernateQuery(session);
-        ScrollableResults results = query.from(cat).scroll(ScrollMode.SCROLL_INSENSITIVE, cat);
+        HibernateQuery<Void> query = new HibernateQuery<Void>(session);
+        ScrollableResults results = query.from(cat).select(cat).scroll(ScrollMode.SCROLL_INSENSITIVE);
         while (results.next()) {
             System.out.println(results.get(0));
         }
@@ -122,7 +122,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
             .execute();
         assertEquals(1, amount);
 
-        assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).count());
+        assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).fetchCount());
     }
 
     @Test

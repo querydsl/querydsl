@@ -91,21 +91,21 @@ public class ParsingTest extends AbstractQueryTest {
     @Test
     public void DocoExamples911() throws Exception {
         query().from(fatcat).where(
-                fatcat.weight.gt(sub().from(cat).unique(cat.weight.avg())))
+                fatcat.weight.gt(sub().from(cat).select(cat.weight.avg())))
                 .parse();
     }
 
     @Test
     public void DocoExamples911_2() throws Exception {
         query().from(cat).where(
-                cat.name.eqAny(sub().from(name).list(name.nickName)))
+                cat.name.eqAny(sub().from(name).select(name.nickName)))
                 .parse();
     }
     
     @Test
     public void DocoExamples911_3() throws Exception {
         query().from(cat).where(
-                sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
+                sub().from(mate).where(mate.mate.eq(cat)).select(mate).notExists())
                 .parse();
     }
     
@@ -119,7 +119,7 @@ public class ParsingTest extends AbstractQueryTest {
     @Test
     public void DocoExamples911_5() throws Exception {
         query().from(cat).where(
-                cat.name.notIn(sub().from(name).list(name.nickName)))
+                cat.name.notIn(sub().from(name).select(name.nickName)))
                 .parse();
     }
     
@@ -134,7 +134,7 @@ public class ParsingTest extends AbstractQueryTest {
                                 catalog.effectiveDate.gtAny(
                                         sub().from(catalog).where(
                                                 catalog.effectiveDate.lt(DateExpression.currentDate()))
-                                             .list(catalog.effectiveDate))))
+                                             .select(catalog.effectiveDate))))
                 .groupBy(ord).having(price.amount.sum().gt(0l))
                 .orderBy(price.amount.sum().desc())
                 .select(ord.id, price.amount.sum(), item.count());
@@ -450,13 +450,13 @@ public class ParsingTest extends AbstractQueryTest {
     @Test
     @NoOpenJPA
     public void Fetch() throws RecognitionException, TokenStreamException{
-        query().from(cat).innerJoin(cat.mate, mate).fetch().parse();               
+        query().from(cat).innerJoin(cat.mate, mate).fetchJoin().parse();
     }
     
     @Test
     @NoOpenJPA
     public void Fetch2() throws RecognitionException, TokenStreamException{
-        query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
+        query().from(cat).innerJoin(cat.mate, mate).fetchJoin().fetchJoin().parse();
     }
 
     @Test

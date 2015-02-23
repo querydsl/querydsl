@@ -20,7 +20,6 @@ import javax.inject.Provider;
 import com.querydsl.sql.AbstractSQLQueryFactory;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.OracleTemplates;
-import com.querydsl.sql.SQLSubQuery;
 import com.querydsl.sql.SQLTemplates;
 
 /**
@@ -29,7 +28,7 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery, SQLSubQuery> {
+public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<Void>> {
 
     public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -43,8 +42,8 @@ public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery, SQL
         this(new Configuration(templates), connection);
     }
 
-    public OracleQuery query() {
-        return new OracleQuery(connection.get(), configuration);
+    public OracleQuery<Void> query() {
+        return new OracleQuery<Void>(connection.get(), configuration);
     }
 
 }

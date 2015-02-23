@@ -10,7 +10,6 @@ import com.querydsl.core.testutil.IncludeIn;
 
 public class SelectTeradataBase extends AbstractBaseTest {
 
-
     protected SetQueryBandClause setQueryBand() {
         return new SetQueryBandClause(connection, configuration);
     }
@@ -19,14 +18,14 @@ public class SelectTeradataBase extends AbstractBaseTest {
     @IncludeIn(TERADATA)
     public void SetQueryBand_ForSession() {
         setQueryBand().set("a", "bb").forSession().execute();
-        query().from(survey).list(survey.id);
+        query().from(survey).select(survey.id).fetch();
     }
 
     @Test
     @IncludeIn(TERADATA)
     public void SetQueryBand_ForTransaction() {
         setQueryBand().set("a", "bb").forTransaction().execute();
-        query().from(survey).list(survey.id);
+        query().from(survey).select(survey.id).fetch();
     }
 
 }

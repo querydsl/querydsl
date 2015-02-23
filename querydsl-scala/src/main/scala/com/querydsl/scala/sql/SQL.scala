@@ -29,10 +29,6 @@ trait SQLHelpers {
   
   def templates: SQLTemplates
 
-  implicit def toRichSimpleQuery[T, R <: RelationalPath[T]](p: RelationalPath[T] with R) = {
-    new RichSimpleQuery[T, R, T, R](p, p, new SQLQuery(connection, templates).from(p) )
-  }
-  
 }
 
 /**

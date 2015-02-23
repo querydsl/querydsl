@@ -17,10 +17,11 @@ import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 
-import com.querydsl.jpa.JPASubQuery;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.core.types.EntityPath;
 
 /**
  * Factory class for query and DML clause creation
@@ -55,7 +56,17 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
-    public JPAQuery from(EntityPath<?> from) {
+    public <T> JPAQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public JPAQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public JPAQuery<Void> from(EntityPath<?> from) {
         return query().from(from);
     }
 
@@ -69,17 +80,12 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
-    public JPAQuery query() {
+    public JPAQuery<Void> query() {
         if (templates != null) {
-            return new JPAQuery(entityManager.get(), templates);    
+            return new JPAQuery<Void>(entityManager.get(), templates);
         } else {
-            return new JPAQuery(entityManager.get());
+            return new JPAQuery<Void>(entityManager.get());
         }        
-    }
-
-    @Override
-    public JPASubQuery subQuery() {
-        return new JPASubQuery();
     }
 
 }

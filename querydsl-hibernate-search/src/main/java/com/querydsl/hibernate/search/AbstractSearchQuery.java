@@ -34,7 +34,7 @@ import com.querydsl.lucene3.LuceneSerializer;
 /**
  * Abstract base class for Hibernate Search query classes
  */
-public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>> implements SimpleQuery<Q>, SimpleProjectable<T> {
+public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>> implements SimpleQuery<Q>, Fetchable<T> {
 
     private final EntityPath<T> path;
 
@@ -62,19 +62,8 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
         this(Search.getFullTextSession(session), path);
     }
 
-
     @Override
-    public boolean exists() {
-        return createQuery(true).getResultSize() > 0;
-    }
-
-    @Override
-    public boolean notExists() {
-        return createQuery(true).getResultSize() == 0;
-    }
-
-    @Override
-    public long count() {
+    public long fetchCount() {
         return createQuery(true).getResultSize();
     }
 
@@ -116,12 +105,12 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
 
 
     @SuppressWarnings("unchecked")
-    public CloseableIterator<T> iterate() {
+    public CloseableIterator<T> fetchIterate() {
         return new IteratorAdapter<T>(createQuery(false).iterate());
     }
 
     public CloseableIterator<T> iterateDistinct() {
-        return iterate();
+        return fetchIterate();
     }
 
     @Override
@@ -131,15 +120,15 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<T> list() {
+    public List<T> fetch() {
         return createQuery(false).list();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public SearchResults<T> listResults() {
+    public QueryResults<T> fetchResults() {
         FullTextQuery query = createQuery(false);
-        return new SearchResults<T>(query.list(), queryMixin.getMetadata().getModifiers(), query.getResultSize());
+        return new QueryResults<T>(query.list(), queryMixin.getMetadata().getModifiers(), query.getResultSize());
     }
 
     @Override
@@ -163,13 +152,13 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
     }
 
     @Override
-    public T singleResult() {
-        return limit(1).uniqueResult();
+    public T fetchFirst() {
+        return limit(1).fetchOne();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T uniqueResult() {
+    public T fetchOne() {
         try {
             return (T) createQuery(false).uniqueResult();
         } catch (org.hibernate.NonUniqueResultException e) {

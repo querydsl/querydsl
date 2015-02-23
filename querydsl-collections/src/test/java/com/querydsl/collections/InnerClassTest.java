@@ -36,10 +36,10 @@ public class InnerClassTest {
         Example example = alias(Example.class);
         assertFalse(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNull())
-                .list($(example)).isEmpty());
+                .fetch().isEmpty());
         assertTrue(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNotNull())
-                .list($(example)).isEmpty());
+                .fetch().isEmpty());
     }
 
 }

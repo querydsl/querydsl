@@ -16,21 +16,19 @@ package com.querydsl.core.util;
 import static com.google.common.collect.Iterables.filter;
 import static com.querydsl.core.util.ArrayUtils.isEmpty;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.ImmutableClassToInstanceMap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Primitives;
-import com.querydsl.core.types.ExpressionException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
+
 import javax.annotation.Nullable;
+
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
+import com.google.common.primitives.Primitives;
+import com.querydsl.core.types.ExpressionException;
 
 /**
  *
@@ -119,7 +117,7 @@ public class ConstructorUtils {
     }
 
     /**
-     * Returns a list of transformers applicable to the given constructor.
+     * Returns a fetch of transformers applicable to the given constructor.
      *
      * @param constructor
      * @return

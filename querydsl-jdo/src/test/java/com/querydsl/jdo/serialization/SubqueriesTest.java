@@ -40,8 +40,8 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT max(d.employees.size()) FROM com.querydsl.jdo.models.company.Department d)",
 
           serialize(query().from(department).where(department.employees.size().eq(
-               query().from(d).unique(d.employees.size().max())
-            )).list(department))
+               query().from(d).select(d.employees.size().max())
+            )).select(department))
         );
     }
 
@@ -55,8 +55,8 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e)",
 
           serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(employee.department.employees, e).unique(e.weeklyhours.avg())
-            )).list(employee))
+               query().from(employee.department.employees, e).select(e.weeklyhours.avg())
+            )).select(employee))
         );
     }
 
@@ -72,8 +72,8 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)",
 
           serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(employee.department.employees, e).where(e.manager.eq(employee.manager)).unique(e.weeklyhours.avg())
-            )).list(employee))
+               query().from(employee.department.employees, e).where(e.manager.eq(employee.manager)).select(e.weeklyhours.avg())
+            )).select(employee))
         );
     }
 /*  "SELECT FROM " + Employee.class.getName() + " WHERE this.weeklyhours > " +
@@ -86,8 +86,8 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT avg(e.weeklyhours) FROM com.querydsl.jdo.models.company.Employee e)",
 
           serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(e).unique(e.weeklyhours.avg())
-            )).list(employee))
+               query().from(e).select(e.weeklyhours.avg())
+            )).select(employee))
         );
     }
 
@@ -106,7 +106,7 @@ public class SubqueriesTest extends AbstractTest{
               .where(
                   employee.weeklyhours.eq(e.weeklyhours),
                   employee.firstName.eq("emp1First")
-              ).list(employee))
+              ).select(employee))
         );
     }
 

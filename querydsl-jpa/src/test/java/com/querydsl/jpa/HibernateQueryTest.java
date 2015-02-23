@@ -13,15 +13,16 @@
  */
 package com.querydsl.jpa;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.domain.QEmployee;
 import com.querydsl.jpa.domain.QUser;
 import com.querydsl.jpa.hibernate.HibernateQuery;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class HibernateQueryTest {
 
@@ -29,15 +30,15 @@ public class HibernateQueryTest {
     public void Clone() {
         QCat cat = QCat.cat;
         BooleanBuilder emptyBooleanBuilder = new BooleanBuilder();
-        HibernateQuery hq = new HibernateQuery().from(cat).where(cat.name.isNull().and(emptyBooleanBuilder));
+        HibernateQuery<Void> hq = new HibernateQuery<Void>().from(cat).where(cat.name.isNull().and(emptyBooleanBuilder));
 
-        HibernateQuery hq2 = hq.clone();
+        HibernateQuery<Void> hq2 = hq.clone();
         assertNotNull(hq2);
     }
 
     @Test
     public void InnerJoin() {
-        HibernateQuery hqlQuery = new HibernateQuery();
+        HibernateQuery<Void> hqlQuery = new HibernateQuery<Void>();
         QEmployee employee = QEmployee.employee;
         hqlQuery.from(employee);
         hqlQuery.innerJoin(employee.user, QUser.user);

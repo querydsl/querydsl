@@ -6,20 +6,16 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.commons.lang.Pair;
-import com.querydsl.core.Projectable;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.support.AbstractProjectable;
+import com.querydsl.core.support.DummyFetchableQuery;
 import com.querydsl.core.types.ConstructorExpression;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
 
 public abstract class AbstractGroupByTest {
 
-    protected static final Projectable BASIC_RESULTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> BASIC_RESULTS = projectable(
             row(null, "null post", 7, "comment 7"),
             row(null, "null post", 8, "comment 8"),
             row(1, "post 1", 1, "comment 1"),
@@ -30,7 +26,7 @@ public abstract class AbstractGroupByTest {
             row(3, "post 3", 6, "comment 6")
     );
 
-    protected static final Projectable BASIC_RESULTS_UNORDERED = projectable(
+    protected static final DummyFetchableQuery<Tuple> BASIC_RESULTS_UNORDERED = projectable(
             row(null, "null post", 8, "comment 8"),
             row(null, "null post", 7, "comment 7"),
             row(1, "post 1", 2, "comment 2"),
@@ -41,7 +37,7 @@ public abstract class AbstractGroupByTest {
             row(2, "post 2", 5, "comment 5")
     );
 
-    protected static final Projectable MAP_RESULTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> MAP_RESULTS = projectable(
             row(null, "null post", pair(7, "comment 7")),
             row(null, "null post", pair(8, "comment 8")),
             row(1, "post 1", pair(1, "comment 1")),
@@ -51,7 +47,7 @@ public abstract class AbstractGroupByTest {
             row(3, "post 3", pair(6, "comment 6"))
     );
 
-    protected static final Projectable MAP2_RESULTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> MAP2_RESULTS = projectable(
             row(null, pair(7, "comment 7")),
             row(null,  pair(8, "comment 8")),
             row(1, pair(1, "comment 1")),
@@ -61,7 +57,7 @@ public abstract class AbstractGroupByTest {
             row(3, pair(6, "comment 6"))
     );
 
-    protected static final Projectable MAP3_RESULTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> MAP3_RESULTS = projectable(
         row(1, pair(1, pair(1, "comment 1"))),
         row(1, pair(1, pair(2, "comment 2"))),
         row(2, pair(2, pair(5, "comment 5"))),
@@ -71,7 +67,7 @@ public abstract class AbstractGroupByTest {
         row(1, pair(1, pair(3, "comment 3")))
     );
 
-    protected static final Projectable MAP4_RESULTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> MAP4_RESULTS = projectable(
         row(1, pair(pair(1, "comment 1"), "post 1")),
         row(1, pair(pair(1, "comment 2"), "post 1")),
         row(2, pair(pair(2, "comment 5"), "post 2")),
@@ -81,7 +77,7 @@ public abstract class AbstractGroupByTest {
         row(1, pair(pair(1, "comment 3"), "post 1"))
     );
 
-    protected static final Projectable POST_W_COMMENTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> POST_W_COMMENTS = projectable(
             row(null, null, "null post", comment(7)),
             row(null, null, "null post", comment(8)),
             row(1, 1, "post 1", comment(1)),
@@ -91,7 +87,7 @@ public abstract class AbstractGroupByTest {
             row(3, 3, "post 3", comment(6))
     );
 
-    protected static final Projectable POST_W_COMMENTS2 = projectable(
+    protected static final DummyFetchableQuery<Tuple> POST_W_COMMENTS2 = projectable(
             row(null, "null post", comment(7)),
             row(null, "null post", comment(8)),
             row(1, "post 1", comment(1)),
@@ -102,7 +98,7 @@ public abstract class AbstractGroupByTest {
     );
 
     // [ user.name, latestPost(post.id, post.name), latestPost.comments() ]
-    protected static final Projectable USERS_W_LATEST_POST_AND_COMMENTS = projectable(
+    protected static final DummyFetchableQuery<Tuple> USERS_W_LATEST_POST_AND_COMMENTS = projectable(
             row("Jane", "Jane", 2, "post 2", comment(4)),
             row("Jane", "Jane", 2, "post 2", comment(5)),
             row("John", "John", 1, "post 1", comment(1)),
@@ -152,31 +148,20 @@ public abstract class AbstractGroupByTest {
         return new Comment(id, "comment " + id);
     }
 
-    protected static Projectable projectable(final Object[]... rows) {
-        return new AbstractProjectable() {
-            @Override
-            public <T> CloseableIterator<T> iterate(Expression<T> arg) {
-                return (CloseableIterator)iterator(rows);
-            }
-
-            @Override
-            public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-                return iterator(rows);
-            }
-            
-        };
+    protected static DummyFetchableQuery<Tuple> projectable(final Object[]... rows) {
+        return new DummyFetchableQuery<Tuple>(toTuples(rows));
     }
 
     protected static Object[] row(Object... row) {
         return row;
     }
 
-    protected static CloseableIterator<Tuple> iterator(Object[]... rows) {
+    protected static List<Tuple> toTuples(Object[]... rows) {
         List<Tuple> tuples = Lists.newArrayList();
         for (Object[] row : rows) {
             tuples.add(new MockTuple(row));
         }
-        return new IteratorAdapter<Tuple>(tuples.iterator());
+        return tuples;
     }
 
     public abstract void Group_Order();

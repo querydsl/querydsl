@@ -157,7 +157,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
             groupBy(postId).as(map(postId, map(commentId, commentText))));
         
         Map<Integer, Map<Integer, Map<Integer, String>>> expected = new LinkedHashMap<Integer, Map<Integer, Map<Integer, String>>>();
-        for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
+        for (Iterator<Tuple> iterator = MAP3_RESULTS.fetchIterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
             
@@ -186,7 +186,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
             groupBy(postId).as(map(map(postId, commentText), postName)));
         
         Map<Integer, Map<Map<Integer, String>, String>> expected = new LinkedHashMap<Integer, Map<Map<Integer, String>, String>>();
-        for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
+        for (Iterator<Tuple> iterator = MAP4_RESULTS.fetchIterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
  

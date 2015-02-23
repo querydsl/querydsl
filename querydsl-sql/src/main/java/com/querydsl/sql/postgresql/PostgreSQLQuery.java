@@ -18,6 +18,8 @@ import java.sql.Connection;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.PostgreSQLTemplates;
@@ -33,10 +35,10 @@ import com.querydsl.sql.SQLTemplates;
  * @see SQLQuery
  *
  */
-public class PostgreSQLQuery extends AbstractSQLQuery<PostgreSQLQuery> {
+public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> {
 
     public PostgreSQLQuery(Connection conn) {
-        this(conn, new Configuration(new PostgreSQLTemplates()), new DefaultQueryMetadata());
+        this(conn, new Configuration(PostgreSQLTemplates.DEFAULT), new DefaultQueryMetadata());
     }
 
     public PostgreSQLQuery(Connection conn, SQLTemplates templates) {
@@ -54,14 +56,14 @@ public class PostgreSQLQuery extends AbstractSQLQuery<PostgreSQLQuery> {
     /**
      * @return
      */
-    public PostgreSQLQuery forShare() {
+    public PostgreSQLQuery<T> forShare() {
         return addFlag(SQLOps.FOR_SHARE_FLAG);
     }
 
     /**
      * @return
      */
-    public PostgreSQLQuery noWait() {
+    public PostgreSQLQuery<T> noWait() {
         return addFlag(SQLOps.NO_WAIT_FLAG);
     }
 
@@ -69,7 +71,7 @@ public class PostgreSQLQuery extends AbstractSQLQuery<PostgreSQLQuery> {
      * @param paths
      * @return
      */
-    public PostgreSQLQuery of(RelationalPath<?>... paths) {
+    public PostgreSQLQuery<T> of(RelationalPath<?>... paths) {
         StringBuilder builder = new StringBuilder(" of ");
         for (RelationalPath<?> path : paths) {
             if (builder.length() > 4) {
@@ -81,10 +83,21 @@ public class PostgreSQLQuery extends AbstractSQLQuery<PostgreSQLQuery> {
     }
  
     @Override
-    public PostgreSQLQuery clone(Connection conn) {
-        PostgreSQLQuery q = new PostgreSQLQuery(conn, getConfiguration(), getMetadata().clone());
+    public PostgreSQLQuery<T> clone(Connection conn) {
+        PostgreSQLQuery<T> q = new PostgreSQLQuery<T>(conn, getConfiguration(), getMetadata().clone());
         q.clone(this);
         return q;
     }
 
+    @Override
+    public <U> PostgreSQLQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (PostgreSQLQuery<U>) this;
+    }
+
+    @Override
+    public PostgreSQLQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (PostgreSQLQuery<Tuple>) this;
+    }
 }

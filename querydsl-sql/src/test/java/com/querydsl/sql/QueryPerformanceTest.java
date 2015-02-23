@@ -123,9 +123,9 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf);
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     query.from(companies).where(companies.id.eq((long)i))
-                        .list(companies.name);            
+                        .select(companies.name).fetch();
                 }                
             }            
         });    
@@ -138,9 +138,9 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf);
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     CloseableIterator<String> it = query.from(companies)
-                            .where(companies.id.eq((long)i)).iterate(companies.name);
+                            .where(companies.id.eq((long)i)).select(companies.name).fetchIterate();
                     try {
                         while (it.hasNext()) {
                             it.next();
@@ -160,7 +160,7 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf);
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     ResultSet rs = query.from(companies)
                             .where(companies.id.eq((long)i)).getResults(companies.name);          
                     try {
@@ -182,9 +182,9 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf, new DefaultQueryMetadata());
                     query.from(companies).where(companies.id.eq((long)i))
-                        .list(companies.name);            
+                        .select(companies.name).fetch();
                 }                
             }            
         });    
@@ -197,9 +197,9 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf);
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     query.from(companies).where(companies.id.eq((long)i))
-                        .list(companies.id, companies.name);            
+                        .select(companies.id, companies.name).fetch();
                 }                
             }            
         });            
@@ -212,9 +212,9 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf);
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     query.from(companies).where(companies.name.eq(String.valueOf(i)))
-                        .list(companies.name);            
+                        .select(companies.name).fetch();
                 }                
             }            
         });    
@@ -227,10 +227,10 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf);
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     CloseableIterator<String> it = query.from(companies)
                             .where(companies.name.eq(String.valueOf(i)))
-                            .iterate(companies.name);
+                            .select(companies.name).fetchIterate();
                     try {
                         while (it.hasNext()) {
                             it.next();
@@ -250,10 +250,10 @@ public class QueryPerformanceTest {
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {            
                     QCompanies companies = QCompanies.companies;
-                    SQLQuery query = new SQLQuery(conn, conf, new DefaultQueryMetadata().noValidate());
+                    SQLQuery<Void> query = new SQLQuery<Void>(conn, conf, new DefaultQueryMetadata());
                     query.from(companies)
                         .where(companies.name.eq(String.valueOf(i)))
-                        .list(companies.name);            
+                        .select(companies.name).fetch();
                 }                
             }            
         });    

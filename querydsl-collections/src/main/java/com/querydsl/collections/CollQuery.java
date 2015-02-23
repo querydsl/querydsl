@@ -13,9 +13,8 @@
  */
 package com.querydsl.collections;
 
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.SimpleQuery;
+import com.querydsl.core.*;
+import com.querydsl.core.types.Expression;
 
 /**
  * CollQuery is the default implementation of the {@link SimpleQuery} interface for collections
@@ -23,7 +22,7 @@ import com.querydsl.core.SimpleQuery;
  * @author tiwe
  *
  */
-public class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable {
+public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements Cloneable {
 
     /**
      * Create a new CollQuery instance
@@ -74,16 +73,19 @@ public class CollQuery extends AbstractCollQuery<CollQuery> implements Cloneable
      * Clone the state of this query to a new CollQuery instance
      */
     @Override
-    public CollQuery clone() {
-        return new CollQuery(queryMixin.getMetadata().clone(), getQueryEngine());
+    public CollQuery<T> clone() {
+        return new CollQuery<T>(queryMixin.getMetadata().clone(), getQueryEngine());
     }
 
-    /**
-     * @return
-     */
     @Override
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
+    public <E> CollQuery<E> select(Expression<E> expr) {
+        queryMixin.setProjection(expr);
+        return (CollQuery<E>)this;
     }
 
+    @Override
+    public CollQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (CollQuery<Tuple>)this;
+    }
 }

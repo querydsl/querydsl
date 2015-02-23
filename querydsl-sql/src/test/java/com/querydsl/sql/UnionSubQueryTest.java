@@ -34,13 +34,13 @@ public class UnionSubQueryTest {
         SimplePath<Integer> two = Expressions.path(Integer.class,"2");
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
 
-        Expression<?> expr = intPath.in(sq().union(
-                sq().unique(one),
-                sq().unique(two)));
+        Expression<?> expr = intPath.in(query().union(
+                query().select(one),
+                query().select(two)));
 
         serializer.handle(expr);
         assertEquals(
-                "intPath in ((select 1 from dual)\n" +
+            "intPath in ((select 1 from dual)\n" +
         	"union\n" +
         	"(select 2 from dual))", serializer.toString());
     }
@@ -51,10 +51,10 @@ public class UnionSubQueryTest {
         SimplePath<Integer> two = Expressions.path(Integer.class,"2");
         SimplePath<Integer> three = Expressions.path(Integer.class,"3");
         SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");
-        Expression<?> union = sq().union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+        Expression<?> union = query().union(
+            query().select(one.as(col1)),
+            query().select(two),
+            query().select(three));
 
         serializer.handle(union);
         assertEquals(
@@ -71,10 +71,10 @@ public class UnionSubQueryTest {
         SimplePath<Integer> two = Expressions.path(Integer.class,"2");
         SimplePath<Integer> three = Expressions.path(Integer.class,"3");
         SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");
-        Expression<?> union = sq().unionAll(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+        Expression<?> union = query().unionAll(
+            query().select(one.as(col1)),
+            query().select(two),
+            query().select(three));
 
         serializer.handle(union);
         assertEquals(
@@ -85,9 +85,8 @@ public class UnionSubQueryTest {
                 "(select 3 from dual)", serializer.toString());
     }
 
-
-    protected SQLSubQuery sq() {
-        return new SQLSubQuery();
+    private SQLQuery<Void> query() {
+        return new SQLQuery<Void>();
     }
 
 }

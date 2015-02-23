@@ -16,9 +16,7 @@ package com.querydsl.sql;
 import java.util.List;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.*;
 
 /**
  * Union defines an interface for Union queries
@@ -27,7 +25,7 @@ import com.querydsl.core.types.Predicate;
  *
  * @param <RT> return type of projection
  */
-public interface Union<RT> {
+public interface Union<RT> extends SubQueryExpression<RT> {
     
     /**
      * Get the projection as a typed List
@@ -69,4 +67,17 @@ public interface Union<RT> {
      */
     Union<RT> orderBy(OrderSpecifier<?>... o);
 
+    /**
+     *
+     * @param alias
+     * @return
+     */
+    Expression<RT> as(String alias);
+
+    /**
+     *
+     * @param alias
+     * @return
+     */
+    Expression<RT> as(Path<RT> alias);
 }

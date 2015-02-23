@@ -20,30 +20,20 @@ import java.util.Map;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.JoinType;
-import com.querydsl.core.QueryException;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.SearchResults;
-import com.querydsl.core.SimpleQuery;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.support.ProjectableQuery;
+import com.querydsl.core.*;
+import com.querydsl.core.support.FetchableQueryBase;
 import com.querydsl.core.types.*;
 
 /**
  * AbstractCollQuery provides a base class for Collection query implementations.
- * Extend it like this
  *
- * <pre>{@code
- * public class MyType extends AbstractColQuery<MyType> {
- *   ...
- * }
- * }</pre>
  *
  * @see CollQuery
  *
  * @author tiwe
  */
-public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends ProjectableQuery<Q> implements SimpleQuery<Q> {
+public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> extends FetchableQueryBase<T, Q>
+        implements FetchableQuery<T, Q> {
 
     private final Map<Expression<?>, Iterable<?>> iterables = new HashMap<Expression<?>, Iterable<?>>();
 
@@ -57,9 +47,9 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         try {
-            return queryEngine.count(getMetadata(), iterables);
+            return queryEngine.count(queryMixin.getMetadata(), iterables);
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         } finally {
@@ -67,15 +57,8 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
         }
     }
 
-    @Override
-    public boolean exists() {
-        try {
-            return queryEngine.exists(getMetadata(), iterables);
-        } catch (Exception e) {
-            throw new QueryException(e.getMessage(), e);
-        } finally {
-            reset();
-        }
+    protected QueryMetadata getMetadata() {
+        return queryMixin.getMetadata();
     }
 
     private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias) {
@@ -132,9 +115,6 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
     public Q having(Predicate... e) {
         throw new UnsupportedOperationException();
     }
-
-
-    public abstract QueryMetadata getMetadata();
 
     protected QueryEngine getQueryEngine() {
         return queryEngine;
@@ -193,29 +173,19 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
+    public CloseableIterator<T> fetchIterate() {
         try {
-            projection = queryMixin.setProjection(projection);
-            return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
+            Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
+            return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
         } finally {
             reset();
         }
     }
 
     @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> List<RT> list(Expression<RT> projection) {
+    public List<T> fetch() {
         try {
-            projection = queryMixin.setProjection(projection);
+            Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
             return queryEngine.list(getMetadata(), iterables, projection);
         } finally {
             reset();
@@ -223,37 +193,27 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
     }
 
     @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
-        projection = queryMixin.setProjection(projection);
+    public QueryResults<T> fetchResults() {
+        Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0l) {
-            List<RT> list = queryEngine.list(getMetadata(), iterables, projection);
+            List<T> list = queryEngine.list(getMetadata(), iterables, projection);
             reset();
-            return new SearchResults<RT>(list, getMetadata().getModifiers(), count);
+            return new QueryResults<T>(list, getMetadata().getModifiers(), count);
         } else {
             reset();
-            return SearchResults.emptyResults();
+            return QueryResults.<T>emptyResults();
         }
 
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> RT uniqueResult(Expression<RT> expr) {
+    public T fetchOne() {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2l);
         }
-        return uniqueResult(iterate(expr));
+        return uniqueResult(fetchIterate());
     }
 
     private void reset() {

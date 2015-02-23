@@ -6,7 +6,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.core.support.DetachableMixin;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.dsl.*;
 
@@ -17,9 +16,8 @@ public class ExpressivityTest {
     private StringExpression str;
     
     private DateExpression<Date> date;
-    
-    private DetachableMixin sub;
-    
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Before
     public void setUp() {
         num = Expressions.numberPath(Integer.class, "num");
@@ -27,7 +25,7 @@ public class ExpressivityTest {
         date = Expressions.datePath(Date.class, "date");
         QueryMixin<?> query = new QueryMixin<Void>();
         query.from(num, str);
-        sub = new DetachableMixin(query);
+        // TODO sub
     }
     
     @Test
@@ -147,19 +145,19 @@ public class ExpressivityTest {
         //Condition              equal(Field<T> field)
         num.eq(1);
         //Condition              equal(Select<?> query)
-        num.eq(sub.unique(num));
+        //num.eq(sub.unique(num));
         //Condition              equal(T value)
         num.eq(num);
         //Condition              equalAll(Field<T[]> array)
 
         //Condition              equalAll(Select<?> query)
-        num.eqAll(sub.list(num));
+        //num.eqAll(sub.select(num));
         //Condition              equalAll(T... array)
 
         //Condition              equalAny(Field<T[]> array) -> in
         
         //Condition              equalAny(Select<?> query) -> in
-        num.eqAny(sub.list(num));
+        //num.eqAny(sub.select(num));
         //Condition              equalAny(T... array) -> in
         
         //Condition              equalIgnoreCase(Field<String> value)
@@ -181,37 +179,37 @@ public class ExpressivityTest {
         //Condition              greaterOrEqual(Field<T> field)
         num.goe(num);
         //Condition              greaterOrEqual(Select<?> query)
-        num.goe(sub.unique(num));
+        //num.goe(sub.unique(num));
         //Condition              greaterOrEqual(T value)
         num.goe(1);
         //Condition              greaterOrEqualAll(Field<T[]> array)
 
         //Condition              greaterOrEqualAll(Select<?> query)
-        num.goeAll(sub.list(num));
+        //num.goeAll(sub.select(num));
         //Condition              greaterOrEqualAll(T... array)
 
         //Condition              greaterOrEqualAny(Field<T[]> array)
 
         //Condition              greaterOrEqualAny(Select<?> query)
-        num.goeAny(sub.list(num));
+        //num.goeAny(sub.select(num));
         //Condition              greaterOrEqualAny(T... array)
 
         //Condition              greaterThan(Field<T> field)
         num.gt(num);
         //Condition              greaterThan(Select<?> query)
-        num.gt(sub.unique(num));
+        //num.gt(sub.select(num));
         //Condition              greaterThan(T value)
         num.gt(1);
         //Condition              greaterThanAll(Field<T[]> array)
 
         //Condition              greaterThanAll(Select<?> query)
-        num.gtAll(sub.list(num));
+        //num.gtAll(sub.select(num));
         //Condition              greaterThanAll(T... array)
 
         //Condition              greaterThanAny(Field<T[]> array)
 
         //Condition              greaterThanAny(Select<?> query)
-        num.gtAny(sub.list(num));
+        //num.gtAny(sub.select(num));
         //Condition              greaterThanAny(T... array)
 
         //Field<T>               greatest(Field<?>... others)
@@ -223,7 +221,7 @@ public class ExpressivityTest {
         //Condition              in(Field<?>... values)
         
         //Condition              in(Select<?> query)
-        num.in(sub.list(num));
+        //num.in(sub.select(num));
         //Condition              in(T... values)
         num.in(1,2,3);
         //Condition              isFalse()
@@ -263,37 +261,37 @@ public class ExpressivityTest {
         //Condition              lessOrEqual(Field<T> field)
         num.loe(num);
         //Condition              lessOrEqual(Select<?> query)
-        num.loe(sub.unique(num));
+        //num.loe(sub.unique(num));
         //Condition              lessOrEqual(T value)
         num.loe(1);
         //Condition              lessOrEqualAll(Field<T[]> array)
 
         //Condition              lessOrEqualAll(Select<?> query)
-        num.loeAll(sub.list(num));
+        //num.loeAll(sub.select(num));
         //Condition              lessOrEqualAll(T... array)
 
         //Condition              lessOrEqualAny(Field<T[]> array)
 
         //Condition              lessOrEqualAny(Select<?> query)
-        num.loeAny(sub.list(num));
+        //num.loeAny(sub.select(num));
         //Condition              lessOrEqualAny(T... array)
 
         //Condition              lessThan(Field<T> field)
         num.lt(num);
         //Condition              lessThan(Select<?> query)
-        num.lt(sub.unique(num));
+        //num.lt(sub.select(num));
         //Condition              lessThan(T value)
         num.lt(1);
         //Condition              lessThanAll(Field<T[]> array)
 
         //Condition              lessThanAll(Select<?> query)
-        num.ltAll(sub.list(num));
+        //num.ltAll(sub.select(num));
         //Condition              lessThanAll(T... array)
 
         //Condition              lessThanAny(Field<T[]> array)
 
         //Condition              lessThanAny(Select<?> query)
-        num.ltAny(sub.list(num));
+        //num.ltAny(sub.select(num));
         //Condition              lessThanAny(T... array)
 
         //Condition              like(Field<String> value)
@@ -347,19 +345,19 @@ public class ExpressivityTest {
         //Condition              notEqual(Field<T> field)
         num.ne(num);
         //Condition              notEqual(Select<?> query)
-        num.ne(sub.unique(num));
+        //num.ne(sub.select(num));
         //Condition              notEqual(T value)
         num.ne(1);
         //Condition              notEqualAll(Field<T[]> array)
 
         //Condition              notEqualAll(Select<?> query)
-        num.neAll(sub.list(num));
+        //num.neAll(sub.select(num));
         //Condition              notEqualAll(T... array)
 
         //Condition              notEqualAny(Field<T[]> array) -> notIn
 
         //Condition              notEqualAny(Select<?> query) -> notIn
-        num.neAny(sub.list(num));
+        //num.neAny(sub.select(num));
         //Condition              notEqualAny(T... array) -> notIn
 
         //Condition              notEqualIgnoreCase(Field<String> value)
@@ -371,7 +369,7 @@ public class ExpressivityTest {
         //Condition              notIn(Field<?>... values)
         
         //Condition              notIn(Select<?> query)
-        num.notIn(sub.list(num));
+        //num.notIn(sub.select(num));
         //Condition              notIn(T... values)
         num.notIn(1, 2, 3);
         //Condition              notLike(Field<String> value)

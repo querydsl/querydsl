@@ -18,13 +18,7 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 /**
  * SimpleExpression is the base class for Expression implementations.
@@ -98,7 +92,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Get the {@code count(this)} expression
      *
-     * @return count(this)
+     * @return fetchCount(this)
      */
     public NumberExpression<Long> count() {
         if (count == null) {
@@ -163,6 +157,23 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression eqAll(SubQueryExpression<? extends T> right) {
+        return eq(ExpressionUtils.all(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression eqAny(SubQueryExpression<? extends T> right) {
+        return eq(ExpressionUtils.any(right));
+    }
+
+
+    /**
      * Get a {@code this in right} expression
      *
      * @param right rhs of the comparison
@@ -190,7 +201,6 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         }
     }
 
-
     /**
      * Get a {@code this in right} expression
      *
@@ -198,6 +208,16 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression in(CollectionExpression<?,? extends T> right) {
+        return Expressions.booleanOperation(Ops.IN, mixin, right);
+    }
+
+    /**
+     * Get a {@code this in right} expression
+     *
+     * @param right rhs of the comparison
+     * @return
+     */
+    public BooleanExpression in(SubQueryExpression<? extends T> right) {
         return Expressions.booleanOperation(Ops.IN, mixin, right);
     }
 
@@ -278,6 +298,17 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     public final BooleanExpression notIn(CollectionExpression<?,? extends T> right) {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
     }
+
+    /**
+     * Get a {@code this not in right} expression
+     *
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final BooleanExpression notIn(SubQueryExpression<? extends T> right) {
+        return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
+    }
+
 
 
     /**

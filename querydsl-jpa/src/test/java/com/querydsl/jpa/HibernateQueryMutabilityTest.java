@@ -34,8 +34,8 @@ public class HibernateQueryMutabilityTest implements HibernateTest {
 
     private Session session;
 
-    protected HibernateQuery query() {
-        return new HibernateQuery(session);
+    protected HibernateQuery<Void> query() {
+        return new HibernateQuery<Void>(session);
     }
 
     @Override
@@ -48,18 +48,18 @@ public class HibernateQueryMutabilityTest implements HibernateTest {
             NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, IOException {
         QCat cat = QCat.cat;
-        HibernateQuery query = query().from(cat);
+        HibernateQuery<Void> query = query().from(cat);
         new QueryMutability(query).test(cat, cat.name);
     }
 
     @Test
     public void Clone() {
         QCat cat = QCat.cat;
-        HibernateQuery query = query().from(cat).where(cat.name.isNotNull());
-        HibernateQuery query2 = query.clone(session);
+        HibernateQuery<Void> query = query().from(cat).where(cat.name.isNotNull());
+        HibernateQuery<Void> query2 = query.clone(session);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
-        query2.list(cat);
+        query2.select(cat).fetch();
     }
 
 }

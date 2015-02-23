@@ -46,8 +46,8 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
     private Session session;
 
     @Override
-    protected HibernateSQLQuery query() {
-        return new HibernateSQLQuery(session, templates);
+    protected HibernateSQLQuery<Void> query() {
+        return new HibernateSQLQuery<Void>(session, templates);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
 
     @Before
     public void setUp() {
-        if (query().from(cat).notExists()) {
+        if (query().from(cat).fetchCount() == 0) {
             session.save(new Cat("Beck", 1, Color.BLACK));
             session.save(new Cat("Kate", 2, Color.BLACK));
             session.save(new Cat("Kitty", 3, Color.BLACK));
@@ -73,7 +73,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
         SAnimal cat = new SAnimal("cat");
         QCat catEntity = QCat.cat;
 
-        Query query = query().from(cat).createQuery(catEntity);
+        Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.list().size());
     }
 
@@ -83,7 +83,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
         SAnimal cat = new SAnimal("CAT");
         QCat catEntity = QCat.cat;
 
-        Query query = query().from(cat).createQuery(catEntity);
+        Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.list().size());
     }
 

@@ -20,7 +20,7 @@ import java.util.List;
 import org.junit.Before;
 
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.Expression;
 
@@ -50,7 +50,7 @@ public abstract class AbstractQueryTest {
 
     protected List<Integer> myInts = new ArrayList<Integer>();
 
-    protected TestQuery last;
+    protected TestQuery<Void> last;
 
     
     @Before
@@ -68,35 +68,38 @@ public abstract class AbstractQueryTest {
         return cats;
     }
 
-    protected TestQuery query() {
-        last = new TestQuery();
+    protected TestQuery<Void> query() {
+        last = new TestQuery<Void>();
         return last;
     }
 
-    static class TestQuery extends AbstractCollQuery<TestQuery> {
+    static class TestQuery<T> extends AbstractCollQuery<T, TestQuery<T>> {
 
         List<Object> res = new ArrayList<Object>();
 
         public TestQuery() {
             super(new DefaultQueryMetadata(), DefaultQueryEngine.getDefault());
         }
-        
+
         @Override
-        public QueryMetadata getMetadata() {
-            return queryMixin.getMetadata();
-        }
-        
-        @Override
-        public <RT> List<RT> list(Expression<RT> projection) {
-            boolean array = projection.getType().isArray();
-            List<RT> rv = super.list(projection);
-            for (Object o : rv) {
-                //System.out.println(array ? Arrays.toString((Object[])o) : o);
+        public List<T> fetch() {
+            List<T> rv = super.fetch();
+            for (T o : rv) {
                 res.add(o);
             }
-            //System.out.println();
             return rv;
         }
 
+        @Override
+        public <U> TestQuery<U> select(Expression<U> expr) {
+            queryMixin.setProjection(expr);
+            return (TestQuery<U>) this;
+        }
+
+        @Override
+        public TestQuery<Tuple> select(Expression<?>... exprs) {
+            queryMixin.setProjection(exprs);
+            return (TestQuery<Tuple>) this;
+        }
     }
 }

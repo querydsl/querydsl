@@ -27,7 +27,7 @@ public interface SerializerConfig {
     boolean useEntityAccessors();
 
     /**
-     * @return if indexed list accessors are used 
+     * @return if indexed list accessors are used
      */
     boolean useListAccessors();
 

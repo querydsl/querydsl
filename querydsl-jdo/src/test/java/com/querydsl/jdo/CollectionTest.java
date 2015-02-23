@@ -36,7 +36,7 @@ public class CollectionTest extends AbstractJDOTest {
     
     @Test
     public void Contains_Value() {
-        Product product = query().from(QProduct.product).list(QProduct.product).get(0);
+        Product product = query().from(QProduct.product).select(QProduct.product).fetch().get(0);
         query(store, store.productsByName.containsValue(product));
     }
     
@@ -73,13 +73,13 @@ public class CollectionTest extends AbstractJDOTest {
 
     @Test
     public void Collection_Any_Count() {
-        query().from(store).where(store.products.any().name.eq("Sony Discman")).count();
+        query().from(store).where(store.products.any().name.eq("Sony Discman")).fetchCount();
     }
     
     @Test
     @Ignore // Not supported
     public void Collection_Any_In_Projection() {
-        query().from(store).list(store.products.any());
+        query().from(store).select(store.products.any()).fetch();
     }
     
     @BeforeClass

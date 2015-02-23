@@ -13,13 +13,11 @@
  */
 package com.querydsl.core.types;
 
-import com.querydsl.core.Detachable;
 import com.querydsl.core.QueryMetadata;
 
 /**
  *
- * SubQueryExpression represents a sub querydsl. The actual construction of a subquery
- * is done via an {@link Detachable} instance.
+ * SubQueryExpression represents a sub query.
  *
  * @author tiwe
  *

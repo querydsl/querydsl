@@ -33,7 +33,7 @@ public class QueryMetadataTest extends AbstractQueryTest {
         
         CollQuery query = new CollQuery(metadata);
         query.bind(cat, cats);
-        assertEquals(Arrays.asList(c3), query.list(cat));
+        assertEquals(Arrays.asList(c3), query.select(cat).fetch());
     }
 
 }

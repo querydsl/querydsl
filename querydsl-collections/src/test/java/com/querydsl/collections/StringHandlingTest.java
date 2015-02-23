@@ -44,21 +44,21 @@ public class StringHandlingTest extends AbstractQueryTest {
         for (Tuple arr : query()
                 .from(a, data1)
                 .from(b, data2)
-                .where(a.equalsIgnoreCase(b)).list(a, b)) {
+                .where(a.equalsIgnoreCase(b)).select(a, b).fetch()) {
             assertEquals(res.next(), arr.get(a) + " - " + arr.get(b));
         }
     }
 
     @Test
     public void StartsWithIgnoreCase() {
-        assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("AB")).count());
-        assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("ab")).count());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("AB")).fetchCount());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("ab")).fetchCount());
     }
 
     @Test
     public void EndsWithIgnoreCase() {
-        assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("BC")).count());
-        assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("bc")).count());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("BC")).fetchCount());
+        assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("bc")).fetchCount());
     }
 
 }

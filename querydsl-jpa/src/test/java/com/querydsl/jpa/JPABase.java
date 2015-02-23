@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Target;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
@@ -60,8 +61,8 @@ public class JPABase extends AbstractJPATest implements JPATest {
     private EntityManager entityManager;
 
     @Override
-    protected JPAQuery query() {
-        return new JPAQuery(entityManager);
+    protected JPAQuery<Void> query() {
+        return new JPAQuery<Void>(entityManager);
     }
 
     protected JPADeleteClause delete(EntityPath<?> path) {
@@ -69,8 +70,8 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Override
-    protected JPAQuery testQuery() {
-        return new JPAQuery(entityManager, new DefaultQueryMetadata().noValidate());
+    protected JPAQuery<Void> testQuery() {
+        return new JPAQuery<Void>(entityManager, new DefaultQueryMetadata());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoOpenJPA
     @NoHibernate
     public void Connection_Access() {
-        assertNotNull(query().from(cat).createQuery(cat).unwrap(Connection.class));
+        assertNotNull(query().from(cat).select(cat).createQuery().unwrap(Connection.class));
     }
 
     @Test
@@ -117,7 +118,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         QCat child = new QCat("kitten");
 
         delete(child)
-            .where(child.id.eq(-100), new JPASubQuery()
+            .where(child.id.eq(-100), new JPAQuery<Void>()
                .from(parent)
                .where(parent.id.eq(-200),
                       child.in(parent.kittens)).exists())
@@ -130,10 +131,10 @@ public class JPABase extends AbstractJPATest implements JPATest {
         QChild child = QChild.child;
         QParent parent = QParent.parent;
 
-        JPASubQuery subQuery = new JPASubQuery()
+        JPAQuery<Void> subQuery = new JPAQuery<Void>()
             .from(parent)
             .where(parent.id.eq(2),
-                   child.parent.eq(parent));
+                    child.parent.eq(parent));
                    //child.in(parent.children));
 
         delete(child)
@@ -153,7 +154,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     public void FlushMode() {
-        assertFalse(query().from(cat).setFlushMode(FlushModeType.AUTO).list(cat).isEmpty());
+        assertFalse(query().from(cat).setFlushMode(FlushModeType.AUTO).select(cat).fetch().isEmpty());
     }
 
     @Test
@@ -161,7 +162,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     public void Hint() {
         javax.persistence.Query query = query().from(cat)
                 .setHint("org.hibernate.cacheable", true)
-                .createQuery(cat);
+                .select(cat).createQuery();
 
         assertNotNull(query);
         assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
@@ -171,7 +172,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @Test
     public void Hint2() {
         assertFalse(query().from(cat).setHint("org.hibernate.cacheable", true)
-                .list(cat).isEmpty());
+                .select(cat).fetch().isEmpty());
     }
 
     @Test @Ignore
@@ -181,7 +182,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
                 .setHint("eclipselink.batch.type", "IN")
                 .setHint("eclipselink.batch", "person.workAddress")
                 .setHint("eclipselink.batch", "person.homeAddress")
-                .createQuery(cat);
+                .select(cat).createQuery();
 
         assertNotNull(query);
         assertEquals("person.homeAddress", query.getHints().get("eclipselink.batch"));
@@ -190,7 +191,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @Test
     @ExcludeIn(Target.DERBY)
     public void Iterate() {
-        CloseableIterator<Cat> cats = query().from(cat).iterate(cat);
+        CloseableIterator<Cat> cats = query().from(cat).select(cat).fetchIterate();
         while (cats.hasNext()) {
             Cat cat = cats.next();
             assertNotNull(cat);
@@ -200,13 +201,14 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     public void Limit1_UniqueResult() {
-        assertNotNull(query().from(cat).limit(1).uniqueResult(cat));
+        assertNotNull(query().from(cat).limit(1).select(cat).fetchOne());
     }
 
     @Test
     public void LockMode() {
         javax.persistence.Query query = query().from(cat)
-                .setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(cat);
+                .setLockMode(LockModeType.PESSIMISTIC_READ)
+                .select(cat).createQuery();
         assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
         assertFalse(query.getResultList().isEmpty());
     }
@@ -214,13 +216,14 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @Test
     public void LockMode2() {
         assertFalse(query().from(cat).setLockMode(LockModeType.PESSIMISTIC_READ)
-                .list(cat).isEmpty());
+                .select(cat).fetch().isEmpty());
     }
 
     @Test
     public void QueryExposure() {
         //save(new Cat(20));
-        List<Cat> results = query().from(cat).createQuery(cat).getResultList();
+        List<Cat> results = query().from(cat)
+                .select(cat).createQuery().getResultList();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
@@ -230,31 +233,38 @@ public class JPABase extends AbstractJPATest implements JPATest {
     public void Subquery_UniqueResult() {
         QCat cat2 = new QCat("cat2");
 
-        BooleanExpression exists = new JPASubQuery().from(cat2).where(cat2.eyecolor.isNotNull()).exists();
+        BooleanExpression exists = new JPAQuery<Void>().from(cat2).where(cat2.eyecolor.isNotNull()).exists();
         assertNotNull(query().from(cat)
                 .where(cat.breed.eq(0).not())
-                .singleResult(new QCatSummary(cat.breed.count(), exists)));
+                .select(new QCatSummary(cat.breed.count(), exists)).fetchOne());
     }
 
     @Test
+    @NoEclipseLink
+    @NoBatooJPA
     public void createQuery() {
-        List<Object[]> rows = query().from(cat).createQuery(cat.id, cat.name).getResultList();
-        for (Object[] row : rows) {
-            assertEquals(2, row.length);
+        List<Tuple> rows = query().from(cat)
+                .select(cat.id, cat.name).createQuery().getResultList();
+        for (Tuple row : rows) {
+            assertEquals(2, row.size());
         }
     }
 
     @Test
+    @NoEclipseLink
+    @NoBatooJPA
     public void createQuery2() {
-        List<Object[]> rows = query().from(cat).createQuery(new Expression[]{cat.id, cat.name}).getResultList();
-        for (Object[] row : rows) {
-            assertEquals(2, row.length);
+        List<Tuple> rows = query().from(cat)
+                .select(new Expression<?>[]{cat.id, cat.name}).createQuery().getResultList();
+        for (Tuple row : rows) {
+            assertEquals(2, row.size());
         }
     }
 
     @Test
     public void createQuery3() {
-        List<String> rows = query().from(cat).createQuery(cat.name).getResultList();
+        List<String> rows = query().from(cat)
+                .select(cat.name).createQuery().getResultList();
         for (String row : rows) {
             assertTrue(row instanceof String);
         }

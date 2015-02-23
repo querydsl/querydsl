@@ -45,9 +45,9 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         SimpleExpression<Integer> three = Expressions.template(Integer.class,"3");
         NumberPath<Integer> col1 = Expressions.numberPath(Integer.class,"col1");
         Union union = query.union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+            sq().select(one.as(col1)),
+            sq().select(two),
+            sq().select(three));
         assertEquals(
                 "(select 1 col1 from dual)\n" +
                 "union\n" +

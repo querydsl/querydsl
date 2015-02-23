@@ -14,8 +14,7 @@
 package com.querydsl.jpa;
 
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.support.ProjectableQuery;
+import com.querydsl.core.support.FetchableSubQueryBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 
@@ -24,7 +23,7 @@ import com.querydsl.core.types.dsl.Expressions;
  *
  * @author tiwe
  */
-public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends ProjectableQuery<Q> implements JPQLQuery {
+public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends FetchableSubQueryBase<T, Q> implements JPQLQuery<T> {
 
     protected final JPAQueryMixin<Q> queryMixin;
 
@@ -57,13 +56,8 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         queryMixin.getMetadata().reset();
     }
 
-    @Override
-    public boolean exists() {
-        return singleResult(Expressions.ONE) != null;
-    }
-
-    public Q fetch() {
-        return queryMixin.fetch();
+    public Q fetchJoin() {
+        return queryMixin.fetchJoin();
     }
 
     public Q fetchAll() {
@@ -76,6 +70,10 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
     
     public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
+    }
+
+    public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
+        return queryMixin.from(Expressions.as((Path)target, alias));
     }
 
     public <P> Q innerJoin(CollectionExpression<?,P> target) {
@@ -182,10 +180,6 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return queryMixin.on(conditions);
     }
 
-    @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
 
     @Override
     public String toString() {
@@ -193,10 +187,6 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
         return serializer.toString().trim();
     }
 
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
-    }
-    
     public abstract Q clone();
 
 }

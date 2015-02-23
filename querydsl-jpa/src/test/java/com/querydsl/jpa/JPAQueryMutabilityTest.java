@@ -40,8 +40,8 @@ public class JPAQueryMutabilityTest implements JPATest {
 
     private EntityManager entityManager;
 
-    protected JPASQLQuery query() {
-        return new JPASQLQuery(entityManager, derbyTemplates);
+    protected JPASQLQuery<Void> query() {
+        return new JPASQLQuery<Void>(entityManager, derbyTemplates);
     }
 
     @Override
@@ -57,18 +57,18 @@ public class JPAQueryMutabilityTest implements JPATest {
         entityManager.flush();
 
         SAnimal cat = new SAnimal("cat");
-        JPASQLQuery query = query().from(cat);
+        JPASQLQuery<Void> query = query().from(cat);
         new QueryMutability(query).test(cat.id, cat.name);
     }
 
     @Test
     public void Clone() {
         SAnimal cat = new SAnimal("cat");
-        JPASQLQuery query = query().from(cat).where(cat.name.isNotNull());
-        JPASQLQuery query2 = query.clone(entityManager);
+        JPASQLQuery<Void> query = query().from(cat).where(cat.name.isNotNull());
+        JPASQLQuery<Void> query2 = query.clone(entityManager);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
-        query2.list(cat.id);
+        query2.select(cat.id).fetch();
     }
 
 }

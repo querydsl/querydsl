@@ -34,8 +34,8 @@ public class QueryMutabilityTest{
 
     private Session session;
 
-    protected HibernateSQLQuery query() {
-        return new HibernateSQLQuery(session, derbyTemplates);
+    protected HibernateSQLQuery<Void> query() {
+        return new HibernateSQLQuery<Void>(session, derbyTemplates);
     }
 
     public void setSession(Session session) {
@@ -48,18 +48,18 @@ public class QueryMutabilityTest{
             NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, IOException {
         SAnimal cat = new SAnimal("cat");
-        HibernateSQLQuery query = query().from(cat);
+        HibernateSQLQuery<Void> query = query().from(cat);
         new QueryMutability(query).test(cat.id, cat.name);
     }
 
     @Test
     public void Clone() {
         SAnimal cat = new SAnimal("cat");
-        HibernateSQLQuery query = query().from(cat).where(cat.name.isNotNull());
-        HibernateSQLQuery query2 = query.clone(session);
+        HibernateSQLQuery<Void> query = query().from(cat).where(cat.name.isNotNull());
+        HibernateSQLQuery<Void> query2 = query.clone(session);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
-        //query2.list(cat.id);
+        //query2.fetch(cat.id);
     }
 
 }

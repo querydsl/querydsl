@@ -34,7 +34,7 @@ public abstract class AbstractSQLTemplatesTest {
 
     private SQLTemplates templates;
 
-    protected SQLQuery query;
+    protected SQLQuery<Void> query;
 
     protected abstract SQLTemplates createTemplates();
 
@@ -42,7 +42,7 @@ public abstract class AbstractSQLTemplatesTest {
     public void setUp() {
         templates = createTemplates();
         templates.newLineToSingleSpace();
-        query = new SQLQuery(templates);
+        query = new SQLQuery<Void>(templates);
     }
 
     @Test
@@ -63,9 +63,9 @@ public abstract class AbstractSQLTemplatesTest {
         NumberExpression<Integer> three = Expressions.THREE;
         Path<Integer> col1 = Expressions.path(Integer.class,"col1");
         Union union = query.union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+            sq().select(one.as(col1)),
+            sq().select(two),
+            sq().select(three));
 
         if (templates.getDummyTable() == null) {
             assertEquals(
@@ -91,8 +91,8 @@ public abstract class AbstractSQLTemplatesTest {
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
 
-    protected SQLSubQuery sq() {
-        return new SQLSubQuery();
+    protected SQLQuery<Void> sq() {
+        return new SQLQuery<Void>();
     }
 
     protected int getPrecedence(Operator... ops) {

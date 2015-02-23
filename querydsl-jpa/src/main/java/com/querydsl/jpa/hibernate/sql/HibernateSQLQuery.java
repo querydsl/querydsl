@@ -13,12 +13,15 @@
  */
 package com.querydsl.jpa.hibernate.sql;
 
+import org.hibernate.Session;
+import org.hibernate.StatelessSession;
+
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.hibernate.SessionHolder;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
 
 /**
  * HibernateSQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality
@@ -27,7 +30,7 @@ import org.hibernate.StatelessSession;
  * @author tiwe
  *
  */
-public class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQuery> {
+public class HibernateSQLQuery<T> extends AbstractHibernateSQLQuery<T, HibernateSQLQuery<T>> {
 
     public HibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
         super(session, new Configuration(sqlTemplates));
@@ -54,10 +57,22 @@ public class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQue
     }
 
     @Override
-    protected HibernateSQLQuery clone(SessionHolder sessionHolder) {
-        HibernateSQLQuery q = new HibernateSQLQuery(sessionHolder, configuration, getMetadata().clone());
+    protected HibernateSQLQuery<T> clone(SessionHolder sessionHolder) {
+        HibernateSQLQuery<T> q = new HibernateSQLQuery<T>(sessionHolder, configuration, getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public <U> HibernateSQLQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (HibernateSQLQuery<U>) this;
+    }
+
+    @Override
+    public HibernateSQLQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (HibernateSQLQuery<Tuple>) this;
     }
 
 }

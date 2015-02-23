@@ -15,13 +15,7 @@ package com.querydsl.core.support;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.JoinFlag;
-import com.querydsl.core.JoinType;
-import com.querydsl.core.QueryFlag;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.Tuple;
+import com.querydsl.core.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.FactoryExpressionUtils.FactoryExpressionAdapter;
 
@@ -107,13 +101,8 @@ public class QueryMixin<T> {
         return e;
     }
 
-    public T setProjection(Expression<?>... o) {
-        Expression<?>[] copy = new Expression<?>[o.length];
-        for (int i = 0; i < copy.length; i++) {
-            copy[i] = convert(o[i], Role.SELECT);
-        }
-        metadata.setProjection(Projections.tuple(copy));
-        return self;
+    public Expression<?> setProjection(Expression<?>... o) {
+        return setProjection(Projections.tuple(o));
     }
 
     private <P extends Path<?>> P assertRoot(P p) {
@@ -158,11 +147,6 @@ public class QueryMixin<T> {
 
     protected Predicate convert(Predicate condition, Role role) {
         return condition;
-    }
-
-
-    public Expression<Tuple> createProjection(Expression<?>[] args) {
-        return Projections.tuple(args);
     }
 
     protected <D> Expression<D> createAlias(Expression<?> expr, Path<D> alias) {

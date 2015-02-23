@@ -46,11 +46,6 @@ public class HibernateQueryFactoryTest {
     }
 
     @Test
-    public void SubQuery() {
-        assertNotNull(queryFactory.subQuery());
-    }
-
-    @Test
     public void From() {
         assertNotNull(queryFactory.from(QAnimal.animal));
     }

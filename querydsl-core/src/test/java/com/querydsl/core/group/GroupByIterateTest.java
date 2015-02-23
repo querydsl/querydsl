@@ -141,7 +141,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
         Object commentId = null;
         Map<Integer, String> comments = null;
         List<Map<Integer, String>> expected = new LinkedList<Map<Integer, String>>();
-        for (Iterator<Tuple> iterator = MAP2_RESULTS.iterate(); iterator.hasNext();) {
+        for (Iterator<Tuple> iterator = MAP2_RESULTS.fetchIterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
 
@@ -167,7 +167,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
         Object postId = null;
         Map<Integer, Map<Integer, String>> posts = null;
         List<Map<Integer, Map<Integer, String>>> expected = new LinkedList<Map<Integer, Map<Integer, String>>>();
-        for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
+        for (Iterator<Tuple> iterator = MAP3_RESULTS.fetchIterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
             
@@ -199,7 +199,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
         Object commentId = null;
         Map<Map<Integer, String>, String> comments = null;
         List<Map<Map<Integer, String>, String>> expected = new LinkedList<Map<Map<Integer, String>, String>>();
-        for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
+        for (Iterator<Tuple> iterator = MAP4_RESULTS.fetchIterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
  

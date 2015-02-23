@@ -41,7 +41,7 @@ public abstract class AbstractBaseTest {
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
 
-    protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
+    protected final class TestQuery<T> extends SQLQuery<T>  {
 
         private TestQuery(Connection conn, Configuration configuration) {
             super(conn, configuration);
@@ -63,13 +63,14 @@ public abstract class AbstractBaseTest {
             return serializer;
         }
 
-        public TestQuery clone(Connection conn) {
-            TestQuery q = new TestQuery(conn, getConfiguration(), getMetadata().clone());
+        public TestQuery<T> clone(Connection conn) {
+            TestQuery<T> q = new TestQuery<T>(conn, getConfiguration(), getMetadata().clone());
             q.union = union;
             q.unionAll = unionAll;
             q.firstUnionSubQuery = firstUnionSubQuery;
             return q;
         }
+
     }
 
     protected Connection connection = Connections.getConnection();
@@ -117,7 +118,7 @@ public abstract class AbstractBaseTest {
         return sqlInsertClause;
     }
 
-    protected SQLInsertClause insert(RelationalPath<?> e, AbstractSQLSubQuery<?> sq) {
+    protected SQLInsertClause insert(RelationalPath<?> e, SQLQuery<?> sq) {
         SQLInsertClause sqlInsertClause = new SQLInsertClause(connection, configuration, e, sq);
         sqlInsertClause.addListener(new TestLoggingListener());
         return sqlInsertClause;
@@ -135,8 +136,8 @@ public abstract class AbstractBaseTest {
         return sqlMergeClause;
     }
 
-    protected ExtendedSQLQuery extQuery() {
-        ExtendedSQLQuery extendedSQLQuery = new ExtendedSQLQuery(connection, configuration);
+    protected ExtendedSQLQuery<Void> extQuery() {
+        ExtendedSQLQuery<Void> extendedSQLQuery = new ExtendedSQLQuery<Void>(connection, configuration);
         extendedSQLQuery.addListener(new TestLoggingListener());
         return extendedSQLQuery;
     }
@@ -147,27 +148,22 @@ public abstract class AbstractBaseTest {
         return mySQLReplaceClause;
     }
 
-    protected TestQuery query() {
-        TestQuery testQuery = new TestQuery(connection, configuration);
+    protected SQLQuery<Void> query() {
+        SQLQuery<Void> testQuery = new TestQuery<Void>(connection, configuration);
         testQuery.addListener(new TestLoggingListener());
         return testQuery;
     }
 
-    protected TeradataQuery teradataQuery() {
-        TeradataQuery teradataQuery = new TeradataQuery(connection, configuration);
+    protected TeradataQuery<Void> teradataQuery() {
+        TeradataQuery<Void> teradataQuery = new TeradataQuery<Void>(connection, configuration);
         teradataQuery.addListener(new TestLoggingListener());
         return teradataQuery;
     }
 
-    protected TestQuery testQuery() {
-        TestQuery testQuery = new TestQuery(connection, configuration,
-                new DefaultQueryMetadata().noValidate());
+    protected TestQuery<Void> testQuery() {
+        TestQuery<Void> testQuery = new TestQuery<Void>(connection, configuration, new DefaultQueryMetadata());
         testQuery.addListener(new TestLoggingListener());
         return testQuery;
-    }
-
-    protected SQLSubQuery sq() {
-        return new SQLSubQuery();
     }
 
     protected long execute(DMLClause<?>... clauses) {

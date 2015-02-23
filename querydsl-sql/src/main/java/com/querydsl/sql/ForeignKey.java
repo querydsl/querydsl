@@ -81,7 +81,7 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
         return builder.getValue();
     }
 
-    public BooleanExpression in(CollectionExpression<?,Tuple> coll) {
+    public BooleanExpression in(SubQueryExpression<Tuple> coll) {
         return Expressions.booleanOperation(Ops.IN, getProjection(), coll);
     }
 

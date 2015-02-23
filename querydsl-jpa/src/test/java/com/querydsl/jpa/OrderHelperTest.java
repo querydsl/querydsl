@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 
 public class OrderHelperTest {
 
@@ -21,7 +22,7 @@ public class OrderHelperTest {
         order.add("previousProject.customer.company.name");
         order.add("department.name");
 
-        JPASubQuery query = new JPASubQuery();
+        JPAQuery<Void> query = new JPAQuery<Void>();
         query.from(entity);
         OrderHelper.orderBy(query, entity, order);
         assertEquals("select project\n" +

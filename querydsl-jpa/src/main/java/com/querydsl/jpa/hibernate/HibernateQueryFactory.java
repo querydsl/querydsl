@@ -17,10 +17,12 @@ import javax.inject.Provider;
 
 import org.hibernate.Session;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.core.types.EntityPath;
 
 /**
  * Factory class for query and DML clause creation
@@ -47,7 +49,17 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return new HibernateDeleteClause(session.get(), path, templates);
     }
 
-    public HibernateQuery from(EntityPath<?> from) {
+    @Override
+    public <T> HibernateQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public HibernateQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    public HibernateQuery<Void> from(EntityPath<?> from) {
         return query().from(from);
     }
 
@@ -55,11 +67,8 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return new HibernateUpdateClause(session.get(), path, templates);
     }
 
-    public HibernateQuery query() {
-        return new HibernateQuery(session.get(), templates);
+    public HibernateQuery<Void> query() {
+        return new HibernateQuery<Void>(session.get(), templates);
     }
 
-    public HibernateSubQuery subQuery() {
-        return new HibernateSubQuery();
-    }
 }

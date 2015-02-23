@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 
 import com.google.common.base.Objects;
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.Projectable;
+import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
@@ -39,7 +39,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
     }
 
     @Override
-    public CloseableIterator<V> transform(Projectable projectable) {
+    public CloseableIterator<V> transform(FetchableQuery query) {
         // create groups
         FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(Projections.tuple(expressions));
         boolean hasGroups = false;
@@ -49,7 +49,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
         if (hasGroups) {
             expr = withoutGroupExpressions(expr);
         }
-        final CloseableIterator<Tuple> iter = projectable.iterate(expr);
+        final CloseableIterator<Tuple> iter = query.select(expr).fetchIterate();
 
         return new CloseableIterator<V>() {
 

@@ -39,8 +39,8 @@ public class SerializationBase implements JPATest {
     @Test
     public void test() throws IOException, ClassNotFoundException{
         // create query
-        JPAQuery query = query();
-        query.from(cat).where(cat.name.eq("Kate")).list(cat);
+        JPAQuery<Void> query = query();
+        query.from(cat).where(cat.name.eq("Kate")).select(cat).fetch();
         
         QueryMetadata metadata = query.getMetadata();
         assertFalse(metadata.getJoins().isEmpty());
@@ -54,9 +54,9 @@ public class SerializationBase implements JPATest {
         assertEquals(metadata.getProjection(), metadata2.getProjection());
         
         // create new query
-        JPAQuery query2 = new JPAQuery(entityManager, metadata2);
+        JPAQuery<Void> query2 = new JPAQuery<Void>(entityManager, metadata2);
         assertEquals("select cat\nfrom Cat cat\nwhere cat.name = ?1", query2.toString());
-        query2.list(cat);        
+        query2.select(cat).fetch();
     }
 
     @Test
@@ -64,8 +64,8 @@ public class SerializationBase implements JPATest {
         Predicate where = cat.kittens.any().name.eq("Ruth234");
         Predicate where2 = Serialization.serialize(where);
 
-        assertEquals(0, query().from(cat).where(where).count());
-        assertEquals(0, query().from(cat).where(where2).count());
+        assertEquals(0, query().from(cat).where(where).fetchCount());
+        assertEquals(0, query().from(cat).where(where2).fetchCount());
     }
 
     @Test
@@ -79,19 +79,19 @@ public class SerializationBase implements JPATest {
             ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
             out.writeObject(where);
             out.close();
-            assertEquals(0, query().from(cat).where(where).count());
+            assertEquals(0, query().from(cat).where(where).fetchCount());
         } else {
             // deserialize predicate on second run
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
             Predicate where2 = (Predicate) in.readObject();
             in.close();
-            assertEquals(0, query().from(cat).where(where2).count());
+            assertEquals(0, query().from(cat).where(where2).fetchCount());
         }
     }
 
-    private JPAQuery query() {
-        return new JPAQuery(entityManager);
+    private JPAQuery<Void> query() {
+        return new JPAQuery<Void>(entityManager);
     }
 
     @Override

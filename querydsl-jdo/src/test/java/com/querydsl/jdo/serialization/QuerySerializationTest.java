@@ -29,7 +29,7 @@ public class QuerySerializationTest extends AbstractTest{
     @Test
     public void SelectFromWhereOrder() {
         assertEquals(
-            "SELECT UNIQUE this.name " +
+            "SELECT this.name " +
             "FROM com.querydsl.jdo.test.domain.Product " +
             "WHERE this.name == a1 " +
             "PARAMETERS java.lang.String a1 " +
@@ -38,7 +38,7 @@ public class QuerySerializationTest extends AbstractTest{
             serialize(query().from(product)
               .where(product.name.eq("Test"))
               .orderBy(product.name.asc())
-              .unique(product.name)));
+              .select(product.name)));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class QuerySerializationTest extends AbstractTest{
             serialize(query().from(product)
               .where(product.name.startsWith("A").or(product.name.endsWith("B")))
               .groupBy(product.price)
-              .list(product.name)));
+              .select(product.name)));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class QuerySerializationTest extends AbstractTest{
 
             serialize(query().from(product, other)
               .where(product.name.eq(other.name))
-              .list(product.name)));
+              .select(product.name)));
     }
 
     @Test
@@ -78,8 +78,8 @@ public class QuerySerializationTest extends AbstractTest{
             "(SELECT avg(other.price) FROM com.querydsl.jdo.test.domain.Product other)",
 
             serialize(query().from(product)
-              .where(product.price.lt(query().from(other).unique(other.price.avg())))
-              .list(product.price)));
+              .where(product.price.lt(query().from(other).select(other.price.avg())))
+              .select(product.price)));
     }
 
     @Test
@@ -93,8 +93,8 @@ public class QuerySerializationTest extends AbstractTest{
                 "PARAMETERS java.lang.String a1).contains(this.price)",
 
             serialize(query().from(product)
-              .where(product.price.in(query().from(other).where(other.name.eq("Some name")).list(other.price)))
-              .list(product.name)));
+              .where(product.price.in(query().from(other).where(other.name.eq("Some name")).select(other.price)))
+              .select(product.name)));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class QuerySerializationTest extends AbstractTest{
 
             serialize(query().from(product)
               .where(product.instanceOf(Book.class))
-              .list(product)));
+              .select(product)));
     }
 
 }

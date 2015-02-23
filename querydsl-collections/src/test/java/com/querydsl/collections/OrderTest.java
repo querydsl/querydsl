@@ -26,16 +26,16 @@ public class OrderTest extends AbstractQueryTest {
 
     @Test
     public void test() {
-        query().from(cat, cats).orderBy(cat.name.asc()).list(cat.name);
+        query().from(cat, cats).orderBy(cat.name.asc()).select(cat.name).fetch();
         assertArrayEquals(new Object[] { "Alex", "Bob", "Francis", "Kitty" }, last.res.toArray());
 
-        query().from(cat, cats).orderBy(cat.name.desc()).list(cat.name);
+        query().from(cat, cats).orderBy(cat.name.desc()).select(cat.name).fetch();
         assertArrayEquals(new Object[] { "Kitty", "Francis", "Bob", "Alex" }, last.res.toArray());
 
-        query().from(cat, cats).orderBy(cat.name.substring(1).asc()).list(cat.name);
+        query().from(cat, cats).orderBy(cat.name.substring(1).asc()).select(cat.name).fetch();
         assertArrayEquals(new Object[] { "Kitty", "Alex", "Bob", "Francis" }, last.res.toArray());
 
-        query().from(cat, cats).from(otherCat, cats).orderBy(cat.name.asc(), otherCat.name.desc()).list(cat.name, otherCat.name);
+        query().from(cat, cats).from(otherCat, cats).orderBy(cat.name.asc(), otherCat.name.desc()).select(cat.name, otherCat.name).fetch();
 
         // TODO : more tests
     }
@@ -43,26 +43,26 @@ public class OrderTest extends AbstractQueryTest {
     @Test
     public void test2() {
         List<String> orderedNames = Arrays.asList("Alex","Bob","Francis","Kitty"); 
-        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).list(cat.name));
-        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).distinct().list(cat.name));
+        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name).fetch());
+        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).distinct().select(cat.name).fetch());
     }
     
     @Test
     public void With_count() {
-        CollQuery q = new CollQuery();
+        CollQuery<Void> q = new CollQuery<Void>();
         q.from(cat, cats);
-        long size = q.distinct().count();
+        long size = q.distinct().fetchCount();
         assertTrue(size > 0);
         q.offset(0).limit(10);
         q.orderBy(cat.name.asc());
-        assertEquals(Arrays.asList("Alex","Bob","Francis","Kitty"), q.distinct().list(cat.name));
+        assertEquals(Arrays.asList("Alex","Bob","Francis","Kitty"), q.distinct().select(cat.name).fetch());
     }
 
     @Test
     public void With_null() {
         List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));        
-        assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).list(cat));
-        assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).list(cat));
+        assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).select(cat).fetch());
+        assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).select(cat).fetch());
 
     }
 }

@@ -19,7 +19,8 @@ import java.util.List;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.SearchResults;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.Projections;
@@ -28,7 +29,7 @@ import com.querydsl.core.types.Projections;
  * @author tiwe
  *
  */
-public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> {
+public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>> {
 
     public ExtendedSQLQuery(SQLTemplates templates) {
         super(null, new Configuration(templates), new DefaultQueryMetadata());
@@ -46,20 +47,20 @@ public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> {
         super(conn, configuration, metadata);
     }
     
-    public <T> CloseableIterator<T> iterate(Class<T> type, Expression<?>... exprs) {
-        return iterate(createProjection(type, exprs));
+    public <RT> CloseableIterator<RT> iterate(Class<RT> type, Expression<?>... exprs) {
+        return select(createProjection(type, exprs)).fetchIterate();
     }
     
-    public <T> T uniqueResult(Class<T> type, Expression<?>... exprs) {
-        return uniqueResult(createProjection(type, exprs));
+    public <RT> RT uniqueResult(Class<RT> type, Expression<?>... exprs) {
+        return select(createProjection(type, exprs)).fetchOne();
     }
     
-    public <T> List<T> list(Class<T> type, Expression<?>... exprs) {
-        return list(createProjection(type, exprs));
+    public <RT> List<RT> list(Class<RT> type, Expression<?>... exprs) {
+        return select(createProjection(type, exprs)).fetch();
     }
     
-    public <T> SearchResults<T> listResults(Class<T> type, Expression<?>... exprs) {
-        return listResults(createProjection(type, exprs));
+    public <RT> QueryResults<RT> listResults(Class<RT> type, Expression<?>... exprs) {
+        return select(createProjection(type, exprs)).fetchResults();
     }
     
     private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs) {
@@ -67,10 +68,22 @@ public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> {
     }
 
     @Override
-    public ExtendedSQLQuery clone(Connection connection) {
-        ExtendedSQLQuery query = new ExtendedSQLQuery(connection, getConfiguration(), getMetadata().clone());
+    public ExtendedSQLQuery<T> clone(Connection connection) {
+        ExtendedSQLQuery<T> query = new ExtendedSQLQuery<T>(connection, getConfiguration(), getMetadata().clone());
         query.clone(this);
         return query;
+    }
+
+    @Override
+    public <U> ExtendedSQLQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (ExtendedSQLQuery<U>) this;
+    }
+
+    @Override
+    public ExtendedSQLQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (ExtendedSQLQuery<Tuple>) this;
     }
     
 }

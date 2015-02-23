@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.SearchResults;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 
@@ -45,23 +45,23 @@ public class PagingTest extends AbstractQueryTest {
     }
 
     private void assertResultSize(int total, int size, QueryModifiers modifiers) {
-        // via list
-        assertEquals(size, createQuery(modifiers).list(var).size());
+        // via fetch
+        assertEquals(size, createQuery(modifiers).select(var).fetch().size());
 
         // via results
-        SearchResults<?> results = createQuery(modifiers).listResults(var);
+        QueryResults<?> results = createQuery(modifiers).select(var).fetchResults();
         assertEquals(total, results.getTotal());
         assertEquals(size, results.getResults().size());
 
-        // via count (ignore limit and offset)
-        assertEquals(total, createQuery(modifiers).count());
+        // via fetchCount (ignore limit and offset)
+        assertEquals(total, createQuery(modifiers).fetchCount());
 
         // via iterator
-        assertEquals(size, IteratorAdapter.asList(createQuery(modifiers).iterate(var)).size());
+        assertEquals(size, IteratorAdapter.asList(createQuery(modifiers).select(var).fetchIterate()).size());
     }
 
-    private CollQuery createQuery(QueryModifiers modifiers) {
-        CollQuery query = new CollQuery().from(var, ints);
+    private CollQuery<Void> createQuery(QueryModifiers modifiers) {
+        CollQuery<Void> query = new CollQuery<Void>().from(var, ints);
         if (modifiers != null) {
             query.restrict(modifiers);
         }

@@ -14,7 +14,7 @@ public class OrderHelper {
 
     private static final Pattern DOT = Pattern.compile("\\.");
 
-    public static PathBuilder<?> join(JPACommonQuery<?> query, PathBuilder<?> builder, Map<String, PathBuilder<?>> joins, String path) {
+    public static PathBuilder<?> join(JPQLQuery<?> query, PathBuilder<?> builder, Map<String, PathBuilder<?>> joins, String path) {
         PathBuilder<?> rv = joins.get(path);
         if (rv == null) {
             if (path.contains(".")) {
@@ -34,7 +34,7 @@ public class OrderHelper {
         return rv;
     }
 
-    public static void orderBy(JPACommonQuery<?> query, EntityPath<?> entity, List<String> order) {
+    public static void orderBy(JPQLQuery<?> query, EntityPath<?> entity, List<String> order) {
         PathBuilder<?> builder = new PathBuilder(entity.getType(), entity.getMetadata());
         Map<String, PathBuilder<?>> joins = Maps.newHashMap();
 

@@ -83,7 +83,7 @@ public class ExtendedSQLTest {
 
         QAuthor author = QAuthor.author;
         QBook book = QBook.book;
-        MySQLQuery query = new MySQLQuery(null);
+        MySQLQuery<Void> query = new MySQLQuery<Void>(null);
         query.from(author)
            .join(book).on(author.id.eq(book.authorId))
            .where(book.language.eq("DE"), book.published.eq(new Date()))

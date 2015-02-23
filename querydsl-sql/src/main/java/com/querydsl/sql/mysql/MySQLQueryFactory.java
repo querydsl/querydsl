@@ -29,7 +29,7 @@ import com.querydsl.sql.dml.SQLInsertClause;
  * @author tiwe
  *
  */
-public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery, SQLSubQuery> {
+public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<Void>> {
 
     public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -61,8 +61,8 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery, SQLSu
         return insert;
     }
     
-    public MySQLQuery query() {
-        return new MySQLQuery(connection.get(), configuration);
+    public MySQLQuery<Void> query() {
+        return new MySQLQuery<Void>(connection.get(), configuration);
     }
 
     public MySQLReplaceClause replace(RelationalPath<?> entity) {

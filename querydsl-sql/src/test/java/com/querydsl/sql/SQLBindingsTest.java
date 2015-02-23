@@ -14,7 +14,7 @@ public class SQLBindingsTest {
 
     private QSurvey survey = QSurvey.survey;
 
-    private SQLQuery query = new SQLQuery(SQLTemplates.DEFAULT);
+    private SQLQuery<Void> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
 
     @Test
     public void Empty() {
@@ -25,16 +25,16 @@ public class SQLBindingsTest {
 
     @Test
     public void SingleArg() {
-        query.from(survey).where(survey.name.eq("Bob"));
-        SQLBindings bindings = query.getSQL(survey.id);
+        query.from(survey).where(survey.name.eq("Bob")).select(survey.id);
+        SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ?", bindings.getSQL());
         assertEquals(Arrays.asList("Bob"), bindings.getBindings());
     }
 
     @Test
     public void TwoArgs() {
-        query.from(survey).where(survey.name.eq("Bob"), survey.name2.eq("A"));
-        SQLBindings bindings = query.getSQL(survey.id);
+        query.from(survey).where(survey.name.eq("Bob"), survey.name2.eq("A")).select(survey.id);
+        SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSQL());
         assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
     }
@@ -42,9 +42,9 @@ public class SQLBindingsTest {
     @Test
     public void Params() {
         Param<String> name = new Param<String>(String.class, "name");
-        query.from(survey).where(survey.name.eq(name), survey.name2.eq("A"));
+        query.from(survey).where(survey.name.eq(name), survey.name2.eq("A")).select(survey.id);
         query.set(name, "Bob");
-        SQLBindings bindings = query.getSQL(survey.id);
+        SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSQL());
         assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
     }

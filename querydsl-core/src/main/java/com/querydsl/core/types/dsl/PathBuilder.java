@@ -32,7 +32,7 @@ import com.querydsl.core.types.PathMetadataFactory;
  * <pre>{@code
  * PathBuilder<User> user = new PathBuilder<User>(User.class, "user");
  * Predicate filter = user.getString("firstName").eq("Bob");
- * List<User> users = query.from(user).where(filter).list(user);
+ * List<User> users = query.from(user).where(filter).select(user).fetch();
  * }</pre>
  *
  * @author tiwe

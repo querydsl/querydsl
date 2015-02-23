@@ -36,10 +36,10 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
 
     private final Map<Path<?>, Object> paths = new HashMap<Path<?>, Object>();
 
-    private final CollQuery query;
+    private final CollQuery<T> query;
 
     public CollUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col) {
-        this.query = new CollQuery(qe).from(expr, col);
+        this.query = new CollQuery<Void>(qe).from(expr, col).select(expr);
         this.expr = expr;
     }
 
@@ -50,7 +50,7 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
     @Override
     public long execute() {
         int rv = 0;
-        for (T match : query.list(expr)) {
+        for (T match : query.fetch()) {
             BeanMap beanMap = new BeanMap(match);
             for (Map.Entry<Path<?>,Object> entry : paths.entrySet()) {
                 // TODO : support deep updates as well

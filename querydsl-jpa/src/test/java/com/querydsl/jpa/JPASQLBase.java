@@ -48,8 +48,8 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
     private EntityManager entityManager;
 
     @Override
-    protected JPASQLQuery query() {
-        return new JPASQLQuery(entityManager, templates);
+    protected JPASQLQuery<Void> query() {
+        return new JPASQLQuery<Void>(entityManager, templates);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
 
     @Before
     public void setUp() {
-        if (query().from(cat).notExists()) {
+        if (query().from(cat).fetchCount() == 0) {
             entityManager.persist(new Cat("Beck", 1, Color.BLACK));
             entityManager.persist(new Cat("Kate", 2, Color.BLACK));
             entityManager.persist(new Cat("Kitty", 3, Color.BLACK));
@@ -75,7 +75,7 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
         SAnimal cat = new SAnimal("cat");
         QCat catEntity = QCat.cat;
 
-        Query query = query().from(cat).createQuery(catEntity);
+        Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.getResultList().size());
     }
 
@@ -85,7 +85,7 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
         SAnimal cat = new SAnimal("CAT");
         QCat catEntity = QCat.cat;
 
-        Query query = query().from(cat).createQuery(catEntity);
+        Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.getResultList().size());
     }
 

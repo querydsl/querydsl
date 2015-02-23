@@ -46,16 +46,6 @@ public class SQLQueryFactoryTest {
     }
 
     @Test
-    public void SubQuery() {
-        assertNotNull(queryFactory.subQuery());
-    }
-
-    @Test
-    public void SubQuery_From() {
-        assertNotNull(queryFactory.subQuery(QSurvey.survey));
-    }
-
-    @Test
     public void From() {
         assertNotNull(queryFactory.from(QSurvey.survey));
     }

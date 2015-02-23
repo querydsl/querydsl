@@ -18,6 +18,8 @@ import java.sql.Connection;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.sql.*;
@@ -28,10 +30,10 @@ import com.querydsl.sql.*;
  * @author tiwe
  *
  */
-public class TeradataQuery extends AbstractSQLQuery<TeradataQuery> {
+public class TeradataQuery<T> extends AbstractSQLQuery<T, TeradataQuery<T>> {
 
     public TeradataQuery(Connection conn) {
-        this(conn, new Configuration(new TeradataTemplates()), new DefaultQueryMetadata());
+        this(conn, new Configuration(TeradataTemplates.DEFAULT), new DefaultQueryMetadata());
     }
 
     public TeradataQuery(Connection conn, SQLTemplates templates) {
@@ -52,16 +54,28 @@ public class TeradataQuery extends AbstractSQLQuery<TeradataQuery> {
      * @param predicate
      * @return
      */
-    public TeradataQuery qualify(Predicate predicate) {
+    public TeradataQuery<T> qualify(Predicate predicate) {
         predicate = ExpressionUtils.predicate(SQLOps.QUALIFY, predicate);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.BEFORE_ORDER, predicate));
     }
 
     @Override
-    public TeradataQuery clone(Connection conn) {
-        TeradataQuery q = new TeradataQuery(conn, getConfiguration(), getMetadata().clone());
+    public TeradataQuery<T> clone(Connection conn) {
+        TeradataQuery<T> q = new TeradataQuery<T>(conn, getConfiguration(), getMetadata().clone());
         q.clone(this);
         return q;
+    }
+
+    @Override
+    public <U> TeradataQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (TeradataQuery<U>) this;
+    }
+
+    @Override
+    public TeradataQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (TeradataQuery<Tuple>) this;
     }
 
 }

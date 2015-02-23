@@ -42,21 +42,21 @@ public class IterationTest {
     
     @Test
     public void test() {                
-        assertEquals(expected, CollQueryFactory.from ($(lt), allData).list($(lt.getData())));
+        assertEquals(expected, CollQueryFactory.from ($(lt), allData).select($(lt.getData())).fetch());
     }
 
     @Test
     public void test2() {        
-        assertEquals(expected, CollQueryFactory.from ($(lt), Arrays.asList(allData.toArray())).list($(lt.getData())));
+        assertEquals(expected, CollQueryFactory.from ($(lt), Arrays.asList(allData.toArray())).select($(lt.getData())).fetch());
     }
     
     @Test
     public void test3() {                
-        assertEquals(expected, CollQueryFactory.from (lt, allData).list($(lt.getData())));
+        assertEquals(expected, CollQueryFactory.from (lt, allData).select($(lt.getData())).fetch());
     }
 
     @Test
     public void test4() {        
-        assertEquals(expected, CollQueryFactory.from (lt, Arrays.asList(allData.toArray())).list($(lt.getData())));
+        assertEquals(expected, CollQueryFactory.from (lt, Arrays.asList(allData.toArray())).select($(lt.getData())).fetch());
     }
 }

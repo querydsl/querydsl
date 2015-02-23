@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Param;
@@ -50,16 +49,13 @@ public class CollQueryStandardTest {
     
     private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM) {
         @Override
-        protected Pair<Projectable, Expression<?>[]> createQuery() {
-            return Pair.of(
-                    (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data),
-                    NO_EXPRESSIONS);
+        protected Fetchable<?> createQuery() {
+            return CollQueryFactory.from(cat, data).from(otherCat, data);
         }
         @Override
-        protected Pair<Projectable, Expression<?>[]> createQuery(Predicate filter) {
-            return Pair.of(
-                    (Projectable)CollQueryFactory.from(cat, data).from(otherCat, data).where(filter),
-                    new Expression<?>[]{cat.name});
+        protected Fetchable<?> createQuery(Predicate filter) {
+            return CollQueryFactory.from(cat, data).from(otherCat, data)
+                    .where(filter).select(cat.name);
         }
     };
 
@@ -86,7 +82,7 @@ public class CollQueryStandardTest {
     @Test
     public void TupleProjection() {
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
-            .list(cat.name, cat.birthdate);
+            .select(cat.name, cat.birthdate).fetch();
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
@@ -97,7 +93,7 @@ public class CollQueryStandardTest {
     public void Nested_TupleProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
-            .list(concat, cat.name, cat.birthdate);
+            .select(concat, cat.name, cat.birthdate).fetch();
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
@@ -109,7 +105,7 @@ public class CollQueryStandardTest {
     @Test
     public void ArrayProjection() {
         List<String[]> results =  CollQueryFactory.from(cat, data)
-            .list(new ArrayConstructorExpression<String>(String[].class, cat.name));
+            .select(new ArrayConstructorExpression<String>(String[].class, cat.name)).fetch();
         assertFalse(results.isEmpty());
         for (String[] result : results) {
             assertNotNull(result[0]);
@@ -119,7 +115,7 @@ public class CollQueryStandardTest {
     @Test
     public void ConstructorProjection() {
         List<Projection> projections =  CollQueryFactory.from(cat, data)
-            .list(Projections.constructor(Projection.class, cat.name, cat));
+            .select(Projections.constructor(Projection.class, cat.name, cat)).fetch();
         assertFalse(projections.isEmpty());
         for (Projection projection : projections) {
             assertNotNull(projection);
@@ -129,24 +125,24 @@ public class CollQueryStandardTest {
     @Test
     public void Params() {
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
     }
 
     @Test
     public void Params_anon() {
         Param<String> name = new Param<String>(String.class);
-        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
     }
 
     @Test(expected=ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).select(cat.name).fetchOne());
     }
     
     @Test
     public void Limit() {
-        CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).list(cat);
+        CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch();
     }
    
 }

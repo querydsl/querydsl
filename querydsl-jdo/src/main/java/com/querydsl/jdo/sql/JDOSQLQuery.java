@@ -13,14 +13,16 @@
  */
 package com.querydsl.jdo.sql;
 
+import javax.annotation.Nullable;
+import javax.jdo.PersistenceManager;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
 import com.querydsl.sql.SQLTemplates;
-
-import javax.annotation.Nullable;
-import javax.jdo.PersistenceManager;
 
 /**
  * JDOSQLQuery is an SQLQuery implementation that uses JDO's SQL query functionality
@@ -29,14 +31,14 @@ import javax.jdo.PersistenceManager;
  * @author tiwe
  *
  */
-public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
+public final class JDOSQLQuery<T> extends AbstractSQLQuery<T, JDOSQLQuery<T>> {
 
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
-        this(persistenceManager, new Configuration(templates), new DefaultQueryMetadata().noValidate(), false);
+        this(persistenceManager, new Configuration(templates), new DefaultQueryMetadata(), false);
     }
 
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, Configuration configuration) {
-        this(persistenceManager, configuration, new DefaultQueryMetadata().noValidate(), false);
+        this(persistenceManager, configuration, new DefaultQueryMetadata(), false);
     }
 
     public JDOSQLQuery(
@@ -47,8 +49,8 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
     }
 
     @Override
-    public JDOSQLQuery clone() {
-        JDOSQLQuery query = new JDOSQLQuery(persistenceManager, configuration, getMetadata().clone(), detach);
+    public JDOSQLQuery<T> clone() {
+        JDOSQLQuery<T> query = new JDOSQLQuery<T>(persistenceManager, configuration, getMetadata().clone(), detach);
         query.clone(this);
         return query;
     }
@@ -56,5 +58,17 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> {
     @Override
     protected SQLSerializer createSerializer() {
         return new SQLSerializer(configuration);
+    }
+
+    @Override
+    public <U> JDOSQLQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (JDOSQLQuery<U>) this;
+    }
+
+    @Override
+    public JDOSQLQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (JDOSQLQuery<Tuple>) this;
     }
 }

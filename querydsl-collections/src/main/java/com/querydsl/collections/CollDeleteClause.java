@@ -33,10 +33,10 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
 
     private final Path<T> expr;
 
-    private final CollQuery query;
+    private final CollQuery<T> query;
 
     public CollDeleteClause(QueryEngine qe, Path<T> expr, Collection<? extends T> col) {
-        this.query = new CollQuery(qe).from(expr, col);
+        this.query = new CollQuery<Void>(qe).from(expr, col).select(expr);
         this.expr = expr;
         this.col = col;
     }
@@ -48,7 +48,7 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
     @Override
     public long execute() {
         int rv = 0;
-        for (T match : query.list(expr)) {
+        for (T match : query.fetch()) {
             col.remove(match);
             rv++;
         }

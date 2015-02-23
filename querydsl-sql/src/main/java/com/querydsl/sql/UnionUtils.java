@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql;
 
+import java.util.List;
+
 import com.querydsl.core.types.*;
 
 /**
@@ -23,19 +25,19 @@ import com.querydsl.core.types.*;
  */
 public final class UnionUtils {
 
-    public static Expression<?> union(SubQueryExpression<?>[] union, boolean unionAll) {
+    public static <T> Expression<T> union(List<SubQueryExpression<T>> union, boolean unionAll) {
         final Operator operator = unionAll ? SQLOps.UNION_ALL : SQLOps.UNION;
-        Expression<?> rv = union[0];
-        for (int i = 1; i < union.length; i++) {
-            rv = ExpressionUtils.operation(rv.getType(), operator, rv, union[i]);
+        Expression<T> rv = union.get(0);
+        for (int i = 1; i < union.size(); i++) {
+            rv = ExpressionUtils.operation(rv.getType(), operator, rv, union.get(i));
         }
         return rv;
     }
 
-    public static Expression<?> union(SubQueryExpression<?>[] union, Path<?> alias,
+    public static <T> Expression<T> union(List<SubQueryExpression<T>> union, Path<T> alias,
             boolean unionAll) {
-        final Expression<?> rv = union(union, unionAll);
-        return ExpressionUtils.as((Expression)rv, alias);
+        final Expression<T> rv = union(union, unionAll);
+        return ExpressionUtils.as(rv, alias);
     }
 
     private UnionUtils() {}

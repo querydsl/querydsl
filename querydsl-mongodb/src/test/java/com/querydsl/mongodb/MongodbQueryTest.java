@@ -31,7 +31,7 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.SearchResults;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.testutil.ExternalDB;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
@@ -94,7 +94,7 @@ public class MongodbQueryTest {
 
     @Test
     public void SingleResult_Keys() {
-        User u = where(user.firstName.eq("Jaakko")).singleResult(user.firstName);
+        User u = where(user.firstName.eq("Jaakko")).firstResult(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
@@ -108,7 +108,7 @@ public class MongodbQueryTest {
 
     @Test
     public void List_Deep_Keys() {
-        User u = where(user.firstName.eq("Jaakko")).singleResult(user.addresses.any().street);
+        User u = where(user.firstName.eq("Jaakko")).firstResult(user.addresses.any().street);
         for (Address a : u.getAddresses()) {
             assertNotNull(a.street);
             assertNull(a.city);
@@ -148,11 +148,11 @@ public class MongodbQueryTest {
         entity.getProperties().put("key", "value");
         ds.save(entity);
 
-        assertTrue(query(mapEntity).where(mapEntity.properties.get("key").isNotNull()).exists());
-        assertFalse(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull()).exists());
+        assertTrue(query(mapEntity).where(mapEntity.properties.get("key").isNotNull()).fetchCount() > 0);
+        assertFalse(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull()).fetchCount() > 0);
 
-        assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key")).exists());
-        assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key2")).exists());
+        assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key")).fetchCount() > 0);
+        assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key2")).fetchCount() > 0);
     }
 
     @Test
@@ -161,23 +161,23 @@ public class MongodbQueryTest {
         entity.getProperties().put("key", "value");
         ds.save(entity);
 
-        assertFalse(query(mapEntity).where(mapEntity.properties.get("key").isNotNull().not()).exists());
-        assertTrue(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull().not()).exists());
+        assertFalse(query(mapEntity).where(mapEntity.properties.get("key").isNotNull().not()).fetchCount() > 0);
+        assertTrue(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull().not()).fetchCount() > 0);
 
-        assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key").not()).exists());
-        assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key2").not()).exists());
+        assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key").not()).fetchCount() > 0);
+        assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key2").not()).fetchCount() > 0);
     }
 
     @Test
     public void Equals_Ignore_Case() {
-        assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).exists());
-        assertFalse(where(user.firstName.equalsIgnoreCase("AaKk")).exists());
+        assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).fetchCount() > 0);
+        assertFalse(where(user.firstName.equalsIgnoreCase("AaKk")).fetchCount() > 0);
     }
 
     @Test
     public void Equals_Ignore_Case_Not() {
-        assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko").not()).exists());
-        assertTrue(where(user.firstName.equalsIgnoreCase("AaKk").not()).exists());
+        assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko").not()).fetchCount() > 0);
+        assertTrue(where(user.firstName.equalsIgnoreCase("AaKk").not()).fetchCount() > 0);
     }
 
     @Test
@@ -194,47 +194,47 @@ public class MongodbQueryTest {
 
     @Test
     public void Exists() {
-        assertTrue(where(user.firstName.eq("Jaakko")).exists());
-        assertFalse(where(user.firstName.eq("JaakkoX")).exists());
-        assertTrue(where(user.id.eq(u1.getId())).exists());
+        assertTrue(where(user.firstName.eq("Jaakko")).fetchCount() > 0);
+        assertFalse(where(user.firstName.eq("JaakkoX")).fetchCount() > 0);
+        assertTrue(where(user.id.eq(u1.getId())).fetchCount() > 0);
     }
 
     @Test
     public void Find_By_Id() {
-        assertNotNull(where(user.id.eq(u1.getId())).singleResult() != null);
+        assertNotNull(where(user.id.eq(u1.getId())).fetchFirst() != null);
     }
 
     @Test
     public void NotExists() {
-        assertFalse(where(user.firstName.eq("Jaakko")).notExists());
-        assertTrue(where(user.firstName.eq("JaakkoX")).notExists());
+        assertFalse(where(user.firstName.eq("Jaakko")).fetchCount() == 0);
+        assertTrue(where(user.firstName.eq("JaakkoX")).fetchCount() == 0);
     }
 
     @Test
     public void UniqueResult() {
-        assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
+        assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).fetchOne().getLastName());
     }
 
     @Test(expected=NonUniqueResultException.class)
     public void UniqueResultContract() {
-        where(user.firstName.isNotNull()).uniqueResult();
+        where(user.firstName.isNotNull()).fetchOne();
     }
 
     @Test
     public void SingleResult() {
-        where(user.firstName.isNotNull()).singleResult();
+        where(user.firstName.isNotNull()).fetchFirst();
     }
 
     @Test
     public void LongPath() {
-        assertEquals(2, query().where(user.mainAddress().city().name.eq("Helsinki")).count());
-        assertEquals(2, query().where(user.mainAddress().city().name.eq("Tampere")).count());
+        assertEquals(2, query().where(user.mainAddress().city().name.eq("Helsinki")).fetchCount());
+        assertEquals(2, query().where(user.mainAddress().city().name.eq("Tampere")).fetchCount());
     }
 
     @Test
     public void CollectionPath() {
-        assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
-        assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
+        assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).fetchCount());
+        assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).fetchCount());
     }
 
     @Test
@@ -248,62 +248,62 @@ public class MongodbQueryTest {
         ds.save(d);
         Date end = new Date(current + 2 * dayInMillis);
 
-        assertEquals(d, query(dates).where(dates.date.between(start, end)).singleResult());
-        assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).count());
+        assertEquals(d, query(dates).where(dates.date.between(start, end)).fetchFirst());
+        assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).fetchCount());
     }
 
     @Test
     public void ElemMatch() {
 //      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1"}}}
-        assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1")).count());
+        assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1")).fetchCount());
 //      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1" , "postCode" : "00100"}}}
-        assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00100")).count());
+        assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00100")).fetchCount());
 //      { "addresses" : { "$elemMatch" : { "street" : "akatu"}}}
-        assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("akatu")).count());
+        assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("akatu")).fetchCount());
 //      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1" , "postCode" : "00200"}}}
-        assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00200")).count());
+        assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00200")).fetchCount());
     }
 
     @Test
     public void IndexedAccess() {
-        assertEquals(1, query().where(user.addresses.get(0).street.eq("Aakatu1")).count());
-        assertEquals(0, query().where(user.addresses.get(1).street.eq("Aakatu1")).count());
+        assertEquals(1, query().where(user.addresses.get(0).street.eq("Aakatu1")).fetchCount());
+        assertEquals(0, query().where(user.addresses.get(1).street.eq("Aakatu1")).fetchCount());
     }
 
     @Test
     public void Count() {
-        assertEquals(4, query().count());
+        assertEquals(4, query().fetchCount());
     }
 
     @Test
     public void Order() {
-        List<User> users = query().orderBy(user.age.asc()).list();
+        List<User> users = query().orderBy(user.age.asc()).fetch();
         assertEquals(asList(u1, u2, u3, u4), users);
 
-        users = query().orderBy(user.age.desc()).list();
+        users = query().orderBy(user.age.desc()).fetch();
         assertEquals(asList(u4, u3, u2, u1), users);
     }
 
     @Test
     public void Restrict() {
-        assertEquals(asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
-        assertEquals(asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
+        assertEquals(asList(u1, u2), query().limit(2).orderBy(user.age.asc()).fetch());
+        assertEquals(asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).fetch());
     }
 
     @Test
     public void ListResults() {
-        SearchResults<User> results = query().limit(2).orderBy(user.age.asc()).listResults();
+        QueryResults<User> results = query().limit(2).orderBy(user.age.asc()).fetchResults();
         assertEquals(4l, results.getTotal());
         assertEquals(2, results.getResults().size());
 
-        results = query().offset(2).orderBy(user.age.asc()).listResults();
+        results = query().offset(2).orderBy(user.age.asc()).fetchResults();
         assertEquals(4l, results.getTotal());
         assertEquals(2, results.getResults().size());
     }
 
     @Test
     public void EmptyResults() {
-        SearchResults<User> results = query().where(user.firstName.eq("XXX")).listResults();
+        QueryResults<User> results = query().where(user.firstName.eq("XXX")).fetchResults();
         assertEquals(0l, results.getTotal());
         assertEquals(Collections.emptyList(), results.getResults());
     }
@@ -439,7 +439,7 @@ public class MongodbQueryTest {
 
         Iterator<User> i = where(user.firstName.startsWith("A"))
                             .orderBy(user.firstName.asc())
-                            .iterate();
+                            .fetchIterate();
 
         assertEquals(a, i.next());
         assertEquals(b, i.next());
@@ -450,8 +450,8 @@ public class MongodbQueryTest {
     @Test
     public void UniqueResultAndLimitAndOffset() {
         MorphiaQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
-        assertEquals(4, q.list().size());
-        assertEquals(u1, q.list().get(0));
+        assertEquals(4, q.fetch().size());
+        assertEquals(u1, q.fetch().get(0));
     }
 
     @Test
@@ -459,7 +459,7 @@ public class MongodbQueryTest {
         for (User u : users) {
             if (u.getFriend() != null) {
                 assertQuery(user.friend().eq(u.getFriend()), u);
-                where(user.friend().ne(u.getFriend())).list();
+                where(user.friend().ne(u.getFriend())).fetch();
             }
         }
     }
@@ -495,8 +495,8 @@ public class MongodbQueryTest {
         predicates.add(list.isNotEmpty());
 
         for (Predicate predicate : predicates) {
-            long count1 = where(predicate).count();
-            long count2 = where(predicate.not()).count();
+            long count1 = where(predicate).fetchCount();
+            long count2 = where(predicate.not()).fetchCount();
             assertEquals(predicate.toString(), 4, count1 + count2);
         }
     }
@@ -517,8 +517,8 @@ public class MongodbQueryTest {
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
         ds.save(i);
 
-        assertTrue(where(item, item.ctds.contains(i.getCtds().get(0))).count() > 0);
-        assertTrue(where(item, item.ctds.contains(ObjectId.get())).count() == 0);
+        assertTrue(where(item, item.ctds.contains(i.getCtds().get(0))).fetchCount() > 0);
+        assertTrue(where(item, item.ctds.contains(ObjectId.get())).fetchCount() == 0);
     }
 
     @Test
@@ -527,8 +527,8 @@ public class MongodbQueryTest {
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
         ds.save(i);
 
-        assertTrue(where(item, item.ctds.any().in(i.getCtds())).count() > 0);
-        assertTrue(where(item, item.ctds.any().in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
+        assertTrue(where(item, item.ctds.any().in(i.getCtds())).fetchCount() > 0);
+        assertTrue(where(item, item.ctds.any().in(Arrays.asList(ObjectId.get(), ObjectId.get()))).fetchCount() == 0);
     }
 
     @Test
@@ -545,7 +545,7 @@ public class MongodbQueryTest {
     public void ReadPreference() {
         MorphiaQuery<User> query = query();
         query.setReadPreference(ReadPreference.primary());
-        assertEquals(4, query.count());
+        assertEquals(4, query.fetchCount());
 
     }
 
@@ -580,7 +580,7 @@ public class MongodbQueryTest {
 
     private void assertQuery(MorphiaQuery<User> query, User ... expected ) {
         String toString = query.toString();
-        List<User> results = query.list();
+        List<User> results = query.fetch();
 
         assertNotNull(toString, results);
         if (expected == null ) {
