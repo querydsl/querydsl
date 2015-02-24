@@ -13,9 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
 import java.util.IdentityHashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * Templates provides operator patterns for query expression serialization
@@ -55,8 +56,8 @@ public class Templates {
         add(Ops.AND, "{0} && {1}", 36);
         add(Ops.NOT, "!{0}", 3);
         add(Ops.OR, "{0} || {1}", 38);
-        add(Ops.XNOR, "{0} xnor {1}", 39);
-        add(Ops.XOR, "{0} xor {1}", 39);
+        add(Ops.XNOR, "{0} xnor {1}", 37);
+        add(Ops.XOR, "{0} xor {1}", 37);
 
         // collection
         add(Ops.COL_IS_EMPTY, "empty({0})");
@@ -73,31 +74,29 @@ public class Templates {
 
         // comparison
         add(Ops.BETWEEN, "{0} between {1} and {2}", 30);
-        add(Ops.GOE, "{0} >= {1}", 20);
-        add(Ops.GT, "{0} > {1}", 21);
-        add(Ops.LOE, "{0} <= {1}", 22);
-        add(Ops.LT, "{0} < {1}", 23);
+        add(Ops.GOE, "{0} >= {1}", 18);
+        add(Ops.GT, "{0} > {1}", 18);
+        add(Ops.LOE, "{0} <= {1}", 18);
+        add(Ops.LT, "{0} < {1}", 18);
 
         // numeric
         add(Ops.NEGATE, "-{0}", 6);
-        add(Ops.ADD, "{0} + {1}", 13);
-        add(Ops.DIV, "{0} / {1}", 8);
-        add(Ops.MOD, "{0} % {1}", 10);
+        add(Ops.ADD, "{0} + {1}", 12);
+        add(Ops.DIV, "{0} / {1}", 7);
+        add(Ops.MOD, "{0} % {1}", 7);
         add(Ops.MULT, "{0} * {1}", 7);
         add(Ops.SUB, "{0} - {1}", 12);
 
         // various
         add(Ops.EQ, "{0} = {1}", 18);
         add(Ops.EQ_IGNORE_CASE, "eqIc({0},{1})", 18);
-        add(Ops.INSTANCE_OF, "{0}.class = {1}");
-        add(Ops.NE, "{0} != {1}", 25);
-        add(Ops.IN, "{0} in {1}", 27);
+        add(Ops.INSTANCE_OF, "{0}.class = {1}", 18);
+        add(Ops.NE, "{0} != {1}", 18);
+        add(Ops.IN, "{0} in {1}", 18);
         add(Ops.NOT_IN, "{0} not in {1}", 27);
-        add(Ops.IS_NULL, "{0} is null", 26);
-        add(Ops.IS_NOT_NULL, "{0} is not null", 26);
+        add(Ops.IS_NULL, "{0} is null", 18);
+        add(Ops.IS_NOT_NULL, "{0} is not null", 18);
         add(Ops.ALIAS, "{0} as {1}", 0);
-
-        add(Ops.EXISTS, "exists({0})");
 
         add(Ops.NUMCAST, "cast({0},{1})");
         add(Ops.STRING_CAST, "str({0})");
@@ -122,8 +121,8 @@ public class Templates {
         add(Ops.INDEX_OF, "indexOf({0},{1})");
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
-        add(Ops.LIKE, "{0} like {1}", 26);
-        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", 26);
+        add(Ops.LIKE, "{0} like {1}", 18);
+        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", 18);
 
         add(Ops.StringOps.LEFT, "left({0},{1})");
         add(Ops.StringOps.RIGHT, "right({0},{1})");
@@ -244,7 +243,7 @@ public class Templates {
         add(Ops.NULLIF, "nullif({0},{1})");
 
         // subquery
-        add(Ops.EXISTS, "exists {0}");
+        add(Ops.EXISTS, "exists {0}", 0);
 
         // numeric aggregates
         add(Ops.AggOps.BOOLEAN_ALL, "all({0})");
@@ -308,6 +307,12 @@ public class Templates {
 
     public final int getPrecedence(Operator op) {
         return precedence.get(op).intValue();
+    }
+
+    protected void setPrecedence(int p, Operator... ops) {
+        for (Operator op : ops) {
+            precedence.put(op, p);
+        }
     }
 
 }

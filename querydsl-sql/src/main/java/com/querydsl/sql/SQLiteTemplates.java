@@ -68,7 +68,9 @@ public class SQLiteTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setArraysSupported(false);
 
-        add(Ops.MOD, "{0} % {1}");
+        setPrecedence(17, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+
+        add(Ops.MOD, "{0} % {1}", 7);
 
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2s}+1)-1");

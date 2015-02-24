@@ -78,6 +78,19 @@ public class PostgreSQLTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setSupportsUnquotedReservedWordsAsIdentifier(true);
 
+        setPrecedence(19, Ops.IN, Ops.CONCAT, Ops.MATCHES);
+        setPrecedence(20, Ops.BETWEEN);
+        setPrecedence(21, Ops.LIKE, Ops.LIKE_ESCAPE);
+        setPrecedence(22, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        setPrecedence(23, Ops.EQ, Ops.EQ_IGNORE_CASE);
+
+        // other like cases
+        setPrecedence(21, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
+        add(Ops.MOD, "{0} % {1}", 7);
+
         // String
         add(Ops.MATCHES, "{0} ~ {1}");
         add(Ops.INDEX_OF, "strpos({0},{1})-1");

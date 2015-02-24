@@ -26,14 +26,13 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.sql.types.Type;
 import com.querydsl.core.types.*;
+import com.querydsl.sql.types.Type;
 
 /**
  * SQLTemplates extends Templates to provides SQL specific extensions
@@ -306,8 +305,6 @@ public class SQLTemplates extends Templates {
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 35);
         add(Ops.OR, "{0} or {1}", 38);
-        add(Ops.XNOR, "{0} xnor {1}", 39);
-        add(Ops.XOR, "{0} xor {1}", 39);
 
         // math
         add(Ops.MathOps.RANDOM, "rand()");
@@ -359,8 +356,8 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.TRUNC_SECOND, "date_trunc('second',{0})");
 
         // string
-        add(Ops.CONCAT, "{0} || {1}", 38);
-        add(Ops.MATCHES, "{0} regexp {1}", 25);
+        add(Ops.CONCAT, "{0} || {1}", 12);
+        add(Ops.MATCHES, "{0} regexp {1}", 18);
         add(Ops.CHAR_AT, "cast(substr({0},{1s}+1,1) as char)");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
         add(Ops.INDEX_OF, "locate({1},{0})-1");
@@ -372,13 +369,13 @@ public class SQLTemplates extends Templates {
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
 
         // like with escape
-        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'");
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
+        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'", 18);
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'", 18);
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'", 18);
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'", 18);
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'", 18);
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'", 18);
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'", 18);
 
         add(SQLOps.CAST, "cast({0} as {1s})");
         add(SQLOps.UNION, "{0}\nunion\n{1}", 50);

@@ -18,11 +18,16 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.sql.domain.QSurvey;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Template;
 import com.querydsl.core.types.expr.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.sql.domain.QSurvey;
+
+import junit.framework.Assert;
 
 public abstract class AbstractSQLTemplatesTest {
 
@@ -49,7 +54,7 @@ public abstract class AbstractSQLTemplatesTest {
         if (templates.getDummyTable() == null) {
             assertEquals("select 1", query.toString());
         } else {
-            assertEquals("select 1 from dual", query.toString());
+            assertEquals("select 1 from " + templates.getDummyTable(), query.toString());
         }
     }
 
@@ -73,12 +78,13 @@ public abstract class AbstractSQLTemplatesTest {
                     "union\n" +
                     "(select 3)", union.toString());
         } else {
+            String dummyTable = templates.getDummyTable();
             assertEquals(
-                    "(select 1 as col1 from dual)\n" +
+                    "(select 1 as col1 from "+dummyTable+")\n" +
                     "union\n" +
-                    "(select 2 from dual)\n" +
+                    "(select 2 from "+dummyTable+")\n" +
                     "union\n" +
-                    "(select 3 from dual)", union.toString());
+                    "(select 3 from "+dummyTable+")", union.toString());
         }
     }
 
@@ -91,5 +97,34 @@ public abstract class AbstractSQLTemplatesTest {
     protected SQLSubQuery sq() {
         return new SQLSubQuery();
     }
+
+    protected int getPrecedence(Operator... ops) {
+        int precedence = templates.getPrecedence(ops[0]);
+        for (int i = 1; i < ops.length; i++) {
+            assertEquals(ops[i].name(), precedence, templates.getPrecedence(ops[i]));
+        }
+        return precedence;
+    }
+
+    @Test
+    public void Generic_Precedence() {
+        int likePrecedence = templates.getPrecedence(Ops.LIKE);
+        int eqPrecedence = templates.getPrecedence(Ops.EQ);
+        if (templates.getPrecedence(Ops.EQ_IGNORE_CASE) != eqPrecedence) {
+            Assert.fail("Unexpected precedence for EQ_IGNORE_CASE "
+                    + templates.getPrecedence(Ops.EQ_IGNORE_CASE));
+        }
+        for (Operator op : Ops.values()) {
+            Template template = templates.getTemplate(op);
+            int precedence = templates.getPrecedence(op);
+            if (template.toString().contains(" like ") && precedence != likePrecedence) {
+                Assert.fail("Unexpected precedence for " + op + " with template " + template);
+            } else if (!template.toString().contains("(") && precedence < 0) {
+                Assert.fail("Unexpected precedence for " + op + " with template " + template);
+            }
+
+        }
+    }
+
 
 }

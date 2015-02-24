@@ -60,14 +60,24 @@ public class SQLServerTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setArraysSupported(false);
 
+        setPrecedence(12, Ops.NEGATE);
+        setPrecedence(28, Ops.NOT);
+        setPrecedence(29, Ops.AND);
+        setPrecedence(30, Ops.IN, Ops.NOT_IN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.OR);
+
+        // other like cases
+        setPrecedence(30, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
         // String
-        add(Ops.CONCAT, "{0} + {1}", 13);
+        add(Ops.CONCAT, "{0} + {1}", 12);
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
         add(Ops.INDEX_OF, "charindex({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1");
         // NOTE : needs to be replaced with real regular expression
-        add(Ops.MATCHES, "{0} like {1}");
-        add(Ops.STRING_IS_EMPTY, "len({0}) = 0");
+        add(Ops.MATCHES, "{0} like {1}", 30);
+        add(Ops.STRING_IS_EMPTY, "len({0}) = 0", 18);
         add(Ops.STRING_LENGTH, "len({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
         add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})", 1);

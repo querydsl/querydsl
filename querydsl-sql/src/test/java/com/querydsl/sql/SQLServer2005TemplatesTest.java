@@ -14,13 +14,11 @@
 package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
@@ -80,6 +78,30 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());
+    }
+
+    @Test
+    public void Precedence() {
+        // 1  ~ (Bitwise NOT)
+        // 2  (Multiply), / (Division), % (Modulo)
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV);
+        // 3 + (Positive), - (Negative), + (Add), (+ Concatenate), - (Subtract), & (Bitwise AND), ^ (Bitwise Exclusive OR), | (Bitwise OR)
+        int p3 = getPrecedence(Ops.NEGATE, Ops.ADD, Ops.SUB, Ops.CONCAT);
+        // 4 =, >, <, >=, <=, <>, !=, !>, !< (Comparison operators)
+        int p4 = getPrecedence(Ops.EQ, Ops.GT, Ops.LT, Ops.GOE, Ops.LOE, Ops.NE);
+        // 5 NOT
+        int p5 = getPrecedence(Ops.NOT);
+        // 6 AND
+        int p6 = getPrecedence(Ops.AND);
+        // 7 ALL, ANY, BETWEEN, IN, LIKE, OR, SOME
+        int p7 = getPrecedence(Ops.BETWEEN, Ops.IN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.OR);
+        // 8 = (Assignment)
+
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
     }
 
 }

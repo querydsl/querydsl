@@ -14,9 +14,11 @@
 package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Ops;
 
 
 public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
@@ -47,6 +49,43 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
         assertEquals("from SURVEY survey1 order by (case when survey1.NAME is null then 1 else 0 end), survey1.NAME asc", query.toString());
     }
 
+    @Test
+    public void Precedence() {
+        // INTERVAL
+        // BINARY, COLLATE
+        // !
+        // - (unary minus), ~ (unary bit inversion)
+        int p0 = getPrecedence(Ops.NEGATE);
+        // ^
+        // *, /, DIV, %, MOD
+        int p1 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);
+        // -, +
+        int p2 = getPrecedence(Ops.SUB, Ops.ADD);
+        // <<, >>
+        // &
+        // |
+        // = (comparison), <=>, >=, >, <=, <, <>, !=, IS, LIKE, REGEXP, IN
+        int p3 = getPrecedence(Ops.EQ, Ops.GOE, Ops.GT, Ops.LT, Ops.NE, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.MATCHES, Ops.IN, Ops.LIKE, Ops.LIKE_ESCAPE);
+        // BETWEEN, CASE, WHEN, THEN, ELSE
+        int p4 = getPrecedence(Ops.BETWEEN, Ops.CASE, Ops.CASE_ELSE);
+        // NOT
+        int p5 = getPrecedence(Ops.NOT);
+        // &&, AND
+        int p6 = getPrecedence(Ops.AND);
+        // XOR
+        int p7 = getPrecedence(Ops.XOR, Ops.XNOR);
+        // ||, OR
+        int p8 = getPrecedence(Ops.OR);
+        // = (assignment), :=
 
+        assertTrue(p0 < p1);
+        assertTrue(p1 < p2);
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
+        assertTrue(p7 < p8);
+    }
 
 }
