@@ -1,14 +1,20 @@
 package com.querydsl.jpa;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
+import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Template;
 import com.querydsl.core.types.Templates;
+
+import junit.framework.Assert;
 
 public class JPQLTemplatesTest {
 
@@ -24,7 +30,6 @@ public class JPQLTemplatesTest {
         }
     }
 
-    
     @Test
     public void Custom_Escape() {
         List<Templates> templates = Arrays.<Templates>asList(
@@ -35,6 +40,60 @@ public class JPQLTemplatesTest {
         for (Templates t : templates) {
             assertEquals("{0} like {1} escape 'X'", t.getTemplate(Ops.LIKE).toString());
         }
+    }
+
+    @Test
+    public void Precedence() {
+        // Navigation operator (.)
+        // +, - unary *,
+        int p1 = getPrecedence(Ops.NEGATE);
+        // / multiplication and division
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV);
+        // +, - addition and subtraction
+        int p3 = getPrecedence(Ops.ADD, Ops.SUB);
+        // Comparison operators : =, >, >=, <, <=, <> (not equal), [NOT] BETWEEN, [NOT] LIKE, [NOT] IN, IS [NOT] NULL, IS [NOT] EMPTY, [NOT] MEMBER [OF]
+        int p4 = getPrecedence(Ops.EQ, Ops.GT, Ops.GOE, Ops.LT, Ops.LOE, Ops.NE, Ops.BETWEEN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.IN,
+                Ops.IS_NULL, Ops.IS_NOT_NULL, JPQLOps.MEMBER_OF, JPQLOps.NOT_MEMBER_OF);
+        // NOT
+        int p5 = getPrecedence(Ops.NOT);
+        // AND
+        int p6 = getPrecedence(Ops.AND);
+        // OR
+        int p7 = getPrecedence(Ops.OR);
+
+        assertTrue(p1 < p2);
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
+    }
+
+    protected int getPrecedence(Operator... ops) {
+        int precedence = JPQLTemplates.DEFAULT.getPrecedence(ops[0]);
+        for (int i = 1; i < ops.length; i++) {
+            assertEquals(ops[i].name(), precedence, JPQLTemplates.DEFAULT.getPrecedence(ops[i]));
+        }
+        return precedence;
+    }
+
+    @Test
+    public void Generic_Precedence() {
+        for (JPQLTemplates templates : ImmutableList.of(
+                JPQLTemplates.DEFAULT, HQLTemplates.DEFAULT, EclipseLinkTemplates.DEFAULT)) {
+            int likePrecedence = templates.getPrecedence(Ops.LIKE);
+            for (Operator op : Ops.values()) {
+                Template template = templates.getTemplate(op);
+                int precedence = templates.getPrecedence(op);
+                if (template.toString().contains(" like ") && precedence != likePrecedence) {
+                    Assert.fail("Unexpected precedence for " + op + " with template " + template);
+                } else if (!template.toString().contains("(") && precedence < 0) {
+                    Assert.fail("Unexpected precedence for " + op + " with template " + template);
+                }
+
+            }
+        }
+
     }
 
 }

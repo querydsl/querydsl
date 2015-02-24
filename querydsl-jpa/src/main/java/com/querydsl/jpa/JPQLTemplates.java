@@ -48,6 +48,14 @@ public class JPQLTemplates extends Templates {
         super(escape);
         this.queryHandler = queryHandler;
 
+        setPrecedence(18, Ops.BETWEEN, Ops.COL_IS_EMPTY, Ops.MAP_IS_EMPTY);
+
+        // other like cases
+        setPrecedence(18, Ops.MATCHES, Ops.MATCHES_IC,
+                Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
         add(Ops.CASE, "case {0} end");
         add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 0);
         add(Ops.CASE_ELSE,  "else {0}", 0);
@@ -55,28 +63,28 @@ public class JPQLTemplates extends Templates {
         //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
-        add(Ops.NOT, "not {0}", 3);
-        add(Ops.OR, "{0} or {1}", 38);
-        add(Ops.XNOR, "{0} xnor {1}", 39);
-        add(Ops.XOR, "{0} xor {1}", 39);
+        add(Ops.NOT, "not {0}", 35);
+        add(Ops.OR, "{0} or {1}", 37);
+        add(Ops.XNOR, "{0} xnor {1}");
+        add(Ops.XOR, "{0} xor {1}");
 
         // comparison
-        add(Ops.BETWEEN, "{0} between {1} and {2}", 30);
+        add(Ops.BETWEEN, "{0} between {1} and {2}");
 
         // numeric
         add(Ops.MathOps.SQRT, "sqrt({0})");
         add(Ops.MOD, "mod({0},{1})", 0);
 
         // various
-        add(Ops.NE, "{0} <> {1}", 25);
-        add(Ops.IS_NULL, "{0} is null", 26);
-        add(Ops.IS_NOT_NULL, "{0} is not null", 26);
+        add(Ops.NE, "{0} <> {1}");
+        add(Ops.IS_NULL, "{0} is null");
+        add(Ops.IS_NOT_NULL, "{0} is not null");
         add(JPQLOps.CAST, "cast({0} as {1s})");
         add(Ops.NUMCAST, "cast({0} as {1s})");
 
         // collection
-        add(JPQLOps.MEMBER_OF, "{0} member of {1}");
-        add(JPQLOps.NOT_MEMBER_OF, "{0} not member of {1}");
+        add(JPQLOps.MEMBER_OF, "{0} member of {1}", 18);
+        add(JPQLOps.NOT_MEMBER_OF, "{0} not member of {1}", 18);
 
         add(Ops.IN, "{0} in {1}");
         add(Ops.NOT_IN, "{0} not in {1}");
@@ -85,10 +93,10 @@ public class JPQLTemplates extends Templates {
         add(Ops.ARRAY_SIZE, "size({0})");
 
         // string
-        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'",1);
+        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
         add(Ops.CONCAT, "concat({0},{1})",0);
-        add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'", 27); // TODO : support real regexes
-        add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'", 27); // TODO : support real regexes
+        add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'"); // TODO : support real regexes
+        add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'"); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)", 1);
         add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})", 1);

@@ -34,7 +34,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     
     @Test
     public void BooleanOperations_Not() {
-        assertToString("not (cust is null)", cust.isNull().not());
+        assertToString("not cust is null", cust.isNull().not());
     }
     
     
