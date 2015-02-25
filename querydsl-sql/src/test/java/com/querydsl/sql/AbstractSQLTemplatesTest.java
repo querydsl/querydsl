@@ -18,10 +18,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Template;
+import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
@@ -124,6 +122,48 @@ public abstract class AbstractSQLTemplatesTest {
             }
 
         }
+    }
+
+    @Test
+    public void Arithmetic() {
+        NumberExpression<Integer> one = Expressions.numberPath(Integer.class, "one");
+        NumberExpression<Integer> two = Expressions.numberPath(Integer.class, "two");
+
+        // add
+        assertSerialized(one.add(two), "one + two");
+        assertSerialized(one.add(two).multiply(1), "(one + two) * ?");
+        assertSerialized(one.add(two).divide(1), "(one + two) / ?");
+        assertSerialized(one.add(two).add(1), "one + two + ?");
+
+        assertSerialized(one.add(two.multiply(1)), "one + two * ?");
+        assertSerialized(one.add(two.divide(1)), "one + two / ?");
+        assertSerialized(one.add(two.add(1)), "one + (two + ?)"); // XXX could be better
+
+        // sub
+        assertSerialized(one.subtract(two), "one - two");
+        assertSerialized(one.subtract(two).multiply(1), "(one - two) * ?");
+        assertSerialized(one.subtract(two).divide(1), "(one - two) / ?");
+        assertSerialized(one.subtract(two).add(1), "one - two + ?");
+
+        assertSerialized(one.subtract(two.multiply(1)), "one - two * ?");
+        assertSerialized(one.subtract(two.divide(1)), "one - two / ?");
+        assertSerialized(one.subtract(two.add(1)), "one - (two + ?)");
+
+        // mult
+        assertSerialized(one.multiply(two), "one * two");
+        assertSerialized(one.multiply(two).multiply(1), "one * two * ?");
+        assertSerialized(one.multiply(two).divide(1), "one * two / ?");
+        assertSerialized(one.multiply(two).add(1), "one * two + ?");
+
+        assertSerialized(one.multiply(two.multiply(1)), "one * (two * ?)"); // XXX could better
+        assertSerialized(one.multiply(two.divide(1)), "one * (two / ?)");
+        assertSerialized(one.multiply(two.add(1)), "one * (two + ?)");
+    }
+
+    private void assertSerialized(Expression<?> expr, String serialized) {
+        SQLSerializer serializer = new SQLSerializer(new Configuration(templates));
+        serializer.handle(expr);
+        assertEquals(serialized, serializer.toString());
     }
 
 
