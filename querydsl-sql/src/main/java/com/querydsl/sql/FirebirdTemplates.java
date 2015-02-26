@@ -45,8 +45,8 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");
         add(Ops.SUBSTR_1ARG, "substring({0} from {1s}+1)", 1);
         add(Ops.SUBSTR_2ARGS, "substring({0} from {1s}+1 for {2s}-{1s})", 1);
-        add(Ops.INDEX_OF, "position({1},{0})-1");
-        add(Ops.INDEX_OF_2ARGS, "position({1},{0},{2s}+1)-1");
+        add(Ops.INDEX_OF, "(position({1},{0})-1)");
+        add(Ops.INDEX_OF_2ARGS, "(position({1},{0},{2s}+1)-1)");
         add(Ops.StringOps.LOCATE, "position({0},{1})");
         add(Ops.StringOps.LOCATE2, "position({0},{1},{2})");
         add(Ops.STRING_LENGTH, "char_length({0})");

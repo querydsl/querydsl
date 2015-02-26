@@ -112,8 +112,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
         add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
         add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
-        add(Ops.INDEX_OF, "locate({1},{0})-1");
-        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1");
+        add(Ops.INDEX_OF, "(locate({1},{0})-1)");
+        add(Ops.INDEX_OF_2ARGS, "(locate({1},{0},{2s}+1)-1)");
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");

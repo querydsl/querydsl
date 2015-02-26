@@ -114,13 +114,15 @@ public abstract class AbstractSQLTemplatesTest {
         }
         for (Operator op : Ops.values()) {
             Template template = templates.getTemplate(op);
+            String str = template.toString();
             int precedence = templates.getPrecedence(op);
-            if (template.toString().contains(" like ") && precedence != likePrecedence) {
+            if (str.contains(" like ") && precedence != likePrecedence) {
                 Assert.fail("Unexpected precedence for " + op + " with template " + template);
-            } else if (!template.toString().contains("(") && precedence < 0) {
+            } else if (!str.contains("(") && precedence < 0) {
                 Assert.fail("Unexpected precedence for " + op + " with template " + template);
+            } else if (str.endsWith(" + 1") || str.endsWith("+1") || str.endsWith(" - 1") || str.endsWith("-1")) {
+                Assert.fail("Unsafe pattern for " + op + " with template " + template);
             }
-
         }
     }
 

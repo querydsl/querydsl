@@ -52,7 +52,7 @@ public class HSQLDBTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setFunctionJoinsWrapped(true);
         add(Ops.TRIM, "trim(both from {0})");
-        add(Ops.NEGATE, "{0} * -1", 7);
+        add(Ops.NEGATE, "({0} * -1)", -1);
 
         add(SQLOps.NEXTVAL, "next value for {0s}");
 

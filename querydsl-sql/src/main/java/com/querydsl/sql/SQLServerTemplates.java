@@ -73,8 +73,8 @@ public class SQLServerTemplates extends SQLTemplates {
         // String
         add(Ops.CONCAT, "{0} + {1}", 12);
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
-        add(Ops.INDEX_OF, "charindex({1},{0})-1");
-        add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1");
+        add(Ops.INDEX_OF, "(charindex({1},{0})-1)");
+        add(Ops.INDEX_OF_2ARGS, "(charindex({1},{0},{2})-1)");
         // NOTE : needs to be replaced with real regular expression
         add(Ops.MATCHES, "{0} like {1}", 30);
         add(Ops.STRING_IS_EMPTY, "len({0}) = 0", 18);
