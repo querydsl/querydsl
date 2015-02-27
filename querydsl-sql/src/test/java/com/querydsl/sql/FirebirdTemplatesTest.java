@@ -14,9 +14,11 @@
 package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.expr.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
@@ -52,6 +54,36 @@ public class FirebirdTemplatesTest extends AbstractSQLTemplatesTest{
                 "select 2 from RDB$DATABASE\n" +
                 "union\n" +
                 "select 3 from RDB$DATABASE", union.toString());
+    }
+
+    @Test
+    public void Precedence() {
+        // concat
+        // *, /, +, -
+        // comparison
+        // NOT
+        // AND
+        // OR
+
+        int p1 = getPrecedence(Ops.CONCAT);
+        int p2 = getPrecedence(Ops.NEGATE);
+        int p3 = getPrecedence(Ops.MULT, Ops.DIV);
+        int p4 = getPrecedence(Ops.SUB, Ops.ADD);
+        int p5 = getPrecedence(Ops.EQ, Ops.GOE, Ops.GT, Ops.LT, Ops.NE, Ops.IS_NULL, Ops.IS_NOT_NULL,
+                               Ops.MATCHES, Ops.IN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN);
+        int p6 = getPrecedence(Ops.NOT);
+        int p7 = getPrecedence(Ops.AND);
+        int p8 = getPrecedence(Ops.XOR, Ops.XNOR);
+        int p9 = getPrecedence(Ops.OR);
+
+        assertTrue(p1 < p2);
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
+        assertTrue(p7 < p8);
+        assertTrue(p8 < p9);
     }
 
 }

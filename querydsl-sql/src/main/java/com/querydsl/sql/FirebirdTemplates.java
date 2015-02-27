@@ -41,6 +41,11 @@ public class FirebirdTemplates extends SQLTemplates {
         setWrapSelectParameters(true);
         setArraysSupported(false);
 
+        setPrecedence(6, Ops.NEGATE);
+        setPrecedence(18, Ops.BETWEEN);
+
+        add(Ops.CONCAT, "{0} || {1}", 5);
+
         // string
         add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");
         add(Ops.SUBSTR_1ARG, "substring({0} from {1s}+1)", 1);
