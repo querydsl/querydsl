@@ -190,10 +190,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     @Override
     public String toString() {
         if (normalize) {
-            return Normalization.normalize(builder.toString());    
+            return Normalization.normalize(builder.toString());
         } else {
             return builder.toString();
-        }        
+        }
     }
 
     @Override

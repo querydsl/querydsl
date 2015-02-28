@@ -31,6 +31,11 @@ public class NormalizationTest {
     }
 
     @Test
+    public void Arithmetic() {
+        assertEquals("3", Normalization.normalize("1 - 2 + 4"));
+    }
+
+    @Test
     public void Normalize_Addition() {
         assertEquals("3", Normalization.normalize("1+2"));
         assertEquals("where 3 = 3", Normalization.normalize("where 1+2 = 3"));

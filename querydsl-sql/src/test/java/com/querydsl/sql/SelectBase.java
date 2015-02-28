@@ -126,6 +126,29 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Arithmetic() {
+        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "(1.0)");
+        NumberExpression<Integer> two = NumberTemplate.create(Integer.class, "(2.0)");
+        NumberExpression<Integer> three = NumberTemplate.create(Integer.class, "(3.0)");
+        NumberExpression<Integer> four = NumberTemplate.create(Integer.class, "(4.0)");
+
+        assertEquals(1, query().singleResult(one).intValue());
+        assertEquals(2, query().singleResult(two).intValue());
+        assertEquals(4, query().singleResult(four).intValue());
+
+        assertEquals(3, query().singleResult(one.subtract(two).add(four)).intValue());
+        assertEquals(-5, query().singleResult(one.subtract(two.add(four))).intValue());
+        assertEquals(-1, query().singleResult(one.add(two).subtract(four)).intValue());
+        assertEquals(-1, query().singleResult(one.add(two.subtract(four))).intValue());
+
+        assertEquals(12, query().singleResult(one.add(two).multiply(four)).intValue());
+        assertEquals(2, query().singleResult(four.multiply(one).divide(two)).intValue());
+        assertEquals(2, query().singleResult(four.multiply(one.divide(two))).intValue());
+        assertEquals(6, query().singleResult(four.divide(two).multiply(three)).intValue());
+        assertEquals(1, query().singleResult(four.divide(two.multiply(two))).intValue());
+    }
+
+    @Test
     @IncludeIn(POSTGRESQL) // TODO generalize array literal projections
     public void Array() {
         Expression<Integer[]> expr = Expressions.template(Integer[].class, "'{1,2,3}'::int[]");
