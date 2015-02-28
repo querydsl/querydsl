@@ -144,6 +144,15 @@ public class DB2Templates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
 
+        setPrecedence(7, Ops.CONCAT);
+        setPrecedence(19, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN,
+                Ops.IN, Ops.NOT_IN, Ops.EXISTS);
+
+        // other like cases
+        setPrecedence(19, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
         add(SQLOps.NEXTVAL, "next value for {0s}");
 
         add(Ops.MathOps.RANDOM, "rand()");
