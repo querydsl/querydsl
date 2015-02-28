@@ -19,13 +19,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.core.support.Expressions;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.TemplatesTestUtils;
 import com.querydsl.core.types.expr.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
 import com.querydsl.sql.domain.QSurvey;
-
-import junit.framework.Assert;
 
 public abstract class AbstractSQLTemplatesTest {
 
@@ -106,24 +107,7 @@ public abstract class AbstractSQLTemplatesTest {
 
     @Test
     public void Generic_Precedence() {
-        int likePrecedence = templates.getPrecedence(Ops.LIKE);
-        int eqPrecedence = templates.getPrecedence(Ops.EQ);
-        if (templates.getPrecedence(Ops.EQ_IGNORE_CASE) != eqPrecedence) {
-            Assert.fail("Unexpected precedence for EQ_IGNORE_CASE "
-                    + templates.getPrecedence(Ops.EQ_IGNORE_CASE));
-        }
-        for (Operator op : Ops.values()) {
-            Template template = templates.getTemplate(op);
-            String str = template.toString();
-            int precedence = templates.getPrecedence(op);
-            if (str.contains(" like ") && precedence != likePrecedence) {
-                Assert.fail("Unexpected precedence for " + op + " with template " + template);
-            } else if (!str.contains("(") && precedence < 0) {
-                Assert.fail("Unexpected precedence for " + op + " with template " + template);
-            } else if (str.endsWith(" + 1") || str.endsWith("+1") || str.endsWith(" - 1") || str.endsWith("-1")) {
-                Assert.fail("Unsafe pattern for " + op + " with template " + template);
-            }
-        }
+        TemplatesTestUtils.testPrecedence(templates);
     }
 
     @Test

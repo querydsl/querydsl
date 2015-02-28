@@ -11,10 +11,8 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Template;
 import com.querydsl.core.types.Templates;
-
-import junit.framework.Assert;
+import com.querydsl.core.types.TemplatesTestUtils;
 
 public class JPQLTemplatesTest {
 
@@ -81,19 +79,7 @@ public class JPQLTemplatesTest {
     public void Generic_Precedence() {
         for (JPQLTemplates templates : ImmutableList.of(
                 JPQLTemplates.DEFAULT, HQLTemplates.DEFAULT, EclipseLinkTemplates.DEFAULT)) {
-            int likePrecedence = templates.getPrecedence(Ops.LIKE);
-            for (Operator op : Ops.values()) {
-                Template template = templates.getTemplate(op);
-                String str = template.toString();
-                int precedence = templates.getPrecedence(op);
-                if (str.contains(" like ") && precedence != likePrecedence) {
-                    Assert.fail("Unexpected precedence for " + op + " with template " + template);
-                } else if (!str.contains("(") && precedence < 0) {
-                    Assert.fail("Unexpected precedence for " + op + " with template " + template);
-                } else if (str.endsWith(" + 1") || str.endsWith("+1") || str.endsWith(" - 1") || str.endsWith("-1")) {
-                    Assert.fail("Unsafe pattern for " + op + " with template " + template);
-                }
-            }
+            TemplatesTestUtils.testPrecedence(templates);
         }
     }
 

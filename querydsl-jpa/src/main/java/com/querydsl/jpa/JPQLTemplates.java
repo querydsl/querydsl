@@ -48,7 +48,7 @@ public class JPQLTemplates extends Templates {
         super(escape);
         this.queryHandler = queryHandler;
 
-        setPrecedence(18, Ops.BETWEEN, Ops.COL_IS_EMPTY, Ops.MAP_IS_EMPTY);
+        setPrecedence(18, Ops.BETWEEN, Ops.COL_IS_EMPTY);
 
         // other like cases
         setPrecedence(18, Ops.MATCHES, Ops.MATCHES_IC,
@@ -73,7 +73,7 @@ public class JPQLTemplates extends Templates {
 
         // numeric
         add(Ops.MathOps.SQRT, "sqrt({0})");
-        add(Ops.MOD, "mod({0},{1})", 0);
+        add(Ops.MOD, "mod({0},{1})", -1);
 
         // various
         add(Ops.NE, "{0} <> {1}");
@@ -94,12 +94,12 @@ public class JPQLTemplates extends Templates {
 
         // string
         add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
-        add(Ops.CONCAT, "concat({0},{1})",0);
+        add(Ops.CONCAT, "concat({0},{1})", -1);
         add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'"); // TODO : support real regexes
         add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'"); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)", 1);
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})", 1);
+        add(Ops.SUBSTR_1ARG, "substring({0},({1s})+1)", -1); // TODO simplify
+        add(Ops.SUBSTR_2ARGS, "substring({0},({1s})+1,({2s})-({1s}))", -1); // TODO simplify
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");

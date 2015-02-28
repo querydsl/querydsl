@@ -62,7 +62,7 @@ public class DerbyTemplates extends SQLTemplates {
 
         setPrecedence(18, Ops.BETWEEN, Ops.EXISTS);
 
-        add(Ops.CONCAT, "varchar({0} || {1})");
+        add(Ops.CONCAT, "varchar({0} || {1})", -1);
 
         add(SQLOps.NEXTVAL, "next value for {0s}");
 

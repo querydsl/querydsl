@@ -104,7 +104,7 @@ public class MySQLTemplates extends SQLTemplates {
         setNullsLast(null);
 
         add(Ops.MOD, "{0} % {1}", 7);
-        add(Ops.CONCAT, "concat({0}, {1})", 0);
+        add(Ops.CONCAT, "concat({0}, {1})", -1);
 
         add(Ops.StringOps.LPAD, "lpad({0},{1},' ')");
         add(Ops.StringOps.RPAD, "rpad({0},{1},' ')");

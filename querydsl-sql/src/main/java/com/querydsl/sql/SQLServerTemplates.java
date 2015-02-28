@@ -80,7 +80,7 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.STRING_IS_EMPTY, "len({0}) = 0", 18);
         add(Ops.STRING_LENGTH, "len({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})", 1);
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})");
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");

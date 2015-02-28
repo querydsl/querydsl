@@ -13,17 +13,19 @@
  */
 package com.querydsl.jpa;
 
-import com.querydsl.jpa.domain.JobFunction;
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.domain.QDomesticCat;
-import com.querydsl.jpa.domain.QEmployee;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import com.querydsl.core.support.Context;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.TemplateExpressionImpl;
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import com.querydsl.jpa.domain.JobFunction;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QDomesticCat;
+import com.querydsl.jpa.domain.QEmployee;
 
 
 public class JPACollectionAnyVisitorTest {
@@ -63,7 +65,7 @@ public class JPACollectionAnyVisitorTest {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");
         assertMatches("exists \\(select 1\n"+
                 "from cat.kittens as cat_kittens.*\n" +
-                "where substring\\(cat_kittens.*\\.name,2\\) = \\?1\\)", serialize(predicate));
+                "where substring\\(cat_kittens.*\\.name,\\(1\\)\\+1\\) = \\?1\\)", serialize(predicate));
     }
 
     @Test
