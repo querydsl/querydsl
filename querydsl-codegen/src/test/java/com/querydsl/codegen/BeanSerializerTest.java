@@ -121,7 +121,9 @@ public class BeanSerializerTest {
         BeanSerializer serializer = new BeanSerializer();
         serializer.setAddToString(true);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        //System.out.println(writer.toString());
+        assertTrue(String.valueOf(writer).contains(
+                "    @Override\n"
+                + "    public String toString()"));
     }
 
     @Test

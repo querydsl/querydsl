@@ -13,10 +13,11 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Generated;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
+
+import javax.annotation.Generated;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -196,6 +197,7 @@ public class BeanSerializer implements Serializer{
     }
 
     protected void addToString(EntityType model, CodeWriter writer) throws IOException {
+        writer.line("@Override");
         writer.beginPublicMethod(Types.STRING, "toString");
         StringBuilder builder = new StringBuilder();
         for (Property property : model.getProperties()) {
