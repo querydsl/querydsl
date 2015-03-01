@@ -149,7 +149,7 @@ public class SerializationTest {
 
         assertEquals("from SURVEY SURVEY\n" +
                 "join table(TableValuedFunction(?)) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
     @Test
