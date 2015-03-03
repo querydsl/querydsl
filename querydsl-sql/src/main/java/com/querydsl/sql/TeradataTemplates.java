@@ -62,11 +62,11 @@ public class TeradataTemplates extends SQLTemplates {
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
 
-        setPrecedence(13, Ops.CONCAT);
-        setPrecedence(18, Ops.BETWEEN, Ops.NOT_IN);
+        setPrecedence(Precedence.ARITH_LOW + 1, Ops.CONCAT);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
 
         add(Ops.NE, "{0} <> {1}");
-        add(Ops.MOD, "{0} % {1}", 7);
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
 
         // String
         add(Ops.STRING_LENGTH, "character_length({0})");

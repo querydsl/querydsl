@@ -84,7 +84,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
     public void Precedence() {
         // 1  ~ (Bitwise NOT)
         // 2  (Multiply), / (Division), % (Modulo)
-        int p2 = getPrecedence(Ops.MULT, Ops.DIV);
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);
         // 3 + (Positive), - (Negative), + (Add), (+ Concatenate), - (Subtract), & (Bitwise AND), ^ (Bitwise Exclusive OR), | (Bitwise OR)
         int p3 = getPrecedence(Ops.NEGATE, Ops.ADD, Ops.SUB, Ops.CONCAT);
         // 4 =, >, <, >=, <=, <>, !=, !>, !< (Comparison operators)

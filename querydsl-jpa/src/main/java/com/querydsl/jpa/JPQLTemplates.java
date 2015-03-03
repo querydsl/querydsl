@@ -48,10 +48,11 @@ public class JPQLTemplates extends Templates {
         super(escape);
         this.queryHandler = queryHandler;
 
-        setPrecedence(18, Ops.BETWEEN, Ops.COL_IS_EMPTY);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.NE, Ops.EQ_IGNORE_CASE,
+                Ops.BETWEEN, Ops.COL_IS_EMPTY);
 
         // other like cases
-        setPrecedence(18, Ops.MATCHES, Ops.MATCHES_IC,
+        setPrecedence(Precedence.COMPARISON, Ops.MATCHES, Ops.MATCHES_IC,
                 Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
                 Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
                 Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
@@ -62,9 +63,9 @@ public class JPQLTemplates extends Templates {
 
         //CHECKSTYLE:OFF
         // boolean
-        add(Ops.AND, "{0} and {1}", 36);
-        add(Ops.NOT, "not {0}", 35);
-        add(Ops.OR, "{0} or {1}", 37);
+        add(Ops.AND, "{0} and {1}");
+        add(Ops.NOT, "not {0}", Precedence.NOT);
+        add(Ops.OR, "{0} or {1}");
         add(Ops.XNOR, "{0} xnor {1}");
         add(Ops.XOR, "{0} xor {1}");
 
@@ -83,8 +84,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.NUMCAST, "cast({0} as {1s})");
 
         // collection
-        add(JPQLOps.MEMBER_OF, "{0} member of {1}", 18);
-        add(JPQLOps.NOT_MEMBER_OF, "{0} not member of {1}", 18);
+        add(JPQLOps.MEMBER_OF, "{0} member of {1}", Precedence.COMPARISON);
+        add(JPQLOps.NOT_MEMBER_OF, "{0} not member of {1}", Precedence.COMPARISON);
 
         add(Ops.IN, "{0} in {1}");
         add(Ops.NOT_IN, "{0} not in {1}");

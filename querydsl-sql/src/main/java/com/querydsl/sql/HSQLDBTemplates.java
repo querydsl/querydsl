@@ -52,13 +52,14 @@ public class HSQLDBTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setFunctionJoinsWrapped(true);
 
-        setPrecedence(7, Ops.CONCAT);
-        setPrecedence(17, Ops.NOT);
-        setPrecedence(19, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN,
+        setPrecedence(Precedence.ARITH_HIGH, Ops.CONCAT);
+        setPrecedence(Precedence.ARITH_LOW + 1, Ops.NOT);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
+        setPrecedence(Precedence.COMPARISON + 1, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN,
                 Ops.IN, Ops.NOT_IN, Ops.EXISTS);
 
         // other like cases
-        setPrecedence(19, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+        setPrecedence(Precedence.COMPARISON + 1, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
                 Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
                 Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
 

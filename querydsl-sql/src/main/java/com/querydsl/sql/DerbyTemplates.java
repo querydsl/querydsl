@@ -60,7 +60,7 @@ public class DerbyTemplates extends SQLTemplates {
         setFunctionJoinsWrapped(true);
         setDefaultValues("\nvalues (default)");
 
-        setPrecedence(18, Ops.BETWEEN, Ops.EXISTS);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE, Ops.EXISTS);
 
         add(Ops.CONCAT, "varchar({0} || {1})", -1);
 

@@ -103,7 +103,10 @@ public class MySQLTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
 
-        add(Ops.MOD, "{0} % {1}", 7);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
+        setPrecedence(Precedence.CASE, Ops.BETWEEN);
+
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
         add(Ops.CONCAT, "concat({0}, {1})", -1);
 
         add(Ops.StringOps.LPAD, "lpad({0},{1},' ')");

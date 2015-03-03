@@ -28,13 +28,11 @@ public final class JDOQLTemplates extends JavaTemplates {
     public static final JDOQLTemplates DEFAULT = new JDOQLTemplates();
 
     protected JDOQLTemplates() {
-        setPrecedence(17, Ops.GOE, Ops.GT, Ops.LOE, Ops.LT, Ops.INSTANCE_OF);
-
         // String
         add(Ops.STRING_CONTAINS, "({0}.indexOf({1}) > -1)", -1);
         add(Ops.STRING_CONTAINS_IC, "({0l}.indexOf({1l}) > -1)", -1);
         add(Ops.EQ_IGNORE_CASE, "{0l}.equals({1l})");
-        add(Ops.STRING_IS_EMPTY, "{0} == \"\"", 18);
+        add(Ops.STRING_IS_EMPTY, "{0} == \"\"", Precedence.EQUALITY);
         add(Ops.LIKE, "{0}.like({1})");
         add(Ops.LIKE_ESCAPE, "{0}.like({1})");
 
