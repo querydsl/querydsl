@@ -102,6 +102,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QGeneric16Test_HidaBez.java");
         expected.add("QGeneric16Test_HidaBezGruppe.java");
         expected.add("QProperties2Test_ConcreteX.java");
+        expected.add("QProperties3Test_Order.java");
 
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }
