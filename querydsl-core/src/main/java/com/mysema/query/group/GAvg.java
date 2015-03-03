@@ -24,7 +24,7 @@ import com.mysema.util.MathUtils;
  * @param <T>
  */
 @SuppressWarnings("unchecked")
-public class GAvg<T extends Number & Comparable<T>> extends AbstractGroupExpression<T, T> {
+public class GAvg<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 

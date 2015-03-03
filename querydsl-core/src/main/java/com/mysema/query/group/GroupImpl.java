@@ -13,12 +13,7 @@
  */
 package com.mysema.query.group;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
@@ -105,6 +100,16 @@ class GroupImpl implements Group {
     }
 
     @Override
+    public <K, V> SortedMap<K, V> getSortedMap(Expression<K> key, Expression<V> value) {
+        for (QPair<?, ?> pair : maps) {
+            if (pair.equals(key, value)) {
+                return (SortedMap<K, V>) groupCollectorMap.get(pair).get();
+            }
+        }
+        throw new NoSuchElementException("GMap(" + key + ", " + value + ")");
+    }
+
+    @Override
     public <T> T getOne(Expression<T> expr) {
         return this.<T, T>get(expr);
     }
@@ -112,6 +117,11 @@ class GroupImpl implements Group {
     @Override
     public <T> Set<T> getSet(Expression<T> expr) {
         return this.<T, Set<T>>get(expr);
+    }
+
+    @Override
+    public <T> SortedSet<T> getSortedSet(Expression<T> expr) {
+        return this.<T, SortedSet<T>>get(expr);
     }
 
     @Override

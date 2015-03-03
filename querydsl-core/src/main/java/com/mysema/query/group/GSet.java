@@ -13,8 +13,7 @@
  */
 package com.mysema.query.group;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 import com.mysema.query.types.Expression;
 
@@ -23,32 +22,61 @@ import com.mysema.query.types.Expression;
  *
  * @param <T>
  */
-class GSet<T> extends AbstractGroupExpression<T, Set<T>> { 
-    
+abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
+
     private static final long serialVersionUID = -1575808026237160843L;
+
+    public static <U> GSet<U, Set<U>> createLinked(Expression<U> expr) {
+        return new GSet<U, Set<U>>(expr) {
+            @Override
+            protected Set<U> createSet() {
+                return new LinkedHashSet<U>();
+            }
+        };
+    }
+
+    public static <U extends Comparable<? super U>> GSet<U, SortedSet<U>> createSorted(Expression<U> expr) {
+        return new GSet<U, SortedSet<U>>(expr) {
+            @Override
+            protected SortedSet<U> createSet() {
+                return new TreeSet<U>();
+            }
+        };
+    }
+
+    public static <U> GSet<U, SortedSet<U>> createSorted(Expression<U> expr, final Comparator<? super U> comparator) {
+        return new GSet<U, SortedSet<U>>(expr) {
+            @Override
+            protected SortedSet<U> createSet() {
+                return new TreeSet<U>(comparator);
+            }
+        };
+    }
 
     public GSet(Expression<T> expr) {
         super(Set.class, expr);
     }
 
-    @Override
-    public GroupCollector<T,Set<T>> createGroupCollector() {
-        return new GroupCollector<T,Set<T>>() {
+    protected abstract S createSet();
 
-            private final Set<T> set = new LinkedHashSet<T>();
-            
+    @Override
+    public GroupCollector<T, S> createGroupCollector() {
+        return new GroupCollector<T, S>() {
+
+            private final S set = createSet();
+
             @Override
             public void add(T o) {
                 if (o != null) {
-                    set.add(o);    
-                }                
+                    set.add(o);
+                }
             }
 
             @Override
-            public Set<T> get() {
+            public S get() {
                 return set;
             }
-            
+
         };
     }
 }

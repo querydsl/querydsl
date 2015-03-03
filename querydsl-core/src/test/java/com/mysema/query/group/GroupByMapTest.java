@@ -14,23 +14,14 @@
 package com.mysema.query.group;
 
 
-import static com.mysema.query.group.GroupBy.groupBy;
-import static com.mysema.query.group.GroupBy.list;
-import static com.mysema.query.group.GroupBy.map;
-import static com.mysema.query.group.GroupBy.set;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static com.mysema.query.group.GroupBy.*;
+import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import org.junit.Test;
 
+import com.google.common.collect.Ordering;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Tuple;
 import com.mysema.query.types.Projections;
@@ -40,14 +31,38 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void Group_Order() {
         Map<Integer, Group> results = BASIC_RESULTS
-            .transform(groupBy(postId).as(postName, set(commentId)));
+                .transform(groupBy(postId).as(postName, set(commentId)));
         assertEquals(4, results.size());
+    }
+
+    @Test
+    public void Set_By_Sorted() {
+        Map<Integer, Group> results = BASIC_RESULTS_UNORDERED
+                .transform(groupBy(postId).as(postName, sortedSet(commentId)));
+
+        Group group = results.get(1);
+        Iterator<Integer> it = group.getSet(commentId).iterator();
+        assertEquals(1, it.next().intValue());
+        assertEquals(2, it.next().intValue());
+        assertEquals(3, it.next().intValue());
+    }
+
+    @Test
+    public void Set_By_Sorted_Reverse() {
+        Map<Integer, Group> results = BASIC_RESULTS_UNORDERED
+                .transform(groupBy(postId).as(postName, sortedSet(commentId, Ordering.natural().reverse())));
+
+        Group group = results.get(1);
+        Iterator<Integer> it = group.getSet(commentId).iterator();
+        assertEquals(3, it.next().intValue());
+        assertEquals(2, it.next().intValue());
+        assertEquals(1, it.next().intValue());
     }
 
     @Test
     public void First_Set_And_List() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         assertEquals(toInt(1), group.getOne(postId));
@@ -59,7 +74,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void Group_By_Null() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(null);
         assertNull(group.getOne(postId));
@@ -72,7 +87,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test(expected=NoSuchElementException.class)
     public void NoSuchElementException() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         group.getSet(qComment);
@@ -81,7 +96,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test(expected=ClassCastException.class)
     public void ClassCastException() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         group.getList(commentId);
@@ -90,7 +105,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void Map() {
         Map<Integer, Group> results = MAP_RESULTS.transform(
-            groupBy(postId).as(postName, map(commentId, commentText)));
+                groupBy(postId).as(postName, map(commentId, commentText)));
 
         Group group = results.get(1);
 
@@ -100,25 +115,52 @@ public class GroupByMapTest extends AbstractGroupByTest {
     }
 
     @Test
+    public void Map_Sorted() {
+        Map<Integer, Group> results = MAP_RESULTS.transform(
+                groupBy(postId).as(postName, sortedMap(commentId, commentText)));
+
+        Group group = results.get(1);
+
+        Iterator<Map.Entry<Integer, String>> it = group.getMap(commentId, commentText).entrySet().iterator();
+        assertEquals(1, it.next().getKey().intValue());
+        assertEquals(2, it.next().getKey().intValue());
+        assertEquals(3, it.next().getKey().intValue());
+    }
+
+    @Test
+    public void Map_Sorted_Reverse() {
+        Map<Integer, Group> results = MAP_RESULTS.transform(
+                groupBy(postId).as(postName, sortedMap(commentId, commentText, Ordering.natural().reverse())));
+
+        Group group = results.get(1);
+
+        Iterator<Map.Entry<Integer, String>> it = group.getMap(commentId, commentText).entrySet().iterator();
+        assertEquals(3, it.next().getKey().intValue());
+        assertEquals(2, it.next().getKey().intValue());
+        assertEquals(1, it.next().getKey().intValue());
+    }
+
+
+    @Test
     public void Map2() {
         Map<Integer, Map<Integer, String>> results = MAP2_RESULTS.transform(
-            groupBy(postId).as(map(commentId, commentText)));
+                groupBy(postId).as(map(commentId, commentText)));
 
         Map<Integer, String> comments = results.get(1);
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
     }
-    
+
     @Test
-    public void Map3() {        
+    public void Map3() {
         Map<Integer, Map<Integer, Map<Integer, String>>> actual = MAP3_RESULTS.transform(
-            groupBy(postId).as(map(postId, map(commentId, commentText))));
-        
+                groupBy(postId).as(map(postId, map(commentId, commentText))));
+
         Map<Integer, Map<Integer, Map<Integer, String>>> expected = new LinkedHashMap<Integer, Map<Integer, Map<Integer, String>>>();
         for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
-            
+
             Map<Integer, Map<Integer, String>> posts = expected.get(array[0]);
             if (posts == null) {
                 posts = new LinkedHashMap<Integer, Map<Integer,String>>();
@@ -134,20 +176,20 @@ public class GroupByMapTest extends AbstractGroupByTest {
             }
             Pair<Integer, String> second = pair.getSecond();
             comments.put(second.getFirst(), second.getSecond());
-        }      
+        }
         assertEquals(expected.toString(), actual.toString());
     }
 
     @Test
-    public void Map4() {    
+    public void Map4() {
         Map<Integer, Map<Map<Integer, String>, String>> actual = MAP4_RESULTS.transform(
-            groupBy(postId).as(map(map(postId, commentText), postName)));
-        
+                groupBy(postId).as(map(map(postId, commentText), postName)));
+
         Map<Integer, Map<Map<Integer, String>, String>> expected = new LinkedHashMap<Integer, Map<Map<Integer, String>, String>>();
         for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
- 
+
             Map<Map<Integer, String>, String> comments = expected.get(array[0]);
             if (comments == null) {
                 comments = new LinkedHashMap<Map<Integer, String>, String>();
@@ -155,17 +197,17 @@ public class GroupByMapTest extends AbstractGroupByTest {
             }
             @SuppressWarnings("unchecked")
             Pair<Pair<Integer, String>, String> pair = (Pair<Pair<Integer, String>, String>) array[1];
-            Pair<Integer, String> first = pair.getFirst(); 
+            Pair<Integer, String> first = pair.getFirst();
             Map<Integer, String> posts = Collections.singletonMap(first.getFirst(), first.getSecond());
             comments.put(posts, pair.getSecond());
-        }      
+        }
         assertEquals(expected.toString(), actual.toString());
     }
 
     @Test
     public void Array_Access() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         Object[] array = group.toArray();
@@ -224,8 +266,8 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void OneToOneToMany_Projection() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).as(Projections.constructor(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)))));
+                groupBy(userName).as(Projections.constructor(User.class, userName,
+                        Projections.constructor(Post.class, postId, postName, set(qComment)))));
 
         assertEquals(2, results.size());
 
@@ -239,8 +281,8 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void OneToOneToMany_Projection_As_Bean() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).as(Projections.bean(User.class, userName,
-                Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+                groupBy(userName).as(Projections.bean(User.class, userName,
+                        Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
 
         assertEquals(2, results.size());
 
@@ -254,8 +296,8 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void OneToOneToMany_Projection_As_Bean_And_Constructor() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).as(Projections.bean(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+                groupBy(userName).as(Projections.bean(User.class, userName,
+                        Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
 
         assertEquals(2, results.size());
 
