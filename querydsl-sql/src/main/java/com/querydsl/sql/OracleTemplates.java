@@ -85,8 +85,8 @@ public class OracleTemplates extends SQLTemplates {
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
         // String
-        add(Ops.INDEX_OF, "(instrb({0},{1})-1)");
-        add(Ops.INDEX_OF_2ARGS, "(instrb({0},{1},{2}+1)-1)");
+        add(Ops.INDEX_OF, "instrb({0},{1})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1", Precedence.ARITH_LOW);
         add(Ops.MATCHES, "regexp_like({0},{1})", -1);
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");

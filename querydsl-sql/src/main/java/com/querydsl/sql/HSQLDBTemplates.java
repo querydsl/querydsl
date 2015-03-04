@@ -64,7 +64,7 @@ public class HSQLDBTemplates extends SQLTemplates {
                 Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
 
         add(Ops.TRIM, "trim(both from {0})");
-        add(Ops.NEGATE, "({0} * -1)", -1);
+        add(Ops.NEGATE, "{0} * -1", Precedence.ARITH_HIGH);
 
         add(SQLOps.NEXTVAL, "next value for {0s}");
 
@@ -77,7 +77,7 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 
         add(Ops.DateTimeOps.WEEK, "extract(week_of_year from {0})");
-        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(year from {0}) * 100 + extract(week_of_year from {0}))");
+        add(Ops.DateTimeOps.YEAR_WEEK, "extract(year from {0}) * 100 + extract(week_of_year from {0})", Precedence.ARITH_LOW);
 
         add(Ops.DateTimeOps.ADD_YEARS, "dateadd('yy', {1s}, {0})");
         add(Ops.DateTimeOps.ADD_MONTHS, "dateadd('mm', {1s}, {0})");

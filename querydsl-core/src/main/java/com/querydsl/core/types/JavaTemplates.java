@@ -42,7 +42,7 @@ public class JavaTemplates extends Templates {
         add(Ops.COL_SIZE, "{0}.size()");
 
         // array
-        add(Ops.ARRAY_SIZE, "{0}.length", 0);
+        add(Ops.ARRAY_SIZE, "{0}.length");
 
         // map
         add(Ops.MAP_IS_EMPTY, "{0}.isEmpty()");

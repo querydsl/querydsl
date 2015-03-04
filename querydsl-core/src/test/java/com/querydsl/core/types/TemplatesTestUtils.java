@@ -15,14 +15,18 @@ public final class TemplatesTestUtils {
             Template template = templates.getTemplate(op);
             String str = template.toString();
             int precedence = templates.getPrecedence(op);
-            if (str.matches("\\w+\\([^\\(\\)]+\\)") && precedence > -1) {
+            if (str.contains(" like ") && precedence != likePrecedence) {
                 Assert.fail("Unexpected precedence for " + op + " with template " + template);
-            } else if (str.contains(" like ") && precedence != likePrecedence) {
+            } else if (!str.contains("(") && !str.contains(".") && precedence < 0) {
                 Assert.fail("Unexpected precedence for " + op + " with template " + template);
-            } else if (!str.contains("(") && precedence < 0) {
-                Assert.fail("Unexpected precedence for " + op + " with template " + template);
-            } else if (str.endsWith(" + 1") || str.endsWith("+1") || str.endsWith(" - 1") || str.endsWith("-1")) {
-                Assert.fail("Unsafe pattern for " + op + " with template " + template);
+            } else if (str.matches(".*[<>] ?\\-?\\d")) {
+                if (precedence != Templates.Precedence.COMPARISON) {
+                    Assert.fail("Unsafe pattern for " + op + " with template " + template);
+                }
+            } else if (str.matches(".*[\\+\\-] ?\\-?\\d")) {
+                if (precedence != Templates.Precedence.ARITH_LOW && precedence != Templates.Precedence.ARITH_HIGH) {
+                    Assert.fail("Unsafe pattern for " + op + " with template " + template);
+                }
             }
         }
     }

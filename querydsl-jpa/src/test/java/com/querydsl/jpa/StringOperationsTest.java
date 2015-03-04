@@ -49,17 +49,17 @@ public class StringOperationsTest extends AbstractQueryTest{
         Expression startIndex = Expressions.constant(0);
         Expression endIndex = NumberOperation.create(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
         Expression substr = StringOperation.create(Ops.SUBSTR_2ARGS, path, startIndex, endIndex);
-        assertToString("substring(cat.name,(0)+1,((locate(?1,cat.name)-1))-(0))", substr);
+        assertToString("substring(cat.name,1,(locate(?1,cat.name)-1)-0)", substr);
     }
     
     @Test
     public void IndexOf2() {
         StringPath str = QCat.cat.name;
-        assertToString("substring(cat.name,(0)+1,((locate(?1,cat.name)-1))-(0))", str.substring(0, str.indexOf("x")));
+        assertToString("substring(cat.name,1,(locate(?1,cat.name)-1)-0)", str.substring(0, str.indexOf("x")));
     }
     
     @Test
     public void IndexOf3() {
-        assertToString("substring(cat.name,(1)+1,(2)-(1))", QCat.cat.name.substring(1,2));
+        assertToString("substring(cat.name,2,1)", QCat.cat.name.substring(1,2));
     }
 }

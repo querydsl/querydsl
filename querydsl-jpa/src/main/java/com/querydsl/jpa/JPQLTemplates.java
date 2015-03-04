@@ -99,12 +99,12 @@ public class JPQLTemplates extends Templates {
         add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'"); // TODO : support real regexes
         add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'"); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},({1s})+1)", -1); // TODO simplify
-        add(Ops.SUBSTR_2ARGS, "substring({0},({1s})+1,({2s})-({1s}))", -1); // TODO simplify
+        add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)", Precedence.ARITH_LOW);
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})", Precedence.ARITH_LOW);
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
-        add(Ops.CHAR_AT, "cast(substring({0},{1s}+1,1) as char)");
+        add(Ops.CHAR_AT, "cast(substring({0},{1s}+1,1) as char)", Precedence.ARITH_LOW);
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
 
         add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
@@ -113,8 +113,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
         add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
         add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
-        add(Ops.INDEX_OF, "(locate({1},{0})-1)");
-        add(Ops.INDEX_OF_2ARGS, "(locate({1},{0},{2s}+1)-1)");
+        add(Ops.INDEX_OF, "locate({1},{0})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1", Precedence.ARITH_LOW);
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");
@@ -130,7 +130,7 @@ public class JPQLTemplates extends Templates {
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
 
-        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})", Precedence.ARITH_LOW);
 
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");

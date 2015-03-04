@@ -95,8 +95,8 @@ public class PostgreSQLTemplates extends SQLTemplates {
 
         // String
         add(Ops.MATCHES, "{0} ~ {1}");
-        add(Ops.INDEX_OF, "(strpos({0},{1})-1)");
-        add(Ops.INDEX_OF_2ARGS, "(strpos({0},{1})-1)"); //FIXME
+        add(Ops.INDEX_OF, "strpos({0},{1})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1", Precedence.ARITH_LOW); //FIXME
         add(Ops.StringOps.LOCATE,  "strpos({1},{0})");
         add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2s}-1) || substr({1},{2s}),{0})");
 

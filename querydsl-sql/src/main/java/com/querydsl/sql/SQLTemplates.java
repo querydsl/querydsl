@@ -325,8 +325,8 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.WEEK, "extract(week from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "(extract(year from {0}) * 100 + extract(month from {0}))");
-        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(year from {0}) * 100 + extract(week from {0}))");
+        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})", Precedence.ARITH_LOW);
+        add(Ops.DateTimeOps.YEAR_WEEK, "extract(year from {0}) * 100 + extract(week from {0})", Precedence.ARITH_LOW);
         add(Ops.DateTimeOps.DAY_OF_WEEK, "extract(day_of_week from {0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "extract(day_of_year from {0})");
@@ -360,11 +360,11 @@ public class SQLTemplates extends Templates {
         add(Ops.MATCHES, "{0} regexp {1}", Precedence.COMPARISON);
         add(Ops.CHAR_AT, "cast(substr({0},{1s}+1,1) as char)");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
-        add(Ops.INDEX_OF, "(locate({1},{0})-1)");
-        add(Ops.INDEX_OF_2ARGS, "(locate({1},{0},{2s}+1)-1)");
+        add(Ops.INDEX_OF, "locate({1},{0})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1", Precedence.ARITH_LOW);
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
-        add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)");
-        add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})");
+        add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)", Precedence.ARITH_LOW);
+        add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})", Precedence.ARITH_LOW);
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
 

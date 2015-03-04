@@ -65,7 +65,7 @@ public class JPACollectionAnyVisitorTest {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");
         assertMatches("exists \\(select 1\n"+
                 "from cat.kittens as cat_kittens.*\n" +
-                "where substring\\(cat_kittens.*\\.name,\\(1\\)\\+1\\) = \\?1\\)", serialize(predicate));
+                "where substring\\(cat_kittens.*\\.name,2\\) = \\?1\\)", serialize(predicate));
     }
 
     @Test

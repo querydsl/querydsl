@@ -25,6 +25,9 @@ import javax.annotation.Nullable;
  */
 public class Templates {
 
+    /**
+     * Precedence order based on Java language operator precedence
+     */
     protected static class Precedence {
         public static final int HIGHEST = -1;
         public static final int NOT_HIGH = 10;

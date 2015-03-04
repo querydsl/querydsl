@@ -73,8 +73,8 @@ public class SQLiteTemplates extends SQLTemplates {
 
         add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
 
-        add(Ops.INDEX_OF, "(charindex({1},{0},1)-1)");
-        add(Ops.INDEX_OF_2ARGS, "(charindex({1},{0},{2s}+1)-1)");
+        add(Ops.INDEX_OF, "charindex({1},{0},1)-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2s}+1)-1", Precedence.ARITH_LOW);
 
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
         add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2s})");
@@ -104,7 +104,7 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.RANDOM2, "random({0})");
         add(Ops.MathOps.LN, "log({0})");
-        add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
+        add(Ops.MathOps.LOG, "log({0}) / log({1})", Precedence.ARITH_HIGH);
 
         addTypeNameToCode("text", Types.VARCHAR);
     }
