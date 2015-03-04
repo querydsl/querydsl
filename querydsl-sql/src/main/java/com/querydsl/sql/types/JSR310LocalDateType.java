@@ -36,12 +36,12 @@ public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {
     @Nullable
     @Override
     public LocalDate getValue(ResultSet rs, int startIndex) throws SQLException {
-        Date date = rs.getDate(startIndex, utc());
+        Date date = rs.getDate(startIndex);
         return date != null ? date.toLocalDate() : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDate value) throws SQLException {
-        st.setDate(startIndex, Date.valueOf(value), utc());
+        st.setDate(startIndex, Date.valueOf(value));
     }
 }

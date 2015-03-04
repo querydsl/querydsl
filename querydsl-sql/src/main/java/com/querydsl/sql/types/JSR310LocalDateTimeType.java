@@ -15,7 +15,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDateTime> {
 
-
     public JSR310LocalDateTimeType() {
         super(Types.TIMESTAMP);
     }
@@ -43,6 +42,6 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, Timestamp.from(value.toInstant(ZoneOffset.UTC)), utc());
+        st.setTimestamp(startIndex, Timestamp.valueOf(value), utc());
     }
 }

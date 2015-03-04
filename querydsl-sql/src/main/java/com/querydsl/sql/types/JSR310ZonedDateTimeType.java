@@ -16,9 +16,8 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 @IgnoreJRERequirement //conditionally included
 public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDateTime> {
 
-
     public JSR310ZonedDateTimeType() {
-        super(Types.TIMESTAMP);
+        super(Types.TIMESTAMP_WITH_TIMEZONE);
     }
 
     public JSR310ZonedDateTimeType(int type) {

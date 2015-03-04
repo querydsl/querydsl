@@ -15,7 +15,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
 
-
     public JSR310LocalTimeType() {
         super(Types.TIME);
     }

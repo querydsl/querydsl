@@ -37,12 +37,12 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
     @Nullable
     @Override
     public OffsetTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Time time = rs.getTime(startIndex, utc());
+        Time time = rs.getTime(startIndex);
         return time != null ? OffsetTime.of(time.toLocalTime(), ZoneOffset.UTC) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, OffsetTime value) throws SQLException {
-        st.setTime(startIndex, Time.valueOf(value.toLocalTime()), utc());
+        st.setTime(startIndex, Time.valueOf(value.toLocalTime()));
     }
 }
