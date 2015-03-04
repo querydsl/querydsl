@@ -2,6 +2,8 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +27,7 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     @Override
     public String getLiteral(Instant value) {
-        return dateTimeFormatter.format(value);
+        return dateTimeFormatter.format(LocalDateTime.ofInstant(value, ZoneId.of("Z")));
     }
 
     @Override
