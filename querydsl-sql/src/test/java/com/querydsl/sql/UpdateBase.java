@@ -190,7 +190,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update_With_TempateExpression_In_Batch() {
+    public void Update_With_TemplateExpression_In_Batch() {
         update(survey)
             .set(survey.id, 3)
             .set(survey.name, Expressions.stringTemplate("'Hello'"))
