@@ -194,7 +194,8 @@ public class UpdateBase extends AbstractBaseTest {
         update(survey)
             .set(survey.id, 3)
             .set(survey.name, Expressions.stringTemplate("'Hello'"))
-            .addBatch();
+            .addBatch()
+            .execute();
     }
 
 }
