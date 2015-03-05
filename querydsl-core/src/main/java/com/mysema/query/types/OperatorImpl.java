@@ -13,12 +13,8 @@
  */
 package com.mysema.query.types;
 
+import java.io.ObjectStreamException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -27,24 +23,6 @@ import javax.annotation.concurrent.Immutable;
  */
 @Immutable
 public final class OperatorImpl<T> implements Operator<T> {
-
-    static final Map<String, Operator<?>> OPS = new HashMap<String, Operator<?>>(150);
-
-    static {
-        try {
-            // initialize all fields of Ops
-            List<Field> fields = new ArrayList<Field>();
-            fields.addAll(Arrays.asList(Ops.class.getFields()));
-            for (Class<?> cl : Ops.class.getClasses()) {
-                fields.addAll(Arrays.asList(cl.getFields()));
-            }
-            for (Field field : fields) {
-                field.get(null);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
 
     private static final long serialVersionUID = -2435035383548549877L;
 
@@ -59,7 +37,6 @@ public final class OperatorImpl<T> implements Operator<T> {
     private OperatorImpl(String id) {
         this.id = id;
         this.hashCode = id.hashCode();
-        OPS.put(id, this);
     }
 
     /**
@@ -80,5 +57,19 @@ public final class OperatorImpl<T> implements Operator<T> {
     @Override
     public int hashCode() {
         return hashCode;
+    }
+
+    private Object readResolve() throws ObjectStreamException {
+        try {
+            String[] names = id.split("#");
+            Field opField = Class.forName(names[0]).getDeclaredField(names[1]);
+            return opField.get(null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
