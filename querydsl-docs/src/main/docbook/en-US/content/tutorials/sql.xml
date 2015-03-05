@@ -437,7 +437,7 @@ Configuration configuration = new Configuration(templates);
         <para>OracleTemplates (test with Oracle 10 and 11)</para>
       </listitem>
       <listitem>
-        <para>PostgresTemplates (tested with PostgreSQL 9.1)</para>
+        <para>PostgreSQLTemplates (tested with PostgreSQL 9.1)</para>
       </listitem>
       <listitem>
         <para>SQLiteTemplates (tested with xerial JDBC 3.7.2)</para>
