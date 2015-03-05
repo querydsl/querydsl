@@ -11,17 +11,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.sql.postgres;
+package com.querydsl.sql.postgresql;
 
 import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.querydsl.sql.AbstractSQLQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.PostgresTemplates;
-import com.querydsl.sql.SQLSubQuery;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.*;
+import com.querydsl.sql.PostgreSQLTemplates;
 
 /**
  * PostgreSQL specific implementation of SQLQueryFactory
@@ -29,22 +26,22 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class PostgresQueryFactory extends AbstractSQLQueryFactory<PostgresQuery, SQLSubQuery> {
+public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQuery, SQLSubQuery> {
 
-    public PostgresQueryFactory(Configuration configuration, Provider<Connection> connection) {
+    public PostgreSQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
     }
 
-    public PostgresQueryFactory(Provider<Connection> connection) {
-        this(new Configuration(new PostgresTemplates()), connection);
+    public PostgreSQLQueryFactory(Provider<Connection> connection) {
+        this(new Configuration(new PostgreSQLTemplates()), connection);
     }
 
-    public PostgresQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+    public PostgreSQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
         this(new Configuration(templates), connection);
     }
 
-    public PostgresQuery query() {
-        return new PostgresQuery(connection.get(), configuration);
+    public PostgreSQLQuery query() {
+        return new PostgreSQLQuery(connection.get(), configuration);
     }
 
 

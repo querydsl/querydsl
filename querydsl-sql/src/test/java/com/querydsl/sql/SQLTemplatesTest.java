@@ -97,7 +97,7 @@ public class SQLTemplatesTest {
         // MSSQL OK
         // MySQL
         // Oracle OK
-        // Postgres OK
+        // PostgreSQL OK
 
     }
 

@@ -83,7 +83,7 @@ public abstract class AbstractBaseTest {
 
     public AbstractBaseTest() {
         // TODO enable registration of (jdbc type, java type) -> usertype mappings
-        if (target == Target.POSTGRES || target == Target.ORACLE) {
+        if (target == Target.POSTGRESQL || target == Target.ORACLE) {
             configuration.register("XML_TEST", "COL", new XMLAsStringType());
         }
     }

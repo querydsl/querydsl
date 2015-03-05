@@ -100,7 +100,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({MYSQL, POSTGRES, DERBY, SQLSERVER, TERADATA})
+    @ExcludeIn({MYSQL, POSTGRESQL, DERBY, SQLSERVER, TERADATA})
     public void SubQuery_Params() {
         Param<String> aParam = new Param<String>(String.class, "param");
         SQLSubQuery subQuery = new SQLSubQuery().from(employee).where(employee.firstname.eq(aParam));

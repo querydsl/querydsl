@@ -16,7 +16,7 @@ public class PostgreSQLLiteralsSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initPostgres();
+        Connections.initPostgreSQL();
         Connections.initConfiguration(PostGISTemplates.builder().quote().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }

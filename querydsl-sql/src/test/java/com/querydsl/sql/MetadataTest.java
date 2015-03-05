@@ -32,7 +32,7 @@ public class MetadataTest {
         printMetadata();
         Connections.initOracle();
         printMetadata();
-        Connections.initPostgres();
+        Connections.initPostgreSQL();
         printMetadata();
         Connections.initSQLite();
         printMetadata();

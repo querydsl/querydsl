@@ -14,7 +14,7 @@
 package com.querydsl.sql.spatial;
 
 import com.querydsl.spatial.SpatialOps;
-import com.querydsl.sql.PostgresTemplates;
+import com.querydsl.sql.PostgreSQLTemplates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
@@ -23,7 +23,7 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class PostGISTemplates extends PostgresTemplates {
+public class PostGISTemplates extends PostgreSQLTemplates {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final PostGISTemplates DEFAULT = new PostGISTemplates();

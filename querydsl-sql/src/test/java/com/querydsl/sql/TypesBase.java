@@ -54,7 +54,7 @@ public class TypesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, POSTGRES, TERADATA})
+    @ExcludeIn({CUBRID, POSTGRESQL, TERADATA})
     public void DumpTypes() throws SQLException {
         Connection conn = Connections.getConnection();
         DatabaseMetaData md = conn.getMetaData();

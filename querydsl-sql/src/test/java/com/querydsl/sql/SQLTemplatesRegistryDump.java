@@ -20,7 +20,7 @@ public class SQLTemplatesRegistryDump {
         dump();
         Connections.initOracle();
         dump();
-        Connections.initPostgres();
+        Connections.initPostgreSQL();
         dump();
         Connections.initSQLite();
         dump();

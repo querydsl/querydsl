@@ -17,7 +17,7 @@ public class SQLTemplatesRegistry {
     private final SQLTemplates hsqldb = new HSQLDBTemplates();
     private final SQLTemplates mysql = new MySQLTemplates();
     private final SQLTemplates oracle = new OracleTemplates();
-    private final SQLTemplates postgres = new PostgresTemplates();
+    private final SQLTemplates postgresql = new PostgreSQLTemplates();
     private final SQLTemplates sqlite = new SQLiteTemplates();
     private final SQLTemplates teradata = new TeradataTemplates();
 
@@ -35,7 +35,7 @@ public class SQLTemplatesRegistry {
         if (name.equals("hsql")) return hsqldb;
         if (name.equals("mysql")) return mysql;
         if (name.equals("oracle")) return oracle;
-        if (name.equals("postgresql")) return postgres;
+        if (name.equals("postgresql")) return postgresql;
         if (name.equals("sqlite")) return sqlite;
         if (name.startsWith("teradata")) return teradata;
 

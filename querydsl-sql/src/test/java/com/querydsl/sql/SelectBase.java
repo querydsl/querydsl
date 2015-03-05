@@ -126,7 +126,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(POSTGRES) // TODO generalize array literal projections
+    @IncludeIn(POSTGRESQL) // TODO generalize array literal projections
     public void Array() {
         Expression<Integer[]> expr = Expressions.template(Integer[].class, "'{1,2,3}'::int[]");
         Integer[] result = query().singleResult(expr);
@@ -137,7 +137,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(POSTGRES) // TODO generalize array literal projections
+    @IncludeIn(POSTGRESQL) // TODO generalize array literal projections
     public void Array2() {
         Expression<int[]> expr = Expressions.template(int[].class, "'{1,2,3}'::int[]");
         int[] result = query().singleResult(expr);
@@ -351,7 +351,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, TERADATA}) // TODO fix postgres
+    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, TERADATA}) // TODO fix postgresql
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
@@ -1073,7 +1073,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, POSTGRES})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, POSTGRESQL})
     public void Number_As_Boolean() {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
@@ -1274,7 +1274,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, ORACLE, POSTGRES, SQLITE, TERADATA})
+    @ExcludeIn({FIREBIRD, ORACLE, POSTGRESQL, SQLITE, TERADATA})
     public void Random2() {
         query().uniqueResult(MathExpressions.random(10));
     }
@@ -1473,7 +1473,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({POSTGRES, SQLITE})
+    @ExcludeIn({POSTGRESQL, SQLITE})
     public void String_IndexOf() {
         StringExpression str = Expressions.stringTemplate("'  abcd  '");
 
@@ -1665,7 +1665,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({HSQLDB, ORACLE, POSTGRES})
+    @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With() {
         query().with(employee2, sq().from(employee)
                   .where(employee.firstname.eq("Tom"))
@@ -1675,7 +1675,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({HSQLDB, ORACLE, POSTGRES})
+    @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With2() {
         QEmployee employee3 = new QEmployee("e3");
         query().with(employee2, sq().from(employee)
@@ -1689,7 +1689,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({HSQLDB, ORACLE, POSTGRES})
+    @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With3() {
         query().with(employee2, employee2.all()).as(
                 sq().from(employee)
@@ -1700,7 +1700,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({ORACLE, POSTGRES})
+    @IncludeIn({ORACLE, POSTGRESQL})
     public void With_Recursive() {
         query().withRecursive(employee2, sq().from(employee)
                   .where(employee.firstname.eq("Tom"))
@@ -1711,7 +1711,7 @@ public class SelectBase extends AbstractBaseTest {
 
 
     @Test
-    @IncludeIn({ORACLE, POSTGRES})
+    @IncludeIn({ORACLE, POSTGRESQL})
     public void With_Recursive2() {
         query().withRecursive(employee2, employee2.all()).as(
                 sq().from(employee)

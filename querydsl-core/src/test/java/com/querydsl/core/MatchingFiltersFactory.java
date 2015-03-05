@@ -77,13 +77,13 @@ public class MatchingFiltersFactory {
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
                 && !target.equals(Target.FIREBIRD)
-                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
+                && (!target.equals(Target.POSTGRESQL) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
                     && !target.equals(Target.CUBRID)
-                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)) {
+                    && !target.equals(Target.POSTGRESQL) && !target.equals(Target.HSQLDB)) {
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -113,13 +113,13 @@ public class MatchingFiltersFactory {
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
-                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
+                && (!target.equals(Target.POSTGRESQL) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
                     && !target.equals(Target.CUBRID)
-                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)) {
+                    && !target.equals(Target.POSTGRESQL) && !target.equals(Target.HSQLDB)) {
                 rv.add(expr.week().eq(other.week()));
             }
         }

@@ -288,7 +288,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    @ExcludeIn({Target.DERBY, Target.POSTGRES})
+    @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     public void Union2() {
         List<Tuple> rows = query().union(
             new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id),
@@ -320,7 +320,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    @ExcludeIn({Target.DERBY, Target.POSTGRES})
+    @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     public void Union4() {
         query().union(cat,
             new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id),

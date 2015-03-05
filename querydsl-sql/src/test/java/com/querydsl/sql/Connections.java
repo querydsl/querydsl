@@ -60,7 +60,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean db2Inited, derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited, firebirdInited;
+    private static boolean db2Inited, derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresqlInited, sqliteInited, teradataInited, firebirdInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null) {
@@ -129,7 +129,7 @@ public final class Connections {
         return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
-    private static Connection getPostgres() throws ClassNotFoundException, SQLException{
+    private static Connection getPostgreSQL() throws ClassNotFoundException, SQLException{
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://localhost:5432/querydsl";
         return DriverManager.getConnection(url, "querydsl", "querydsl");
@@ -849,16 +849,16 @@ public final class Connections {
         oracleInited = true;
     }
 
-    public static void initPostgres() throws SQLException, ClassNotFoundException{
-        targetHolder.set(Target.POSTGRES);
-        SQLTemplates templates = new PostgresTemplates(true);
-        // NOTE : unquoted identifiers are converted to lower case in Postgres
-        Connection c = getPostgres();
+    public static void initPostgreSQL() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.POSTGRESQL);
+        SQLTemplates templates = new PostgreSQLTemplates(true);
+        // NOTE : unquoted identifiers are converted to lower case in PostgreSQL
+        Connection c = getPostgreSQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
 
-        if (postgresInited) {
+        if (postgresqlInited) {
             return;
         }
 
@@ -942,7 +942,7 @@ public final class Connections {
         dropTable(templates, "XML_TEST");
         stmt.execute("create table \"XML_TEST\"(\"COL\" XML)");
 
-        postgresInited = true;
+        postgresqlInited = true;
     }
 
     public static void initSQLite() throws SQLException, ClassNotFoundException{

@@ -23,11 +23,11 @@ import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
 
 
-public class PostgresTemplatesTest extends AbstractSQLTemplatesTest{
+public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Override
     protected SQLTemplates createTemplates() {
-        return new PostgresTemplates();
+        return new PostgreSQLTemplates();
     }    
     
     @Test

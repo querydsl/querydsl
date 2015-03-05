@@ -14,7 +14,7 @@ public class SpatialTest {
     public void setUp() throws ClassNotFoundException, SQLException {
         Connections.initH2();
 //      Connections.initMySQL();
-//      Connections.initPostgres();
+//      Connections.initPostgreSQL();
 //      Connections.initTeradata();
     }
 
