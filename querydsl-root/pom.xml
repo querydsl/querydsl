@@ -360,7 +360,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-Xms256m -Xmx512m -XX:MaxPermSize=512m</argLine>
+          <argLine>-Xms256m -Xmx512m</argLine>
           <excludedGroups>com.querydsl.core.testutil.ExternalDB</excludedGroups>
         </configuration>
         <dependencies>
