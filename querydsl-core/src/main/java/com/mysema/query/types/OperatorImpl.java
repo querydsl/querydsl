@@ -62,7 +62,7 @@ public final class OperatorImpl<T> implements Operator<T> {
     private Object readResolve() throws ObjectStreamException {
         try {
             String[] names = id.split("#");
-            Field opField = Class.forName(names[0]).getDeclaredField(names[1]);
+            Field opField = Class.forName(names[0]).getField(names[1]);
             return opField.get(null);
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
