@@ -1,4 +1,4 @@
-package com.querydsl.scala;
+package com.querydsl.scala
 
 import javax.persistence._
 import com.querydsl.codegen.GenericExporter

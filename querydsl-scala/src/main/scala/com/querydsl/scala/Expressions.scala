@@ -21,7 +21,7 @@ import com.querydsl.core.types.PathMetadataFactory._
 import com.querydsl.core.types.Ops._
 
 import java.util.Collection
-import java.util.Arrays._;
+import java.util.Arrays._
 
 import Constants._
 import Operations._

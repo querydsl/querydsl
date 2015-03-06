@@ -16,7 +16,7 @@ trait CompileTestUtils {
       Class.forName(className).getProtectionDomain.getCodeSource.getLocation
     }
 
-    val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList
+    val currentLibraries = this.getClass.getClassLoader.asInstanceOf[java.net.URLClassLoader].getURLs.toList
     val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
 
     classpath.value = cp.mkString(pathSeparator)
@@ -40,14 +40,14 @@ trait CompileTestUtils {
         throw new AssertionError("Compile failed, interpreter output:\n" + out.toString("utf-8"))
       }
     } finally {
-      interpreterWriter.close
-      interpreter.close
+      interpreterWriter.close()
+      interpreter.close()
     }
   }
   
   def recursiveFileList(file: File): Array[File] = {
     if (file.isDirectory) {
-      file.listFiles.flatMap(recursiveFileList(_))
+      file.listFiles.flatMap(recursiveFileList)
     } else {
       Array(file)
     }

@@ -24,7 +24,7 @@ import com.querydsl.core.types._
 import com.querydsl.core.types.PathMetadataFactory._
 import java.util.{List => JavaList, ArrayList, Map => JavaMap, HashMap}
 import java.lang.reflect._
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 /**
  * Implementation of RelationalPath for Scala

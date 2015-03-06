@@ -24,7 +24,7 @@ import javax.inject.Inject
 import java.util._
 import java.io.IOException
 
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
@@ -48,8 +48,8 @@ object Serializer {
   def writeImports(model: EntityType, javaBeanSupport: Boolean, writer: ScalaWriter) {
     val importedClasses = getAnnotationTypes(model)
     if (javaBeanSupport)  importedClasses.add("scala.reflect.BeanProperty")    
-    if (model.hasLists()) importedClasses.add(classOf[List[_]].getName)
-    if (model.hasMaps())  importedClasses.add(classOf[Map[_, _]].getName)
+    if (model.hasLists) importedClasses.add(classOf[List[_]].getName)
+    if (model.hasMaps)  importedClasses.add(classOf[Map[_, _]].getName)
     writer.importClasses(importedClasses.toArray: _*)    
   }
   
@@ -105,12 +105,12 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends Seriali
     
   def writeClass(model: EntityType, writer: ScalaWriter) = {
     writer.javadoc(model.getSimpleName + javadocSuffix)
-    model.getAnnotations foreach(writer.annotation(_))
+    model.getAnnotations foreach(writer.annotation)
     writer.beginClass(model)
     for (property <- model.getProperties) {
-      property.getAnnotations.foreach(writer.annotation(_))
+      property.getAnnotations.foreach(writer.annotation)
       if (javaBeanSupport) writer.line("@BeanProperty")
-      writer.publicField(property.getType(), property.getEscapedName, "_")
+      writer.publicField(property.getType, property.getEscapedName, "_")
     }
     writer.end()
   }
@@ -139,7 +139,7 @@ class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends Seriali
   }
     
   def writeClass(model: EntityType, writer: ScalaWriter) = {
-    model.getAnnotations foreach (writer.annotation(_))
+    model.getAnnotations foreach writer.annotation
     val parameters = model.getProperties
       .map(p => new Parameter(p.getEscapedName, p.getType)).toArray
     writer.caseClass(model.getSimpleName, parameters:_*) 

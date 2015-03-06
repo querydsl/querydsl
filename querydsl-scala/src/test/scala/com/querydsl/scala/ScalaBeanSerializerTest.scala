@@ -1,10 +1,10 @@
 package com.querydsl.scala
 
-import com.mysema.codegen._;
-import com.mysema.codegen.model._;
-import com.querydsl.codegen._;
+import com.mysema.codegen._
+import com.mysema.codegen.model._
+import com.querydsl.codegen._
 
-import java.io.StringWriter;
+import java.io.StringWriter
 
 import org.junit._
 import org.junit.Assert._
@@ -47,11 +47,11 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     @BeanProperty var setField: java.util.Set[DomainClass] = _
     @BeanProperty var time: java.sql.Time = _"""
     
-    val str = writer.toString().replaceAll("\\s+", " ")
+    val str = writer.toString.replaceAll("\\s+", " ")
     //println(str)
  
     toMatch.split("\\n").map(_.trim).foreach { line =>
-      assertTrue(line, str.contains(line));
+      assertTrue(line, str.contains(line))
     }
     
   }
@@ -62,7 +62,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     serializer.createCompanionObject = false
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     assertCompileSuccess(str)
   }
 }

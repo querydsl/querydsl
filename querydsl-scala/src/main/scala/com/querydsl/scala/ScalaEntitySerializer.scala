@@ -26,7 +26,7 @@ import com.querydsl.sql.codegen.support._
 import com.querydsl.core.types._
 import java.util._
 import java.io.IOException
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 import scala.collection.immutable.Map
@@ -57,15 +57,15 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     val simpleName: String = model.getSimpleName
 
     // package
-    if (!model.getPackageName.isEmpty()) writer.packageDecl(model.getPackageName)
+    if (!model.getPackageName.isEmpty) writer.packageDecl(model.getPackageName)
 
     // imports
     writer.importPackages("com.querydsl.core.types","com.querydsl.scala")
     writer.staticimports(classOf[PathMetadataFactory])
 
     var importedClasses = getAnnotationTypes(model)
-    if (model.hasLists()) importedClasses.add(classOf[java.util.List[_]].getName)
-    if (model.hasMaps())  importedClasses.add(classOf[java.util.Map[_, _]].getName)
+    if (model.hasLists) importedClasses.add(classOf[java.util.List[_]].getName)
+    if (model.hasMaps)  importedClasses.add(classOf[java.util.Map[_, _]].getName)
     writer.importClasses(importedClasses.toArray: _*)    
     
     writeHeader(model, scalaWriter)    
@@ -121,7 +121,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   def writeAnnotations(model: EntityType, queryType: Type, writer: ScalaWriter) = {
-    model.getAnnotations.foreach(writer.annotation(_))
+    model.getAnnotations.foreach(writer.annotation)
   }
   
   def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {}
@@ -194,7 +194,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   def getAnnotationTypes(model: EntityType): Set[String] = {
-    Set() ++ (model.getAnnotations.map(_.annotationType.getName))
+    Set() ++ model.getAnnotations.map(_.annotationType.getName)
   }
   
   private def getRaw(t : Type): Type = {

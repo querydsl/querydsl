@@ -1,14 +1,14 @@
-package test;
+package test
 
-import com.querydsl.core.types._;
-import com.querydsl.scala._;
+import com.querydsl.core.types._
+import com.querydsl.scala._
 
-import com.querydsl.core.types.PathMetadataFactory._;
-import com.querydsl.scala.sql.RelationalPathImpl;
+import com.querydsl.core.types.PathMetadataFactory._
+import com.querydsl.scala.sql.RelationalPathImpl
 
-import com.querydsl.sql._;
+import com.querydsl.sql._
 
-object QSurvey extends QSurvey("survey"){
+object QSurvey extends QSurvey("survey") {
   override def as(variable: String) = new QSurvey(variable)
 
 }
@@ -22,7 +22,7 @@ class QSurvey(md: PathMetadata) extends RelationalPathImpl[Survey](md, "PUBLIC",
 
   val name = createString("name")
 
-  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id);
+  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id)
 
   addMetadata(id, ColumnMetadata.named("ID"))
   addMetadata(name, ColumnMetadata.named("NAME"))

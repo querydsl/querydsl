@@ -374,7 +374,7 @@ abstract class FactoryExpressionBase[T](cl: Class[T], args: Ex[_]*)
   
   def accept[R,C](v: Visitor[R,C], context: C): R = v.visit(this, context)
   
-  def getArgs(): java.util.List[Ex[_]] = Arrays.asList(args:_*)
+  def getArgs: java.util.List[Ex[_]] = Arrays.asList(args:_*)
   
   def apply(i: Int): Ex[_] = args(i)
   

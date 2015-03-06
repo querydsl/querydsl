@@ -1,10 +1,10 @@
 package com.querydsl.scala
 
-import com.mysema.codegen._;
-import com.mysema.codegen.model._;
-import com.querydsl.codegen._;
+import com.mysema.codegen._
+import com.mysema.codegen.model._
+import com.querydsl.codegen._
 
-import java.io.StringWriter;
+import java.io.StringWriter
 
 import org.junit._
 import org.junit.Assert._

@@ -1,8 +1,8 @@
-package com.querydsl.scala;
+package com.querydsl.scala
 
-import com.querydsl.core.types._;
+import com.querydsl.core.types._
 
-import org.junit.{ Test, Before, After, Assert };
+import org.junit.{ Test, Before, After, Assert }
 
 import Matchers._
 

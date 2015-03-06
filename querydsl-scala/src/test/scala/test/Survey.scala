@@ -1,9 +1,9 @@
-package test;
+package test
 
-import scala.reflect.BeanProperty;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotNull;
-import com.querydsl.sql._;
+import scala.beans.BeanProperty
+import javax.validation.constraints.Size
+import javax.validation.constraints.NotNull
+import com.querydsl.sql._
 
 object Survey extends QSurvey("survey"){
   override def as(variable: String) = new QSurvey(variable)
@@ -12,9 +12,9 @@ object Survey extends QSurvey("survey"){
 
 class Survey {
 
- var id: Integer = _;
+ var id: Integer = _
 
- var name: String = _;
+ var name: String = _
 
 }
 
