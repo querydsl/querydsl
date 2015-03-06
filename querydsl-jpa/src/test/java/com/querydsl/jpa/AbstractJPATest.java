@@ -621,6 +621,7 @@ public abstract class AbstractJPATest {
     @Test
     public void Exists() {
         assertTrue(query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).exists());
+        assertFalse(query().from(cat).where(cat.kittens.any().name.eq("Ruth321")).exists());
     }
 
     @Test
