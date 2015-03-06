@@ -1,8 +1,8 @@
-package com.mysema.query.jpa;
+package com.mysema.query;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.Ops;
 
 public class CycleClassInitDependencyTest {
 
@@ -12,31 +12,31 @@ public class CycleClassInitDependencyTest {
         // If class is loaded before hand it will work for example:
         // System.out.println(Ops.DateTimeOps.DATE);
 
-        // each thread wants
+        // each thread wants to load one part of the dependency circle
         Thread t1 = new Thread(new LoadClassRunnable("com.mysema.query.types.OperatorImpl"));
         Thread t2 = new Thread(new LoadClassRunnable("com.mysema.query.types.Ops"));
         t1.start();
         t2.start();
 
-        // trying to create anything depending on Ops class for instance:
-        // JPAQuery -> JPQLTemplates -> Ops
-        new JPAQuery();
+        // trying to do anything depending on Ops class for instance:
+        Ops.ADD.getId();
 
     }
 
-    public class LoadClassRunnable implements Runnable {
+    private static class LoadClassRunnable implements Runnable {
 
-        private String classToLoad;
+        private final String classToLoad;
 
         public LoadClassRunnable(String classToLoad) {
             this.classToLoad = classToLoad;
         }
 
+        @Override
         public void run() {
             try {
                 Class.forName(classToLoad);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 
