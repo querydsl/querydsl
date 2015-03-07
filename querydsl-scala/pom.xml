@@ -203,7 +203,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
+            <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
+            <printSummary>true</printSummary>
         </configuration>                
       </plugin>      
       
