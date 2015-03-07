@@ -24,9 +24,15 @@ trait CompileTestUtils {
   }
 
   def assertCompileSuccess(files: Traversable[File]): Unit = {
+    for (file <- files) {
+      assertCompileSuccess(fromFile(file).mkString)
+    }
+  }
+
+  def assertCompileSuccessCombined(files: Traversable[File]): Unit = {
     assertCompileSuccess(files
-                           map (fromFile(_).mkString)
-                           mkString ("\n"))
+      map (fromFile(_).mkString)
+      mkString ("\n"))
   }
 
   def assertCompileSuccess(source: String): Unit = {

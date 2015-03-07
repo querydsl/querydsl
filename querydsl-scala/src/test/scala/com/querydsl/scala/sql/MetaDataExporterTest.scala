@@ -97,8 +97,8 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setCreateScalaSources(true)
         exporter.setTypeMappings(ScalaTypeMappings.create)
         exporter.export(connection.getMetaData)
-        
-        assertCompileSuccess(recursiveFileList(directory))        
+
+        assertCompileSuccessCombined(recursiveFileList(directory))
     }
     
     @Test
@@ -136,8 +136,8 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setCreateScalaSources(true)
         exporter.setTypeMappings(ScalaTypeMappings.create)
         exporter.export(connection.getMetaData)
-        
-        assertCompileSuccess(recursiveFileList(directory))       
+
+        assertCompileSuccessCombined(recursiveFileList(directory))
     }
     
 }

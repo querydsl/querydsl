@@ -100,8 +100,8 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
     exporter.setTypeMappings(ScalaTypeMappings.create)
     exporter.setSchemaPattern("PUBLIC")
     exporter.export(connection.getMetaData)
-    
-    assertCompileSuccess(recursiveFileList(directory))
+
+    assertCompileSuccessCombined(recursiveFileList(directory))
   }
     
   @Test
