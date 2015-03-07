@@ -26,6 +26,33 @@ abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
 
     private static final long serialVersionUID = -1575808026237160843L;
 
+    public GSet(Expression<T> expr) {
+        super(Set.class, expr);
+    }
+
+    protected abstract S createSet();
+
+    @Override
+    public GroupCollector<T, S> createGroupCollector() {
+        return new GroupCollector<T, S>() {
+
+            private final S set = createSet();
+
+            @Override
+            public void add(T o) {
+                if (o != null) {
+                    set.add(o);
+                }
+            }
+
+            @Override
+            public S get() {
+                return set;
+            }
+
+        };
+    }
+
     public static <U> GSet<U, Set<U>> createLinked(Expression<U> expr) {
         return new GSet<U, Set<U>>(expr) {
             @Override
@@ -53,30 +80,4 @@ abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
         };
     }
 
-    public GSet(Expression<T> expr) {
-        super(Set.class, expr);
-    }
-
-    protected abstract S createSet();
-
-    @Override
-    public GroupCollector<T, S> createGroupCollector() {
-        return new GroupCollector<T, S>() {
-
-            private final S set = createSet();
-
-            @Override
-            public void add(T o) {
-                if (o != null) {
-                    set.add(o);
-                }
-            }
-
-            @Override
-            public S get() {
-                return set;
-            }
-
-        };
-    }
 }

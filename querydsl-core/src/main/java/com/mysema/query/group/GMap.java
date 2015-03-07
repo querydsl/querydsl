@@ -31,6 +31,25 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
 
     protected abstract M createMap();
 
+    @Override
+    public GroupCollector<Pair<K,V>, M> createGroupCollector() {
+        return new GroupCollector<Pair<K,V>, M>() {
+
+            private final M map = createMap();
+
+            @Override
+            public void add(Pair<K,V> pair) {
+                map.put(pair.getFirst(), pair.getSecond());
+            }
+
+            @Override
+            public M get() {
+                return map;
+            }
+
+        };
+    }
+
     public static <T, U> GMap<T, U, Map<T,U>> createLinked(QPair<T, U> expr) {
         return new GMap<T, U, Map<T, U>>(expr) {
             @Override
@@ -55,25 +74,6 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
             protected SortedMap<T, U> createMap() {
                 return new TreeMap<T, U>(comparator);
             }
-        };
-    }
-
-    @Override
-    public GroupCollector<Pair<K,V>, M> createGroupCollector() {
-        return new GroupCollector<Pair<K,V>, M>() {
-
-            private final M map = createMap();
-
-            @Override
-            public void add(Pair<K,V> pair) {
-                map.put(pair.getFirst(), pair.getSecond());
-            }
-
-            @Override
-            public M get() {
-                return map;
-            }
-
         };
     }
 
