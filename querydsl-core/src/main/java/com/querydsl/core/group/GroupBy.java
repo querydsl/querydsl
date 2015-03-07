@@ -103,7 +103,7 @@ public final class GroupBy {
     }
 
     /**
-     * Create a new aggregating set expression using a backing LinkedHashMap
+     * Create a new aggregating set expression using a backing LinkedHashSet
      *
      * @param expression
      * @return
