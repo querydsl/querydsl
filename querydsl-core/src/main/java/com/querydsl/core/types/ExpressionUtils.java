@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
-
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
@@ -533,14 +533,14 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Create a new root variable based on the given path
+     * Create a new root variable based on the given path and suffix
      *
      * @param path
+     * @param suffix
      * @return
      */
-    public static String createRootVariable(Path<?> path) {
-        String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
-        String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 5);
+    public static String createRootVariable(Path<?> path, int suffix) {
+        String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES);
         return variable + "_" + suffix;
     }
 

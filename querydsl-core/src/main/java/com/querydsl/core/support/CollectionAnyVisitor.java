@@ -31,7 +31,7 @@ import com.querydsl.core.types.template.BooleanTemplate;
 @SuppressWarnings("unchecked")
 public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
 
-    public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
+    private int replacedCounter;
 
     @SuppressWarnings("rawtypes")
     private static <T> Path<T> replaceParent(Path<T> path, Path<?> parent) {
@@ -110,7 +110,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
             Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, context);
             expr = new PathImpl<Object>(expr.getType(), PathMetadataFactory.forCollectionAny(parent));
             EntityPath<?> replacement = new EntityPathBase<Object>(expr.getType(),
-                    ExpressionUtils.createRootVariable(expr));
+                    ExpressionUtils.createRootVariable(expr, replacedCounter++));
             context.add(expr, replacement);
             return replacement;
 
@@ -134,7 +134,5 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
     public Expression<?> visit(ParamExpression<?> expr, Context context) {
         return expr;
     }
-
-    protected CollectionAnyVisitor() {}
 
 }

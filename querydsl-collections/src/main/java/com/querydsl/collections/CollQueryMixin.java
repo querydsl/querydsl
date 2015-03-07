@@ -48,7 +48,7 @@ public class CollQueryMixin<T> extends QueryMixin<T> {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
         if (predicate != null) {
             Context context = new Context();
-            Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
+            Predicate transformed = (Predicate) predicate.accept(collectionAnyVisitor, context);
             for (int i = 0; i < context.paths.size(); i++) {
                 leftJoin(
                     (Path)context.paths.get(i).getMetadata().getParent(),

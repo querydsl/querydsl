@@ -46,6 +46,8 @@ public class QueryMixin<T> {
         }
     };
 
+    protected final CollectionAnyVisitor collectionAnyVisitor = new CollectionAnyVisitor();
+
     private T self;
 
     public QueryMixin() {
@@ -123,7 +125,7 @@ public class QueryMixin<T> {
 
     private Path<?> normalizePath(Path<?> expr) {
         Context context = new Context();
-        Path<?> replaced = (Path<?>)expr.accept(CollectionAnyVisitor.DEFAULT, context);
+        Path<?> replaced = (Path<?>)expr.accept(collectionAnyVisitor, context);
         if (!replaced.equals(expr)) {
             for (int i = 0; i < context.paths.size(); i++) {
                 Path path = context.paths.get(i).getMetadata().getParent();
