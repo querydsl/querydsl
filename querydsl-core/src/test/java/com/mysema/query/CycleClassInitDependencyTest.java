@@ -1,10 +1,32 @@
 package com.mysema.query;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collection;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.reflections.util.ClasspathHelper;
 
 import com.mysema.query.types.Ops;
 
 public class CycleClassInitDependencyTest {
+
+    private static ClassLoader loader;
+
+    @BeforeClass
+    public static void overrideClassLoader() {
+        loader = Thread.currentThread().getContextClassLoader();
+        Collection<URL> urls = ClasspathHelper.forClassLoader();
+        ClassLoader cl = new URLClassLoader(urls.toArray(new URL[0]));
+        Thread.currentThread().setContextClassLoader(cl);
+    }
+
+    @AfterClass
+    public static void resetClassLoader() {
+        Thread.currentThread().setContextClassLoader(loader);
+    }
 
     @Test(timeout = 2000)
     public void test() throws InterruptedException {
