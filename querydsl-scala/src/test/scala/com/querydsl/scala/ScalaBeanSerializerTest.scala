@@ -11,7 +11,7 @@ import org.junit.Assert._
 
 import scala.collection.JavaConversions._
 
-class ScalaBeanSerializerTest extends CompileTestUtils {
+class ScalaBeanSerializerTest {
 
   val typeMappings = ScalaTypeMappings.create
   
@@ -63,6 +63,6 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString
-    assertCompileSuccess(str)
+    CompileTestUtils.assertCompileSuccess(str)
   }
 }

@@ -8,7 +8,7 @@ import scala.io.Source.fromFile
 import java.io.File
 import java.io.File.pathSeparator
 
-trait CompileTestUtils {
+object CompileTestUtils {
 
   private object env extends Settings {
 
@@ -23,10 +23,18 @@ trait CompileTestUtils {
     usejavacp.value = true
   }
 
+  def assertCompileSuccess(file: File): Unit = {
+    assertCompileSuccess(recursiveFileList(file))
+  }
+
   def assertCompileSuccess(files: Traversable[File]): Unit = {
     for (file <- files) {
       assertCompileSuccess(fromFile(file).mkString)
     }
+  }
+
+  def assertCompileSuccessCombined(file: File): Unit = {
+    assertCompileSuccessCombined(recursiveFileList(file))
   }
 
   def assertCompileSuccessCombined(files: Traversable[File]): Unit = {
@@ -51,7 +59,7 @@ trait CompileTestUtils {
     }
   }
   
-  def recursiveFileList(file: File): Array[File] = {
+  private def recursiveFileList(file: File): Array[File] = {
     if (file.isDirectory) {
       file.listFiles.flatMap(recursiveFileList)
     } else {

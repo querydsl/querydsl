@@ -11,7 +11,7 @@ import org.junit.Assert._
 
 import scala.collection.JavaConversions._
 
-class CaseClassSerializerTest extends CompileTestUtils {
+class CaseClassSerializerTest {
 
   val typeMappings = ScalaTypeMappings.create
   
@@ -36,7 +36,7 @@ class CaseClassSerializerTest extends CompileTestUtils {
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
     
-    assertCompileSuccess(str)
+    CompileTestUtils.assertCompileSuccess(str)
   }  
   
 }  

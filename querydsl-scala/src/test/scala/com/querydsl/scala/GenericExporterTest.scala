@@ -6,7 +6,7 @@ import org.junit.Test
 import io.Source.fromFile
 import java.io.File
 
-class GenericExporterTest extends CompileTestUtils {
+class GenericExporterTest {
 
   @Test
   def Export {
@@ -18,20 +18,20 @@ class GenericExporterTest extends CompileTestUtils {
     exporter.export(getClass.getPackage)
 
     val targetFolder = new File("target/gen1/com/querydsl/scala/")
-    
+
     // com.querydsl.scala
     val sources = (targetFolder.listFiles()
       filter (_.getName.endsWith(".scala"))
       map (fromFile(_).mkString)
       mkString ("\n"))
-    assertCompileSuccess(sources)
+    CompileTestUtils.assertCompileSuccess(sources)
     
     // com.querydsl.scala.ext
     val other = (new File(targetFolder, "ext").listFiles()
       filter (_.getName.endsWith(".scala"))
       map (fromFile(_).mkString)
       mkString ("\n"))
-    assertCompileSuccess("import com.querydsl.scala.ext._\n" + other)
+    CompileTestUtils.assertCompileSuccess("import com.querydsl.scala.ext._\n" + other)
   }
   
 }

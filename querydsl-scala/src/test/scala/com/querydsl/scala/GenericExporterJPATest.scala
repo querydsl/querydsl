@@ -5,7 +5,7 @@ import com.querydsl.codegen.GenericExporter
 import org.junit.Test
 import io.Source.fromFile
 
-class GenericExporterJPATest extends CompileTestUtils {
+class GenericExporterJPATest {
 
   @Test
   def Export {
@@ -26,7 +26,7 @@ class GenericExporterJPATest extends CompileTestUtils {
       filter (_.getName.endsWith(".scala"))
       map (fromFile(_).mkString)
       mkString ("\n"))
-    assertCompileSuccess(sources)
+    CompileTestUtils.assertCompileSuccess(sources)
   }
 
 }

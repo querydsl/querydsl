@@ -16,7 +16,7 @@ import scala.collection.JavaConversions._
 
 import com.querydsl.scala._
 
-class MetaDataExporterTest extends CompileTestUtils {
+class MetaDataExporterTest {
         
     var connection: java.sql.Connection = _
     
@@ -48,7 +48,6 @@ class MetaDataExporterTest extends CompileTestUtils {
                     CONSTRAINT PK_employee PRIMARY KEY (id),
                     CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))""")
 
-
             // table with count column
             stmt.execute("create table count_table(count int)")
 
@@ -78,8 +77,8 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setCreateScalaSources(true)
         exporter.setTypeMappings(ScalaTypeMappings.create)
         exporter.export(connection.getMetaData)
-        
-        assertCompileSuccess(recursiveFileList(directory))
+
+        CompileTestUtils.assertCompileSuccess(directory)
     }
     
     @Test
@@ -98,7 +97,7 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setTypeMappings(ScalaTypeMappings.create)
         exporter.export(connection.getMetaData)
 
-        assertCompileSuccessCombined(recursiveFileList(directory))
+        CompileTestUtils.assertCompileSuccessCombined(directory)
     }
     
     @Test
@@ -117,7 +116,7 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setTypeMappings(ScalaTypeMappings.create)
         exporter.export(connection.getMetaData)
 
-        assertCompileSuccess(recursiveFileList(directory))       
+        CompileTestUtils.assertCompileSuccess(directory)
     }    
     
     @Test
@@ -137,7 +136,7 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setTypeMappings(ScalaTypeMappings.create)
         exporter.export(connection.getMetaData)
 
-        assertCompileSuccessCombined(recursiveFileList(directory))
+        CompileTestUtils.assertCompileSuccessCombined(directory)
     }
     
 }

@@ -13,7 +13,7 @@ import com.querydsl.sql._
 
 import java.io.StringWriter
 
-class ScalaEntitySerializerTest extends CompileTestUtils {
+class ScalaEntitySerializerTest {
 
   var entityType: EntityType = null
 
@@ -69,6 +69,6 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
     //System.err.println(str);
-    assertCompileSuccess(str)
+    CompileTestUtils.assertCompileSuccess(str)
   }
 }

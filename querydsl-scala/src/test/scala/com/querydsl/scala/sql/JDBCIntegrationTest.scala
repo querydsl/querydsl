@@ -24,7 +24,7 @@ import com.querydsl.sql.codegen._
 import com.querydsl.sql.dml._
 import com.querydsl.scala.Helpers._
 
-class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
+class JDBCIntegrationTest extends SQLHelpers {
     
   val survey = QSurvey
   val employee = QEmployee
@@ -82,7 +82,7 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
     exporter.setSchemaPattern("PUBLIC")
     exporter.export(connection.getMetaData)
 
-    assertCompileSuccess(recursiveFileList(directory))
+    CompileTestUtils.assertCompileSuccess(directory)
   }
 
   @Test
@@ -101,7 +101,7 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
     exporter.setSchemaPattern("PUBLIC")
     exporter.export(connection.getMetaData)
 
-    assertCompileSuccessCombined(recursiveFileList(directory))
+    CompileTestUtils.assertCompileSuccessCombined(directory)
   }
     
   @Test
