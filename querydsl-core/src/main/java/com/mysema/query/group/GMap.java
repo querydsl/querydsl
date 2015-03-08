@@ -13,9 +13,7 @@
  */
 package com.mysema.query.group;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.mysema.commons.lang.Pair;
 
@@ -23,7 +21,7 @@ import com.mysema.commons.lang.Pair;
  * @param <K>
  * @param <V>
  */
-class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
+abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pair<K, V>, M> {
 
     private static final long serialVersionUID = 7106389414200843920L;
 
@@ -31,11 +29,13 @@ class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
         super(Map.class, qpair);
     }
 
-    @Override
-    public GroupCollector<Pair<K,V>, Map<K, V>> createGroupCollector() {
-        return new GroupCollector<Pair<K,V>, Map<K, V>>() {
+    protected abstract M createMap();
 
-            private final Map<K, V> map = new LinkedHashMap<K, V>();
+    @Override
+    public GroupCollector<Pair<K,V>, M> createGroupCollector() {
+        return new GroupCollector<Pair<K,V>, M>() {
+
+            private final M map = createMap();
 
             @Override
             public void add(Pair<K,V> pair) {
@@ -43,10 +43,37 @@ class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
             }
 
             @Override
-            public Map<K, V> get() {
+            public M get() {
                 return map;
             }
 
+        };
+    }
+
+    public static <T, U> GMap<T, U, Map<T,U>> createLinked(QPair<T, U> expr) {
+        return new GMap<T, U, Map<T, U>>(expr) {
+            @Override
+            protected Map<T, U> createMap() {
+                return new LinkedHashMap<T, U>();
+            }
+        };
+    }
+
+    public static <T extends Comparable<? super T>, U> GMap<T, U, SortedMap<T, U>> createSorted(QPair<T, U> expr) {
+        return new GMap<T, U, SortedMap<T, U>>(expr) {
+            @Override
+            protected SortedMap<T, U> createMap() {
+                return new TreeMap<T, U>();
+            }
+        };
+    }
+
+    public static <T, U> GMap<T, U, SortedMap<T, U>> createSorted(QPair<T, U> expr, final Comparator<? super T> comparator) {
+        return new GMap<T, U, SortedMap<T, U>>(expr) {
+            @Override
+            protected SortedMap<T, U> createMap() {
+                return new TreeMap<T, U>(comparator);
+            }
         };
     }
 

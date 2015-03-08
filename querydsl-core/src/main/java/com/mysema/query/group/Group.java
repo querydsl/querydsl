@@ -13,42 +13,39 @@
  */
 package com.mysema.query.group;
 
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 import com.mysema.query.types.Expression;
 
 /**
  * A group of rows. Group is build according to GroupDefinitions. 
- * 
+ *
  * @author sasa
  *
  */
 public interface Group {
-    
+
     /**
      * @return Groups elements as an array
      */
     Object[] toArray();
-    
+
     /**
      * Returns the value of the given group. 
-     * 
+     *
      * @param <T> Type of element in a single ResultSet row, i.e. type of {@code Expression<T>}
      * @param <R> Target type of this group, e.g. {@code List<T>}
-     * @param coldef 
+     * @param coldef
      * @throws NoSuchElementException if group is undefined.
      * @throws ClassCastException if group is of different type  
      * @return Value of given group definition in this group
      */
     <T, R> R getGroup(GroupExpression<T, R> coldef);
-    
+
     /**
      * Returns the value of the given single valued expression. This is the 
      * first value of given column within this group of the ResultSet. 
-     * 
+     *
      * @param <T> Value type
      * @param expr Grouped expression
      * @throws NoSuchElementException if group is undefined.  
@@ -56,10 +53,10 @@ public interface Group {
      * @return Value of given expression in this group
      */
     <T> T getOne(Expression<T> expr);
-    
+
     /**
      * Returns a Set of values in this group. 
-     * 
+     *
      * @param <T> Value type of Set
      * @param expr Grouped expression
      * @throws NoSuchElementException if group is undefined.  
@@ -67,29 +64,53 @@ public interface Group {
      * @return Set of values in this group
      */
     <T> Set<T> getSet(Expression<T> expr);
-    
+
     /**
-     * Returns a List of values in this group. 
-     * 
+     * Returns a SortedSet of values in this group.
+     *
+     * @param <T> Value type of Set
+     * @param expr Grouped expression
+     * @throws NoSuchElementException if group is undefined.
+     * @throws ClassCastException if group is of different type (e.g. List)
+     * @return Set of values in this group
+     */
+    <T> SortedSet<T> getSortedSet(Expression<T> expr);
+
+    /**
+     * Returns a List of values in this group.
+     *
      * @param <T> Value type of List
      * @param expr Grouped expression
-     * @throws NoSuchElementException if group is undefined.  
+     * @throws NoSuchElementException if group is undefined.
      * @throws ClassCastException if group is of different type (e.g. Set)
      * @return List of values in this group
      */
     <T> List<T> getList(Expression<T> expr);
-    
+
     /**
      * Returns a Map of values in this group
-     * 
+     *
      * @param <K> Key type of result Map
      * @param <V> Value type of result Map
      * @param key Key expression
      * @param value Value expression
-     * @throws NoSuchElementException if group is undefined.  
+     * @throws NoSuchElementException if group is undefined.
      * @throws ClassCastException if group is of different type (e.g. List)
      * @return Map of values in this group
      */
     <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value);
-    
+
+    /**
+     * Returns a SortedMap of values in this group
+     *
+     * @param <K> Key type of result Map
+     * @param <V> Value type of result Map
+     * @param key Key expression
+     * @param value Value expression
+     * @throws NoSuchElementException if group is undefined.
+     * @throws ClassCastException if group is of different type (e.g. List)
+     * @return Map of values in this group
+     */
+    <K, V> SortedMap<K, V> getSortedMap(Expression<K> key, Expression<V> value);
+
 }

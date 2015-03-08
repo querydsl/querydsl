@@ -34,6 +34,17 @@ public abstract class AbstractGroupByTest {
             row(3, "post 3", 6, "comment 6")
     );
 
+    protected static final Projectable BASIC_RESULTS_UNORDERED = projectable(
+            row(null, "null post", 8, "comment 8"),
+            row(null, "null post", 7, "comment 7"),
+            row(1, "post 1", 2, "comment 2"),
+            row(1, "post 1", 1, "comment 1"),
+            row(2, "post 2", 4, "comment 4"),
+            row(1, "post 1", 3, "comment 3"),
+            row(3, "post 3", 6, "comment 6"),
+            row(2, "post 2", 5, "comment 5")
+    );
+
     protected static final Projectable MAP_RESULTS = projectable(
             row(null, "null post", pair(7, "comment 7")),
             row(null, "null post", pair(8, "comment 8")),
