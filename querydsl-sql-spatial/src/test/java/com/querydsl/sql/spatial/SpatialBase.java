@@ -10,9 +10,6 @@ import com.querydsl.spatial.GeometryExpressions;
 import com.querydsl.spatial.PointExpression;
 import com.querydsl.spatial.path.*;
 import com.querydsl.sql.AbstractBaseTest;
-import com.querydsl.sql.spatial.QShapes;
-import com.querydsl.sql.spatial.QSpatialRefSys;
-import com.querydsl.sql.spatial.Shapes;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.testutil.ExcludeIn;
@@ -59,7 +56,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(POSTGRES)
+    @IncludeIn(POSTGRESQL)
     public void SpatialRefSys() {
         QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
         query().from(spatialRefSys).list(spatialRefSys);
@@ -203,7 +200,7 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, point.m(), MYSQL, TERADATA, H2);
         add(expressions, point.srid());
         // TODO add emulations
-        add(expressions, point.transform(26986), MYSQL, POSTGRES, SQLSERVER, TERADATA, H2);
+        add(expressions, point.transform(26986), MYSQL, POSTGRESQL, SQLSERVER, TERADATA, H2);
         // point specific
         add(expressions, point.x(), H2);
         add(expressions, point.y(), H2);
@@ -228,7 +225,7 @@ public class SpatialBase extends AbstractBaseTest {
         add(expressions, point1.disjoint(point2));
         add(expressions, point1.distance(point2), MYSQL);
         add(expressions, point1.distanceSphere(point2), H2, MYSQL, SQLSERVER);
-        add(expressions, point1.distanceSpheroid(point2), H2, MYSQL, POSTGRES, SQLSERVER);
+        add(expressions, point1.distanceSpheroid(point2), H2, MYSQL, POSTGRESQL, SQLSERVER);
         add(expressions, point1.eq(point2));
         add(expressions, point1.intersection(point2), MYSQL);
         add(expressions, point1.intersects(point2));
@@ -421,7 +418,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn(Target.POSTGRES)
+    @IncludeIn(Target.POSTGRESQL)
     public void Extensions() {
         List<Expression<?>> expressions = Lists.newArrayList();
         GeometryExpression<?> expr1 = shapes.geometry;

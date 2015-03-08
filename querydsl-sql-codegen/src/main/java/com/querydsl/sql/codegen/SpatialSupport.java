@@ -55,7 +55,7 @@ import com.querydsl.sql.spatial.RelationalPathSpatial;
 public final class SpatialSupport {
 
     private static void registerTypes(Configuration configuration) {
-        // mysql & postgres
+        // mysql & postgresql
         configuration.registerType("geometry", Geometry.class);
         configuration.registerType("point", Point.class);
         configuration.registerType("linestring", LineString.class);

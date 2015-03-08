@@ -399,7 +399,7 @@ public class ParsingTest extends AbstractQueryTest {
     
     @Test
     @NoEclipseLink
-    @ExcludeIn({DERBY, HSQLDB, H2, MYSQL, ORACLE, POSTGRES})
+    @ExcludeIn({DERBY, HSQLDB, H2, MYSQL, ORACLE, POSTGRESQL})
     @Ignore
     public void DocoExamples98_11() throws Exception {
         query().from(item, ord).select(item).where(

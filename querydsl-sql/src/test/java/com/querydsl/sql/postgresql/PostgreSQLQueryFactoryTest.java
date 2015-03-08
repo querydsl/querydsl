@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.sql.postgres;
+package com.querydsl.sql.postgresql;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -26,9 +26,9 @@ import org.junit.Test;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.domain.QSurvey;
 
-public class PostgresQueryFactoryTest {
+public class PostgreSQLQueryFactoryTest {
 
-    private PostgresQueryFactory queryFactory;
+    private PostgreSQLQueryFactory queryFactory;
 
     @Before
     public void setUp() {
@@ -38,7 +38,7 @@ public class PostgresQueryFactoryTest {
                 return EasyMock.createNiceMock(Connection.class);
             }
         };
-        queryFactory = new PostgresQueryFactory(SQLTemplates.DEFAULT, provider);
+        queryFactory = new PostgreSQLQueryFactory(SQLTemplates.DEFAULT, provider);
     }
 
     @Test

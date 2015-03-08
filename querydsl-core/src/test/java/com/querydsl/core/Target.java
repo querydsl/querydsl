@@ -55,9 +55,9 @@ public enum Target{
      */
     ORACLE,
     /**
-     * Postgres
+     * PostgreSQL
      */
-    POSTGRES,
+    POSTGRESQL,
     /**
      * Microsoft SQL Server
      */

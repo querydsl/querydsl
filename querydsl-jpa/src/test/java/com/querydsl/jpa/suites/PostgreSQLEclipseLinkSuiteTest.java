@@ -12,7 +12,7 @@ import com.querydsl.jpa.SerializationBase;
 import com.querydsl.core.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
-public class PostgresEclipseLinkSuiteTest extends AbstractJPASuite {
+public class PostgreSQLEclipseLinkSuiteTest extends AbstractJPASuite {
 
     public static class JPA extends JPABase {}
     public static class JPASQL extends JPASQLBase {}
@@ -21,8 +21,8 @@ public class PostgresEclipseLinkSuiteTest extends AbstractJPASuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Mode.mode.set("postgres-eclipselink");
-        Mode.target.set(Target.POSTGRES);
+        Mode.mode.set("postgresql-eclipselink");
+        Mode.target.set(Target.POSTGRESQL);
     }
 
 }

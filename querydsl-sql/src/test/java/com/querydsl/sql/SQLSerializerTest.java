@@ -67,8 +67,8 @@ public class SQLSerializerTest {
 
     @Test
     public void CountDistinct_PostgreSQL() {
-        Configuration postgres = new Configuration(new PostgresTemplates());
-        SQLSerializer serializer = new SQLSerializer(postgres);
+        Configuration postgresql = new Configuration(new PostgreSQLTemplates());
+        SQLSerializer serializer = new SQLSerializer(postgresql);
         SQLSubQuery query = new SQLSubQuery();
         query.from(QEmployeeNoPK.employee);
         query.distinct();

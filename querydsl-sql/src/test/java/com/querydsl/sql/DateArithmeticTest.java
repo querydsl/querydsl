@@ -29,7 +29,7 @@ public class DateArithmeticTest {
         list.add(new HSQLDBTemplates());
         list.add(new MySQLTemplates());
         list.add(new OracleTemplates());
-        list.add(new PostgresTemplates());
+        list.add(new PostgreSQLTemplates());
         list.add(new SQLiteTemplates());
         list.add(new SQLServerTemplates());
         list.add(new SQLServer2005Templates());

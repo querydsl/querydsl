@@ -1,22 +1,22 @@
-package com.querydsl.sql.postgres;
+package com.querydsl.sql.postgresql;
 
 import static org.junit.Assert.assertEquals;
 
+import com.querydsl.sql.PostgreSQLTemplates;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.sql.PostgresTemplates;
 import com.querydsl.sql.domain.QSurvey;
 
-public class PostgresQueryTest {
+public class PostgreSQLQueryTest {
     
-    private PostgresQuery query;
+    private PostgreSQLQuery query;
     
     private QSurvey survey = new QSurvey("survey");
     
     @Before
     public void setUp() {
-        query = new PostgresQuery(null, new PostgresTemplates() {{
+        query = new PostgreSQLQuery(null, new PostgreSQLTemplates() {{
             newLineToSingleSpace();
         }});        
     }
@@ -87,7 +87,7 @@ public class PostgresQueryTest {
         assertEquals("from SURVEY survey for update of SURVEY", toString(query));
     }
     
-    private String toString(PostgresQuery query) {
+    private String toString(PostgreSQLQuery query) {
         return query.toString().replace('\n', ' ');
     }
 

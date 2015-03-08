@@ -7,7 +7,7 @@ import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.HSQLDBTemplates;
 import com.querydsl.sql.MySQLTemplates;
 import com.querydsl.sql.OracleTemplates;
-import com.querydsl.sql.PostgresTemplates;
+import com.querydsl.sql.PostgreSQLTemplates;
 import com.querydsl.sql.SQLServerTemplates;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.SQLiteTemplates;
@@ -32,7 +32,7 @@ public final class Mode {
         case SQLSERVER: return new SQLServerTemplates();
         case MYSQL: return new MySQLTemplates();
         case ORACLE:return new OracleTemplates();
-        case POSTGRES: return new PostgresTemplates();
+        case POSTGRESQL: return new PostgreSQLTemplates();
         case SQLITE:return new SQLiteTemplates();
         case TERADATA: return new TeradataTemplates();
         }

@@ -20,7 +20,7 @@ public class PostgreSQLLiteralsSuiteTest extends AbstractSuite {
         public void setUp() throws Exception {
             //NOTE: replacing the templates with a non-quoting one
             previous = configuration;
-            configuration = new Configuration(PostgresTemplates.builder().newLineToSingleSpace().build());
+            configuration = new Configuration(PostgreSQLTemplates.builder().newLineToSingleSpace().build());
             super.setUp();
         }
 
@@ -43,8 +43,8 @@ public class PostgreSQLLiteralsSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initPostgres();
-        Connections.initConfiguration(PostgresTemplates.builder().quote().newLineToSingleSpace().build());
+        Connections.initPostgreSQL();
+        Connections.initConfiguration(PostgreSQLTemplates.builder().quote().newLineToSingleSpace().build());
         Connections.getConfiguration().setUseLiterals(true);
     }
 

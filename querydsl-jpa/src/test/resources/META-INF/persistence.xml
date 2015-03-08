@@ -228,9 +228,9 @@
         </properties>
     </persistence-unit>
 
-    <!-- postgres -->
+    <!-- postgresql -->
 
-    <persistence-unit name="postgres">
+    <persistence-unit name="postgresql">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
@@ -245,7 +245,7 @@
         </properties>
     </persistence-unit>
     
-    <persistence-unit name="postgres-eclipselink" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="postgresql-eclipselink" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>

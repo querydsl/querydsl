@@ -20,16 +20,16 @@ import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.Ops;
 
 /**
- * PostgresTemplates is an SQL dialect for PostgreSQL
+ * PostgreSQLTemplates is an SQL dialect for PostgreSQL
  *
  * <p>tested with PostgreSQL 8.4 and 9.1</p>
  *
  * @author tiwe
  *
  */
-public class PostgresTemplates extends SQLTemplates {
+public class PostgreSQLTemplates extends SQLTemplates {
 
-    protected static final Set<String> POSTGRES_RESERVED_WORDS
+    protected static final Set<String> POSTGRESQL_RESERVED_WORDS
             = ImmutableSet.of(
                     "ALL", "ANALYSE", "ANALYZE", "AND", "ANY", "ARRAY", "AS",
                     "ASC", "ASYMMETRIC", "AUTHORIZATION", "BINARY", "BOTH",
@@ -51,27 +51,27 @@ public class PostgresTemplates extends SQLTemplates {
                     "VARIADIC", "VERBOSE", "WHEN", "WHERE", "WINDOW", "WITH");
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
-    public static final PostgresTemplates DEFAULT = new PostgresTemplates();
+    public static final PostgreSQLTemplates DEFAULT = new PostgreSQLTemplates();
 
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
-                return new PostgresTemplates(escape, quote);
+                return new PostgreSQLTemplates(escape, quote);
             }
         };
     }
 
-    public PostgresTemplates() {
+    public PostgreSQLTemplates() {
         this('\\', false);
     }
 
-    public PostgresTemplates(boolean quote) {
+    public PostgreSQLTemplates(boolean quote) {
         this('\\', quote);
     }
 
-    public PostgresTemplates(char escape, boolean quote) {
-        super(POSTGRES_RESERVED_WORDS, "\"", escape, quote);
+    public PostgreSQLTemplates(char escape, boolean quote) {
+        super(POSTGRESQL_RESERVED_WORDS, "\"", escape, quote);
         setDummyTable(null);
         setCountDistinctMultipleColumns(true);
         setCountViaAnalytics(true);

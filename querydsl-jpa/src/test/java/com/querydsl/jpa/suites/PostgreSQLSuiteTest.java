@@ -14,7 +14,7 @@ import com.querydsl.jpa.SerializationBase;
 import com.querydsl.core.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
-public class PostgresSuiteTest extends AbstractSuite {
+public class PostgreSQLSuiteTest extends AbstractSuite {
 
     public static class JPA extends JPABase {}
     public static class JPASQL extends JPASQLBase {}
@@ -25,8 +25,8 @@ public class PostgresSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Mode.mode.set("postgres");
-        Mode.target.set(Target.POSTGRES);
+        Mode.mode.set("postgresql");
+        Mode.target.set(Target.POSTGRESQL);
     }
 
 }

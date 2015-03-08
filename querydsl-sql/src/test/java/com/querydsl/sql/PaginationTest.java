@@ -30,7 +30,7 @@ public class PaginationTest {
         list.add(new HSQLDBTemplates());
         list.add(new MySQLTemplates());
         list.add(new OracleTemplates());  // inner query
-        list.add(new PostgresTemplates());
+        list.add(new PostgreSQLTemplates());
         list.add(new SQLiteTemplates());
         list.add(new SQLServerTemplates());
         list.add(new SQLServer2005Templates()); // inner query

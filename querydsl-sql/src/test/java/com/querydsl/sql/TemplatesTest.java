@@ -26,7 +26,7 @@ public class TemplatesTest extends TemplatesTestBase {
         new HSQLDBTemplates();
         new MySQLTemplates();
         new OracleTemplates();
-        new PostgresTemplates();
+        new PostgreSQLTemplates();
         new SQLTemplates("\"",'\\',false);
         new SQLServerTemplates();
     }
