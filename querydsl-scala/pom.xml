@@ -205,7 +205,7 @@
         <configuration>
           <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
           <printSummary>true</printSummary>
-        </configuration>                
+        </configuration>
       </plugin>      
       
       <plugin>
