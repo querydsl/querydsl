@@ -99,12 +99,6 @@ public class HQLTemplates extends JPQLTemplates {
     }
 
     @Override
-    public boolean isSelect1Supported() {
-        // TODO return true, when JPQLTemplates becomes standard
-        return false;
-    }
-
-    @Override
     public boolean isEnumInPathSupported() {
         // related : http://opensource.atlassian.com/projects/hibernate/browse/HHH-5159
         return false;

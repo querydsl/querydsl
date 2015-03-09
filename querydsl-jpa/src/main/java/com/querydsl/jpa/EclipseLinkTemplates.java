@@ -95,10 +95,4 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         return false;
     }
 
-    @Override
-    public boolean isSelect1Supported() {
-        return true;
-    }
-
-
 }

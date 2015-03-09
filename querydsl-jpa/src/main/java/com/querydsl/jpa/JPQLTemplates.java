@@ -158,10 +158,6 @@ public class JPQLTemplates extends Templates {
         return true;
     }
 
-    public boolean isSelect1Supported() {
-        return false;
-    }
-
     @Nullable
     public String getExistsProjection() {
         return null;
