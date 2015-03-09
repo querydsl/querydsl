@@ -2,14 +2,10 @@ package com.mysema.query;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.reflections.util.ClasspathHelper;
-
-import com.mysema.query.types.Ops;
 
 public class CycleClassInitDependencyTest {
 
@@ -18,8 +14,13 @@ public class CycleClassInitDependencyTest {
     @BeforeClass
     public static void overrideClassLoader() {
         loader = Thread.currentThread().getContextClassLoader();
-        Collection<URL> urls = ClasspathHelper.forClassLoader();
-        ClassLoader cl = new URLClassLoader(urls.toArray(new URL[0]));
+        ClassLoader cl = null;
+        if (loader instanceof URLClassLoader) {
+            URL[] urls = ((URLClassLoader) loader).getURLs();
+            cl = URLClassLoader.newInstance(urls, null/*no delegation*/);
+        } else {
+            throw new IllegalStateException("Unknown classloader type");
+        }
         Thread.currentThread().setContextClassLoader(cl);
     }
 
@@ -31,17 +32,13 @@ public class CycleClassInitDependencyTest {
     @Test(timeout = 2000)
     public void test() throws InterruptedException {
 
-        // If class is loaded before hand it will work for example:
-        // System.out.println(Ops.DateTimeOps.DATE);
-
         // each thread wants to load one part of the dependency circle
         Thread t1 = new Thread(new LoadClassRunnable("com.mysema.query.types.OperatorImpl"));
         Thread t2 = new Thread(new LoadClassRunnable("com.mysema.query.types.Ops"));
         t1.start();
         t2.start();
 
-        // trying to do anything depending on Ops class for instance:
-        Ops.ADD.getId();
+        t1.join();
 
     }
 
@@ -56,7 +53,7 @@ public class CycleClassInitDependencyTest {
         @Override
         public void run() {
             try {
-                Class.forName(classToLoad);
+                Class.forName(classToLoad, true, Thread.currentThread().getContextClassLoader());
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
