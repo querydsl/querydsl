@@ -2,10 +2,12 @@ package com.mysema.query;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.reflections.util.ClasspathHelper;
 
 public class CycleClassInitDependencyTest {
 
@@ -14,13 +16,8 @@ public class CycleClassInitDependencyTest {
     @BeforeClass
     public static void overrideClassLoader() {
         loader = Thread.currentThread().getContextClassLoader();
-        ClassLoader cl = null;
-        if (loader instanceof URLClassLoader) {
-            URL[] urls = ((URLClassLoader) loader).getURLs();
-            cl = URLClassLoader.newInstance(urls, null/*no delegation*/);
-        } else {
-            throw new IllegalStateException("Unknown classloader type");
-        }
+        Collection<URL> urls = ClasspathHelper.forClassLoader();
+        ClassLoader cl = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), null/*no delegation*/);
         Thread.currentThread().setContextClassLoader(cl);
     }
 
