@@ -101,7 +101,7 @@ class JDBCIntegrationTest extends SQLHelpers {
     exporter.setSchemaPattern("PUBLIC")
     exporter.export(connection.getMetaData)
 
-    CompileTestUtils.assertCompileSuccessCombined(directory)
+    CompileTestUtils.assertCompileSuccess(directory)
   }
     
   @Test

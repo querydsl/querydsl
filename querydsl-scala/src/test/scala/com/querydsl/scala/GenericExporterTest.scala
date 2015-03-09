@@ -20,15 +20,11 @@ class GenericExporterTest {
     val targetFolder = new File("target/gen1/com/querydsl/scala/")
 
     // com.querydsl.scala
-    val sources = (targetFolder.listFiles()
-      filter (_.getName.endsWith(".scala"))
-      map (fromFile(_).mkString)
-      mkString ("\n"))
+    val sources = targetFolder.listFiles.filter(_.getName.endsWith(".scala"))
     CompileTestUtils.assertCompileSuccess(sources)
     
     // com.querydsl.scala.ext
-    val other = (new File(targetFolder, "ext").listFiles()
-      filter (_.getName.endsWith(".scala"))
+    val other = (new File(targetFolder, "ext").listFiles() filter (_.getName.endsWith(".scala"))
       map (fromFile(_).mkString)
       mkString ("\n"))
     CompileTestUtils.assertCompileSuccess("import com.querydsl.scala.ext._\n" + other)

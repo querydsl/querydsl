@@ -22,10 +22,7 @@ class GenericExporterJPATest {
     exporter.export(getClass.getPackage)
 
     val targetFolder = new java.io.File("target/gen1-jpa/com/querydsl/scala/")
-    val sources = (targetFolder listFiles ()
-      filter (_.getName.endsWith(".scala"))
-      map (fromFile(_).mkString)
-      mkString ("\n"))
+    val sources = targetFolder.listFiles.filter(_.getName.endsWith(".scala"))
     CompileTestUtils.assertCompileSuccess(sources)
   }
 

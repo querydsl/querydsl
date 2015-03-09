@@ -97,7 +97,7 @@ class MetaDataExporterTest {
       exporter.setTypeMappings(ScalaTypeMappings.create)
       exporter.export(connection.getMetaData)
 
-      CompileTestUtils.assertCompileSuccessCombined(directory)
+      CompileTestUtils.assertCompileSuccess(directory)
     }
     
     @Test
@@ -136,7 +136,7 @@ class MetaDataExporterTest {
       exporter.setTypeMappings(ScalaTypeMappings.create)
       exporter.export(connection.getMetaData)
 
-      CompileTestUtils.assertCompileSuccessCombined(directory)
+      CompileTestUtils.assertCompileSuccess(directory)
     }
     
 }

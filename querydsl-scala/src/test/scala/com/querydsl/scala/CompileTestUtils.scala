@@ -8,39 +8,33 @@ import scala.io.Source.fromFile
 import java.io.File
 import java.io.File.pathSeparator
 
+import scala.tools.nsc.reporters.{ConsoleReporter, Reporter}
+
 object CompileTestUtils {
 
-  private object env extends Settings {
-
-    private def jarPathOfClass(className: String) = {
-      Class.forName(className).getProtectionDomain.getCodeSource.getLocation
-    }
-
-    val currentLibraries = this.getClass.getClassLoader.asInstanceOf[java.net.URLClassLoader].getURLs.toList
-    val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
-
-    classpath.value = cp.mkString(pathSeparator)
-    usejavacp.value = true
+  private def jarPathOfClass(className: String) = {
+    Class.forName(className).getProtectionDomain.getCodeSource.getLocation
   }
+
+  private val env = new Settings()
+  private val currentLibraries = this.getClass.getClassLoader.asInstanceOf[java.net.URLClassLoader].getURLs.toList
+  private val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
+  env.classpath.value = cp.mkString(pathSeparator)
+  env.usejavacp.value = true
+  env.d.value = "target"
 
   def assertCompileSuccess(file: File): Unit = {
     assertCompileSuccess(recursiveFileList(file))
   }
 
   def assertCompileSuccess(files: Traversable[File]): Unit = {
-    for (file <- files) {
-      assertCompileSuccess(fromFile(file).mkString)
+    val reporter = new ConsoleReporter(env)
+    val g = new Global(env, reporter)
+    val run = new g.Run
+    run.compile(files.map(_.getPath).toList)
+    if (reporter.hasErrors) {
+      throw new AssertionError("Compilation failed")
     }
-  }
-
-  def assertCompileSuccessCombined(file: File): Unit = {
-    assertCompileSuccessCombined(recursiveFileList(file))
-  }
-
-  def assertCompileSuccessCombined(files: Traversable[File]): Unit = {
-    assertCompileSuccess(files
-      map (fromFile(_).mkString)
-      mkString ("\n"))
   }
 
   def assertCompileSuccess(source: String): Unit = {
