@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -21,6 +22,7 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.OperationImpl;
+import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.expr.SimpleExpression;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.template.SimpleTemplate;
@@ -82,6 +84,34 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());
+    }
+
+    @Test
+    public void Precedence() {
+        // +, - (as unary operators), PRIOR, CONNECT_BY_ROOT  identity, negation, location in hierarchy
+        int p1 = getPrecedence(Ops.NEGATE);
+        // *, / multiplication, division
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV);
+        // +, - (as binary operators), || addition, subtraction, concatenation
+        int p3 = getPrecedence(Ops.ADD, Ops.SUB, Ops.CONCAT);
+        // =, !=, <, >, <=, >=, comparison
+        int p4 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        // IS [NOT] NULL, LIKE, [NOT] BETWEEN, [NOT] IN, EXISTS, IS OF type comparison
+        int p5 = getPrecedence(Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.EXISTS);
+        // NOT exponentiation, logical negation
+        int p6 = getPrecedence(Ops.NOT);
+        // AND conjunction
+        int p7 = getPrecedence(Ops.AND);
+        // OR disjunction
+        int p8 = getPrecedence(Ops.OR);
+
+        assertTrue(p1 < p2);
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
+        assertTrue(p7 < p8);
     }
 
 }

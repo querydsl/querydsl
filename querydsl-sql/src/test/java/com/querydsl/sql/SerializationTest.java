@@ -13,19 +13,21 @@
  */
 package com.querydsl.sql;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Connection;
 
+import org.easymock.EasyMock;
+import org.junit.Test;
+
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.path.PathBuilder;
 import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.path.PathBuilder;
-import org.easymock.EasyMock;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class SerializationTest {
 
@@ -120,7 +122,7 @@ public class SerializationTest {
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", serializer.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", serializer.toString());
 
     }
 
@@ -134,7 +136,7 @@ public class SerializationTest {
 
         assertEquals("from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
     @Test
@@ -147,7 +149,7 @@ public class SerializationTest {
 
         assertEquals("from SURVEY SURVEY\n" +
                 "join table(TableValuedFunction(?)) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
     @Test

@@ -13,9 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
 import java.util.IdentityHashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * Templates provides operator patterns for query expression serialization
@@ -23,6 +24,24 @@ import java.util.Map;
  * @author tiwe
  */
 public class Templates {
+
+    /**
+     * Precedence order based on Java language operator precedence
+     */
+    protected static class Precedence {
+        public static final int HIGHEST = -1;
+        public static final int NOT_HIGH = 10;
+        public static final int NEGATE = 20;
+        public static final int ARITH_HIGH = 30;
+        public static final int ARITH_LOW = 40;
+        public static final int COMPARISON = 50;
+        public static final int EQUALITY = 60;
+        public static final int CASE = 70, LIST = 70;
+        public static final int NOT = 80;
+        public static final int AND = 90;
+        public static final int XOR = 100, XNOR = 100;
+        public static final int OR = 110;
+    }
 
     public static final Templates DEFAULT = new Templates();
 
@@ -47,16 +66,16 @@ public class Templates {
         };
         //CHECKSTYLE:OFF
 
-        add(Ops.LIST, "{0}, {1}", 40);
-        add(Ops.SINGLETON, "{0}", 40);
+        add(Ops.LIST, "{0}, {1}", Precedence.LIST);
+        add(Ops.SINGLETON, "{0}", Precedence.LIST);
         add(Ops.WRAPPED, "({0})");
 
         // boolean
-        add(Ops.AND, "{0} && {1}", 36);
-        add(Ops.NOT, "!{0}", 3);
-        add(Ops.OR, "{0} || {1}", 38);
-        add(Ops.XNOR, "{0} xnor {1}", 39);
-        add(Ops.XOR, "{0} xor {1}", 39);
+        add(Ops.AND, "{0} && {1}", Precedence.AND);
+        add(Ops.NOT, "!{0}", Precedence.NOT_HIGH);
+        add(Ops.OR, "{0} || {1}", Precedence.OR);
+        add(Ops.XNOR, "{0} xnor {1}", Precedence.XNOR);
+        add(Ops.XOR, "{0} xor {1}", Precedence.XOR);
 
         // collection
         add(Ops.COL_IS_EMPTY, "empty({0})");
@@ -72,38 +91,37 @@ public class Templates {
         add(Ops.CONTAINS_VALUE, "containsValue({0},{1})");
 
         // comparison
-        add(Ops.BETWEEN, "{0} between {1} and {2}", 30);
-        add(Ops.GOE, "{0} >= {1}", 20);
-        add(Ops.GT, "{0} > {1}", 21);
-        add(Ops.LOE, "{0} <= {1}", 22);
-        add(Ops.LT, "{0} < {1}", 23);
+        add(Ops.BETWEEN, "{0} between {1} and {2}", Precedence.COMPARISON);
+        add(Ops.GOE, "{0} >= {1}", Precedence.COMPARISON);
+        add(Ops.GT, "{0} > {1}", Precedence.COMPARISON);
+        add(Ops.LOE, "{0} <= {1}", Precedence.COMPARISON);
+        add(Ops.LT, "{0} < {1}", Precedence.COMPARISON);
 
         // numeric
-        add(Ops.NEGATE, "-{0}", 6);
-        add(Ops.ADD, "{0} + {1}", 13);
-        add(Ops.DIV, "{0} / {1}", 8);
-        add(Ops.MOD, "{0} % {1}", 10);
-        add(Ops.MULT, "{0} * {1}", 7);
-        add(Ops.SUB, "{0} - {1}", 12);
+        add(Ops.NEGATE, "-{0}", Precedence.NEGATE);
+        add(Ops.ADD, "{0} + {1}", Precedence.ARITH_LOW);
+        add(Ops.DIV, "{0} / {1}", Precedence.ARITH_HIGH);
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
+        add(Ops.MULT, "{0} * {1}", Precedence.ARITH_HIGH);
+        add(Ops.SUB, "{0} - {1}", Precedence.ARITH_LOW);
 
         // various
-        add(Ops.EQ, "{0} = {1}", 18);
-        add(Ops.EQ_IGNORE_CASE, "eqIc({0},{1})", 18);
-        add(Ops.INSTANCE_OF, "{0}.class = {1}");
-        add(Ops.NE, "{0} != {1}", 25);
-        add(Ops.IN, "{0} in {1}", 27);
-        add(Ops.NOT_IN, "{0} not in {1}", 27);
-        add(Ops.IS_NULL, "{0} is null", 26);
-        add(Ops.IS_NOT_NULL, "{0} is not null", 26);
-        add(Ops.ALIAS, "{0} as {1}", 0);
+        add(Ops.EQ, "{0} = {1}", Precedence.EQUALITY);
+        add(Ops.EQ_IGNORE_CASE, "eqIc({0},{1})", Precedence.EQUALITY);
+        add(Ops.INSTANCE_OF, "{0} instanceof {1}", Precedence.COMPARISON);
+        add(Ops.NE, "{0} != {1}", Precedence.EQUALITY);
 
-        add(Ops.EXISTS, "exists({0})");
+        add(Ops.IN, "{0} in {1}", Precedence.COMPARISON);
+        add(Ops.NOT_IN, "{0} not in {1}", Precedence.COMPARISON);
+        add(Ops.IS_NULL, "{0} is null", Precedence.COMPARISON);
+        add(Ops.IS_NOT_NULL, "{0} is not null", Precedence.COMPARISON);
+        add(Ops.ALIAS, "{0} as {1}", 0);
 
         add(Ops.NUMCAST, "cast({0},{1})");
         add(Ops.STRING_CAST, "str({0})");
 
         // string
-        add(Ops.CONCAT, "{0} + {1}", 37);
+        add(Ops.CONCAT, "{0} + {1}", Precedence.ARITH_LOW);
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1})");
         add(Ops.SUBSTR_2ARGS, "substring({0},{1},{2})");
@@ -122,8 +140,8 @@ public class Templates {
         add(Ops.INDEX_OF, "indexOf({0},{1})");
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
-        add(Ops.LIKE, "{0} like {1}", 26);
-        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", 26);
+        add(Ops.LIKE, "{0} like {1}", Precedence.COMPARISON);
+        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'", Precedence.COMPARISON);
 
         add(Ops.StringOps.LEFT, "left({0},{1})");
         add(Ops.StringOps.RIGHT, "right({0},{1})");
@@ -229,14 +247,14 @@ public class Templates {
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
 
         // case
-        add(Ops.CASE, "case {0} end", 30);
-        add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 30);
-        add(Ops.CASE_ELSE,  "else {0}", 30);
+        add(Ops.CASE, "case {0} end", Precedence.CASE);
+        add(Ops.CASE_WHEN,  "when {0} then {1} {2}", Precedence.CASE);
+        add(Ops.CASE_ELSE,  "else {0}", Precedence.CASE);
 
         // case for
-        add(Ops.CASE_EQ, "case {0} {1} end", 30);
-        add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}", 30);
-        add(Ops.CASE_EQ_ELSE,  "else {0}", 30);
+        add(Ops.CASE_EQ, "case {0} {1} end", Precedence.CASE);
+        add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}", Precedence.CASE);
+        add(Ops.CASE_EQ_ELSE,  "else {0}", Precedence.CASE);
 
         // coalesce
         add(Ops.COALESCE, "coalesce({0})");
@@ -244,7 +262,7 @@ public class Templates {
         add(Ops.NULLIF, "nullif({0},{1})");
 
         // subquery
-        add(Ops.EXISTS, "exists {0}");
+        add(Ops.EXISTS, "exists {0}", 0);
 
         // numeric aggregates
         add(Ops.AggOps.BOOLEAN_ALL, "all({0})");
@@ -308,6 +326,12 @@ public class Templates {
 
     public final int getPrecedence(Operator op) {
         return precedence.get(op).intValue();
+    }
+
+    protected void setPrecedence(int p, Operator... ops) {
+        for (Operator op : ops) {
+            precedence.put(op, p);
+        }
     }
 
 }

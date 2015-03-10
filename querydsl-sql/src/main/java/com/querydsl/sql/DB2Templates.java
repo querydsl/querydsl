@@ -144,6 +144,16 @@ public class DB2Templates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
 
+        setPrecedence(Precedence.ARITH_HIGH, Ops.CONCAT);
+        setPrecedence(Precedence.COMPARISON - 1, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        setPrecedence(Precedence.COMPARISON, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN,
+                Ops.IN, Ops.NOT_IN, Ops.EXISTS);
+
+        // other like cases
+        setPrecedence(Precedence.COMPARISON, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
         add(SQLOps.NEXTVAL, "next value for {0s}");
 
         add(Ops.MathOps.RANDOM, "rand()");

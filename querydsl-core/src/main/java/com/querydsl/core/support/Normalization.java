@@ -26,15 +26,13 @@ public final class Normalization {
 
     // TODO simplify
     private static final Pattern FULL_OPERATION = Pattern.compile(
-            "(?<![\\d\\*/\"' ])" + "(\\b|\\(|\\s+)"  +
+            "(?<![\\d*/\"?' ])" + "(\\b|\\(|\\s+)"  +
             "(" + NUMBER + WS + "[+\\-/*]" + WS + ")+" + NUMBER + WS +
-            "(?![\\d\\*/\"' ])");
+            "(?![\\d*/\"' ])");
 
     private static final Pattern[] OPERATIONS = {
-            Pattern.compile(NUMBER + WS + "\\*" + WS + NUMBER),
-            Pattern.compile(NUMBER + WS + "/" + WS + NUMBER),
-            Pattern.compile(NUMBER + WS + "\\+" + WS + NUMBER),
-            Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER)
+            Pattern.compile(NUMBER + WS + "([*/])" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "([+-])" + WS + NUMBER),
     };
 
     private static String normalizeOperation(String queryString) {
@@ -42,14 +40,15 @@ public final class Normalization {
             Pattern operation = OPERATIONS[i];
             Matcher matcher;
             while ((matcher = operation.matcher(queryString)).find()) {
+                char operator = matcher.group(2).charAt(0);
                 BigDecimal first = new BigDecimal(matcher.group(1));
-                BigDecimal second = new BigDecimal(matcher.group(2));
+                BigDecimal second = new BigDecimal(matcher.group(3));
                 BigDecimal result;
-                switch (i) {
-                    case 0: result = first.multiply(second); break;
-                    case 1: result = first.divide(second, 10, RoundingMode.HALF_UP); break;
-                    case 2: result = first.add(second); break;
-                    case 3: result = first.subtract(second); break;
+                switch (operator) {
+                    case '*': result = first.multiply(second); break;
+                    case '/': result = first.divide(second, 10, RoundingMode.HALF_UP); break;
+                    case '+': result = first.add(second); break;
+                    case '-': result = first.subtract(second); break;
                     default: throw new IllegalStateException();
                 }
                 StringBuffer buffer = new StringBuffer();

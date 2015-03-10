@@ -13,49 +13,38 @@
  */
 package com.querydsl.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.Ops;
 
-public class H2TemplatesTest extends AbstractSQLTemplatesTest{
+public class HSQLDBTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Override
     protected SQLTemplates createTemplates() {
-        return new H2Templates();
-    }
-
-    @Test
-    public void Builder() {
-        SQLTemplates templates = H2Templates.builder().quote()
-            .newLineToSingleSpace()
-            .build();
-        
-        assertNotNull(templates);
+        return new HSQLDBTemplates();
     }
 
     @Test
     public void Precedence() {
-        // unary
-        // *, /, %
-        // +, -
-        // ||
-        // comparison
-        // NOT
-        // AND
-        // OR
+        // Evaluation from left to right. Parentheses group operations.
+        // Multiplication and division take precedence over addition and subtraction.
+        // AND takes precedence over OR.
+        // NOT applies to the immediate term.
+        // LIKE applies to the result of any string concatenation to the right.
+        // Comparison ops are not combined without logical ops so there is no precedence issue.
 
-        int p1 = getPrecedence(Ops.NEGATE);
-        int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);
+        //int p1 = getPrecedence(Ops.NEGATE);
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.CONCAT);
         int p3 = getPrecedence(Ops.ADD, Ops.SUB);
-        int p4 = getPrecedence(Ops.CONCAT);
-        int p5 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT); // ...
-        int p6 = getPrecedence(Ops.NOT);
+        int p4 = getPrecedence(Ops.NOT);
+        int p5 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        int p6 = getPrecedence(Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.EXISTS);
         int p7 = getPrecedence(Ops.AND);
         int p8 = getPrecedence(Ops.OR);
 
-        assertTrue(p1 < p2);
+        //assertTrue(p1 < p2);
         assertTrue(p2 < p3);
         assertTrue(p3 < p4);
         assertTrue(p4 < p5);
@@ -63,4 +52,5 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest{
         assertTrue(p6 < p7);
         assertTrue(p7 < p8);
     }
+
 }

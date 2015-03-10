@@ -1,6 +1,6 @@
 /*
  * Copyright 2011, Mysema Ltd
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,44 +13,31 @@
  */
 package com.querydsl.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.Ops;
 
-public class H2TemplatesTest extends AbstractSQLTemplatesTest{
+public class DB2TemplatesTest extends AbstractSQLTemplatesTest{
 
     @Override
     protected SQLTemplates createTemplates() {
-        return new H2Templates();
-    }
-
-    @Test
-    public void Builder() {
-        SQLTemplates templates = H2Templates.builder().quote()
-            .newLineToSingleSpace()
-            .build();
-        
-        assertNotNull(templates);
+        return new DB2Templates();
     }
 
     @Test
     public void Precedence() {
-        // unary
-        // *, /, %
-        // +, -
-        // ||
-        // comparison
-        // NOT
-        // AND
-        // OR
+        // Expressions within parentheses are evaluated first. When the order of evaluation is not
+        // specified by parentheses, prefix operators are applied before multiplication and division,
+        // and multiplication, division, and concatenation are applied before addition and subtraction.
+        // Operators at the same precedence level are applied from left to right.
 
         int p1 = getPrecedence(Ops.NEGATE);
-        int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.CONCAT);
         int p3 = getPrecedence(Ops.ADD, Ops.SUB);
-        int p4 = getPrecedence(Ops.CONCAT);
-        int p5 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT); // ...
+        int p4 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        int p5 = getPrecedence(Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.EXISTS);
         int p6 = getPrecedence(Ops.NOT);
         int p7 = getPrecedence(Ops.AND);
         int p8 = getPrecedence(Ops.OR);
@@ -63,4 +50,5 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest{
         assertTrue(p6 < p7);
         assertTrue(p7 < p8);
     }
+
 }

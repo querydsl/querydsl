@@ -13,17 +13,19 @@
  */
 package com.querydsl.jpa;
 
-import com.querydsl.jpa.domain.JobFunction;
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.domain.QDomesticCat;
-import com.querydsl.jpa.domain.QEmployee;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import com.querydsl.core.support.Context;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.TemplateExpressionImpl;
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import com.querydsl.jpa.domain.JobFunction;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QDomesticCat;
+import com.querydsl.jpa.domain.QEmployee;
 
 
 public class JPACollectionAnyVisitorTest {

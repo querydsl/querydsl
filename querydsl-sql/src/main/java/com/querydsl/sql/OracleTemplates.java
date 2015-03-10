@@ -72,13 +72,22 @@ public class OracleTemplates extends SQLTemplates {
         setCountViaAnalytics(true);
         setListMaxSize(1000);
 
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
+        setPrecedence(Precedence.COMPARISON + 1, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN,
+                Ops.IN, Ops.NOT_IN, Ops.EXISTS);
+
+        // other like cases
+        setPrecedence(Precedence.COMPARISON + 1, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
         add(Ops.ALIAS, "{0} {1}");
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
         // String
-        add(Ops.INDEX_OF, "instrb({0},{1})-1");
-        add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1");
-        add(Ops.MATCHES, "regexp_like({0},{1})");
+        add(Ops.INDEX_OF, "instrb({0},{1})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1", Precedence.ARITH_LOW);
+        add(Ops.MATCHES, "regexp_like({0},{1})", -1);
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
         add(Ops.StringOps.LEFT, "substr({0},1,{1})");

@@ -31,6 +31,11 @@ public class NormalizationTest {
     }
 
     @Test
+    public void Arithmetic() {
+        assertEquals("3", Normalization.normalize("1 - 2 + 4"));
+    }
+
+    @Test
     public void Normalize_Addition() {
         assertEquals("3", Normalization.normalize("1+2"));
         assertEquals("where 3 = 3", Normalization.normalize("where 1+2 = 3"));
@@ -97,5 +102,10 @@ public class NormalizationTest {
     public void Substring() {
         assertEquals("substring(cat.name,1,locate(?1,cat.name)-1)",
                 Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-0)"));
+    }
+
+    @Test
+    public void Parameters() {
+        assertEquals("?1 + 1", Normalization.normalize("?1 + 1"));
     }
 }
