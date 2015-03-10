@@ -1,10 +1,11 @@
 package com.querydsl.core.types;
 
-import java.io.*;
+import static com.querydsl.core.testutil.Serialization.serialize;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import com.querydsl.core.types.path.SimplePath;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class SerializationTest {
 
@@ -12,24 +13,12 @@ public class SerializationTest {
     public void roundtrip() throws Exception {
         PathImpl path = new PathImpl(Object.class, "entity");
         SimplePath path2 = new SimplePath(Object.class, "entity");
-        assertEquals(path, roundtrip(path));
-        assertEquals(path2, roundtrip(path2));
-        assertEquals(path2.isNull(), roundtrip(path2.isNull()));
-        assertEquals(path.hashCode(), roundtrip(path).hashCode());
-        assertEquals(path2.hashCode(), roundtrip(path2).hashCode());
-        assertEquals(path2.isNull().hashCode(), roundtrip(path2.isNull()).hashCode());
-    }
-
-    private <T> T roundtrip(T obj) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(obj);
-        out.close();
-
-        // deserialize predicate
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        return (T) in.readObject();
+        assertEquals(path, serialize(path));
+        assertEquals(path2, serialize(path2));
+        assertEquals(path2.isNull(), serialize(path2.isNull()));
+        assertEquals(path.hashCode(), serialize(path).hashCode());
+        assertEquals(path2.hashCode(), serialize(path2).hashCode());
+        assertEquals(path2.isNull().hashCode(), serialize(path2.isNull()).hashCode());
     }
 
 }

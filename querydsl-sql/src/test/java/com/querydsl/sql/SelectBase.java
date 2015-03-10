@@ -43,6 +43,7 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.support.Expressions;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.expr.*;
 import com.querydsl.core.types.path.NumberPath;
@@ -1392,16 +1393,8 @@ public class SelectBase extends AbstractBaseTest {
         serialize(rows);
     }
 
-    private void serialize(Object obj) throws IOException, ClassNotFoundException{
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bytesOut);
-        out.writeObject(obj);
-        out.close();
-        bytesOut.close();
-
-        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bytesIn);
-        List<Tuple> rows = (List<Tuple>) in.readObject();
+    private void serialize(List<Tuple> rows) throws IOException, ClassNotFoundException{
+        rows = Serialization.serialize(rows);
         for (Tuple row : rows) {
             row.hashCode();
         }

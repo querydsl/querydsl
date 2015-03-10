@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -41,23 +42,11 @@ public class SerializationBase implements JPATest {
         JPAQuery query = query();
         query.from(cat).where(cat.name.eq("Kate")).list(cat);
         
-        // get metadata
         QueryMetadata metadata = query.getMetadata();
         assertFalse(metadata.getJoins().isEmpty());
         assertTrue(metadata.getWhere() != null);
         assertTrue(metadata.getProjection() != null);
-        
-        // serialize metadata
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(metadata);
-        out.close();
-        
-        // deserialize metadata
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        QueryMetadata  metadata2 = (QueryMetadata) in.readObject();
-        in.close();
+        QueryMetadata metadata2 = Serialization.serialize(metadata);
         
         // validate it
         assertEquals(metadata.getJoins(), metadata2.getJoins());
@@ -73,18 +62,7 @@ public class SerializationBase implements JPATest {
     @Test
     public void Any_Serialized() throws Exception {
         Predicate where = cat.kittens.any().name.eq("Ruth234");
-
-        // serialize predicate
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(where);
-        out.close();
-
-        // deserialize predicate
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        Predicate where2 = (Predicate) in.readObject();
-        in.close();
+        Predicate where2 = Serialization.serialize(where);
 
         assertEquals(0, query().from(cat).where(where).count());
         assertEquals(0, query().from(cat).where(where2).count());

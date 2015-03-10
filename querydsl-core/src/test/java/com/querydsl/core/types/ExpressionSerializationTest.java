@@ -1,13 +1,10 @@
 package com.querydsl.core.types;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import org.junit.Test;
 
+import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.StringPath;
 
@@ -21,15 +18,7 @@ public class ExpressionSerializationTest {
     }
 
     private void serialize(Object obj) throws IOException, ClassNotFoundException{
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bytesOut);
-        out.writeObject(obj);
-        out.close();
-        bytesOut.close();
-
-        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bytesIn);
-        Object obj2 = in.readObject();
+        Object obj2 = Serialization.serialize(obj);
         obj2.hashCode();
     }
 

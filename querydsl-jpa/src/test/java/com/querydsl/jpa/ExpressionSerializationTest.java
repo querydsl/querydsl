@@ -1,35 +1,17 @@
 package com.querydsl.jpa;
 
+import static com.querydsl.core.testutil.Serialization.serialize;
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.core.types.Expression;
 
 public class ExpressionSerializationTest {
-
-    private <T> T serialize(T obj) throws ClassNotFoundException, IOException {
-        // serialize
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(obj);
-        out.close();
-
-        // deserialize
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        T obj2 = (T) in.readObject();
-        in.close();
-        return obj2;
-    }
 
     @Test
     public void Serialize() throws Exception {
