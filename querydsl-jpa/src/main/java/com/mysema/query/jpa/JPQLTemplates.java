@@ -164,6 +164,10 @@ public class JPQLTemplates extends Templates {
         return true;
     }
 
+    /**
+     * Not used anymore
+     */
+    @Deprecated
     public boolean isSelect1Supported() {
         return false;
     }
