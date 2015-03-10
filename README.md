@@ -12,9 +12,9 @@ Use these tutorials to get started
 
 * [Querying JPA](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration)
 * [Querying SQL](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html)
-* [Querying Mongodb](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s06.html)
-* [Querying Lucene](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html)
-* [Querying Collections](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html)
+* [Querying Mongodb](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s07.html)
+* [Querying Lucene](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s05.html)
+* [Querying Collections](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s08.html)
 * [Querydsl Spatial](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s04.html)
 * [Querying JDO](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s02.html)
 
