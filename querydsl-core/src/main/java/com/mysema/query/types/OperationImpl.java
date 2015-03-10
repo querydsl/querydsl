@@ -13,11 +13,9 @@
  */
 package com.mysema.query.types;
 
-import javax.annotation.concurrent.Immutable;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.lang.reflect.Field;
 import java.util.List;
+
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -88,27 +86,6 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     @Override
     public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
-    }
-
-    /**
-     * Resets operator field to singleton version
-     *
-     * @param ois
-     * @throws ClassNotFoundException
-     * @throws IOException
-     */
-    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-        try {
-            ois.defaultReadObject();
-            Field field = OperationImpl.class.getDeclaredField("operator");
-            field.setAccessible(true);
-            field.set(this, OperatorImpl.OPS.get(operator.getId()));
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
 }

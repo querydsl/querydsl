@@ -116,9 +116,9 @@ public final class Ops {
 
     public static final Operator<String>  LOWER = new OperatorImpl<String>(NS, "LOWER");
 
-    public static final Operator<String>  SUBSTR_1ARG = new OperatorImpl<String>(NS, "SUBSTR");
+    public static final Operator<String>  SUBSTR_1ARG = new OperatorImpl<String>(NS, "SUBSTR_1ARG");
 
-    public static final Operator<String>  SUBSTR_2ARGS = new OperatorImpl<String>(NS, "SUBSTR2");
+    public static final Operator<String>  SUBSTR_2ARGS = new OperatorImpl<String>(NS, "SUBSTR_2ARGS");
 
     public static final Operator<String>  TRIM = new OperatorImpl<String>(NS, "TRIM");
 
@@ -134,9 +134,9 @@ public final class Ops {
 
     public static final Operator<Boolean> STARTS_WITH = new OperatorImpl<Boolean>(NS, "STARTS_WITH");
 
-    public static final Operator<Boolean> STARTS_WITH_IC = new OperatorImpl<Boolean>(NS, "STATS_WITH_IC");
+    public static final Operator<Boolean> STARTS_WITH_IC = new OperatorImpl<Boolean>(NS, "STARTS_WITH_IC");
 
-    public static final Operator<Number>  INDEX_OF_2ARGS = new OperatorImpl<Number>(NS, "INDEX_OF2");
+    public static final Operator<Number>  INDEX_OF_2ARGS = new OperatorImpl<Number>(NS, "INDEX_OF_2ARGS");
 
     public static final Operator<Number>  INDEX_OF = new OperatorImpl<Number>(NS, "INDEX_OF");
 
@@ -357,7 +357,7 @@ public final class Ops {
 
         public static final Operator<Number> ROUND = new OperatorImpl<Number>(NS, "ROUND");
 
-        public static final Operator<Number> ROUND2 = new OperatorImpl<Number>(NS, "ROUND");
+        public static final Operator<Number> ROUND2 = new OperatorImpl<Number>(NS, "ROUND2");
 
         public static final Operator<Number> RANDOM = new OperatorImpl<Number>(NS, "RANDOM");
 
