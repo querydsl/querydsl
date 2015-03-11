@@ -19,20 +19,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 
 /**
  * SerializerBase is a stub for Serializer implementations which serialize query metadata to Strings
@@ -40,6 +30,9 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
+
+    private static final Set<Operator> SAME_PRECEDENCE = ImmutableSet.<Operator>of(Ops.CASE,
+            Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE);
 
     private final StringBuilder builder = new StringBuilder(128);
            
@@ -264,17 +257,22 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         handleTemplate(template, args);
         return null;
     }
-    
+
     protected void visitOperation(Class<?> type, Operator<?> operator, final List<? extends Expression<?>> args) {
         final Template template = templates.getTemplate(operator);
         if (template != null) {
-            final int precedence = templates.getPrecedence(operator);        
+            final int precedence = templates.getPrecedence(operator);
+            boolean first = true;
             for (final Template.Element element : template.getElements()) {
                 final Object rv = element.convert(args);
                 if (rv instanceof Expression) {
                     final Expression<?> expr = (Expression<?>) rv;
                     if (precedence > -1 && expr instanceof Operation) {
-                        if (precedence < templates.getPrecedence(((Operation<?>) expr).getOperator())) {
+                        Operator op = ((Operation<?>) expr).getOperator();
+                        int opPrecedence = templates.getPrecedence(op);
+                        if (precedence < opPrecedence) {
+                            append("(").handle(expr).append(")");
+                        } else if (!first && precedence == opPrecedence && !SAME_PRECEDENCE.contains(op)) {
                             append("(").handle(expr).append(")");
                         } else {
                             handle(expr);
@@ -282,12 +280,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                     } else {
                         handle(expr);
                     }
+                    first = false;
                 } else if (element.isString()) {
                     append(rv.toString());
                 } else {
                     visitConstant(rv);
                 }
-            }    
+            }
         } else if (strict) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
         } else {
@@ -295,7 +294,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             append("(");
             handle(", ", args);
             append(")");
-        }        
+        }
     }
 
 }

@@ -51,6 +51,11 @@ public class H2Templates extends SQLTemplates {
         setLimitRequired(true);
         setCountDistinctMultipleColumns(true);
 
+        setPrecedence(Precedence.ARITH_LOW + 1, Ops.CONCAT);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
+
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
+
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
 

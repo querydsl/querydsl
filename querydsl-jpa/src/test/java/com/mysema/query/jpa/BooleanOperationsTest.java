@@ -34,10 +34,9 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     
     @Test
     public void BooleanOperations_Not() {
-        assertToString("not (cust is null)", cust.isNull().not());
+        assertToString("not cust is null", cust.isNull().not());
     }
-    
-    
+
     @Test
     public void BooleanOperations2_And() {
         cat.name.eq(cust.name.firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));

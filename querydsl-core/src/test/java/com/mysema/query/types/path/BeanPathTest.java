@@ -103,8 +103,8 @@ public class BeanPathTest {
         BooleanExpression pred1 = beanPath.instanceOf(BeanPathTest.class).or(beanPath.instanceOf(SubClass.class));
         BooleanExpression pred2 = beanPath.instanceOfAny(BeanPathTest.class, SubClass.class);
         assertEquals(pred1, pred2);
-        assertEquals("p.class = class com.mysema.query.types.path.BeanPathTest || " +
-        	     "p.class = class com.mysema.query.types.path.BeanPathTest$SubClass", pred2.toString());
+        assertEquals("p instanceof class com.mysema.query.types.path.BeanPathTest || " +
+        	     "p instanceof class com.mysema.query.types.path.BeanPathTest$SubClass", pred2.toString());
     }
 
 }

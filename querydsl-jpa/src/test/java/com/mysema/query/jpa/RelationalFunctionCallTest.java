@@ -61,7 +61,7 @@ public class RelationalFunctionCallTest {
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?1) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", serializer.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", serializer.toString());
 
     }
 

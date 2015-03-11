@@ -62,7 +62,11 @@ public class TeradataTemplates extends SQLTemplates {
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
 
+        setPrecedence(Precedence.ARITH_LOW + 1, Ops.CONCAT);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
+
         add(Ops.NE, "{0} <> {1}");
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
 
         // String
         add(Ops.STRING_LENGTH, "character_length({0})");
@@ -77,7 +81,6 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.MATCHES_IC, "(regex_instr({0l}, {1}) = 1)");
 
         // Number
-        add(Ops.MOD, "{0} mod {1}");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
         add(Ops.MathOps.RANDOM, "cast(random(0, 1000000000) as numeric(20,10))/1000000000");
         add(Ops.MathOps.COT, "(cos({0}) / sin({0}))");

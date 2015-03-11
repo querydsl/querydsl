@@ -29,10 +29,10 @@ public final class JDOQLTemplates extends JavaTemplates {
 
     protected JDOQLTemplates() {
         // String
-        add(Ops.STRING_CONTAINS, "{0}.indexOf({1}) > -1", 25);
-        add(Ops.STRING_CONTAINS_IC, "{0l}.indexOf({1l}) > -1", 25);
+        add(Ops.STRING_CONTAINS, "{0}.indexOf({1}) > -1", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS_IC, "{0l}.indexOf({1l}) > -1", Precedence.COMPARISON);
         add(Ops.EQ_IGNORE_CASE, "{0l}.equals({1l})");
-        add(Ops.STRING_IS_EMPTY, "{0} == \"\"", 25);
+        add(Ops.STRING_IS_EMPTY, "{0} == \"\"", Precedence.EQUALITY);
         add(Ops.LIKE, "{0}.like({1})");
         add(Ops.LIKE_ESCAPE, "{0}.like({1})");
 

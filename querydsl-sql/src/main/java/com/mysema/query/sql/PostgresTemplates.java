@@ -78,10 +78,25 @@ public class PostgresTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setSupportsUnquotedReservedWordsAsIdentifier(true);
 
+        setPrecedence(Precedence.COMPARISON - 3, Ops.IS_NULL, Ops.IS_NOT_NULL);
+        setPrecedence(Precedence.COMPARISON - 2, Ops.CONCAT, Ops.MATCHES);
+        setPrecedence(Precedence.COMPARISON - 1, Ops.IN);
+        setPrecedence(Precedence.COMPARISON, Ops.BETWEEN);
+        setPrecedence(Precedence.COMPARISON + 1, Ops.LIKE, Ops.LIKE_ESCAPE);
+        setPrecedence(Precedence.COMPARISON + 2, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        setPrecedence(Precedence.COMPARISON + 3, Ops.EQ, Ops.EQ_IGNORE_CASE);
+
+        // other like cases
+        setPrecedence(Precedence.COMPARISON + 1, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
+
         // String
         add(Ops.MATCHES, "{0} ~ {1}");
-        add(Ops.INDEX_OF, "strpos({0},{1})-1");
-        add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1"); //FIXME
+        add(Ops.INDEX_OF, "strpos({0},{1})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1", Precedence.ARITH_LOW); //FIXME
         add(Ops.StringOps.LOCATE,  "strpos({1},{0})");
         add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2s}-1) || substr({1},{2s}),{0})");
 

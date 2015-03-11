@@ -19,7 +19,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.TemplatesTestUtils;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.NumberTemplate;
@@ -49,7 +53,7 @@ public abstract class AbstractSQLTemplatesTest {
         if (templates.getDummyTable() == null) {
             assertEquals("select 1", query.toString());
         } else {
-            assertEquals("select 1 from dual", query.toString());
+            assertEquals("select 1 from " + templates.getDummyTable(), query.toString());
         }
     }
 
@@ -73,12 +77,13 @@ public abstract class AbstractSQLTemplatesTest {
                     "union\n" +
                     "(select 3)", union.toString());
         } else {
+            String dummyTable = templates.getDummyTable();
             assertEquals(
-                    "(select 1 as col1 from dual)\n" +
+                    "(select 1 as col1 from "+dummyTable+")\n" +
                     "union\n" +
-                    "(select 2 from dual)\n" +
+                    "(select 2 from "+dummyTable+")\n" +
                     "union\n" +
-                    "(select 3 from dual)", union.toString());
+                    "(select 3 from "+dummyTable+")", union.toString());
         }
     }
 
@@ -90,6 +95,61 @@ public abstract class AbstractSQLTemplatesTest {
 
     protected SQLSubQuery sq() {
         return new SQLSubQuery();
+    }
+
+    protected int getPrecedence(Operator<?>... ops) {
+        int precedence = templates.getPrecedence(ops[0]);
+        for (int i = 1; i < ops.length; i++) {
+            assertEquals(ops[i].getId(), precedence, templates.getPrecedence(ops[i]));
+        }
+        return precedence;
+    }
+
+    @Test
+    public void Generic_Precedence() {
+        TemplatesTestUtils.testPrecedence(templates);
+    }
+
+    @Test
+    public void Arithmetic() {
+        NumberExpression<Integer> one = Expressions.numberPath(Integer.class, "one");
+        NumberExpression<Integer> two = Expressions.numberPath(Integer.class, "two");
+
+        // add
+        assertSerialized(one.add(two), "one + two");
+        assertSerialized(one.add(two).multiply(1), "(one + two) * ?");
+        assertSerialized(one.add(two).divide(1), "(one + two) / ?");
+        assertSerialized(one.add(two).add(1), "one + two + ?");
+
+        assertSerialized(one.add(two.multiply(1)), "one + two * ?");
+        assertSerialized(one.add(two.divide(1)), "one + two / ?");
+        assertSerialized(one.add(two.add(1)), "one + (two + ?)"); // XXX could be better
+
+        // sub
+        assertSerialized(one.subtract(two), "one - two");
+        assertSerialized(one.subtract(two).multiply(1), "(one - two) * ?");
+        assertSerialized(one.subtract(two).divide(1), "(one - two) / ?");
+        assertSerialized(one.subtract(two).add(1), "one - two + ?");
+
+        assertSerialized(one.subtract(two.multiply(1)), "one - two * ?");
+        assertSerialized(one.subtract(two.divide(1)), "one - two / ?");
+        assertSerialized(one.subtract(two.add(1)), "one - (two + ?)");
+
+        // mult
+        assertSerialized(one.multiply(two), "one * two");
+        assertSerialized(one.multiply(two).multiply(1), "one * two * ?");
+        assertSerialized(one.multiply(two).divide(1), "one * two / ?");
+        assertSerialized(one.multiply(two).add(1), "one * two + ?");
+
+        assertSerialized(one.multiply(two.multiply(1)), "one * (two * ?)"); // XXX could better
+        assertSerialized(one.multiply(two.divide(1)), "one * (two / ?)");
+        assertSerialized(one.multiply(two.add(1)), "one * (two + ?)");
+    }
+
+    private void assertSerialized(Expression<?> expr, String serialized) {
+        SQLSerializer serializer = new SQLSerializer(new Configuration(templates));
+        serializer.handle(expr);
+        assertEquals(serialized, serializer.toString());
     }
 
 }
