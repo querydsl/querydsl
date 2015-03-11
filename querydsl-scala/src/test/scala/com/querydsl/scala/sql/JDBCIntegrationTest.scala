@@ -24,22 +24,16 @@ import com.querydsl.sql.codegen._
 import com.querydsl.sql.dml._
 import com.querydsl.scala.Helpers._
 
-class JDBCIntegrationTest extends SQLHelpers {
-    
-  val survey = QSurvey
-  val employee = QEmployee
+object JDBCIntegrationTest {
 
-  val templates = new HSQLDBTemplates()
+  private var connection: Connection = _
+  private var statement: Statement = _
 
-  var connection: Connection = _
-
-  var statement: Statement = _
-  
-  @Before
-  def setUp() {
+  @BeforeClass
+  def setUpClass() {
     Class.forName("org.h2.Driver")
-    val url = "jdbc:h2:~/dbs/h2-scala"
-    
+    val url = "jdbc:h2:mem:testdb" + System.currentTimeMillis()
+
     connection = DriverManager.getConnection(url, "sa", "")
     statement = connection.createStatement()
     statement.execute("drop table employee if exists")
@@ -64,46 +58,43 @@ class JDBCIntegrationTest extends SQLHelpers {
 
     statement.execute("insert into employee (firstname, lastname) values ('Bob', 'Smith')")
     statement.execute("insert into employee (firstname, lastname) values ('John', 'Doe')")
-    
+
     // TODO : create table with multi column primary key
   }
 
-  @Test
-  def Generation_without_Beantypes {
-    val namingStrategy = new DefaultNamingStrategy()
-    val exporter = new MetaDataExporter()
-    exporter.setNamePrefix("Q")
-    exporter.setPackageName("com.querydsl")
-    val directory = new File("target/gensql1")
-    exporter.setTargetFolder(directory)
-    exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
-    exporter.setCreateScalaSources(true)
-    exporter.setTypeMappings(ScalaTypeMappings.create)
-    exporter.setSchemaPattern("PUBLIC")
-    exporter.export(connection.getMetaData)
-
-    CompileTestUtils.assertCompileSuccess(directory)
+  @AfterClass
+  def tearDownClass() {
+    try {
+      statement.close()
+    } finally {
+      connection.close()
+    }
   }
 
-  @Test
-  def Generation_with_Beantypes {
-    val namingStrategy = new DefaultNamingStrategy()
-    //val beanSerializer = new ScalaBeanSerializer()
-    val exporter = new MetaDataExporter()
-    exporter.setNamePrefix("Q")
-    exporter.setPackageName("com.querydsl")
-    val directory = new File("target/gensql2")
-    exporter.setTargetFolder(directory)
-    exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
-    exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer])
-    exporter.setCreateScalaSources(true)
-    exporter.setTypeMappings(ScalaTypeMappings.create)
-    exporter.setSchemaPattern("PUBLIC")
-    exporter.export(connection.getMetaData)
+}
 
-    CompileTestUtils.assertCompileSuccess(directory)
+class JDBCIntegrationTest extends SQLHelpers {
+  import JDBCIntegrationTest._
+
+  val survey = QSurvey
+  val employee = QEmployee
+
+  val templates = new HSQLDBTemplates()
+  val configuration = new Configuration(templates)
+
+  def connection = JDBCIntegrationTest.connection
+
+  @Before
+  def setUp(): Unit = {
+    connection.setAutoCommit(false)
   }
-    
+
+  @After
+  def tearDown(): Unit = {
+    connection.rollback()
+    connection.setAutoCommit(true)
+  }
+
   @Test
   def Populate_Bean {
     assertEquals(2, query.from(survey).list(survey) size ())
@@ -235,23 +226,13 @@ class JDBCIntegrationTest extends SQLHelpers {
     val count = delete(survey) where(survey.id === id) execute()
     assertTrue(count > 0)
   }
-  
 
-  @After
-  def tearDown() {
-    try {
-      statement.close()
-    } finally {
-      connection.close()
-    }
-  }
+  def query = new SQLQuery(connection, configuration)
 
-  def query = new SQLQuery(connection, templates)
-
-  def delete(path: RelationalPath[_]) = new SQLDeleteClause(connection, templates, path)
+  def delete(path: RelationalPath[_]) = new SQLDeleteClause(connection, configuration, path)
   
-  def insert(path: RelationalPath[_]) = new SQLInsertClause(connection, templates, path)
+  def insert(path: RelationalPath[_]) = new SQLInsertClause(connection, configuration, path)
   
-  def update(path: RelationalPath[_]) = new SQLUpdateClause(connection, templates, path)
+  def update(path: RelationalPath[_]) = new SQLUpdateClause(connection, configuration, path)
   
 }

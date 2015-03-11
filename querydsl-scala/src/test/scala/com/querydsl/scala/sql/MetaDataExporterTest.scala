@@ -18,7 +18,7 @@ import com.querydsl.scala._
 
 object MetaDataExporterTest {
 
-  var connection: java.sql.Connection = _
+  private var connection: java.sql.Connection = _
 
   @BeforeClass
   def setUp() {
