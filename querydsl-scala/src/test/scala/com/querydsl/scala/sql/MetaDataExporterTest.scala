@@ -78,7 +78,6 @@ class MetaDataExporterTest {
   @Test
   def Generate_Without_BeanTypes() {
     val directory = new java.io.File("target/jdbcgen1")
-    val namingStrategy = new DefaultNamingStrategy()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
     exporter.setPackageName("com.querydsl")
@@ -95,8 +94,6 @@ class MetaDataExporterTest {
   @Test
   def Generate_With_BeanTypes() {
     val directory = new java.io.File("target/jdbcgen2")
-    val namingStrategy = new DefaultNamingStrategy()
-    //val beanSerializer = new ScalaBeanSerializer()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
     exporter.setPackageName("com.querydsl")
@@ -114,8 +111,6 @@ class MetaDataExporterTest {
   @Test
   def Generate_With_Schema() {
     val directory = new java.io.File("target/jdbcgen3")
-    val namingStrategy = new DefaultNamingStrategy()
-    //val beanSerializer = new ScalaBeanSerializer()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
     exporter.setPackageName("com.querydsl")
@@ -133,8 +128,6 @@ class MetaDataExporterTest {
   @Test
   def Generate_With_BeanTypes_And_Schema() {
     val directory = new java.io.File("target/jdbcgen4")
-    val namingStrategy = new DefaultNamingStrategy()
-    //val beanSerializer = new ScalaBeanSerializer()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
     exporter.setPackageName("com.querydsl")
