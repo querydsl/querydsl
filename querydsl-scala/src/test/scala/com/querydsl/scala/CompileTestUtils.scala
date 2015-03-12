@@ -2,6 +2,9 @@ package com.querydsl.scala
 
 import java.io.File._
 
+import com.google.common.base.Charsets
+import com.google.common.io.Files
+
 import scala.tools.nsc._
 import scala.tools.nsc.interpreter.IR.Success
 import scala.io.Source.fromFile
@@ -16,12 +19,14 @@ object CompileTestUtils {
     Class.forName(className).getProtectionDomain.getCodeSource.getLocation
   }
 
-  private val env = new Settings()
   private val currentLibraries = this.getClass.getClassLoader.asInstanceOf[java.net.URLClassLoader].getURLs.toList
   private val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
+
+  private val env = new Settings()
   env.classpath.value = cp.mkString(pathSeparator)
   env.usejavacp.value = true
-  env.d.value = "target"
+  //env.d.value = "target"
+  env.stopAfter.value = List("refchecks")
 
   def assertCompileSuccess(file: File): Unit = {
     assertCompileSuccess(recursiveFileList(file))
@@ -38,18 +43,12 @@ object CompileTestUtils {
   }
 
   def assertCompileSuccess(source: String): Unit = {
-    val out = new java.io.ByteArrayOutputStream
-    val interpreterWriter = new java.io.PrintWriter(out)
-
-    val interpreter = new scala.tools.nsc.interpreter.IMain(env, interpreterWriter)
+    val file = File.createTempFile("source", ".scala")
     try {
-      val result = interpreter.interpret(source.replaceAll("package [\\w\\.]+", ""))
-      if (result != Success) {
-        throw new AssertionError("Compile failed, interpreter output:\n" + out.toString("utf-8"))
-      }
+      Files.write(source, file, Charsets.UTF_8)
+      assertCompileSuccess(file)
     } finally {
-      interpreterWriter.close()
-      interpreter.close()
+        file.delete()
     }
   }
   
