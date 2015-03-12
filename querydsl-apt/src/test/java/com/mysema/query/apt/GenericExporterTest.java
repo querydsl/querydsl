@@ -1,10 +1,15 @@
 package com.mysema.query.apt;
 
-import javax.persistence.*;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.*;
+
+import org.junit.Test;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ForwardingSet;
@@ -15,8 +20,6 @@ import com.mysema.query.codegen.Keywords;
 import com.mysema.query.domain.AbstractEntityTest;
 import com.mysema.query.domain.CustomCollection;
 import com.mysema.query.domain.Generic2Test;
-import org.junit.Test;
-import static org.junit.Assert.fail;
 
 public class GenericExporterTest extends AbstractProcessorTest {
 
@@ -98,6 +101,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QGeneric16Test_HidaBez.java");
         expected.add("QGeneric16Test_HidaBezGruppe.java");
         expected.add("QProperties2Test_ConcreteX.java");
+        expected.add("QProperties3Test_Order.java");
 
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }
