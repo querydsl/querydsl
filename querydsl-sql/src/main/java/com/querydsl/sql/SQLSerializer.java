@@ -852,7 +852,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
          && args.get(0) instanceof Path<?>
          && args.get(1) instanceof Constant<?>
          && operator != Ops.NUMCAST) {
-            Object constant = ((Constant)args.get(1)).getConstant();
+            Object constant = ((Constant<?>)args.get(1)).getConstant();
             if (!Collection.class.isInstance(constant) || !((Collection)constant).isEmpty()) {
                 for (Element element : templates.getTemplate(operator).getElements()) {
                     if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
@@ -870,7 +870,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             super.visitOperation(type, operator, args);
             inUnion = oldUnion;
 
-        } else if (operator == Ops.LIKE && args.get(1) instanceof Constant) {
+        } else if (operator == Ops.LIKE && args.get(1) instanceof Constant<?>) {
             final String escape = String.valueOf(templates.getEscapeChar());
             final String escaped = args.get(1).toString().replace(escape, escape + escape);
             super.visitOperation(String.class, Ops.LIKE,
@@ -882,7 +882,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
-            final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+            @SuppressWarnings("unchecked") //this is the second argument's type
+            Constant<Class<?>> expectedConstant = (Constant<Class<?>>) args.get(1);
+
+            final Class<?> targetType = expectedConstant.getConstant();
             final String typeName = configuration.getTypeNameForCast(targetType);
             super.visitOperation(targetType, SQLOps.CAST,
                     ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));

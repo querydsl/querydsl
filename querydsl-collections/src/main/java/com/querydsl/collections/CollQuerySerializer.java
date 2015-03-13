@@ -195,7 +195,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             handle(args.get(0));
             append(OPERATOR_SYMBOLS.get(operator));
             handle(args.get(1));
-            if (args.get(1) instanceof Constant) {
+            if (args.get(1) instanceof Constant<?>) {
                 append(CAST_SUFFIXES.get(args.get(1).getType()));
             }
             return;
@@ -204,7 +204,10 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         if (operator == Ops.STRING_CAST) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator == Ops.NUMCAST) {
-            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
+            @SuppressWarnings("unchecked") //this is the second argument's type
+            Constant<Class<?>> rightArg = (Constant<Class<?>>) args.get(1);
+
+            visitCast(operator, args.get(0), rightArg.getConstant());
         } else {
             super.visitOperation(type, operator, args);
         }

@@ -115,7 +115,9 @@ public class LuceneSerializer {
         } else if (op == Ops.GOE) {
             return ge(operation, metadata);
         } else if (op == LuceneOps.LUCENE_QUERY) {
-            return ((Constant<Query>)operation.getArg(0)).getConstant();
+            @SuppressWarnings("unchecked") //This is the expected type
+            Query rv = ((Constant<Query>)operation.getArg(0)).getConstant();
+            return rv;
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
@@ -159,15 +161,15 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, terms[0]));
     }
 
-    @SuppressWarnings("unchecked")
     protected Query eq(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
         Path<?> path = getPath(operation.getArg(0));
         String field = toField(path);
 
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
-            return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
-                    .getArg(1)).getConstant())));
+            @SuppressWarnings("unchecked") //guarded by previous check
+            Constant<? extends Number> rightArg = (Constant<? extends Number>) operation.getArg(1);
+            return new TermQuery(new Term(field, convertNumber(rightArg.getConstant())));
         }
 
         return eq(field, convert(path, operation.getArg(1), metadata), ignoreCase);
@@ -211,7 +213,9 @@ public class LuceneSerializer {
     protected Query in(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         Path<?> path = getPath(operation.getArg(0));
         String field = toField(path);
-        Collection<?> values = (Collection<?>) ((Constant<?>) operation.getArg(1)).getConstant();
+        @SuppressWarnings("unchecked") //This is the second argument type
+        Constant<Collection<?>> collConstant = (Constant<Collection<?>>) operation.getArg(1);
+        Collection<?> values = collConstant.getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
             String[] str = convert(path, value);
@@ -349,15 +353,23 @@ public class LuceneSerializer {
                 metadata);
     }
 
-    @SuppressWarnings({"unchecked"})
     protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min,
             @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
-            Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
-            return numericRange((Class) numType, field, (Number) (min == null ? null
-                    : ((Constant) min).getConstant()), (Number) (max == null ? null
-                    : ((Constant) max).getConstant()), minInc, maxInc);
+            @SuppressWarnings("unchecked") //guarded by previous check
+            Constant<? extends Number> minConstant = (Constant<? extends Number>) min;
+            @SuppressWarnings("unchecked") //guarded by previous check
+            Constant<? extends Number> maxConstant = (Constant<? extends Number>) max;
+
+            Class<? extends Number> numType = minConstant != null ? minConstant.getType() : maxConstant.getType();
+            //this is not necessarily safe, but compile time checking
+            //on the user side mandates these types to be interchangeable
+            @SuppressWarnings("unchecked")
+            Class<Number> unboundedNumType = (Class<Number>)numType;
+            return numericRange(unboundedNumType, field, minConstant == null ? null
+                    : minConstant.getConstant(), maxConstant == null ? null
+                            : maxConstant.getConstant(), minInc, maxInc);
         }
         return stringRange(leftHandSide, field, min, max, minInc, maxInc, metadata);
     }

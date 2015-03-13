@@ -59,7 +59,7 @@ public final class Template implements Serializable {
         @Override
         public Object convert(final List<?> args) {
             final Object arg = args.get(index);
-            return arg instanceof Constant ? arg.toString() : arg;
+            return arg instanceof Constant<?> ? arg.toString() : arg;
         }
 
         @Override

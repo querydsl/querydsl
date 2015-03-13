@@ -51,7 +51,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public Object visit(Constant<?> expr, Void context) {
         if (Enum.class.isAssignableFrom(expr.getType())) {
-            return ((Enum<?>)expr.getConstant()).name();
+            @SuppressWarnings("unchecked") //Guarded by previous check
+            Constant<? extends Enum<?>> expectedExpr = (Constant<? extends Enum<?>>)expr;
+            return expectedExpr.getConstant().name();
         } else {
             return expr.getConstant();
         }
@@ -190,7 +192,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                 exprIndex = 0;
             }
             if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
-                Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
+                @SuppressWarnings("unchecked") //guarded by previous check
+                Collection<?> values = ((Constant<? extends Collection<?>>) expr.getArg(constIndex)).getConstant();
                 return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));
             } else {
                 if (isReference(expr, exprIndex)) {
@@ -208,7 +211,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                 exprIndex = 0;
             }
             if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
-                Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
+                @SuppressWarnings("unchecked") //guarded by previous check
+                Collection<?> values = ((Constant<? extends Collection<?>>) expr.getArg(constIndex)).getConstant();
                 return asDBObject(asDBKey(expr, exprIndex), asDBObject("$nin", values.toArray()));
             } else {
                 if (isReference(expr, exprIndex)) {

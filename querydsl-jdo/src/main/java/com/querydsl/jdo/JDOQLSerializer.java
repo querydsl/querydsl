@@ -273,16 +273,20 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+//    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (operator == Ops.INSTANCE_OF) {
             handle(args.get(0)).append(" instanceof ");
-            append(((Constant<Class<?>>) args.get(1)).getConstant().getName());
+            @SuppressWarnings("unchecked") //This is the expected type for instanceOf
+            Constant<Class<?>> rightArg = (Constant<Class<?>>) args.get(1);
+            append(rightArg.getConstant().getName());
 
         } else if (operator == Ops.LIKE || operator == Ops.LIKE_ESCAPE) {
+            @SuppressWarnings("unchecked") //This is the expected type for like
+            Expression<String> rightArg = (Expression<String>) args.get(1);
             super.visitOperation(type, Ops.MATCHES, 
-                ImmutableList.of(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1), false)));
+                ImmutableList.of(args.get(0), ExpressionUtils.likeToRegex(rightArg, false)));
             
         // exists    
         } else if (operator == Ops.EXISTS && args.get(0) instanceof SubQueryExpression) {
@@ -300,7 +304,9 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             append(") == 0");
                 
         } else if (operator == Ops.NUMCAST) {
-            Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
+            @SuppressWarnings("unchecked") //This is the expected type for castToNum
+            Constant<Class<?>> rightArg = (Constant<Class<?>>)args.get(1);
+            Class<?> clazz = rightArg.getConstant();
             if (Number.class.isAssignableFrom(clazz) && Primitives.isWrapperType(clazz)) {
                 clazz = Primitives.unwrap(clazz);
             }
