@@ -34,7 +34,7 @@ class CaseClassSerializerTest {
     serializer.createCompanionObject = false
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     
     CompileTestUtils.assertCompileSuccess(str)
   }  

@@ -51,7 +51,7 @@ class ScalaEntitySerializerTest {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     //System.err.println(str)
     assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata) " +
     		"extends EntityPathImpl[Person](cl, md) {"))
@@ -67,7 +67,7 @@ class ScalaEntitySerializerTest {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     //System.err.println(str);
     CompileTestUtils.assertCompileSuccess(str)
   }
