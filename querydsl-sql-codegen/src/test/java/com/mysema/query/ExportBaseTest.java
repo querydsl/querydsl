@@ -18,14 +18,11 @@ import java.sql.SQLException;
 
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.mysema.query.sql.codegen.DefaultNamingStrategy;
 import com.mysema.query.sql.codegen.MetaDataExporter;
 import com.mysema.query.sql.codegen.NamingStrategy;
-import com.mysema.testutil.FilteringTestRunner;
 
-@RunWith(FilteringTestRunner.class)
 public abstract class ExportBaseTest {
 
     @Test
