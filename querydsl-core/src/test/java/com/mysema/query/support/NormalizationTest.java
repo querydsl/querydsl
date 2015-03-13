@@ -65,6 +65,8 @@ public class NormalizationTest {
         assertEquals("-2.5", Normalization.normalize("2.5 * -1"));
         assertEquals("hours * 2 + 3", Normalization.normalize("hours * 2 + 3"));
         assertEquals("2 + 3 * hours", Normalization.normalize("2 + 3 * hours"));
+        assertEquals("2 + 3 * 0hours", Normalization.normalize("2 + 3 * 0hours"));
+        assertEquals("a like '1 + 2 ' and b like '2 * 3'", Normalization.normalize("a like '1 + 2 ' and b like '2 * 3'"));
     }
 
     @Test
@@ -92,5 +94,14 @@ public class NormalizationTest {
     public void Substring() {
         assertEquals("substring(cat.name,1,locate(?1,cat.name)-1)",
                 Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-0)"));
+    }
+
+    @Test
+    public void Literals() {
+        assertEquals("'INPS-ISET-0000-12345678A'", Normalization.normalize("'INPS-ISET-0000-12345678A'"));
+        assertEquals("'INPS-ISET-0000X00000000A'", Normalization.normalize("'INPS-ISET-0000X00000000A'"));
+        assertEquals("'INPS-ISET-0000-00000000A'", Normalization.normalize("'INPS-ISET-0000-00000000A'"));
+
+        assertEquals("column = 'INPS-ISET-0000-00000000A' limit 1", Normalization.normalize("column = 'INPS-ISET-0000-00000000A' limit 1"));
     }
 }
