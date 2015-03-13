@@ -378,8 +378,8 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'", Precedence.COMPARISON);
 
         add(SQLOps.CAST, "cast({0} as {1s})");
-        add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.LIST);
-        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", Precedence.LIST);
+        add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.OR + 1);
+        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", Precedence.OR + 1);
         add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
         // analytic functions
