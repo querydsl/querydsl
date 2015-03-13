@@ -14,11 +14,12 @@
 package com.querydsl.sql.codegen;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.ResourceCheck;
+import com.querydsl.core.testutil.ExternalDB;
 import com.querydsl.sql.Connections;
 
-@ResourceCheck("/sqlserver.run")
+@Category(ExternalDB.class)
 public class ExportMSSQLTest extends ExportBaseTest{
 
     @BeforeClass
