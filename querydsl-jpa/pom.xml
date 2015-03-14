@@ -286,6 +286,10 @@
                 <name>derby.stream.error.file</name>
                 <value>target/derby.log</value>
             </property>
+            <property>
+                <name>org.jboss.logging.provider</name>
+                <value>slf4j</value>
+            </property>
           </systemProperties>
         </configuration>
         <executions>

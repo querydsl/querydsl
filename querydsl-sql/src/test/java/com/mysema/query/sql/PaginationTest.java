@@ -3,13 +3,16 @@ package com.mysema.query.sql;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.testutil.ReportingOnly;
 
+@Category(ReportingOnly.class)
 public class PaginationTest {
 
     private String serialize(QueryMetadata metadata, SQLTemplates templates) {

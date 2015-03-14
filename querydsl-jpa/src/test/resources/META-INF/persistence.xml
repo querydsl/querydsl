@@ -17,7 +17,7 @@
             <property name="hibernate.connection.url" value="jdbc:derby:target/derbydb-hibernate;create=true" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
         </properties>
     </persistence-unit>
 
@@ -29,6 +29,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb-eclipselink;create=true" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.logging.level" value="SEVERE"/>
         </properties>
     </persistence-unit>
 
@@ -54,7 +55,7 @@
             <property name="hibernate.connection.user" value="sa" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
         </properties>
     </persistence-unit>
 
@@ -67,6 +68,7 @@
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.logging.level" value="SEVERE"/>
         </properties>
     </persistence-unit>
 
@@ -82,7 +84,7 @@
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
         </properties>
     </persistence-unit>
     
@@ -96,7 +98,7 @@
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
         </properties>
     </persistence-unit>
 
@@ -109,6 +111,7 @@
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.logging.level" value="SEVERE"/>
         </properties>
     </persistence-unit>
     
@@ -221,6 +224,7 @@
             <property name="javax.persistence.jdbc.password" value="querydsl" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.logging.level" value="SEVERE"/>
         </properties>
     </persistence-unit>
 
@@ -251,6 +255,7 @@
             <property name="javax.persistence.jdbc.password" value="querydsl" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.logging.level" value="SEVERE"/>
         </properties>
     </persistence-unit>
 
