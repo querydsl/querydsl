@@ -2,52 +2,59 @@ package com.querydsl.scala
 
 import java.io.File._
 
+import com.google.common.base.Charsets
+import com.google.common.io.Files
+
 import scala.tools.nsc._
 import scala.tools.nsc.interpreter.IR.Success
 import scala.io.Source.fromFile
 import java.io.File
 import java.io.File.pathSeparator
 
-trait CompileTestUtils {
+import scala.tools.nsc.reporters.{ConsoleReporter, Reporter}
 
-  private object env extends Settings {
+object CompileTestUtils {
 
-    private def jarPathOfClass(className: String) = {
-      Class.forName(className).getProtectionDomain.getCodeSource.getLocation
-    }
+  private def jarPathOfClass(className: String) = {
+    Class.forName(className).getProtectionDomain.getCodeSource.getLocation
+  }
 
-    val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList
-    val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
+  private val currentLibraries = this.getClass.getClassLoader.asInstanceOf[java.net.URLClassLoader].getURLs.toList
+  private val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
 
-    classpath.value = cp.mkString(pathSeparator)
-    usejavacp.value = true
+  private val env = new Settings()
+  env.classpath.value = cp.mkString(pathSeparator)
+  env.usejavacp.value = true
+  //env.d.value = "target"
+  env.stopAfter.value = List("refchecks")
+
+  def assertCompileSuccess(file: File): Unit = {
+    assertCompileSuccess(recursiveFileList(file))
   }
 
   def assertCompileSuccess(files: Traversable[File]): Unit = {
-    assertCompileSuccess(files
-                           map (fromFile(_).mkString)
-                           mkString ("\n"))
+    val reporter = new ConsoleReporter(env)
+    val g = new Global(env, reporter)
+    val run = new g.Run
+    run.compile(files.map(_.getPath).toList)
+    if (reporter.hasErrors) {
+      throw new AssertionError("Compilation failed")
+    }
   }
 
   def assertCompileSuccess(source: String): Unit = {
-    val out = new java.io.ByteArrayOutputStream
-    val interpreterWriter = new java.io.PrintWriter(out)
-
-    val interpreter = new scala.tools.nsc.interpreter.IMain(env, interpreterWriter)
+    val file = File.createTempFile("source", ".scala")
     try {
-      val result = interpreter.interpret(source.replaceAll("package [\\w\\.]+", ""))
-      if (result != Success) {
-        throw new AssertionError("Compile failed, interpreter output:\n" + out.toString("utf-8"))
-      }
+      Files.write(source, file, Charsets.UTF_8)
+      assertCompileSuccess(file)
     } finally {
-      interpreterWriter.close
-      interpreter.close
+        file.delete()
     }
   }
   
-  def recursiveFileList(file: File): Array[File] = {
+  private def recursiveFileList(file: File): Array[File] = {
     if (file.isDirectory) {
-      file.listFiles.flatMap(recursiveFileList(_))
+      file.listFiles.flatMap(recursiveFileList)
     } else {
       Array(file)
     }

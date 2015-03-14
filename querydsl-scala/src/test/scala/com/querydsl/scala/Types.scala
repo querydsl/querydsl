@@ -1,4 +1,4 @@
-package com.querydsl.scala;
+package com.querydsl.scala
 
 import com.querydsl.core.annotations._
 

@@ -1,11 +1,11 @@
-package com.querydsl.scala;
+package com.querydsl.scala
 
 import javax.persistence._
 import com.querydsl.codegen.GenericExporter
 import org.junit.Test
 import io.Source.fromFile
 
-class GenericExporterJPATest extends CompileTestUtils {
+class GenericExporterJPATest {
 
   @Test
   def Export {
@@ -22,11 +22,8 @@ class GenericExporterJPATest extends CompileTestUtils {
     exporter.export(getClass.getPackage)
 
     val targetFolder = new java.io.File("target/gen1-jpa/com/querydsl/scala/")
-    val sources = (targetFolder listFiles ()
-      filter (_.getName.endsWith(".scala"))
-      map (fromFile(_).mkString)
-      mkString ("\n"))
-    assertCompileSuccess(sources)
+    val sources = targetFolder.listFiles.filter(_.getName.endsWith(".scala"))
+    CompileTestUtils.assertCompileSuccess(sources)
   }
 
 }

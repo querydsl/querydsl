@@ -1,4 +1,4 @@
-package com.querydsl.scala;
+package com.querydsl.scala
 
 import com.querydsl.core.annotations._
 import com.querydsl.codegen.GenericExporter
@@ -6,7 +6,7 @@ import org.junit.Test
 import io.Source.fromFile
 import java.io.File
 
-class GenericExporterTest extends CompileTestUtils {
+class GenericExporterTest {
 
   @Test
   def Export {
@@ -17,21 +17,8 @@ class GenericExporterTest extends CompileTestUtils {
     exporter.setCreateScalaSources(true)
     exporter.export(getClass.getPackage)
 
-    val targetFolder = new File("target/gen1/com/querydsl/scala/")
-    
-    // com.querydsl.scala
-    val sources = (targetFolder.listFiles()
-      filter (_.getName.endsWith(".scala"))
-      map (fromFile(_).mkString)
-      mkString ("\n"))
-    assertCompileSuccess(sources)
-    
-    // com.querydsl.scala.ext
-    val other = (new File(targetFolder, "ext").listFiles()
-      filter (_.getName.endsWith(".scala"))
-      map (fromFile(_).mkString)
-      mkString ("\n"))
-    assertCompileSuccess("import com.querydsl.scala.ext._\n" + other)
+    val targetFolder = new File("target/gen1")
+    CompileTestUtils.assertCompileSuccess(targetFolder)
   }
   
 }

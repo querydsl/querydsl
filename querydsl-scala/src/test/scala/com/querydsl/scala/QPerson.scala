@@ -1,11 +1,10 @@
-package com.querydsl.scala;
+package com.querydsl.scala
 
-import com.querydsl.core.types._;
-import com.querydsl.scala._;
-
-import com.querydsl.core.types.PathMetadataFactory._;
-import java.util.List;
-import java.util.Map;
+import com.querydsl.core.types._
+import com.querydsl.scala._
+import com.querydsl.core.types.PathMetadataFactory._
+import java.util.List
+import java.util.Map
 
 object QPerson extends QPerson("person"){
   override def as(variable: String) = new QPerson(variable)
