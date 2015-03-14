@@ -29,7 +29,7 @@ class ScalaBeanSerializerTest {
     //println(writer.toString)
     
     var toMatch = """package com.querydsl
-    import scala.reflect.BeanProperty
+    import scala.beans.BeanProperty
     import java.util.List
     import java.util.Map
     /**

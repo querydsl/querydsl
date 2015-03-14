@@ -47,7 +47,7 @@ object Serializer {
    */
   def writeImports(model: EntityType, javaBeanSupport: Boolean, writer: ScalaWriter) {
     val importedClasses = getAnnotationTypes(model)
-    if (javaBeanSupport)  importedClasses.add("scala.reflect.BeanProperty")    
+    if (javaBeanSupport)  importedClasses.add("scala.beans.BeanProperty")
     if (model.hasLists) importedClasses.add(classOf[List[_]].getName)
     if (model.hasMaps)  importedClasses.add(classOf[Map[_, _]].getName)
     writer.importClasses(importedClasses.toArray: _*)    
