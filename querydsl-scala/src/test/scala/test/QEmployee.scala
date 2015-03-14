@@ -1,13 +1,13 @@
-package test;
+package test
 
-import com.mysema.query.types._;
-import com.mysema.query.scala._;
+import com.mysema.query.types._
+import com.mysema.query.scala._
 
-import com.mysema.query.types.PathMetadataFactory._;
+import com.mysema.query.types.PathMetadataFactory._
 
-import com.mysema.query.scala.sql.RelationalPathImpl;
+import com.mysema.query.scala.sql.RelationalPathImpl
 
-import com.mysema.query.sql._;
+import com.mysema.query.sql._
 
 object QEmployee extends QEmployee("employee"){
   override def as(variable: String) = new QEmployee(variable)
@@ -27,11 +27,11 @@ class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee](md, "P
 
   val superiorId = createNumber[Integer]("superiorId")
 
-  val sysIdx55: PrimaryKey[Employee] = createPrimaryKey(id);
+  val sysIdx55: PrimaryKey[Employee] = createPrimaryKey(id)
 
-  val superiorFk: ForeignKey[Employee] = createForeignKey(superiorId, "ID");
+  val superiorFk: ForeignKey[Employee] = createForeignKey(superiorId, "ID")
 
-  val _superiorFk: ForeignKey[Employee] = createInvForeignKey(id, "SUPERIOR_ID");
+  val _superiorFk: ForeignKey[Employee] = createInvForeignKey(id, "SUPERIOR_ID")
 
   addMetadata(firstname, ColumnMetadata.named("FIRSTNAME"))
   addMetadata(id, ColumnMetadata.named("ID"))

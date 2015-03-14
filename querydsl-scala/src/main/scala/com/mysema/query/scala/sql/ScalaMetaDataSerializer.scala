@@ -88,10 +88,10 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       columnMeta.append(".named(\"" + metadata.getName + "\")")
       columnMeta.append(".ofType(" + metadata.getJdbcType + ")")
       if (metadata.hasSize) {
-        columnMeta.append(".withSize(" + metadata.getSize() + ")")
+        columnMeta.append(".withSize(" + metadata.getSize + ")")
       }
       if (metadata.getDigits > 0) {
-        columnMeta.append(".withDigits(" + metadata.getDigits() + ")")
+        columnMeta.append(".withDigits(" + metadata.getDigits + ")")
       }
       if (!metadata.isNullable) {
         columnMeta.append(".notNull()")
@@ -102,13 +102,13 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
 
   override def writeAnnotations(model: EntityType, queryType: Type, writer: ScalaWriter) = {
     if (model == queryType) {
-      model.getAnnotations.foreach(writer.annotation(_))
+      model.getAnnotations.foreach(writer.annotation)
     }
   }
 
   def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
     primaryKeys.foreach { pk =>
-      val fieldName = namingStrategy.getPropertyNameForPrimaryKey(pk.getName(), model)
+      val fieldName = namingStrategy.getPropertyNameForPrimaryKey(pk.getName, model)
       val value = pk.getColumns.map(c => escape(namingStrategy.getPropertyName(c, model)))
           .mkString("createPrimaryKey(", ", ", ")")
       writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value)
@@ -126,7 +126,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       val value = new StringBuilder(if (inverse) "createInvForeignKey(" else "createForeignKey(")
       if (fk.getForeignColumns.size == 1) {
         value.append(namingStrategy.getPropertyName(fk.getForeignColumns.get(0), model))
-        value.append(", \"" + fk.getParentColumns().get(0) + "\"")
+        value.append(", \"" + fk.getParentColumns.get(0) + "\"")
       } else {
         val local = fk.getForeignColumns.map(c => escape(namingStrategy.getPropertyName(c, model))).mkString(", ")
         val foreign = fk.getParentColumns.map("\"" + _ + "\"").mkString(", ")
@@ -134,7 +134,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       }
       value.append(")")
       val t = new ClassType(classOf[ForeignKey[_]], fk.getType)
-      writer.publicFinal(t, fieldName, value.toString())
+      writer.publicFinal(t, fieldName, value.toString)
     }
   }
 

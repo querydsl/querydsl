@@ -1,11 +1,11 @@
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
-import com.mysema.query.types._;
-import com.mysema.query.scala._;
+import com.mysema.query.types._
+import com.mysema.query.scala._
 
-import com.mysema.query.types.PathMetadataFactory._;
-import java.util.List;
-import java.util.Map;
+import com.mysema.query.types.PathMetadataFactory._
+import java.util.List
+import java.util.Map
 
 object QPerson extends QPerson("person"){
   override def as(variable: String) = new QPerson(variable)

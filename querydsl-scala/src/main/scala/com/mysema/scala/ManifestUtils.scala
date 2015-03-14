@@ -20,6 +20,6 @@ package com.mysema.scala
  */
 object ManifestUtils {
   
-  implicit def toClass[X](mf: Manifest[X]) = mf.runtimeClass.asInstanceOf[Class[X]]
+  implicit def toClass[X](mf: Manifest[X]): Class[X] = mf.runtimeClass.asInstanceOf[Class[X]]
   
 }

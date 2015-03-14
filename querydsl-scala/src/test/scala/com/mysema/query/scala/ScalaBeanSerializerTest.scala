@@ -1,17 +1,17 @@
 package com.mysema.query.scala
 
-import com.mysema.codegen._;
-import com.mysema.codegen.model._;
-import com.mysema.query.codegen._;
+import com.mysema.codegen._
+import com.mysema.codegen.model._
+import com.mysema.query.codegen._
 
-import java.io.StringWriter;
+import java.io.StringWriter
 
 import org.junit._
 import org.junit.Assert._
 
 import scala.collection.JavaConversions._
 
-class ScalaBeanSerializerTest extends CompileTestUtils {
+class ScalaBeanSerializerTest {
 
   val typeMappings = ScalaTypeMappings.create
   
@@ -29,7 +29,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     //println(writer.toString)
     
     var toMatch = """package com.mysema.query
-    import scala.reflect.BeanProperty
+    import scala.beans.BeanProperty
     import java.util.List
     import java.util.Map
     /**
@@ -47,11 +47,11 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     @BeanProperty var setField: java.util.Set[DomainClass] = _
     @BeanProperty var time: java.sql.Time = _"""
     
-    val str = writer.toString().replaceAll("\\s+", " ")
+    val str = writer.toString.replaceAll("\\s+", " ")
     //println(str)
  
     toMatch.split("\\n").map(_.trim).foreach { line =>
-      assertTrue(line, str.contains(line));
+      assertTrue(line, str.contains(line))
     }
     
   }
@@ -62,7 +62,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     serializer.createCompanionObject = false
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
-    assertCompileSuccess(str)
+    val str = writer.toString
+    CompileTestUtils.assertCompileSuccess(str)
   }
 }

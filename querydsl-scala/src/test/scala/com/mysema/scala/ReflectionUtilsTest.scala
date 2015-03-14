@@ -1,7 +1,7 @@
-package com.mysema.scala;
+package com.mysema.scala
 
 import java.lang.reflect._
-import javax.annotation.Nullable;
+import javax.annotation.Nullable
 import scala.collection.mutable.ListBuffer
 
 import org.junit._

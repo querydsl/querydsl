@@ -1,4 +1,4 @@
-package com.mysema.query.scala.ext;
+package com.mysema.query.scala.ext
 
 import com.mysema.query.annotations._
 import scala.runtime.RichChar
