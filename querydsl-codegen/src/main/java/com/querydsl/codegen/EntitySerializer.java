@@ -30,8 +30,8 @@ import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.ComparableExpression;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.path.*;
 
 /**

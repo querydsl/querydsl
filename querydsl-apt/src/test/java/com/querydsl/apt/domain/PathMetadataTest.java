@@ -24,7 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.expr.StringExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 
 @Ignore
 public class PathMetadataTest {

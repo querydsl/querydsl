@@ -10,6 +10,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.path.StringPath;
 
 public class ReplaceVisitorTest {

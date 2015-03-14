@@ -18,8 +18,8 @@ import javax.annotation.Nullable;
 import org.geolatte.geom.Point;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A Point is a 0-dimensional geometric object and represents a single location in coordinate space. A Point has an
@@ -48,7 +48,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
      */
     public NumberExpression<Double> x() {
         if (x == null) {
-            x = NumberOperation.create(Double.class, SpatialOps.X, mixin);
+            x = Expressions.numberOperation(Double.class, SpatialOps.X, mixin);
         }
         return x;
     }
@@ -60,7 +60,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
      */
     public NumberExpression<Double> y() {
         if (y == null) {
-            y = NumberOperation.create(Double.class, SpatialOps.Y, mixin);
+            y = Expressions.numberOperation(Double.class, SpatialOps.Y, mixin);
         }
         return y;
     }
@@ -72,7 +72,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
      */
     public NumberExpression<Double> z() {
         if (z == null) {
-            z = NumberOperation.create(Double.class, SpatialOps.Z, mixin);
+            z = Expressions.numberOperation(Double.class, SpatialOps.Z, mixin);
         }
         return z;
     }
@@ -84,7 +84,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
      */
     public NumberExpression<Double> m() {
         if (m == null) {
-            m = NumberOperation.create(Double.class, SpatialOps.M, mixin);
+            m = Expressions.numberOperation(Double.class, SpatialOps.M, mixin);
         }
         return m;
     }

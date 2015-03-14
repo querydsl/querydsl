@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.testutil.Serialization;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.NumberOperation;
 import com.querydsl.core.types.path.BeanPath;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.StringPath;

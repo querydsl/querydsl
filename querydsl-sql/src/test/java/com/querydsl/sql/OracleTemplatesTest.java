@@ -23,7 +23,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.template.SimpleTemplate;
 

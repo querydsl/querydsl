@@ -21,7 +21,7 @@ import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.template.NumberTemplate;
 
 public class Delegate2Test {

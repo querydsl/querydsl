@@ -3,7 +3,7 @@ package com.querydsl.apt.domain;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryDelegate;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.path.ComparablePath;
 import com.querydsl.core.types.template.BooleanTemplate;
 

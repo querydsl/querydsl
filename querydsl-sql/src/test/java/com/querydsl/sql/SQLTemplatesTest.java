@@ -13,7 +13,7 @@
  */
 package com.querydsl.sql;
 
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.template.SimpleTemplate;

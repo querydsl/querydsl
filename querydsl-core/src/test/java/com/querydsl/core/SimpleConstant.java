@@ -16,8 +16,8 @@ package com.querydsl.core;
 import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * SimpleConstant represents general constant expressions

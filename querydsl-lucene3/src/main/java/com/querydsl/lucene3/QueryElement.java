@@ -16,7 +16,7 @@ package com.querydsl.lucene3;
 import org.apache.lucene.search.Query;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.expr.BooleanOperation;
+import com.querydsl.core.types.dsl.BooleanOperation;
 
 /**
  * QueryElement wraps a Lucene Query

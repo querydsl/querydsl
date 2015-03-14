@@ -16,7 +16,7 @@ package com.querydsl.sql;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.expr.SimpleOperation;
+import com.querydsl.core.types.dsl.SimpleOperation;
 
 /**
  * WindowOver is the first part of a WindowFunction construction

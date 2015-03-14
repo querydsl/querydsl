@@ -24,8 +24,8 @@ import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.annotations.QueryType;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.StringExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.StringPath;
 

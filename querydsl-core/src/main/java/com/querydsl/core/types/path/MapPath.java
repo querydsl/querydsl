@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.MapExpressionBase;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.MapExpressionBase;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * MapPath represents map paths

@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 public class BeanPathTest {
     

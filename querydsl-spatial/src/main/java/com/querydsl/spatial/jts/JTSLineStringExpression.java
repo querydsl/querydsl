@@ -15,11 +15,11 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
@@ -49,7 +49,7 @@ public abstract class JTSLineStringExpression<T extends LineString> extends JTSC
      */
     public NumberExpression<Integer> numPoints() {
         if (numPoints == null) {
-            numPoints = NumberOperation.create(Integer.class, SpatialOps.NUM_POINTS, mixin);
+            numPoints = Expressions.numberOperation(Integer.class, SpatialOps.NUM_POINTS, mixin);
         }
         return numPoints;
     }

@@ -18,17 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.MutableExpressionBase;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.TemplateFactory;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.ComparableExpressionBase;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.expr.SimpleOperation;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.template.SimpleTemplate;
 
 /**
@@ -116,11 +110,11 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
 
     @SuppressWarnings("unchecked")
     public SimpleExpression<A> as(Expression<A> alias) {
-        return SimpleOperation.create((Class<A>)getType(),Ops.ALIAS, this, alias);
+        return Expressions.operation((Class<A>) getType(), Ops.ALIAS, this, alias);
     }
 
     public SimpleExpression<A> as(String alias) {
-        return SimpleOperation.create((Class<A>)getType(),Ops.ALIAS, this, new PathImpl<A>(getType(), alias));
+        return Expressions.operation((Class<A>) getType(), Ops.ALIAS, this, new PathImpl<A>(getType(), alias));
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.DateTimeExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
 
 /**
  * DateTimePath presents DateTime typed paths

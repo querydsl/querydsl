@@ -34,7 +34,7 @@ public class DependenciesTest {
         jdepend.addDirectory("target/classes/com/querydsl/dml");
         jdepend.addDirectory("target/classes/com/querydsl/support");
         jdepend.addDirectory("target/classes/com/querydsl/types");
-        jdepend.addDirectory("target/classes/com/querydsl/types/expr");
+        jdepend.addDirectory("target/classes/com/querydsl/types/dsl");
         jdepend.addDirectory("target/classes/com/querydsl/types/path");
         jdepend.addDirectory("target/classes/com/querydsl/types/querydsl");
         jdepend.addDirectory("target/classes/com/querydsl/types/template");

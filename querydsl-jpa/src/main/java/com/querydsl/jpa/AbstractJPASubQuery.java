@@ -18,7 +18,7 @@ import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.DetachableQuery;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.query.NumberSubQuery;
 import com.querydsl.core.types.template.NumberTemplate;

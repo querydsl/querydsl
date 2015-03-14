@@ -21,7 +21,7 @@ import com.querydsl.core.types.Template;
 import com.querydsl.core.types.TemplateExpression;
 import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**
  * BooleanTemplate is a custom boolean expression

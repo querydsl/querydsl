@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
 

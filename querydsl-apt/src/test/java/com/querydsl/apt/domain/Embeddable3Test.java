@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEmbeddable;
 import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class Embeddable3Test {
 

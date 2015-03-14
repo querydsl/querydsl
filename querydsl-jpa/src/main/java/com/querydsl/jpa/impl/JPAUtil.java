@@ -19,7 +19,7 @@ import java.util.Map;
 
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.util.MathUtils;
 
 /**

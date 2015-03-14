@@ -14,7 +14,7 @@
 package com.querydsl.core.types.query;
 
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**
  * Extensions to the SubQueryExpression interface

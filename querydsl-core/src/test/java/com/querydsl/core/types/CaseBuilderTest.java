@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import com.querydsl.core.types.expr.*;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.template.BooleanTemplate;
 import org.junit.Test;
 import static com.querydsl.core.alias.Alias.$;

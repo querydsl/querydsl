@@ -17,10 +17,9 @@ import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.expr.ComparableExpression;
-import com.querydsl.core.types.expr.ComparableOperation;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.expr.StringOperation;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 
 /**
  * JPAExpressions provides factory methods for JPQL specific operations
@@ -38,7 +37,7 @@ public final class JPAExpressions {
      * @return
      */
     public static <A extends Comparable<? super A>> ComparableExpression<A> avg(CollectionExpression<?,A> col) {
-        return ComparableOperation.create((Class)col.getParameter(0), Ops.QuantOps.AVG_IN_COL, (Expression<?>)col);
+        return Expressions.comparableOperation((Class) col.getParameter(0), Ops.QuantOps.AVG_IN_COL, (Expression<?>) col);
     }
 
     /**
@@ -48,7 +47,7 @@ public final class JPAExpressions {
      * @return
      */
     public static <A extends Comparable<? super A>> ComparableExpression<A> max(CollectionExpression<?,A> left) {
-        return ComparableOperation.create((Class)left.getParameter(0), Ops.QuantOps.MAX_IN_COL, (Expression<?>)left);
+        return Expressions.comparableOperation((Class) left.getParameter(0), Ops.QuantOps.MAX_IN_COL, (Expression<?>) left);
     }
 
     /**
@@ -58,7 +57,7 @@ public final class JPAExpressions {
      * @return
      */
     public static <A extends Comparable<? super A>> ComparableExpression<A> min(CollectionExpression<?,A> left) {
-        return ComparableOperation.create((Class)left.getParameter(0), Ops.QuantOps.MIN_IN_COL, (Expression<?>)left);
+        return Expressions.comparableOperation((Class) left.getParameter(0), Ops.QuantOps.MIN_IN_COL, (Expression<?>) left);
     }
 
     /**
@@ -68,7 +67,7 @@ public final class JPAExpressions {
      * @return
      */
     public static StringExpression type(EntityPath<?> path) {
-        return StringOperation.create(JPQLOps.TYPE, path);
+        return Expressions.stringOperation(JPQLOps.TYPE, path);
     }
 
     private JPAExpressions() {}

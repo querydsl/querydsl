@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class RelationalPathExtractorTest {
 

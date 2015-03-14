@@ -2,7 +2,7 @@ package com.querydsl.spatial;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.*;
+import com.querydsl.core.types.dsl.*;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.GeometryCollection;
 
@@ -18,7 +18,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static StringExpression asEWKT(GeometryExpression<?> expr) {
-        return StringOperation.create(SpatialOps.AS_EWKT, expr);
+        return Expressions.stringOperation(SpatialOps.AS_EWKT, expr);
     }
 
     /**
@@ -61,7 +61,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> xmin(GeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.XMIN, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.XMIN, expr);
     }
 
     /**
@@ -71,7 +71,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> xmax(GeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.XMAX, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.XMAX, expr);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> ymin(GeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.YMIN, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.YMIN, expr);
     }
 
     /**
@@ -91,7 +91,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> ymax(GeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.YMAX, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.YMAX, expr);
     }
 
     /**
@@ -105,7 +105,7 @@ public final class GeometryExpressions {
      */
     public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
                                             Expression<? extends Geometry> expr2, Expression<Double> distance) {
-        return BooleanOperation.create(SpatialOps.DWITHIN, expr1, expr2, distance);
+        return Expressions.booleanOperation(SpatialOps.DWITHIN, expr1, expr2, distance);
     }
 
     /**
@@ -119,7 +119,7 @@ public final class GeometryExpressions {
      */
     public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
                                             Expression<? extends Geometry> expr2, double distance) {
-        return BooleanOperation.create(SpatialOps.DWITHIN, expr1, expr2, ConstantImpl.create(distance));
+        return Expressions.booleanOperation(SpatialOps.DWITHIN, expr1, expr2, ConstantImpl.create(distance));
     }
 
     /**

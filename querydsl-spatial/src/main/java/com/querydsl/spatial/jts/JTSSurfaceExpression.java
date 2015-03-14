@@ -15,10 +15,10 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
@@ -50,7 +50,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      */
     public NumberExpression<Double> area() {
         if (area == null) {
-            area = NumberOperation.create(Double.class, SpatialOps.AREA, mixin);
+            area = Expressions.numberOperation(Double.class, SpatialOps.AREA, mixin);
         }
         return area;
     }

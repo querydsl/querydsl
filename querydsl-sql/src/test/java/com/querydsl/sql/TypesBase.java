@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.google.common.collect.Maps;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.testutil.ExcludeIn;
 

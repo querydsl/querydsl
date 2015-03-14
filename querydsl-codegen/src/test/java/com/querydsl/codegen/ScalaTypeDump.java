@@ -27,7 +27,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.*;
+import com.querydsl.core.types.dsl.*;
 
 public class ScalaTypeDump {
     

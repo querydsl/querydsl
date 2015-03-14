@@ -23,8 +23,8 @@ import com.querydsl.core.types.MutableExpressionBase;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.ComparableExpressionBase;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.template.SimpleTemplate;
 
 /**

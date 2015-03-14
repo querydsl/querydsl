@@ -55,7 +55,7 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.types.ParamNotSetException;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.StringPath;
 

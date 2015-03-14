@@ -20,10 +20,9 @@ import org.geolatte.geom.Polygon;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A PolyhedralSurface is a contiguous collection of polygons, which share common boundary segments.
@@ -56,7 +55,7 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
      */
     public NumberExpression<Integer> numPatches() {
         if (numPatches == null) {
-            numPatches = NumberOperation.create(Integer.class, SpatialOps.NUM_SURFACES, mixin);
+            numPatches = Expressions.numberOperation(Integer.class, SpatialOps.NUM_SURFACES, mixin);
         }
         return numPatches;
     }
@@ -79,7 +78,7 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
-            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
+            closed = Expressions.booleanOperation(SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.NumberTemplate;
 

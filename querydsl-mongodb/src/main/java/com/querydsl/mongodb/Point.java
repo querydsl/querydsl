@@ -15,7 +15,7 @@ package com.querydsl.mongodb;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.path.ArrayPath;
 
 /**

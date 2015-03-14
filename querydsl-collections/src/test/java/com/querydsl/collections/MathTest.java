@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.MathExpressions;
+import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.path.NumberPath;
 
 public class MathTest {

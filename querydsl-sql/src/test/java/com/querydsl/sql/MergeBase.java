@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.querydsl.sql.dml.SQLMergeClause;
 import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.testutil.ExcludeIn;

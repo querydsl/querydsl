@@ -23,7 +23,7 @@ import org.junit.Test;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Templates;
 import com.querydsl.core.types.ToStringVisitor;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.path.BooleanPath;
 
 public class BooleanBuilderTest {

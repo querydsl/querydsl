@@ -15,11 +15,11 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -65,7 +65,7 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
      */
     public NumberExpression<Integer> numInteriorRing() {
         if (numInteriorRing == null) {
-            numInteriorRing = NumberOperation.create(Integer.class, SpatialOps.NUM_INTERIOR_RING, mixin);
+            numInteriorRing = Expressions.numberOperation(Integer.class, SpatialOps.NUM_INTERIOR_RING, mixin);
         }
         return numInteriorRing;
     }

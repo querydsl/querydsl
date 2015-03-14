@@ -19,9 +19,9 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.SubQueryExpressionImpl;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.DateTimeExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * DateTime typed single result subquery
@@ -52,7 +52,7 @@ public final class DateTimeSubQuery<T extends Comparable<?>> extends DateTimeExp
     @Override
     public BooleanExpression exists() {
         if (exists == null) {
-            exists = BooleanOperation.create(Ops.EXISTS, mixin);
+            exists = Expressions.booleanOperation(Ops.EXISTS, mixin);
         }
         return exists;
     }

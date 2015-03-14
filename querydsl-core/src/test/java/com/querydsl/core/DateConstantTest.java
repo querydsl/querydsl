@@ -20,7 +20,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.DateExpression;
+import com.querydsl.core.types.dsl.DateExpression;
 
 public class DateConstantTest {
 

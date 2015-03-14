@@ -19,7 +19,7 @@ import com.querydsl.core.Detachable;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.*;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.query.*;
 
 /**

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 
 public class SQLBindingsTest {
 

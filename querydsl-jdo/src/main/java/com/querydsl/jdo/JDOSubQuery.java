@@ -17,8 +17,8 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.query.NumberSubQuery;
 
 /**
@@ -54,7 +54,7 @@ public class JDOSubQuery extends AbstractJDOSubQuery<JDOSubQuery> {
         if (target instanceof Operation && ((Operation)target).getOperator() == Ops.ALIAS) {
             target = ((Operation)target).getArg(1);
         }
-        return unique(NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, target));  
+        return unique(Expressions.numberOperation(Long.class, Ops.AggOps.COUNT_AGG, target));
     }
 
 }

@@ -13,7 +13,7 @@
  */
 package com.querydsl.jpa;
 
-import static com.querydsl.core.support.Expressions.numberOperation;
+import static com.querydsl.core.types.dsl.Expressions.numberOperation;
 import static org.junit.Assert.assertEquals;
 
 import javax.persistence.EntityManager;

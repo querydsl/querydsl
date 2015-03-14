@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.path.NumberPath;
 
 public class CastTest extends AbstractQueryTest {

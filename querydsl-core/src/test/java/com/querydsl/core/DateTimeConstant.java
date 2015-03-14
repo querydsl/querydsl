@@ -16,8 +16,8 @@ package com.querydsl.core;
 import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.DateTimeExpression;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * @author tiwe

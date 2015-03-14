@@ -41,7 +41,7 @@ public List<Customer> getCustomer(String... names) {
     <title>Dynamic expressions</title>
 
     <para>
-      The <code>com.querydsl.core.support.Expressions</code>
+      The <code>com.querydsl.core.types.dsl.Expressions</code>
       class is a static factory class for dynamic expression construction.
       The factory methods are named by the returned type and are mostly self-documenting.
     </para>

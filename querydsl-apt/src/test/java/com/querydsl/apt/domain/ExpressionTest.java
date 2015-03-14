@@ -23,11 +23,10 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import com.querydsl.core.domain.*;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.StringExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 
 public class ExpressionTest {
 

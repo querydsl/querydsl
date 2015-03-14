@@ -19,7 +19,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * SetPath represents set paths

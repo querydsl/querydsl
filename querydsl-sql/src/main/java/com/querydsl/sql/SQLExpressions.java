@@ -20,19 +20,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.DateOperation;
-import com.querydsl.core.types.expr.DateTimeExpression;
-import com.querydsl.core.types.expr.DateTimeOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.expr.SimpleOperation;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.expr.StringOperation;
-import com.querydsl.core.types.expr.Wildcard;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * Common SQL expressions
@@ -117,14 +105,14 @@ public final class SQLExpressions {
      * Get an aggregate any expression for the given boolean expression
      */
     public static BooleanExpression any(BooleanExpression expr) {
-        return BooleanOperation.create(Ops.AggOps.BOOLEAN_ANY, expr);
+        return Expressions.booleanOperation(Ops.AggOps.BOOLEAN_ANY, expr);
     }
 
     /**
      * Get an aggregate all expression for the given boolean expression
      */
     public static BooleanExpression all(BooleanExpression expr) {
-        return BooleanOperation.create(Ops.AggOps.BOOLEAN_ALL, expr);
+        return Expressions.booleanOperation(Ops.AggOps.BOOLEAN_ALL, expr);
     }
 
     /**
@@ -145,7 +133,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> SimpleExpression<T> nextval(Class<T> type, String sequence) {
-        return SimpleOperation.create(type, SQLOps.NEXTVAL, ConstantImpl.create(sequence));
+        return Expressions.operation(type, SQLOps.NEXTVAL, ConstantImpl.create(sequence));
     }
 
     /**
@@ -155,7 +143,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> date(DateTimeExpression<D> dateTime) {
-        return DateOperation.create((Class)dateTime.getType(), Ops.DateTimeOps.DATE, dateTime);
+        return Expressions.dateOperation((Class) dateTime.getType(), Ops.DateTimeOps.DATE, dateTime);
     }
 
     /**
@@ -166,7 +154,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> date(Class<D> type, DateTimeExpression<?> dateTime) {
-        return DateOperation.create(type, Ops.DateTimeOps.DATE, dateTime);
+        return Expressions.dateOperation(type, Ops.DateTimeOps.DATE, dateTime);
     }
 
     /**
@@ -178,7 +166,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> dateadd(DatePart unit, DateTimeExpression<D> date, int amount) {
-        return DateTimeOperation.create((Class)date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
+        return Expressions.dateTimeOperation((Class) date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
     }
 
     /**
@@ -190,7 +178,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> dateadd(DatePart unit, DateExpression<D> date, int amount) {
-        return DateOperation.create((Class)date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
+        return Expressions.dateOperation((Class) date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
     }
 
     /**
@@ -203,7 +191,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             DateExpression<D> start, DateExpression<D> end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
+        return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
     }
 
     /**
@@ -216,7 +204,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             D start, DateExpression<D> end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
+        return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
     }
 
     /**
@@ -229,7 +217,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             DateExpression<D> start, D end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
+        return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
     }
 
     /**
@@ -242,7 +230,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             DateTimeExpression<D> start, DateTimeExpression<D> end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
+        return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
     }
 
     /**
@@ -255,7 +243,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             D start, DateTimeExpression<D> end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
+        return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
     }
 
     /**
@@ -268,7 +256,7 @@ public final class SQLExpressions {
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
             DateTimeExpression<D> start, D end) {
-        return NumberOperation.create(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
+        return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
     }
 
     /**
@@ -278,7 +266,7 @@ public final class SQLExpressions {
      * @param expr
      */
     public static <D extends Comparable> DateExpression<D> datetrunc(DatePart unit, DateExpression<D> expr) {
-        return DateOperation.create((Class)expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+        return Expressions.dateOperation((Class) expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
 
     /**
@@ -288,7 +276,7 @@ public final class SQLExpressions {
      * @param expr
      */
     public static <D extends Comparable> DateTimeExpression<D> datetrunc(DatePart unit, DateTimeExpression<D> expr) {
-        return DateTimeOperation.create((Class)expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+        return Expressions.dateTimeOperation((Class) expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
 
     /**
@@ -299,7 +287,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addYears(DateTimeExpression<D> date, int years) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
     }
 
     /**
@@ -310,7 +298,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addMonths(DateTimeExpression<D> date, int months) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
     }
 
     /**
@@ -321,7 +309,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addWeeks(DateTimeExpression<D> date, int weeks) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
     }
 
     /**
@@ -332,7 +320,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addDays(DateTimeExpression<D> date, int days) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
     }
 
     /**
@@ -343,7 +331,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addHours(DateTimeExpression<D> date, int hours) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_HOURS, date, ConstantImpl.create(hours));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_HOURS, date, ConstantImpl.create(hours));
     }
 
     /**
@@ -354,7 +342,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addMinutes(DateTimeExpression<D> date, int minutes) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MINUTES, date, ConstantImpl.create(minutes));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_MINUTES, date, ConstantImpl.create(minutes));
     }
 
     /**
@@ -365,7 +353,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addSeconds(DateTimeExpression<D> date, int seconds) {
-        return DateTimeOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_SECONDS, date, ConstantImpl.create(seconds));
+        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_SECONDS, date, ConstantImpl.create(seconds));
     }
 
     /**
@@ -376,7 +364,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addYears(DateExpression<D> date, int years) {
-        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
+        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
     }
 
     /**
@@ -387,7 +375,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addMonths(DateExpression<D> date, int months) {
-        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
+        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
     }
 
     /**
@@ -398,7 +386,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addWeeks(DateExpression<D> date, int weeks) {
-        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
+        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
     }
 
     /**
@@ -409,7 +397,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addDays(DateExpression<D> date, int days) {
-        return DateOperation.create((Class)date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
+        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
     }
 
     /**
@@ -918,7 +906,7 @@ public final class SQLExpressions {
      * @return
      */
     public static StringExpression left(Expression<String> lhs, Expression<Integer> rhs) {
-        return StringOperation.create(Ops.StringOps.LEFT, lhs, rhs);
+        return Expressions.stringOperation(Ops.StringOps.LEFT, lhs, rhs);
     }
 
     /**
@@ -929,7 +917,7 @@ public final class SQLExpressions {
      * @return
      */
     public static StringExpression right(Expression<String> lhs, Expression<Integer> rhs) {
-        return StringOperation.create(Ops.StringOps.RIGHT, lhs, rhs);
+        return Expressions.stringOperation(Ops.StringOps.RIGHT, lhs, rhs);
     }
 
     private SQLExpressions() {}

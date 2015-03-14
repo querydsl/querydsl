@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.StringExpression;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.path.DatePath;
 import com.querydsl.core.types.path.StringPath;
 import com.querydsl.core.types.template.DateTemplate;

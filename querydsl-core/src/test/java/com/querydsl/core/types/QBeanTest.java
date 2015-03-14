@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.path.*;
 import org.junit.Before;
 import org.junit.Test;

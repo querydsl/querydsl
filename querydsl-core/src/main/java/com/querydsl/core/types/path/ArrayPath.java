@@ -19,17 +19,11 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import com.google.common.primitives.Primitives;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.ArrayExpression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.ArrayExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * ArrayPath represents an array typed path
@@ -118,7 +112,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
      */
     public NumberExpression<Integer> size() {
         if (size == null) {
-            size = NumberOperation.create(Integer.class, Ops.ARRAY_SIZE, pathMixin);
+            size = Expressions.numberOperation(Integer.class, Ops.ARRAY_SIZE, pathMixin);
         }
         return size;
     }

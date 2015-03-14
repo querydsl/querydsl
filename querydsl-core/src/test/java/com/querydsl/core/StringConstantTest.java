@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.StringExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 
 public class StringConstantTest {
 

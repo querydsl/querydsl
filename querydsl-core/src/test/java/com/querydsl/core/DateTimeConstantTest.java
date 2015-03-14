@@ -20,7 +20,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.DateTimeExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
 
 public class DateTimeConstantTest {
 

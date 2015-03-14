@@ -19,9 +19,9 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.SubQueryExpressionImpl;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.TimeExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.TimeExpression;
 
 /**
  * Time typed single result subquery
@@ -52,7 +52,7 @@ public final class TimeSubQuery<T extends Comparable<?>> extends TimeExpression<
     @Override
     public BooleanExpression exists() {
         if (exists == null) {
-            exists = BooleanOperation.create(Ops.EXISTS, mixin);
+            exists = Expressions.booleanOperation(Ops.EXISTS, mixin);
         }
         return exists;
     }

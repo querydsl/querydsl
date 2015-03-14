@@ -14,7 +14,7 @@
 package com.querydsl.lucene4;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.expr.StringOperation;
+import com.querydsl.core.types.dsl.StringOperation;
 
 /**
  * TermElement represents the embedded String as a term

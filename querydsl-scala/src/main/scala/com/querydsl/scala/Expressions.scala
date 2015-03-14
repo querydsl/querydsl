@@ -39,7 +39,7 @@ object Constants {
 
 trait DslExpression[T] extends Expression[T] {
 
-  def as(right: Path[T]): DslExpression[T] = dsl(getType, ALIAS, this, right)
+  def as(right: Path[T]): DslExpression[T] = Operations.dsl(getType, ALIAS, this, right)
 
   def as(alias: String): DslExpression[T] = as(new PathImpl[T](getType, alias))
 

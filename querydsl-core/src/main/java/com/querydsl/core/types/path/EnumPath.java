@@ -20,7 +20,7 @@ import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.EnumExpression;
+import com.querydsl.core.types.dsl.EnumExpression;
 
 /**
  * EnumPath represents enum paths

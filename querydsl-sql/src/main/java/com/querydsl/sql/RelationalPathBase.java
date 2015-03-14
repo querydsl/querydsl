@@ -13,20 +13,21 @@
  */
 package com.querydsl.sql;
 
-import javax.annotation.Nullable;
+import static com.google.common.collect.ImmutableList.copyOf;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.path.BeanPath;
-import static com.google.common.collect.ImmutableList.copyOf;
 
 /**
  * RelationalPathBase is a base class for {@link RelationalPath} implementations
@@ -108,7 +109,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     public NumberExpression<Long> count() {
         if (count == null) {
             if (primaryKey != null) {
-                count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG,
+                count = Expressions.numberOperation(Long.class, Ops.AggOps.COUNT_AGG,
                         primaryKey.getLocalColumns().get(0));
             } else {
                 throw new IllegalStateException("No count expression can be created");
@@ -122,7 +123,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         if (countDistinct == null) {
             if (primaryKey != null) {
                 // TODO handle multiple column primary keys properly
-                countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG,
+                countDistinct = Expressions.numberOperation(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG,
                         primaryKey.getLocalColumns().get(0));
             } else {
                 throw new IllegalStateException("No count distinct expression can be created");
@@ -200,7 +201,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         }
         BooleanExpression rv = null;
         for (int i = 0; i < pk1.getLocalColumns().size(); i++) {
-            BooleanExpression pred = BooleanOperation.create(op, pk1.getLocalColumns().get(i), pk2.getLocalColumns().get(i));
+            BooleanExpression pred = Expressions.booleanOperation(op, pk1.getLocalColumns().get(i), pk2.getLocalColumns().get(i));
             rv = rv != null ? rv.and(pred) : pred;
         }
         return rv;

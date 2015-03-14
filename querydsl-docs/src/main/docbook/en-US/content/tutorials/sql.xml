@@ -677,7 +677,7 @@ query.list(Expressions.constant(1),
            Expressions.constant("abc"));
 ]]></programlisting>
 
-    <para>The class  <code>com.querydsl.core.support.Expressions</code> offers also other useful static methods for
+    <para>The class  <code>com.querydsl.core.types.dsl.Expressions</code> offers also other useful static methods for
     projections, operation and template creation.</para>
 
   </sect2>

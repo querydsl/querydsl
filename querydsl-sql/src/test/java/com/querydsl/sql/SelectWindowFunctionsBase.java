@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.Wildcard;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.query.ListSubQuery;

@@ -16,12 +16,12 @@ package com.querydsl.jpa;
 import org.junit.Test;
 
 import com.querydsl.core.domain.QCat;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.NumberOperation;
-import com.querydsl.core.types.expr.StringOperation;
+import com.querydsl.core.types.dsl.NumberOperation;
+import com.querydsl.core.types.dsl.StringOperation;
 import com.querydsl.core.types.path.StringPath;
 
 public class StringOperationsTest extends AbstractQueryTest{
@@ -47,8 +47,8 @@ public class StringOperationsTest extends AbstractQueryTest{
     public void IndexOf() {        
         Path path = QCat.cat.name;
         Expression startIndex = Expressions.constant(0);
-        Expression endIndex = NumberOperation.create(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
-        Expression substr = StringOperation.create(Ops.SUBSTR_2ARGS, path, startIndex, endIndex);
+        Expression endIndex = Expressions.numberOperation(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
+        Expression substr = Expressions.stringOperation(Ops.SUBSTR_2ARGS, path, startIndex, endIndex);
         assertToString("substring(cat.name,1,(locate(?1,cat.name)-1)-0)", substr);
     }
     

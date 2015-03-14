@@ -20,8 +20,8 @@ import org.geolatte.geom.GeometryCollection;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A GeometryCollection is a geometric object that is a collection of some number of geometric objects.
@@ -48,7 +48,7 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
      */
     public NumberExpression<Integer> numGeometries() {
         if (numGeometries == null) {
-            numGeometries = NumberOperation.create(Integer.class, SpatialOps.NUM_GEOMETRIES, mixin);
+            numGeometries = Expressions.numberOperation(Integer.class, SpatialOps.NUM_GEOMETRIES, mixin);
         }
         return numGeometries;
     }

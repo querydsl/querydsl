@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.types.path.SimplePath;
 import com.querydsl.core.types.template.SimpleTemplate;
 

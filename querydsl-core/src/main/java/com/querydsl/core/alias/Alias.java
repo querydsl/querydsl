@@ -29,7 +29,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.path.ArrayPath;
 import com.querydsl.core.types.path.BooleanPath;
 import com.querydsl.core.types.path.CollectionPath;

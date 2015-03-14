@@ -15,8 +15,8 @@ package com.querydsl.sql.oracle;
 
 import java.util.Date;
 
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.template.DateTemplate;
 import com.querydsl.core.types.template.NumberTemplate;
 

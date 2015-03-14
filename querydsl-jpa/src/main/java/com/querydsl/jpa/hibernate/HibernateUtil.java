@@ -32,7 +32,7 @@ import org.hibernate.type.Type;
 
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 
 /**
  * HibernateUtil provides static utility methods for Hibernate

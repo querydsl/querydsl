@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.Wildcard;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.core.types.path.NumberPath;
 import com.querydsl.core.types.query.ListSubQuery;
 import com.querydsl.core.types.query.NumberSubQuery;
@@ -42,7 +42,7 @@ public class SQLSubQueryTest {
         };
         SQLSubQuery query = new SQLSubQuery();
         query.from(employee)
-            .where(BooleanOperation.create(op, employee.id));
+            .where(Expressions.booleanOperation(op, employee.id));
 
         assertEquals("from EMPLOYEE EMPLOYEE\nwhere unknownfn(EMPLOYEE.ID)", query.toString());
     }

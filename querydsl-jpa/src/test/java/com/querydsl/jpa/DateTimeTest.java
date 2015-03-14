@@ -17,9 +17,9 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.DateTimeExpression;
-import com.querydsl.core.types.expr.TimeExpression;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.TimeExpression;
 import com.querydsl.core.types.path.DatePath;
 import com.querydsl.core.types.path.DateTimePath;
 

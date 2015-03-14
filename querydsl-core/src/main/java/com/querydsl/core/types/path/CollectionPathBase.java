@@ -23,8 +23,8 @@ import com.querydsl.core.types.ExpressionException;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.expr.CollectionExpressionBase;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.CollectionExpressionBase;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * CollectionPath is a base class for collection typed paths

@@ -17,7 +17,7 @@ import java.sql.Date;
 
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.expr.DateExpression;
+import com.querydsl.core.types.dsl.DateExpression;
 import com.querydsl.core.types.path.BooleanPath;
 
 public class DateExtensions {

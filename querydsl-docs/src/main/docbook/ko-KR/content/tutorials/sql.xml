@@ -659,7 +659,7 @@ query.list(Expressions.constant(1),
            Expressions.constant("abc"));
 ]]></programlisting>
 
-    <para><code>com.querydsl.core.support.Expressions</code> 클래스는
+    <para><code>com.querydsl.core.types.dsl.Expressions</code> 클래스는
     프로젝션, 오퍼레이션, 템플릿 생성을 위한 유용한 정적 메서드도 제공한다.</para>
 
   </sect2>

@@ -22,7 +22,7 @@ import org.junit.Test;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.types.path.StringPath;
 
 public class DefaultQueryMetadataTest {

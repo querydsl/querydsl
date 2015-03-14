@@ -20,8 +20,8 @@ import org.geolatte.geom.Polygon;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A Polygon is a planar Surface defined by 1 exterior boundary and 0 or more interior boundaries. Each interior
@@ -65,7 +65,7 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
      */
     public NumberExpression<Integer> numInteriorRing() {
         if (numInteriorRing == null) {
-            numInteriorRing = NumberOperation.create(Integer.class, SpatialOps.NUM_INTERIOR_RING, mixin);
+            numInteriorRing = Expressions.numberOperation(Integer.class, SpatialOps.NUM_INTERIOR_RING, mixin);
         }
         return numInteriorRing;
     }

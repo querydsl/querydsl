@@ -40,7 +40,7 @@ public List<Customer> getCustomer(String... names) {
     <title>동적 표현식</title>
 
     <para>
-      <code>com.querydsl.core.support.Expressions</code> 클래스는 동적인 표현식 생성을 위한 정적 팩토리 클래스다.
+      <code>com.querydsl.core.types.dsl.Expressions</code> 클래스는 동적인 표현식 생성을 위한 정적 팩토리 클래스다.
       팩토리 메서드는 리턴 타입에 따라 이름을 지었으므로 쉽게 유추할 수 있다.
     </para>
 

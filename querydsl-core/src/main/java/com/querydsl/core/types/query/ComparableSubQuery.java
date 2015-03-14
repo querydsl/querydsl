@@ -19,9 +19,9 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.SubQueryExpressionImpl;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.ComparableExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * Comparable typed single result subquery
@@ -53,7 +53,7 @@ public final class ComparableSubQuery<T extends Comparable<?>> extends Comparabl
     @Override
     public BooleanExpression exists() {
         if (exists == null) {
-            exists = BooleanOperation.create(Ops.EXISTS, mixin);
+            exists = Expressions.booleanOperation(Ops.EXISTS, mixin);
         }
         return exists;
     }

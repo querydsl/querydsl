@@ -29,9 +29,10 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.PathType;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * BeanPath represents bean paths
@@ -328,7 +329,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @return
      */
     public <B extends T> BooleanExpression instanceOf(Class<B> type) {
-        return BooleanOperation.create(Ops.INSTANCE_OF, pathMixin, ConstantImpl.create(type));
+        return Expressions.booleanOperation(Ops.INSTANCE_OF, pathMixin, ConstantImpl.create(type));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

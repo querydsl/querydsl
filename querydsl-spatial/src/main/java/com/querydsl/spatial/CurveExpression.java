@@ -19,10 +19,9 @@ import org.geolatte.geom.Geometry;
 import org.geolatte.geom.Point;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A Curve is a 1-dimensional geometric object usually stored as a sequence of Points, with the subtype of Curve
@@ -57,7 +56,7 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
      */
     public NumberExpression<Double> length() {
         if (length == null) {
-            length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);
+            length = Expressions.numberOperation(Double.class, SpatialOps.LENGTH, mixin);
         }
         return length;
     }
@@ -93,7 +92,7 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
-            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
+            closed = Expressions.booleanOperation(SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }
@@ -106,7 +105,7 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
      */
     public BooleanExpression isRing() {
         if (ring == null) {
-            ring = BooleanOperation.create(SpatialOps.IS_RING, mixin);
+            ring = Expressions.booleanOperation(SpatialOps.IS_RING, mixin);
         }
         return ring;
     }

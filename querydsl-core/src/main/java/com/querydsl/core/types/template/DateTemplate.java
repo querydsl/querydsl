@@ -21,7 +21,7 @@ import com.querydsl.core.types.TemplateExpression;
 import com.querydsl.core.types.TemplateExpressionImpl;
 import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.DateExpression;
+import com.querydsl.core.types.dsl.DateExpression;
 
 /**
  * DateTemplate defines custom date expressions

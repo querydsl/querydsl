@@ -13,13 +13,9 @@
  */
 package com.querydsl.core.group;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.DslExpression;
-import com.querydsl.core.types.expr.DslOperation;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.DslExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * A base class for GroupExpressions
@@ -49,7 +45,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
      */
     @SuppressWarnings("unchecked")
     public DslExpression<R> as(Path<R> alias) {
-        return DslOperation.create((Class<R>)getType(), Ops.ALIAS, this, alias);
+        return Expressions.dslOperation((Class<R>) getType(), Ops.ALIAS, this, alias);
     }
 
     /**

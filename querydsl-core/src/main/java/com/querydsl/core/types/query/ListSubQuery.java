@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.*;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * List result subquery
@@ -88,7 +88,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     @Override
     public BooleanExpression exists() {
         if (exists == null) {
-            exists = BooleanOperation.create(Ops.EXISTS, mixin);
+            exists = Expressions.booleanOperation(Ops.EXISTS, mixin);
         }
         return exists;
     }
@@ -109,7 +109,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     }
 
     public SimpleExpression<?> as(Expression<?> alias) {
-        return SimpleOperation.create(alias.getType(),Ops.ALIAS, this, alias);
+        return Expressions.operation(alias.getType(),Ops.ALIAS, this, alias);
     }
 
     @Override

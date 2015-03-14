@@ -18,8 +18,8 @@ import java.util.Calendar;
 import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.TimeExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.TimeExpression;
 
 /**
  * @author tiwe
