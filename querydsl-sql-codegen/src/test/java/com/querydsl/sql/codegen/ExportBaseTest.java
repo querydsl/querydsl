@@ -18,12 +18,9 @@ import java.sql.SQLException;
 
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.querydsl.sql.Connections;
-import com.querydsl.core.testutil.FilteringTestRunner;
 
-@RunWith(FilteringTestRunner.class)
 public abstract class ExportBaseTest {
 
     @Test

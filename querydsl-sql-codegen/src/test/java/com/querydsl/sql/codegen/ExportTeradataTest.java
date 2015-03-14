@@ -6,7 +6,6 @@ import org.junit.experimental.categories.Category;
 import com.querydsl.core.testutil.ExternalDB;
 import com.querydsl.sql.Connections;
 
-//@Ignore
 @Category(ExternalDB.class)
 public class ExportTeradataTest extends ExportBaseTest {
 
