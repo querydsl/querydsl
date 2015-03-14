@@ -13,7 +13,7 @@ import com.mysema.query.sql._
 
 import java.io.StringWriter
 
-class ScalaEntitySerializerTest extends CompileTestUtils {
+class ScalaEntitySerializerTest {
 
   var entityType: EntityType = null
 
@@ -51,7 +51,7 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     //System.err.println(str)
     assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) " +
     		"extends EntityPathImpl[Person](cl, md) {"))
@@ -67,8 +67,8 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     //System.err.println(str);
-    assertCompileSuccess(str)
+    CompileTestUtils.assertCompileSuccess(str)
   }
 }

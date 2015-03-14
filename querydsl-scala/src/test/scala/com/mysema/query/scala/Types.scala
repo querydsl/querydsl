@@ -1,4 +1,4 @@
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
 import com.mysema.query.annotations._
 

@@ -1,13 +1,13 @@
 package com.mysema.query.scala.sql
 
-import com.mysema.codegen._;
-import com.mysema.codegen.model._;
+import com.mysema.codegen._
+import com.mysema.codegen.model._
 
-import com.mysema.query.codegen._;
+import com.mysema.query.codegen._
 import com.mysema.query.sql._
 import com.mysema.query.sql.codegen._
 
-import java.io.StringWriter;
+import java.io.StringWriter
 
 import org.junit._
 import org.junit.Assert._
@@ -29,7 +29,7 @@ class ScalaMetaDataSerializerTest {
         "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false)
     entityType = new EntityType(typeModel)
     //entityType.addAnnotation(new TableImpl("DOMAIN_TYPE"))
-    entityType.getData().put("table", "DOMAIN_TYPE")
+    entityType.getData.put("table", "DOMAIN_TYPE")
 
     // properties
     List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], 
@@ -49,7 +49,7 @@ class ScalaMetaDataSerializerTest {
     val namingStrategy = new DefaultNamingStrategy()
     val serializer = new ScalaMetaDataSerializer(typeMappings, namingStrategy)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
+    val str = writer.toString
     //System.err.println(str)
     assertTrue("companion object isn't before class", str.indexOf("object") < str.indexOf("class"))
     //assertTrue("companion object isn't before annotations", str.indexOf("object") < str.indexOf("@Table"))    

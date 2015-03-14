@@ -27,7 +27,7 @@ import com.mysema.query.types.Path
  */
 object ScalaTypeMappings {
   
-  def create: TypeMappings = new ScalaTypeMappings();
+  def create: TypeMappings = new ScalaTypeMappings()
   
 }
 

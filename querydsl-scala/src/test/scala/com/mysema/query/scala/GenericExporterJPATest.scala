@@ -1,11 +1,11 @@
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
 import javax.persistence._
 import com.mysema.query.codegen.GenericExporter
 import org.junit.Test
 import io.Source.fromFile
 
-class GenericExporterJPATest extends CompileTestUtils {
+class GenericExporterJPATest {
 
   @Test
   def Export {
@@ -22,11 +22,7 @@ class GenericExporterJPATest extends CompileTestUtils {
     exporter.export(getClass.getPackage)
 
     val targetFolder = new java.io.File("target/gen1-jpa/com/mysema/query/scala/")
-    val sources = (targetFolder listFiles ()
-      filter (_.getName.endsWith(".scala"))
-      map (fromFile(_).mkString)
-      mkString ("\n"))
-    assertCompileSuccess(sources)
+    CompileTestUtils.assertCompileSuccess(targetFolder)
   }
 
 }

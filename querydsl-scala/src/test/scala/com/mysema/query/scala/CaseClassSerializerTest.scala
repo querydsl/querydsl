@@ -1,17 +1,17 @@
 package com.mysema.query.scala
 
-import com.mysema.codegen._;
-import com.mysema.codegen.model._;
-import com.mysema.query.codegen._;
+import com.mysema.codegen._
+import com.mysema.codegen.model._
+import com.mysema.query.codegen._
 
-import java.io.StringWriter;
+import java.io.StringWriter
 
 import org.junit._
 import org.junit.Assert._
 
 import scala.collection.JavaConversions._
 
-class CaseClassSerializerTest extends CompileTestUtils {
+class CaseClassSerializerTest {
 
   val typeMappings = ScalaTypeMappings.create
   
@@ -34,9 +34,9 @@ class CaseClassSerializerTest extends CompileTestUtils {
     serializer.createCompanionObject = false
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    val str = writer.toString()
-    
-    assertCompileSuccess(str)
+    val str = writer.toString
+
+    CompileTestUtils.assertCompileSuccess(str)
   }  
   
 }  

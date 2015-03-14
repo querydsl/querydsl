@@ -21,7 +21,7 @@ import com.mysema.query.types.PathMetadataFactory._
 import com.mysema.query.types.Ops._
 
 import java.util.Collection
-import java.util.Arrays._;
+import java.util.Arrays._
 
 import Constants._
 import Operations._

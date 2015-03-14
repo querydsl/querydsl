@@ -1,8 +1,8 @@
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
-import com.mysema.query.types._;
+import com.mysema.query.types._
 
-import org.junit.{ Test, Before, After, Assert };
+import org.junit.{ Test, Before, After, Assert }
 
 import Matchers._
 

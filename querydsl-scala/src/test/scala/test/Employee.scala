@@ -1,9 +1,9 @@
-package test;
+package test
 
-import scala.reflect.BeanProperty;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotNull;
-import com.mysema.query.sql._;
+import scala.beans.BeanProperty
+import javax.validation.constraints.Size
+import javax.validation.constraints.NotNull
+import com.mysema.query.sql._
 
 object Employee extends QEmployee("employee"){
   override def as(variable: String) = new QEmployee(variable)
@@ -12,13 +12,13 @@ object Employee extends QEmployee("employee"){
 
 class Employee {
 
-  var firstname: String = _;
+  var firstname: String = _
 
-  var id: Integer = _;
+  var id: Integer = _
 
-  var lastname: String = _;
+  var lastname: String = _
 
-  var superiorId: Integer = _;
+  var superiorId: Integer = _
 
 }
 
