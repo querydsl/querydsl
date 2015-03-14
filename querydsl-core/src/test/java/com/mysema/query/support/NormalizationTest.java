@@ -1,13 +1,18 @@
 package com.mysema.query.support;
 
-import com.mysema.testutil.Benchmark;
-import com.mysema.testutil.Runner;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.mysema.testutil.Benchmark;
+import com.mysema.testutil.Performance;
+import com.mysema.testutil.Runner;
 
 public class NormalizationTest {
 
     @Test
+    @Category(Performance.class)
     public void Performance() throws Exception {
         Runner.run("NormalizationTest Performance", new Benchmark() {
 

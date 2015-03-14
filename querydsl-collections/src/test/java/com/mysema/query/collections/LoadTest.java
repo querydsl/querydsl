@@ -21,10 +21,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
+import com.mysema.testutil.Performance;
 
+@Category(Performance.class)
 public class LoadTest {
 
     private QCat cat = QCat.cat;
