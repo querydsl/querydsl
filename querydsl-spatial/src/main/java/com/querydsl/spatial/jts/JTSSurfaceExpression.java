@@ -63,7 +63,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      */
     public JTSPointExpression<Point> centroid() {
         if (centroid == null) {
-            centroid = JTSPointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
+            centroid = JTSGeometryExpressions.pointOperation(SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
@@ -75,7 +75,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      */
     public JTSPointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
-            pointOnSurface = JTSPointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);
+            pointOnSurface = JTSGeometryExpressions.pointOperation(SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }

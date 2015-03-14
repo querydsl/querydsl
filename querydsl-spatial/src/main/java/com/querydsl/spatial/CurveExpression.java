@@ -68,7 +68,7 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
      */
     public PointExpression<Point> startPoint() {
         if (startPoint == null) {
-            startPoint = PointOperation.create(Point.class, SpatialOps.START_POINT, mixin);
+            startPoint = GeometryExpressions.pointOperation(SpatialOps.START_POINT, mixin);
         }
         return startPoint;
     }
@@ -80,7 +80,7 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
      */
     public PointExpression<Point> endPoint() {
         if (endPoint == null) {
-            endPoint = PointOperation.create(Point.class, SpatialOps.END_POINT, mixin);
+            endPoint = GeometryExpressions.pointOperation(SpatialOps.END_POINT, mixin);
         }
         return endPoint;
     }

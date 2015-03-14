@@ -67,7 +67,7 @@ public abstract class MultiSurfaceExpression<T extends GeometryCollection> exten
      */
     public PointExpression<Point> centroid() {
         if (centroid == null) {
-            centroid = PointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
+            centroid = GeometryExpressions.pointOperation(SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
@@ -79,7 +79,7 @@ public abstract class MultiSurfaceExpression<T extends GeometryCollection> exten
      */
     public PointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
-            pointOnSurface = PointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);
+            pointOnSurface = GeometryExpressions.pointOperation(SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }

@@ -33,18 +33,6 @@ public class JTSPointOperation<T extends Point> extends JTSPointExpression<T> im
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    public static <D extends Point> JTSPointOperation<D> create(Class<D> type, Operator op, Expression<?> one) {
-        return new JTSPointOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
-    }
-
-    public static <D extends Point> JTSPointOperation<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
-        return new JTSPointOperation<D>(type, op, ImmutableList.of(one, two));
-    }
-
-    public static <D extends Point> JTSPointOperation<D> create(Class<D> type, Operator op, Expression<?>... args) {
-        return new JTSPointOperation<D>(type, op, args);
-    }
-
     private final OperationImpl< T> opMixin;
 
     protected JTSPointOperation(Class<T> type, Operator op, Expression<?>... args) {

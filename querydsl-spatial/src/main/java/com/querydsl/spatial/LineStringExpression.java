@@ -61,7 +61,7 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
      * @return
      */
     public PointExpression<Point> pointN(int idx) {
-        return PointOperation.create(Point.class, SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
+        return GeometryExpressions.pointOperation(SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
     }
 
 }

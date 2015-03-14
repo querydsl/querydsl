@@ -61,7 +61,7 @@ public abstract class JTSLineStringExpression<T extends LineString> extends JTSC
      * @return
      */
     public JTSPointExpression<Point> pointN(int idx) {
-        return JTSPointOperation.create(Point.class, SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
+        return JTSGeometryExpressions.pointOperation(SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
     }
 
 }

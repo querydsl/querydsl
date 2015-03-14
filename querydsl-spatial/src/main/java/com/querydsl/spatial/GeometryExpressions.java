@@ -1,10 +1,14 @@
 package com.querydsl.spatial;
 
+import org.geolatte.geom.*;
+
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.*;
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.GeometryCollection;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 
 /**
  * GeometryExpressions contains static functions for GEO operations
@@ -28,7 +32,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static GeometryExpression<?> fromText(String text) {
-        return GeometryOperation.create(Geometry.class, SpatialOps.GEOM_FROM_TEXT, ConstantImpl.create(text));
+        return geometryOperation(SpatialOps.GEOM_FROM_TEXT, ConstantImpl.create(text));
     }
 
     /**
@@ -38,7 +42,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static GeometryExpression<?> fromText(Expression<String> text) {
-        return GeometryOperation.create(Geometry.class, SpatialOps.GEOM_FROM_TEXT, text);
+        return geometryOperation(SpatialOps.GEOM_FROM_TEXT, text);
     }
 
     /**
@@ -50,7 +54,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static <T extends Geometry> GeometryExpression<T> setSRID(Expression<T> expr, int srid) {
-        return (GeometryExpression)GeometryOperation.create(expr.getType(), SpatialOps.SET_SRID,
+        return (GeometryExpression)geometryOperation(expr.getType(), SpatialOps.SET_SRID,
                 expr, ConstantImpl.create(srid));
     }
 
@@ -129,7 +133,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static GeometryExpression<?> extent(Expression<? extends GeometryCollection> collection) {
-        return GeometryOperation.create(Geometry.class, SpatialOps.EXTENT, collection);
+        return geometryOperation(SpatialOps.EXTENT, collection);
     }
 
     /**
@@ -139,7 +143,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static GeometryExpression<?> collect(Expression<? extends GeometryCollection> collection) {
-        return GeometryOperation.create(Geometry.class, SpatialOps.COLLECT, collection);
+        return geometryOperation(SpatialOps.COLLECT, collection);
     }
 
     /**
@@ -150,7 +154,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static GeometryExpression<?> collect(Expression<? extends Geometry> expr1, Expression<? extends Geometry> expr2) {
-        return GeometryOperation.create(Geometry.class, SpatialOps.COLLECT2, expr1, expr2);
+        return geometryOperation(SpatialOps.COLLECT2, expr1, expr2);
     }
 
     /**
@@ -163,7 +167,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static <T extends Geometry> GeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay) {
-        return (GeometryExpression)GeometryOperation.create(expr.getType(), SpatialOps.TRANSLATE,
+        return (GeometryExpression)geometryOperation(expr.getType(), SpatialOps.TRANSLATE,
                 expr, ConstantImpl.create(deltax), ConstantImpl.create(deltay));
     }
 
@@ -178,8 +182,63 @@ public final class GeometryExpressions {
      * @return
      */
     public static <T extends Geometry> GeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay, float deltaz) {
-        return (GeometryExpression)GeometryOperation.create(expr.getType(), SpatialOps.TRANSLATE2,
+        return (GeometryExpression)geometryOperation(expr.getType(), SpatialOps.TRANSLATE2,
                 expr, ConstantImpl.create(deltax), ConstantImpl.create(deltay), ConstantImpl.create(deltaz));
+    }
+
+    /**
+     * Create a new Geometry operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static GeometryExpression<Geometry> geometryOperation(Operator op, Expression<?>... args) {
+        return new GeometryOperation<Geometry>(Geometry.class, op, args);
+    }
+
+    /**
+     * Create a new Geometry operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static <T extends Geometry> GeometryExpression<T> geometryOperation(Class<T> type, Operator op, Expression<?>... args) {
+        return new GeometryOperation<T>(type, op, args);
+    }
+
+    /**
+     * Create a new LineString operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static LineStringExpression<LineString> lineStringOperation(Operator op, Expression<?>... args) {
+        return new LineStringOperation<LineString>(LineString.class, op, args);
+    }
+
+    /**
+     * Create a new Point operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static PointExpression<Point> pointOperation(Operator op, Expression<?>... args) {
+        return new PointOperation<Point>(Point.class, op, args);
+    }
+
+    /**
+     * Create a new Polygon operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static PolygonExpression<Polygon> polygonOperation(Operator op, Expression<?>... args) {
+        return new PolygonOperation<Polygon>(Polygon.class, op, args);
     }
 
     private GeometryExpressions() {}

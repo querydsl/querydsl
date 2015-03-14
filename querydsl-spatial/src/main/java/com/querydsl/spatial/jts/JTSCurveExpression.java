@@ -68,7 +68,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public JTSPointExpression<Point> startPoint() {
         if (startPoint == null) {
-            startPoint = JTSPointOperation.create(Point.class, SpatialOps.START_POINT, mixin);
+            startPoint = JTSGeometryExpressions.pointOperation(SpatialOps.START_POINT, mixin);
         }
         return startPoint;
     }
@@ -80,7 +80,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public JTSPointExpression<Point> endPoint() {
         if (endPoint == null) {
-            endPoint = JTSPointOperation.create(Point.class, SpatialOps.END_POINT, mixin);
+            endPoint = JTSGeometryExpressions.pointOperation(SpatialOps.END_POINT, mixin);
         }
         return endPoint;
     }

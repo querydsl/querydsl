@@ -33,18 +33,6 @@ public class JTSGeometryOperation<T extends Geometry> extends JTSGeometryExpress
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    public static <D extends Geometry> JTSGeometryOperation<D> create(Class<D> type, Operator op, Expression<?> one) {
-        return new JTSGeometryOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
-    }
-
-    public static <D extends Geometry> JTSGeometryOperation<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
-        return new JTSGeometryOperation<D>(type, op, ImmutableList.of(one, two));
-    }
-
-    public static <D extends Geometry> JTSGeometryOperation<D> create(Class<D> type, Operator op, Expression<?>... args) {
-        return new JTSGeometryOperation<D>(type, op, args);
-    }
-
     private final OperationImpl< T> opMixin;
 
     protected JTSGeometryOperation(Class<T> type, Operator op, Expression<?>... args) {

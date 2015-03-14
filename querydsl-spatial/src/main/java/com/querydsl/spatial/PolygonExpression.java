@@ -53,7 +53,7 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
      */
     public LineStringExpression<?> exteriorRing() {
         if (exterorRing == null) {
-            exterorRing = LineStringOperation.create(LineString.class, SpatialOps.EXTERIOR_RING, mixin);
+            exterorRing = GeometryExpressions.lineStringOperation(SpatialOps.EXTERIOR_RING, mixin);
         }
         return exterorRing;
     }
@@ -77,6 +77,6 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
      * @return
      */
     public LineStringExpression<LineString> interiorRingN(int idx) {
-        return LineStringOperation.create(LineString.class, SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));
+        return GeometryExpressions.lineStringOperation(SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));
     }
 }

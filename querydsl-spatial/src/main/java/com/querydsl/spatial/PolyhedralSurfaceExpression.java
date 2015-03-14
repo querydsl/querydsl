@@ -16,7 +16,6 @@ package com.querydsl.spatial;
 import javax.annotation.Nullable;
 
 import org.geolatte.geom.PolyHedralSurface;
-import org.geolatte.geom.Polygon;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
@@ -67,7 +66,7 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
      * @return
      */
     public PolygonExpression<?> patchN(int n) {
-        return PolygonOperation.create(Polygon.class, SpatialOps.SURFACE, mixin, ConstantImpl.create(n));
+        return GeometryExpressions.polygonOperation(SpatialOps.SURFACE, mixin, ConstantImpl.create(n));
     }
 
     /**

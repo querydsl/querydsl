@@ -33,18 +33,6 @@ public class JTSPolygonOperation<T extends Polygon> extends JTSPolygonExpression
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    public static <D extends Polygon> JTSPolygonOperation<D> create(Class<D> type, Operator op, Expression<?> one) {
-        return new JTSPolygonOperation<D>(type, op, ImmutableList.<Expression<?>>of(one));
-    }
-
-    public static <D extends Polygon> JTSPolygonOperation<D> create(Class<D> type, Operator op, Expression<?> one, Expression<?> two) {
-        return new JTSPolygonOperation<D>(type, op, ImmutableList.of(one, two));
-    }
-
-    public static <D extends Polygon> JTSPolygonOperation<D> create(Class<D> type, Operator op, Expression<?>... args) {
-        return new JTSPolygonOperation<D>(type, op, args);
-    }
-
     private final OperationImpl< T> opMixin;
 
     protected JTSPolygonOperation(Class<T> type, Operator op, Expression<?>... args) {

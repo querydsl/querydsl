@@ -60,7 +60,7 @@ public abstract class JTSGeometryCollectionExpression<T extends GeometryCollecti
      * @return
      */
     public JTSGeometryExpression<Geometry> geometryN(Integer n) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));
     }
 
 }

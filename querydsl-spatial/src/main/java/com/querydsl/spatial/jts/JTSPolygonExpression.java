@@ -53,7 +53,7 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
      */
     public JTSLineStringExpression<?> exteriorRing() {
         if (exteriorRing == null) {
-            exteriorRing = JTSLineStringOperation.create(LineString.class, SpatialOps.EXTERIOR_RING, mixin);
+            exteriorRing = JTSGeometryExpressions.lineStringOperation(SpatialOps.EXTERIOR_RING, mixin);
         }
         return exteriorRing;
     }
@@ -77,6 +77,6 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
      * @return
      */
     public JTSLineStringExpression<LineString> interiorRingN(int idx) {
-        return JTSLineStringOperation.create(LineString.class, SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));
+        return JTSGeometryExpressions.lineStringOperation(SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));
     }
 }

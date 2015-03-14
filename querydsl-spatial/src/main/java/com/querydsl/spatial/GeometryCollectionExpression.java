@@ -60,7 +60,7 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
      * @return
      */
     public GeometryExpression<Geometry> geometryN(Integer n) {
-        return GeometryOperation.create(Geometry.class, SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));
+        return GeometryExpressions.geometryOperation(SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));
     }
 
 }
