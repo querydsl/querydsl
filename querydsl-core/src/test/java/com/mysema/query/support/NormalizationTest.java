@@ -31,6 +31,11 @@ public class NormalizationTest {
     }
 
     @Test
+    public void Arithmetic() {
+        assertEquals("3", Normalization.normalize("1 - 2 + 4"));
+    }
+
+    @Test
     public void Normalize_Addition() {
         assertEquals("3", Normalization.normalize("1+2"));
         assertEquals("where 3 = 3", Normalization.normalize("where 1+2 = 3"));
@@ -108,5 +113,10 @@ public class NormalizationTest {
         assertEquals("'INPS-ISET-0000-00000000A'", Normalization.normalize("'INPS-ISET-0000-00000000A'"));
 
         assertEquals("column = 'INPS-ISET-0000-00000000A' limit 1", Normalization.normalize("column = 'INPS-ISET-0000-00000000A' limit 1"));
+    }
+
+    @Test
+    public void Parameters() {
+        assertEquals("?1 + 1", Normalization.normalize("?1 + 1"));
     }
 }

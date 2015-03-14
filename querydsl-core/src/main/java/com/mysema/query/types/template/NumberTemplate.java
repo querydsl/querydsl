@@ -60,6 +60,8 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
     
     public static final NumberExpression<Integer> THREE = create(Integer.class, "3");
 
+    public static final NumberExpression<Integer> FOUR = create(Integer.class, "4");
+
     public static final NumberExpression<Integer> ZERO = create(Integer.class, "0");
 
     private final TemplateExpressionImpl<T> templateMixin;

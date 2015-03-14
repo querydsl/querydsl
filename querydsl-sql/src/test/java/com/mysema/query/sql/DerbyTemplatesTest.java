@@ -14,19 +14,52 @@
 package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Ops;
 
-public class DerbyTemplatesTest {
+public class DerbyTemplatesTest extends AbstractSQLTemplatesTest{
+
+    @Override
+    protected SQLTemplates createTemplates() {
+        return new DerbyTemplates();
+    }
 
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("next value for myseq", new SQLSerializer(new Configuration(new DerbyTemplates())).handle(nextval).toString());
+    }
+
+    @Test
+    public void Precedence() {
+        // unary + and -
+        int p1 = getPrecedence(Ops.NEGATE);
+        // *, /, || (concatenation)
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV);
+        // binary + and -
+        int p3 = getPrecedence(Ops.ADD, Ops.SUB);
+        // comparisons, quantified comparisons, EXISTS, IN, IS NULL, LIKE, BETWEEN, IS
+        int p4 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE, Ops.EXISTS,
+                Ops.IN, Ops.IS_NULL, Ops.LIKE, Ops.BETWEEN, Ops.IS_NOT_NULL);
+        // NOT
+        int p5 = getPrecedence(Ops.NOT);
+        // AND
+        int p6 = getPrecedence(Ops.AND);
+        // OR
+        int p7 = getPrecedence(Ops.OR);
+
+        assertTrue(p1 < p2);
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
     }
 
 }

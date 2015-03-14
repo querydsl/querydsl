@@ -13,7 +13,12 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Connection;
+
+import org.easymock.EasyMock;
+import org.junit.Test;
 
 import com.mysema.query.Survey;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -24,9 +29,6 @@ import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.path.PathBuilder;
-import org.easymock.EasyMock;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class SerializationTest {
 
@@ -121,7 +123,7 @@ public class SerializationTest {
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", serializer.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", serializer.toString());
 
     }
 
@@ -135,7 +137,7 @@ public class SerializationTest {
 
         assertEquals("from SURVEY SURVEY\n" +
                 "join TableValuedFunction(?) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
     @Test
@@ -148,7 +150,7 @@ public class SerializationTest {
 
         assertEquals("from SURVEY SURVEY\n" +
                 "join table(TableValuedFunction(?)) as tokFunc\n" +
-                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
     @Test

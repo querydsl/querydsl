@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -21,11 +22,10 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.template.SimpleTemplate;
-
-
 
 public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
 
@@ -43,15 +43,15 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");
         NumberPath<Integer> col1 = new NumberPath<Integer>(Integer.class,"col1");
         Union union = query.union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+                sq().unique(one.as(col1)),
+                sq().unique(two),
+                sq().unique(three));
         assertEquals(
                 "(select 1 col1 from dual)\n" +
-                "union\n" +
-                "(select 2 from dual)\n" +
-                "union\n" +
-                "(select 3 from dual)", union.toString());
+                        "union\n" +
+                        "(select 2 from dual)\n" +
+                        "union\n" +
+                        "(select 3 from dual)", union.toString());
     }
 
     @Test
@@ -72,16 +72,44 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         query.getMetadata().addFlag(new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() "));
 
         assertEquals("select * from (  " +
-        	"select a.*, rownum rn from (   " +
-        	"select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
-        	"a) " +
-        	"where rn > 3 and rownum <= 5", query.toString());
+                "select a.*, rownum rn from (   " +
+                "select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
+                "a) " +
+                "where rn > 3 and rownum <= 5", query.toString());
     }
 
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());
+    }
+
+    @Test
+    public void Precedence() {
+        // +, - (as unary operators), PRIOR, CONNECT_BY_ROOT  identity, negation, location in hierarchy
+        int p1 = getPrecedence(Ops.NEGATE);
+        // *, / multiplication, division
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV);
+        // +, - (as binary operators), || addition, subtraction, concatenation
+        int p3 = getPrecedence(Ops.ADD, Ops.SUB, Ops.CONCAT);
+        // =, !=, <, >, <=, >=, comparison
+        int p4 = getPrecedence(Ops.EQ, Ops.NE, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
+        // IS [NOT] NULL, LIKE, [NOT] BETWEEN, [NOT] IN, EXISTS, IS OF type comparison
+        int p5 = getPrecedence(Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.EXISTS);
+        // NOT exponentiation, logical negation
+        int p6 = getPrecedence(Ops.NOT);
+        // AND conjunction
+        int p7 = getPrecedence(Ops.AND);
+        // OR disjunction
+        int p8 = getPrecedence(Ops.OR);
+
+        assertTrue(p1 < p2);
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
+        assertTrue(p7 < p8);
     }
 
 }

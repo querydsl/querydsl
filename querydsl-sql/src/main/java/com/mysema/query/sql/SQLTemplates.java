@@ -303,18 +303,16 @@ public class SQLTemplates extends Templates {
         add(SQLOps.QUALIFY, "\nqualify {0}");
 
         // boolean
-        add(Ops.AND, "{0} and {1}", 36);
-        add(Ops.NOT, "not {0}", 35);
-        add(Ops.OR, "{0} or {1}", 38);
-        add(Ops.XNOR, "{0} xnor {1}", 39);
-        add(Ops.XOR, "{0} xor {1}", 39);
+        add(Ops.AND, "{0} and {1}");
+        add(Ops.NOT, "not {0}", Precedence.NOT);
+        add(Ops.OR, "{0} or {1}");
 
         // math
         add(Ops.MathOps.RANDOM, "rand()");
         add(Ops.MathOps.RANDOM2, "rand({0})");
         add(Ops.MathOps.CEIL, "ceiling({0})");
         add(Ops.MathOps.POWER, "power({0},{1})");
-        add(Ops.MOD, "mod({0},{1})", -1);
+        add(Ops.MOD, "mod({0},{1})", Precedence.HIGHEST);
 
         // date time
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
@@ -328,8 +326,8 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.WEEK, "extract(week from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "(extract(year from {0}) * 100 + extract(month from {0}))");
-        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(year from {0}) * 100 + extract(week from {0}))");
+        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})", Precedence.ARITH_LOW);
+        add(Ops.DateTimeOps.YEAR_WEEK, "extract(year from {0}) * 100 + extract(week from {0})", Precedence.ARITH_LOW);
         add(Ops.DateTimeOps.DAY_OF_WEEK, "extract(day_of_week from {0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "extract(day from {0})");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "extract(day_of_year from {0})");
@@ -359,30 +357,30 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.TRUNC_SECOND, "date_trunc('second',{0})");
 
         // string
-        add(Ops.CONCAT, "{0} || {1}", 38);
-        add(Ops.MATCHES, "{0} regexp {1}", 25);
+        add(Ops.CONCAT, "{0} || {1}", Precedence.ARITH_LOW);
+        add(Ops.MATCHES, "{0} regexp {1}", Precedence.COMPARISON);
         add(Ops.CHAR_AT, "cast(substr({0},{1s}+1,1) as char)");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
-        add(Ops.INDEX_OF, "locate({1},{0})-1");
-        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1");
+        add(Ops.INDEX_OF, "locate({1},{0})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1", Precedence.ARITH_LOW);
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
-        add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)", 1);
-        add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})", 1);
+        add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)", Precedence.ARITH_LOW);
+        add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})", Precedence.ARITH_LOW);
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
 
         // like with escape
-        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'");
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
+        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'", Precedence.COMPARISON);
 
         add(SQLOps.CAST, "cast({0} as {1s})");
-        add(SQLOps.UNION, "{0}\nunion\n{1}", 50);
-        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", 50);
+        add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.LIST);
+        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", Precedence.LIST);
         add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
         // analytic functions

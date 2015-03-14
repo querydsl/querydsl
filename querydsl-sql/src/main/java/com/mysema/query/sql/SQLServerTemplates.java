@@ -60,17 +60,26 @@ public class SQLServerTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setArraysSupported(false);
 
+        setPrecedence(Precedence.ARITH_LOW, Ops.NEGATE);
+        setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
+        setPrecedence(Precedence.OR, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.LIKE, Ops.LIKE_ESCAPE);
+
+        // other like cases
+        setPrecedence(Precedence.OR, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
         // String
-        add(Ops.CONCAT, "{0} + {1}", 13);
+        add(Ops.CONCAT, "{0} + {1}");
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
-        add(Ops.INDEX_OF, "charindex({1},{0})-1");
-        add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1");
+        add(Ops.INDEX_OF, "charindex({1},{0})-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1", Precedence.ARITH_LOW);
         // NOTE : needs to be replaced with real regular expression
-        add(Ops.MATCHES, "{0} like {1}");
-        add(Ops.STRING_IS_EMPTY, "len({0}) = 0");
+        add(Ops.MATCHES, "{0} like {1}", Precedence.OR);
+        add(Ops.STRING_IS_EMPTY, "len({0}) = 0", Precedence.COMPARISON);
         add(Ops.STRING_LENGTH, "len({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})", 1);
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})");
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
@@ -82,7 +91,7 @@ public class SQLServerTemplates extends SQLTemplates {
 
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
-        add(Ops.MOD, "{0} % {1}", 10);
+        add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
         add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.LN, "log({0})");

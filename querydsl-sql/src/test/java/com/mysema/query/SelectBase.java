@@ -125,6 +125,55 @@ public class SelectBase extends AbstractBaseTest {
         }
     }
 
+    private void arithmeticTests(NumberExpression<Integer> one, NumberExpression<Integer> two,
+                                 NumberExpression<Integer> three, NumberExpression<Integer> four) {
+        assertEquals(1, query().singleResult(one).intValue());
+        assertEquals(2, query().singleResult(two).intValue());
+        assertEquals(4, query().singleResult(four).intValue());
+
+        assertEquals(3, query().singleResult(one.subtract(two).add(four)).intValue());
+        assertEquals(-5, query().singleResult(one.subtract(two.add(four))).intValue());
+        assertEquals(-1, query().singleResult(one.add(two).subtract(four)).intValue());
+        assertEquals(-1, query().singleResult(one.add(two.subtract(four))).intValue());
+
+        assertEquals(12, query().singleResult(one.add(two).multiply(four)).intValue());
+        assertEquals(2, query().singleResult(four.multiply(one).divide(two)).intValue());
+        assertEquals(2, query().singleResult(four.multiply(one.divide(two))).intValue());
+        assertEquals(6, query().singleResult(four.divide(two).multiply(three)).intValue());
+        assertEquals(1, query().singleResult(four.divide(two.multiply(two))).intValue());
+    }
+
+    @Test
+    public void Arithmetic() {
+        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "(1.0)");
+        NumberExpression<Integer> two = NumberTemplate.create(Integer.class, "(2.0)");
+        NumberExpression<Integer> three = NumberTemplate.create(Integer.class, "(3.0)");
+        NumberExpression<Integer> four = NumberTemplate.create(Integer.class, "(4.0)");
+        arithmeticTests(one, two, three, four);
+    }
+
+    @Test
+    public void Arithmetic2() {
+        NumberExpression<Integer> one = NumberTemplate.ONE;
+        NumberExpression<Integer> two = NumberTemplate.TWO;
+        NumberExpression<Integer> three = NumberTemplate.THREE;
+        NumberExpression<Integer> four = NumberTemplate.FOUR;
+        arithmeticTests(one, two, three, four);
+    }
+
+    @Test
+    public void Arithmetic_Mod() {
+        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "(1)");
+        NumberExpression<Integer> two = NumberTemplate.create(Integer.class, "(2)");
+        NumberExpression<Integer> three = NumberTemplate.create(Integer.class, "(3)");
+        NumberExpression<Integer> four = NumberTemplate.create(Integer.class, "(4)");
+
+        assertEquals(4, query().singleResult(four.mod(three).add(three)).intValue());
+        assertEquals(1, query().singleResult(four.mod(two.add(one))).intValue());
+        assertEquals(0, query().singleResult(four.mod(two.multiply(one))).intValue());
+        assertEquals(2, query().singleResult(four.add(one).mod(three)).intValue());
+    }
+
     @Test
     @IncludeIn(POSTGRES) // TODO generalize array literal projections
     public void Array() {

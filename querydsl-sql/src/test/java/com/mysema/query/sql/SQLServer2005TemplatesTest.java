@@ -14,13 +14,11 @@
 package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Path;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.NumberTemplate;
@@ -49,15 +47,15 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
         NumberExpression<Integer> three = NumberTemplate.THREE;
         Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
         Union union = query.union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+                sq().unique(one.as(col1)),
+                sq().unique(two),
+                sq().unique(three));
         assertEquals(
                 "(select 1 as col1)\n" +
-                "union\n" +
-                "(select 2)\n" +
-                "union\n" +
-                "(select 3)", union.toString());
+                        "union\n" +
+                        "(select 2)\n" +
+                        "union\n" +
+                        "(select 3)", union.toString());
     }
 
     @Test
@@ -72,14 +70,38 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().addProjection(survey1.id);
         assertEquals("select * from (" +
-      		"   select survey1.ID, row_number() over () as rn from SURVEY survey1) a " +
-      		"where rn > ? and rn <= ? order by rn", query.toString());
+                "   select survey1.ID, row_number() over () as rn from SURVEY survey1) a " +
+                "where rn > ? and rn <= ? order by rn", query.toString());
     }
 
     @Test
     public void NextVal() {
         Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());
+    }
+
+    @Test
+    public void Precedence() {
+        // 1  ~ (Bitwise NOT)
+        // 2  (Multiply), / (Division), % (Modulo)
+        int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);
+        // 3 + (Positive), - (Negative), + (Add), (+ Concatenate), - (Subtract), & (Bitwise AND), ^ (Bitwise Exclusive OR), | (Bitwise OR)
+        int p3 = getPrecedence(Ops.NEGATE, Ops.ADD, Ops.SUB, Ops.CONCAT);
+        // 4 =, >, <, >=, <=, <>, !=, !>, !< (Comparison operators)
+        int p4 = getPrecedence(Ops.EQ, Ops.GT, Ops.LT, Ops.GOE, Ops.LOE, Ops.NE);
+        // 5 NOT
+        int p5 = getPrecedence(Ops.NOT);
+        // 6 AND
+        int p6 = getPrecedence(Ops.AND);
+        // 7 ALL, ANY, BETWEEN, IN, LIKE, OR, SOME
+        int p7 = getPrecedence(Ops.BETWEEN, Ops.IN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.OR);
+        // 8 = (Assignment)
+
+        assertTrue(p2 < p3);
+        assertTrue(p3 < p4);
+        assertTrue(p4 < p5);
+        assertTrue(p5 < p6);
+        assertTrue(p6 < p7);
     }
 
 }
