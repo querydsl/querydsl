@@ -14,11 +14,11 @@
 package com.mysema.query;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
-import com.mysema.query.Connections;
-import com.mysema.testutil.ResourceCheck;
+import com.mysema.testutil.ExternalDB;
 
-@ResourceCheck("/sqlserver.run")
+@Category(ExternalDB.class)
 public class ExportMSSQLTest extends ExportBaseTest{
 
     @BeforeClass

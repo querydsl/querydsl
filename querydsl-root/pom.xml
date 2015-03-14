@@ -560,6 +560,7 @@
               <excludes>
                 <exclude>**/*$*</exclude>
                 <exclude>**/DB2*SuiteTest.java</exclude>
+                <exclude>**/ExportMSSQLTest.java</exclude>
                 <exclude>**/ExportOracleTest.java</exclude>
                 <exclude>**/ExportTeradataTest.java</exclude>
                 <exclude>**/Oracle*SuiteTest.java</exclude>

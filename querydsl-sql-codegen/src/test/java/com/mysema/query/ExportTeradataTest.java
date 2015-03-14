@@ -5,7 +5,6 @@ import org.junit.experimental.categories.Category;
 
 import com.mysema.testutil.ExternalDB;
 
-//@Ignore
 @Category(ExternalDB.class)
 public class ExportTeradataTest extends ExportBaseTest {
 
