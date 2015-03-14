@@ -51,6 +51,7 @@ import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
+import com.mysema.testutil.Serialization;
 
 public class SelectBase extends AbstractBaseTest {
 
@@ -1392,16 +1393,8 @@ public class SelectBase extends AbstractBaseTest {
         serialize(rows);
     }
 
-    private void serialize(Object obj) throws IOException, ClassNotFoundException{
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bytesOut);
-        out.writeObject(obj);
-        out.close();
-        bytesOut.close();
-
-        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bytesIn);
-        List<Tuple> rows = (List<Tuple>) in.readObject();
+    private void serialize(List<Tuple> rows) throws IOException, ClassNotFoundException{
+        rows = Serialization.serialize(rows);
         for (Tuple row : rows) {
             row.hashCode();
         }

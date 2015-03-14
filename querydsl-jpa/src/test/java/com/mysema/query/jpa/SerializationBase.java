@@ -13,8 +13,14 @@
  */
 package com.mysema.query.jpa;
 
-import javax.persistence.EntityManager;
+import static org.junit.Assert.*;
+
 import java.io.*;
+
+import javax.persistence.EntityManager;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.mysema.query.JPATest;
 import com.mysema.query.QueryMetadata;
@@ -22,9 +28,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.Predicate;
 import com.mysema.testutil.JPATestRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
+import com.mysema.testutil.Serialization;
 
 @RunWith(JPATestRunner.class)
 public class SerializationBase implements JPATest {
@@ -39,23 +43,11 @@ public class SerializationBase implements JPATest {
         JPAQuery query = query();
         query.from(cat).where(cat.name.eq("Kate")).list(cat);
         
-        // get metadata
         QueryMetadata metadata = query.getMetadata();
         assertFalse(metadata.getJoins().isEmpty());
         assertTrue(metadata.getWhere() != null);
         assertTrue(metadata.getProjection().isEmpty());
-        
-        // serialize metadata
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(metadata);
-        out.close();
-        
-        // deserialize metadata
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        QueryMetadata  metadata2 = (QueryMetadata) in.readObject();
-        in.close();
+        QueryMetadata metadata2 = Serialization.serialize(metadata);
         
         // validate it
         assertEquals(metadata.getJoins(), metadata2.getJoins());
@@ -71,18 +63,7 @@ public class SerializationBase implements JPATest {
     @Test
     public void Any_Serialized() throws Exception {
         Predicate where = cat.kittens.any().name.eq("Ruth234");
-
-        // serialize predicate
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(where);
-        out.close();
-
-        // deserialize predicate
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        Predicate where2 = (Predicate) in.readObject();
-        in.close();
+        Predicate where2 = Serialization.serialize(where);
 
         assertEquals(0, query().from(cat).where(where).count());
         assertEquals(0, query().from(cat).where(where2).count());
