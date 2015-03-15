@@ -1,5 +1,6 @@
 package com.querydsl.sql;
 
+import static com.querydsl.core.testutil.Serialization.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.*;
@@ -31,14 +32,4 @@ public class RelationalPathTest {
         serialize(tuple.newInstance(1, "a"));
     }
 
-    private Object serialize(Object obj) throws IOException, ClassNotFoundException{
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bytesOut);
-        out.writeObject(obj);
-        out.close();
-
-        ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bytesIn);
-        return in.readObject();
-    }
 }

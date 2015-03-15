@@ -16,25 +16,16 @@ package com.querydsl.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 import org.junit.Test;
 
 import com.querydsl.core.QueryFlag.Position;
+import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.types.expr.NumberOperation;
 import com.querydsl.core.types.path.BeanPath;
 import com.querydsl.core.types.path.NumberPath;
@@ -58,18 +49,8 @@ public class QueryMetadaSerializationTest {
         metadata.addOrderBy(expr.asc());
         metadata.setProjection(expr);
         metadata.addWhere(expr.isEmpty());
-        
-        // serialize metadata
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(metadata);
-        out.close();
-        
-        // deserialize metadata
-        ByteArrayInputStream bain = new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(bain);
-        QueryMetadata  metadata2 = (QueryMetadata) in.readObject();
-        in.close();
+
+        QueryMetadata metadata2 = Serialization.serialize(metadata);
         
         assertEquals(metadata.getFlags(), metadata2.getFlags());
         assertEquals(metadata.getGroupBy().get(0), metadata2.getGroupBy().get(0));
