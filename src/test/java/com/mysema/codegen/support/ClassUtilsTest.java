@@ -7,16 +7,12 @@ package com.mysema.codegen.support;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.Test;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Ordering;
 
 public class ClassUtilsTest {
 
@@ -52,4 +48,15 @@ public class ClassUtilsTest {
 //        assertEquals(Collection.class, ClassUtils.normalize(Bag.class));
     }
 
+    @Test
+    public void Normalize_Accessibility() {
+        //com.google.common.base.Absent is not public, cannot be accessed from outside package
+        assertEquals(Optional.class, ClassUtils.normalize(Optional.absent().getClass()));
+        //com.google.common.collect.AllEqualOrdering is not public, cannot be accessed from outside package
+        assertEquals(Ordering.class, ClassUtils.normalize(Ordering.allEqual().getClass()));
+
+        //TODO interface normalization support? How to know which one?
+        //com.google.common.base.Functions.ToStringFunction is not public, cannot be accessed from outside package
+        //assertEquals(Function.class, ClassUtils.normalize(Functions.toStringFunction().getClass()));
+    }
 }
