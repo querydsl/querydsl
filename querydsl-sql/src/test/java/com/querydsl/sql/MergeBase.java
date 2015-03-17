@@ -98,7 +98,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({CUBRID, DB2, DERBY, POSTGRESQL, SQLSERVER})
+    @ExcludeIn({CUBRID, DB2, DERBY, POSTGRESQL, SQLSERVER, TERADATA})
     public void Merge_With_Keys_Null_Id() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
                 .setNull(survey.id)

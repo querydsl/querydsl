@@ -1100,7 +1100,7 @@ public final class Connections {
 
         // qtest
         dropTable(templates, "QTEST");
-        stmt.execute("create table QTEST (ID int " + identity + " NOT NULL,  C1 int NULL)");
+        stmt.execute("create table QTEST (ID int " + identity + " NOT NULL, C1 int NULL)");
 
         // survey
         dropTable(templates, "SURVEY");
@@ -1142,11 +1142,11 @@ public final class Connections {
 
         // numbers
         dropTable(templates, "NUMBER_TEST");
-        stmt.execute("create table NUMBER_TEST(col1 int)");
+        stmt.execute("create table NUMBER_TEST(ID int " + identity + " NOT NULL, col1 int)");
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(COL varchar(128))");
+        stmt.execute("create table XML_TEST(ID int " + identity + " NOT NULL, COL varchar(128))");
 
         teradataInited = true;
     }
