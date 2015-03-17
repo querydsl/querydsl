@@ -73,6 +73,9 @@ public enum Target{
     /**
      *
      */
-    LUCENE;
-
+    LUCENE,
+    /**
+     * NuoDB http://dev.nuodb.com/download-nuodb/request/download
+     */
+    NUODB;
 }

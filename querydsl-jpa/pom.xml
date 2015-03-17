@@ -182,6 +182,12 @@
       <version>${mysql.version}</version>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>${mysql.version}</version>
+          <scope>test</scope>
+      </dependency>
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>

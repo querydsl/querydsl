@@ -25,7 +25,7 @@ import com.querydsl.core.testutil.ExcludeIn;
 public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER, NUODB})
     public void Keys() {
         QEmployee employee2 = new QEmployee("employee2");
         ForeignKey<Employee> nameKey1 = new ForeignKey<Employee>(employee,
@@ -41,7 +41,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER, NUODB})
     public void List_In_Query() {
         QEmployee employee2 = new QEmployee("employee2");
         query().from(employee)
@@ -70,14 +70,14 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLITE)
+    @ExcludeIn({SQLITE, NUODB})
     public void SubQuery_All() {
         query().from(employee).where(employee.id.gtAll(
                 sq().from(employee2).list(employee2.id))).count();
     }
 
     @Test
-    @ExcludeIn(SQLITE)
+    @ExcludeIn({SQLITE, NUODB})
     public void SubQuery_Any() {
         query().from(employee).where(employee.id.gtAny(
                 sq().from(employee2).list(employee2.id))).count();
@@ -110,7 +110,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLITE)
+    @ExcludeIn({SQLITE, NUODB})
     public void SubQuery_RightJoin() {
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");

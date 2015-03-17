@@ -1,12 +1,9 @@
 package com.querydsl.sql;
 
+import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.employee;
 import static com.querydsl.sql.Constants.employee2;
 import static com.querydsl.sql.Constants.survey;
-import static com.querydsl.core.Target.DB2;
-import static com.querydsl.core.Target.ORACLE;
-import static com.querydsl.core.Target.SQLSERVER;
-import static com.querydsl.core.Target.TERADATA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +24,7 @@ import com.querydsl.core.testutil.IncludeIn;
 public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
-    @ExcludeIn(SQLSERVER) // FIXME
+    @ExcludeIn({SQLSERVER, NUODB}) // FIXME
     public void WindowFunctions() {
         NumberPath<Integer> path = survey.id;
         NumberPath<?> path2 = survey.id;
@@ -65,6 +62,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(NUODB)
     public void WindowFunctions_Manual_Paging() {
         Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
         Expression<Object[]> all = Wildcard.all;
@@ -121,7 +119,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DB2, SQLSERVER})
+    @ExcludeIn({DB2, SQLSERVER, NUODB})
     public void WindowFunctions_Regr() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
@@ -156,6 +154,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(NUODB)
     public void WindowFunctions_Over() {
         //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
         //FROM TestDB.Shipment
@@ -166,6 +165,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(NUODB)
     public void WindowFunctions_PartitionBy() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
@@ -179,7 +179,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLSERVER)
+    @ExcludeIn({SQLSERVER, NUODB})
     public void WindowFunctions_OrderBy() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
@@ -193,7 +193,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLSERVER)
+    @ExcludeIn({SQLSERVER, NUODB})
     public void WindowFunctions_UnboundedRows() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt

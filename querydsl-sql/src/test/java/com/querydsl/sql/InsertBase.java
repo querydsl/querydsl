@@ -180,7 +180,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, HSQLDB, DB2, DERBY, ORACLE})
+    @ExcludeIn({FIREBIRD, HSQLDB, DB2, DERBY, ORACLE, NUODB})
     public void Insert_Without_Values() {
         assertEquals(1, insert(survey).execute());
     }

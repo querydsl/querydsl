@@ -16,6 +16,7 @@ public class SQLTemplatesRegistry {
     private final SQLTemplates h2 = new H2Templates();
     private final SQLTemplates hsqldb = new HSQLDBTemplates();
     private final SQLTemplates mysql = new MySQLTemplates();
+    private final SQLTemplates nuodb = new NuoDBTemplates();
     private final SQLTemplates oracle = new OracleTemplates();
     private final SQLTemplates postgres = new PostgresTemplates();
     private final SQLTemplates sqlite = new SQLiteTemplates();
@@ -34,6 +35,7 @@ public class SQLTemplatesRegistry {
         if (name.equals("h2")) return h2;
         if (name.equals("hsql")) return hsqldb;
         if (name.equals("mysql")) return mysql;
+        if (name.equals("nuodb")) return nuodb;
         if (name.equals("oracle")) return oracle;
         if (name.equals("postgresql")) return postgres;
         if (name.equals("sqlite")) return sqlite;

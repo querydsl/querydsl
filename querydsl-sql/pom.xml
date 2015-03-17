@@ -85,6 +85,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.nuodb.jdbc</groupId>
+      <artifactId>nuodb-jdbc</artifactId>
+      <version>${nuodb.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
@@ -186,6 +192,11 @@
       <version>1.2</version>
       <optional>true</optional>
     </dependency>
+      <dependency>
+          <groupId>com.mysema.commons</groupId>
+          <artifactId>mysema-commons-lang</artifactId>
+          <version>0.2.4</version>
+      </dependency>
   </dependencies>
   
   <build>

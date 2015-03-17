@@ -41,13 +41,13 @@ public abstract class AbstractBaseTest {
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
 
-    protected final class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
+    protected class TestQuery extends AbstractSQLQuery<TestQuery> implements SQLCommonQuery<TestQuery> {
 
-        private TestQuery(Connection conn, Configuration configuration) {
+        public TestQuery(Connection conn, Configuration configuration) {
             super(conn, configuration);
         }
 
-        private TestQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+        public TestQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
             super(conn, configuration, metadata);
         }
 
