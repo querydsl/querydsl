@@ -9,7 +9,8 @@ import org.junit.experimental.categories.Category;
 import com.google.common.collect.Lists;
 import com.querydsl.core.testutil.ReportingOnly;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.path.DateTimePath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.Expressions;
 
 @Category(ReportingOnly.class)
 public class DateArithmeticTest {
@@ -37,7 +38,7 @@ public class DateArithmeticTest {
         list.add(new TeradataTemplates());
 
         List<Expression<?>> exprs = Lists.newArrayList();
-        DateTimePath<Date> path = new DateTimePath<Date>(Date.class, "date");
+        DateTimePath<Date> path = Expressions.dateTimePath(Date.class, "date");
         exprs.add(SQLExpressions.addYears(path, 2));
         exprs.add(SQLExpressions.addMonths(path, 2));
         exprs.add(SQLExpressions.addDays(path, 2));

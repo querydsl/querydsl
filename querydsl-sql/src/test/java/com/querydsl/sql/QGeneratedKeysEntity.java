@@ -14,8 +14,8 @@
 package com.querydsl.sql;
 
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 //@Table("GENERATED_KEYS")
 public class QGeneratedKeysEntity extends RelationalPathBase<QGeneratedKeysEntity>{

@@ -14,7 +14,7 @@
 package com.querydsl.apt.domain;
 
 import com.querydsl.core.annotations.QueryDelegate;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public final class UserUtils {
 

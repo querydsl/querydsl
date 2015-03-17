@@ -17,20 +17,43 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.StringPath;
+import com.google.common.collect.ImmutableList;
+import com.querydsl.core.types.*;
 
 public class ExpressionsTest {
 
     private static final StringPath str = new StringPath("str");
     
     private static final BooleanExpression a = new BooleanPath("a"), b = new BooleanPath("b");
-    
+
+    @Test
+    public void  Signature() throws NoSuchMethodException {
+        List<String> types = ImmutableList.of("boolean", "comparable", "date", "dsl", "dateTime",
+                "enum", "number", "simple", "string", "time");
+        for (String type : types) {
+            if (type.equals("simple")) continue; // FIXME
+            if (type.equals("boolean") || type.equals("string")) {
+                Expressions.class.getMethod(type + "Path", String.class);
+                Expressions.class.getMethod(type + "Path", Path.class, String.class);
+                Expressions.class.getMethod(type + "Path", PathMetadata.class);
+                Expressions.class.getMethod(type + "Operation", Operator.class, Expression[].class);
+                Expressions.class.getMethod(type + "Template", String.class, Object[].class);
+                Expressions.class.getMethod(type + "Template", Template.class, Object[].class);
+            } else {
+                Expressions.class.getMethod(type + "Path", Class.class, String.class);
+                Expressions.class.getMethod(type + "Path", Class.class, Path.class, String.class);
+                Expressions.class.getMethod(type + "Path", Class.class, PathMetadata.class);
+                Expressions.class.getMethod(type + "Operation", Class.class, Operator.class, Expression[].class);
+                Expressions.class.getMethod(type + "Template", Class.class, String.class, Object[].class);
+                Expressions.class.getMethod(type + "Template", Class.class, Template.class, Object[].class);
+            }
+        }
+    }
+
     @Test
     public void As() {
         assertEquals("null as str", Expressions.as(null, str).toString());

@@ -16,7 +16,7 @@ package com.querydsl.sql;
 import org.junit.Test;
 
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 @SuppressWarnings("serial")
 public class KeyTest {

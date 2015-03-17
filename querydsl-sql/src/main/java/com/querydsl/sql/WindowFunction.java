@@ -23,7 +23,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.template.SimpleTemplate;
 
 /**
  * @author tiwe
@@ -100,10 +99,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                 size += rowsOrRangeArgs.size();
             }
             builder.append(")");
-            value = new SimpleTemplate<A>(
-                    target.getType(),
-                    TemplateFactory.DEFAULT.create(builder.toString()),
-                    args.build());
+            value = Expressions.template((Class)target.getType(), builder.toString(), args.build());
         }
         return value;
     }

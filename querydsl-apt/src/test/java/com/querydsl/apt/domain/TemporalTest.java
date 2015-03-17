@@ -10,8 +10,8 @@ import javax.persistence.TemporalType;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.TimePath;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.TimePath;
 
 public class TemporalTest {
         

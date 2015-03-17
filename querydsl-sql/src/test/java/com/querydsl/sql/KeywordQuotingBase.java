@@ -22,8 +22,8 @@ import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 import org.junit.*;
 

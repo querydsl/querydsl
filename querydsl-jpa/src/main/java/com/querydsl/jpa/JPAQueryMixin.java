@@ -30,7 +30,7 @@ import com.querydsl.core.support.PathsExtractor;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.support.ReplaceVisitor;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.CollectionPathBase;
+import com.querydsl.core.types.dsl.CollectionPathBase;
 
 /**
  * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction

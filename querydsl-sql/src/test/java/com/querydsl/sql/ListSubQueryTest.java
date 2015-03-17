@@ -8,7 +8,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.query.ListSubQuery;
+import com.querydsl.core.types.dsl.ListSubQuery;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 

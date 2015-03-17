@@ -29,7 +29,6 @@ import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Templates;
 import com.querydsl.core.types.ToStringVisitor;
-import com.querydsl.core.types.path.StringPath;
 
 public class OperationTest {
     

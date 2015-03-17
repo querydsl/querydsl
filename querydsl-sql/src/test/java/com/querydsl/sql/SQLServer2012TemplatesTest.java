@@ -21,9 +21,8 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.template.NumberTemplate;
 
 
 public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
@@ -31,7 +30,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     @Override
     @Test
     public void NoFrom() {
-        query.getMetadata().setProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(Expressions.ONE);
         assertEquals("select 1", query.toString());
     }
 
@@ -44,10 +43,10 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     @Test
     @Override
     public void Union() {
-        NumberExpression<Integer> one = NumberTemplate.ONE;
-        NumberExpression<Integer> two = NumberTemplate.TWO;
-        NumberExpression<Integer> three = NumberTemplate.THREE;
-        Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        NumberExpression<Integer> one = Expressions.ONE;
+        NumberExpression<Integer> two = Expressions.TWO;
+        NumberExpression<Integer> three = Expressions.THREE;
+        Path<Integer> col1 = Expressions.path(Integer.class,"col1");
         Union union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),

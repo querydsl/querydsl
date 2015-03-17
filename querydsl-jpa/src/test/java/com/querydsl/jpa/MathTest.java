@@ -16,7 +16,7 @@ package com.querydsl.jpa;
 import org.junit.Test;
 
 import com.querydsl.jpa.domain.QCat;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class MathTest extends AbstractQueryTest{
 

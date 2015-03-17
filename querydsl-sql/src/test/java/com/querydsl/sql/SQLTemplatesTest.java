@@ -13,22 +13,22 @@
  */
 package com.querydsl.sql;
 
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.template.SimpleTemplate;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.junit.Test;
+
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class SQLTemplatesTest {
 
@@ -46,7 +46,7 @@ public class SQLTemplatesTest {
         assertTrue(template.getElements().get(1) instanceof Template.AsString);
 
         SQLSerializer serializer = new SQLSerializer(new Configuration(new DerbyTemplates()));
-        serializer.handle(SimpleTemplate.create(Object.class, template, ConstantImpl.create(5)));
+        serializer.handle(Expressions.template(Object.class, template, ConstantImpl.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
 

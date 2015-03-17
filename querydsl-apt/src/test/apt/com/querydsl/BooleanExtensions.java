@@ -2,7 +2,7 @@ package com.querydsl;
 
 import com.querydsl.core.annotations.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.BooleanPath;
 
 public class BooleanExtensions {
     

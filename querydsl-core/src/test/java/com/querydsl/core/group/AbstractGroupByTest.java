@@ -15,11 +15,7 @@ import com.querydsl.core.support.AbstractProjectable;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 public abstract class AbstractGroupByTest {
 
@@ -122,21 +118,21 @@ public abstract class AbstractGroupByTest {
 //            row("John", 1, "post 1", comment(3))
 //    );
 
-    protected static final SimplePath<Post> post = new SimplePath<Post>(Post.class, "post");
+    protected static final SimplePath<Post> post = Expressions.path(Post.class, "post");
 
-    protected static final SimplePath<User> user = new SimplePath<User>(User.class, "user");
+    protected static final SimplePath<User> user = Expressions.path(User.class, "user");
 
-    protected static final SimplePath<Comment> comment = new SimplePath<Comment>(Comment.class, "comment");
+    protected static final SimplePath<Comment> comment = Expressions.path(Comment.class, "comment");
 
-    protected static final NumberExpression<Integer> postId = new NumberPath<Integer>(Integer.class, post, "id");
+    protected static final NumberExpression<Integer> postId = Expressions.numberPath(Integer.class, post, "id");
 
-    protected static final StringExpression userName = new StringPath(user, "name");
+    protected static final StringExpression userName = Expressions.stringPath(user, "name");
 
-    protected static final StringExpression postName = new StringPath(post, "name");
+    protected static final StringExpression postName = Expressions.stringPath(post, "name");
 
-    protected static final NumberPath<Integer> commentId = new NumberPath<Integer>(Integer.class, comment, "id");
+    protected static final NumberPath<Integer> commentId = Expressions.numberPath(Integer.class, comment, "id");
 
-    protected static final StringExpression commentText = new StringPath(comment, "text");
+    protected static final StringExpression commentText = Expressions.stringPath(comment, "text");
 
     protected static final ConstructorExpression<Comment> qComment = Projections.constructor(Comment.class, commentId, commentText);
 

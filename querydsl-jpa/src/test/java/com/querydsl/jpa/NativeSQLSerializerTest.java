@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
-import com.querydsl.core.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.domain.sql.SAnimal;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.MySQLTemplates;

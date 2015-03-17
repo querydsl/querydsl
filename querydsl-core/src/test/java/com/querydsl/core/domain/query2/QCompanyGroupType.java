@@ -8,8 +8,8 @@ import com.querydsl.core.domain.CompanyGroup;
 import com.querydsl.core.domain.QCompany;
 import com.querydsl.core.domain.QCompanyGroupPK;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.PathInits;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**

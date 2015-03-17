@@ -19,7 +19,7 @@ import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.query.NumberSubQuery;
+import com.querydsl.core.types.dsl.NumberSubQuery;
 
 /**
  * JDOSubQuery is subquery implementation for JDOQL

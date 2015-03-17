@@ -21,7 +21,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 public class ArrayExtTest {
 

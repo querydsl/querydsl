@@ -23,9 +23,9 @@ import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.query.NumberSubQuery;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.ListSubQuery;
+import com.querydsl.core.types.dsl.NumberSubQuery;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
@@ -124,7 +124,7 @@ public class SQLSubQueryTest {
 
     @Test
     public void Validate() {
-        NumberPath<Long> operatorTotalPermits = new NumberPath<Long>(Long.class, "operator_total_permits");
+        NumberPath<Long> operatorTotalPermits = Expressions.numberPath(Long.class, "operator_total_permits");
         QSurvey survey = new QSurvey("survey");
 
         // select survey.name, count(*) as operator_total_permits

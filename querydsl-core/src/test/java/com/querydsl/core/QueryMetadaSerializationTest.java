@@ -26,11 +26,7 @@ import org.junit.Test;
 
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.testutil.Serialization;
-import com.querydsl.core.types.dsl.NumberOperation;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.util.ReflectionUtils;
 
 public class QueryMetadaSerializationTest {
@@ -39,7 +35,7 @@ public class QueryMetadaSerializationTest {
 
     @Test
     public void Serialization() throws IOException, ClassNotFoundException{
-        StringPath expr = new StringPath("str");
+        StringPath expr = Expressions.stringPath("str");
         metadata.addJoin(JoinType.DEFAULT, expr);
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
         metadata.addGroupBy(expr);

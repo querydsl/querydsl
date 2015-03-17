@@ -25,8 +25,8 @@ import com.querydsl.sql.SQLServerTemplates;
 import com.querydsl.sql.SQLSubQuery;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class RelationalFunctionCallTest {
 

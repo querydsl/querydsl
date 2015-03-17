@@ -23,9 +23,9 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.template.SimpleTemplate;
 
 
 
@@ -40,10 +40,10 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @SuppressWarnings("unchecked")
     @Test
     public void Union() {
-        SimpleExpression<Integer> one = SimpleTemplate.create(Integer.class,"1");
-        SimpleExpression<Integer> two = SimpleTemplate.create(Integer.class,"2");
-        SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");
-        NumberPath<Integer> col1 = new NumberPath<Integer>(Integer.class,"col1");
+        SimpleExpression<Integer> one = Expressions.template(Integer.class, "1");
+        SimpleExpression<Integer> two = Expressions.template(Integer.class,"2");
+        SimpleExpression<Integer> three = Expressions.template(Integer.class,"3");
+        NumberPath<Integer> col1 = Expressions.numberPath(Integer.class,"col1");
         Union union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),

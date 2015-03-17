@@ -17,8 +17,8 @@ import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPathBase;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 //@Schema("PUBLIC")
 //@Table("SURVEY")

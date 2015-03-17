@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.EnumPath;
+import com.querydsl.core.types.dsl.EnumPath;
 
 public class LiteralEntityTest {
 

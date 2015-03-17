@@ -18,7 +18,7 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.TemplateFactory;
-import com.querydsl.core.types.template.StringTemplate;
+import com.querydsl.core.types.dsl.StringTemplate;
 
 public class CustomExpressionsTest extends AbstractQueryTest{
 

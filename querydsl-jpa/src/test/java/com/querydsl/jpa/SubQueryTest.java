@@ -20,7 +20,7 @@ import org.junit.Test;
 import com.querydsl.core.domain.QCat;
 import com.querydsl.jpa.domain.QEmployee;
 import com.querydsl.jpa.domain.QUser;
-import com.querydsl.core.types.query.NumberSubQuery;
+import com.querydsl.core.types.dsl.NumberSubQuery;
 
 public class SubQueryTest extends AbstractQueryTest{
 

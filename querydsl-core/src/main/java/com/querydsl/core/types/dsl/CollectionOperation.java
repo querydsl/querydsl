@@ -35,11 +35,11 @@ public class CollectionOperation<E> extends CollectionExpressionBase<Collection<
 
     private final OperationImpl<Collection<E>> opMixin;
 
-    public CollectionOperation(Class<? super E> type, Operator op, Expression<?>... args) {
+    protected CollectionOperation(Class<? super E> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    public CollectionOperation(Class<? super E> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected CollectionOperation(Class<? super E> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl(Collection.class, op, args));
         this.opMixin = (OperationImpl)super.mixin;
         this.elementType = (Class<E>)type;

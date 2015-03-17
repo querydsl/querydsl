@@ -77,7 +77,7 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
     <para><code>Expressions</code> 기반의 표현식 생성 외에 Querydsl은 동적 경로 생성을 위한 더 표현력이 좋은 API를 제공한다.</para>
 
     <para>
-      동적 경로 생성을 위해 <code>com.querydsl.core.types.path.PathBuilder</code> 클래스를 사용할 수 있다.
+      동적 경로 생성을 위해 <code>com.querydsl.core.types.dsl.PathBuilder</code> 클래스를 사용할 수 있다.
       이 클래스는 <code>EntityPathBase</code> 클래스를 확장하고 있고 경로 생성을 위해 클래스 생성과 별칭 사용 대신에 사용가능하다.
     </para>
 
@@ -164,7 +164,7 @@ Expression<String> cases = customer.annualSpending
 
     <para>
       표현식 타입에서 지네릭 시그너처를 피하기 위해, 타입 계층을 단순화시킨다. 그 결과로 모든 생성된 쿼리 타입은
-      <code>com.querydsl.core.types.path.EntityPathBase</code>나 <code>com.querydsl.core.types.path.BeanPath</code>를
+      <code>com.querydsl.core.types.dsl.EntityPathBase</code>나 <code>com.querydsl.core.types.dsl.BeanPath</code>를
       직접 상속받으며, 논리적인 상위 타입으로 타입 변환할 수 없다.
     </para>
 

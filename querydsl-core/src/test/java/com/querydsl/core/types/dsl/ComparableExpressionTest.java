@@ -17,8 +17,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.StringPath;
-
 public class ComparableExpressionTest {
     
     private StringPath strPath = new StringPath("str");

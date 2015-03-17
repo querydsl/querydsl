@@ -22,15 +22,15 @@ import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.TimeExpression;
-import com.querydsl.core.types.query.BooleanSubQuery;
-import com.querydsl.core.types.query.ComparableSubQuery;
-import com.querydsl.core.types.query.DateSubQuery;
-import com.querydsl.core.types.query.DateTimeSubQuery;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.query.NumberSubQuery;
-import com.querydsl.core.types.query.SimpleSubQuery;
-import com.querydsl.core.types.query.StringSubQuery;
-import com.querydsl.core.types.query.TimeSubQuery;
+import com.querydsl.core.types.dsl.BooleanSubQuery;
+import com.querydsl.core.types.dsl.ComparableSubQuery;
+import com.querydsl.core.types.dsl.DateSubQuery;
+import com.querydsl.core.types.dsl.DateTimeSubQuery;
+import com.querydsl.core.types.dsl.ListSubQuery;
+import com.querydsl.core.types.dsl.NumberSubQuery;
+import com.querydsl.core.types.dsl.SimpleSubQuery;
+import com.querydsl.core.types.dsl.StringSubQuery;
+import com.querydsl.core.types.dsl.TimeSubQuery;
 
 /**
  * Detachable defines methods for the construction of SubQuery instances

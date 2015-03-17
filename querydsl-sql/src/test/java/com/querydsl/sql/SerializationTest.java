@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.dml.SQLUpdateClause;

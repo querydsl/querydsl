@@ -19,14 +19,15 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class NestedExpressionTest {
 
-    StringPath str1 = new StringPath("str1");
-    StringPath str2 = new StringPath("str2");
-    StringPath str3 = new StringPath("str3");
-    StringPath str4 = new StringPath("str3");
+    StringPath str1 = Expressions.stringPath("str1");
+    StringPath str2 = Expressions.stringPath("str2");
+    StringPath str3 = Expressions.stringPath("str3");
+    StringPath str4 = Expressions.stringPath("str3");
 
     Concatenation concat1 = new Concatenation(new Concatenation(str1, str2), str3);
     Concatenation concat2 = new Concatenation(new Concatenation(str1, new Concatenation(str2, str3)), str4);

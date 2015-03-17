@@ -15,9 +15,11 @@ package com.querydsl.core.domain.query;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import java.sql.Date;
+
 import com.querydsl.core.domain.Cat;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 
 /**
@@ -45,7 +47,7 @@ public class QCat extends EntityPathBase<Cat> {
     public final NumberPath<Integer> breed = createNumber("breed", Integer.class);
 
     //inherited
-    public final DatePath<java.sql.Date> dateField = _super.dateField;
+    public final DatePath<Date> dateField = _super.dateField;
 
     //inherited
     public final NumberPath<Integer> id = _super.id;

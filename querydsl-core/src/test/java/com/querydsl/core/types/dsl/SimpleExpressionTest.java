@@ -28,21 +28,6 @@ import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.path.ArrayPath;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.CollectionPath;
-import com.querydsl.core.types.path.ComparablePath;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.DateTimePath;
-import com.querydsl.core.types.path.EnumPath;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.SetPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.types.path.TimePath;
 
 public class SimpleExpressionTest {
 

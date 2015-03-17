@@ -28,7 +28,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.CollectionPathBase;
+import com.querydsl.core.types.dsl.CollectionPathBase;
 
 /**
  * AbstractMongodbQuery provides a base class for general Querydsl query implementation with a

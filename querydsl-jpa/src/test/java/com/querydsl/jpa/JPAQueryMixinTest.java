@@ -1,18 +1,20 @@
 package com.querydsl.jpa;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
+
+import org.junit.Test;
 
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.domain4.QBookMark;
 import com.querydsl.jpa.domain4.QBookVersion;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.path.StringPath;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class JPAQueryMixinTest {
 
@@ -189,7 +191,7 @@ public class JPAQueryMixinTest {
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, bookVersion)),
                 md.getJoins());
-        assertEquals(Arrays.asList(new StringPath(bookVersion.definition.bookMarks, "comment").asc()),
+        assertEquals(Arrays.asList(Expressions.stringPath(bookVersion.definition.bookMarks, "comment").asc()),
                 md.getOrderBy());
 
     }

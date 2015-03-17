@@ -17,17 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.MutableExpressionBase;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.TemplateFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.SimpleOperation;
-import com.querydsl.core.types.template.SimpleTemplate;
 
 /**
  * @author tiwe
@@ -85,10 +79,7 @@ public class WithinGroup<T> extends SimpleOperation<T> {
                     }
                 }
                 builder.append(")");
-                value = new SimpleTemplate<T>(
-                        WithinGroup.this.getType(),
-                        TemplateFactory.DEFAULT.create(builder.toString()),
-                        args.build());
+                value = Expressions.template((Class)WithinGroup.this.getType(), builder.toString(), args.build());
             }
             return value;
         }

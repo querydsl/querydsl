@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
 
 
 public class SimpleProjectableAdapterTest {
@@ -28,7 +28,7 @@ public class SimpleProjectableAdapterTest {
     public void test() {
         DummyQuery query = new DummyQuery();
         DummyProjectable projectable = new DummyProjectable();
-        SimpleProjectableAdapter simpleQuery = new SimpleProjectableAdapter(query, projectable, new StringPath("a"));
+        SimpleProjectableAdapter simpleQuery = new SimpleProjectableAdapter(query, projectable, Expressions.stringPath("a"));
         
         simpleQuery.count();
         simpleQuery.distinct().count();

@@ -20,7 +20,7 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.template.BooleanTemplate;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * CollQueryMixin extends {@link QueryMixin} to provide normalization logic specific to this module
@@ -31,7 +31,7 @@ import com.querydsl.core.types.template.BooleanTemplate;
  */
 public class CollQueryMixin<T> extends QueryMixin<T> {
 
-    private static final Predicate ANY = BooleanTemplate.create("any");
+    private static final Predicate ANY = Expressions.booleanTemplate("any");
 
     public CollQueryMixin() {}
 

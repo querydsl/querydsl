@@ -22,16 +22,17 @@ import org.junit.Test;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Param;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class DefaultQueryMetadataTest {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
-    private final StringPath str = new StringPath("str");
+    private final StringPath str = Expressions.stringPath("str");
     
-    private final StringPath str2 = new StringPath("str2");
+    private final StringPath str2 = Expressions.stringPath("str2");
 
     @Test
     public void AddWhere_With_Null() {

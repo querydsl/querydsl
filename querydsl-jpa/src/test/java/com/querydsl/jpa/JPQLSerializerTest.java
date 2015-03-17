@@ -23,14 +23,13 @@ import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.domain.QCat;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.domain.JobFunction;
 import com.querydsl.jpa.domain.Location;
 import com.querydsl.jpa.domain.QDomesticCat;
@@ -118,7 +117,7 @@ public class JPQLSerializerTest {
     @Test
     public void NormalizeNumericArgs() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
-        NumberPath<Double> doublePath = new NumberPath<Double>(Double.class, "doublePath");
+        NumberPath<Double> doublePath = Expressions.numberPath(Double.class, "doublePath");
         serializer.handle(doublePath.add(1));
         serializer.handle(doublePath.between((float)1.0, 1l));
         serializer.handle(doublePath.lt((byte)1));
@@ -160,21 +159,21 @@ public class JPQLSerializerTest {
     @Test
     public void In() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
-        serializer.handle(new NumberPath<Integer>(Integer.class, "id").in(Arrays.asList(1, 2)));
+        serializer.handle(Expressions.numberPath(Integer.class, "id").in(Arrays.asList(1, 2)));
         assertEquals("id in (?1)", serializer.toString());
     }
 
     @Test
     public void Not_In() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
-        serializer.handle(new NumberPath<Integer>(Integer.class, "id").notIn(Arrays.asList(1, 2)));
+        serializer.handle(Expressions.numberPath(Integer.class, "id").notIn(Arrays.asList(1, 2)));
         assertEquals("id not in (?1)", serializer.toString());
     }
 
     @Test
     public void Like() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
-        serializer.handle(new StringPath("str").contains("abc!"));
+        serializer.handle(Expressions.stringPath("str").contains("abc!"));
         assertEquals("str like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }
@@ -182,7 +181,7 @@ public class JPQLSerializerTest {
     @Test
     public void StringContainsIc() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
-        serializer.handle(new StringPath("str").containsIgnoreCase("ABc!"));
+        serializer.handle(Expressions.stringPath("str").containsIgnoreCase("ABc!"));
         assertEquals("lower(str) like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }

@@ -28,24 +28,7 @@ import com.google.common.base.CaseFormat;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.path.ArrayPath;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.CollectionPath;
-import com.querydsl.core.types.path.ComparablePath;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.DateTimePath;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.EnumPath;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.SetPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.types.path.TimePath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * Alias provides alias factory methods
@@ -57,7 +40,7 @@ public final class Alias {
 
     private static final AliasFactory aliasFactory = new AliasFactory(new DefaultPathFactory(), new DefaultTypeSystem());
 
-    private static final SimplePath<Object> it = new SimplePath<Object>(Object.class, PathMetadataFactory.forVariable("it"));
+    private static final SimplePath<Object> it = Expressions.path(Object.class, "it");
 
     // exclude $-methods from Checkstyle checks
     //CHECKSTYLE:OFF
@@ -250,12 +233,12 @@ public final class Alias {
 
     @SuppressWarnings("unchecked")
     public static <D extends Comparable<?>> ComparablePath<D> var(D arg) {
-        return new ComparablePath<D>((Class)arg.getClass(), "var"+arg);
+        return Expressions.comparablePath((Class<D>)arg.getClass(), "var"+arg);
     }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<D>> NumberPath<D> var(D arg) {
-        return new NumberPath<D>((Class)arg.getClass(), "var" + arg.getClass().getSimpleName()+arg);
+        return Expressions.numberPath((Class<D>)arg.getClass(), "var" + arg.getClass().getSimpleName() + arg);
     }
 
     @SuppressWarnings("unchecked")
@@ -265,7 +248,7 @@ public final class Alias {
     }
 
     public static StringPath var(String arg) {
-        return new StringPath(arg.replace(' ', '_'));
+        return Expressions.stringPath(arg.replace(' ', '_'));
     }
 
     private Alias() {}

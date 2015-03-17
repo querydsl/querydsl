@@ -41,8 +41,7 @@ import com.querydsl.jpa.hibernate.HibernateSubQuery;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.path.*;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.testutil.ExcludeIn;
 
 import antlr.RecognitionException;
@@ -397,7 +396,7 @@ public abstract class AbstractJPATest {
     public void Constant() {
         //select cat.id, ?1 as const from Cat cat
         List<Cat> cats = query().from(cat).list(cat);
-        Path<String> path = new StringPath("const");
+        Path<String> path = Expressions.stringPath("const");
         List<Tuple> tuples = query().from(cat).list(cat.id, Expressions.constantAs("abc", path));
         for (int i = 0; i < cats.size(); i++) {
             assertEquals(Integer.valueOf(cats.get(i).getId()), tuples.get(i).get(cat.id));
@@ -410,7 +409,7 @@ public abstract class AbstractJPATest {
     @NoBatooJPA
     public void Constant_Hibernate() {
         //select cat.id, ?1 as const from Cat cat
-        query().from(cat).list(cat.id, Expressions.constantAs("abc", new StringPath("const")));
+        query().from(cat).list(cat.id, Expressions.constantAs("abc", Expressions.stringPath("const")));
     }
 
     @Test
@@ -719,9 +718,9 @@ public abstract class AbstractJPATest {
     @Test
     @Ignore // FIXME
     public void GroupBy_Distinct_Count() {
-        List<Integer> ids = query().from(cat).groupBy(cat.id).distinct().list(NumberTemplate.ONE);
+        List<Integer> ids = query().from(cat).groupBy(cat.id).distinct().list(Expressions.ONE);
         SearchResults<Integer> results = query().from(cat).groupBy(cat.id)
-                .limit(1).distinct().listResults(NumberTemplate.ONE);
+                .limit(1).distinct().listResults(Expressions.ONE);
 
         assertEquals(1, ids.size());
         assertEquals(1, results.getResults().size());
@@ -875,7 +874,7 @@ public abstract class AbstractJPATest {
     public void List_ElementCollection_Of_Enum() {
         QEmployee employee = QEmployee.employee;
         //QJobFunction jobFunction = QJobFunction.jobFunction;
-        EnumPath<JobFunction> jobFunction = new EnumPath<JobFunction>(JobFunction.class, "jf");
+        EnumPath<JobFunction> jobFunction = Expressions.enumPath(JobFunction.class, "jf");
 
         List<JobFunction> jobFunctions = query().from(employee)
                 .innerJoin(employee.jobFunctions, jobFunction).list(jobFunction);
@@ -886,7 +885,7 @@ public abstract class AbstractJPATest {
     @NoBatooJPA
     public void List_ElementCollection_Of_String() {
         QFoo foo = QFoo.foo;
-        StringPath str = new StringPath("str");
+        StringPath str = Expressions.stringPath("str");
 
         List<String> strings = query().from(foo).innerJoin(foo.names, str).list(str);
         assertEquals(2, strings.size());
@@ -948,7 +947,7 @@ public abstract class AbstractJPATest {
     public void Map_Join() {
         //select m.text from Show s join s.acts a where key(a) = 'B'
         QShow show = QShow.show;
-        StringPath act = new StringPath("act");
+        StringPath act = Expressions.stringPath("act");
         query().from(show).join(show.acts, act);
     }
 
@@ -1061,7 +1060,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Order() {
-        NumberPath<Double> weight = new NumberPath<Double>(Double.class, "weight");
+        NumberPath<Double> weight = Expressions.numberPath(Double.class, "weight");
         query().from(cat).orderBy(weight.asc()).list(cat.bodyWeight.as(weight));
     }
 
@@ -1539,7 +1538,7 @@ public abstract class AbstractJPATest {
     @ExcludeIn(DERBY)
     public void Transform_GroupBy_Alias() {
         QCat kitten = new QCat("kitten");
-        SimplePath<Cat> k = new SimplePath<Cat>(Cat.class, "k");
+        SimplePath<Cat> k = Expressions.path(Cat.class, "k");
         Map<Integer, Group> result = query().from(cat).innerJoin(cat.kittens, kitten)
             .transform(GroupBy.groupBy(cat.id)
                     .as(cat.name, cat.id,

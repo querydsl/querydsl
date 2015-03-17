@@ -38,7 +38,7 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.TemporalExpression;
 import com.querydsl.core.types.dsl.TimeExpression;
-import com.querydsl.core.types.path.ListPath;
+import com.querydsl.core.types.dsl.ListPath;
 
 /**
  * @author tiwe

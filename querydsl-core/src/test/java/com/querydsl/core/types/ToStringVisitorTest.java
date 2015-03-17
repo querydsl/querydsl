@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import com.querydsl.core.domain.QCat;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.path.BooleanPath;
+import com.querydsl.core.types.dsl.BooleanPath;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

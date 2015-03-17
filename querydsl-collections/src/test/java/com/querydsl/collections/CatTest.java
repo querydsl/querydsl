@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.SimplePath;
 
 public class CatTest {
 

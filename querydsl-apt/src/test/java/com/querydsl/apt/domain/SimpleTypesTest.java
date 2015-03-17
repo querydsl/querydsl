@@ -27,7 +27,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.*;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 public class SimpleTypesTest extends AbstractTest {
 

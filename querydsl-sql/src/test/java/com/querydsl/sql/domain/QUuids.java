@@ -9,7 +9,7 @@ import javax.annotation.Generated;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPathBase;
 

@@ -4,7 +4,9 @@ import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.querydsl.core.domain.CompanyGroupPK;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 import javax.annotation.Generated;
 

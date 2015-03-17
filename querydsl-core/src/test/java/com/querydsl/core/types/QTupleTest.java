@@ -13,23 +13,24 @@
  */
 package com.querydsl.core.types;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.path.StringPath;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class QTupleTest {
 
-    StringPath str1 = new StringPath("str1");
-    StringPath str2 = new StringPath("str2");
-    StringPath str3 = new StringPath("str3");
-    StringPath str4 = new StringPath("str4");
+    StringPath str1 = Expressions.stringPath("str1");
+    StringPath str2 = Expressions.stringPath("str2");
+    StringPath str3 = Expressions.stringPath("str3");
+    StringPath str4 = Expressions.stringPath("str4");
     Expression<?>[] exprs1 = new Expression[]{str1, str2};
     Expression<?>[] exprs2 = new Expression[]{str3, str4};
 
@@ -41,7 +42,7 @@ public class QTupleTest {
         QTuple qTuple = new QTuple(expr);
         Tuple tuple = qTuple.newInstance("arg");
         assertEquals("arg", tuple.get(expr));
-        assertEquals("arg", tuple.get(new StringPath("s")));
+        assertEquals("arg", tuple.get(Expressions.stringPath("s")));
     }
 
     @Test

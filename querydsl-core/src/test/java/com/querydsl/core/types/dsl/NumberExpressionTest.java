@@ -17,8 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.NumberPath;
-
 public class NumberExpressionTest {
     
     private NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "int");

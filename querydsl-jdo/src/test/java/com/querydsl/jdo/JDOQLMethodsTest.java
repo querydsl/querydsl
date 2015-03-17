@@ -28,8 +28,8 @@ import com.querydsl.jdo.test.domain.QStore;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.MapPath;
 
 public class JDOQLMethodsTest extends AbstractJDOTest {
 

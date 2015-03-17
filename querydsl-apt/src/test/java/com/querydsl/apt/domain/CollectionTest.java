@@ -21,9 +21,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
-import com.querydsl.core.types.path.SetPath;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.MapPath;
+import com.querydsl.core.types.dsl.SetPath;
 
 public class CollectionTest {
     

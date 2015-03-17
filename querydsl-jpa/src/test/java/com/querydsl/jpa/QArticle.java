@@ -2,12 +2,13 @@ package com.querydsl.jpa;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.StringPath;
 
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.path.PathInits;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**

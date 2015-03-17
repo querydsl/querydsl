@@ -28,7 +28,7 @@ public final class SpatialSupport {
         for (Map.Entry<String, String> entry : additions.entrySet()) {
             typeMappings.register(
                     new SimpleType("org.geolatte.geom."+ entry.getKey()),
-                    new SimpleType("com.querydsl.spatial.path." + entry.getValue()));
+                    new SimpleType("com.querydsl.spatial." + entry.getValue()));
         }
     }
     
@@ -46,7 +46,7 @@ public final class SpatialSupport {
     	for (Map.Entry<String, String> entry : additions.entrySet()) {
     		typeMappings.register(
     				new SimpleType("com.vividsolutions.jts.geom."+ entry.getKey()),
-    				new SimpleType("com.querydsl.spatial.jts.path." + entry.getValue()));
+    				new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
     	}
     }
 

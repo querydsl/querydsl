@@ -7,8 +7,8 @@ import javax.annotation.Generated;
 import com.querydsl.core.domain.Company;
 import com.querydsl.core.domain.QCompanyPK;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.PathInits;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**

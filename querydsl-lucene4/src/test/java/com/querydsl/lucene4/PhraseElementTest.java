@@ -20,13 +20,14 @@ import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class PhraseElementTest {
 
     @Test
     public void test() {
-        StringPath title = new StringPath("title");
+        StringPath title = Expressions.stringPath("title");
         LuceneSerializer serializer = new LuceneSerializer(false,false);
         QueryMetadata metadata = new DefaultQueryMetadata();
         assertEquals("title:Hello World", serializer.toQuery(title.eq("Hello World"), metadata).toString());

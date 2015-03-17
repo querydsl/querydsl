@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.querydsl.core.types.QBeanPropertyTest.Entity;
-import com.querydsl.core.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 public class ProjectionsTest {
 

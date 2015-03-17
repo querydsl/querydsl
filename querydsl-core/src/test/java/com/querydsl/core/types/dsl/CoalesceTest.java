@@ -17,8 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.StringPath;
-
 public class CoalesceTest {
 
     private final StringPath firstname = new StringPath("firstname");

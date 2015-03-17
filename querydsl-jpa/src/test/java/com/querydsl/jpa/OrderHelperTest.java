@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.querydsl.core.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 public class OrderHelperTest {
 

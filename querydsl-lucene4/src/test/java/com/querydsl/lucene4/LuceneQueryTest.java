@@ -13,15 +13,8 @@
  */
 package com.querydsl.lucene4;
 
-import static org.easymock.EasyMock.createMockBuilder;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -30,13 +23,9 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.DoubleField;
-import org.apache.lucene.document.Field;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -57,9 +46,10 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.Param;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 /**
  * Tests for LuceneQuery
@@ -74,7 +64,7 @@ public class LuceneQueryTest {
     private NumberPath<Integer> year;
     private NumberPath<Double> gross;
 
-    private final StringPath sort = new StringPath("sort");
+    private final StringPath sort = Expressions.stringPath("sort");
 
     private RAMDirectory idx;
     private IndexWriter writer;

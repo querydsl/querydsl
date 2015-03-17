@@ -30,9 +30,9 @@ import com.querydsl.core.support.ProjectableQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.template.NumberTemplate;
-import com.querydsl.core.types.template.SimpleTemplate;
+import com.querydsl.core.types.dsl.ListSubQuery;
+import com.querydsl.core.types.dsl.NumberTemplate;
+import com.querydsl.core.types.dsl.SimpleTemplate;
 
 /**
  * ProjectableSQLQuery is the base type for SQL query implementations
@@ -95,7 +95,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      */
     @Override
     public Q addFlag(Position position, String prefix, Expression<?> expr) {
-        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
+        Expression<?> flag = Expressions.template(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
@@ -141,7 +141,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
 
     @Override
     public boolean exists() {
-        return singleResult(NumberTemplate.ONE) != null;
+        return singleResult(Expressions.ONE) != null;
     }
 
     public Q from(Expression<?> arg) {

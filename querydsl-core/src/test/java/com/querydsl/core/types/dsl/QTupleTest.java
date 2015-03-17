@@ -20,9 +20,6 @@ import org.junit.Test;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QTuple;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
 
 public class QTupleTest {
 

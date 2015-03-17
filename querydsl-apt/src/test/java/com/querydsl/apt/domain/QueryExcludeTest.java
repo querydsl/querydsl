@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryExclude;
-import com.querydsl.core.types.path.EntityPathBase;
+import com.querydsl.core.types.dsl.EntityPathBase;
 
 public class QueryExcludeTest {
     

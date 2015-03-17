@@ -13,13 +13,14 @@
  */
 package com.querydsl.core.types;
 
-import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.template.BooleanTemplate;
-import org.junit.Test;
 import static com.querydsl.core.alias.Alias.$;
 import static com.querydsl.core.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
+import com.querydsl.core.types.dsl.*;
 
 public class CaseBuilderTest {
 
@@ -37,7 +38,7 @@ public class CaseBuilderTest {
     @Test
     public void General() {
         SimpleExpression<Object> expr = new CaseBuilder()
-            .when(BooleanTemplate.TRUE).then(new Object())
+            .when(Expressions.TRUE).then(new Object())
             .otherwise(null);
         assertNotNull(expr);
     }

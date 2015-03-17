@@ -16,10 +16,7 @@ package com.querydsl.core.support;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.template.BooleanTemplate;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * CollectionAnyVisitor is an expression visitor which transforms any() path expressions which are
@@ -39,7 +36,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
                 path.getMetadata().getPathType());
         if (path instanceof CollectionExpression) {
             CollectionExpression<?,?> col = (CollectionExpression<?,?>)path;
-            return new ListPath(col.getParameter(0), SimplePath.class, metadata);
+            return (Path<T>)Expressions.listPath(col.getParameter(0), SimplePath.class, metadata);
         } else {
             return new PathImpl<T>(path.getType(), metadata);
         }
@@ -64,7 +61,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
         }
         if (context.replace) {
             if (expr.getType().equals(Boolean.class)) {
-                Predicate predicate = BooleanTemplate.create(expr.getTemplate(), args);
+                Predicate predicate = Expressions.booleanTemplate(expr.getTemplate(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;
             } else {
                 return TemplateExpressionImpl.create(expr.getType(), expr.getTemplate(), args);

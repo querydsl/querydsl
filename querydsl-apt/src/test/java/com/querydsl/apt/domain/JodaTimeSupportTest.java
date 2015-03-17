@@ -17,10 +17,10 @@ import org.joda.time.*;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.ComparablePath;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.DateTimePath;
-import com.querydsl.core.types.path.TimePath;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.TimePath;
 
 public class JodaTimeSupportTest extends AbstractTest {
 

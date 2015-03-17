@@ -29,8 +29,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CollectionExpressionBase;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.ListSubQuery;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -123,7 +122,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
 
     @Override
     public BooleanExpression exists() {
-        return unique(NumberTemplate.ONE).exists();
+        return unique(Expressions.ONE).exists();
     }
 
     @Override

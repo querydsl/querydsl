@@ -18,8 +18,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimplePath;
 
 public class UnionSubQueryTest {
 
@@ -29,9 +30,9 @@ public class UnionSubQueryTest {
 
     @Test
     public void In_Union() {
-        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
-        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
-        NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
+        SimplePath<Integer> one = Expressions.path(Integer.class, "1");
+        SimplePath<Integer> two = Expressions.path(Integer.class,"2");
+        NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
 
         Expression<?> expr = intPath.in(sq().union(
                 sq().unique(one),
@@ -46,10 +47,10 @@ public class UnionSubQueryTest {
 
     @Test
     public void Union_SubQuery() {
-        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
-        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
-        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
-        SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        SimplePath<Integer> one = Expressions.path(Integer.class,"1");
+        SimplePath<Integer> two = Expressions.path(Integer.class,"2");
+        SimplePath<Integer> three = Expressions.path(Integer.class,"3");
+        SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");
         Expression<?> union = sq().union(
             sq().unique(one.as(col1)),
             sq().unique(two),
@@ -66,10 +67,10 @@ public class UnionSubQueryTest {
 
     @Test
     public void UnionAll_SubQuery() {
-        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
-        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
-        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
-        SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        SimplePath<Integer> one = Expressions.path(Integer.class,"1");
+        SimplePath<Integer> two = Expressions.path(Integer.class,"2");
+        SimplePath<Integer> three = Expressions.path(Integer.class,"3");
+        SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");
         Expression<?> union = sq().unionAll(
             sq().unique(one.as(col1)),
             sq().unique(two),

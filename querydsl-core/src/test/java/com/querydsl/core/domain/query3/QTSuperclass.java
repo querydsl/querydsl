@@ -8,9 +8,9 @@ import com.querydsl.core.domain.IdNamePair;
 import com.querydsl.core.domain.Superclass;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.PathInits;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**

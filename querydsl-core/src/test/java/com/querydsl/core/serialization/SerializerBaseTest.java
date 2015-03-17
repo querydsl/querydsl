@@ -20,15 +20,16 @@ import org.junit.Test;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.JavaTemplates;
 import com.querydsl.core.types.TemplateExpressionImpl;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class SerializerBaseTest {
 
     @Test
     public void test() {
         DummySerializer serializer = new DummySerializer(new JavaTemplates());
-        StringPath strPath = new StringPath("str");
+        StringPath strPath = Expressions.stringPath("str");
         // path
         serializer.handle(strPath);
         // operation

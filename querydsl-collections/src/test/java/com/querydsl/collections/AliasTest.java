@@ -13,14 +13,9 @@
  */
 package com.querydsl.collections;
 
-import static com.querydsl.core.alias.Alias.$;
-import static com.querydsl.core.alias.Alias.alias;
-import static com.querydsl.core.alias.Alias.var;
 import static com.querydsl.collections.CollQueryFactory.from;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static com.querydsl.core.alias.Alias.*;
+import static org.junit.Assert.*;
 
 import java.util.Date;
 
@@ -28,8 +23,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.core.alias.Alias;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class AliasTest extends AbstractQueryTest {
 
@@ -147,7 +143,7 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void Various1() {
-        StringPath str = new StringPath("str");
+        StringPath str = Expressions.stringPath("str");
         for (String s : from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).list(str)) {
             assertTrue(s.equals("a") || s.equals("ab"));
             System.out.println(s);
@@ -165,7 +161,7 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void Various3() {
-        NumberPath<Integer> num = new NumberPath<Integer>(Integer.class, "num");
+        NumberPath<Integer> num = Expressions.numberPath(Integer.class, "num");
         for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).list(num)) {
             System.out.println(i);
         }

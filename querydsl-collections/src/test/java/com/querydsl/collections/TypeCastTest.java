@@ -18,7 +18,7 @@ import java.util.Collections;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.querydsl.core.types.path.PathInits;
+import com.querydsl.core.types.dsl.PathInits;
 
 public class TypeCastTest {
 

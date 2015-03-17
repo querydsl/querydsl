@@ -15,10 +15,10 @@ package com.querydsl.sql;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.EnumPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 //@Table("PERSON")
 public class QPerson extends RelationalPathBase<QPerson> {

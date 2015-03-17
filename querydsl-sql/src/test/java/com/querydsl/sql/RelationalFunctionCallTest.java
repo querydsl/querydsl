@@ -17,11 +17,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.sql.domain.QSurvey;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.sql.domain.QSurvey;
 
 public class RelationalFunctionCallTest {
     
@@ -40,7 +41,7 @@ public class RelationalFunctionCallTest {
         public TokenizeFunction(String alias, String... tokens) {
            super(String.class, "tokenize", serializeCollection(tokens));
            this.alias = new PathBuilder<String>(String.class, alias);
-           this.token = new StringPath(this.alias, "token");        
+           this.token = Expressions.stringPath(this.alias, "token");
        }
         
     }
@@ -62,7 +63,7 @@ public class RelationalFunctionCallTest {
     
     @Test
     public void TwoArgs() {
-        StringPath str = new StringPath("str");
+        StringPath str = Expressions.stringPath("str");
         RelationalFunctionCall<String> functionCall = RelationalFunctionCall.create(String.class, "getElements", "a", str);
         assertEquals("getElements({0}, {1})", functionCall.getTemplate().toString());
         assertEquals("a", functionCall.getArg(0));

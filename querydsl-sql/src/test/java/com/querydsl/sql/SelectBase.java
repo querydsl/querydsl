@@ -17,7 +17,7 @@ import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.*;
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -40,17 +40,11 @@ import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.group.Group;
 import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.types.query.NumberSubQuery;
-import com.querydsl.core.types.template.NumberTemplate;
 import com.querydsl.sql.domain.*;
 
 public class SelectBase extends AbstractBaseTest {
@@ -146,28 +140,28 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Arithmetic() {
-        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "(1.0)");
-        NumberExpression<Integer> two = NumberTemplate.create(Integer.class, "(2.0)");
-        NumberExpression<Integer> three = NumberTemplate.create(Integer.class, "(3.0)");
-        NumberExpression<Integer> four = NumberTemplate.create(Integer.class, "(4.0)");
+        NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "(1.0)");
+        NumberExpression<Integer> two = Expressions.numberTemplate(Integer.class, "(2.0)");
+        NumberExpression<Integer> three = Expressions.numberTemplate(Integer.class, "(3.0)");
+        NumberExpression<Integer> four = Expressions.numberTemplate(Integer.class, "(4.0)");
         arithmeticTests(one, two, three, four);
     }
 
     @Test
     public void Arithmetic2() {
-        NumberExpression<Integer> one = NumberTemplate.ONE;
-        NumberExpression<Integer> two = NumberTemplate.TWO;
-        NumberExpression<Integer> three = NumberTemplate.THREE;
-        NumberExpression<Integer> four = NumberTemplate.FOUR;
+        NumberExpression<Integer> one = Expressions.ONE;
+        NumberExpression<Integer> two = Expressions.TWO;
+        NumberExpression<Integer> three = Expressions.THREE;
+        NumberExpression<Integer> four = Expressions.FOUR;
         arithmeticTests(one, two, three, four);
     }
     
     @Test
     public void Arithmetic_Mod() {
-        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "(1)");
-        NumberExpression<Integer> two = NumberTemplate.create(Integer.class, "(2)");
-        NumberExpression<Integer> three = NumberTemplate.create(Integer.class, "(3)");
-        NumberExpression<Integer> four = NumberTemplate.create(Integer.class, "(4)");
+        NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "(1)");
+        NumberExpression<Integer> two = Expressions.numberTemplate(Integer.class, "(2)");
+        NumberExpression<Integer> three = Expressions.numberTemplate(Integer.class, "(3)");
+        NumberExpression<Integer> four = Expressions.numberTemplate(Integer.class, "(4)");
 
         assertEquals(4, query().singleResult(four.mod(three).add(three)).intValue());
         assertEquals(1, query().singleResult(four.mod(two.add(one))).intValue());
@@ -293,7 +287,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Complex_SubQuery() {
         // alias for the salary
-        NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
+        NumberPath<BigDecimal> sal = Expressions.numberPath(BigDecimal.class, "sal");
         // alias for the subquery
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         // query execution
@@ -359,7 +353,7 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn(ORACLE)
     public void Count_All() {
         expectedQuery = "select count(*) as rc from EMPLOYEE e";
-        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rc");
+        NumberPath<Long> rowCount = Expressions.numberPath(Long.class, "rc");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
 
@@ -368,7 +362,7 @@ public class SelectBase extends AbstractBaseTest {
     @IncludeIn(ORACLE)
     public void Count_All_Oracle() {
         expectedQuery = "select count(*) rc from EMPLOYEE e";
-        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rc");
+        NumberPath<Long> rowCount = Expressions.numberPath(Long.class, "rc");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
 
@@ -631,8 +625,8 @@ public class SelectBase extends AbstractBaseTest {
     public void DateTime() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
         assertEquals(Integer.valueOf(10),      query.singleResult(employee.datefield.dayOfMonth()));
-        assertEquals(Integer.valueOf(2),      query.singleResult(employee.datefield.month()));
-        assertEquals(Integer.valueOf(2000),   query.singleResult(employee.datefield.year()));
+        assertEquals(Integer.valueOf(2), query.singleResult(employee.datefield.month()));
+        assertEquals(Integer.valueOf(2000), query.singleResult(employee.datefield.year()));
         assertEquals(Integer.valueOf(200002), query.singleResult(employee.datefield.yearMonth()));
     }
 
@@ -732,7 +726,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({H2, DB2, DERBY, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
-        NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
+        NumberPath<BigDecimal> alias = Expressions.numberPath(BigDecimal.class, "alias");
         query().from(employee)
                .groupBy(alias)
                .list(employee.salary.multiply(100).as(alias),
@@ -756,9 +750,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({FIREBIRD, SQLSERVER})
     public void GroupBy_Distinct_Count() {
-        List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().list(NumberTemplate.ONE);
+        List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().list(Expressions.ONE);
         SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
-                .limit(1).distinct().listResults(NumberTemplate.ONE);
+                .limit(1).distinct().listResults(Expressions.ONE);
 
         assertEquals(1, ids.size());
         assertEquals(1, results.getResults().size());
@@ -786,7 +780,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void In() {
-        query().from(employee).where(employee.id.in(Arrays.asList(1,2))).list(employee);
+        query().from(employee).where(employee.id.in(Arrays.asList(1, 2))).list(employee);
     }
 
     @Test
@@ -797,8 +791,8 @@ public class SelectBase extends AbstractBaseTest {
             ids.add(i);
         }
         assertEquals(
-            query().from(employee).count(),
-            query().from(employee).where(employee.id.in(ids)).count());
+                query().from(employee).count(),
+                query().from(employee).where(employee.id.in(ids)).count());
     }
 
     @Test
@@ -1176,7 +1170,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Params() {
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Mike",query()
+        assertEquals("Mike", query()
                 .from(employee).where(employee.firstname.eq(name))
                 .set(name, "Mike")
                 .uniqueResult(employee.firstname));
@@ -1185,7 +1179,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Params_anon() {
         Param<String> name = new Param<String>(String.class);
-        assertEquals("Mike",query()
+        assertEquals("Mike", query()
                 .from(employee).where(employee.firstname.eq(name))
                 .set(name, "Mike")
                 .uniqueResult(employee.firstname));
@@ -1194,7 +1188,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test(expected=ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Mike",query()
+        assertEquals("Mike", query()
                 .from(employee).where(employee.firstname.eq(name))
                 .uniqueResult(employee.firstname));
     }
@@ -1390,7 +1384,7 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({SQLITE, DERBY})
     public void Rpad() {
         assertEquals("ab  ", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
-        assertEquals("ab!!", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
+        assertEquals("ab!!", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4, '!')));
     }
 
     @Test
@@ -1521,7 +1515,7 @@ public class SelectBase extends AbstractBaseTest {
 
         assertEquals(Integer.valueOf(2),  singleResult(str.indexOf("a")));
         assertEquals(Integer.valueOf(-1), singleResult(str.indexOf("a", 4)));
-        assertEquals(Integer.valueOf(3),  singleResult(str.indexOf("b", 2)));
+        assertEquals(Integer.valueOf(3), singleResult(str.indexOf("b", 2)));
     }
 
     @Test
@@ -1586,12 +1580,12 @@ public class SelectBase extends AbstractBaseTest {
         query().from(employee).groupBy(employee.superiorId)
             .having(employee.superiorId.isNotNull())
             .orderBy(employee.superiorId.asc())
-            .list(employee.salary.avg(),employee.id.max());
+            .list(employee.salary.avg(), employee.id.max());
     }
 
     @Test
     public void TemplateExpression() {
-        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "1");
+        NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "1");
         query().from(survey).list(one.as("col1"));
     }
 
@@ -1626,8 +1620,8 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({DB2, DERBY})
     public void Tuple2() {
         query().from(employee)
-            .list(Expressions.as(ConstantImpl.create("1"),"code"),
-                  employee.id);
+            .list(Expressions.as(ConstantImpl.create("1"), "code"),
+                    employee.id);
     }
 
     @Test
@@ -1721,11 +1715,11 @@ public class SelectBase extends AbstractBaseTest {
     public void With2() {
         QEmployee employee3 = new QEmployee("e3");
         query().with(employee2, sq().from(employee)
-                  .where(employee.firstname.eq("Tom"))
-                  .list(Wildcard.all))
+                .where(employee.firstname.eq("Tom"))
+                .list(Wildcard.all))
                .with(employee2, sq().from(employee)
-                  .where(employee.firstname.eq("Tom"))
-                  .list(Wildcard.all))
+                       .where(employee.firstname.eq("Tom"))
+                       .list(Wildcard.all))
                .from(employee, employee2, employee3)
                .list(employee.id, employee2.id, employee3.id);
     }
@@ -1735,8 +1729,8 @@ public class SelectBase extends AbstractBaseTest {
     public void With3() {
         query().with(employee2, employee2.all()).as(
                 sq().from(employee)
-                  .where(employee.firstname.eq("Tom"))
-                  .list(Wildcard.all))
+                        .where(employee.firstname.eq("Tom"))
+                        .list(Wildcard.all))
                .from(employee, employee2)
                .list(employee.id, employee2.id);
     }
@@ -1745,8 +1739,8 @@ public class SelectBase extends AbstractBaseTest {
     @IncludeIn({ORACLE, POSTGRESQL})
     public void With_Recursive() {
         query().withRecursive(employee2, sq().from(employee)
-                  .where(employee.firstname.eq("Tom"))
-                  .list(Wildcard.all))
+                .where(employee.firstname.eq("Tom"))
+                .list(Wildcard.all))
                .from(employee, employee2)
                .list(employee.id, employee2.id);
     }
@@ -1757,8 +1751,8 @@ public class SelectBase extends AbstractBaseTest {
     public void With_Recursive2() {
         query().withRecursive(employee2, employee2.all()).as(
                 sq().from(employee)
-                  .where(employee.firstname.eq("Tom"))
-                  .list(Wildcard.all))
+                        .where(employee.firstname.eq("Tom"))
+                        .list(Wildcard.all))
                .from(employee, employee2)
                .list(employee.id, employee2.id);
     }

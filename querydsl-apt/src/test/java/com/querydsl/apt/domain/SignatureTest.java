@@ -20,7 +20,7 @@ import java.io.Serializable;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QuerySupertype;
-import com.querydsl.core.types.path.ComparablePath;
+import com.querydsl.core.types.dsl.ComparablePath;
 
 public class SignatureTest {
     

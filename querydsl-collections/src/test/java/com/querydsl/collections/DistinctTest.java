@@ -20,12 +20,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class DistinctTest extends AbstractQueryTest {
 
-    private NumberPath<Integer> intVar1 = new NumberPath<Integer>(Integer.class, "var1");
-    private NumberPath<Integer> intVar2 = new NumberPath<Integer>(Integer.class, "var2");
+    private NumberPath<Integer> intVar1 = Expressions.numberPath(Integer.class, "var1");
+    private NumberPath<Integer> intVar2 = Expressions.numberPath(Integer.class, "var2");
     private List<Integer> list1 = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
     private List<Integer> list2 = Arrays.asList(2, 2, 3, 3, 3, 4, 4, 4, 4, 4);
 

@@ -17,9 +17,9 @@ import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.query.ListSubQuery;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.ListSubQuery;
 import com.querydsl.core.testutil.ExcludeIn;
 
 public class SubqueriesBase extends AbstractBaseTest {
@@ -143,7 +143,7 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     public void SubQuerySerialization2() {
-        NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
+        NumberPath<BigDecimal> sal = Expressions.numberPath(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
 

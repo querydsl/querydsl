@@ -20,9 +20,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.NumberOperation;
-import com.querydsl.core.types.dsl.StringOperation;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class StringOperationsTest extends AbstractQueryTest{
 

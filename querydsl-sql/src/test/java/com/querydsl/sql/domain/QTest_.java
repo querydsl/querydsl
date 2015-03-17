@@ -15,8 +15,8 @@ package com.querydsl.sql.domain;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.StringPath;
 
 //@Table("TEST")
 public class QTest_ extends EntityPathBase<Object> {

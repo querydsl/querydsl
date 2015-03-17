@@ -13,19 +13,22 @@
  */
 package com.querydsl.core.types;
 
-import java.util.Arrays;
-
-import com.querydsl.core.types.path.StringPath;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Arrays;
+
+import org.junit.Test;
+
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
+
 public class QMapTest {
 
-    StringPath str1 = new StringPath("str1");
-    StringPath str2 = new StringPath("str2");
-    StringPath str3 = new StringPath("str3");
-    StringPath str4 = new StringPath("str4");
+    StringPath str1 = Expressions.stringPath("str1");
+    StringPath str2 = Expressions.stringPath("str2");
+    StringPath str3 = Expressions.stringPath("str3");
+    StringPath str4 = Expressions.stringPath("str4");
     Expression<?>[] exprs1 = new Expression[]{str1, str2};
     Expression<?>[] exprs2 = new Expression[]{str3, str4};
 

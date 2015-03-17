@@ -13,9 +13,7 @@
  */
 package com.querydsl.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,7 +22,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Templates;
 import com.querydsl.core.types.ToStringVisitor;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.path.BooleanPath;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class BooleanBuilderTest {
 
@@ -159,7 +157,7 @@ public class BooleanBuilderTest {
     public void ToString() {
         BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals("true", builder.toString());
-        builder.or(new BooleanPath("condition"));
+        builder.or(Expressions.booleanPath("condition"));
         assertEquals("true || condition", builder.toString());
     }
 
@@ -179,7 +177,7 @@ public class BooleanBuilderTest {
     public void Accept() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first);
-        builder.or(new BooleanPath("condition"));
+        builder.or(Expressions.booleanPath("condition"));
         assertEquals("true || condition", builder.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
     }
 

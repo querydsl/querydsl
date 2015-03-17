@@ -3,7 +3,7 @@ package com.querydsl.apt.domain;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class Array2Test {
 
@@ -19,7 +19,7 @@ public class Array2Test {
 
     @Test
     public void test() {
-        new QArray2Test_Example(new SimplePath<byte[]>(byte[].class, "bytes")).newInstance(new byte[0]);
+        new QArray2Test_Example(Expressions.path(byte[].class, "bytes")).newInstance(new byte[0]);
     }
 
 }

@@ -22,7 +22,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class StringHandlingTest extends AbstractQueryTest {
 
@@ -32,9 +33,9 @@ public class StringHandlingTest extends AbstractQueryTest {
 
     private List<String> data = Arrays.asList("abc", "aBC", "def");
 
-    private final StringPath a = new StringPath("a");
+    private final StringPath a = Expressions.stringPath("a");
 
-    private final StringPath b = new StringPath("b");
+    private final StringPath b = Expressions.stringPath("b");
 
     @Test
     public void EqualsIgnoreCase() {

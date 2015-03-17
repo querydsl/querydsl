@@ -13,15 +13,14 @@
  */
 package com.querydsl.jpa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.domain.QAccount;
 import com.querydsl.jpa.domain.QInheritedProperties;
-import com.querydsl.core.types.path.NumberPath;
 
 public class FeaturesTest extends AbstractQueryTest {
 
@@ -165,7 +164,7 @@ public class FeaturesTest extends AbstractQueryTest {
 //    }
 
     private <D extends Number & Comparable<?>> NumberPath<D> var(Class<D> cl) {
-        return new NumberPath<D>(cl, "var");
+        return Expressions.numberPath(cl, "var");
     }
 
 }

@@ -17,8 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.BooleanPath;
-
 public class BooleanExpressionTest {
 
     private final BooleanExpression a = new BooleanPath("a");

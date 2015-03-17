@@ -18,8 +18,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class InterfaceTypeTest extends AbstractTest {
 
