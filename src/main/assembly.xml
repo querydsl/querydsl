@@ -8,7 +8,7 @@
   </formats>
   <files>
     <file>
-      <source>../querydsl-root/LICENSE.txt</source>
+      <source>LICENSE.txt</source>
       <outputDirectory>/</outputDirectory>
     </file>
   </files>
@@ -45,7 +45,7 @@
     </fileSet>
 
     <fileSet>
-      <directory>../querydsl-core/target</directory>
+      <directory>querydsl-core/target</directory>
       <includes>
         <include>*-sources.jar</include>
       </includes>
@@ -62,7 +62,5 @@
       <scope>compile</scope>
       <outputDirectory>lib/all</outputDirectory>
     </dependencySet>
-    <!-- <dependencySet> <scope>provided</scope> <outputDirectory>lib/all</outputDirectory> 
-      </dependencySet> -->
   </dependencySets>
 </assembly>
