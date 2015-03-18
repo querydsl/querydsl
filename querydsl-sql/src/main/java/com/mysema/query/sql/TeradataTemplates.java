@@ -13,6 +13,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Types;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
@@ -109,6 +111,19 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_HOUR, "trunc({0}, 'hh24')");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc({0}, 'mi')");
         add(Ops.DateTimeOps.TRUNC_SECOND, "{0}"); // not truncated
+
+        addTypeNameToCode("byteint", Types.BIT, true);
+        addTypeNameToCode("byteint", Types.BOOLEAN, true);
+        addTypeNameToCode("byteint", Types.TINYINT, true);
+        addTypeNameToCode("float", Types.DOUBLE, true);
+    }
+
+    @Override
+    public String getCastTypeNameForCode(int code) {
+        switch (code) {
+            case Types.VARCHAR:  return "varchar(4000)";
+            default: return super.getCastTypeNameForCode(code);
+        }
     }
 
     @Override

@@ -144,15 +144,19 @@ public class OracleTemplates extends SQLTemplates {
         addTypeNameToCode("raw", Types.VARBINARY);
         addTypeNameToCode("long", Types.LONGVARCHAR);
         addTypeNameToCode("varchar2", Types.VARCHAR);
+
+        addTypeNameToCode("number(1,0)", Types.BOOLEAN, true);
+        addTypeNameToCode("number(3,0)", Types.TINYINT, true);
+        addTypeNameToCode("number(5,0)", Types.SMALLINT, true);
+        addTypeNameToCode("number(10,0)", Types.INTEGER, true);
+        addTypeNameToCode("number(19,0)", Types.BIGINT, true);
+        addTypeNameToCode("binary_float", Types.FLOAT, true);
+        addTypeNameToCode("binary_double", Types.DOUBLE, true);
     }
 
     @Override
     public String getCastTypeNameForCode(int code) {
         switch (code) {
-            case Types.TINYINT:  return "number(3,0)";
-            case Types.SMALLINT: return "number(5,0)";
-            case Types.INTEGER:  return "number(10,0)";
-            case Types.BIGINT:   return "number(19,0)";
             case Types.DOUBLE:   return "double precision";
             case Types.VARCHAR:  return "varchar(4000 char)";
             default: return super.getCastTypeNameForCode(code);

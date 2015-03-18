@@ -13,11 +13,6 @@
  */
 package com.mysema.query.sql.types;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.mysema.util.MathUtils;
-
 /**
  * @author tiwe
  *
@@ -29,18 +24,4 @@ public abstract class AbstractNumberType<T extends Number & Comparable<T>> exten
         super(type);
     }
 
-    @Override
-    public T getValue(ResultSet rs, int startIndex) throws SQLException {
-        Object obj = rs.getObject(startIndex);
-        if (obj instanceof Number) {
-            return MathUtils.cast((Number) obj, getReturnedClass());
-        } else if (obj instanceof Boolean) {
-            return MathUtils.cast(Boolean.TRUE.equals(obj) ? 1 : 0, getReturnedClass());
-        } else if (obj != null) {
-            throw new IllegalArgumentException(obj.toString());
-        } else {
-            return null;
-        }
-    }
-    
 }
