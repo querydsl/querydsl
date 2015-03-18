@@ -99,7 +99,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                 size += rowsOrRangeArgs.size();
             }
             builder.append(")");
-            value = Expressions.template((Class)target.getType(), builder.toString(), args.build());
+            value = Expressions.template((Class<A>)target.getType(), builder.toString(), args.build());
         }
         return value;
     }

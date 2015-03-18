@@ -15,6 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Method;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
+import com.querydsl.core.util.BeanUtils;
 
 public class ExpressionsTest {
 
@@ -35,23 +37,28 @@ public class ExpressionsTest {
         List<String> types = ImmutableList.of("boolean", "comparable", "date", "dsl", "dateTime",
                 "enum", "number", "simple", "string", "time");
         for (String type : types) {
-            if (type.equals("simple")) continue; // FIXME
             if (type.equals("boolean") || type.equals("string")) {
-                Expressions.class.getMethod(type + "Path", String.class);
-                Expressions.class.getMethod(type + "Path", Path.class, String.class);
-                Expressions.class.getMethod(type + "Path", PathMetadata.class);
-                Expressions.class.getMethod(type + "Operation", Operator.class, Expression[].class);
-                Expressions.class.getMethod(type + "Template", String.class, Object[].class);
-                Expressions.class.getMethod(type + "Template", Template.class, Object[].class);
+                assertReturnType(Expressions.class.getMethod(type + "Path", String.class));
+                assertReturnType(Expressions.class.getMethod(type + "Path", Path.class, String.class));
+                assertReturnType(Expressions.class.getMethod(type + "Path", PathMetadata.class));
+                assertReturnType(Expressions.class.getMethod(type + "Operation", Operator.class, Expression[].class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", String.class, Object[].class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", String.class, ImmutableList.class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", Template.class, Object[].class));
             } else {
-                Expressions.class.getMethod(type + "Path", Class.class, String.class);
-                Expressions.class.getMethod(type + "Path", Class.class, Path.class, String.class);
-                Expressions.class.getMethod(type + "Path", Class.class, PathMetadata.class);
-                Expressions.class.getMethod(type + "Operation", Class.class, Operator.class, Expression[].class);
-                Expressions.class.getMethod(type + "Template", Class.class, String.class, Object[].class);
-                Expressions.class.getMethod(type + "Template", Class.class, Template.class, Object[].class);
+                assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, String.class));
+                assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, Path.class, String.class));
+                assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, PathMetadata.class));
+                assertReturnType(Expressions.class.getMethod(type + "Operation", Class.class, Operator.class, Expression[].class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, Object[].class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, ImmutableList.class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, Object[].class));
             }
         }
+    }
+
+    private void assertReturnType(Method method) {
+        assertEquals(BeanUtils.capitalize(method.getName()), method.getReturnType().getSimpleName());
     }
 
     @Test
