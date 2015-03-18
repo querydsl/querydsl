@@ -85,7 +85,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.nuodb.jdbc</groupId>
+      <groupId>com.nuodb</groupId>
       <artifactId>nuodb-jdbc</artifactId>
       <version>${nuodb.version}</version>
       <scope>test</scope>
@@ -264,16 +264,20 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <systemProperties>
-            <property>
-                <name>derby.stream.error.file</name>
-                <value>target/derby.log</value>
-            </property>
-          </systemProperties>
+            <!--
+            <failIfNoTests>true</failIfNoTests>
+            <excludedGroups>com.querydsl.core.testutil.Performance,com.querydsl.core.testutil.ReportingOnly</excludedGroups>
+            <excludes>
+                <exclude>**/*$*</exclude>
+            </excludes>
+            <includes>
+                <include>**/NuoDBSuiteTest.java</include>
+            </includes>
+            -->
         </configuration>
-      </plugin>         
-      
-      <!-- 
+      </plugin>
+
+      <!--
       <plugin>
         <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
@@ -286,16 +290,18 @@
           </execution>            
         </executions>
         <configuration>
-          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
-          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
-          <packageName>com.querydsl.sql.domain2</packageName>
+          <jdbcDriver>com.nuodb.jdbc.Driver</jdbcDriver>
+          <jdbcUrl>jdbc:com.nuodb://localhost/test</jdbcUrl>
+          <jdbcUser>dba</jdbcUser>
+          <jdbcPassword>goalie</jdbcPassword>
+          <packageName>com.querydsl.sql.nuodb</packageName>
           <targetFolder>target/generated-test-sources/java</targetFolder>
         </configuration>
         <dependencies>
           <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>${derby.version}</version>
+            <groupId>com.nuodb</groupId>
+            <artifactId>nuodb-jdbc</artifactId>
+            <version>${nuodb.version}</version>
           </dependency>
         </dependencies>
       </plugin>

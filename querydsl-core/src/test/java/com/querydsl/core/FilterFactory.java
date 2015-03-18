@@ -131,7 +131,7 @@ public class FilterFactory {
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
         if (module.equals(Module.SQL) || module.equals(Module.COLLECTIONS)) {
-            if (target != Target.DERBY) {
+            if (target != Target.DERBY && target != Target.NUODB) {
                 rv.add(expr.yearWeek().eq(other.yearWeek()));
             }
         }
@@ -328,7 +328,8 @@ public class FilterFactory {
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)
          && !target.equals(Target.SQLITE)
-         && !target.equals(Target.SQLSERVER)) {
+         && !target.equals(Target.SQLSERVER)
+         && !target.equals(Target.NUODB)) {
             rv.add(expr.matches(knownValue.substring(0,1)+".*"));
             rv.add(expr.matches(".*"+knownValue.substring(1)));
             rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));

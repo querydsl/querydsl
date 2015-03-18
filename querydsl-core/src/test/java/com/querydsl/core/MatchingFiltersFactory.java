@@ -76,14 +76,14 @@ public class MatchingFiltersFactory {
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
-                && !target.equals(Target.FIREBIRD)
+                && !target.equals(Target.FIREBIRD) && !target.equals(Target.NUODB)
                 && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
-                    && !target.equals(Target.CUBRID)
-                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)) {
+                    && !target.equals(Target.CUBRID) && !target.equals(Target.POSTGRES)
+                    && !target.equals(Target.HSQLDB)) {
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -180,9 +180,9 @@ public class MatchingFiltersFactory {
 
     public Collection<Predicate> string(StringExpression expr, StringExpression other) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
+
         if (module != Module.LUCENE) {
             rv.addAll(comparable(expr, other));
-
             rv.add(expr.charAt(0).eq(other.charAt(0)));
             rv.add(expr.charAt(1).eq(other.charAt(1)));
         }
@@ -206,7 +206,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.endsWith(other));
         rv.add(expr.endsWith(other.substring(1)));
         rv.add(expr.endsWith(other.substring(2)));
-        
+
         rv.add(expr.endsWithIgnoreCase(other));        
         rv.add(expr.endsWithIgnoreCase(other.substring(1)));
         rv.add(expr.endsWithIgnoreCase(other.substring(2)));
@@ -232,7 +232,7 @@ public class MatchingFiltersFactory {
         if (module != Module.LUCENE) {
             rv.add(expr.length().eq(other.length()));
             rv.add(expr.like(other));
-            
+
             if (module != Module.JDO || other instanceof Constant<?>) {
                 rv.add(expr.like(other.substring(0,1).append("%")));
                 rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
@@ -251,10 +251,11 @@ public class MatchingFiltersFactory {
             && !target.equals(Target.DB2)
             && !target.equals(Target.DERBY)
             && !target.equals(Target.SQLITE)
-            && !target.equals(Target.SQLSERVER))) {
+            && !target.equals(Target.SQLSERVER)
+            && !target.equals(Target.NUODB))) {
                 
                 rv.add(expr.matches(other));
-                
+
                 if (module != Module.JDO || other instanceof Constant<?>) {
                     rv.add(expr.matches(other.substring(0,1).append(".*")));
                     rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
