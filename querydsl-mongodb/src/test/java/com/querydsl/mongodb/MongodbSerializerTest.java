@@ -98,6 +98,26 @@ public class MongodbSerializerTest {
     }
 
     @Test
+    public void CollectionIsEmpty() {
+        BasicDBObject expected = dbo("$or",
+            dblist(
+                dbo("addresses", dblist()),
+                dbo("addresses",
+                    dbo("$exists", false))));
+        assertQuery(QUser.user.addresses.isEmpty(), expected);
+    }
+
+    @Test
+    public void CollectionIsNotEmpty() {
+        BasicDBObject expected = dbo("$nor",
+            dblist(
+                dbo("addresses", dblist()),
+                dbo("addresses",
+                    dbo("$exists", false))));
+        assertQuery(QUser.user.addresses.isNotEmpty(), expected);
+    }
+
+    @Test
     public void Equals() {
         assertQuery(title.eq("A"), dbo("title","A"));
         assertQuery(year.eq(1), dbo("year",1));
@@ -131,7 +151,6 @@ public class MongodbSerializerTest {
 
     @Test
     public void Between() {
-        System.err.println(dbo("year", dbo("$gte", 1).append("$lte", 10)));
         assertQuery(year.between(1, 10), dbo("year", dbo("$gte", 1).append("$lte", 10)));
     }
 
@@ -159,6 +178,12 @@ public class MongodbSerializerTest {
     @Test
     public void In() {
         assertQuery(year.in(1,2,3), dbo("year", dbo("$in", 1,2,3)));
+    }
+
+    @Test
+    public void NotIn() {
+        assertQuery(year.in(1,2,3).not(), dbo("year", dbo("$nin", 1,2,3)));
+        assertQuery(year.notIn(1,2,3), dbo("year", dbo("$nin", 1,2,3)));
     }
 
     @Test
@@ -242,7 +267,6 @@ public class MongodbSerializerTest {
         }
         return new BasicDBObject(key, value);
     }
-
     public static BasicDBList dblist(Object... contents) {
         BasicDBList list = new BasicDBList();
         list.addAll(Arrays.asList(contents));
