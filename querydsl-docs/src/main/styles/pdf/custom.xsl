@@ -393,6 +393,7 @@
     <xsl:attribute name="padding-bottom">0.5em</xsl:attribute>
     <xsl:attribute name="margin-left">0.5em</xsl:attribute>
     <xsl:attribute name="margin-right">0.5em</xsl:attribute>
+    <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
   </xsl:attribute-set>
 
     <!-- Shade (background) programlistings -->
