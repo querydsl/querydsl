@@ -29,7 +29,6 @@ import com.querydsl.core.types.OrderSpecifier;
  * @param <T> Java type
  * @see java.lang.Comparable
  */
-@SuppressWarnings({"unchecked"})
 public abstract class ComparableExpressionBase<T extends Comparable> extends SimpleExpression<T> {
 
     private static final long serialVersionUID = 1460921109546656911L;

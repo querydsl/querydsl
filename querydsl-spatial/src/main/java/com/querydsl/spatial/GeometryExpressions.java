@@ -54,8 +54,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static <T extends Geometry> GeometryExpression<T> setSRID(Expression<T> expr, int srid) {
-        return (GeometryExpression)geometryOperation(expr.getType(), SpatialOps.SET_SRID,
-                expr, ConstantImpl.create(srid));
+        return geometryOperation(expr.getType(), SpatialOps.SET_SRID, expr, ConstantImpl.create(srid));
     }
 
     /**
@@ -167,7 +166,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static <T extends Geometry> GeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay) {
-        return (GeometryExpression)geometryOperation(expr.getType(), SpatialOps.TRANSLATE,
+        return geometryOperation(expr.getType(), SpatialOps.TRANSLATE,
                 expr, ConstantImpl.create(deltax), ConstantImpl.create(deltay));
     }
 
@@ -182,7 +181,7 @@ public final class GeometryExpressions {
      * @return
      */
     public static <T extends Geometry> GeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay, float deltaz) {
-        return (GeometryExpression)geometryOperation(expr.getType(), SpatialOps.TRANSLATE2,
+        return geometryOperation(expr.getType(), SpatialOps.TRANSLATE2,
                 expr, ConstantImpl.create(deltax), ConstantImpl.create(deltay), ConstantImpl.create(deltaz));
     }
 
@@ -204,7 +203,8 @@ public final class GeometryExpressions {
      * @param args
      * @return
      */
-    public static <T extends Geometry> GeometryExpression<T> geometryOperation(Class<T> type, Operator op, Expression<?>... args) {
+    public static <T extends Geometry> GeometryExpression<T> geometryOperation(Class<? extends T> type,
+                                                                               Operator op, Expression<?>... args) {
         return new GeometryOperation<T>(type, op, args);
     }
 

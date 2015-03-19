@@ -1520,7 +1520,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void StringFunctions2() throws SQLException {
-        for (BooleanExpression where : Arrays.<BooleanExpression> asList(
+        for (BooleanExpression where : Arrays.asList(
                 employee.firstname.startsWith("a"),
                 employee.firstname.startsWithIgnoreCase("a"),
                 employee.firstname.endsWith("a"),

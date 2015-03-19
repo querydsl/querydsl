@@ -42,7 +42,7 @@ public final class GuavaHelpers {
      * @return
      */
     public static <T> com.google.common.base.Predicate<T> wrap(Predicate predicate) {        
-        Path<?> path = (Path<?>)predicate.accept(PathExtractor.DEFAULT, null);
+        Path<?> path = predicate.accept(PathExtractor.DEFAULT, null);
         if (path != null) {
             final Evaluator<Boolean> ev = createEvaluator(path.getRoot(), predicate);
             return new com.google.common.base.Predicate<T>() {
@@ -63,7 +63,7 @@ public final class GuavaHelpers {
      * @return
      */
     public static <F,T> Function<F,T> wrap(Expression<T> projection) {        
-        Path<?> path = (Path<?>)projection.accept(PathExtractor.DEFAULT, null);
+        Path<?> path = projection.accept(PathExtractor.DEFAULT, null);
         if (path != null) {
             final Evaluator<T> ev = createEvaluator(path.getRoot(), projection);
             return new Function<F,T>() {

@@ -64,7 +64,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private Expression<?> projection;
 
     // NOTE : this is not necessarily serializable
-    private Map<ParamExpression<?>,Object> params = ImmutableMap.<ParamExpression<?>, Object>of();
+    private Map<ParamExpression<?>,Object> params = ImmutableMap.of();
 
     private boolean unique;
 

@@ -28,7 +28,7 @@ public class Concatenation extends ExpressionBase<String> implements FactoryExpr
     
     public Concatenation(Expression<?>... args) {
         super(String.class);
-        this.args = Arrays.<Expression<?>>asList(args);
+        this.args = Arrays.asList(args);
     }
     
     @Override

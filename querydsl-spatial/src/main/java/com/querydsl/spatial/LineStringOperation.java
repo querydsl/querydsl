@@ -33,13 +33,13 @@ public class LineStringOperation<T extends LineString> extends LineStringExpress
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    private final OperationImpl< T> opMixin;
+    private final OperationImpl<T> opMixin;
 
-    protected LineStringOperation(Class<T> type, Operator op, Expression<?>... args) {
+    protected LineStringOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected LineStringOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected LineStringOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }

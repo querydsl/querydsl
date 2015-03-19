@@ -49,7 +49,7 @@ public class GAvg<T extends Number> extends AbstractGroupExpression<T, T> {
             @Override
             public T get() {
                 BigDecimal avg = sum.divide(BigDecimal.valueOf(count));
-                return MathUtils.cast(avg, (Class<T>) getType());
+                return MathUtils.cast(avg, getType());
             }
 
         };

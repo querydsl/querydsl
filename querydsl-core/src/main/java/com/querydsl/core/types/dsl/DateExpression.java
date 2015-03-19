@@ -31,7 +31,6 @@ import com.querydsl.core.types.PathImpl;
  * @author tiwe
  * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>
  */
-@SuppressWarnings({"unchecked"})
 public abstract class DateExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static final DateExpression<Date> CURRENT_DATE = currentDate(Date.class);
@@ -60,7 +59,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     private volatile NumberExpression<Integer> dayOfMonth, dayOfWeek, dayOfYear;
 
     @Nullable
-    private volatile DateExpression min, max;
+    private volatile DateExpression<T> min, max;
 
     @Nullable
     private volatile NumberExpression<Integer> week, month, year, yearMonth, yearWeek;
@@ -71,7 +70,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
 
     @Override
     public DateExpression<T> as(Path<T> alias) {
-        return Expressions.dateOperation((Class<T>)getType(), Ops.ALIAS, mixin, alias);
+        return Expressions.dateOperation(getType(), Ops.ALIAS, mixin, alias);
     }
 
     @Override

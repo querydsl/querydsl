@@ -21,7 +21,6 @@ import org.junit.Test;
 
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.types.dsl.StringPath;
@@ -36,7 +35,7 @@ public class DefaultQueryMetadataTest {
 
     @Test
     public void AddWhere_With_Null() {
-        metadata.addWhere((Predicate)null);
+        metadata.addWhere(null);
     }
     
     @Test
@@ -46,7 +45,7 @@ public class DefaultQueryMetadataTest {
     
     @Test
     public void AddHaving_With_Null() {
-        metadata.addHaving((Predicate)null);
+        metadata.addHaving(null);
     }
     
     @Test

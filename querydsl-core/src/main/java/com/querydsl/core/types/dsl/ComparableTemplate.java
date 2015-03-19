@@ -19,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Template;
 import com.querydsl.core.types.TemplateExpression;
 import com.querydsl.core.types.TemplateExpressionImpl;
-import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.Visitor;
 
 /**
@@ -35,7 +34,7 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    protected ComparableTemplate(Class<T> type, Template template, ImmutableList<?> args) {
+    protected ComparableTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

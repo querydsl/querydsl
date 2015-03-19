@@ -73,9 +73,9 @@ public final class CaseBuilder {
 
         private final List<CaseElement<A>> cases = new ArrayList<CaseElement<A>>();
 
-        private final Class<A> type;
+        private final Class<? extends A> type;
 
-        public Cases(Class<A> type) {
+        public Cases(Class<? extends A> type) {
             this.type = type;
         }
 
@@ -84,7 +84,7 @@ public final class CaseBuilder {
             return this;
         }
 
-        protected abstract Q createResult(Class<A> type, Expression<A> last);
+        protected abstract Q createResult(Class<? extends A> type, Expression<A> last);
 
         public Q otherwise(A constant) {
             if (constant != null) {
@@ -181,11 +181,10 @@ public final class CaseBuilder {
             }
         }
 
-        @SuppressWarnings("unchecked")
         private <A> Cases<A, SimpleExpression<A>> thenSimple(Expression<A> expr) {
-            return new Cases<A, SimpleExpression<A>>((Class)expr.getType()) {
+            return new Cases<A, SimpleExpression<A>>(expr.getType()) {
                 @Override
-                protected SimpleExpression<A> createResult(Class<A> type, Expression<A> last) {
+                protected SimpleExpression<A> createResult(Class<? extends A> type, Expression<A> last) {
                     return Expressions.operation(type, Ops.CASE, last);
                 }
 
@@ -204,9 +203,8 @@ public final class CaseBuilder {
 
         private Cases<Boolean, BooleanExpression> thenBoolean(Expression<Boolean> expr) {
             return new Cases<Boolean,BooleanExpression>(Boolean.class) {
-                @SuppressWarnings("unchecked")
                 @Override
-                protected BooleanExpression createResult(Class<Boolean> type, Expression<Boolean> last) {
+                protected BooleanExpression createResult(Class<? extends Boolean> type, Expression<Boolean> last) {
                     return Expressions.booleanOperation(Ops.CASE, last);
                 }
 
@@ -224,9 +222,9 @@ public final class CaseBuilder {
         }
 
         private <T extends Comparable> Cases<T, ComparableExpression<T>> thenComparable(Expression<T> expr) {
-            return new Cases<T, ComparableExpression<T>>((Class)expr.getType()) {
+            return new Cases<T, ComparableExpression<T>>(expr.getType()) {
                 @Override
-                protected ComparableExpression<T> createResult(Class<T> type, Expression<T> last) {
+                protected ComparableExpression<T> createResult(Class<? extends T> type, Expression<T> last) {
                     return Expressions.comparableOperation(type, Ops.CASE, last);
                 }
 
@@ -244,9 +242,9 @@ public final class CaseBuilder {
         }
 
         private <T extends Comparable> Cases<T, DateExpression<T>> thenDate(Expression<T> expr) {
-            return new Cases<T, DateExpression<T>>((Class)expr.getType()) {
+            return new Cases<T, DateExpression<T>>(expr.getType()) {
                 @Override
-                protected DateExpression<T> createResult(Class<T> type, Expression<T> last) {
+                protected DateExpression<T> createResult(Class<? extends T> type, Expression<T> last) {
                     return Expressions.dateOperation(type, Ops.CASE, last);
                 }
 
@@ -264,9 +262,9 @@ public final class CaseBuilder {
         }
 
         private <T extends Comparable> Cases<T, DateTimeExpression<T>> thenDateTime(Expression<T> expr) {
-            return new Cases<T, DateTimeExpression<T>>((Class)expr.getType()) {
+            return new Cases<T, DateTimeExpression<T>>(expr.getType()) {
                 @Override
-                protected DateTimeExpression<T> createResult(Class<T> type, Expression<T> last) {
+                protected DateTimeExpression<T> createResult(Class<? extends T> type, Expression<T> last) {
                     return Expressions.dateTimeOperation(type, Ops.CASE, last);
                 }
 
@@ -289,9 +287,9 @@ public final class CaseBuilder {
 
         @SuppressWarnings("unchecked")
         private <T extends Enum<T>> Cases<T,EnumExpression<T>> thenEnum(Expression<T> expr) {
-            return new Cases<T,EnumExpression<T>>((Class)expr.getType()) {
+            return new Cases<T,EnumExpression<T>>(expr.getType()) {
                 @Override
-                protected EnumExpression<T> createResult(Class<T> type, Expression<T> last) {
+                protected EnumExpression<T> createResult(Class<? extends T> type, Expression<T> last) {
                     return Expressions.enumOperation(type, Ops.CASE, last);
                 }
             }.addCase(when, expr);
@@ -309,9 +307,9 @@ public final class CaseBuilder {
 
         @SuppressWarnings("unchecked")
         private <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> thenNumber(Expression<A> expr) {
-            return new Cases<A, NumberExpression<A>>((Class)expr.getType()) {
+            return new Cases<A, NumberExpression<A>>(expr.getType()) {
                 @Override
-                protected NumberExpression<A> createResult(Class<A> type, Expression<A> last) {
+                protected NumberExpression<A> createResult(Class<? extends A> type, Expression<A> last) {
                     return Expressions.numberOperation(type, Ops.CASE, last);
                 }
 
@@ -332,7 +330,7 @@ public final class CaseBuilder {
             return new Cases<String,StringExpression>(String.class) {
                 @SuppressWarnings("unchecked")
                 @Override
-                protected StringExpression createResult(Class<String> type, Expression<String> last) {
+                protected StringExpression createResult(Class<? extends String> type, Expression<String> last) {
                     return Expressions.stringOperation(Ops.CASE, last);
                 }
 
@@ -350,9 +348,9 @@ public final class CaseBuilder {
         }
 
         private <T extends Comparable> Cases<T, TimeExpression<T>> thenTime(Expression<T> expr) {
-            return new Cases<T, TimeExpression<T>>((Class)expr.getType()) {
+            return new Cases<T, TimeExpression<T>>(expr.getType()) {
                 @Override
-                protected TimeExpression<T> createResult(Class<T> type, Expression<T> last) {
+                protected TimeExpression<T> createResult(Class<? extends T> type, Expression<T> last) {
                     return Expressions.timeOperation(type, Ops.CASE, last);
                 }
 

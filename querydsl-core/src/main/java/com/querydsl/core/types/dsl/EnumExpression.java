@@ -35,7 +35,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
 
     @Override
     public EnumExpression<T> as(Path<T> alias) {
-        return Expressions.<T>enumOperation((Class<T>)getType(),Ops.ALIAS, mixin, alias);
+        return Expressions.enumOperation(getType(),Ops.ALIAS, mixin, alias);
     }
 
     @Override

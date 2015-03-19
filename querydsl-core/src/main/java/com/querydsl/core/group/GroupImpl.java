@@ -85,7 +85,7 @@ class GroupImpl implements Group {
 
     @Override
     public <T> List<T> getList(Expression<T> expr) {
-        return this.<T, List<T>>get(expr);
+        return this.get(expr);
     }
 
     @Override
@@ -111,17 +111,17 @@ class GroupImpl implements Group {
 
     @Override
     public <T> T getOne(Expression<T> expr) {
-        return this.<T, T>get(expr);
+        return this.get(expr);
     }
 
     @Override
     public <T> Set<T> getSet(Expression<T> expr) {
-        return this.<T, Set<T>>get(expr);
+        return this.get(expr);
     }
 
     @Override
     public <T> SortedSet<T> getSortedSet(Expression<T> expr) {
-        return this.<T, SortedSet<T>>get(expr);
+        return this.get(expr);
     }
 
     @Override

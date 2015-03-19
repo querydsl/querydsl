@@ -29,16 +29,16 @@ public class WindowOver<T> extends SimpleOperation<T> {
 
     private static final long serialVersionUID = 464583892898579544L;
 
-    public WindowOver(Class<T> type, Operator op) {
+    public WindowOver(Class<? extends T> type, Operator op) {
         super(type, op, ImmutableList.<Expression<?>>of());
     }
 
-    public WindowOver(Class<T> type, Operator op, Expression<?> arg) {
+    public WindowOver(Class<? extends T> type, Operator op, Expression<?> arg) {
         super(type, op, ImmutableList.<Expression<?>>of(arg));
     }
 
-    public WindowOver(Class<T> type, Operator op, Expression<?> arg1, Expression<?> arg2) {
-        super(type, op, ImmutableList.<Expression<?>>of(arg1, arg2));
+    public WindowOver(Class<? extends T> type, Operator op, Expression<?> arg1, Expression<?> arg2) {
+        super(type, op, ImmutableList.of(arg1, arg2));
     }
 
     /**

@@ -31,7 +31,6 @@ import com.querydsl.core.types.PathImpl;
  * @author tiwe
  * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>
  */
-@SuppressWarnings({"unchecked"})
 public abstract class DateTimeExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static final DateTimeExpression<Date> CURRENT_DATE = currentDate(Date.class);
@@ -55,7 +54,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      * @return
      */
     public static <T extends Comparable> DateTimeExpression<T> currentDate(Class<T> cl) {
-        return Expressions.<T>dateTimeOperation(cl, Ops.DateTimeOps.CURRENT_DATE);
+        return Expressions.dateTimeOperation(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
 
     /**
@@ -96,7 +95,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
 
     @Override
     public DateTimeExpression<T> as(Path<T> alias) {
-        return Expressions.dateTimeOperation((Class<T>)getType(), Ops.ALIAS, mixin, alias);
+        return Expressions.dateTimeOperation(getType(), Ops.ALIAS, mixin, alias);
     }
 
     @Override
@@ -161,7 +160,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public DateTimeExpression<T> max() {
         if (max == null) {
-            max = Expressions.dateTimeOperation((Class<T>)getType(), Ops.AggOps.MAX_AGG, mixin);
+            max = Expressions.dateTimeOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
         }
         return max;
     }
@@ -186,7 +185,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      */
     public DateTimeExpression<T> min() {
         if (min == null) {
-            min = Expressions.dateTimeOperation((Class<T>)getType(), Ops.AggOps.MIN_AGG, mixin);
+            min = Expressions.dateTimeOperation(getType(), Ops.AggOps.MIN_AGG, mixin);
         }
         return min;
     }

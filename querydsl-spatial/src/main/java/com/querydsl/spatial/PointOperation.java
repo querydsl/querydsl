@@ -33,7 +33,7 @@ public class PointOperation<T extends Point> extends PointExpression<T> implemen
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    private final OperationImpl< T> opMixin;
+    private final OperationImpl<T> opMixin;
 
     protected PointOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));

@@ -31,8 +31,6 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.core.types.dsl.ListSubQuery;
-import com.querydsl.core.types.dsl.NumberTemplate;
-import com.querydsl.core.types.dsl.SimpleTemplate;
 
 /**
  * ProjectableSQLQuery is the base type for SQL query implementations

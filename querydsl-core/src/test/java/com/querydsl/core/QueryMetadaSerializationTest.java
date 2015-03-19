@@ -63,7 +63,7 @@ public class QueryMetadaSerializationTest {
     @Test
     public void FullySerializable() {
         Set<Class<?>> checked = new HashSet<Class<?>>();
-        checked.addAll(Arrays.<Class<?>>asList(Collection.class, List.class, Set.class, Map.class, 
+        checked.addAll(Arrays.asList(Collection.class, List.class, Set.class, Map.class,
                 Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
         classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, 

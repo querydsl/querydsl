@@ -34,7 +34,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    protected TimeTemplate(Class<T> type, Template template, ImmutableList<?> args) {
+    protected TimeTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(new TemplateExpressionImpl<T>(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }

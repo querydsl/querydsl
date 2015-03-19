@@ -19,7 +19,6 @@ import java.util.HashSet;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.dsl.ListPath;
 
 /**
  * @author tiwe

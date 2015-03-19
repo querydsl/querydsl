@@ -43,9 +43,8 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
      *
      * @return
      */
-    @SuppressWarnings("unchecked")
     public DslExpression<R> as(Path<R> alias) {
-        return Expressions.dslOperation((Class<R>) getType(), Ops.ALIAS, this, alias);
+        return Expressions.dslOperation(getType(), Ops.ALIAS, this, alias);
     }
 
     /**

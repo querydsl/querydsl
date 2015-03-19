@@ -411,7 +411,7 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = Lists.newArrayList(PathMetadata.class, Generated.class);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }

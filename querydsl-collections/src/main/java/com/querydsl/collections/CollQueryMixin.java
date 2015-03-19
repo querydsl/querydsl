@@ -14,7 +14,6 @@
 package com.querydsl.collections;
 
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.support.CollectionAnyVisitor;
 import com.querydsl.core.support.Context;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.ExpressionUtils;

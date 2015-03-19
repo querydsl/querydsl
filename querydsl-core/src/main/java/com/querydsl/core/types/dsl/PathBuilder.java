@@ -199,8 +199,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> CollectionPath<A, PathBuilder<A>> getCollection(String property, Class<A> type) {
-        validate(property, Collection.class);
-        return super.<A, PathBuilder<A>>createCollection(property, type, PathBuilder.class, PathInits.DIRECT);
+        return this.<A, PathBuilder<A>>getCollection(property, type, PathBuilder.class);
     }
 
     /**
@@ -213,9 +212,9 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param queryType
      * @return
      */
-    public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<E> queryType) {
+    public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<? super E> queryType) {
         validate(property, Collection.class);
-        return super.<A, E>createCollection(property, type, queryType, PathInits.DIRECT);
+        return super.createCollection(property, type, queryType, PathInits.DIRECT);
     }
 
     /**
@@ -323,8 +322,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> ListPath<A, PathBuilder<A>> getList(String property, Class<A> type) {
-        validate(property, List.class);
-        return super.<A, PathBuilder<A>>createList(property, type, PathBuilder.class, PathInits.DIRECT);
+        return this.<A, PathBuilder<A>>getList(property, type, PathBuilder.class);
     }
 
     /**
@@ -337,9 +335,9 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param queryType
      * @return
      */
-    public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<E> queryType) {
+    public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<? super E> queryType) {
         validate(property, List.class);
-        return super.<A, E>createList(property, type, queryType, PathInits.DIRECT);
+        return super.createList(property, type, queryType, PathInits.DIRECT);
     }
 
     /**
@@ -353,8 +351,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <K, V> MapPath<K, V, PathBuilder<V>> getMap(String property, Class<K> key, Class<V> value) {
-        validate(property, Map.class);
-        return super.<K,V,PathBuilder<V>>createMap(property, key, value, PathBuilder.class);
+        return this.<K, V, PathBuilder<V>>getMap(property, key, value, PathBuilder.class);
     }
 
     /**
@@ -369,9 +366,9 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param queryType
      * @return
      */
-    public <K, V, E extends SimpleExpression<V>> MapPath<K, V, E> getMap(String property, Class<K> key, Class<V> value, Class<E> queryType) {
+    public <K, V, E extends SimpleExpression<V>> MapPath<K, V, E> getMap(String property, Class<K> key, Class<V> value, Class<? super E> queryType) {
         validate(property, Map.class);
-        return super.<K,V,E>createMap(property, key, value, queryType);
+        return super.createMap(property, key, value, queryType);
     }
 
     /**
@@ -407,8 +404,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @return
      */
     public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
-        validate(property, Set.class);
-        return super.<A, PathBuilder<A>>createSet(property, type, PathBuilder.class, PathInits.DIRECT);
+        return this.<A, PathBuilder<A>>getSet(property, type, PathBuilder.class);
     }
 
     /**
@@ -421,9 +417,9 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param queryType
      * @return
      */
-    public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<E> queryType) {
+    public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<? super E> queryType) {
         validate(property, Set.class);
-        return super.<A, E>createSet(property, type, queryType, PathInits.DIRECT);
+        return super.createSet(property, type, queryType, PathInits.DIRECT);
     }
 
     /**

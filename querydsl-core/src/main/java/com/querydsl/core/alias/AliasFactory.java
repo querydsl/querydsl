@@ -159,7 +159,7 @@ public class AliasFactory {
      */
     @Nullable
     public <A extends Expression<?>> A getCurrentAndReset() {
-        A rv = this.<A> getCurrent();
+        A rv = this.getCurrent();
         reset();
         return rv;
     }

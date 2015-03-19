@@ -104,7 +104,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
                     } else {
                         // field access by reflection
                         append(CollQueryFunctions.class.getName() + ".<");
-                        append(((Class)path.getType()).getName()).append(">get(");
+                        append((path.getType()).getName()).append(">get(");
                         handle(parent);
                         append(", \""+property+"\")");
                     }
@@ -122,14 +122,14 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         } else {
             List<Object> args = new ArrayList<Object>(2);
             if (path.getMetadata().getParent() != null) {
-                args.add((Expression<?>)path.getMetadata().getParent());
+                args.add(path.getMetadata().getParent());
             }
             args.add(path.getMetadata().getElement());
             final Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()) {
                 Object rv = element.convert(args);
                 if (rv instanceof Expression) {                    
-                    ((Expression)rv).accept(this, context);
+                    ((Expression<?>)rv).accept(this, context);
                 } else if (element.isString()) {    
                     append(rv.toString());
                 } else {

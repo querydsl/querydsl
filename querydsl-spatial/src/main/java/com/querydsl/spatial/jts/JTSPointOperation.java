@@ -33,7 +33,7 @@ public class JTSPointOperation<T extends Point> extends JTSPointExpression<T> im
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    private final OperationImpl< T> opMixin;
+    private final OperationImpl<T> opMixin;
 
     protected JTSPointOperation(Class<T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));

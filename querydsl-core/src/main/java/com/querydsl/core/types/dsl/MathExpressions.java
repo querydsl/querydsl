@@ -175,7 +175,7 @@ public final class MathExpressions {
      * @return
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num) {
-        return Expressions.numberOperation((Class<A>) num.getType(), MathOps.ROUND, num);
+        return Expressions.numberOperation(num.getType(), MathOps.ROUND, num);
     }
 
     /**
@@ -186,7 +186,7 @@ public final class MathExpressions {
      * @return
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num, int s) {
-        return Expressions.numberOperation((Class<A>) num.getType(), MathOps.ROUND2, num, ConstantImpl.create(s));
+        return Expressions.numberOperation(num.getType(), MathOps.ROUND2, num, ConstantImpl.create(s));
     }
 
     /**

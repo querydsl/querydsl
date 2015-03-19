@@ -87,7 +87,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
                 if (pathMixin.getMetadata().getPathType() != PathType.COLLECTION_ANY) {
                     metadata = PathMetadataFactory.forDelegate(pathMixin);
                 } else {
-                    metadata = (PathMetadata)pathMixin.getMetadata();
+                    metadata = pathMixin.getMetadata();
                 }
                 U rv;
                 // the inits for the subtype will be wider, if it's a variable path

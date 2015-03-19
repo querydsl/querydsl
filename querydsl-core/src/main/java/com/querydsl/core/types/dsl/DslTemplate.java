@@ -19,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Template;
 import com.querydsl.core.types.TemplateExpression;
 import com.querydsl.core.types.TemplateExpressionImpl;
-import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.Visitor;
 
 /**

@@ -143,7 +143,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> date(DateTimeExpression<D> dateTime) {
-        return Expressions.dateOperation((Class) dateTime.getType(), Ops.DateTimeOps.DATE, dateTime);
+        return Expressions.dateOperation(dateTime.getType(), Ops.DateTimeOps.DATE, dateTime);
     }
 
     /**
@@ -166,7 +166,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> dateadd(DatePart unit, DateTimeExpression<D> date, int amount) {
-        return Expressions.dateTimeOperation((Class) date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
+        return Expressions.dateTimeOperation(date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
     }
 
     /**
@@ -178,7 +178,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> dateadd(DatePart unit, DateExpression<D> date, int amount) {
-        return Expressions.dateOperation((Class) date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
+        return Expressions.dateOperation(date.getType(), DATE_ADD_OPS.get(unit), date, ConstantImpl.create(amount));
     }
 
     /**
@@ -266,7 +266,7 @@ public final class SQLExpressions {
      * @param expr
      */
     public static <D extends Comparable> DateExpression<D> datetrunc(DatePart unit, DateExpression<D> expr) {
-        return Expressions.dateOperation((Class) expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+        return Expressions.dateOperation(expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
 
     /**
@@ -276,7 +276,7 @@ public final class SQLExpressions {
      * @param expr
      */
     public static <D extends Comparable> DateTimeExpression<D> datetrunc(DatePart unit, DateTimeExpression<D> expr) {
-        return Expressions.dateTimeOperation((Class) expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
+        return Expressions.dateTimeOperation(expr.getType(), DATE_TRUNC_OPS.get(unit), expr);
     }
 
     /**
@@ -287,7 +287,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addYears(DateTimeExpression<D> date, int years) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
     }
 
     /**
@@ -298,7 +298,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addMonths(DateTimeExpression<D> date, int months) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
     }
 
     /**
@@ -309,7 +309,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addWeeks(DateTimeExpression<D> date, int weeks) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
     }
 
     /**
@@ -320,7 +320,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addDays(DateTimeExpression<D> date, int days) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
     }
 
     /**
@@ -331,7 +331,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addHours(DateTimeExpression<D> date, int hours) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_HOURS, date, ConstantImpl.create(hours));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_HOURS, date, ConstantImpl.create(hours));
     }
 
     /**
@@ -342,7 +342,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addMinutes(DateTimeExpression<D> date, int minutes) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_MINUTES, date, ConstantImpl.create(minutes));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_MINUTES, date, ConstantImpl.create(minutes));
     }
 
     /**
@@ -353,7 +353,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateTimeExpression<D> addSeconds(DateTimeExpression<D> date, int seconds) {
-        return Expressions.dateTimeOperation((Class) date.getType(), Ops.DateTimeOps.ADD_SECONDS, date, ConstantImpl.create(seconds));
+        return Expressions.dateTimeOperation(date.getType(), Ops.DateTimeOps.ADD_SECONDS, date, ConstantImpl.create(seconds));
     }
 
     /**
@@ -364,7 +364,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addYears(DateExpression<D> date, int years) {
-        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
+        return Expressions.dateOperation(date.getType(), Ops.DateTimeOps.ADD_YEARS, date, ConstantImpl.create(years));
     }
 
     /**
@@ -375,7 +375,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addMonths(DateExpression<D> date, int months) {
-        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
+        return Expressions.dateOperation(date.getType(), Ops.DateTimeOps.ADD_MONTHS, date, ConstantImpl.create(months));
     }
 
     /**
@@ -386,7 +386,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addWeeks(DateExpression<D> date, int weeks) {
-        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
+        return Expressions.dateOperation(date.getType(), Ops.DateTimeOps.ADD_WEEKS, date, ConstantImpl.create(weeks));
     }
 
     /**
@@ -397,7 +397,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <D extends Comparable> DateExpression<D> addDays(DateExpression<D> date, int days) {
-        return Expressions.dateOperation((Class) date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
+        return Expressions.dateOperation(date.getType(), Ops.DateTimeOps.ADD_DAYS, date, ConstantImpl.create(days));
     }
 
     /**
@@ -407,7 +407,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> sum(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.SUM_AGG, expr);
+        return new WindowOver<T>(expr.getType(), Ops.AggOps.SUM_AGG, expr);
     }
 
     /**
@@ -446,7 +446,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> avg(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.AVG_AGG, expr);
+        return new WindowOver<T>(expr.getType(), Ops.AggOps.AVG_AGG, expr);
     }
 
     /**
@@ -456,7 +456,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Comparable> WindowOver<T> min(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.MIN_AGG, expr);
+        return new WindowOver<T>(expr.getType(), Ops.AggOps.MIN_AGG, expr);
     }
 
     /**
@@ -466,7 +466,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Comparable> WindowOver<T> max(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), Ops.AggOps.MAX_AGG, expr);
+        return new WindowOver<T>(expr.getType(), Ops.AggOps.MAX_AGG, expr);
     }
 
     /**
@@ -476,7 +476,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> lead(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.LEAD, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.LEAD, expr);
     }
 
     /**
@@ -486,7 +486,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> lag(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.LAG, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.LAG, expr);
     }
 
     /**
@@ -513,7 +513,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> nthValue(Expression<T> measureExpr, Expression<? extends Number> n) {
-        return new WindowOver<T>((Class<T>)measureExpr.getType(), SQLOps.NTHVALUE, measureExpr, n);
+        return new WindowOver<T>(measureExpr.getType(), SQLOps.NTHVALUE, measureExpr, n);
     }
 
     /**
@@ -616,7 +616,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WithinGroup<T> percentileCont(Expression<T> arg) {
-        return new WithinGroup<T>((Class)arg.getType(), SQLOps.PERCENTILECONT, arg);
+        return new WithinGroup<T>(arg.getType(), SQLOps.PERCENTILECONT, arg);
     }
 
     /**
@@ -635,7 +635,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WithinGroup<T> percentileDisc(Expression<T> arg) {
-        return new WithinGroup<T>((Class)arg.getType(), SQLOps.PERCENTILEDISC, arg);
+        return new WithinGroup<T>(arg.getType(), SQLOps.PERCENTILEDISC, arg);
     }
 
     /**
@@ -776,7 +776,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> ratioToReport(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.RATIOTOREPORT, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.RATIOTOREPORT, expr);
     }
 
     /**
@@ -795,7 +795,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> stddev(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEV, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.STDDEV, expr);
     }
 
     /**
@@ -803,7 +803,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> stddevDistinct(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEV_DISTINCT, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.STDDEV_DISTINCT, expr);
     }
 
     /**
@@ -813,7 +813,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> stddevPop(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEVPOP, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.STDDEVPOP, expr);
     }
 
     /**
@@ -823,7 +823,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> stddevSamp(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.STDDEVSAMP, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.STDDEVSAMP, expr);
     }
 
     /**
@@ -833,7 +833,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> variance(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.VARIANCE, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.VARIANCE, expr);
     }
 
     /**
@@ -843,7 +843,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> varPop(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.VARPOP, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.VARPOP, expr);
     }
 
     /**
@@ -853,7 +853,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T extends Number> WindowOver<T> varSamp(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.VARSAMP, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.VARSAMP, expr);
     }
 
     /**
@@ -863,7 +863,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> firstValue(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.FIRSTVALUE, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.FIRSTVALUE, expr);
     }
 
     /**
@@ -873,7 +873,7 @@ public final class SQLExpressions {
      * @return
      */
     public static <T> WindowOver<T> lastValue(Expression<T> expr) {
-        return new WindowOver<T>((Class<T>)expr.getType(), SQLOps.LASTVALUE, expr);
+        return new WindowOver<T>(expr.getType(), SQLOps.LASTVALUE, expr);
     }
 
     /**

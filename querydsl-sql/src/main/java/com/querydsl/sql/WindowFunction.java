@@ -99,18 +99,18 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                 size += rowsOrRangeArgs.size();
             }
             builder.append(")");
-            value = Expressions.template((Class<A>)target.getType(), builder.toString(), args.build());
+            value = Expressions.template(target.getType(), builder.toString(), args.build());
         }
         return value;
     }
 
     @SuppressWarnings("unchecked")
     public SimpleExpression<A> as(Expression<A> alias) {
-        return Expressions.operation((Class<A>) getType(), Ops.ALIAS, this, alias);
+        return Expressions.operation(getType(), Ops.ALIAS, this, alias);
     }
 
     public SimpleExpression<A> as(String alias) {
-        return Expressions.operation((Class<A>) getType(), Ops.ALIAS, this, new PathImpl<A>(getType(), alias));
+        return Expressions.operation(getType(), Ops.ALIAS, this, new PathImpl<A>(getType(), alias));
     }
 
     @Override

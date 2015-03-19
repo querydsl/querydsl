@@ -37,7 +37,6 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @param exprs
      * @return
      */
-    @Nullable
     public static BooleanExpression allOf(BooleanExpression... exprs) {
         BooleanExpression rv = null;
         for (BooleanExpression b : exprs) {
@@ -52,7 +51,6 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @param exprs
      * @return
      */
-    @Nullable
     public static BooleanExpression anyOf(BooleanExpression... exprs) {
         BooleanExpression rv = null;
         for (BooleanExpression b : exprs) {

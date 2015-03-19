@@ -61,8 +61,8 @@ public class CaseBuilderTest {
     public void BooleanTyped_Predicate() {
         Customer c = alias(Customer.class, "customer");
         BooleanExpression cases = new CaseBuilder()
-                .when((Predicate)$(c.getAnnualSpending()).gt(20000)).then(false)
-                .when((Predicate)$(c.getAnnualSpending()).gt(10000)).then(true)
+                .when($(c.getAnnualSpending()).gt(20000)).then(false)
+                .when($(c.getAnnualSpending()).gt(10000)).then(true)
                 .otherwise(false);
 
         assertEquals(

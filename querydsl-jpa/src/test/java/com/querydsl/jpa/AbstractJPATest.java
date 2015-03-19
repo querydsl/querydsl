@@ -13,8 +13,8 @@
  */
 package com.querydsl.jpa;
 
-import static org.junit.Assert.*;
 import static com.querydsl.core.Target.*;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -33,16 +33,14 @@ import com.querydsl.core.*;
 import com.querydsl.core.group.Group;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.group.QPair;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.domain.*;
 import com.querydsl.jpa.domain.Company.Rating;
 import com.querydsl.jpa.domain4.QBookMark;
 import com.querydsl.jpa.domain4.QBookVersion;
 import com.querydsl.jpa.hibernate.HibernateSubQuery;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.dsl.NumberTemplate;
-import com.querydsl.core.testutil.ExcludeIn;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -363,7 +361,7 @@ public abstract class AbstractJPATest {
     @Test
     public void Collection_Predicates() {
         ListPath<Cat, QCat> path = cat.kittens;
-        List<Predicate> predicates = Arrays.<Predicate>asList(
+        List<Predicate> predicates = Arrays.asList(
 //            path.eq(savedCats),
 //            path.in(savedCats),
 //            path.isNotNull(),
@@ -381,7 +379,7 @@ public abstract class AbstractJPATest {
     @Test
     public void Collection_Projections() {
         ListPath<Cat, QCat> path = cat.kittens;
-        List<Expression<?>> projections = Arrays.<Expression<?>>asList(
+        List<Expression<?>> projections = Arrays.asList(
 //            path.count(),
 //            path.countDistinct()
         );

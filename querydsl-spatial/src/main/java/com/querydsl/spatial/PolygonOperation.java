@@ -33,13 +33,13 @@ public class PolygonOperation<T extends Polygon> extends PolygonExpression<T> im
 
     private static final long serialVersionUID = 3433471874808633698L;
 
-    private final OperationImpl< T> opMixin;
+    private final OperationImpl<T> opMixin;
 
-    protected PolygonOperation(Class<T> type, Operator op, Expression<?>... args) {
+    protected PolygonOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected PolygonOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected PolygonOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }

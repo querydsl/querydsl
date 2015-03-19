@@ -67,7 +67,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
 
     public ComparableExpression<T> getValue() {
         if (value == null) {
-            value = (ComparableExpression<T>)Expressions.comparableOperation(getType(), Ops.COALESCE, getExpressionList());
+            value = Expressions.comparableOperation(getType(), Ops.COALESCE, getExpressionList());
         }
         return value;
     }
@@ -78,7 +78,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
      * @return
      */
     public DslExpression<T> as(Path<T> alias) {
-        return Expressions.dslOperation((Class<T>)getType(),Ops.ALIAS, this, alias);
+        return Expressions.dslOperation(getType(),Ops.ALIAS, this, alias);
     }
 
     /**
@@ -113,11 +113,11 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     }
 
     public DateExpression<T> asDate() {
-        return (DateExpression<T>) Expressions.dateOperation(getType(), Ops.COALESCE, getExpressionList());
+        return Expressions.dateOperation(getType(), Ops.COALESCE, getExpressionList());
     }
 
     public DateTimeExpression<T> asDateTime() {
-        return (DateTimeExpression<T>) Expressions.dateTimeOperation(getType(), Ops.COALESCE, getExpressionList());
+        return Expressions.dateTimeOperation(getType(), Ops.COALESCE, getExpressionList());
     }
 
     public EnumExpression<?> asEnum() {
@@ -133,7 +133,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     }
 
     public TimeExpression<T> asTime() {
-        return (TimeExpression<T>) Expressions.timeOperation(getType(), Ops.COALESCE, getExpressionList());
+        return Expressions.timeOperation(getType(), Ops.COALESCE, getExpressionList());
     }
 
     private Expression<?> getExpressionList() {

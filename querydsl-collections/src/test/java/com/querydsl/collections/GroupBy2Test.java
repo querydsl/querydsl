@@ -3,7 +3,6 @@ package com.querydsl.collections;
 import static com.querydsl.core.group.GroupBy.list;
 import static com.querydsl.core.group.GroupBy.map;
 import static org.junit.Assert.assertEquals;
-import com.querydsl.core.group.GroupBy.*;
 
 import java.util.List;
 import java.util.Map;

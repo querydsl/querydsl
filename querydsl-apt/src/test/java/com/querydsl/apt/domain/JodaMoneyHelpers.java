@@ -14,7 +14,7 @@ public class JodaMoneyHelpers {
 
     @QueryDelegate(Money.class)
     public static NumberExpression<BigDecimal> sum(QMoney money) {
-        return Expressions.<BigDecimal>numberOperation(BigDecimal.class, Ops.AggOps.SUM_AGG, money);
+        return Expressions.numberOperation(BigDecimal.class, Ops.AggOps.SUM_AGG, money);
     }
 
 }

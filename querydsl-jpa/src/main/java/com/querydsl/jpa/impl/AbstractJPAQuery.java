@@ -220,7 +220,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         try {
             Query query = createQuery(expr);
-            return queryHandler.<RT>iterate(query, projection);
+            return queryHandler.iterate(query, projection);
         } finally {
             reset();
         }

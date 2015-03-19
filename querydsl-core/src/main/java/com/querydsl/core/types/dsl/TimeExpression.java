@@ -29,7 +29,6 @@ import com.querydsl.core.types.PathImpl;
  *
  * @param <T> expression type
  */
-@SuppressWarnings({"unchecked"})
 public abstract class TimeExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static final long serialVersionUID = 7360552308332457990L;
@@ -45,7 +44,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     @Override
     public TimeExpression<T> as(Path<T> alias) {
-        return Expressions.timeOperation((Class<T>)getType(),Ops.ALIAS, mixin, alias);
+        return Expressions.timeOperation(getType(),Ops.ALIAS, mixin, alias);
     }
 
     @Override

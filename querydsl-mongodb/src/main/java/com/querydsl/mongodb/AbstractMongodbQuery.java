@@ -127,7 +127,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
 
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
-        Multimap<Expression<?>, Predicate> predicates = HashMultimap.<Expression<?>, Predicate>create();
+        Multimap<Expression<?>, Predicate> predicates = HashMultimap.create();
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);

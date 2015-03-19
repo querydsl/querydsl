@@ -35,11 +35,11 @@ public class JTSLineStringOperation<T extends LineString> extends JTSLineStringE
 
     private final OperationImpl< T> opMixin;
 
-    protected JTSLineStringOperation(Class<T> type, Operator op, Expression<?>... args) {
+    protected JTSLineStringOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
 
-    protected JTSLineStringOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected JTSLineStringOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(new OperationImpl<T>(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }

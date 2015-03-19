@@ -97,7 +97,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
                 if (!first) {
                     builder.append(", ");
                 }
-                builder.append("{" + size + "}");
+                builder.append("{").append(size).append("}");
                 if (!expr.isAscending()) {
                     builder.append(" desc");
                 }
@@ -106,7 +106,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
                 first = false;
             }
             builder.append(")");
-            value = Expressions.template((Class)target.getType(), builder.toString(), args.build());
+            value = Expressions.template(target.getType(), builder.toString(), args.build());
         }
         return value;
     }

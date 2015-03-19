@@ -24,7 +24,6 @@ import com.querydsl.core.types.*;
  *
  * @param <T> expression type
  */
-@SuppressWarnings({"unchecked"})
 public abstract class ComparableExpression<T extends Comparable> extends ComparableExpressionBase<T> {
 
     private static final long serialVersionUID = 5761359576767404270L;
@@ -35,7 +34,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     
     @Override
     public ComparableExpression<T> as(Path<T> alias) {
-        return Expressions.<T>comparableOperation((Class)getType(), Ops.ALIAS, mixin, alias);
+        return Expressions.comparableOperation(getType(), Ops.ALIAS, mixin, alias);
     }
     
     @Override
@@ -135,7 +134,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
-        return gt(ExpressionUtils.<T>all(right));
+        return gt(ExpressionUtils.all(right));
     }
 
     
@@ -144,7 +143,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression gtAny(CollectionExpression<?, ? super T> right) {
-        return gt(ExpressionUtils.<T>any(right));
+        return gt(ExpressionUtils.any(right));
     }
 
     /**
@@ -174,7 +173,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
-        return goe(ExpressionUtils.<T>all(right));
+        return goe(ExpressionUtils.all(right));
     }
     
     /**
@@ -182,7 +181,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
-        return goe(ExpressionUtils.<T>any(right));
+        return goe(ExpressionUtils.any(right));
     }
 
     /**
@@ -212,7 +211,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
-        return lt(ExpressionUtils.<T>all(right));
+        return lt(ExpressionUtils.all(right));
     }
 
     
@@ -221,7 +220,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression ltAny(CollectionExpression<?, ? super T> right) {
-        return lt(ExpressionUtils.<T>any(right));
+        return lt(ExpressionUtils.any(right));
     }
 
     /**
@@ -251,7 +250,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
-        return loe(ExpressionUtils.<T>all(right));
+        return loe(ExpressionUtils.all(right));
     }
     
     /**
@@ -259,7 +258,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
-        return loe(ExpressionUtils.<T>any(right));
+        return loe(ExpressionUtils.any(right));
     }
 
 }
