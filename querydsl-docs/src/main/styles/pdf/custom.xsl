@@ -252,6 +252,11 @@
     </fo:block>
   </xsl:template>
 
+  <!-- Start each chapter on a new page -->
+  <xsl:attribute-set name="chapter.title.properties">
+    <xsl:attribute name="break-before">page</xsl:attribute>
+  </xsl:attribute-set>
+
 <!-- Sections 1, 2 and 3 titles have a small bump factor and padding -->
   <xsl:attribute-set name="section.title.level1.properties">
     <xsl:attribute name="space-before.optimum">0.8em</xsl:attribute>
