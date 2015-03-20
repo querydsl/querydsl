@@ -37,7 +37,7 @@ import com.querydsl.core.types.query.StringSubQuery;
 import com.querydsl.core.types.query.TimeSubQuery;
 
 /**
- * DetachableAdapter is an apadater implementation for the Detachable interface
+ * DetachableAdapter is an adapter implementation for the Detachable interface
  * 
  * @author tiwe
  *

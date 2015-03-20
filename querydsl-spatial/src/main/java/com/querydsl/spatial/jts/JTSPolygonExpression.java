@@ -40,7 +40,7 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
     private volatile NumberExpression<Integer> numInteriorRing;
 
     @Nullable
-    private volatile JTSLineStringExpression<LineString> exterorRing;
+    private volatile JTSLineStringExpression<LineString> exteriorRing;
 
     public JTSPolygonExpression(Expression<T> mixin) {
         super(mixin);
@@ -52,10 +52,10 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
      * @return
      */
     public JTSLineStringExpression<?> exteriorRing() {
-        if (exterorRing == null) {
-            exterorRing = JTSLineStringOperation.create(LineString.class, SpatialOps.EXTERIOR_RING, mixin);
+        if (exteriorRing == null) {
+            exteriorRing = JTSLineStringOperation.create(LineString.class, SpatialOps.EXTERIOR_RING, mixin);
         }
-        return exterorRing;
+        return exteriorRing;
     }
 
     /**

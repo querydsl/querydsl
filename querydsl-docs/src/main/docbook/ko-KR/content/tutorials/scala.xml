@@ -38,7 +38,7 @@ expr eq "Ben"           expr === "Ben"
 expr ne "Ben"           expr !== "Ben"
 expr append "X"         expr + "X"
 expr isEmpty            expr is empty
-expr isNotEmpoty        expr not empty
+expr isNotEmpty         expr not empty
 
 // boolean
 left and right          left && right
@@ -171,7 +171,7 @@ exporter.export(connection.getMetaData)
 query().from(employee).select(employee.firstName, employee.lastName)
 ]]></programlisting>
 
-      <para>다음과 같이 Employee 또는 QEmployee의 companio 객체를 사용할 수 있다.</para>
+      <para>다음과 같이 Employee 또는 QEmployee의 companion 객체를 사용할 수 있다.</para>
 
       <programlisting language="java"><![CDATA[
 Employee.select(_.firstName, _.lastName)

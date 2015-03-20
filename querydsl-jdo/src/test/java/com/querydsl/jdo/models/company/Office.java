@@ -55,7 +55,7 @@ public class Office {
     }
 
     /**
-     * Accessor for the roomt name
+     * Accessor for the room name
      *
      * @return Returns the room name.
      */

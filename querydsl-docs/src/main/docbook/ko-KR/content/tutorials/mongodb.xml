@@ -182,7 +182,7 @@ query
 
     <title>공간(Geospatial) 쿼리</title>
 
-    <para>near(Douyble[]) 메서드를 이용해서 공간 검색을 할 수 있다.</para>
+    <para>near(Double[]) 메서드를 이용해서 공간 검색을 할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[
 query

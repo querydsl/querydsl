@@ -140,7 +140,7 @@ public class AliasFactory {
     }
 
     /**
-     * Get the current thread bound expression without reseting it
+     * Get the current thread bound expression without resetting it
      * 
      * @param <A>
      * @return

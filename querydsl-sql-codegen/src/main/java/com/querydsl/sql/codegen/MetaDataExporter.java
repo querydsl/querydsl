@@ -517,7 +517,7 @@ public class MetaDataExporter {
     /**
      * Override the NamingStrategy (default: new DefaultNamingStrategy())
      *
-     * @param namingStrategy namingstrategy to override (default: new DefaultNamingStrategy())
+     * @param namingStrategy naming strategy to override (default: new DefaultNamingStrategy())
      */
     public void setNamingStrategy(NamingStrategy namingStrategy) {
         module.bind(NamingStrategy.class, namingStrategy);

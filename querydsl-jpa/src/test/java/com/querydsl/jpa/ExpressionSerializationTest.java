@@ -15,7 +15,6 @@ public class ExpressionSerializationTest {
 
     @Test
     public void Serialize() throws Exception {
-        //QAdress.adress.name.eq("test"
         Expression<?> expr = QCat.cat.name.eq("test");
         Expression<?> expr2 = serialize(expr);
 

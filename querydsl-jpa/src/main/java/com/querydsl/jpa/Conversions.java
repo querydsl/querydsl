@@ -45,10 +45,10 @@ public final class Conversions {
         if (isAggSumWithConversion(expr) || isCountAggConversion(expr)) {
             return new NumberConversion<RT>(expr);
         } else if (expr instanceof FactoryExpression) {
-            FactoryExpression<RT> factorye = (FactoryExpression<RT>)expr;
-            for (Expression<?> e : factorye.getArgs()) {
+            FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>)expr;
+            for (Expression<?> e : factoryExpr.getArgs()) {
                 if (isAggSumWithConversion(e) || isCountAggConversion(expr)) {
-                    return new NumberConversions<RT>(factorye);
+                    return new NumberConversions<RT>(factoryExpr);
                 }
             }
         }
@@ -86,10 +86,10 @@ public final class Conversions {
         } else if (Enum.class.isAssignableFrom(expr.getType())) {
             return new EnumConversion<RT>(expr);
         } else if (expr instanceof FactoryExpression) {
-            FactoryExpression<RT> factorye = (FactoryExpression<RT>)expr;
+            FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>)expr;
             boolean numberConversions = false;
             boolean hasEntityPath = false;
-            for (Expression<?> e : factorye.getArgs()) {
+            for (Expression<?> e : factoryExpr.getArgs()) {
                 if (isEntityPathAndNeedsWrapping(e)) {
                     hasEntityPath = true;
                 } else if (Number.class.isAssignableFrom(e.getType())) {
@@ -99,12 +99,12 @@ public final class Conversions {
                 }
             }
             if (hasEntityPath) {
-                factorye = createEntityPathConversions(factorye);
+                factoryExpr = createEntityPathConversions(factoryExpr);
             }
             if (numberConversions) {
-                factorye = new NumberConversions<RT>(factorye);
+                factoryExpr = new NumberConversions<RT>(factoryExpr);
             }
-            return factorye;
+            return factoryExpr;
         }
         return expr;
     }

@@ -190,7 +190,7 @@ public class MergeBase extends AbstractBaseTest{
 
     @Test
     @IncludeIn(H2)
-    public void Merge_With_TempateExpression_In_Batch() {
+    public void Merge_With_TemplateExpression_In_Batch() {
         SQLMergeClause merge = merge(survey)
                 .keys(survey.id)
                 .set(survey.id, 5)
