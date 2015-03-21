@@ -199,7 +199,7 @@ public class MongodbSerializerTest {
     }
 
     @Test
-    public void Regexcases() {
+    public void RegexCases() {
         assertQuery(title.startsWith("A"),
                 dbo("title", dbo("$regex", "^\\QA\\E")));
         assertQuery(title.startsWithIgnoreCase("A"),

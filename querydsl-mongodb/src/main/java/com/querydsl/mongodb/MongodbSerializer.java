@@ -127,7 +127,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             if (subOp == Ops.IN) {
                 return visit(OperationImpl.create(Boolean.class, Ops.NOT_IN, subOperation.getArg(0),
                         subOperation.getArg(1)), context);
-            } else if (key.equals("$or")) {
+            } else if ("$or".equals(key)) {
                 return asDBObject("$nor", arg.get(key));
 
             } else if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY) {

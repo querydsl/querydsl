@@ -36,6 +36,7 @@ import com.querydsl.core.testutil.ExternalDB;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.path.ListPath;
 import com.querydsl.core.types.path.StringPath;
 import com.querydsl.mongodb.domain.*;
 import com.querydsl.mongodb.domain.User.Gender;
@@ -332,10 +333,6 @@ public class MongodbQueryTest {
     @Test
     public void IsEmpty() {
         assertQuery(user.firstName.isEmpty());
-    }
-
-    @Test
-    public void isEmpty2() {
         assertQuery(user.friends.isEmpty(), u1);
     }
 
@@ -344,24 +341,13 @@ public class MongodbQueryTest {
         assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
         assertQuery(user.firstName.ne("Jaakko").not(), u1);
         assertQuery(user.firstName.matches("Jaakko").not(), u3, u4, u2);
+        assertQuery(user.friends.isNotEmpty(), u3, u4, u2);
     }
 
     @Test
     public void Or() {
         assertQuery(user.lastName.eq("Aakkonen").or(user.lastName.eq("BeekkoNen")), u3, u4);
     }
-
-    //This is not supported yet
-//    @Test
-//    public void UniqueResult() {
-//
-//        addUser("Dille", "Duplikaatti");
-//        addUser("Dille", "Duplikaatti");
-//
-//        assertEquals(2, where(user.firstName.eq("Dille")).count());
-//        assertEquals(1, where(user.firstName.eq("Dille")).countDistinct());
-//
-//    }
 
     @Test
     public void Iterate() {
@@ -398,6 +384,7 @@ public class MongodbQueryTest {
 
     @Test
     public void Various() {
+        ListPath<Address, QAddress> list = user.addresses;
         StringPath str = user.lastName;
         List<Predicate> predicates = new ArrayList<Predicate>();
         predicates.add(str.between("a", "b"));
@@ -413,7 +400,7 @@ public class MongodbQueryTest {
         predicates.add(str.isEmpty());
         predicates.add(str.isNotNull());
         predicates.add(str.isNull());
-//        predicates.add(str.like("a"));
+        predicates.add(str.like("a"));
         predicates.add(str.loe("a"));
         predicates.add(str.lt("a"));
         predicates.add(str.matches("a"));
@@ -422,6 +409,8 @@ public class MongodbQueryTest {
         predicates.add(str.notIn("a","b","c"));
         predicates.add(str.startsWith("a"));
         predicates.add(str.startsWithIgnoreCase("a"));
+        predicates.add(list.isEmpty());
+        predicates.add(list.isNotEmpty());
 
         for (Predicate predicate : predicates) {
             where(predicate).count();
