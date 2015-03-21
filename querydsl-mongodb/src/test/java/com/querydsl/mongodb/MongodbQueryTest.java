@@ -144,15 +144,40 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Contains_Key_Not() {
+        MapEntity entity = new MapEntity();
+        entity.getProperties().put("key", "value");
+        ds.save(entity);
+
+        assertFalse(query(mapEntity).where(mapEntity.properties.get("key").isNotNull().not()).exists());
+        assertTrue(query(mapEntity).where(mapEntity.properties.get("key2").isNotNull().not()).exists());
+
+        assertFalse(query(mapEntity).where(mapEntity.properties.containsKey("key").not()).exists());
+        assertTrue(query(mapEntity).where(mapEntity.properties.containsKey("key2").not()).exists());
+    }
+
+    @Test
     public void Equals_Ignore_Case() {
         assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).exists());
         assertFalse(where(user.firstName.equalsIgnoreCase("AaKk")).exists());
     }
 
     @Test
+    public void Equals_Ignore_Case_Not() {
+        assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko").not()).exists());
+        assertTrue(where(user.firstName.equalsIgnoreCase("AaKk").not()).exists());
+    }
+
+    @Test
     public void Equals_and_Between() {
         assertQuery(user.firstName.startsWith("Jaa").and(user.age.between(20, 30)), u2, u1);
         assertQuery(user.firstName.startsWith("Jaa").and(user.age.goe(20).and(user.age.loe(30))), u2, u1);
+    }
+
+    @Test
+    public void Equals_and_Between_Not() {
+        assertQuery(user.firstName.startsWith("Jaa").and(user.age.between(20, 30)).not(), u3, u4);
+        assertQuery(user.firstName.startsWith("Jaa").and(user.age.goe(20).and(user.age.loe(30))).not(), u3, u4);
     }
 
     @Test
@@ -292,7 +317,6 @@ public class MongodbQueryTest {
         assertQuery(where(user.firstName.eq("Jaana"), user.lastName.eq("Aakkonen")), u3);
 
         assertQuery(user.firstName.ne("Jaana"), u2, u1);
-
     }
 
     @Test
@@ -312,6 +336,22 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void RegexQueries_Not() {
+        assertQuery(user.firstName.startsWith("Jaan").not(), u2, u1);
+        assertQuery(user.firstName.startsWith("jaan").not(), u3, u4, u2, u1);
+        assertQuery(user.firstName.startsWithIgnoreCase("jaan").not(), u2, u1);
+
+        assertQuery(user.lastName.endsWith("unen").not(), u3, u4);
+
+        assertQuery(user.lastName.endsWithIgnoreCase("onen").not(), u2, u1);
+
+        assertQuery(user.lastName.contains("oN").not(), u3, u2, u1);
+        assertQuery(user.lastName.containsIgnoreCase("on").not(), u2, u1);
+
+        assertQuery(user.firstName.matches(".*aa.*[^i]$").not(), u2);
+    }
+
+    @Test
     public void Like() {
         assertQuery(user.firstName.like("Jaan"));
         assertQuery(user.firstName.like("Jaan%"), u3, u4);
@@ -321,8 +361,22 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Like_Not() {
+        assertQuery(user.firstName.like("Jaan").not(), u3, u4, u2, u1);
+        assertQuery(user.firstName.like("Jaan%").not(), u2, u1);
+        assertQuery(user.firstName.like("jaan%").not(), u3, u4, u2, u1);
+
+        assertQuery(user.lastName.like("%unen").not(), u3, u4);
+    }
+
+    @Test
     public void IsNotNull() {
         assertQuery(user.firstName.isNotNull(), u3, u4, u2, u1);
+    }
+
+    @Test
+    public void IsNotNull_Not() {
+        assertQuery(user.firstName.isNotNull().not());
     }
 
     @Test
@@ -331,9 +385,20 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void IsNull_Not() {
+        assertQuery(user.firstName.isNull().not(), u3, u4, u2, u1);
+    }
+
+    @Test
     public void IsEmpty() {
         assertQuery(user.firstName.isEmpty());
         assertQuery(user.friends.isEmpty(), u1);
+    }
+
+    @Test
+    public void IsEmpty_Not() {
+        assertQuery(user.firstName.isEmpty().not(), u3, u4, u2, u1);
+        assertQuery(user.friends.isEmpty().not(), u3, u4, u2);
     }
 
     @Test
@@ -347,6 +412,11 @@ public class MongodbQueryTest {
     @Test
     public void Or() {
         assertQuery(user.lastName.eq("Aakkonen").or(user.lastName.eq("BeekkoNen")), u3, u4);
+    }
+
+    @Test
+    public void Or_Not() {
+        assertQuery(user.lastName.eq("Aakkonen").or(user.lastName.eq("BeekkoNen")).not(), u2, u1);
     }
 
     @Test
@@ -413,8 +483,9 @@ public class MongodbQueryTest {
         predicates.add(list.isNotEmpty());
 
         for (Predicate predicate : predicates) {
-            where(predicate).count();
-            where(predicate.not()).count();
+            long count1 = where(predicate).count();
+            long count2 = where(predicate.not()).count();
+            assertEquals(predicate.toString(), 4, count1 + count2);
         }
     }
 
@@ -451,6 +522,11 @@ public class MongodbQueryTest {
     @Test
     public void Size() {
         assertQuery(user.addresses.size().eq(2), u1);
+    }
+
+    @Test
+    public void Size_Not() {
+        assertQuery(user.addresses.size().eq(2).not(), u3, u4, u2);
     }
 
     @Test
