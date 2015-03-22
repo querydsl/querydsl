@@ -30,56 +30,58 @@ public class CollectionAnyVisitorTest {
         
     @Test
     public void Path() {
-        assertMatches("cat_kittens.*", serialize(cat.kittens.any()));
+        assertEquals("cat_kittens_0", serialize(cat.kittens.any()));
     }
     
     @Test
     public void Longer_Path() {
-        assertMatches("cat_kittens.*\\.name", serialize(cat.kittens.any().name));
+        assertEquals("cat_kittens_0.name", serialize(cat.kittens.any().name));
+    }
+
+    @Test
+    public void Longer_Path2() {
+        CollectionAnyVisitor visitor = new CollectionAnyVisitor();
+        assertEquals("cat_kittens_0.name", serialize(cat.kittens.any().name, visitor));
+        assertEquals("cat_kittens_1.name", serialize(cat.kittens.any().name, visitor));
     }
     
     @Test
     public void Very_Long_Path() {
-        assertMatches("cat_kittens.*_kittens.*\\.name", serialize(cat.kittens.any().kittens.any().name));
+        assertEquals("cat_kittens_0_kittens_1.name", serialize(cat.kittens.any().kittens.any().name));
     }
     
     @Test
     public void Simple_BooleanOperation() {        
-        Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
-        assertMatches("cat_kittens.*\\.name = Ruth123", serialize(predicate));
+        Predicate predicate = cat.kittens.any().name.eq("Ruth123");
+        assertEquals("cat_kittens_0.name = Ruth123", serialize(predicate));
     }
     
     @Test
     public void Simple_StringOperation() {        
-        Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
-        assertMatches("substring\\(cat_kittens.*\\.name,1\\) = uth123", serialize(predicate));
+        Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");
+        assertEquals("substring(cat_kittens_0.name,1) = uth123", serialize(predicate));
     }
     
     @Test
     public void And_Operation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
-        assertMatches("cat_kittens.*\\.name = Ruth123 && cat_kittens.*\\.bodyWeight > 10.0", serialize(predicate));
+        assertEquals("cat_kittens_0.name = Ruth123 && cat_kittens_1.bodyWeight > 10.0", serialize(predicate));
     }
     
     @Test
     public void Template() {
         Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}", 
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
-        assertMatches("cat_kittens.*\\.name = Ruth123", serialize(templateExpr));
+        assertEquals("cat_kittens_0.name = Ruth123", serialize(templateExpr));
     }
     
     private String serialize(Expression<?> expression) {
-        CollectionAnyVisitor visitor = new CollectionAnyVisitor() {
-            @Override
-            protected Predicate exists(Context c, Predicate condition) {
-                return condition;
-            }            
-        };
+        return serialize(expression, new CollectionAnyVisitor());
+    }
+
+    private String serialize(Expression<?> expression, CollectionAnyVisitor visitor) {
         Expression<?> transformed = expression.accept(visitor, new Context());
         return transformed.toString();
     }
-    
-    private static void assertMatches(String str1, String str2) {
-        assertTrue(str2, str2.matches(str1));
-    }
+
 }

@@ -49,6 +49,8 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private final JPAListAccessVisitor listAccessVisitor;
 
+    private final JPACollectionAnyVisitor collectionAnyVisitor;
+
     private final ReplaceVisitor<Void> replaceVisitor =  new ReplaceVisitor<Void>() {
         public Expression<?> visit(Path<?> expr, Void context) {
             return convertPathForOrder(expr);
@@ -67,18 +69,21 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     public JPAQueryMixin() {
         mapAccessVisitor = new JPAMapAccessVisitor(getMetadata());
         listAccessVisitor = new JPAListAccessVisitor(getMetadata());
+        collectionAnyVisitor = new JPACollectionAnyVisitor();
     }
 
     public JPAQueryMixin(QueryMetadata metadata) {
         super(metadata);
         mapAccessVisitor = new JPAMapAccessVisitor(metadata);
         listAccessVisitor = new JPAListAccessVisitor(metadata);
+        collectionAnyVisitor = new JPACollectionAnyVisitor();
     }
 
     public JPAQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
         mapAccessVisitor = new JPAMapAccessVisitor(metadata);
         listAccessVisitor = new JPAListAccessVisitor(metadata);
+        collectionAnyVisitor = new JPACollectionAnyVisitor();
     }
 
     public T fetch() {
@@ -196,7 +201,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
         if (predicate != null) {
             // transform any usage
-            predicate = (Predicate) predicate.accept(JPACollectionAnyVisitor.DEFAULT, new Context());
+            predicate = (Predicate) predicate.accept(collectionAnyVisitor, new Context());
             return predicate;
         } else {
             return null;

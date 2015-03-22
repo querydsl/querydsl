@@ -31,8 +31,6 @@ import com.querydsl.core.types.path.SimplePath;
  */
 public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
 
-    public static final JPACollectionAnyVisitor DEFAULT = new JPACollectionAnyVisitor();
-
     @SuppressWarnings("unchecked")
     @Override
     protected Predicate exists(Context c, Predicate condition) {
@@ -46,7 +44,7 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
                 // join via parent
                 Path<?> parent = child.getMetadata().getParent();
                 EntityPathBase<Object> newParent = new EntityPathBase<Object>(parent.getType(),
-                        ExpressionUtils.createRootVariable(parent));
+                        ExpressionUtils.createRootVariable(parent, Math.abs(condition.hashCode())));
                 EntityPath<Object> newChild = new EntityPathBase<Object>(child.getType(),
                         PathMetadataFactory.forProperty(newParent, child.getMetadata().getName()));
                 query.from(newParent).innerJoin(newChild, replacement);
@@ -57,7 +55,5 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
         query.where(condition);
         return query.exists();
     }
-
-    private JPACollectionAnyVisitor() {}
 
 }

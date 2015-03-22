@@ -14,10 +14,7 @@
 package com.querydsl.collections;
 
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Nullable;
 import javax.tools.JavaCompiler;
@@ -56,6 +53,8 @@ public class DefaultEvaluatorFactory {
     private final EvaluatorFactory factory;
 
     private final CollQueryTemplates templates;
+
+    private final CollectionAnyVisitor collectionAnyVisitor = new CollectionAnyVisitor();
 
     public DefaultEvaluatorFactory(CollQueryTemplates templates) {
         this(templates,
@@ -215,7 +214,7 @@ public class DefaultEvaluatorFactory {
                 if (colAnyJoin) {
                     Context context = new Context();
                     Expression<?> replacement = alias.getArg(0)
-                            .accept(CollectionAnyVisitor.DEFAULT, context);
+                            .accept(collectionAnyVisitor, context);
                     ser.handle(replacement);
                 } else {
                     ser.handle(alias.getArg(0));

@@ -14,15 +14,9 @@
 package com.querydsl.jdo;
 
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.support.CollectionAnyVisitor;
 import com.querydsl.core.support.Context;
 import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.PredicateOperation;
+import com.querydsl.core.types.*;
 
 /**
  * JDOQueryMixin extends {@link QueryMixin} to provide module specific extensions 
@@ -48,7 +42,7 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
         if (predicate != null) {
             Context context = new Context();            
-            Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
+            Predicate transformed = (Predicate) predicate.accept(collectionAnyVisitor, context);
             for (int i = 0; i < context.paths.size(); i++) {
                 Path<?> path = context.paths.get(i);            
                 addCondition(context, i, path, role);
