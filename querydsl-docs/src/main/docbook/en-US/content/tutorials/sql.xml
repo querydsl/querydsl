@@ -171,7 +171,7 @@
           </row>
           <row>
             <entry>targetFolder</entry>
-            <entry>target folder where source filder should be generated</entry>
+            <entry>target folder where source folder should be generated</entry>
           </row>
           <row>
             <entry>namingStrategyClass</entry>
@@ -929,7 +929,7 @@ new SQLUpdateClause(conn, configuration, survey)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLDelecteClause(conn, configuration, survey)
+new SQLDeleteClause(conn, configuration, survey)
     .where(survey.name.eq("XXX"))
     .execute();
 
@@ -938,7 +938,7 @@ new SQLDelecteClause(conn, configuration, survey)
       <para>Without where</para>
 
       <programlisting language="java"><![CDATA[
-new SQLDelecteClause(conn, configuration, survey)
+new SQLDeleteClause(conn, configuration, survey)
     .execute()
 ]]></programlisting>
 
@@ -1129,7 +1129,7 @@ configuration.register(new UtilDateType());
 
     <programlisting language="java"><![CDATA[
 Configuration configuration = new Configuration(new H2Templates());
-// declares a maping for the gender column in the person table
+// declares a mapping for the gender column in the person table
 configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
 ]]></programlisting>
 
@@ -1151,7 +1151,7 @@ configuration.registerNumeric(5,2,Float.class);
     <para>SQLListener is a listener interface that can be used to listen to queries and DML clause. SQLListener
     instances can be registered either on the configuration and on the query/clause level via the addListener method.</para>
 
-    <para>Use cases for listeners are data synchronization, logging, cacheing and validation.</para>
+    <para>Use cases for listeners are data synchronization, logging, caching and validation.</para>
 
   </sect2>
 

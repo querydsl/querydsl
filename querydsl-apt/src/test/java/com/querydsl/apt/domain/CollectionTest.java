@@ -46,7 +46,7 @@ public class CollectionTest {
         
         Collection collection2;
         
-        Collection<Collection<Person>> collectionOfCOllection;
+        Collection<Collection<Person>> collectionOfCollection;
         
         Collection<Set<String>> collectionOfSet;
         

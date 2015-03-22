@@ -32,14 +32,14 @@ import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.SearchResults;
-import com.querydsl.mongodb.domain.*;
-import com.querydsl.mongodb.domain.User.Gender;
-import com.querydsl.mongodb.morphia.MorphiaQuery;
+import com.querydsl.core.testutil.ExternalDB;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.mongodb.domain.*;
+import com.querydsl.mongodb.domain.User.Gender;
+import com.querydsl.mongodb.morphia.MorphiaQuery;
 
 @Category(ExternalDB.class)
 public class MongodbQueryTest {
@@ -287,7 +287,7 @@ public class MongodbQueryTest {
         assertQuery(user.lastName.eq("Jantunen"), user.firstName.desc(), u1, u2);
 
         assertQuery(user.firstName.eq("Jaana").and(user.lastName.eq("Aakkonen")), u3);
-        //This shoud produce 'and' also
+        //This should produce 'and' also
         assertQuery(where(user.firstName.eq("Jaana"), user.lastName.eq("Aakkonen")), u3);
 
         assertQuery(user.firstName.ne("Jaana"), u2, u1);

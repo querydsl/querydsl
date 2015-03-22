@@ -514,7 +514,7 @@ new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute
     <para>For Hibernate based Delete usage, use the HibernateDeleteClause instead.</para>
 
     <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide
-    finegrained second level cache interaction.</para>
+    fine-grained second level cache interaction.</para>
   </sect2>
 
   <sect2>
@@ -542,7 +542,7 @@ new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
     <para>For Hibernate based Update usage, use the HibernateUpdateClause instead.</para>
 
     <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide
-    finegrained second level cache interaction.</para>
+    fine-grained second level cache interaction.</para>
 
   </sect2>
 

@@ -25,7 +25,7 @@ import com.querydsl.core.annotations.QueryEntity;
  */
 @QueryEntity
 public class Wardrobe {
-    // this must be initialized in the constructor. dont change it
+    // this must be initialized in the constructor. don't change it
     private List<Cloth> clothes;
     private String model;
     private Gym gym;
@@ -33,7 +33,7 @@ public class Wardrobe {
     private String stringValue;
 
     public Wardrobe() {
-        // this must be initialized in the constructor. dont change it
+        // this must be initialized in the constructor. don't change it
         clothes = new ArrayList<Cloth>();
     }
 

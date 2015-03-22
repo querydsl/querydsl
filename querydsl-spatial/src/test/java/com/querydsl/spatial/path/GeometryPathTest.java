@@ -27,6 +27,6 @@ public class GeometryPathTest {
         assertEquals(new MultiPolygonPath<MultiPolygon>("geometry"), geometry.asMultiPolygon());
         assertEquals(new PointPath<Point>("geometry"), geometry.asPoint());
         assertEquals(new PolygonPath<Polygon>("geometry"), geometry.asPolygon());
-        assertEquals(new PolyhedralSurfacePath<PolyHedralSurface>("geometry"), geometry.asPolygHedralSurface());
+        assertEquals(new PolyhedralSurfacePath<PolyHedralSurface>("geometry"), geometry.asPolyHedralSurface());
     }
 }

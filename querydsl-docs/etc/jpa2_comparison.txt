@@ -205,9 +205,9 @@ QPerson men = new QPerson("men");
 QPerson women = new QPerson("women");
 query.from(men, women).where(
       men.gender.eq(Gender.MALE),
-      men.relationshipStatus.eq(RelationshipStatsu.SINGLE),
+      men.relationshipStatus.eq(RelationshipStatus.SINGLE),
       women.gender.eq(Gender.FEMALE),
-      women.relationshipStatsu.eq(RelationshipStatsu.SINGLE));    
+      women.relationshipStatus.eq(RelationshipStatus.SINGLE));
 [/code]
 
 [b]Fetch joins[/b]
@@ -234,7 +234,7 @@ List<Employee> employees = query.from(employee).join(employee.address).fetch()
 [code]
 CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
 Root<Employee> emp = query.from(Employee.class);
-emp.fetch(Empoyee_.phones, JoinType.LEFT);
+emp.fetch(Employee_.phones, JoinType.LEFT);
 query.select(emp).distinct(true);
 List<Employee> employees = em.createQuery( query).getResultList();
 [/code]
@@ -255,11 +255,11 @@ List<Employee> employees = query.from(employee)
 CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
 Root<Employee> emp = query.from(Employee.class);
 Subquery<Project> sq = query.subquery(Project.class);
-Root<Project> projecti sq.from(Project.class);
-Join<Project,Employeee> sqEmp = project.join(Project_.employees);
+Root<Project> project sq.from(Project.class);
+Join<Project,Employee> sqEmp = project.join(Project_.employees);
 sq.select(project)
   .where(cb.equals(sqEmp, emp),
-         cb.eqauls(project.get(Project_.name),
+         cb.equals(project.get(Project_.name),
                    cb.parameter(String.class,"project")));
 criteria.add(cb.exists());
 [/code]

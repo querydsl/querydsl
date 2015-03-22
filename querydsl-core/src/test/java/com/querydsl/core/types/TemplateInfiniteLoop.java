@@ -3,7 +3,7 @@ package com.querydsl.core.types;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TermplateInfiniteLoop {
+public class TemplateInfiniteLoop {
 
     static String templates[] = createTemplates();
 

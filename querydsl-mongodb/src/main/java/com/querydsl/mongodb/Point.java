@@ -41,7 +41,7 @@ public class Point extends ArrayPath<Double[], Double> {
     }
 
     /**
-     * Finds the closest points relative to the given location and orders the results with decreasing promimity
+     * Finds the closest points relative to the given location and orders the results with decreasing proximity
      *
      * @param latVal latitude
      * @param longVal longitude

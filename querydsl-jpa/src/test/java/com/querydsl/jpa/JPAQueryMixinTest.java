@@ -180,7 +180,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Embeddable_Colllection() {
+    public void OrderBy_Embeddable_Collection() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = new QBookMark("bookVersion_definition_bookMarks");
         mixin.from(bookVersion);

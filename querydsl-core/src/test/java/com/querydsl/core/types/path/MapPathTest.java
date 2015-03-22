@@ -31,7 +31,7 @@ public class MapPathTest {
     }
     
     @Test
-    public void GetKeytType() {
+    public void GetKeyType() {
         assertEquals(String.class, mapPath.getKeyType());
     }
 

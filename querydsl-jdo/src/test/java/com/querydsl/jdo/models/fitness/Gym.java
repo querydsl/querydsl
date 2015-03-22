@@ -29,7 +29,7 @@ public class Gym {
     private String location;
     private String name;
 
-    // this must be initialized in the constructor. dont change it
+    // this must be initialized in the constructor. don't change it
     private Map<String, Wardrobe> wardrobes; // store Wardrobe in values
     private Map<Wardrobe, String> wardrobes2; // store Wardrobe in keys
     private Map<String, Wardrobe> wardrobesInverse; // store Wardrobe in values
@@ -53,7 +53,7 @@ public class Gym {
     private String stringValue;
 
     public Gym() {
-        // this must be initialized in the constructor. dont change it
+        // this must be initialized in the constructor. don't change it
         wardrobes = new HashMap<String, Wardrobe>();
         equipments = new HashMap<String, GymEquipment>();
         partners = new HashMap<String, Gym>();

@@ -24,7 +24,7 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
 
 /**
- * EmptyMetadata provides a immutable empty QueryMetadata instace
+ * EmptyMetadata provides an immutable empty QueryMetadata instance
  *
  * @author tiwe
  *

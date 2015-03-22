@@ -139,7 +139,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
         return polygon;
     }
 
-    public PolyhedralSurfacePath<PolyHedralSurface> asPolygHedralSurface() {
+    public PolyhedralSurfacePath<PolyHedralSurface> asPolyHedralSurface() {
         if (polyhedralSurface == null) {
             polyhedralSurface = new PolyhedralSurfacePath<PolyHedralSurface>(pathMixin.getMetadata());
         }

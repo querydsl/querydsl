@@ -106,7 +106,7 @@ public class AntMetaDataExporter extends Task {
     private String targetFolder;
 
     /**
-     * namingstrategy class to override (default: DefaultNamingStrategy)
+     * naming strategy class to override (default: DefaultNamingStrategy)
      */
     private String namingStrategyClass;
 
