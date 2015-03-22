@@ -116,6 +116,18 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Between() {
+        assertQuery(user.age.between(20, 30), u2, u1);
+        assertQuery(user.age.goe(20).and(user.age.loe(30)), u2, u1);
+    }
+
+    @Test
+    public void Between_Not() {
+        assertQuery(user.age.between(20, 30).not(), u3, u4);
+        assertQuery(user.age.goe(20).and(user.age.loe(30)).not(), u3, u4);
+    }
+
+    @Test
     public void Contains() {
         assertQuery(user.friends.contains(u1), u3, u4, u2);
     }
@@ -567,18 +579,18 @@ public class MongodbQueryTest {
     }
 
     private void assertQuery(MorphiaQuery<User> query, User ... expected ) {
-        //System.out.println(query.toString());
+        String toString = query.toString();
         List<User> results = query.list();
 
-        assertNotNull(results);
+        assertNotNull(toString, results);
         if (expected == null ) {
             assertEquals("Should get empty result", 0, results.size());
             return;
         }
-        assertEquals(expected.length, results.size());
+        assertEquals(toString, expected.length, results.size());
         int i = 0;
         for (User u : expected) {
-            assertEquals(u, results.get(i++));
+            assertEquals(toString, u, results.get(i++));
         }
     }
 
