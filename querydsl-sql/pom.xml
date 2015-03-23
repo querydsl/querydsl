@@ -101,6 +101,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.nuodb</groupId>
+      <artifactId>nuodb-jdbc</artifactId>
+      <version>${nuodb.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.postgis</groupId>
       <artifactId>postgis-jdbc</artifactId>
       <version>1.3.3</version>
