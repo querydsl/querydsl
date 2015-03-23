@@ -15,9 +15,8 @@ package com.mysema.query;
 
 /**
  * @author tiwe
- *
  */
-public enum Target{
+public enum Target {
     /**
      * CUBRID
      */
@@ -73,6 +72,9 @@ public enum Target{
     /**
      *
      */
-    LUCENE;
-
+    LUCENE,
+    /**
+     * NuoDB http://dev.nuodb.com/download-nuodb/request/download
+     */
+    NUODB
 }

@@ -16,6 +16,7 @@ package com.mysema.query;
 import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.DB2;
 import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.NUODB;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
@@ -32,7 +33,7 @@ import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.testutil.ExcludeIn;
 
-@ExcludeIn({CUBRID, DB2, DERBY, ORACLE, SQLSERVER, POSTGRES, SQLITE, TERADATA})
+@ExcludeIn({CUBRID, DB2, DERBY, ORACLE, SQLSERVER, POSTGRES, SQLITE, TERADATA, NUODB})
 public class BeanPopulationBase extends AbstractBaseTest {
 
     private final QEmployee e = new QEmployee("e");
