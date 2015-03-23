@@ -24,7 +24,7 @@ import com.querydsl.core.testutil.IncludeIn;
 public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
-    @ExcludeIn({SQLSERVER, NUODB}) // FIXME
+    @ExcludeIn(SQLSERVER) // FIXME
     public void WindowFunctions() {
         NumberPath<Integer> path = survey.id;
         NumberPath<?> path2 = survey.id;
@@ -62,7 +62,6 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(NUODB)
     public void WindowFunctions_Manual_Paging() {
         Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
         Expression<Object[]> all = Wildcard.all;
@@ -119,7 +118,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DB2, SQLSERVER, NUODB})
+    @ExcludeIn({DB2, SQLSERVER})
     public void WindowFunctions_Regr() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
@@ -154,7 +153,6 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(NUODB)
     public void WindowFunctions_Over() {
         //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
         //FROM TestDB.Shipment
@@ -165,7 +163,6 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(NUODB)
     public void WindowFunctions_PartitionBy() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
@@ -179,7 +176,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLSERVER, NUODB})
+    @ExcludeIn(SQLSERVER)
     public void WindowFunctions_OrderBy() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
@@ -193,7 +190,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLSERVER, NUODB})
+    @ExcludeIn(SQLSERVER)
     public void WindowFunctions_UnboundedRows() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt
