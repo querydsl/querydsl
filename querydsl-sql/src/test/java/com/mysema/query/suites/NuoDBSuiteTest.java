@@ -20,25 +20,34 @@ public class NuoDBSuiteTest extends AbstractSuite {
     public static class Insert extends InsertBase {}
     public static class LikeEscape extends LikeEscapeBase {}
     public static class Merge extends MergeBase {}
-    public static class Select extends SelectBase {
 
+    public static class Select extends SelectBase {
         protected TestQuery query() {
+            /**
+             * Super class method {@link TestQuery#uniqueResult(Expression expr)} sets limit of 2 on original SELECT
+             * and results in <tt>select min(e.SALARY) from EMPLOYEE e limit ?</tt> statement. NuoDB uses natural
+             * ordering by default and for this query specifically, which might cause min() value to be not among
+             * requested rows causes {@link #Aggregate_UniqueResult()} test.
+             */
             TestQuery testQuery = new TestQuery(connection, configuration) {
                 @Override
                 public <RT> RT uniqueResult(Expression<RT> expr) {
                     CloseableIterator<RT> iterator = iterate(expr);
-                    return uniqueResult(iterator);
+                    return super.uniqueResult(iterator);
                 }
             };
+            testQuery.addListener(new TestLoggingListener());
             return testQuery;
         }
 
+        /**
+         * Aggregate unique result is fixed in overridden {@link TestQuery#uniqueResult(Expression expr)}.
+         */
         @Override
         public void Aggregate_UniqueResult() {
             super.Aggregate_UniqueResult();
         }
     }
-    public static class SelectWindowFunctions extends SelectWindowFunctionsBase {}
     public static class Subqueries extends SubqueriesBase {}
     public static class Types extends TypesBase {}
     public static class Union extends UnionBase {}
@@ -47,6 +56,6 @@ public class NuoDBSuiteTest extends AbstractSuite {
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initNuoDB();
-        Connections.setTemplates(NuoDBTemplates.builder().build());
+        Connections.initConfiguration(NuoDBTemplates.builder().build());
     }
 }

@@ -13,13 +13,15 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Ops;
 
 import java.sql.Types;
 import java.util.Set;
 
 import static com.google.common.collect.ImmutableSet.of;
+import static java.sql.Types.SMALLINT;
+import static java.sql.Types.TINYINT;
+import static java.sql.Types.VARCHAR;
 
 /**
  * @author Sergey Bushik
@@ -116,8 +118,9 @@ public class NuoDBTemplates extends SQLTemplates {
     }
 
     public NuoDBTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        super(RESERVED_WORDS, "\"", escape, quote);
 
+        setSupportsUnquotedReservedWordsAsIdentifier(true);
         setParameterMetadataAvailable(false);
         setLimitRequired(true);
         setNullsFirst(null);
@@ -149,23 +152,26 @@ public class NuoDBTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.YEAR, "year({0})");
         add(Ops.DateTimeOps.WEEK, "week({0})");
 
-        addClass2TypeMappings("string", String.class);
-        addClass2TypeMappings("smallint", Byte.class);
-        addClass2TypeMappings("smallint", Short.class);
+        addTypeNameToCode("smallint", TINYINT, true);
     }
 
     @Override
-    protected boolean requiresQuotes(String identifier) {
-        return isReservedWord(identifier) || super.requiresQuotes(identifier);
+    public String getCastTypeNameForCode(int code) {
+        switch (code) {
+            case Types.VARCHAR:
+                return "string";
+            default:
+                return super.getCastTypeNameForCode(code);
+        }
+    }
+
+    @Override
+    protected boolean requiresQuotes(String identifier, boolean precededByDot) {
+        return isReservedWord(identifier) || super.requiresQuotes(identifier, precededByDot);
     }
 
     private boolean isReservedWord(String identifier) {
         return RESERVED_WORDS.contains(identifier.toUpperCase());
-    }
-
-    @Override
-    public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
-        super.serialize(metadata, forCountRow, context);
     }
 
     @Override

@@ -168,7 +168,7 @@ public final class Connections {
     }
 
     public static void dropTable(SQLTemplates templates, String table) throws SQLException{
-        new DropTableClause(connHolder.get(), templates, table).execute();
+        new DropTableClause(connHolder.get(), new Configuration(templates), table).execute();
     }
 
     public static void dropType(Statement stmt, String type) throws SQLException {
