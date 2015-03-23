@@ -59,8 +59,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean db2Inited, derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, 
-    oracleInited, postgresInited, sqliteInited, teradataInited, firebirdInited, nuodbInited;
+    private static boolean db2Inited, derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited, teradataInited, firebirdInited, nuodbInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null) {
