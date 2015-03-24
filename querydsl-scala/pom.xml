@@ -6,7 +6,7 @@
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
     <version>4.0.0.BUILD-SNAPSHOT</version>
-    <relativePath>../querydsl-root/pom.xml</relativePath> 
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.querydsl</groupId>

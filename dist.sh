@@ -8,17 +8,18 @@ mvn javadoc:aggregate
 echo "Creating release bundles"
 for module in apt collections hibernate-search jpa jdo lucene3 lucene4 sql sql-codegen
 do
-  cd ../querydsl-$module
+  cd querydsl-$module
   mvn -Dtest=X clean assembly:assembly
+  cd ..
 done
 
 echo "Creating reference documentation"
-cd ../querydsl-docs
-mkdir -p ../querydsl-root/target/dist/reference
+cd querydsl-docs
+mkdir -p ../target/dist/reference
 mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml clean package
-cp -R target/docbook/publish/en-US/* ../querydsl-root/target/dist/reference/
+cp -R target/docbook/publish/en-US/* ../target/dist/reference/
 mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml -Dtranslation=ko-KR clean package
-cp -R target/docbook/publish/ko-KR ../querydsl-root/target/dist/reference/
-cd ../querydsl-root
+cp -R target/docbook/publish/ko-KR ../target/dist/reference/
+cd ..
 
 echo "done."
