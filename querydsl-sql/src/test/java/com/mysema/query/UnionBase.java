@@ -165,8 +165,10 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @ExcludeIn(FIREBIRD)
+    @ExcludeIn({FIREBIRD, NUODB})
     public void Union_Multi_Column_Projection_List() throws IOException{
+        // select max(e.id), max(e.id)-? from employee e;
+        // results in "mix of statistical and scalar expressions in select list"
         SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
 
@@ -178,7 +180,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @ExcludeIn(FIREBIRD)
+    @ExcludeIn({FIREBIRD, NUODB})
     public void Union_Multi_Column_Projection_Iterate() throws IOException{
         SubQueryExpression<Tuple> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));

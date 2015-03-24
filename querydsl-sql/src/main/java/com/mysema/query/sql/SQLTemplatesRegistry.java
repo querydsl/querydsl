@@ -20,6 +20,7 @@ public class SQLTemplatesRegistry {
     private final SQLTemplates postgres = new PostgresTemplates();
     private final SQLTemplates sqlite = new SQLiteTemplates();
     private final SQLTemplates teradata = new TeradataTemplates();
+    private final SQLTemplates nuodb = new NuoDBTemplates();
 
     private final SQLTemplates sqlserver = new SQLServerTemplates();
     private final SQLTemplates sqlserver2005 = new SQLServer2005Templates();
@@ -38,6 +39,7 @@ public class SQLTemplatesRegistry {
         if (name.equals("postgresql")) return postgres;
         if (name.equals("sqlite")) return sqlite;
         if (name.startsWith("teradata")) return teradata;
+        if (name.startsWith("nuodb")) return nuodb;
 
         // sqlserver
         if (name.equals("microsft sql server")) {

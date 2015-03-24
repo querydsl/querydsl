@@ -71,12 +71,13 @@ public class MatchingFiltersFactory {
 
     public Collection<Predicate> date(DateExpression<java.sql.Date> expr, 
             DateExpression<java.sql.Date> other) {
+
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
-                && !target.equals(Target.FIREBIRD)
+                && !target.equals(Target.FIREBIRD) && !target.equals(Target.NUODB)
                 && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))) {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
@@ -87,7 +88,6 @@ public class MatchingFiltersFactory {
                 rv.add(expr.week().eq(other.week()));
             }
         }
-
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
@@ -251,7 +251,8 @@ public class MatchingFiltersFactory {
             && !target.equals(Target.DB2)
             && !target.equals(Target.DERBY)
             && !target.equals(Target.SQLITE)
-            && !target.equals(Target.SQLSERVER))) {
+            && !target.equals(Target.SQLSERVER)
+            && !target.equals(Target.NUODB))) {
                 
                 rv.add(expr.matches(other));
                 
