@@ -287,7 +287,7 @@ public class MongodbQueryTest {
         assertQuery(user.lastName.eq("Jantunen"), user.firstName.desc(), u1, u2);
 
         assertQuery(user.firstName.eq("Jaana").and(user.lastName.eq("Aakkonen")), u3);
-        //This shoud produce 'and' also
+        //This should produce 'and' also
         assertQuery(where(user.firstName.eq("Jaana"), user.lastName.eq("Aakkonen")), u3);
 
         assertQuery(user.firstName.ne("Jaana"), u2, u1);

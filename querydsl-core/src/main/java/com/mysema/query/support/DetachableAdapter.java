@@ -37,7 +37,7 @@ import com.mysema.query.types.query.StringSubQuery;
 import com.mysema.query.types.query.TimeSubQuery;
 
 /**
- * DetachableAdapter is an apadater implementation for the Detachable interface
+ * DetachableAdapter is an adapter implementation for the Detachable interface
  * 
  * @author tiwe
  *

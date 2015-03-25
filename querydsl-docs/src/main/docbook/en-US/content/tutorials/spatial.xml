@@ -126,7 +126,7 @@ Geometry point = Wkt.fromWkt("Point(2 2)");
 query.where(table.geo.distance(point).lt(5.0));
 ]]></programlisting>
 
-      <para>In addition to straight distance between geometries spherical and spherodial distance are provided via
+      <para>In addition to straight distance between geometries spherical and spheroidal distance are provided via
       distanceSphere and distanceSpheroid.</para>
 
     </sect3>

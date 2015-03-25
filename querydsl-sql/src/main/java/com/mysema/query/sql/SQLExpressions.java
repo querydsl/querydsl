@@ -109,7 +109,7 @@ public final class SQLExpressions {
     public static final Expression<Object[]> all = Wildcard.all;
 
     /**
-     * Wilcard count expression
+     * Wildcard count expression
      */
     public static final Expression<Long> countAll = Wildcard.count;
 

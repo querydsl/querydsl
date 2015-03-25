@@ -29,7 +29,7 @@ public final class MongodbExpressions {
     private MongodbExpressions() {}
 
     /**
-     * Finds the closest points relative to the given location and orders the results with decreasing promimity
+     * Finds the closest points relative to the given location and orders the results with decreasing proximity
      *
      * @param expr
      * @param latVal latitude
