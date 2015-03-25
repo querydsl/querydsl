@@ -6,7 +6,7 @@
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
     <version>3.6.3.BUILD-SNAPSHOT</version>
-    <relativePath>../querydsl-root/pom.xml</relativePath> 
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
