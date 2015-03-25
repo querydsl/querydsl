@@ -109,8 +109,6 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         PathMetadata<?> metadata = path.getMetadata();
         if (metadata.isRoot() || paths.contains(path)) {
             return path;
-        } else if (aliases.containsKey(path)) {
-            return (Path<T>) aliases.get(path);
         } else if (metadata.getPathType() == PathType.COLLECTION_ANY) {
             return (Path<T>) shorten(metadata.getParent(), paths);
         } else if (!isEntityPath(path)) {
@@ -122,18 +120,26 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
                         new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
             }
         } else if (metadata.getParent().getMetadata().isRoot()) {
-            Class<T> type = getElementTypeOrType(path);
-            Path<T> newPath = new PathImpl<T>(type, path.toString().replace('.', '_'));
-            leftJoin(path, newPath);
-            return newPath;
+            if (aliases.containsKey(path)) {
+                return (Path<T>) aliases.get(path);
+            } else {
+                Class<T> type = getElementTypeOrType(path);
+                Path<T> newPath = new PathImpl<T>(type, path.toString().replace('.', '_'));
+                leftJoin(path, newPath);
+                return newPath;
+            }
         } else {
             Class<T> type = getElementTypeOrType(path);
             Path<?> parent = shorten(metadata.getParent(), paths);
             Path<T> oldPath = new PathImpl<T>(path.getType(),
                     new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
-            Path<T> newPath = new PathImpl<T>(type, oldPath.toString().replace('.', '_'));
-            leftJoin(oldPath, newPath);
-            return newPath;
+            if (aliases.containsKey(oldPath)) {
+                return (Path<T>) aliases.get(oldPath);
+            } else {
+                Path<T> newPath = new PathImpl<T>(type, oldPath.toString().replace('.', '_'));
+                leftJoin(oldPath, newPath);
+                return newPath;
+            }
         }
     }
 
