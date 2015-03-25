@@ -146,6 +146,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             Path<T> oldPath = new PathImpl<T>(path.getType(),
                     new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
             Path<T> newPath = new PathImpl<T>(type, oldPath.toString().replace('.', '_'));
+            aliases.put(path, newPath);
             leftJoin(oldPath, newPath);
             return newPath;
         }
