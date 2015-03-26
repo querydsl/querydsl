@@ -15,6 +15,7 @@ package com.mysema.query.mongodb;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
@@ -25,23 +26,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Order;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 
 /**
  * Serializes the given Querydsl query to a DBObject query for MongoDB
@@ -134,20 +119,14 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
         } else if (op == Ops.NOT) {
             //Handle the not's child
-            BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
-
-            //Only support the first key, let's see if there
-            //is cases where this will get broken
-            String key = arg.keySet().iterator().next();
             Operation<?> subOperation = (Operation<?>) expr.getArg(0);
             Operator<?> subOp = subOperation.getOperator();
             if (subOp == Ops.IN) {
                 return visit(OperationImpl.create(Boolean.class, Ops.NOT_IN, subOperation.getArg(0),
                         subOperation.getArg(1)), context);
-            } else if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY) {
-                return asDBObject(key, asDBObject("$not", arg.get(key)));
             } else {
-                return asDBObject(key, asDBObject("$ne", arg.get(key)));
+                BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
+                return negate(arg);
             }
 
         } else if (op == Ops.OR) {
@@ -279,6 +258,46 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
+    }
+
+    private Object negate(BasicDBObject arg) {
+        BasicDBList list = new BasicDBList();
+        for (Map.Entry<String, Object> entry : arg.entrySet()) {
+            if (entry.getKey().equals("$or")) {
+                list.add(asDBObject("$nor", entry.getValue()));
+
+            } else if (entry.getKey().equals("$and")) {
+                BasicDBList list2 = new BasicDBList();
+                for (Object o : ((BasicDBList)entry.getValue())) {
+                    list2.add(negate((BasicDBObject)o));
+                }
+                list.add(asDBObject("$or", list2));
+
+            } else if (entry.getValue() instanceof Pattern) {
+                list.add(asDBObject(entry.getKey(), asDBObject("$not", entry.getValue())));
+
+            } else if (entry.getValue() instanceof BasicDBObject) {
+                list.add(negate(entry.getKey(), (BasicDBObject) entry.getValue()));
+
+            } else {
+                list.add(asDBObject(entry.getKey(), asDBObject("$ne", entry.getValue())));
+            }
+        }
+        return list.size() == 1 ? list.get(0) : asDBObject("$or", list);
+    }
+
+    private Object negate(String key, BasicDBObject value) {
+        if (value.size() == 1) {
+            return asDBObject(key, asDBObject("$not", value));
+
+        } else {
+            BasicDBList list2 = new BasicDBList();
+            for (Map.Entry<String, Object> entry2 : value.entrySet()) {
+                list2.add(asDBObject(key,
+                        asDBObject("$not", asDBObject(entry2.getKey(), entry2.getValue()))));
+            }
+            return asDBObject("$or", list2);
+        }
     }
 
     protected DBRef asReference(Operation<?> expr, int constIndex) {
