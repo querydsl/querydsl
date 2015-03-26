@@ -17,16 +17,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.RelationalFunctionCall;
-import com.querydsl.sql.RelationalPathBase;
-import com.querydsl.sql.SQLSerializer;
-import com.querydsl.sql.SQLServerTemplates;
-import com.querydsl.sql.SQLSubQuery;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.sql.*;
 
 public class RelationalFunctionCallTest {
 
@@ -49,7 +44,7 @@ public class RelationalFunctionCallTest {
         //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
 
         QSurvey table = new QSurvey("SURVEY");
-        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         SQLSubQuery sq = new SQLSubQuery();
         SubQueryExpression<?> expr = sq.from(table)

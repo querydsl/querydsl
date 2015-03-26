@@ -116,6 +116,19 @@ public final class SQLExpressions {
     }
 
     /**
+     * Create a new RelationalFunctionCall for the given function and arguments
+     *
+     * @param type
+     * @param function
+     * @param args
+     * @param <T>
+     * @return
+     */
+    public static <T> RelationalFunctionCall<T> relationalFunctionCall(Class<? extends T> type, String function, Object... args) {
+        return new RelationalFunctionCall<T>(type, function, args);
+    }
+
+    /**
      * Get a nextval(sequence) expression
      *
      * @param sequence

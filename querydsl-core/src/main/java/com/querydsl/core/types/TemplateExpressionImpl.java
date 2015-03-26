@@ -35,23 +35,23 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private final Template template;
 
-    public static <C> Expression<C> create(Class<C> cl, String template) {
+    public static <C> Expression<C> create(Class<? extends C> cl, String template) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of());
     }
 
-    public static <C> Expression<C> create(Class<C> cl, String template, Object one) {
+    public static <C> Expression<C> create(Class<? extends C> cl, String template, Object one) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one));
     }
 
-    public static <C> Expression<C> create(Class<C> cl, String template, Object one, Object two) {
+    public static <C> Expression<C> create(Class<? extends C> cl, String template, Object one, Object two) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.of(one, two));
     }
 
-    public static <C> Expression<C> create(Class<C> cl, String template, Object... args) {
+    public static <C> Expression<C> create(Class<? extends C> cl, String template, Object... args) {
         return new TemplateExpressionImpl<C>(cl, TemplateFactory.DEFAULT.create(template), args);
     }
 
-    public static <C> Expression<C> create(Class<C> cl, Template template, Object... args) {
+    public static <C> Expression<C> create(Class<? extends C> cl, Template template, Object... args) {
         return new TemplateExpressionImpl<C>(cl, template, args);
     }
 

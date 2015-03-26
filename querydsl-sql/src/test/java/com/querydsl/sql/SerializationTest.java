@@ -110,7 +110,7 @@ public class SerializationTest {
 
     @Test
     public void FunctionCall() {
-        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         SQLSubQuery sq = new SQLSubQuery();
         SubQueryExpression<?> expr = sq.from(survey)
@@ -128,7 +128,7 @@ public class SerializationTest {
 
     @Test
     public void FunctionCall2() {
-        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         SQLQuery q = new SQLQuery(new SQLServerTemplates());
         q.from(survey)
@@ -141,7 +141,7 @@ public class SerializationTest {
 
     @Test
     public void FunctionCall3() {
-        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         SQLQuery q = new SQLQuery(new HSQLDBTemplates());
         q.from(survey)

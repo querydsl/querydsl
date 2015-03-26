@@ -49,20 +49,8 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
 
     private final TemplateExpression<T> templateMixin;
 
-    /**
-     * Create a new RelationalFunctionCall for the given function and arguments
-     *
-     * @param type
-     * @param function
-     * @param args
-     * @return
-     */
-    public static <T> RelationalFunctionCall<T> create(Class<? extends T> type, String function, Object... args) {
-        return new RelationalFunctionCall<T>(type, function, args);
-    }
-
-    public RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
-        super(TemplateExpressionImpl.create((Class)type, createTemplate(function, args.length), args));
+    protected RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
+        super(TemplateExpressionImpl.create(type, createTemplate(function, args.length), args));
         templateMixin = (TemplateExpression<T>)mixin;
     }
 

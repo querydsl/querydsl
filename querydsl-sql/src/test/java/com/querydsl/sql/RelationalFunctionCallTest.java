@@ -57,14 +57,14 @@ public class RelationalFunctionCallTest {
     
     @Test
     public void NoArgs() {
-        RelationalFunctionCall<String> functionCall = RelationalFunctionCall.create(String.class, "getElements");
+        RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements");
         assertEquals("getElements()", functionCall.getTemplate().toString());
     }
     
     @Test
     public void TwoArgs() {
         StringPath str = Expressions.stringPath("str");
-        RelationalFunctionCall<String> functionCall = RelationalFunctionCall.create(String.class, "getElements", "a", str);
+        RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements", "a", str);
         assertEquals("getElements({0}, {1})", functionCall.getTemplate().toString());
         assertEquals("a", functionCall.getArg(0));
         assertEquals(str, functionCall.getArg(1));        
