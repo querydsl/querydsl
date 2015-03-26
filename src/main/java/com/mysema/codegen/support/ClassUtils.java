@@ -13,11 +13,8 @@
  */
 package com.mysema.codegen.support;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * @author tiwe
@@ -91,6 +88,8 @@ public final class ClassUtils {
             if (zuper != null && !Object.class.equals(zuper)) {
                 return zuper;
             }
+        } else if (!Modifier.isPublic(clazz.getModifiers())) {
+            return normalize(clazz.getSuperclass());
         }
         return clazz;
     }
