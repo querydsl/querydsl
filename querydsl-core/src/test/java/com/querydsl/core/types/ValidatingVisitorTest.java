@@ -32,7 +32,7 @@ public class ValidatingVisitorTest {
 
     @Before
     public void setUp() {
-        known.add(new PathImpl(Object.class, "path"));
+        known.add(ExpressionUtils.path(Object.class, "path"));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ValidatingVisitorTest {
 
     @Test
     public void VisitFactoryExpressionOfQVoid() {
-        validator.visit(new QBean(Object.class, new PathImpl(String.class, "path")), known);
+        validator.visit(new QBean(Object.class, ExpressionUtils.path(String.class, "path")), known);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ValidatingVisitorTest {
 
     @Test
     public void VisitPathOfQVoid() {
-        validator.visit(new PathImpl(Object.class, "path"), known);
+        validator.visit(ExpressionUtils.path(Object.class, "path"), known);
     }
 
     @Test

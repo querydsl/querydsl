@@ -34,7 +34,7 @@ public class StringPath extends StringExpression implements Path<String> {
     }
 
     protected StringPath(PathMetadata metadata) {
-        super(new PathImpl<String>(String.class, metadata));
+        super(ExpressionUtils.path(String.class, metadata));
         this.pathMixin = (PathImpl<String>)mixin;
     }
 

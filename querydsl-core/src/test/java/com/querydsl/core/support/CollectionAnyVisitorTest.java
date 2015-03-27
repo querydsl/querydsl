@@ -13,15 +13,15 @@
  */
 package com.querydsl.core.support;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.querydsl.core.domain.QCat;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.TemplateExpressionImpl;
 
 
 public class CollectionAnyVisitorTest {
@@ -70,7 +70,7 @@ public class CollectionAnyVisitorTest {
     
     @Test
     public void Template() {
-        Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}", 
+        Expression<Boolean> templateExpr = ExpressionUtils.template(Boolean.class, "{0} = {1}",
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertEquals("cat_kittens_0.name = Ruth123", serialize(templateExpr));
     }

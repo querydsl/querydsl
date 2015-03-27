@@ -35,7 +35,7 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
     }
 
     protected NumberPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

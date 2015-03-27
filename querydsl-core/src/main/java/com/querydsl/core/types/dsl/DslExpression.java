@@ -14,9 +14,9 @@
 package com.querydsl.core.types.dsl;
 
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
 
 /**
  * DslExpression is the base class for DSL expressions, but {@link SimpleExpression} is the base class
@@ -59,7 +59,7 @@ public abstract class DslExpression<T> implements Expression<T> {
      * @return
      */
     public DslExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
 
     @Override

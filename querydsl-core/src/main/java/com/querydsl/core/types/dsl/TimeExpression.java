@@ -17,10 +17,7 @@ import java.sql.Time;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 /**
  * TimeExpression represents Time expressions
@@ -49,7 +46,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     @Override
     public TimeExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
     
     /**

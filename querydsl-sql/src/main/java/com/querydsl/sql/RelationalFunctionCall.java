@@ -15,11 +15,7 @@ package com.querydsl.sql;
 
 import java.util.List;
 
-import com.querydsl.core.types.Template;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.TemplateExpressionImpl;
-import com.querydsl.core.types.TemplateFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
@@ -50,7 +46,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
     private final TemplateExpression<T> templateMixin;
 
     protected RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
-        super(TemplateExpressionImpl.create(type, createTemplate(function, args.length), args));
+        super(ExpressionUtils.template(type, createTemplate(function, args.length), args));
         templateMixin = (TemplateExpression<T>)mixin;
     }
 

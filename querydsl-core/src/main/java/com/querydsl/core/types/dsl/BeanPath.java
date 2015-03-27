@@ -20,15 +20,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.ExpressionException;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.PathType;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * BeanPath represents bean paths
@@ -61,7 +53,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     public BeanPath(Class<? extends T> type, PathMetadata metadata, @Nullable PathInits inits) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
         this.inits = inits;
     }

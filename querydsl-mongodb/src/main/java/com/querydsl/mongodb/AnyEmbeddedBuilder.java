@@ -19,7 +19,6 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.PredicateOperation;
 
 /**
  * AnyEmbeddedBuilder is a builder for constraints on embedded objects
@@ -41,7 +40,7 @@ public class AnyEmbeddedBuilder<Q extends AbstractMongodbQuery<K, Q>, K> {
     }
 
     public Q on(Predicate... conditions) {
-        return queryMixin.where(PredicateOperation.create(
+        return queryMixin.where(ExpressionUtils.predicate(
                 MongodbOps.ELEM_MATCH, collection, ExpressionUtils.allOf(conditions)));
     }
 

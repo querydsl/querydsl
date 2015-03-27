@@ -13,11 +13,13 @@
  */
 package com.querydsl.core.types;
 
-import com.querydsl.core.domain.QCat;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.BooleanPath;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.querydsl.core.domain.QCat;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.Expressions;
 
 
 public class ToStringVisitorTest {
@@ -36,7 +38,7 @@ public class ToStringVisitorTest {
         
     @Test
     public void Template() {
-        Expression<Boolean> template = TemplateExpressionImpl.create(Boolean.class, "{0} is not null", QCat.cat.name);
+        Expression<Boolean> template = ExpressionUtils.template(Boolean.class, "{0} is not null", QCat.cat.name);
         assertEquals("cat_name is not null", 
                 template.accept(ToStringVisitor.DEFAULT, templates));
     }

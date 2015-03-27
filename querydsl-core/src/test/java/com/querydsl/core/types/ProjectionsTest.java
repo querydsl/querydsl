@@ -46,7 +46,7 @@ public class ProjectionsTest {
     @Test
     public void Array() {
         FactoryExpression<String[]> expr = Projections.array(String[].class,
-                new PathImpl(String.class, "p1"), new PathImpl(String.class, "p2"));
+                ExpressionUtils.path(String.class, "p1"), ExpressionUtils.path(String.class, "p2"));
         assertEquals(String[].class, expr.newInstance("1", "2").getClass());
     }
 

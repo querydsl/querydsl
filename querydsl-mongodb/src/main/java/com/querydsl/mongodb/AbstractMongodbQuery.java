@@ -139,7 +139,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
             if (ids.isEmpty()) {
                 throw new NoResults();
             }
-            Path path = new PathImpl<String>(String.class, source, "$id");
+            Path path = ExpressionUtils.path(String.class, source, "$id");
             predicates.put(source.getRoot(), ExpressionUtils.in(path, ids));
         }
         Path source = (Path)((Operation)joins.get(0).getTarget()).getArg(0);

@@ -53,28 +53,28 @@ public class DetachableMixinTest {
 
     @Test
     public void List_Objects() {
-        query.from(new PathImpl(Object.class, "x"));
-        ListSubQuery subQuery = detachable.list(new PathImpl(Object.class, "x"), "XXX");
+        query.from(ExpressionUtils.path(Object.class, "x"));
+        ListSubQuery subQuery = detachable.list(ExpressionUtils.path(Object.class, "x"), "XXX");
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
-        assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
+        assertEquals(ExpressionUtils.path(Object.class, "x"), exprs.get(0));
         assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
     }
 
     @Test
     public void Unique_Objects() {
-        query.from(new PathImpl(Object.class, "x"));
-        SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), "XXX");
+        query.from(ExpressionUtils.path(Object.class, "x"));
+        SubQueryExpression<?> subQuery = detachable.unique(ExpressionUtils.path(Object.class, "x"), "XXX");
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
-        assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
+        assertEquals(ExpressionUtils.path(Object.class, "x"), exprs.get(0));
         assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
     }
 
     @Test
     public void Null_As_Template() {
-        query.from(new PathImpl(Object.class, "x"));
-        SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), null);
+        query.from(ExpressionUtils.path(Object.class, "x"));
+        SubQueryExpression<?> subQuery = detachable.unique(ExpressionUtils.path(Object.class, "x"), null);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
-        assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
+        assertEquals(ExpressionUtils.path(Object.class, "x"), exprs.get(0));
         assertEquals(Expressions.nullExpression(), exprs.get(1));
     }
 

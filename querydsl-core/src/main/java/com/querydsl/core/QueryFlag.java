@@ -17,7 +17,7 @@ import java.io.Serializable;
 
 import com.google.common.base.Objects;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.TemplateExpressionImpl;
+import com.querydsl.core.types.ExpressionUtils;
 
 /**
  * Defines a positioned flag in a Query for customization of query serialization
@@ -108,7 +108,7 @@ public class QueryFlag implements Serializable{
     private final Expression<?> flag;
 
     public QueryFlag(Position position, String flag) {
-        this(position, TemplateExpressionImpl.create(Object.class, flag));
+        this(position, ExpressionUtils.template(Object.class, flag));
     }
 
     public QueryFlag(Position position, Expression<?> flag) {

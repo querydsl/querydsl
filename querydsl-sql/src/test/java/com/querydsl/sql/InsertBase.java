@@ -13,9 +13,9 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.survey;
 import static com.querydsl.sql.Constants.survey2;
-import static com.querydsl.core.Target.*;
 import static org.junit.Assert.*;
 
 import java.sql.ResultSet;
@@ -31,16 +31,16 @@ import org.junit.Test;
 
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.sql.dml.DefaultMapper;
 import com.querydsl.sql.dml.Mapper;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.domain.*;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.dsl.Param;
-import com.querydsl.core.testutil.ExcludeIn;
-import com.querydsl.core.testutil.IncludeIn;
 
 public class InsertBase extends AbstractBaseTest {
 
@@ -67,8 +67,8 @@ public class InsertBase extends AbstractBaseTest {
         QDateTest dateTest = QDateTest.qDateTest;
         LocalDate localDate = new LocalDate(1978, 1, 2);
 
-        Path<LocalDate> localDateProperty = new PathImpl<LocalDate>(LocalDate.class, "DATE_TEST");
-        Path<DateTime> dateTimeProperty = new PathImpl<DateTime>(DateTime.class, "DATE_TEST");
+        Path<LocalDate> localDateProperty = ExpressionUtils.path(LocalDate.class, "DATE_TEST");
+        Path<DateTime> dateTimeProperty = ExpressionUtils.path(DateTime.class, "DATE_TEST");
         SQLInsertClause insert = insert(dateTest);
         insert.set(localDateProperty, localDate);
         insert.execute();
@@ -248,7 +248,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
     public void Insert_With_Keys_Projected2() throws SQLException{
-        Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
+        Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
         assertNotNull(id);
     }

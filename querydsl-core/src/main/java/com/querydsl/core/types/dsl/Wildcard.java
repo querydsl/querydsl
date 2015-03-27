@@ -14,8 +14,8 @@
 package com.querydsl.core.types.dsl;
 
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.TemplateExpressionImpl;
 
 /**
  * Wildcard provides constant Expressions for general wildcard expressions
@@ -28,7 +28,7 @@ public final class Wildcard {
     /**
      * Wildcard expression (*) for all columns
      */
-    public static final Expression<Object[]> all = TemplateExpressionImpl.create(Object[].class, "*");
+    public static final Expression<Object[]> all = ExpressionUtils.template(Object[].class, "*");
 
     /**
      * Wildcard count expression (count(*))

@@ -18,7 +18,7 @@ import java.io.Serializable;
 import javax.annotation.concurrent.Immutable;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.TemplateExpressionImpl;
+import com.querydsl.core.types.ExpressionUtils;
 
 /**
  * JoinFlag defines a join related flag using an Expression instance
@@ -65,11 +65,11 @@ public class JoinFlag implements Serializable{
     private final Position position;
     
     public JoinFlag(String flag) {
-        this(TemplateExpressionImpl.create(Object.class, flag), Position.BEFORE_TARGET);
+        this(ExpressionUtils.template(Object.class, flag), Position.BEFORE_TARGET);
     }
     
     public JoinFlag(String flag, Position position) {
-        this(TemplateExpressionImpl.create(Object.class, flag), position);
+        this(ExpressionUtils.template(Object.class, flag), position);
     }
     
     

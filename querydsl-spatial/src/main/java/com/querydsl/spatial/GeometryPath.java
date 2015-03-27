@@ -15,22 +15,9 @@ package com.querydsl.spatial;
 
 import java.lang.reflect.AnnotatedElement;
 
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.LineString;
-import org.geolatte.geom.LinearRing;
-import org.geolatte.geom.MultiLineString;
-import org.geolatte.geom.MultiPoint;
-import org.geolatte.geom.MultiPolygon;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.PolyHedralSurface;
-import org.geolatte.geom.Polygon;
+import org.geolatte.geom.*;
 
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * @author tiwe
@@ -74,7 +61,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
     }
 
     public GeometryPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

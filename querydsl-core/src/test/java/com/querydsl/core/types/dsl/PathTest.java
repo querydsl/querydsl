@@ -14,11 +14,7 @@
 package com.querydsl.core.types.dsl;
 
 import static com.querydsl.core.alias.Alias.$;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -36,12 +32,7 @@ import org.junit.Test;
 import com.querydsl.core.alias.Alias;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryTransient;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Templates;
-import com.querydsl.core.types.ToStringVisitor;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.*;
 import com.querydsl.core.util.Annotations;
 
 public class PathTest {
@@ -137,21 +128,21 @@ public class PathTest {
         assertEquals(new BooleanPath("b"), new BooleanPath("b"));
         assertEquals(new NumberPath<Integer>(Integer.class,"n"), new NumberPath<Integer>(Integer.class,"n"));
 
-        assertEquals(new ArrayPath(String[].class, "p"), new PathImpl(String.class, "p"));
-        assertEquals(new BooleanPath("p"), new PathImpl(Boolean.class, "p"));
-        assertEquals(new ComparablePath(String.class,"p"), new PathImpl(String.class, "p"));
-        assertEquals(new DatePath(Date.class,"p"), new PathImpl(Date.class, "p"));
-        assertEquals(new DateTimePath(Date.class,"p"), new PathImpl(Date.class, "p"));
-        assertEquals(new EnumPath(ExampleEnum.class,"p"), new PathImpl(ExampleEnum.class, "p"));
-        assertEquals(new NumberPath(Integer.class,"p"), new PathImpl(Integer.class, "p"));
-        assertEquals(new StringPath("p"), new PathImpl(String.class, "p"));
-        assertEquals(new TimePath(Time.class,"p"), new PathImpl(Time.class, "p"));
+        assertEquals(new ArrayPath(String[].class, "p"), ExpressionUtils.path(String.class, "p"));
+        assertEquals(new BooleanPath("p"), ExpressionUtils.path(Boolean.class, "p"));
+        assertEquals(new ComparablePath(String.class,"p"), ExpressionUtils.path(String.class, "p"));
+        assertEquals(new DatePath(Date.class,"p"), ExpressionUtils.path(Date.class, "p"));
+        assertEquals(new DateTimePath(Date.class,"p"), ExpressionUtils.path(Date.class, "p"));
+        assertEquals(new EnumPath(ExampleEnum.class,"p"), ExpressionUtils.path(ExampleEnum.class, "p"));
+        assertEquals(new NumberPath(Integer.class,"p"), ExpressionUtils.path(Integer.class, "p"));
+        assertEquals(new StringPath("p"), ExpressionUtils.path(String.class, "p"));
+        assertEquals(new TimePath(Time.class,"p"), ExpressionUtils.path(Time.class, "p"));
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void Various_Properties() {
-        Path<?> parent = new PathImpl(Object.class, "parent");
+        Path<?> parent = ExpressionUtils.path(Object.class, "parent");
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, parent, "p"));
         paths.add(new BeanPath(Object.class, parent, "p"));
@@ -170,7 +161,7 @@ public class PathTest {
         paths.add(new TimePath(Time.class, parent, "p"));
 
         for (Path<?> path : paths) {
-            Path other = new PathImpl(path.getType(), PathMetadataFactory.forProperty(parent, "p"));
+            Path other = ExpressionUtils.path(path.getType(), PathMetadataFactory.forProperty(parent, "p"));
             assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
             assertEquals(path.hashCode(), other.hashCode());
             assertEquals(path, other);
@@ -201,7 +192,7 @@ public class PathTest {
         paths.add(new TimePath(Time.class,"p"));
 
         for (Path<?> path : paths) {
-            Path other = new PathImpl(path.getType(), "p");
+            Path other = ExpressionUtils.path(path.getType(), "p");
             assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, null));
             assertEquals(path.hashCode(), other.hashCode());
             assertEquals(path, other);
@@ -213,8 +204,8 @@ public class PathTest {
 
     @Test
     public void Parent_Path() {
-        Path<Object> person = new PathImpl<Object>(Object.class, "person");
-        Path<String> name = new PathImpl<String>(String.class, person, "name");
+        Path<Object> person = ExpressionUtils.path(Object.class, "person");
+        Path<String> name = ExpressionUtils.path(String.class, person, "name");
         assertEquals("person.name", name.toString());
     }
 

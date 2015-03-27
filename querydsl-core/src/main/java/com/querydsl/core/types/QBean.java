@@ -290,7 +290,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      */
     @SuppressWarnings("unchecked")
     public Expression<T> as(Path<T> alias) {
-        return OperationImpl.create(getType(),Ops.ALIAS, this, alias);
+        return ExpressionUtils.operation(getType(),Ops.ALIAS, this, alias);
     }
 
     /**
@@ -299,7 +299,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      * @return
      */
     public Expression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
 
     @Override

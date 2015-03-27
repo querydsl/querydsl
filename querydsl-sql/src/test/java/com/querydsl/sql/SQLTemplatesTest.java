@@ -89,7 +89,7 @@ public class SQLTemplatesTest {
 
     @Test
     public void NextVal() {
-        Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
+        Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("nextval('myseq')", new SQLSerializer(new Configuration(SQLTemplates.DEFAULT)).handle(nextval).toString());
         // Derby OK
         // H2 OK

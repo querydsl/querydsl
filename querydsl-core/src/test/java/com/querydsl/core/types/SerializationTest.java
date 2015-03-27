@@ -12,8 +12,8 @@ public class SerializationTest {
 
     @Test
     public void roundtrip() throws Exception {
-        PathImpl path = new PathImpl(Object.class, "entity");
-        SimplePath path2 = Expressions.path(Object.class, "entity");
+        Path<?> path = ExpressionUtils.path(Object.class, "entity");
+        SimplePath<?> path2 = Expressions.path(Object.class, "entity");
         assertEquals(path, serialize(path));
         assertEquals(path2, serialize(path2));
         assertEquals(path2.isNull(), serialize(path2.isNull()));

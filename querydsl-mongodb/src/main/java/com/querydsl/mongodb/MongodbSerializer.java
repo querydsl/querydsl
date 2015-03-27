@@ -123,7 +123,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             Operation<?> subOperation = (Operation<?>) expr.getArg(0);
             Operator subOp = subOperation.getOperator();
             if (subOp == Ops.IN) {
-                return visit(OperationImpl.create(Boolean.class, Ops.NOT_IN, subOperation.getArg(0),
+                return visit(ExpressionUtils.operation(Boolean.class, Ops.NOT_IN, subOperation.getArg(0),
                         subOperation.getArg(1)), context);
             } else {
                 BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));

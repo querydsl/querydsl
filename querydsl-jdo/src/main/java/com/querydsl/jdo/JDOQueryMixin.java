@@ -57,7 +57,7 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
     private void addCondition(Context context, int i, Path<?> path, Role role) {
         EntityPath<?> alias = context.replacements.get(i);                 
         from(alias);
-        Predicate condition = PredicateOperation.create(Ops.IN, alias, path.getMetadata().getParent());
+        Predicate condition = ExpressionUtils.predicate(Ops.IN, alias, path.getMetadata().getParent());
         if (role == Role.WHERE) {
             super.where(condition);
         } else {

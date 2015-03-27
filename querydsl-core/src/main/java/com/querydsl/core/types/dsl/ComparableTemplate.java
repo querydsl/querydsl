@@ -16,10 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Template;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.TemplateExpressionImpl;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * ComparableTemplate defines custom comparable expressions
@@ -35,7 +32,7 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
     private final TemplateExpressionImpl<T> templateMixin;
 
     protected ComparableTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
-        super(new TemplateExpressionImpl<T>(type, template, args));
+        super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
 

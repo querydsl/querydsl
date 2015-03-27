@@ -143,8 +143,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 }
                 if (treat) {
                     Expression<?> entityName = ConstantImpl.create(getEntityName(op.getArg(1).getType()));
-                    Expression<?> t = OperationImpl.create(op.getType(), JPQLOps.TREAT, op.getArg(0), entityName);
-                    op = OperationImpl.create(op.getType(), Ops.ALIAS, t, op.getArg(1));
+                    Expression<?> t = ExpressionUtils.operation(op.getType(), JPQLOps.TREAT, op.getArg(0), entityName);
+                    op = ExpressionUtils.operation(op.getType(), Ops.ALIAS, t, op.getArg(1));
                 }
             }
             handle(op);
@@ -480,7 +480,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (entityType.hasSingleIdAttribute()) {
                 SingularAttribute<?,?> id = getIdProperty(entityType);
                 // turn lhs into id path
-                lhs = new PathImpl<Object>(id.getJavaType(), lhs, id.getName());
+                lhs = ExpressionUtils.path(id.getJavaType(), lhs, id.getName());
                 // turn rhs into id collection
                 Set<Object> ids = new HashSet<Object>();
                 for (Object entity : rhs.getConstant()) {

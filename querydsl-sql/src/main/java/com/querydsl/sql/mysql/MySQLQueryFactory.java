@@ -18,15 +18,10 @@ import java.sql.Connection;
 import javax.inject.Provider;
 
 import com.querydsl.core.QueryFlag.Position;
-import com.querydsl.sql.AbstractSQLQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.MySQLTemplates;
-import com.querydsl.sql.RelationalPath;
-import com.querydsl.sql.SQLSubQuery;
-import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.TemplateExpressionImpl;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.sql.*;
+import com.querydsl.sql.dml.SQLInsertClause;
 
 /**
  * MySQL specific implementation of SQLQueryFactory
@@ -62,7 +57,7 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery, SQLSu
     
     public SQLInsertClause insertOnDuplicateKeyUpdate(RelationalPath<?> entity, Expression<?> clause) {
         SQLInsertClause insert = insert(entity);
-        insert.addFlag(Position.END, TemplateExpressionImpl.create(String.class, " on duplicate key update {0}", clause));
+        insert.addFlag(Position.END, ExpressionUtils.template(String.class, " on duplicate key update {0}", clause));
         return insert;
     }
     

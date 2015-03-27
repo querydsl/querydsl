@@ -17,12 +17,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.geolatte.geom.LineString;
 
-import com.querydsl.spatial.LineStringExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * @author tiwe
@@ -48,7 +43,7 @@ public class LineStringPath<T extends LineString> extends LineStringExpression<T
     }
 
     public LineStringPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

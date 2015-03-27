@@ -68,7 +68,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     @Override
     public SimpleExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
 
     /**

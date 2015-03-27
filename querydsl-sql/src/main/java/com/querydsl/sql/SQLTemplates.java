@@ -110,7 +110,7 @@ public class SQLTemplates extends Templates {
                     "XMLNAMESPACES", "XMLPARSE", "XMLPI", "XMLQUERY",
                     "XMLSERIALIZE", "XMLTABLE", "XMLTEXT", "XMLVALIDATE", "YEAR");
 
-    public static final Expression<?> RECURSIVE = TemplateExpressionImpl.create(Object.class, "");
+    public static final Expression<?> RECURSIVE = ExpressionUtils.template(Object.class, "");
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);

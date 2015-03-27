@@ -23,20 +23,20 @@ import org.junit.Test;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.types.PathMetadataFactory;
 
 public class OrderedQueryMetadataTest {
 
-    private Path<Object> x = new PathImpl<Object>(Object.class, PathMetadataFactory.forVariable("x"));
-    private Path<Object> y = new PathImpl<Object>(Object.class, PathMetadataFactory.forVariable("y"));
-    private Path<Object> x_a = new PathImpl<Object>(Object.class, PathMetadataFactory.forProperty(x, "a"));
-    private Path<Object> x_a_a = new PathImpl<Object>(Object.class, PathMetadataFactory.forProperty(x_a, "a"));
-    private Path<Object> x_a_b = new PathImpl<Object>(Object.class, PathMetadataFactory.forProperty(x_a, "b"));
-    private Path<Object> x_b = new PathImpl<Object>(Object.class, PathMetadataFactory.forProperty(x, "a"));
-    private Path<Object> y_a = new PathImpl<Object>(Object.class, PathMetadataFactory.forProperty(y, "a"));
-    private Path<Object> y_b = new PathImpl<Object>(Object.class, PathMetadataFactory.forProperty(y, "b"));
+    private Path<Object> x = ExpressionUtils.path(Object.class, PathMetadataFactory.forVariable("x"));
+    private Path<Object> y = ExpressionUtils.path(Object.class, PathMetadataFactory.forVariable("y"));
+    private Path<Object> x_a = ExpressionUtils.path(Object.class, PathMetadataFactory.forProperty(x, "a"));
+    private Path<Object> x_a_a = ExpressionUtils.path(Object.class, PathMetadataFactory.forProperty(x_a, "a"));
+    private Path<Object> x_a_b = ExpressionUtils.path(Object.class, PathMetadataFactory.forProperty(x_a, "b"));
+    private Path<Object> x_b = ExpressionUtils.path(Object.class, PathMetadataFactory.forProperty(x, "a"));
+    private Path<Object> y_a = ExpressionUtils.path(Object.class, PathMetadataFactory.forProperty(y, "a"));
+    private Path<Object> y_b = ExpressionUtils.path(Object.class, PathMetadataFactory.forProperty(y, "b"));
 
     private void addJoin(QueryMetadata md, JoinExpression j) {
         md.addJoin(j.getType(), j.getTarget());

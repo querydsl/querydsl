@@ -15,14 +15,10 @@ package com.querydsl.spatial.jts;
 
 import java.util.List;
 
+import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Geometry;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Visitor;
 
 /**
  * @author tiwe
@@ -40,7 +36,7 @@ public class JTSGeometryOperation<T extends Geometry> extends JTSGeometryExpress
     }
 
     protected JTSGeometryOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
-        super(new OperationImpl<T>(type, op, args));
+        super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
 

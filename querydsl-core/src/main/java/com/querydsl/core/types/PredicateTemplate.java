@@ -31,23 +31,15 @@ public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implement
 
     @Nullable
     private volatile Predicate not;
-    
-    public PredicateTemplate(String template, Object... args) {
-        super(Boolean.class, TemplateFactory.DEFAULT.create(template), args);
-    }
-    
-    public PredicateTemplate(Template template, Object... args) {
-        super(Boolean.class, template, args);
-    }
 
-    public PredicateTemplate(Template template, ImmutableList<?> args) {
+    protected PredicateTemplate(Template template, ImmutableList<?> args) {
         super(Boolean.class, template, args);
     }
     
     @Override
     public Predicate not() {
         if (not == null) {
-            not = PredicateOperation.create(Ops.NOT, this);
+            not = ExpressionUtils.predicate(Ops.NOT, this);
         }
         return not;
     }

@@ -16,7 +16,7 @@ package com.querydsl.sql;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.OperationImpl;
+import com.querydsl.core.types.ExpressionUtils;
 
 /**
  * @author tiwe
@@ -35,7 +35,7 @@ public class WithBuilder<R> {
     }
 
     public R as(Expression<?> expr) {
-        Expression<?> flag = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, expr);
+        Expression<?> flag = ExpressionUtils.operation(alias.getType(), SQLOps.WITH_ALIAS, alias, expr);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, flag));
     }
 

@@ -35,7 +35,7 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
     }
 
     protected EnumPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

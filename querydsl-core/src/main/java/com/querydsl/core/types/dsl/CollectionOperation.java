@@ -18,10 +18,7 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * @author tiwe
@@ -40,7 +37,7 @@ public class CollectionOperation<E> extends CollectionExpressionBase<Collection<
     }
 
     protected CollectionOperation(Class<? super E> type, Operator op, ImmutableList<Expression<?>> args) {
-        super(new OperationImpl(Collection.class, op, args));
+        super(ExpressionUtils.operation((Class)Collection.class, op, args));
         this.opMixin = (OperationImpl)super.mixin;
         this.elementType = (Class<E>)type;
     }

@@ -15,14 +15,8 @@ package com.querydsl.spatial.jts;
 
 import java.lang.reflect.AnnotatedElement;
 
+import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.LineString;
-
-import com.querydsl.spatial.jts.JTSLineStringExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
 
 /**
  * @author tiwe
@@ -48,7 +42,7 @@ public class JTSLineStringPath<T extends LineString> extends JTSLineStringExpres
     }
 
     public JTSLineStringPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

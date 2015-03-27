@@ -16,10 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Template;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.TemplateExpressionImpl;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * TimeTemplate defines custom time expressions
@@ -35,7 +32,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
     private final TemplateExpressionImpl<T> templateMixin;
 
     protected TimeTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
-        super(new TemplateExpressionImpl<T>(type, template, args));
+        super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
     

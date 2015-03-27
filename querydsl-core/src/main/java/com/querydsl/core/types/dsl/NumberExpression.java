@@ -18,14 +18,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.Ops.MathOps;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.util.MathUtils;
 
 /**
@@ -89,7 +83,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
     @Override
     public NumberExpression<T> as(String alias) {
-        return Expressions.numberOperation(getType(), Ops.ALIAS, mixin, new PathImpl<T>(getType(), alias));
+        return Expressions.numberOperation(getType(), Ops.ALIAS, mixin, ExpressionUtils.path(getType(), alias));
     }
 
     /**

@@ -39,7 +39,7 @@ import com.querydsl.core.types.dsl.ListSubQuery;
  */
 public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Query<Q>> extends ProjectableQuery<Q> implements SQLCommonQuery<Q> {
 
-    private static final Path<?> defaultQueryAlias = new PathImpl(Object.class, "query");
+    private static final Path<?> defaultQueryAlias = ExpressionUtils.path(Object.class, "query");
 
     protected final Configuration configuration;
     
@@ -420,13 +420,13 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
 
     @Override
     public Q with(Path<?> alias, SubQueryExpression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
+        Expression<?> expr = ExpressionUtils.operation(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
     @Override
     public Q with(Path<?> alias, Expression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
+        Expression<?> expr = ExpressionUtils.operation(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 

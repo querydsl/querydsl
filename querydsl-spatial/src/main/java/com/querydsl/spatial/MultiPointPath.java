@@ -17,12 +17,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import org.geolatte.geom.MultiPoint;
 
-import com.querydsl.spatial.MultiPointExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * @author tiwe
@@ -48,7 +43,7 @@ public class MultiPointPath<T extends MultiPoint> extends MultiPointExpression<T
     }
 
     public MultiPointPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

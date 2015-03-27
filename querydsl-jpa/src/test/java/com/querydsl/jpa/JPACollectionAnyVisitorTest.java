@@ -18,10 +18,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.querydsl.core.support.Context;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.TemplateExpressionImpl;
+import com.querydsl.core.types.*;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.domain.QDomesticCat;
 import com.querydsl.jpa.domain.QEmployee;
@@ -79,7 +76,7 @@ public class JPACollectionAnyVisitorTest {
 
     @Test
     public void Template() {
-        Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}",
+        Expression<Boolean> templateExpr = ExpressionUtils.template(Boolean.class, "{0} = {1}",
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertEquals("exists (select 1\n" +
                 "from cat.kittens as cat_kittens_0\n" +

@@ -13,7 +13,8 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -23,12 +24,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Templates;
-import com.querydsl.core.types.ToStringVisitor;
+import com.querydsl.core.types.*;
 
 public class OperationTest {
     
@@ -51,7 +47,7 @@ public class OperationTest {
         operations.add(new TimeOperation(Time.class,Ops.DateTimeOps.CURRENT_TIME, args));
         
         for (Operation<?> operation : operations) {
-            Operation<?> other = new OperationImpl(operation.getType(), operation.getOperator(), 
+            Operation<?> other = ExpressionUtils.operation(operation.getType(), operation.getOperator(),
                     ImmutableList.copyOf(operation.getArgs()));
             assertEquals(operation.toString(), operation.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
             assertEquals(operation.hashCode(), other.hashCode());

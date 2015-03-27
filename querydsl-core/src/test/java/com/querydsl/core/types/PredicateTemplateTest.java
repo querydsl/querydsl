@@ -21,7 +21,7 @@ public class PredicateTemplateTest {
 
     @Test
     public void Not() {
-        PredicateTemplate template = new PredicateTemplate("XXX");
+        PredicateTemplate template = ExpressionUtils.predicateTemplate("XXX");
         assertEquals("!XXX", template.not().toString());
     }
 

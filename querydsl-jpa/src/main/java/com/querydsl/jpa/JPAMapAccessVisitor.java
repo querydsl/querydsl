@@ -26,7 +26,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
         if (expr.getOperator() == Ops.CONTAINS_KEY) {
             ParameterizedExpression map = (ParameterizedExpression<?>) expr.getArg(0);
             Expression key = expr.getArg(1);
-            Path replacement = new PathImpl<Object>(map.getParameter(1),
+            Path replacement = ExpressionUtils.path(map.getParameter(1),
                     ExpressionUtils.createRootVariable((Path<?>)map, Math.abs(expr.hashCode())));
             metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(map, replacement));
             metadata.addJoinCondition(ExpressionUtils.eq(
@@ -53,7 +53,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
                 // join parent as path123 on key(path123) = ...
                 Path parent = pathMetadata.getParent();
                 ParameterizedExpression parExpr = (ParameterizedExpression) parent;
-                replacement = new PathImpl(parExpr.getParameter(1),
+                replacement = ExpressionUtils.path(parExpr.getParameter(1),
                         ExpressionUtils.createRootVariable(parent, replacements.size()));
                 metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(parent, replacement));
                 metadata.addJoinCondition(ExpressionUtils.eq(

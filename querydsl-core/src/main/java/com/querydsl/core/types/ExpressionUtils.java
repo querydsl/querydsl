@@ -13,7 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -44,12 +47,197 @@ public final class ExpressionUtils {
     private static final Templates TEMPLATES = new UnderscoreTemplates();
 
     /**
+     * Create a new Operation expression
+     *
+     * @param type
+     * @param operator
+     * @param args
+     * @return
+     */
+    public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
+                                             Expression<?>... args) {
+        return operation(type, operator, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param type
+     * @param operator
+     * @param args
+     * @return
+     */
+    public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
+                                             ImmutableList<Expression<?>> args) {
+        if (type.equals(Boolean.class)) {
+            return (Operation<T>) new PredicateOperation(operator, args);
+        } else {
+            return new OperationImpl<T>(type, operator, args);
+        }
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param operator
+     * @param args
+     * @return
+     */
+    public static PredicateOperation predicate(Operator operator, Expression<?>... args) {
+        return predicate(operator, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param operator
+     * @param args
+     * @return
+     */
+    public static PredicateOperation predicate(Operator operator, ImmutableList<Expression<?>> args) {
+        return new PredicateOperation(operator, args);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param type
+     * @param variable
+     * @return
+     */
+    public static <T> Path<T> path(Class<? extends T> type, String variable) {
+        return new PathImpl<T>(type, variable);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param type
+     * @param parent
+     * @param property
+     * @return
+     */
+    public static <T> Path<T> path(Class<? extends T> type, Path<?> parent, String property) {
+        return new PathImpl<T>(type, parent, property);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param type
+     * @param metadata
+     * @param <T>
+     * @return
+     */
+    public static <T> Path<T> path(Class<? extends T> type, PathMetadata metadata) {
+        return new PathImpl<T>(type, metadata);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template
+     * @param args
+     * @return
+     */
+    public static PredicateTemplate predicateTemplate(String template, Object... args) {
+        return predicateTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template
+     * @param args
+     * @return
+     */
+    public static PredicateTemplate predicateTemplate(String template, ImmutableList<?> args) {
+        return predicateTemplate(TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template
+     * @param args
+     * @return
+     */
+    public static PredicateTemplate predicateTemplate(Template template, Object... args) {
+        return predicateTemplate(template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template
+     * @param args
+     * @return
+     */
+    public static PredicateTemplate predicateTemplate(Template template, ImmutableList<?> args) {
+        return new PredicateTemplate(template, args);
+    }
+
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, Object... args) {
+        return template(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, ImmutableList<?> args) {
+        return template(cl, TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, Object... args) {
+        return template(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
+        if (cl.equals(Boolean.class)) {
+            return (TemplateExpression<T>) new PredicateTemplate(template, args);
+        } else {
+            return new TemplateExpressionImpl<T>(cl, template, args);
+        }
+    }
+
+    /**
      * @param col
      * @return
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> all(CollectionExpression<?, ? super T> col) {
-        return OperationImpl.create((Class<T>)col.getParameter(0), Ops.QuantOps.ALL, col);
+        return new OperationImpl<T>((Class<T>)col.getParameter(0), Ops.QuantOps.ALL,
+                ImmutableList.<Expression<?>>of(col));
     }
 
     /**
@@ -58,7 +246,8 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
-        return OperationImpl.create((Class<T>)col.getParameter(0), Ops.QuantOps.ANY, col);
+        return new OperationImpl<T>((Class<T>)col.getParameter(0), Ops.QuantOps.ANY,
+                ImmutableList.<Expression<?>>of(col));
     }
 
     /**
@@ -110,7 +299,7 @@ public final class ExpressionUtils {
         } else if (right == null) {
             return left;
         } else {
-            return PredicateOperation.create(Ops.AND, left, right);
+            return predicate(Ops.AND, left, right);
         }
     }
 
@@ -158,7 +347,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
-        return OperationImpl.create(alias.getType(), Ops.ALIAS, source, alias);
+        return operation(alias.getType(), Ops.ALIAS, source, alias);
     }
 
     /**
@@ -170,7 +359,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Expression<D> as(Expression<D> source, String alias) {
-        return as(source, new PathImpl<D>(source.getType(), alias));
+        return as(source, path(source.getType(), alias));
     }
 
     /**
@@ -178,7 +367,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Expression<Long> count(Expression<?> source) {
-        return OperationImpl.create(Long.class, Ops.AggOps.COUNT_AGG, source);
+        return operation(Long.class, Ops.AggOps.COUNT_AGG, source);
     }
 
     /**
@@ -202,7 +391,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
-        return PredicateOperation.create(Ops.EQ, left, right);
+        return predicate(Ops.EQ, left, right);
     }
 
     /**
@@ -214,7 +403,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate in(Expression<D> left, CollectionExpression<?,? extends D> right) {
-        return PredicateOperation.create(Ops.IN, left, right);
+        return predicate(Ops.IN, left, right);
     }
 
     /**
@@ -229,7 +418,7 @@ public final class ExpressionUtils {
         if (right.size() == 1) {
             return eqConst(left, right.iterator().next());
         } else {
-            return PredicateOperation.create(Ops.IN, left, ConstantImpl.create(right));
+            return predicate(Ops.IN, left, ConstantImpl.create(right));
         }
     }
 
@@ -256,7 +445,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate isNull(Expression<?> left) {
-        return PredicateOperation.create(Ops.IS_NULL, left);
+        return predicate(Ops.IS_NULL, left);
     }
 
     /**
@@ -266,7 +455,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static Predicate isNotNull(Expression<?> left) {
-        return PredicateOperation.create(Ops.IS_NOT_NULL, left);
+        return predicate(Ops.IS_NOT_NULL, left);
     }
 
     /**
@@ -314,7 +503,7 @@ public final class ExpressionUtils {
                 Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0), false);
                 Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1), false);
                 if (lhs != o.getArg(0) || rhs != o.getArg(1)) {
-                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
+                    return operation(String.class, Ops.CONCAT, lhs, rhs);
                 }
             }
         }
@@ -337,10 +526,10 @@ public final class ExpressionUtils {
     public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
         Expression<T> rv = (Expression<T>)exprs.get(0);
         if (exprs.size() == 1) {
-            rv = OperationImpl.create(clazz, Ops.SINGLETON, rv, exprs.get(0));
+            rv = operation(clazz, Ops.SINGLETON, rv, exprs.get(0));
         } else {
             for (int i = 1; i < exprs.size(); i++) {
-                rv = OperationImpl.create(clazz, Ops.LIST, rv, exprs.get(i));
+                rv = operation(clazz, Ops.LIST, rv, exprs.get(i));
             }
         }
 
@@ -383,7 +572,7 @@ public final class ExpressionUtils {
                 Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
                 Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
                 if (lhs != o.getArg(0) || rhs != o.getArg(1)) {
-                    return OperationImpl.create(String.class, Ops.CONCAT, lhs, rhs);
+                    return operation(String.class, Ops.CONCAT, lhs, rhs);
                 }
             }
         }
@@ -411,7 +600,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
-        return PredicateOperation.create(Ops.NE, left, right);
+        return predicate(Ops.NE, left, right);
     }
 
     /**
@@ -423,7 +612,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate notIn(Expression<D> left, CollectionExpression<?,? extends D> right) {
-        return PredicateOperation.create(Ops.NOT_IN, left, right);
+        return predicate(Ops.NOT_IN, left, right);
     }
 
     /**
@@ -438,7 +627,7 @@ public final class ExpressionUtils {
         if (right.size() == 1) {
             return neConst(left, right.iterator().next());
         } else {
-            return PredicateOperation.create(Ops.NOT_IN, left, ConstantImpl.create(right));
+            return predicate(Ops.NOT_IN, left, ConstantImpl.create(right));
         }
     }
 
@@ -473,7 +662,7 @@ public final class ExpressionUtils {
         } else if (right == null) {
             return left;
         } else {
-            return PredicateOperation.create(Ops.OR, left, right);
+            return predicate(Ops.OR, left, right);
         }
     }
 

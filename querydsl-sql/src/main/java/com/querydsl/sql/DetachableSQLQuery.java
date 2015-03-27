@@ -66,7 +66,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
      */
     @Override
     public Q addFlag(Position position, String prefix, Expression<?> expr) {
-        Expression<?> flag = TemplateExpressionImpl.create(expr.getType(), prefix + "{0}", expr);
+        Expression<?> flag = ExpressionUtils.template(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
@@ -315,13 +315,13 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
 
     @Override
     public Q with(Path<?> alias, SubQueryExpression<?> target) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, target);
+        Expression<?> expr = ExpressionUtils.operation(alias.getType(), SQLOps.WITH_ALIAS, alias, target);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
     @Override
     public Q with(Path<?> alias, Expression<?> query) {
-        Expression<?> expr = OperationImpl.create(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
+        Expression<?> expr = ExpressionUtils.operation(alias.getType(), SQLOps.WITH_ALIAS, alias, query);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.WITH, expr));
     }
 
