@@ -5,6 +5,8 @@
  */
 package com.mysema.codegen;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -17,9 +19,8 @@ import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import junit.framework.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -74,6 +75,12 @@ public class SimpleCompilerTest {
         if (compilationResult != 0) {
             Assert.fail("Compilation Failed");
         }
+    }
+
+    @Test
+    public void Surefire() {
+        URLClassLoader cl = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        assertTrue(SimpleCompiler.isSureFireBooter(cl));
     }
     
 
