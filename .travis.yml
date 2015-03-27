@@ -7,7 +7,7 @@ services:
 addons:
   postgresql: "9.3"
 install:
-  - sh -c 'cd querydsl-root && mvn -B -q install -DskipTests=true'
+  - sh -c 'mvn -B -q install -DskipTests=true'
 before_script:
   - mysql -u root -e "source travis/mysql.sql"
   - psql -U postgres -f travis/postgresql.sql  
@@ -15,5 +15,5 @@ before_script:
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
 script:
-  - sh -c 'cd querydsl-root && mvn -B test -Pall,travis'
+  - sh -c 'mvn -B test -Pall,travis'
 

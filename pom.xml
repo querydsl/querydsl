@@ -249,9 +249,9 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>../querydsl-root/src/main/assembly.xml</descriptor>
+            <descriptor>../src/main/assembly.xml</descriptor>
           </descriptors>
-          <outputDirectory>../querydsl-root/target/dist</outputDirectory>
+          <outputDirectory>../target/dist</outputDirectory>
         </configuration>
       </plugin>     
       <plugin>
@@ -414,114 +414,114 @@
       <id>all</id>
       <activation><activeByDefault>true</activeByDefault></activation>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-spatial</module>
-        <module>../querydsl-apt</module> 
-        <module>../querydsl-collections</module>           
-        <module>../querydsl-sql</module>
-        <module>../querydsl-sql-codegen</module>
-        <module>../querydsl-sql-spring</module>
-        <module>../querydsl-maven-plugin</module>
-        <module>../querydsl-jpa</module>    
-        <module>../querydsl-jpa-codegen</module>
-        <module>../querydsl-jdo</module>
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-spatial</module>
+        <module>querydsl-apt</module> 
+        <module>querydsl-collections</module>           
+        <module>querydsl-sql</module>
+        <module>querydsl-sql-codegen</module>
+        <module>querydsl-sql-spring</module>
+        <module>querydsl-maven-plugin</module>
+        <module>querydsl-jpa</module>    
+        <module>querydsl-jpa-codegen</module>
+        <module>querydsl-jdo</module>
                 
         <!-- Lucene related -->
-        <module>../querydsl-lucene3</module>
-        <module>../querydsl-lucene4</module>
-        <module>../querydsl-hibernate-search</module>
+        <module>querydsl-lucene3</module>
+        <module>querydsl-lucene4</module>
+        <module>querydsl-hibernate-search</module>
         
         <!-- NoSQL -->
-        <module>../querydsl-mongodb</module>
+        <module>querydsl-mongodb</module>
         
         <!-- Languages -->        
-        <module>../querydsl-scala</module>
+        <module>querydsl-scala</module>
       </modules>
     </profile>
     
     <profile>
       <id>hibernate-search</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-lucene3</module>  
-        <module>../querydsl-hibernate-search</module>        
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-lucene3</module>  
+        <module>querydsl-hibernate-search</module>        
       </modules>
     </profile>   
 
     <profile>
       <id>jpa</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-spatial</module>
-        <module>../querydsl-apt</module> 
-        <module>../querydsl-sql</module>
-        <module>../querydsl-sql-codegen</module>
-        <module>../querydsl-sql-spring</module>
-        <module>../querydsl-maven-plugin</module>        
-        <module>../querydsl-jpa</module>        
-        <module>../querydsl-jpa-codegen</module>
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-spatial</module>
+        <module>querydsl-apt</module> 
+        <module>querydsl-sql</module>
+        <module>querydsl-sql-codegen</module>
+        <module>querydsl-sql-spring</module>
+        <module>querydsl-maven-plugin</module>        
+        <module>querydsl-jpa</module>        
+        <module>querydsl-jpa-codegen</module>
       </modules>
     </profile>    
     
     <profile>
       <id>jdo</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-spatial</module>
-        <module>../querydsl-apt</module> 
-        <module>../querydsl-sql</module>
-        <module>../querydsl-sql-codegen</module>
-        <module>../querydsl-sql-spring</module>
-        <module>../querydsl-maven-plugin</module>        
-        <module>../querydsl-jdo</module>
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-spatial</module>
+        <module>querydsl-apt</module> 
+        <module>querydsl-sql</module>
+        <module>querydsl-sql-codegen</module>
+        <module>querydsl-sql-spring</module>
+        <module>querydsl-maven-plugin</module>        
+        <module>querydsl-jdo</module>
       </modules>
     </profile>        
     
     <profile>
       <id>lucene</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-apt</module> 
-        <module>../querydsl-lucene3</module>         
-        <module>../querydsl-lucene4</module>
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-apt</module> 
+        <module>querydsl-lucene3</module>         
+        <module>querydsl-lucene4</module>
       </modules>
     </profile>     
     
     <profile>
       <id>mongodb</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-apt</module> 
-        <module>../querydsl-mongodb</module>        
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-apt</module> 
+        <module>querydsl-mongodb</module>        
       </modules>
     </profile>
     
     <profile>
       <id>sql</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-spatial</module>
-        <module>../querydsl-sql</module>
-        <module>../querydsl-sql-codegen</module>
-        <module>../querydsl-sql-spring</module>
-        <module>../querydsl-maven-plugin</module>        
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-spatial</module>
+        <module>querydsl-sql</module>
+        <module>querydsl-sql-codegen</module>
+        <module>querydsl-sql-spring</module>
+        <module>querydsl-maven-plugin</module>        
       </modules>
     </profile>        
   
     <profile>
       <id>collections</id>
       <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-codegen</module>
-        <module>../querydsl-apt</module>
-        <module>../querydsl-collections</module>
+        <module>querydsl-core</module>
+        <module>querydsl-codegen</module>
+        <module>querydsl-apt</module>
+        <module>querydsl-collections</module>
       </modules>
     </profile>
     
