@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QuerySupertype;
-import com.querydsl.core.types.path.DateTimePath;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 /**
  * Test multiple level superclasses with generics.

@@ -21,9 +21,9 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class QBean2Test {
 

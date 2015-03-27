@@ -38,7 +38,8 @@ import org.junit.Test;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class LuceneSerializerNotTokenizedTest {
     private RAMDirectory idx;
@@ -201,7 +202,7 @@ public class LuceneSerializerNotTokenizedTest {
 
     @Test
     public void Multiple_Field_Search_From_Movies() throws Exception {
-        StringPath movie = new StringPath("movie");
+        StringPath movie = Expressions.stringPath("movie");
         testQuery(movie.in("Interview with the Vampire"), "movie:Interview with the Vampire", 1);
         testQuery(movie.eq("Up in the Air"), "movie:Up in the Air", 1);
     }

@@ -165,7 +165,7 @@ public final class TypeElementHandler {
         }
 
         // inits
-        List<String> inits = Collections.<String>emptyList();
+        List<String> inits = Collections.emptyList();
         if (annotations.isAnnotationPresent(QueryInit.class)) {
             inits = ImmutableList.copyOf(annotations.getAnnotation(QueryInit.class).value());
         }

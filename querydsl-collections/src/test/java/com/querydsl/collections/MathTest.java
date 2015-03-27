@@ -7,12 +7,13 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.MathExpressions;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.MathExpressions;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class MathTest {
     
-    private NumberPath<Double> num = new NumberPath<Double>(Double.class, "num");
+    private NumberPath<Double> num = Expressions.numberPath(Double.class, "num");
     
     @Test
     public void Math() {

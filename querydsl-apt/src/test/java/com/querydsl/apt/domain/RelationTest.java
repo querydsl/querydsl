@@ -22,7 +22,7 @@ import org.junit.Test;
 import com.querydsl.apt.domain.rel.RelationType2;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 public class RelationTest extends AbstractTest {
 

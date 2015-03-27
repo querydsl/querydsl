@@ -17,8 +17,8 @@ import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.util.MathUtils;
 
 /**

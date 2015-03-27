@@ -10,7 +10,7 @@ import javax.persistence.*;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryInit;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 public class AnyPathTest {
     @Entity

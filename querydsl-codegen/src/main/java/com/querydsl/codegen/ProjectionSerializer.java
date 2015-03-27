@@ -24,7 +24,7 @@ import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * ProjectionSerializer is a {@link Serializer} implementation for projection types

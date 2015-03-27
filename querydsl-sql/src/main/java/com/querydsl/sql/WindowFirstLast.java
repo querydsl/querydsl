@@ -18,14 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.MutableExpressionBase;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.TemplateFactory;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.expr.ComparableExpressionBase;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.template.SimpleTemplate;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
  * @author tiwe
@@ -101,7 +97,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
                 if (!first) {
                     builder.append(", ");
                 }
-                builder.append("{" + size + "}");
+                builder.append("{").append(size).append("}");
                 if (!expr.isAscending()) {
                     builder.append(" desc");
                 }
@@ -110,10 +106,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
                 first = false;
             }
             builder.append(")");
-            value = new SimpleTemplate<T>(
-                    target.getType(),
-                    TemplateFactory.DEFAULT.create(builder.toString()),
-                    args.build());
+            value = Expressions.template(target.getType(), builder.toString(), args.build());
         }
         return value;
     }

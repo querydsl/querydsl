@@ -8,8 +8,6 @@ import javax.persistence.OneToOne;
 
 import org.junit.Test;
 
-import com.querydsl.core.domain.*;
-
 public class Generic10Test extends AbstractTest {
 
     public interface Tradable {}

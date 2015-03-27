@@ -26,15 +26,15 @@ import org.junit.Test;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.expr.Wildcard;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QEmployeeNoPK;
 import com.querydsl.sql.domain.QSurvey;
@@ -165,7 +165,7 @@ public class SQLSerializerTest {
     @Test
     public void Join_To_Function_With_Alias() {
         SQLQuery query = query();
-        query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
+        query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin functionCall() as fc\nwhere SURVEY.NAME is not null", query.toString());
     }
@@ -173,7 +173,7 @@ public class SQLSerializerTest {
     @Test
     public void Join_To_Function_In_Derby() {
         SQLQuery query = new SQLQuery(new DerbyTemplates());
-        query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
+        query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
     }

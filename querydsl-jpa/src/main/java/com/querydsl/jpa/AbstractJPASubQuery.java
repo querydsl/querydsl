@@ -18,10 +18,9 @@ import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.DetachableQuery;
-import com.querydsl.core.support.Expressions;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.query.NumberSubQuery;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberSubQuery;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -55,7 +54,7 @@ public abstract class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> exte
             }
         }
         count.append(")");
-        return unique(NumberTemplate.create(Long.class, count.toString()));
+        return unique(Expressions.numberTemplate(Long.class, count.toString()));
     }
 
     public Q from(EntityPath<?> o) {

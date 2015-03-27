@@ -20,7 +20,8 @@ import java.util.Collections;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class DeepPopulationTest {
 
@@ -62,8 +63,8 @@ public class DeepPopulationTest {
 
     @Test
     public void Deep_Population_Via_QBean() {
-        StringPath name = new StringPath("name");
-        StringPath id = new StringPath("id");
+        StringPath name = Expressions.stringPath("name");
+        StringPath id = Expressions.stringPath("id");
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
         QBean<Entity1> entity1Bean = new QBean<Entity1>(Entity1.class, 
                 Collections.singletonMap("entity2", entity2Bean));
@@ -75,8 +76,8 @@ public class DeepPopulationTest {
 
     @Test
     public void Deep_Population_Via_QTuple() {
-        StringPath name = new StringPath("name");
-        StringPath id = new StringPath("id");
+        StringPath name = Expressions.stringPath("name");
+        StringPath id = Expressions.stringPath("id");
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
         QTuple tupleExpr = new QTuple(entity2Bean);
 

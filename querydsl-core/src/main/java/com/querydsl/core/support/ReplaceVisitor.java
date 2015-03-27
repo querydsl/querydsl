@@ -20,7 +20,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.template.BooleanTemplate;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * ReplaceVisitor is a deep visitor that can be customized to replace segments of
@@ -148,7 +148,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
             return expr;
         } else {
             if (expr instanceof Predicate) {
-                return BooleanTemplate.create(expr.getTemplate(), args);
+                return Expressions.booleanTemplate(expr.getTemplate(), args);
             } else {
                 return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), args);
             }

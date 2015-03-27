@@ -1,12 +1,7 @@
 package com.querydsl.sql;
 
-import static com.querydsl.sql.Constants.employee;
-import static com.querydsl.sql.Constants.employee2;
-import static com.querydsl.sql.Constants.survey;
-import static com.querydsl.core.Target.DB2;
-import static com.querydsl.core.Target.ORACLE;
-import static com.querydsl.core.Target.SQLSERVER;
-import static com.querydsl.core.Target.TERADATA;
+import static com.querydsl.core.Target.*;
+import static com.querydsl.sql.Constants.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,14 +10,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.Wildcard;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.query.SimpleSubQuery;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.*;
 
 public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
@@ -79,7 +70,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         // with subquery, generic alias
         System.out.println("#2");
         ListSubQuery<Tuple> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        SimplePath<Tuple> subAlias = new SimplePath<Tuple>(Tuple.class, "s");
+        SimplePath<Tuple> subAlias = Expressions.path(Tuple.class, "s");
         for (Object[] row : query().from(sub.as(subAlias)).list(all)) {
             System.out.println(Arrays.asList(row));
         }
@@ -88,7 +79,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         // with subquery, only row number
         System.out.println("#3");
         SimpleSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
-        SimplePath<Long> subAlias2 = new SimplePath<Long>(Long.class, "s");
+        SimplePath<Long> subAlias2 = Expressions.path(Long.class, "s");
         for (Object[] row : query().from(sub2.as(subAlias2)).list(all)) {
             System.out.println(Arrays.asList(row));
         }

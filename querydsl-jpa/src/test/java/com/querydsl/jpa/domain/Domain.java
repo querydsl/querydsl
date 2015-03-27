@@ -25,7 +25,7 @@ public final class Domain {
 
     private Domain() {}
 
-    public static final List<Class<?>> classes = Arrays.<Class<?>>asList(
+    public static final List<Class<?>> classes = Arrays.asList(
             Account.class,
             Animal.class,
             Author.class,

@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.common.collect.Maps;
 import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 public class OrderHelper {
 

@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class JPATest extends AbstractTest {
 

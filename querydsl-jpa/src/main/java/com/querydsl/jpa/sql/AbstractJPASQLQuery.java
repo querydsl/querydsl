@@ -251,7 +251,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         try {
             Query query = createQuery(expr);
-            return queryHandler.<RT>iterate(query, null);
+            return queryHandler.iterate(query, null);
         } finally {
             reset();
         }

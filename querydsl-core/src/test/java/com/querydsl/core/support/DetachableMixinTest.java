@@ -24,7 +24,8 @@ import org.junit.Test;
 
 import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.query.ListSubQuery;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.ListSubQuery;
 
 
 @SuppressWarnings("unchecked")

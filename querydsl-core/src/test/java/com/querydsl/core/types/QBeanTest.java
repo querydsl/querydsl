@@ -13,14 +13,15 @@
  */
 package com.querydsl.core.types;
 
+import static org.junit.Assert.*;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.querydsl.core.support.Expressions;
-import com.querydsl.core.types.path.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.querydsl.core.types.dsl.*;
 
 
 public class QBeanTest {
@@ -131,7 +132,7 @@ public class QBeanTest {
 
     @Test
     public void with_Class_and_Alias() {
-        StringPath name2 = new StringPath("name2");
+        StringPath name2 = Expressions.stringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertNull(bean.getName());

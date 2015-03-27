@@ -20,7 +20,7 @@ import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.PluralAttribute;
 
 import com.google.common.primitives.Primitives;
-import com.querydsl.core.types.path.PathBuilderValidator;
+import com.querydsl.core.types.dsl.PathBuilderValidator;
 
 /**
  * JPAPathBuilderValidator implements PathBuilderValidator using a JPA Metamodel instance

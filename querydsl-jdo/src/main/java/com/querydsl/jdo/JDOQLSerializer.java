@@ -24,7 +24,7 @@ import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings

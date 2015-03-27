@@ -29,7 +29,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.mongodb.domain.QDummyEntity;
 import com.querydsl.mongodb.domain.QPerson;
 import com.querydsl.mongodb.domain.QUser;

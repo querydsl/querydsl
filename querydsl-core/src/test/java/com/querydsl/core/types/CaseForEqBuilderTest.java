@@ -20,8 +20,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.StringExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 
 public class CaseForEqBuilderTest {
 

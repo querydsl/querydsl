@@ -24,14 +24,12 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.DetachableQuery;
-import com.querydsl.core.support.Expressions;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.CollectionExpressionBase;
-import com.querydsl.core.types.expr.CollectionOperation;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CollectionExpressionBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.ListSubQuery;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -124,7 +122,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
 
     @Override
     public BooleanExpression exists() {
-        return unique(NumberTemplate.ONE).exists();
+        return unique(Expressions.ONE).exists();
     }
 
     @Override
@@ -267,7 +265,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
                 elementType = ((CollectionExpression)rv).getParameter(0);
             }
             for (int i = 1; i < sq.size(); i++) {
-                rv = CollectionOperation.create(op, (Class)elementType, rv, sq.get(i));
+                rv = Expressions.collectionOperation((Class)elementType, op, rv, sq.get(i));
             }
             return (CollectionExpressionBase<?,T>)rv;
         }

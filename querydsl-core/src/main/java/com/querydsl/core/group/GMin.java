@@ -39,7 +39,7 @@ class GMin<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
                 if (min != null) {
                     min = o.compareTo(min) < 0 ? o : min;
                 } else {
-                    min = (T)o;
+                    min = o;
                 }
             }
             @Override

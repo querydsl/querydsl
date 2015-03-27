@@ -30,7 +30,7 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;

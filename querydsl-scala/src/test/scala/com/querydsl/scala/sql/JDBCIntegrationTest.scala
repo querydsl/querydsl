@@ -2,7 +2,7 @@ package com.querydsl.scala.sql
 
 import test._
 import com.querydsl.sql._
-import com.querydsl.core.types.path._
+import com.querydsl.core.types.dsl._
 import java.io.File
 
 import java.sql.Connection

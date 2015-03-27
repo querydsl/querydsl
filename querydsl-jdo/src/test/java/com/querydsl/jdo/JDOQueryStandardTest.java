@@ -29,7 +29,7 @@ import org.junit.Test;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
 import com.querydsl.jdo.test.domain.QStore;

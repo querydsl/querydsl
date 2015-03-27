@@ -25,7 +25,7 @@ import org.hibernate.StatelessSession;
 import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.UpdateClause;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 import com.querydsl.jpa.HQLTemplates;

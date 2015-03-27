@@ -1,26 +1,25 @@
 package com.querydsl.sql;
 
+import static com.querydsl.core.Target.*;
+import static com.querydsl.sql.Constants.employee;
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Test;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.Tuple;
-import com.querydsl.sql.domain.Employee;
-import com.querydsl.sql.domain.QEmployee;
+import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.query.ListSubQuery;
-import com.querydsl.core.types.query.SimpleSubQuery;
-import com.querydsl.core.types.template.NumberTemplate;
-import com.querydsl.core.testutil.ExcludeIn;
-import org.junit.Test;
-import static com.querydsl.sql.Constants.employee;
-import static com.querydsl.core.Target.*;
-import static org.junit.Assert.*;
+import com.querydsl.core.types.dsl.*;
+import com.querydsl.sql.domain.Employee;
+import com.querydsl.sql.domain.QEmployee;
 
 public class UnionBase extends AbstractBaseTest {
 
@@ -29,8 +28,8 @@ public class UnionBase extends AbstractBaseTest {
     public void In_Union() {
         assertTrue(query().from(employee)
             .where(employee.id.in(
-                sq().union(sq().unique(NumberTemplate.ONE),
-                           sq().unique(NumberTemplate.TWO))))
+                sq().union(sq().unique(Expressions.ONE),
+                           sq().unique(Expressions.TWO))))
             .exists());
     }
 
@@ -240,7 +239,7 @@ public class UnionBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, CUBRID})
     public void Union_Clone() {
-        NumberPath<Integer> idAlias = new NumberPath<Integer>(Integer.class, "id");
+        NumberPath<Integer> idAlias = Expressions.numberPath(Integer.class, "id");
         ListSubQuery<Employee> sq1 = sq().from(employee)
                 .list(Projections.constructor(Employee.class, employee.id.as(idAlias)));
         ListSubQuery<Employee> sq2 = sq().from(employee)

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 
 public class ParamTest {
 

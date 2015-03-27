@@ -26,11 +26,10 @@ import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.support.Expressions;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Template.Element;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.types.Null;
 
 /**
@@ -905,7 +904,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             Collection<Object> coll = ((Constant<Collection<Object>>)args.get(1)).getConstant();
             if (coll.isEmpty()) {
                 super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
-                        ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO));
+                        ImmutableList.of(Expressions.ONE, Expressions.TWO));
             } else {
                 if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
                     super.visitOperation(type, operator, args);

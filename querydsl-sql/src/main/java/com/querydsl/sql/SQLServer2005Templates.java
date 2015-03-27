@@ -19,7 +19,7 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.*;
 
 

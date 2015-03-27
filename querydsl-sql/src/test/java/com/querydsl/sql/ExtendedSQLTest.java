@@ -8,10 +8,10 @@ import org.junit.Test;
 
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.expr.Wildcard;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.mysql.MySQLQuery;
 
 public class ExtendedSQLTest {

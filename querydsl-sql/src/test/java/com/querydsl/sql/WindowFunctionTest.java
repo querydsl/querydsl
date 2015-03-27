@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class WindowFunctionTest {
 

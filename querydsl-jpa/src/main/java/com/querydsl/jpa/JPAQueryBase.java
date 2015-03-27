@@ -16,13 +16,8 @@ package com.querydsl.jpa;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.support.ProjectableQuery;
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.MapExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * JPAQueryBase is a base Query class for JPA queries
@@ -64,7 +59,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
 
     @Override
     public boolean exists() {
-        return singleResult(NumberTemplate.ONE) != null;
+        return singleResult(Expressions.ONE) != null;
     }
 
     public Q fetch() {

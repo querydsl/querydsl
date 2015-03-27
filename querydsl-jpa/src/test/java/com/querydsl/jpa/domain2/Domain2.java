@@ -20,7 +20,7 @@ public final class Domain2 {
     
     private Domain2() {}
 
-    public static final List<Class<?>> classes = Arrays.<Class<?>>asList(
+    public static final List<Class<?>> classes = Arrays.asList(
             Category.class, 
             CategoryProp.class, 
             Contact.class,

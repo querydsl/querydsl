@@ -13,9 +13,6 @@
  */
 package com.querydsl.jpa.codegen;
 
-import javax.annotation.Nullable;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -24,6 +21,13 @@ import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import javax.annotation.Nullable;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -31,15 +35,13 @@ import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.*;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryType;
-import com.querydsl.codegen.*;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.ReflectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * AbstractDomainExporter is a common supertype for DomainExporters
@@ -64,7 +66,7 @@ public abstract class AbstractDomainExporter {
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
     @SuppressWarnings("unchecked")
-    protected final TypeFactory typeFactory = new TypeFactory(Arrays.<Class<? extends Annotation>>asList(Entity.class,
+    protected final TypeFactory typeFactory = new TypeFactory(Arrays.asList(Entity.class,
             javax.persistence.MappedSuperclass.class, Embeddable.class));
 
     private final QueryTypeFactory queryTypeFactory;
@@ -229,7 +231,7 @@ public abstract class AbstractDomainExporter {
 
     protected Property createProperty(EntityType entityType, String propertyName, Type propertyType,
             AnnotatedElement annotated) {
-        List<String> inits = Collections.<String>emptyList();
+        List<String> inits = Collections.emptyList();
         if (annotated.isAnnotationPresent(QueryInit.class)) {
             inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
         }

@@ -20,9 +20,8 @@ import org.junit.Test;
 
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 
 public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest{
@@ -34,17 +33,17 @@ public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest{
     
     @Test
     public void NoFrom() {
-        query.getMetadata().setProjection(NumberTemplate.ONE);
+        query.getMetadata().setProjection(Expressions.ONE);
         assertEquals("select 1", query.toString());
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void Union() {        
-        NumberExpression<Integer> one = NumberTemplate.ONE;
-        NumberExpression<Integer> two = NumberTemplate.TWO;
-        NumberExpression<Integer> three = NumberTemplate.THREE;
-        Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        NumberExpression<Integer> one = Expressions.ONE;
+        NumberExpression<Integer> two = Expressions.TWO;
+        NumberExpression<Integer> three = Expressions.THREE;
+        Path<Integer> col1 = Expressions.path(Integer.class,"col1");
         Union union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),

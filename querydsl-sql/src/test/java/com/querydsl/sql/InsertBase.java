@@ -35,10 +35,10 @@ import com.querydsl.sql.dml.DefaultMapper;
 import com.querydsl.sql.dml.Mapper;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.domain.*;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
 

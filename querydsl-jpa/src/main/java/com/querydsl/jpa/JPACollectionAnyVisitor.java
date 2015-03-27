@@ -18,9 +18,9 @@ import javax.persistence.Entity;
 import com.querydsl.core.support.CollectionAnyVisitor;
 import com.querydsl.core.support.Context;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimplePath;
 
 /**
  * JPACollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
@@ -39,7 +39,7 @@ public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
             Path<?> child = c.paths.get(i).getMetadata().getParent();
             EntityPath<Object> replacement = (EntityPath<Object>) c.replacements.get(i);
             if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
-                query.from(new ListPath(c.paths.get(i).getType(), SimplePath.class, child.getMetadata()), replacement);
+                query.from(Expressions.listPath((Class)c.paths.get(i).getType(), SimplePath.class, child.getMetadata()), replacement);
             } else {
                 // join via parent
                 Path<?> parent = child.getMetadata().getParent();

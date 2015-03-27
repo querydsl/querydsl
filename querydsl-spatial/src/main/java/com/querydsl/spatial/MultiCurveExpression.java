@@ -18,10 +18,9 @@ import javax.annotation.Nullable;
 import org.geolatte.geom.GeometryCollection;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A MultiCurve is a 1-dimensional GeometryCollection whose elements are Curves.
@@ -52,7 +51,7 @@ public abstract class MultiCurveExpression<T extends GeometryCollection> extends
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
-            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
+            closed = Expressions.booleanOperation(SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }
@@ -65,7 +64,7 @@ public abstract class MultiCurveExpression<T extends GeometryCollection> extends
      */
     public NumberExpression<Double> length() {
         if (length == null) {
-            length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);
+            length = Expressions.numberOperation(Double.class, SpatialOps.LENGTH, mixin);
         }
         return length;
     }

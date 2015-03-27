@@ -30,9 +30,7 @@ import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.ComparableExpression;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * EntitySerializer is a {@link Serializer} implementation for entity types
@@ -410,18 +408,10 @@ public class EntitySerializer implements Serializer {
         introDelegatePackages(writer, model);
 
         // other packages
-        List<Package> packages = Lists.newArrayList();
-        packages.add(SimplePath.class.getPackage());
-        if (!model.getConstructors().isEmpty()) {
-            packages.add(SimpleExpression.class.getPackage());
-        }
-        if (isImportExprPackage(model)) {
-            packages.add(ComparableExpression.class.getPackage());
-        }
-        writer.imports(packages.toArray(new Package[packages.size()]));
+        writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = Lists.newArrayList(PathMetadata.class, Generated.class);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }

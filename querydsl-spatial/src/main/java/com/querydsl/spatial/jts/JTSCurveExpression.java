@@ -15,12 +15,11 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
@@ -57,7 +56,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public NumberExpression<Double> length() {
         if (length == null) {
-            length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);
+            length = Expressions.numberOperation(Double.class, SpatialOps.LENGTH, mixin);
         }
         return length;
     }
@@ -69,7 +68,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public JTSPointExpression<Point> startPoint() {
         if (startPoint == null) {
-            startPoint = JTSPointOperation.create(Point.class, SpatialOps.START_POINT, mixin);
+            startPoint = JTSGeometryExpressions.pointOperation(SpatialOps.START_POINT, mixin);
         }
         return startPoint;
     }
@@ -81,7 +80,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public JTSPointExpression<Point> endPoint() {
         if (endPoint == null) {
-            endPoint = JTSPointOperation.create(Point.class, SpatialOps.END_POINT, mixin);
+            endPoint = JTSGeometryExpressions.pointOperation(SpatialOps.END_POINT, mixin);
         }
         return endPoint;
     }
@@ -93,7 +92,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
-            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
+            closed = Expressions.booleanOperation(SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }
@@ -106,7 +105,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      */
     public BooleanExpression isRing() {
         if (ring == null) {
-            ring = BooleanOperation.create(SpatialOps.IS_RING, mixin);
+            ring = Expressions.booleanOperation(SpatialOps.IS_RING, mixin);
         }
         return ring;
     }

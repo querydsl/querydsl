@@ -7,16 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.core.support.DetachableMixin;
-import com.querydsl.core.support.Expressions;
 import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.MathExpressions;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.expr.StringExpressions;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 public class ExpressivityTest {
     
@@ -31,9 +23,9 @@ public class ExpressivityTest {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Before
     public void setUp() {
-        num = new NumberPath<Integer>(Integer.class, "num");
-        str = new StringPath("str");
-        date = new DatePath<Date>(Date.class, "date");
+        num = Expressions.numberPath(Integer.class, "num");
+        str = Expressions.stringPath("str");
+        date = Expressions.datePath(Date.class, "date");
         QueryMixin query = new QueryMixin();
         query.from(num, str);
         sub = new DetachableMixin(query);

@@ -19,8 +19,8 @@ import org.geolatte.geom.Geometry;
 import org.geolatte.geom.Point;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A Surface is a 2-dimensional geometric object.
@@ -50,7 +50,7 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
      */
     public NumberExpression<Double> area() {
         if (area == null) {
-            area = NumberOperation.create(Double.class, SpatialOps.AREA, mixin);
+            area = Expressions.numberOperation(Double.class, SpatialOps.AREA, mixin);
         }
         return area;
     }
@@ -63,7 +63,7 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
      */
     public PointExpression<Point> centroid() {
         if (centroid == null) {
-            centroid = PointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
+            centroid = GeometryExpressions.pointOperation(SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
@@ -75,7 +75,7 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
      */
     public PointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
-            pointOnSurface = PointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);
+            pointOnSurface = GeometryExpressions.pointOperation(SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }

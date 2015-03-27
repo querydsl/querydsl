@@ -17,14 +17,14 @@ import java.sql.Date;
 
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.path.BooleanPath;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class DateExtensions {
         
     @QueryDelegate(Date.class)
     public static Predicate extension(DateExpression<Date> date) {
-        return new BooleanPath("b");
+        return Expressions.booleanPath("b");
     }
     
 }

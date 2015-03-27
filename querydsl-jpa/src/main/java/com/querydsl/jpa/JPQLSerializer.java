@@ -28,7 +28,7 @@ import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.MathUtils;
 
 /**
@@ -469,7 +469,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
         if (rhs.getConstant().isEmpty()) {
             operator = operator == Ops.IN ? Ops.EQ : Ops.NE;
-            args = ImmutableList.of(NumberTemplate.ONE, NumberTemplate.TWO);
+            args = ImmutableList.of(Expressions.ONE, Expressions.TWO);
         } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             final Metamodel metamodel = entityManager.getMetamodel();
             final PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();

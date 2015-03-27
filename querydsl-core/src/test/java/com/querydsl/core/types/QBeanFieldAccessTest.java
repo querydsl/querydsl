@@ -22,11 +22,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.PathBuilderFactory;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 
 public class QBeanFieldAccessTest {
@@ -92,7 +88,7 @@ public class QBeanFieldAccessTest {
 
     @Test
     public void with_Class_and_Alias_using_fields() {
-        StringPath name2 = new StringPath("name2");
+        StringPath name2 = Expressions.stringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertNull(bean.name);

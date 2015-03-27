@@ -1,7 +1,7 @@
 package com.querydsl.scala.sql
 
 import com.querydsl.sql._
-import com.querydsl.core.types.path._
+import com.querydsl.core.types.dsl._
 import java.util.{ Arrays, Collections }
 
 object QUser {

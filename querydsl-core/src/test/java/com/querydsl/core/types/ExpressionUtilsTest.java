@@ -18,19 +18,19 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableSet;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class ExpressionUtilsTest {
 
-    private static final StringPath str = new StringPath("str");
+    private static final StringPath str = Expressions.stringPath("str");
     
-    private static final StringPath str2 = new StringPath("str2");
+    private static final StringPath str2 = Expressions.stringPath("str2");
     
     @Test
     public void LikeToRegex() {
@@ -39,7 +39,7 @@ public class ExpressionUtilsTest {
         assertEquals(".*abc$", regex(ConstantImpl.create("%abc")));
         assertEquals("^.$",  regex(ConstantImpl.create("_")));
         
-        StringPath path = new StringPath("path");
+        StringPath path = Expressions.stringPath("path");
         assertEquals("path + .*", regex(path.append("%")));
         assertEquals(".* + path", regex(path.prepend("%")));
         assertEquals("path + .", regex(path.append("_")));
@@ -50,7 +50,7 @@ public class ExpressionUtilsTest {
     @Ignore
     public void LikeToRegexSpeed() {
         // 4570
-        StringPath path = new StringPath("path");
+        StringPath path = Expressions.stringPath("path");
         final int iterations = 1000000;
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
@@ -78,7 +78,7 @@ public class ExpressionUtilsTest {
         assertEquals("_",  like(ConstantImpl.create(".")));
         assertEquals(".", like(ConstantImpl.create("\\.")));
         
-        StringPath path = new StringPath("path");
+        StringPath path = Expressions.stringPath("path");
         assertEquals("path + %", like(path.append(".*")));
         assertEquals("% + path", like(path.prepend(".*")));
         assertEquals("path + _", like(path.append(".")));
@@ -104,7 +104,7 @@ public class ExpressionUtilsTest {
     @Ignore
     public void RegexToLikeSpeed() {
         // 3255
-        StringPath path = new StringPath("path");        
+        StringPath path = Expressions.stringPath("path");        
         final int iterations = 1000000;
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {

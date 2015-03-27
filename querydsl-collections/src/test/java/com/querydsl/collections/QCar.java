@@ -1,9 +1,9 @@
 package com.querydsl.collections;
 
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class QCar extends BeanPath<Car> {
 

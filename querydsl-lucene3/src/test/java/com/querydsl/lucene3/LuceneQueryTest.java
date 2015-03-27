@@ -13,15 +13,8 @@
  */
 package com.querydsl.lucene3;
 
-import static org.easymock.EasyMock.createMockBuilder;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -55,9 +48,10 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.types.ParamNotSetException;
-import com.querydsl.core.types.expr.Param;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.types.dsl.StringPath;
 
 /**
  * Tests for LuceneQuery
@@ -72,7 +66,7 @@ public class LuceneQueryTest {
     private NumberPath<Integer> year;
     private NumberPath<Double> gross;
 
-    private final StringPath sort = new StringPath("sort");
+    private final StringPath sort = Expressions.stringPath("sort");
 
     private RAMDirectory idx;
     private IndexWriter writer;

@@ -15,11 +15,13 @@ package com.querydsl.core.domain.query2;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
+import java.util.Date;
+
 import com.querydsl.core.domain.Cat;
 import com.querydsl.core.domain.QAnimal;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 
 /**
@@ -39,7 +41,7 @@ public class QCatType extends EntityPathBase<Cat> {
     public final BooleanPath alive = _super.alive;
 
     //inherited
-    public final DateTimePath<java.util.Date> birthdate = _super.birthdate;
+    public final DateTimePath<Date> birthdate = _super.birthdate;
 
     //inherited
     public final NumberPath<Double> bodyWeight = _super.bodyWeight;

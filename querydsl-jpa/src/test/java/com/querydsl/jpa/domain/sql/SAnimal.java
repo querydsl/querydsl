@@ -2,11 +2,16 @@ package com.querydsl.jpa.domain.sql;
 
 import javax.annotation.Generated;
 
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.*;
+
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 
 /**
@@ -21,7 +26,7 @@ public class SAnimal extends com.querydsl.sql.RelationalPathBase<SAnimal> {
 
     public final BooleanPath alive = createBoolean("alive");
 
-    public final DateTimePath<java.sql.Timestamp> birthdate = createDateTime("birthdate", java.sql.Timestamp.class);
+    public final DateTimePath<Timestamp> birthdate = createDateTime("birthdate", java.sql.Timestamp.class);
 
     public final NumberPath<Double> bodyWeight = createNumber("bodyWeight", Double.class);
 
@@ -29,7 +34,7 @@ public class SAnimal extends com.querydsl.sql.RelationalPathBase<SAnimal> {
 
     public final NumberPath<Integer> color = createNumber("color", Integer.class);
 
-    public final DatePath<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
+    public final DatePath<Date> dateField = createDate("dateField", java.sql.Date.class);
 
     public final StringPath dtype = createString("dtype");
 
@@ -43,7 +48,7 @@ public class SAnimal extends com.querydsl.sql.RelationalPathBase<SAnimal> {
 
     public final StringPath name = createString("name");
 
-    public final TimePath<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
+    public final TimePath<Time> timeField = createTime("timeField", java.sql.Time.class);
 
     public final NumberPath<Integer> toes = createNumber("toes", Integer.class);
 

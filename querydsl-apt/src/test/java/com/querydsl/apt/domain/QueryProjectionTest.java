@@ -24,10 +24,7 @@ import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.annotations.QueryType;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 public class QueryProjectionTest {
 
@@ -65,8 +62,8 @@ public class QueryProjectionTest {
 
     @Test
     public void Entity_Case() {
-        NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
-        StringExpression stringExpr = new StringPath("x");
+        NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
+        StringExpression stringExpr = Expressions.stringPath("x");
 
         QQueryProjectionTest_EntityWithProjection.create(longExpr).newInstance(0l);
         QQueryProjectionTest_EntityWithProjection.create(stringExpr).newInstance("");
@@ -118,8 +115,8 @@ public class QueryProjectionTest {
 
     @Test
     public void Dto_Case() throws SecurityException, NoSuchMethodException{
-        NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
-        StringExpression stringExpr = new StringPath("x");
+        NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
+        StringExpression stringExpr = Expressions.stringPath("x");
 
         new QQueryProjectionTest_DTOWithProjection(longExpr).newInstance(0l);
         new QQueryProjectionTest_DTOWithProjection(stringExpr).newInstance("");

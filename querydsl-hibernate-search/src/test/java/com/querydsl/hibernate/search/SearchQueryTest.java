@@ -29,7 +29,7 @@ import org.junit.Test;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 public class SearchQueryTest extends AbstractQueryTest {
 

@@ -24,7 +24,7 @@ import com.querydsl.core.alias.Alias;
 import com.querydsl.core.domain.QCommonPersistence;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 public class QueryMixinTest {
 

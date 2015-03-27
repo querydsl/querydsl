@@ -19,8 +19,8 @@ import org.geolatte.geom.GeometryCollection;
 import org.geolatte.geom.Point;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A MultiSurface is a 2-dimensional GeometryCollection whose elements are Surfaces, all using coordinates from
@@ -54,7 +54,7 @@ public abstract class MultiSurfaceExpression<T extends GeometryCollection> exten
      */
     public NumberExpression<Double> area() {
         if (area == null) {
-            area = NumberOperation.create(Double.class, SpatialOps.AREA, mixin);
+            area = Expressions.numberOperation(Double.class, SpatialOps.AREA, mixin);
         }
         return area;
     }
@@ -67,7 +67,7 @@ public abstract class MultiSurfaceExpression<T extends GeometryCollection> exten
      */
     public PointExpression<Point> centroid() {
         if (centroid == null) {
-            centroid = PointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
+            centroid = GeometryExpressions.pointOperation(SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
@@ -79,7 +79,7 @@ public abstract class MultiSurfaceExpression<T extends GeometryCollection> exten
      */
     public PointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
-            pointOnSurface = PointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);
+            pointOnSurface = GeometryExpressions.pointOperation(SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }

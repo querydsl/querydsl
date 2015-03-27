@@ -18,7 +18,7 @@ import org.junit.Test;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryType;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 public class QueryTypeTest extends AbstractTest {
 

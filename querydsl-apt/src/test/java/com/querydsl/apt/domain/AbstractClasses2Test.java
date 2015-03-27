@@ -24,7 +24,7 @@ import javax.persistence.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 @SuppressWarnings("serial")
 public class AbstractClasses2Test {

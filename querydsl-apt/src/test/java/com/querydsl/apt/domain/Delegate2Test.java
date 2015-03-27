@@ -21,8 +21,8 @@ import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 public class Delegate2Test {
 
@@ -38,7 +38,7 @@ public class Delegate2Test {
 
     @QueryDelegate(Point.class)
     public static NumberExpression<Integer> geoDistance(Path<Point> point, Point other) {
-        return NumberTemplate.create(Integer.class, "geo_distance({0},{1})", point, ConstantImpl.create(other));
+        return Expressions.numberTemplate(Integer.class, "geo_distance({0},{1})", point, ConstantImpl.create(other));
     }
 
     @Test

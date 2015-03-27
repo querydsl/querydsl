@@ -17,7 +17,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.FuzzyQuery;
 
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**
  * Utility methods to create filter expressions for Lucene queries that are not covered by the

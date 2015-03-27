@@ -16,9 +16,9 @@ package com.querydsl.core.domain;
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
 
 
 /**

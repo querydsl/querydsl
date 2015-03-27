@@ -237,7 +237,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
             return new SearchResults<RT>(list, getMetadata().getModifiers(), count);
         } else {
             reset();
-            return SearchResults.<RT>emptyResults();
+            return SearchResults.emptyResults();
         }
 
     }

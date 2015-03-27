@@ -19,11 +19,12 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.path.ComparablePath;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimplePath;
+import com.querydsl.jpa.impl.JPAQuery;
 
 /**
  * @author tiwe
@@ -35,10 +36,10 @@ public class CustomFinder {
         EntityPath<T> entityPath = new EntityPathBase<T>(entityClass, "entity");
         BooleanBuilder builder = new BooleanBuilder();
         for (Map.Entry<String, ?> entry : filters.entrySet()) {
-            SimplePath<Object> property = new SimplePath<Object>(entry.getValue().getClass(), entityPath, entry.getKey()); 
+            SimplePath<Object> property = Expressions.path((Class)entry.getValue().getClass(), entityPath, entry.getKey());
             builder.and(property.eq(entry.getValue()));
         }
-        ComparablePath<?> sortProperty = new ComparablePath(Comparable.class, entityPath, sort);
+        ComparablePath<?> sortProperty = Expressions.comparablePath(Comparable.class, entityPath, sort);
         return new JPAQuery(em).from(entityPath).where(builder.getValue()).orderBy(sortProperty.asc()).list(entityPath);
     }
 

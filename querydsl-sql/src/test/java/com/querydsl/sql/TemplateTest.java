@@ -21,33 +21,28 @@ import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.types.template.DateTemplate;
-import com.querydsl.core.types.template.StringTemplate;
+import com.querydsl.core.types.dsl.*;
 
 public class TemplateTest {
 
     @Test
     public void ToDate() {
-        StringExpression str = new StringPath("str");
+        StringExpression str = Expressions.stringPath("str");
         assertEquals("to_date(str,'DD-MON-YYYY')", to_date(str, "DD-MON-YYYY").toString());
     }
 
     @Test
     public void ToChar() {
-        DateExpression<Date> date = new DatePath<Date>(Date.class,"date");
+        DateExpression<Date> date = Expressions.datePath(Date.class,"date");
         assertEquals("to_char(date,'DD-MON-YYYY')", to_char(date, "DD-MON-YYYY").toString());
     }
 
     private DateExpression<Date> to_date(Expression<String> expr, String pattern) {
-        return DateTemplate.create(Date.class, "to_date({0},'{1s}')", expr, ConstantImpl.create(pattern));
+        return Expressions.dateTemplate(Date.class, "to_date({0},'{1s}')", expr, ConstantImpl.create(pattern));
     }
 
     private StringExpression to_char(Expression<?> expr, String pattern) {
-        return StringTemplate.create("to_char({0},'{1s}')", expr, ConstantImpl.create(pattern));
+        return Expressions.stringTemplate("to_char({0},'{1s}')", expr, ConstantImpl.create(pattern));
     }
         
 }

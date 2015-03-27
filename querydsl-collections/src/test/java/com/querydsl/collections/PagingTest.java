@@ -23,13 +23,14 @@ import org.junit.Test;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.SearchResults;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class PagingTest extends AbstractQueryTest {
 
     private List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    private NumberPath<Integer> var = new NumberPath<Integer>(Integer.class, "var");
+    private NumberPath<Integer> var = Expressions.numberPath(Integer.class, "var");
 
     @Test
     public void test() {

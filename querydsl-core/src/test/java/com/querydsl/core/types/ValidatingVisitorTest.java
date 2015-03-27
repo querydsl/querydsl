@@ -20,9 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.types.expr.Param;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.template.SimpleTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.Param;
 
 @SuppressWarnings("unchecked")
 public class ValidatingVisitorTest {
@@ -48,7 +47,7 @@ public class ValidatingVisitorTest {
 
     @Test
     public void VisitOperationOfQVoid() {
-        validator.visit((Operation)new SimplePath(Object.class, "path").isNull(), known);
+        validator.visit((Operation) Expressions.path(Object.class, "path").isNull(), known);
     }
 
     @Test
@@ -68,7 +67,7 @@ public class ValidatingVisitorTest {
 
     @Test
     public void VisitTemplateExpressionOfQVoid() {
-        validator.visit((TemplateExpression)SimpleTemplate.create(Object.class, "XXX"), known);
+        validator.visit((TemplateExpression)Expressions.template(Object.class, "XXX"), known);
     }
 
 }

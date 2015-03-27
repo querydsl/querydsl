@@ -15,7 +15,7 @@ package com.querydsl.codegen;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.ArrayPath;
+import com.querydsl.core.types.dsl.ArrayPath;
 
 
 public class Point extends ArrayPath<Double[], Double>{

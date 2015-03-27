@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QuerySupertype;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class Inheritance5Test {
 

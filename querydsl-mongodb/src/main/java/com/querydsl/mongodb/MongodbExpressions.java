@@ -15,8 +15,8 @@ package com.querydsl.mongodb;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * Mongodb specific operations
@@ -37,7 +37,7 @@ public final class MongodbExpressions {
      * @return
      */
     public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal) {
-        return BooleanOperation.create(MongodbOps.NEAR, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
+        return Expressions.booleanOperation(MongodbOps.NEAR, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
     }
 
 }

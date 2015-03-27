@@ -28,7 +28,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.CollectionPathBase;
+import com.querydsl.core.types.dsl.CollectionPathBase;
 
 /**
  * AbstractMongodbQuery provides a base class for general Querydsl query implementation with a
@@ -127,7 +127,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
 
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
-        Multimap<Expression<?>, Predicate> predicates = HashMultimap.<Expression<?>, Predicate>create();
+        Multimap<Expression<?>, Predicate> predicates = HashMultimap.create();
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);

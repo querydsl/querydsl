@@ -15,17 +15,10 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.expr.SimpleOperation;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.expr.StringOperation;
+import com.querydsl.core.types.dsl.*;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -69,7 +62,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public NumberExpression<Integer> dimension() {
         if (dimension == null) {
-            dimension = NumberOperation.create(Integer.class, SpatialOps.DIMENSION, mixin);
+            dimension = Expressions.numberOperation(Integer.class, SpatialOps.DIMENSION, mixin);
         }
         return dimension;
     }
@@ -82,7 +75,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public StringExpression geometryType() {
         if (geometryType == null) {
-            geometryType = StringOperation.create(SpatialOps.GEOMETRY_TYPE, mixin);
+            geometryType = Expressions.stringOperation(SpatialOps.GEOMETRY_TYPE, mixin);
         }
         return geometryType;
     }
@@ -95,7 +88,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public NumberExpression<Integer> srid() {
         if (srid == null) {
-            srid = NumberOperation.create(Integer.class, SpatialOps.SRID, mixin);
+            srid = Expressions.numberOperation(Integer.class, SpatialOps.SRID, mixin);
         }
         return srid;
     }
@@ -111,7 +104,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public JTSGeometryExpression<Geometry> envelope() {
         if (envelope == null) {
-            envelope = JTSGeometryOperation.create(Geometry.class, SpatialOps.ENVELOPE, mixin);
+            envelope = JTSGeometryExpressions.geometryOperation(SpatialOps.ENVELOPE, mixin);
         }
         return envelope;
     }
@@ -123,7 +116,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public StringExpression asText() {
         if (text == null) {
-            text = StringOperation.create(SpatialOps.AS_TEXT, mixin);
+            text = Expressions.stringOperation(SpatialOps.AS_TEXT, mixin);
         }
         return text;
     }
@@ -136,7 +129,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public SimpleExpression<byte[]> asBinary() {
         if (binary == null) {
-            binary = SimpleOperation.create(byte[].class, SpatialOps.AS_BINARY, mixin);
+            binary = Expressions.operation(byte[].class, SpatialOps.AS_BINARY, mixin);
         }
         return binary;
     }
@@ -149,7 +142,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public BooleanExpression isEmpty() {
         if (empty == null) {
-            empty = BooleanOperation.create(SpatialOps.IS_EMPTY, mixin);
+            empty = Expressions.booleanOperation(SpatialOps.IS_EMPTY, mixin);
         }
         return empty;
     }
@@ -163,7 +156,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public BooleanExpression isSimple() {
         if (simple == null) {
-            simple = BooleanOperation.create(SpatialOps.IS_SIMPLE, mixin);
+            simple = Expressions.booleanOperation(SpatialOps.IS_SIMPLE, mixin);
         }
         return simple;
     }
@@ -175,7 +168,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public JTSGeometryExpression<Geometry> boundary() {
         if (boundary == null) {
-            boundary = JTSGeometryOperation.create(Geometry.class, SpatialOps.BOUNDARY, mixin);
+            boundary = JTSGeometryExpressions.geometryOperation(SpatialOps.BOUNDARY, mixin);
         }
         return boundary;
     }
@@ -183,7 +176,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
     // query
 
     /* (non-Javadoc)
-     * @see com.querydsl.core.types.expr.SimpleExpression#eq(java.lang.Object)
+     * @see com.querydsl.core.types.dsl.SimpleExpression#eq(java.lang.Object)
      */
     @Override
     public BooleanExpression eq(Geometry right) {
@@ -191,11 +184,11 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
     }
 
     /* (non-Javadoc)
-     * @see com.querydsl.core.types.expr.SimpleExpression#eq(com.querydsl.core.types.Expression)
+     * @see com.querydsl.core.types.dsl.SimpleExpression#eq(com.querydsl.core.types.Expression)
      */
     @Override
     public BooleanExpression eq(Expression<? super T> right) {
-        return BooleanOperation.create(SpatialOps.EQUALS, mixin, right);
+        return Expressions.booleanOperation(SpatialOps.EQUALS, mixin, right);
     }
 
     /**
@@ -215,7 +208,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression disjoint(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.DISJOINT, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.DISJOINT, mixin, geometry);
     }
 
     /**
@@ -235,7 +228,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression intersects(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.INTERSECTS, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.INTERSECTS, mixin, geometry);
     }
 
     /**
@@ -255,7 +248,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression touches(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.TOUCHES, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.TOUCHES, mixin, geometry);
     }
 
     /**
@@ -275,7 +268,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression crosses(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.CROSSES, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.CROSSES, mixin, geometry);
     }
 
     /**
@@ -295,7 +288,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression within(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.WITHIN, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.WITHIN, mixin, geometry);
     }
 
     /**
@@ -315,7 +308,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression contains(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.CONTAINS, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.CONTAINS, mixin, geometry);
     }
 
     /**
@@ -335,7 +328,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression overlaps(Expression<? extends Geometry> geometry) {
-        return BooleanOperation.create(SpatialOps.OVERLAPS, mixin, geometry);
+        return Expressions.booleanOperation(SpatialOps.OVERLAPS, mixin, geometry);
     }
 
     /**
@@ -363,7 +356,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public BooleanExpression relate(Expression<? extends Geometry> geometry, String matrix) {
-        return BooleanOperation.create(SpatialOps.RELATE, mixin, geometry, ConstantImpl.create(matrix));
+        return Expressions.booleanOperation(SpatialOps.RELATE, mixin, geometry, ConstantImpl.create(matrix));
     }
 
     // analysis
@@ -391,17 +384,17 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public NumberExpression<Double> distance(Expression<? extends Geometry> geometry) {
-        return NumberOperation.create(Double.class, SpatialOps.DISTANCE, mixin, geometry);
+        return Expressions.numberOperation(Double.class, SpatialOps.DISTANCE, mixin, geometry);
     }
 
     // TODO maybe move out
     public NumberExpression<Double> distanceSphere(Expression<? extends Geometry> geometry) {
-        return NumberOperation.create(Double.class, SpatialOps.DISTANCE_SPHERE, mixin, geometry);
+        return Expressions.numberOperation(Double.class, SpatialOps.DISTANCE_SPHERE, mixin, geometry);
     }
 
     // TODO maybe move out
     public NumberExpression<Double> distanceSpheroid(Expression<? extends Geometry> geometry) {
-        return NumberOperation.create(Double.class, SpatialOps.DISTANCE_SPHEROID, mixin, geometry);
+        return Expressions.numberOperation(Double.class, SpatialOps.DISTANCE_SPHEROID, mixin, geometry);
     }
 
     /**
@@ -415,7 +408,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public JTSGeometryExpression<Geometry> buffer(double distance) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.BUFFER, mixin, ConstantImpl.create(distance));
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.BUFFER, mixin, ConstantImpl.create(distance));
     }
 
     /**
@@ -427,7 +420,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      */
     public JTSGeometryExpression<Geometry> convexHull() {
         if (convexHull == null) {
-            convexHull = JTSGeometryOperation.create(Geometry.class, SpatialOps.CONVEXHULL, mixin);
+            convexHull = JTSGeometryExpressions.geometryOperation(SpatialOps.CONVEXHULL, mixin);
         }
         return convexHull;
     }
@@ -451,7 +444,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public JTSGeometryExpression<Geometry> intersection(Expression<? extends Geometry> geometry) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.INTERSECTION, mixin, geometry);
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.INTERSECTION, mixin, geometry);
     }
 
     /**
@@ -473,7 +466,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public JTSGeometryExpression<Geometry> union(Expression<? extends Geometry> geometry) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.UNION, mixin, geometry);
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.UNION, mixin, geometry);
     }
 
     /**
@@ -495,7 +488,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public JTSGeometryExpression<Geometry> difference(Expression<? extends Geometry> geometry) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.DIFFERENCE, mixin, geometry);
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.DIFFERENCE, mixin, geometry);
     }
 
     /**
@@ -517,11 +510,11 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return
      */
     public JTSGeometryExpression<Geometry> symDifference(Expression<? extends Geometry> geometry) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.SYMDIFFERENCE, mixin, geometry);
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.SYMDIFFERENCE, mixin, geometry);
     }
 
     public JTSGeometryExpression<Geometry> transform(int srid) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.TRANSFORM, mixin, ConstantImpl.create(srid));
+        return JTSGeometryExpressions.geometryOperation(SpatialOps.TRANSFORM, mixin, ConstantImpl.create(srid));
     }
 
 }

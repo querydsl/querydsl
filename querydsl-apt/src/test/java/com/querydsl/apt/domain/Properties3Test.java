@@ -8,7 +8,7 @@ import javax.persistence.TemporalType;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-import com.querydsl.core.types.path.DateTimePath;
+import com.querydsl.core.types.dsl.DateTimePath;
 
 public class Properties3Test extends AbstractTest {
 

@@ -21,14 +21,14 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.ValidatingVisitor;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
-import com.querydsl.core.types.path.PathInits;
-import com.querydsl.core.types.path.SetPath;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.MapPath;
+import com.querydsl.core.types.dsl.PathInits;
+import com.querydsl.core.types.dsl.SetPath;
+import com.querydsl.core.types.dsl.SimplePath;
 
 
 /**

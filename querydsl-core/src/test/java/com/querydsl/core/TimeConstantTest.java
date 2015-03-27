@@ -20,7 +20,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.TimeExpression;
+import com.querydsl.core.types.dsl.TimeExpression;
 
 public class TimeConstantTest {
 

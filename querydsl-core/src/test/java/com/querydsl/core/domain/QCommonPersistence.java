@@ -16,8 +16,8 @@ package com.querydsl.core.domain;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 /**
  * QCommonPersistence is a Querydsl query type for CommonPersistence

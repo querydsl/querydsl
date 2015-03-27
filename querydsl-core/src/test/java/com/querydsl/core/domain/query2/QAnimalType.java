@@ -15,9 +15,12 @@ package com.querydsl.core.domain.query2;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
+import java.sql.Time;
+import java.util.Date;
+
 import com.querydsl.core.domain.Animal;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 
 /**
@@ -31,7 +34,7 @@ public class QAnimalType extends EntityPathBase<Animal> {
 
     public final BooleanPath alive = createBoolean("alive");
 
-    public final DateTimePath<java.util.Date> birthdate = createDateTime("birthdate", java.util.Date.class);
+    public final DateTimePath<Date> birthdate = createDateTime("birthdate", java.util.Date.class);
 
     public final NumberPath<Double> bodyWeight = createNumber("bodyWeight", Double.class);
 
@@ -41,7 +44,7 @@ public class QAnimalType extends EntityPathBase<Animal> {
 
     public final StringPath name = createString("name");
 
-    public final TimePath<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
+    public final TimePath<Time> timeField = createTime("timeField", java.sql.Time.class);
 
     public final NumberPath<Integer> toes = createNumber("toes", Integer.class);
 

@@ -28,24 +28,7 @@ import com.google.common.base.CaseFormat;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.path.ArrayPath;
-import com.querydsl.core.types.path.BooleanPath;
-import com.querydsl.core.types.path.CollectionPath;
-import com.querydsl.core.types.path.ComparablePath;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.DateTimePath;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.EnumPath;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.SetPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.path.StringPath;
-import com.querydsl.core.types.path.TimePath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * Alias provides alias factory methods
@@ -57,7 +40,7 @@ public final class Alias {
 
     private static final AliasFactory aliasFactory = new AliasFactory(new DefaultPathFactory(), new DefaultTypeSystem());
 
-    private static final SimplePath<Object> it = new SimplePath<Object>(Object.class, PathMetadataFactory.forVariable("it"));
+    private static final SimplePath<Object> it = Expressions.path(Object.class, "it");
 
     // exclude $-methods from Checkstyle checks
     //CHECKSTYLE:OFF
@@ -68,98 +51,98 @@ public final class Alias {
      * @return
      */
     public static <D extends Expression<?>> D $() {
-        return aliasFactory.<D>getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static <D> ArrayPath<D[], D> $(D[] arg) {
-        return aliasFactory.<ArrayPath<D[], D>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<BigDecimal> $(BigDecimal arg) {
-        return aliasFactory.<NumberPath<BigDecimal>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<BigInteger> $(BigInteger arg) {
-        return aliasFactory.<NumberPath<BigInteger>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static BooleanPath $(Boolean arg) {
-        return aliasFactory.<BooleanPath> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<Byte> $(Byte arg) {
-        return aliasFactory.<NumberPath<Byte>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
     
     public static <T extends Enum<T>> EnumPath<T> $(T arg) {
-        return aliasFactory.<EnumPath<T>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static <D> CollectionPath<D, SimpleExpression<D>> $(Collection<D> args) {
-        return aliasFactory.<CollectionPath<D, SimpleExpression<D>>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static <D extends Comparable<?>> ComparablePath<D> $(D arg) {
 //        return aliasFactory.<ComparablePath<D>> getCurrentAndReset();
-        return Alias.<D, ComparablePath<D>>getPath(arg);
+        return Alias.getPath(arg);
     }
 
     public static NumberPath<Double> $(Double arg) {
-        return aliasFactory.<NumberPath<Double>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<Float> $(Float arg) {
-        return aliasFactory.<NumberPath<Float>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<Integer> $(Integer arg) {
-        return aliasFactory.<NumberPath<Integer>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static DatePath<java.sql.Date> $(java.sql.Date arg) {
-        return aliasFactory.<DatePath<java.sql.Date>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static DateTimePath<java.util.Date> $(java.util.Date arg) {
-        return aliasFactory.<DateTimePath<java.util.Date>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static <D> ListPath<D, SimpleExpression<D>> $(List<D> args) {
-        return aliasFactory.<ListPath<D, SimpleExpression<D>>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<Long> $(Long arg) {
-        return aliasFactory.<NumberPath<Long>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static <K, V> MapPath<K, V, SimpleExpression<V>> $(Map<K, V> args) {
-        return aliasFactory.<MapPath<K, V, SimpleExpression<V>>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static <D> SetPath<D, SimpleExpression<D>> $(Set<D> args) {
-        return aliasFactory.<SetPath<D, SimpleExpression<D>>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static NumberPath<Short> $(Short arg) {
-        return aliasFactory.<NumberPath<Short>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static StringPath $(String arg) {
-        return aliasFactory.<StringPath> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static TimePath<Time> $(Time arg) {
-        return aliasFactory.<TimePath<Time>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
 
     public static DateTimePath<Timestamp> $(Timestamp arg) {
-        return aliasFactory.<DateTimePath<Timestamp>> getCurrentAndReset();
+        return aliasFactory.getCurrentAndReset();
     }
     
     @SuppressWarnings("unchecked")
     @Nullable
     public static <D> EntityPathBase<D> $(D arg) {
-        EntityPathBase<D> rv = aliasFactory.<EntityPathBase<D>> getCurrentAndReset();
+        EntityPathBase<D> rv = aliasFactory.getCurrentAndReset();
         if (rv != null) {
             return rv;
         } else if (arg instanceof EntityPath<?>) {    
@@ -174,7 +157,7 @@ public final class Alias {
     @SuppressWarnings("unchecked")
     @Nullable
     private static <D, P extends Path<D>> P getPath(D arg) {
-        P rv = aliasFactory.<P>getCurrentAndReset();
+        P rv = aliasFactory.getCurrentAndReset();
         if (rv != null) {
             return rv;
         } else if (arg instanceof Path<?>) {    
@@ -229,7 +212,7 @@ public final class Alias {
      */
     @SuppressWarnings("unchecked")
     public static <D> Expression<D> getAny(D arg) {
-        Expression<D> current = (Expression<D>) aliasFactory.getCurrentAndReset();
+        Expression<D> current = aliasFactory.getCurrentAndReset();
         if (current != null) {
             return current;
         } else if (arg instanceof ManagedObject) {
@@ -250,12 +233,12 @@ public final class Alias {
 
     @SuppressWarnings("unchecked")
     public static <D extends Comparable<?>> ComparablePath<D> var(D arg) {
-        return new ComparablePath<D>((Class)arg.getClass(), "var"+arg);
+        return Expressions.comparablePath((Class<D>)arg.getClass(), "var"+arg);
     }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<D>> NumberPath<D> var(D arg) {
-        return new NumberPath<D>((Class)arg.getClass(), "var" + arg.getClass().getSimpleName()+arg);
+        return Expressions.numberPath((Class<D>)arg.getClass(), "var" + arg.getClass().getSimpleName() + arg);
     }
 
     @SuppressWarnings("unchecked")
@@ -265,7 +248,7 @@ public final class Alias {
     }
 
     public static StringPath var(String arg) {
-        return new StringPath(arg.replace(' ', '_'));
+        return Expressions.stringPath(arg.replace(' ', '_'));
     }
 
     private Alias() {}

@@ -2,11 +2,16 @@ package com.querydsl.jpa.domain.sql;
 
 import javax.annotation.Generated;
 
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.*;
+
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 
 /**
@@ -29,7 +34,7 @@ public class SSimpletypes extends com.querydsl.sql.RelationalPathBase<SSimpletyp
 
     public final StringPath cchar2 = createString("cchar2");
 
-    public final DatePath<java.sql.Date> date = createDate("date", java.sql.Date.class);
+    public final DatePath<Date> date = createDate("date", java.sql.Date.class);
 
     public final NumberPath<Double> ddouble = createNumber("ddouble", Double.class);
 
@@ -53,9 +58,9 @@ public class SSimpletypes extends com.querydsl.sql.RelationalPathBase<SSimpletyp
 
     public final StringPath sstring = createString("sstring");
 
-    public final TimePath<java.sql.Time> time = createTime("time", java.sql.Time.class);
+    public final TimePath<Time> time = createTime("time", java.sql.Time.class);
 
-    public final DateTimePath<java.sql.Timestamp> timestamp = createDateTime("timestamp", java.sql.Timestamp.class);
+    public final DateTimePath<Timestamp> timestamp = createDateTime("timestamp", java.sql.Timestamp.class);
 
     public final com.querydsl.sql.PrimaryKey<SSimpletypes> primary = createPrimaryKey(id);
 

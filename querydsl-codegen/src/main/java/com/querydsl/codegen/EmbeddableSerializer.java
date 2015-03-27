@@ -25,7 +25,8 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
+
 import static com.mysema.codegen.Symbols.UNCHECKED;
 
 /**

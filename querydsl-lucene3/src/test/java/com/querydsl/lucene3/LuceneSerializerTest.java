@@ -41,11 +41,11 @@ import org.junit.Test;
 
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.path.CollectionPath;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.PathBuilder;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CollectionPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
 
 /**
  * Tests for LuceneSerializer

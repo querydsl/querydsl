@@ -1,16 +1,14 @@
 package com.querydsl.spatial.jts;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.expr.StringOperation;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.spatial.SpatialOps;
+import com.vividsolutions.jts.geom.*;
 
 /**
  * GeometryExpressions contains static functions for GEO operations
@@ -24,7 +22,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static StringExpression asEWKT(JTSGeometryExpression<?> expr) {
-        return StringOperation.create(SpatialOps.AS_EWKT, expr);
+        return Expressions.stringOperation(SpatialOps.AS_EWKT, expr);
     }
 
     /**
@@ -34,7 +32,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static JTSGeometryExpression<?> fromText(String text) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.GEOM_FROM_TEXT, ConstantImpl.create(text));
+        return geometryOperation(SpatialOps.GEOM_FROM_TEXT, ConstantImpl.create(text));
     }
 
     /**
@@ -44,7 +42,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static JTSGeometryExpression<?> fromText(Expression<String> text) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.GEOM_FROM_TEXT, text);
+        return geometryOperation(SpatialOps.GEOM_FROM_TEXT, text);
     }
 
     /**
@@ -56,7 +54,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static <T extends Geometry> JTSGeometryExpression<T> setSRID(Expression<T> expr, int srid) {
-        return (JTSGeometryExpression)JTSGeometryOperation.create(expr.getType(), SpatialOps.SET_SRID,
+        return geometryOperation(expr.getType(), SpatialOps.SET_SRID,
                 expr, ConstantImpl.create(srid));
     }
 
@@ -67,7 +65,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> xmin(JTSGeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.XMIN, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.XMIN, expr);
     }
 
     /**
@@ -77,7 +75,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> xmax(JTSGeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.XMAX, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.XMAX, expr);
     }
 
     /**
@@ -87,7 +85,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> ymin(JTSGeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.YMIN, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.YMIN, expr);
     }
 
     /**
@@ -97,7 +95,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static NumberExpression<Double> ymax(JTSGeometryExpression<?> expr) {
-        return NumberOperation.create(Double.class, SpatialOps.YMAX, expr);
+        return Expressions.numberOperation(Double.class, SpatialOps.YMAX, expr);
     }
 
     /**
@@ -111,7 +109,7 @@ public final class JTSGeometryExpressions {
      */
     public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
                                             Expression<? extends Geometry> expr2, Expression<Double> distance) {
-        return BooleanOperation.create(SpatialOps.DWITHIN, expr1, expr2, distance);
+        return Expressions.booleanOperation(SpatialOps.DWITHIN, expr1, expr2, distance);
     }
 
     /**
@@ -125,7 +123,7 @@ public final class JTSGeometryExpressions {
      */
     public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
                                             Expression<? extends Geometry> expr2, double distance) {
-        return BooleanOperation.create(SpatialOps.DWITHIN, expr1, expr2, ConstantImpl.create(distance));
+        return Expressions.booleanOperation(SpatialOps.DWITHIN, expr1, expr2, ConstantImpl.create(distance));
     }
 
     /**
@@ -135,7 +133,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static JTSGeometryExpression<?> extent(Expression<? extends GeometryCollection> collection) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.EXTENT, collection);
+        return geometryOperation(SpatialOps.EXTENT, collection);
     }
 
     /**
@@ -145,7 +143,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static JTSGeometryExpression<?> collect(Expression<? extends GeometryCollection> collection) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.COLLECT, collection);
+        return geometryOperation(SpatialOps.COLLECT, collection);
     }
 
     /**
@@ -156,7 +154,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static JTSGeometryExpression<?> collect(Expression<? extends Geometry> expr1, Expression<? extends Geometry> expr2) {
-        return JTSGeometryOperation.create(Geometry.class, SpatialOps.COLLECT2, expr1, expr2);
+        return geometryOperation(SpatialOps.COLLECT2, expr1, expr2);
     }
 
     /**
@@ -169,7 +167,7 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static <T extends Geometry> JTSGeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay) {
-        return (JTSGeometryExpression)JTSGeometryOperation.create(expr.getType(), SpatialOps.TRANSLATE,
+        return geometryOperation(expr.getType(), SpatialOps.TRANSLATE,
                 expr, ConstantImpl.create(deltax), ConstantImpl.create(deltay));
     }
 
@@ -184,8 +182,64 @@ public final class JTSGeometryExpressions {
      * @return
      */
     public static <T extends Geometry> JTSGeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay, float deltaz) {
-        return (JTSGeometryExpression)JTSGeometryOperation.create(expr.getType(), SpatialOps.TRANSLATE2,
+        return geometryOperation(expr.getType(), SpatialOps.TRANSLATE2,
                 expr, ConstantImpl.create(deltax), ConstantImpl.create(deltay), ConstantImpl.create(deltaz));
+    }
+
+    /**
+     * Create a new Geometry operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static JTSGeometryExpression<Geometry> geometryOperation(Operator op, Expression<?>... args) {
+        return new JTSGeometryOperation<Geometry>(Geometry.class, op, args);
+    }
+
+    /**
+     * Create a new Geometry operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static <T extends Geometry> JTSGeometryExpression<T> geometryOperation(Class<? extends T> type,
+                                                                                  Operator op, Expression<?>... args) {
+        return new JTSGeometryOperation<T>(type, op, args);
+    }
+
+    /**
+     * Create a new LineString operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static JTSLineStringExpression<LineString> lineStringOperation(Operator op, Expression<?>... args) {
+        return new JTSLineStringOperation<LineString>(LineString.class, op, args);
+    }
+
+    /**
+     * Create a new Point operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static JTSPointExpression<Point> pointOperation(Operator op, Expression<?>... args) {
+        return new JTSPointOperation<Point>(Point.class, op, args);
+    }
+
+    /**
+     * Create a new Polygon operation expression
+     *
+     * @param op
+     * @param args
+     * @return
+     */
+    public static JTSPolygonExpression<Polygon> polygonOperation(Operator op, Expression<?>... args) {
+        return new JTSPolygonOperation<Polygon>(Polygon.class, op, args);
     }
 
     private JTSGeometryExpressions() {}

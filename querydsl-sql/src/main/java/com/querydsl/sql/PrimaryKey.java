@@ -21,14 +21,9 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.ProjectionRole;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * PrimaryKey defines a primary key on table
@@ -66,7 +61,7 @@ public final class PrimaryKey<E> implements Serializable, ProjectionRole<Tuple> 
     }
     
     public BooleanExpression in(CollectionExpression<?,Tuple> coll) {        
-        return BooleanOperation.create(Ops.IN, getProjection(), coll);
+        return Expressions.booleanOperation(Ops.IN, getProjection(), coll);
     }
 
     @Override

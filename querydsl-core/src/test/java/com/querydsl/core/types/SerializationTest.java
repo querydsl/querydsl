@@ -5,14 +5,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimplePath;
 
 public class SerializationTest {
 
     @Test
     public void roundtrip() throws Exception {
         PathImpl path = new PathImpl(Object.class, "entity");
-        SimplePath path2 = new SimplePath(Object.class, "entity");
+        SimplePath path2 = Expressions.path(Object.class, "entity");
         assertEquals(path, serialize(path));
         assertEquals(path2, serialize(path2));
         assertEquals(path2.isNull(), serialize(path2.isNull()));

@@ -15,12 +15,11 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.BooleanOperation;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
 /**
@@ -52,7 +51,7 @@ public abstract class JTSMultiCurveExpression<T extends GeometryCollection> exte
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
-            closed = BooleanOperation.create(SpatialOps.IS_CLOSED, mixin);
+            closed = Expressions.booleanOperation(SpatialOps.IS_CLOSED, mixin);
         }
         return closed;
     }
@@ -65,7 +64,7 @@ public abstract class JTSMultiCurveExpression<T extends GeometryCollection> exte
      */
     public NumberExpression<Double> length() {
         if (length == null) {
-            length = NumberOperation.create(Double.class, SpatialOps.LENGTH, mixin);
+            length = Expressions.numberOperation(Double.class, SpatialOps.LENGTH, mixin);
         }
         return length;
     }

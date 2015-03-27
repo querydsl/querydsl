@@ -16,9 +16,9 @@ package com.querydsl.lucene3;
 import org.apache.lucene.document.Document;
 
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class QDocument extends EntityPathBase<Document> {
 

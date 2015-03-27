@@ -17,11 +17,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.DateTimeExpression;
-import com.querydsl.core.types.expr.TimeExpression;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.DateTimePath;
+import com.querydsl.core.types.dsl.*;
 
 public class DateTimeTest extends AbstractQueryTest {
 
@@ -47,12 +43,12 @@ public class DateTimeTest extends AbstractQueryTest {
     
     @Test
     public void DayOfMonth() {
-        assertToString("day(date)", new DatePath<Date>(Date.class, "date").dayOfMonth());
+        assertToString("day(date)", Expressions.datePath(Date.class, "date").dayOfMonth());
     }
     
     @Test
     public void DayOfMonth2() {
-        assertToString("day(date)", new DateTimePath<Date>(Date.class, "date").dayOfMonth());
+        assertToString("day(date)", Expressions.dateTimePath(Date.class, "date").dayOfMonth());
     }
     
     @Test

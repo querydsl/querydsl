@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.support.Expressions;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.support.ReplaceVisitor;
 import com.querydsl.core.types.*;
 

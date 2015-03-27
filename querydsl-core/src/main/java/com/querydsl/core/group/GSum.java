@@ -46,7 +46,7 @@ public class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
 
             @Override
             public T get() {
-                return (T) MathUtils.cast(sum, (Class<T>) getType());
+                return MathUtils.cast(sum, getType());
             }
 
         };

@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.expr.Param;
+import com.querydsl.core.types.dsl.Param;
 
 public class CollQueryStandardTest {
 

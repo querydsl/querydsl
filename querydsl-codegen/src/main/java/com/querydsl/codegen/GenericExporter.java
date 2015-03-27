@@ -469,7 +469,7 @@ public class GenericExporter {
     @Nullable
     private Property createProperty(EntityType entityType, String propertyName, Type propertyType,
             AnnotatedElement annotated) {
-        List<String> inits = Collections.<String>emptyList();
+        List<String> inits = Collections.emptyList();
         if (annotated.isAnnotationPresent(skipAnnotation)
             && !annotated.isAnnotationPresent(QueryType.class)) {
             return null;

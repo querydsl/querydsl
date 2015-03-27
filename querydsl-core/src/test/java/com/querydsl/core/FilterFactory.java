@@ -24,21 +24,21 @@ import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.MapExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.expr.ArrayExpression;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.expr.Coalesce;
-import com.querydsl.core.types.expr.CollectionExpressionBase;
-import com.querydsl.core.types.expr.ComparableExpression;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.DateTimeExpression;
-import com.querydsl.core.types.expr.ListExpression;
-import com.querydsl.core.types.expr.MapExpressionBase;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.SimpleExpression;
-import com.querydsl.core.types.expr.StringExpression;
-import com.querydsl.core.types.expr.TemporalExpression;
-import com.querydsl.core.types.expr.TimeExpression;
-import com.querydsl.core.types.path.ListPath;
+import com.querydsl.core.types.dsl.ArrayExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Coalesce;
+import com.querydsl.core.types.dsl.CollectionExpressionBase;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.ListExpression;
+import com.querydsl.core.types.dsl.MapExpressionBase;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.core.types.dsl.TemporalExpression;
+import com.querydsl.core.types.dsl.TimeExpression;
+import com.querydsl.core.types.dsl.ListPath;
 
 /**
  * @author tiwe

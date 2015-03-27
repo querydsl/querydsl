@@ -15,10 +15,10 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -48,7 +48,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
      */
     public NumberExpression<Double> x() {
         if (x == null) {
-            x = NumberOperation.create(Double.class, SpatialOps.X, mixin);
+            x = Expressions.numberOperation(Double.class, SpatialOps.X, mixin);
         }
         return x;
     }
@@ -60,7 +60,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
      */
     public NumberExpression<Double> y() {
         if (y == null) {
-            y = NumberOperation.create(Double.class, SpatialOps.Y, mixin);
+            y = Expressions.numberOperation(Double.class, SpatialOps.Y, mixin);
         }
         return y;
     }
@@ -72,7 +72,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
      */
     public NumberExpression<Double> z() {
         if (z == null) {
-            z = NumberOperation.create(Double.class, SpatialOps.Z, mixin);
+            z = Expressions.numberOperation(Double.class, SpatialOps.Z, mixin);
         }
         return z;
     }
@@ -84,7 +84,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
      */
     public NumberExpression<Double> m() {
         if (m == null) {
-            m = NumberOperation.create(Double.class, SpatialOps.M, mixin);
+            m = Expressions.numberOperation(Double.class, SpatialOps.M, mixin);
         }
         return m;
     }

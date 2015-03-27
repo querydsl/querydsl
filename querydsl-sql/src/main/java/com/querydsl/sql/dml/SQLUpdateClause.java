@@ -21,7 +21,6 @@ import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.UpdateClause;

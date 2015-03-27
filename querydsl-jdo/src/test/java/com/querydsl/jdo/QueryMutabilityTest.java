@@ -30,7 +30,7 @@ public class QueryMutabilityTest extends AbstractJDOTest{
             IllegalArgumentException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
         QProduct product = QProduct.product;
-        JDOQuery query = (JDOQuery) query().from(product);
+        JDOQuery query = query().from(product);
         new QueryMutability(query).test(product.name, product.description);
     }
 

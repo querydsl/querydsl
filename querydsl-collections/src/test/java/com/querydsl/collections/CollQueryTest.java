@@ -13,22 +13,25 @@
  */
 package com.querydsl.collections;
 
+import static com.querydsl.collections.CollQueryFactory.from;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Test;
+
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
-import org.junit.Test;
-import static com.querydsl.collections.CollQueryFactory.from;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class CollQueryTest extends AbstractQueryTest {
 
@@ -123,8 +126,8 @@ public class CollQueryTest extends AbstractQueryTest {
 
     @Test
     public void Various() {
-        StringPath a = new StringPath("a");
-        StringPath b = new StringPath("b");
+        StringPath a = Expressions.stringPath("a");
+        StringPath b = Expressions.stringPath("b");
         for (Tuple strs : from(a, "aa", "bb", "cc")
                 .from(b, Arrays.asList("a","b"))
                 .where(a.startsWith(b)).list(a, b)) {
@@ -145,7 +148,7 @@ public class CollQueryTest extends AbstractQueryTest {
 
     @Test
     public void BigDecimals() {
-        NumberPath<BigDecimal> a = new NumberPath<BigDecimal>(BigDecimal.class, "cost");
+        NumberPath<BigDecimal> a = Expressions.numberPath(BigDecimal.class, "cost");
         List<BigDecimal> nums = from(a, new BigDecimal("2.1"), new BigDecimal("20.21"),
                 new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).list(a);
 

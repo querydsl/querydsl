@@ -15,8 +15,10 @@ package com.querydsl.core.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import java.sql.Date;
+
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
 
 /**
@@ -34,7 +36,7 @@ public class QAnimal extends EntityPathBase<Animal> {
 
     public final NumberPath<Double> bodyWeight = createNumber("bodyWeight", Double.class);
 
-    public final DatePath<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
+    public final DatePath<Date> dateField = createDate("dateField", java.sql.Date.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 

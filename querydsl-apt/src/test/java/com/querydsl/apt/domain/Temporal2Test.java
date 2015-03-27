@@ -11,8 +11,9 @@ import javax.persistence.TemporalType;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.core.types.path.DatePath;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class Temporal2Test {
 
@@ -34,8 +35,8 @@ public class Temporal2Test {
 
     @Test
     public void test() {
-        DatePath<Date> datePath = new DatePath<Date>(Date.class, "date");
-        NumberPath<BigDecimal> numberPath = new NumberPath<BigDecimal>(BigDecimal.class, "num");
+        DatePath<Date> datePath = Expressions.datePath(Date.class, "date");
+        NumberPath<BigDecimal> numberPath = Expressions.numberPath(BigDecimal.class, "num");
         new QTemporal2Test_Cheque(datePath, numberPath);
     }
 

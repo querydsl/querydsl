@@ -15,11 +15,11 @@ package com.querydsl.jdo.test.domain;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.ListPath;
-import com.querydsl.core.types.path.MapPath;
-import com.querydsl.core.types.path.PathInits;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.MapPath;
+import com.querydsl.core.types.dsl.PathInits;
+import com.querydsl.core.types.dsl.StringPath;
 
 /**
  * QStore is a Querydsl query type for Store

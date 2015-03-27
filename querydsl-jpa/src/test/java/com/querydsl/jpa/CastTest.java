@@ -17,12 +17,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 public class CastTest extends AbstractQueryTest {
 
-    private static NumberExpression<Integer> expr = new NumberPath<Integer>(Integer.class,"int");
+    private static NumberExpression<Integer> expr = Expressions.numberPath(Integer.class, "int");
 
     @Test
     public void Byte() {

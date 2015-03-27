@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 import org.junit.Test;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.SimpleExpression;
+import com.querydsl.core.types.dsl.SimpleExpression;
 
 public class ReflectionUtilsTest {
 

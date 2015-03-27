@@ -19,8 +19,8 @@ import javax.annotation.Generated;
 
 import com.querydsl.core.domain.MyEmbeddable;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.NumberPath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.NumberPath;
 
 
 /**

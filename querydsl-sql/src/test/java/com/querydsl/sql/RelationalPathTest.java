@@ -17,7 +17,7 @@ public class RelationalPathTest {
     @Test
     public void Path() throws ClassNotFoundException, IOException {
         QSurvey survey = QSurvey.survey;
-        QSurvey survey2 = (QSurvey) serialize(survey);
+        QSurvey survey2 = serialize(survey);
         assertEquals(Arrays.asList(survey.all()), Arrays.asList(survey2.all()));
         assertEquals(survey.getMetadata(), survey2.getMetadata());
         assertEquals(survey.getMetadata(survey.id), survey2.getMetadata(survey.id));

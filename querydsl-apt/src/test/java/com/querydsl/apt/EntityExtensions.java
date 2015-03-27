@@ -15,13 +15,13 @@ package com.querydsl.apt;
 
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.path.BooleanPath;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class EntityExtensions {
     
     @QueryDelegate(EntityWithExtensions.class)
     public static Predicate extension(QEntityWithExtensions entity) {
-        return new BooleanPath("b");
+        return Expressions.booleanPath("b");
     }
 
 }

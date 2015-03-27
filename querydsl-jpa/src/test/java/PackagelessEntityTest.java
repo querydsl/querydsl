@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.querydsl.jpa.JPASubQuery;
-import com.querydsl.core.types.path.PathBuilder;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 
 public class PackagelessEntityTest {

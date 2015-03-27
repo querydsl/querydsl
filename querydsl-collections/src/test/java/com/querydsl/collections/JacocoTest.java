@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.querydsl.core.alias.Alias;
-import com.querydsl.core.types.path.EntityPathBase;
+import com.querydsl.core.types.dsl.EntityPathBase;
 
 public class JacocoTest {
     

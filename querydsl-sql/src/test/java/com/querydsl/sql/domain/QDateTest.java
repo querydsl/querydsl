@@ -4,7 +4,7 @@ import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPathBase;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.DatePath;
+import com.querydsl.core.types.dsl.DatePath;
 
 import java.sql.Date;
 

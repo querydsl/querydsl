@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import org.joda.money.QMoney;
 import org.junit.Test;
 
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 public class JodaMoneyTest {
 

@@ -19,12 +19,13 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class MappingProjectionTest {
     
-    StringPath str1 = new StringPath("str1");
-    StringPath str2 = new StringPath("str2");
+    StringPath str1 = Expressions.stringPath("str1");
+    StringPath str2 = Expressions.stringPath("str2");
     
     @SuppressWarnings("serial")
     @Test

@@ -14,8 +14,8 @@
 package com.querydsl.hibernate.search;
 
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class QUser extends EntityPathBase<User> {
 

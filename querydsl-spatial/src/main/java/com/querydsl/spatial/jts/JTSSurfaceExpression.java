@@ -15,10 +15,10 @@ package com.querydsl.spatial.jts;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.spatial.SpatialOps;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
@@ -50,7 +50,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      */
     public NumberExpression<Double> area() {
         if (area == null) {
-            area = NumberOperation.create(Double.class, SpatialOps.AREA, mixin);
+            area = Expressions.numberOperation(Double.class, SpatialOps.AREA, mixin);
         }
         return area;
     }
@@ -63,7 +63,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      */
     public JTSPointExpression<Point> centroid() {
         if (centroid == null) {
-            centroid = JTSPointOperation.create(Point.class, SpatialOps.CENTROID, mixin);
+            centroid = JTSGeometryExpressions.pointOperation(SpatialOps.CENTROID, mixin);
         }
         return centroid;
     }
@@ -75,7 +75,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      */
     public JTSPointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {
-            pointOnSurface = JTSPointOperation.create(Point.class, SpatialOps.POINT_ON_SURFACE, mixin);
+            pointOnSurface = JTSGeometryExpressions.pointOperation(SpatialOps.POINT_ON_SURFACE, mixin);
         }
         return pointOnSurface;
     }

@@ -19,7 +19,10 @@ import java.io.Serializable;
 
 import com.querydsl.core.domain.CommonIdentifiable;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.path.*;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimplePath;
 
 
 /**
@@ -33,7 +36,7 @@ public class QCommonIdentifiable extends EntityPathBase<CommonIdentifiable<? ext
 
     public final QCommonPersistence _super = new QCommonPersistence(this);
 
-    public final SimplePath<java.io.Serializable> id = createSimple("id", java.io.Serializable.class);
+    public final SimplePath<Serializable> id = createSimple("id", java.io.Serializable.class);
 
     //inherited
     public final NumberPath<Long> version = _super.version;
@@ -43,7 +46,7 @@ public class QCommonIdentifiable extends EntityPathBase<CommonIdentifiable<? ext
         super((Class)CommonIdentifiable.class, forVariable(variable));
     }
 
-    public QCommonIdentifiable(BeanPath<? extends CommonIdentifiable<? extends java.io.Serializable>> entity) {
+    public QCommonIdentifiable(BeanPath<? extends CommonIdentifiable<? extends Serializable>> entity) {
         super(entity.getType(), entity.getMetadata());
     }
 

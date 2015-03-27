@@ -22,9 +22,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.querydsl.jpa.domain.*;
-import com.querydsl.core.types.expr.ComparableExpression;
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.NumberExpression;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.testutil.ExcludeIn;
 
 import antlr.RecognitionException;

@@ -15,10 +15,7 @@ package com.querydsl.sql.oracle;
 
 import java.util.Date;
 
-import com.querydsl.core.types.expr.DateExpression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.template.DateTemplate;
-import com.querydsl.core.types.template.NumberTemplate;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * Convenience functions and constants for Oracle DB usage
@@ -29,12 +26,12 @@ public final class OracleGrammar {
 
     private OracleGrammar() {}
 
-    public static final NumberExpression<Integer> level = NumberTemplate.create(Integer.class, "level");
+    public static final NumberExpression<Integer> level = Expressions.numberTemplate(Integer.class, "level");
 
-    public static final NumberExpression<Integer> rownum = NumberTemplate.create(Integer.class, "rownum");
+    public static final NumberExpression<Integer> rownum = Expressions.numberTemplate(Integer.class, "rownum");
 
-    public static final NumberExpression<Integer> rowid = NumberTemplate.create(Integer.class, "rowid");
+    public static final NumberExpression<Integer> rowid = Expressions.numberTemplate(Integer.class, "rowid");
 
-    public static final DateExpression<Date> sysdate = DateTemplate.create(Date.class, "sysdate");
+    public static final DateExpression<Date> sysdate = Expressions.dateTemplate(Date.class, "sysdate");
 
 }

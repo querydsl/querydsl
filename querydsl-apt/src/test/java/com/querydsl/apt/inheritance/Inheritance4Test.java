@@ -17,9 +17,9 @@ import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.AbstractTest;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.SimplePath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimplePath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class Inheritance4Test extends AbstractTest {
 

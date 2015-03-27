@@ -19,10 +19,10 @@ import java.io.Serializable;
 
 import com.querydsl.core.domain.CommonIdentifiable;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.path.BeanPath;
-import com.querydsl.core.types.path.EntityPathBase;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.SimplePath;
+import com.querydsl.core.types.dsl.BeanPath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimplePath;
 
 
 /**

@@ -20,8 +20,8 @@ import org.geolatte.geom.Point;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.expr.NumberExpression;
-import com.querydsl.core.types.expr.NumberOperation;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * A LineString is a Curve with linear interpolation between Points. Each consecutive pair of Points defines a Line
@@ -49,7 +49,7 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
      */
     public NumberExpression<Integer> numPoints() {
         if (numPoints == null) {
-            numPoints = NumberOperation.create(Integer.class, SpatialOps.NUM_POINTS, mixin);
+            numPoints = Expressions.numberOperation(Integer.class, SpatialOps.NUM_POINTS, mixin);
         }
         return numPoints;
     }
@@ -61,7 +61,7 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
      * @return
      */
     public PointExpression<Point> pointN(int idx) {
-        return PointOperation.create(Point.class, SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
+        return GeometryExpressions.pointOperation(SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
     }
 
 }

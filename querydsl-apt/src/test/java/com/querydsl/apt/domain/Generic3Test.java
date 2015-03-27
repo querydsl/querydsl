@@ -5,7 +5,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class Generic3Test extends AbstractTest {
     

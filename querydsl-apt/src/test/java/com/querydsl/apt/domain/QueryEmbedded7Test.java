@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryEmbedded;
 import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.types.path.NumberPath;
-import com.querydsl.core.types.path.StringPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class QueryEmbedded7Test {
 

@@ -16,9 +16,7 @@ package com.querydsl.codegen;
 import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.expr.*;
-import com.querydsl.core.types.path.*;
-import com.querydsl.core.types.template.*;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * JavaTypeMappings defines mappings from {@link TypeCategory} instances to {@link Expression} types

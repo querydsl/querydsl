@@ -3,9 +3,9 @@ package com.querydsl.apt.domain;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QueryDelegate;
-import com.querydsl.core.types.expr.BooleanExpression;
-import com.querydsl.core.types.path.ComparablePath;
-import com.querydsl.core.types.template.BooleanTemplate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class Delegate3Test {
 
@@ -28,7 +28,7 @@ public class Delegate3Test {
 
     @QueryDelegate(Geometry.class)
     public static BooleanExpression isWithin( ComparablePath<? extends Geometry> geo1, ComparablePath<? extends Geometry> geo2){
-        return BooleanTemplate.TRUE;
+        return Expressions.TRUE;
     }
 
     @Test
