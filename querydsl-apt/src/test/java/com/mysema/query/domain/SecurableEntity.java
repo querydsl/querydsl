@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.TableGenerator;
 
 /**
- * This is an example of using system ACL function. Note, field id is must,
- * abstract function getId must also implemented.
+ * This is an example of using system ACL function. Note, field id is required,
+ * abstract function getId must also be implemented.
  */
 @Entity
 public class SecurableEntity extends AbstractSecurable<Long, Long> {

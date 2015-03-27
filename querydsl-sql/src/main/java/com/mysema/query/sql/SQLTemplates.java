@@ -215,7 +215,7 @@ public class SQLTemplates extends Templates {
 
     private String leftJoin = "\nleft join ";
 
-    private String rightJoin = "\nright join ";;
+    private String rightJoin = "\nright join ";
 
     private String limitTemplate = "\nlimit {0}";
 

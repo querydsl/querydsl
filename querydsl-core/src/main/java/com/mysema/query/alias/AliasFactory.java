@@ -17,9 +17,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Nullable;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -28,6 +25,9 @@ import com.mysema.query.QueryException;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadataFactory;
+
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 
 /**
  * AliasFactory is a factory class for alias creation
@@ -141,7 +141,7 @@ public class AliasFactory {
     }
 
     /**
-     * Get the current thread bound expression without reseting it
+     * Get the current thread bound expression without resetting it
      * 
      * @param <A>
      * @return

@@ -868,7 +868,7 @@ new SQLUpdateClause(conn, configuration, survey)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLDelecteClause(conn, configuration, survey)
+new SQLDeleteClause(conn, configuration, survey)
     .where(survey.name.eq("XXX"))
     .execute();
 
@@ -877,7 +877,7 @@ new SQLDelecteClause(conn, configuration, survey)
       <para>where 없이</para>
 
       <programlisting language="java"><![CDATA[
-new SQLDelecteClause(conn, configuration, survey)
+new SQLDeleteClause(conn, configuration, survey)
     .execute()
 ]]></programlisting>
 
@@ -1065,7 +1065,7 @@ configuration.register(new UtilDateType());
 
     <programlisting language="java"><![CDATA[
 Configuration configuration = new Configuration(new H2Templates());
-// declares a maping for the gender column in the person table
+// declares a mapping for the gender column in the person table
 configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
 ]]></programlisting>
 

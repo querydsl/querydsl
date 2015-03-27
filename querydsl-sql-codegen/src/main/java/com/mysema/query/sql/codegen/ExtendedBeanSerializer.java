@@ -30,7 +30,7 @@ import com.mysema.query.sql.Column;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
- * ExtendedBeanSerialzier outputs primary key based equals, hashCode and toString implementations
+ * ExtendedBeanSerializer outputs primary key based equals, hashCode and toString implementations
  * 
  * @author tiwe
  *

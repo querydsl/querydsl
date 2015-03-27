@@ -46,7 +46,7 @@ public class PathComparator<T, V extends Comparable<V>> implements Comparator<T>
     @Override
     public int compare(T leftBean, T rightBean) {
         if(leftBean == rightBean) {
-            return 0; // Reference to the seme object should always result in '0'
+            return 0; // Reference to the same object should always result in '0'
         } else if (leftBean == null) {
             return -1; // Whenever the reference varies and left is null, right is not null
         } else if (rightBean == null) {

@@ -24,7 +24,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
 /**
- * EmptyMetadata provides a immutable empty QueryMetadata instace
+ * EmptyMetadata provides an immutable empty QueryMetadata instance
  *
  * @author tiwe
  *

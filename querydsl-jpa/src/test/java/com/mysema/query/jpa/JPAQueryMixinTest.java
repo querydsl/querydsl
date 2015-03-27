@@ -1,6 +1,10 @@
 package com.mysema.query.jpa;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
+
+import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
@@ -11,8 +15,6 @@ import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class JPAQueryMixinTest {
 
@@ -180,7 +182,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Embeddable_Colllection() {
+    public void OrderBy_Embeddable_Collection() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = new QBookMark("bookVersion_definition_bookMarks");
         mixin.from(bookVersion);

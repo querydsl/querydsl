@@ -38,7 +38,7 @@ expr eq "Ben"           expr === "Ben"
 expr ne "Ben"           expr !== "Ben"
 expr append "X"         expr + "X"
 expr isEmpty            expr is empty
-expr isNotEmpoty        expr not empty
+expr isNotEmpty         expr not empty
 
 // boolean
 left and right          left && right

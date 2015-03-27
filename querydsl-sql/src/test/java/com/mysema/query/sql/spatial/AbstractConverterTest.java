@@ -48,7 +48,7 @@ public abstract class AbstractConverterTest {
             data.add(new LineString(createSequence(crs, (Point)data.get(i), (Point)data.get(i))));
         }
 
-        // polgyon
+        // polygon
         // TODO
 
         // multipoint

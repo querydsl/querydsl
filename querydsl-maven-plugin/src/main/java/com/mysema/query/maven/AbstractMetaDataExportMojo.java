@@ -19,6 +19,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
 
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
+
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.sql.Configuration;
@@ -27,10 +32,6 @@ import com.mysema.query.sql.codegen.DefaultNamingStrategy;
 import com.mysema.query.sql.codegen.MetaDataExporter;
 import com.mysema.query.sql.codegen.NamingStrategy;
 import com.mysema.query.sql.types.Type;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 
 /**
  * MetaDataExportMojo is a goal for MetaDataExporter usage
@@ -130,7 +131,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String targetFolder;
 
     /**
-     * namingstrategy class to override (default: DefaultNamingStrategy)
+     * naming strategy class to override (default: DefaultNamingStrategy)
      *
      * @parameter
      */

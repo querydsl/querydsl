@@ -50,7 +50,7 @@ public class GeoSpatialQueryTest {
     @Before
     public void before() {
         ds.delete(ds.createQuery(GeoEntity.class));
-        ds.getCollection(GeoEntity.class).ensureIndex(new BasicDBObject("location","2d"));;
+        ds.getCollection(GeoEntity.class).ensureIndex(new BasicDBObject("location","2d"));
     }
 
     @Test

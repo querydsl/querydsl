@@ -255,7 +255,7 @@ public final class Connections {
         stmt.execute("create table SURVEY(ID int auto_increment(16693,2), " +
                 "NAME varchar(30)," +
                 "NAME2 varchar(30)," +
-                "constraint suryey_pk primary key(ID))");
+                "constraint survey_pk primary key(ID))");
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
 
         // test
@@ -966,7 +966,7 @@ public final class Connections {
         stmt.execute("create table SURVEY(ID int auto_increment, " +
                 "NAME varchar(30)," +
                 "NAME2 varchar(30)," +
-                "constraint suryey_pk primary key(ID))");
+                "constraint survey_pk primary key(ID))");
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
 
         // test

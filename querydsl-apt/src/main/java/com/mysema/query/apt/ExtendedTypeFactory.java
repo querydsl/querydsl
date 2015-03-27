@@ -13,14 +13,15 @@
  */
 package com.mysema.query.apt;
 
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 import javax.annotation.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.*;
-import java.lang.annotation.Annotation;
-import java.util.*;
 
 import com.mysema.codegen.model.*;
 import com.mysema.query.annotations.QueryExclude;
@@ -135,12 +136,12 @@ public final class ExtendedTypeFactory {
         }
 
         @Override
-        public Type visitWildcard(WildcardType wildardType, Boolean p) {
-            if (wildardType.getExtendsBound() != null) {
-                Type type = visit(wildardType.getExtendsBound(), p);
+        public Type visitWildcard(WildcardType wildcardType, Boolean p) {
+            if (wildcardType.getExtendsBound() != null) {
+                Type type = visit(wildcardType.getExtendsBound(), p);
                 return new TypeExtends(type);
-            } else if (wildardType.getSuperBound() != null) {
-                Type type = visit(wildardType.getSuperBound(), p);
+            } else if (wildcardType.getSuperBound() != null) {
+                Type type = visit(wildcardType.getSuperBound(), p);
                 return new TypeSuper(type);
             } else {
                 return null;
