@@ -13,9 +13,6 @@
  */
 package com.querydsl.core.types;
 
-import java.lang.reflect.Field;
-
-
 /**
  * JavaTemplates extends {@link Templates} to provide Java syntax compliant serialization
  * of Querydsl expressions
@@ -101,13 +98,8 @@ public class JavaTemplates extends Templates {
         add(Ops.CASE_EQ_ELSE,  "{0}");
 
         // Math
-        try {
-            for (Field f : Ops.MathOps.class.getFields()) {
-                Operator op = (Operator) f.get(null);
-                add(op, "Math." + getTemplate(op));
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e.getMessage(), e);
+        for (Operator op : Ops.MathOps.values()) {
+            add(op, "Math." + getTemplate(op));
         }
         add(Ops.MOD, "{0} % {0}");
 

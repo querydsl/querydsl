@@ -16,27 +16,21 @@ package com.querydsl.core.serialization;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
-
 import org.junit.Test;
 
-import com.querydsl.core.types.JavaTemplates;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.*;
 
 public class JavaTemplatesTest {
 
     @Test
-    public void Mappings() throws IllegalArgumentException, IllegalAccessException {
-        JavaTemplates templates = new JavaTemplates();
+    public void Mappings() {
+        Templates templates = new JavaTemplates();
         int matched = 0;
-        for (Field field : Ops.class.getFields()) {
-            if (Operator.class.isAssignableFrom(field.getType())) {
-                matched++;
-                Operator operator = (Operator) field.get(null);
-                assertNotNull(field.getName() + " missing", templates.getTemplate(operator));
-            }
+        for (Operator operator : Ops.values()) {
+            ++matched;
+            assertNotNull(templates.getTemplate(operator));
         }
+
         assertTrue(matched > 0);
     }
 
