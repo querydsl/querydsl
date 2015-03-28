@@ -94,8 +94,8 @@ public class TemplateFactory {
                     if (arg instanceof Constant) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
-                        Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
-                        return OperationImpl.create(String.class, Ops.LOWER, concated);
+                        Expression<String> concatenated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
+                        return OperationImpl.create(String.class, Ops.LOWER, concatenated);
                     } else {
                         return escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
                     }
@@ -153,9 +153,9 @@ public class TemplateFactory {
                     if (arg instanceof Constant) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
-                        Expression<String> concated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
-                        concated = OperationImpl.create(String.class, Ops.CONCAT, concated, PERCENT);
-                        return OperationImpl.create(String.class, Ops.LOWER, concated);
+                        Expression<String> concatenated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
+                        concatenated = OperationImpl.create(String.class, Ops.CONCAT, concatenated, PERCENT);
+                        return OperationImpl.create(String.class, Ops.LOWER, concatenated);
                     } else {
                         return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
                     }
