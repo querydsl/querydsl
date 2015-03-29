@@ -13,8 +13,6 @@
  */
 package com.mysema.codegen;
 
-import javax.lang.model.SourceVersion;
-import javax.tools.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -25,6 +23,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.jar.Manifest;
+
+import javax.lang.model.SourceVersion;
+import javax.tools.*;
 
 import com.google.common.base.Joiner;
 
@@ -39,7 +40,7 @@ public class SimpleCompiler implements JavaCompiler {
 
     private static final Joiner pathJoiner = Joiner.on(File.pathSeparator);
 
-    private static boolean isSureFireBooter(URLClassLoader cl) {
+    protected static boolean isSureFireBooter(URLClassLoader cl) {
         for (URL url : cl.getURLs()) {
             if (url.getPath().contains("surefirebooter")) {
                 return true;
