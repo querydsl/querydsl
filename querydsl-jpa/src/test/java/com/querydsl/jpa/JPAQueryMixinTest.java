@@ -13,6 +13,9 @@ import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QCompany;
+import com.querydsl.jpa.domain.QDepartment;
+import com.querydsl.jpa.domain.QEmployee;
 import com.querydsl.jpa.domain4.QBookMark;
 import com.querydsl.jpa.domain4.QBookVersion;
 
@@ -38,6 +41,24 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate))),
                 md.getJoins());
         assertEquals(Arrays.asList(cat_mate.name.asc()),
+                md.getOrderBy());
+    }
+
+    @Test
+    public void OrderBy_NonRoot_Twice() {
+        QDepartment department = QDepartment.department;
+        QCompany department_company = new QCompany("department_company");
+        QEmployee department_company_ceo = new QEmployee("department_company_ceo");
+        mixin.from(department);
+        mixin.orderBy(department.company.ceo.firstName.asc(), department.company.ceo.lastName.asc());
+
+        QueryMetadata md = mixin.getMetadata();
+        assertEquals(Arrays.asList(
+                        new JoinExpression(JoinType.DEFAULT, department),
+                        new JoinExpression(JoinType.LEFTJOIN, department.company.as(department_company)),
+                        new JoinExpression(JoinType.LEFTJOIN, department_company.ceo.as(department_company_ceo))),
+                md.getJoins());
+        assertEquals(Arrays.asList(department_company_ceo.firstName.asc(), department_company_ceo.lastName.asc()),
                 md.getOrderBy());
     }
 

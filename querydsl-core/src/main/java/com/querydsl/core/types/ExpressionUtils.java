@@ -545,6 +545,16 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Create a new root variable based on the given path
+     *
+     * @param path
+     * @return
+     */
+    public static String createRootVariable(Path<?> path) {
+        return path.accept(ToStringVisitor.DEFAULT, TEMPLATES);
+    }
+
+    /**
      * Converts the given object to an Expression
      *
      * @param o

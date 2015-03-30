@@ -137,7 +137,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             }
         } else if (metadata.getParent().getMetadata().isRoot()) {
             Class<T> type = getElementTypeOrType(path);
-            Path<T> newPath = new PathImpl<T>(type, path.toString().replace('.', '_'));
+            Path<T> newPath = new PathImpl<T>(type, ExpressionUtils.createRootVariable(path));
             leftJoin(path, newPath);
             return newPath;
         } else {
@@ -145,7 +145,8 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             Path<?> parent = shorten(metadata.getParent(), paths);
             Path<T> oldPath = new PathImpl<T>(path.getType(),
                     new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
-            Path<T> newPath = new PathImpl<T>(type, oldPath.toString().replace('.', '_'));
+            Path<T> newPath = new PathImpl<T>(type, ExpressionUtils.createRootVariable(oldPath));
+            aliases.put(path, newPath);
             leftJoin(oldPath, newPath);
             return newPath;
         }
