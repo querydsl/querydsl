@@ -85,7 +85,7 @@ public final class SQLExpressions {
             if (args[i] instanceof Expression) {
                 exprs[i] = (Expression)args[i];
             } else {
-                exprs[i] = new ConstantImpl(args[i]);
+                exprs[i] = ConstantImpl.create(args[i]);
             }
         }
         return exprs;

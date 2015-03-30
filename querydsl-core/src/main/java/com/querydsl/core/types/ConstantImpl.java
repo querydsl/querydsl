@@ -21,21 +21,25 @@ import javax.annotation.concurrent.Immutable;
  * @author tiwe
  */
 @Immutable
-@SuppressWarnings("unchecked")
 public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final long serialVersionUID = -3898138057967814118L;
 
     private static final int CACHE_SIZE = 256;
 
+    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
     private static final Constant<Character>[] CHARACTERS = new Constant[CACHE_SIZE];
 
+    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
     private static final Constant<Byte>[] BYTES = new Constant[CACHE_SIZE];
 
+    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
     private static final Constant<Integer>[] INTEGERS = new Constant[CACHE_SIZE];
 
+    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
     private static final Constant<Long>[] LONGS = new Constant[CACHE_SIZE];
 
+    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
     private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
 
     private static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
@@ -107,6 +111,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
      *
      * @param constant
      */
+    @SuppressWarnings("unchecked") //The class of the constant will mandate the type
     public ConstantImpl(T constant) {
         this((Class)constant.getClass(), constant);
     }

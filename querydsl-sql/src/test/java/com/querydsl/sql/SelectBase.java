@@ -432,7 +432,7 @@ public class SelectBase extends AbstractBaseTest {
 
         Map<Object, Object> failures = Maps.newIdentityHashMap();
         for (Object dt : data) {
-            Object dt2 = query().singleResult(new ConstantImpl(dt));
+            Object dt2 = query().singleResult(ConstantImpl.create(dt));
             if (!dt.equals(dt2)) {
                 failures.put(dt, dt2);
             }

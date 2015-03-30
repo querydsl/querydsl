@@ -39,7 +39,7 @@ import org.hibernate.StatelessSession;
  */
 public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause> {
 
-    private final QueryMixin queryMixin = new JPAQueryMixin();
+    private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
     private final SessionHolder session;
 

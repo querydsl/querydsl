@@ -72,7 +72,7 @@ public final class PathsExtractor implements Visitor<Void, List<Path<?>>> {
     public Path<?> visit(Collection<?> exprs, List<Path<?>> paths) {
         for (Object e : exprs) {
             if (e instanceof Expression) {
-                ((Expression) e).accept(this, paths);
+                ((Expression<?>) e).accept(this, paths);
             }
         }
         return null;

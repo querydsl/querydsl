@@ -149,7 +149,7 @@ public class ProjectionsFactory {
             rv.add(expr.countDistinct());
         }
 
-        if (!(other instanceof Constant || module == Module.JDO || module == Module.RDFBEAN)) {
+        if (!(other instanceof Constant<?> || module == Module.JDO || module == Module.RDFBEAN)) {
             CaseBuilder cases = new CaseBuilder();
             rv.add(NumberConstant.create(1).add(cases
                 .when(expr.gt(10)).then(expr)
@@ -206,7 +206,7 @@ public class ProjectionsFactory {
         rv.add(expr.substring(1));
         rv.add(expr.substring(0, 1));
 
-        if (!(other instanceof Constant || module == Module.JDO || module == Module.RDFBEAN)) {
+        if (!(other instanceof Constant<?> || module == Module.JDO || module == Module.RDFBEAN)) {
             CaseBuilder cases = new CaseBuilder();
             rv.add(cases.when(expr.eq("A")).then(other)
                         .when(expr.eq("B")).then(expr)

@@ -58,10 +58,9 @@ public final class StringConstant extends StringExpression implements Constant<S
         return v.visit(this, context);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public StringExpression append(Expression<String> s) {
-        if (s instanceof Constant) {
+        if (s instanceof Constant<?>) {
             return append(((Constant<String>)s).getConstant());
         } else {
             return super.append(s);
@@ -134,10 +133,9 @@ public final class StringConstant extends StringExpression implements Constant<S
         return BooleanConstant.create(!constant.equals(s));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public StringExpression prepend(Expression<String> s) {
-        if (s instanceof Constant) {
+        if (s instanceof Constant<?>) {
             return prepend(((Constant<String>)s).getConstant());
         } else {
             return super.prepend(s);

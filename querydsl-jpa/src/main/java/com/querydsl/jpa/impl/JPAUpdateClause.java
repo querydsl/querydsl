@@ -39,7 +39,7 @@ import com.querydsl.jpa.JPQLTemplates;
  */
 public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
 
-    private final QueryMixin queryMixin = new JPAQueryMixin();
+    private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
     private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
 

@@ -69,7 +69,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
             Path<?> parent = (Path)metadata.getParent().accept(this, context);
             Object element = metadata.getElement();
             if (element instanceof Expression<?>) {
-                element = ((Expression) element).accept(this, context);
+                element = ((Expression<?>) element).accept(this, context);
             }
             if (parent.equals(metadata.getParent()) && Objects.equal(element, metadata.getElement())) {
                 return expr;
@@ -138,7 +138,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         ImmutableList.Builder builder = ImmutableList.builder();
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression) {
-                builder.add(((Expression)arg).accept(this, context));
+                builder.add(((Expression<?>)arg).accept(this, context));
             } else {
                 builder.add(arg);
             }

@@ -49,7 +49,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.LOWER, (Expression)arg);
@@ -63,7 +63,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.UPPER, (Expression)arg);
@@ -77,7 +77,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         return OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
@@ -91,7 +91,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         Expression<String> concatenated = OperationImpl.create(String.class, Ops.CONCAT, (Expression)arg, PERCENT);
@@ -120,7 +120,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         Expression<String> concatenated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
@@ -135,7 +135,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         Expression<String> concatenated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);
@@ -150,7 +150,7 @@ public class TemplateFactory {
             new Function<Object,Object>() {
                 @Override
                 public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
+                    if (arg instanceof Constant<?>) {
                         return ConstantImpl.create(apply(arg.toString()).toString());
                     } else if (arg instanceof Expression) {
                         Expression<String> concatenated = OperationImpl.create(String.class, Ops.CONCAT, PERCENT, (Expression)arg);

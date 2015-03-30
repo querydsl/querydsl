@@ -20,7 +20,7 @@ public class QueryMixinPerformanceTest {
         
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            QueryMixin mixin = new QueryMixin();
+            QueryMixin<?> mixin = new QueryMixin<Void>();
             mixin.from(entity);
             mixin.where(other.eq(new DummyEntity()));
             mixin.setProjection(entity);
@@ -37,7 +37,7 @@ public class QueryMixinPerformanceTest {
         
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            QueryMixin mixin = new QueryMixin();
+            QueryMixin<?> mixin = new QueryMixin<Void>();
             mixin.from(entities);
             mixin.where(other.eq(new DummyEntity()));
             mixin.setProjection(entity);

@@ -23,17 +23,15 @@ import com.querydsl.core.Detachable;
 import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.EntityPath;
 
-
-@SuppressWarnings("unchecked")
 public class DetachableAdapterTest {
     
-    private QueryMixin queryMixin;
+    private QueryMixin<?> queryMixin;
     
     private Detachable detachable;
     
     @Before
     public void setUp() {
-        queryMixin = new QueryMixin();
+        queryMixin = new QueryMixin<Void>();
         detachable = new DetachableAdapter(new DetachableMixin(queryMixin));
     }
     

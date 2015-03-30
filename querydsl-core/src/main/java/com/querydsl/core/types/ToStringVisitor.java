@@ -60,12 +60,12 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
                     if (precedence > -1 && rv instanceof Operation) {
                         if (precedence < templates.getPrecedence(((Operation<?>)rv).getOperator())) {
                             builder.append("(");
-                            builder.append(((Expression)rv).accept(this, templates));
+                            builder.append(((Expression<?>)rv).accept(this, templates));
                             builder.append(")");
                             continue;
                         }
                     }
-                    builder.append(((Expression)rv).accept(this, templates));
+                    builder.append(((Expression<?>)rv).accept(this, templates));
                 } else {
                     builder.append(rv.toString());
                 }
@@ -93,7 +93,7 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
                 for (Template.Element element : pattern.getElements()) {
                     Object rv = element.convert(args);
                     if (rv instanceof Expression) {
-                        builder.append(((Expression)rv).accept(this, templates));
+                        builder.append(((Expression<?>)rv).accept(this, templates));
                     } else {
                         builder.append(rv.toString());
                     }
@@ -118,7 +118,7 @@ public final class ToStringVisitor implements Visitor<String,Templates> {
         for (Template.Element element : expr.getTemplate().getElements()) {
             Object rv = element.convert(expr.getArgs());
             if (rv instanceof Expression) {
-                builder.append(((Expression)rv).accept(this, templates));
+                builder.append(((Expression<?>)rv).accept(this, templates));
             } else {
                 builder.append(rv.toString());
             }

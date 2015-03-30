@@ -420,7 +420,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         } else if (operator == Ops.IN || operator == Ops.NOT_IN) {
             if (args.get(1) instanceof Path) {
                 visitAnyInPath(type, operator, args);
-            } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant) {
+            } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant<?>) {
                 visitPathInCollection(type, operator, args);
             } else {
                 super.visitOperation(type, operator, args);
@@ -439,7 +439,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             super.visitOperation(type, Ops.LIKE,
                     ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
-        } else if (operator == Ops.LIKE && args.get(1) instanceof Constant) {
+        } else if (operator == Ops.LIKE && args.get(1) instanceof Constant<?>) {
             final String escape = String.valueOf(templates.getEscapeChar());
             final String escaped = args.get(1).toString().replace(escape, escape + escape);
             super.visitOperation(String.class, Ops.LIKE,
@@ -457,7 +457,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     private void visitNumCast(List<? extends Expression<?>> args) {
-        final Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+        @SuppressWarnings("unchecked") //this is the second argument's type
+        Constant<Class<?>> rightArg = (Constant<Class<?>>) args.get(1);
+
+        final Class<?> targetType = rightArg.getConstant();
         final String typeName = templates.getTypeForCast(targetType);
         visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
     }
@@ -502,11 +505,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         return null;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitAnyInPath(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
-        if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
-            final Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
-            final Enum constant = (Enum)((Constant)args.get(0)).getConstant();
+        if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant<?> && Enum.class.isAssignableFrom(args.get(0).getType())) {
+            @SuppressWarnings("unchecked") //guarded by previous check
+            Constant<? extends Enum<?>> expectedConstant = (Constant<? extends Enum<?>>) args.get(0);
+
+            final Enum<?> constant = expectedConstant.getConstant();
+            final Enumerated enumerated = ((Path<?>)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
             if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
                 args = ImmutableList.of(ConstantImpl.create(constant.ordinal()), args.get(1));
             } else {
@@ -518,33 +523,39 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 args);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     private List<? extends Expression<?>> normalizeNumericArgs(List<? extends Expression<?>> args) {
+        //we do not yet let it produce these types
+        //we verify the types with isAssignableFrom()
+        @SuppressWarnings("unchecked")
+        List<? extends Expression<? extends Number>> potentialArgs =
+                (List<? extends Expression<? extends Number>>) args;
         boolean hasConstants = false;
         Class<? extends Number> numType = null;
-        for (Expression<?> arg : args) {
+        for (Expression<? extends Number> arg : potentialArgs) {
             if (Number.class.isAssignableFrom(arg.getType())) {
-                if (arg instanceof Constant) {
+                if (arg instanceof Constant<?>) {
                     hasConstants = true;
                 } else {
-                    numType = (Class<? extends Number>) arg.getType();
+                    numType = arg.getType();
                 }
             }
         }
         if (hasConstants && numType != null) {
+            //now we do let the potentialArgs help us
             final List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args.size());
-            for (final Expression<?> arg : args) {
-                if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
+            for (final Expression<? extends Number> arg : potentialArgs) {
+                if (arg instanceof Constant<?> && Number.class.isAssignableFrom(arg.getType())
                         && !arg.getType().equals(numType)) {
-                    final Number number = (Number) ((Constant)arg).getConstant();
-                    newArgs.add(ConstantImpl.create(MathUtils.cast(number, (Class)numType)));
+                    final Number number = ((Constant<? extends Number>) arg).getConstant();
+                    newArgs.add(ConstantImpl.create(MathUtils.cast(number, numType)));
                 } else {
                     newArgs.add(arg);
                 }
             }
             return newArgs;
         } else {
-            return args;
+            //the types are all non-constants, or not Number expressions
+            return potentialArgs;
         }
     }
 

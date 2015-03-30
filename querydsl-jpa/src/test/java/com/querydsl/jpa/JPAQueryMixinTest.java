@@ -18,7 +18,7 @@ import com.querydsl.jpa.domain4.QBookVersion;
 
 public class JPAQueryMixinTest {
 
-    private JPAQueryMixin mixin = new JPAQueryMixin();
+    private JPAQueryMixin<?> mixin = new JPAQueryMixin<Object>();
 
     @Test
     public void Where_Null() {
