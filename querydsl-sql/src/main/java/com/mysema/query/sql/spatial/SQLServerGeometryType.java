@@ -34,6 +34,8 @@ public class SQLServerGeometryType extends AbstractType<Geometry> {
 
     public static final SQLServerGeometryType DEFAULT = new SQLServerGeometryType();
 
+    private static final int DEFAULT_SRID = 4326;
+
     public SQLServerGeometryType() {
         super(Types.BLOB);
     }
@@ -74,7 +76,7 @@ public class SQLServerGeometryType extends AbstractType<Geometry> {
         if (geometry.getSRID() > -1) {
             return "geometry::STGeomFromText('" + str + "', " + geometry.getSRID() + ")";
         } else {
-            return "geometry::STGeomFromText('" + str + "', 4326)";
+            return "geometry::STGeomFromText('" + str + "', " + DEFAULT_SRID + ")";
         }
     }
 
