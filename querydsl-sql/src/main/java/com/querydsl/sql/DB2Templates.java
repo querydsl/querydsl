@@ -182,18 +182,17 @@ public class DB2Templates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_MINUTES, "{0} + {1} minutes");
         add(Ops.DateTimeOps.ADD_SECONDS, "{0} + {1} seconds");
 
-        // FIXME
-        add(Ops.DateTimeOps.DIFF_YEARS, "timestampdiff(256, char({0} - {1}))");
-        add(Ops.DateTimeOps.DIFF_MONTHS, "timestampdiff(64, char({0} - {1}))");
-        add(Ops.DateTimeOps.DIFF_WEEKS, "timestampdiff(32, char({0} - {1}))");
-        add(Ops.DateTimeOps.DIFF_DAYS, "timestampdiff(16, char({0} - {1}))");
-        add(Ops.DateTimeOps.DIFF_HOURS, "timestampdiff(8, char({0} - {1}))");
-        add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(4, char({0} - {1}))");
-        add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(2, char({0} - {1}))");
+        add(Ops.DateTimeOps.DIFF_YEARS,   "timestampdiff(256, char(timestamp({1}) - timestamp({0})))");
+        add(Ops.DateTimeOps.DIFF_MONTHS,  "timestampdiff(64, char(timestamp({1}) - timestamp({0})))");
+        add(Ops.DateTimeOps.DIFF_WEEKS,   "timestampdiff(32, char(timestamp({1}) - timestamp({0})))");
+        add(Ops.DateTimeOps.DIFF_DAYS,    "timestampdiff(16, char(timestamp({1}) - timestamp({0})))");
+        add(Ops.DateTimeOps.DIFF_HOURS,   "timestampdiff(8, char(timestamp({1}) - timestamp({0})))");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "timestampdiff(4, char(timestamp({1}) - timestamp({0})))");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "timestampdiff(2, char(timestamp({1}) - timestamp({0})))");
 
         add(Ops.DateTimeOps.TRUNC_YEAR, "trunc_timestamp({0}, 'year')");
         add(Ops.DateTimeOps.TRUNC_MONTH, "trunc_timestamp({0}, 'month')");
-        add(Ops.DateTimeOps.TRUNC_WEEK, "trunc_timestamp({0}, 'week')");
+        add(Ops.DateTimeOps.TRUNC_WEEK, "trunc_timestamp({0}, 'ww')");
         add(Ops.DateTimeOps.TRUNC_DAY, "trunc_timestamp({0}, 'dd')");
         add(Ops.DateTimeOps.TRUNC_HOUR, "trunc_timestamp({0}, 'hh')");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "trunc_timestamp({0}, 'mi')");
@@ -214,20 +213,6 @@ public class DB2Templates extends SQLTemplates {
         switch (code) {
             case Types.VARCHAR:  return "varchar(4000)";
             default: return super.getCastTypeNameForCode(code);
-        }
-    }
-
-
-    @Override
-    public String serialize(String literal, int jdbcType) {
-        if (jdbcType == Types.TIMESTAMP) {
-            return "{ts '" + literal + "'}";
-        } else if (jdbcType == Types.DATE) {
-            return "{d '" + literal + "'}";
-        } else if (jdbcType == Types.TIME) {
-            return "{t '" + literal + "'}";
-        } else {
-            return super.serialize(literal, jdbcType);
         }
     }
 

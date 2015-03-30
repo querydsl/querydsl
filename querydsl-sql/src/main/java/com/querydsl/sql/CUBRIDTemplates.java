@@ -62,6 +62,8 @@ public class CUBRIDTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setArraysSupported(false);
 
+        add(Ops.DateTimeOps.DATE, "trunc({0})");
+
         add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.YEAR_WEEK, "(year({0}) * 100 + week({0}))");
@@ -73,6 +75,15 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.ADD_HOURS, "date_add({0}, interval {1s} hour)");
         add(Ops.DateTimeOps.ADD_MINUTES, "date_add({0}, interval {1s} minute)");
         add(Ops.DateTimeOps.ADD_SECONDS, "date_add({0}, interval {1s} second)");
+
+        String diffSeconds = "(unix_timestamp({1}) - unix_timestamp({0}))";
+        add(Ops.DateTimeOps.DIFF_YEARS,   "(year({1}) - year({0}))");
+        add(Ops.DateTimeOps.DIFF_MONTHS,  "months_between({1}, {0})");
+        add(Ops.DateTimeOps.DIFF_WEEKS,   "ceil(({1}-{0}) / 7)");
+        add(Ops.DateTimeOps.DIFF_DAYS,    "({1}-{0})");
+        add(Ops.DateTimeOps.DIFF_HOURS,   "ceil(" + diffSeconds + " / 3600)");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "ceil(" + diffSeconds + " / 60)");
+        add(Ops.DateTimeOps.DIFF_SECONDS, diffSeconds);
 
         add(Ops.DateTimeOps.TRUNC_YEAR,   "trunc({0},'yyyy')");
         add(Ops.DateTimeOps.TRUNC_MONTH,  "trunc({0},'mm')");
@@ -100,6 +111,21 @@ public class CUBRIDTemplates extends SQLTemplates {
         addTypeNameToCode("varchar", Types.LONGVARCHAR, true);
         addTypeNameToCode("double", Types.FLOAT, true);
         addTypeNameToCode("float", Types.REAL, true);
+    }
+
+
+    @Override
+    public String serialize(String literal, int jdbcType) {
+        switch (jdbcType) {
+            case Types.DATE:
+                return "date'" + literal + "'";
+            case Types.TIME:
+                return "time'" + literal + "'";
+            case Types.TIMESTAMP:
+                return "timestamp'" + literal + "'";
+            default:
+                return super.serialize(literal, jdbcType);
+        }
     }
 
     @Override

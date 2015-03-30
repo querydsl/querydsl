@@ -39,8 +39,8 @@ public class BigDecimalAsDoubleType extends AbstractType<BigDecimal> {
 
     @Override
     public BigDecimal getValue(ResultSet rs, int startIndex) throws SQLException {
-        Number num = (Number)rs.getObject(startIndex);
-        return num != null ? BigDecimal.valueOf(num.doubleValue()) : null;
+        double val = rs.getDouble(startIndex);
+        return rs.wasNull() ? null : BigDecimal.valueOf(val);
     }
 
     @Override

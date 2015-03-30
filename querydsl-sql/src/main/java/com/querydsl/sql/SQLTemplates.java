@@ -378,8 +378,8 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'", Precedence.COMPARISON);
 
         add(SQLOps.CAST, "cast({0} as {1s})");
-        add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.LIST);
-        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", Precedence.LIST);
+        add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.OR + 1);
+        add(SQLOps.UNION_ALL, "{0}\nunion all\n{1}", Precedence.OR + 1);
         add(SQLOps.NEXTVAL, "nextval('{0s}')");
 
         // analytic functions
@@ -778,23 +778,23 @@ public class SQLTemplates extends Templates {
         return nullsLast;
     }
 
-    public boolean isCountViaAnalytics() {
+    public final boolean isCountViaAnalytics() {
         return countViaAnalytics;
     }
 
-    public boolean isWrapSelectParameters() {
+    public final boolean isWrapSelectParameters() {
         return wrapSelectParameters;
     }
 
-    public boolean isArraysSupported() {
+    public final boolean isArraysSupported() {
         return arraysSupported;
     }
 
-    public int getListMaxSize() {
+    public final int getListMaxSize() {
         return listMaxSize;
     }
 
-    public boolean isSupportsUnquotedReservedWordsAsIdentifier() {
+    public final boolean isSupportsUnquotedReservedWordsAsIdentifier() {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
 
@@ -1171,7 +1171,7 @@ public class SQLTemplates extends Templates {
         listMaxSize = i;
     }
 
-    public void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
+    protected void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
         this.supportsUnquotedReservedWordsAsIdentifier = b;
     }
 

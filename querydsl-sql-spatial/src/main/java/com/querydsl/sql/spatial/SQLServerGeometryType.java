@@ -13,16 +13,18 @@
  */
 package com.querydsl.sql.spatial;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import com.querydsl.sql.types.AbstractType;
+import javax.annotation.Nullable;
+
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
+
+import com.querydsl.sql.types.AbstractType;
 
 /**
  * @author tiwe
@@ -31,6 +33,8 @@ import org.geolatte.geom.codec.Wkt;
 public class SQLServerGeometryType extends AbstractType<Geometry> {
 
     public static final SQLServerGeometryType DEFAULT = new SQLServerGeometryType();
+
+    private static final int DEFAULT_SRID = 4326;
 
     public SQLServerGeometryType() {
         super(Types.BLOB);
@@ -72,7 +76,7 @@ public class SQLServerGeometryType extends AbstractType<Geometry> {
         if (geometry.getSRID() > -1) {
             return "geometry::STGeomFromText('" + str + "', " + geometry.getSRID() + ")";
         } else {
-            return "geometry::STGeomFromText('" + str + "')";
+            return "geometry::STGeomFromText('" + str + "', " + DEFAULT_SRID + ")";
         }
     }
 

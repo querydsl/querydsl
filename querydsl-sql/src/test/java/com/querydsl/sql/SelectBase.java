@@ -395,7 +395,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, TERADATA}) // TODO fix postgresql
+    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
@@ -432,7 +432,7 @@ public class SelectBase extends AbstractBaseTest {
 
         Map<Object, Object> failures = Maps.newIdentityHashMap();
         for (Object dt : data) {
-            Object dt2 = query().singleResult(ConstantImpl.create(dt));
+            Object dt2 = query().singleResult(Expressions.constant(dt));
             if (!dt.equals(dt2)) {
                 failures.put(dt, dt2);
             }
@@ -443,6 +443,14 @@ public class SelectBase extends AbstractBaseTest {
                         + ": " + entry.getKey() + " != " + entry.getValue());
             }
             Assert.fail("Failed with " + failures);
+        }
+    }
+
+    @Test
+    @ExcludeIn({CUBRID, SQLITE, TERADATA})
+    public void Dates_Literals() {
+        if (configuration.getUseLiterals()) {
+            Dates();
         }
     }
 
@@ -469,9 +477,9 @@ public class SelectBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.addYears(dt, 1));
         add(exprs, SQLExpressions.addMonths(dt, 1));
         add(exprs, SQLExpressions.addDays(dt, 1));
-        add(exprs, SQLExpressions.addHours(dt, 1));
-        add(exprs, SQLExpressions.addMinutes(dt, 1));
-        add(exprs, SQLExpressions.addSeconds(dt, 1));
+        add(exprs, SQLExpressions.addHours(dt, 1), TERADATA);
+        add(exprs, SQLExpressions.addMinutes(dt, 1), TERADATA);
+        add(exprs, SQLExpressions.addSeconds(dt, 1), TERADATA);
 
         for (Expression<?> expr : exprs) {
             assertNotNull(query().singleResult(expr));
@@ -479,10 +487,12 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DB2, SQLITE, TERADATA})
+    @ExcludeIn({DB2, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
-        TestQuery query = query().from(employee, employee2);
+        TestQuery query = query().from(employee).orderBy(employee.id.asc());
+        TestQuery query2 = query().from(employee, employee2)
+                .orderBy(employee.id.asc(), employee2.id.desc());
 
         List<DatePart> dps = Lists.newArrayList();
         add(dps, DatePart.year);
@@ -493,16 +503,21 @@ public class SelectBase extends AbstractBaseTest {
         add(dps, DatePart.minute, HSQLDB);
         add(dps, DatePart.second, HSQLDB);
 
-        Date date = new Date(0);
+        LocalDate localDate = new LocalDate(1970, 1, 10);
+        Date date = new Date(localDate.toDateMidnight().getMillis());
+
         for (DatePart dp : dps) {
-            query.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
-            query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
-            query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
+            int diff1 = query.singleResult(SQLExpressions.datediff(dp, date, employee.datefield));
+            int diff2 = query.singleResult(SQLExpressions.datediff(dp, employee.datefield, date));
+            int diff3 = query2.singleResult(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield));
+            assertEquals(diff1, -diff2);
         }
     }
 
+    // TDO Date_Diff with timestamps
+
     @Test
-    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, SQLITE, TERADATA})
+    @ExcludeIn({DB2, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
 
@@ -526,14 +541,14 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER}) // FIXME
+    @ExcludeIn({SQLITE}) // FIXME
     public void Date_Trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
         List<DatePart> dps = Lists.newArrayList();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
-        add(dps, DatePart.week);
+        add(dps, DatePart.week, DERBY, FIREBIRD, SQLSERVER);
         add(dps, DatePart.day);
         add(dps, DatePart.hour);
         add(dps, DatePart.minute);
@@ -545,7 +560,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, SQLITE}) // FIXME
+    @ExcludeIn({SQLITE, TERADATA}) // FIXME
     public void Date_Trunc2() {
         DateTimeExpression<DateTime> expr = DateTimeExpression.currentTimestamp(DateTime.class);
 
@@ -631,7 +646,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
     public void DateTime_To_Date() {
         query().singleResult(SQLExpressions.date(DateTimeExpression.currentTimestamp()));
     }
@@ -748,7 +762,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, SQLSERVER})
+    @ExcludeIn({FIREBIRD, SQLSERVER, TERADATA})
     public void GroupBy_Distinct_Count() {
         List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().list(Expressions.ONE);
         SearchResults<Integer> results = query().from(employee).groupBy(employee.id)
@@ -784,7 +798,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER})
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER, TERADATA})
     public void In_Long_List() {
         List<Integer> ids = Lists.newArrayList();
         for (int i = 0; i < 20000; i++) {
@@ -796,7 +810,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER})
+    @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER, TERADATA})
     public void NotIn_Long_List() {
         List<Integer> ids = Lists.newArrayList();
         for (int i = 0; i < 20000; i++) {
@@ -989,7 +1003,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DB2, DERBY, HSQLDB})
+    @ExcludeIn({DB2, DERBY})
     public void Literals() {
         assertEquals(1, singleResult(ConstantImpl.create(1)).intValue());
         assertEquals(2l, singleResult(ConstantImpl.create(2l)).longValue());
@@ -998,6 +1012,13 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(true, singleResult(ConstantImpl.create(true)));
         assertEquals(false, singleResult(ConstantImpl.create(false)));
         assertEquals("abc", singleResult(ConstantImpl.create("abc")));
+    }
+
+    @Test
+    public void Literals_Literals() {
+        if (configuration.getUseLiterals()) {
+            Literals();
+        }
     }
 
     private double log(double x, int y) {
@@ -1117,7 +1138,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({CUBRID, DERBY, FIREBIRD, POSTGRESQL})
+    @ExcludeIn({DERBY, FIREBIRD, POSTGRESQL})
     public void Number_As_Boolean() {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
@@ -1152,7 +1173,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
     public void Order_NullsFirst() {
         query().from(survey)
             .orderBy(survey.name.asc().nullsFirst())
@@ -1160,7 +1180,6 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(CUBRID)
     public void Order_NullsLast() {
         query().from(survey)
             .orderBy(survey.name.asc().nullsLast())
@@ -1823,5 +1842,13 @@ public class SelectBase extends AbstractBaseTest {
         TestQuery query = query().from(employee).orderBy(employee.id.asc());
         assertEquals(Integer.valueOf(200006), query.singleResult(employee.datefield.yearWeek()));
     }
+
+    @Test
+    @IncludeIn({H2})
+    public void YearWeek_H2() {
+        TestQuery query = query().from(employee).orderBy(employee.id.asc());
+        assertEquals(Integer.valueOf(200007), query.singleResult(employee.datefield.yearWeek()));
+    }
+
 
 }

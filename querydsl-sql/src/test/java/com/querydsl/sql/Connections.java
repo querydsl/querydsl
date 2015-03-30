@@ -89,7 +89,7 @@ public final class Connections {
 
     private static Connection getDB2() throws SQLException, ClassNotFoundException {
         Class.forName("com.ibm.db2.jcc.DB2Driver");
-        String url = "jdbc:db2://192.168.0.24:50001/SAMPLE";
+        String url = "jdbc:db2://db2host:50001/SAMPLE";
         return DriverManager.getConnection(url, "db2inst1", "a3sd!fDj");
     }
 
@@ -119,7 +119,7 @@ public final class Connections {
 
     private static Connection getMySQL() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/querydsl"; // ?useLegacyDatetimeCode=false
+        String url = "jdbc:mysql://localhost:3306/querydsl?useLegacyDatetimeCode=false";
         return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
@@ -1100,7 +1100,7 @@ public final class Connections {
 
         // qtest
         dropTable(templates, "QTEST");
-        stmt.execute("create table QTEST (ID int " + identity + " NOT NULL,  C1 int NULL)");
+        stmt.execute("create table QTEST (ID int " + identity + " NOT NULL, C1 int NULL)");
 
         // survey
         dropTable(templates, "SURVEY");
@@ -1142,11 +1142,11 @@ public final class Connections {
 
         // numbers
         dropTable(templates, "NUMBER_TEST");
-        stmt.execute("create table NUMBER_TEST(col1 int)");
+        stmt.execute("create table NUMBER_TEST(ID int " + identity + " NOT NULL, col1 int)");
 
         // xml
         dropTable(templates, "XML_TEST");
-        stmt.execute("create table XML_TEST(COL varchar(128))");
+        stmt.execute("create table XML_TEST(ID int " + identity + " NOT NULL, COL varchar(128))");
 
         teradataInited = true;
     }

@@ -13,23 +13,26 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.core.Target.*;
+import static com.querydsl.sql.Constants.survey;
+import static org.junit.Assert.assertEquals;
+
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-import com.querydsl.sql.dml.SQLUpdateClause;
-import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.Param;
-import com.querydsl.core.testutil.IncludeIn;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static com.querydsl.sql.Constants.survey;
-import static com.querydsl.core.Target.*;
-import static org.junit.Assert.assertEquals;
+
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.Param;
+import com.querydsl.sql.dml.SQLUpdateClause;
+import com.querydsl.sql.domain.QEmployee;
+import com.querydsl.sql.domain.QSurvey;
 
 public class UpdateBase extends AbstractBaseTest {
 
@@ -190,6 +193,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(TERADATA)
     public void Update_With_TemplateExpression_In_Batch() {
         update(survey)
             .set(survey.id, 3)
