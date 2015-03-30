@@ -10,6 +10,9 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QCompany;
+import com.mysema.query.jpa.domain.QDepartment;
+import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.types.PathMetadataFactory;
@@ -38,6 +41,24 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate))),
                 md.getJoins());
         assertEquals(Arrays.asList(cat_mate.name.asc()),
+                md.getOrderBy());
+    }
+
+    @Test
+    public void OrderBy_NonRoot_Twice() {
+        QDepartment department = QDepartment.department;
+        QCompany department_company = new QCompany("department_company");
+        QEmployee department_company_ceo = new QEmployee("department_company_ceo");
+        mixin.from(department);
+        mixin.orderBy(department.company.ceo.firstName.asc(), department.company.ceo.lastName.asc());
+
+        QueryMetadata md = mixin.getMetadata();
+        assertEquals(Arrays.asList(
+                        new JoinExpression(JoinType.DEFAULT, department),
+                        new JoinExpression(JoinType.LEFTJOIN, department.company.as(department_company)),
+                        new JoinExpression(JoinType.LEFTJOIN, department_company.ceo.as(department_company_ceo))),
+                md.getJoins());
+        assertEquals(Arrays.asList(department_company_ceo.firstName.asc(), department_company_ceo.lastName.asc()),
                 md.getOrderBy());
     }
 
