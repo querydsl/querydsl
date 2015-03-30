@@ -14,6 +14,7 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -36,6 +37,12 @@ public class ShortType extends AbstractNumberType<Short> {
     @Override
     public Class<Short> getReturnedClass() {
         return Short.class;
+    }
+
+    @Override
+    public Short getValue(ResultSet rs, int startIndex) throws SQLException {
+        short val = rs.getShort(startIndex);
+        return rs.wasNull() ? null : Short.valueOf(val);
     }
 
     @Override

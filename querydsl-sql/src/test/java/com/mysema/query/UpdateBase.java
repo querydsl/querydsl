@@ -13,9 +13,17 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Target.*;
+import static org.junit.Assert.assertEquals;
+
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLUpdateClause;
@@ -24,13 +32,8 @@ import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.Param;
+import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static com.mysema.query.Constants.survey;
-import static com.mysema.query.Target.*;
-import static org.junit.Assert.assertEquals;
 
 public class UpdateBase extends AbstractBaseTest {
 
@@ -191,6 +194,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(TERADATA)
     public void Update_With_TempateExpression_In_Batch() {
         update(survey)
             .set(survey.id, 3)

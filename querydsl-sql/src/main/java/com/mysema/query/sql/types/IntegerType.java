@@ -14,6 +14,7 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -36,6 +37,12 @@ public class IntegerType extends AbstractNumberType<Integer> {
     @Override
     public Class<Integer> getReturnedClass() {
         return Integer.class;
+    }
+
+    @Override
+    public Integer getValue(ResultSet rs, int startIndex) throws SQLException {
+        int val = rs.getInt(startIndex);
+        return rs.wasNull() ? null : Integer.valueOf(val);
     }
 
     @Override

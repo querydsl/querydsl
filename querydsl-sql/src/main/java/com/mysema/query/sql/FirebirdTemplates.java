@@ -94,6 +94,14 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DIFF_MINUTES, "datediff(minute,{0},{1})");
         add(Ops.DateTimeOps.DIFF_SECONDS, "datediff(second,{0},{1})");
 
+        add(Ops.DateTimeOps.TRUNC_YEAR,   "cast(extract(year from {0}) || '-1-1' as date)");
+        add(Ops.DateTimeOps.TRUNC_MONTH,  "cast(substring(cast({0} as char(100)) from 1 for 7) || '-1' as date)");
+        // TODO weeks
+        add(Ops.DateTimeOps.TRUNC_DAY,    "cast(substring(cast({0} as char(100)) from 1 for 10) as date)");
+        add(Ops.DateTimeOps.TRUNC_HOUR,   "cast(substring(cast({0} as char(100)) from 1 for 13) || ':00:00' as timestamp)");
+        add(Ops.DateTimeOps.TRUNC_MINUTE, "cast(substring(cast({0} as char(100)) from 1 for 16) || ':00' as timestamp)");
+        add(Ops.DateTimeOps.TRUNC_SECOND, "cast(substring(cast({0} as char(100)) from 1 for 19) as timestamp)");
+
         addTypeNameToCode("smallint", Types.BOOLEAN, true);
         addTypeNameToCode("smallint", Types.BIT, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);
