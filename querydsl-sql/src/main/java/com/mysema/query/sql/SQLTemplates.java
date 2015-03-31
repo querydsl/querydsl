@@ -789,23 +789,23 @@ public class SQLTemplates extends Templates {
         return nullsLast;
     }
 
-    public final boolean isCountViaAnalytics() {
+    public boolean isCountViaAnalytics() {
         return countViaAnalytics;
     }
 
-    public final boolean isWrapSelectParameters() {
+    public boolean isWrapSelectParameters() {
         return wrapSelectParameters;
     }
 
-    public final boolean isArraysSupported() {
+    public boolean isArraysSupported() {
         return arraysSupported;
     }
 
-    public final int getListMaxSize() {
+    public int getListMaxSize() {
         return listMaxSize;
     }
 
-    public final boolean isSupportsUnquotedReservedWordsAsIdentifier() {
+    public boolean isSupportsUnquotedReservedWordsAsIdentifier() {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
 

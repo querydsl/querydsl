@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.6.3.BUILD-SNAPSHOT</version>
+  <version>3.6.3</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -228,6 +228,7 @@
                   <excludes>
                     <exclude>com/mysema/query/jpa/NativeSQLSerializer</exclude>
                     <exclude>com/mysema/query/sql/types/ArrayType</exclude>
+                    <exclude>com/mysema/query/sql/types/AbstractNumberType</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
