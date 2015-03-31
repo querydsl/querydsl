@@ -1483,7 +1483,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Single_Column_via_Object_type() {
         for (Object s : query().from(survey)
-                .list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))) {
+                .list(ExpressionUtils.path(Object.class, survey.name.getMetadata()))) {
             assertEquals(String.class, s.getClass());
         }
     }

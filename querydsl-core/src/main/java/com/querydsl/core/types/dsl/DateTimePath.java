@@ -35,7 +35,7 @@ public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> im
     }
 
     protected DateTimePath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

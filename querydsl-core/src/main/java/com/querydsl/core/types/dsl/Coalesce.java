@@ -16,15 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.MutableExpressionBase;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * Coalesce defines a coalesce function invocation. The coalesce function
@@ -87,7 +79,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
      * @return
      */
     public DslExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
 
     public final Coalesce<T> add(Expression<T> expr) {

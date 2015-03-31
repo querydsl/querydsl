@@ -18,11 +18,7 @@ import java.util.List;
 import org.geolatte.geom.LineString;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * @author tiwe
@@ -40,7 +36,7 @@ public class LineStringOperation<T extends LineString> extends LineStringExpress
     }
 
     protected LineStringOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
-        super(new OperationImpl<T>(type, op, args));
+        super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
 

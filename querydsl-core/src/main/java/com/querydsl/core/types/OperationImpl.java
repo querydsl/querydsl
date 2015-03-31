@@ -38,19 +38,11 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private final Operator operator;
 
-    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator operator, Expression<?> one) {
-        return new OperationImpl<RT>(type, operator, ImmutableList.<Expression<?>>of(one));
-    }
-
-    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator operator, Expression<?> one, Expression<?> two) {
-        return new OperationImpl<RT>(type, operator, ImmutableList.of(one, two));
-    }
-
     protected OperationImpl(Class<? extends T> type, Operator operator, Expression<?>... args) {
         this(type, operator, ImmutableList.copyOf(args));
     }
 
-    public OperationImpl(Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
+    protected OperationImpl(Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
         super(type);
         Class<?> wrapped = Primitives.wrap(type);
         Preconditions.checkArgument(operator.getType().isAssignableFrom(wrapped), operator.name());

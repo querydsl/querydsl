@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -82,7 +82,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Test
     public void NextVal() {
-        Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
+        Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());
     }
 

@@ -132,20 +132,20 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             if (parent.equals(metadata.getParent())) {
                 return path;
             } else {
-                return new PathImpl<T>(path.getType(),
+                return ExpressionUtils.path(path.getType(),
                         new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
             }
         } else if (metadata.getParent().getMetadata().isRoot()) {
             Class<T> type = getElementTypeOrType(path);
-            Path<T> newPath = new PathImpl<T>(type, ExpressionUtils.createRootVariable(path));
+            Path<T> newPath = ExpressionUtils.path(type, ExpressionUtils.createRootVariable(path));
             leftJoin(path, newPath);
             return newPath;
         } else {
             Class<T> type = getElementTypeOrType(path);
             Path<?> parent = shorten(metadata.getParent(), paths);
-            Path<T> oldPath = new PathImpl<T>(path.getType(),
+            Path<T> oldPath = ExpressionUtils.path(path.getType(),
                     new PathMetadata(parent, metadata.getElement(), metadata.getPathType()));
-            Path<T> newPath = new PathImpl<T>(type, ExpressionUtils.createRootVariable(oldPath));
+            Path<T> newPath = ExpressionUtils.path(type, ExpressionUtils.createRootVariable(oldPath));
             aliases.put(path, newPath);
             leftJoin(oldPath, newPath);
             return newPath;
@@ -167,7 +167,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
             if (!paths.contains(path) && !paths.contains(metadata.getParent())) {
                 Path<?> shortened = shorten(metadata.getParent(), paths);
-                return new PathImpl<T>(path.getType(),
+                return ExpressionUtils.path(path.getType(),
                         new PathMetadata(shortened, metadata.getElement(), metadata.getPathType()));
             } else {
                 return path;
@@ -214,7 +214,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         paths.add(path);
         EntityPath<?> alias = context.replacements.get(i);
         leftJoin((Expression)path.getMetadata().getParent(), context.replacements.get(i));
-        Expression index = OperationImpl.create(Integer.class, JPQLOps.INDEX, alias);
+        Expression index = ExpressionUtils.operation(Integer.class, JPQLOps.INDEX, alias);
         Object element = path.getMetadata().getElement();
         if (!(element instanceof Expression)) {
             element = ConstantImpl.create(element);

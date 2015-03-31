@@ -16,12 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.PredicateOperation;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * BooleanOperation represents boolean operations
@@ -40,7 +35,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
     
     protected BooleanOperation(Operator op, ImmutableList<Expression<?>> args) {
-        super(new PredicateOperation(op, args));
+        super(ExpressionUtils.predicate(op, args));
         opMixin = (PredicateOperation)mixin;
     }
     

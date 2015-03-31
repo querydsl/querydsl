@@ -18,20 +18,12 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import com.google.common.collect.Lists;
-import com.querydsl.sql.RelationalPath;
-import com.querydsl.sql.SQLOps;
 import com.querydsl.core.support.EnumConversion;
 import com.querydsl.core.support.NumberConversion;
 import com.querydsl.core.support.NumberConversions;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.FactoryExpressionUtils;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
+import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.SQLOps;
 
 /**
  * Conversions provides module specific projection conversion functionality
@@ -70,7 +62,7 @@ public final class Conversions {
         List<Expression<?>> conversions = Lists.newArrayList();
         for (Expression<?> e : factorye.getArgs()) {
             if (isEntityPathAndNeedsWrapping(e)) {
-                conversions.add(OperationImpl.create(e.getType(), SQLOps.ALL, e));
+                conversions.add(ExpressionUtils.operation(e.getType(), SQLOps.ALL, e));
             } else {
                 conversions.add(e);
             }
@@ -80,7 +72,7 @@ public final class Conversions {
 
     public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {
         if (isEntityPathAndNeedsWrapping(expr)) {
-            return OperationImpl.create(expr.getType(), SQLOps.ALL, expr);
+            return ExpressionUtils.operation(expr.getType(), SQLOps.ALL, expr);
         } else if (Number.class.isAssignableFrom(expr.getType())) {
             return new NumberConversion<RT>(expr);
         } else if (Enum.class.isAssignableFrom(expr.getType())) {

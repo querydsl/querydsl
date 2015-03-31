@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import java.util.Collections;
+import com.google.common.collect.ImmutableList;
 
 /**
  * NullExpression defines a general null expression
@@ -34,7 +34,7 @@ public class NullExpression<T> extends TemplateExpressionImpl<T> {
     public static final NullExpression<Object> DEFAULT = new NullExpression<Object>(Object.class);
 
     private NullExpression(Class<? extends T> type) {
-        super(type, NULL_TEMPLATE, Collections.<Expression<?>>emptyList());
+        super(type, NULL_TEMPLATE, ImmutableList.of());
     }
 
 }

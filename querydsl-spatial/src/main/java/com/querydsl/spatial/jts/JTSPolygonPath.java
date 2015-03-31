@@ -15,14 +15,8 @@ package com.querydsl.spatial.jts;
 
 import java.lang.reflect.AnnotatedElement;
 
+import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Polygon;
-
-import com.querydsl.spatial.jts.JTSPolygonExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
 
 /**
  * @author tiwe
@@ -48,7 +42,7 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
     }
 
     public JTSPolygonPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

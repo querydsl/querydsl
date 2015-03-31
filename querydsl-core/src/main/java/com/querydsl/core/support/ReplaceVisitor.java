@@ -49,9 +49,9 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         if (args.equals(expr.getArgs())) {
             return expr;
         } else if (expr instanceof Predicate) {
-            return new PredicateOperation(expr.getOperator(), args);
+            return ExpressionUtils.predicate(expr.getOperator(), args);
         } else {
-            return new OperationImpl(expr.getType(), expr.getOperator(), args);
+            return ExpressionUtils.operation(expr.getType(), expr.getOperator(), args);
         }
     }
 
@@ -75,7 +75,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
                 return expr;
             } else {
                 metadata = new PathMetadata(parent, element, metadata.getPathType());
-                return new PathImpl(expr.getType(), metadata);
+                return ExpressionUtils.path(expr.getType(), metadata);
             }
         }
     }
@@ -150,7 +150,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
             if (expr instanceof Predicate) {
                 return Expressions.booleanTemplate(expr.getTemplate(), args);
             } else {
-                return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), args);
+                return ExpressionUtils.template(expr.getType(), expr.getTemplate(), args);
             }
         }
     }

@@ -89,7 +89,7 @@ public final class Expressions {
      * @return
      */
     public static <D> SimpleExpression<D> as(Expression<D> source, String alias) {
-        return as(source, new PathImpl<D>(source.getType(), alias));
+        return as(source, ExpressionUtils.path(source.getType(), alias));
     }
 
     /**
@@ -182,8 +182,20 @@ public final class Expressions {
      * @param args
      * @return
      */
+    public static <T> SimpleTemplate<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
+        return simpleTemplate(cl, template, args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
     public static <T> SimpleTemplate<T> simpleTemplate(Class<? extends T> cl, String template, Object... args) {
-        return new SimpleTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return simpleTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -195,7 +207,7 @@ public final class Expressions {
      * @return
      */
     public static <T> SimpleTemplate<T> simpleTemplate(Class<? extends T> cl, String template, ImmutableList<?> args) {
-        return new SimpleTemplate<T>(cl, createTemplate(template), args);
+        return simpleTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -207,7 +219,19 @@ public final class Expressions {
      * @return
      */
     public static <T> SimpleTemplate<T> simpleTemplate(Class<? extends T> cl, Template template, Object... args) {
-        return new SimpleTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return simpleTemplate(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T> SimpleTemplate<T> simpleTemplate(Class<? extends T> cl, Template template, ImmutableList<?> args) {
+        return new SimpleTemplate<T>(cl, template, args);
     }
 
     /**
@@ -219,7 +243,7 @@ public final class Expressions {
      * @return
      */
     public static <T> DslTemplate<T> dslTemplate(Class<? extends T> cl, String template, Object... args) {
-        return new DslTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return dslTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -231,7 +255,7 @@ public final class Expressions {
      * @return
      */
     public static <T> DslTemplate<T> dslTemplate(Class<? extends T> cl, String template, ImmutableList<?> args) {
-        return new DslTemplate<T>(cl, createTemplate(template), args);
+        return dslTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -243,8 +267,21 @@ public final class Expressions {
      * @return
      */
     public static <T> DslTemplate<T> dslTemplate(Class<? extends T> cl, Template template, Object... args) {
-        return new DslTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return dslTemplate(cl, template, ImmutableList.copyOf(args));
     }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T> DslTemplate<T> dslTemplate(Class<? extends T> cl, Template template, ImmutableList<?> args) {
+        return new DslTemplate<T>(cl, template, args);
+    }
+
 
     /**
      * Create a new Template expression
@@ -256,7 +293,7 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> ComparableTemplate<T> comparableTemplate(Class<? extends T> cl,
             String template, Object... args) {
-        return new ComparableTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return comparableTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -269,7 +306,7 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> ComparableTemplate<T> comparableTemplate(Class<? extends T> cl,
                                                                                      String template, ImmutableList<?> args) {
-        return new ComparableTemplate<T>(cl, createTemplate(template), args);
+        return comparableTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -282,7 +319,20 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> ComparableTemplate<T> comparableTemplate(Class<? extends T> cl,
                                                                                      Template template, Object... args) {
-        return new ComparableTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return comparableTemplate(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T extends Comparable<?>> ComparableTemplate<T> comparableTemplate(Class<? extends T> cl,
+                                                                                     Template template, ImmutableList<?> args) {
+        return new ComparableTemplate<T>(cl, template, args);
     }
 
     /**
@@ -295,7 +345,7 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateTemplate<T> dateTemplate(Class<? extends T> cl,
                                                                          String template, Object... args) {
-        return new DateTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return dateTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -308,7 +358,7 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateTemplate<T> dateTemplate(Class<? extends T> cl,
                                                                          String template, ImmutableList<?> args) {
-        return new DateTemplate<T>(cl, createTemplate(template), args);
+        return dateTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -321,8 +371,22 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateTemplate<T> dateTemplate(Class<? extends T> cl,
                                                                          Template template, Object... args) {
-        return new DateTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return dateTemplate(cl, template, ImmutableList.copyOf(args));
     }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T extends Comparable<?>> DateTemplate<T> dateTemplate(Class<? extends T> cl,
+                                                                         Template template, ImmutableList<?> args) {
+        return new DateTemplate<T>(cl, template, args);
+    }
+
 
     /**
      * Create a new Template expression
@@ -334,7 +398,7 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateTimeTemplate<T> dateTimeTemplate(Class<? extends T> cl,
                                                                                  String template, Object... args) {
-        return new DateTimeTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return dateTimeTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -346,8 +410,8 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> DateTimeTemplate<T> dateTimeTemplate(Class<? extends T> cl,
-                                                                                   String template, ImmutableList<?> args) {
-        return new DateTimeTemplate<T>(cl, createTemplate(template), args);
+                                                                                 String template, ImmutableList<?> args) {
+        return dateTimeTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -360,7 +424,21 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateTimeTemplate<T> dateTimeTemplate(Class<? extends T> cl,
                                                                                    Template template, Object... args) {
-        return new DateTimeTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return dateTimeTemplate(cl, template, ImmutableList.copyOf(args));
+    }
+
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T extends Comparable<?>> DateTimeTemplate<T> dateTimeTemplate(Class<? extends T> cl,
+                                                                                 Template template, ImmutableList<?> args) {
+        return new DateTimeTemplate<T>(cl, template, args);
     }
 
     /**
@@ -373,7 +451,7 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> TimeTemplate<T> timeTemplate(Class<? extends T> cl,
                                                                            String template, Object... args) {
-        return new TimeTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return timeTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -385,8 +463,8 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> TimeTemplate<T> timeTemplate(Class<? extends T> cl,
-                                                                           String template, ImmutableList<?> args) {
-        return new TimeTemplate<T>(cl, createTemplate(template), args);
+                                                                         String template, ImmutableList<?> args) {
+        return timeTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -398,8 +476,21 @@ public final class Expressions {
      * @return
      */
     public static <T extends Comparable<?>> TimeTemplate<T> timeTemplate(Class<? extends T> cl,
-                                                                           Template template, Object... args) {
-        return new TimeTemplate<T>(cl, template, ImmutableList.copyOf(args));
+                                                                         Template template, Object... args) {
+        return timeTemplate(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T extends Comparable<?>> TimeTemplate<T> timeTemplate(Class<? extends T> cl,
+                                                                         Template template, ImmutableList<?> args) {
+        return new TimeTemplate<T>(cl, template, args);
     }
 
     /**
@@ -412,7 +503,7 @@ public final class Expressions {
      */
     public static <T extends Enum<T>> EnumTemplate<T> enumTemplate(Class<? extends T> cl,
                                                                      String template, Object... args) {
-        return new EnumTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return enumTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -425,7 +516,7 @@ public final class Expressions {
      */
     public static <T extends Enum<T>> EnumTemplate<T> enumTemplate(Class<? extends T> cl,
                                                                      String template, ImmutableList<?> args) {
-        return new EnumTemplate<T>(cl, createTemplate(template), args);
+        return enumTemplate(cl, createTemplate(template), args);
     }
 
     /**
@@ -438,7 +529,20 @@ public final class Expressions {
      */
     public static <T extends Enum<T>> EnumTemplate<T> enumTemplate(Class<? extends T> cl,
                                                                      Template template, Object... args) {
-        return new EnumTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return enumTemplate(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T extends Enum<T>> EnumTemplate<T> enumTemplate(Class<? extends T> cl,
+                                                                   Template template, ImmutableList<?> args) {
+        return new EnumTemplate<T>(cl, template, args);
     }
 
     /**
@@ -451,7 +555,7 @@ public final class Expressions {
      */
     public static <T extends Number & Comparable<?>> NumberTemplate<T> numberTemplate(Class<? extends T> cl,
             String template, Object... args) {
-        return new NumberTemplate<T>(cl, createTemplate(template), ImmutableList.copyOf(args));
+        return numberTemplate(cl, createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -463,10 +567,9 @@ public final class Expressions {
      * @return
      */
     public static <T extends Number & Comparable<?>> NumberTemplate<T> numberTemplate(Class<? extends T> cl,
-                                                                                        String template, ImmutableList<?> args) {
-        return new NumberTemplate<T>(cl, createTemplate(template), args);
+                                                                                      String template, ImmutableList<?> args) {
+        return numberTemplate(cl, createTemplate(template), args);
     }
-
 
     /**
      * Create a new Template expression
@@ -478,7 +581,20 @@ public final class Expressions {
      */
     public static <T extends Number & Comparable<?>> NumberTemplate<T> numberTemplate(Class<? extends T> cl,
                                                                                         Template template, Object... args) {
-        return new NumberTemplate<T>(cl, template, ImmutableList.copyOf(args));
+        return numberTemplate(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
+    public static <T extends Number & Comparable<?>> NumberTemplate<T> numberTemplate(Class<? extends T> cl,
+                                                                                      Template template, ImmutableList<?> args) {
+        return new NumberTemplate<T>(cl, template, args);
     }
 
     /**
@@ -489,7 +605,7 @@ public final class Expressions {
      * @return
      */
     public static StringTemplate stringTemplate(String template, Object... args) {
-        return new StringTemplate(createTemplate(template), ImmutableList.copyOf(args));
+        return stringTemplate(createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -500,7 +616,7 @@ public final class Expressions {
      * @return
      */
     public static StringTemplate stringTemplate(String template, ImmutableList<?> args) {
-        return new StringTemplate(createTemplate(template), args);
+        return stringTemplate(createTemplate(template), args);
     }
 
 
@@ -512,7 +628,7 @@ public final class Expressions {
      * @return
      */
     public static StringTemplate stringTemplate(Template template, Object... args) {
-        return new StringTemplate(template, ImmutableList.copyOf(args));
+        return stringTemplate(template, ImmutableList.copyOf(args));
     }
 
     /**
@@ -522,8 +638,20 @@ public final class Expressions {
      * @param args
      * @return
      */
+    public static StringTemplate stringTemplate(Template template, ImmutableList<?> args) {
+        return new StringTemplate(template, ImmutableList.copyOf(args));
+    }
+
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template
+     * @param args
+     * @return
+     */
     public static BooleanTemplate booleanTemplate(String template, Object... args) {
-        return new BooleanTemplate(createTemplate(template), ImmutableList.copyOf(args));
+        return booleanTemplate(createTemplate(template), ImmutableList.copyOf(args));
     }
 
     /**
@@ -534,7 +662,7 @@ public final class Expressions {
      * @return
      */
     public static BooleanTemplate booleanTemplate(String template, ImmutableList<?> args) {
-        return new BooleanTemplate(createTemplate(template), args);
+        return booleanTemplate(createTemplate(template), args);
     }
 
     /**
@@ -545,6 +673,17 @@ public final class Expressions {
      * @return
      */
     public static BooleanTemplate booleanTemplate(Template template, Object... args) {
+        return booleanTemplate(template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template
+     * @param args
+     * @return
+     */
+    public static BooleanTemplate booleanTemplate(Template template, ImmutableList<?> args) {
         return new BooleanTemplate(template, ImmutableList.copyOf(args));
     }
 

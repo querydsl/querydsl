@@ -19,8 +19,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
 import com.querydsl.core.types.Ops;
 
 public class DerbyTemplatesTest extends AbstractSQLTemplatesTest{
@@ -32,7 +32,7 @@ public class DerbyTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Test
     public void NextVal() {
-        Operation<String> nextval = OperationImpl.create(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
+        Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("next value for myseq", new SQLSerializer(new Configuration(new DerbyTemplates())).handle(nextval).toString());
     }
 

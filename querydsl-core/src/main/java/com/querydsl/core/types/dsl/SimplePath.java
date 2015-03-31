@@ -35,7 +35,7 @@ public class SimplePath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     protected SimplePath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

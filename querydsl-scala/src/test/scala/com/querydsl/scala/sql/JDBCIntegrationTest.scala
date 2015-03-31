@@ -1,7 +1,7 @@
 package com.querydsl.scala.sql
 
 import test._
-import com.querydsl.sql._
+import com.querydsl.sql.{Configuration, HSQLDBTemplates, RelationalPath, SQLQuery}
 import com.querydsl.core.types.dsl._
 import java.io.File
 

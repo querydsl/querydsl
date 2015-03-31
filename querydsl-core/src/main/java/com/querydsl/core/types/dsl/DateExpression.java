@@ -17,10 +17,7 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 /**
  * DateExpression represents Date expressions
@@ -75,7 +72,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
 
     @Override
     public DateExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
 
     /**

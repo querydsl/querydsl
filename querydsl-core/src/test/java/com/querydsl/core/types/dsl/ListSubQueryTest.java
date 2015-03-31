@@ -21,22 +21,21 @@ import org.junit.Test;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.dsl.ListSubQuery;
+import com.querydsl.core.types.ExpressionUtils;
 
 public class ListSubQueryTest {
 
     @Test
     public void As() {
         ListSubQuery<Date> subQuery = new ListSubQuery<Date>(Date.class,new DefaultQueryMetadata());
-        assertNotNull(subQuery.as(new PathImpl<Date>(Date.class,"a")));
-        assertNotNull(subQuery.as(new PathImpl<Date>(Date.class,"a")));
+        assertNotNull(subQuery.as(ExpressionUtils.path(Date.class, "a")));
+        assertNotNull(subQuery.as(ExpressionUtils.path(Date.class,"a")));
     }
  
     @Test
     public void Count() {
         DefaultQueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, new PathImpl<Object>(Object.class, "path"));
+        md.addJoin(JoinType.DEFAULT, ExpressionUtils.path(Object.class, "path"));
         ListSubQuery<Date> subQuery = new ListSubQuery<Date>(Date.class, md);
         assertNotNull(subQuery.count().toString());
     }
@@ -44,7 +43,7 @@ public class ListSubQueryTest {
     @Test
     public void Count_Distinct() {
         DefaultQueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, new PathImpl<Object>(Object.class, "path"));
+        md.addJoin(JoinType.DEFAULT, ExpressionUtils.path(Object.class, "path"));
         ListSubQuery<Date> subQuery = new ListSubQuery<Date>(Date.class, md);
         assertNotNull(subQuery.count().toString());
     }

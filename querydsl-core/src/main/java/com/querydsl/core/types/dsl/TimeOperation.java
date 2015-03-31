@@ -16,11 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * TimeOperation represents Time operations
@@ -40,7 +36,7 @@ public class TimeOperation<T extends Comparable<?>> extends TimeExpression<T> im
     }
 
     protected TimeOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
-        super(new OperationImpl<T>(type, op, args));
+        super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>)mixin;
     }
     

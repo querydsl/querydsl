@@ -15,14 +15,8 @@ package com.querydsl.spatial.jts;
 
 import java.lang.reflect.AnnotatedElement;
 
+import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.MultiPolygon;
-
-import com.querydsl.spatial.jts.JTSMultiPolygonExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.Visitor;
 
 /**
  * @author tiwe
@@ -48,7 +42,7 @@ public class JTSMultiPolygonPath<T extends MultiPolygon> extends JTSMultiPolygon
     }
 
     public JTSMultiPolygonPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

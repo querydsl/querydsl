@@ -53,7 +53,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
      * @return
      */
     public DslExpression<R> as(String alias) {
-        return as(new PathImpl<R>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
 
     @Override

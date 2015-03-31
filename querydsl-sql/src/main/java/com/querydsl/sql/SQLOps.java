@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.OperationImpl;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operator;
 
 /**
@@ -87,13 +87,13 @@ public enum SQLOps implements Operator {
         return type;
     }
 
-    public static final QueryFlag FOR_SHARE_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
+    public static final QueryFlag FOR_SHARE_FLAG = new QueryFlag(Position.END, ExpressionUtils.operation(
             Object.class, FOR_SHARE, ImmutableList.<Expression<?>>of()));
 
-    public static final QueryFlag FOR_UPDATE_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
+    public static final QueryFlag FOR_UPDATE_FLAG = new QueryFlag(Position.END, ExpressionUtils.operation(
             Object.class, FOR_UPDATE, ImmutableList.<Expression<?>>of()));
 
-    public static final QueryFlag NO_WAIT_FLAG = new QueryFlag(Position.END, new OperationImpl<Object>(
+    public static final QueryFlag NO_WAIT_FLAG = new QueryFlag(Position.END, ExpressionUtils.operation(
             Object.class, NO_WAIT, ImmutableList.<Expression<?>>of()));
 
 }

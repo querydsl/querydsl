@@ -39,17 +39,17 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     @Nullable
     private transient AnnotatedElement annotatedElement;
     
-    public PathImpl(Class<? extends T> type, String variable) {
+    protected PathImpl(Class<? extends T> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable));
     }
 
-    public PathImpl(Class<? extends T> type, PathMetadata metadata) {
+    protected PathImpl(Class<? extends T> type, PathMetadata metadata) {
         super(type);
         this.metadata = metadata;
         this.root = metadata.getRootPath() != null ? metadata.getRootPath() : this;
     }
 
-    public PathImpl(Class<? extends T> type, Path<?> parent, String property) {
+    protected PathImpl(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 

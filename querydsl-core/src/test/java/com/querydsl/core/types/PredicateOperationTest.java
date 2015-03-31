@@ -13,17 +13,18 @@
  */
 package com.querydsl.core.types;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 public class PredicateOperationTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void Not() {
-        Path o1 = new PathImpl(Object.class, "o1");
-        Path o2 = new PathImpl(Object.class, "o2");
-        PredicateOperation template = PredicateOperation.create(Ops.EQ, o1, o2);
+        Path<?> o1 = ExpressionUtils.path(Object.class, "o1");
+        Path<?> o2 = ExpressionUtils.path(Object.class, "o2");
+        PredicateOperation template = ExpressionUtils.predicate(Ops.EQ, o1, o2);
         assertEquals("!(o1 = o2)", template.not().toString());
     }
 

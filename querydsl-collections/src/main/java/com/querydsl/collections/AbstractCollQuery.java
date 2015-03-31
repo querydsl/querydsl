@@ -79,11 +79,11 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
     }
 
     private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias) {
-        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
+        return ExpressionUtils.operation(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     private <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias) {
-        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
+        return ExpressionUtils.operation(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     /**

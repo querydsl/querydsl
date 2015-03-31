@@ -73,7 +73,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
 
     @Override
     public BooleanExpression as(String alias) {
-        return as(new PathImpl<Boolean>(Boolean.class, alias));
+        return as(ExpressionUtils.path(Boolean.class, alias));
     }
 
     /**

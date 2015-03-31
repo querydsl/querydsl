@@ -24,10 +24,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 public class SimpleExpressionTest {
 
@@ -90,10 +87,10 @@ public class SimpleExpressionTest {
         paths.add(new TimePath(Time.class,"p"));
 
         for (DslExpression<?> expr : paths) {
-            Path o = new PathImpl(expr.getType(), "o");
-            assertEquals(OperationImpl.create(expr.getType(), Ops.ALIAS, expr, o), expr.as("o"));
-            Path p = new PathImpl(expr.getType(), "p");
-            assertEquals(OperationImpl.create(expr.getType(), Ops.ALIAS, expr, p), expr.as(p));
+            Path<?> o = ExpressionUtils.path(expr.getType(), "o");
+            assertEquals(ExpressionUtils.operation(expr.getType(), Ops.ALIAS, expr, o), expr.as("o"));
+            Path p = ExpressionUtils.path(expr.getType(), "p");
+            assertEquals(ExpressionUtils.operation(expr.getType(), Ops.ALIAS, expr, p), expr.as(p));
         }
     }
 

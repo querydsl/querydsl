@@ -13,12 +13,7 @@
  */
 package com.querydsl.sql;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.OperationImpl;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.*;
 
 /**
  * UnionUtils provides static utility methods for Union handling
@@ -32,7 +27,7 @@ public final class UnionUtils {
         final Operator operator = unionAll ? SQLOps.UNION_ALL : SQLOps.UNION;
         Expression<?> rv = union[0];
         for (int i = 1; i < union.length; i++) {
-            rv = OperationImpl.create(rv.getType(), operator, rv, union[i]);
+            rv = ExpressionUtils.operation(rv.getType(), operator, rv, union[i]);
         }
         return rv;
     }

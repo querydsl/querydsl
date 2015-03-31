@@ -18,13 +18,9 @@ import java.sql.Connection;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.AbstractSQLQuery;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLOps;
-import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.TeradataTemplates;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.PredicateOperation;
+import com.querydsl.sql.*;
 
 /**
  * TeradataQuery provides Teradata related extensions to SQLQuery
@@ -57,7 +53,7 @@ public class TeradataQuery extends AbstractSQLQuery<TeradataQuery> {
      * @return
      */
     public TeradataQuery qualify(Predicate predicate) {
-        predicate = PredicateOperation.create(SQLOps.QUALIFY, predicate);
+        predicate = ExpressionUtils.predicate(SQLOps.QUALIFY, predicate);
         return queryMixin.addFlag(new QueryFlag(QueryFlag.Position.BEFORE_ORDER, predicate));
     }
 

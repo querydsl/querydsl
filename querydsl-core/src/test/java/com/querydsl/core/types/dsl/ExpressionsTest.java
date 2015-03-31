@@ -45,6 +45,7 @@ public class ExpressionsTest {
                 assertReturnType(Expressions.class.getMethod(type + "Template", String.class, Object[].class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", String.class, ImmutableList.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Template.class, Object[].class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", Template.class, ImmutableList.class));
             } else {
                 assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, String.class));
                 assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, Path.class, String.class));
@@ -53,6 +54,7 @@ public class ExpressionsTest {
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, Object[].class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, ImmutableList.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, Object[].class));
+                assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, ImmutableList.class));
             }
         }
     }

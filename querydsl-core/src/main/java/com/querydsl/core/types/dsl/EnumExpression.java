@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 /**
  * EnumExpression represents Enum typed expressions
@@ -40,7 +37,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
 
     @Override
     public EnumExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
+        return as(ExpressionUtils.path(getType(), alias));
     }
     
     /**

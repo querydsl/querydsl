@@ -13,9 +13,9 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.survey;
 import static com.querydsl.sql.Constants.survey2;
-import static com.querydsl.core.Target.*;
 import static org.junit.Assert.*;
 
 import java.sql.ResultSet;
@@ -25,13 +25,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.sql.dml.SQLMergeClause;
-import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.dml.SQLMergeClause;
+import com.querydsl.sql.domain.QSurvey;
 
 public class MergeBase extends AbstractBaseTest{
 
@@ -119,7 +119,7 @@ public class MergeBase extends AbstractBaseTest{
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
     public void Merge_With_Keys_Projected2() throws SQLException{
-        Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
+        Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = merge(survey).keys(survey.id)
                 .set(survey.id, 9)
                 .set(survey.name, "Hello you").executeWithKey(idPath);

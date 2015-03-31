@@ -74,7 +74,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         QueryMetadata md = subQueryMixin.getMetadata().clone();
         Expression<?> e = md.getProjection();
         if (e != null) {
-            md.setProjection(OperationImpl.create(Long.class, operator, e));
+            md.setProjection(ExpressionUtils.operation(Long.class, operator, e));
         } else if (operator == Ops.AggOps.COUNT_AGG) {
             md.setProjection(Wildcard.count);
         } else {

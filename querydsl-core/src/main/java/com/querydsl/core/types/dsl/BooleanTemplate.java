@@ -16,10 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.PredicateTemplate;
-import com.querydsl.core.types.Template;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * BooleanTemplate is a custom boolean expression
@@ -34,7 +31,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     private final PredicateTemplate templateMixin;
 
     protected BooleanTemplate(Template template, ImmutableList<?> args) {
-        super(new PredicateTemplate(template, args));
+        super(ExpressionUtils.predicateTemplate(template, args));
         this.templateMixin = (PredicateTemplate)mixin;
     }
 

@@ -41,7 +41,7 @@ trait DslExpression[T] extends Expression[T] {
 
   def as(right: Path[T]): DslExpression[T] = Operations.dsl(getType, ALIAS, this, right)
 
-  def as(alias: String): DslExpression[T] = as(new PathImpl[T](getType, alias))
+  def as(alias: String): DslExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
 }
 
@@ -49,7 +49,7 @@ trait SimpleExpression[T] extends DslExpression[T] {
 
   override def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS, this, right)
 
-  override def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): SimpleExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
   def eq(right: T): BooleanExpression = eq(constant(right))
 
@@ -217,7 +217,7 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
 
   override def as(right: Path[T]) = comparable(getType, ALIAS, this, right)
 
-  override def as(alias: String): ComparableExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): ComparableExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
 }
 
@@ -361,7 +361,7 @@ trait NumberExpression[T] extends SimpleExpression[T] {
 
   override def as(right: Path[T]) = number(getType, ALIAS, this, right)
 
-  override def as(alias: String): NumberExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): NumberExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
 }
 
@@ -393,7 +393,7 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
 
   override def as(right: Path[java.lang.Boolean]) = boolean(ALIAS, this, right)
 
-  override def as(alias: String): BooleanExpression = as(new PathImpl[java.lang.Boolean](getType, alias))
+  override def as(alias: String): BooleanExpression = as(ExpressionUtils.path[java.lang.Boolean](getType, alias))
 
 }
 
@@ -489,7 +489,7 @@ trait StringExpression extends ComparableExpression[String] {
 
   override def as(right: Path[String]) = string(ALIAS, this, right)
 
-  override def as(alias: String): StringExpression = as(new PathImpl[String](getType, alias))
+  override def as(alias: String): StringExpression = as(ExpressionUtils.path[String](getType, alias))
 
 }
 
@@ -517,7 +517,7 @@ trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   override def as(right: Path[T]) = time(getType, ALIAS, this, right)
 
-  override def as(alias: String): TimeExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): TimeExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
 }
 
@@ -553,7 +553,7 @@ trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   override def as(right: Path[T]) = dateTime(getType, ALIAS, this, right)
 
-  override def as(alias: String): DateTimeExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): DateTimeExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
 }
 
@@ -581,7 +581,7 @@ trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
   override def as(right: Path[T]) = date(getType, ALIAS, this, right)
 
-  override def as(alias: String): DateExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): DateExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
 }
 
@@ -591,7 +591,7 @@ trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
   override def as(right: Path[T]) = enum(getType.asInstanceOf[Class[T]], ALIAS, this, right)
 
-  override def as(alias: String): EnumExpression[T] = as(new PathImpl[T](getType, alias))
+  override def as(alias: String): EnumExpression[T] = as(ExpressionUtils.path[T](getType, alias))
 
   def mapToId[T <: { def id: java.lang.Long }](events: List[T]) = events groupBy (_.id.longValue) toList
 

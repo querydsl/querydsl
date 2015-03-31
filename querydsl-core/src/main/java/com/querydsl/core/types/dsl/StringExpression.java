@@ -15,11 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.*;
 
 /**
  * StringExpression represents {@link java.lang.String} expressions
@@ -54,7 +50,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
 
     @Override
     public StringExpression as(String alias) {
-        return as(new PathImpl<String>(String.class, alias));
+        return as(ExpressionUtils.path(String.class, alias));
     }
 
     /**

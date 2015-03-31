@@ -110,7 +110,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
     }
 
     public SimpleExpression<A> as(String alias) {
-        return Expressions.operation(getType(), Ops.ALIAS, this, new PathImpl<A>(getType(), alias));
+        return Expressions.operation(getType(), Ops.ALIAS, this, ExpressionUtils.path(getType(), alias));
     }
 
     @Override

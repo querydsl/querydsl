@@ -43,7 +43,7 @@ public class GeometryCollectionPath<T extends GeometryCollection> extends Geomet
     }
 
     public GeometryCollectionPath(Class<? extends T> type, PathMetadata metadata) {
-        super(new PathImpl<T>(type, metadata));
+        super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>)mixin;
     }
 

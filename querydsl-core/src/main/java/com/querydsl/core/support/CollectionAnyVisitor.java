@@ -14,9 +14,10 @@
 package com.querydsl.core.support;
 
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimplePath;
 
 /**
  * CollectionAnyVisitor is an expression visitor which transforms any() path expressions which are
@@ -38,7 +39,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
             CollectionExpression<?,?> col = (CollectionExpression<?,?>)path;
             return (Path<T>)Expressions.listPath(col.getParameter(0), SimplePath.class, metadata);
         } else {
-            return new PathImpl<T>(path.getType(), metadata);
+            return ExpressionUtils.path(path.getType(), metadata);
         }
     }
 
@@ -64,7 +65,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
                 Predicate predicate = Expressions.booleanTemplate(expr.getTemplate(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;
             } else {
-                return TemplateExpressionImpl.create(expr.getType(), expr.getTemplate(), args);
+                return ExpressionUtils.template(expr.getType(), expr.getTemplate(), args);
             }
         } else {
             return expr;
@@ -87,10 +88,10 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
         }
         if (context.replace) {
             if (expr.getType().equals(Boolean.class)) {
-                Predicate predicate = new PredicateOperation(expr.getOperator(), ImmutableList.copyOf(args));
+                Predicate predicate = ExpressionUtils.predicate(expr.getOperator(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;
             } else {
-                return new OperationImpl(expr.getType(), expr.getOperator(), ImmutableList.copyOf(args));
+                return ExpressionUtils.operation(expr.getType(), expr.getOperator(), args);
             }
         } else {
             return expr;
@@ -105,7 +106,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
     public Expression<?> visit(Path<?> expr, Context context) {
         if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY) {
             Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, context);
-            expr = new PathImpl<Object>(expr.getType(), PathMetadataFactory.forCollectionAny(parent));
+            expr = ExpressionUtils.path(expr.getType(), PathMetadataFactory.forCollectionAny(parent));
             EntityPath<?> replacement = new EntityPathBase<Object>(expr.getType(),
                     ExpressionUtils.createRootVariable(expr, replacedCounter++));
             context.add(expr, replacement);
