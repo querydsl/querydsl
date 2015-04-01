@@ -9,7 +9,7 @@
     코드 생성할 수 없는 경우, 표현식을 생성하기 위한 범용 방법을 사용하면 된다.</para>
 
   <sect2>
-    <title>복합 조건(complext predicates)</title>
+    <title>복합 조건(complex predicates)</title>
 
     <para>
       복합 불리언 표현식을 작성하려면 <code>com.mysema.query.BooleanBuilder</code> 클래스를 사용한다.
