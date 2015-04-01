@@ -503,13 +503,7 @@ public class SQLTemplates extends Templates {
     public String escapeLiteral(String str) {
         StringBuilder builder = new StringBuilder();
         for (char ch : str.toCharArray()) {
-            if (ch == '\n') {
-                builder.append("\\n");
-                continue;
-            } else if (ch == '\r') {
-                builder.append("\\r");
-                continue;
-            } else if (ch == '\'') {
+            if (ch == '\'') {
                 builder.append("''");
                 continue;
             }
