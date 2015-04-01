@@ -342,6 +342,11 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Case4() {
+        query().from(cat).list(cat.mate.when(savedCats.get(0)).then(0).otherwise(1));
+    }
+
+    @Test
     public void CaseBuilder() {
         QCat cat2 = new QCat("cat2");
         NumberExpression<Integer> casex = new CaseBuilder()

@@ -42,6 +42,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
             Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN);
 
+    private static final Set<Operator> CASE_OPS = ImmutableSet.<Operator>of(
+            Ops.CASE_EQ_ELSE, Ops.CASE_ELSE);
+
     private static final String COMMA = ", ";
 
     private static final String DELETE = "delete from ";
@@ -334,10 +337,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             append("'");
             append(escapeLiteral(constant.toString()));
             append("'");
-        } else if (constant instanceof Enum) {
+        } else if (constant instanceof Enum<?>) {
             append(constant.getClass().getName());
             append(".");
-            append(((Enum) constant).name());
+            append(((Enum<?>) constant).name());
         } else {
             // TODO date time literals
             throw new IllegalArgumentException("Unsupported constant " + constant);
@@ -403,7 +406,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean oldInCaseOperation = inCaseOperation;
-        inCaseOperation = inCaseOperation || operator.equals(Ops.CASE) || operator.equals(Ops.CASE_EQ);
+        inCaseOperation = CASE_OPS.contains(operator);
         boolean oldWrapElements = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
