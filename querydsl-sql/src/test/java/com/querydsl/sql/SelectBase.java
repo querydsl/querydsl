@@ -879,12 +879,14 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD)
     public void Like_Escape() {
-        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen");
+        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen", "a\nb");
 
         for (String str : strs) {
             assertTrue(str, query()
                 .from(employee)
-                .where(Expressions.stringTemplate("'" + str + "'").contains(str)).count() > 0);
+                .where(Expressions.predicate(Ops.STRING_CONTAINS,
+                       Expressions.constant(str),
+                       Expressions.constant(str))).count() > 0);
         }
     }
 
@@ -1012,6 +1014,11 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(true, singleResult(ConstantImpl.create(true)));
         assertEquals(false, singleResult(ConstantImpl.create(false)));
         assertEquals("abc", singleResult(ConstantImpl.create("abc")));
+        assertEquals("'", singleResult(ConstantImpl.create("'")));
+        assertEquals("\"", singleResult(ConstantImpl.create("\"")));
+        assertEquals("\n", singleResult(ConstantImpl.create("\n")));
+        assertEquals("\r\n", singleResult(ConstantImpl.create("\r\n")));
+        assertEquals("\t", singleResult(ConstantImpl.create("\t")));
     }
 
     @Test
