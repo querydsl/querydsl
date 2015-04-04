@@ -645,7 +645,8 @@ public class EntitySerializer implements Serializer {
             writer.line("// inherited");
             Supertype superType = model.getSuperType();
             if (!superType.getEntityType().hasEntityFields()) {
-                writer.publicFinal(queryType, field.getEscapedName(),"_super." + field.getEscapedName());
+                String value = NEW + writer.getRawName(queryType) + "(_super." + field.getEscapedName() + ")";
+                writer.publicFinal(queryType, field.getEscapedName(), value);
             } else {
                 writer.publicFinal(queryType, field.getEscapedName());
             }
