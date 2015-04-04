@@ -91,20 +91,8 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
             args.add(target);
             builder.append(first ? "first " : "last ");
             builder.append(ORDER_BY);
-            boolean first = true;
-            int size = 1;
-            for (OrderSpecifier<?> expr : orderBy) {
-                if (!first) {
-                    builder.append(", ");
-                }
-                builder.append("{").append(size).append("}");
-                if (!expr.isAscending()) {
-                    builder.append(" desc");
-                }
-                args.add(expr.getTarget());
-                size++;
-                first = false;
-            }
+            builder.append("{1}");
+            args.add(ExpressionUtils.orderBy(orderBy));
             builder.append(")");
             value = Expressions.template(target.getType(), builder.toString(), args.build());
         }

@@ -37,6 +37,7 @@ public enum Ops implements Operator {
     SINGLETON(Object.class),
     ORDINAL(Integer.class),
     WRAPPED(Object.class),
+    ORDER(Object.class),
 
     // collection
     IN(Boolean.class), // cmp. contains

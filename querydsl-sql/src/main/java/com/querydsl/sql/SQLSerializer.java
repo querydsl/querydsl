@@ -696,16 +696,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!orderBy.isEmpty()) {
             stage = Stage.ORDER_BY;
             append(templates.getOrderBy());
-            boolean first = true;
             skipParent = true;
-            for (OrderSpecifier<?> os : orderBy) {
-                if (!first) {
-                    append(COMMA);
-                }
-                handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
-                first = false;
-            }
+            handleOrderBy(orderBy);
             skipParent = false;
             if (hasFlags) {
                 serialize(Position.AFTER_ORDER, flags);
@@ -936,6 +928,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = true;
             super.visitOperation(type, operator, args);
             skipParent = oldSkipParent;
+
+        } else if (operator == Ops.ORDER) {
+            List<OrderSpecifier<?>> order = ((Constant<List<OrderSpecifier<?>>>)args.get(0)).getConstant();
+            handleOrderBy(order);
 
         } else {
             super.visitOperation(type, operator, args);

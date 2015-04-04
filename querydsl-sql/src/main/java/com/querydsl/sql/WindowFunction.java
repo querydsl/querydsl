@@ -79,19 +79,9 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     builder.append(" ");
                 }
                 builder.append(ORDER_BY);
-                boolean first = true;
-                for (OrderSpecifier<?> expr : orderBy) {
-                    if (!first) {
-                        builder.append(", ");
-                    }
-                    builder.append("{" + size + "}");
-                    if (!expr.isAscending()) {
-                        builder.append(" desc");
-                    }
-                    args.add(expr.getTarget());
-                    size++;
-                    first = false;
-                }
+                builder.append("{" + size + "}");
+                args.add(ExpressionUtils.orderBy(orderBy));
+                size++;
             }
             if (rowsOrRange != null) {
                 builder.append(rowsOrRange);
