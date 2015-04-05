@@ -19,7 +19,15 @@ public class WindowFunctionTest {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         Expression<?> wf = SQLExpressions.sum(path).over().partitionBy(path2).orderBy(path);
-        assertEquals("sum(path) over (partition by path2 order by path)", toString(wf));
+        assertEquals("sum(path) over (partition by path2 order by path asc)", toString(wf));
+    }
+
+    @Test
+    public void Complex_NullsFirst() {
+        NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
+        NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
+        Expression<?> wf = SQLExpressions.sum(path).over().partitionBy(path2).orderBy(path.desc().nullsFirst());
+        assertEquals("sum(path) over (partition by path2 order by path desc nulls first)", toString(wf));
     }
 
     @Test
@@ -80,11 +88,11 @@ public class WindowFunctionTest {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
-        assertEquals("sum(path) over (order by path rows between current row and unbounded following)",
+        assertEquals("sum(path) over (order by path asc rows between current row and unbounded following)",
                 toString(wf.rows().between().currentRow().unboundedFollowing()));
-        assertEquals("sum(path) over (order by path rows between preceding intPath and following intPath)",
+        assertEquals("sum(path) over (order by path asc rows between preceding intPath and following intPath)",
                 toString(wf.rows().between().preceding(intPath).following(intPath)));
-        assertEquals("sum(path) over (order by path rows between preceding ? and following ?)",
+        assertEquals("sum(path) over (order by path asc rows between preceding ? and following ?)",
                 toString(wf.rows().between().preceding(1).following(3)));
     }
 
@@ -93,7 +101,7 @@ public class WindowFunctionTest {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
-        assertEquals("sum(path) over (order by path rows unbounded preceding)",
+        assertEquals("sum(path) over (order by path asc rows unbounded preceding)",
                 toString(wf.rows().unboundedPreceding()));
     }
 
@@ -102,7 +110,7 @@ public class WindowFunctionTest {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
-        assertEquals("sum(path) over (order by path rows current row)",
+        assertEquals("sum(path) over (order by path asc rows current row)",
                 toString(wf.rows().currentRow()));
     }
 
@@ -112,9 +120,9 @@ public class WindowFunctionTest {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
-        assertEquals("sum(path) over (order by path rows preceding intPath)",
+        assertEquals("sum(path) over (order by path asc rows preceding intPath)",
                 toString(wf.rows().preceding(intPath)));
-        assertEquals("sum(path) over (order by path rows preceding ?)",
+        assertEquals("sum(path) over (order by path asc rows preceding ?)",
                 toString(wf.rows().preceding(3)));
     }
 
@@ -125,10 +133,10 @@ public class WindowFunctionTest {
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         NumberPath<Long> path3 = Expressions.numberPath(Long.class, "path3");
         assertEquals(
-                "min(path) keep (dense_rank first order by path2)",
+                "min(path) keep (dense_rank first order by path2 asc)",
                 toString(SQLExpressions.min(path).keepFirst().orderBy(path2)));
         assertEquals(
-                "min(path) keep (dense_rank first order by path2) over (partition by path3)",
+                "min(path) keep (dense_rank first order by path2 asc) over (partition by path3)",
                 toString(SQLExpressions.min(path).keepFirst().orderBy(path2).over().partitionBy(path3)));
     }
 
@@ -139,7 +147,7 @@ public class WindowFunctionTest {
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         NumberPath<Long> path3 = Expressions.numberPath(Long.class, "path3");
         assertEquals(
-                "min(path) keep (dense_rank last order by path2) over (partition by path3)",
+                "min(path) keep (dense_rank last order by path2 asc) over (partition by path3)",
                 toString(SQLExpressions.min(path).keepLast().orderBy(path2).over().partitionBy(path3)));
     }
 

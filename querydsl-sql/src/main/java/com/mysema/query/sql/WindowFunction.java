@@ -18,13 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.MutableExpressionBase;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -86,19 +80,9 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     builder.append(" ");
                 }
                 builder.append(ORDER_BY);
-                boolean first = true;
-                for (OrderSpecifier<?> expr : orderBy) {
-                    if (!first) {
-                        builder.append(", ");
-                    }
-                    builder.append("{" + size + "}");
-                    if (!expr.isAscending()) {
-                        builder.append(" desc");
-                    }
-                    args.add(expr.getTarget());
-                    size++;
-                    first = false;
-                }
+                builder.append("{" + size + "}");
+                args.add(ExpressionUtils.orderBy(orderBy));
+                size++;
             }
             if (rowsOrRange != null) {
                 builder.append(rowsOrRange);

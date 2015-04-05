@@ -70,19 +70,8 @@ public class WithinGroup<T> extends SimpleOperation<T> {
                 size++;
                 if (!orderBy.isEmpty()) {
                     builder.append(ORDER_BY);
-                    boolean first = true;
-                    for (OrderSpecifier<?> expr : orderBy) {
-                        if (!first) {
-                            builder.append(", ");
-                        }
-                        builder.append("{" + size + "}");
-                        if (!expr.isAscending()) {
-                            builder.append(" desc");
-                        }
-                        args.add(expr.getTarget());
-                        size++;
-                        first = false;
-                    }
+                    builder.append("{" + size + "}");
+                    args.add(ExpressionUtils.orderBy(orderBy));
                 }
                 builder.append(")");
                 value = new SimpleTemplate<T>(
