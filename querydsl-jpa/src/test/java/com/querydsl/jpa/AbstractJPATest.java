@@ -319,6 +319,14 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(MYSQL) // doesn't work in Eclipselink
+    public void Case4() {
+        NumberExpression<Float> numExpression = cat.bodyWeight.floatValue().divide(otherCat.bodyWeight.floatValue()).multiply(100);
+        NumberExpression<Float> numExpression2 = cat.id.when(0).then(0.0F).otherwise(numExpression);
+        query().from(cat, otherCat).list(numExpression2);
+    }
+
+    @Test
     public void CaseBuilder() {
         QCat cat2 = new QCat("cat2");
         NumberExpression<Integer> casex = new CaseBuilder()
