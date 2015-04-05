@@ -15,9 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 
@@ -35,9 +33,6 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
 
     @Nullable
     private volatile OrderSpecifier<T> asc, desc;
-
-    @Nullable
-    private volatile StringExpression stringCast;
 
     public ComparableExpressionBase(Expression<T> mixin) {
         super(mixin);
@@ -72,17 +67,6 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     }
 
     /**
-     * Create a cast expression to the given numeric type
-     *
-     * @param <A>
-     * @param type
-     * @return
-     */
-    public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
-        return Expressions.numberOperation(type, Ops.NUMCAST, mixin, ConstantImpl.create(type));
-    }
-
-    /**
      * Get an OrderSpecifier for descending order of this expression
      *
      * @return
@@ -92,19 +76,6 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
             desc = new OrderSpecifier<T>(Order.DESC, mixin);
         }
         return desc;
-    }
-
-    /**
-     * Get a cast to String expression
-     *
-     * @see     java.lang.Object#toString()
-     * @return
-     */
-    public StringExpression stringValue() {
-        if (stringCast == null) {
-            stringCast = Expressions.stringOperation(Ops.STRING_CAST, mixin);
-        }
-        return stringCast;
     }
 
 }

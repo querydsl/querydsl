@@ -72,6 +72,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @Nullable
     private volatile NumberExpression<T> negation;
 
+    @Nullable
+    private volatile StringExpression stringCast;
+
     public NumberExpression(Expression<T> mixin) {
         super(mixin);
     }
@@ -84,6 +87,19 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @Override
     public NumberExpression<T> as(String alias) {
         return Expressions.numberOperation(getType(), Ops.ALIAS, mixin, ExpressionUtils.path(getType(), alias));
+    }
+
+    /**
+     * Get a cast to String expression
+     *
+     * @see     java.lang.Object#toString()
+     * @return
+     */
+    public StringExpression stringValue() {
+        if (stringCast == null) {
+            stringCast = Expressions.stringOperation(Ops.STRING_CAST, mixin);
+        }
+        return stringCast;
     }
 
     /**
@@ -144,7 +160,6 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return MathUtils.cast(number, getType());
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
         if (type.equals(getType())) {
