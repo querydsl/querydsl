@@ -138,8 +138,8 @@ public class JPQLTemplates extends Templates {
 
         // case for eq
         add(Ops.CASE_EQ, "case {1} end");
-        add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
-        add(Ops.CASE_EQ_ELSE,  "else {0}");
+        add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}", 0);
+        add(Ops.CASE_EQ_ELSE,  "else {0}", 0);
 
         add(Ops.INSTANCE_OF, "type({0}) = {1}");
         add(JPQLOps.TYPE, "type({0})");
