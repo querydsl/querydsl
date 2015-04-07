@@ -85,7 +85,13 @@
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <version>0.9.9</version>
-      <scope>test</scope>
+      <scope>compile</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
   </dependencies>
 
