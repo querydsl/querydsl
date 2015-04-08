@@ -343,6 +343,14 @@ public class SQLSerializerTest {
         assertEquals("datediff('year',EMPLOYEE.DATEFIELD,(date '1970-01-01'))", serializer.toString());
     }
 
+    @Test
+    public void Multiplication() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.setUseLiterals(true);
+        serializer.handle(employee.salary.multiply(1.000E5).multiply(500).asc());
+        assertEquals("EMPLOYEE.salary * 50000000 ASC", serializer.toString());
+    }
+
     private SQLQuery<?> query() {
         return new SQLQuery<Void>();
     }
