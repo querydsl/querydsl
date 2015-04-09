@@ -22,7 +22,7 @@ import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
@@ -38,11 +38,11 @@ import com.querydsl.core.util.MathUtils;
  */
 public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
-    private static final Set<Operator> NUMERIC = ImmutableSet.<Operator>of(
+    private static final Set<? extends Operator> NUMERIC = Sets.immutableEnumSet(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
             Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN);
 
-    private static final Set<Operator> CASE_OPS = ImmutableSet.<Operator>of(
+    private static final Set<? extends Operator> CASE_OPS = Sets.immutableEnumSet(
             Ops.CASE_EQ_ELSE, Ops.CASE_ELSE);
 
     private static final String COMMA = ", ";
