@@ -34,7 +34,6 @@ import com.mysema.codegen.support.ClassUtils;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.*;
 import com.querydsl.core.util.BeanUtils;
-import com.querydsl.core.util.ClassPathUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**

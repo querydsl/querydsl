@@ -85,7 +85,7 @@
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <version>0.9.9</version>
-      <scope>compile</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

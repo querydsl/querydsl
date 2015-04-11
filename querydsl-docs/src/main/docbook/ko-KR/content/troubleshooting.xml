@@ -55,7 +55,7 @@ Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for L
 
     <para>이에 대한 가장 쉬운 해결책은 멀티쓰레드 환경에서 사용되기 전에 단일 쓰레드에서 클래스를 초기화하는 것이다.</para>
 
-    <para>이런 목적으로 com.querydsl.core.util.ClassPathUtils 클래스를 사용할 수 있다.</para>
+    <para>이런 목적으로 com.querydsl.codegen.ClassPathUtils 클래스를 사용할 수 있다.</para>
 
     <programlisting language="java"><![CDATA[
     ClassPathUtils.scanPackage(Thread.currentThread().getContextClassLoader(), packageToLoad);

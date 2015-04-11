@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.core.util;
+package com.querydsl.codegen;
 
 import org.reflections.Reflections;
 import org.reflections.adapters.JavaReflectionAdapter;
