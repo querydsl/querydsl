@@ -14,7 +14,6 @@
 package com.querydsl.codegen;
 
 import com.SomeClass;
-import com.querydsl.SomeOtherClass2;
 import org.junit.Test;
 
 import java.io.IOException;

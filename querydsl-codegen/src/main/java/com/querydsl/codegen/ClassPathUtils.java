@@ -39,8 +39,7 @@ public final class ClassPathUtils {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(pkg, classLoader))
                 .addClassLoader(classLoader)
-                .setScanners(new SubTypesScanner(false))
-                .setMetadataAdapter(new JavaReflectionAdapter()));
+                .setScanners(new SubTypesScanner(false)));
         Set<Class<?>> classes = new HashSet<Class<?>>();
         for (String typeNames : reflections.getStore().get(SubTypesScanner.class.getSimpleName()).values()) {
             Class<?> clazz = safeClassForName(classLoader, typeNames);
