@@ -114,12 +114,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    public final S handle(final String sep, final List<?> expressions) {
+    public final S handle(final String sep, final List<? extends Expression<?>> expressions) {
         for (int i = 0; i < expressions.size(); i++) {
             if (i != 0) {
                 append(sep);
             }
-            handle((Expression<?>)expressions.get(i));
+            handle(expressions.get(i));
         }
         return self;
     }
