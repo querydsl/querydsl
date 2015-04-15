@@ -46,15 +46,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final Templates templates;
 
-    private final char escape;
-
     private boolean normalize = true;
     
     private boolean strict = true;
     
     public SerializerBase(Templates templates) {
         this.templates = templates;
-        this.escape = templates.getEscapeChar();
     }
     
     public final S prepend(final String str) {
