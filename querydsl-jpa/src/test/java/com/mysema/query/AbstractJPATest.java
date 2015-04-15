@@ -310,6 +310,14 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoBatooJPA
+    public void Case_Long() {
+        assertEquals(ImmutableList.of(1L, 2L, 2L, 2L, 2L, 2L),
+                query().from(cat).orderBy(cat.id.asc())
+                        .list(cat.name.when("Bob123").then(1L).otherwise(2L)));
+    }
+
+    @Test
     public void Case2() {
         assertEquals(ImmutableList.of(4, 4, 4, 4, 4, 4),
                 query().from(cat)
