@@ -59,7 +59,7 @@ Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for L
     <para>An easy to use solution is to initialize the classes in a single thread before
       they are used in different threads.</para>
 
-    <para>The com.querydsl.core.util.ClassPathUtils class can be used for that like this:</para>
+    <para>The com.querydsl.codegen.ClassPathUtils class can be used for that like this:</para>
 
     <programlisting language="java"><![CDATA[
     ClassPathUtils.scanPackage(Thread.currentThread().getContextClassLoader(), packageToLoad);

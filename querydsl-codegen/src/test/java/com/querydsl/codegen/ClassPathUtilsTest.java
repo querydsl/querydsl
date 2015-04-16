@@ -11,28 +11,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.core.util;
+package com.querydsl.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import com.SomeClass;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Set;
 
-import org.junit.Test;
-
-import com.SomeClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 
 public class ClassPathUtilsTest {
-    
+
     @Test
     public void ScanPackage() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Set<Class<?>> classes = ClassPathUtils.scanPackage(classLoader, SomeClass.class.getPackage());
         assertFalse(classes.isEmpty());
     }
-    
+
     @Test
     public void ScanPackage_Check_Initialized() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -40,5 +39,4 @@ public class ClassPathUtilsTest {
         assertFalse(classes.isEmpty());
         assertEquals("XXX", SomeOtherClass2.property);
     }
-
 }

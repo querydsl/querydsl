@@ -1,9 +1,9 @@
-package com.querydsl.core.util;
+package com.querydsl.codegen;
 
 public class SomeOtherClass {
 
     static {
-        SomeOtherClass2.property = "XXX";
+      SomeOtherClass2.property = "XXX";
     }
     
     public String someProperty;

@@ -1,4 +1,4 @@
-package com.querydsl.core.util;
+package com.querydsl.codegen;
 
 public class SomeOtherClass2 {
     
