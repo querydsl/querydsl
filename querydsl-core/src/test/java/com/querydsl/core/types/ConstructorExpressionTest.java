@@ -13,8 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
@@ -22,7 +21,6 @@ import org.junit.Test;
 
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
-import static org.junit.Assert.assertTrue;
 
 public class ConstructorExpressionTest {
 
@@ -46,24 +44,24 @@ public class ConstructorExpressionTest {
     public void Create() {
         Expression<Long> longVal = ConstantImpl.create(1l);
         Expression<String> stringVal = ConstantImpl.create("");
-        assertNotNull(ConstructorExpression.create(ProjectionExample.class, longVal, stringVal).newInstance(0l, ""));
+        assertNotNull(Projections.constructor(ProjectionExample.class, longVal, stringVal).newInstance(0l, ""));
     }
 
     @Test
     public void Create2() {
         Expression<Long> longVal = ConstantImpl.create(1l);
-        assertNotNull(ConstructorExpression.create(ProjectionExample.class, longVal).newInstance(0l));
+        assertNotNull(Projections.constructor(ProjectionExample.class, longVal).newInstance(0l));
     }
 
     @Test
     public void Create3() {
-        assertNotNull(ConstructorExpression.create(ProjectionExample.class).newInstance());
+        assertNotNull(Projections.constructor(ProjectionExample.class).newInstance());
     }
 
     @Test
     public void Create4() {
         Expression<String> stringVal = ConstantImpl.create("");
-        assertNotNull(ConstructorExpression.create(ProjectionExample.class, stringVal).newInstance(""));
+        assertNotNull(Projections.constructor(ProjectionExample.class, stringVal).newInstance(""));
     }
 
     @Test
@@ -76,7 +74,7 @@ public class ConstructorExpressionTest {
         Expression<Long> longVal = ConstantImpl.create(0L);
         Expression<Float> floatVal = ConstantImpl.create(0.0F);
         Expression<Double> doubleVal = ConstantImpl.create(0.0);
-        ProjectionExample instance = ConstructorExpression.create(ProjectionExample.class,
+        ProjectionExample instance = Projections.constructor(ProjectionExample.class,
                 booleanVal, byteVal,
                 charVal, shortVal,
                 intVal, longVal,
@@ -90,14 +88,14 @@ public class ConstructorExpressionTest {
 
     @Test
     public void FactoryExpression_has_right_args() {
-        FactoryExpression<ProjectionExample> constructor = ConstructorExpression.create(ProjectionExample.class, concat);
+        FactoryExpression<ProjectionExample> constructor = Projections.constructor(ProjectionExample.class, concat);
         constructor = FactoryExpressionUtils.wrap(constructor);
         assertEquals(Arrays.asList(str1, str2), constructor.getArgs());
     }
 
     @Test
     public void FactoryExpression_newInstance() {
-        FactoryExpression<ProjectionExample> constructor = ConstructorExpression.create(ProjectionExample.class, concat);
+        FactoryExpression<ProjectionExample> constructor = Projections.constructor(ProjectionExample.class, concat);
         constructor = FactoryExpressionUtils.wrap(constructor);
         ProjectionExample projection = constructor.newInstance("12", "34");
         assertEquals("1234", projection.text);

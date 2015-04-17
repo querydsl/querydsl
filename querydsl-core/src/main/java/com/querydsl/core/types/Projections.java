@@ -116,7 +116,7 @@ public final class Projections {
      * @return
      */
     public static <T> ConstructorExpression<T> constructor(Class<T> type, Expression<?>... exprs) {
-        return ConstructorExpression.create(type, exprs);
+        return new ConstructorExpression<T>(type, exprs);
     }
 
     /**

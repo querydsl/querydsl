@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableList;
  * QEmployee employee = QEmployee.employee;
  * List<EmployeeInfo> result = query.from(employee)
  *   .where(employee.valid.eq(true))
- *   .list(ConstructorExpression.create(EmployeeInfo.class, employee.firstName, employee.lastName));
+ *   .list(Projections.constructor(EmployeeInfo.class, employee.firstName, employee.lastName));
  * }
  * </pre>
  *
@@ -49,12 +49,12 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -602747921848073175L;
 
-    public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args) {
+    private static Class<?>[] getParameterTypes(Expression<?>... args) {
         Class<?>[] paramTypes = new Class[args.length];
         for (int i = 0; i < paramTypes.length; i++) {
             paramTypes[i] = args[i].getType();
         }
-        return new ConstructorExpression<D>(type, paramTypes, args);
+        return paramTypes;
     }
 
     private final ImmutableList<Expression<?>> args;
@@ -65,6 +65,10 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     private transient Constructor<?> constructor;
 
     private transient Iterable<Function<Object[], Object[]>> transformers;
+
+    protected ConstructorExpression(Class<T> type, Expression<?>... args) {
+        this(type, getParameterTypes(args), ImmutableList.copyOf(args));
+    }
 
     protected ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));

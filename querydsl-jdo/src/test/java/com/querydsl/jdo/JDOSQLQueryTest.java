@@ -13,28 +13,31 @@
  */
 package com.querydsl.jdo;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
+import static org.junit.Assert.*;
+
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Transaction;
+
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.SearchResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jdo.sql.JDOSQLQuery;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.sql.SProduct;
 import com.querydsl.sql.HSQLDBTemplates;
 import com.querydsl.sql.SQLSubQuery;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.core.types.ConstructorExpression;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
     
@@ -148,7 +151,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     public void EntityProjections() {
         List<Product> products = sql()
             .from(product)
-            .list(ConstructorExpression.create(Product.class,
+            .list(Projections.constructor(Product.class,
                     product.name, product.description, product.price, product.amount));
         assertEquals(30, products.size());
         for (Product p : products) {

@@ -328,7 +328,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Constructor_Projection2() {
         List<SimpleProjection> projections =query().from(employee).list(
-                ConstructorExpression.create(SimpleProjection.class,
+                Projections.constructor(SimpleProjection.class,
                         employee.firstname, employee.lastname));
         assertFalse(projections.isEmpty());
         for (SimpleProjection projection : projections) {

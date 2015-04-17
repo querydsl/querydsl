@@ -510,7 +510,7 @@ cats = query.from(cat)
 query = new JDOSQLQuery(pm, templates);
 List<CatDTO> catDTOs = query.from(cat)
     .orderBy(cat.name.asc())
-    .list(ConstructorExpression.create(CatDTO.class, cat.id, cat.name));
+    .list(Projections.constructor(CatDTO.class, cat.id, cat.name));
 ]]></programlisting>
 
   </sect2>
