@@ -22,7 +22,7 @@ import com.querydsl.core.types.*;
  *
  * @param <T> expression type
  */
-public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpression<T> {
+public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpression<T> {
 
     private static final long serialVersionUID = 8819222316513862829L;
 

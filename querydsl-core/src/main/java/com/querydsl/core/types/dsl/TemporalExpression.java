@@ -23,7 +23,7 @@ import com.querydsl.core.types.Expression;
  * @param <T> expression type
  */
 @SuppressWarnings({"unchecked"})
-public abstract class TemporalExpression<T extends Comparable> extends ComparableExpression<T> {
+public abstract class TemporalExpression<T extends Comparable> extends LiteralExpression<T> {
 
     private static final long serialVersionUID = 1137918766051524298L;
 
