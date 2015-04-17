@@ -80,7 +80,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return constantToLabel;
     }
     
-    public int getLength() {
+    protected int getLength() {
         return builder.length();
     }
 
@@ -277,7 +277,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 }
             }    
         } else if (strict) {
-            throw new IllegalArgumentException("Got no pattern for " + operator);
+            throw new IllegalArgumentException("No pattern found for " + operator);
         } else {
             append(operator.toString());
             append("(");
