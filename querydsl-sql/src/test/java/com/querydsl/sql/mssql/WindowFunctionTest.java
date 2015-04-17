@@ -40,19 +40,19 @@ public class WindowFunctionTest {
     @Test
     public void Mutable() {
         WindowFunction<Long> rn = rowNumber().over().orderBy(employee.firstname);
-        assertEquals("row_number() over (order by e.FIRSTNAME)", toString(rn));
-        assertEquals("row_number() over (order by e.FIRSTNAME, e.LASTNAME)", toString(rn.orderBy(employee.lastname)));
+        assertEquals("row_number() over (order by e.FIRSTNAME asc)", toString(rn));
+        assertEquals("row_number() over (order by e.FIRSTNAME asc, e.LASTNAME asc)", toString(rn.orderBy(employee.lastname)));
     }
 
     @Test
     public void OrderBy() {
-        assertEquals("row_number() over (order by e.FIRSTNAME)",
+        assertEquals("row_number() over (order by e.FIRSTNAME asc)",
             toString(rowNumber().over().orderBy(employee.firstname.asc())));
 
-        assertEquals("row_number() over (order by e.FIRSTNAME)",
+        assertEquals("row_number() over (order by e.FIRSTNAME asc)",
             toString(rowNumber().over().orderBy(employee.firstname)));
 
-        assertEquals("row_number() over (order by e.FIRSTNAME) as rn",
+        assertEquals("row_number() over (order by e.FIRSTNAME asc) as rn",
             toString(rowNumber().over().orderBy(employee.firstname.asc()).as("rn")));
 
         assertEquals("row_number() over (order by e.FIRSTNAME desc)",
@@ -61,10 +61,10 @@ public class WindowFunctionTest {
 
     @Test
     public void PartitionBy() {
-        assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME)",
+        assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME asc)",
             toString(rowNumber().over().partitionBy(employee.lastname).orderBy(employee.firstname.asc())));
 
-        assertEquals("row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME)",
+        assertEquals("row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME asc)",
             toString(rowNumber().over().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc())));
     }
 

@@ -757,6 +757,16 @@ public final class ExpressionUtils {
         }
     }
 
+    /**
+     * Create an expression out of the given order specifiers
+     *
+     * @param args
+     * @return
+     */
+    public static Expression<?> orderBy(List<OrderSpecifier<?>> args) {
+        return operation(Object.class, Ops.ORDER, ConstantImpl.create(args));
+    }
+
     private ExpressionUtils() {}
 
 }
