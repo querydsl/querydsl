@@ -18,11 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.MutableExpressionBase;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -95,20 +91,8 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
             args.add(target);
             builder.append(first ? "first " : "last ");
             builder.append(ORDER_BY);
-            boolean first = true;
-            int size = 1;
-            for (OrderSpecifier<?> expr : orderBy) {
-                if (!first) {
-                    builder.append(", ");
-                }
-                builder.append("{" + size + "}");
-                if (!expr.isAscending()) {
-                    builder.append(" desc");
-                }
-                args.add(expr.getTarget());
-                size++;
-                first = false;
-            }
+            builder.append("{1}");
+            args.add(ExpressionUtils.orderBy(orderBy));
             builder.append(")");
             value = new SimpleTemplate<T>(
                     target.getType(),

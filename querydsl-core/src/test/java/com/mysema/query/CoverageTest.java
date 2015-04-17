@@ -107,6 +107,7 @@ public class CoverageTest {
             Ops.STRING_CAST,
 //            Ops.DELEGATE,
             Ops.WRAPPED,
+            Ops.ORDER,
 
             Ops.XOR,
             Ops.XNOR,

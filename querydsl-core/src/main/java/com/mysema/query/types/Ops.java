@@ -51,6 +51,8 @@ public final class Ops {
 
     public static final Operator<Object>  WRAPPED = new OperatorImpl<Object>(NS, "WRAPPED");
 
+    public static final Operator<Object> ORDER = new OperatorImpl<Object>(NS, "ORDER");
+
 
     // collection
     public static final Operator<Boolean> IN = new OperatorImpl<Boolean>(NS, "IN"); // cmp. contains
