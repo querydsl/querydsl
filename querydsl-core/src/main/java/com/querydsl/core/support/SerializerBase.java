@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.support;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -49,15 +46,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final Templates templates;
 
-    private final char escape;
-
     private boolean normalize = true;
     
     private boolean strict = true;
     
     public SerializerBase(Templates templates) {
         this.templates = templates;
-        this.escape = templates.getEscapeChar();
     }
     
     public final S prepend(final String str) {
@@ -86,7 +80,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return constantToLabel;
     }
     
-    public int getLength() {
+    protected int getLength() {
         return builder.length();
     }
 
@@ -113,21 +107,16 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public final S handle(final String sep, final Expression<?>[] expressions) {
-        for (int i = 0; i< expressions.length; i++) {
-            if (i != 0) {
-                append(sep);
-            }
-            handle(expressions[i]);
-        }
+        handle(sep, Arrays.asList(expressions));
         return self;
     }
-    
-    public final S handle(final String sep, final List<?> expressions) {
+
+    public final S handle(final String sep, final List<? extends Expression<?>> expressions) {
         for (int i = 0; i < expressions.size(); i++) {
             if (i != 0) {
                 append(sep);
             }
-            handle((Expression<?>)expressions.get(i));
+            handle(expressions.get(i));
         }
         return self;
     }
@@ -288,7 +277,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 }
             }    
         } else if (strict) {
-            throw new IllegalArgumentException("Got no pattern for " + operator);
+            throw new IllegalArgumentException("No pattern found for " + operator);
         } else {
             append(operator.toString());
             append("(");

@@ -19,7 +19,7 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.Templates;
 
-public class DummySerializer extends SerializerBase<DummySerializer>{
+class DummySerializer extends SerializerBase<DummySerializer>{
 
     public DummySerializer(Templates templates) {
         super(templates);
