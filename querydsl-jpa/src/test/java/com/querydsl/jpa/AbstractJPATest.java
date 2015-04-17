@@ -299,23 +299,46 @@ public abstract class AbstractJPATest {
     @Test
     @NoBatooJPA
     public void Case() {
-        query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
+        assertEquals(ImmutableList.of(1, 2, 2, 2, 2, 2),
+                query().from(cat).orderBy(cat.id.asc())
+                        .list(cat.name.when("Bob123").then(1).otherwise(2)));
+    }
+
+    @Test
+    @NoBatooJPA
+    public void Case_Long() {
+        assertEquals(ImmutableList.of(1L, 2L, 2L, 2L, 2L, 2L),
+                query().from(cat).orderBy(cat.id.asc())
+                        .list(cat.name.when("Bob123").then(1L).otherwise(2L)));
     }
 
     @Test
     public void Case2() {
-        query().from(cat)
-            .list(Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
-                    .when(cat.toes.eq(3)).then(cat.id.multiply(3))
-                    .otherwise(4));
+        assertEquals(ImmutableList.of(4, 4, 4, 4, 4, 4),
+                query().from(cat)
+                        .list(Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
+                                .when(cat.toes.eq(3)).then(cat.id.multiply(3))
+                                .otherwise(4)));
     }
 
     @Test
     public void Case3() {
-        query().from(cat)
-            .list(Expressions.cases()
-                    .when(cat.toes.in(2, 3)).then(cat.id.multiply(cat.toes))
-                    .otherwise(4));
+        assertEquals(ImmutableList.of(4, 4, 4, 4, 4, 4),
+                query().from(cat).list(Expressions.cases()
+                        .when(cat.toes.in(2, 3)).then(cat.id.multiply(cat.toes))
+                        .otherwise(4)));
+    }
+
+    @Test
+    @ExcludeIn(MYSQL) // doesn't work in Eclipselink
+    public void Case4() {
+        NumberExpression<Float> numExpression = cat.bodyWeight.floatValue().divide(otherCat.bodyWeight.floatValue()).multiply(100);
+        NumberExpression<Float> numExpression2 = cat.id.when(0).then(0.0F).otherwise(numExpression);
+        assertEquals(ImmutableList.of(200, 150, 133, 125, 120),
+                query().from(cat, otherCat)
+                        .where(cat.id.eq(otherCat.id.add(1)))
+                        .orderBy(cat.id.asc(), otherCat.id.asc())
+                        .list(numExpression2.intValue()));
     }
 
     @Test

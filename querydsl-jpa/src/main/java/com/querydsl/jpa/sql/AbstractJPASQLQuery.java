@@ -163,6 +163,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
 
         // set constants
         JPAUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
+        this.projection = null; // necessary when query is reused
 
         if (projection instanceof FactoryExpression) {
             if (!queryHandler.transform(query, (FactoryExpression<?>)projection)) {

@@ -150,9 +150,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
         // set transformer, if necessary and possible
         Expression<?> projection = getMetadata().getProjection();
+        this.projection = null; // necessary when query is reused
 
         if (!forCount && projection instanceof FactoryExpression) {
-
             if (!queryHandler.transform(query, (FactoryExpression<?>) projection)) {
                 this.projection = (FactoryExpression) projection;
             }

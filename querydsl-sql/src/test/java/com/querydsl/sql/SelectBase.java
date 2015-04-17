@@ -232,6 +232,17 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Case() {
+        NumberExpression<Float> numExpression = employee.salary.floatValue().divide(employee2.salary.floatValue()).multiply(100.1);
+        NumberExpression<Float> numExpression2 = employee.id.when(0).then(0.0F).otherwise(numExpression);
+        assertEquals(ImmutableList.of(87, 90, 88, 87, 83, 80, 75),
+                query().from(employee, employee2)
+                        .where(employee.id.eq(employee2.id.add(1)))
+                        .orderBy(employee.id.asc(), employee2.id.asc())
+                        .list(numExpression2.floor().intValue()));
+    }
+
+    @Test
     public void Casts() throws SQLException {
         NumberExpression<?> num = employee.id;
         List<Expression<?>> exprs = Lists.newArrayList();
