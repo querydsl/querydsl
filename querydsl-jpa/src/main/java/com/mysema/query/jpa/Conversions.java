@@ -23,15 +23,7 @@ import com.mysema.query.sql.SQLOps;
 import com.mysema.query.support.EnumConversion;
 import com.mysema.query.support.NumberConversion;
 import com.mysema.query.support.NumberConversions;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.FactoryExpressionUtils;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationImpl;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
+import com.mysema.query.types.*;
 
 /**
  * Conversions provides module specific projection conversion functionality
@@ -42,22 +34,27 @@ import com.mysema.query.types.Path;
 public final class Conversions {
 
     public static <RT> Expression<RT> convert(Expression<RT> expr) {
-        if (isAggSumWithConversion(expr) || isCountAggConversion(expr)) {
-            return new NumberConversion<RT>(expr);
-        } else if (expr instanceof FactoryExpression) {
-            FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>)expr;
+        if (expr instanceof FactoryExpression) {
+            FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>) expr;
             for (Expression<?> e : factoryExpr.getArgs()) {
-                if (isAggSumWithConversion(e) || isCountAggConversion(expr)) {
+                if (needsNumberConversion(e)) {
                     return new NumberConversions<RT>(factoryExpr);
                 }
             }
+        } else if (needsNumberConversion(expr)) {
+            return new NumberConversion<RT>(expr);
         }
         return expr;
     }
 
+    private static boolean needsNumberConversion(Expression<?> expr) {
+        expr = ExpressionUtils.extract(expr);
+        return Number.class.isAssignableFrom(expr.getType()) && !Path.class.isInstance(expr);
+    }
+
     private static boolean isEntityPathAndNeedsWrapping(Expression<?> expr) {
         if ((expr instanceof Path && expr.getType().isAnnotationPresent(Entity.class)) ||
-            (expr instanceof EntityPath && !RelationalPath.class.isInstance(expr))) {
+                (expr instanceof EntityPath && !RelationalPath.class.isInstance(expr))) {
             Path<?> path = (Path<?>)expr;
             if (path.getMetadata().getParent() == null) {
                 return true;
@@ -66,16 +63,16 @@ public final class Conversions {
         return false;
     }
 
-    private static <RT> FactoryExpression<RT> createEntityPathConversions(FactoryExpression<RT> factoryExpr) {
+    private static <RT> FactoryExpression<RT> createEntityPathConversions(FactoryExpression<RT> factorye) {
         List<Expression<?>> conversions = Lists.newArrayList();
-        for (Expression<?> e : factoryExpr.getArgs()) {
+        for (Expression<?> e : factorye.getArgs()) {
             if (isEntityPathAndNeedsWrapping(e)) {
                 conversions.add(OperationImpl.create(e.getType(), SQLOps.ALL, e));
             } else {
                 conversions.add(e);
             }
         }
-        return FactoryExpressionUtils.wrap(factoryExpr, conversions);
+        return FactoryExpressionUtils.wrap(factorye, conversions);
     }
 
     public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {
@@ -107,36 +104,6 @@ public final class Conversions {
             return factoryExpr;
         }
         return expr;
-    }
-
-    private static boolean isAggSumWithConversion(Expression<?> expr) {
-        expr = ExpressionUtils.extract(expr);
-        if (expr instanceof Operation) {
-            Operation<?> operation = (Operation<?>)expr;
-            Class<?> type = operation.getType();
-            if (type.equals(Float.class) || type.equals(Integer.class) || type.equals(Long.class)
-                    || type.equals(Short.class) || type.equals(Byte.class)) {
-                if (operation.getOperator() == Ops.AggOps.SUM_AGG) {
-                    return true;
-                } else {
-                    for (Expression<?> e : operation.getArgs()) {
-                        if (isAggSumWithConversion(e)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean isCountAggConversion(Expression<?> expr) {
-        expr = ExpressionUtils.extract(expr);
-        if (expr instanceof Operation) {
-            Operation<?> operation = (Operation<?>)expr;
-            return operation.getOperator() == Ops.AggOps.COUNT_AGG;
-        }
-        return false;
     }
 
     private Conversions() {}

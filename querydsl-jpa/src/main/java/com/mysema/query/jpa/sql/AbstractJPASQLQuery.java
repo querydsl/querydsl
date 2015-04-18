@@ -13,15 +13,20 @@
  */
 package com.mysema.query.jpa.sql;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ListMultimap;
@@ -39,9 +44,6 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * AbstractJPASQLQuery is the base class for JPA Native SQL queries
@@ -161,6 +163,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
 
         // set constants
         JPAUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
+        this.projection = null; // necessary when query is reused
 
         FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;
         if ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null) {
