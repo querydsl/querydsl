@@ -102,7 +102,7 @@ public class QBeanTest {
 
     @Test
     public void with_Path_and_Exprs() {
-        QBean<Entity> beanProjection = new QBean<Entity>(entity, name, age, married);
+        QBean<Entity> beanProjection = Projections.bean(entity, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
         assertEquals(30, bean.getAge());
@@ -111,7 +111,7 @@ public class QBeanTest {
 
     @Test
     public void with_unknown_properties() {
-        QBean<Entity> beanProjection = new QBean<Entity>(entity, name, age, Expressions.booleanPath("unknown"));
+        QBean<Entity> beanProjection = Projections.bean(entity, name, age, Expressions.booleanPath("unknown"));
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
         assertEquals(30, bean.getAge());

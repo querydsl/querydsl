@@ -64,20 +64,20 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> bean(Class<T> type, Expression<?>... exprs) {
+    public static <T> QBean<T> bean(Class<? extends T> type, Expression<?>... exprs) {
         return new QBean<T>(type, exprs);
     }
-    
+
     /**
      * Create a Bean populating projection for the given type and expressions
-     * 
+     *
      * @param <T>
      * @param type type of the projection
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> bean(Path<T> type, Expression<?>... exprs) {
-        return new QBean<T>(type, exprs);
+    public static <T> QBean<T> bean(Path<? extends T> type, Expression<?>... exprs) {
+        return new QBean<T>(type.getType(), exprs);
     }
 
     /**
@@ -86,8 +86,8 @@ public final class Projections {
      * @param type
      * @param bindings
      */
-    public static <T> QBean<T> bean(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
-        return new QBean<T>(type, bindings);
+    public static <T> QBean<T> bean(Path<? extends T> type, Map<String, ? extends Expression<?>> bindings) {
+        return new QBean<T>(type.getType(), bindings);
     }
 
     /**
@@ -96,10 +96,9 @@ public final class Projections {
      * @param type
      * @param bindings
      */
-    public static <T> QBean<T> bean(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
+    public static <T> QBean<T> bean(Class<? extends T> type, Map<String, ? extends Expression<?>> bindings) {
         return new QBean<T>(type, bindings);
     }
-
 
     /**
      * Create a constructor invocation projection for the given type and expressions
@@ -115,7 +114,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> ConstructorExpression<T> constructor(Class<T> type, Expression<?>... exprs) {
+    public static <T> ConstructorExpression<T> constructor(Class<? extends T> type, Expression<?>... exprs) {
         return new ConstructorExpression<T>(type, exprs);
     }
 
@@ -128,7 +127,7 @@ public final class Projections {
      * @param <T>
      * @return
      */
-    public static <T> ConstructorExpression<T> constructor(Class<T> type, Class<?>[] paramTypes, Expression<?>... exprs) {
+    public static <T> ConstructorExpression<T> constructor(Class<? extends T> type, Class<?>[] paramTypes, Expression<?>... exprs) {
         return new ConstructorExpression<T>(type, paramTypes, exprs);
     }
 
@@ -141,7 +140,7 @@ public final class Projections {
      * @param <T>
      * @return
      */
-    public static <T> ConstructorExpression<T> constructor(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> exprs) {
+    public static <T> ConstructorExpression<T> constructor(Class<? extends T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> exprs) {
         return new ConstructorExpression<T>(type, paramTypes, exprs);
     }
 
@@ -159,7 +158,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> fields(Class<T> type, Expression<?>... exprs) {
+    public static <T> QBean<T> fields(Class<? extends T> type, Expression<?>... exprs) {
         return new QBean<T>(type, true, exprs);
     }
     
@@ -171,8 +170,8 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> fields(Path<T> type, Expression<?>... exprs) {
-        return new QBean<T>(type, true, exprs);
+    public static <T> QBean<T> fields(Path<? extends T> type, Expression<?>... exprs) {
+        return new QBean<T>(type.getType(), true, exprs);
     }
 
     /**
@@ -181,8 +180,8 @@ public final class Projections {
      * @param type
      * @param bindings
      */
-    public static <T> QBean<T> fields(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
-        return new QBean<T>(type, true, bindings);
+    public static <T> QBean<T> fields(Path<? extends T> type, Map<String, ? extends Expression<?>> bindings) {
+        return new QBean<T>(type.getType(), true, bindings);
     }
 
     /**
@@ -191,7 +190,7 @@ public final class Projections {
      * @param type
      * @param bindings
      */
-    public static <T> QBean<T> fields(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
+    public static <T> QBean<T> fields(Class<? extends T> type, Map<String, ? extends Expression<?>> bindings) {
         return new QBean<T>(type, true, bindings);
     }
 

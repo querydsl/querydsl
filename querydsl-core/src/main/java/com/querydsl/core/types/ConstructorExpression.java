@@ -66,15 +66,15 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     private transient Iterable<Function<Object[], Object[]>> transformers;
 
-    protected ConstructorExpression(Class<T> type, Expression<?>... args) {
+    protected ConstructorExpression(Class<? extends T> type, Expression<?>... args) {
         this(type, getParameterTypes(args), ImmutableList.copyOf(args));
     }
 
-    protected ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
+    protected ConstructorExpression(Class<? extends T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));
     }
 
-    protected ConstructorExpression(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
+    protected ConstructorExpression(Class<? extends T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
         super(type);
         this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
         this.args = args;
