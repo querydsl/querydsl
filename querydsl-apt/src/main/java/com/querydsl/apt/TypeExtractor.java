@@ -22,7 +22,7 @@ import javax.lang.model.type.*;
  * @author tiwe
  *
  */
-public class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
+class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
 
     private final boolean skipEnum;
     

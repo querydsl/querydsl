@@ -13,11 +13,12 @@
  */
 package com.querydsl.apt;
 
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.SimpleTypeVisitor6;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleTypeVisitor6;
 
 /**
  * Converts Java 8 IntersectionType instances into their first bound when visiting
@@ -25,7 +26,7 @@ import java.util.List;
  * @param <R>
  * @param <P>
  */
-public class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
+class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
 
     private static Class<?> IntersectionTypeClass;
 

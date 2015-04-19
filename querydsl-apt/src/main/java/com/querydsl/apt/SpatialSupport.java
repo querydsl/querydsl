@@ -11,7 +11,7 @@ import com.querydsl.codegen.AbstractModule;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.TypeMappings;
 
-public final class SpatialSupport {
+final class SpatialSupport {
 
     private static void registerTypes(TypeMappings typeMappings) {
         Map<String, String> additions = Maps.newHashMap();

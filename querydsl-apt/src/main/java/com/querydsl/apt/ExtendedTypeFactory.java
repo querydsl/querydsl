@@ -33,7 +33,7 @@ import com.querydsl.core.annotations.QueryExclude;
  * @author tiwe
  *
  */
-public final class ExtendedTypeFactory {
+final class ExtendedTypeFactory {
 
     private final Map<List<String>, Type> typeCache = new HashMap<List<String>, Type>();
 

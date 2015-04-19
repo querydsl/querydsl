@@ -13,16 +13,17 @@
  */
 package com.querydsl.apt;
 
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 import com.querydsl.codegen.*;
 import com.querydsl.core.util.Annotations;
@@ -46,8 +47,10 @@ public interface Configuration {
     TypeMappings getTypeMappings();
 
     /**
-     * @param e
-     * @param elements
+     * Get the visitor configuration for the given eleemnt
+     *
+     * @param e element to be inspected
+     * @param elements child elements
      * @return
      */
     VisitorConfig getConfig(TypeElement e, List<? extends Element> elements);

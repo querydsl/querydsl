@@ -49,7 +49,7 @@ import com.querydsl.core.util.BeanUtils;
  * @author tiwe
  *
  */
-public final class TypeElementHandler {
+final class TypeElementHandler {
 
     private final TypeMappings typeMappings;
 
