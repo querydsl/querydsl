@@ -16,21 +16,36 @@ package com.querydsl.codegen;
 import java.util.Collections;
 
 /**
- * CodegenModule provides a module general serialization
+ * {@code CodegenModule} provides a module for general serialization
  *
  * @author tiwe
  *
  */
 public class CodegenModule  extends AbstractModule {
 
+    /**
+     * key for the query type name prefix
+     */
     public static final String PREFIX = "prefix";
 
+    /**
+     * key for the query type name suffix
+     */
     public static final String SUFFIX = "suffix";
 
+    /**
+     * key for the keywords set
+     */
     public static final String KEYWORDS = "keywords";
 
+    /**
+     * key for the package suffix
+     */
     public static final String PACKAGE_SUFFIX = "packageSuffix";
 
+    /**
+     * key for the custom imports set
+     */
     public static final String IMPORTS = "imports";
 
     @Override

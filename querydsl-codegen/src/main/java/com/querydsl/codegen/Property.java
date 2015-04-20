@@ -21,7 +21,7 @@ import com.mysema.codegen.model.Type;
 import com.querydsl.core.util.JavaSyntaxUtils;
 
 /**
- * Property represents a property in a query domain type.
+ * {@code Property} represents a property in a query domain type.
  *
  * @author tiwe
  */

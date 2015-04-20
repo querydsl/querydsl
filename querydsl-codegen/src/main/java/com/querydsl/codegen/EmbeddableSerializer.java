@@ -13,11 +13,14 @@
  */
 package com.querydsl.codegen;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import static com.mysema.codegen.Symbols.UNCHECKED;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
@@ -27,10 +30,8 @@ import com.mysema.codegen.model.Types;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
 
-import static com.mysema.codegen.Symbols.UNCHECKED;
-
 /**
- * EmbeddableSerializer is a {@link Serializer} implementation for embeddable types
+ * {@code EmbeddableSerializer} is a {@link Serializer} implementation for embeddable types
  *
  * @author tiwe
  *
@@ -38,10 +39,10 @@ import static com.mysema.codegen.Symbols.UNCHECKED;
 public final class EmbeddableSerializer extends EntitySerializer {
 
     /**
-     * Create a new EmbeddableSerializer instance
+     * Create a new {@code EmbeddableSerializer} instance
      *
-     * @param typeMappings
-     * @param keywords
+     * @param typeMappings type mappings to be used
+     * @param keywords keywords to be used
      */
     @Inject
     public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {

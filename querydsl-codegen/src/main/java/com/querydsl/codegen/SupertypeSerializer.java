@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
- * SupertypeSerializer is a {@link Serializer} implementation for supertypes
+ * {@code SupertypeSerializer} is a {@link Serializer} implementation for supertypes
  *
  * @author tiwe
  *
@@ -29,8 +29,8 @@ public final class SupertypeSerializer extends EntitySerializer{
     /**
      * Create a new SupertypeSerializer instance
      * 
-     * @param typeMappings
-     * @param keywords
+     * @param typeMappings type mappings to be used
+     * @param keywords keywords to be used
      */
     @Inject
     public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {

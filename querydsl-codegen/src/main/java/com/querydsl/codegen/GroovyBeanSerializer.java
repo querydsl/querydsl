@@ -24,7 +24,7 @@ import java.util.Set;
 import com.mysema.codegen.CodeWriter;
 
 /**
- * GroovyBeanSerializer is a {@link Serializer} implementation which serializes {@link EntityType} 
+ * {@code GroovyBeanSerializer} is a {@link Serializer} implementation which serializes {@link EntityType}
  * instances into Groovy classes
  *
  * @author tiwe
@@ -39,35 +39,35 @@ public class GroovyBeanSerializer implements Serializer {
     private boolean printSupertype = false;
 
     /**
-     * Create a new GroovyBeanSerializer instance
+     * Create a new {@code GroovyBeanSerializer} instance
      */
     public GroovyBeanSerializer() {
         this(true, " is a Querydsl bean type");
     }
 
     /**
-     * Create a new GroovyBeanSerializer instance
+     * Create a new {@code GroovyBeanSerializer} instance
      * 
-     * @param javadocSuffix
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
     public GroovyBeanSerializer(String javadocSuffix) {
         this(true, javadocSuffix);
     }
     
     /**
-     * Create a new GroovyBeanSerializer instance
+     * Create a new {@code GroovyBeanSerializer} instance
      * 
-     * @param propertyAnnotations
+     * @param propertyAnnotations true, to serialize property annotations
      */
     public GroovyBeanSerializer(boolean propertyAnnotations) {
         this(propertyAnnotations, " is a Querydsl bean type");
     }
 
     /**
-     * Create a new GroovyBeanSerializer instance
+     * Create a new {@code GroovyBeanSerializer} instance
      * 
-     * @param propertyAnnotations
-     * @param javadocSuffix
+     * @param propertyAnnotations true, to serialize property annotations
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
     public GroovyBeanSerializer(boolean propertyAnnotations, String javadocSuffix) {
         this.propertyAnnotations = propertyAnnotations;

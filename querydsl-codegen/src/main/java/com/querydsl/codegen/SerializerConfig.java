@@ -14,7 +14,7 @@
 package com.querydsl.codegen;
 
 /**
- * SerializerConfig defines serialization options to be used in the {@link Serializer}
+ * {@code SerializerConfig} defines serialization options to be used in the {@link Serializer}
  * 
  * @author tiwe
  *

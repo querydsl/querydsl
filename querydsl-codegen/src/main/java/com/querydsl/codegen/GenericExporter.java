@@ -13,12 +13,13 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Nullable;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.nio.charset.Charset;
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -37,8 +38,8 @@ import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**
- * GenericExporter provides query type serialization logic for cases where APT annotation processors
- * can't be used. GenericExporter scans the classpath for classes annotated with specified annotations
+ * {@code GenericExporter} provides query type serialization logic for cases where APT annotation processors
+ * can't be used. {@code GenericExporter} scans the classpath for classes annotated with specified annotations
  * in specific packages and mirrors them into Querydsl expression types.
  *
  * <p>Example with Querydsl annotations: </p>
@@ -127,8 +128,8 @@ public class GenericExporter {
      * Create a GenericExporter instance using the given classloader and charset for serializing
      * source files
      *
-     * @param classLoader
-     * @param charset
+     * @param classLoader classloader to use
+     * @param charset charset of target sources
      */
     public GenericExporter(ClassLoader classLoader, Charset charset) {
         this.classLoader = classLoader;
@@ -140,7 +141,7 @@ public class GenericExporter {
     /**
      * Create a GenericExporter instance using the given classloader and default charset
      *
-     * @param classLoader
+     * @param classLoader classloader to use
      */
     public GenericExporter(ClassLoader classLoader) {
         this(classLoader, Charset.defaultCharset());
@@ -149,7 +150,7 @@ public class GenericExporter {
     /**
      * Create a GenericExporter instance using the context classloader and the given charset
      *
-     * @param charset
+     * @param charset charset of target sources
      */
     public GenericExporter(Charset charset) {
         this(Thread.currentThread().getContextClassLoader(), charset);
@@ -165,7 +166,7 @@ public class GenericExporter {
     /**
      * Export the given packages
      *
-     * @param packages
+     * @param packages packages to be scanned
      */
     public void export(Package... packages) {
         String[] pkgs = new String[packages.length];
@@ -178,7 +179,7 @@ public class GenericExporter {
     /**
      * Export the given packages
      *
-     * @param packages
+     * @param packages packages to be scanned
      */
     public void export(String... packages) {
         scanPackages(packages);
@@ -188,7 +189,7 @@ public class GenericExporter {
     /**
      * Export the given classes
      *
-     * @param classes
+     * @param classes classes to be scanned
      */
     public void export(Class<?>...classes) {
         for (Class<?> cl : classes) {
@@ -560,7 +561,7 @@ public class GenericExporter {
 
 
     /**
-     * @return
+     * @return a set of generated files
      */
     public Set<File> getGeneratedFiles() {
         return generatedFiles;

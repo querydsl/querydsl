@@ -29,7 +29,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.TemplateExpression;
 
 /**
- * TypeMappings defines mappings from Java types to {@link Expression}, {@link Path} and 
+ * {@code TypeMappings} defines mappings from Java types to {@link Expression}, {@link Path} and
  * {@link TemplateExpression} types
  *
  * @author tiwe
