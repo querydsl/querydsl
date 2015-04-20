@@ -33,35 +33,45 @@ import com.querydsl.codegen.Serializer;
 import com.querydsl.codegen.TypeMappings;
 
 /**
- * AbstractExporterMojo calls the {@link GenericExporter} tool using the
+ * {@code AbstractExporterMojo} calls the {@link GenericExporter} tool using the
  * classpath of the module the plugin is invoked in.
  *
  */
 public abstract class AbstractExporterMojo extends AbstractMojo {
 
     /**
+     * target folder for sources
+     *
      * @parameter
      * @required
      */
     private File targetFolder;
 
     /**
+     * switch for scala source generation
+     *
      * @parameter default-value=false
      */
     private boolean scala;
 
     /**
+     * packages to be exported
+     *
      * @parameter
      * @required
      */
     private String[] packages;
 
     /**
+     * switch for inspecting fields
+     *
      * @parameter default-value=true
      */
     private boolean handleFields = true;
 
     /**
+     * switch for inspecting getters
+     *
      * @parameter default-value=true
      */
     private boolean handleMethods = true;
@@ -73,11 +83,15 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
+     * source file encoding
+     *
      * @parameter
      */
     private String sourceEncoding;
 
     /**
+     * test classpath usage switch
+     *
      * @parameter default-value=false
      */
     private boolean testClasspath;

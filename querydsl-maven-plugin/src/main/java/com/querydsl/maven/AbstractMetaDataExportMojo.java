@@ -32,7 +32,7 @@ import com.querydsl.sql.codegen.*;
 import com.querydsl.sql.types.Type;
 
 /**
- * MetaDataExportMojo is a goal for MetaDataExporter usage
+ * {@code AbstractMetaDataExportMojo} is the base class for {@link MetaDataExporter} usage
  *
  * @author tiwe
  */
@@ -139,11 +139,15 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String namingStrategyClass;
 
     /**
+     * name for bean serializer class
+     *
      * @parameter
      */
     private String beanSerializerClass;
 
     /**
+     * name for serializer class
+     *
      * @parameter
      */
     private String serializerClass;
@@ -156,21 +160,29 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean exportBeans;
 
     /**
+     * additional interfaces to be implemented by beans
+     *
      * @parameter
      */
     private String[] beanInterfaces;
 
     /**
+     * switch for {@code toString} addition
+     *
      * @parameter default-value=false
      */
     private boolean beanAddToString;
 
     /**
+     * switch for full construction addition
+     *
      * @parameter default-value=false
      */
     private boolean beanAddFullConstructor;
 
     /**
+     * switch to print supertype content
+     *
      * @parameter default-value=false
      */
     private boolean beanPrintSupertype;
@@ -197,61 +209,85 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean columnAnnotations;
 
     /**
+     * custom type classnames to use
+     *
      * @parameter
      */
     private String[] customTypes;
 
     /**
+     * custom type mappings to use
+     *
      * @parameter
      */
     private TypeMapping[] typeMappings;
 
     /**
+     * custom numeric mappings
+     *
      * @parameter
      */
     private NumericMapping[] numericMappings;
 
     /**
+     * custom rename mappings
+     *
      * @parameter
      */
     private RenameMapping[] renameMappings;
 
     /**
+     * switch for generating scala sources
+     *
      * @parameter default-value=false
      */
     private boolean createScalaSources;
 
     /**
+     * switch for using schema as suffix in package generation
+     *
      * @parameter default-value=false
      */
     private boolean schemaToPackage;
 
     /**
+     * switch to lowercase name
+     *
      * @parameter default-value=false
      */
     private boolean lowerCase;
 
     /**
+     * switch to export tables
+     *
      * @parameter default-value=true
      */
     private boolean exportTables;
 
     /**
+     * switch to export views
+     *
      * @parameter default-value=true
      */
     private boolean exportViews;
 
     /**
+     * switch to export all types
+     *
      * @parameter default-value=false
      */
     private boolean exportAll;
 
     /**
+     * switch to export primary keys
+     *
      * @parameter default-value=true
      */
     private boolean exportPrimaryKeys;
 
     /**
+     * switch to export foreign keys
+     *
      * @parameter default-value=true
      */
     private boolean exportForeignKeys;
@@ -264,6 +300,8 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String columnComparatorClass;
 
     /**
+     * switch to enable spatial type support
+     *
      * @parameter default-value=false
      */
     private boolean spatial;

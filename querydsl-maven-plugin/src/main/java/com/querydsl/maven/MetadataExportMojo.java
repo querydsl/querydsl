@@ -13,8 +13,10 @@
  */
 package com.querydsl.maven;
 
+import com.querydsl.sql.codegen.MetaDataExporter;
+
 /**
- * MetadataExportMojo is a goal for MetaDataExporter usage and is bound to the generate-sources phased
+ * {@code MetadataExportMojo} is a goal for {@link MetaDataExporter} usage and is bound to the generate-sources phased
  * 
  * @phase generate-sources
  * @goal export

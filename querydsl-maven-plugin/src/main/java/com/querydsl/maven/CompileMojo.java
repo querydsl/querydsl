@@ -36,7 +36,7 @@ import org.codehaus.plexus.util.Scanner;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
- * CompilerMojo compiles the sources generated in the other tasks
+ * {@code CompileMojo} compiles the sources generated in the other tasks
  *
  * @goal compile
  * @requiresDependencyResolution test
