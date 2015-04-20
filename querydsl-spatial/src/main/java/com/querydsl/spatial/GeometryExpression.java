@@ -58,7 +58,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * to the coordinate dimension. In non-homogeneous collections, this will return the largest topological
      * dimension of the contained objects.
      *
-     * @return
+     * @return dimension
      */
     public NumberExpression<Integer> dimension() {
         if (dimension == null) {
@@ -71,7 +71,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns the name of the instantiable subtype of Geometry of which this
      * geometric object is an instantiable member. The name of the subtype of Geometry is returned as a string.
      *
-     * @return
+     * @return geometry type
      */
     public StringExpression geometryType() {
         if (geometryType == null) {
@@ -84,7 +84,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns the Spatial Reference System ID for this geometric object. This will normally be a
      * foreign key to an index of reference systems stored in either the same or some other datastore.
      *
-     * @return
+     * @return SRID
      */
     public NumberExpression<Integer> srid() {
         if (srid == null) {
@@ -100,7 +100,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Envelope is as two direct positions, one containing all the minimums, and another all the maximums. In some
      * cases, this coordinate will be outside the range of validity for the Spatial Reference System.
      *
-     * @return
+     * @return envelope
      */
     public GeometryExpression<Geometry> envelope() {
         if (envelope == null) {
@@ -112,7 +112,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Exports this geometric object to a specific Well-known Text Representation of Geometry.
      *
-     * @return
+     * @return text representation
      */
     public StringExpression asText() {
         if (text == null) {
@@ -125,7 +125,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Exports this geometric object to a specific Well-known Binary Representation of
      * Geometry.
      *
-     * @return
+     * @return binary representation
      */
     public SimpleExpression<byte[]> asBinary() {
         if (binary == null) {
@@ -138,7 +138,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns 1 (TRUE) if this geometric object is the empty Geometry. If true, then this
      * geometric object represents the empty point set ∅ for the coordinate space.
      *
-     * @return
+     * @return empty
      */
     public BooleanExpression isEmpty() {
         if (empty == null) {
@@ -152,7 +152,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * as self intersection or self tangency. The description of each instantiable geometric class
      * will include the specific conditions that cause an instance of that class to be classified as not simple.
      *
-     * @return
+     * @return simple
      */
     public BooleanExpression isSimple() {
         if (simple == null) {
@@ -164,7 +164,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns the closure of the combinatorial boundary of this geometric object
      *
-     * @return
+     * @return boundary
      */
     public GeometryExpression<Geometry> boundary() {
         if (boundary == null) {
@@ -194,8 +194,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object is “spatially disjoint” from anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if disjoint
      */
     public BooleanExpression disjoint(Geometry geometry) {
         return disjoint(ConstantImpl.create(geometry));
@@ -204,8 +204,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object is “spatially disjoint” from anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if disjoint
      */
     public BooleanExpression disjoint(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.DISJOINT, mixin, geometry);
@@ -214,8 +214,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially intersects” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if intersects
      */
     public BooleanExpression intersects(Geometry geometry) {
         return intersects(ConstantImpl.create(geometry));
@@ -224,8 +224,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially intersects” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if intersects
      */
     public BooleanExpression intersects(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.INTERSECTS, mixin, geometry);
@@ -234,8 +234,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially touches” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if touches
      */
     public BooleanExpression touches(Geometry geometry) {
         return touches(ConstantImpl.create(geometry));
@@ -244,8 +244,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially touches” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if touches
      */
     public BooleanExpression touches(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.TOUCHES, mixin, geometry);
@@ -254,8 +254,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially crosses’ anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return trye, if crosses
      */
     public BooleanExpression crosses(Geometry geometry) {
          return crosses(ConstantImpl.create(geometry));
@@ -264,8 +264,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially crosses’ anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if crosses
      */
     public BooleanExpression crosses(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.CROSSES, mixin, geometry);
@@ -274,8 +274,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object is “spatially within” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other goemetry
+     * @return true, if within
      */
     public BooleanExpression within(Geometry geometry) {
         return within(ConstantImpl.create(geometry));
@@ -284,8 +284,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object is “spatially within” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if within
      */
     public BooleanExpression within(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.WITHIN, mixin, geometry);
@@ -294,8 +294,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially contains” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if contains
      */
     public BooleanExpression contains(Geometry geometry) {
         return contains(ConstantImpl.create(geometry));
@@ -304,8 +304,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially contains” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if contains
      */
     public BooleanExpression contains(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.CONTAINS, mixin, geometry);
@@ -314,8 +314,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially overlaps” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if overlaps
      */
     public BooleanExpression overlaps(Geometry geometry) {
         return overlaps(ConstantImpl.create(geometry));
@@ -324,8 +324,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object “spatially overlaps” anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return true, if overlaps
      */
     public BooleanExpression overlaps(Expression<? extends Geometry> geometry) {
         return Expressions.booleanOperation(SpatialOps.OVERLAPS, mixin, geometry);
@@ -337,9 +337,9 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * as specified by the values in the intersectionPatternMatrix. This returns FALSE if all the
      * tested intersections are empty except exterior (this) intersect exterior (another).
      *
-     * @param geometry
-     * @param matrix
-     * @return
+     * @param geometry other geometry
+     * @param matrix matrix
+     * @return true, if this geometry is spatially related to the other
      */
     public BooleanExpression relate(Geometry geometry, String matrix) {
         return relate(ConstantImpl.create(geometry), matrix);
@@ -351,9 +351,9 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * as specified by the values in the intersectionPatternMatrix. This returns FALSE if all the
      * tested intersections are empty except exterior (this) intersect exterior (another).
      *
-     * @param geometry
-     * @param matrix
-     * @return
+     * @param geometry other geometry
+     * @param matrix matrix
+     * @return true, if this geometry is spatially related to the other
      */
     public BooleanExpression relate(Expression<? extends Geometry> geometry, String matrix) {
         return Expressions.booleanOperation(SpatialOps.RELATE, mixin, geometry, ConstantImpl.create(matrix));
@@ -367,8 +367,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * are closed, it is possible to find a point on each geometric object involved, such that the
      * distance between these 2 points is the returned distance between their geometric objects.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return distance between this and the other geometry
      */
     public NumberExpression<Double> distance(Geometry geometry) {
         return distance(ConstantImpl.create(geometry));
@@ -380,8 +380,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * are closed, it is possible to find a point on each geometric object involved, such that the
      * distance between these 2 points is the returned distance between their geometric objects.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return distance between this and the other geometry
      */
     public NumberExpression<Double> distance(Expression<? extends Geometry> geometry) {
         return Expressions.numberOperation(Double.class, SpatialOps.DISTANCE, mixin, geometry);
@@ -404,8 +404,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * often be some relatively small error in this distance, but it should be near the resolution
      * of the coordinates used.
      *
-     * @param distance
-     * @return
+     * @param distance distance
+     * @return buffer
      */
     public GeometryExpression<Geometry> buffer(double distance) {
         return GeometryExpressions.geometryOperation(SpatialOps.BUFFER, mixin, ConstantImpl.create(distance));
@@ -416,7 +416,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Convex hulls, being dependent on straight lines, can be accurately represented in linear
      * interpolations for any geometry restricted to linear interpolations.
      *
-     * @return
+     * @return convex hull
      */
     public GeometryExpression<Geometry> convexHull() {
         if (convexHull == null) {
@@ -429,8 +429,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the Point set intersection of this geometric
      * object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return intersection of this and the other geometry
      */
     public GeometryExpression<Geometry> intersection(Geometry geometry) {
         return intersection(ConstantImpl.create(geometry));
@@ -440,8 +440,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the Point set intersection of this geometric
      * object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return intersection of this and the other geometry
      */
     public GeometryExpression<Geometry> intersection(Expression<? extends Geometry> geometry) {
         return GeometryExpressions.geometryOperation(SpatialOps.INTERSECTION, mixin, geometry);
@@ -451,8 +451,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the Point set
      * union of this geometric object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return union of this and the other geometry
      */
     public GeometryExpression<Geometry> union(Geometry geometry) {
         return union(ConstantImpl.create(geometry));
@@ -462,8 +462,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the Point set
      * union of this geometric object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return union of this and the other geometry
      */
     public GeometryExpression<Geometry> union(Expression<? extends Geometry> geometry) {
         return GeometryExpressions.geometryOperation(SpatialOps.UNION, mixin, geometry);
@@ -473,8 +473,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the Point
      * set difference of this geometric object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return difference between this and the other geometry
      */
     public GeometryExpression<Geometry> difference(Geometry geometry) {
         return difference(ConstantImpl.create(geometry));
@@ -484,8 +484,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the Point
      * set difference of this geometric object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return difference between this and the other geometry
      */
     public GeometryExpression<Geometry> difference(Expression<? extends Geometry> geometry) {
         return GeometryExpressions.geometryOperation(SpatialOps.DIFFERENCE, mixin, geometry);
@@ -495,8 +495,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the
      * Point set symmetric difference of this geometric object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return symmetric difference between this and the other goemetry
      */
     public GeometryExpression<Geometry> symDifference(Geometry geometry) {
         return symDifference(ConstantImpl.create(geometry));
@@ -506,8 +506,8 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Returns a geometric object that represents the
      * Point set symmetric difference of this geometric object with anotherGeometry.
      *
-     * @param geometry
-     * @return
+     * @param geometry other geometry
+     * @return symmetric difference between this and the geometry
      */
     public GeometryExpression<Geometry> symDifference(Expression<? extends Geometry> geometry) {
         return GeometryExpressions.geometryOperation(SpatialOps.SYMDIFFERENCE, mixin, geometry);

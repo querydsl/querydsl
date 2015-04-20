@@ -19,6 +19,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.MultiPoint;
 
 /**
+ * {@code JTSMultiPointPath} extends {@link JTSMultiPointExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

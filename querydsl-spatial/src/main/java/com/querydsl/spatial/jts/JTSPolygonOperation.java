@@ -20,6 +20,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
+ * {@code JTSPolygonOperation} extends {@link JTSPolygonExpression} to implement the
+ * {@link Operation} interface
+ *
  * @author tiwe
  *
  * @param <T>

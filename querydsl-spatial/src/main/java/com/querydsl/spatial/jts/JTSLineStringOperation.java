@@ -20,6 +20,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
+ * {@code JTSLineStringOperation} extends {@link JTSLineStringExpression} to implement the
+ * {@link Operation} interface
+ *
  * @author tiwe
  *
  * @param <T>

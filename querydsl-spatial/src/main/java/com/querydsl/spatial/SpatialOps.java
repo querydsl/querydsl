@@ -16,6 +16,8 @@ package com.querydsl.spatial;
 import com.querydsl.core.types.Operator;
 
 /**
+ * {@code SpatialOps} provides {@link Operator} instances for spatial operations
+ *
  * @author tiwe
  *
  */

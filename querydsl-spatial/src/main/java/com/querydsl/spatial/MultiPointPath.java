@@ -20,6 +20,9 @@ import org.geolatte.geom.MultiPoint;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code MultiPointPath} extends {@link MultiPointExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>
@@ -51,13 +54,13 @@ public class MultiPointPath<T extends MultiPoint> extends MultiPointExpression<T
         this((Class<? extends T>) MultiPoint.class, PathMetadataFactory.forVariable(var));
     }
 
+    public MultiPointPath(Class<? extends T> type, String var) {
+        this(type, PathMetadataFactory.forVariable(var));
+    }
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);
-    }
-
-    public MultiPointPath(Class<? extends T> type, String var) {
-        this(type, PathMetadataFactory.forVariable(var));
     }
 
     @Override

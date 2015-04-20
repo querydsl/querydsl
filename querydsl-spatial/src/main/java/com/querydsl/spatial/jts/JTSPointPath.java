@@ -19,6 +19,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Point;
 
 /**
+ * {@code JTSPointPath} extends {@link JTSPointExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

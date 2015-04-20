@@ -21,6 +21,9 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code GeometryOperation} extends {@link GeometryCollectionExpression} to implement the
+ * {@link Operation} interface
+ *
  * @author tiwe
  *
  * @param <T>

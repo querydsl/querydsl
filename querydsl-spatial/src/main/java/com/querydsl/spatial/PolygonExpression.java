@@ -49,7 +49,7 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
     /**
      * Returns the exterior ring of this Polygon.
      *
-     * @return
+     * @return exterior ring
      */
     public LineStringExpression<?> exteriorRing() {
         if (exterorRing == null) {
@@ -61,7 +61,7 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
     /**
      * Returns the number of interior rings in this Polygon.
      *
-     * @return
+     * @return number of interior rings
      */
     public NumberExpression<Integer> numInteriorRing() {
         if (numInteriorRing == null) {
@@ -73,8 +73,8 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
     /**
      * Returns the N th interior ring for this Polygon as a LineString.
      *
-     * @param idx
-     * @return
+     * @param idx one based index
+     * @return interior ring at index
      */
     public LineStringExpression<LineString> interiorRingN(int idx) {
         return GeometryExpressions.lineStringOperation(SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));

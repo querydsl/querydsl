@@ -45,7 +45,7 @@ public abstract class JTSLineStringExpression<T extends LineString> extends JTSC
     /**
      * The number of Points in this LineString.
      *
-     * @return
+     * @return number of points
      */
     public NumberExpression<Integer> numPoints() {
         if (numPoints == null) {
@@ -57,8 +57,8 @@ public abstract class JTSLineStringExpression<T extends LineString> extends JTSC
     /**
      * Returns the specified Point N in this LineString.
      *
-     * @param idx
-     * @return
+     * @param idx one based index
+     * @return point at index
      */
     public JTSPointExpression<Point> pointN(int idx) {
         return JTSGeometryExpressions.pointOperation(SpatialOps.POINTN, mixin, ConstantImpl.create(idx));

@@ -24,6 +24,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
+ * {@code JTSGeometryPaths} provides factory methods for {@link JTSGeometryExpression} creation
+ *
  * @author tiwe
  *
  */

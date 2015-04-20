@@ -19,6 +19,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
+ * {@code JTSPolygonPath} extends {@link JTSPolygonExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

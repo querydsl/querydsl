@@ -20,6 +20,9 @@ import org.geolatte.geom.LineString;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code LineStringPath} extends {@link LineStringExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

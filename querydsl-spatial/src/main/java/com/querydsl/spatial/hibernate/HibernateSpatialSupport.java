@@ -19,6 +19,10 @@ import com.google.common.collect.Maps;
 import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Operator;
 
+/**
+ * {@code HibernateSpatialSupport} provides mappings from operators to serialization templates
+ * to be used in Hibernate Spatial
+ */
 public class HibernateSpatialSupport {
 
     public static Map<Operator, String> getSpatialOps() {

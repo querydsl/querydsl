@@ -46,7 +46,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
     /**
      * The area of this Surface, as measured in the spatial reference system of this Surface.
      *
-     * @return
+     * @return area
      */
     public NumberExpression<Double> area() {
         if (area == null) {
@@ -59,7 +59,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
      * The mathematical centroid for this Surface as a Point. The result is not guaranteed to
      * be on this Surface.
      *
-     * @return
+     * @return centroid
      */
     public JTSPointExpression<Point> centroid() {
         if (centroid == null) {
@@ -71,7 +71,7 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
     /**
      * A Point guaranteed to be on this Surface.
      *
-     * @return
+     * @return point on surface
      */
     public JTSPointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {

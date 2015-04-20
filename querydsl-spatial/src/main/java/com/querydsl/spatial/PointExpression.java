@@ -44,7 +44,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
     /**
      * The x-coordinate value for this Point.
      *
-     * @return
+     * @return x-coordinate
      */
     public NumberExpression<Double> x() {
         if (x == null) {
@@ -56,7 +56,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
     /**
      * The y-coordinate value for this Point.
      *
-     * @return
+     * @return y-coordinate
      */
     public NumberExpression<Double> y() {
         if (y == null) {
@@ -68,7 +68,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
     /**
      * The z-coordinate value for this Point, if it has one. Returns NIL otherwise.
      *
-     * @return
+     * @return z-coordinate
      */
     public NumberExpression<Double> z() {
         if (z == null) {
@@ -80,7 +80,7 @@ public abstract class PointExpression<T extends Point> extends GeometryExpressio
     /**
      * The m-coordinate value for this Point, if it has one. Returns NIL otherwise.
      *
-     * @return
+     * @return m-coordinate
      */
     public NumberExpression<Double> m() {
         if (m == null) {

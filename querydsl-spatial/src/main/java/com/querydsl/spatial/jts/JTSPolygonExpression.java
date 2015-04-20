@@ -49,7 +49,7 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
     /**
      * Returns the exterior ring of this Polygon.
      *
-     * @return
+     * @return exterior ring
      */
     public JTSLineStringExpression<?> exteriorRing() {
         if (exteriorRing == null) {
@@ -61,7 +61,7 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
     /**
      * Returns the number of interior rings in this Polygon.
      *
-     * @return
+     * @return number of interior rings
      */
     public NumberExpression<Integer> numInteriorRing() {
         if (numInteriorRing == null) {
@@ -73,8 +73,8 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
     /**
      * Returns the N th interior ring for this Polygon as a LineString.
      *
-     * @param idx
-     * @return
+     * @param idx one based index
+     * @return interior ring at index
      */
     public JTSLineStringExpression<LineString> interiorRingN(int idx) {
         return JTSGeometryExpressions.lineStringOperation(SpatialOps.INTERIOR_RINGN, mixin, ConstantImpl.create(idx));

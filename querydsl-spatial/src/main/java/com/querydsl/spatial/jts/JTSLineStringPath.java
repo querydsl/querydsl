@@ -19,6 +19,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
+ * {@code JTSLineStringPath} extends {@link JTSLineStringExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

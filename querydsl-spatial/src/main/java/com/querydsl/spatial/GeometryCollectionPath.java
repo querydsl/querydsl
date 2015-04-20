@@ -20,6 +20,9 @@ import org.geolatte.geom.GeometryCollection;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code GeometryCollectionPath} extends {@link GeometryCollectionExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

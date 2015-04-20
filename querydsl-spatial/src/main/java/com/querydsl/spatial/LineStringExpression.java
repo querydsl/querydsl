@@ -45,7 +45,7 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
     /**
      * The number of Points in this LineString.
      *
-     * @return
+     * @return number of points
      */
     public NumberExpression<Integer> numPoints() {
         if (numPoints == null) {
@@ -57,8 +57,8 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
     /**
      * Returns the specified Point N in this LineString.
      *
-     * @param idx
-     * @return
+     * @param idx one basedindex of element
+     * @return matched element
      */
     public PointExpression<Point> pointN(int idx) {
         return GeometryExpressions.pointOperation(SpatialOps.POINTN, mixin, ConstantImpl.create(idx));
