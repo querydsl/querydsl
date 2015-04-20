@@ -191,7 +191,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @Test
     @ExcludeIn(Target.DERBY)
     public void Iterate() {
-        CloseableIterator<Cat> cats = query().from(cat).select(cat).fetchIterate();
+        CloseableIterator<Cat> cats = query().from(cat).select(cat).iterate();
         while (cats.hasNext()) {
             Cat cat = cats.next();
             assertNotNull(cat);

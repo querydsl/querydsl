@@ -87,7 +87,7 @@ public class AliasTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "cat");
 
         // 1
-        from(c, cats).where($(c.getBirthdate()).gt(new Date())).select($(c)).fetchIterate();
+        from(c, cats).where($(c.getBirthdate()).gt(new Date())).select($(c)).iterate();
 
         // 2
         try {
@@ -103,28 +103,28 @@ public class AliasTest extends AbstractQueryTest {
         // 4
          from(c,cats)
              .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-             .select($(c.getName())).fetchIterate();
+             .select($(c.getName())).iterate();
 
         // 5
-        from(c, cats).where($(c).eq(other)).select($(c)).fetchIterate();
+        from(c, cats).where($(c).eq(other)).select($(c)).iterate();
 
         // 6
         from(c, cats).where($(c.getKittens()).contains(other)).select($(c))
-                .fetchIterate();
+                .iterate();
 
         // 7
-        from(c, cats).where($(c.getKittens().isEmpty())).select($(c)).fetchIterate();
+        from(c, cats).where($(c.getKittens().isEmpty())).select($(c)).iterate();
 
         // 8
-        from(c, cats).where($(c.getName()).startsWith("B")).select($(c)).fetchIterate();
+        from(c, cats).where($(c.getName()).startsWith("B")).select($(c)).iterate();
 
         // 9
-        from(c, cats).where($(c.getName()).upper().eq("MOE")).select($(c)).fetchIterate();
+        from(c, cats).where($(c.getName()).upper().eq("MOE")).select($(c)).iterate();
 
         // 10
         assertNotNull($(c.getKittensByName()));
         assertNotNull($(c.getKittensByName().get("Kitty")));
-        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull()).select(cat).fetchIterate();
+        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull()).select(cat).iterate();
 
         // 11
 //        try {

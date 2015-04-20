@@ -48,7 +48,7 @@ public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>
     }
     
     public <RT> CloseableIterator<RT> iterate(Class<RT> type, Expression<?>... exprs) {
-        return select(createProjection(type, exprs)).fetchIterate();
+        return select(createProjection(type, exprs)).iterate();
     }
     
     public <RT> RT uniqueResult(Class<RT> type, Expression<?>... exprs) {

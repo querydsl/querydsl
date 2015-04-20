@@ -49,7 +49,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
         if (hasGroups) {
             expr = withoutGroupExpressions(expr);
         }
-        final CloseableIterator<Tuple> iter = query.select(expr).fetchIterate();
+        final CloseableIterator<Tuple> iter = query.select(expr).iterate();
 
         return new CloseableIterator<V>() {
 

@@ -44,7 +44,7 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
 
     @Override
     public CloseableIterator<T> iterate() {
-        return query.fetchIterate();
+        return query.iterate();
     }
 
     @Override

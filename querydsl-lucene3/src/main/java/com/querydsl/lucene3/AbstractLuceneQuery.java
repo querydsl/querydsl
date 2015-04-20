@@ -163,7 +163,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     }
 
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         final QueryMetadata metadata = queryMixin.getMetadata();
         final List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
         final Integer queryLimit = metadata.getModifiers().getLimitAsInteger();
@@ -209,7 +209,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     }
 
     private List<T> innerList() {
-        return new IteratorAdapter<T>(fetchIterate()).asList();
+        return new IteratorAdapter<T>(iterate()).asList();
     }
 
     @Override

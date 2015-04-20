@@ -156,7 +156,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
      * SQL query returns identifiers only.<br>
      */
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         try {
             Query query = createQuery();
             ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);

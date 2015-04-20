@@ -20,7 +20,7 @@ public class DummyFetchable<T> implements Fetchable<T> {
     }
 
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(results.iterator());
     }
 

@@ -184,7 +184,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     }
 
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         try {
             Query query = createQuery();
             return queryHandler.iterate(query, projection);

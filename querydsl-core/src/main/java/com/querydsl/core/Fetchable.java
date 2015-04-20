@@ -51,7 +51,7 @@ public interface Fetchable<T> {
      *
      * @return
      */
-    CloseableIterator<T> fetchIterate();
+    CloseableIterator<T> iterate();
 
     /**
      * Get the projection in {@link QueryResults} form

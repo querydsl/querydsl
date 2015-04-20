@@ -85,7 +85,7 @@ public class MongodbQueryTest {
 
     @Test
     public void List_Keys() {
-        User u = where(user.firstName.eq("Jaakko")).list(user.firstName, user.mainAddress().street).get(0);
+        User u = where(user.firstName.eq("Jaakko")).fetch(user.firstName, user.mainAddress().street).get(0);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
         assertEquals("Aakatu", u.getMainAddress().street);
@@ -94,21 +94,21 @@ public class MongodbQueryTest {
 
     @Test
     public void SingleResult_Keys() {
-        User u = where(user.firstName.eq("Jaakko")).firstResult(user.firstName);
+        User u = where(user.firstName.eq("Jaakko")).fetchFirst(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
 
     @Test
     public void UniqueResult_Keys() {
-        User u = where(user.firstName.eq("Jaakko")).uniqueResult(user.firstName);
+        User u = where(user.firstName.eq("Jaakko")).fetchOne(user.firstName);
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
 
     @Test
     public void List_Deep_Keys() {
-        User u = where(user.firstName.eq("Jaakko")).firstResult(user.addresses.any().street);
+        User u = where(user.firstName.eq("Jaakko")).fetchFirst(user.addresses.any().street);
         for (Address a : u.getAddresses()) {
             assertNotNull(a.street);
             assertNull(a.city);
@@ -439,7 +439,7 @@ public class MongodbQueryTest {
 
         Iterator<User> i = where(user.firstName.startsWith("A"))
                             .orderBy(user.firstName.asc())
-                            .fetchIterate();
+                            .iterate();
 
         assertEquals(a, i.next());
         assertEquals(b, i.next());

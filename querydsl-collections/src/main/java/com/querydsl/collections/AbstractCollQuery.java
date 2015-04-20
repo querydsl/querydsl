@@ -173,7 +173,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     }
 
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         try {
             Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
             return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
@@ -213,7 +213,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2l);
         }
-        return uniqueResult(fetchIterate());
+        return uniqueResult(iterate());
     }
 
     private void reset() {

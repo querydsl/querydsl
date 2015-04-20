@@ -58,7 +58,7 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
 
 
     @Nullable
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         throw new UnsupportedOperationException();
     }
 

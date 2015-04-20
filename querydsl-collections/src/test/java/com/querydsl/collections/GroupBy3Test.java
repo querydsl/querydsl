@@ -58,7 +58,7 @@ public class GroupBy3Test {
                 assetThreat.id,
                 Projections.bean(Threat.class, threat.id))))
             .andReturn(projectable);
-        expect(projectable.fetchIterate()).andReturn(iter);
+        expect(projectable.iterate()).andReturn(iter);
         expect(iter.hasNext()).andReturn(false);
         iter.close();
         replay(iter, projectable);
@@ -89,7 +89,7 @@ public class GroupBy3Test {
                 assetThreat.id,
                 Projections.bean(Threat.class, threat.id))))
             .andReturn(projectable);
-        expect(projectable.fetchIterate()).andReturn(iter);
+        expect(projectable.iterate()).andReturn(iter);
         expect(iter.hasNext()).andReturn(false);
         iter.close();
         replay(iter, projectable);

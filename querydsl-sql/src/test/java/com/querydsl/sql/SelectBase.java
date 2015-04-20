@@ -312,7 +312,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Constructor() throws Exception {
         for (IdName idName : query().from(survey).select(new QIdName(survey.id, survey.name)).fetch()) {
-            System.out.println("id and name : " + idName.getId() + ","+ idName.getName());
+            System.out.println("id and name : " + idName.getId() + "," + idName.getName());
         }
     }
 
@@ -1262,7 +1262,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Projection() throws IOException{
-        CloseableIterator<Tuple> results = query().from(survey).select(survey.all()).fetchIterate();
+        CloseableIterator<Tuple> results = query().from(survey).select(survey.all()).iterate();
         assertTrue(results.hasNext());
         while (results.hasNext()) {
             assertEquals(3, results.next().size());
@@ -1285,7 +1285,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Projection2() throws IOException{
         // TODO : add assertions
-        CloseableIterator<Tuple> results = query().from(survey).select(survey.id, survey.name).fetchIterate();
+        CloseableIterator<Tuple> results = query().from(survey).select(survey.id, survey.name).iterate();
         assertTrue(results.hasNext());
         while (results.hasNext()) {
             assertEquals(2, results.next().size());
@@ -1295,7 +1295,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Projection3() throws IOException{
-        CloseableIterator<String> names = query().from(survey).select(survey.name).fetchIterate();
+        CloseableIterator<String> names = query().from(survey).select(survey.name).iterate();
         assertTrue(names.hasNext());
         while (names.hasNext()) {
             System.out.println(names.next());
@@ -1308,7 +1308,7 @@ public class SelectBase extends AbstractBaseTest {
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         List<Survey> surveys =
             query().from(
-                query().from(survey).select(survey.all()).as("sq"))
+                    query().from(survey).select(survey.all()).as("sq"))
                     .select(Projections.bean(Survey.class, Collections.singletonMap("name", sq.get(survey.name)))).fetch();
         assertFalse(surveys.isEmpty());
 
@@ -1733,7 +1733,7 @@ public class SelectBase extends AbstractBaseTest {
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With() {
         query().with(employee2, query().from(employee)
-                  .where(employee.firstname.eq("Tom"))
+                .where(employee.firstname.eq("Tom"))
                 .select(Wildcard.all))
                .from(employee, employee2)
                .select(employee.id, employee2.id).fetch();

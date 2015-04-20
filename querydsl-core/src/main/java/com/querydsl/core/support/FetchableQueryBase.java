@@ -40,7 +40,7 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
 
     @Override
     public List<T> fetch() {
-        return IteratorAdapter.asList(fetchIterate());
+        return IteratorAdapter.asList(iterate());
     }
 
     @Override

@@ -159,7 +159,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     }
 
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         try {
             Query query = createQuery();
             ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);

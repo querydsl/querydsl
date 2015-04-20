@@ -140,7 +140,7 @@ public class QueryPerformanceTest {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     CloseableIterator<String> it = query.from(companies)
-                            .where(companies.id.eq((long)i)).select(companies.name).fetchIterate();
+                            .where(companies.id.eq((long)i)).select(companies.name).iterate();
                     try {
                         while (it.hasNext()) {
                             it.next();
@@ -230,7 +230,7 @@ public class QueryPerformanceTest {
                     SQLQuery<Void> query = new SQLQuery<Void>(conn, conf);
                     CloseableIterator<String> it = query.from(companies)
                             .where(companies.name.eq(String.valueOf(i)))
-                            .select(companies.name).fetchIterate();
+                            .select(companies.name).iterate();
                     try {
                         while (it.hasNext()) {
                             it.next();

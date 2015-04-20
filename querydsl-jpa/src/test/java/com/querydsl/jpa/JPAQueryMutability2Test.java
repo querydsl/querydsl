@@ -62,10 +62,10 @@ public class JPAQueryMutability2Test implements JPATest {
         query.fetchCount();
         query.distinct().fetchCount();
 
-        query.select(cat).fetchIterate();
-        query.select(cat, cat).fetchIterate();
-        query.distinct().select(cat).fetchIterate();
-        query.distinct().select(cat, cat).fetchIterate();
+        query.select(cat).iterate();
+        query.select(cat, cat).iterate();
+        query.distinct().select(cat).iterate();
+        query.distinct().select(cat, cat).iterate();
 
         query.select(cat).fetch();
         query.select(cat, cat).fetch();

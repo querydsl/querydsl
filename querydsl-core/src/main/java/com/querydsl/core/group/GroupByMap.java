@@ -51,7 +51,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
         if (hasGroups) {
             expr = withoutGroupExpressions(expr);
         }
-        CloseableIterator<Tuple> iter = query.select(expr).fetchIterate();
+        CloseableIterator<Tuple> iter = query.select(expr).iterate();
         try {
             while (iter.hasNext()) {
                 Object[] row = iter.next().toArray();

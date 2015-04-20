@@ -105,12 +105,12 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
 
 
     @SuppressWarnings("unchecked")
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(createQuery(false).iterate());
     }
 
     public CloseableIterator<T> iterateDistinct() {
-        return fetchIterate();
+        return iterate();
     }
 
     @Override

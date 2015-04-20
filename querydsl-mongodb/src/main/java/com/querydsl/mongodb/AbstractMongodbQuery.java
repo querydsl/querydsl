@@ -200,11 +200,11 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
 
     public CloseableIterator<K> iterate(Path<?>... paths) {
         queryMixin.setProjection(paths);
-        return fetchIterate();
+        return iterate();
     }
 
     @Override
-    public CloseableIterator<K> fetchIterate() {
+    public CloseableIterator<K> iterate() {
         final DBCursor cursor = createCursor();
         return new CloseableIterator<K>() {
             @Override
@@ -227,7 +227,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         };
     }
 
-    public List<K> list(Path<?>... paths) {
+    public List<K> fetch(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetch();
     }
@@ -285,7 +285,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         return null;
     }
 
-    public K firstResult(Path<?>...paths) {
+    public K fetchFirst(Path<?>...paths) {
         queryMixin.setProjection(paths);
         return fetchFirst();
     }
@@ -304,7 +304,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
-    public K uniqueResult(Path<?>... paths) {
+    public K fetchOne(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetchOne();
     }
@@ -331,7 +331,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
-    public QueryResults<K> listResults(Path<?>... paths) {
+    public QueryResults<K> fetchResults(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetchResults();
     }

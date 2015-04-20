@@ -699,7 +699,7 @@ public class LuceneQueryTest {
     @Test
     public void Iterate() {
         query.where(year.between(1800, 2000));
-        final Iterator<Document> iterator = query.fetchIterate();
+        final Iterator<Document> iterator = query.iterate();
         int count = 0;
         while (iterator.hasNext()) {
             iterator.next();

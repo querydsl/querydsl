@@ -266,7 +266,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
 
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        return innerUnion((List)ImmutableList.copyOf(sq));
+        return innerUnion((List) ImmutableList.copyOf(sq));
     }
 
     private <RT> Union<RT> innerUnion(List<SubQueryExpression<RT>> sq) {
@@ -318,7 +318,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @return
      */
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path)alias, false));
+        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
     }
 
     /**
@@ -354,7 +354,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @return
      */
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path)alias, true));
+        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
     }
 
     @Override
@@ -363,7 +363,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
             && !queryMixin.getMetadata().getProjection().toString().contains("count(")) {
             limit(2);
         }
-        CloseableIterator<T> iterator = fetchIterate();
+        CloseableIterator<T> iterator = iterate();
         return uniqueResult(iterator);
     }
 

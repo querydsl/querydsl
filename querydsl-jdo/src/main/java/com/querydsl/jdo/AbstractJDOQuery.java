@@ -237,7 +237,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     @Override
-    public CloseableIterator<T> fetchIterate() {
+    public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(fetch().iterator(), closeable);
     }
 

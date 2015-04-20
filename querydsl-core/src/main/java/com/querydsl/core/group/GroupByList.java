@@ -50,7 +50,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         if (hasGroups) {
             expr = withoutGroupExpressions(expr);
         }
-        final CloseableIterator<Tuple> iter = query.select(expr).fetchIterate();
+        final CloseableIterator<Tuple> iter = query.select(expr).iterate();
 
         List<V> list = Lists.newArrayList();
         GroupImpl group = null;

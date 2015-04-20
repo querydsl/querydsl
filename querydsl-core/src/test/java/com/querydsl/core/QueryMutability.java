@@ -35,13 +35,13 @@ public final class QueryMutability {
         System.err.println("countDistinct");
         query.select(p1).distinct().fetchCount();
 
-        System.err.println("fetchIterate");
-        query.select(p1).fetchIterate();
-        query.select(p1, p2).fetchIterate();
+        System.err.println("iterate");
+        query.select(p1).iterate();
+        query.select(p1, p2).iterate();
 
         System.err.println("iterateDistinct");
-        query.select(p1).distinct().fetchIterate();
-        query.select(p1, p2).distinct().fetchIterate();
+        query.select(p1).distinct().iterate();
+        query.select(p1, p2).distinct().iterate();
 
         System.err.println("list");
         query.select(p1).fetch();
