@@ -25,7 +25,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.sql.*;
 
 /**
- * TeradataQuery provides Teradata related extensions to SQLQuery
+ * {@code TeradataQuery} provides Teradata related extensions to SQLQuery
  *
  * @author tiwe
  *
@@ -51,8 +51,8 @@ public class TeradataQuery<T> extends AbstractSQLQuery<T, TeradataQuery<T>> {
     /**
      * Adds a qualify expression
      *
-     * @param predicate
-     * @return
+     * @param predicate qualify expression
+     * @return the current object
      */
     public TeradataQuery<T> qualify(Predicate predicate) {
         predicate = ExpressionUtils.predicate(SQLOps.QUALIFY, predicate);

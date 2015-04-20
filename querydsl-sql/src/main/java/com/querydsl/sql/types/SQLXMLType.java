@@ -16,7 +16,7 @@ package com.querydsl.sql.types;
 import java.sql.*;
 
 /**
- * SQLXMLType maps SQLXML to SQLXML on the JDBC level
+ * {@code SQLXMLType} maps SQLXML to SQLXML on the JDBC level
  *
  * @author tiwe
  *

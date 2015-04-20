@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BytesType maps byte[] to byte[] on the JDBC level
+ * {@code BytesType} maps byte[] to byte[] on the JDBC level
  *
  * @author tiwe
  *

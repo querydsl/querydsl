@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.codegen.EntityType;
 
 /**
- * DefaultNamingStrategy is the default implementation of the NamingStrategy
+ * {@code DefaultNamingStrategy} is the default implementation of the {@link NamingStrategy}
  * interface. It changes underscore usage into camel case form.
  *
  * @author tiwe

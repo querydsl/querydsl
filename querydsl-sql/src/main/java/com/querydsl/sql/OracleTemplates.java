@@ -24,7 +24,7 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
 
 /**
- * OracleTemplates is an SQL dialect for Oracle
+ * {@code OracleTemplates} is an SQL dialect for Oracle
  *
  * <p>tested with Oracle 10g XE</p>
  *

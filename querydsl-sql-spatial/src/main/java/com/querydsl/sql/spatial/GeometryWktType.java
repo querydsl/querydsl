@@ -25,11 +25,7 @@ import org.geolatte.geom.codec.Wkt;
 
 import com.querydsl.sql.types.AbstractType;
 
-/**
- * @author tiwe
- *
- */
-public class GeometryWktType extends AbstractType<Geometry> {
+class GeometryWktType extends AbstractType<Geometry> {
 
     public static final GeometryWktType DEFAULT = new GeometryWktType();
 

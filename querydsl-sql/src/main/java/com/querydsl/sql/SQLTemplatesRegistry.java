@@ -4,7 +4,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 /**
- *
+ * {@code SQLTemplatesRegistry} is a registry for SQLTemplates instances
  */
 public class SQLTemplatesRegistry {
 
@@ -26,6 +26,14 @@ public class SQLTemplatesRegistry {
     private final SQLTemplates sqlserver2008 = new SQLServer2008Templates();
     private final SQLTemplates sqlserver2012 = new SQLServer2012Templates();
 
+    /**
+     * Get the SQLTemplates instance that matches best the SQL engine of the
+     * given database metadata
+     *
+     * @param md database metadata
+     * @return templates
+     * @throws SQLException
+     */
     public SQLTemplates getTemplates(DatabaseMetaData md) throws SQLException {
         String name = md.getDatabaseProductName().toLowerCase();
         if (name.equals("cubrid")) return cubrid;

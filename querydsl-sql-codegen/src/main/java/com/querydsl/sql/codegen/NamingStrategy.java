@@ -16,7 +16,7 @@ package com.querydsl.sql.codegen;
 import com.querydsl.codegen.EntityType;
 
 /**
- * NamingStrategy defines a conversion strategy from table to class and column
+ * {@code NamingStrategy} defines a conversion strategy from table to class and column
  * to property names
  *
  * @author tiwe

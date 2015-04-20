@@ -41,6 +41,12 @@ public final class ColumnMetadata implements Serializable {
         return ColumnMetadata.named(path.getMetadata().getName());
     }
 
+    /**
+     * Extract the column name for the given path, returns the path name, if no ColumnMetadata is attached
+     *
+     * @param path patch
+     * @return column name or path name
+     */
     public static String getName(Path<?> path) {
         Path<?> parent = path.getMetadata().getParent();
         if (parent instanceof EntityPath) {
@@ -123,7 +129,7 @@ public final class ColumnMetadata implements Serializable {
     /**
      * For char or date types this is the maximum number of characters, for numeric or decimal types this is precision.
      *
-     * @return
+     * @return size
      */
     public int getSize() {
         return size;
@@ -140,7 +146,7 @@ public final class ColumnMetadata implements Serializable {
     /**
      * the number of fractional digits
      *
-     * @return
+     * @return digits
      */
     public int getDigits() {
         return decimalDigits;

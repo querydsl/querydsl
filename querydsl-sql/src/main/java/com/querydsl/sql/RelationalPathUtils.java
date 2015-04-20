@@ -19,7 +19,7 @@ import java.util.Map;
 import com.querydsl.core.types.*;
 
 /**
- * RelationalPathUtils provides static utility methods for {@link RelationalPath} instances
+ * {@code RelationalPathUtils} provides static utility methods for {@link RelationalPath} instances
  *
  * @author tiwe
  *

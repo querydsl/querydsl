@@ -26,7 +26,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 
 /**
- * DB2Templates is an SQL dialect for DB2 10.1.2
+ * {@code DB2Templates} is an SQL dialect for DB2 10.1.2
  *
  * @author tiwe
  *

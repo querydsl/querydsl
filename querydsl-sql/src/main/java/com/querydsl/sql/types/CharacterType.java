@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * CharacterType maps Character to Character on the JDBC level
+ * {@code CharacterType} maps Character to Character on the JDBC level
  *
  * @author tiwe
  *

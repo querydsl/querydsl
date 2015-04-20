@@ -24,7 +24,7 @@ import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.sql.types.*;
 
 /**
- * JavaTypeMapping provides a mapping from Class to Type instances
+ * {@code JavaTypeMapping} provides a mapping from Class to Type instances
  *
  * @author tiwe
  *

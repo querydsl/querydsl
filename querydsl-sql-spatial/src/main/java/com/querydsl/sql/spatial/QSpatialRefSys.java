@@ -23,8 +23,6 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
 
-
-
 /**
  * QSpatialRefSys is a Querydsl query type for SpatialRefSys
  */

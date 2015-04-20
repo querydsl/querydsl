@@ -21,7 +21,7 @@ import java.sql.Types;
 import java.util.Calendar;
 
 /**
- * CalendarType maps Calendar to Timestamp on the JDBC level
+ * {@code CalendarType} maps Calendar to Timestamp on the JDBC level
  *
  * @author tiwe
  *

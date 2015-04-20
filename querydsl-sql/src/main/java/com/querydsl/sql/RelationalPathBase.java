@@ -30,7 +30,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.BeanPath;
 
 /**
- * RelationalPathBase is a base class for {@link RelationalPath} implementations
+ * {@code RelationalPathBase} is a base class for {@link RelationalPath} implementations
  *
  * @author tiwe
  *
@@ -136,7 +136,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
      * Compares the two relational paths using primary key columns
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this == right
      */
     @Override
     public BooleanExpression eq(T right) {
@@ -151,7 +151,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
      * Compares the two relational paths using primary key columns
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this == right
      */
     @Override
     public BooleanExpression eq(Expression<? super T> right) {
@@ -166,7 +166,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
      * Compares the two relational paths using primary key columns
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this != right
      */
     @Override
     public BooleanExpression ne(T right) {
@@ -181,7 +181,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
      * Compares the two relational paths using primary key columns
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this != right
      */
     @Override
     public BooleanExpression ne(Expression<? super T> right) {

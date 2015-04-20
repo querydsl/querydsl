@@ -19,6 +19,8 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 
 /**
+ * {@code WithBuilder} is a builder for common table expressions
+ *
  * @author tiwe
  *
  * @param <R>

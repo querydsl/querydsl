@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * ObjectType maps Object to Object on the JDBC level
+ * {@code ObjectType} maps Object to Object on the JDBC level
  *
  * @author tiwe
  *

@@ -109,9 +109,6 @@ public class WithinGroup<T> extends SimpleOperation<T> {
         super(type, op, merge(args));
     }
 
-    /**
-     * @return
-     */
     public OrderBy withinGroup() {
         return new OrderBy();
     }

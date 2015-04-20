@@ -14,8 +14,9 @@
 package com.querydsl.sql.mssql;
 
 /**
- * @author tiwe
+ * Table hints constants for SQLServerQuery
  *
+ * @author tiwe
  */
 public enum SQLServerTableHints {
     NOEXPAND,

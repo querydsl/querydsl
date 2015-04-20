@@ -21,7 +21,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
 /**
- * SQLQuery is a JDBC based implementation of the {@link SQLCommonQuery}
+ * {@code SQLQuery} is a JDBC based implementation of the {@link SQLCommonQuery}
  * interface
  *
  * @param <T>
@@ -62,7 +62,7 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
      *
      * @param conn Connection to use
      * @param templates SQLTemplates to use
-     * @param metadata
+     * @param metadata metadata
      */
     public SQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
         super(conn, new Configuration(templates), metadata);
@@ -71,7 +71,7 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
     /**
      * Create a new SQLQuery instance
      *
-     * @param configuration
+     * @param configuration configuration
      */
     public SQLQuery(Configuration configuration) {
         this(null, configuration);
@@ -81,7 +81,7 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
      * Create a new SQLQuery instance
      *
      * @param conn Connection to use
-     * @param configuration
+     * @param configuration configuration
      */
     public SQLQuery(Connection conn, Configuration configuration) {
         super(conn, configuration, new DefaultQueryMetadata());
@@ -90,9 +90,9 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
     /**
      * Create a new SQLQuery instance
      *
-     * @param conn
-     * @param configuration
-     * @param metadata
+     * @param conn Connection to use
+     * @param configuration configuration
+     * @param metadata metadata
      */
     public SQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);

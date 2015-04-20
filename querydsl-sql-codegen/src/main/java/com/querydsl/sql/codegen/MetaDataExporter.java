@@ -40,7 +40,7 @@ import com.querydsl.sql.*;
 import com.querydsl.sql.codegen.support.*;
 
 /**
- * MetadataExporter exports JDBC metadata to Querydsl query types
+ * {@code MetadataExporter} exports JDBC metadata to Querydsl query types
  *
  * <p>Example</p>
  *

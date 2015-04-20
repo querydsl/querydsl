@@ -28,7 +28,7 @@ import com.querydsl.sql.dml.SQLMergeBatch;
 import com.querydsl.sql.dml.SQLUpdateBatch;
 
 /**
- * SQLListeners is an SQLListener implementation which dispatches the
+ * {@code SQLListeners} is a {@link SQLListener} implementation which dispatches the
  * notifications to a list of SQLListener instances
  *
  * @author tiwe

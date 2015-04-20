@@ -23,7 +23,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Ops;
 
 /**
- * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
+ * {@code SQLServerTemplates} is an SQL dialect for Microsoft SQL Server
  *
  * @author tiwe
  *

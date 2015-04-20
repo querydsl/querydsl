@@ -13,14 +13,14 @@
  */
 package com.querydsl.sql.types;
 
+import java.sql.*;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 
-import java.sql.*;
-
 /**
- * LocalDateTimeType maps LocalDateTime to Timestamp on the JDBC level
+ * {@code LocalDateTimeType} maps LocalDateTime to Timestamp on the JDBC level
  *
  * @author tiwe
  *

@@ -23,7 +23,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
 
 /**
- * SQLMergeBatch defines the state of an SQL MERGE batch item
+ * {@code SQLMergeBatch} defines the state of an SQL MERGE batch item
  * 
  * @author tiwe
  *

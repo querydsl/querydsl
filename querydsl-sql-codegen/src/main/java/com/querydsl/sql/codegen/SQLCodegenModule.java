@@ -23,7 +23,7 @@ import com.querydsl.sql.RelationalPathBase;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * SQLCodegenModule is a dependency injection module with codegen configuration
+ * {@code SQLCodegenModule} is a dependency injection module with codegen configuration
  *
  * @author tiwe
  *

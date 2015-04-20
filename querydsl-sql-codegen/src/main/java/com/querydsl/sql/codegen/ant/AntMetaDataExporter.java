@@ -29,7 +29,7 @@ import com.querydsl.sql.codegen.MetaDataExporter;
 import com.querydsl.sql.codegen.NamingStrategy;
 
 /**
- * AntMetaDataExporter exports JDBC metadata to Querydsl query types
+ * {@code AntMetaDataExporter} exports JDBC metadata to Querydsl query types
  *
  * @author tiwe
  *

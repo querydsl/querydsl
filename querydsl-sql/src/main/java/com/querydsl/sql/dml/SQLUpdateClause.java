@@ -13,25 +13,30 @@
  */
 package com.querydsl.sql.dml;
 
-import javax.annotation.Nonnegative;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+
+import javax.annotation.Nonnegative;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.UpdateClause;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.sql.*;
 import com.querydsl.sql.types.Null;
-import com.querydsl.core.types.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * SQLUpdateClause defines a UPDATE clause
+ * {@code SQLUpdateClause} defines a UPDATE clause
  *
  * @author tiwe
  *
@@ -68,9 +73,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     /**
      * Add the given String literal at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLUpdateClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -80,9 +85,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     /**
      * Add the given Expression at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLUpdateClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -92,7 +97,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     /**
      * Add the current state of bindings as a batch item
      *
-     * @return
+     * @return the current object
      */
     public SQLUpdateClause addBatch() {
         batches.add(new SQLUpdateBatch(metadata, updates));
@@ -299,8 +304,8 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
      * The properties need to match the fields of the clause's entity instance.
      * Primary key columns are skipped in the population.
      *
-     * @param bean
-     * @return
+     * @param bean bean to use for population
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public SQLUpdateClause populate(Object bean) {
@@ -310,9 +315,9 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     /**
      * Populate the UPDATE clause with the properties of the given bean using the given Mapper.
      *
-     * @param obj
-     * @param mapper
-     * @return
+     * @param obj object to use for population
+     * @param mapper mapper to use
+     * @return the current object
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> SQLUpdateClause populate(T obj, Mapper<T> mapper) {

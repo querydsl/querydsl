@@ -21,7 +21,7 @@ import java.sql.Types;
 import javax.annotation.Nullable;
 
 /**
- * NumericBooleanType maps Boolean to 1/0 (Integer) on the JDBC level
+ * {@code NumericBooleanType} maps Boolean to 1/0 (Integer) on the JDBC level
  *
  * @author tiwe
  *

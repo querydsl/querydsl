@@ -20,7 +20,7 @@ import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.Ops;
 
 /**
- * MySQLTemplates is an SQL dialect for MySQL
+ * {@code MySQLTemplates} is an SQL dialect for MySQL
  *
  * <p>tested with MySQL CE 5.1 and 5.5</p>
  *

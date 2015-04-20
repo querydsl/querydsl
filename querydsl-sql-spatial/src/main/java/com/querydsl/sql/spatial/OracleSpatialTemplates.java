@@ -17,6 +17,8 @@ import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
+ * {@code OracleSpatialTemplates} is a spatial enabled SQL dialect for Oracle
+ *
  * @author tiwe
  *
  */

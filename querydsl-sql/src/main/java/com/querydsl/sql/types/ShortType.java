@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * ShortType maps Short to Short on the JDBC level
+ * {@code ShortType} maps Short to Short on the JDBC level
  *
  * @author tiwe
  *
  */
-public class ShortType extends AbstractNumberType<Short> {
+public class ShortType extends AbstractType<Short> {
 
     public ShortType() {
         super(Types.SMALLINT);

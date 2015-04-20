@@ -31,11 +31,7 @@ import org.geolatte.geom.Polygon;
 import org.geolatte.geom.crs.CrsId;
 
 
-/**
- * @author tiwe
- *
- */
-public class PGgeometryConverter {
+class PGgeometryConverter {
 
     // to postgis
 

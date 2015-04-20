@@ -18,19 +18,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.MDC;
+
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.DMLClause;
-import com.querydsl.sql.*;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Path;
-import org.slf4j.Logger;
-import org.slf4j.MDC;
+import com.querydsl.sql.*;
 
 /**
- * AbstractSQLClause is a superclass for SQL based DMLClause implementations
+ * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
  *
  * @author tiwe
  */
@@ -44,9 +45,6 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected SQLListenerContextImpl context;
 
-    /**
-     * @param configuration
-     */
     public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
@@ -54,7 +52,9 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     }
 
     /**
-     * @param listener
+     * Add a listener
+     *
+     * @param listener listener to add
      */
     public void addListener(SQLListener listener) {
         listeners.add(listener);
@@ -121,7 +121,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     /**
      * Get the SQL string and bindings
      *
-     * @return
+     * @return SQL and bindings
      */
     public abstract List<SQLBindings> getSQL();
 

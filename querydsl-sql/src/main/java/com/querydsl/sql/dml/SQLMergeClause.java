@@ -33,7 +33,7 @@ import com.querydsl.sql.*;
 import com.querydsl.sql.types.Null;
 
 /**
- * SQLMergeClause defines an MERGE INTO clause
+ * {@code SQLMergeClause} defines an MERGE INTO clause
  *
  * @author tiwe
  *
@@ -77,9 +77,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     /**
      * Add the given String literal at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLMergeClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -89,9 +89,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     /**
      * Add the given Expression at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLMergeClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -111,7 +111,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     /**
      * Add the current state of bindings as a batch item
      *
-     * @return
+     * @return the current object
      */
     public SQLMergeClause addBatch() {
         if (!configuration.getTemplates().isNativeMerge()) {
@@ -136,8 +136,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      * If no rows were created, null is returned, otherwise the key of the first row is returned.
      *
      * @param <T>
-     * @param path
-     * @return
+     * @param path path for key
+     * @return generated key
      */
     @SuppressWarnings("unchecked")
     @Nullable
@@ -150,8 +150,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      * If no rows were created, null is returned, otherwise the key of the first row is returned.
      *
      * @param <T>
-     * @param type
-     * @return
+     * @param type type of key
+     * @return generated key
      */
     public <T> T executeWithKey(Class<T> type) {
         return executeWithKey(type, null);
@@ -178,8 +178,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      * Otherwise, the key of the first row is returned.
      *
      * @param <T>
-     * @param path
-     * @return
+     * @param path path for key
+     * @return generated keys
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> executeWithKeys(Path<T> path) {
@@ -212,7 +212,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     /**
      * Execute the clause and return the generated keys as a ResultSet
      *
-     * @return
+     * @return result set with generated keys
      */
     public ResultSet executeWithKeys() {
         context = startContext(connection, metadata, entity);
@@ -493,8 +493,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     /**
      * Set the keys to be used in the MERGE clause
      *
-     * @param paths
-     * @return
+     * @param paths keys
+     * @return the current object
      */
     public SQLMergeClause keys(Path<?>... paths) {
         keys.addAll(Arrays.asList(paths));

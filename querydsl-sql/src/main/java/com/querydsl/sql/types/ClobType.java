@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * ClobType maps Clob to Clob on the JDBC level
+ * {@code ClobType} maps Clob to Clob on the JDBC level
  *
  * @author tiwe
  *

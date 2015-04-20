@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BigIntegerType maps BigInteger to BigDecimal on the JDBC level
+ * {@code BigIntegerType} maps BigInteger to BigDecimal on the JDBC level
  *
  * @author tiwe
  *

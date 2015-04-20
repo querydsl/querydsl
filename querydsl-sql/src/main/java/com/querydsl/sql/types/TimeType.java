@@ -16,7 +16,7 @@ package com.querydsl.sql.types;
 import java.sql.*;
 
 /**
- * TimeType maps Time to Time on the JDBC level
+ * {@code TimeType} maps Time to Time on the JDBC level
  *
  * @author tiwe
  *

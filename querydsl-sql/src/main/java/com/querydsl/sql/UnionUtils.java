@@ -23,7 +23,7 @@ import com.querydsl.core.types.*;
  * @author tiwe
  *
  */
-public final class UnionUtils {
+final class UnionUtils {
 
     public static <T> Expression<T> union(List<SubQueryExpression<T>> union, boolean unionAll) {
         final Operator operator = unionAll ? SQLOps.UNION_ALL : SQLOps.UNION;

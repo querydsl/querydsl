@@ -23,7 +23,7 @@ import com.querydsl.sql.types.BigIntegerAsLongType;
 import com.querydsl.core.types.Ops;
 
 /**
- * SQLiteTemplates is a SQL dialect for SQLite
+ * {@code SQLiteTemplates} is a SQL dialect for SQLite
  *
  * @author tiwe
  *

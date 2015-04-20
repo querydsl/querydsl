@@ -27,9 +27,11 @@ import com.querydsl.core.types.Path;
 public interface Mapper<T> {
     
     /**
-     * @param path
-     * @param object
-     * @return
+     * Create a map of updates for the given path and instance
+     *
+     * @param path path
+     * @param object instance
+     * @return bindings
      */
     Map<Path<?>, Object> createMap(RelationalPath<?> path, T object);
 

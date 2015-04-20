@@ -40,6 +40,9 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 
 /**
+ * {@code RelationalPathSpatial} extends {@link RelationalPathBase} to provide factory methods
+ * for spatial path creation
+ *
  * @author tiwe
  *
  * @param <T>

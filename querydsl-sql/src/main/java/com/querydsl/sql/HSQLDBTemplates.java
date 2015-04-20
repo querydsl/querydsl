@@ -18,7 +18,7 @@ import java.sql.Types;
 import com.querydsl.core.types.Ops;
 
 /**
- * HSQLDBTemplates is an SQL dialect for HSQLDB
+ * {@code HSQLDBTemplates} is an SQL dialect for HSQLDB
  *
  * @author tiwe
  *

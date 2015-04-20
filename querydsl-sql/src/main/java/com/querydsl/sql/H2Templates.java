@@ -18,7 +18,7 @@ import java.sql.Types;
 import com.querydsl.core.types.Ops;
 
 /**
- * H2Templates is an SQL dialect for H2
+ * {@code H2Templates} is an SQL dialect for H2
  *
  * @author tiwe
  *

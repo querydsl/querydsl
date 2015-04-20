@@ -26,7 +26,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
- * PrimaryKey defines a primary key on table
+ * {@code PrimaryKey} defines a primary key on table
  *
  * @author tiwe
  */

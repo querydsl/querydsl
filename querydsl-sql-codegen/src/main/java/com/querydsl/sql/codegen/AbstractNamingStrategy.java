@@ -17,7 +17,7 @@ import com.querydsl.codegen.EntityType;
 import com.querydsl.core.util.JavaSyntaxUtils;
 
 /**
- * AbstractNamingStrategy is an abstract base class for NamingStrategy implementations
+ * {@code AbstractNamingStrategy} is an abstract base class for {@link NamingStrategy} implementations
  *
  * @author tiwe
  *

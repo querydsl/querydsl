@@ -20,7 +20,7 @@ import com.querydsl.core.QueryException;
 import com.querydsl.sql.support.SQLExceptionWrapper;
 
 /**
- * Default implementation of the SQLExceptionTranslator interface
+ * Default implementation of the {@link SQLExceptionTranslator} interface
  *
  * @author tiwe
  *

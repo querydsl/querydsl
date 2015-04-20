@@ -20,7 +20,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 
 /**
- * SQLUpdateBatch defines the state of an SQL UPDATE batch item
+ * {@code SQLUpdateBatch} defines the state of an SQL UPDATE batch item
  *
  * @author tiwe
  *

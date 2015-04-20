@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * URLType maps URL to URL on the JDBC level
+ * {@code URLType} maps URL to URL on the JDBC level
  *
  * @author tiwe
  *

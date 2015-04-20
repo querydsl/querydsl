@@ -16,7 +16,7 @@ package com.querydsl.sql.codegen;
 import com.querydsl.codegen.EntityType;
 
 /**
- * OriginalNamingStrategy preserves the table and column names in the conversion
+ * {@code OriginalNamingStrategy} preserves the table and column names in the conversion
  *
  * @author tiwe
  *

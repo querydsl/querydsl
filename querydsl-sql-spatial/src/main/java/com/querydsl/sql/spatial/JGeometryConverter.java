@@ -13,17 +13,15 @@
  */
 package com.querydsl.sql.spatial;
 
-import oracle.spatial.geometry.JGeometry;
+import static oracle.spatial.geometry.JGeometry.*;
+
 import org.geolatte.geom.*;
 import org.geolatte.geom.Point;
 import org.geolatte.geom.crs.CrsId;
-import static oracle.spatial.geometry.JGeometry.*;
 
-/**
- * @author tiwe
- *
- */
-public class JGeometryConverter {
+import oracle.spatial.geometry.JGeometry;
+
+class JGeometryConverter {
 
     // to jgeometry
 

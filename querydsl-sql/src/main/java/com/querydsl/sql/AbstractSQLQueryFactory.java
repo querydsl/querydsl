@@ -26,7 +26,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
 
 /**
- * AbstractSQLQueryFactory is the base class for {@link SQLCommonQueryFactory} implementations
+ * {@code AbstractSQLQueryFactory} is the base class for {@link SQLCommonQueryFactory} implementations
  *
  * @author tiwe
  *

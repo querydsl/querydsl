@@ -22,7 +22,7 @@ import java.util.Currency;
 import javax.annotation.Nullable;
 
 /**
- * CurrencyType maps Currency to String on the JDBC level
+ * {@code CurrencyType} maps Currency to String on the JDBC level
  *
  * @author tiwe
  *

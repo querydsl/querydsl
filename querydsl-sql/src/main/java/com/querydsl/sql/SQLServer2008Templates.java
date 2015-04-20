@@ -15,7 +15,7 @@ package com.querydsl.sql;
 
 
 /**
- * SQLServer2008Templates is an SQL dialect for Microsoft SQL Server 2008
+ * {@code SQLServer2008Templates} is an SQL dialect for Microsoft SQL Server 2008
  *
  * @author tiwe
  *

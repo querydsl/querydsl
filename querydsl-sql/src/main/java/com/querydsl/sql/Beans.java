@@ -16,7 +16,7 @@ package com.querydsl.sql;
 import java.util.Map;
 
 /**
- * Beans contains Objects mapped to {@link RelationalPath} instances
+ * {@code Beans} contains Objects mapped to {@link RelationalPath} instances
  * 
  * @author luis
  */

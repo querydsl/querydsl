@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * FloatType maps Float to Float on the JDBC level
+ * {@code FloatType} maps Float to Float on the JDBC level
  *
  * @author tiwe
  *
  */
-public class FloatType extends AbstractNumberType<Float> {
+public class FloatType extends AbstractType<Float> {
 
     public FloatType() {
         super(Types.FLOAT);

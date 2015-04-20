@@ -27,7 +27,7 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.dml.AbstractSQLClause;
 
 /**
- * SetQueryBandClause provides support for Teradata specific set query_band executions.
+ * {@code SetQueryBandClause} provides support for Teradata specific set query_band executions.
  *
  * @author tiwe
  *

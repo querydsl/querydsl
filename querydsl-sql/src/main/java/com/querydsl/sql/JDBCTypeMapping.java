@@ -30,7 +30,7 @@ import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
 
 /**
- * JDBCTypeMapping defines a mapping from JDBC types to Java classes.
+ * {@code JDBCTypeMapping} defines a mapping from JDBC types to Java classes.
  *
  * @author tiwe
  *

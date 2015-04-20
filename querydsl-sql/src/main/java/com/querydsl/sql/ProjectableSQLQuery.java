@@ -35,7 +35,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
 
 /**
- * ProjectableSQLQuery is the base type for SQL query implementations
+ * {@code ProjectableSQLQuery} is the base type for SQL query implementations
  *
  * @param <Q> concrete subtype
  */
@@ -73,8 +73,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Add the given String literal as a join flag to the last added join with the position
      * BEFORE_TARGET
      *
-     * @param flag
-     * @return
+     * @param flag join flag
+     * @return the current object
      */
     @Override
     public Q addJoinFlag(String flag) {
@@ -84,9 +84,9 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     /**
      * Add the given String literal as a join flag to the last added join
      *
-     * @param flag
-     * @param position
-     * @return
+     * @param flag join flag
+     * @param position position
+     * @return the current object
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -101,7 +101,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @param position position of the flag
      * @param prefix prefix for the flag
      * @param expr expression of the flag
-     * @return
+     * @return the current object
      */
     @Override
     public Q addFlag(Position position, String prefix, Expression<?> expr) {
@@ -112,8 +112,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     /**
      * Add the given query flag
      *
-     * @param flag
-     * @return
+     * @param flag query flag
+     * @return the current object
      */
     public Q addFlag(QueryFlag flag) {
         return queryMixin.addFlag(flag);
@@ -122,9 +122,9 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     /**
      * Add the given String literal as query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     @Override
     public Q addFlag(Position position, String flag) {
@@ -134,9 +134,9 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     /**
      * Add the given Expression as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     @Override
     public Q addFlag(Position position, Expression<?> flag) {
@@ -292,8 +292,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
-     * @param sq
-     * @return
+     * @param sq subqueries
+     * @return union
      */
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
@@ -303,8 +303,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
-     * @param sq
-     * @return
+     * @param sq subqueries
+     * @return union
      */
     public <RT> Union<RT> union(List<SubQueryExpression<RT>> sq) {
         return innerUnion(sq);
@@ -314,8 +314,9 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
-     * @param sq
-     * @return
+     * @param alias alias for union
+     * @param sq subqueryies
+     * @return the current object
      */
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
@@ -325,8 +326,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
-     * @param sq
-     * @return
+     * @param sq subqueries
+     * @return union
      */
     public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
         unionAll = true;
@@ -337,8 +338,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
-     * @param sq
-     * @return
+     * @param sq subqueries
+     * @return union
      */
     public <RT> Union<RT> unionAll(List<SubQueryExpression<RT>> sq) {
         unionAll = true;
@@ -350,8 +351,9 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
-     * @param sq
-     * @return
+     * @param alias alias for union
+     * @param sq subqueries
+     * @return the current object
      */
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
@@ -462,7 +464,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     /**
      * Get the query as an SQL query string and bindings
      *
-     * @return
+     * @return SQL string and bindings
      */
     public SQLBindings getSQL() {
         SQLSerializer serializer = serialize(false);
@@ -479,7 +481,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         }
         return new SQLBindings(serializer.toString(), args.build());
     }
-    
+
+    @Override
     public String toString() {
         SQLSerializer serializer = serialize(false);
         return serializer.toString().trim();

@@ -17,7 +17,7 @@ import java.lang.annotation.Annotation;
 
 
 /**
- * ColumnImpl is an implementation for the Column annotation
+ * ColumnImpl is an implementation of the {@link Column} annotation
  * 
  * @author tiwe
  *

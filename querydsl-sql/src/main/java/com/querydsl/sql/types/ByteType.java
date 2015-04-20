@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * ByteType maps Byte to Byte on the JDBC level
+ * {@code ByteType} maps Byte to Byte on the JDBC level
  *
  * @author tiwe
  *
  */
-public class ByteType extends AbstractNumberType<Byte> {
+public class ByteType extends AbstractType<Byte> {
 
     public ByteType() {
         super(Types.TINYINT);

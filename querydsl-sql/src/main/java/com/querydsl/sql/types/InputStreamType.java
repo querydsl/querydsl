@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * InputStreamType maps InputStream to InputStream on the JDBC level
+ * {@code InputStreamType} maps InputStream to InputStream on the JDBC level
  *
  * @author tiwe
  *
