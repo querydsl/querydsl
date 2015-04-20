@@ -28,7 +28,7 @@ import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.QueryExclude;
 
 /**
- * ExtendedTypeFactory is a factory for APT inspection based Type creation
+ * {@code ExtendedTypeFactory} is a factory for APT-based inspection {@link Type} creation
  *
  * @author tiwe
  *
@@ -249,7 +249,6 @@ final class ExtendedTypeFactory {
 
     public ExtendedTypeFactory(
             ProcessingEnvironment env,
-            Configuration configuration,
             Set<Class<? extends Annotation>> annotations,
             TypeMappings typeMappings,
             QueryTypeFactory queryTypeFactory) {
@@ -320,20 +319,19 @@ final class ExtendedTypeFactory {
         String name = typeElement.getQualifiedName().toString();
 
         if (name.startsWith("java.")) {
-            String simpleName = typeElement.getSimpleName().toString();
             Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
 
             if (isAssignable(declaredType, mapType)) {
-                return createMapType(simpleName, i, deep);
+                return createMapType(i, deep);
 
             } else if (isAssignable(declaredType, listType)) {
-                return createCollectionType(Types.LIST, simpleName, i, deep);
+                return createCollectionType(Types.LIST, i, deep);
 
             } else if (isAssignable(declaredType, setType)) {
-                return createCollectionType(Types.SET, simpleName, i, deep);
+                return createCollectionType(Types.SET, i, deep);
 
             } else if (isAssignable(declaredType, collectionType)) {
-                return createCollectionType(Types.COLLECTION, simpleName, i, deep);
+                return createCollectionType(Types.COLLECTION, i, deep);
             }
         }
 
@@ -397,7 +395,7 @@ final class ExtendedTypeFactory {
         return type;
     }
 
-    private Type createMapType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+    private Type createMapType(Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(Types.MAP, defaultType, defaultType);
         }
@@ -422,8 +420,8 @@ final class ExtendedTypeFactory {
         return new SimpleType(Types.MAP, keyType, valueType);
     }
 
-    private Type createCollectionType(Type baseType, String simpleName,
-            Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+    private Type createCollectionType(Type baseType,
+                                      Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(baseType, defaultType);
         }
@@ -450,7 +448,7 @@ final class ExtendedTypeFactory {
         if (entityTypeCache.containsKey(key)) {
             EntityType entityType = entityTypeCache.get(key);
             if (deep && entityType.getSuperTypes().isEmpty()) {
-                for (Type superType : getSupertypes(typeMirror, entityType, deep)) {
+                for (Type superType : getSupertypes(typeMirror, deep)) {
                     entityType.addSupertype(new Supertype(superType));
                 }
             }
@@ -478,7 +476,7 @@ final class ExtendedTypeFactory {
             entityTypeCache.put(key, entityType);
 
             if (deep) {
-                for (Type superType : getSupertypes(typeMirror, value, deep)) {
+                for (Type superType : getSupertypes(typeMirror, deep)) {
                     entityType.addSupertype(new Supertype(superType));
                 }
             }
@@ -511,20 +509,19 @@ final class ExtendedTypeFactory {
             }
         }
 
-        String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
 
         if (isAssignable(declaredType, mapType)) {
-            return createMapType(simpleName, i, deep);
+            return createMapType(i, deep);
 
         } else if (isAssignable(declaredType, listType)) {
-            return createCollectionType(Types.LIST, simpleName, i, deep);
+            return createCollectionType(Types.LIST, i, deep);
 
         } else if (isAssignable(declaredType, setType)) {
-            return createCollectionType(Types.SET, simpleName, i, deep);
+            return createCollectionType(Types.SET, i, deep);
 
         } else if (isAssignable(declaredType, collectionType)) {
-            return createCollectionType(Types.COLLECTION, simpleName, i, deep);
+            return createCollectionType(Types.COLLECTION, i, deep);
 
         } else {
             String name = typeElement.getQualifiedName().toString();
@@ -532,7 +529,7 @@ final class ExtendedTypeFactory {
         }
     }
 
-    private Set<Type> getSupertypes(TypeMirror typeMirror, Type type, boolean deep) {
+    private Set<Type> getSupertypes(TypeMirror typeMirror, boolean deep) {
         boolean doubleIndex = doubleIndexEntities;
         doubleIndexEntities = false;
         Set<Type> superTypes = Collections.emptySet();

@@ -21,7 +21,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.SimpleTypeVisitor6;
 
 /**
- * Converts Java 8 IntersectionType instances into their first bound when visiting
+ * Converts Java 8 {@link javax.lang.model.type.IntersectionType IntersectionType} instances into their first bound when visiting
  *
  * @param <R>
  * @param <P>

@@ -29,7 +29,7 @@ import com.querydsl.codegen.*;
 import com.querydsl.core.util.Annotations;
 
 /**
- * Configuration defines the configuration options for APT based Querydsl code generation
+ * {@code Configuration} defines the configuration options for APT-based Querydsl code generation
  *
  * @author tiwe
  *
@@ -47,7 +47,7 @@ public interface Configuration {
     TypeMappings getTypeMappings();
 
     /**
-     * Get the visitor configuration for the given eleemnt
+     * Get the visitor configuration for the given element
      *
      * @param e element to be inspected
      * @param elements child elements

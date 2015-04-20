@@ -17,7 +17,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.*;
 
 /**
- * TypeExtractor is a visitor implementation which a concrete type given a general {@link TypeElement}
+ * {@code TypeExtractor} is a visitor implementation which extracts a concrete type from a generic {@link TypeElement}
  * 
  * @author tiwe
  *
@@ -53,7 +53,7 @@ class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
                 case ENUM:      return skipEnum ? null : typeElement;
                 case CLASS:     return typeElement;
                 case INTERFACE: return visitInterface(t);
-                default: throw new IllegalArgumentException("Illegal type " + typeElement);
+                default: throw new IllegalArgumentException("Illegal type: " + typeElement);
             }
         } else {
             return null;
