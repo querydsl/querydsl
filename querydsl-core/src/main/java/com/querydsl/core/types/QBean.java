@@ -38,7 +38,7 @@ import com.google.common.primitives.Primitives;
  * QEmployee employee = QEmployee.employee;
  * List<EmployeeInfo> result = query.from(employee)
  *      .where(employee.valid.eq(true))
- *      .select(new QBean<EmployeeInfo>(EmployeeInfo.class, employee.firstName, employee.lastName))
+ *      .select(Projections.bean(EmployeeInfo.class, employee.firstName, employee.lastName))
  *      .fech();
  * }
  * </pre>

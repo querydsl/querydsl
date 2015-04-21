@@ -27,7 +27,7 @@ import com.google.common.collect.Maps;
  * <p>Usage example</p>
  * <pre>
  * {@code 
- * List<Map<Expression<?>,?> result = query.from(employee).select(new QMap(employee.firstName, employee.lastName)).fetch();
+ * List<Map<Expression<?>,?> result = query.from(employee).select(Projections.map(employee.firstName, employee.lastName)).fetch();
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
  *     System.out.println("lastName " + row.get(employee.lastName)); 
