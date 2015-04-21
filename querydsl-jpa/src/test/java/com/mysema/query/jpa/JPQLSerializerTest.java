@@ -13,7 +13,11 @@
  */
 package com.mysema.query.jpa;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
+
+import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
@@ -31,8 +35,6 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class JPQLSerializerTest {
 
@@ -66,7 +68,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(3)
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = 2) then 2 when (cat.toes = 3) then 3 else 4 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else 4 end", serializer.toString());
     }
 
     @Test
@@ -88,7 +90,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = 2) then (cat.id * 2) when (cat.toes = 3) then (cat.id * 3) else 4 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else 4 end", serializer.toString());
     }
 
     @Test
