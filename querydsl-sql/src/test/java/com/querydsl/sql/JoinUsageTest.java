@@ -24,7 +24,7 @@ public class JoinUsageTest {
     @Ignore
     public void Join_Already_Declared() {
         QSurvey survey = QSurvey.survey;
-        SQLQuery<Void> subQuery = new SQLQuery<Void>();
+        SQLQuery<?> subQuery = new SQLQuery<Void>();
         subQuery.from(survey).fullJoin(survey);
     }
 

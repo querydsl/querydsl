@@ -21,11 +21,11 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 public abstract class AbstractQueryTest implements Constants {
 
-    protected QueryHelper<Void> query() {
+    protected QueryHelper<?> query() {
         return new QueryHelper<Void>(HQLTemplates.DEFAULT);
     }
 
-    protected JPAQuery<Void> sub() {
+    protected JPAQuery<?> sub() {
         return new JPAQuery<Void>();
     }
 

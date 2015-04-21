@@ -470,7 +470,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({SQLITE})
     public void Date_Add() {
-        SQLQuery<Void> query = query().from(employee);
+        SQLQuery<?> query = query().from(employee);
         Date date1 = query.select(employee.datefield).fetchFirst();
         Date date2 = query.select(SQLExpressions.addYears(employee.datefield, 1)).fetchFirst();
         Date date3 = query.select(SQLExpressions.addMonths(employee.datefield, 1)).fetchFirst();
@@ -503,8 +503,8 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn({DB2, SQLITE, TERADATA})
     public void Date_Diff() {
         QEmployee employee2 = new QEmployee("employee2");
-        SQLQuery<Void> query = query().from(employee).orderBy(employee.id.asc());
-        SQLQuery<Void> query2 = query().from(employee, employee2)
+        SQLQuery<?> query = query().from(employee).orderBy(employee.id.asc());
+        SQLQuery<?> query2 = query().from(employee, employee2)
                 .orderBy(employee.id.asc(), employee2.id.desc());
 
         List<DatePart> dps = Lists.newArrayList();
@@ -532,7 +532,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, HSQLDB, SQLITE, TERADATA})
     public void Date_Diff2() {
-        SQLQuery<Void> query = query().from(employee).orderBy(employee.id.asc());
+        SQLQuery<?> query = query().from(employee).orderBy(employee.id.asc());
 
         LocalDate localDate = new LocalDate(1970, 1, 10);
         Date date = new Date(localDate.toDateMidnight().getMillis());
@@ -651,7 +651,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void DateTime() {
-        SQLQuery<Void> query = query().from(employee).orderBy(employee.id.asc());
+        SQLQuery<?> query = query().from(employee).orderBy(employee.id.asc());
         assertEquals(Integer.valueOf(10),     query.select(employee.datefield.dayOfMonth()).fetchFirst());
         assertEquals(Integer.valueOf(2),      query.select(employee.datefield.month()).fetchFirst());
         assertEquals(Integer.valueOf(2000),   query.select(employee.datefield.year()).fetchFirst());
@@ -706,7 +706,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void GroupBy_Superior() {
-        SQLQuery<Void> qry = query()
+        SQLQuery<?> qry = query()
             .from(employee)
             .innerJoin(employee._superiorIdKey, employee2);
 
@@ -1849,14 +1849,14 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY, H2})
     public void YearWeek() {
-        SQLQuery<Void> query = query().from(employee).orderBy(employee.id.asc());
+        SQLQuery<?> query = query().from(employee).orderBy(employee.id.asc());
         assertEquals(Integer.valueOf(200006), query.select(employee.datefield.yearWeek()).fetchFirst());
     }
 
     @Test
     @IncludeIn({H2})
     public void YearWeek_H2() {
-        SQLQuery<Void> query = query().from(employee).orderBy(employee.id.asc());
+        SQLQuery<?> query = query().from(employee).orderBy(employee.id.asc());
         assertEquals(Integer.valueOf(200007), query.select(employee.datefield.yearWeek()).fetchFirst());
     }
 

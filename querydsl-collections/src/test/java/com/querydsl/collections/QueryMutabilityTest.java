@@ -28,7 +28,7 @@ public class QueryMutabilityTest {
             NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, IOException {
         QCat cat = QCat.cat;
-        CollQuery<Void> query = new CollQuery<Void>();
+        CollQuery<?> query = new CollQuery<Void>();
         query.from(cat, Collections.<Cat> emptyList());
         new QueryMutability(query).test(cat.id, cat.name);
 

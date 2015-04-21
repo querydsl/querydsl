@@ -37,28 +37,28 @@ public class SerializationTest {
 
     @Test
     public void InnerJoin() {
-        SQLQuery<Void> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).innerJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\ninner join SURVEY s2", query.toString());
     }
 
     @Test
     public void LeftJoin() {
-        SQLQuery<Void> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).leftJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nleft join SURVEY s2", query.toString());
     }
 
     @Test
     public void RightJoin() {
-        SQLQuery<Void> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).rightJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nright join SURVEY s2", query.toString());
     }
 
     @Test
     public void FullJoin() {
-        SQLQuery<Void> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(connection,SQLTemplates.DEFAULT);
         query.from(new QSurvey("s1")).fullJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nfull join SURVEY s2", query.toString());
     }
@@ -112,7 +112,7 @@ public class SerializationTest {
     public void FunctionCall() {
         RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SQLQuery<Void> sq = new SQLQuery<Void>();
+        SQLQuery<?> sq = new SQLQuery<Void>();
         SubQueryExpression<?> expr = sq.from(survey)
             .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not())
             .select(survey.name);
@@ -130,7 +130,7 @@ public class SerializationTest {
     public void FunctionCall2() {
         RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SQLQuery<Void> q = new SQLQuery<Void>(new SQLServerTemplates());
+        SQLQuery<?> q = new SQLQuery<Void>(new SQLServerTemplates());
         q.from(survey)
             .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
 
@@ -143,7 +143,7 @@ public class SerializationTest {
     public void FunctionCall3() {
         RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SQLQuery<Void> q = new SQLQuery<Void>(new HSQLDBTemplates());
+        SQLQuery<?> q = new SQLQuery<Void>(new HSQLDBTemplates());
         q.from(survey)
             .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
 
@@ -154,7 +154,7 @@ public class SerializationTest {
 
     @Test
     public void Union() {
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.union(new SQLQuery<Void>().from(survey).select(survey.all()),
                 new SQLQuery<Void>().from(survey).select(survey.all()));
 
@@ -168,7 +168,7 @@ public class SerializationTest {
 
     @Test
     public void Union_GroupBy() {
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.union(new SQLQuery<Void>().from(survey).select(survey.all()),
                 new SQLQuery<Void>().from(survey).select(survey.all()))
                 .groupBy(survey.id);
@@ -184,7 +184,7 @@ public class SerializationTest {
 
     @Test
     public void Union2() {
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.union(survey,
                 new SQLQuery<Void>().from(survey).select(survey.all()),
                 new SQLQuery<Void>().from(survey).select(survey.all()));
@@ -200,7 +200,7 @@ public class SerializationTest {
     @Test
     public void With() {
         QSurvey survey2 = new QSurvey("survey2");
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.with(survey, survey.id, survey.name).as(
                 new SQLQuery<Void>().from(survey2).select(survey2.id, survey2.name));
 
@@ -213,7 +213,7 @@ public class SerializationTest {
     public void With_Tuple() {
         PathBuilder<Survey> survey = new PathBuilder<Survey>(Survey.class, "SURVEY");
         QSurvey survey2 = new QSurvey("survey2");
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.with(survey, survey.get(survey2.id), survey.get(survey2.name)).as(
                 new SQLQuery<Void>().from(survey2).select(survey2.id, survey2.name));
 
@@ -225,7 +225,7 @@ public class SerializationTest {
     @Test
     public void With_Tuple2() {
         QSurvey survey2 = new QSurvey("survey2");
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.with(survey, survey.id, survey.name).as(
                 new SQLQuery<Void>().from(survey2).select(survey2.id, survey2.name));
 
@@ -237,7 +237,7 @@ public class SerializationTest {
     @Test
     public void With_SingleColumn() {
         QSurvey survey2 = new QSurvey("survey2");
-        SQLQuery<Void> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> q = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         q.with(survey, new Path[]{ survey.id }).as(
                 new SQLQuery<Void>().from(survey2).select(survey2.id));
 

@@ -28,7 +28,7 @@ import com.querydsl.sql.TeradataTemplates;
  * @author tiwe
  *
  */
-public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery<Void>> {
+public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery<?>> {
 
     public TeradataQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -43,7 +43,7 @@ public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery<
     }
 
     @Override
-    public TeradataQuery<Void> query() {
+    public TeradataQuery<?> query() {
         return new TeradataQuery<Void>(connection.get(), configuration);
     }
 

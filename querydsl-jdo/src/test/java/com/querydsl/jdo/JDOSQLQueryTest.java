@@ -44,7 +44,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
     private final SProduct product = SProduct.product;
     
-    protected JDOSQLQuery<Void> sql() {
+    protected JDOSQLQuery<?> sql() {
         return new JDOSQLQuery<Void>(pm, sqlTemplates);
     }
 

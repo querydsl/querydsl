@@ -61,7 +61,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     private EntityManager entityManager;
 
     @Override
-    protected JPAQuery<Void> query() {
+    protected JPAQuery<?> query() {
         return new JPAQuery<Void>(entityManager);
     }
 
@@ -70,7 +70,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Override
-    protected JPAQuery<Void> testQuery() {
+    protected JPAQuery<?> testQuery() {
         return new JPAQuery<Void>(entityManager, new DefaultQueryMetadata());
     }
 
@@ -131,7 +131,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         QChild child = QChild.child;
         QParent parent = QParent.parent;
 
-        JPAQuery<Void> subQuery = new JPAQuery<Void>()
+        JPAQuery<?> subQuery = new JPAQuery<Void>()
             .from(parent)
             .where(parent.id.eq(2),
                     child.parent.eq(parent));

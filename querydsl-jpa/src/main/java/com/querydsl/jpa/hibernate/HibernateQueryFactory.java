@@ -59,7 +59,7 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return query().select(exprs);
     }
 
-    public HibernateQuery<Void> from(EntityPath<?> from) {
+    public HibernateQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }
 
@@ -67,7 +67,7 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return new HibernateUpdateClause(session.get(), path, templates);
     }
 
-    public HibernateQuery<Void> query() {
+    public HibernateQuery<?> query() {
         return new HibernateQuery<Void>(session.get(), templates);
     }
 

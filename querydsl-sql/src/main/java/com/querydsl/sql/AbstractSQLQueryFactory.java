@@ -31,7 +31,7 @@ import com.querydsl.core.types.SubQueryExpression;
  * @author tiwe
  *
  */
-public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<Q>> implements SQLCommonQueryFactory<Q,
+public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLCommonQueryFactory<Q,
     SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     protected final Configuration configuration;

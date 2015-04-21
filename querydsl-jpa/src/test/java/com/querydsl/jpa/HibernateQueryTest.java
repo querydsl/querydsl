@@ -30,15 +30,14 @@ public class HibernateQueryTest {
     public void Clone() {
         QCat cat = QCat.cat;
         BooleanBuilder emptyBooleanBuilder = new BooleanBuilder();
-        HibernateQuery<Void> hq = new HibernateQuery<Void>().from(cat).where(cat.name.isNull().and(emptyBooleanBuilder));
-
-        HibernateQuery<Void> hq2 = hq.clone();
+        HibernateQuery<?> hq = new HibernateQuery<Void>().from(cat).where(cat.name.isNull().and(emptyBooleanBuilder));
+        HibernateQuery<?> hq2 = hq.clone();
         assertNotNull(hq2);
     }
 
     @Test
     public void InnerJoin() {
-        HibernateQuery<Void> hqlQuery = new HibernateQuery<Void>();
+        HibernateQuery<?> hqlQuery = new HibernateQuery<Void>();
         QEmployee employee = QEmployee.employee;
         hqlQuery.from(employee);
         hqlQuery.innerJoin(employee.user, QUser.user);

@@ -41,7 +41,7 @@ public class JPAIntegrationBase extends ParsingTest implements JPATest {
     private JPQLTemplates templates;
     
     @Override
-    protected QueryHelper<Void> query() {
+    protected QueryHelper<?> query() {
         return new QueryHelper<Void>(templates) {
             @Override
             public void parse() throws RecognitionException, TokenStreamException {

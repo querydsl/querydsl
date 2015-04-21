@@ -71,7 +71,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union_Multiple_Columns2() throws SQLException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.firstname, employee.lastname);
-        SQLQuery<Void> query = query();
+        SQLQuery<?> query = query();
         query.union(sq1, sq2);
         List<String> list = query.select(employee.firstname).fetch();
         assertFalse(list.isEmpty());
@@ -86,7 +86,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union_Multiple_Columns3() throws SQLException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.firstname, employee.lastname);
-        SQLQuery<Void> query = query();
+        SQLQuery<?> query = query();
         query.union(sq1, sq2);
         List<Tuple> list = query.select(employee.lastname, employee.firstname).fetch();
         assertFalse(list.isEmpty());
@@ -247,7 +247,7 @@ public class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Employee> sq2 = query().from(employee)
                 .select(Projections.constructor(Employee.class, employee.id.as(idAlias)));
 
-        SQLQuery<Void> query = query();
+        SQLQuery<?> query = query();
         query.union(sq1, sq2);
         query.clone().select(idAlias).fetch();
     }

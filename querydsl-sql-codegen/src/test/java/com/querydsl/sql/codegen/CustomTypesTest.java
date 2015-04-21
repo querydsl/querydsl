@@ -92,7 +92,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
         assertEquals(1l, insert.execute());
 
         // query
-        SQLQuery<Void> query = new SQLQuery<Void>(connection, configuration);
+        SQLQuery<?> query = new SQLQuery<Void>(connection, configuration);
         assertEquals(Gender.MALE, query.from(person).where(person.id.eq(10)).select(person.gender).fetchOne());
 
         // update

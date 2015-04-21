@@ -12,7 +12,7 @@ public class ECJEvaluatorFactoryTest extends AbstractQueryTest {
                 CollQueryTemplates.DEFAULT,
                 new ECJEvaluatorFactory(getClass().getClassLoader()));
         QueryEngine queryEngine = new DefaultQueryEngine(evaluatorFactory);
-        CollQuery<Void> query = new CollQuery<Void>(queryEngine);
+        CollQuery<?> query = new CollQuery<Void>(queryEngine);
         query.from(cat, cats).select(cat.name).fetch();
     }
 

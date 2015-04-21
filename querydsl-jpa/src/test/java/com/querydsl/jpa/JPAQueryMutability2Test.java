@@ -41,11 +41,11 @@ public class JPAQueryMutability2Test implements JPATest {
             add(customOperator, "sign({0})");
     }};
 
-    protected JPAQuery<Void> query() {
+    protected JPAQuery<?> query() {
         return new JPAQuery<Void>(entityManager);
     }
 
-    protected JPAQuery<Void> query(JPQLTemplates templates) {
+    protected JPAQuery<?> query(JPQLTemplates templates) {
         return new JPAQuery<Void>(entityManager, templates);
     }
 
@@ -57,7 +57,7 @@ public class JPAQueryMutability2Test implements JPATest {
     @Test
     public void test() {
         QCat cat = QCat.cat;
-        JPAQuery<Void> query = query().from(cat);
+        JPAQuery<?> query = query().from(cat);
 
         query.fetchCount();
         query.distinct().fetchCount();
@@ -79,8 +79,8 @@ public class JPAQueryMutability2Test implements JPATest {
     @Test
     public void Clone() {
         QCat cat = QCat.cat;
-        JPAQuery<Void> query = query().from(cat).where(cat.name.isNotNull());
-        JPAQuery<Void> query2 = query.clone(entityManager);
+        JPAQuery<?> query = query().from(cat).where(cat.name.isNotNull());
+        JPAQuery<?> query2 = query.clone(entityManager);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
         query2.select(cat).fetch();
@@ -89,7 +89,7 @@ public class JPAQueryMutability2Test implements JPATest {
     @Test
     public void Clone_Custom_Templates() {
         QCat cat = QCat.cat;
-        JPAQuery<Void> query = query().from(cat);
+        JPAQuery<?> query = query().from(cat);
         //attach using the custom templates
         query.clone(entityManager, customTemplates)
                 .select(numberOperation(Integer.class, customOperator, cat.floatProperty)).fetchOne();
@@ -98,7 +98,7 @@ public class JPAQueryMutability2Test implements JPATest {
     @Test
     public void Clone_Keep_Templates() {
         QCat cat = QCat.cat;
-        JPAQuery<Void> query = query(customTemplates).from(cat);
+        JPAQuery<?> query = query(customTemplates).from(cat);
         //keep the original templates
         query.clone()
                 .select(numberOperation(Integer.class, customOperator, cat.floatProperty)).fetchOne();
@@ -107,7 +107,7 @@ public class JPAQueryMutability2Test implements JPATest {
     @Test(expected = IllegalArgumentException.class)
     public void Clone_Lose_Templates() {
         QCat cat = QCat.cat;
-        JPAQuery<Void> query = query(customTemplates).from(cat);
+        JPAQuery<?> query = query(customTemplates).from(cat);
         //clone using the entitymanager's default templates
         query.clone(entityManager)
                 .select(numberOperation(Integer.class, customOperator, cat.floatProperty)).fetchOne();

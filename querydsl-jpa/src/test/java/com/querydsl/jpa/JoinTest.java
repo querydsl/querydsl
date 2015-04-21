@@ -35,8 +35,8 @@ public class JoinTest {
     private final Entity alias = Alias.alias(Entity.class);
 
     private final StringPath path = Expressions.stringPath("path");
-    private final JPAQuery<Void> subQuery = new JPAQuery<Void>();
-    private final HibernateQuery<Void> query = new HibernateQuery<Void>(new DummySessionHolder(), HQLTemplates.DEFAULT);
+    private final JPAQuery<?> subQuery = new JPAQuery<Void>();
+    private final HibernateQuery<?> query = new HibernateQuery<Void>(new DummySessionHolder(), HQLTemplates.DEFAULT);
 
     @Test
     public void SubQuery_InnerJoin() {

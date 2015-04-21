@@ -163,7 +163,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
 
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
-        SQLQuery<Void> sq = query().from(employee).where(employee.id.eq(param));
+        SQLQuery<?> sq = query().from(employee).where(employee.id.eq(param));
         sq.set(param, -12478923);
 
         SQLUpdateClause update = update(survey1);

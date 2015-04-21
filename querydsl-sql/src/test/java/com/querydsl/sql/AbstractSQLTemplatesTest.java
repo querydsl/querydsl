@@ -34,7 +34,7 @@ public abstract class AbstractSQLTemplatesTest {
 
     private SQLTemplates templates;
 
-    protected SQLQuery<Void> query;
+    protected SQLQuery<?> query;
 
     protected abstract SQLTemplates createTemplates();
 
@@ -91,7 +91,7 @@ public abstract class AbstractSQLTemplatesTest {
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
 
-    protected SQLQuery<Void> sq() {
+    protected SQLQuery<?> sq() {
         return new SQLQuery<Void>();
     }
 

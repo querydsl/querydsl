@@ -28,7 +28,7 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<Void>> {
+public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<?>> {
 
     public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -42,7 +42,7 @@ public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<Void
         this(new Configuration(templates), connection);
     }
 
-    public OracleQuery<Void> query() {
+    public OracleQuery<?> query() {
         return new OracleQuery<Void>(connection.get(), configuration);
     }
 

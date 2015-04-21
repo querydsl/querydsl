@@ -91,11 +91,11 @@ public abstract class AbstractJPATest {
         return Mode.target.get();
     }
 
-    protected abstract JPQLQuery<Void> query();
+    protected abstract JPQLQuery<?> query();
 
-    protected abstract JPQLQuery<Void> testQuery();
+    protected abstract JPQLQuery<?> testQuery();
 
-    protected JPAQuery<Void> subQuery() {
+    protected JPAQuery<?> subQuery() {
         return new JPAQuery<Void>();
     }
 
@@ -637,7 +637,7 @@ public abstract class AbstractJPATest {
     public void Enum_In2() {
         QEmployee employee = QEmployee.employee;
 
-        JPQLQuery<Void> query = query();
+        JPQLQuery<?> query = query();
         query.from(employee).where(employee.lastName.eq("Smith"), employee.jobFunctions
                 .contains(JobFunction.CODER));
         assertEquals(1l, query.fetchCount());
@@ -1072,7 +1072,7 @@ public abstract class AbstractJPATest {
         QEmployee employee = QEmployee.employee;
         QUser user = QUser.user;
 
-        JPQLQuery<Void> query = query();
+        JPQLQuery<?> query = query();
         query.from(employee);
         query.innerJoin(employee.user, user);
         query.select(employee).fetch();
@@ -1285,7 +1285,7 @@ public abstract class AbstractJPATest {
         QCompany company = QCompany.company;
         StringExpression name = company.name;
         Integer companyId = query().from(company).select(company.id).fetchFirst();
-        JPQLQuery<Void> query = query().from(company).where(company.id.eq(companyId));
+        JPQLQuery<?> query = query().from(company).where(company.id.eq(companyId));
         String str = query.select(company.name).fetchFirst();
 
         assertEquals(Integer.valueOf(29),

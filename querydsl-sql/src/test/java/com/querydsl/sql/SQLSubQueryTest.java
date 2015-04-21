@@ -37,14 +37,14 @@ public class SQLSubQueryTest {
             public String toString() { return name(); }
             public Class<?> getType() { return Object.class; }
         };
-        SQLQuery<Void> query = new SQLQuery<Void>();
+        SQLQuery<?> query = new SQLQuery<Void>();
         query.from(employee)
             .where(Expressions.booleanOperation(op, employee.id)).toString();
     }
 
     @Test
     public void List() {
-        SQLQuery<Void> query = new SQLQuery<Void>();
+        SQLQuery<?> query = new SQLQuery<Void>();
         query.from(employee);
         SubQueryExpression<?> subQuery = query.select(employee.id, Expressions.constant("XXX"), employee.firstname);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
@@ -56,7 +56,7 @@ public class SQLSubQueryTest {
     @Test
     public void List_Entity() {
         QEmployee employee2 = new QEmployee("employee2");
-        SQLQuery<Void> query = new SQLQuery<Void>();
+        SQLQuery<?> query = new SQLQuery<Void>();
         Expression<?> expr = query.from(employee)
              .innerJoin(employee.superiorIdKey, employee2)
              .select(employee, employee2.id);
@@ -92,7 +92,7 @@ public class SQLSubQueryTest {
 
     @Test
     public void Unique() {
-        SQLQuery<Void> query = new SQLQuery<Void>();
+        SQLQuery<?> query = new SQLQuery<Void>();
         query.from(employee);
         SubQueryExpression<?> subQuery = query.select(employee.id, Expressions.constant("XXX"), employee.firstname);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
@@ -137,7 +137,7 @@ public class SQLSubQueryTest {
             .select(survey.name, Wildcard.count.as(operatorTotalPermits))
             .as("top");
 
-        new SQLQuery(null, SQLTemplates.DEFAULT).from(e);
+        new SQLQuery<Void>(null, SQLTemplates.DEFAULT).from(e);
     }
 
     @Test

@@ -53,12 +53,12 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     private Session session;
 
     @Override
-    protected HibernateQuery<Void> query() {
+    protected HibernateQuery<?> query() {
         return new HibernateQuery<Void>(session, getTemplates());
     }
 
     @Override
-    protected HibernateQuery<Void> testQuery() {
+    protected HibernateQuery<?> testQuery() {
         return new HibernateQuery<Void>(new DefaultSessionHolder(session),
                 getTemplates(), new DefaultQueryMetadata());
     }

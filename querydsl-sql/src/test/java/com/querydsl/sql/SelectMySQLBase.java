@@ -11,7 +11,7 @@ import com.querydsl.core.testutil.IncludeIn;
 
 public class SelectMySQLBase extends AbstractBaseTest {
 
-    protected MySQLQuery<Void> mysqlQuery() {
+    protected MySQLQuery<?> mysqlQuery() {
         return new MySQLQuery<Void>(connection, configuration);
     }
 

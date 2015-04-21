@@ -26,14 +26,14 @@ public class SQLServerQueryTest {
     
     @Test
     public void TableHints_Single() {        
-        SQLServerQuery<Void> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
+        SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT)\nwhere SURVEY.NAME is null", query.toString());
     }
     
     @Test
     public void TableHints_Multiple() {
-        SQLServerQuery<Void> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
+        SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT, SQLServerTableHints.NOLOCK).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT, NOLOCK)\nwhere SURVEY.NAME is null", query.toString());
     }
@@ -41,7 +41,7 @@ public class SQLServerQueryTest {
     @Test
     public void TableHints_Multiple2() {
         QSurvey survey2 = new QSurvey("survey2");
-        SQLServerQuery<Void> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
+        SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT)
              .from(survey2).tableHints(SQLServerTableHints.NOLOCK)
              .where(survey.name.isNull());

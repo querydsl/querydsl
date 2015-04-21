@@ -20,7 +20,7 @@ public class SelectOracleBase extends AbstractBaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
-    protected OracleQuery<Void> oracleQuery() {
+    protected OracleQuery<?> oracleQuery() {
         return new OracleQuery<Void>(connection, configuration) {
             @Override
             protected SQLSerializer serialize(boolean forCountRow) {

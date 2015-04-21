@@ -55,7 +55,7 @@ public class SQLSerializerTest {
     @Test
     public void CountDistinct() {
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
-        SQLQuery<Void> query = new SQLQuery<Void>();
+        SQLQuery<?> query = new SQLQuery<Void>();
         query.from(QEmployeeNoPK.employee);
         query.distinct();
         serializer.serializeForQuery(query.getMetadata(), true);
@@ -69,7 +69,7 @@ public class SQLSerializerTest {
     public void CountDistinct_PostgreSQL() {
         Configuration postgresql = new Configuration(new PostgreSQLTemplates());
         SQLSerializer serializer = new SQLSerializer(postgresql);
-        SQLQuery<Void> query = new SQLQuery<Void>();
+        SQLQuery<?> query = new SQLQuery<Void>();
         query.from(QEmployeeNoPK.employee);
         query.distinct();
         serializer.serializeForQuery(query.getMetadata(), true);
@@ -156,7 +156,7 @@ public class SQLSerializerTest {
 
     @Test
     public void From_Function() {
-        SQLQuery<Void> query = query();
+        SQLQuery<?> query = query();
         query.from(Expressions.template(Survey.class, "functionCall()")).join(survey);
         query.where(survey.name.isNotNull());
         assertEquals("from functionCall()\njoin SURVEY SURVEY\nwhere SURVEY.NAME is not null", query.toString());
@@ -164,7 +164,7 @@ public class SQLSerializerTest {
 
     @Test
     public void Join_To_Function_With_Alias() {
-        SQLQuery<Void> query = query();
+        SQLQuery<?> query = query();
         query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin functionCall() as fc\nwhere SURVEY.NAME is not null", query.toString());
@@ -172,7 +172,7 @@ public class SQLSerializerTest {
 
     @Test
     public void Join_To_Function_In_Derby() {
-        SQLQuery<Void> query = new SQLQuery<Void>(new DerbyTemplates());
+        SQLQuery<?> query = new SQLQuery<Void>(new DerbyTemplates());
         query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
@@ -180,7 +180,7 @@ public class SQLSerializerTest {
 
     @Test
     public void Keyword_After_Dot() {
-        SQLQuery<Void> query = new SQLQuery<Void>(MySQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(MySQLTemplates.DEFAULT);
         PathBuilder<Survey> surveyBuilder = new PathBuilder<Survey>(Survey.class, "survey");
         query.from(surveyBuilder).where(surveyBuilder.get("not").isNotNull());
         assertFalse(query.toString().contains("`"));
@@ -199,7 +199,7 @@ public class SQLSerializerTest {
         Configuration conf = new Configuration(new DerbyTemplates());
         conf.registerTableOverride("SURVEY", "surveys");
 
-        SQLQuery<Void> query = new SQLQuery<Void>(conf);
+        SQLQuery<?> query = new SQLQuery<Void>(conf);
         query.from(survey);
         assertEquals("from surveys SURVEY", query.toString());
     }
@@ -209,7 +209,7 @@ public class SQLSerializerTest {
         Configuration conf = new Configuration(new DerbyTemplates());
         conf.registerColumnOverride("SURVEY", "NAME", "LABEL");
 
-        SQLQuery<Void> query = new SQLQuery<Void>(conf);
+        SQLQuery<?> query = new SQLQuery<Void>(conf);
         query.from(survey).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY\n" +
                 "where SURVEY.LABEL is null", query.toString());
@@ -220,7 +220,7 @@ public class SQLSerializerTest {
         Configuration conf = new Configuration(new DerbyTemplates());
         conf.registerColumnOverride("PUBLIC", "SURVEY", "NAME", "LABEL");
 
-        SQLQuery<Void> query = new SQLQuery<Void>(conf);
+        SQLQuery<?> query = new SQLQuery<Void>(conf);
         query.from(survey).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY\n" +
                 "where SURVEY.LABEL is null", query.toString());
@@ -248,7 +248,7 @@ public class SQLSerializerTest {
         System.err.println(serializer);
     }
 
-    private SQLQuery<Void> query() {
+    private SQLQuery<?> query() {
         return new SQLQuery<Void>();
     }
 
@@ -285,7 +285,7 @@ public class SQLSerializerTest {
 
         QEmployee e = QEmployee.employee;
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
-        SQLQuery<Void> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub,
                 query().unionAll(
                     query().from(e).where(e.firstname.eq("Mike"))
@@ -321,7 +321,7 @@ public class SQLSerializerTest {
 
         QEmployee e = QEmployee.employee;
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
-        SQLQuery<Void> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub, sub.get(e.id), sub.get(e.firstname), sub.get(e.superiorId)).as(
                 query().unionAll(
                     query().from(e).where(e.firstname.eq("Mike"))

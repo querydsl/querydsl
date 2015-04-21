@@ -41,7 +41,7 @@ public class QueryPerformanceTest implements JPATest {
         Mode.target.remove();
     }
 
-    private JPAQuery<Void> query() {
+    private JPAQuery<?> query() {
         return new JPAQuery<Void>(entityManager);
     }
 

@@ -44,7 +44,7 @@ public class UniqueResultsTest implements HibernateTest {
         assertEquals(Long.valueOf(3), query().from(cat).select(cat.count()).fetchOne());
     }
 
-    private HibernateQuery<Void> query() {
+    private HibernateQuery<?> query() {
         return new HibernateQuery<Void>(session);
     }
 

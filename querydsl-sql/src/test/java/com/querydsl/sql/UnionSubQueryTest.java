@@ -85,7 +85,7 @@ public class UnionSubQueryTest {
                 "(select 3 from dual)", serializer.toString());
     }
 
-    private SQLQuery<Void> query() {
+    private SQLQuery<?> query() {
         return new SQLQuery<Void>();
     }
 

@@ -25,7 +25,7 @@ import com.querydsl.sql.*;
  * @author tiwe
  *
  */
-public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQuery<Void>> {
+public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQuery<?>> {
 
     public PostgreSQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -39,7 +39,7 @@ public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQu
         this(new Configuration(templates), connection);
     }
 
-    public PostgreSQLQuery<Void> query() {
+    public PostgreSQLQuery<?> query() {
         return new PostgreSQLQuery<Void>(connection.get(), configuration);
     }
 

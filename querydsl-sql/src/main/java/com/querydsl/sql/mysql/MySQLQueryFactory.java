@@ -29,7 +29,7 @@ import com.querydsl.sql.dml.SQLInsertClause;
  * @author tiwe
  *
  */
-public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<Void>> {
+public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<?>> {
 
     public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -61,7 +61,7 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<Void>>
         return insert;
     }
     
-    public MySQLQuery<Void> query() {
+    public MySQLQuery<?> query() {
         return new MySQLQuery<Void>(connection.get(), configuration);
     }
 

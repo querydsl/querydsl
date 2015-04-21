@@ -39,7 +39,7 @@ public class SerializationBase implements JPATest {
     @Test
     public void test() throws IOException, ClassNotFoundException{
         // create query
-        JPAQuery<Void> query = query();
+        JPAQuery<?> query = query();
         query.from(cat).where(cat.name.eq("Kate")).select(cat).fetch();
         
         QueryMetadata metadata = query.getMetadata();
@@ -54,7 +54,7 @@ public class SerializationBase implements JPATest {
         assertEquals(metadata.getProjection(), metadata2.getProjection());
         
         // create new query
-        JPAQuery<Void> query2 = new JPAQuery<Void>(entityManager, metadata2);
+        JPAQuery<?> query2 = new JPAQuery<Void>(entityManager, metadata2);
         assertEquals("select cat\nfrom Cat cat\nwhere cat.name = ?1", query2.toString());
         query2.select(cat).fetch();
     }
@@ -90,7 +90,7 @@ public class SerializationBase implements JPATest {
         }
     }
 
-    private JPAQuery<Void> query() {
+    private JPAQuery<?> query() {
         return new JPAQuery<Void>(entityManager);
     }
 

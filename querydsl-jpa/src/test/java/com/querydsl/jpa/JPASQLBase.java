@@ -48,7 +48,7 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
     private EntityManager entityManager;
 
     @Override
-    protected JPASQLQuery<Void> query() {
+    protected JPASQLQuery<?> query() {
         return new JPASQLQuery<Void>(entityManager, templates);
     }
 

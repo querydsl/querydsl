@@ -26,7 +26,7 @@ import com.querydsl.core.types.Expression;
  * @author tiwe
  *
  */
-public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<Void>> {
+public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
 
     /**
      * Create a new DELETE clause
@@ -57,7 +57,7 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<Void>> {
      * @param from
      * @return
      */
-    JPQLQuery<Void> from(EntityPath<?> from);
+    JPQLQuery<?> from(EntityPath<?> from);
     
     /**
      * Create a new UPDATE clause

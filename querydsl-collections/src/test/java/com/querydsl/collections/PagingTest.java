@@ -60,8 +60,8 @@ public class PagingTest extends AbstractQueryTest {
         assertEquals(size, IteratorAdapter.asList(createQuery(modifiers).select(var).iterate()).size());
     }
 
-    private CollQuery<Void> createQuery(QueryModifiers modifiers) {
-        CollQuery<Void> query = new CollQuery<Void>().from(var, ints);
+    private CollQuery<?> createQuery(QueryModifiers modifiers) {
+        CollQuery<?> query = new CollQuery<Void>().from(var, ints);
         if (modifiers != null) {
             query.restrict(modifiers);
         }

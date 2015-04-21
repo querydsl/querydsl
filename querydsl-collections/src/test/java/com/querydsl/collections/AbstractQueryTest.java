@@ -50,7 +50,7 @@ public abstract class AbstractQueryTest {
 
     protected List<Integer> myInts = new ArrayList<Integer>();
 
-    protected TestQuery<Void> last;
+    protected TestQuery<?> last;
 
     
     @Before
@@ -68,7 +68,7 @@ public abstract class AbstractQueryTest {
         return cats;
     }
 
-    protected TestQuery<Void> query() {
+    protected TestQuery<?> query() {
         last = new TestQuery<Void>();
         return last;
     }

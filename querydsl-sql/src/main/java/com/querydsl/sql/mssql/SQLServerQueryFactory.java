@@ -28,7 +28,7 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuery<Void>> {
+public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuery<?>> {
 
     public SQLServerQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -42,7 +42,7 @@ public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuer
         this(new Configuration(templates), connection);
     }
 
-    public SQLServerQuery<Void> query() {
+    public SQLServerQuery<?> query() {
         return new SQLServerQuery<Void>(connection.get(), configuration);
     }
 

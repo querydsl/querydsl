@@ -42,7 +42,7 @@ public abstract class AbstractSQLTest {
 
     }
 
-    protected SQLQuery<Void> sq() {
+    protected SQLQuery<?> sq() {
         return new SQLQuery<Void>();
     }
 

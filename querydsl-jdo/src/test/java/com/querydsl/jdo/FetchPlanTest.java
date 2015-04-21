@@ -34,7 +34,7 @@ import com.querydsl.jdo.test.domain.QStore;
 
 public class FetchPlanTest extends AbstractJDOTest{
     
-    private JDOQuery<Void> query;
+    private JDOQuery<?> query;
     
     @After
     public void tearDown() {

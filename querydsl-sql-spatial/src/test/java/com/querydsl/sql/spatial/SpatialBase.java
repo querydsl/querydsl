@@ -31,27 +31,27 @@ public class SpatialBase extends AbstractBaseTest {
     // multilinestring 12-13
     // multipolygon 14-15
 
-    private SQLQuery<Void> withPoints() {
+    private SQLQuery<?> withPoints() {
         return query().from(shapes).where(shapes.id.between(1, 5));
     }
 
-    private SQLQuery<Void> withLineStrings() {
+    private SQLQuery<?> withLineStrings() {
         return query().from(shapes).where(shapes.id.between(6, 7));
     }
 
-    private SQLQuery<Void> withPolygons() {
+    private SQLQuery<?> withPolygons() {
         return query().from(shapes).where(shapes.id.between(8, 9));
     }
 
-    private SQLQuery<Void> withMultipoints() {
+    private SQLQuery<?> withMultipoints() {
         return query().from(shapes).where(shapes.id.between(10, 11));
     }
 
-    private SQLQuery<Void> withMultiLineStrings() {
+    private SQLQuery<?> withMultiLineStrings() {
         return query().from(shapes).where(shapes.id.between(12, 13));
     }
 
-    private SQLQuery<Void> withMultiPolygons() {
+    private SQLQuery<?> withMultiPolygons() {
         return query().from(shapes).where(shapes.id.between(14, 15));
     }
 

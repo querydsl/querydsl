@@ -42,7 +42,7 @@ public class TupleTest extends AbstractQueryTest {
                     "(select cat.mate, max(cat.birthdate) from Cat cat group by cat.mate))", subQuery);
     }
 
-    private HibernateQuery<Void> subQuery() {
+    private HibernateQuery<?> subQuery() {
         return new HibernateQuery<Void>();
     }
     

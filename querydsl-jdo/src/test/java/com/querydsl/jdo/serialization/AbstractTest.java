@@ -21,7 +21,7 @@ import com.querydsl.jdo.JDOQuery;
 
 public abstract class AbstractTest {
 
-    protected JDOQuery<Void> query() {
+    protected JDOQuery<?> query() {
         return new JDOQuery<Void>();
     }
 

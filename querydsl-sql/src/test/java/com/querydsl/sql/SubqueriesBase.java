@@ -99,7 +99,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     @ExcludeIn({MYSQL, POSTGRESQL, DERBY, SQLSERVER, TERADATA})
     public void SubQuery_Params() {
         Param<String> aParam = new Param<String>(String.class, "param");
-        SQLQuery<Void> subQuery = new SQLQuery<Void>().from(employee).where(employee.firstname.eq(aParam));
+        SQLQuery<?> subQuery = new SQLQuery<Void>().from(employee).where(employee.firstname.eq(aParam));
         subQuery.set(aParam, "Mike");
 
         assertEquals(1, query().from(subQuery.select(Wildcard.all)).fetchCount());
@@ -130,7 +130,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     @Test
     @SkipForQuoted
     public void SubQuerySerialization() {
-        SQLQuery<Void> query = query();
+        SQLQuery<?> query = query();
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
 

@@ -54,7 +54,7 @@ public class JacocoTest {
         }
         CloneableKlasse vo = Alias.alias(CloneableKlasse.class, "vo");
         assertNotNull(vo);
-        CollQuery<Void> query = new CollQuery<Void>();
+        CollQuery<?> query = new CollQuery<Void>();
         final EntityPathBase<CloneableKlasse> fromVo = Alias.$(vo);
         assertNotNull(fromVo);
         query.from(fromVo, vos);

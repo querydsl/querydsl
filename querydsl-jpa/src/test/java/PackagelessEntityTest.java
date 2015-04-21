@@ -25,8 +25,8 @@ public class PackagelessEntityTest {
     @SuppressWarnings("unchecked")
     @Test
     public void PackageLess_Path() {
-        JPAQuery<Void> query = new JPAQuery<Void>();
-        PathBuilder builder = new PathBuilder(PackagelessEntityTest.class,"entity");
+        JPAQuery<?> query = new JPAQuery<Void>();
+        PathBuilder<PackagelessEntityTest> builder = new PathBuilder(PackagelessEntityTest.class,"entity");
         query.from(builder);
         assertEquals("select entity\nfrom PackagelessEntityTest entity", query.toString());
     }

@@ -46,7 +46,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
     private Session session;
 
     @Override
-    protected HibernateSQLQuery<Void> query() {
+    protected HibernateSQLQuery<?> query() {
         return new HibernateSQLQuery<Void>(session, templates);
     }
 

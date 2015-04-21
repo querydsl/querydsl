@@ -26,7 +26,7 @@ import com.querydsl.core.types.EntityPath;
  * @author tiwe
  *
  */
-public class JDOQueryFactory implements QueryFactory<JDOQuery<Void>> {
+public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
 
     private final Provider<PersistenceManager> persistenceManager;
 
@@ -38,11 +38,11 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<Void>> {
         return new JDODeleteClause(persistenceManager.get(), path);
     }
 
-    public JDOQuery<Void> from(EntityPath<?> from) {
+    public JDOQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }
 
-    public JDOQuery<Void> query() {
+    public JDOQuery<?> query() {
         return new JDOQuery<Void>(persistenceManager.get());
     }
 

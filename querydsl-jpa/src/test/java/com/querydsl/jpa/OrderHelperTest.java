@@ -22,7 +22,7 @@ public class OrderHelperTest {
         order.add("previousProject.customer.company.name");
         order.add("department.name");
 
-        JPAQuery<Void> query = new JPAQuery<Void>();
+        JPAQuery<?> query = new JPAQuery<Void>();
         query.from(entity);
         OrderHelper.orderBy(query, entity, order);
         assertEquals("select project\n" +

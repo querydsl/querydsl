@@ -10,7 +10,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class PostgreSQLQueryTest {
     
-    private PostgreSQLQuery<Void> query;
+    private PostgreSQLQuery<?> query;
     
     private QSurvey survey = new QSurvey("survey");
     

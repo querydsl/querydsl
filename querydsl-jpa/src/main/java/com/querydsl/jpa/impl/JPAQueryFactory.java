@@ -66,7 +66,7 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
-    public JPAQuery<Void> from(EntityPath<?> from) {
+    public JPAQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }
 
@@ -80,7 +80,7 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
-    public JPAQuery<Void> query() {
+    public JPAQuery<?> query() {
         if (templates != null) {
             return new JPAQuery<Void>(entityManager.get(), templates);
         } else {

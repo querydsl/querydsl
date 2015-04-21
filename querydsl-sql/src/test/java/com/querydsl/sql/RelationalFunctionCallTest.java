@@ -50,7 +50,7 @@ public class RelationalFunctionCallTest {
     public void Validation() {
         QSurvey survey = QSurvey.survey;
         TokenizeFunction func = new TokenizeFunction("func", "a", "b");
-        SQLQuery<Void> sub = new SQLQuery<Void>().from(func.as(func.alias)).where(survey.name.like(func.token));
+        SQLQuery<?> sub = new SQLQuery<Void>().from(func.as(func.alias)).where(survey.name.like(func.token));
         System.out.println(sub);
         
     }

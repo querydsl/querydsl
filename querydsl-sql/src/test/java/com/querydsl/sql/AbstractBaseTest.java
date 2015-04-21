@@ -136,8 +136,8 @@ public abstract class AbstractBaseTest {
         return sqlMergeClause;
     }
 
-    protected ExtendedSQLQuery<Void> extQuery() {
-        ExtendedSQLQuery<Void> extendedSQLQuery = new ExtendedSQLQuery<Void>(connection, configuration);
+    protected ExtendedSQLQuery<?> extQuery() {
+        ExtendedSQLQuery<?> extendedSQLQuery = new ExtendedSQLQuery<Void>(connection, configuration);
         extendedSQLQuery.addListener(new TestLoggingListener());
         return extendedSQLQuery;
     }
@@ -148,19 +148,19 @@ public abstract class AbstractBaseTest {
         return mySQLReplaceClause;
     }
 
-    protected SQLQuery<Void> query() {
+    protected SQLQuery<?> query() {
         SQLQuery<Void> testQuery = new TestQuery<Void>(connection, configuration);
         testQuery.addListener(new TestLoggingListener());
         return testQuery;
     }
 
-    protected TeradataQuery<Void> teradataQuery() {
-        TeradataQuery<Void> teradataQuery = new TeradataQuery<Void>(connection, configuration);
+    protected TeradataQuery<?> teradataQuery() {
+        TeradataQuery<?> teradataQuery = new TeradataQuery<Void>(connection, configuration);
         teradataQuery.addListener(new TestLoggingListener());
         return teradataQuery;
     }
 
-    protected TestQuery<Void> testQuery() {
+    protected TestQuery<?> testQuery() {
         TestQuery<Void> testQuery = new TestQuery<Void>(connection, configuration, new DefaultQueryMetadata());
         testQuery.addListener(new TestLoggingListener());
         return testQuery;

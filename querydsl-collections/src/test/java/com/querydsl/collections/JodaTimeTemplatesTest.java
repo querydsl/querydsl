@@ -14,7 +14,7 @@ import com.querydsl.core.types.dsl.TimePath;
 
 public class JodaTimeTemplatesTest {
     
-    private CollQuery<Void> query = new CollQuery<Void>(JodaTimeTemplates.DEFAULT);
+    private CollQuery<?> query = new CollQuery<Void>(JodaTimeTemplates.DEFAULT);
     
     @Test
     public void DateTime() {

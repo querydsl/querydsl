@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  * @author tiwe
  *
  */
-public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<Void>> {
+public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
 
     static class DataSourceProvider implements Provider<Connection> {
 
@@ -59,7 +59,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<Void>> {
     }
 
     @Override
-    public SQLQuery<Void> query() {
+    public SQLQuery<?> query() {
         return new SQLQuery<Void>(connection.get(), configuration);
     }
 

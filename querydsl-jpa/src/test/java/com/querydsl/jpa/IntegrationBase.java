@@ -43,7 +43,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     private Session session;
 
     @Override
-    protected QueryHelper<Void> query() {
+    protected QueryHelper<?> query() {
         return new QueryHelper<Void>(HQLTemplates.DEFAULT) {
             @Override
             public void parse() throws RecognitionException, TokenStreamException {
@@ -102,7 +102,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         session.save(new Cat("Steve",11));
 
         QCat cat = QCat.cat;
-        HibernateQuery<Void> query = new HibernateQuery<Void>(session);
+        HibernateQuery<?> query = new HibernateQuery<Void>(session);
         ScrollableResults results = query.from(cat).select(cat).scroll(ScrollMode.SCROLL_INSENSITIVE);
         while (results.next()) {
             System.out.println(results.get(0));
