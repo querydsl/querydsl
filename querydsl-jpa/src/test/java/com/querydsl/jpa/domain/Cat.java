@@ -109,5 +109,9 @@ public class Cat extends Animal {
         this.kittensSet = kittensSet;
     }
 
+    public void setMate(Cat mate) {
+        this.mate = mate;
+    }
+
 }
 

@@ -22,7 +22,7 @@ import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
@@ -38,9 +38,12 @@ import com.querydsl.core.util.MathUtils;
  */
 public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
-    private static final Set<Operator> NUMERIC = ImmutableSet.<Operator>of(
+    private static final Set<? extends Operator> NUMERIC = Sets.immutableEnumSet(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
             Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN);
+
+    private static final Set<? extends Operator> CASE_OPS = Sets.immutableEnumSet(
+            Ops.CASE_EQ_ELSE, Ops.CASE_ELSE);
 
     private static final String COMMA = ", ";
 
@@ -334,10 +337,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             append("'");
             append(escapeLiteral(constant.toString()));
             append("'");
-        } else if (constant instanceof Enum) {
+        } else if (constant instanceof Enum<?>) {
             append(constant.getClass().getName());
             append(".");
-            append(((Enum) constant).name());
+            append(((Enum<?>) constant).name());
         } else {
             // TODO date time literals
             throw new IllegalArgumentException("Unsupported constant " + constant);
@@ -403,7 +406,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean oldInCaseOperation = inCaseOperation;
-        inCaseOperation = inCaseOperation || operator.equals(Ops.CASE) || operator.equals(Ops.CASE_EQ);
+        inCaseOperation = CASE_OPS.contains(operator);
         boolean oldWrapElements = wrapElements;
         wrapElements = templates.wrapElements(operator);
 

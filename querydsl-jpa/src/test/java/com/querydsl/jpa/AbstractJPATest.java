@@ -121,6 +121,7 @@ public abstract class AbstractJPATest {
             cat.setDateField(date);
             cat.setTimeField(time);
             cat.setColor(Color.BLACK);
+            cat.setMate(prev);
             save(cat);
             savedCats.add(cat);
             prev = cat;
@@ -339,6 +340,14 @@ public abstract class AbstractJPATest {
                         .where(cat.id.eq(otherCat.id.add(1)))
                         .orderBy(cat.id.asc(), otherCat.id.asc())
                         .list(numExpression2.intValue()));
+    }
+
+    @Test
+    @NoEclipseLink // EclipseLink uses a left join for cat.mate
+    public void Case5() {
+        assertEquals(ImmutableList.of(0, 1, 1, 1),
+                query().from(cat).orderBy(cat.id.asc())
+                        .list(cat.mate.when(savedCats.get(0)).then(0).otherwise(1)));
     }
 
     @Test
