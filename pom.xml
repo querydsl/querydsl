@@ -25,7 +25,10 @@
     <project.homepage>http://www.querydsl.com</project.homepage>
     <project.githubpage>http://github.com/querydsl/querydsl</project.githubpage>
     <project.checkout>scm:git:git@github.com:querydsl/querydsl.git</project.checkout>
-    
+
+    <!-- custom checkstyle checks -->
+    <querydsl-checkstyle-checks.version>0.1.BUILD-SNAPSHOT</querydsl-checkstyle-checks.version>
+
     <!-- deps -->
     <derby.version>10.10.1.1</derby.version>
     <hsqldb.version>2.3.1</hsqldb.version>
@@ -418,6 +421,13 @@
             <artifactId>checkstyle</artifactId>
             <version>6.4.1</version>
           </dependency>
+
+          <!-- custom checkstyle checks -->
+          <dependency>
+            <groupId>com.querydsl.checkstyle</groupId>
+            <artifactId>checkstyle-checks</artifactId>
+            <version>${querydsl-checkstyle-checks.version}</version>
+         </dependency>
         </dependencies>
       </plugin>
     </plugins>
