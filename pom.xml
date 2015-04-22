@@ -404,6 +404,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
+              <includeTestSourceDirectory>true</includeTestSourceDirectory>
               <failOnViolation>true</failOnViolation>
             </configuration>
           </execution>
