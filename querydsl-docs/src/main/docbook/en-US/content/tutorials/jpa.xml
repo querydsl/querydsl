@@ -711,7 +711,7 @@ cats = query.from(cat)
 query = new JPASQLQuery(entityManager, templates);
 List<CatDTO> catDTOs = query.from(cat)
     .orderBy(cat.name.asc())
-    .list(ConstructorExpression.create(CatDTO.class, cat.id, cat.name));
+    .list(Projections.constructor(CatDTO.class, cat.id, cat.name));
 ]]></programlisting>
 
     <para>If you are using the Hibernate API instead of the JPA API, then use

@@ -119,7 +119,7 @@ public class CollQueryStandardTest {
     @Test
     public void ConstructorProjection() {
         List<Projection> projections =  CollQueryFactory.from(cat, data)
-            .list(ConstructorExpression.create(Projection.class, cat.name, cat));
+            .list(Projections.constructor(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections) {
             assertNotNull(projection);

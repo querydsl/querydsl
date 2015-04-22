@@ -14,7 +14,6 @@ import com.querydsl.core.SearchResults;
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
-import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.SubQueryExpression;
@@ -78,7 +77,7 @@ public abstract class AbstractSQLTest {
     @Ignore
     public void EntityProjections() {
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
-                .list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
+                .list(Projections.constructor(Cat.class, cat.name, cat.id));
         assertEquals(6, cats.size());
         for (Cat c : cats) {
             System.out.println(c.getName());

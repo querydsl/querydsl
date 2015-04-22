@@ -451,7 +451,7 @@ public abstract class AbstractJPATest {
     @Test
     public void ConstructorProjection() {
         List<Projection> projections = query().from(cat)
-                .list(ConstructorExpression.create(Projection.class, cat.name, cat));
+                .list(Projections.constructor(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections) {
             assertNotNull(projection);
