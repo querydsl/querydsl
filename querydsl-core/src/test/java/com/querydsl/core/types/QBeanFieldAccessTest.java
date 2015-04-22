@@ -66,7 +66,7 @@ public class QBeanFieldAccessTest {
 
     @Test
     public void with_Path_and_Exprs_using_fields() {
-        QBean<Entity> beanProjection = new QBean<Entity>(entity, true, name, age, married);
+        QBean<Entity> beanProjection = Projections.fields(entity, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.name);
         assertEquals(30, bean.age);

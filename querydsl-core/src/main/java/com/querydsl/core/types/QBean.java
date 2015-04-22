@@ -88,55 +88,9 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      * Create a new QBean instance
      *
      * @param type
-     * @param args
-     */
-    @SuppressWarnings("unchecked")
-    protected QBean(Path<T> type, Expression<?>... args) {
-        this((Class)type.getType(), false, args);
-    }
-
-    /**
-     * Create a new QBean instance
-     *
-     * @param type
      * @param bindings
      */
-    @SuppressWarnings("unchecked")
-    protected QBean(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
-        this((Class)type.getType(), false, bindings);
-    }
-
-    /**
-     * Create a new QBean instance
-     *
-     * @param type
-     * @param fieldAccess
-     * @param args
-     */
-    @SuppressWarnings("unchecked")
-    protected QBean(Path<T> type, boolean fieldAccess, Expression<?>... args) {
-        this((Class)type.getType(), fieldAccess, args);
-    }
-
-    /**
-     * Create a new QBean instance
-     *
-     * @param type
-     * @param fieldAccess
-     * @param bindings
-     */
-    @SuppressWarnings("unchecked")
-    protected QBean(Path<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
-        this((Class)type.getType(), fieldAccess, bindings);
-    }
-
-    /**
-     * Create a new QBean instance
-     *
-     * @param type
-     * @param bindings
-     */
-    protected QBean(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
+    protected QBean(Class<? extends T> type, Map<String, ? extends Expression<?>> bindings) {
         this(type, false, bindings);
     }
 
@@ -146,7 +100,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      * @param type
      * @param args
      */
-    protected QBean(Class<T> type, Expression<?>... args) {
+    protected QBean(Class<? extends T> type, Expression<?>... args) {
         this(type, false, args);
     }
 
@@ -157,7 +111,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      * @param fieldAccess
      * @param args
      */
-    protected QBean(Class<T> type, boolean fieldAccess, Expression<?>... args) {
+    protected QBean(Class<? extends T> type, boolean fieldAccess, Expression<?>... args) {
         this(type, fieldAccess, createBindings(args));
     }
 
@@ -168,7 +122,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      * @param fieldAccess
      * @param bindings
      */
-    protected QBean(Class<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
+    protected QBean(Class<? extends T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
         this.bindings = ImmutableMap.copyOf(bindings);
         this.fieldAccess = fieldAccess;
