@@ -518,7 +518,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 args);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private List<? extends Expression<?>> normalizeNumericArgs(List<? extends Expression<?>> args) {
         boolean hasConstants = false;
         Class<? extends Number> numType = null;

@@ -72,7 +72,7 @@ public class GenericTest extends AbstractTest {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "serial" })
+    @SuppressWarnings({ "serial", "unchecked" })
     public static class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>>{
         @Override
         public double doubleValue() {

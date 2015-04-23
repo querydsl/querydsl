@@ -214,7 +214,7 @@ public final class Configuration {
      * @param value
      * @throws SQLException
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> void set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException {
         if (Null.class.isInstance(value)) {
             Integer sqlType = path != null ? ColumnMetadata.getColumnMetadata(path).getJdbcType() : null;
@@ -228,7 +228,7 @@ public final class Configuration {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
         if (hasTableColumnTypes && path != null && !clazz.equals(Null.class)
                 && path.getMetadata().getParent() instanceof RelationalPath) {

@@ -160,7 +160,7 @@ public final class Expressions {
      * @param alias
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <D> SimpleExpression<D> constantAs(D source, Path<D> alias) {
         if (source == null) {
             return as((Expression)nullExpression(), alias);

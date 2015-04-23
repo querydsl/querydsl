@@ -142,7 +142,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
@@ -256,7 +256,7 @@ public abstract class DetachableSQLQuery<Q extends DetachableSQLQuery<Q>> extend
         return queryMixin.rightJoin(target, alias);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <T> CollectionExpressionBase<?,T> union(Operator op, List<? extends SubQueryExpression<?>> sq) {
         Expression<?> rv = sq.get(0);
         if (sq.size() == 1 && !CollectionExpression.class.isInstance(rv)) {

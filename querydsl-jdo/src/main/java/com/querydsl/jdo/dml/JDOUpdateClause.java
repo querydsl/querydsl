@@ -43,7 +43,7 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public JDOUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {

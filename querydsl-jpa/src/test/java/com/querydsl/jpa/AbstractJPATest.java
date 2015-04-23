@@ -647,7 +647,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn({MYSQL, DERBY})
+    @ExcludeIn({DERBY, MYSQL})
     @NoBatooJPA
     public void GroupBy() {
         QAuthor author = QAuthor.author;
@@ -1294,7 +1294,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, DERBY})
+    @ExcludeIn({DERBY, HSQLDB})
     public void Substring_From_Right2() {
         query().from(cat)
             .where(cat.name.substring(cat.name.length().subtract(1), cat.name.length())

@@ -32,7 +32,7 @@ public class QueryInit4Test {
 
         String tenantName;
 
-        @QueryInit({"user.primaryTenant", "tenant"})
+        @QueryInit({"tenant", "user.primaryTenant"})
         Set<UserTenantApplication> userTenantApplications;
         
         Set<Organization> organizations;

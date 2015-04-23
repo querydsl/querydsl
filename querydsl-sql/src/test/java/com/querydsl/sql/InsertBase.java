@@ -180,7 +180,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, HSQLDB, DB2, DERBY, ORACLE})
+    @ExcludeIn({DB2, DERBY, FIREBIRD, HSQLDB, ORACLE})
     public void Insert_Without_Values() {
         assertEquals(1, insert(survey).execute());
     }
@@ -288,7 +288,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, CUBRID, DERBY, FIREBIRD})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, HSQLDB})
     public void Insert_With_SubQuery2() {
 //        insert into modules(name)
 //        select 'MyModule'
@@ -305,7 +305,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, CUBRID, DERBY})
+    @ExcludeIn({CUBRID, DERBY, HSQLDB})
     public void Insert_With_SubQuery3() {
 //        insert into modules(name)
 //        select 'MyModule'

@@ -287,7 +287,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private String[] imports;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (isForTest()) {

@@ -226,13 +226,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, DB2, DERBY, FIREBIRD, ORACLE, SQLITE, SQLSERVER, TERADATA})
     public void Boolean_All() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.all(employee.firstname.isNotNull())));
     }
 
     @Test
-    @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
+    @ExcludeIn({CUBRID, DB2, DERBY, FIREBIRD, ORACLE, SQLITE, SQLSERVER, TERADATA})
     public void Boolean_Any() {
         assertTrue(query().from(employee).uniqueResult(SQLExpressions.any(employee.firstname.isNotNull())));
     }
@@ -401,7 +401,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @IncludeIn({H2, SQLSERVER, MYSQL, ORACLE, TERADATA}) // TODO fix postgresql
+    @IncludeIn({H2, MYSQL, ORACLE, SQLSERVER, TERADATA}) // TODO fix postgresql
     public void Dates() {
         long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
@@ -672,7 +672,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({H2, SQLITE, DERBY, CUBRID, MYSQL})
+    @ExcludeIn({CUBRID, DERBY, H2, MYSQL, SQLITE})
     public void Full_Join() throws SQLException {
         query().from(employee).fullJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
@@ -730,7 +730,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({H2, DB2, DERBY, ORACLE, SQLSERVER})
+    @ExcludeIn({DB2, DERBY, H2, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
         NumberPath<BigDecimal> alias = new NumberPath<BigDecimal>(BigDecimal.class, "alias");
         query().from(employee)
@@ -948,7 +948,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, DB2, DERBY, FIREBIRD, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({CUBRID, DB2, DERBY, FIREBIRD, ORACLE, SQLSERVER, TERADATA})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
@@ -1011,7 +1011,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, DERBY})
+    @ExcludeIn({DERBY, SQLITE})
     public void LPad() {
         assertEquals("  ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
         assertEquals("!!ab", singleResult(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
@@ -1387,7 +1387,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, DERBY})
+    @ExcludeIn({DERBY, SQLITE})
     public void Rpad() {
         assertEquals("ab  ", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
         assertEquals("ab!!", singleResult(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
@@ -1395,7 +1395,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     @Ignore
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
+    @ExcludeIn({DERBY, ORACLE, SQLSERVER})
     public void Select_BooleanExpr() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.eq(0)));
@@ -1403,7 +1403,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     @Ignore
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
+    @ExcludeIn({DERBY, ORACLE, SQLSERVER})
     public void Select_BooleanExpr2() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.gt(0)));
@@ -1415,13 +1415,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({CUBRID, SQLITE, SQLSERVER, TERADATA})
     public void Select_For_Update() {
         query().from(survey).forUpdate().list(survey.id);
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({CUBRID, SQLITE, SQLSERVER, TERADATA})
     public void Select_For_Update_UniqueResult() {
         query().from(survey).forUpdate().uniqueResult(survey.id);
     }

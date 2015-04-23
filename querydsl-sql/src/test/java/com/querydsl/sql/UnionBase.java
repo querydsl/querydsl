@@ -134,7 +134,7 @@ public class UnionBase extends AbstractBaseTest {
     // FIXME for CUBRID
     // Teradata: The ORDER BY clause must contain only integer constants.
     @Test
-    @ExcludeIn({DERBY, CUBRID, FIREBIRD, TERADATA})
+    @ExcludeIn({CUBRID, DERBY, FIREBIRD, TERADATA})
     public void Union5() {
         /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name
          * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID)
@@ -238,7 +238,7 @@ public class UnionBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DERBY, CUBRID})
+    @ExcludeIn({CUBRID, DERBY})
     public void Union_Clone() {
         NumberPath<Integer> idAlias = new NumberPath<Integer>(Integer.class, "id");
         ListSubQuery<Employee> sq1 = sq().from(employee)

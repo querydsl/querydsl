@@ -154,7 +154,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
     }

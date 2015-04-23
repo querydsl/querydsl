@@ -235,7 +235,7 @@ public class AntMetaDataExporter extends Task {
 
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void execute() {
         if (targetFolder == null) {
             throw new BuildException("targetFolder is a mandatory property");

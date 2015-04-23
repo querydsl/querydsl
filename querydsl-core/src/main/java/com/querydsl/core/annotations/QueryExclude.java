@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  *
  */
 @Documented
-@Target({TYPE, PACKAGE})
+@Target({PACKAGE, TYPE})
 @Retention(RUNTIME)
 public @interface QueryExclude {
 

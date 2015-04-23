@@ -45,7 +45,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     @Nullable
     private volatile NumberExpression<Long> countDistinct;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ListSubQuery(Class<T> elementType, QueryMetadata md) {
         super(new SubQueryExpressionImpl<List<T>>((Class)List.class, md));
         this.elementType = elementType;

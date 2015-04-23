@@ -57,7 +57,7 @@ public class MixinGroupExpression<E, F, R> extends AbstractGroupExpression<E, R>
 
     private final GroupExpression<E, F> groupExpression;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public MixinGroupExpression(GroupExpression<E, F> groupExpression, GroupExpression<F, R> mixin) {
         super((Class) mixin.getType(), groupExpression.getExpression());
         this.mixin = mixin;

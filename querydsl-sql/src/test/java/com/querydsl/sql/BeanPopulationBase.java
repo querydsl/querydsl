@@ -32,7 +32,7 @@ import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.core.testutil.ExcludeIn;
 
-@ExcludeIn({CUBRID, DB2, DERBY, ORACLE, SQLSERVER, POSTGRESQL, SQLITE, TERADATA})
+@ExcludeIn({CUBRID, DB2, DERBY, ORACLE, POSTGRESQL, SQLITE, SQLSERVER, TERADATA})
 public class BeanPopulationBase extends AbstractBaseTest {
 
     private final QEmployee e = new QEmployee("e");

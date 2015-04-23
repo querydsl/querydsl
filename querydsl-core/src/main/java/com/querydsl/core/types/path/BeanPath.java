@@ -331,7 +331,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         return BooleanOperation.create(Ops.INSTANCE_OF, pathMixin, ConstantImpl.create(type));
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public BooleanExpression instanceOfAny(Class... types) {
         BooleanExpression[] exprs = new BooleanExpression[types.length];
         for (int i = 0; i < types.length; i++) {

@@ -52,7 +52,7 @@ public class MergeBase extends AbstractBaseTest{
 
 
     @Test
-    @ExcludeIn({H2, CUBRID, SQLSERVER})
+    @ExcludeIn({CUBRID, H2, SQLSERVER})
     public void Merge_With_Keys() throws SQLException{
         ResultSet rs = merge(survey).keys(survey.id)
                 .set(survey.id, 7)
@@ -109,7 +109,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({H2, CUBRID, SQLSERVER})
+    @ExcludeIn({CUBRID, H2, SQLSERVER})
     public void Merge_With_Keys_Projected() throws SQLException{
         assertNotNull(merge(survey).keys(survey.id)
                 .set(survey.id, 8)
@@ -117,7 +117,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({H2, CUBRID, SQLSERVER})
+    @ExcludeIn({CUBRID, H2, SQLSERVER})
     public void Merge_With_Keys_Projected2() throws SQLException{
         Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
         Object id = merge(survey).keys(survey.id)
