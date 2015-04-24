@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
+import static com.querydsl.sql.SQLExpressions.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public abstract class AbstractSQLTemplatesTest {
     public void setUp() {
         templates = createTemplates();
         templates.newLineToSingleSpace();
-        query = new SQLQuery<Void>(templates);
+        query = new SQLQuery<Void>(new Configuration(templates));
     }
 
     @Test
@@ -63,9 +64,9 @@ public abstract class AbstractSQLTemplatesTest {
         NumberExpression<Integer> three = Expressions.THREE;
         Path<Integer> col1 = Expressions.path(Integer.class,"col1");
         Union union = query.union(
-            sq().select(one.as(col1)),
-            sq().select(two),
-            sq().select(three));
+            select(one.as(col1)),
+            select(two),
+            select(three));
 
         if (templates.getDummyTable() == null) {
             assertEquals(
@@ -89,10 +90,6 @@ public abstract class AbstractSQLTemplatesTest {
     public void InnerJoin() {
         query.from(survey1).innerJoin(survey2);
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
-    }
-
-    protected SQLQuery<?> sq() {
-        return new SQLQuery<Void>();
     }
 
     protected int getPrecedence(Operator... ops) {

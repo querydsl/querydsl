@@ -2,6 +2,7 @@ package com.querydsl.sql;
 
 import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.*;
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -99,10 +100,10 @@ public class SubqueriesBase extends AbstractBaseTest {
     @ExcludeIn({MYSQL, POSTGRESQL, DERBY, SQLSERVER, TERADATA})
     public void SubQuery_Params() {
         Param<String> aParam = new Param<String>(String.class, "param");
-        SQLQuery<?> subQuery = new SQLQuery<Void>().from(employee).where(employee.firstname.eq(aParam));
+        SQLQuery<?> subQuery = select(Wildcard.all).from(employee).where(employee.firstname.eq(aParam));
         subQuery.set(aParam, "Mike");
 
-        assertEquals(1, query().from(subQuery.select(Wildcard.all)).fetchCount());
+        assertEquals(1, query().from(subQuery).fetchCount());
     }
 
     @Test

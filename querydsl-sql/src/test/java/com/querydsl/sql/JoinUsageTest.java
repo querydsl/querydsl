@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.selectFrom;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -24,8 +26,7 @@ public class JoinUsageTest {
     @Ignore
     public void Join_Already_Declared() {
         QSurvey survey = QSurvey.survey;
-        SQLQuery<?> subQuery = new SQLQuery<Void>();
-        subQuery.from(survey).fullJoin(survey);
+        selectFrom(survey).fullJoin(survey);
     }
 
 }

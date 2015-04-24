@@ -1,5 +1,6 @@
 package com.querydsl.jpa;
 
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
@@ -24,7 +25,6 @@ import com.querydsl.jpa.domain.Color;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.domain.QCompany;
 import com.querydsl.jpa.domain.sql.SAnimal;
-import com.querydsl.sql.SQLQuery;
 
 public abstract class AbstractSQLTest {
 
@@ -40,10 +40,6 @@ public abstract class AbstractSQLTest {
             this.cat = cat;
         }
 
-    }
-
-    protected SQLQuery<?> sq() {
-        return new SQLQuery<Void>();
     }
 
     @Test
@@ -271,8 +267,8 @@ public abstract class AbstractSQLTest {
     @Test
     @SuppressWarnings("unchecked")
     public void Union() throws SQLException {
-        SubQueryExpression<Integer> sq1 = sq().from(cat).select(cat.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(cat).select(cat.id.min());
+        SubQueryExpression<Integer> sq1 = select(cat.id.max()).from(cat);
+        SubQueryExpression<Integer> sq2 = select(cat.id.min()).from(cat);
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
     }
@@ -280,8 +276,8 @@ public abstract class AbstractSQLTest {
     @Test
     @SuppressWarnings("unchecked")
     public void Union_All() {
-        SubQueryExpression<Integer> sq1 = sq().from(cat).select(cat.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(cat).select(cat.id.min());
+        SubQueryExpression<Integer> sq1 = select(cat.id.max()).from(cat);
+        SubQueryExpression<Integer> sq2 = select(cat.id.min()).from(cat);
         List<Integer> list = query().unionAll(sq1, sq2).list();
         assertFalse(list.isEmpty());
     }
@@ -291,8 +287,8 @@ public abstract class AbstractSQLTest {
     @Ignore // FIXME
     public void Union2() {
         List<Tuple> rows = query().union(
-            new SQLQuery<Void>().from(cat).where(cat.name.eq("Beck")).distinct().select(cat.name, cat.id),
-            new SQLQuery<Void>().from(cat).where(cat.name.eq("Kate")).distinct().select(cat.name, null))
+                select(cat.name, cat.id).from(cat).where(cat.name.eq("Beck")).distinct(),
+                select(cat.name, null).from(cat).where(cat.name.eq("Kate")).distinct())
         .list();
 
         assertEquals(2, rows.size());
@@ -307,8 +303,8 @@ public abstract class AbstractSQLTest {
     public void Union3() {
         SAnimal cat2 = new SAnimal("cat2");
         List<Tuple> rows = query().union(
-            new SQLQuery<Void>().from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)).select(cat.id, cat2.id),
-            new SQLQuery<Void>().from(cat).select(cat.id, null))
+                select(cat.id, cat2.id).from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)),
+                select(cat.id, null).from(cat))
         .list();
 
         assertEquals(12, rows.size());
@@ -325,8 +321,8 @@ public abstract class AbstractSQLTest {
     @Ignore // FIXME
     public void Union4() {
         query().union(cat,
-            new SQLQuery<Void>().from(cat).where(cat.name.eq("Beck")).distinct().select(cat.name, cat.id),
-            new SQLQuery<Void>().from(cat).where(cat.name.eq("Kate")).distinct().select(cat.name, null))
+                select(cat.name, cat.id).from(cat).where(cat.name.eq("Beck")).distinct(),
+                select(cat.name, null).from(cat).where(cat.name.eq("Kate")).distinct())
         .select(cat.name, cat.id).fetch();
     }
 
@@ -335,8 +331,8 @@ public abstract class AbstractSQLTest {
     public void Union5() {
         SAnimal cat2 = new SAnimal("cat2");
         List<Tuple> rows = query().union(
-            new SQLQuery<Void>().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).select(cat.id, cat2.id),
-            new SQLQuery<Void>().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).select(cat.id, cat2.id))
+                select(cat.id, cat2.id).from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))),
+                select(cat.id, cat2.id).from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))))
         .list();
 
         assertEquals(5, rows.size());

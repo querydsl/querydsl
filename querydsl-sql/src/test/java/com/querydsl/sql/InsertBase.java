@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.survey;
 import static com.querydsl.sql.Constants.survey2;
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.*;
 
 import java.sql.ResultSet;
@@ -98,12 +99,11 @@ public class InsertBase extends AbstractBaseTest {
         QEmployee emp2 = new QEmployee("emp2");
         SQLInsertClause insert = insert(survey);
         insert.columns(survey.id, survey.name);
-        insert.select(new SQLQuery<Void>().from(survey)
+        insert.select(select(survey.id, emp2.firstname).from(survey)
           .innerJoin(emp1)
            .on(survey.id.eq(emp1.id))
           .innerJoin(emp2)
-           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
-          .select(survey.id, emp2.firstname));
+           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname)));
 
         insert.execute();
     }

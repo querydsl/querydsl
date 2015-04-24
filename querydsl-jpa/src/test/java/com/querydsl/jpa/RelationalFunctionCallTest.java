@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -46,9 +47,8 @@ public class RelationalFunctionCallTest {
         QSurvey table = new QSurvey("SURVEY");
         RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SQLQuery<?> sq = new SQLQuery<Void>();
-        SubQueryExpression<?> expr = sq.from(table)
-            .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).select(table.name);
+        SubQueryExpression<?> expr = select(table.name).from(table)
+            .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not());
 
         Configuration conf = new Configuration(new SQLServerTemplates());
         SQLSerializer serializer = new NativeSQLSerializer(conf, true);

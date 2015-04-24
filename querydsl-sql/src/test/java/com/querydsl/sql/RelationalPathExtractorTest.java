@@ -13,7 +13,7 @@ import com.querydsl.core.types.dsl.Expressions;
 public class RelationalPathExtractorTest {
 
     private SQLQuery<?> query() {
-        return new SQLQuery<Void>(SQLTemplates.DEFAULT);
+        return new SQLQuery<Void>();
     }
 
     @Test

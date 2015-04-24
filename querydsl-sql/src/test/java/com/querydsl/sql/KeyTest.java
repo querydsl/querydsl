@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.selectOne;
+
 import org.junit.Test;
 
 import com.querydsl.core.types.PathMetadataFactory;
@@ -98,16 +100,12 @@ public class KeyTest {
         QCompany company = new QCompany("company");
 
         // superiorId -> id
-        query().from(user).innerJoin(user.superiorIdKey, user2);
+        selectOne().from(user).innerJoin(user.superiorIdKey, user2);
 
         // department -> id / company -> id
-        query().from(user)
+        selectOne().from(user)
             .innerJoin(user.departmentKey, department)
             .innerJoin(department.companyKey, company);
-    }
-
-    private SQLQuery query() {
-        return new SQLQuery(SQLTemplates.DEFAULT);
     }
 
 }

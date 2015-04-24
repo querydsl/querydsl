@@ -13,6 +13,7 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -84,9 +85,8 @@ public class SQLSerializerTest {
         Path<Object> userPath = Expressions.path(Object.class, "user");
         NumberPath<Long> idPath = Expressions.numberPath(Long.class, userPath, "id");
         StringPath usernamePath = Expressions.stringPath(userPath, "username");
-        Expression<?> sq = new SQLQuery<Void>()
-            .from(userPath).where(idPath.eq(1l))
-            .select(idPath, usernamePath);
+        Expression<?> sq = select(idPath, usernamePath)
+            .from(userPath).where(idPath.eq(1l));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
@@ -101,9 +101,8 @@ public class SQLSerializerTest {
         PathBuilder<Object> userPath = new PathBuilder<Object>(Object.class, "user");
         NumberPath<Long> idPath = userPath.getNumber("id", Long.class);
         StringPath usernamePath = userPath.getString("username");
-        Expression<?> sq = new SQLQuery<Void>()
-            .from(userPath).where(idPath.eq(1l))
-            .select(idPath, usernamePath);
+        Expression<?> sq = select(idPath, usernamePath)
+            .from(userPath).where(idPath.eq(1l));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
@@ -172,7 +171,7 @@ public class SQLSerializerTest {
 
     @Test
     public void Join_To_Function_In_Derby() {
-        SQLQuery<?> query = new SQLQuery<Void>(new DerbyTemplates());
+        SQLQuery<?> query = new SQLQuery<Void>(DerbyTemplates.DEFAULT);
         query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
@@ -233,23 +232,18 @@ public class SQLSerializerTest {
         String[] strs = new String[]{"a","b","c"};
         for(String str : strs) {
             Expression<Boolean> alias = Expressions.cases().when(survey.name.eq(str)).then(true).otherwise(false);
-            sq.add(query().from(survey).distinct().select(survey.name, alias));
+            sq.add(select(survey.name, alias).from(survey).distinct());
         }
 
         // master query
         PathBuilder<Tuple> subAlias = new PathBuilder<Tuple>(Tuple.class, "sub");
-        SubQueryExpression<?> master = query()
-                .from(query().union(sq).as(subAlias))
-                .groupBy(subAlias.get("prop1"))
-                .select(subAlias.get("prop2"));
+        SubQueryExpression<?> master = selectOne()
+                .from(union(sq).as(subAlias))
+                .groupBy(subAlias.get("prop1"));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(master.getMetadata(), false);
         System.err.println(serializer);
-    }
-
-    private SQLQuery<?> query() {
-        return new SQLQuery<Void>();
     }
 
     @Test
@@ -268,7 +262,7 @@ public class SQLSerializerTest {
 
     @Test
     public void List_In_Query() {
-        Expression<?> expr = Expressions.list(survey.id, survey.name).in(query().from(survey).select(survey.id, survey.name));
+        Expression<?> expr = Expressions.list(survey.id, survey.name).in(select(survey.id, survey.name).from(survey));
 
         String str = new SQLSerializer(Configuration.DEFAULT).handle(expr).toString();
         assertEquals("(SURVEY.ID, SURVEY.NAME) in (select SURVEY.ID, SURVEY.NAME\nfrom SURVEY SURVEY)", str);
@@ -287,11 +281,9 @@ public class SQLSerializerTest {
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub,
-                query().unionAll(
-                    query().from(e).where(e.firstname.eq("Mike"))
-                        .select(e.id, e.firstname, e.superiorId),
-                    query().from(e, sub).where(e.superiorId.eq(sub.get(e.id)))
-                        .select(e.id, e.firstname, e.superiorId)))
+                unionAll(
+                        select(e.id, e.firstname, e.superiorId).from(e).where(e.firstname.eq("Mike")),
+                        select(e.id, e.firstname, e.superiorId).from(e, sub).where(e.superiorId.eq(sub.get(e.id)))))
              .from(sub);
 
         QueryMetadata md = query.getMetadata();
@@ -323,11 +315,9 @@ public class SQLSerializerTest {
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub, sub.get(e.id), sub.get(e.firstname), sub.get(e.superiorId)).as(
-                query().unionAll(
-                    query().from(e).where(e.firstname.eq("Mike"))
-                        .select(e.id, e.firstname, e.superiorId),
-                    query().from(e, sub).where(e.superiorId.eq(sub.get(e.id)))
-                        .select(e.id, e.firstname, e.superiorId)))
+                unionAll(
+                        select(e.id, e.firstname, e.superiorId).from(e).where(e.firstname.eq("Mike")),
+                        select(e.id, e.firstname, e.superiorId).from(e, sub).where(e.superiorId.eq(sub.get(e.id)))))
              .from(sub);
 
         QueryMetadata md = query.getMetadata();
@@ -355,6 +345,10 @@ public class SQLSerializerTest {
         Expression<?> expr = SQLExpressions.datediff(DatePart.year, employee.datefield, new java.sql.Date(-offset));
         serializer.handle(expr);
         assertEquals("datediff('year',EMPLOYEE.DATEFIELD,(date '1970-01-01'))", serializer.toString());
+    }
+
+    private SQLQuery<?> query() {
+        return new SQLQuery<Void>();
     }
 
 }

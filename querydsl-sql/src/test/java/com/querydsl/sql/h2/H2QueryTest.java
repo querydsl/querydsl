@@ -9,15 +9,13 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class H2QueryTest {
     
-    private SQLQuery query;
+    private SQLQuery<?> query;
     
     private QSurvey survey = new QSurvey("survey");
     
     @Before
     public void setUp() {
-        query = new SQLQuery(null, new H2Templates() {{
-            newLineToSingleSpace();
-        }});
+        query = new SQLQuery(H2Templates.builder().newLineToSingleSpace().build());
     }
     
     @Test

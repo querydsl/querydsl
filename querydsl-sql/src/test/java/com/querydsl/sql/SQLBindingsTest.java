@@ -14,7 +14,7 @@ public class SQLBindingsTest {
 
     private QSurvey survey = QSurvey.survey;
 
-    private SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
+    private SQLQuery<?> query = new SQLQuery<Void>();
 
     @Test
     public void Empty() {

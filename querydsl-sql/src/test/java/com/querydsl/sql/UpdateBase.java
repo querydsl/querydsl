@@ -15,6 +15,7 @@ package com.querydsl.sql;
 
 import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.survey;
+import static com.querydsl.sql.SQLExpressions.selectOne;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
@@ -153,7 +154,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(new SQLQuery<Void>().from(employee).where(survey1.id.eq(employee.id)).exists());
+        update.where(selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
         update.execute();
     }
 
@@ -178,7 +179,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(new SQLQuery<Void>().from(employee).where(survey1.name.eq(employee.lastname)).exists());
+        update.where(selectOne().from(employee).where(survey1.name.eq(employee.lastname)).exists());
         update.execute();
     }
 

@@ -3,21 +3,19 @@ package com.querydsl.sql.hsqldb;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.HSQLDBTemplates;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.domain.QSurvey;
 
 public class HsqldbQueryTest {
     
-    private SQLQuery query;
+    private SQLQuery<?> query;
     
     private QSurvey survey = new QSurvey("survey");
     
     @Before
     public void setUp() {
-        query = new SQLQuery(null, new H2Templates() {{
-            newLineToSingleSpace();
-        }});
+        query = new SQLQuery(HSQLDBTemplates.builder().newLineToSingleSpace().build());
     }
     
     @Test

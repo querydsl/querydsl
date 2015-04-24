@@ -1,5 +1,6 @@
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
@@ -18,9 +19,8 @@ public class ListSubQueryTest {
     public void HashCode() {
         QSurvey survey = QSurvey.survey;
         QSurvey survey2 = new QSurvey("survey2");
-        SubQueryExpression<Tuple> query1 = new SQLQuery<Void>().from(survey).select(survey.all());
-        SubQueryExpression<Tuple> query2 = new SQLQuery<Void>().from(survey2).select(survey2.all());
-
+        SubQueryExpression<Tuple> query1 = select(survey.all()).from(survey);
+        SubQueryExpression<Tuple> query2 = select(survey2.all()).from(survey2);
 
         Set<SubQueryExpression<Tuple>> queries = Sets.newHashSet();
         queries.add(query1);
@@ -32,8 +32,8 @@ public class ListSubQueryTest {
     public void HashCode2() {
         QSurvey survey = new QSurvey("entity");
         QEmployee employee = new QEmployee("entity");
-        SubQueryExpression<Integer> query1 = new SQLQuery<Void>().from(survey).select(survey.id);
-        SubQueryExpression<Integer> query2 = new SQLQuery<Void>().from(employee).select(employee.id);
+        SubQueryExpression<Integer> query1 = select(survey.id).from(survey);
+        SubQueryExpression<Integer> query2 = select(employee.id).from(employee);
 
         Set<SubQueryExpression<Integer>> queries = Sets.newHashSet();
         queries.add(query1);
