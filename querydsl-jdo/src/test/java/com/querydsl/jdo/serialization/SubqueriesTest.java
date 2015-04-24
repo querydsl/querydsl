@@ -13,6 +13,7 @@
  */
 package com.querydsl.jdo.serialization;
 
+import static com.querydsl.jdo.JDOExpressions.select;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -39,9 +40,9 @@ public class SubqueriesTest extends AbstractTest{
           "WHERE this.employees.size() == " +
           "(SELECT max(d.employees.size()) FROM com.querydsl.jdo.models.company.Department d)",
 
-          serialize(query().from(department).where(department.employees.size().eq(
-               query().from(d).select(d.employees.size().max())
-            )).select(department))
+          serialize(select(department).from(department).where(department.employees.size().eq(
+                  select(d.employees.size().max()).from(d)
+            )))
         );
     }
 
@@ -54,9 +55,9 @@ public class SubqueriesTest extends AbstractTest{
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e)",
 
-          serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(employee.department.employees, e).select(e.weeklyhours.avg())
-            )).select(employee))
+          serialize(select(employee).from(employee).where(employee.weeklyhours.gt(
+                  select(e.weeklyhours.avg()).from(employee.department.employees, e)
+            )))
         );
     }
 
@@ -71,9 +72,9 @@ public class SubqueriesTest extends AbstractTest{
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)",
 
-          serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(employee.department.employees, e).where(e.manager.eq(employee.manager)).select(e.weeklyhours.avg())
-            )).select(employee))
+          serialize(select(employee).from(employee).where(employee.weeklyhours.gt(
+                  select(e.weeklyhours.avg()).from(employee.department.employees, e).where(e.manager.eq(employee.manager))
+            )))
         );
     }
 /*  "SELECT FROM " + Employee.class.getName() + " WHERE this.weeklyhours > " +
@@ -85,9 +86,9 @@ public class SubqueriesTest extends AbstractTest{
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM com.querydsl.jdo.models.company.Employee e)",
 
-          serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(e).select(e.weeklyhours.avg())
-            )).select(employee))
+          serialize(select(employee).from(employee).where(employee.weeklyhours.gt(
+                  select(e.weeklyhours.avg()).from(e)
+            )))
         );
     }
 
@@ -102,11 +103,11 @@ public class SubqueriesTest extends AbstractTest{
           "VARIABLES com.querydsl.jdo.models.company.Employee e " +
           "PARAMETERS java.lang.String a1",
 
-          serialize(query().from(employee, e)
+          serialize(select(employee).from(employee, e)
               .where(
                   employee.weeklyhours.eq(e.weeklyhours),
                   employee.firstName.eq("emp1First")
-              ).select(employee))
+              ))
         );
     }
 

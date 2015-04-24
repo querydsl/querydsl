@@ -13,6 +13,7 @@
  */
 package com.querydsl.jdo.serialization;
 
+import static com.querydsl.jdo.JDOExpressions.selectFrom;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -43,8 +44,8 @@ public class ContainerTest extends AbstractTest{
           "WHERE !this.wardrobes.containsValue(a1) " +
           "PARAMETERS com.querydsl.jdo.models.fitness.Wardrobe a1",
 
-          serialize(query().from(gym)
-                  .where(gym.wardrobes.containsValue(wrd).not()).select(gym)));
+          serialize(selectFrom(gym)
+                  .where(gym.wardrobes.containsValue(wrd).not())));
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes.containsValue(wrd) && !this.wardrobes.containsValue(wrd2) "
@@ -55,9 +56,8 @@ public class ContainerTest extends AbstractTest{
           "WHERE !this.wardrobes.containsValue(a1) && !this.wardrobes.containsValue(a2) " +
           "PARAMETERS com.querydsl.jdo.models.fitness.Wardrobe a1, com.querydsl.jdo.models.fitness.Wardrobe a2",
 
-          serialize(query().from(gym)
-                  .where(gym.wardrobes.containsValue(wrd).not(), gym.wardrobes.containsValue(wrd2).not())
-                  .select(gym)));
+          serialize(selectFrom(gym)
+                  .where(gym.wardrobes.containsValue(wrd).not(), gym.wardrobes.containsValue(wrd2).not())));
 //
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes.containsValue(wrd) && !this.wardrobes.containsValue(wrd2) && this.wardrobes.containsValue(wrd1) "
@@ -68,12 +68,11 @@ public class ContainerTest extends AbstractTest{
           "WHERE !this.wardrobes.containsValue(a1) && !this.wardrobes.containsValue(a2) && this.wardrobes.containsValue(a3) " +
           "PARAMETERS com.querydsl.jdo.models.fitness.Wardrobe a1, com.querydsl.jdo.models.fitness.Wardrobe a2, com.querydsl.jdo.models.fitness.Wardrobe a3",
 
-        serialize(query().from(gym)
+        serialize(selectFrom(gym)
                 .where(
                     gym.wardrobes.containsValue(wrd).not(),
                     gym.wardrobes.containsValue(wrd1).not(),
-                    gym.wardrobes.containsValue(wrd2))
-                .select(gym)));
+                    gym.wardrobes.containsValue(wrd2))));
     }
 
     @Test 
@@ -87,8 +86,8 @@ public class ContainerTest extends AbstractTest{
           "WHERE !this.wardrobes2.containsKey(a1) " +
           "PARAMETERS com.querydsl.jdo.models.fitness.Wardrobe a1",
 
-          serialize(query().from(gym)
-                   .where(gym.wardrobes2.containsKey(wrd).not()).select(gym)));
+          serialize(selectFrom(gym)
+                   .where(gym.wardrobes2.containsKey(wrd).not())));
 //
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes2.containsKey(wrd) && !this.wardrobes2.containsKey(wrd2) "
@@ -98,11 +97,10 @@ public class ContainerTest extends AbstractTest{
           "WHERE !this.wardrobes2.containsKey(a1) && !this.wardrobes2.containsKey(a2) " +
           "PARAMETERS com.querydsl.jdo.models.fitness.Wardrobe a1, com.querydsl.jdo.models.fitness.Wardrobe a2",
 
-          serialize(query().from(gym)
+          serialize(selectFrom(gym)
                    .where(
                        gym.wardrobes2.containsKey(wrd).not(),
-                       gym.wardrobes2.containsKey(wrd2).not())
-                   .select(gym)));
+                       gym.wardrobes2.containsKey(wrd2).not())));
 //
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes2.containsKey(wrd) && !this.wardrobes2.containsKey(wrd2) && this.wardrobes2.containsKey(wrd1) "
@@ -112,12 +110,11 @@ public class ContainerTest extends AbstractTest{
           "WHERE !this.wardrobes2.containsKey(a1) && !this.wardrobes2.containsKey(a2) && this.wardrobes2.containsKey(a3) " +
           "PARAMETERS com.querydsl.jdo.models.fitness.Wardrobe a1, com.querydsl.jdo.models.fitness.Wardrobe a2, com.querydsl.jdo.models.fitness.Wardrobe a3",
 
-        serialize(query().from(gym)
+        serialize(selectFrom(gym)
                  .where(
                      gym.wardrobes2.containsKey(wrd).not(),
                      gym.wardrobes2.containsKey(wrd2).not(),
-                     gym.wardrobes2.containsKey(wrd1))
-                 .select(gym)));
+                     gym.wardrobes2.containsKey(wrd1))));
     }
 
     @Test 
@@ -149,8 +146,8 @@ public class ContainerTest extends AbstractTest{
           "WHERE this.wardrobes.get(a1) == a2 " +
           "PARAMETERS java.lang.String a1, com.querydsl.jdo.models.fitness.Wardrobe a2",
 
-          serialize(query().from(gym)
-                   .where(gym.wardrobes.get(wrd.getModel()).eq(wrd)).select(gym)));
+          serialize(selectFrom(gym)
+                   .where(gym.wardrobes.get(wrd.getModel()).eq(wrd))));
     }
 
     @Test 
@@ -163,8 +160,8 @@ public class ContainerTest extends AbstractTest{
           "PARAMETERS java.lang.String a1 " +
           "ORDER BY this.wardrobes.get(a1).model ASC",
 
-          serialize(query().from(gym)
-                   .orderBy(gym.wardrobes.get(wrd.getModel()).model.asc()).select(gym)));
+          serialize(selectFrom(gym)
+                   .orderBy(gym.wardrobes.get(wrd.getModel()).model.asc())));
     }
 
 }

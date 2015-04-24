@@ -17,13 +17,8 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.jdo.JDOQLSerializer;
 import com.querydsl.jdo.JDOQLTemplates;
-import com.querydsl.jdo.JDOQuery;
 
 public abstract class AbstractTest {
-
-    protected JDOQuery<?> query() {
-        return new JDOQuery<Void>();
-    }
 
     protected String serialize(SubQueryExpression<?> expr) {
         Expression<?> source = expr.getMetadata().getJoins().get(0).getTarget();

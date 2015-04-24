@@ -13,6 +13,7 @@
  */
 package com.querydsl.jdo.serialization;
 
+import static com.querydsl.jdo.JDOExpressions.select;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -35,10 +36,9 @@ public class QuerySerializationTest extends AbstractTest{
             "PARAMETERS java.lang.String a1 " +
             "ORDER BY this.name ASC",
 
-            serialize(query().from(product)
+            serialize(select(product.name).from(product)
               .where(product.name.eq("Test"))
-              .orderBy(product.name.asc())
-              .select(product.name)));
+              .orderBy(product.name.asc())));
     }
 
     @Test
@@ -50,10 +50,9 @@ public class QuerySerializationTest extends AbstractTest{
             "PARAMETERS java.lang.String a1, java.lang.String a2 " +
             "GROUP BY this.price",
 
-            serialize(query().from(product)
+            serialize(select(product.name).from(product)
               .where(product.name.startsWith("A").or(product.name.endsWith("B")))
-              .groupBy(product.price)
-              .select(product.name)));
+              .groupBy(product.price)));
     }
 
     @Test
@@ -64,9 +63,8 @@ public class QuerySerializationTest extends AbstractTest{
             "WHERE this.name == other.name " +
             "VARIABLES com.querydsl.jdo.test.domain.Product other",
 
-            serialize(query().from(product, other)
-              .where(product.name.eq(other.name))
-              .select(product.name)));
+            serialize(select(product.name).from(product, other)
+              .where(product.name.eq(other.name))));
     }
 
     @Test
@@ -77,9 +75,8 @@ public class QuerySerializationTest extends AbstractTest{
             "WHERE this.price < " +
             "(SELECT avg(other.price) FROM com.querydsl.jdo.test.domain.Product other)",
 
-            serialize(query().from(product)
-              .where(product.price.lt(query().from(other).select(other.price.avg())))
-              .select(product.price)));
+            serialize(select(product.price).from(product)
+              .where(product.price.lt(select(other.price.avg()).from(other)))));
     }
 
     @Test
@@ -92,9 +89,8 @@ public class QuerySerializationTest extends AbstractTest{
                 "WHERE other.name == a1 " +
                 "PARAMETERS java.lang.String a1).contains(this.price)",
 
-            serialize(query().from(product)
-              .where(product.price.in(query().from(other).where(other.name.eq("Some name")).select(other.price)))
-              .select(product.name)));
+            serialize(select(product.name).from(product)
+              .where(product.price.in(select(other.price).from(other).where(other.name.eq("Some name"))))));
     }
 
     @Test
@@ -104,9 +100,8 @@ public class QuerySerializationTest extends AbstractTest{
             "FROM com.querydsl.jdo.test.domain.Product " +
             "WHERE this instanceof com.querydsl.jdo.test.domain.Book",
 
-            serialize(query().from(product)
-              .where(product.instanceOf(Book.class))
-              .select(product)));
+            serialize(select(product).from(product)
+              .where(product.instanceOf(Book.class))));
     }
 
 }
