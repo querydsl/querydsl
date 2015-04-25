@@ -15,6 +15,7 @@ package com.querydsl.jpa;
 
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Query;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.support.ExtendedSubQuery;
 import com.querydsl.core.types.*;
 
@@ -305,5 +306,11 @@ public interface JPQLQuery<T> extends FetchableQuery<T, JPQLQuery<T>>, Query<JPQ
       * @return
        */
     JPQLQuery<T> fetchAll();
+
+    @Override
+    <U> JPQLQuery<U> select(Expression<U> expr);
+
+    @Override
+    JPQLQuery<Tuple> select(Expression<?>... exprs);
 
 }

@@ -1,5 +1,6 @@
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.JPAExpressions.select;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
@@ -8,7 +9,6 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
 
 public class OrderHelperTest {
 
@@ -22,7 +22,7 @@ public class OrderHelperTest {
         order.add("previousProject.customer.company.name");
         order.add("department.name");
 
-        JPAQuery<?> query = new JPAQuery<Void>();
+        JPQLQuery<?> query = select(entity);
         query.from(entity);
         OrderHelper.orderBy(query, entity, order);
         assertEquals("select project\n" +

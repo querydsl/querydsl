@@ -16,6 +16,8 @@ package com.querydsl.jpa;
 import static com.querydsl.core.Target.*;
 import static com.querydsl.core.alias.Alias.$;
 import static com.querydsl.core.alias.Alias.alias;
+import static com.querydsl.jpa.JPAExpressions.select;
+import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
@@ -91,35 +93,35 @@ public class ParsingTest extends AbstractQueryTest {
     @Test
     public void DocoExamples911() throws Exception {
         query().from(fatcat).where(
-                fatcat.weight.gt(sub().from(cat).select(cat.weight.avg())))
+                fatcat.weight.gt(select(cat.weight.avg()).from(cat)))
                 .parse();
     }
 
     @Test
     public void DocoExamples911_2() throws Exception {
         query().from(cat).where(
-                cat.name.eqAny(sub().from(name).select(name.nickName)))
+                cat.name.eqAny(select(name.nickName).from(name)))
                 .parse();
     }
     
     @Test
     public void DocoExamples911_3() throws Exception {
         query().from(cat).where(
-                sub().from(mate).where(mate.mate.eq(cat)).select(mate).notExists())
+                select(mate).from(mate).where(mate.mate.eq(cat)).notExists())
                 .parse();
     }
     
     @Test
     public void DocoExamples911_4() throws Exception {
         query().from(cat).where(
-                sub().from(mate).where(mate.mate.eq(cat)).exists())
+                selectFrom(mate).where(mate.mate.eq(cat)).exists())
                 .parse();
     }
     
     @Test
     public void DocoExamples911_5() throws Exception {
         query().from(cat).where(
-                cat.name.notIn(sub().from(name).select(name.nickName)))
+                cat.name.notIn(select(name.nickName).from(name)))
                 .parse();
     }
     
@@ -132,9 +134,8 @@ public class ParsingTest extends AbstractQueryTest {
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.gt(DateExpression.currentDate())).and(
                                 catalog.effectiveDate.gtAny(
-                                        sub().from(catalog).where(
-                                                catalog.effectiveDate.lt(DateExpression.currentDate()))
-                                             .select(catalog.effectiveDate))))
+                                        select(catalog.effectiveDate).from(catalog).where(
+                                                catalog.effectiveDate.lt(DateExpression.currentDate())))))
                 .groupBy(ord).having(price.amount.sum().gt(0l))
                 .orderBy(price.amount.sum().desc())
                 .select(ord.id, price.amount.sum(), item.count());

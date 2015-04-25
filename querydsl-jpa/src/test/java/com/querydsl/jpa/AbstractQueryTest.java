@@ -17,16 +17,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.querydsl.core.types.Expression;
-import com.querydsl.jpa.impl.JPAQuery;
 
 public abstract class AbstractQueryTest implements Constants {
 
     protected QueryHelper<?> query() {
         return new QueryHelper<Void>(HQLTemplates.DEFAULT);
-    }
-
-    protected JPAQuery<?> sub() {
-        return new JPAQuery<Void>();
     }
 
     protected static void assertToString(String expected, Expression<?> expr) {

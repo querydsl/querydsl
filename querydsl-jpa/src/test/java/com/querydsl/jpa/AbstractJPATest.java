@@ -14,6 +14,7 @@
 package com.querydsl.jpa;
 
 import static com.querydsl.core.Target.*;
+import static com.querydsl.jpa.JPAExpressions.select;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
@@ -41,7 +42,6 @@ import com.querydsl.jpa.domain.Company.Rating;
 import com.querydsl.jpa.domain4.QBookMark;
 import com.querydsl.jpa.domain4.QBookVersion;
 import com.querydsl.jpa.hibernate.HibernateQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -94,10 +94,6 @@ public abstract class AbstractJPATest {
     protected abstract JPQLQuery<?> query();
 
     protected abstract JPQLQuery<?> testQuery();
-
-    protected JPAQuery<?> subQuery() {
-        return new JPAQuery<Void>();
-    }
 
     protected abstract void save(Object entity);
 
@@ -1227,8 +1223,8 @@ public abstract class AbstractJPATest {
     public void SubQuery() {
         QShow show = QShow.show;
         QShow show2 = new QShow("show2");
-        query().from(show).where(subQuery().from(show2)
-               .where(show2.id.ne(show.id)).select(show2.count()).gt(0L)).fetchCount();
+        query().from(show).where(select(show2.count()).from(show2)
+               .where(show2.id.ne(show.id)).gt(0L)).fetchCount();
     }
 
     @Test
@@ -1236,8 +1232,8 @@ public abstract class AbstractJPATest {
         QCat cat = QCat.cat;
         QCat other = new QCat("other");
         List<Cat> cats = query().from(cat)
-            .where(cat.name.in(new HibernateQuery<Void>().from(other)
-            .groupBy(other.name).select(other.name)))
+            .where(cat.name.in(select(other.name).from(other)
+            .groupBy(other.name)))
                 .select(cat).fetch();
         assertNotNull(cats);
     }
@@ -1247,9 +1243,8 @@ public abstract class AbstractJPATest {
         QCat cat = QCat.cat;
         QCat other = new QCat("other");
         query().from(cat)
-            .where(cat.name.eq(new JPAQuery<Void>().from(other)
-                                       .where(other.name.indexOf("B").eq(0))
-                                       .select(other.name)))
+            .where(cat.name.eq(select(other.name).from(other)
+                                       .where(other.name.indexOf("B").eq(0))))
                 .select(cat).fetch();
     }
 
@@ -1258,7 +1253,7 @@ public abstract class AbstractJPATest {
         QCat cat = QCat.cat;
         QCat other = new QCat("other");
         query().from(cat)
-                .select(cat.name, new JPAQuery<Void>().from(other).where(other.name.eq(cat.name)).select(other.count())).fetch();
+                .select(cat.name, select(other.count()).from(other).where(other.name.eq(cat.name))).fetch();
     }
 
     @Test
@@ -1266,8 +1261,7 @@ public abstract class AbstractJPATest {
         QEmployee employee = QEmployee.employee;
         QEmployee employee2 = new QEmployee("e2");
         query().from(employee)
-                .where(subQuery().from(employee2)
-                        .select(employee2.id.count()).gt(1L))
+                .where(select(employee2.id.count()).from(employee2).gt(1L))
                 .fetchCount();
     }
 
@@ -1378,9 +1372,8 @@ public abstract class AbstractJPATest {
     public void Sum_of_Integer() {
         QCat cat2 = new QCat("cat2");
         query().from(cat)
-                .where(new JPAQuery<Void>()
-                        .from(cat2).where(cat2.eq(cat.mate))
-                        .select(cat2.breed.sum()).gt(0))
+                .where(select(cat2.breed.sum())
+                        .from(cat2).where(cat2.eq(cat.mate)).gt(0))
                 .select(cat).fetch();
     }
 
@@ -1388,9 +1381,8 @@ public abstract class AbstractJPATest {
     public void Sum_of_Float() {
         QCat cat2 = new QCat("cat2");
         query().from(cat)
-                .where(new JPAQuery<Void>()
-                        .from(cat2).where(cat2.eq(cat.mate))
-                        .select(cat2.floatProperty.sum()).gt(0.0f))
+                .where(select(cat2.floatProperty.sum())
+                        .from(cat2).where(cat2.eq(cat.mate)).gt(0.0f))
                 .select(cat).fetch();
     }
 
@@ -1398,9 +1390,8 @@ public abstract class AbstractJPATest {
     public void Sum_of_Double() {
         QCat cat2 = new QCat("cat2");
         query().from(cat)
-                .where(new JPAQuery<Void>()
-                        .from(cat2).where(cat2.eq(cat.mate))
-                        .select(cat2.bodyWeight.sum()).gt(0.0))
+                .where(select(cat2.bodyWeight.sum())
+                        .from(cat2).where(cat2.eq(cat.mate)).gt(0.0))
                 .select(cat).fetch();
     }
 

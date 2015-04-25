@@ -52,6 +52,41 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
     JPQLQuery<Tuple> select(Expression<?>... exprs);
 
     /**
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    <T> JPQLQuery<T> selectDistinct(Expression<T> expr);
+
+    /**
+     *
+     * @param exprs
+     * @return
+     */
+    JPQLQuery<Tuple> selectDistinct(Expression<?>... exprs);
+
+    /**
+     *
+     * @return
+     */
+    JPQLQuery<Integer> selectOne();
+
+    /**
+     *
+     * @return
+     */
+    JPQLQuery<Integer> selectZero();
+
+    /**
+     *
+     * @param from
+     * @param <T>
+     * @return
+     */
+    <T> JPQLQuery<T> selectFrom(EntityPath<T> from);
+
+    /**
      * Create a new Query with the given source
      * 
      * @param from

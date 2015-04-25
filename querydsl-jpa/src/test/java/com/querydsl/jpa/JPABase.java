@@ -13,6 +13,8 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.JPAExpressions.selectFrom;
+import static com.querydsl.jpa.JPAExpressions.selectOne;
 import static org.junit.Assert.*;
 
 import java.sql.Connection;
@@ -118,8 +120,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         QCat child = new QCat("kitten");
 
         delete(child)
-            .where(child.id.eq(-100), new JPAQuery<Void>()
-               .from(parent)
+            .where(child.id.eq(-100), selectOne().from(parent)
                .where(parent.id.eq(-200),
                       child.in(parent.kittens)).exists())
             .execute();
@@ -131,8 +132,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         QChild child = QChild.child;
         QParent parent = QParent.parent;
 
-        JPAQuery<?> subQuery = new JPAQuery<Void>()
-            .from(parent)
+        JPQLQuery<?> subQuery = selectFrom(parent)
             .where(parent.id.eq(2),
                     child.parent.eq(parent));
                    //child.in(parent.children));
@@ -233,7 +233,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     public void Subquery_UniqueResult() {
         QCat cat2 = new QCat("cat2");
 
-        BooleanExpression exists = new JPAQuery<Void>().from(cat2).where(cat2.eyecolor.isNotNull()).exists();
+        BooleanExpression exists = selectOne().from(cat2).where(cat2.eyecolor.isNotNull()).exists();
         assertNotNull(query().from(cat)
                 .where(cat.breed.eq(0).not())
                 .select(new QCatSummary(cat.breed.count(), exists)).fetchOne());

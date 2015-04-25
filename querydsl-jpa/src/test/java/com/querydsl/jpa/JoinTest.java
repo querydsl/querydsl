@@ -14,6 +14,7 @@
 package com.querydsl.jpa;
 
 import static com.querydsl.core.alias.Alias.$;
+import static com.querydsl.jpa.JPAExpressions.selectOne;
 
 import java.util.List;
 
@@ -23,7 +24,6 @@ import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.hibernate.HibernateQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 
 public class JoinTest {
 
@@ -35,7 +35,7 @@ public class JoinTest {
     private final Entity alias = Alias.alias(Entity.class);
 
     private final StringPath path = Expressions.stringPath("path");
-    private final JPAQuery<?> subQuery = new JPAQuery<Void>();
+    private final JPQLQuery<?> subQuery = selectOne();
     private final HibernateQuery<?> query = new HibernateQuery<Void>(new DummySessionHolder(), HQLTemplates.DEFAULT);
 
     @Test

@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
 
@@ -63,6 +64,31 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     @Override
     public JPAQuery<Tuple> select(Expression<?>... exprs) {
         return query().select(exprs);
+    }
+
+    @Override
+    public <T> JPAQuery<T> selectDistinct(Expression<T> expr) {
+        return select(expr).distinct();
+    }
+
+    @Override
+    public JPAQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return select(exprs).distinct();
+    }
+
+    @Override
+    public JPAQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public JPAQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public <T> JPAQuery<T> selectFrom(EntityPath<T> from) {
+        return select(from).from(from);
     }
 
     @Override

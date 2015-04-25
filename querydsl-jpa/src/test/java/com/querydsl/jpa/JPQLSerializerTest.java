@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.JPAExpressions.selectOne;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -148,7 +149,7 @@ public class JPQLSerializerTest {
         md.addJoin(JoinType.DEFAULT, child);
         md.addWhere(
             child.id.eq(1)
-            .and(new JPAQuery<Void>()
+            .and(selectOne()
                 .from(parent)
                 .where(parent.id.eq(2), child.in(parent.kittens)).exists()));
         serializer.serializeForDelete(md);
