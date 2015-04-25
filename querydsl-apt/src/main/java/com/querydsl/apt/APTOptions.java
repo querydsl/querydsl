@@ -21,28 +21,64 @@ package com.querydsl.apt;
  */
 public final class APTOptions {
 
+    /**
+     * set whether default variables are created (default: true)
+     */
     public static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
 
+    /**
+     * set the prefix for query types (default: Q)
+     */
     public static final String QUERYDSL_PREFIX = "querydsl.prefix";
 
+    /**
+     * set a suffix for query types (default: empty)
+     */
     public static final String QUERYDSL_SUFFIX = "querydsl.suffix";
 
+    /**
+     * set a suffix for query type packages (default: empty)
+     */
     public static final String QUERYDSL_PACKAGE_SUFFIX = "querydsl.packageSuffix";
 
+    /**
+     * enable accessors for direct key based map access (default: false)
+     */
     public static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
 
+    /**
+     * enable accessors for direct indexed list access (default: false)
+     */
     public static final String QUERYDSL_LIST_ACCESSORS = "querydsl.listAccessors";
 
+    /**
+     * enable reference field accessors (default: false)
+     */
     public static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
+    /**
+     * comma separated list of packages to be excluded from code generation (default: none)
+     */
     public static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
 
+    /**
+     * comma separated list of class names to be excluded from code generation (default: none)
+     */
     public static final String QUERYDSL_EXCLUDED_CLASSES = "querydsl.excludedClasses";
 
+    /**
+     * comma separated list of packages to be included into code generation (default: all)
+     */
     public static final String QUERYDSL_INCLUDED_PACKAGES = "querydsl.includedPackages";
 
+    /**
+     * comma separated list of class names to be included into code generation (default: all)
+     */
     public static final String QUERYDSL_INCLUDED_CLASSES = "querydsl.includedClasses";
 
+    /**
+     * set whether unknown non-annotated classes should be treated as embeddable (default: false)
+     */
     public static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
 
     private APTOptions() {}

@@ -27,7 +27,7 @@ import com.querydsl.apt.Configuration;
 import com.querydsl.apt.jpa.JPAAnnotationProcessor;
 
 /**
- * HibernateAnnotationProcessor extends {@link JPAAnnotationProcessor} to take Hibernate specific 
+ * {@code HibernateAnnotationProcessor} extends {@link JPAAnnotationProcessor} to take Hibernate-specific
  * annotations into account
  * 
  * @author tiwe

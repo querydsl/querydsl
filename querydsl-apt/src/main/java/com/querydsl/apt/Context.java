@@ -27,7 +27,7 @@ import com.querydsl.codegen.EntityType;
  * @author tiwe
  *
  */
-public class Context {
+class Context {
 
     final Map<String, EntityType> supertypes  = new HashMap<String, EntityType>();
 

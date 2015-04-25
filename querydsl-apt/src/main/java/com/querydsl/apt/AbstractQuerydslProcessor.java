@@ -41,8 +41,8 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.codegen.*;
 
 /**
- * Base class for Querydsl annotation processors, contains the main processing logic. The subclasses
- * just provide the configuration.
+ * {@code AbstractQuerydslProcessor} is the base class for Querydsl annotation processors and
+ * contains the main processing logic. The subclasses just provide the configuration.
  *
  * @author tiwe
  *
@@ -89,7 +89,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Set<Class<? extends Annotation>> entityAnnotations = conf.getEntityAnnotations();
         TypeMappings typeMappings = conf.getTypeMappings();
         QueryTypeFactory queryTypeFactory = conf.getQueryTypeFactory();
-        this.typeFactory = new ExtendedTypeFactory(processingEnv, conf, entityAnnotations, typeMappings, queryTypeFactory);
+        this.typeFactory = new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory);
         elementHandler = new TypeElementHandler(conf, typeFactory, typeMappings, queryTypeFactory);
         this.roundEnv = roundEnv;
 
@@ -144,7 +144,6 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         for (EntityType entityType : new ArrayList<EntityType>(typeFactory.getEntityTypes())) {
             String fullName = entityType.getFullName();
             if (!context.allTypes.keySet().contains(fullName)) {
-                //System.err.println(fullName);
                 TypeElement element = processingEnv.getElementUtils().getTypeElement(fullName);
                 if (element != null) {
                     elementHandler.handleEntityType(element);

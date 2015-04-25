@@ -35,7 +35,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.util.Annotations;
 
 /**
- * DefaultConfiguration is a simple implementation of the {@link Configuration} interface
+ * {@code DefaultConfiguration} is a simple implementation of the {@link Configuration} interface.
  *
  * @author tiwe
  *
@@ -178,7 +178,7 @@ public class DefaultConfiguration implements Configuration {
         }
 
         try {
-            // register additional mappings, if querydsl-spatial is on the classpath
+            // register additional mappings if querydsl-spatial is on the classpath
             Class.forName("com.querydsl.spatial.GeometryExpression");
             SpatialSupport.addSupport(module);
         } catch (Exception e) {

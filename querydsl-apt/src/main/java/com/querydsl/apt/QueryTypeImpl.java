@@ -19,6 +19,8 @@ import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
 
 /**
+ * Implementation of the {@link QueryType} annotation
+ *
  * @author tiwe
  *
  */

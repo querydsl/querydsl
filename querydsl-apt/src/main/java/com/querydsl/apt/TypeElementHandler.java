@@ -44,12 +44,12 @@ import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 
 /**
- * TypeElementHandler is a an APT visitor for entity types
+ * {@code TypeElementHandler} is an APT visitor for entity types
  *
  * @author tiwe
  *
  */
-public final class TypeElementHandler {
+final class TypeElementHandler {
 
     private final TypeMappings typeMappings;
 

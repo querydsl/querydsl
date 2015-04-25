@@ -30,6 +30,12 @@ import com.querydsl.apt.DefaultConfiguration;
 import com.querydsl.apt.VisitorConfig;
 import com.querydsl.codegen.Keywords;
 
+/**
+ * Configuration for {@link JDOAnnotationProcessor}
+ *
+ * @author tiwe
+ * @see JDOAnnotationProcessor
+ */
 public class JDOConfiguration extends DefaultConfiguration {
 
     @SuppressWarnings("unchecked")

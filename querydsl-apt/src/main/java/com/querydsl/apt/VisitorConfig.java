@@ -13,8 +13,10 @@
  */
 package com.querydsl.apt;
 
+import com.querydsl.codegen.EntityType;
+
 /**
- * VisitorConfig defines the entity type specific visiting configuration
+ * {@code VisitorConfig} defines the {@link EntityType}-specific visiting configuration
  *
  * @author tiwe
  *
