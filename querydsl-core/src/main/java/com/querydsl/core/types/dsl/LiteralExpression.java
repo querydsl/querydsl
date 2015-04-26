@@ -27,7 +27,7 @@ import com.querydsl.core.types.Ops;
 public abstract class LiteralExpression<T extends Comparable> extends ComparableExpression<T> {
 
     @Nullable
-    private volatile StringExpression stringCast;
+    private transient volatile StringExpression stringCast;
 
     public LiteralExpression(Expression<T> mixin) {
         super(mixin);

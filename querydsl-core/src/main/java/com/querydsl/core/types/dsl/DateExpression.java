@@ -54,13 +54,13 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     @Nullable
-    private volatile NumberExpression<Integer> dayOfMonth, dayOfWeek, dayOfYear;
+    private transient volatile NumberExpression<Integer> dayOfMonth, dayOfWeek, dayOfYear;
 
     @Nullable
-    private volatile DateExpression<T> min, max;
+    private transient volatile DateExpression<T> min, max;
 
     @Nullable
-    private volatile NumberExpression<Integer> week, month, year, yearMonth, yearWeek;
+    private transient volatile NumberExpression<Integer> week, month, year, yearMonth, yearWeek;
 
     public DateExpression(Expression<T> mixin) {
         super(mixin);

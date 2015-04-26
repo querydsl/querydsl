@@ -36,10 +36,10 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     private static final long serialVersionUID = 691230660037162054L;
 
     @Nullable
-    private volatile BooleanExpression empty;
+    private transient volatile BooleanExpression empty;
 
     @Nullable
-    private volatile NumberExpression<Integer> size;
+    private transient volatile NumberExpression<Integer> size;
 
     public CollectionExpressionBase(Expression<T> mixin) {
         super(mixin);
