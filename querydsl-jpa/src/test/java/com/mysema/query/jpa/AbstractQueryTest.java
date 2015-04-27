@@ -29,7 +29,11 @@ public abstract class AbstractQueryTest implements Constants {
     }
 
     protected static void assertToString(String expected, Expression<?> expr) {
-        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT, null);
+        assertToString(HQLTemplates.DEFAULT, expected, expr);
+    }
+
+    protected static void assertToString(JPQLTemplates templates, String expected, Expression<?> expr) {
+        JPQLSerializer serializer = new JPQLSerializer(templates, null);
         assertEquals(expected, serializer.handle(expr).toString().replace("\n", " "));
     }
 

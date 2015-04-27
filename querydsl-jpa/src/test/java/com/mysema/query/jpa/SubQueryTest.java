@@ -141,6 +141,20 @@ public class SubQueryTest extends AbstractQueryTest{
         assertToString("(select count(cat) from Cat cat)",                        
                 sub().from(cat).count());        
     }
+
+    @Test
+    public void Count_OpenJPA() {
+        assertToString(OpenJPATemplates.DEFAULT,
+                "(select count(cat_) from Cat cat_)",
+                sub().from(cat).count());
+    }
+
+    @Test
+    public void Count_OpenJPA2() {
+        assertToString(OpenJPATemplates.DEFAULT,
+                "(select count(cat_, other_) from Cat cat_, Cat other_)",
+                sub().from(cat, new QCat("other")).count());
+    }
     
     @Test
     public void Count_Via_List() {
