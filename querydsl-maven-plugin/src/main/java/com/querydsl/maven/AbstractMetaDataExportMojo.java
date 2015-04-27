@@ -174,7 +174,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean beanAddToString;
 
     /**
-     * switch for full construction addition
+     * switch for full constructor addition
      *
      * @parameter default-value=false
      */
@@ -244,14 +244,15 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private boolean createScalaSources;
 
     /**
-     * switch for using schema as suffix in package generation
+     * switch for using schema as suffix in package generation, full package name will be
+     * {@code ${packageName}.${schema}}
      *
      * @parameter default-value=false
      */
     private boolean schemaToPackage;
 
     /**
-     * switch to lowercase name
+     * switch to normalize schema, table and column names to lowercase
      *
      * @parameter default-value=false
      */
