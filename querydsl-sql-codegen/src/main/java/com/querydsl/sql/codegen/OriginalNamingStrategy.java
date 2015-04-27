@@ -25,7 +25,7 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getClassName(String tableName) {
-        return Naming.normalize(tableName, reservedSuffix);
+        return normalizeJavaName(tableName);
     }
 
     @Override
@@ -35,31 +35,28 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getDefaultVariableName(EntityType entityType) {
-        return Naming.normalize(escape(entityType, entityType.getData().get("table").toString()), reservedSuffix);
+        String escaped = escape(entityType, entityType.getData().get("table").toString());
+        return normalizeJavaName(escaped);
     }
 
     @Override
     public String getPropertyName(String columnName, EntityType entityType) {
-        return getPropertyName(columnName);
+        return normalizeJavaName(columnName);
     }
 
     @Override
     public String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType) {
-        return getPropertyName(foreignKeyName);
+        return normalizeJavaName(foreignKeyName);
     }
 
     @Override
     public String getPropertyNameForInverseForeignKey(String foreignKeyName, EntityType entityType) {
-        return "_" + foreignKeyName;
+        return normalizeJavaName("_" + foreignKeyName);
     }
 
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType model) {
-        return getPropertyName(primaryKeyName);
-    }
-
-    private String getPropertyName(String name) {
-        return Naming.normalize(name, reservedSuffix);
+        return normalizeJavaName(primaryKeyName);
     }
 
 }

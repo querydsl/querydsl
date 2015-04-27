@@ -13,12 +13,14 @@
  */
 package com.querydsl.sql.codegen;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.mysema.codegen.model.Types;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class DefaultNamingStrategyTest {
 
@@ -46,6 +48,7 @@ public class DefaultNamingStrategyTest {
 
     @Test
     public void GetPropertyName() {
+        assertEquals("a", namingStrategy.getPropertyName("a", entityModel));
         assertEquals("whileCol", namingStrategy.getPropertyName("while", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
