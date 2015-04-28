@@ -20,7 +20,7 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 
 /**
- * QueryEngine defines an interface for the evaluation of ColQuery queries
+ * {@code QueryEngine} defines an interface for the evaluation of ColQuery queries
  *
  * @author tiwe
  *
@@ -30,26 +30,28 @@ public interface QueryEngine {
     /**
      * Evaluate the given query and return the count of matched rows
      *
-     * @param metadata
-     * @param iterables
-     * @return
+     * @param metadata query metadata
+     * @param iterables source contents
+     * @return matching row count
      */
     long count(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables);
 
     /**
      * Evaluate the given query and return the projection as a list
      *
-     * @param metadata
-     * @param iterables
-     * @return
+     * @param metadata query metadata
+     * @param iterables source contents
+     * @return matching rows
      */
     <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, 
             Expression<T> projection);
 
     /**
-     * @param metadata
-     * @param iterables
-     * @return
+     * Evaluate the given query return whether rows where matched
+     *
+     * @param metadata query metadata
+     * @param iterables source contents
+     * @return true, if at least one row was matched
      */
     boolean exists(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables);
 

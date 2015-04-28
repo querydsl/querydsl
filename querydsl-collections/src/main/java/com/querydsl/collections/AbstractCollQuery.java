@@ -25,8 +25,7 @@ import com.querydsl.core.support.FetchableQueryBase;
 import com.querydsl.core.types.*;
 
 /**
- * AbstractCollQuery provides a base class for Collection query implementations.
- *
+ * {@code AbstractCollQuery} provides a base class for {@link Collection} query implementations.
  *
  * @see CollQuery
  *
@@ -72,10 +71,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     /**
      * Add a query source
      *
-     * @param <A>
+     * @param <A> type of expression
      * @param entity Path for the source
      * @param col content of the source
-     * @return
+     * @return current object
      */
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
@@ -86,10 +85,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     /**
      * Bind the given collection to an already existing query source
      *
-     * @param <A>
+     * @param <A> type of expression
      * @param entity Path for the source
      * @param col content of the source
-     * @return
+     * @return current object
      */
     public <A> Q bind(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
@@ -123,10 +122,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     /**
      * Define an inner join from the Collection typed path to the alias
      *
-     * @param <P>
-     * @param target
-     * @param alias
-     * @return
+     * @param <P> type of expression
+     * @param target target of the join
+     * @param alias alias for the join target
+     * @return current object
      */
     public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
@@ -136,10 +135,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     /**
      * Define an inner join from the Map typed path to the alias
      *
-     * @param <P>
-     * @param target
-     * @param alias
-     * @return
+     * @param <P> type of expression
+     * @param target target of the join
+     * @param alias alias for the join target
+     * @return current object
      */
     public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
@@ -149,10 +148,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     /**
      * Define a left join from the Collection typed path to the alias
      *
-     * @param <P>
-     * @param target
-     * @param alias
-     * @return
+     * @param <P> type of expression
+     * @param target target of the join
+     * @param alias alias for the join target
+     * @return current object
      */
     public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
@@ -162,10 +161,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     /**
      * Define a left join from the Map typed path to the alias
      *
-     * @param <P>
-     * @param target
-     * @param alias
-     * @return
+     * @param <P> type of expression
+     * @param target target of the join
+     * @param alias alias for the joint target
+     * @return current object
      */
     public <P> Q leftJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
@@ -204,7 +203,6 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
             reset();
             return QueryResults.<T>emptyResults();
         }
-
     }
 
     @Override

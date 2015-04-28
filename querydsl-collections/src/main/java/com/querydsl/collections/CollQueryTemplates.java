@@ -18,7 +18,7 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.PathType;
 
 /**
- * CollQueryTemplates extends {@link JavaTemplates} to add module specific operation
+ * {@code CollQueryTemplates} extends {@link JavaTemplates} to add module specific operation
  * templates.
  *
  * @author tiwe

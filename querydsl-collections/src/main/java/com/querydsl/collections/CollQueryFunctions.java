@@ -27,7 +27,7 @@ import com.querydsl.core.util.MathUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**
- * CollQueryFunctions defines function implementation for use in ColQueryTemplates
+ * {@code CollQueryFunctions} defines function implementation for use in ColQueryTemplates
  *
  * @author tiwe
  *

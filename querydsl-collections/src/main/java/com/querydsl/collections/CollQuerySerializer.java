@@ -42,7 +42,7 @@ import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.Template;
 
 /**
- * CollQuerySerializer is a {@link Serializer} implementation for the Java language
+ * {@code CollQuerySerializer} is a {@link Serializer} implementation for the Java language
  *
  * @author tiwe
  */

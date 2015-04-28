@@ -20,7 +20,7 @@ import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.Path;
 
 /**
- * CollQueryFactory provides static convenience methods for query construction
+ * {@code CollQueryFactory} provides static convenience methods for query construction
  *
  * @author tiwe
  */
@@ -31,7 +31,7 @@ public final class CollQueryFactory {
      * 
      * @param path source expression
      * @param col source collection
-     * @return
+     * @return delete clause
      */
     public static <A> CollDeleteClause<A> delete(Path<A> path, Collection<A> col) {
         return new CollDeleteClause<A>(path, col);
@@ -42,7 +42,7 @@ public final class CollQueryFactory {
      * 
      * @param alias source alias
      * @param col source collection
-     * @return
+     * @return query
      */
     public static <A> CollQuery<A> from(A alias, Iterable<A> col) {
         Path<A> expr = Alias.$(alias);
@@ -54,7 +54,7 @@ public final class CollQueryFactory {
      * 
      * @param path source expression
      * @param arr source array
-     * @return
+     * @return query
      */
     public static <A> CollQuery<A> from(Path<A> path, A... arr) {
         return new CollQuery<Void>().from(path, ImmutableList.copyOf(arr)).select(path);
@@ -65,7 +65,7 @@ public final class CollQueryFactory {
      * 
      * @param path source expression
      * @param col source collection
-     * @return
+     * @return query
      */
     public static <A> CollQuery<A> from(Path<A> path, Iterable<A> col) {
         return new CollQuery<Void>().from(path, col).select(path);
@@ -76,7 +76,7 @@ public final class CollQueryFactory {
      * 
      * @param path source expression
      * @param col source collection
-     * @return
+     * @return query
      */
     public static <A> CollUpdateClause<A> update(Path<A> path, Iterable<A> col) {
         return new CollUpdateClause<A>(path, col);

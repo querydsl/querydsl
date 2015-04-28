@@ -17,7 +17,7 @@ import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
 
 /**
- * CollQuery is the default implementation of the {@link SimpleQuery} interface for collections
+ * {@code CollQuery} is the default implementation of the {@link FetchableQuery} interface for collections
  *
  * @author tiwe
  *
@@ -34,7 +34,7 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
     /**
      * Creates a new CollQuery instance
      * 
-     * @param templates
+     * @param templates serialization templates
      */
     public CollQuery(CollQueryTemplates templates) {
         this(new DefaultQueryEngine(new DefaultEvaluatorFactory(templates)));
@@ -43,7 +43,7 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
     /**
      * Create a new CollQuery instance
      *
-     * @param queryEngine
+     * @param queryEngine query engine for query execution
      */
     public CollQuery(QueryEngine queryEngine) {
         super(new DefaultQueryMetadata(), queryEngine);
@@ -53,7 +53,7 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
     /**
      * Create a new CollQuery instance
      *
-     * @param metadata
+     * @param metadata query metadata
      */
     public CollQuery(QueryMetadata metadata) {
         super(metadata, DefaultQueryEngine.getDefault());
@@ -62,8 +62,8 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
     /**
      * Create a new CollQuery instance
      *
-     * @param metadata
-     * @param queryEngine
+     * @param metadata query metadata
+     * @param queryEngine query engine for query execution
      */
     public CollQuery(QueryMetadata metadata, QueryEngine queryEngine) {
         super(metadata, queryEngine);
