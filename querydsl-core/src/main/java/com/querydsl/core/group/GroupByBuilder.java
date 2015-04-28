@@ -39,7 +39,7 @@ public class GroupByBuilder<K> {
     /**
      * Create a new GroupByBuilder for the given key expression
      *
-     * @param key
+     * @param key key for aggregating
      */
     public GroupByBuilder(Expression<K> key) {
         this.key = key;
@@ -48,8 +48,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a map
      *
-     * @param expressions
-     * @return
+     * @param expressions projection
+     * @return new result transformer
      */
     public ResultTransformer<Map<K, Group>> as(Expression<?>... expressions) {
         return new GroupByMap<K, Group>(key, expressions);
@@ -58,8 +58,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a closeable iterator
      *
-     * @param expressions
-     * @return
+     * @param expressions projection
+     * @return new result transformer
      */
     public ResultTransformer<CloseableIterator<Group>> iterate(Expression<?>... expressions) {
         return new GroupByIterate<K, Group>(key, expressions);
@@ -68,8 +68,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a list
      *
-     * @param expressions
-     * @return
+     * @param expressions projection
+     * @return new result transformer
      */
     public ResultTransformer<List<Group>> list(Expression<?>... expressions) {
         return new GroupByList<K, Group>(key, expressions);
@@ -78,8 +78,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a map
      *
-     * @param expression
-     * @return
+     * @param expression projection
+     * @return new result transformer
      */
     @SuppressWarnings("unchecked")
     public <V> ResultTransformer<Map<K, V>> as(Expression<V> expression) {
@@ -99,8 +99,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a closeable iterator
      *
-     * @param expression
-     * @return
+     * @param expression projection
+     * @return new result transformer
      */
     public <V> ResultTransformer<CloseableIterator<V>> iterate(Expression<V> expression) {
         final Expression<V> lookup = getLookup(expression);
@@ -115,8 +115,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a list
      *
-     * @param expression
-     * @return
+     * @param expression projection
+     * @return new result transformer
      */
     public <V> ResultTransformer<List<V>> list(Expression<V> expression) {
         final Expression<V> lookup = getLookup(expression);
@@ -139,8 +139,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a map
      *
-     * @param expression
-     * @return
+     * @param expression projection
+     * @return new result transformer
      */
     public <V> ResultTransformer<Map<K, V>> as(FactoryExpression<V> expression) {
         final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
@@ -172,8 +172,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a closeable iterator
      *
-     * @param expression
-     * @return
+     * @param expression projection
+     * @return new result transformer
      */
     public <V> ResultTransformer<CloseableIterator<V>> iterate(FactoryExpression<V> expression) {
         final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
@@ -194,8 +194,8 @@ public class GroupByBuilder<K> {
     /**
      * Get the results as a list
      *
-     * @param expression
-     * @return
+     * @param expression projection
+     * @return new result transformer
      */
     public <V> ResultTransformer<List<V>> list(FactoryExpression<V> expression) {
         final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);

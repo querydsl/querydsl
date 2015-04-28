@@ -21,7 +21,7 @@ import javax.annotation.concurrent.Immutable;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**
- * PathImpl defines a default implementation of the {@link Path} interface
+ * {@code PathImpl} defines a default implementation of the {@link Path} interface
  *
  * @author tiwe
  *

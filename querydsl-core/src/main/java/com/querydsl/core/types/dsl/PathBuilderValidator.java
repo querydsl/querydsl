@@ -23,16 +23,17 @@ import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**
- * PathBuilderValidator validates PathBuilder properties at creation time
+ * {@code PathBuilderValidator} validates {@link PathBuilder} properties at creation time
  */
 public interface PathBuilderValidator {
 
     /**
      * Validates the given property of given class
      *
-     * @param parent
-     * @param property
-     * @param propertyType
+     * @param parent type of the parent object
+     * @param property property name
+     * @param propertyType property type
+     * @return propertyType or subtype of it
      */
     Class<?> validate(Class<?> parent, String property, Class<?> propertyType);
 

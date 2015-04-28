@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * BooleanExpression represents {@link java.lang.Boolean} expressions
+ * {@code BooleanExpression} represents {@link java.lang.Boolean} expressions
  *
  * @author tiwe
  * @see java.lang.Boolean
@@ -30,34 +30,6 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
 
     @Nullable
     private volatile BooleanExpression eqTrue, eqFalse;
-
-    /**
-     * Return the intersection of the given Boolean expressions
-     *
-     * @param exprs
-     * @return
-     */
-    public static BooleanExpression allOf(BooleanExpression... exprs) {
-        BooleanExpression rv = null;
-        for (BooleanExpression b : exprs) {
-            rv = rv == null ? b : rv.and(b);
-        }
-        return rv;
-    }
-
-    /**
-     * Return the union of the given Boolean expressions
-     *
-     * @param exprs
-     * @return
-     */
-    public static BooleanExpression anyOf(BooleanExpression... exprs) {
-        BooleanExpression rv = null;
-        for (BooleanExpression b : exprs) {
-            rv = rv == null ? b : rv.or(b);
-        }
-        return rv;
-    }
 
     @Nullable
     private volatile BooleanExpression not;
@@ -77,10 +49,12 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     }
 
     /**
-     * Get an intersection of this and the given expression
+     * Create a {@code this && right} expression
+     *
+     * <p>Returns an intersection of this and the given expression</p>
      *
      * @param right right hand side of the union
-     * @return {@code this && right}
+     * @return {@code this &amp;&amp; right}
      */
     public BooleanExpression and(@Nullable Predicate right) {
         right = (Predicate) ExpressionUtils.extract(right);
@@ -92,17 +66,21 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     }
 
     /**
-     * Get an intersection of this and the union of the given predicates
+     * Create a {@code this && any(predicates)} expression
      *
-     * @param predicates
-     * @return
+     * <p>Returns an intersection of this and the union of the given predicates</p>
+     *
+     * @param predicates union of predicates
+     * @return this &amp;&amp; any(predicates)
      */
     public BooleanExpression andAnyOf(Predicate... predicates) {
         return and(ExpressionUtils.anyOf(predicates));
     }
 
     /**
-     * Get a negation of this boolean expression
+     * Create a {@code !this} expression
+     *
+     * <p>Returns a negation of this boolean expression</p>
      *
      * @return !this
      */
@@ -116,7 +94,9 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     }
 
     /**
-     * Get a union of this and the given expression
+     * Create a {@code this || right} expression
+     *
+     * <p>Returns a union of this and the given expression</p>
      *
      * @param right right hand side of the union
      * @return this || right
@@ -131,28 +111,30 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     }
 
     /**
-     * Get a union of this and the intersection of the given predicates
+     * Create a {@code this or all(predicates)} expression
      *
-     * @param predicates
-     * @return
+     * <p>Return a union of this and the intersection of the given predicates</p>
+     *
+     * @param predicates intersection of predicates
+     * @return this or all(predicates)
      */
     public BooleanExpression orAllOf(Predicate... predicates) {
         return or(ExpressionUtils.allOf(predicates));
     }
 
     /**
-     * Get a this == true expression
+     * Create a {@code this == true} expression
      *
-     * @return
+     * @return this == true
      */
     public BooleanExpression isTrue() {
         return eq(true);
     }
 
     /**
-     * Get a this == false expression
+     * Create a {@code this == false} expression
      *
-     * @return
+     * @return this == false
      */
     public BooleanExpression isFalse() {
         return eq(false);

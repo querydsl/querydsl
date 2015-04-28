@@ -14,6 +14,8 @@
 package com.querydsl.core.types;
 
 /**
+ * {@code ExpressionException} is thrown for {@link Expression} construction issues
+ *
  * @author tiwe
  *
  */

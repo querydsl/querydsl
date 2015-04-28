@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * BooleanPath represents boolean path expressions
+ * {@code BooleanPath} represents boolean path expressions
  *
  * @author tiwe
  * @see java.lang.Boolean

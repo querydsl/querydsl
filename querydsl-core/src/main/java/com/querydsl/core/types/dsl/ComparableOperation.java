@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * ComparableOperation represents Comparable operations
+ * {@code ComparableOperation} represents Comparable operations
  *
  * @author tiwe
  *

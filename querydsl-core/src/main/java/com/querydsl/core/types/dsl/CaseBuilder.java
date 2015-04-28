@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * CaseBuilder enables the construction of typesafe case-when-then-else
+ * {@code CaseBuilder} enables the construction of typesafe case-when-then-else
  * constructs :
  * e.g.
  *

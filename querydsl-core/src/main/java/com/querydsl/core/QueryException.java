@@ -14,6 +14,8 @@
 package com.querydsl.core;
 
 /**
+ * {@code QueryException} is thrown for exceptional query construction issues
+ *
  * @author tiwe
  *
  */

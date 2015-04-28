@@ -19,7 +19,7 @@ import java.util.List;
 import com.querydsl.core.util.ArrayUtils;
 
 /**
- * Utility class to expand FactoryExpression constructor arguments and compress {@link FactoryExpression}
+ * Utility class to expand {@link FactoryExpression} constructor arguments and compress {@link FactoryExpression}
  * invocation arguments
  *
  * @author tiwe
@@ -77,10 +77,6 @@ public final class FactoryExpressionUtils {
 
     }
 
-    /**
-     * @param projection
-     * @return
-     */
     public static FactoryExpression<?> wrap(List<? extends Expression<?>> projection) {
         boolean usesFactoryExpressions = false;
         for (Expression<?> e : projection) {

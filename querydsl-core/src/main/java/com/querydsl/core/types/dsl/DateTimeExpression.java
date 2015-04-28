@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * DateTimeExpression represents Date / Time expressions
+ * {@code DateTimeExpression} represents Date / Time expressions
  * The date representation is compatible with the Gregorian calendar.
  *
  * @param <T> expression type
@@ -37,48 +37,46 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     private static final long serialVersionUID = -6879277113694148047L;
 
     /**
-     * Get an expression representing the current date as a DateTimeExpression instance
+     * Create an expression representing the current date as a DateTimeExpression instance
      *
-     * @return
+     * @return current date
      */
     public static DateTimeExpression<Date> currentDate() {
         return CURRENT_DATE;
     }
 
     /**
-     * Get an expression representing the current date as a DateTimeExpression instance
+     * Create an expression representing the current date as a DateTimeExpression instance
      *
-     * @return
+     * @return current date
      */
     public static <T extends Comparable> DateTimeExpression<T> currentDate(Class<T> cl) {
         return Expressions.dateTimeOperation(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
 
     /**
-     * Get an expression representing the current time instant as a DateTimeExpression instance
+     * Create an expression representing the current time instant as a DateTimeExpression instance
      *
-     * @return
+     * @return current timestamp
      */
     public static DateTimeExpression<Date> currentTimestamp() {
         return CURRENT_TIMESTAMP;
     }
 
     /**
-     * Get an expression representing the current time instant as a DateTimeExpression instance
+     * Create an expression representing the current time instant as a DateTimeExpression instance
      *
-     * @return
+     * @return current timestamp
      */
     public static <T extends Comparable> DateTimeExpression<T> currentTimestamp(Class<T> cl) {
         return Expressions.dateTimeOperation(cl, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
-
 
     @Nullable
     private volatile NumberExpression<Integer> dayOfMonth, dayOfWeek, dayOfYear;
 
     @Nullable
     private volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
-
 
     @Nullable
     private volatile DateTimeExpression<T> min, max;
@@ -101,9 +99,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a day of month expression (range 1-31)
+     * Create a day of month expression (range 1-31)
      *
-     * @return
+     * @return day of month
      */
     public NumberExpression<Integer> dayOfMonth() {
         if (dayOfMonth == null) {
@@ -113,10 +111,10 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a day of week expression (range 1-7 / SUN-SAT)
+     * Create a day of week expression (range 1-7 / SUN-SAT)
      * <p>NOT supported in JDOQL and not in Derby</p>
      *
-     * @return
+     * @return day of week
      */
     public NumberExpression<Integer> dayOfWeek() {
         if (dayOfWeek == null) {
@@ -126,10 +124,10 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a day of year expression (range 1-356)
+     * Create a day of year expression (range 1-356)
      * <p>NOT supported in JDOQL and not in Derby</p>
      *
-     * @return
+     * @return day of year
      */
     public NumberExpression<Integer> dayOfYear() {
         if (dayOfYear == null) {
@@ -139,9 +137,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a hours expression (range 0-23)
+     * Create a hours expression (range 0-23)
      *
-     * @return
+     * @return hour
      */
     public NumberExpression<Integer> hour() {
         if (hours == null) {
@@ -163,10 +161,10 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a milliseconds expression (range 0-999)
+     * Create a milliseconds expression (range 0-999)
      * <p>Is always 0 in HQL and JDOQL modules</p>
      *
-     * @return
+     * @return milli seconds
      */
     public NumberExpression<Integer> milliSecond() {
         if (milliseconds == null) {
@@ -188,9 +186,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a minutes expression (range 0-59)
+     * Create a minutes expression (range 0-59)
      *
-     * @return
+     * @return minute
      */
     public NumberExpression<Integer> minute() {
         if (minutes == null) {
@@ -200,9 +198,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a month expression (range 1-12 / JAN-DEC)
+     * Create a month expression (range 1-12 / JAN-DEC)
      *
-     * @return
+     * @return month
      */
     public NumberExpression<Integer> month() {
         if (month == null) {
@@ -212,9 +210,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a seconds expression (range 0-59)
+     * Create a seconds expression (range 0-59)
      *
-     * @return
+     * @return second
      */
     public NumberExpression<Integer> second() {
         if (seconds == null) {
@@ -224,9 +222,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a week expression
+     * Create a week expression
      *
-     * @return
+     * @return week
      */
     public NumberExpression<Integer> week() {
         if (week == null) {
@@ -236,9 +234,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a year expression
+     * Create a year expression
      *
-     * @return
+     * @return year
      */
     public NumberExpression<Integer> year() {
         if (year == null) {
@@ -248,9 +246,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a year / month expression
+     * Create a year / month expression
      *
-     * @return
+     * @return year month
      */
     public NumberExpression<Integer> yearMonth() {
         if (yearMonth == null) {
@@ -260,9 +258,9 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get a ISO yearweek expression
+     * Create a ISO yearweek expression
      *
-     * @return
+     * @return year week
      */
     public NumberExpression<Integer> yearWeek() {
         if (yearWeek == null) {

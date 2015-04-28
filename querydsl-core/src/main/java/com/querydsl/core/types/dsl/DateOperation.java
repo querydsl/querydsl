@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * DateOperation represents Date operations
+ * {@code DateOperation} represents Date operations
  *
  * @author tiwe
  *

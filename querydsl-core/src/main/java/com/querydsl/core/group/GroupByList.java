@@ -40,7 +40,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
     }
 
     @Override
-    public List<V> transform(FetchableQuery query) {
+    public List<V> transform(FetchableQuery<?,?> query) {
         // create groups
         FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(Projections.tuple(expressions));
         boolean hasGroups = false;

@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * NumberOperation represents numeric operations
+ * {@code NumberOperation} represents numeric operations
  *
  * @author tiwe
  *

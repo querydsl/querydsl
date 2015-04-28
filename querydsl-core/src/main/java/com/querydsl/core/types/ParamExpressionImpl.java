@@ -18,7 +18,7 @@ import java.util.UUID;
 import javax.annotation.concurrent.Immutable;
 
 /**
- * ParamExpressionImpl defines a parameter in a query with an optional name
+ * {@code ParamExpressionImpl} defines a parameter in a query with an optional name
  *
  * @author tiwe
  *

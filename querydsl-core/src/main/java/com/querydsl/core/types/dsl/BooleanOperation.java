@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * BooleanOperation represents boolean operations
+ * {@code BooleanOperation} represents boolean operations
  *
  * @author tiwe
  *

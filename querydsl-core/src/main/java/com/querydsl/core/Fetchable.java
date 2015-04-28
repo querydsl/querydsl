@@ -18,7 +18,7 @@ import java.util.List;
 import com.mysema.commons.lang.CloseableIterator;
 
 /**
- * Fetchable defines default projection methods for {@link Query} implementations.
+ * {@code Fetchable} defines default projection methods for {@link Query} implementations.
  * All Querydsl query implementations should implement this interface.
  *
  * @author tiwe
@@ -27,14 +27,14 @@ public interface Fetchable<T> {
     /**
      * Get the projection as a typed List
      *
-     * @return
+     * @return results in list form
      */
     List<T> fetch();
 
     /**
      * Get the first result of Get the projection or null if no result is found
      *
-     * @return
+     * @return first result or null
      */
     T fetchFirst();
 
@@ -42,28 +42,28 @@ public interface Fetchable<T> {
      * Get the projection as a unique result or null if no result is found
      *
      * @throws NonUniqueResultException if there is more than one matching result
-     * @return
+     * @return first result or null
      */
     T fetchOne();
 
     /**
      * Get the projection as a typed closeable Iterator
      *
-     * @return
+     * @return closeable iterator
      */
     CloseableIterator<T> iterate();
 
     /**
      * Get the projection in {@link QueryResults} form
      *
-     * @return
+     * @return results
      */
     QueryResults<T> fetchResults();
 
     /**
      * Get the count of matched elements
      *
-     * @return
+     * @return row count
      */
     long fetchCount();
 

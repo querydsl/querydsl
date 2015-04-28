@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * StringOperation represents a String typed operation
+ * {@code StringOperation} represents a String typed operation
  *
  * @author tiwe
  *

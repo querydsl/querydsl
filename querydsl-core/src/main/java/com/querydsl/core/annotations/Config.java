@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Config defines serialization flags for annotated domain types and packages
+ * {@code Config} defines serialization flags for annotated domain types and packages
  *
  * @author tiwe
  *
@@ -33,37 +33,27 @@ import java.lang.annotation.Target;
 public @interface Config {
 
     /**
-     * Created entity field initialization accessors
-     *
-     * @return
+     * Create entity field initialization accessors     *
      */
     boolean entityAccessors() default false;
 
     /**
      * Create accessors for indexed list access
-     *
-     * @return
      */
     boolean listAccessors() default false;
 
     /**
      * Create accessors for keyed map access
-     *
-     * @return
      */
     boolean mapAccessors() default false;
 
     /**
      * Create default variable in query type
-     *
-     * @return
      */
     boolean createDefaultVariable() default true;
 
     /**
      * The name of the default variable in query type
-     *
-     * @return
      */
     String defaultVariableName() default "";
 

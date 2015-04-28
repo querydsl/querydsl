@@ -14,6 +14,8 @@
 package com.querydsl.core.group;
 
 /**
+ * {@code MixinGroupExpression} provides nesting support for {@link GroupExpression} instances
+ *
  * @param <E>
  * @param <F>
  * @param <R>

@@ -39,7 +39,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
     }
 
     @Override
-    public Map<K, V> transform(FetchableQuery query) {
+    public Map<K, V> transform(FetchableQuery<?,?> query) {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
 
         // create groups

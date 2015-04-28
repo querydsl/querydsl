@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
-public class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
+class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -1337452521648394353L;
 

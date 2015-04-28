@@ -18,13 +18,7 @@ import java.math.BigDecimal;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.util.MathUtils;
 
-/**
- * @author tiwe
- *
- * @param <T>
- */
-@SuppressWarnings("unchecked")
-public class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
+class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 

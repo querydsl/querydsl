@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * EnumOperation represents enum operations
+ * {@code EnumOperation} represents enum operations
  *
  * @author tiwe
  *

@@ -14,7 +14,7 @@
 package com.querydsl.core;
 
 /**
- * NonUniqueResultException is thrown for query results where one result row is expected, but multiple
+ * {@code NonUniqueResultException} is thrown for query results where one result row is expected, but multiple
  * are retrieved.
  * 
  * @author tiwe

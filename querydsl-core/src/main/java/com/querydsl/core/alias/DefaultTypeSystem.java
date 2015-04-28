@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * DefaultTypeSystem is the default implementation of the {@link TypeSystem} interface
+ * {@code DefaultTypeSystem} is the default implementation of the {@link TypeSystem} interface
  * 
  * @author tiwe
  *

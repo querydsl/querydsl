@@ -24,12 +24,14 @@ public interface GroupCollector<T, R> {
     /**
      * Add given value to this group
      * 
-     * @param o
+     * @param o value to add
      */
     void add(T o);
 
     /**
-     * @return Value of this group.
+     * Get the value for this group
+     *
+     * @return value of this group.
      */
     R get();
     

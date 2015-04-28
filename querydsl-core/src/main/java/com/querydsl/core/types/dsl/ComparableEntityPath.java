@@ -18,7 +18,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 
 /**
- * ComparableEntityPath extends the ComparablePath class to implement the EntityPath interface
+ * {@code ComparableEntityPath} extends the {@link ComparablePath} class to implement the EntityPath interface
  *
  * @author tiwe
  *

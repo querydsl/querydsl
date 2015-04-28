@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * StringTemplate defines custom String expressions
+ * {@code StringTemplate} defines custom String expressions
  *
  * @author tiwe
  *

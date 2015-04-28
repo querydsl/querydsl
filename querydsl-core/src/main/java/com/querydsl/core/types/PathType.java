@@ -14,7 +14,7 @@
 package com.querydsl.core.types;
 
 /**
- * PathType represents the relation of a {@link Path} to its parent
+ * {@code PathType} represents the relation of a {@link Path} to its parent
  */
 public enum PathType implements Operator {
     /**

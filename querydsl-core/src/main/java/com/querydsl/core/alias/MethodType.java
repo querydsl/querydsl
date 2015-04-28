@@ -24,50 +24,50 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.EntityPath;
 
 /**
- * MethodType defines the supported method types used in the Alias functionality
+ * {@code MethodType} defines the supported method types used in the Alias functionality
  * 
  * @author tiwe
  *
  */
 public enum MethodType{
     /**
-     *
+     * __mappedPath invocation
      */
     GET_MAPPED_PATH("__mappedPath", EntityPath.class, ManagedObject.class),
     /**
-     *
+     * getter invocation
      */
     GETTER("(get|is).+", Object.class, Object.class),
     /**
-     *
+     * hashCode invocation
      */
     HASH_CODE("hashCode", int.class, Object.class),
     /**
-     *
+     * List#get(int) invocation
      */
     LIST_ACCESS("get", Object.class, List.class, int.class),
     /**
-     *
+     * Map#get(Object) invocation
      */
     MAP_ACCESS("get", Object.class, Map.class, Object.class),
     /**
-     *
+     * Collection#size() invocation
      */
     SIZE("size", int.class, Object.class),
     /**
-     *
+     * toString invocation
      */
     TO_STRING("toString",String.class, Object.class),
     /**
-     *
+     * Scala getter inovication
      */
     SCALA_GETTER(".+", Object.class, Object.class),
     /**
-     *
+     * Scala list apply invocation
      */
     SCALA_LIST_ACCESS("apply", Object.class, Object.class, int.class),
     /**
-     *
+     * Scala map apply invocation
      */
     SCALA_MAP_ACCESS("apply", Object.class, Object.class, Object.class);
 

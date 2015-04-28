@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * ComparableExpression extends {@link ComparableExpressionBase} to provide comparison methods.
+ * {@code ComparableExpression} extends {@link ComparableExpressionBase} to provide comparison methods.
  *
  * @author tiwe
  *
@@ -43,11 +43,13 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code from <= this <= to} expression
+     * Create a {@code this between from and to} expression
      *
-     * @param from
-     * @param to
-     * @return
+     * <p>Is equivalent to {@code from <= this <= to}</p>
+     *
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this between from and to
      */
     public final BooleanExpression between(@Nullable T from, @Nullable T to) {
         if (from == null) {
@@ -64,11 +66,13 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code from <= this <= to} expression
+     * Create a {@code this between from and to} expression
      *
-     * @param from
-     * @param to
-     * @return
+     * <p>Is equivalent to {@code from <= this <= to}</p>
+     *
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this between from and to
      */
     public final BooleanExpression between(@Nullable Expression<T> from, @Nullable Expression<T> to) {
         if (from == null) {
@@ -86,32 +90,36 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code this not between from and to} expression
+     * Create a {@code this not between from and to} expression
      *
-     * @param from
-     * @param to
-     * @return
+     * <p>Is equivalent to {@code this < from || this > to}</p>
+     *
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this not between from and to
      */
     public final BooleanExpression notBetween(T from, T to) {
         return between(from, to).not();
     }
 
     /**
-     * Get a {@code this not between from and to} expression
+     * Create a {@code this not between from and to} expression
      *
-     * @param from
-     * @param to
-     * @return
+     * <p>Is equivalent to {@code this < from || this > to}</p>
+     *
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this not between from and to
      */
     public final BooleanExpression notBetween(Expression<T> from, Expression<T> to) {
         return between(from, to).not();
     }
 
     /**
-     * Get a {@code this > right} expression
+     * Create a {@code this > right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &gt; right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression gt(T right) {
@@ -119,10 +127,10 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code this > right} expression
+     * Create a {@code this > right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &gt; right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression gt(Expression<T> right) {
@@ -130,44 +138,50 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
     
     /**
-     * @param right
-     * @return
+     * Create a {@code this > all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt; all right
      */
     public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
         return gt(ExpressionUtils.all(right));
     }
 
-    
     /**
-     * @param right
-     * @return
+     * Create a {@code this > any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt; any right
      */
     public BooleanExpression gtAny(CollectionExpression<?, ? super T> right) {
         return gt(ExpressionUtils.any(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this > all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt; all right
      */
     public BooleanExpression gtAll(SubQueryExpression<? extends T> right) {
         return gt(ExpressionUtils.all(right));
     }
 
-
     /**
-     * @param right
-     * @return
+     * Create a {@code this > any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt; any right
      */
     public BooleanExpression gtAny(SubQueryExpression<? extends T> right) {
         return gt(ExpressionUtils.any(right));
     }
 
     /**
-     * Get a {@code this >= right} expression
+     * Create a {@code this >= right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &gt;= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression goe(T right) {
@@ -175,10 +189,10 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code this >= right} expression
+     * Create a {@code this >= right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &gt;= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression goe(Expression<T> right) {
@@ -186,43 +200,50 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
     
     /**
-     * @param right
-     * @return
+     * Create a {@code this >= all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt;= all right
      */
     public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.all(right));
     }
     
     /**
-     * @param right
-     * @return
+     * Create a {@code this >= any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt;= any right
      */
     public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.any(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this >= all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt;= all right
      */
     public BooleanExpression goeAll(SubQueryExpression<? extends T> right) {
         return goe(ExpressionUtils.all(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this >= any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &gt;= any right
      */
     public BooleanExpression goeAny(SubQueryExpression<? extends T> right) {
         return goe(ExpressionUtils.any(right));
     }
 
-
     /**
-     * Get a {@code this < right} expression
+     * Create a {@code this < right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &lt; right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression lt(T right) {
@@ -230,10 +251,10 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code this < right} expression
+     * Create a {@code this < right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &lt; right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression lt(Expression<T> right) {
@@ -241,44 +262,50 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
     
     /**
-     * @param right
-     * @return
+     * Create a {@code this < all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt; all right
      */
     public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
         return lt(ExpressionUtils.all(right));
     }
 
-    
     /**
-     * @param right
-     * @return
+     * Create a {@code this < any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt; any right
      */
     public BooleanExpression ltAny(CollectionExpression<?, ? super T> right) {
         return lt(ExpressionUtils.any(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this < all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt; all right
      */
     public BooleanExpression ltAll(SubQueryExpression<? extends T> right) {
         return lt(ExpressionUtils.all(right));
     }
 
-
     /**
-     * @param right
-     * @return
+     * Create a {@code this < any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt; any right
      */
     public BooleanExpression ltAny(SubQueryExpression<? extends T> right) {
         return lt(ExpressionUtils.any(right));
     }
 
     /**
-     * Get a {@code this <= right} expression
+     * Create a {@code this <= right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &lt;= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(T right) {
@@ -286,10 +313,10 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a {@code this <= right} expression
+     * Create a {@code this <= right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this &lt;= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(Expression<T> right) {
@@ -297,32 +324,40 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
     
     /**
-     * @param right
-     * @return
+     * Create a {@code this <= all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt;= all right
      */
     public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
         return loe(ExpressionUtils.all(right));
     }
     
     /**
-     * @param right
-     * @return
+     * Create a {@code this <= any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt;= any right
      */
     public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
         return loe(ExpressionUtils.any(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this <= all right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt;= all right
      */
     public BooleanExpression loeAll(SubQueryExpression<? extends T> right) {
         return loe(ExpressionUtils.all(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this <= any right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this &lt;= any right
      */
     public BooleanExpression loeAny(SubQueryExpression<? extends T> right) {
         return loe(ExpressionUtils.any(right));

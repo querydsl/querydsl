@@ -14,7 +14,7 @@
 package com.querydsl.core.types;
 
 /**
- * JavaTemplates extends {@link Templates} to provide Java syntax compliant serialization
+ * {@code JavaTemplates} extends {@link Templates} to provide Java syntax compliant serialization
  * of Querydsl expressions
  *
  * @author tiwe

@@ -19,7 +19,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * Templates provides operator patterns for query expression serialization
+ * {@code Templates} provides operator patterns for query expression serialization
  *
  * @author tiwe
  */

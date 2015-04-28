@@ -19,7 +19,7 @@ import java.util.Map;
 import com.google.common.base.CaseFormat;
 
 /**
- * PathBuilderFactory is a factory class for PathBuilder creation
+ * {@code PathBuilderFactory} is a factory class for PathBuilder creation
  *
  * @author tiwe
  *
@@ -31,15 +31,15 @@ public final class PathBuilderFactory {
     /**
      * Create a new PathBuilder instance for the given type
      * 
-     * @param clazz
-     * @return
+     * @param type type of expression
+     * @return new PathBuilder instance
      */
     @SuppressWarnings("unchecked")
-    public <T> PathBuilder<T> create(Class<T> clazz) {
-        PathBuilder<T> rv = (PathBuilder<T>) paths.get(clazz);
+    public <T> PathBuilder<T> create(Class<T> type) {
+        PathBuilder<T> rv = (PathBuilder<T>) paths.get(type);
         if (rv == null) {
-            rv = new PathBuilder<T>(clazz, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, clazz.getSimpleName()));
-            paths.put(clazz, rv);
+            rv = new PathBuilder<T>(type, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, type.getSimpleName()));
+            paths.put(type, rv);
         }
         return rv;
     }

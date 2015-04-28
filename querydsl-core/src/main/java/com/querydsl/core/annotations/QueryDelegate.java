@@ -58,7 +58,7 @@ import java.lang.annotation.Target;
 public @interface QueryDelegate {
 
     /**
-     * @return
+     * Target type for delegate expansion
      */
     Class<?> value();
 

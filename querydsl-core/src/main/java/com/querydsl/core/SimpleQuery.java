@@ -19,7 +19,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 
 /**
- * SimpleQuery defines a simple querying interface than {@link Query}
+ * {@code SimpleQuery} defines a simple querying interface than {@link Query}
  *
  * @author tiwe
  *
@@ -31,32 +31,32 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
     /**
      * Set the limit / max results for the query results
      *
-     * @param limit
-     * @return
+     * @param limit max rows
+     * @return the current object
      */
     Q limit(@Nonnegative long limit);
 
     /**
      * Set the offset for the query results
      *
-     * @param offset
-     * @return
+     * @param offset row offset
+     * @return the current object
      */
     Q offset(@Nonnegative long offset);
 
     /**
      * Set both limit and offset of the query results
      *
-     * @param modifiers
-     * @return
+     * @param modifiers query modifiers
+     * @return the current object
      */
     Q restrict(QueryModifiers modifiers);
 
     /**
      * Add order expressions
      *
-     * @param o
-     * @return
+     * @param o order
+     * @return the current object
      */
     Q orderBy(OrderSpecifier<?>... o);
 
@@ -64,16 +64,16 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
      * Set the given parameter to the given value
      *
      * @param <T>
-     * @param param
-     * @param value
-     * @return
+     * @param param param
+     * @param value binding
+     * @return the current object
      */
     <T> Q set(ParamExpression<T> param, T value);
     
     /**
      * Set the Query to return distinct results
      * 
-     * @return
+     * @return the current object
      */
     Q distinct();
 

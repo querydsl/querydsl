@@ -14,7 +14,7 @@
 package com.querydsl.core.types;
 
 /**
- * Order defines ascending and descending order
+ * {@code Order} defines ascending and descending order
  *
  * @author tiwe
  */

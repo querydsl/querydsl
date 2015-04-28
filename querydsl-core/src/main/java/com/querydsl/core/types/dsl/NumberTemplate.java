@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * NumberTemplate defines custom numeric expressions
+ * {@code NumberTemplate} defines custom numeric expressions
  *
  * @author tiwe
  *

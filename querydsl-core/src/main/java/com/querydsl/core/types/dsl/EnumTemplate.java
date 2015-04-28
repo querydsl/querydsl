@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * EnumTemplate defines custom enum expressions
+ * {@code EnumTemplate} defines custom enum expressions
  *
  * @author tiwe
  *

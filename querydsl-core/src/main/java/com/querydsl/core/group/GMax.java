@@ -15,11 +15,6 @@ package com.querydsl.core.group;
 
 import com.querydsl.core.types.Expression;
 
-/**
- * @author tiwe
- *
- * @param <T>
- */
 class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3815394663181131511L;

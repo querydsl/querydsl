@@ -25,7 +25,7 @@ import com.querydsl.core.types.PathImpl;
 import com.querydsl.core.types.PathMetadata;
 
 /**
- * CollectionPath is a base class for collection typed paths
+ * {@code CollectionPath} is a base class for collection typed paths
  * 
  * @author tiwe
  *
@@ -48,7 +48,12 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
         super(mixin);
         this.inits = inits;
     }
-    
+
+    /**
+     * Create a path that matches any element in this collection
+     *
+     * @return path expression
+     */
     public abstract Q any();
     
     @SuppressWarnings("unchecked")

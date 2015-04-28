@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * TimeTemplate defines custom time expressions
+ * {@code TimeTemplate} defines custom time expressions
  *
  * @author tiwe
  *

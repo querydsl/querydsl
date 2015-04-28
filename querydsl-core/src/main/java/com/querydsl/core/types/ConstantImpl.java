@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import javax.annotation.concurrent.Immutable;
 
 /**
- * ConstantImpl is the default implementation of the Constant interface
+ * {@code ConstantImpl} is the default implementation of the {@link Constant} interface
  *
  * @author tiwe
  */
@@ -109,7 +109,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
     /**
      * Create a new Constant for the given object
      *
-     * @param constant
+     * @param constant constant
      */
     @SuppressWarnings("unchecked") //The class of the constant will mandate the type
     public ConstantImpl(T constant) {
@@ -119,8 +119,8 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
     /**
      * Create a new Constant of the given type for the given object
      *
-     * @param type
-     * @param constant
+     * @param type type of the expression
+     * @param constant constant
      */
     public ConstantImpl(Class<T> type, T constant) {
         super(type);

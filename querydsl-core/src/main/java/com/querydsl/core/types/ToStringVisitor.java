@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * ToStringVisitor is used for toString() serialization in {@link Expression} implementations.
+ * {@code ToStringVisitor} is used for toString() serialization in {@link Expression} implementations.
  *
  * @author tiwe
  */

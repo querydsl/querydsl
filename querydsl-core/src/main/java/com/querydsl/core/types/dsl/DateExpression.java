@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * DateExpression represents Date expressions
+ * {@code DateExpression} represents Date expressions
  * The date representation is compatible with the Gregorian calendar.
  *
  * @param <T> expression type
@@ -35,18 +35,19 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     private static final long serialVersionUID = 6054664454254721302L;
 
     /**
-     * Get an expression representing the current date as a DateExpression instance
+     * Create an expression representing the current date as a {@code DateExpression} instance
      *
-     * @return
+     * @return current date
      */
     public static DateExpression<Date> currentDate() {
         return CURRENT_DATE;
     }
 
     /**
-     * Get an expression representing the current date as a DateExpression instance
+     * Create an expression representing the current date as a {@code DateExpression} instance
      *
-     * @return
+     * @param cl type of expression
+     * @return current date
      */
     public static <T extends Comparable> DateExpression<T> currentDate(Class<T> cl) {
         return Expressions.dateOperation(cl, Ops.DateTimeOps.CURRENT_DATE);
@@ -76,9 +77,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a day of month expression (range 1-31)
+     * Create a day of month expression (range 1-31)
      *
-     * @return
+     * @return day of month
      */
     public NumberExpression<Integer> dayOfMonth() {
         if (dayOfMonth == null) {
@@ -88,10 +89,10 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a day of week expression (range 1-7 / SUN-SAT)
+     * Create a day of week expression (range 1-7 / SUN-SAT)
      * <p>NOT supported in JDOQL and not in Derby</p>
      *
-     * @return
+     * @return day of week
      */
     public NumberExpression<Integer> dayOfWeek() {
         if (dayOfWeek == null) {
@@ -101,10 +102,10 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a day of year expression (range 1-356)
+     * Create a day of year expression (range 1-356)
      * <p>NOT supported in JDOQL and not in Derby</p>
      *
-     * @return
+     * @return day of year
      */
     public NumberExpression<Integer> dayOfYear() {
         if (dayOfYear == null) {
@@ -138,9 +139,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a month expression (range 1-12 / JAN-DEC)
+     * Create a month expression (range 1-12 / JAN-DEC)
      *
-     * @return
+     * @return month
      */
     public NumberExpression<Integer> month() {
         if (month == null) {
@@ -150,9 +151,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a week expression
+     * Create a week expression
      *
-     * @return
+     * @return week
      */
     public NumberExpression<Integer> week() {
         if (week == null) {
@@ -162,9 +163,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a year expression
+     * Create a year expression
      *
-     * @return
+     * @return year
      */
     public NumberExpression<Integer> year() {
         if (year == null) {
@@ -174,9 +175,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a year / month expression
+     * Create a year / month expression
      *
-     * @return
+     * @return year month
      */
     public NumberExpression<Integer> yearMonth() {
         if (yearMonth == null) {
@@ -186,9 +187,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a ISO yearweek expression
+     * Create a ISO yearweek expression
      *
-     * @return
+     * @return year week
      */
     public NumberExpression<Integer> yearWeek() {
         if (yearWeek == null) {

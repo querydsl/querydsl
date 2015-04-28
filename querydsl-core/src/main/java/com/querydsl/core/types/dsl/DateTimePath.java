@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * DateTimePath presents DateTime typed paths
+ * {@code DateTimePath} presents DateTime typed paths
  *
  * @author tiwe
  *

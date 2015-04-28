@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
+ * {@code FetchableSubQueryBase} extends {@link FetchableQueryBase} to provide fluent Expression creation functionality
  *
  * @param <T>
  * @param <Q>

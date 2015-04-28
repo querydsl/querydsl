@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * DatePath presents Date paths
+ * {@code DatePath} presents Date paths
  *
  * @author tiwe
  *

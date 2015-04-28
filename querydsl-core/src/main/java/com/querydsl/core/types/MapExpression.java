@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import java.util.Map;
 
 /**
- * MapExpression represents {@link java.util.Map} typed expressions
+ * {@code MapExpression} represents {@link java.util.Map} typed expressions
  *
  * @author tiwe
  *

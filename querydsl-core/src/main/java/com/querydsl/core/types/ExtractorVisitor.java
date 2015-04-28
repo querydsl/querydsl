@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 
 /**
- * ExtractorVisitor is a Visitor implementation for Expression extraction
+ * {@code ExtractorVisitor} is a {@link Visitor} implementation for {@link Expression} extraction
  * 
  * @author tiwe
  *

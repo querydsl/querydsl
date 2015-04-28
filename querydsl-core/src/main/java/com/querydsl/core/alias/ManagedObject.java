@@ -16,13 +16,13 @@ package com.querydsl.core.alias;
 import com.querydsl.core.types.EntityPath;
 
 /**
- * ManagedObject is a tagging interface for CGLIB alias proxies
+ * {@code ManagedObject} is a tagging interface for CGLIB alias proxies
  *
  */
 public interface ManagedObject {
 
     /**
-     * @return
+     * @return returns the underlying {@link EntityPath} instance of this proxy
      */
     EntityPath<?> __mappedPath();
 

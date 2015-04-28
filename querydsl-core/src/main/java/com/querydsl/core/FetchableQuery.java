@@ -16,34 +16,39 @@ package com.querydsl.core;
 import com.querydsl.core.types.Expression;
 
 /**
+ * {@code FetchableQuery} extends {@link Fetchable} and {@link SimpleQuery} with projection changing
+ * methods and result aggregation functionality using {@link ResultTransformer} instances.
  *
- * @param <T>
- * @param <Q>
+ * @param <T> element type
+ * @param <Q> concrete subtype
  */
 public interface FetchableQuery<T, Q extends FetchableQuery<T, Q>> extends SimpleQuery<Q>, Fetchable<T> {
 
     /**
+     * Change the projection of this query
      *
-     * @param expr
      * @param <U>
-     * @return
+     * @param expr new projection
+     *
+     * @return the current object
      */
     <U> FetchableQuery<U, ?> select(Expression<U> expr);
 
     /**
+     * Change the projection of this query
      *
-     * @param exprs
-     * @return
+     * @param exprs new projection
+     * @return the current object
      */
     FetchableQuery<Tuple, ?> select(Expression<?>... exprs);
 
     /**
-     * Apply the given transformer to this Projectable instance and return the results
+     * Apply the given transformer to this {@code FetchableQuery} instance and return the results
      *
-     * @param <T>
-     * @param transformer
-     * @return
+     * @param <S>
+     * @param transformer result transformer
+     * @return transformed result
      */
-    <T> T transform(ResultTransformer<T> transformer);
+    <S> S transform(ResultTransformer<S> transformer);
 
 }

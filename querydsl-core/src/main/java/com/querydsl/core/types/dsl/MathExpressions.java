@@ -27,7 +27,11 @@ import com.querydsl.core.types.Ops.MathOps;
 public final class MathExpressions {
 
     /**
-     * @param num
+     * Create a {@code acos(num)} expression
+     *
+     * <p>Returns the principal value of the arc cosine of num, expressed in radians.</p>
+     *
+     * @param num numeric expression
      * @return acos(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> acos(Expression<A> num) {
@@ -35,7 +39,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code asin(num)} expression
+     *
+     * <p>Returns the principal value of the arc sine of num, expressed in radians.</p>
+     *
+     * @param num numeric expression
      * @return asin(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> asin(Expression<A> num) {
@@ -43,7 +51,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code atan(num)} expression
+     *
+     * <p>Returns the principal value of the arc tangent of num, expressed in radians.</p>
+     *
+     * @param num numeric expression
      * @return atan(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> atan(Expression<A> num) {
@@ -51,7 +63,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code cos(num)} expression
+     *
+     * <p>Returns the cosine of an angle of num radians.</p>
+     *
+     * @param num numeric expression
      * @return cos(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> cos(Expression<A> num) {
@@ -59,7 +75,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code cosh(num)} expression
+     *
+     * <p>Returns the hyperbolic cosine of num radians.</p>
+     *
+     * @param num numeric expression
      * @return cosh(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> cosh(Expression<A> num) {
@@ -67,7 +87,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code cot(num)} expression
+     *
+     * <p>Returns the cotangent of num.</p>
+     *
+     * @param num numeric expression
      * @return cot(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> cot(Expression<A> num) {
@@ -75,7 +99,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code coth(num)} expression
+     *
+     * <p>Returns the hyperbolic cotangent of num.</p>
+     *
+     * @param num numeric expression
      * @return coth(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> coth(Expression<A> num) {
@@ -83,7 +111,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code deg(num)} expression
+     *
+     * <p>Convert radians to degrees.</p>
+     *
+     * @param num numeric expression
      * @return deg(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> degrees(Expression<A> num) {
@@ -91,7 +123,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code exp(num)} expression
+     *
+     * <p>Returns the base-e exponential function of num, which is e raised to the power num.</p>
+     *
+     * @param num numeric expression
      * @return exp(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> exp(Expression<A> num) {
@@ -99,7 +135,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code ln(num)} expression
+     *
+     * <p>Returns the natural logarithm of num.</p>
+     *
+     * @param num numeric expression
      * @return ln(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> ln(Expression<A> num) {
@@ -107,8 +147,10 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
-     * @param base
+     * Create a {@code log(num, base)} expression
+     *
+     * @param num numeric expression
+     * @param base base
      * @return log(num, base)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> log(Expression<A> num, int base) {
@@ -116,7 +158,9 @@ public final class MathExpressions {
     }
 
     /**
-     * Return the greater of the given values
+     * Create a {@code max(left, right)} expression
+     *
+     * <p>Return the greater of the given values</p>
      *
      * @return max(left, right)
      */
@@ -125,7 +169,9 @@ public final class MathExpressions {
     }
 
     /**
-     * Return the smaller of the given values
+     * Create a {@code min(left, right)} expression
+     *
+     * <p>Return the smaller of the given values</p>
      *
      * @return min(left, right)
      */
@@ -134,8 +180,12 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
-     * @param exponent
+     * Create a {@code power(num, exponent)} expression
+     *
+     * <p>Returns num raised to the power exponent</p>
+     *
+     * @param num  numeric expression
+     * @param exponent exponent
      * @return power(num, exponent)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> power(Expression<A> num, int exponent) {
@@ -143,7 +193,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code rad(num)} expression
+     *
+     * <p>Converts degrees to radians</p>
+     *
+     * @param num numeric expression
      * @return rad(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> radians(Expression<A> num) {
@@ -152,6 +206,7 @@ public final class MathExpressions {
 
     /**
      * Returns the random expression
+     *
      * @return random()
      */
     public static NumberExpression<Double> random() {
@@ -161,8 +216,8 @@ public final class MathExpressions {
     /**
      * Return a random number expression with the given seed
      *
-     * @param seed
-     * @return
+     * @param seed seed
+     * @return random(seed)
      */
     public static NumberExpression<Double> random(int seed) {
         return Expressions.numberOperation(Double.class, MathOps.RANDOM2, ConstantImpl.create(seed));
@@ -171,8 +226,8 @@ public final class MathExpressions {
     /**
      * Round to nearest integer
      *
-     * @param num
-     * @return
+     * @param num numeric expression
+     * @return round(this)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num) {
         return Expressions.numberOperation(num.getType(), MathOps.ROUND, num);
@@ -181,16 +236,20 @@ public final class MathExpressions {
     /**
      * Round to s decimal places
      *
-     * @param num
-     * @param s
-     * @return
+     * @param num numeric expression
+     * @param s decimal places
+     * @return round(num, s)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> round(Expression<A> num, int s) {
         return Expressions.numberOperation(num.getType(), MathOps.ROUND2, num, ConstantImpl.create(s));
     }
 
     /**
-     * @param num
+     * Create a {@code sign(num)} expression
+     *
+     * <p>Returns the positive (+1), zero (0), or negative (-1) sign of num.</p>
+     *
+     * @param num numeric expression
      * @return sign(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Integer> sign(Expression<A> num) {
@@ -198,7 +257,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code sin(num)} expression
+     *
+     * <p>Returns the sine of an angle of num radians.</p>
+     *
+     * @param num numeric expression
      * @return sin(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> sin(Expression<A> num) {
@@ -206,7 +269,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code sinh(num)} expression
+     *
+     * <p>Returns the hyperbolic sine of num radians.</p>
+     *
+     * @param num numeric expression
      * @return sinh(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> sinh(Expression<A> num) {
@@ -214,7 +281,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code tan(num)} expression
+     *
+     * <p>Returns the tangent of an angle of num radians.</p>
+     *
+     * @param num numeric expression
      * @return tan(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> tan(Expression<A> num) {
@@ -222,7 +293,11 @@ public final class MathExpressions {
     }
 
     /**
-     * @param num
+     * Create a {@code tanh(num)} expression
+     *
+     * <p>Returns the hyperbolic tangent of num radians.</p>
+     *
+     * @param num numeric expression
      * @return tanh(num)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> tanh(Expression<A> num) {

@@ -20,7 +20,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Path;
 
 /**
- * Context is used in {@link CollectionAnyVisitor} as the visitor context
+ * {@code Context} is used in {@link CollectionAnyVisitor} as the visitor context
  *
  * @author tiwe
  *

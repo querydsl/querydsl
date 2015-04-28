@@ -13,8 +13,9 @@
  */
 package com.querydsl.core.types;
 
-
 /**
+ * {@code ParamNotSetException} is thrown when unbound parameters are found before query execution
+ *
  * @author tiwe
  *
  */

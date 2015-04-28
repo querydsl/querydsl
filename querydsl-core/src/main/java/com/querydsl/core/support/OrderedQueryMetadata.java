@@ -22,7 +22,7 @@ import com.querydsl.core.JoinType;
 import com.querydsl.core.types.Expression;
 
 /**
- * OrderedQueryMetadata performs no metadata validation and ensures that FROM elements are before 
+ * {@code OrderedQueryMetadata} performs no metadata validation and ensures that FROM elements are before
  * JOIN elements
  * 
  * @author tiwe

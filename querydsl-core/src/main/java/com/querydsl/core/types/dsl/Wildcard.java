@@ -18,7 +18,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
 
 /**
- * Wildcard provides constant Expressions for general wildcard expressions
+ * {@code Wildcard} provides constant Expressions for general wildcard expressions
  * 
  * @author tiwe
  *

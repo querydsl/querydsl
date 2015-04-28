@@ -18,7 +18,7 @@ import javax.annotation.concurrent.Immutable;
 import com.querydsl.core.QueryMetadata;
 
 /**
- * SubQueryExpressionImpl is the default implementation of the {@link SubQueryExpression} interface
+ * {@code SubQueryExpressionImpl} is the default implementation of the {@link SubQueryExpression} interface
  *
  * @author tiwe
  *

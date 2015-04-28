@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * DslOperation represents a simple operation expression
+ * {@code DslOperation} represents a simple operation expression
  *
  * @author tiwe
  *

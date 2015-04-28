@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 public @interface QueryEntities {
 
     /**
-     * @return
+     * Entities to process
      */
     Class<?>[] value();
 }

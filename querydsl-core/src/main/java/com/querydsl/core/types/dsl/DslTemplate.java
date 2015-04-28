@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * DslTemplate defines custom simple expressions
+ * {@code DslTemplate} defines custom simple expressions
  *
  * @author tiwe
  *

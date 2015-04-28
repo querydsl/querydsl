@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Template.Element;
 
 /**
- * TemplateFactory is a factory for {@link Template} instances
+ * {@code TemplateFactory} is a factory for {@link Template} instances
  *
  * @author tiwe
  *

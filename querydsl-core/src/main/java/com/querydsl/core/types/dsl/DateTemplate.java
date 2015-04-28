@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * DateTemplate defines custom date expressions
+ * {@code DateTemplate} defines custom date expressions
  *
  * @author tiwe
  *

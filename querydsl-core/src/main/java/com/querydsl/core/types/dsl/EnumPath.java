@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * EnumPath represents enum paths
+ * {@code EnumPath} represents enum paths
  *
  * @author tiwe
  *

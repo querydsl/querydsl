@@ -1,10 +1,11 @@
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
- * Common superclass for FactoryExpression implementations
+ * Common superclass for {@link FactoryExpression} implementations
  *
  * @param <T>
  */
@@ -62,7 +63,7 @@ public abstract class FactoryExpressionBase<T> extends ExpressionBase<T> impleme
     /**
      * Returns a wrapper expression which returns null if all arguments to newInstance are null
      *
-     * @return
+     * @return new factory expression with {@code skip nulls} applied
      */
     public FactoryExpression<T> skipNulls() {
         return new FactoryExpressionWrapper<T>(this);

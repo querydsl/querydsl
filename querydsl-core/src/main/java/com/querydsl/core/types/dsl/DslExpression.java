@@ -19,7 +19,7 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
 
 /**
- * DslExpression is the base class for DSL expressions, but {@link SimpleExpression} is the base class
+ * {@code DslExpression} is the base class for DSL expressions, but {@link SimpleExpression} is the base class
  * for scalar Expressions
  *
  * @author tiwe
@@ -46,7 +46,7 @@ public abstract class DslExpression<T> implements Expression<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return this as alias
      */
     @SuppressWarnings("unchecked")
     public DslExpression<T> as(Path<T> alias) {
@@ -56,7 +56,7 @@ public abstract class DslExpression<T> implements Expression<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return this as alias
      */
     public DslExpression<T> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));

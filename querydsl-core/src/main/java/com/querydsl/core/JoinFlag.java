@@ -21,14 +21,16 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 
 /**
- * JoinFlag defines a join related flag using an Expression instance
- * 
+ * {@code JoinFlag} defines a join related flag using an Expression instance
+ *
+ * <p>{@code JoinFlag} instances can be used in Querydsl modules which serialize queries to String form.</p>
+ *
  * @author tiwe
  *
  */
 @Immutable
 public class JoinFlag implements Serializable{
-    
+
     public enum Position {
         
         /**
@@ -63,20 +65,43 @@ public class JoinFlag implements Serializable{
     private final Expression<?> flag;
     
     private final Position position;
-    
+
+    /**
+     * Create a new instance using the given flag
+     * <p>The used position is before the target.</p>
+     *
+     * @param flag flag in String form
+     */
     public JoinFlag(String flag) {
         this(ExpressionUtils.template(Object.class, flag), Position.BEFORE_TARGET);
     }
-    
+
+    /**
+     * Create a new instance using the given flag and position.
+     *
+     * @param flag flag in String form
+     * @param position position of the flag in the join
+     */
     public JoinFlag(String flag, Position position) {
         this(ExpressionUtils.template(Object.class, flag), position);
     }
-    
-    
+
+    /**
+     * Create a new instance using the given flag
+     * <p>The used position is before the target.</p>
+     *
+     * @param flag flag in Expression form
+     */
     public JoinFlag(Expression<?> flag) {
         this(flag, Position.BEFORE_TARGET);
     }
-    
+
+    /**
+     * Create a new instance using the given flag and position
+     *
+     * @param flag flag in Expression form
+     * @param position position of the flag in the join
+     */
     public JoinFlag(Expression<?> flag, Position position) {
         this.flag = flag;
         this.position = position;

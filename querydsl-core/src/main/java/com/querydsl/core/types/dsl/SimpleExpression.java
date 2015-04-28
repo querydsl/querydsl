@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * SimpleExpression is the base class for Expression implementations.
+ * {@code SimpleExpression} is the base class for {@link Expression} implementations.
  *
  * @author tiwe
  *
@@ -48,7 +48,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return alias expression
      */
     @Override
     public SimpleExpression<T> as(Path<T> alias) {
@@ -58,7 +58,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return alias expression
      */
     @Override
     public SimpleExpression<T> as(String alias) {
@@ -68,7 +68,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Create a {@code this is not null} expression
      *
-     * @return
+     * @return this is not null
      */
     public BooleanExpression isNotNull() {
         if (isnotnull == null) {
@@ -80,7 +80,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Create a {@code this is null} expression
      *
-     * @return
+     * @return this is null
      */
     public BooleanExpression isNull() {
         if (isnull == null) {
@@ -92,7 +92,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     /**
      * Get the {@code count(this)} expression
      *
-     * @return fetchCount(this)
+     * @return count(this)
      */
     public NumberExpression<Long> count() {
         if (count == null) {
@@ -115,12 +115,12 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this == right} expression
+     * Create a {@code this == right} expression
      *
      * <p>Use expr.isNull() instead of expr.eq(null)</p>
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this == right
      */
     public BooleanExpression eq(T right) {
         if (right == null) {
@@ -131,42 +131,50 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this == right} expression
+     * Create a {@code this == right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this == right
      */
     public BooleanExpression eq(Expression<? super T> right) {
         return Expressions.booleanOperation(Ops.EQ, mixin, right);
     }
 
     /**
+     * Create a {@code this == all right} expression
+     *
      * @param right
-     * @return
+     * @return this == all right
      */
     public BooleanExpression eqAll(CollectionExpression<?, ? super T> right) {
         return eq(ExpressionUtils.all(right));
     }
 
     /**
+     * Create a {@code this == < right} expression
+     *
      * @param right
-     * @return
+     * @return this == any right
      */
     public BooleanExpression eqAny(CollectionExpression<?, ? super T> right) {
         return eq(ExpressionUtils.any(right));
     }
 
     /**
+     * Create a {@code this == all right} expresion
+     *
      * @param right
-     * @return
+     * @return this == all right
      */
     public BooleanExpression eqAll(SubQueryExpression<? extends T> right) {
         return eq(ExpressionUtils.all(right));
     }
 
     /**
+     * Create a {@code this == any right} expression
+     *
      * @param right
-     * @return
+     * @return this == any right
      */
     public BooleanExpression eqAny(SubQueryExpression<? extends T> right) {
         return eq(ExpressionUtils.any(right));
@@ -174,10 +182,10 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
 
     /**
-     * Get a {@code this in right} expression
+     * Create a {@code this in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this in right
      */
     public BooleanExpression in(Collection<? extends T> right) {
         if (right.size() == 1) {
@@ -188,10 +196,10 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this in right} expression
+     * Create a {@code this in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this in right
      */
     public BooleanExpression in(T... right) {
         if (right.length == 1) {
@@ -202,30 +210,30 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this in right} expression
+     * Create a {@code this in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this in right
      */
     public BooleanExpression in(CollectionExpression<?,? extends T> right) {
         return Expressions.booleanOperation(Ops.IN, mixin, right);
     }
 
     /**
-     * Get a {@code this in right} expression
+     * Create a {@code this in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this in right
      */
     public BooleanExpression in(SubQueryExpression<? extends T> right) {
         return Expressions.booleanOperation(Ops.IN, mixin, right);
     }
 
     /**
-     * Get a {@code this <> right} expression
+     * Create a {@code this <> right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this != right
      */
     public BooleanExpression ne(T right) {
         if (right == null) {
@@ -236,36 +244,40 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this <> right} expression
+     * Create a {@code this <> right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this != right
      */
     public BooleanExpression ne(Expression<? super T> right) {
         return Expressions.booleanOperation(Ops.NE, mixin, right);
     }
 
     /**
+     * Create a {@code this != all right} expression
+     *
      * @param right
-     * @return
+     * @return this != all right
      */
     public BooleanExpression neAll(CollectionExpression<?, ? super T> right) {
         return ne(ExpressionUtils.all(right));
     }
 
     /**
+     * Create a {@code this != any right} expression
+     *
      * @param right
-     * @return
+     * @return this != any right
      */
     public BooleanExpression neAny(CollectionExpression<?, ? super T> right) {
         return ne(ExpressionUtils.any(right));
     }
 
     /**
-     * Get a {@code this not in right} expression
+     * Create a {@code this not in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this not in right
      */
     public BooleanExpression notIn(Collection<? extends T> right) {
         if (right.size() == 1) {
@@ -276,10 +288,10 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this not in right} expression
+     * Create a {@code this not in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this not in right
      */
     public BooleanExpression notIn(T... right) {
         if (right.length == 1) {
@@ -290,20 +302,20 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Get a {@code this not in right} expression
+     * Create a {@code this not in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this not in right
      */
     public final BooleanExpression notIn(CollectionExpression<?,? extends T> right) {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
     }
 
     /**
-     * Get a {@code this not in right} expression
+     * Create a {@code this not in right} expression
      *
      * @param right rhs of the comparison
-     * @return
+     * @return this not in right
      */
     public final BooleanExpression notIn(SubQueryExpression<? extends T> right) {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
@@ -312,40 +324,40 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
 
     /**
-     * Get a {@code nullif(this, other)} expression
+     * Create a {@code nullif(this, other)} expression
      *
      * @param other
-     * @return
+     * @return nullif(this, other)
      */
     public SimpleExpression<T> nullif(Expression<T> other) {
         return Expressions.operation(this.getType(), Ops.NULLIF, this, other);
     }
 
     /**
-     * Get a {@code nullif(this, other)} expression
+     * Create a {@code nullif(this, other)} expression
      *
      * @param other
-     * @return
+     * @return nullif(this, other)
      */
     public SimpleExpression<T> nullif(T other) {
         return nullif(ConstantImpl.create(other));
     }
 
     /**
-     * Get a case expression builder
+     * Create a case expression builder
      *
      * @param other
-     * @return
+     * @return case expression builder
      */
     public CaseForEqBuilder<T> when(T other) {
         return new CaseForEqBuilder<T>(mixin, ConstantImpl.create(other));
     }
 
     /**
-     * Get a case expression builder
+     * Create a case expression builder
      *
      * @param other
-     * @return
+     * @return case expression builder
      */
     public CaseForEqBuilder<T> when(Expression<? extends T> other) {
         return new CaseForEqBuilder<T>(mixin, other);

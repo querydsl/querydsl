@@ -34,8 +34,6 @@ public @interface QueryInit {
 
     /**
      * Initialized paths
-     *
-     * @return
      */
     String[] value();
 

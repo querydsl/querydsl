@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * TimeExpression represents Time expressions
+ * {@code TimeExpression} represents Time expressions
  *
  * @author tiwe
  *
@@ -50,9 +50,9 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
     
     /**
-     * Get a hours expression (range 0-23)
+     * Create a hours expression (range 0-23)
      *
-     * @return
+     * @return hour
      */
     public NumberExpression<Integer> hour() {
         if (hours == null) {
@@ -62,9 +62,9 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a minutes expression (range 0-59)
+     * Create a minutes expression (range 0-59)
      *
-     * @return
+     * @return minute
      */
     public NumberExpression<Integer> minute() {
         if (minutes == null) {
@@ -74,9 +74,9 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a seconds expression (range 0-59)
+     * Create a seconds expression (range 0-59)
      *
-     * @return
+     * @return second
      */
     public NumberExpression<Integer> second() {
         if (seconds == null) {
@@ -86,10 +86,10 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get a milliseconds expression (range 0-999)
+     * Create a milliseconds expression (range 0-999)
      * <p>Is always 0 in JPA and JDO modules</p>
      *
-     * @return
+     * @return milli second
      */
     public NumberExpression<Integer> milliSecond() {
         if (milliseconds == null) { 
@@ -99,18 +99,18 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get an expression representing the current time as a TimeExpression instance
+     * Create an expression representing the current time as a TimeExpression instance
      *
-     * @return
+     * @return current time
      */
     public static TimeExpression<Time> currentTime() {
         return CURRENT_TIME;
     }
 
     /**
-     * Get an expression representing the current time as a TimeExpression instance
+     * Create an expression representing the current time as a TimeExpression instance
      *
-     * @return
+     * @return current time
      */
     public static <T extends Comparable> TimeExpression<T> currentTime(Class<T> cl) {
         return Expressions.timeOperation(cl, Ops.DateTimeOps.CURRENT_TIME);

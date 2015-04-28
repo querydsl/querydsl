@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 
 /**
- * QList represents a projection of type List
+ * {@code QList} represents a projection of type List
  *
  * @author tiwe
  *

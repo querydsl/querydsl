@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import java.util.Collection;
 
 /**
- * CollectionExpression represents {@link java.util.Collection} typed expressions
+ * {@code CollectionExpression} represents {@link java.util.Collection} typed expressions
  *
  * @author tiwe
  *

@@ -25,7 +25,7 @@ public interface QueryFactory<Q extends Query<?>> {
     /**
      * Create a new Query
      * 
-     * @return
+     * @return new query
      */
     Q query();
 

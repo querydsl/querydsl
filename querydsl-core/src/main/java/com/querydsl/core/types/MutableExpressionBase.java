@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 
 /**
- * MutableExpressionBase is the base class for mutable Expression implementations
+ * {@code MutableExpressionBase} is the base class for mutable Expression implementations
  * 
  * @author tiwe
  *

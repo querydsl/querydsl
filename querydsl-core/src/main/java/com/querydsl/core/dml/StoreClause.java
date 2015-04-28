@@ -33,7 +33,7 @@ public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C> {
      * @param <T>
      * @param path path to be updated
      * @param value value to set
-     * @return
+     * @return the current object
      */
     <T> C set(Path<T> path, @Nullable T value);
     
@@ -41,24 +41,24 @@ public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C> {
      * Add an expression binding
      * 
      * @param <T>
-     * @param path
-     * @param expression
-     * @return
+     * @param path path to be updated
+     * @param expression binding
+     * @return the current object
      */
     <T> C set(Path<T> path, Expression<? extends T> expression);
     
     /**
      * Bind the given path to null
      * 
-     * @param path
-     * @return
+     * @param path path to be updated
+     * @return the current object
      */
     <T> C setNull(Path<T> path);
     
     /**
      * Returns true, if no bindings have been set, otherwise false.
      * 
-     * @return
+     * @return true, if empty, false, if not
      */
     boolean isEmpty();
 

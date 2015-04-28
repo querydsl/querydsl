@@ -20,7 +20,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 
 /**
- * EntityPathBase provides a base class for EntityPath implementations
+ * {@code EntityPathBase} provides a base class for {@link EntityPath} implementations
  *
  * @author tiwe
  *

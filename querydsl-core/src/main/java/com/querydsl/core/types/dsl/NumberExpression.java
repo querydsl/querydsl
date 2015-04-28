@@ -23,7 +23,7 @@ import com.querydsl.core.types.Ops.MathOps;
 import com.querydsl.core.util.MathUtils;
 
 /**
- * NumberExpression represents a numeric expression
+ * {@code NumberExpression} represents a numeric expression
  *
  * @author tiwe
  *
@@ -38,7 +38,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     private static final NumberExpression<Double> random = Expressions.numberOperation(Double.class, MathOps.RANDOM);
 
     /**
-     * Return the greater of the given values
+     * Create a {@code max(left, right)} expression
+     *
+     * <p>Return the greater of the given values</p>
      *
      * @return max(left, right)
      */
@@ -47,7 +49,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Return the smaller of the given values
+     * Create a {@code min(left, right)} expression
+     *
+     * <p>Returns the smaller of the given values</p>
      *
      * @return min(left, right)
      */
@@ -56,7 +60,10 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Returns the random expression
+     * Create a {@code random()} expression
+     *
+     * <p>Returns the random number</p>
+     *
      * @return random()
      */
     public static NumberExpression<Double> random() {
@@ -90,10 +97,10 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get a cast to String expression
+     * Create a cast to String expression
      *
      * @see     java.lang.Object#toString()
-     * @return
+     * @return string representation
      */
     public StringExpression stringValue() {
         if (stringCast == null) {
@@ -103,7 +110,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the absolute value of this expression
+     * Create a {@code abs(this)} expression
+     *
+     * <p>Returns the absolute value of this expression</p>
      *
      * @return abs(this)
      */
@@ -115,9 +124,11 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the sum of this and right
+     * Create a {@code this + right} expression
      *
-     * @param right
+     * <p>Returns the sum of this and right</p>
+     *
+     * @param right rhs of expression
      * @return this + right
      */
     public <N extends Number & Comparable<?>> NumberExpression<T> add(Expression<N> right) {
@@ -125,9 +136,11 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the sum of this and right
+     * Create a {@code this + right} expression
      *
-     * @param right
+     * <p>Get the sum of this and right</p>
+     *
+     * @param right rhs of expression
      * @return this + right
      */
     public <N extends Number & Comparable<N>> NumberExpression<T> add(N right) {
@@ -135,7 +148,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the average value of this expression (aggregation)
+     * Create a {@code avg(this)} expression
+     *
+     * <p>Get the average value of this expression (aggregation)</p>
      *
      *  @return avg(this)
      */
@@ -147,7 +162,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the byte expression of this numeric expression
+     * Create a {@code cast(this as byte)} expression
+     *
+     * <p>Get the byte expression of this numeric expression</p>
      *
      * @return this.byteValue()
      * @see java.lang.Number#byteValue()
@@ -170,9 +187,11 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Returns the smallest (closest to negative infinity)
+     * Create a {@code ceil(this)} expression
+     *
+     * <p>Returns the smallest (closest to negative infinity)
      * {@code double} value that is greater than or equal to the
-     * argument and is equal to a mathematical integer
+     * argument and is equal to a mathematical integer</p>
      *
      * @return ceil(this)
      * @see java.lang.Math#ceil(double)
@@ -193,7 +212,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the result of the operation this / right
+     * Create a {@code this / right} expression
+     *
+     * <p>Get the result of the operation this / right</p>
      *
      * @param right
      * @return this / right
@@ -204,7 +225,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the result of the operation this / right
+     * Create a {@code this / right} expression
+     *
+     * <p>Get the result of the operation this / right</p>
      *
      * @param right
      * @return this / right
@@ -215,7 +238,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the double expression of this numeric expression
+     * Create a {@code cast(this as double)} expression
+     *
+     * <p>Get the double expression of this numeric expression</p>
      *
      * @return this.doubleValue()
      * @see java.lang.Number#doubleValue()
@@ -225,7 +250,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the float expression of this numeric expression
+     * Create a {@code cast(this as double)} expression
+     *
+     * <p>Get the float expression of this numeric expression</p>
      *
      * @return this.floatValue()
      * @see java.lang.Number#floatValue()
@@ -235,9 +262,11 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Returns the largest (closest to positive infinity)
+     * Create a {@code floor(this)} expression
+     *
+     * <p>Returns the largest (closest to positive infinity)
      * {@code double} value that is less than or equal to the
-     * argument and is equal to a mathematical integer.
+     * argument and is equal to a mathematical integer.</p>
      *
      * @return floor(this)
      * @see java.lang.Math#floor(double)
@@ -274,16 +303,20 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * Create a {@code this >= all right} expression
+     *
      * @param right
-     * @return
+     * @return this &gt;= all right
      */
     public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.all(right));
     }
 
     /**
+     * Create a {@code this >= any right} expression
+     *
      * @param right
-     * @return
+     * @return this &gt;= any right
      */
     public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.any(right));
@@ -314,32 +347,40 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * Create a {@code this > all right} expression
+     *
      * @param right
-     * @return
+     * @return this &gt; all right
      */
     public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
         return gt(ExpressionUtils.all(right));
     }
 
     /**
+     * Create a {@code this > any right} expression
+     *
      * @param right
-     * @return
+     * @return this &gt; any right
      */
     public BooleanExpression gtAny(CollectionExpression<?, ? super T> right) {
         return gt(ExpressionUtils.any(right));
     }
 
     /**
+     * Create a {@code this > all right} expression
+     *
      * @param right
-     * @return
+     * @return this &gt; all right
      */
     public BooleanExpression gtAll(SubQueryExpression<? extends T> right) {
         return gt(ExpressionUtils.all(right));
     }
 
     /**
+     * Create a {@code this > any right} expression
+     *
      * @param right
-     * @return
+     * @return this &gt; any right
      */
     public BooleanExpression gtAny(SubQueryExpression<? extends T> right) {
         return gt(ExpressionUtils.any(right));
@@ -347,12 +388,14 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
 
     /**
-     * Create a {@code from <= this <= to} expression
+     * Create a {@code this between from and to} expression
+     *
+     * <p>Is equivalent to {@code from <= this <= to}</p>
      *
      * @param <A>
-     * @param from
-     * @param to
-     * @return
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this between from and to
      */
     public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable A from, @Nullable A to) {
         if (from == null) {
@@ -369,12 +412,14 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a {@code from <= this <= to} expression
+     * Create a {@code this between from and to} expression
+     *
+     * <p>Is equivalent to {@code from <= this <= to}</p>
      *
      * @param <A>
-     * @param from
-     * @param to
-     * @return
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this between from and to
      */
     public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable Expression<A> from, @Nullable Expression<A> to) {
         if (from == null) {
@@ -391,25 +436,35 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * @param from
-     * @param to
-     * @return
+     * Create a {@code this not between from and to} expression
+     *
+     * <p>Is equivalent to {@code this < from || this > to}</p>
+     *
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this not between from and to
      */
     public final <A extends Number & Comparable<?>> BooleanExpression notBetween(A from, A to) {
         return between(from, to).not();
     }
 
     /**
-     * @param from
-     * @param to
-     * @return
+     * Create a {@code this not between from and to} expression
+     *
+     * <p>Is equivalent to {@code this < from || this > to}</p>
+     *
+     * @param from inclusive start of range
+     * @param to inclusive end of range
+     * @return this not between from and to
      */
     public final <A extends Number & Comparable<?>> BooleanExpression notBetween(Expression<A> from, Expression<A> to) {
         return between(from, to).not();
     }
 
     /**
-     * Get the int expression of this numeric expression
+     * Create a {@code this.intValue()} expression
+     *
+     * <p>Get the int expression of this numeric expression</p>
      *
      * @return this.intValue()
      * @see java.lang.Number#intValue()
@@ -419,20 +474,20 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Expr: {@code this like str}
+     * Create a {@code this like str} expression
      *
-     * @param str
-     * @return
+     * @param str rhs
+     * @return this like str
      */
     public BooleanExpression like(String str) {
         return Expressions.booleanOperation(Ops.LIKE, stringValue(), ConstantImpl.create(str));
     }
 
     /**
-     * Expr: {@code this like str}
+     * Create a {@code this like str} expression
      *
      * @param str
-     * @return
+     * @return this like str
      */
     public BooleanExpression like(Expression<String> str) {
         return Expressions.booleanOperation(Ops.LIKE, stringValue(), str);
@@ -463,23 +518,29 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this <= all right} expression
+     *
+     * @param right rhs
+     * @return this &lt;= all right
      */
     public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
         return loe(ExpressionUtils.all(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this <= any right} expression
+     *
+     * @param right rhs
+     * @return this &lt;= any right
      */
     public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
         return loe(ExpressionUtils.any(right));
     }
 
     /**
-     * Get the long expression of this numeric expression
+     * Create a {@code this.longValue()} expression
+     *
+     * <p>Get the long expression of this numeric expression</p>
      *
      * @return this.longValue()
      * @see java.lang.Number#longValue()
@@ -513,23 +574,29 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this < all right} expression
+     *
+     * @param right rhs
+     * @return this &lt; all right
      */
     public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
         return lt(ExpressionUtils.all(right));
     }
 
     /**
-     * @param right
-     * @return
+     * Create a {@code this < any right} expression
+     *
+     * @param right rhs
+     * @return this &lt; any right
      */
     public BooleanExpression ltAny(CollectionExpression<?, ? super T> right) {
         return lt(ExpressionUtils.any(right));
     }
 
     /**
-     * Get the maximum value of this expression (aggregation)
+     * Create a {@code max(this)} expression
+     *
+     * <p>Get the maximum value of this expression (aggregation)</p>
      *
      * @return max(this)
      */
@@ -542,7 +609,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the minimum value of this expression (aggregation)
+     * Create a {@code min(this)} expression
+     *
+     * <p>Get the minimum value of this expression (aggregation)</p>
      *
      * @return min(this)
      */
@@ -555,23 +624,29 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * Create a {@code mod(this, num)} expression
+     *
      * @param num
-     * @return
+     * @return mod(this, num)
      */
     public NumberExpression<T> mod(Expression<T> num) {
         return Expressions.numberOperation(getType(), Ops.MOD, mixin, num);
     }
 
     /**
+     * Create a {@code mod(this, num)} expression
+     *
      * @param num
-     * @return
+     * @return mod(this, num)
      */
     public NumberExpression<T> mod(T num) {
         return Expressions.numberOperation(getType(), Ops.MOD, mixin, ConstantImpl.create(num));
     }
 
     /**
-     * Get the result of the operation this * right
+     * Create a {@code this * right} expression
+     *
+     * <p>Get the result of the operation this * right</p>
      *
      * @param right
      * @return this * right
@@ -581,7 +656,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the result of the operation this * right
+     * Create a {@code this * right} expression
+     *
+     * <p>Get the result of the operation this * right</p>
      *
      * @param right
      * @return this * right
@@ -591,7 +668,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the negation of this expression
+     * Create a {@code this * -1} expression
+     *
+     * <p>Get the negation of this expression</p>
      *
      * @return this * -1
      */
@@ -603,7 +682,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Returns the closest {@code int} to this.
+     * Create a {@code round(this)} expression
+     *
+     * <p>Returns the closest {@code int} to this.</p>
      *
      * @return round(this)
      * @see java.lang.Math#round(double)
@@ -617,7 +698,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the short expression of this numeric expression
+     * Create a {@code this.shortValue()} expression
+     *
+     * <p>Get the short expression of this numeric expression</p>
      *
      * @return this.shortValue()
      * @see java.lang.Number#shortValue()
@@ -627,7 +710,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the square root of this numeric expressions
+     * Create a {@code sqrt(this)} expression
+     *
+     * <p>Get the square root of this numeric expressions</p>
      *
      * @return sqrt(this)
      */
@@ -639,7 +724,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the difference of this and right
+     * Create a {@code this - right} expression
+     *
+     * <p>Get the difference of this and right</p>
      *
      * @param right
      * @return this - right
@@ -649,7 +736,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the difference of this and right
+     * Create a {@code this - right} expression
+     *
+     * <p>Get the difference of this and right</p>
      *
      * @param right
      * @return this - right
@@ -659,7 +748,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Get the sum of this expression (aggregation)
+     * Create a {@code sum(this)} expression
+     *
+     * <p>Get the sum of this expression (aggregation)</p>
      *
      * @return sum(this)
      */

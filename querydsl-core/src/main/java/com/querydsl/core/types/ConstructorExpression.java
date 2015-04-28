@@ -27,7 +27,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 
 /**
- * ConstructorExpression represents a constructor invocation
+ * {@code ConstructorExpression} represents a constructor invocation
  *
  * <p>Example</p>
  *
@@ -84,7 +84,7 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return alias expression
      */
     @SuppressWarnings("unchecked")
     public Expression<T> as(Path<T> alias) {
@@ -94,7 +94,7 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return alias expression
      */
     public Expression<T> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));

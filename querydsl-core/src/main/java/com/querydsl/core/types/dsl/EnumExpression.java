@@ -16,7 +16,7 @@ package com.querydsl.core.types.dsl;
 import com.querydsl.core.types.*;
 
 /**
- * EnumExpression represents Enum typed expressions
+ * {@code EnumExpression} represents Enum typed expressions
  *
  * @author tiwe
  *
@@ -41,7 +41,9 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
     }
     
     /**
-     * @return
+     * Get the ordinal of this enum
+     *
+     * @return ordinal number
      */
     public NumberExpression<Integer> ordinal() {
         return Expressions.numberOperation(Integer.class, Ops.ORDINAL, mixin);

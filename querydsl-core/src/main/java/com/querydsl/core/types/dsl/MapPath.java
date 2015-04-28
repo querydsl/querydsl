@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * MapPath represents map paths
+ * {@code MapPath} represents map paths
  *
  * @author tiwe
  *
@@ -107,6 +107,11 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         }
     }
 
+    /**
+     * Get the key type
+     *
+     * @return key type
+     */
     public Class<K> getKeyType() {
         return keyType;
     }
@@ -121,6 +126,11 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         return pathMixin.getRoot();
     }
 
+    /**
+     * Get the value type
+     *
+     * @return value type
+     */
     public Class<V> getValueType() {
         return valueType;
     }

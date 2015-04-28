@@ -22,7 +22,7 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.*;
 
 /**
- * SerializerBase is a stub for Serializer implementations which serialize query metadata to Strings
+ * {@code SerializerBase} is a stub for Serializer implementations which serialize query metadata to Strings
  *
  * @author tiwe
  */

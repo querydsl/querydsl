@@ -15,7 +15,7 @@ package com.querydsl.core.annotations;
 
 
 /**
- * PropertyType defines the Path type to be used for a Domain property
+ * {@code PropertyType} defines the Path type to be used for a Domain property
  *
  * @author tiwe
  *

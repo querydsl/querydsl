@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * ComparablePath represents Comparable paths
+ * {@code ComparablePath} represents comparable paths
  *
  * @author tiwe
  *

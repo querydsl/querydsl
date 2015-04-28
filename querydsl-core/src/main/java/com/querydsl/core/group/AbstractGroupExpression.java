@@ -41,7 +41,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return alias expression
      */
     public DslExpression<R> as(Path<R> alias) {
         return Expressions.dslOperation(getType(), Ops.ALIAS, this, alias);
@@ -50,7 +50,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return alias expression
      */
     public DslExpression<R> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));
