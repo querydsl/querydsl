@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.Configuration;
 
 /**
- * {@linkplain RenameMapping} is used to override schemas, tables, columns and combinations of the three.
+ * {@code RenameMapping} overrides schemas, tables, columns and combinations of the three.
  *
  * @author tiwe
  */

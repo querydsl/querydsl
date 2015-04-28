@@ -16,7 +16,7 @@ package com.querydsl.maven;
 import com.querydsl.codegen.GenericExporter;
 
 /**
- * {@code GenericExporterMojo} calls the {@link GenericExporter} tool using the classpath of the module
+ * {@code GenericExporterMojo} calls {@link GenericExporter} using the classpath of the module
  * 
  * @goal generic-export
  * @requiresDependencyResolution test
