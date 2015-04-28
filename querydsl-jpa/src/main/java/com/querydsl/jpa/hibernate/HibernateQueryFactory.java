@@ -17,10 +17,13 @@ import javax.inject.Provider;
 
 import org.hibernate.Session;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.core.types.EntityPath;
 
 /**
  * Factory class for query and DML clause creation
@@ -47,7 +50,42 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return new HibernateDeleteClause(session.get(), path, templates);
     }
 
-    public HibernateQuery from(EntityPath<?> from) {
+    @Override
+    public <T> HibernateQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public HibernateQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public <T> HibernateQuery<T> selectDistinct(Expression<T> expr) {
+        return select(expr).distinct();
+    }
+
+    @Override
+    public HibernateQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return select(exprs).distinct();
+    }
+
+    @Override
+    public HibernateQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public HibernateQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public <T> HibernateQuery<T> selectFrom(EntityPath<T> from) {
+        return select(from).from(from);
+    }
+
+    public HibernateQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }
 
@@ -55,11 +93,8 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return new HibernateUpdateClause(session.get(), path, templates);
     }
 
-    public HibernateQuery query() {
-        return new HibernateQuery(session.get(), templates);
+    public HibernateQuery<?> query() {
+        return new HibernateQuery<Void>(session.get(), templates);
     }
 
-    public HibernateSubQuery subQuery() {
-        return new HibernateSubQuery();
-    }
 }

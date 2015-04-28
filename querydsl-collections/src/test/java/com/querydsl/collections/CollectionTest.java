@@ -47,7 +47,7 @@ public class CollectionTest {
     public void Join() {
         assertEquals("4", CollQueryFactory.from(cat, cats)
                 .innerJoin(cat.kittens, other)
-                .where(other.name.eq("4")).uniqueResult(cat.name));
+                .where(other.name.eq("4")).select(cat.name).fetchFirst());
     }
     
     @Test
@@ -58,49 +58,49 @@ public class CollectionTest {
                 .from(cat, cats).from(other, cats)
                 .innerJoin(cat.kittens, cat_kittens)
                 .innerJoin(other.kittens, other_kittens)
-                .where(cat_kittens.eq(other_kittens)).count());
+                .where(cat_kittens.eq(other_kittens)).fetchCount());
     }
     
     @Test
     public void Any_UniqueResult() {
         assertEquals("4", CollQueryFactory.from(cat, cats)
-                .where(cat.kittens.any().name.eq("4")).uniqueResult(cat.name));
+                .where(cat.kittens.any().name.eq("4")).select(cat.name).fetchOne());
     }
     
     @Test
     public void Any_Count() {
         assertEquals(4, CollQueryFactory.from(cat, cats)
-                .where(cat.kittens.any().name.isNotNull()).count());
+                .where(cat.kittens.any().name.isNotNull()).fetchCount());
     }
     
     @Test
     public void Any_Two_Levels() {
         assertEquals(4, CollQueryFactory.from(cat, cats).where( 
-                cat.kittens.any().kittens.any().isNotNull()).count());
+                cat.kittens.any().kittens.any().isNotNull()).fetchCount());
     }
     
     @Test
     public void Any_Two_Levels2() {
         assertEquals(4, CollQueryFactory.from(cat, cats).where(
                 cat.kittens.any().name.isNotNull(), 
-                cat.kittens.any().kittens.any().isNotNull()).count());
+                cat.kittens.any().kittens.any().isNotNull()).fetchCount());
     }
     
     @Test
     public void Any_From_Two_Sources() {
         assertEquals(16, CollQueryFactory.from(cat, cats).from(other, cats).where(
-                cat.kittens.any().name.eq(other.kittens.any().name)).count());
+                cat.kittens.any().name.eq(other.kittens.any().name)).fetchCount());
     }
     
     @Test
     public void List_Size() {
-        assertEquals(4, CollQueryFactory.from(cat, cats).where(cat.kittens.size().gt(0)).count());
-        assertEquals(2, CollQueryFactory.from(cat, cats).where(cat.kittens.size().gt(2)).count());
+        assertEquals(4, CollQueryFactory.from(cat, cats).where(cat.kittens.size().gt(0)).fetchCount());
+        assertEquals(2, CollQueryFactory.from(cat, cats).where(cat.kittens.size().gt(2)).fetchCount());
     }
     
     @Test
     public void List_Is_Empty() {
-        assertEquals(0, CollQueryFactory.from(cat, cats).where(cat.kittens.isEmpty()).count());
+        assertEquals(0, CollQueryFactory.from(cat, cats).where(cat.kittens.isEmpty()).fetchCount());
     }
     
 }

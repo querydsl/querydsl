@@ -13,10 +13,7 @@
  */
 package com.querydsl.jpa;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +27,7 @@ import org.junit.runner.RunWith;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
@@ -55,14 +53,14 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     private Session session;
 
     @Override
-    protected HibernateQuery query() {
-        return new HibernateQuery(session, getTemplates());
+    protected HibernateQuery<?> query() {
+        return new HibernateQuery<Void>(session, getTemplates());
     }
 
     @Override
-    protected HibernateQuery testQuery() {
-        return new HibernateQuery(new DefaultSessionHolder(session),
-                getTemplates(), new DefaultQueryMetadata().noValidate());
+    protected HibernateQuery<?> testQuery() {
+        return new HibernateQuery<Void>(new DefaultSessionHolder(session),
+                getTemplates(), new DefaultQueryMetadata());
     }
 
     protected JPQLTemplates getTemplates() {
@@ -82,30 +80,30 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     @Test
     public void QueryExposure() {
 //        save(new Cat());
-        List<Cat> results = query().from(cat).createQuery(cat).list();
+        List<Cat> results = query().from(cat).select(cat).createQuery().list();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
 
     @Test
     public void WithComment() {
-        query().from(cat).setComment("my comment").list(cat);
+        query().from(cat).setComment("my comment").select(cat).fetch();
     }
 
     @Test
     public void LockMode() {
-        query().from(cat).setLockMode(cat, LockMode.PESSIMISTIC_WRITE).list(cat);
+        query().from(cat).setLockMode(cat, LockMode.PESSIMISTIC_WRITE).select(cat).fetch();
     }
 
     @Test
     public void FlushMode() {
-        query().from(cat).setFlushMode(org.hibernate.FlushMode.AUTO).list(cat);
+        query().from(cat).setFlushMode(org.hibernate.FlushMode.AUTO).select(cat).fetch();
     }
 
     @Test
     public void Scroll() throws IOException {
         CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(cat)
-                .createQuery(cat).scroll());
+                .select(cat).createQuery().scroll());
         assertTrue(cats.hasNext());
         while (cats.hasNext()) {
             assertNotNull(cats.next());
@@ -114,39 +112,37 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     }
 
     @Test
-    public void ScrollArray() throws IOException {
-        CloseableIterator<Object[]> rows = new ScrollableResultsIterator<Object[]>(query()
+    public void ScrollTuple() throws IOException {
+        CloseableIterator<Tuple> rows = new ScrollableResultsIterator<Tuple>(query()
                 .from(cat)
-                .createQuery(cat.name, cat.birthdate).scroll(), true);
+                .select(cat.name, cat.birthdate).createQuery().scroll());
         assertTrue(rows.hasNext());
         while (rows.hasNext()) {
-            Object[] row = rows.next();
-            assertEquals(2, row.length);
-            assertNotNull(row[0]);
-            assertNotNull(row[1]);
+            Tuple row = rows.next();
+            assertEquals(2, row.size());
         }
         rows.close();
     }
 
     @Test
     public void createQuery() {
-        List<Object[]> rows = query().from(cat).createQuery(cat.id, cat.name).list();
-        for (Object[] row : rows) {
-            assertEquals(2, row.length);
+        List<Tuple> rows = query().from(cat).select(cat.id, cat.name).createQuery().list();
+        for (Tuple row : rows) {
+            assertEquals(2, row.size());
         }
     }
 
     @Test
     public void createQuery2() {
-        List<Object[]> rows = query().from(cat).createQuery(new Expression[]{cat.id, cat.name}).list();
-        for (Object[] row : rows) {
-            assertEquals(2, row.length);
+        List<Tuple> rows = query().from(cat).select(new Expression[]{cat.id, cat.name}).createQuery().list();
+        for (Tuple row : rows) {
+            assertEquals(2, row.size());
         }
     }
 
     @Test
     public void createQuery3() {
-        List<String> rows = query().from(cat).createQuery(cat.name).list();
+        List<String> rows = query().from(cat).select(cat.name).createQuery().list();
         for (String row : rows) {
             assertTrue(row instanceof String);
         }

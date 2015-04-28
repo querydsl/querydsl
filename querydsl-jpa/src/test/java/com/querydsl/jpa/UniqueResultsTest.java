@@ -37,15 +37,15 @@ public class UniqueResultsTest implements HibernateTest {
         session.save(new Cat("Bob2", 2));
         session.save(new Cat("Bob3", 3));
 
-        assertEquals(Integer.valueOf(1), query().from(cat).orderBy(cat.name.asc()).offset(0).limit(1).uniqueResult(cat.id));
-        assertEquals(Integer.valueOf(2), query().from(cat).orderBy(cat.name.asc()).offset(1).limit(1).uniqueResult(cat.id));
-        assertEquals(Integer.valueOf(3), query().from(cat).orderBy(cat.name.asc()).offset(2).limit(1).uniqueResult(cat.id));
+        assertEquals(Integer.valueOf(1), query().from(cat).orderBy(cat.name.asc()).offset(0).limit(1).select(cat.id).fetchOne());
+        assertEquals(Integer.valueOf(2), query().from(cat).orderBy(cat.name.asc()).offset(1).limit(1).select(cat.id).fetchOne());
+        assertEquals(Integer.valueOf(3), query().from(cat).orderBy(cat.name.asc()).offset(2).limit(1).select(cat.id).fetchOne());
 
-        assertEquals(Long.valueOf(3), query().from(cat).uniqueResult(cat.count()));
+        assertEquals(Long.valueOf(3), query().from(cat).select(cat.count()).fetchOne());
     }
 
-    private HibernateQuery query() {
-        return new HibernateQuery(session);
+    private HibernateQuery<?> query() {
+        return new HibernateQuery<Void>(session);
     }
 
     @Override

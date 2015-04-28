@@ -20,12 +20,8 @@ import com.querydsl.core.types.Expression;
 
 public abstract class AbstractQueryTest implements Constants {
 
-    protected QueryHelper query() {
-        return new QueryHelper(HQLTemplates.DEFAULT);
-    }
-
-    protected JPASubQuery sub() {
-        return new JPASubQuery();
+    protected QueryHelper<?> query() {
+        return new QueryHelper<Void>(HQLTemplates.DEFAULT);
     }
 
     protected static void assertToString(String expected, Expression<?> expr) {

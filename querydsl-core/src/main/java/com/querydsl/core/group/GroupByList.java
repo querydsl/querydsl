@@ -18,7 +18,7 @@ import java.util.List;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.Projectable;
+import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
@@ -40,7 +40,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
     }
 
     @Override
-    public List<V> transform(Projectable projectable) {
+    public List<V> transform(FetchableQuery query) {
         // create groups
         FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(Projections.tuple(expressions));
         boolean hasGroups = false;
@@ -50,7 +50,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         if (hasGroups) {
             expr = withoutGroupExpressions(expr);
         }
-        final CloseableIterator<Tuple> iter = projectable.iterate(expr);
+        final CloseableIterator<Tuple> iter = query.select(expr).iterate();
 
         List<V> list = Lists.newArrayList();
         GroupImpl group = null;

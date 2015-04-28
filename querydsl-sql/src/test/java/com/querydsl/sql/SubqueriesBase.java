@@ -1,7 +1,8 @@
 package com.querydsl.sql;
 
-import static com.querydsl.sql.Constants.*;
 import static com.querydsl.core.Target.*;
+import static com.querydsl.sql.Constants.*;
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -12,15 +13,11 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.Param;
-import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.ListSubQuery;
-import com.querydsl.core.testutil.ExcludeIn;
 
 public class SubqueriesBase extends AbstractBaseTest {
 
@@ -36,8 +33,8 @@ public class SubqueriesBase extends AbstractBaseTest {
                 ImmutableList.of("a", "b"));
 
         query().from(employee)
-        .where(nameKey1.in(sq().from(employee2).list(nameKey2)))
-            .list(employee.id);
+        .where(nameKey1.in(query().from(employee2).select(nameKey2.getProjection())))
+            .select(employee.id).fetch();
     }
 
     @Test
@@ -46,8 +43,8 @@ public class SubqueriesBase extends AbstractBaseTest {
         QEmployee employee2 = new QEmployee("employee2");
         query().from(employee)
             .where(Expressions.list(employee.id, employee.lastname)
-                .in(sq().from(employee2).list(employee2.id, employee2.lastname)))
-            .list(employee.id);
+                .in(query().from(employee2).select(employee2.id, employee2.lastname)))
+            .select(employee.id).fetch();
     }
 
     @Test
@@ -59,43 +56,43 @@ public class SubqueriesBase extends AbstractBaseTest {
             + "where e.ID = (select max(e.ID) "
             + "from EMPLOYEE e)";
         List<Integer> list = query().from(employee)
-        .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
-        .list(employee.id);
+        .where(employee.id.eq(query().from(employee).select(employee.id.max())))
+        .select(employee.id).fetch();
         assertFalse(list.isEmpty());
     }
 
     @Test
     public void SubQuery_Alias() {
-        query().from(sq().from(employee).list(employee.all()).as(employee2)).list(employee2.all());
+        query().from(query().from(employee).select(employee.all()).as(employee2)).select(employee2.all()).fetch();
     }
 
     @Test
     @ExcludeIn(SQLITE)
     public void SubQuery_All() {
         query().from(employee).where(employee.id.gtAll(
-                sq().from(employee2).list(employee2.id))).count();
+                query().from(employee2).select(employee2.id))).fetchCount();
     }
 
     @Test
     @ExcludeIn(SQLITE)
     public void SubQuery_Any() {
         query().from(employee).where(employee.id.gtAny(
-                sq().from(employee2).list(employee2.id))).count();
+                query().from(employee2).select(employee2.id))).fetchCount();
     }
 
     @Test
     public void SubQuery_InnerJoin() {
-        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
+        SubQueryExpression<Integer> sq = query().from(employee2).select(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
-        query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).select(employee.id).fetch();
 
     }
 
     @Test
     public void SubQuery_LeftJoin() {
-        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
+        SubQueryExpression<Integer> sq = query().from(employee2).select(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
-        query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).select(employee.id).fetch();
 
     }
 
@@ -103,37 +100,38 @@ public class SubqueriesBase extends AbstractBaseTest {
     @ExcludeIn({MYSQL, POSTGRESQL, DERBY, SQLSERVER, TERADATA})
     public void SubQuery_Params() {
         Param<String> aParam = new Param<String>(String.class, "param");
-        SQLSubQuery subQuery = new SQLSubQuery().from(employee).where(employee.firstname.eq(aParam));
+        SQLQuery<?> subQuery = select(Wildcard.all).from(employee).where(employee.firstname.eq(aParam));
         subQuery.set(aParam, "Mike");
 
-        assertEquals(1, query().from(subQuery.list(Wildcard.all)).count());
+        assertEquals(1, query().from(subQuery).fetchCount());
     }
 
     @Test
     @ExcludeIn(SQLITE)
     public void SubQuery_RightJoin() {
-        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
+        SubQueryExpression<Integer> sq = query().from(employee2).select(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
-        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).select(employee.id).fetch();
     }
 
     @Test
     public void SubQuery_with_Alias() {
-        List<Integer> ids1 = query().from(employee).list(employee.id);
-        List<Integer> ids2 = query().from(sq().from(employee).list(employee.id), employee).list(employee.id);
+        List<Integer> ids1 = query().from(employee).select(employee.id).fetch();
+        List<Integer> ids2 = query().from(query().from(employee).select(employee.id), employee).select(employee.id).fetch();
         assertEquals(ids1, ids2);
     }
 
     @Test
     public void SubQuery_with_Alias2() {
-        List<Integer> ids1 = query().from(employee).list(employee.id);
-        List<Integer> ids2 = query().from(sq().from(employee).list(employee.id).as(employee)).list(employee.id);
+        List<Integer> ids1 = query().from(employee).select(employee.id).fetch();
+        List<Integer> ids2 = query().from(query().from(employee).select(employee.id).as(employee)).select(employee.id).fetch();
         assertEquals(ids1, ids2);
     }
 
     @Test
+    @SkipForQuoted
     public void SubQuerySerialization() {
-        SQLSubQuery query = sq();
+        SQLQuery<?> query = query();
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
 
@@ -148,9 +146,9 @@ public class SubqueriesBase extends AbstractBaseTest {
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
 
         serializer.handle(
-                sq()
+                query()
                 .from(employee)
-                .list(employee.salary.add(employee.salary).add(employee.salary).as(sal))
+                .select(employee.salary.add(employee.salary).add(employee.salary).as(sal))
                 .as(sq));
         assertEquals(
                 "(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE e) as sq",

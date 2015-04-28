@@ -15,13 +15,13 @@ package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static com.querydsl.sql.SQLExpressions.select;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
-
 
 public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
 
@@ -44,11 +44,11 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
-        Path<Integer> col1 = Expressions.path(Integer.class,"col1");
+        Path<Integer> col1 = Expressions.path(Integer.class, "col1");
         Union union = query.union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+            select(one.as(col1)),
+            select(two),
+            select(three));
         assertEquals(
                 "(select 1 as col1)\n" +
                 "union\n" +

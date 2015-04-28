@@ -13,9 +13,13 @@
  */
 package com.querydsl.sql.dml;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.*;
+
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -25,12 +29,10 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.InsertClause;
-import com.querydsl.sql.*;
-import com.querydsl.sql.types.Null;
 import com.querydsl.core.types.*;
 import com.querydsl.core.util.ResultSetAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.querydsl.sql.*;
+import com.querydsl.sql.types.Null;
 
 /**
  * SQLInsertClause defines an INSERT INTO clause
@@ -53,7 +55,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     private SubQueryExpression<?> subQuery;
 
     @Nullable
-    private AbstractSQLSubQuery<?> subQueryBuilder;
+    private SQLQuery<?> subQueryBuilder;
 
     private final List<SQLInsertBatch> batches = new ArrayList<SQLInsertBatch>();
 
@@ -70,13 +72,13 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity,
-            AbstractSQLSubQuery<?> subQuery) {
+            SQLQuery<?> subQuery) {
         this(connection, new Configuration(templates), entity);
         this.subQueryBuilder = subQuery;
     }
 
     public SQLInsertClause(Connection connection, Configuration configuration,
-            RelationalPath<?> entity, AbstractSQLSubQuery<?> subQuery) {
+            RelationalPath<?> entity, SQLQuery<?> subQuery) {
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
@@ -120,7 +122,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      */
     public SQLInsertClause addBatch() {
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
             values.clear();
         }
         batches.add(new SQLInsertBatch(columns, values, subQuery));
@@ -225,7 +227,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
             values.clear();
         }
 
@@ -240,7 +242,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         listeners.preRender(context);
 
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()]));
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
             values.clear();
         }
 

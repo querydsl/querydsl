@@ -19,13 +19,17 @@ import java.sql.SQLException;
 import javax.inject.Provider;
 import javax.sql.DataSource;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
+
 /**
  * Factory class for query and DML clause creation
  *
  * @author tiwe
  *
  */
-public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery, SQLSubQuery> {
+public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
 
     static class DataSourceProvider implements Provider<Connection> {
 
@@ -59,8 +63,77 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery, SQLSubQue
     }
 
     @Override
-    public SQLQuery query() {
-        return new SQLQuery(connection.get(), configuration);
+    public SQLQuery<?> query() {
+        return new SQLQuery<Void>(connection.get(), configuration);
+    }
+
+    /**
+     * Create a new SQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public <T> SQLQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    /**
+     * Create a new SQLQuery instance with the given projection
+     *
+     * @param exprs
+     * @return
+     */
+    public SQLQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    /**
+     * Create a new SQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public <T> SQLQuery<T> selectDistinct(Expression<T> expr) {
+        return query().select(expr).distinct();
+    }
+
+    /**
+     * Create a new SQLQuery instance with the given projection
+     *
+     * @param exprs
+     * @return
+     */
+    public SQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return query().select(exprs).distinct();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public SQLQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public SQLQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    /**
+     * Create a new detached SQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public <T> SQLQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
     }
 
 }

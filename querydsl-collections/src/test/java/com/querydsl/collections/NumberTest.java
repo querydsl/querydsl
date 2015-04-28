@@ -17,6 +17,6 @@ public class NumberTest {
         final NumberPath<BigDecimal> num = Expressions.numberPath(BigDecimal.class, "num");
         final CollQuery query = CollQueryFactory.from(num, Arrays.asList(new BigDecimal("1.6"), new BigDecimal("1.3")));
 
-        assertEquals(new BigDecimal("2.9"), query.uniqueResult(num.sum()));
+        assertEquals(new BigDecimal("2.9"), query.select(num.sum()).fetchOne());
     }
 }

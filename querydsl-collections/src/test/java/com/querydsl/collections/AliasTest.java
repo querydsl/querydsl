@@ -43,21 +43,21 @@ public class AliasTest extends AbstractQueryTest {
     public void AliasVariations1() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.kittens.size().gt(0)).list(cat.name)) {
+        for (String name : from(cat, cats).where(cat.kittens.size().gt(0)).select(cat.name).fetch()) {
             assertNotNull(name);
             System.out.println(name);
         }
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getKittens()).size().gt(0)).list($(c.getName()))) {
+        for (String name : from(c, cats).where($(c.getKittens()).size().gt(0)).select($(c.getName())).fetch()) {
             assertNotNull(name);
             System.out.println(name);
         }
 
         // 2nd - variation 1
 //        for (String name : from(c, cats).where($(c.getKittens().size()).gt(0))
-//                .list(c.getName())) {
+//                .fetch(c.getName())) {
 //            System.out.println(name);
 //        }
 
@@ -67,14 +67,14 @@ public class AliasTest extends AbstractQueryTest {
     public void AliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.name.matches("fri.*")).list(cat.name)) {
+        for (String name : from(cat, cats).where(cat.name.matches("fri.*")).select(cat.name).fetch()) {
             assertNotNull(name);
             System.out.println(name);
         }
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getName()).matches("fri.*")).list($(c.getName()))) {
+        for (String name : from(c, cats).where($(c.getName()).matches("fri.*")).select($(c.getName())).fetch()) {
             assertNotNull(name);
             System.out.println(name);
         }
@@ -87,7 +87,7 @@ public class AliasTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "cat");
 
         // 1
-        from(c, cats).where($(c.getBirthdate()).gt(new Date())).list($(c)).iterator();
+        from(c, cats).where($(c.getBirthdate()).gt(new Date())).select($(c)).iterate();
 
         // 2
         try {
@@ -103,32 +103,32 @@ public class AliasTest extends AbstractQueryTest {
         // 4
          from(c,cats)
              .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-             .list($(c.getName())).iterator();
+             .select($(c.getName())).iterate();
 
         // 5
-        from(c, cats).where($(c).eq(other)).list($(c)).iterator();
+        from(c, cats).where($(c).eq(other)).select($(c)).iterate();
 
         // 6
-        from(c, cats).where($(c.getKittens()).contains(other)).list($(c))
-                .iterator();
+        from(c, cats).where($(c.getKittens()).contains(other)).select($(c))
+                .iterate();
 
         // 7
-        from(c, cats).where($(c.getKittens().isEmpty())).list($(c)).iterator();
+        from(c, cats).where($(c.getKittens().isEmpty())).select($(c)).iterate();
 
         // 8
-        from(c, cats).where($(c.getName()).startsWith("B")).list($(c)).iterator();
+        from(c, cats).where($(c.getName()).startsWith("B")).select($(c)).iterate();
 
         // 9
-        from(c, cats).where($(c.getName()).upper().eq("MOE")).list($(c)).iterator();
+        from(c, cats).where($(c.getName()).upper().eq("MOE")).select($(c)).iterate();
 
         // 10
         assertNotNull($(c.getKittensByName()));
         assertNotNull($(c.getKittensByName().get("Kitty")));
-        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull()).list(cat);
+        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull()).select(cat).iterate();
 
         // 11
 //        try {
-//            from(cat, cats).where(cat.mate.alive).list(cat);
+//            from(cat, cats).where(cat.mate.alive).fetch(cat);
 //            fail("expected RuntimeException");
 //        } catch (RuntimeException e) {
 //            System.out.println(e.getMessage());
@@ -144,7 +144,7 @@ public class AliasTest extends AbstractQueryTest {
     @Test
     public void Various1() {
         StringPath str = Expressions.stringPath("str");
-        for (String s : from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).list(str)) {
+        for (String s : from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).select(str).fetch()) {
             assertTrue(s.equals("a") || s.equals("ab"));
             System.out.println(s);
         }
@@ -152,7 +152,7 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void Various2() {
-        for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).list(var())) {
+        for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).select(var()).fetch()) {
             int i = (Integer) o;
             assertTrue(i > 0 && i < 6);
             System.out.println(o);
@@ -162,7 +162,7 @@ public class AliasTest extends AbstractQueryTest {
     @Test
     public void Various3() {
         NumberPath<Integer> num = Expressions.numberPath(Integer.class, "num");
-        for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).list(num)) {
+        for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).select(num).fetch()) {
             System.out.println(i);
         }
     }

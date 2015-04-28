@@ -22,12 +22,12 @@ public class UniqueResultContractTest extends AbstractQueryTest{
 
     @Test(expected=NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results() {
-        CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).uniqueResult(cat);
+        CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).fetchOne();
     }
     
     @Test
     public void UniqueResult_With_Array() {
-        CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).limit(1).uniqueResult(new Expression[]{cat});
+        CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).limit(1).select(new Expression[]{cat}).fetchOne();
     }
     
 }

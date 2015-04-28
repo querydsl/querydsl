@@ -29,8 +29,9 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.types.*;
-import com.querydsl.core.util.ArrayUtils;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.Path;
 import com.querydsl.jpa.*;
 
 /**
@@ -40,7 +41,7 @@ import com.querydsl.jpa.*;
  *
  * @param <Q>
  */
-public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends JPAQueryBase<Q> {
+public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery<T, Q>> extends JPAQueryBase<T, Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
@@ -71,7 +72,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         QueryModifiers modifiers = getMetadata().getModifiers();
         try {
             Query query = createQuery(modifiers, true);
@@ -89,36 +90,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     /**
      * Expose the original Hibernate query for the given projection
      *
-     * @param expr
      * @return
      */
-    public Query createQuery(Expression<?> expr) {
-        queryMixin.setProjection(expr);
-        return createQuery(getMetadata().getModifiers(), false);
-    }
-
-    /**
-     * Expose the original Hibernate query for the given projection
-     *
-     * @param expr1
-     * @param expr2
-     * @param rest
-     * @return
-     */
-    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
-        queryMixin.setProjection(ExpressionUtils.list(Object[].class,
-                ArrayUtils.combine(Expression.class, expr1, expr2, rest)));
-        return createQuery(getMetadata().getModifiers(), false);
-    }
-
-    /**
-     * Expose the original Hibernate query for the given projection
-     *
-     * @param args
-     * @return
-     */
-    public Query createQuery(Expression<?>[] args) {
-        queryMixin.setProjection(ExpressionUtils.list(Object[].class, args));
+    public Query createQuery() {
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -172,16 +146,6 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return query;
     }
 
-    /**
-     * Return the query results as an <tt>Iterator</tt>.<br>
-     * <br>
-     * Entities returned as results are initialized on demand. The first
-     * SQL query returns identifiers only.<br>
-     */
-    @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
 
     /**
      * Return the query results as an <tt>Iterator</tt>. If the query
@@ -192,40 +156,29 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
+    public CloseableIterator<T> iterate() {
         try {
-            Query query = createQuery(projection);
+            Query query = createQuery();
             ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
-            return new ScrollableResultsIterator<RT>(results);
+            return new ScrollableResultsIterator<T>(results);
         } finally {
             reset();
         }
-    }
-
-    @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expression<RT> expr) {
+    public List<T> fetch() {
         try {
-            return createQuery(expr).list();
+            return createQuery().list();
         } finally {
             reset();
         }
     }
 
     @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
+    public QueryResults<T> fetchResults() {
         try{
-            queryMixin.setProjection(expr);
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.uniqueResult();
 
@@ -233,10 +186,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
                 QueryModifiers modifiers = getMetadata().getModifiers();
                 Query query = createQuery(modifiers, false);
                 @SuppressWarnings("unchecked")
-                List<RT> list = query.list();
-                return new SearchResults<RT>(list, modifiers, total);
+                List<T> list = query.list();
+                return new QueryResults<T>(list, modifiers, total);
             } else {
-                return SearchResults.emptyResults();
+                return QueryResults.emptyResults();
             }
         }finally{
             reset();
@@ -268,29 +221,11 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * support for scrollable <tt>ResultSet</tt>s.<br>
      *
      * @param mode
-     * @param expr
      * @return
      */
-    public ScrollableResults scroll(ScrollMode mode, Expression<?> expr) {
+    public ScrollableResults scroll(ScrollMode mode) {
         try {
-            return createQuery(expr).scroll(mode);
-        } finally {
-            reset();
-        }
-    }
-
-    /**
-     * Return the query results as <tt>ScrollableResults</tt>. The
-     * scrollability of the returned results depends upon JDBC driver
-     * support for scrollable <tt>ResultSet</tt>s.<br>
-     *
-     * @param mode
-     * @param args
-     * @return
-     */
-    public ScrollableResults scroll(ScrollMode mode, Expression<?>... args) {
-        try {
-            return createQuery(args).scroll(mode);
+            return createQuery().scroll(mode);
         } finally {
             reset();
         }
@@ -329,8 +264,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     /**
-     * Set a fetch size for the underlying JDBC query.
-     * @param fetchSize the fetch size
+     * Set a fetchJoin size for the underlying JDBC query.
+     * @param fetchSize the fetchJoin size
      */
     @SuppressWarnings("unchecked")
     public Q setFetchSize(int fetchSize) {
@@ -379,23 +314,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.setProjection(expr);
-        return (RT)uniqueResult();
-    }
-
-    private Object uniqueResult() {
+    public T fetchOne() {
         try {
             QueryModifiers modifiers = getMetadata().getModifiers();
             Query query = createQuery(modifiers, false);
             try{
-                return query.uniqueResult();
+                return (T) query.uniqueResult();
             } catch (org.hibernate.NonUniqueResultException e) {
                 throw new NonUniqueResultException();
             }

@@ -46,7 +46,7 @@ import com.querydsl.sql.SQLSerializer;
  * @param <T>
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableSQLQuery<T> {
+public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
 
@@ -69,14 +69,14 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     @Nullable
     protected FactoryExpression<?> projection;
 
-    protected final QueryMixin<T> queryMixin;
+    protected final QueryMixin<Q> queryMixin;
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata, Configuration conf, PersistenceManager persistenceManager,
                             boolean detach) {
-        super(new QueryMixin<T>(metadata, false), conf);
+        super(new QueryMixin<Q>(metadata, false), conf);
         this.queryMixin = super.queryMixin;
-        this.queryMixin.setSelf((T)this);
+        this.queryMixin.setSelf((Q)this);
         this.persistenceManager = persistenceManager;
         this.detach = detach;
     }
@@ -88,7 +88,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         Query query = createQuery(true);
         query.setUnique(true);
         reset();
@@ -172,48 +172,26 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return rv;
     }
 
-    @Override
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
-    }
-
     public boolean isDetach() {
         return detach;
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
-    }
-
-    @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
+    public CloseableIterator<T> iterate() {
+        return new IteratorAdapter<T>(fetch().iterator(), closeable);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expression<RT> expr) {
-        queryMixin.setProjection(expr);
+    public List<T> fetch() {
         Object rv = execute(createQuery(false), false);
         reset();
-        return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT) rv);
-    }
-
-    @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
+        return rv instanceof List ? (List<T>)rv : Collections.singletonList((T) rv);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.setProjection(expr);
+    public QueryResults<T> fetchResults() {
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
         long total = (Long) execute(countQuery, true);
@@ -221,10 +199,10 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Query query = createQuery(false);
             reset();
-            return new SearchResults<RT>((List<RT>) execute(query, false), modifiers, total);
+            return new QueryResults<T>((List<T>) execute(query, false), modifiers, total);
         } else {
             reset();
-            return SearchResults.emptyResults();
+            return QueryResults.emptyResults();
         }
     }
 
@@ -243,23 +221,9 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         }
     }
 
-
     @Override
     @Nullable
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    @Nullable
-    public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.setProjection(expr);
-        return (RT)uniqueResult();
-    }
-
-    @Nullable
-    private Object uniqueResult() {
+    public T fetchOne() {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
@@ -272,12 +236,12 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
                 if (list.size() > 1) {
                     throw new NonUniqueResultException();
                 }
-                return list.get(0);
+                return (T) list.get(0);
             } else {
                 return null;
             }
         } else {
-            return rv;
+            return (T) rv;
         }
     }
 }

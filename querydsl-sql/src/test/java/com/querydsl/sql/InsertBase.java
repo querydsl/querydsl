@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import static com.querydsl.core.Target.*;
 import static com.querydsl.sql.Constants.survey;
 import static com.querydsl.sql.Constants.survey2;
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.*;
 
 import java.sql.ResultSet;
@@ -73,11 +74,11 @@ public class InsertBase extends AbstractBaseTest {
         insert.set(localDateProperty, localDate);
         insert.execute();
 
-        Tuple result = query().from(dateTest).singleResult(
+        Tuple result = query().from(dateTest).select(
                 dateTest.dateTest.year(),
                 dateTest.dateTest.month(),
                 dateTest.dateTest.dayOfMonth(),
-                dateTimeProperty);
+                dateTimeProperty).fetchFirst();
         assertEquals(Integer.valueOf(1978), result.get(0, Integer.class));
         assertEquals(Integer.valueOf(1), result.get(1, Integer.class));
         assertEquals(Integer.valueOf(2), result.get(2, Integer.class));
@@ -98,12 +99,11 @@ public class InsertBase extends AbstractBaseTest {
         QEmployee emp2 = new QEmployee("emp2");
         SQLInsertClause insert = insert(survey);
         insert.columns(survey.id, survey.name);
-        insert.select(new SQLSubQuery().from(survey)
+        insert.select(select(survey.id, emp2.firstname).from(survey)
           .innerJoin(emp1)
            .on(survey.id.eq(emp1.id))
           .innerJoin(emp2)
-           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
-          .list(survey.id, emp2.firstname));
+           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname)));
 
         insert.execute();
     }
@@ -130,8 +130,8 @@ public class InsertBase extends AbstractBaseTest {
 
         assertEquals(2, insert.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).fetchCount());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).fetchCount());
     }
 
     @Test
@@ -147,8 +147,8 @@ public class InsertBase extends AbstractBaseTest {
 
         assertEquals(2, insert.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).fetchCount());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).fetchCount());
     }
 
     @Test
@@ -280,10 +280,10 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery() {
-        int count = (int)query().from(survey).count();
+        int count = (int)query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
-            .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
+            .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
             .execute());
     }
 
@@ -296,12 +296,12 @@ public class InsertBase extends AbstractBaseTest {
 //        (select 1 from modules where modules.name = 'MyModule')
 
         assertEquals(1, insert(survey).set(survey.name,
-            sq().where(sq().from(survey2)
+            query().where(query().from(survey2)
                            .where(survey2.name.eq("MyModule")).notExists())
-                .unique(Expressions.constant("MyModule")))
+                .select(Expressions.constant("MyModule")).fetchFirst())
             .execute());
 
-        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule")).count());
+        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule")).fetchCount());
     }
 
     @Test
@@ -313,33 +313,33 @@ public class InsertBase extends AbstractBaseTest {
 //        (select 1 from modules where modules.name = 'MyModule')
 
         assertEquals(1, insert(survey).columns(survey.name).select(
-            sq().where(sq().from(survey2)
+            query().where(query().from(survey2)
                            .where(survey2.name.eq("MyModule2")).notExists())
-                .unique(Expressions.constant("MyModule2")))
+                .select(Expressions.constant("MyModule2")))
             .execute());
 
-        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule2")).count());
+        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule2")).fetchCount());
     }
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Params() {
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
-        SQLSubQuery sq = sq().from(survey2);
+        SQLQuery<?> sq = query().from(survey2);
         sq.set(param, 20);
 
-        int count = (int)query().from(survey).count();
+        int count = (int)query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
-            .select(sq.list(survey2.id.add(param), survey2.name))
+            .select(sq.select(survey2.id.add(param), survey2.name))
             .execute());
     }
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Via_Constructor() {
-        int count = (int)query().from(survey).count();
-        SQLInsertClause insert = insert(survey, sq().from(survey2));
+        int count = (int)query().from(survey).fetchCount();
+        SQLInsertClause insert = insert(survey, query().from(survey2));
         insert.set(survey.id, survey2.id.add(20));
         insert.set(survey.name, survey2.name);
         assertEquals(count, insert.execute());
@@ -348,9 +348,9 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Without_Columns() {
-        int count = (int)query().from(survey).count();
+        int count = (int)query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
-            .select(sq().from(survey2).list(survey2.id.add(10), survey2.name, survey2.name2))
+            .select(query().from(survey2).select(survey2.id.add(10), survey2.name, survey2.name2))
             .execute());
 
     }
@@ -367,12 +367,12 @@ public class InsertBase extends AbstractBaseTest {
     public void InsertBatch_with_Subquery() {
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)
-            .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
+            .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
             .addBatch();
 
         insert(survey)
             .columns(survey.id, survey.name)
-            .select(sq().from(survey2).list(survey2.id.add(40), survey2.name))
+            .select(query().from(survey2).select(survey2.id.add(40), survey2.name))
             .addBatch();
 
         insert.execute();
@@ -382,7 +382,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     public void Like() {
         insert(survey).values(11, "Hello World", "a\\b").execute();
-        assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).count());
+        assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).fetchCount());
     }
 
     @Test
@@ -393,13 +393,13 @@ public class InsertBase extends AbstractBaseTest {
         insert.set(survey.id, 7).set(survey.name, "a%").addBatch();
         assertEquals(3, insert.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.like("a|%", '|')).count());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a|_", '|')).count());
-        assertEquals(3l, query().from(survey).where(survey.name.like("a%")).count());
-        assertEquals(2l, query().from(survey).where(survey.name.like("a_")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.like("a|%", '|')).fetchCount());
+        assertEquals(1l, query().from(survey).where(survey.name.like("a|_", '|')).fetchCount());
+        assertEquals(3l, query().from(survey).where(survey.name.like("a%")).fetchCount());
+        assertEquals(2l, query().from(survey).where(survey.name.like("a_")).fetchCount());
 
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).fetchCount());
+        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).fetchCount());
     }
 
     @Test
@@ -430,7 +430,7 @@ public class InsertBase extends AbstractBaseTest {
         QUuids uuids = QUuids.uuids;
         UUID uuid = UUID.randomUUID();
         insert(uuids).set(uuids.field, uuid).execute();
-        assertEquals(uuid, query().from(uuids).singleResult(uuids.field));
+        assertEquals(uuid, query().from(uuids).select(uuids.field).fetchFirst());
     }
 
     @Test
@@ -440,7 +440,7 @@ public class InsertBase extends AbstractBaseTest {
         QXmlTest xmlTest = QXmlTest.xmlTest;
         String contents = "<html><head>a</head><body>b</body></html>";
         insert(xmlTest).set(xmlTest.col, contents).execute();
-        assertEquals(contents, query().from(xmlTest).singleResult(xmlTest.col));
+        assertEquals(contents, query().from(xmlTest).select(xmlTest.col).fetchFirst());
     }
 
 }

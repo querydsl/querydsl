@@ -1,7 +1,8 @@
 package com.querydsl.collections;
 
-import com.mysema.codegen.ECJEvaluatorFactory;
 import org.junit.Test;
+
+import com.mysema.codegen.ECJEvaluatorFactory;
 
 public class ECJEvaluatorFactoryTest extends AbstractQueryTest {
 
@@ -11,8 +12,8 @@ public class ECJEvaluatorFactoryTest extends AbstractQueryTest {
                 CollQueryTemplates.DEFAULT,
                 new ECJEvaluatorFactory(getClass().getClassLoader()));
         QueryEngine queryEngine = new DefaultQueryEngine(evaluatorFactory);
-        CollQuery query = new CollQuery(queryEngine);
-        query.from(cat, cats).list(cat.name);
+        CollQuery<?> query = new CollQuery<Void>(queryEngine);
+        query.from(cat, cats).select(cat.name).fetch();
     }
 
 }

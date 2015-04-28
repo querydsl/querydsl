@@ -40,7 +40,8 @@ public class CustomFinder {
             builder.and(property.eq(entry.getValue()));
         }
         ComparablePath<?> sortProperty = Expressions.comparablePath(Comparable.class, entityPath, sort);
-        return new JPAQuery(em).from(entityPath).where(builder.getValue()).orderBy(sortProperty.asc()).list(entityPath);
+        return new JPAQuery<Void>(em).from(entityPath).where(builder.getValue())
+                .orderBy(sortProperty.asc()).select(entityPath).fetch();
     }
 
 }

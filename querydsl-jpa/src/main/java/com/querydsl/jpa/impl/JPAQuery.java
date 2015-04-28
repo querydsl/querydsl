@@ -17,6 +17,8 @@ import javax.persistence.EntityManager;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.JPQLTemplates;
 
 /**
@@ -25,7 +27,7 @@ import com.querydsl.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public class JPAQuery extends AbstractJPAQuery<JPAQuery> {
+public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
 
     /**
      * Creates a new detached query
@@ -75,15 +77,26 @@ public class JPAQuery extends AbstractJPAQuery<JPAQuery> {
     }
 
     @Override
-    public JPAQuery clone(EntityManager entityManager, JPQLTemplates templates) {
-        JPAQuery q = new JPAQuery(entityManager, templates, getMetadata().clone());
+    public JPAQuery<T> clone(EntityManager entityManager, JPQLTemplates templates) {
+        JPAQuery<T> q = new JPAQuery<T>(entityManager, templates, getMetadata().clone());
         q.clone(this);
         return q;
     }
 
     @Override
-    public JPAQuery clone(EntityManager entityManager) {
+    public JPAQuery<T> clone(EntityManager entityManager) {
         return clone(entityManager, JPAProvider.getTemplates(entityManager));
     }
 
+    @Override
+    public <U> JPAQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (JPAQuery<U>) this;
+    }
+
+    @Override
+    public JPAQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (JPAQuery<Tuple>) this;
+    }
 }

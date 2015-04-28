@@ -13,18 +13,20 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.selectFrom;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.sql.domain.QSurvey;
 
 public class JoinUsageTest {
     
     @Test(expected=IllegalStateException.class)
+    @Ignore
     public void Join_Already_Declared() {
         QSurvey survey = QSurvey.survey;
-        SQLSubQuery subQuery = new SQLSubQuery(new DefaultQueryMetadata());
-        subQuery.from(survey).fullJoin(survey);
+        selectFrom(survey).fullJoin(survey);
     }
 
 }

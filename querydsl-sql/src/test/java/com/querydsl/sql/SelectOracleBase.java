@@ -20,8 +20,8 @@ public class SelectOracleBase extends AbstractBaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
-    protected OracleQuery oracleQuery() {
-        return new OracleQuery(connection, configuration) {
+    protected OracleQuery<?> oracleQuery() {
+        return new OracleQuery<Void>(connection, configuration) {
             @Override
             protected SQLSerializer serialize(boolean forCountRow) {
                 SQLSerializer serializer = super.serialize(forCountRow);
@@ -43,7 +43,7 @@ public class SelectOracleBase extends AbstractBaseTest {
         oracleQuery().from(employee)
             .where(level.eq(-1))
             .connectBy(level.lt(1000))
-            .list(employee.id);
+            .select(employee.id).fetch();
     }
 
     @Test
@@ -55,7 +55,7 @@ public class SelectOracleBase extends AbstractBaseTest {
                         "connect by prior e.ID = e.SUPERIOR_ID";
         oracleQuery().from(employee)
             .connectByPrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
+            .select(employee.id, employee.lastname, employee.superiorId).fetch();
     }
 
     @Test
@@ -72,7 +72,7 @@ public class SelectOracleBase extends AbstractBaseTest {
         oracleQuery().from(employee)
             .startWith(employee.id.eq(1))
             .connectByPrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
+            .select(employee.id, employee.lastname, employee.superiorId).fetch();
     }
 
     @Test
@@ -91,7 +91,7 @@ public class SelectOracleBase extends AbstractBaseTest {
             .startWith(employee.id.eq(1))
             .connectByPrior(employee.id.eq(employee.superiorId))
             .orderSiblingsBy(employee.lastname)
-            .list(employee.id, employee.lastname, employee.superiorId);
+            .select(employee.id, employee.lastname, employee.superiorId).fetch();
     }
 
     @Test
@@ -106,7 +106,7 @@ public class SelectOracleBase extends AbstractBaseTest {
                 "connect by nocycle prior e.ID = e.SUPERIOR_ID";
         oracleQuery().from(employee)
             .connectByNocyclePrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
+            .select(employee.id, employee.lastname, employee.superiorId).fetch();
     }
 
     @Test
@@ -130,21 +130,21 @@ public class SelectOracleBase extends AbstractBaseTest {
 
         oracleQuery().from(employee)
             .orderBy(employee.salary.asc(), employee.superiorId.asc())
-            .list(
+            .select(
                employee.lastname,
                employee.salary,
                SQLExpressions.sum(employee.salary).over().partitionBy(employee.superiorId).orderBy(employee.lastname, employee.salary),
                SQLExpressions.sum(employee.salary).over().orderBy(employee.superiorId, employee.salary),
-               SQLExpressions.sum(employee.salary).over());
+               SQLExpressions.sum(employee.salary).over()).fetch();
 
         // shorter version
         QEmployee e = employee;
         oracleQuery().from(e)
             .orderBy(e.salary.asc(), e.superiorId.asc())
-            .list(e.lastname, e.salary,
+            .select(e.lastname, e.salary,
                SQLExpressions.sum(e.salary).over().partitionBy(e.superiorId).orderBy(e.lastname, e.salary),
                SQLExpressions.sum(e.salary).over().orderBy(e.superiorId, e.salary),
-               SQLExpressions.sum(e.salary).over());
+               SQLExpressions.sum(e.salary).over()).fetch();
     }
 
 }

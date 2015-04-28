@@ -13,24 +13,18 @@
  */
 package com.querydsl.jdo.serialization;
 
-import com.querydsl.jdo.JDOQLSerializer;
-import com.querydsl.jdo.JDOSubQuery;
-import com.querydsl.jdo.JDOQLTemplates;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.jdo.JDOQLSerializer;
+import com.querydsl.jdo.JDOQLTemplates;
 
 public abstract class AbstractTest {
-
-    protected JDOSubQuery query() {
-        return new JDOSubQuery();
-    }
 
     protected String serialize(SubQueryExpression<?> expr) {
         Expression<?> source = expr.getMetadata().getJoins().get(0).getTarget();
         JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
         serializer.serialize(expr.getMetadata(), false, false);
-        String rv = serializer.toString().replace('\n', ' ');
-        return rv;
+        return serializer.toString().replace('\n', ' ');
     }
 
 }

@@ -20,9 +20,8 @@ package com.querydsl.core;
  * @author tiwe
  * 
  * @param <Q> Query type
- * @param <SQ> Subquery type
  */
-public interface QueryFactory<Q extends Query<?>, SQ extends Detachable> {
+public interface QueryFactory<Q extends Query<?>> {
     /**
      * Create a new Query
      * 
@@ -30,10 +29,4 @@ public interface QueryFactory<Q extends Query<?>, SQ extends Detachable> {
      */
     Q query();
 
-    /**
-     * Create a new Sub query
-     * 
-     * @return
-     */
-    SQ subQuery();
 }

@@ -14,12 +14,11 @@
 package com.querydsl.sql;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 
 /**
@@ -100,6 +99,115 @@ public final class SQLExpressions {
      * Wildcard count expression
      */
     public static final Expression<Long> countAll = Wildcard.count;
+
+    /**
+     * Create a new detached SQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public static <T> SQLQuery<T> select(Expression<T> expr) {
+        return new SQLQuery<Void>().select(expr);
+    }
+
+    /**
+     * Create a new detached SQLQuery instance with the given projection
+     *
+     * @param exprs
+     * @return
+     */
+    public static SQLQuery<Tuple> select(Expression<?>... exprs) {
+        return new SQLQuery<Void>().select(exprs);
+    }
+
+    /**
+     * Create a new detached SQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public static <T> SQLQuery<T> selectDistinct(Expression<T> expr) {
+        return new SQLQuery<Void>().select(expr).distinct();
+    }
+
+    /**
+     * Create a new detached SQLQuery instance with the given projection
+     *
+     * @param exprs
+     * @return
+     */
+    public static SQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return new SQLQuery<Void>().select(exprs).distinct();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static SQLQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static SQLQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    /**
+     * Create a new detached SQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public static <T> SQLQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
+    }
+
+    /**
+     *
+     * @param sq
+     * @param <T>
+     * @return
+     */
+    public static <T> Union<T> union(SubQueryExpression<T>... sq) {
+        return new SQLQuery<Void>().union(sq);
+    }
+
+    /**
+     *
+     * @param sq
+     * @param <T>
+     * @return
+     */
+    public static <T> Union<T> union(List<SubQueryExpression<T>> sq) {
+        return new SQLQuery<Void>().union(sq);
+    }
+
+    /**
+     *
+     * @param sq
+     * @param <T>
+     * @return
+     */
+    public static <T> Union<T> unionAll(SubQueryExpression<T>... sq) {
+        return new SQLQuery<Void>().unionAll(sq);
+    }
+
+    /**
+     *
+     * @param sq
+     * @param <T>
+     * @return
+     */
+    public static <T> Union<T> unionAll(List<SubQueryExpression<T>> sq) {
+        return new SQLQuery<Void>().unionAll(sq);
+    }
 
     /**
      * Get an aggregate any expression for the given boolean expression

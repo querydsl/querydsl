@@ -66,58 +66,58 @@ public class JoinTest {
 
     @Test
     public void Count() {
-        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
-        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
-        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
-        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).count());
+        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount());
+        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount());
+        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount());
+        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetchCount());
     }
 
     @Test
     public void Count_Collection() {
-        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Mary")).count());
-        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Ann")).count());
-        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Ann").or(friend.firstName.eq("Mary"))).count());
-        assertEquals(1, where(user.firstName.eq("Bart")).join(user.friends, friend).on(friend.firstName.eq("Mary")).count());
-        assertEquals(0, where().join(user.friends, friend).on(friend.firstName.eq("Max")).count());
+        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount());
+        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Ann")).fetchCount());
+        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Ann").or(friend.firstName.eq("Mary"))).fetchCount());
+        assertEquals(1, where(user.firstName.eq("Bart")).join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount());
+        assertEquals(0, where().join(user.friends, friend).on(friend.firstName.eq("Max")).fetchCount());
     }
 
     @Test
     public void Exists() {
-        assertTrue(where().join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
-        assertTrue(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
-        assertFalse(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
-        assertFalse(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).exists());
+        assertTrue(where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount() > 0);
+        assertTrue(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount() > 0);
+        assertFalse(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount() > 0);
+        assertFalse(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetchCount() > 0);
     }
 
     @Test
     public void Exists_Collection() {
-        assertTrue(where().join(user.friends, friend).on(friend.firstName.eq("Mary")).exists());
-        assertTrue(where(user.firstName.eq("Bart")).join(user.friends, friend).on(friend.firstName.eq("Mary")).exists());
+        assertTrue(where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount() > 0);
+        assertTrue(where(user.firstName.eq("Bart")).join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount() > 0);
     }
 
     @Test
     public void List() {
-        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
-        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
-        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
-        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).list().size());
+        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetch().size());
+        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetch().size());
+        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetch().size());
+        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetch().size());
     }
 
     public void List_Collection() {
-        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Mary")).list().size());
+        assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetch().size());
     }
 
     @Test
     public void Single() {
-        assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult().getFirstName());
-        assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult().getFirstName());
-        assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult());
-        assertNull(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).singleResult());
+        assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().getFirstName());
+        assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().getFirstName());
+        assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst());
+        assertNull(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetchFirst());
     }
 
     @Test
     public void Single_Collection() {
-        assertEquals("Bart", where().join(user.friends, friend).on(friend.firstName.eq("Mary")).singleResult().getFirstName());
+        assertEquals("Bart", where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchFirst().getFirstName());
     }
 
     @Test
@@ -125,7 +125,7 @@ public class JoinTest {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.isNotNull())
                 .join(user.enemy(), enemy).on(enemy.firstName.isNotNull())
-                .singleResult().getFirstName());
+                .fetchFirst().getFirstName());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class JoinTest {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.eq("Mary"))
                 .join(user.enemy(), enemy).on(enemy.firstName.eq("Ann"))
-                .singleResult().getFirstName());
+                .fetchFirst().getFirstName());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class JoinTest {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.isNotNull())
                 .join(friend.friend(), friend2).on(friend2.firstName.eq("Jane"))
-                .singleResult().getFirstName());
+                .fetchFirst().getFirstName());
     }
 
     private MorphiaQuery<User> query() {

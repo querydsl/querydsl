@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.junit.Assert;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.Expression;
@@ -144,84 +143,70 @@ public abstract class QueryExecution {
         }
     }
 
-    protected abstract Pair<Projectable, Expression<?>[]> createQuery();
+    protected abstract Fetchable<?> createQuery();
 
-    protected abstract Pair<Projectable, Expression<?>[]> createQuery(Predicate filter);
+    protected abstract Fetchable<?> createQuery(Predicate filter);
 
     private long runCount(Predicate f) {
-        Pair<Projectable, Expression<?>[]> p = createQuery(f);
+        Fetchable<?> p = createQuery(f);
         try{
-            return p.getFirst().count();
+            return p.fetchCount();
         }finally{
-            close(p.getFirst());
+            close(p);
         }
     }
 
     private long runCountDistinct(Predicate f) {
-        Pair<Projectable, Expression<?>[]> p = createQuery(f);
+        Fetchable<?> p = createQuery(f);
         try{
-            ((QueryBase)p.getFirst()).distinct();
-            return p.getFirst().count();
+            ((QueryBase)p).distinct();
+            return p.fetchCount();
         }finally{
-            close(p.getFirst());
+            close(p);
         }
     }
 
     private int runFilter(Predicate f) {
-        Pair<Projectable, Expression<?>[]> p = createQuery(f);
+        Fetchable<?> p = createQuery(f);
         try{
-            return p.getFirst().list(p.getSecond()).size();
-        }finally{
-            close(p.getFirst());
+            return p.fetch().size();
+        } finally {
+            close(p);
         }
     }
 
     private int runFilterDistinct(Predicate f) {
-        Pair<Projectable, Expression<?>[]> p = createQuery(f);
+        Fetchable<?> p = createQuery(f);
         try{
-            ((QueryBase)p.getFirst()).distinct();
-            return p.getFirst().list(p.getSecond()).size();
-        }finally{
-            close(p.getFirst());
+            ((QueryBase)p).distinct();
+            return p.fetch().size();
+        } finally {
+            close(p);
         }
     }
 
     private int runProjection(Expression<?> pr) {
-        Pair<Projectable, Expression<?>[]> p = createQuery();
-        try{
-            if (p.getSecond().length == 0) {
-                return p.getFirst().list(pr).size();
-            } else {
-                Expression<?>[] projection = new Expression[p.getSecond().length + 1];
-                projection[0] = pr;
-                System.arraycopy(p.getSecond(), 0, projection, 1, p.getSecond().length);
-                return p.getFirst().list(projection).size();
-            }
-
-        }finally{
-            close(p.getFirst());
+        Fetchable<?> p = createQuery();
+        try {
+            ((FetchableQuery)p).select(pr);
+            return p.fetch().size();
+        } finally {
+            close(p);
         }
     }
 
     private int runProjectionDistinct(Expression<?> pr) {
-        Pair<Projectable, Expression<?>[]> p = createQuery();
+        Fetchable<?> p = createQuery();
         try{
-            ((QueryBase)p.getFirst()).distinct();
-            if (p.getSecond().length == 0) {
-                return p.getFirst().list(pr).size();
-            } else {
-                Expression<?>[] projection = new Expression[p.getSecond().length + 1];
-                projection[0] = pr;
-                System.arraycopy(p.getSecond(), 0, projection, 1, p.getSecond().length);
-                return p.getFirst().list(projection).size();
-            }
-
+            ((QueryBase)p).distinct();
+            ((FetchableQuery)p).select(pr);
+            return p.fetch().size();
         }finally{
-            close(p.getFirst());
+            close(p);
         }
     }
 
-    private void close(Projectable p) {
+    private void close(Fetchable p) {
         if (p instanceof Closeable) {
             try {
                 ((Closeable)p).close();

@@ -11,25 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.jpa.hibernate;
+package com.querydsl.collections;
 
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.jpa.AbstractJPASubQuery;
+import static org.junit.Assert.assertNotNull;
 
-/**
- * HibernateSubQuery is a subquery class for Hibernate
- *
- * @author tiwe
- *
- */
-public class HibernateSubQuery extends AbstractJPASubQuery<HibernateSubQuery> {
+import org.junit.Test;
 
-    public HibernateSubQuery() {
-        super();
-    }
+public class FirstResultContractTest extends AbstractQueryTest{
 
-    public HibernateSubQuery(QueryMetadata metadata) {
-        super(metadata);
+    @Test
+    public void SingleResult() {
+        assertNotNull(CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).fetchFirst());
     }
 
 }

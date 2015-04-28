@@ -23,7 +23,7 @@ import com.querydsl.core.types.Expression;
  * <p>Usage example:</p>
  * <pre>
  * {@code 
- * List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
+ * List<Tuple> result = query.from(employee).select(employee.firstName, employee.lastName).fetch();
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
  *     System.out.println("lastName " + row.get(employee.lastName)); 

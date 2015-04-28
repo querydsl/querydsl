@@ -13,21 +13,24 @@
  */
 package com.querydsl.sql.dml;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.*;
+
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.StoreClause;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.ResultSetAdapter;
 import com.querydsl.sql.*;
 import com.querydsl.sql.types.Null;
-import com.querydsl.core.types.*;
-import com.querydsl.core.util.ResultSetAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * SQLMergeClause defines an MERGE INTO clause
@@ -298,12 +301,12 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     private boolean hasRow() {
-        SQLQuery query = new SQLQuery(connection, configuration).from(entity);
+        SQLQuery<?> query = new SQLQuery<Void>(connection, configuration).from(entity);
         addKeyConditions(query);
-        return query.exists();
+        return query.select(Expressions.ONE).fetchFirst() != null;
     }
 
-    private void addKeyConditions(FilteredClause query) {
+    private void addKeyConditions(FilteredClause<?> query) {
         List<? extends Path<?>> keys = getKeys();
         for (int i=0; i < columns.size(); i++) {
             if (keys.contains(columns.get(i))) {

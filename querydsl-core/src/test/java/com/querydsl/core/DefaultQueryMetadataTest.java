@@ -29,6 +29,10 @@ public class DefaultQueryMetadataTest {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
+    public DefaultQueryMetadataTest() {
+        metadata.setValidate(true);
+    }
+
     private final StringPath str = Expressions.stringPath("str");
     
     private final StringPath str2 = Expressions.stringPath("str2");

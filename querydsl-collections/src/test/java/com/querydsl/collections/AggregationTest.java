@@ -1,10 +1,11 @@
 package com.querydsl.collections;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class AggregationTest extends AbstractQueryTest {
 
@@ -28,37 +29,37 @@ public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Avg() {
-        assertEquals(Double.valueOf(3.5), query.uniqueResult(cat.weight.avg()));
+        assertEquals(Double.valueOf(3.5), query.select(cat.weight.avg()).fetchOne());
     }
 
     @Test
     public void Count() {
-        assertEquals(Long.valueOf(4l), query.uniqueResult(cat.count()));
+        assertEquals(Long.valueOf(4l), query.select(cat.count()).fetchOne());
     }
 
     @Test
     public void CountDistinct() {
-        assertEquals(Long.valueOf(4l), query.uniqueResult(cat.countDistinct()));
+        assertEquals(Long.valueOf(4l), query.select(cat.countDistinct()).fetchOne());
     }
 
     @Test
     public void Max() {
-        assertEquals(Integer.valueOf(5), query.uniqueResult(cat.weight.max()));
+        assertEquals(Integer.valueOf(5), query.select(cat.weight.max()).fetchOne());
     }
 
     @Test
     public void Min() {
-        assertEquals(Integer.valueOf(2), query.uniqueResult(cat.weight.min()));
+        assertEquals(Integer.valueOf(2), query.select(cat.weight.min()).fetchOne());
     }
 
     @Test(expected=UnsupportedOperationException.class)
     public void Min_And_Max() {
-        query.uniqueResult(cat.weight.min(), cat.weight.max());
+        query.select(cat.weight.min(), cat.weight.max()).fetchOne();
     }
 
     @Test
     public void Sum() {
-        assertEquals(Integer.valueOf(14), query.uniqueResult(cat.weight.sum()));
+        assertEquals(Integer.valueOf(14), query.select(cat.weight.sum()).fetchOne());
     }
 
 }

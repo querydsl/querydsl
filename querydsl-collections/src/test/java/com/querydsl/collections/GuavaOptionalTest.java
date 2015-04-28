@@ -40,7 +40,7 @@ public class GuavaOptionalTest {
 
         for (Cat cat : from(c, cats)
                 .where($(c.getPedigree()).eq(Optional.of("persian")))
-                .list($(c))) {
+                .select($(c)).fetch()) {
 
             assertTrue(cat.getPedigree().isPresent());
             assertEquals("persian", cat.getPedigree().get());

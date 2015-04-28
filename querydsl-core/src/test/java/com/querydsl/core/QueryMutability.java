@@ -16,62 +16,50 @@ package com.querydsl.core;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.Expression;
 
-public final class QueryMutability<T extends QueryBase<T> & Projectable> {
+public final class QueryMutability {
 
-    private final T query;
+    private final FetchableQuery<?,?> query;
 
-    private final QueryMetadata metadata;
-
-    public QueryMutability(T query) throws SecurityException,
+    public QueryMutability(FetchableQuery<?,?> query) throws SecurityException,
             NoSuchMethodException, IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         this.query = query;
-        this.metadata = (QueryMetadata) query.getClass().getMethod("getMetadata").invoke(query);
     }
 
     public void test(Expression<?> p1, Expression<?> p2) throws IOException {
-        System.err.println("count");
-        query.count();
+        System.err.println("fetchCount");
+        query.select(p1).fetchCount();
 
         System.err.println("countDistinct");
-        query.distinct().count();
+        query.select(p1).distinct().fetchCount();
 
         System.err.println("iterate");
-        query.iterate(p1);
-
-        query.iterate(p1, p2);
+        query.select(p1).iterate();
+        query.select(p1, p2).iterate();
 
         System.err.println("iterateDistinct");
-        query.distinct().iterate(p1);
-
-        query.distinct().iterate(p1, p2);
+        query.select(p1).distinct().iterate();
+        query.select(p1, p2).distinct().iterate();
 
         System.err.println("list");
-        query.list(p1);
+        query.select(p1).fetch();
+        query.select(p1, p2).fetch();
 
-        query.list(p1, p2);
+        System.err.println("distinct fetch");
+        query.select(p1).distinct().fetch();
+        query.select(p2).distinct().fetch();
 
-        System.err.println("distinct list");
-        query.distinct().list(p1);
+        System.err.println("fetchResults");
+        query.select(p1).fetchResults();
 
-        query.distinct().list(p1, p2);
+        System.err.println("distinct fetchResults");
+        query.select(p1).distinct().fetchResults();
 
-        System.err.println("listResults");
-        query.listResults(p1);
-
-        System.err.println("distinct listResults");
-        query.distinct().listResults(p1);
-
-        System.err.println("map");
-        query.map(p1, p2);
-
-        System.err.println("uniqueResult");
-        query.uniqueResult(p1);
-
-        query.uniqueResult(p1, p2);
+        System.err.println("fetchOne");
+        query.select(p1).fetchOne();
+        query.select(p1,p2).fetchOne();
     }
 
 }

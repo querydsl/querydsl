@@ -17,6 +17,8 @@ import javax.jdo.PersistenceManager;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 
 /**
  * JDOQuery is the default implementation of the JDOQLQuery interface
@@ -24,7 +26,7 @@ import com.querydsl.core.QueryMetadata;
  * @author tiwe
  *
  */
-public class JDOQuery extends AbstractJDOQuery<JDOQuery> {
+public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
 
     /**
      * Create a detached JDOQuery instance
@@ -84,12 +86,24 @@ public class JDOQuery extends AbstractJDOQuery<JDOQuery> {
      * @param persistenceManager
      * @return
      */
-    public JDOQuery clone(PersistenceManager persistenceManager) {
-        JDOQuery query = new JDOQuery(persistenceManager, getTemplates(), 
+    public JDOQuery<T> clone(PersistenceManager persistenceManager) {
+        JDOQuery<T> query = new JDOQuery<T>(persistenceManager, getTemplates(),
                 getMetadata().clone(), isDetach());
         query.fetchGroups.addAll(fetchGroups);
         query.maxFetchDepth = maxFetchDepth;
         return query;
+    }
+
+    @Override
+    public <U> JDOQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (JDOQuery<U>) this;
+    }
+
+    @Override
+    public JDOQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (JDOQuery<Tuple>) this;
     }
 
 }

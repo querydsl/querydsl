@@ -23,21 +23,24 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.FetchableQuery;
+import com.querydsl.core.JoinFlag;
+import com.querydsl.core.Query;
+import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.support.ProjectableQuery;
+import com.querydsl.core.support.FetchableSubQueryBase;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.core.types.dsl.ListSubQuery;
 
 /**
  * ProjectableSQLQuery is the base type for SQL query implementations
  *
  * @param <Q> concrete subtype
  */
-public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Query<Q>> extends ProjectableQuery<Q> implements SQLCommonQuery<Q> {
+public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>> extends FetchableSubQueryBase<T, Q>
+        implements SQLCommonQuery<Q>, FetchableQuery<T, Q> {
 
     private static final Path<?> defaultQueryAlias = ExpressionUtils.path(Object.class, "query");
 
@@ -55,6 +58,15 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         super(queryMixin);
         this.queryMixin.setSelf((Q) this);
         this.configuration = configuration;
+    }
+
+    @Override
+    public <R,C> R accept(Visitor<R,C> v, @Nullable C context) {
+        if (union != null) {
+            return union.accept(v, context);
+        } else {
+            return super.accept(v, context);
+        }
     }
 
     /**
@@ -132,14 +144,9 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     }
 
     @Override
-    public long count() {
-        Number number = uniqueResult(Wildcard.countAsInt);
-        return number.longValue();
-    }
-
-    @Override
-    public boolean exists() {
-        return singleResult(Expressions.ONE) != null;
+    public long fetchCount() {
+        queryMixin.setProjection(Wildcard.countAsInt);
+        return ((Number) fetchOne()).longValue();
     }
 
     public Q from(Expression<?> arg) {
@@ -257,34 +264,19 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
-    }
-
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        queryMixin.getMetadata().setValidate(false);
+        return innerUnion((List) ImmutableList.copyOf(sq));
+    }
+
+    private <RT> Union<RT> innerUnion(List<SubQueryExpression<RT>> sq) {
+        queryMixin.setProjection(sq.get(0).getMetadata().getProjection());
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
         this.union = UnionUtils.union(sq, unionAll);
-        this.firstUnionSubQuery = sq[0];
-        return new UnionImpl<Q ,RT>((Q)this, (Expression<RT>) sq[0].getMetadata().getProjection());
-    }
-
-    @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
+        this.firstUnionSubQuery = sq.get(0);
+        return new UnionImpl(this);
     }
 
     public Q on(Predicate condition) {
@@ -294,28 +286,6 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     @Override
     public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
-        return innerUnion(sq);
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
     }
 
     /**
@@ -336,19 +306,7 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
-    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, false));
-    }
-
-    /**
-     * Creates an union expression for the given subqueries
-     *
-     * @param <RT>
-     * @param sq
-     * @return
-     */
-    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
-        unionAll = true;
+    public <RT> Union<RT> union(List<SubQueryExpression<RT>> sq) {
         return innerUnion(sq);
     }
 
@@ -359,8 +317,8 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
-    public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
+    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
     }
 
     /**
@@ -382,21 +340,30 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
      * @param sq
      * @return
      */
+    public <RT> Union<RT> unionAll(List<SubQueryExpression<RT>> sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+
+
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(sq, alias, true));
+        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
     }
 
     @Override
-    public Tuple uniqueResult(Expression<?>... args) {
-        return uniqueResult(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> RT uniqueResult(Expression<RT> expr) {
-        if (getMetadata().getModifiers().getLimit() == null && !expr.toString().contains("count(")) {
+    public T fetchOne() {
+        if (getMetadata().getModifiers().getLimit() == null
+            && !queryMixin.getMetadata().getProjection().toString().contains("count(")) {
             limit(2);
         }
-        CloseableIterator<RT> iterator = iterate(expr);
+        CloseableIterator<T> iterator = iterate();
         return uniqueResult(iterator);
     }
 
@@ -495,11 +462,9 @@ public abstract class ProjectableSQLQuery<Q extends ProjectableSQLQuery<Q> & Que
     /**
      * Get the query as an SQL query string and bindings
      *
-     * @param exprs
      * @return
      */
-    public SQLBindings getSQL(Expression<?>... exprs) {
-        queryMixin.setProjection(exprs);
+    public SQLBindings getSQL() {
         SQLSerializer serializer = serialize(false);
         ImmutableList.Builder<Object> args = ImmutableList.builder();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();

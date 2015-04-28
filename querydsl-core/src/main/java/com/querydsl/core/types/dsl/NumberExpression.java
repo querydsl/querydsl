@@ -330,6 +330,23 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAll(SubQueryExpression<? extends T> right) {
+        return gt(ExpressionUtils.all(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAny(SubQueryExpression<? extends T> right) {
+        return gt(ExpressionUtils.any(right));
+    }
+
+
+    /**
      * Create a {@code from <= this <= to} expression
      *
      * @param <A>

@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class SearchResultsTest {
+public class QueryResultsTest {
 
     private List<Integer> list = Arrays.asList(0,1,2,3,4,5,6,7,8,9);
 
-    private SearchResults<Integer> results = new SearchResults<Integer>(list,10l,0l,20);
+    private QueryResults<Integer> results = new QueryResults<Integer>(list,10l,0l,20);
 
     @Test
     public void GetResults() {
@@ -56,7 +56,7 @@ public class SearchResultsTest {
 
     @Test
     public void EmptyResults() {
-        SearchResults<Object> empty = SearchResults.emptyResults();
+        QueryResults<Object> empty = QueryResults.emptyResults();
         assertTrue(empty.isEmpty());
         assertEquals(Long.MAX_VALUE, empty.getLimit());
         assertEquals(0l, empty.getOffset());

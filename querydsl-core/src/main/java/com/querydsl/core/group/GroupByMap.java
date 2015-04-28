@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.Projectable;
+import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
@@ -39,7 +39,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
     }
 
     @Override
-    public Map<K, V> transform(Projectable projectable) {
+    public Map<K, V> transform(FetchableQuery query) {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
 
         // create groups
@@ -51,7 +51,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
         if (hasGroups) {
             expr = withoutGroupExpressions(expr);
         }
-        CloseableIterator<Tuple> iter = projectable.iterate(expr);
+        CloseableIterator<Tuple> iter = query.select(expr).iterate();
         try {
             while (iter.hasNext()) {
                 Object[] row = iter.next().toArray();

@@ -22,7 +22,6 @@ import com.querydsl.scala.ScalaTypeMappings
 
 import com.querydsl.sql.codegen._
 import com.querydsl.sql.dml._
-import com.querydsl.scala.Helpers._
 
 object JDBCIntegrationTest {
 
@@ -97,107 +96,56 @@ class JDBCIntegrationTest extends SQLHelpers {
 
   @Test
   def Populate_Bean {
-    assertEquals(2, query.from(survey).list(survey) size ())
+    assertEquals(2, query.from(survey).select(survey).fetch() size ())
   }
-  
-  @Test
-  def Populate_Bean_via_Factory {
-    assertEquals(2, query.from(survey).list(create[Survey](survey.id, survey.name)) size ())
-  }
-  
+
   @Test
   def List {
-    assertEquals(2, query.from(survey).list(survey.id) size ())
-    assertEquals(2, query.from(employee).list(employee.firstname) size ())
+    assertEquals(2, query.from(survey).select(survey.id).fetch() size ())
+    assertEquals(2, query.from(employee).select(employee.firstname).fetch() size ())
   }
-  
-  @Test
-  def List_2 {
-    assertEquals(2, survey.select(_.id) size)
-    assertEquals(2, employee.select(_.firstname) size)
-  }
-  
+
   @Test
   def Select2 {
-    assertEquals(2, query.from(survey).select(survey.id, survey.name).size)
+    assertEquals(2, query.from(survey).select(survey.id, survey.name).fetch().size)
   }
-  
-  @Test
-  def Select2_2 {
-    assertEquals(2, survey.select(_.id, _.name) size)
-  }
-  
+
   @Test
   def Select3 {
-    assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name.substring(0,1)).size)
+    assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name.substring(0,1)).fetch().size)
   }
-  
-  @Test
-  def Select3_2 {
-    assertEquals(2, survey.select(_.id, _.name, _.name.substring(0,1)) size)
-  }
-  
+
   @Test
   def Select4 {
-    assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name + "X", survey.name + "Y").size)
+    assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name + "X", survey.name + "Y").fetch().size)
   }
-  
-  @Test
-  def Select4_2 {
-    assertEquals(2, survey.select(_.id, _.name, _.name + "X", _.name + "Y") size)
-  }
-  
+
   @Test
   def Count {
-    assertEquals(2, query.from(survey).count)
-    assertEquals(2, query.from(employee).count)
+    assertEquals(2, query.from(survey).fetchCount)
+    assertEquals(2, query.from(employee).fetchCount)
   }
-  
-  @Test
-  def Count_2 {
-    assertEquals(2, survey.query.count)
-    assertEquals(2, employee.query.count)
-  }
-  
+
   @Test
   def Order_By {
     query.from(survey).orderBy(survey.id asc).select(survey)
   }
-  
-  @Test
-  def Order_By_2 {
-    survey.orderBy(_.id asc).select
-  }
-  
-  @Test
-  def Join {
-    val sup = Employee as "sup"
-    val result: List[(Employee, Employee)] = employee.join(_.superiorFk, sup).select
-  }
-  
+
   @Test
   def Unique_Result {
-    assertEquals("abc", query.from(survey).where(survey.id eq 1).uniqueResult(survey.name))
-    assertEquals("def", query.from(survey).where(survey.id eq 2).uniqueResult(survey.name))
-    assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").uniqueResult(employee.firstname))
-    assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").uniqueResult(employee.firstname))
+    assertEquals("abc", query.from(survey).where(survey.id eq 1).select(survey.name).fetchOne())
+    assertEquals("def", query.from(survey).where(survey.id eq 2).select(survey.name).fetchOne())
+    assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").select(employee.firstname).fetchOne())
+    assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").select(employee.firstname).fetchOne())
   }  
-  
-  @Test
-  def Unique {
-    assertEquals("abc", survey.where(_.id eq 1).unique(_.name).get)
-    assertEquals("def", survey.where(_.id eq 2).unique(_.name).get)
-    assertEquals("Bob", employee.where(_.lastname eq "Smith").unique(_.firstname).get)
-    assertEquals("John", employee.where(_.lastname eq "Doe").unique(_.firstname).get)
-  }
-  
+
   @Test
   def Insert {
     val s = new Survey()
     s.name = "XXX"
           
     val id = insert(survey) populate(s) executeWithKey(survey.id)
-    val sNew = query from survey where (survey.id === id) uniqueResult (survey)
+    val sNew = query from survey where (survey.id === id) select (survey) fetchOne()
     assertEquals(s.name, sNew.name)
   }
   
@@ -213,7 +161,7 @@ class JDBCIntegrationTest extends SQLHelpers {
     val count = update(survey) populate(s) execute()
     assertTrue(count > 0)
       
-    val sNew = query from survey where (survey.id === id) uniqueResult (survey)
+    val sNew = query from survey where (survey.id === id) select (survey) fetchOne()
     assertEquals(s.name, sNew.name)
   }
   
@@ -227,7 +175,7 @@ class JDBCIntegrationTest extends SQLHelpers {
     assertTrue(count > 0)
   }
 
-  def query = new SQLQuery(connection, configuration)
+  def query = new SQLQuery[Void](connection, configuration)
 
   def delete(path: RelationalPath[_]) = new SQLDeleteClause(connection, configuration, path)
   

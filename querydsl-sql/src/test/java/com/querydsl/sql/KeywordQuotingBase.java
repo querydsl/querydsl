@@ -18,14 +18,16 @@ package com.querydsl.sql;
 
 import static org.junit.Assert.assertEquals;
 
-import com.querydsl.sql.ddl.CreateTableClause;
-import com.querydsl.sql.ddl.DropTableClause;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.core.types.dsl.StringPath;
-
-import org.junit.*;
+import com.querydsl.sql.ddl.CreateTableClause;
+import com.querydsl.sql.ddl.DropTableClause;
 
 public class KeywordQuotingBase extends AbstractBaseTest {
 
@@ -77,7 +79,7 @@ public class KeywordQuotingBase extends AbstractBaseTest {
         assertEquals("from", query().from(quoting.as(from))
                 .where(from.from.eq("from")
                         .and(from.all.isNotNull()))
-                .singleResult(from.from));
+                .select(from.from).fetchFirst());
     }
 
 }

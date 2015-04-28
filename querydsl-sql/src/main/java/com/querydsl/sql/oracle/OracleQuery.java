@@ -18,19 +18,21 @@ import java.sql.Connection;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.sql.mysql.MySQLQuery;
 
 /**
  * OracleQuery provides Oracle specific extensions to the base SQL query type
  *
  * @author tiwe
  */
-public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
+public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
 
     private static final String CONNECT_BY = "\nconnect by ";
 
@@ -43,7 +45,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     private static final String START_WITH = "\nstart with ";
 
     public OracleQuery(Connection conn) {
-        this(conn, new OracleTemplates(), new DefaultQueryMetadata());
+        this(conn, OracleTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
     public OracleQuery(Connection conn, SQLTemplates templates) {
@@ -66,7 +68,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
      * @param cond
      * @return
      */
-    public OracleQuery connectByPrior(Predicate cond) {
+    public OracleQuery<T> connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
 
@@ -74,7 +76,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
      * @param cond
      * @return
      */
-    public OracleQuery connectBy(Predicate cond) {
+    public OracleQuery<T> connectBy(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
 
@@ -82,7 +84,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
      * @param cond
      * @return
      */
-    public OracleQuery connectByNocyclePrior(Predicate cond) {
+    public OracleQuery<T> connectByNocyclePrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
 
@@ -90,7 +92,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
      * @param cond
      * @return
      */
-    public <A> OracleQuery startWith(Predicate cond) {
+    public <A> OracleQuery<T> startWith(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
 
@@ -98,12 +100,12 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
      * @param path
      * @return
      */
-    public OracleQuery orderSiblingsBy(Expression<?> path) {
+    public OracleQuery<T> orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }
     
     @Override
-    public OracleQuery clone(Connection conn) {
+    public OracleQuery<T> clone(Connection conn) {
         OracleQuery q = new OracleQuery(conn, getConfiguration(), getMetadata().clone());
         q.clone(this);
         return q;
@@ -116,6 +118,18 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     // TODO : connect by isleaf (pseudocolumn)
 
     // TODO : sys connect path
+
+    @Override
+    public <U> OracleQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (OracleQuery<U>) this;
+    }
+
+    @Override
+    public OracleQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (OracleQuery<Tuple>) this;
+    }
 }
 
 

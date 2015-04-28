@@ -251,6 +251,24 @@ public final class ExpressionUtils {
     }
 
     /**
+     * @param col
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> all(SubQueryExpression<? extends T> col) {
+        return new OperationImpl<T>(col.getType(), Ops.QuantOps.ALL, ImmutableList.<Expression<?>>of(col));
+    }
+
+    /**
+     * @param col
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> any(SubQueryExpression<? extends T> col) {
+        return new OperationImpl<T>(col.getType(), Ops.QuantOps.ANY, ImmutableList.<Expression<?>>of(col));
+    }
+
+    /**
      * Create the intersection of the given arguments
      *
      * @param exprs

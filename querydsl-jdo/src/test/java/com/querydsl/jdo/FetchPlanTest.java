@@ -34,7 +34,7 @@ import com.querydsl.jdo.test.domain.QStore;
 
 public class FetchPlanTest extends AbstractJDOTest{
     
-    private JDOQuery query;
+    private JDOQuery<?> query;
     
     @After
     public void tearDown() {
@@ -54,7 +54,7 @@ public class FetchPlanTest extends AbstractJDOTest{
              .addFetchGroup("myfetchgroup1")
              .addFetchGroup("myfetchgroup2")
              .setMaxFetchDepth(2)
-             .list(product);
+             .select(product).fetch();
 //        query.close();
         
         Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
@@ -73,7 +73,7 @@ public class FetchPlanTest extends AbstractJDOTest{
         query = query(); 
         query.from(store)
             .addFetchGroup("products")
-            .list(store);
+            .select(store).fetch();
         
         Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);

@@ -22,29 +22,15 @@ import javax.annotation.Nullable;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.document.MapFieldSelector;
-import org.apache.lucene.search.ChainedFilter;
-import org.apache.lucene.search.DuplicateFilter;
-import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.QueryWrapperFilter;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Sort;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.QueryException;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.SearchResults;
-import com.querydsl.core.SimpleProjectable;
-import com.querydsl.core.SimpleQuery;
+import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
@@ -59,8 +45,7 @@ import com.querydsl.core.types.Predicate;
  * @param <T> projection type
  * @param <Q> concrete subtype of query
  */
-public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>,
-SimpleProjectable<T> {
+public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>, Fetchable<T> {
 
     private final QueryMixin<Q> queryMixin;
 
@@ -84,7 +69,7 @@ SimpleProjectable<T> {
     @SuppressWarnings("unchecked")
     public AbstractLuceneQuery(LuceneSerializer serializer, IndexSearcher searcher,
             Function<Document, T> transformer) {
-        queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata().noValidate());
+        queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata());
         this.serializer = serializer;
         this.searcher = searcher;
         this.transformer = transformer;
@@ -92,16 +77,6 @@ SimpleProjectable<T> {
 
     public AbstractLuceneQuery(IndexSearcher searcher, Function<Document, T> transformer) {
         this(LuceneSerializer.DEFAULT, searcher, transformer);
-    }
-
-    @Override
-    public boolean exists() {
-        return innerCount() > 0;
-    }
-
-    @Override
-    public boolean notExists() {
-        return innerCount() == 0;
     }
 
     private long innerCount() {
@@ -119,7 +94,7 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         return innerCount();
     }
 
@@ -238,7 +213,7 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public List<T> list() {
+    public List<T> fetch() {
         return innerList();
     }
 
@@ -271,13 +246,13 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public SearchResults<T> listResults() {
+    public QueryResults<T> fetchResults() {
         List<T> documents = innerList();
         /*
-         * TODO Get rid of count(). It could be implemented by iterating the
-         * list results in list* from n to m.
+         * TODO Get rid of fetchCount(). It could be implemented by iterating the
+         * fetch results in fetch* from n to m.
          */
-        return new SearchResults<T>(documents, queryMixin.getMetadata().getModifiers(), innerCount());
+        return new QueryResults<T>(documents, queryMixin.getMetadata().getModifiers(), innerCount());
     }
 
     @Override
@@ -347,12 +322,12 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public T singleResult() {
+    public T fetchFirst() {
         return oneResult(false);
     }
 
     @Override
-    public T uniqueResult() {
+    public T fetchOne() {
         return oneResult(true);
     }
 

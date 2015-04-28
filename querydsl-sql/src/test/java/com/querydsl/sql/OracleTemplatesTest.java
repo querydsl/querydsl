@@ -13,6 +13,7 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -26,8 +27,6 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
-
-
 
 public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
 
@@ -43,11 +42,11 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         SimpleExpression<Integer> one = Expressions.template(Integer.class, "1");
         SimpleExpression<Integer> two = Expressions.template(Integer.class,"2");
         SimpleExpression<Integer> three = Expressions.template(Integer.class,"3");
-        NumberPath<Integer> col1 = Expressions.numberPath(Integer.class,"col1");
+        NumberPath<Integer> col1 = Expressions.numberPath(Integer.class, "col1");
         Union union = query.union(
-            sq().unique(one.as(col1)),
-            sq().unique(two),
-            sq().unique(three));
+            select(one.as(col1)),
+            select(two),
+            select(three));
         assertEquals(
                 "(select 1 col1 from dual)\n" +
                 "union\n" +

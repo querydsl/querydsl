@@ -1,6 +1,6 @@
 /*
- * Copyright 2011, Mysema Ltd
- * 
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,22 +13,63 @@
  */
 package com.querydsl.jpa;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 
-/**
- * JPASubQuery is a subquery class for JPA
- *
- * @author tiwe
- *
- */
-public class JPASubQuery extends AbstractJPASubQuery<JPASubQuery> {
+class JPASubQuery<T> extends JPAQueryBase<T, JPASubQuery<T>> {
 
-    public JPASubQuery() {
-        super();
+    JPASubQuery() {
+        super(new DefaultQueryMetadata(), JPQLTemplates.DEFAULT);
     }
 
-    public JPASubQuery(QueryMetadata metadata) {
-        super(metadata);
+    JPASubQuery(QueryMetadata metadata) {
+        super(metadata, JPQLTemplates.DEFAULT);
+    }
+
+    @Override
+    protected JPQLSerializer createSerializer() {
+        return new JPQLSerializer(getTemplates(), null);
+    }
+
+    @Override
+    public JPASubQuery<T> clone() {
+        return new JPASubQuery<T>(getMetadata().clone());
+    }
+
+    @Override
+    public <U> JPASubQuery<U> select(Expression<U> expr) {
+        queryMixin.setProjection(expr);
+        return (JPASubQuery<U>) this;
+    }
+
+    @Override
+    public JPASubQuery<Tuple> select(Expression<?>... exprs) {
+        queryMixin.setProjection(exprs);
+        return (JPASubQuery<Tuple>) this;
+    }
+
+    @Override
+    public T fetchOne() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public CloseableIterator<T> iterate() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public QueryResults<T> fetchResults() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long fetchCount() {
+        throw new UnsupportedOperationException();
     }
 
 }

@@ -13,7 +13,10 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimplePath;
+import com.querydsl.core.types.dsl.Wildcard;
 
 public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
@@ -51,7 +54,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.varSamp(path), DB2, TERADATA);
 
         for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
+            query().from(survey).select(wo.over().partitionBy(survey.name).orderBy(survey.id)).fetch();
         }
     }
 
@@ -62,33 +65,33 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
         // simple
         System.out.println("#1");
-        for (Tuple row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)) {
+        for (Tuple row : query().from(employee).select(employee.firstname, employee.lastname, rowNumber).fetch()) {
             System.out.println(row);
         }
         System.out.println();
 
         // with subquery, generic alias
         System.out.println("#2");
-        ListSubQuery<Tuple> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        SQLQuery<Tuple> sub = query().from(employee).select(employee.firstname, employee.lastname, rowNumber);
         SimplePath<Tuple> subAlias = Expressions.path(Tuple.class, "s");
-        for (Object[] row : query().from(sub.as(subAlias)).list(all)) {
+        for (Object[] row : query().from(sub.as(subAlias)).select(all).fetch()) {
             System.out.println(Arrays.asList(row));
         }
         System.out.println();
 
         // with subquery, only row number
         System.out.println("#3");
-        SimpleSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
+        SQLQuery<Long> sub2 = query().from(employee).select(rowNumber);
         SimplePath<Long> subAlias2 = Expressions.path(Long.class, "s");
-        for (Object[] row : query().from(sub2.as(subAlias2)).list(all)) {
+        for (Object[] row : query().from(sub2.as(subAlias2)).select(all).fetch()) {
             System.out.println(Arrays.asList(row));
         }
         System.out.println();
 
         // with subquery, specific alias
         System.out.println("#4");
-        ListSubQuery<Tuple> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        for (Tuple row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)) {
+        SQLQuery<Tuple> sub3 = query().from(employee).select(employee.firstname, employee.lastname, rowNumber);
+        for (Tuple row : query().from(sub3.as(employee2)).select(employee2.firstname, employee2.lastname).fetch()) {
             System.out.println(Arrays.asList(row));
         }
     }
@@ -107,7 +110,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.variance(path));
 
         for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.keepFirst().orderBy(survey.id));
+            query().from(survey).select(wo.keepFirst().orderBy(survey.id)).fetch();
         }
     }
 
@@ -128,7 +131,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.regrSxy(path,  path2));
 
         for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partitionBy(survey.name).orderBy(survey.id));
+            query().from(survey).select(wo.over().partitionBy(survey.name).orderBy(survey.id)).fetch();
         }
     }
 
@@ -142,7 +145,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         add(exprs, SQLExpressions.stddevDistinct(path));
 
         for (WindowOver<?> wo : exprs) {
-            query().from(survey).list(wo.over().partitionBy(survey.name));
+            query().from(survey).select(wo.over().partitionBy(survey.name)).fetch();
         }
     }
 
@@ -151,9 +154,9 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
         //FROM TestDB.Shipment
 
-        query().from(employee).list(
+        query().from(employee).select(
                 employee.id,
-                SQLExpressions.sum(employee.salary).over());
+                SQLExpressions.sum(employee.salary).over()).fetch();
     }
 
     @Test
@@ -162,11 +165,11 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
         //FROM TestDB.Shipment
 
-        query().from(employee).list(
+        query().from(employee).select(
                 employee.id,
                 employee.superiorId,
                 SQLExpressions.sum(employee.salary).over()
-                    .partitionBy(employee.superiorId));
+                    .partitionBy(employee.superiorId)).fetch();
     }
 
     @Test
@@ -176,11 +179,11 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
         //FROM TestDB.Shipment
 
-        query().from(employee).list(
+        query().from(employee).select(
                 employee.id,
                 SQLExpressions.sum(employee.salary).over()
                     .partitionBy(employee.superiorId)
-                    .orderBy(employee.datefield));
+                    .orderBy(employee.datefield)).fetch();
     }
 
     @Test
@@ -192,12 +195,12 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         //AND CURRENT ROW) AS Total_Qty
         //FROM TestDB.Shipment
 
-        query().from(employee).list(
+        query().from(employee).select(
                 employee.id,
                 SQLExpressions.sum(employee.salary).over()
                     .partitionBy(employee.superiorId)
                     .orderBy(employee.datefield)
-                    .rows().between().unboundedPreceding().currentRow());
+                    .rows().between().unboundedPreceding().currentRow()).fetch();
     }
 
     @Test
@@ -212,7 +215,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
                .qualify(SQLExpressions.rank().over()
                        .partitionBy(employee.superiorId)
                        .orderBy(employee.datefield).eq(1l))
-               .list(employee.id,SQLExpressions.sum(employee.salary).over());
+               .select(employee.id,SQLExpressions.sum(employee.salary).over()).fetch();
 
     }
 

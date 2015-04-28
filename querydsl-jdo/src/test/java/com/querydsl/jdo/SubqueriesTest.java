@@ -30,24 +30,24 @@ public class SubqueriesTest extends AbstractJDOTest {
     
     @Test
     public void List_Exists() {
-        query().from(product).where(sub().from(other).list(other).exists()).list(product);
+        query().from(product).where(query().from(other).select(other).exists()).select(product).fetch();
     }
     
     @Test
     public void List_NotExists() {
-        query().from(product).where(sub().from(other).list(other).notExists()).list(product);
+        query().from(product).where(query().from(other).select(other).notExists()).select(product).fetch();
     }
     
     @Test
     public void List_Contains() {
-        query().from(product).where(sub().from(other).list(other.name).contains(product.name)).list(product);
+        query().from(product).where(product.name.in(query().from(other).select(other.name))).select(product).fetch();
     }
 
     @Test
     public void Gt_Subquery() {
         for (double price : query().from(product)
-                .where(product.price.gt(sub().from(other).unique(other.price.avg())))
-                .list(product.price)) {
+                .where(product.price.gt(query().from(other).select(other.price.avg())))
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }
@@ -55,8 +55,8 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void Gt_Subquery_with_Condition() {
         for (double price : query().from(product)
-                .where(product.price.gt(sub().from(other).where(other.name.eq("XXX")).unique(other.price.avg())))
-                .list(product.price)) {
+                .where(product.price.gt(query().from(other).where(other.name.eq("XXX")).select(other.price.avg())))
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }
@@ -64,8 +64,8 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void Eq_Subquery() {
         for (double price : query().from(product)
-                .where(product.price.eq(sub().from(other).unique(other.price.avg())))
-                .list(product.price)) {
+                .where(product.price.eq(query().from(other).select(other.price.avg())))
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }
@@ -75,8 +75,8 @@ public class SubqueriesTest extends AbstractJDOTest {
     public void In_Subquery() {
         for (double price : query().from(product)
                 .where(product.price.in(
-                        sub().from(other).where(other.name.eq("Some name")).list(other.price)))
-                .list(product.price)) {
+                        query().from(other).where(other.name.eq("Some name")).select(other.price)))
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }
@@ -84,8 +84,8 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void Count() {
         for (double price : query().from(product)
-                .where(sub().from(other).where(other.price.gt(product.price)).count().gt(0))
-                .list(product.price)) {
+                .where(query().from(other).where(other.price.gt(product.price)).select(other.count()).gt(0L))
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }
@@ -93,8 +93,8 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void Exists() {
         for (double price : query().from(product)
-                .where(sub().from(other).where(other.price.gt(product.price)).exists())
-                .list(product.price)) {
+                .where(query().from(other).where(other.price.gt(product.price)).exists())
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }
@@ -102,8 +102,8 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void Not_Exists() {
         for (double price : query().from(product)
-                .where(sub().from(other).where(other.price.gt(product.price)).notExists())
-                .list(product.price)) {
+                .where(query().from(other).where(other.price.gt(product.price)).notExists())
+                .select(product.price).fetch()) {
             System.out.println(price);
         }
     }

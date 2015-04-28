@@ -14,10 +14,10 @@ public class BigDecimalTest {
     public void Arithmetic() {
         NumberPath<BigDecimal> num = Expressions.numberPath(BigDecimal.class, "num");
         CollQuery query = CollQueryFactory.from(num, Arrays.asList(BigDecimal.ONE, BigDecimal.ONE));
-        query.list(num.add(BigDecimal.ONE));
-        query.list(num.subtract(BigDecimal.ONE));
-        query.list(num.multiply(BigDecimal.ONE));
-        query.list(num.divide(BigDecimal.ONE));
+        query.select(num.add(BigDecimal.ONE)).fetch();
+        query.select(num.subtract(BigDecimal.ONE)).fetch();
+        query.select(num.multiply(BigDecimal.ONE)).fetch();
+        query.select(num.divide(BigDecimal.ONE)).fetch();
     }
     
 }

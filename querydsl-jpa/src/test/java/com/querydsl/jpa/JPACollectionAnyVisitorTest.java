@@ -88,7 +88,7 @@ public class JPACollectionAnyVisitorTest {
 //        JPAQuery query = new JPAQuery(em).from(QPerson.person);
 //        QDog anyDog = QPerson.person.animals.any().as(QDog.class);
 //        query.where(anyDog.gender.eq("M"));
-//        List<Person> foundOwners = query.list(QPerson.person);
+//        List<Person> foundOwners = query.fetch(QPerson.person);
 
         QDomesticCat anyCat = QCat.cat.kittens.any().as(QDomesticCat.class);
         Predicate predicate = anyCat.name.eq("X");

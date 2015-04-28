@@ -19,7 +19,6 @@ import javax.inject.Provider;
 
 import com.querydsl.sql.AbstractSQLQueryFactory;
 import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLSubQuery;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.TeradataTemplates;
 
@@ -29,7 +28,7 @@ import com.querydsl.sql.TeradataTemplates;
  * @author tiwe
  *
  */
-public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery, SQLSubQuery> {
+public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery<?>> {
 
     public TeradataQueryFactory(Configuration configuration, Provider<Connection> connection) {
         super(configuration, connection);
@@ -44,8 +43,8 @@ public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery,
     }
 
     @Override
-    public TeradataQuery query() {
-        return new TeradataQuery(connection.get(), configuration);
+    public TeradataQuery<?> query() {
+        return new TeradataQuery<Void>(connection.get(), configuration);
     }
 
 

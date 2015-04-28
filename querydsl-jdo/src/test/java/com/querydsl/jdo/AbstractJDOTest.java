@@ -42,20 +42,16 @@ public abstract class AbstractJDOTest {
 
     protected Transaction tx;
 
-    protected JDOQuery query() {
-        return new JDOQuery(pm, templates, false);
+    protected JDOQuery<?> query() {
+        return new JDOQuery<Void>(pm, templates, false);
     }
 
-    protected JDOQuery detachedQuery() {
-        return new JDOQuery(pm, templates, true);
-    }
-
-    protected JDOSubQuery sub() {
-        return new JDOSubQuery();
+    protected JDOQuery<?> detachedQuery() {
+        return new JDOQuery<Void>(pm, templates, true);
     }
 
     protected <T> List<T> query(EntityPath<T> source, Predicate condition) {
-        return query().from(source).where(condition).list(source);
+        return query().from(source).where(condition).select(source).fetch();
     }
 
     protected JDODeleteClause delete(EntityPath<?> entity) {

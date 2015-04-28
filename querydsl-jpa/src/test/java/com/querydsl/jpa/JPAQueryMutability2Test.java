@@ -41,12 +41,12 @@ public class JPAQueryMutability2Test implements JPATest {
             add(customOperator, "sign({0})");
     }};
 
-    protected JPAQuery query() {
-        return new JPAQuery(entityManager);
+    protected JPAQuery<?> query() {
+        return new JPAQuery<Void>(entityManager);
     }
 
-    protected JPAQuery query(JPQLTemplates templates) {
-        return new JPAQuery(entityManager, templates);
+    protected JPAQuery<?> query(JPQLTemplates templates) {
+        return new JPAQuery<Void>(entityManager, templates);
     }
 
     @Override
@@ -57,62 +57,60 @@ public class JPAQueryMutability2Test implements JPATest {
     @Test
     public void test() {
         QCat cat = QCat.cat;
-        JPAQuery query = query().from(cat);
+        JPAQuery<?> query = query().from(cat);
 
-        query.count();
-        query.distinct().count();
+        query.fetchCount();
+        query.distinct().fetchCount();
 
-        query.iterate(cat);
-        query.iterate(cat,cat);
-        query.distinct().iterate(cat);
-        query.distinct().iterate(cat,cat);
+        query.select(cat).iterate();
+        query.select(cat, cat).iterate();
+        query.distinct().select(cat).iterate();
+        query.distinct().select(cat, cat).iterate();
 
-        query.list(cat);
-        query.list(cat,cat);
-        query.distinct().list(cat);
-        query.distinct().list(cat,cat);
+        query.select(cat).fetch();
+        query.select(cat, cat).fetch();
+        query.distinct().select(cat).fetch();
+        query.distinct().select(cat, cat).fetch();
 
-        query.listResults(cat);
-        query.distinct().listResults(cat);
-
-        query.map(cat.name, cat);
+        query.select(cat).fetchResults();
+        query.distinct().select(cat).fetchResults();
     }
 
     @Test
     public void Clone() {
         QCat cat = QCat.cat;
-        JPAQuery query = query().from(cat).where(cat.name.isNotNull());
-        JPAQuery query2 = query.clone(entityManager);
+        JPAQuery<?> query = query().from(cat).where(cat.name.isNotNull());
+        JPAQuery<?> query2 = query.clone(entityManager);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
-        query2.list(cat);
+        query2.select(cat).fetch();
     }
 
     @Test
     public void Clone_Custom_Templates() {
         QCat cat = QCat.cat;
-        JPAQuery query = query().from(cat);
+        JPAQuery<?> query = query().from(cat);
         //attach using the custom templates
         query.clone(entityManager, customTemplates)
-                .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
+                .select(numberOperation(Integer.class, customOperator, cat.floatProperty)).fetchOne();
     }
 
     @Test
     public void Clone_Keep_Templates() {
         QCat cat = QCat.cat;
-        JPAQuery query = query(customTemplates).from(cat);
+        JPAQuery<?> query = query(customTemplates).from(cat);
         //keep the original templates
         query.clone()
-                .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
+                .select(numberOperation(Integer.class, customOperator, cat.floatProperty)).fetchOne();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void Clone_Lose_Templates() {
         QCat cat = QCat.cat;
-        JPAQuery query = query(customTemplates).from(cat);
+        JPAQuery<?> query = query(customTemplates).from(cat);
         //clone using the entitymanager's default templates
         query.clone(entityManager)
-                .uniqueResult(numberOperation(Integer.class, customOperator, cat.floatProperty));
+                .select(numberOperation(Integer.class, customOperator, cat.floatProperty)).fetchOne();
     }
 
 }

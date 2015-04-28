@@ -23,9 +23,9 @@ class QuerySyntaxTest {
   @Test
   def Query_Syntax {
     query from(c) innerJoin(b) from(c1) where (c1.name like "a%") orderBy(c.name asc) //list(c)
-    query from(c) innerJoin(b) list(b.id count)
+    query from(c) innerJoin(b) select (b.id count)
 
-    query from (c) list (c.id, c.name)
+    query from (c) select (c.id, c.name)
   }
 
   @Test
@@ -40,6 +40,6 @@ class QuerySyntaxTest {
     query from(user) innerJoin(user.departmentKey, department) innerJoin(department.companyKey, company)
   }
 
-  def query() = new SQLSubQuery()
+  def query() = new SQLQuery[Void]()
 
 }

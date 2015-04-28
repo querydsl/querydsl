@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
@@ -20,6 +21,7 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.sql.RelationalPath;
 
 /**
  * JPAExpressions provides factory methods for JPQL specific operations
@@ -29,6 +31,75 @@ import com.querydsl.core.types.dsl.StringExpression;
  */
 @SuppressWarnings("unchecked")
 public final class JPAExpressions {
+
+    /**
+     * Create a new detached JPQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public static <T> JPQLQuery<T> select(Expression<T> expr) {
+        return new JPASubQuery<Void>().select(expr);
+    }
+
+    /**
+     * Create a new detached JPQLQuery instance with the given projection
+     *
+     * @param exprs
+     * @return
+     */
+    public static JPQLQuery<Tuple> select(Expression<?>... exprs) {
+        return new JPASubQuery<Void>().select(exprs);
+    }
+
+    /**
+     * Create a new detached JPQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public static <T> JPQLQuery<T> selectDistinct(Expression<T> expr) {
+        return new JPASubQuery<Void>().select(expr).distinct();
+    }
+
+    /**
+     * Create a new detached JPQLQuery instance with the given projection
+     *
+     * @param exprs
+     * @return
+     */
+    public static JPQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return new JPASubQuery<Void>().select(exprs).distinct();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static JPQLQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static JPQLQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    /**
+     * Create a new detached JPQLQuery instance with the given projection
+     *
+     * @param expr
+     * @param <T>
+     * @return
+     */
+    public static <T> JPQLQuery<T> selectFrom(EntityPath<T> expr) {
+        return select(expr).from(expr);
+    }
 
     /**
      * Get the avg(col) expression

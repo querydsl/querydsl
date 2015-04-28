@@ -36,7 +36,8 @@ import com.google.common.collect.ImmutableList;
  * QEmployee employee = QEmployee.employee;
  * List<EmployeeInfo> result = query.from(employee)
  *   .where(employee.valid.eq(true))
- *   .list(Projections.constructor(EmployeeInfo.class, employee.firstName, employee.lastName));
+ *   .select(Projections.constructor(EmployeeInfo.class, employee.firstName, employee.lastName))
+ *   .fetch();
  * }
  * </pre>
  *

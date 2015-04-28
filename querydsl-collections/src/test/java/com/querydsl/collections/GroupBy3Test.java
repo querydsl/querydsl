@@ -9,8 +9,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.commons.lang.EmptyCloseableIterator;
-import com.querydsl.core.Projectable;
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.group.Group;
@@ -50,14 +50,18 @@ public class GroupBy3Test {
                               set(Projections.bean(Threat.class, threat.id)).as("threats")))
                           .as("assetThreats")));
 
-        Projectable projectable = createMock(Projectable.class);
-        expect(projectable.iterate(Projections.tuple(
+        CloseableIterator iter = createMock(CloseableIterator.class);
+        FetchableQuery projectable = createMock(FetchableQuery.class);
+        expect(projectable.select(Projections.tuple(
                 riskAnalysis.id,
                 riskAnalysis.id,
                 assetThreat.id,
                 Projections.bean(Threat.class, threat.id))))
-            .andReturn(new EmptyCloseableIterator());
-        replay(projectable);
+            .andReturn(projectable);
+        expect(projectable.iterate()).andReturn(iter);
+        expect(iter.hasNext()).andReturn(false);
+        iter.close();
+        replay(iter, projectable);
 
         transformer.transform(projectable);
         verify(projectable);
@@ -77,14 +81,18 @@ public class GroupBy3Test {
                            set(Projections.bean(Threat.class, threat.id)).as("threats"))
                           .as("assetThreats")));
 
-        Projectable projectable = createMock(Projectable.class);
-        expect(projectable.iterate(Projections.tuple(
+        CloseableIterator iter = createMock(CloseableIterator.class);
+        FetchableQuery projectable = createMock(FetchableQuery.class);
+        expect(projectable.select(Projections.tuple(
                 riskAnalysis.id,
                 riskAnalysis.id,
                 assetThreat.id,
                 Projections.bean(Threat.class, threat.id))))
-            .andReturn(new EmptyCloseableIterator());
-        replay(projectable);
+            .andReturn(projectable);
+        expect(projectable.iterate()).andReturn(iter);
+        expect(iter.hasNext()).andReturn(false);
+        iter.close();
+        replay(iter, projectable);
 
         transformer.transform(projectable);
         verify(projectable);

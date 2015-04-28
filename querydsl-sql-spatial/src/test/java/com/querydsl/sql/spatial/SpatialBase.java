@@ -1,21 +1,24 @@
 package com.querydsl.sql.spatial;
 
+import static com.querydsl.core.Target.*;
+import static org.junit.Assert.*;
+
 import java.util.List;
+
+import org.geolatte.geom.*;
+import org.geolatte.geom.codec.Wkt;
+import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;
-import com.querydsl.spatial.*;
-import com.querydsl.sql.AbstractBaseTest;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.testutil.IncludeIn;
-import org.geolatte.geom.*;
-import org.geolatte.geom.codec.Wkt;
-import org.junit.Test;
-import static com.querydsl.core.Target.*;
-import static org.junit.Assert.*;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
+import com.querydsl.spatial.*;
+import com.querydsl.sql.AbstractBaseTest;
+import com.querydsl.sql.SQLQuery;
 
 public class SpatialBase extends AbstractBaseTest {
 
@@ -28,27 +31,27 @@ public class SpatialBase extends AbstractBaseTest {
     // multilinestring 12-13
     // multipolygon 14-15
 
-    private TestQuery withPoints() {
+    private SQLQuery<?> withPoints() {
         return query().from(shapes).where(shapes.id.between(1, 5));
     }
 
-    private TestQuery withLineStrings() {
+    private SQLQuery<?> withLineStrings() {
         return query().from(shapes).where(shapes.id.between(6, 7));
     }
 
-    private TestQuery withPolygons() {
+    private SQLQuery<?> withPolygons() {
         return query().from(shapes).where(shapes.id.between(8, 9));
     }
 
-    private TestQuery withMultipoints() {
+    private SQLQuery<?> withMultipoints() {
         return query().from(shapes).where(shapes.id.between(10, 11));
     }
 
-    private TestQuery withMultiLineStrings() {
+    private SQLQuery<?> withMultiLineStrings() {
         return query().from(shapes).where(shapes.id.between(12, 13));
     }
 
-    private TestQuery withMultiPolygons() {
+    private SQLQuery<?> withMultiPolygons() {
         return query().from(shapes).where(shapes.id.between(14, 15));
     }
 
@@ -56,7 +59,7 @@ public class SpatialBase extends AbstractBaseTest {
     @IncludeIn(POSTGRESQL)
     public void SpatialRefSys() {
         QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
-        query().from(spatialRefSys).list(spatialRefSys);
+        query().from(spatialRefSys).select(spatialRefSys).fetch();
     }
 
     private String normalize(String s) {
@@ -68,7 +71,7 @@ public class SpatialBase extends AbstractBaseTest {
     @Test // FIXME, maybe use enum as the type ?!?
     @ExcludeIn(H2)
     public void GeometryType() {
-        List<Tuple> results = query().from(shapes).list(shapes.geometry, shapes.geometry.geometryType());
+        List<Tuple> results = query().from(shapes).select(shapes.geometry, shapes.geometry.geometryType()).fetch();
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
             assertEquals(
@@ -79,7 +82,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void AsText() {
-        List<Tuple> results = query().from(shapes).list(shapes.geometry, shapes.geometry.asText());
+        List<Tuple> results = query().from(shapes).select(shapes.geometry, shapes.geometry.asText()).fetch();
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
             if (!(row.get(shapes.geometry) instanceof MultiPoint)) {
@@ -94,7 +97,7 @@ public class SpatialBase extends AbstractBaseTest {
     @ExcludeIn(H2)
     public void Point_X_Y() {
         PointPath<Point> point = shapes.geometry.asPoint();
-        List<Tuple> results = withPoints().list(point, point.x(), point.y());
+        List<Tuple> results = withPoints().select(point, point.x(), point.y()).fetch();
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
             assertEquals(Double.valueOf(row.get(point).getX()), row.get(point.x()));
@@ -109,9 +112,9 @@ public class SpatialBase extends AbstractBaseTest {
         QShapes shapes2 = new QShapes("shapes2");
         for (Tuple tuple : query().from(shapes1, shapes2)
                     .where(shapes1.id.loe(5), shapes2.id.loe(5))
-                    .list(shapes1.geometry.asPoint(),
+                    .select(shapes1.geometry.asPoint(),
                           shapes2.geometry.asPoint(),
-                          shapes1.geometry.distance(shapes2.geometry))) {
+                          shapes1.geometry.distance(shapes2.geometry)).fetch()) {
             Point point1 = tuple.get(shapes1.geometry.asPoint());
             Point point2 = tuple.get(shapes2.geometry.asPoint());
             Double distance = tuple.get(shapes1.geometry.distance(shapes2.geometry));
@@ -121,7 +124,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void Point_Instances() {
-        List<Shapes> results = withPoints().list(shapes);
+        List<Shapes> results = withPoints().select(shapes).fetch();
         assertEquals(5, results.size());
         for (Shapes row : results) {
             assertNotNull(row.getId());
@@ -132,7 +135,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void LineString_Instances() {
-        List<Geometry> results = withLineStrings().list(shapes.geometry);
+        List<Geometry> results = withLineStrings().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
             assertNotNull(row);
@@ -142,7 +145,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void Polygon_Instances() {
-        List<Geometry> results = withPolygons().list(shapes.geometry);
+        List<Geometry> results = withPolygons().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
             assertNotNull(row);
@@ -152,7 +155,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void MultiPoint_Instances() {
-        List<Geometry> results = withMultipoints().list(shapes.geometry);
+        List<Geometry> results = withMultipoints().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
             assertNotNull(row);
@@ -162,7 +165,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void MultiLineString_Instances() {
-        List<Geometry> results = withMultiLineStrings().list(shapes.geometry);
+        List<Geometry> results = withMultiLineStrings().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
             assertNotNull(row);
@@ -172,7 +175,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void MultiPolygon_Instances() {
-        List<Geometry> results = withMultiPolygons().list(shapes.geometry);
+        List<Geometry> results = withMultiPolygons().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
             assertNotNull(row);
@@ -205,7 +208,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withPoints().list(expr)) {
+            for (Object row : withPoints().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -246,7 +249,7 @@ public class SpatialBase extends AbstractBaseTest {
         for (Expression<?> expr : expressions) {
             boolean logged = false;
             for (Object row : query().from(shapes1, shapes2)
-                    .where(shapes1.id.loe(5), shapes2.id.loe(5)).list(expr)) {
+                    .where(shapes1.id.loe(5), shapes2.id.loe(5)).select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -281,7 +284,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withLineStrings().list(expr)) {
+            for (Object row : withLineStrings().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -315,7 +318,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withPolygons().list(expr)) {
+            for (Object row : withPolygons().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -344,7 +347,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withMultipoints().list(expr)) {
+            for (Object row : withMultipoints().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -376,7 +379,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withMultiLineStrings().list(expr)) {
+            for (Object row : withMultiLineStrings().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -405,7 +408,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withMultiPolygons().list(expr)) {
+            for (Object row : withMultiPolygons().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;
@@ -433,7 +436,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;
-            for (Object row : withPoints().list(expr)) {
+            for (Object row : withPoints().select(expr).fetch()) {
                 if (row == null && !logged) {
                     System.err.println(expr.toString());
                     logged = true;

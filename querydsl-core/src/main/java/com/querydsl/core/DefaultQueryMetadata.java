@@ -75,7 +75,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private boolean extractParams = true;
 
-    private boolean validate = true;
+    private boolean validate = false;
 
     private ValidatingVisitor validatingVisitor = ValidatingVisitor.DEFAULT;
 

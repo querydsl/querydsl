@@ -147,6 +147,23 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAll(SubQueryExpression<? extends T> right) {
+        return gt(ExpressionUtils.all(right));
+    }
+
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAny(SubQueryExpression<? extends T> right) {
+        return gt(ExpressionUtils.any(right));
+    }
+
+    /**
      * Get a {@code this >= right} expression
      *
      * @param right rhs of the comparison
@@ -183,6 +200,23 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.any(right));
     }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression goeAll(SubQueryExpression<? extends T> right) {
+        return goe(ExpressionUtils.all(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression goeAny(SubQueryExpression<? extends T> right) {
+        return goe(ExpressionUtils.any(right));
+    }
+
 
     /**
      * Get a {@code this < right} expression
@@ -224,6 +258,23 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression ltAll(SubQueryExpression<? extends T> right) {
+        return lt(ExpressionUtils.all(right));
+    }
+
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression ltAny(SubQueryExpression<? extends T> right) {
+        return lt(ExpressionUtils.any(right));
+    }
+
+    /**
      * Get a {@code this <= right} expression
      *
      * @param right rhs of the comparison
@@ -258,6 +309,22 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return
      */
     public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
+        return loe(ExpressionUtils.any(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression loeAll(SubQueryExpression<? extends T> right) {
+        return loe(ExpressionUtils.all(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression loeAny(SubQueryExpression<? extends T> right) {
         return loe(ExpressionUtils.any(right));
     }
 

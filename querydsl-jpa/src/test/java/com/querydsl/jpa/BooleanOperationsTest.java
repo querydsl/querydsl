@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -90,13 +91,13 @@ public class BooleanOperationsTest extends AbstractQueryTest {
 
     @Test
     public void BooleanBuilder_With_Null_In_Where() {
-        assertEquals("select cat\nfrom Cat cat", sub().from(cat).where(new BooleanBuilder()).toString());
+        assertEquals("select cat\nfrom Cat cat", selectFrom(cat).where(new BooleanBuilder()).toString());
     }
     
     @Test
     public void BooleanBuilder_With_Null_In_Having() {
         assertEquals("select cat\nfrom Cat cat\ngroup by cat.name",
-                sub().from(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
+                selectFrom(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
     }
 
 }

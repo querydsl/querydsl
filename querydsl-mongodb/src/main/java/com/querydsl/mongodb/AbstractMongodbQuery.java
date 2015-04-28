@@ -39,7 +39,7 @@ import com.querydsl.core.types.dsl.CollectionPathBase;
  * @param <K>
  * @param <Q>
  */
-public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, Q>> implements SimpleQuery<Q>, SimpleProjectable<K> {
+public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, Q>> implements SimpleQuery<Q>, Fetchable<K> {
 
     @SuppressWarnings("serial")
     private static class NoResults extends RuntimeException {}
@@ -62,7 +62,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
      * @param serializer
      */
     public AbstractMongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
-        this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata().noValidate(), false);
+        this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata(), false);
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;
@@ -102,17 +102,6 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     }
 
     protected abstract DBCollection getCollection(Class<?> type);
-
-    @Override
-    public boolean exists() {
-        try {
-            QueryMetadata metadata = queryMixin.getMetadata();
-            Predicate filter = createFilter(metadata);
-            return collection.findOne(createQuery(filter)) != null;
-        } catch (NoResults ex) {
-            return false;
-        }
-    }
 
     @Nullable
     protected Predicate createFilter(QueryMetadata metadata) {
@@ -164,11 +153,6 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         } else {
             return Collections.emptyList();
         }
-    }
-
-    @Override
-    public boolean notExists() {
-        return !exists();
     }
 
     @Override
@@ -243,13 +227,13 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         };
     }
 
-    public List<K> list(Path<?>... paths) {
+    public List<K> fetch(Path<?>... paths) {
         queryMixin.setProjection(paths);
-        return list();
+        return fetch();
     }
 
     @Override
-    public List<K> list() {
+    public List<K> fetch() {
         try {
             DBCursor cursor = createCursor();
             List<K> results = new ArrayList<K>();
@@ -301,13 +285,13 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         return null;
     }
 
-    public K singleResult(Path<?>...paths) {
+    public K fetchFirst(Path<?>...paths) {
         queryMixin.setProjection(paths);
-        return singleResult();
+        return fetchFirst();
     }
 
     @Override
-    public K singleResult() {
+    public K fetchFirst() {
         try {
             DBCursor c = createCursor().limit(1);
             if (c.hasNext()) {
@@ -320,13 +304,13 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
-    public K uniqueResult(Path<?>... paths) {
+    public K fetchOne(Path<?>... paths) {
         queryMixin.setProjection(paths);
-        return uniqueResult();
+        return fetchOne();
     }
 
     @Override
-    public K uniqueResult() {
+    public K fetchOne() {
         try {
             Long limit = queryMixin.getMetadata().getModifiers().getLimit();
             if (limit == null) {
@@ -347,27 +331,27 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
-    public SearchResults<K> listResults(Path<?>... paths) {
+    public QueryResults<K> fetchResults(Path<?>... paths) {
         queryMixin.setProjection(paths);
-        return listResults();
+        return fetchResults();
     }
 
     @Override
-    public SearchResults<K> listResults() {
+    public QueryResults<K> fetchResults() {
         try {
-            long total = count();
+            long total = fetchCount();
             if (total > 0l) {
-                return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
+                return new QueryResults<K>(fetch(), queryMixin.getMetadata().getModifiers(), total);
             } else {
-                return SearchResults.emptyResults();
+                return QueryResults.emptyResults();
             }
         } catch (NoResults ex) {
-            return SearchResults.emptyResults();
+            return QueryResults.emptyResults();
         }
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         try {
             Predicate filter = createFilter(queryMixin.getMetadata());
             return collection.count(createQuery(filter));

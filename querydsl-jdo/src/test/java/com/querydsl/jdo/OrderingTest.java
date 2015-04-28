@@ -25,7 +25,7 @@ import javax.jdo.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.querydsl.core.SearchResults;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
@@ -37,8 +37,8 @@ public class OrderingTest extends AbstractJDOTest {
     @Test
     public void Order_Asc() {
         List<String> namesAsc = query().from(product).orderBy(
-                product.name.asc(), product.description.desc()).list(
-                product.name);
+                product.name.asc(), product.description.desc()).select(
+                product.name).fetch();
         assertEquals(30, namesAsc.size());
         String prev = null;
         for (String name : namesAsc) {
@@ -52,7 +52,7 @@ public class OrderingTest extends AbstractJDOTest {
     @Test
     public void Order_Desc() {
         List<String> namesDesc = query().from(product).orderBy(
-                product.name.desc()).list(product.name);
+                product.name.desc()).select(product.name).fetch();
         assertEquals(30, namesDesc.size());
         String prev = null;
         for (String name : namesDesc) {
@@ -66,7 +66,7 @@ public class OrderingTest extends AbstractJDOTest {
     @Test
     public void TabularResults() {
         List<Tuple> rows = query().from(product).orderBy(product.name.asc())
-                .list(product.name, product.description);
+                .select(product.name, product.description).fetch();
         assertEquals(30, rows.size());
         for (Tuple row : rows) {
             assertEquals(row.get(0, String.class).substring(1), 
@@ -77,24 +77,24 @@ public class OrderingTest extends AbstractJDOTest {
     @Test
     public void Limit_Order_Asc() {
         assertEquals(Arrays.asList("A0", "A1"), 
-            query().from(product).orderBy(product.name.asc()).limit(2).list(product.name));
+            query().from(product).orderBy(product.name.asc()).limit(2).select(product.name).fetch());
     }
     
     @Test
     public void Limit_Order_Desc() {
         assertEquals(Arrays.asList("C9", "C8"), 
-            query().from(product).orderBy(product.name.desc()).limit(2).list(product.name));
+            query().from(product).orderBy(product.name.desc()).limit(2).select(product.name).fetch());
     }
     
     public void Limit_and_Offset() {
         assertEquals(Arrays.asList("A2", "A3", "A4"), 
-            query().from(product).orderBy(product.name.asc()).offset(2).limit(3).list(product.name));    
+            query().from(product).orderBy(product.name.asc()).offset(2).limit(3).select(product.name).fetch());
     }
 
     @Test
     public void SearchResults() {
-        SearchResults<String> results = query().from(product).orderBy(
-                product.name.asc()).limit(2).listResults(product.name);
+        QueryResults<String> results = query().from(product).orderBy(
+                product.name.asc()).limit(2).select(product.name).fetchResults();
         assertEquals(Arrays.asList("A0", "A1"), results.getResults());
         assertEquals(30, results.getTotal());
 

@@ -84,21 +84,6 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void SubQuery() {
-        assertNotNull(queryFactory.subQuery());
-    }
-
-    @Test
-    public void SubQuery2() {
-        queryFactory2.subQuery().from(QAnimal.animal);
-    }
-
-    @Test
-    public void SubQuery3() {
-        queryFactory3.subQuery().from(QAnimal.animal);
-    }
-
-    @Test
     public void From() {
         assertNotNull(queryFactory.from(QAnimal.animal));
     }

@@ -1,6 +1,6 @@
 /*
- * Copyright 2011, Mysema Ltd
- * 
+ * Copyright 2015, Timo Westkämper
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -11,32 +11,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.core.types.dsl;
+package com.querydsl.core;
 
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.Expression;
 
 /**
- * Extensions to the SubQueryExpression interface
  *
- * @author tiwe
- *
- * @param <T> expression type
+ * @param <T>
+ * @param <Q>
  */
-public interface ExtendedSubQueryExpression<T> extends SubQueryExpression<T> {
+public interface FetchableQuery<T, Q extends FetchableQuery<T, Q>> extends SimpleQuery<Q>, Fetchable<T> {
 
     /**
-     * Get an exists(this) expression for the subquery
      *
+     * @param expr
+     * @param <U>
      * @return
      */
-    BooleanExpression exists();
+    <U> FetchableQuery<U, ?> select(Expression<U> expr);
 
     /**
-     * Get a not exists(this) expression for the subquery
      *
+     * @param exprs
      * @return
      */
-    BooleanExpression notExists();
+    FetchableQuery<Tuple, ?> select(Expression<?>... exprs);
+
+    /**
+     * Apply the given transformer to this Projectable instance and return the results
+     *
+     * @param <T>
+     * @param transformer
+     * @return
+     */
+    <T> T transform(ResultTransformer<T> transformer);
 
 }

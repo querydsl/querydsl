@@ -11,23 +11,23 @@ import com.querydsl.core.testutil.IncludeIn;
 
 public class SelectMySQLBase extends AbstractBaseTest {
 
-    protected MySQLQuery mysqlQuery() {
-        return new MySQLQuery(connection, configuration);
+    protected MySQLQuery<?> mysqlQuery() {
+        return new MySQLQuery<Void>(connection, configuration);
     }
 
     @Test
     @IncludeIn(MYSQL)
     public void MySQL_Extensions() {
-        mysqlQuery().from(survey).bigResult().list(survey.id);
-        mysqlQuery().from(survey).bufferResult().list(survey.id);
-        mysqlQuery().from(survey).cache().list(survey.id);
-        mysqlQuery().from(survey).calcFoundRows().list(survey.id);
-        mysqlQuery().from(survey).noCache().list(survey.id);
+        mysqlQuery().from(survey).bigResult().select(survey.id).fetch();
+        mysqlQuery().from(survey).bufferResult().select(survey.id).fetch();
+        mysqlQuery().from(survey).cache().select(survey.id).fetch();
+        mysqlQuery().from(survey).calcFoundRows().select(survey.id).fetch();
+        mysqlQuery().from(survey).noCache().select(survey.id).fetch();
 
-        mysqlQuery().from(survey).highPriority().list(survey.id);
-        mysqlQuery().from(survey).lockInShareMode().list(survey.id);
-        mysqlQuery().from(survey).smallResult().list(survey.id);
-        mysqlQuery().from(survey).straightJoin().list(survey.id);
+        mysqlQuery().from(survey).highPriority().select(survey.id).fetch();
+        mysqlQuery().from(survey).lockInShareMode().select(survey.id).fetch();
+        mysqlQuery().from(survey).smallResult().select(survey.id).fetch();
+        mysqlQuery().from(survey).straightJoin().select(survey.id).fetch();
     }
 
 }

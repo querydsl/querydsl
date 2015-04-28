@@ -13,7 +13,11 @@
  */
 package com.querydsl.jpa;
 
-import com.querydsl.core.Projectable;
+import com.querydsl.core.FetchableQuery;
+import com.querydsl.core.Query;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.support.ExtendedSubQuery;
+import com.querydsl.core.types.*;
 
 /**
  * Query interface for JPQL queries
@@ -21,22 +25,292 @@ import com.querydsl.core.Projectable;
  * @author tiwe
  *
  */
-public interface JPQLQuery extends JPACommonQuery<JPQLQuery>, Projectable {
+public interface JPQLQuery<T> extends FetchableQuery<T, JPQLQuery<T>>, Query<JPQLQuery<T>>, ExtendedSubQuery<T> {
 
     /**
-     * Add the "fetch" flag to the last defined join
+     * Set the sources of this query
      *
-     * Mind that collection joins might result in duplicate rows and that "inner join fetch"
+     * @param sources
+     * @return
+     */
+    JPQLQuery<T> from(EntityPath<?>... sources);
+
+    /**
+     *
+     * @param target
+     * @param alias
+     * @param <P>
+     * @return
+     */
+    <P> JPQLQuery<T> from(CollectionExpression<?,P> target, Path<P> alias);
+
+    /**
+     * Create a inner join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> innerJoin(EntityPath<P> target);
+
+    /**
+     * Create a inner join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> innerJoin(EntityPath<P> target, Path<P> alias);
+
+    /**
+     * Create a inner join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> innerJoin(CollectionExpression<?, P> target);
+
+    /**
+     * Create a inner join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> innerJoin(CollectionExpression<?,P> target, Path<P> alias);
+
+    /**
+     * Create a inner join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> innerJoin(MapExpression<?, P> target);
+
+    /**
+     * Create a inner join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> innerJoin(MapExpression<?, P> target, Path<P> alias);
+
+    /**
+     * Create a join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> join(EntityPath<P> target);
+
+    /**
+     * Create a join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> join(EntityPath<P> target, Path<P> alias);
+
+    /**
+     * Create a join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> join(CollectionExpression<?,P> target);
+
+    /**
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> join(CollectionExpression<?,P> target, Path<P> alias);
+
+    /**
+     * Create a join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> join(MapExpression<?, P> target);
+
+    /**
+     * Create a join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> join(MapExpression<?, P> target, Path<P> alias);
+
+    /**
+     * Create a left join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> leftJoin(EntityPath<P> target);
+
+    /**
+     * Create a left join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> leftJoin(EntityPath<P> target, Path<P> alias);
+
+    /**
+     * Create a left join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> leftJoin(CollectionExpression<?,P> target);
+
+    /**
+     * Create a left join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> leftJoin(CollectionExpression<?,P> target, Path<P> alias);
+
+    /**
+     * Create a left join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> leftJoin(MapExpression<?, P> target);
+
+    /**
+     * Create a left join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> leftJoin(MapExpression<?, P> target, Path<P> alias);
+
+    /**
+     * Create a right join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> rightJoin(EntityPath<P> target);
+
+    /**
+     * Create a right join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> rightJoin(EntityPath<P> target, Path<P> alias);
+
+    /**
+     * Create a right join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> rightJoin(CollectionExpression<?,P> target);
+
+    /**
+     * Create a right join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> rightJoin(CollectionExpression<?,P> target, Path<P> alias);
+
+    /**
+     * Create a right join with the given target.
+     * Use fetchJoin() to add the fetchJoin parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> JPQLQuery<T> rightJoin(MapExpression<?, P> target);
+
+    /**
+     * Create a right join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> JPQLQuery<T> rightJoin(MapExpression<?, P> target, Path<P> alias);
+
+    /**
+     * Add join conditions to the last added join
+     *
+     * @param condition
+     * @return
+     */
+    JPQLQuery<T> on(Predicate... condition);
+
+    /**
+     * Add the "fetchJoin" flag to the last defined join
+     *
+     * Mind that collection joins might result in duplicate rows and that "inner join fetchJoin"
      * will restrict your result set.
      *
      * @return
      */
-    JPQLQuery fetch();
+    JPQLQuery<T> fetchJoin();
 
     /**
-      * Add the "fetch all properties" flag to the last defined join.
+      * Add the "fetchJoin all properties" flag to the last defined join.
       * @return
        */
-    JPQLQuery fetchAll();
+    JPQLQuery<T> fetchAll();
+
+    @Override
+    <U> JPQLQuery<U> select(Expression<U> expr);
+
+    @Override
+    JPQLQuery<Tuple> select(Expression<?>... exprs);
 
 }

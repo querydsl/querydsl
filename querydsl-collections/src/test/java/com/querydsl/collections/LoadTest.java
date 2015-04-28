@@ -74,7 +74,7 @@ public class LoadTest {
         System.out.println("Querydsl iteration");
         for (int i = 0; i < 5; i++) {
             long s1 = System.currentTimeMillis();
-            List<Cat> bobs1 = CollQueryFactory.from(cat, data).where(cat.name.startsWith("Bob")).list(cat);
+            List<Cat> bobs1 = CollQueryFactory.from(cat, data).where(cat.name.startsWith("Bob")).fetch();
             assertEquals(1000, bobs1.size());
             long e1 = System.currentTimeMillis();
             System.out.println(" " + (e1-s1)+"ms");

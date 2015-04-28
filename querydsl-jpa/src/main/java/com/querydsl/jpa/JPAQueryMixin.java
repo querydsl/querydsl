@@ -86,7 +86,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         collectionAnyVisitor = new JPACollectionAnyVisitor();
     }
 
-    public T fetch() {
+    public T fetchJoin() {
         addJoinFlag(FETCH);
         return getSelf();
     }

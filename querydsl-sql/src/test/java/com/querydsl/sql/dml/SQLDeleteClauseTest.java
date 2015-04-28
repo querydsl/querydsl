@@ -1,15 +1,19 @@
 package com.querydsl.sql.dml;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.KeyAccessorsTest.QEmployee;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class SQLDeleteClauseTest {
 
     @Test(expected=IllegalArgumentException.class)
+    @Ignore
     public void Error() {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");

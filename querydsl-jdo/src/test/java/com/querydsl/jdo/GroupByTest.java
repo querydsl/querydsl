@@ -30,24 +30,24 @@ public class GroupByTest extends AbstractJDOTest {
 
     @Test
     public void Distinct() {
-        assertEquals(3, query().from(product).distinct().list(product.description).size());
-        assertEquals(3, query().from(product).distinct().list(product.price).size());
+        assertEquals(3, query().from(product).distinct().select(product.description).fetch().size());
+        assertEquals(3, query().from(product).distinct().select(product.price).fetch().size());
     }
 
     @Test
     public void GroupBy() {
-        assertEquals(3, query().from(product).groupBy(product.description).list(product.description).size());
-        assertEquals(3, query().from(product).groupBy(product.price).list(product.price).size());
+        assertEquals(3, query().from(product).groupBy(product.description).select(product.description).fetch().size());
+        assertEquals(3, query().from(product).groupBy(product.price).select(product.price).fetch().size());
     }
     
     @Test
     public void Having() {
         assertEquals(3, query().from(product)
                 .groupBy(product.description).having(product.description.ne("XXX"))
-                .list(product.description).size());
+                .select(product.description).fetch().size());
         assertEquals(3, query().from(product)
                 .groupBy(product.price).having(product.price.gt(0))
-                .list(product.price).size());
+                .select(product.price).fetch().size());
     }
 
     @BeforeClass

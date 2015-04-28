@@ -32,9 +32,7 @@ import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.util.ArrayUtils;
 import com.querydsl.jpa.JPAQueryBase;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
@@ -47,7 +45,7 @@ import com.querydsl.jpa.QueryHandler;
  *
  * @param <Q>
  */
-public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JPAQueryBase<Q> {
+public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> extends JPAQueryBase<T, Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
@@ -77,7 +75,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    public long count() {
+    public long fetchCount() {
         try {
             Query query = createQuery(null, true);
             return (Long) query.getSingleResult();
@@ -89,35 +87,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     /**
      * Expose the original JPA query for the given projection
      *
-     * @param expr
      * @return
      */
-    public Query createQuery(Expression<?> expr) {
-        queryMixin.setProjection(expr);
-        return createQuery(getMetadata().getModifiers(), false);
-    }
-
-    /**
-     * Expose the original JPA query for the given projection
-     *
-     * @param expr1
-     * @param expr2
-     * @param rest
-     * @return
-     */
-    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
-        queryMixin.setProjection(ExpressionUtils.list(Object[].class, ArrayUtils.combine(Expression.class, expr1, expr2, rest)));
-        return createQuery(getMetadata().getModifiers(), false);
-    }
-
-    /**
-     * Expose the original JPA query for the given projection
-     *
-     * @param args
-     * @return
-     */
-    public Query createQuery(Expression<?>[] args) {
-        queryMixin.setProjection(ExpressionUtils.list(Object[].class, args));
+    public Query createQuery() {
         return createQuery(getMetadata().getModifiers(), false);
     }
 
@@ -168,7 +140,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @return
      */
     private List<?> getResultList(Query query) {
-        // TODO : use lazy list here?
+        // TODO : use lazy fetch here?
         if (projection != null) {
             List<?> results = query.getResultList();
             List<Object> rv = new ArrayList<Object>(results.size());
@@ -212,14 +184,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    public CloseableIterator<Tuple> iterate(Expression<?>... args) {
-        return iterate(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
+    public CloseableIterator<T> iterate() {
         try {
-            Query query = createQuery(expr);
+            Query query = createQuery();
             return queryHandler.iterate(query, projection);
         } finally {
             reset();
@@ -227,40 +194,29 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @Override
-    public List<Tuple> list(Expression<?>... args) {
-        return list(queryMixin.createProjection(args));
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expression<RT> expr) {
+    public List<T> fetch() {
         try {
-            Query query = createQuery(expr);
-            return (List<RT>) getResultList(query);
+            Query query = createQuery();
+            return (List<T>) getResultList(query);
         } finally {
             reset();
         }
     }
 
     @Override
-    public SearchResults<Tuple> listResults(Expression<?>... args) {
-        return listResults(queryMixin.createProjection(args));
-    }
-
-    @Override
-    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
+    public QueryResults<T> fetchResults() {
         try {
-            queryMixin.setProjection(expr);
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.getSingleResult();
             if (total > 0) {
                 QueryModifiers modifiers = getMetadata().getModifiers();
                 Query query = createQuery(modifiers, false);
                 @SuppressWarnings("unchecked")
-                List<RT> list = (List<RT>) getResultList(query);
-                return new SearchResults<RT>(list, modifiers, total);
+                List<T> list = (List<T>) getResultList(query);
+                return new QueryResults<T>(list, modifiers, total);
             } else {
-                return SearchResults.emptyResults();
+                return QueryResults.emptyResults();
             }
         } finally {
             reset();
@@ -288,18 +244,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         cleanupMDC();
     }
 
-    @Override
-    public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.setProjection(expr);
-        return uniqueResult();
-    }
-
     @Nullable
     @SuppressWarnings("unchecked")
-    private <RT> RT  uniqueResult() {
+    public T fetchOne() {
         try{
             Query query = createQuery(getMetadata().getModifiers(), false);
-            return (RT) getSingleResult(query);
+            return (T) getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);
             return null;

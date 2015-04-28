@@ -13,6 +13,7 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -43,9 +44,9 @@ public class FirebirdTemplatesTest extends AbstractSQLTemplatesTest{
         NumberExpression<Integer> three = Expressions.THREE;
         Path<Integer> col1 = Expressions.numberPath(Integer.class,"col1");
         Union union = query.union(
-                sq().unique(one.as(col1)),
-                sq().unique(two),
-                sq().unique(three));
+                select(one.as(col1)),
+                select(two),
+                select(three));
 
         assertEquals(
                 "select 1 as col1 from RDB$DATABASE\n" +

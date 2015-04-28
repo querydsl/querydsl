@@ -1,5 +1,6 @@
 package com.querydsl.jdo.serialization;
 
+import static com.querydsl.jdo.JDOExpressions.selectFrom;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -17,10 +18,8 @@ public class GroupByTest extends AbstractTest {
                 "GROUP BY this.emailAddress "+
                 "HAVING this.emailAddress != a1",
 
-                serialize(query()
-                    .from(employee)
-                    .groupBy(employee.emailAddress).having(employee.emailAddress.ne("XXX"))
-                    .list(employee)));
+                serialize(selectFrom(employee)
+                    .groupBy(employee.emailAddress).having(employee.emailAddress.ne("XXX"))));
     }
 
 }
