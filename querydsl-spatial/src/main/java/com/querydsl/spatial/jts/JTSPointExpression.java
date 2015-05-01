@@ -35,7 +35,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
     private static final long serialVersionUID = -3549448861390349654L;
 
     @Nullable
-    private volatile NumberExpression<Double> x, y, z, m;
+    private transient volatile NumberExpression<Double> x, y, z, m;
 
     public JTSPointExpression(Expression<T> mixin) {
         super(mixin);

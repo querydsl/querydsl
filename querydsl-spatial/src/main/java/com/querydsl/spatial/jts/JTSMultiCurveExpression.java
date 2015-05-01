@@ -34,10 +34,10 @@ public abstract class JTSMultiCurveExpression<T extends GeometryCollection> exte
     private static final long serialVersionUID = 6983316799469849656L;
 
     @Nullable
-    private volatile BooleanExpression closed;
+    private transient volatile BooleanExpression closed;
 
     @Nullable
-    private volatile NumberExpression<Double> length;
+    private transient volatile NumberExpression<Double> length;
 
     public JTSMultiCurveExpression(Expression<T> mixin) {
         super(mixin);

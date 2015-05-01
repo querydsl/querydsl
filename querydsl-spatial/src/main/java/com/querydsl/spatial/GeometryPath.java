@@ -33,23 +33,23 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
 
     private final PathImpl<T> pathMixin;
 
-    private volatile GeometryCollectionPath<GeometryCollection> collection;
+    private transient volatile GeometryCollectionPath<GeometryCollection> collection;
 
-    private volatile LinearRingPath<LinearRing> linearRing;
+    private transient volatile LinearRingPath<LinearRing> linearRing;
 
-    private volatile LineStringPath<LineString> lineString;
+    private transient volatile LineStringPath<LineString> lineString;
 
-    private volatile MultiLineStringPath<MultiLineString> multiLineString;
+    private transient volatile MultiLineStringPath<MultiLineString> multiLineString;
 
-    private volatile MultiPointPath<MultiPoint> multiPoint;
+    private transient volatile MultiPointPath<MultiPoint> multiPoint;
 
-    private volatile MultiPolygonPath<MultiPolygon> multiPolygon;
+    private transient volatile MultiPolygonPath<MultiPolygon> multiPolygon;
 
-    private volatile PointPath<Point> point;
+    private transient volatile PointPath<Point> point;
 
-    private volatile PolygonPath<Polygon> polygon;
+    private transient volatile PolygonPath<Polygon> polygon;
 
-    private volatile PolyhedralSurfacePath<PolyHedralSurface> polyhedralSurface;
+    private transient volatile PolyhedralSurfacePath<PolyHedralSurface> polyhedralSurface;
 
     public GeometryPath(Path<?> parent, String property) {
         this((Class<? extends T>) Geometry.class, parent, property);

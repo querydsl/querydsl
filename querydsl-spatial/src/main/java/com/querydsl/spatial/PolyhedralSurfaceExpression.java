@@ -38,10 +38,10 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
     private static final long serialVersionUID = -6732418858467327780L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numPatches;
+    private transient volatile NumberExpression<Integer> numPatches;
 
     @Nullable
-    private volatile BooleanExpression closed;
+    private transient volatile BooleanExpression closed;
 
     public PolyhedralSurfaceExpression(Expression<T> mixin) {
         super(mixin);

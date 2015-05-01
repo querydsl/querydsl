@@ -37,10 +37,10 @@ public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpres
     private static final long serialVersionUID = 7544382956232485312L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numInteriorRing;
+    private transient volatile NumberExpression<Integer> numInteriorRing;
 
     @Nullable
-    private volatile LineStringExpression<LineString> exterorRing;
+    private transient volatile LineStringExpression<LineString> exterorRing;
 
     public PolygonExpression(Expression<T> mixin) {
         super(mixin);

@@ -37,13 +37,13 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
     private static final long serialVersionUID = 6139188586728676033L;
 
     @Nullable
-    private volatile NumberExpression<Double> length;
+    private transient volatile NumberExpression<Double> length;
 
     @Nullable
-    private volatile JTSPointExpression<Point> startPoint, endPoint;
+    private transient volatile JTSPointExpression<Point> startPoint, endPoint;
 
     @Nullable
-    private volatile BooleanExpression closed, ring;
+    private transient volatile BooleanExpression closed, ring;
 
     public JTSCurveExpression(Expression<T> mixin) {
         super(mixin);

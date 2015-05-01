@@ -33,21 +33,21 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     private static final long serialVersionUID = -1183228394472681995L;
 
     @Nullable
-    private volatile NumberExpression<Integer> dimension, coordinateDimension, spatialDimension, srid;
+    private transient volatile NumberExpression<Integer> dimension, coordinateDimension, spatialDimension, srid;
 
     @Nullable
-    private volatile StringExpression geometryType;
+    private transient volatile StringExpression geometryType;
 
     @Nullable
-    private volatile StringExpression text;
+    private transient volatile StringExpression text;
 
     @Nullable
-    private volatile GeometryExpression<Geometry> envelope, boundary, convexHull;
+    private transient volatile GeometryExpression<Geometry> envelope, boundary, convexHull;
 
     @Nullable
-    private volatile BooleanExpression empty, simple, threed, measured;
+    private transient volatile BooleanExpression empty, simple, threed, measured;
 
-    private volatile SimpleExpression<byte[]> binary;
+    private transient volatile SimpleExpression<byte[]> binary;
 
     public GeometryExpression(Expression<T> mixin) {
         super(mixin);

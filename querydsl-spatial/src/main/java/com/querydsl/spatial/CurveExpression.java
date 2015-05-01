@@ -37,13 +37,13 @@ public abstract class CurveExpression<T extends Geometry> extends GeometryExpres
     private static final long serialVersionUID = 6139188586728676033L;
 
     @Nullable
-    private volatile NumberExpression<Double> length;
+    private transient volatile NumberExpression<Double> length;
 
     @Nullable
-    private volatile PointExpression<Point> startPoint, endPoint;
+    private transient volatile PointExpression<Point> startPoint, endPoint;
 
     @Nullable
-    private volatile BooleanExpression closed, ring;
+    private transient volatile BooleanExpression closed, ring;
 
     public CurveExpression(Expression<T> mixin) {
         super(mixin);

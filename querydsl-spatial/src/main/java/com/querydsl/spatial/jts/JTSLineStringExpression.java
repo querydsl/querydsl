@@ -36,7 +36,7 @@ public abstract class JTSLineStringExpression<T extends LineString> extends JTSC
     private static final long serialVersionUID = -6572984614863252657L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numPoints;
+    private transient volatile NumberExpression<Integer> numPoints;
 
     public JTSLineStringExpression(Expression<T> mixin) {
         super(mixin);
