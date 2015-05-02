@@ -26,7 +26,17 @@ import com.querydsl.mongodb.AbstractMongodbQuery;
 import com.querydsl.core.types.EntityPath;
 
 /**
- * MorphiaQuery extends {@link com.querydsl.mongodb.AbstractMongodbQuery} with Morphia specific transformations
+ * {@code MorphiaQuery} extends {@link AbstractMongodbQuery} with Morphia specific transformations
+ *
+ * <p>Example</p>
+ *
+ * <pre>{@code
+ * QUser user = QUser.user;
+ * MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
+ * List<User> list = query
+ *     .where(user.firstName.eq("Bob"))
+ *     .fetch();
+ * }</pre>
  *
  * @author laimw
  * @author tiwe

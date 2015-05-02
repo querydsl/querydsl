@@ -21,7 +21,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 
 /**
- * AnyEmbeddedBuilder is a builder for constraints on embedded objects
+ * {@code AnyEmbeddedBuilder} is a builder for constraints on embedded objects
  *
  * @author tiwe
  *

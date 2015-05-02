@@ -26,7 +26,7 @@ import com.querydsl.core.types.PathType;
 import com.querydsl.mongodb.MongodbSerializer;
 
 /**
- * MorphiaSerializer extends {@link MongodbSerializer} with Morphia specific annotation handling
+ * {@code MorphiaSerializer} extends {@link MongodbSerializer} with Morphia specific annotation handling
  *
  * @author tiwe
  *

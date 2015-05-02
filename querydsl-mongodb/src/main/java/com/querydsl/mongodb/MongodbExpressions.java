@@ -31,10 +31,10 @@ public final class MongodbExpressions {
     /**
      * Finds the closest points relative to the given location and orders the results with decreasing proximity
      *
-     * @param expr
+     * @param expr location
      * @param latVal latitude
      * @param longVal longitude
-     * @return
+     * @return predicate
      */
     public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal) {
         return Expressions.booleanOperation(MongodbOps.NEAR, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
