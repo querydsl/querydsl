@@ -15,6 +15,7 @@ package com.querydsl.lucene4;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.util.automaton.LevenshteinAutomata;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -31,9 +32,9 @@ public final class LuceneExpressions {
     /**
      * Create a fuzzy query
      *
-     * @param path
-     * @param value
-     * @return
+     * @param path path
+     * @param value value to match
+     * @return condition
      */
     public static BooleanExpression fuzzyLike(Path<String> path, String value) {
         Term term = new Term(path.getMetadata().getName(), value);
@@ -43,10 +44,10 @@ public final class LuceneExpressions {
     /**
      * Create a fuzzy query
      *
-     * @param path
-     * @param value
-     * @param maxEdits
-     * @return
+     * @param path path
+     * @param value value to match
+     * @param maxEdits must be &gt;= 0 and &lt;= {@link LevenshteinAutomata#MAXIMUM_SUPPORTED_DISTANCE}.
+     * @return condition
      */
     public static BooleanExpression fuzzyLike(Path<String> path, String value, int maxEdits) {
         Term term = new Term(path.getMetadata().getName(), value);
@@ -56,11 +57,11 @@ public final class LuceneExpressions {
     /**
      * Create a fuzzy query
      *
-     * @param path
-     * @param value
-     * @param maxEdits
-     * @param prefixLength
-     * @return
+     * @param path path
+     * @param value value to match
+     * @param maxEdits must be &gt;= 0 and &lt;= {@link LevenshteinAutomata#MAXIMUM_SUPPORTED_DISTANCE}.
+     * @param prefixLength length of common (non-fuzzy) prefix
+     * @return condition
      */
     public static BooleanExpression fuzzyLike(Path<String> path, String value,
             int maxEdits, int prefixLength) {

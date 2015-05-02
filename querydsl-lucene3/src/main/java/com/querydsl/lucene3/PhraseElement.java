@@ -17,7 +17,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.StringOperation;
 
 /**
- * PhraseElement represents the embedded String as a phrase
+ * {@code PhraseElement} represents the embedded String as a phrase
  *
  * @author tiwe
  *

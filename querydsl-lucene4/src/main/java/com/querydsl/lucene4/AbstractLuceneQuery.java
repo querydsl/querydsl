@@ -110,7 +110,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     /**
      * Create a filter for constraints defined in this querydsl
      *
-     * @return
+     * @return filter
      */
     public Filter asFilter() {
         return new QueryWrapperFilter(createQuery());
@@ -124,8 +124,8 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     /**
      * Add a DuplicateFilter for the field of the given property path
      *
-     * @param property
-     * @return
+     * @param property distinct property
+     * @return  the current object
      */
     public Q distinct(Path<?> property) {
         return filter(new DuplicateFilter(serializer.toField(property)));
@@ -134,8 +134,8 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     /**
      * Apply the given Lucene filter to the search results
      *
-     * @param filter
-     * @return
+     * @param filter filter
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q filter(Filter filter) {
@@ -222,8 +222,8 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     /**
      * Set the given fields to load
      *
-     * @param fieldsToLoad
-     * @return
+     * @param fieldsToLoad fields to load
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q load(Set<String> fieldsToLoad) {
@@ -234,8 +234,8 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     /**
      * Load only the fields of the given paths
      *
-     * @param paths
-     * @return
+     * @param paths fields to load
+     * @return  the current object
      */
     @SuppressWarnings("unchecked")
     public Q load(Path<?>... paths) {

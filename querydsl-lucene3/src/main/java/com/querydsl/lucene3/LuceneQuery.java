@@ -19,7 +19,19 @@ import org.apache.lucene.search.IndexSearcher;
 import com.google.common.base.Function;
 
 /**
- * LuceneQuery is a Querydsl query implementation for Lucene queries.
+ * {@code LuceneQuery} is a Querydsl query implementation for Lucene queries.
+ *
+ * <p>Example:</p>
+ *
+ * <pre>{@code
+ * QDocument doc = new QDocument("doc");
+ *
+ * IndexSearcher searcher = new IndexSearcher(index);
+ * LuceneQuery query = new LuceneQuery(true, searcher);
+ * List<Document> documents = query
+ *     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
+ *     .fetch();
+ * }</pre>
  *
  * @author vema
  */

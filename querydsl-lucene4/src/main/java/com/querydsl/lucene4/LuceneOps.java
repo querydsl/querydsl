@@ -16,6 +16,8 @@ package com.querydsl.lucene4;
 import com.querydsl.core.types.Operator;
 
 /**
+ * Lucene specific operators
+ *
  * @author tiwe
  *
  */
