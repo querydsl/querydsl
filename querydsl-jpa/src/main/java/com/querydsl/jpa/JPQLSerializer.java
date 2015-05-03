@@ -32,7 +32,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.MathUtils;
 
 /**
- * JPQLSerializer serializes Querydsl expressions into JPQL syntax.
+ * {@code JPQLSerializer} serializes Querydsl expressions into JPQL syntax.
  *
  * @author tiwe
  */

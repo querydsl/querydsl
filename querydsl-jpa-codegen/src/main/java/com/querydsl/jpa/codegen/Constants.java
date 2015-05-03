@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableList;
  * @author tiwe
  *
  */
-public final class Constants {
+final class Constants {
     
     public static final List<String> keywords = ImmutableList.of(
             "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",

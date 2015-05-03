@@ -33,7 +33,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.CollectionPathBase;
 
 /**
- * JPAQueryMixin extends {@link QueryMixin} to support JPQL join construction
+ * {@code JPAQueryMixin} extends {@link QueryMixin} to support JPQL join construction
  *
  * @author tiwe
  *

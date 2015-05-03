@@ -20,7 +20,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
- * QueryHandler provides injection of provider specific functionality into the query logic
+ * {@code QueryHandle}r provides injection of provider specific functionality into the query logic
  *
  * @author tiwe
  *
@@ -28,47 +28,47 @@ import com.querydsl.core.types.FactoryExpression;
 public interface QueryHandler {
 
     /**
-     * @return
+     * @return whether native queries should be created as typed queries
      */
     boolean createNativeQueryTyped();
 
     /**
      * Iterate the results with the optional projection
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return iterator
      */
     <T> CloseableIterator<T> iterate(Query query, @Nullable FactoryExpression<?> projection);
 
     /**
      * Add the given scalar to the given native query
      *
-     * @param query
-     * @param alias
-     * @param type
+     * @param query query
+     * @param alias alias
+     * @param type type
      */
     void addScalar(Query query, String alias, Class<?> type);
 
     /**
      * Add the given entity to the given native query
      *
-     * @param query
-     * @param alias
-     * @param type
+     * @param query query
+     * @param alias alias
+     * @param type type
      */
     void addEntity(Query query, String alias, Class<?> type);
 
     /**
      * Transform the results of the given query using the given factory expression
      *
-     * @param query
-     * @param projection
-     * @return
+     * @param query query
+     * @param projection projection
+     * @return true, if query as been modified
      */
     boolean transform(Query query, FactoryExpression<?> projection);
 
     /**
-     * @return
+     * @return whether entity projections need to be wrapped
      */
     boolean wrapEntityProjections();
 

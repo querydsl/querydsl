@@ -17,7 +17,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 
 /**
- * NoSessionHolder is a session holder for detached HibernateQuery usage
+ * {@code NoSessionHolder} is a session holder for detached {@link HibernateQuery} usage
  *
  * @author tiwe
  *

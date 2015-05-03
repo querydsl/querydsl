@@ -15,7 +15,9 @@ package com.querydsl.jpa;
 
 import com.querydsl.core.types.Ops;
 
-
+/**
+ * {@code DataNucleusTemplates} extends {@link JPQLTemplates} with DataNucleus specific extensions
+ */
 public class DataNucleusTemplates extends JPQLTemplates {
 
     public static final DataNucleusTemplates DEFAULT = new DataNucleusTemplates();

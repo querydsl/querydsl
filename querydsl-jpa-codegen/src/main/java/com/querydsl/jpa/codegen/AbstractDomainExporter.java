@@ -44,7 +44,7 @@ import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**
- * AbstractDomainExporter is a common supertype for DomainExporters
+ * {@code AbstractDomainExporter} is a common supertype for domain exporters
  *
  * @author tiwe
  *

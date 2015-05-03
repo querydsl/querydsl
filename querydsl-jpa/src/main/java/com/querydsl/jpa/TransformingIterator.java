@@ -21,6 +21,8 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
+ * {@code TransformingIterator} is a CloseableIterator adapter that transforms via a {@link FactoryExpression} instance
+ *
  * @author tiwe
  *
  * @param <T>

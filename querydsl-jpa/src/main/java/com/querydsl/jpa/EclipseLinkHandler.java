@@ -29,11 +29,12 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
+ * {@code EclipseLinkHandler} is the {@link QueryHandler} implementation for EclipseLink
  *
  * @author tiwe
  *
  */
-public class EclipseLinkHandler implements QueryHandler {
+class EclipseLinkHandler implements QueryHandler {
 
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {

@@ -135,6 +135,7 @@ public class HibernateUpdateClause implements
 
     /**
      * Set the lock mode for the given path.
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public HibernateUpdateClause setLockMode(Path<?> path, LockMode lockMode) {

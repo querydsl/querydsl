@@ -21,7 +21,7 @@ import com.querydsl.core.types.PathType;
 import com.querydsl.core.types.Templates;
 
 /**
- * JPQLTemplates extends {@link Templates} to provide operator patterns for JPQL
+ * {@code JPQLTemplates} extends {@link Templates} to provide operator patterns for JPQL
  * serialization
  *
  * @author tiwe

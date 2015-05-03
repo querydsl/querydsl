@@ -90,7 +90,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     /**
      * Expose the original Hibernate query for the given projection
      *
-     * @return
+     * @return query
      */
     public Query createQuery() {
         return createQuery(getMetadata().getModifiers(), false);
@@ -220,8 +220,8 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
      * scrollability of the returned results depends upon JDBC driver
      * support for scrollable <tt>ResultSet</tt>s.<br>
      *
-     * @param mode
-     * @return
+     * @param mode scroll mode
+     * @return scrollable results
      */
     public ScrollableResults scroll(ScrollMode mode) {
         try {
@@ -254,8 +254,8 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     /**
      * Add a comment to the generated SQL.
-     * @param comment
-     * @return
+     * @param comment comment
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q setComment(String comment) {
@@ -266,6 +266,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     /**
      * Set a fetchJoin size for the underlying JDBC query.
      * @param fetchSize the fetchJoin size
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q setFetchSize(int fetchSize) {
@@ -275,6 +276,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     /**
      * Set the lock mode for the given path.
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q setLockMode(Path<?> path, LockMode lockMode) {
@@ -284,6 +286,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     /**
      * Override the current session flush mode, just for this query.
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q setFlushMode(FlushMode flushMode) {
@@ -296,6 +299,8 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
      * a read-only mode where Hibernate will never dirty-check
      * them or make changes persistent.
      *
+     * @return the current object
+     *
      */
     @SuppressWarnings("unchecked")
     public Q setReadOnly(boolean readOnly) {
@@ -306,6 +311,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     /**
      * Set a timeout for the underlying JDBC query.
      * @param timeout the timeout in seconds
+     * @return the current object
      */
     @SuppressWarnings("unchecked")
     public Q setTimeout(int timeout) {
@@ -347,8 +353,8 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     /**
      * Clone the state of this query to a new instance with the given Session
      *
-     * @param session
-     * @return
+     * @param session session
+     * @return cloned query
      */
     public Q clone(Session session) {
         return this.clone(new DefaultSessionHolder(session));
@@ -357,8 +363,8 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     /**
      * Clone the state of this query to a new instance with the given StatelessSession
      *
-     * @param session
-     * @return
+     * @param session session
+     * @return cloned query
      */
     public Q clone(StatelessSession session) {
         return this.clone(new StatelessSessionHolder(session));
@@ -367,7 +373,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     /**
      * Clone the state of this query to a new instance
      *
-     * @return
+     * @return closed query
      */
     public Q clone() {
         return this.clone(this.session);

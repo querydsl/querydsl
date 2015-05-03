@@ -31,74 +31,81 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
     /**
      * Create a new DELETE clause
      * 
-     * @param path
-     * @return
+     * @param path entity to delete from
+     * @return delete clause
      */
     DeleteClause<?> delete(EntityPath<?> path);
 
     /**
+     * Create a new JPQLQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection
      * @param <T>
-     * @return
+     * @return select(expr)
      */
     <T> JPQLQuery<T> select(Expression<T> expr);
 
     /**
+     * Create a new JPQLQuery instance with the given projection
      *
-     * @param exprs
-     * @return
+     * @param exprs projection
+     * @return select(exprs)
      */
     JPQLQuery<Tuple> select(Expression<?>... exprs);
 
     /**
+     * Create a new JPQLQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection
      * @param <T>
-     * @return
+     * @return select(distinct expr)
      */
     <T> JPQLQuery<T> selectDistinct(Expression<T> expr);
 
     /**
+     * Create a new JPQLQuery instance with the given projection
      *
-     * @param exprs
-     * @return
+     * @param exprs projection
+     * @return select(distinct exprs)
      */
     JPQLQuery<Tuple> selectDistinct(Expression<?>... exprs);
 
     /**
+     * Create a new JPQLQuery instance with the projection one
      *
-     * @return
+     * @return select(1)
      */
     JPQLQuery<Integer> selectOne();
 
     /**
+     * Create a new JPQLQuery instance with the projection zero
      *
-     * @return
+     * @return select(0)
      */
     JPQLQuery<Integer> selectZero();
 
     /**
+     * Create a new JPQLQuery instance with the given source and projection
      *
-     * @param from
+     * @param from projection and source
      * @param <T>
-     * @return
+     * @return select(from).from(from)
      */
     <T> JPQLQuery<T> selectFrom(EntityPath<T> from);
 
     /**
      * Create a new Query with the given source
      * 
-     * @param from
-     * @return
+     * @param from from
+     * @return from(from)
      */
     JPQLQuery<?> from(EntityPath<?> from);
     
     /**
      * Create a new UPDATE clause
      * 
-     * @param path
-     * @return
+     * @param path entity to update
+     * @return update clause
      */
     UpdateClause<?> update(EntityPath<?> path);
 

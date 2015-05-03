@@ -45,7 +45,7 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
 
 /**
- * AbstractJPASQLQuery is the base class for JPA Native SQL queries
+ * {@code AbstractJPASQLQuery} is the base class for JPA Native SQL queries
  *
  * @author tiwe
  *
@@ -174,8 +174,8 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     /**
      * Transforms results using FactoryExpression if ResultTransformer can't be used
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return results
      */
     private List<?> getResultList(Query query) {
         // TODO : use lazy fetch here?
@@ -209,8 +209,8 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     /**
      * Transforms results using FactoryExpression if ResultTransformer can't be used
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return single result
      */
     @Nullable
     private Object getSingleResult(Query query) {

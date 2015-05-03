@@ -25,7 +25,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLTemplates;
 
 /**
- * HibernateQuery is the default implementation of the JPQLQuery interface for Hibernate
+ * {@code HibernateQuery} is the default implementation of the JPQLQuery interface for Hibernate
  *
  * @author tiwe
  *
@@ -43,7 +43,7 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     /**
      * Creates a new Session bound query
      *
-     * @param session
+     * @param session session
      */
     public HibernateQuery(Session session) {
         super(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
@@ -52,7 +52,7 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     /**
      * Creates a new Session bound query
      *
-     * @param session
+     * @param session session
      */
     public HibernateQuery(Session session, QueryMetadata metadata) {
         super(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, metadata);
@@ -61,8 +61,8 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     /**
      * Creates a new Session bound query
      *
-     * @param session
-     * @param templates
+     * @param session session
+     * @param templates templates
      */
     public HibernateQuery(Session session, JPQLTemplates templates) {
         super(new DefaultSessionHolder(session), templates, new DefaultQueryMetadata());
@@ -71,7 +71,7 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     /**
      * Creates a new Stateless session bound query
      *
-     * @param session
+     * @param session session
      */
     public HibernateQuery(StatelessSession session) {
         super(new StatelessSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
@@ -80,8 +80,8 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     /**
      * Creates a new Session bound query
      * 
-     * @param session
-     * @param templates
+     * @param session session
+     * @param templates templates
      */
     public HibernateQuery(SessionHolder session, JPQLTemplates templates) {
         super(session, templates, new DefaultQueryMetadata());
@@ -90,9 +90,9 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     /**
      * Creates a new Session bound query
      * 
-     * @param session
-     * @param templates
-     * @param metadata
+     * @param session session
+     * @param templates templates
+     * @param metadata query metadata
      */
     public HibernateQuery(SessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);

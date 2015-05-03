@@ -21,10 +21,9 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.sql.RelationalPath;
 
 /**
- * JPAExpressions provides factory methods for JPQL specific operations
+ * {@code JPAExpressions} provides factory methods for JPQL specific operations
  * elements.
  *
  * @author tiwe
@@ -35,9 +34,9 @@ public final class JPAExpressions {
     /**
      * Create a new detached JPQLQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection
      * @param <T>
-     * @return
+     * @return select(expr)
      */
     public static <T> JPQLQuery<T> select(Expression<T> expr) {
         return new JPASubQuery<Void>().select(expr);
@@ -46,8 +45,8 @@ public final class JPAExpressions {
     /**
      * Create a new detached JPQLQuery instance with the given projection
      *
-     * @param exprs
-     * @return
+     * @param exprs projection
+     * @return select(exprs)
      */
     public static JPQLQuery<Tuple> select(Expression<?>... exprs) {
         return new JPASubQuery<Void>().select(exprs);
@@ -56,9 +55,9 @@ public final class JPAExpressions {
     /**
      * Create a new detached JPQLQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection
      * @param <T>
-     * @return
+     * @return select(distinct expr)
      */
     public static <T> JPQLQuery<T> selectDistinct(Expression<T> expr) {
         return new JPASubQuery<Void>().select(expr).distinct();
@@ -67,24 +66,26 @@ public final class JPAExpressions {
     /**
      * Create a new detached JPQLQuery instance with the given projection
      *
-     * @param exprs
-     * @return
+     * @param exprs projection
+     * @return select(distinct expr)
      */
     public static JPQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
         return new JPASubQuery<Void>().select(exprs).distinct();
     }
 
     /**
+     * Create a new detached JPQLQuery instacne with the projection zero
      *
-     * @return
+     * @return select(0)
      */
     public static JPQLQuery<Integer> selectZero() {
         return select(Expressions.ZERO);
     }
 
     /**
+     * Create a new detached JPQLQuery instacne with the projection one
      *
-     * @return
+     * @return select(1)
      */
     public static JPQLQuery<Integer> selectOne() {
         return select(Expressions.ONE);
@@ -93,49 +94,49 @@ public final class JPAExpressions {
     /**
      * Create a new detached JPQLQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection and source
      * @param <T>
-     * @return
+     * @return select(expr).from(expr)
      */
     public static <T> JPQLQuery<T> selectFrom(EntityPath<T> expr) {
         return select(expr).from(expr);
     }
 
     /**
-     * Get the avg(col) expression
+     * Create a avg(col) expression
      *
-     * @param col
-     * @return
+     * @param col collection
+     * @return avg(col)
      */
     public static <A extends Comparable<? super A>> ComparableExpression<A> avg(CollectionExpression<?,A> col) {
         return Expressions.comparableOperation((Class) col.getParameter(0), Ops.QuantOps.AVG_IN_COL, (Expression<?>) col);
     }
 
     /**
-     * Get the max(col) expression
+     * Create a max(col) expression
      *
-     * @param left
-     * @return
+     * @param left collection
+     * @return max(col)
      */
     public static <A extends Comparable<? super A>> ComparableExpression<A> max(CollectionExpression<?,A> left) {
         return Expressions.comparableOperation((Class) left.getParameter(0), Ops.QuantOps.MAX_IN_COL, (Expression<?>) left);
     }
 
     /**
-     * Get the min(col) expression
+     * Create a min(col) expression
      *
-     * @param left
-     * @return
+     * @param left collection
+     * @return min(col)
      */
     public static <A extends Comparable<? super A>> ComparableExpression<A> min(CollectionExpression<?,A> left) {
         return Expressions.comparableOperation((Class) left.getParameter(0), Ops.QuantOps.MIN_IN_COL, (Expression<?>) left);
     }
 
     /**
-     * Get the type(path) expression
+     * Create a type(path) expression
      *
-     * @param path
-     * @return
+     * @param path entity
+     * @return type(path)
      */
     public static StringExpression type(EntityPath<?> path) {
         return Expressions.stringOperation(JPQLOps.TYPE, path);

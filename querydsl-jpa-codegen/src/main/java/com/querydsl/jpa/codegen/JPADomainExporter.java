@@ -13,14 +13,17 @@
  */
 package com.querydsl.jpa.codegen;
 
-import javax.persistence.Temporal;
-import javax.persistence.metamodel.*;
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
 import java.util.Map;
+
+import javax.persistence.Temporal;
+import javax.persistence.metamodel.*;
+import javax.xml.stream.XMLStreamException;
+
+import org.hibernate.MappingException;
 
 import com.google.common.collect.Maps;
 import com.mysema.codegen.model.SimpleType;
@@ -30,109 +33,108 @@ import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.SerializerConfig;
 import com.querydsl.codegen.SimpleSerializerConfig;
-import org.hibernate.MappingException;
 
 /**
- * JPADomainExporter exports JPA 2 metamodels to Querydsl expression types
+ * {@code JPADomainExporter} exports JPA 2 metamodels to Querydsl expression types
  *
  * @author tiwe
  *
  */
 public class JPADomainExporter extends AbstractDomainExporter {
 
-    private final Metamodel configuration;
+    private final Metamodel metamodel;
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param targetFolder
-     * @param configuration
+     * @param targetFolder target folder
+     * @param metamodel metamodel
      */
-    public JPADomainExporter(File targetFolder, Metamodel configuration) {
-        this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration,
+    public JPADomainExporter(File targetFolder, Metamodel metamodel) {
+        this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, metamodel,
                 Charset.defaultCharset());
     }
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param configuration
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param metamodel metamodel
      */
-    public JPADomainExporter(String namePrefix, File targetFolder, Metamodel configuration) {
-        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration,
+    public JPADomainExporter(String namePrefix, File targetFolder, Metamodel metamodel) {
+        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, metamodel,
                 Charset.defaultCharset());
     }
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param configuration
-     * @param charset
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param metamodel metamodel
+     * @param charset charset (default: system charset)
      */
-    public JPADomainExporter(String namePrefix, File targetFolder, Metamodel configuration,
+    public JPADomainExporter(String namePrefix, File targetFolder, Metamodel metamodel,
             Charset charset) {
-        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, charset);
+        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, metamodel, charset);
     }
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param namePrefix
-     * @param nameSuffix
-     * @param targetFolder
-     * @param configuration
+     * @param namePrefix name prefix (default: Q)
+     * @param nameSuffix name suffix
+     * @param targetFolder target folder
+     * @param metamodel metamodel
      */
     public JPADomainExporter(String namePrefix, String nameSuffix, File targetFolder,
-            Metamodel configuration) {
-        this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration,
+            Metamodel metamodel) {
+        this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, metamodel,
                 Charset.defaultCharset());
     }
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param configuration
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param serializerConfig serializer config
+     * @param metamodel metamodel
      */
     public JPADomainExporter(String namePrefix, File targetFolder,
-            SerializerConfig serializerConfig, Metamodel configuration) {
-        this(namePrefix, "", targetFolder, serializerConfig, configuration, Charset.defaultCharset());
+            SerializerConfig serializerConfig, Metamodel metamodel) {
+        this(namePrefix, "", targetFolder, serializerConfig, metamodel, Charset.defaultCharset());
     }
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param configuration
-     * @param charset
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param serializerConfig serializer config
+     * @param metamodel metamodel
+     * @param charset charset (default: system charset)
      */
     public JPADomainExporter(String namePrefix, File targetFolder,
-            SerializerConfig serializerConfig, Metamodel configuration, Charset charset) {
-        this(namePrefix, "", targetFolder, serializerConfig, configuration, charset);
+            SerializerConfig serializerConfig, Metamodel metamodel, Charset charset) {
+        this(namePrefix, "", targetFolder, serializerConfig, metamodel, charset);
     }
 
     /**
      * Create a new JPADomainExporter instance
      *
-     * @param namePrefix
-     * @param nameSuffix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param configuration
-     * @param charset
+     * @param namePrefix name prefix (default: Q)
+     * @param nameSuffix name suffix (default: empty)
+     * @param targetFolder target folder
+     * @param serializerConfig serializer config
+     * @param metamodel metamodel
+     * @param charset charset (default: system charset)
      */
     public JPADomainExporter(String namePrefix, String nameSuffix, File targetFolder,
-            SerializerConfig serializerConfig, Metamodel configuration, Charset charset) {
+            SerializerConfig serializerConfig, Metamodel metamodel, Charset charset) {
         super(namePrefix, nameSuffix, targetFolder, serializerConfig, charset);
-        this.configuration = configuration;
+        this.metamodel = metamodel;
     }
 
     @Override
@@ -140,7 +142,7 @@ public class JPADomainExporter extends AbstractDomainExporter {
         NoSuchMethodException {
 
         Map<ManagedType<?>, EntityType> types = Maps.newHashMap();
-        for (ManagedType<?> managedType : configuration.getManagedTypes()) {
+        for (ManagedType<?> managedType : metamodel.getManagedTypes()) {
             if (managedType instanceof MappedSuperclassType) {
                 types.put(managedType, createSuperType(managedType.getJavaType()));
             } else if (managedType instanceof javax.persistence.metamodel.EntityType) {

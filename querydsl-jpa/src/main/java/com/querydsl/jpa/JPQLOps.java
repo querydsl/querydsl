@@ -16,6 +16,8 @@ package com.querydsl.jpa;
 import com.querydsl.core.types.Operator;
 
 /**
+ * {@code JPQLOps} provides JPQL specific operators
+ *
  * @author tiwe
  *
  */
