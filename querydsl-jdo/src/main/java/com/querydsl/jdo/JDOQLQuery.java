@@ -29,40 +29,41 @@ import com.querydsl.core.types.Path;
  *
  * @author tiwe
  *
+ * @param <T> result type
  */
 public interface JDOQLQuery<T> extends FetchableQuery<T, JDOQLQuery<T>>, Query<JDOQLQuery<T>>, ExtendedSubQuery<T>, Closeable {
 
     /**
      * Add query sources
      *
-     * @param sources
-     * @return
+     * @param sources sources
+     * @return the current object
      */
     JDOQLQuery<T> from(EntityPath<?>... sources);
 
     /**
      * Add query sources
      *
-     * @param path
-     * @param alias
+     * @param path source
+     * @param alias alias
      * @param <U>
-     * @return
+     * @return the current object
      */
     <U> JDOQLQuery<T> from(CollectionExpression<?, U> path, Path<U> alias);
 
     /**
      * Clone the state of the query for the given PersistenceManager
      *
-     * @param persistenceManager
-     * @return
+     * @param persistenceManager persistence manager
+     * @return cloned query
      */
     JDOQLQuery<T> clone(PersistenceManager persistenceManager);
 
     /**
      * Add the fetch group to the set of active fetch groups.
      * 
-     * @param fetchGroupName
-     * @return
+     * @param fetchGroupName fetch group  name
+     * @return the current object
      */
     JDOQLQuery<T> addFetchGroup(String fetchGroupName);
 
@@ -73,8 +74,8 @@ public interface JDOQLQuery<T> extends FetchableQuery<T, JDOQLQuery<T>>, Query<J
      * A positive integer will result in that number of references from the
      * initial object to be fetched.
      * 
-     * @param maxFetchDepth
-     * @return
+     * @param maxFetchDepth max fetch depth
+     * @return the current object
      */
     JDOQLQuery<T> setMaxFetchDepth(int maxFetchDepth);
     

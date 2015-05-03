@@ -31,14 +31,14 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
 import com.querydsl.core.support.FetchableSubQueryBase;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.CollectionPath;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
  *
  * @author tiwe
  *
- * @param <Q>
+ * @param <T> result type
+ * @param <Q> concrete subclass
  */
 public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> extends FetchableSubQueryBase<T, Q> implements JDOQLQuery<T> {
 
@@ -89,8 +89,8 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     /**
      * Add the fetch group to the set of active fetch groups.
      *
-     * @param fetchGroupName
-     * @return
+     * @param fetchGroupName fetch group name
+     * @return the current object
      */
     @Override
     public Q addFetchGroup(String fetchGroupName) {
@@ -283,8 +283,8 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
      * A positive integer will result in that number of references from the
      * initial object to be fetched.
      *
-     * @param depth
-     * @return
+     * @param depth fetch depth
+     * @return the current object
      */
     @Override
     public Q setMaxFetchDepth(int depth) {

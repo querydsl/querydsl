@@ -30,6 +30,8 @@ import com.querydsl.sql.SQLTemplates;
  *
  * @author tiwe
  *
+ * @param <T> result type
+ *
  */
 public final class JDOSQLQuery<T> extends AbstractSQLQuery<T, JDOSQLQuery<T>> {
 

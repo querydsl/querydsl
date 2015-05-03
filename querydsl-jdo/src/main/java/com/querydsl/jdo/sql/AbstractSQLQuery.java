@@ -43,7 +43,8 @@ import com.querydsl.sql.SQLSerializer;
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> result type
+ * @param <Q> concrete subclass
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
@@ -81,6 +82,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         this.detach = detach;
     }
 
+    /**
+     * Close the query and related resources
+     */
     public void close() {
         for (Query query : queries) {
             query.closeAll();
@@ -144,7 +148,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         } else if (row.getClass().isArray()) {
             return expr.newInstance((Object[])row);
         } else {
-            return expr.newInstance(new Object[]{row});
+            return expr.newInstance(row);
         }
     }
 

@@ -21,10 +21,11 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
 /**
- * JDOQuery is the default implementation of the JDOQLQuery interface
+ * {@code JDOQuery} is the default implementation of the JDOQLQuery interface
  *
  * @author tiwe
  *
+ * @param <T> result type
  */
 public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
 
@@ -70,10 +71,10 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     /**
      * Create a new JDOQuery instance
      * 
-     * @param persistenceManager
-     * @param templates
-     * @param metadata
-     * @param detach
+     * @param persistenceManager PersistenceManager instance to use
+     * @param templates templates to use
+     * @param metadata query metadata
+     * @param detach detached results or not
      */
     protected JDOQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, 
             QueryMetadata metadata, boolean detach) {
@@ -83,8 +84,8 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     /**
      * Clone the state of this query to a new JDOQuery instance with the given PersistenceManager
      *
-     * @param persistenceManager
-     * @return
+     * @param persistenceManager PersistenceManager instance to use
+     * @return cloned query
      */
     public JDOQuery<T> clone(PersistenceManager persistenceManager) {
         JDOQuery<T> query = new JDOQuery<T>(persistenceManager, getTemplates(),

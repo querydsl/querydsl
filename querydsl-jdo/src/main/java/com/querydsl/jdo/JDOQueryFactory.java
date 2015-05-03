@@ -44,9 +44,9 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     /**
      * Create a new JDOQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection
      * @param <T>
-     * @return
+     * @return select(expr)
      */
     public <T> JDOQuery<T> select(Expression<T> expr) {
         return query().select(expr);
@@ -55,8 +55,8 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     /**
      * Create a new JDOQuery instance with the given projection
      *
-     * @param exprs
-     * @return
+     * @param exprs projection
+     * @return select(exprs)
      */
     public JDOQuery<Tuple> select(Expression<?>... exprs) {
         return query().select(exprs);
@@ -65,9 +65,9 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     /**
      * Create a new JDOQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection
      * @param <T>
-     * @return
+     * @return select(distinct expr)
      */
     public <T> JDOQuery<T> selectDistinct(Expression<T> expr) {
         return query().select(expr).distinct();
@@ -76,24 +76,26 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     /**
      * Create a new JDOQuery instance with the given projection
      *
-     * @param exprs
-     * @return
+     * @param exprs projection
+     * @return select(distinct exprs)
      */
     public JDOQuery<Tuple> selectDistinct(Expression<?>... exprs) {
         return query().select(exprs).distinct();
     }
 
     /**
+     * Create a new JDOQuery instance with the projection zero
      *
-     * @return
+     * @return select(0)
      */
     public JDOQuery<Integer> selectZero() {
         return select(Expressions.ZERO);
     }
 
     /**
+     * Create a new JDOQuery instance with the projection one
      *
-     * @return
+     * @return select(1)
      */
     public JDOQuery<Integer> selectOne() {
         return select(Expressions.ONE);
@@ -102,9 +104,9 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     /**
      * Create a new JDOQuery instance with the given projection
      *
-     * @param expr
+     * @param expr projection and source
      * @param <T>
-     * @return
+     * @return select(expr).from(expr)
      */
     public <T> JDOQuery<T> selectFrom(EntityPath<T> expr) {
         return select(expr).from(expr);
