@@ -3,7 +3,8 @@
 <legalnotice id="Legal_Notice">
     <title>Legal Notice</title>
     <para>
-        Copyright <trademark class="copyright"/> 2007-2013 by Mysema Ltd.  This copyrighted material is made available to
+        Copyright <trademark class="copyright"/> 2015 by The Querydsl Team (<ulink url="http://www.querydsl.com/team">http://www.querydsl.com/team</ulink>)
+        This copyrighted material is made available to
         anyone wishing to use, modify, copy, or redistribute it subject to the terms and conditions of the
         <ulink url="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</ulink>.
     </para>
