@@ -32,7 +32,7 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     private transient volatile BooleanExpression eqTrue, eqFalse;
 
     @Nullable
-    private volatile BooleanExpression not;
+    private transient volatile BooleanExpression not;
 
     public BooleanExpression(Expression<Boolean> mixin) {
         super(mixin);

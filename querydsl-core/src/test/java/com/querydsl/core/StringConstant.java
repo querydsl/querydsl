@@ -43,10 +43,10 @@ public final class StringConstant extends StringExpression implements Constant<S
     private final String constant;
 
     @Nullable
-    private volatile NumberExpression<Integer> length;
+    private transient volatile NumberExpression<Integer> length;
 
     @Nullable
-    private volatile StringExpression lower, trim, upper;
+    private transient volatile StringExpression lower, trim, upper;
 
     StringConstant(String constant) {
         super(ConstantImpl.create(constant));

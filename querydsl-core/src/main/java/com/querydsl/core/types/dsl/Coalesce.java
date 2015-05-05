@@ -37,7 +37,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
 
     private final List<Expression<? extends T>> exprs = new ArrayList<Expression<? extends T>>();
 
-    private volatile ComparableExpression<T> value;
+    private transient volatile ComparableExpression<T> value;
 
     public Coalesce(Class<? extends T> type, Expression<?>... exprs) {
         super(type);

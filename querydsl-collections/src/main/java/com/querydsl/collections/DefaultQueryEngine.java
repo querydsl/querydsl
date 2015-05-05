@@ -45,7 +45,7 @@ import com.querydsl.core.types.OrderSpecifier;
 @SuppressWarnings("unchecked")
 public class DefaultQueryEngine implements QueryEngine {
 
-    private static volatile QueryEngine DEFAULT;
+    private static transient volatile QueryEngine DEFAULT;
 
     public static QueryEngine getDefault() {
         if (DEFAULT == null) {

@@ -32,7 +32,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     private static final long serialVersionUID = 1460921109546656911L;
 
     @Nullable
-    private volatile OrderSpecifier<T> asc, desc;
+    private transient volatile OrderSpecifier<T> asc, desc;
 
     public ComparableExpressionBase(Expression<T> mixin) {
         super(mixin);
