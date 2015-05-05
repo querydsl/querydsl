@@ -34,7 +34,7 @@ import com.querydsl.core.support.FetchableSubQueryBase;
 import com.querydsl.core.types.*;
 
 /**
- * Abstract base class for custom implementations of the JDOCommonQuery interface.
+ * Abstract base class for custom implementations of the {@link JDOQLQuery} interface.
  *
  * @author tiwe
  *
