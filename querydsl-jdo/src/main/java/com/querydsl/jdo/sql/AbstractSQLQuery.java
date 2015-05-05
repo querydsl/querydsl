@@ -36,10 +36,11 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.ProjectableSQLQuery;
+import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLSerializer;
 
 /**
- * Base class for JDO based SQLQuery implementations
+ * Base class for JDO-based {@link SQLQuery} implementations
  *
  * @author tiwe
  *
@@ -117,7 +118,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         if (logger.isDebugEnabled()) {
             logger.debug(serializer.toString());
         }
-        Query query = persistenceManager.newQuery("javax.jdo.query.SQL",serializer.toString());
+        Query query = persistenceManager.newQuery("javax.jdo.query.SQL", serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);
 

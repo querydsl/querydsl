@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.annotation.Nullable;
+import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
@@ -278,7 +279,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     /**
      * Set the maximum fetch depth when fetching.
-     * A value of 0 has no meaning and will throw a JDOUserException.
+     * A value of 0 has no meaning and will throw a {@link JDOUserException}.
      * A value of -1 means that no limit is placed on fetching.
      * A positive integer will result in that number of references from the
      * initial object to be fetched.

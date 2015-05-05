@@ -21,7 +21,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
 /**
- * {@code JDOQuery} is the default implementation of the JDOQLQuery interface
+ * {@code JDOQuery} is the default implementation of the {@link JDOQLQuery} interface
  *
  * @author tiwe
  *
@@ -30,7 +30,7 @@ import com.querydsl.core.types.Expression;
 public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
 
     /**
-     * Create a detached JDOQuery instance
+     * Create a detached {@link JDOQuery} instance
      * The query can be attached via the clone method
      *
      */
@@ -39,7 +39,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      *
      * @param persistenceManager PersistenceManager instance to use
      * @param templates JDOQLTemplates to use
@@ -50,7 +50,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      *
      * @param persistenceManager PersistenceManager instance to use
      * @param detach detached results or not
@@ -60,7 +60,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      *
      * @param persistenceManager PersistenceManager instance to use
      */
@@ -69,7 +69,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      * 
      * @param persistenceManager PersistenceManager instance to use
      * @param templates templates to use
@@ -82,7 +82,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Clone the state of this query to a new JDOQuery instance with the given PersistenceManager
+     * Clone the state of this query to a new {@link JDOQuery} instance with the given {@link PersistenceManager}
      *
      * @param persistenceManager PersistenceManager instance to use
      * @return cloned query

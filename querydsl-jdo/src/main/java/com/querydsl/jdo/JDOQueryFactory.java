@@ -42,7 +42,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the given projection
+     * Create a new {@link JDOQuery} instance with the given projection
      *
      * @param expr projection
      * @param <T>
@@ -53,7 +53,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the given projection
+     * Create a new {@link JDOQuery} instance with the given projection
      *
      * @param exprs projection
      * @return select(exprs)
@@ -63,7 +63,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the given projection
+     * Create a new {@link JDOQuery} instance with the given projection
      *
      * @param expr projection
      * @param <T>
@@ -74,7 +74,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the given projection
+     * Create a new {@link JDOQuery} instance with the given projection
      *
      * @param exprs projection
      * @return select(distinct exprs)
@@ -84,7 +84,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the projection zero
+     * Create a new {@link JDOQuery} instance with the projection 0
      *
      * @return select(0)
      */
@@ -93,7 +93,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the projection one
+     * Create a new {@link JDOQuery} instance with the projection 1
      *
      * @return select(1)
      */
@@ -102,7 +102,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
     }
 
     /**
-     * Create a new JDOQuery instance with the given projection
+     * Create a new {@link JDOQuery} instance with the given projection
      *
      * @param expr projection and source
      * @param <T>

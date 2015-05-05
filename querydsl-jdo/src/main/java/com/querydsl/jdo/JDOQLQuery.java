@@ -62,7 +62,7 @@ public interface JDOQLQuery<T> extends FetchableQuery<T, JDOQLQuery<T>>, Query<J
     /**
      * Add the fetch group to the set of active fetch groups.
      * 
-     * @param fetchGroupName fetch group  name
+     * @param fetchGroupName fetch group name
      * @return the current object
      */
     JDOQLQuery<T> addFetchGroup(String fetchGroupName);

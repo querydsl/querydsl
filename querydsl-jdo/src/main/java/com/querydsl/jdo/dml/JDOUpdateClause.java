@@ -26,7 +26,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 
 /**
- * UpdateClause implementation for JDO
+ * {@link UpdateClause} implementation for JDO
  *
  * @author tiwe
  *

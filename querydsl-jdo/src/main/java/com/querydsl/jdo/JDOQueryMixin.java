@@ -19,7 +19,7 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 
 /**
- * {@code JDOQueryMixin} extends {@link QueryMixin} to provide module specific extensions
+ * {@code JDOQueryMixin} extends {@link QueryMixin} to provide module-specific extensions
  * 
  * @author tiwe
  *

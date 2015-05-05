@@ -21,11 +21,12 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLSerializer;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * JDOSQLQuery is an SQLQuery implementation that uses JDO's SQL query functionality
+ * {@code JDOSQLQuery} is a {@link SQLQuery} implementation that uses JDO's SQL query functionality
  * to execute queries
  *
  * @author tiwe

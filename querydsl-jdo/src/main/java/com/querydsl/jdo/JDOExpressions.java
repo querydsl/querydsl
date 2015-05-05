@@ -24,7 +24,7 @@ import com.querydsl.core.types.dsl.Expressions;
 public final class JDOExpressions {
 
     /**
-     * Create a new detached JDOQuery instance with the given projection
+     * Create a new detached {@link JDOQuery} instance with the given projection
      *
      * @param expr projection
      * @param <T>
@@ -35,7 +35,7 @@ public final class JDOExpressions {
     }
 
     /**
-     * Create a new detached JDOQuery instance with the given projection
+     * Create a new detached {@link JDOQuery} instance with the given projection
      *
      * @param exprs projection
      * @return select(exprs)
@@ -45,29 +45,29 @@ public final class JDOExpressions {
     }
 
     /**
-     * Create a new detached JDOQuery instance with the given projection
+     * Create a new detached {@link JDOQuery} instance with the given projection
      *
      * @param expr projection
      * @param <T>
      * @return select(distinct expr)
      */
     public static <T> JDOQuery<T> selectDistinct(Expression<T> expr) {
-        return new JDOQuery<Void>().select(expr).distinct();
+        return select(expr).distinct();
     }
 
     /**
-     * Create a new detached JDOQuery instance with the given projection
+     * Create a new detached {@link JDOQuery} instance with the given projection
      *
      * @param exprs projection
      * @return select(distinct exprs)
      */
     public static JDOQuery<Tuple> selectDistinct(Expression<?>... exprs) {
-        return new JDOQuery<Void>().select(exprs).distinct();
+        return select(exprs).distinct();
     }
 
 
     /**
-     * Create a new detached JDOQuery instance with the given projection 0
+     * Create a new detached {@link JDOQuery} instance with the given projection 0
      *
      * @return select(0)
      */
@@ -76,7 +76,7 @@ public final class JDOExpressions {
     }
 
     /**
-     * Create a new detached JDOQuery instance with the projection 1
+     * Create a new detached {@link JDOQuery} instance with the projection 1
      *
      * @return select(1)
      */
@@ -85,7 +85,7 @@ public final class JDOExpressions {
     }
 
     /**
-     * Create a new detached JDOQuery instance with the given projection
+     * Create a new detached {@link JDOQuery} instance with the given projection
      *
      * @param expr projection and source
      * @param <T>
