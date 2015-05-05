@@ -51,7 +51,7 @@
 
     <para>
       To get an impression of the expressivity of the Querydsl query and expression types go to
-      the javadocs and explore <code>com.querydsl.core.Query</code>, <code>com.querydsl.core.Projectable</code>
+      the javadocs and explore <code>com.querydsl.core.Query</code>, <code>com.querydsl.core.Fetchable</code>
       and <code>com.querydsl.core.types.Expression</code>.
     </para>
 

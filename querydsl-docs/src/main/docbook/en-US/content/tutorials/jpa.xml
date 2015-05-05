@@ -272,7 +272,7 @@ QCustomer customer = new QCustomer("myCustomer");
 
 <programlisting language="java"><![CDATA[
 // where entityManager is a JPA EntityManager
-JPAQuery query = new JPAQuery(entityManager);
+JPAQuery<?> query = new JPAQuery<Void>(entityManager);
 ]]></programlisting>
 
     <para>If you are using the Hibernate API instead, you can instantiate a
@@ -281,11 +281,15 @@ JPAQuery query = new JPAQuery(entityManager);
 
     <programlisting language="java"><![CDATA[
 // where session is a Hibernate session
-HibernateQuery query = new HibernateQuery(session);
+HibernateQuery<?> query = new HibernateQuery<Void>(session);
 ]]></programlisting>
 
+    <para>Both <code>JPAQuery</code> and <code>HibernateQuery</code> implement the <code>JPQLQuery</code> interface.</para>
 
-    <para>Both JPAQuery and HibernateQuery implement the JPQLQuery interface.</para>
+    <para>For the examples of this chapter the queries are created via a <code>JPAQueryFactory</code> instance.
+      <code>JPAQueryFactory</code> should be the preferred option to obtain <code>JPAQuery</code> instances.</para>
+
+    <para>For the Hibernate API <code>HibernateQueryFactory</code> can be used</para>
 
     <para>
       To retrieve the customer with the first name Bob you would construct a
@@ -294,16 +298,14 @@ HibernateQuery query = new HibernateQuery(session);
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-JPAQuery query = new JPAQuery(entityManager);
-Customer bob = query.from(customer)
+Customer bob = queryFactory.selectFrom(customer)
   .where(customer.firstName.eq("Bob"))
-  .uniqueResult(customer);
+  .fetchOne();
 ]]></programlisting>
 
     <para>
-      The from call defines the query source, the where part defines the
-      filter and uniqueResult defines the projection and tells Querydsl
-      to return a single element. Easy, right?
+      The selectFrom call defines the query source and projection, the where part defines the
+      filter and fetchOne tells Querydsl to return a single element. Easy, right?
     </para>
 
     <para>
@@ -321,29 +323,29 @@ query.from(customer, company);
     </para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.selectFrom(customer)
     .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));
 ]]></programlisting>
 
     <para>Or like this</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.selectFrom(customer)
     .where(customer.firstName.eq("Bob").and(customer.lastName.eq("Wilson")));
 ]]></programlisting>
 
     <para>In native JPQL form the query would be written like this: </para>
 
     <programlisting>
-from Customer as customer
-    where customer.firstName = "Bob" and customer.lastName = "Wilson"
+select customer from Customer as customer
+where customer.firstName = "Bob" and customer.lastName = "Wilson"
 </programlisting>
 
     <para>If you want to combine the filters via "or" then use the following pattern
     </para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.selectFrom(customer)
     .where(customer.firstName.eq("Bob").or(customer.lastName.eq("Wilson")));
 ]]></programlisting>
 
@@ -361,35 +363,35 @@ query.from(customer)
 QCat cat = QCat.cat;
 QCat mate = new QCat("mate");
 QCate kitten = new QCat("kitten");
-query.from(cat)
+queryFactory.selectFrom(cat)
     .innerJoin(cat.mate, mate)
     .leftJoin(cat.kittens, kitten)
-    .list(cat);
+    .fetch();
 ]]></programlisting>
 
     <para>The native JPQL version of the query would be </para>
 
     <programlisting>
-from Cat as cat
-    inner join cat.mate as mate
-    left outer join cat.kittens as kitten
+select cat from Cat as cat
+inner join cat.mate as mate
+left outer join cat.kittens as kitten
 </programlisting>
 
     <para>Another example</para>
 
     <programlisting language="java"><![CDATA[
-query.from(cat)
+queryFactory.selectFrom(cat)
     .leftJoin(cat.kittens, kitten)
     .on(kitten.bodyWeight.gt(10.0))
-    .list(cat);
+    .fetch();
 ]]></programlisting>
 
     <para>With the following JPQL version</para>
 
     <programlisting>
-from Cat as cat
-    left join cat.kittens as kitten
-    on kitten.bodyWeight > 10.0
+select cat from Cat as cat
+left join cat.kittens as kitten
+on kitten.bodyWeight > 10.0
 </programlisting>
 
   </sect2>
@@ -399,6 +401,11 @@ from Cat as cat
     <title>General usage</title>
 
     <para>Use the the cascading methods of the JPQLQuery interface like this</para>
+
+    <para>
+      <emphasis>select:</emphasis>
+      Set the projection of the query. (Not necessary if created via query factory)
+    </para>
 
     <para>
       <emphasis>from:</emphasis>
@@ -452,16 +459,16 @@ from Cat as cat
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-query.from(customer)
+queryFactory.selectFrom(customer)
     .orderBy(customer.lastName.asc(), customer.firstName.desc())
-    .list(customer);
+    .fetch();
 ]]></programlisting>
 
     <para>which is equivalent to the following native JPQL</para>
 
     <programlisting>
-from Customer as customer
-    order by customer.lastName asc, customer.firstName desc
+select customer from Customer as customer
+order by customer.lastName asc, customer.firstName desc
 </programlisting>
 
   </sect2>
@@ -473,17 +480,17 @@ from Customer as customer
     <para>Grouping can be done in the following form</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.select(customer.lastName).from(customer)
     .groupBy(customer.lastName)
-    .list(customer.lastName);
+    .fetch();
 ]]></programlisting>
 
     <para>which is equivalent to the following native JPQL</para>
 
     <programlisting>
 select customer.lastName
-    from Customer as customer
-    group by customer.lastName
+from Customer as customer
+group by customer.lastName
 </programlisting>
 
 
@@ -499,19 +506,14 @@ select customer.lastName
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // delete all customers
-new JPADeleteClause(entityManager, customer).execute();
+queryFactory.delete(customer).execute();
 // delete all customers with a level less than 3
-new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute();
+queryFactory.delete(customer).where(customer.level.lt(3)).execute();
 ]]></programlisting>
 
-    <para>The second parameter of the JPADeleteClause constructor is the entity to
-      be deleted.
-      The where call is optional and the execute call performs the deletion and returns the
-      amount of
-      deleted entities.
+    <para>The where call is optional and the execute call performs the deletion and returns the
+      amount of deleted entities.
     </para>
-
-    <para>For Hibernate based Delete usage, use the HibernateDeleteClause instead.</para>
 
     <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide
     fine-grained second level cache interaction.</para>
@@ -527,19 +529,14 @@ new JPADeleteClause(entityManager, customer).where(customer.level.lt(3)).execute
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // rename customers named Bob to Bobby
-new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
+queryFactory.update(customer).where(customer.name.eq("Bob"))
     .set(customer.name, "Bobby")
     .execute();
 ]]></programlisting>
 
-    <para>The second parameter of the JPAUpdateClause constructor is the entity to
-      be updated.
-      The set invocations define the property updates in SQL-Update-style and the execute call
-      performs
-      the Update and returns the amount of updated entities.
+    <para>The set invocations define the property updates in SQL-Update-style and the execute call
+      performs the Update and returns the amount of updated entities.
     </para>
-
-    <para>For Hibernate based Update usage, use the HibernateUpdateClause instead.</para>
 
     <para>DML clauses in JPA don't take JPA level cascade rules into account and don't provide
     fine-grained second level cache interaction.</para>
@@ -550,21 +547,17 @@ new JPAUpdateClause(session, customer).where(customer.name.eq("Bob"))
 
     <title>Subqueries</title>
 
-    <para>To create a subquery you create a JPASubQuery instance, define the query
-      parameters
-      via from, where etc and use
-      unique or list to create a subquery, which is just a type-safe Querydsl expression for the
-      query.
-      unique is used for a unique (single) result and list for a list result.
+    <para>To create a subquery you use the static factory methods of <code>JPAExpressions</code> and
+      define the query parameters via from, where etc.
     </para>
 
     <programlisting language="java"><![CDATA[
 QDepartment department = QDepartment.department;
 QDepartment d = new QDepartment("d");
-query.from(department)
-    .where(department.employees.size().eq(
-        new JPASubQuery().from(d).unique(d.employees.size().max())
-     )).list(department);
+queryFactory.selectFrom(department)
+    .where(department.size.eq(
+        JPAExpressions.select(d.size.max()).from(d)))
+     .fetch();
 ]]></programlisting>
 
     <para>Another example</para>
@@ -572,15 +565,13 @@ query.from(department)
     <programlisting language="java"><![CDATA[
 QEmployee employee = QEmployee.employee;
 QEmployee e = new QEmployee("e");
-query.from(employee)
+queryFactory.selectFrom(employee)
     .where(employee.weeklyhours.gt(
-        new JPASubQuery().from(employee.department.employees, e)
-        .where(e.manager.eq(employee.manager))
-        .unique(e.weeklyhours.avg())
-    )).list(employee);
+        JPAExpressions.select(e.weeklyhours.avg())
+            .from(employee.department.employees, e)
+            .where(e.manager.eq(employee.manager))))
+    .fetch();
 ]]></programlisting>
-
-    <para>For Hibernate based sub query usage, use the HibernateSubQuery instead.</para>
 
   </sect2>
 
@@ -592,8 +583,7 @@ query.from(employee)
     </para>
 
     <programlisting language="java"><![CDATA[
-JPAQuery query = new JPAQuery(entityManager);
-Query jpaQuery = query.from(employee).createQuery(employee);
+Query jpaQuery = queryFactory.selectFrom(employee).createQuery();
 // ...
 List results = jpaQuery.getResultList();
 ]]></programlisting>
@@ -660,8 +650,8 @@ SAnimal cat = new SAnimal("cat");
 SAnimal mate = new SAnimal("mate");
 QCat catEntity = QCat.cat;
 
-JPASQLQuery query = new JPASQLQuery(entityManager, templates);
-List<String> names = query.from(cat).list(cat.name);
+JPASQLQuery<?> query = new JPASQLQuery<Void>(entityManager, templates);
+List<String> names = query.select(cat.name).from(cat).fetch();
 ]]></programlisting>
 
     <para>If you mix entity (e.g. QCat) and table (e.g. SAnimal) references in your query you need to make sure that they
@@ -678,44 +668,45 @@ SAnimal cat = new SAnimal(catEntity.getMetadata().getName());
     <para>Query multiple columns:</para>
 
     <programlisting language="java"><![CDATA[
-query = new JPASQLQuery(entityManager, templates);
-List<Object[]> rows = query.from(cat).list(cat.id, cat.name);
+query = new JPASQLQuery<Void>(entityManager, templates);
+List<Tuple> rows = query.select(cat.id, cat.name).from(cat).fetch();
 ]]></programlisting>
 
     <para>Query all columns:</para>
 
     <programlisting language="java"><![CDATA[
-List<Object[]> rows = query.from(cat).list(cat.all());
+List<Tuple> rows = query.select(cat.all()).from(cat).fetch();
  ]]></programlisting>
 
     <para>Query in SQL, but project as entity: </para>
 
     <programlisting language="java"><![CDATA[
-query = new JPASQLQuery(entityManager, templates);
-List<Cat> cats = query.from(cat).orderBy(cat.name.asc()).list(catEntity);
+query = new JPASQLQuery<Void>(entityManager, templates);
+List<Cat> cats = query.select(catEntity).from(cat).orderBy(cat.name.asc()).fetch();
 ]]></programlisting>
 
     <para>Query with joins: </para>
 
     <programlisting language="java"><![CDATA[
-query = new JPASQLQuery(entityManager, templates);
-cats = query.from(cat)
+query = new JPASQLQuery<Void>(entityManager, templates);
+cats = query.select(catEntity).from(cat)
     .innerJoin(mate).on(cat.mateId.eq(mate.id))
     .where(cat.dtype.eq("Cat"), mate.dtype.eq("Cat"))
-    .list(catEntity);
+    .fetch();
 ]]></programlisting>
 
     <para>Query and project into DTO: </para>
 
     <programlisting language="java"><![CDATA[
-query = new JPASQLQuery(entityManager, templates);
-List<CatDTO> catDTOs = query.from(cat)
+query = new JPASQLQuery<Void>(entityManager, templates);
+List<CatDTO> catDTOs = query.select(Projections.constructor(CatDTO.class, cat.id, cat.name))
+    .from(cat)
     .orderBy(cat.name.asc())
-    .list(Projections.constructor(CatDTO.class, cat.id, cat.name));
+    .fetch();
 ]]></programlisting>
 
     <para>If you are using the Hibernate API instead of the JPA API, then use
-      HibernateSQLQuery instead.
+      <code>HibernateSQLQuery</code> instead.
     </para>
 
   </sect2>

@@ -147,7 +147,7 @@ query.where(table.geo.contains(point));
       <title>Intersection</title>
 
       <programlisting language="java"><![CDATA[
-Geometry geo = query.uniqueResult(table.geo1.intersection(table.geo2));
+Geometry geo = query.select(table.geo1.intersection(table.geo2)).fetchOne();
 ]]></programlisting>
 
     </sect3>
@@ -161,7 +161,7 @@ Geometry geo = query.uniqueResult(table.geo1.intersection(table.geo2));
 
       <programlisting language="java"><![CDATA[
 QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
-List<SpatialRefSys> referenceSystems = query.from(spatialRefSys).list(spatialRefSys);
+List<SpatialRefSys> referenceSystems = query.select(spatialRefSys).from(spatialRefSys).fetch();
 ]]></programlisting>
 
     </sect3>
