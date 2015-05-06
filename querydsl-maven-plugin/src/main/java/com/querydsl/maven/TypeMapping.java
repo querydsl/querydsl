@@ -17,7 +17,7 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.types.Type;
 
 /**
- * {@linkplain TypeMapping} is used to customize the mapping from table + column to a type.
+ * {@code TypeMapping} customizes the mapping from table + column to a type.
  *
  * @author tiwe
  *

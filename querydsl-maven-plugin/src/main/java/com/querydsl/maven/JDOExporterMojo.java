@@ -21,7 +21,7 @@ import javax.persistence.Embedded;
 import com.querydsl.codegen.GenericExporter;
 
 /**
- * JDOExporterMojo calls the GenericExporter tool using the classpath of the module
+ * {@code JDOExporterMojo} calls {@link GenericExporter} using the classpath of the module
  * 
  * @goal jdo-export
  * @requiresDependencyResolution test

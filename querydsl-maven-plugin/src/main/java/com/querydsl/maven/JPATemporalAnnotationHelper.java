@@ -19,7 +19,7 @@ import java.lang.annotation.Annotation;
 import javax.persistence.Temporal;
 
 /**
- * A {@link AnnotationHelper} that handles JPA {@link Temporal} annotation.
+ * An {@link AnnotationHelper} that handles JPA {@link Temporal} annotation.
  * 
  * @author dyorgio
  */

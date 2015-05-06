@@ -33,35 +33,45 @@ import com.querydsl.codegen.Serializer;
 import com.querydsl.codegen.TypeMappings;
 
 /**
- * AbstractExporterMojo calls the {@link GenericExporter} tool using the
- * classpath of the module the plugin is invoked in.
+ * {@code AbstractExporterMojo} calls {@link GenericExporter} using the
+ * classpath of the module in which the plugin is invoked.
  *
  */
 public abstract class AbstractExporterMojo extends AbstractMojo {
 
     /**
+     * target folder for sources
+     *
      * @parameter
      * @required
      */
     private File targetFolder;
 
     /**
+     * switch for scala source generation
+     *
      * @parameter default-value=false
      */
     private boolean scala;
 
     /**
+     * packages to be exported
+     *
      * @parameter
      * @required
      */
     private String[] packages;
 
     /**
+     * switch for inspecting fields
+     *
      * @parameter default-value=true
      */
     private boolean handleFields = true;
 
     /**
+     * switch for inspecting getters
+     *
      * @parameter default-value=true
      */
     private boolean handleMethods = true;
@@ -73,11 +83,15 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
+     * source file encoding
+     *
      * @parameter
      */
     private String sourceEncoding;
 
     /**
+     * test classpath usage switch
+     *
      * @parameter default-value=false
      */
     private boolean testClasspath;
@@ -96,8 +110,8 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
             project.addCompileSourceRoot(targetFolder.getAbsolutePath());
         }
         if (!hasSourceChanges()) {
-            // Only run if something has changed on the source dirs. This will
-            // avoid m2e entering on a infinite build.
+            // Only run if something has changed in the source directories. This will
+            // prevent m2e from entering an infinite build cycle.
             return;
         }
 

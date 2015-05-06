@@ -22,8 +22,7 @@ import javax.persistence.Transient;
 import com.querydsl.codegen.GenericExporter;
 
 /**
- * JPAExporterMojo calls the GenericExporter tool using the classpath of the
- * module
+ * {@code JPAExporterMojo} calls {@link GenericExporter} using the classpath of the module
  *
  * @goal jpa-export
  * @requiresDependencyResolution test
