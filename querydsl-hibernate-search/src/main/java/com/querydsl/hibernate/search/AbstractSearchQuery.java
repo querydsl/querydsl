@@ -44,12 +44,6 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
 
     private final FullTextSession session;
 
-    /**
-     * Create a new SearchQuery instance
-     *
-     * @param session
-     * @param path
-     */
     public AbstractSearchQuery(FullTextSession session, EntityPath<T> path) {
         this.queryMixin = new QueryMixin<Q>((Q)this);
         this.session = session;
@@ -103,14 +97,10 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
         return queryMixin.distinct();
     }
 
-
+    @Override
     @SuppressWarnings("unchecked")
     public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(createQuery(false).iterate());
-    }
-
-    public CloseableIterator<T> iterateDistinct() {
-        return iterate();
     }
 
     @Override

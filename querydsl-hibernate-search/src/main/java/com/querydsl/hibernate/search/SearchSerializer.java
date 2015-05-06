@@ -19,7 +19,7 @@ import com.querydsl.lucene3.LuceneSerializer;
 import com.querydsl.core.types.Path;
 
 /**
- * SearchSerializer extends the LuceneSerializer to use {@link Field} annotation data from paths 
+ * {@code SearchSerializer} extends the {@link LuceneSerializer} to use {@link Field} annotation data from paths
  * 
  * @author tiwe
  *
@@ -31,8 +31,8 @@ public class SearchSerializer extends LuceneSerializer{
     /**
      * Create a new SearchSerializer instance
      * 
-     * @param lowerCase
-     * @param splitTerms
+     * @param lowerCase lowercase names
+     * @param splitTerms split terms
      */
     public SearchSerializer(boolean lowerCase, boolean splitTerms) {
         super(lowerCase, splitTerms);

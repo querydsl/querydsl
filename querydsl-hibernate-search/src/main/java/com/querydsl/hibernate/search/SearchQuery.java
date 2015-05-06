@@ -20,7 +20,7 @@ import org.hibernate.search.Search;
 import com.querydsl.core.types.EntityPath;
 
 /**
- * SearchQuery is a Query implementation for Hibernate Search
+ * {@code SearchQuery} is a Query implementation for Hibernate Search
  *
  * @author tiwe
  *
@@ -31,13 +31,19 @@ public class SearchQuery<T> extends AbstractSearchQuery<T, SearchQuery<T>> {
     /**
      * Create a new SearchQuery instance
      * 
-     * @param session
-     * @param path
+     * @param session session
+     * @param path query source
      */
     public SearchQuery(FullTextSession session, EntityPath<T> path) {
         super(session, path);
     }
 
+    /**
+     * Create a new SearchQuery instance
+     *
+     * @param session session
+     * @param path query source
+     */
     public SearchQuery(Session session, EntityPath<T> path) {
         this(Search.getFullTextSession(session), path);
     }
